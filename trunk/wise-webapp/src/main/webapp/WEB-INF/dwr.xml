@@ -1,0 +1,17 @@
+<!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 2.0//EN" "http://getahead.org/dwr//dwr20.dtd">
+<dwr>
+    <allow>
+        <create creator="spring" javascript="MapEditorService">
+            <param name="beanName" value="mapEditorService"/>
+            <include method="saveMap"/>
+            <include method="loadMap"/>
+        </create>
+        <create creator="spring" javascript="LoggerService">
+            <param name="beanName" value="loggerService"/>
+            <include method="logError"/>
+        </create>
+
+        <convert converter="bean" match="com.wisemapping.dwr.ResponseMessage"/>
+    </allow>
+
+</dwr>

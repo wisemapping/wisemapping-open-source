@@ -1,0 +1,141 @@
+<project>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>mindplot</artifactId>
+    <packaging>jar</packaging>
+    <name>Mindmap Draw JavaScript Library</name>
+
+    <parent>
+        <groupId>org.wisemapping</groupId>
+        <artifactId>wisemapping</artifactId>
+        <relativePath>../pom.xml</relativePath>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.wisemapping</groupId>
+            <artifactId>web2d</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>merge-js-resources</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <mkdir dir="${basedir}/target/classes"/>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>net.sf.alchim</groupId>
+                <artifactId>yuicompressor-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>compress</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirectory>src/main/javascript/</sourceDirectory>
+                            <outputDirectory>target/tmp/</outputDirectory>
+
+                            <aggregations>
+                                <aggregation>
+                                    <output>${basedir}/target/tmp/mindplot-min.js</output>
+                                    <includes>
+                                        <include>header-min.js</include>
+                                        <include>Mindmap-min.js</include>
+                                        <include>NodeModel-min.js</include>
+                                        <include>MindmapDesigner-min.js</include>
+                                        <include>ScreenManager-min.js</include>
+                                        <include>Workspace-min.js</include>
+                                        <include>ShrinkConnector-min.js</include>
+                                        <include>NodeGraph-min.js</include>
+                                        <include>Topic-min.js</include>
+                                        <include>CentralTopic-min.js</include>
+                                        <include>MainTopic-min.js</include>
+                                        <include>DragTopic-min.js</include>
+                                        <include>DragManager-min.js</include>
+                                        <include>DragPivot-min.js</include>
+                                        <include>TopicBoard-min.js</include>
+                                        <include>CentralTopicBoard-min.js</include>
+                                        <include>MainTopicBoard-min.js</include>
+                                        <include>ConnectionLine-min.js</include>
+                                        <include>DragTopicPositioner-min.js</include>
+                                        <include>Board-min.js</include>
+                                        <include>TextEditor-min.js</include>
+                                        <include>VariableDistanceBoard-min.js</include>
+                                        <include>util/Shape-min.js</include>
+                                        <include>FixedDistanceBoard-min.js</include>
+                                        <include>BoardEntry-min.js</include>
+                                        <include>XMLMindmapSerializer-min.js</include>
+                                        <include>PersistanceManager-min.js</include>
+                                        <include>EditorProperties-min.js</include>
+                                        <include>IconGroup-min.js</include>
+                                        <include>BubbleTip-min.js</include>
+                                        <include>Tip-min.js</include>
+                                        <include>Icon-min.js</include>
+                                        <include>LinkIcon-min.js</include>
+                                        <include>Note-min.js</include>
+                                        <include>ImageIcon-min.js</include>
+                                        <include>IconModel-min.js</include>
+                                        <include>LinkModel-min.js</include>
+                                        <include>NoteModel-min.js</include>
+
+                                        <include>Command-min.js</include>
+                                        <include>DesignerActionRunner-min.js</include>
+                                        <include>DesignerUndoManager-min.js</include>
+
+                                        <include>commands/GenericFunctionCommand-min.js</include>
+                                        <include>commands/DeleteTopicCommand-min.js</include>
+                                        <include>commands/DragTopicCommand-min.js</include>
+                                        <include>commands/AddTopicCommand-min.js</include>
+                                        <include>commands/AddLinkToTopicCommand-min.js</include>
+                                        <include>commands/RemoveLinkFromTopicCommand-min.js</include>
+                                        <include>commands/AddIconToTopicCommand-min.js</include>
+                                        <include>commands/RemoveIconFromTopicCommand-min.js</include>
+                                        <include>commands/AddNoteToTopicCommand-min.js</include>
+                                        <include>commands/RemoveNoteFromTopicCommand-min.js</include>
+
+                                        <include>footer-min.js</include>
+
+                                    </includes>
+                                </aggregation>
+                                <aggregation>
+                                    <output>${basedir}/target/classes/mindplot.vml.js</output>
+                                    <includes>
+                                        <include>${basedir}/../web2d/target/classes/web2d.vml-min.js</include>
+                                        <include>${basedir}/target/tmp/mindplot-min.js</include>
+                                    </includes>
+                                </aggregation>
+                                <aggregation>
+                                    <output>${basedir}/target/classes/mindplot.svg.js</output>
+                                    <includes>
+                                        <include>${basedir}/../web2d/target/classes/web2d.svg-min.js</include>
+                                        <include>${basedir}/target/tmp/mindplot-min.js</include>
+                                    </includes>
+                                </aggregation>
+                            </aggregations>
+                            <nomunge>true</nomunge>
+                            <jswarn>false</jswarn>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

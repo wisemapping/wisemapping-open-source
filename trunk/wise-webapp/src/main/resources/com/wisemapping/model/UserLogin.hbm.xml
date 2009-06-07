@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="com.wisemapping.model.UserLogin" table="USER_LOGIN">
+      	<id name="id">
+            <generator class="increment"/>
+        </id>
+        <property name="loginDate" column="login_Date"/>
+        <property name="email"/>                       
+    </class>
+
+</hibernate-mapping>

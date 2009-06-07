@@ -1,0 +1,800 @@
+/************************************************************************************
+*  Windoo Wise CSS
+******************************************/
+div.windoo {
+    position: absolute;
+    overflow: hidden;
+}
+
+div.windoo .windoo-drag {
+    cursor: move;
+}
+
+div.windoo div.windoo-body {
+    position: relative;
+    overflow: auto;
+    width: auto;
+    padding: 0;
+    text-align: left;
+}
+
+div.windoo
+{
+    border: 8px solid #dddddd;
+}
+
+div.windoo div.windoo-frame {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    line-height: 0;
+    background:white;
+}
+
+div.windoo div.windoo-frame .strut {
+    line-height: 0;
+    font-size: 0px;
+}
+
+div.windoo div.windoo-frame .title {
+    overflow: hidden;
+}
+
+div.windoo div.windoo-frame .title .title-text {
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Windoo buttons */
+div.windoo a.windoo-button {
+    position: absolute;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    overflow: hidden;
+    text-indent: -1000em;
+    outline: none;
+    z-index: 10;
+}
+
+/* Minimized and maximazed states */
+div.windoo-maximized .windoo-sizer, div.windoo-minimized .windoo-sizer, div.windoo-rolled .windoo-sizer, div.windoo-minimized a.windoo-button {
+    display: none !important;
+}
+
+div.windoo-minimized a.windoo-restore {
+    display: block !important;
+}
+
+div.windoo-minimized div.windoo-body, div.windoo-minimized .windoo-pane,
+    div.windoo-rolled div.windoo-body, div.windoo-rolled .windoo-pane {
+    display: none !important;
+}
+
+/* Windoo sizers */
+div.windoo .windoo-sizer {
+    position: absolute;
+    overflow: hidden;
+    background: url( '../images/s.gif' );
+    z-index: 5;
+    -moz-user-select: none;
+}
+
+div.windoo .windoo-north {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    cursor: n-resize;
+}
+
+div.windoo .windoo-south {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    cursor: s-resize;
+}
+
+div.windoo .windoo-west {
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 6px;
+    cursor: w-resize;
+}
+
+div.windoo .windoo-east {
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 6px;
+    cursor: e-resize;
+}
+
+div.windoo .windoo-nw,
+    div.windoo .windoo-ne,
+    div.windoo .windoo-sw,
+    div.windoo .windoo-se {
+    width: 9px;
+    height: 9px;
+}
+
+div.windoo .windoo-nw {
+    top: 0;
+    left: 0;
+    cursor: nw-resize;
+}
+
+div.windoo .windoo-ne {
+    top: 0;
+    right: 0;
+    cursor: ne-resize;
+}
+
+div.windoo .windoo-sw {
+    bottom: 0;
+    left: 0;
+    cursor: sw-resize;
+}
+
+div.windoo .windoo-se {
+    bottom: 0;
+    right: 0;
+    cursor: se-resize;
+}
+
+/* Windoo ghost sizer */
+div.windoo-ghost {
+    border: dotted #0d0 2px;
+    position: absolute;
+    -moz-user-select: none;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background: transparent url( '../images/s.gif' );
+}
+
+/* Windoo simple shadow */
+div.windoo-shadow-simple {
+    /*position: absolute;*/
+    /*padding: 0;*/
+    /*overflow: hidden;*/
+}
+
+div.windoo-shadow-simple div.c {
+    /*width: 100%;*/
+    /*height: 100%;*/
+    /*opacity: .4;*/
+    /*filter: Alpha( opacity = 40 );*/
+    /*-moz-border-radius: 4px;*/
+    /*-khtml-border-radius: 4px;*/
+    /*-webkit-border-radius: 4px;*/
+    /*border-radius: 4px;*/
+    /*background: #ccc;*/
+}
+
+/* Modal window shadow overlay */
+div.windoo-modal-overlay {
+    background: #000;
+    opacity: .6;
+    filter: Alpha( opacity = 60 );
+}
+
+/*        *********  wise Styles   **********    */
+
+div.windoo-wise div.windoo-body {
+    margin: 50px 20px 0;
+    padding: 0;
+}
+
+div.windoo-wise-ie .windoo-body {
+    top: 28px;
+}
+
+div.windoo-wise-ghost {
+    border: dotted #00a 2px;
+}
+
+div.windoo-wise .windoo-se {
+    bottom: 0;
+    right: 0;
+    width: 11px;
+    height: 11px;
+    cursor: se-resize;
+    /*background: url( ../images/se-handle.gif ) no-repeat left top;*/
+}
+
+div.windoo-wise div.windoo-frame {
+}
+
+div.windoo-wise div.windoo-frame .top-left {
+    /*padding: 0 0 0 3px;*/
+    /*background: transparent url( ../images/hd-sprite.gif ) no-repeat scroll left -41px;*/
+}
+
+div.windoo-wise div.windoo-frame .top-right {
+    padding: 0 3px 0 0;
+    /*background: transparent url( ../images/hd-sprite.gif ) no-repeat scroll right 0;*/
+}
+
+div.windoo-wise div.windoo-frame .title {
+    /*background: #AABACA url( ../images/hd-sprite.gif ) repeat-x scroll 0 -82px;*/
+    color: #15428B;
+    height: 28px;
+    padding: 0 40px 0 .5em;
+    font: bold 13px "Sans Serif", Tahoma, Verdana, Helvetica;
+}
+
+div.windoo-wise div.windoo-frame .title-text {
+    padding-top: 7px;
+    /*line-height: 13px;*/
+    height: 13px;
+    text-align: left;
+}
+
+div.windoo-wise div.windoo-frame .bot-left {
+    padding: 0 0 0 7px;
+    /*background: transparent url( ../images/bg-left.gif ) no-repeat scroll left bottom;*/
+}
+
+div.windoo-wise div.windoo-frame .bot-right {
+    padding: 0 7px 0 0;
+    /*background: transparent url( ../images/bg-right.gif ) no-repeat scroll right bottom;*/
+}
+
+div.windoo-wise div.windoo-frame .strut {
+    /*background: transparent url( ../images/bg-center.gif ) repeat-x scroll center bottom;*/
+    text-align: left;
+}
+
+div.windoo-wise a.windoo-button {
+    width: 23px;
+    height: 19px;
+    /*line-height: 19px;*/
+    font-size: 9pt;
+    text-indent: -1000em;
+    background: url( '../images/buttons.gif' ) no-repeat scroll 0 0;
+}
+
+div.windoo-wise a.windoo-close {
+    top: 0px;
+    right: 10px;
+    background-position: -69px 0;
+}
+
+div.windoo-wise a.windoo-close:hover {
+    background-position: -69px -19px;
+}
+
+div.windoo-wise a.windoo-close-disabled, div.windoo-wise a.windoo-close-disabled:hover {
+    background-position: -69px 0;
+    opacity: .3;
+    filter: Alpha( opacity = 30 );
+}
+
+div.windoo-wise a.windoo-maximize {
+    top: 0px;
+    right: 33px;
+    background-position: -46px 0;
+}
+
+div.windoo-wise a.windoo-maximize:hover {
+    background-position: -46px -19px;
+}
+
+div.windoo-wise a.windoo-maximize-disabled, div.windoo-wise a.windoo-maximize-disabled:hover {
+    background-position: -46px 0;
+    opacity: .3;
+    filter: Alpha( opacity = 30 );
+}
+
+div.windoo-wise a.windoo-minimize {
+    top: 0px;
+    right: 56px;
+    background-position: 0 0;
+}
+
+div.windoo-wise a.windoo-minimize:hover {
+    background-position: 0 -19px;
+}
+
+div.windoo-wise a.windoo-minimize-disabled, div.windoo-wise a.windoo-minimize-disabled:hover {
+    background-position: 0 0;
+    opacity: .3;
+    filter: Alpha( opacity = 30 );
+}
+
+div.windoo-wise a.windoo-restore {
+    display: none;
+    top: 0px;
+    right: 15px;
+    background-position: -46px 0;
+}
+
+div.windoo-wise a.windoo-restore:hover {
+    background-position: -46px -19px;
+}
+
+div.windoo-wise a.windoo-restore-disabled, div.windoo-wise a.windoo-restore-disabled:hover {
+    background-position: -46px 0;
+    opacity: .3;
+    filter: Alpha( opacity = 30 );
+}
+
+div.windoo-wise a.windoo-menu {
+    display: none;
+}
+
+div.windoo-wise-minimized {
+    width: 165px !important;
+}
+
+div.windoo-shadow-wise-maximized {
+    display: none !important;
+}
+
+div.windoo-wise-alert-message {
+}
+
+div.windoo-wise-confirm-message {
+}
+
+div.windoo-wise-alert-pane, div.windoo-wise-confirm-pane {
+    text-align: center;
+}
+
+div.windoo-wise-alert-pane input, div.windoo-wise-confirm-pane input {
+    margin: 0 .5em;
+    width: 4em;
+}
+
+
+div.windoo-wise-confirm-pane input {
+    background: #3399CC;
+    border: 1px solid #006699;
+    color: #FFFFFF;
+    font-family: arial, helvetica, sans-serif;
+    font-size: 92%;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: bold;
+    /*line-height: normal;*/
+    overflow: visible;
+    padding: 2px 8px 1px;
+    vertical-align: middle;
+}
+
+/************************************************************************************
+ *  - mooRainbow: defaultCSS
+ * author: w00fz <w00fzPuppy@gmail.com>
+*******************************************/
+
+#mooRainbow {
+    font-size: 11px;
+    color: #000;
+}
+
+.moor-box {
+    width: 125px;
+    height: 110px;
+    border: 1px solid #636163;
+    background-color: #e5e5e5;
+}
+
+.moor-overlayBox {
+    width: 80px; /* Width and Height of the overlay must be setted here: default 256x256 */
+    height: 80px;
+    margin-top: 3px;
+    margin-left: 3px;
+    border: 1px solid #000;
+}
+
+.moor-slider {
+    border: 1px solid #000;
+    margin-top: 3px;
+    margin-left: 86px;
+    width: 10px; /* if you want a bigger or smaller slider... */
+    height: 80px;
+}
+
+.moor-colorBox {
+/*display: none;*/
+    visibility: hidden;
+    border: 1px solid #000;
+    width: 59px;
+    height: 68px;
+    margin-top: 20px;
+    margin-left: 315px;
+}
+
+.moor-currentColor {
+/* Bottom Box Color, the backup one */
+/*display: none;*/
+    visibility: hidden;
+    margin-top: 55px;
+    margin-left: 316px;
+    width: 59px;
+    height: 34px;
+}
+
+.moor-okButton {
+    font-family: Tahoma;
+    font-weight: bold;
+    font-size: 8px;
+    margin-top: 90px;
+    margin-left: 3px;
+    background: #e6e6e6;
+    height: 15px;
+    border: 1px solid #d6d6d6;
+    border-left-color: #f5f5f5;
+    border-top-color: #f5f5f5;
+}
+
+label {
+    font-family: mono;
+}
+
+/* Following are just <label> */
+.moor-rLabel {
+/*display: none;*/
+    visibility: hidden;
+    margin-top: 100px;
+    margin-left: 315px;
+}
+
+.moor-gLabel {
+/*display: none;*/
+    visibility: hidden;
+    margin-top: 125px;
+    margin-left: 315px;
+}
+
+.moor-bLabel {
+/*display: none;*/
+    visibility: hidden;
+    margin-top: 150px;
+    margin-left: 315px;
+}
+
+.moor-HueLabel {
+/*display: none;*/
+    visibility: hidden;
+    margin-top: 190px;
+    margin-left: 315px;
+}
+
+span.moor-ballino {
+/* Style hue ? (degree) !! */
+/*display: none;*/
+    visibility: hidden;
+    margin-top: 190px;
+    margin-left: 370px;
+}
+
+.moor-SatuLabel {
+/*display: none;*/
+    visibility: hidden;
+    margin-top: 215px;
+    margin-left: 315px;
+}
+
+.moor-BrighLabel {
+    display: none;
+    margin-top: 240px;
+    margin-left: 315px;
+}
+
+.moor-hexLabel {
+    font-size: 0px;
+    margin-top: 90px;
+    margin-left: 70px;
+}
+
+/* <input> */
+.moor-rInput, .moor-gInput, .moor-bInput, .moor-HueInput, .moor-SatuInput, .moor-BrighInput {
+/*display: none;*/
+    visibility: hidden;
+    width: 30px;
+}
+
+.moor-hexInput {
+    font-size: 9px;
+    width: 45px;
+}
+
+.moor-cursor {
+    background-image: url( ../images/moor_cursor.gif );
+    width: 12px;
+    height: 12px;
+}
+
+.moor-arrows {
+/*display: none;*/
+    visibility: hidden; /*background-image: url(images/moor_arrows.gif);*/
+    top: 9px;
+    left: 270px;
+    width: 41px;
+    height: 9px;
+}
+
+.moor-chooseColor {
+    margin-left: 100px;
+    margin-top: 3px;
+    width: 20px;
+    height: 82px;
+}
+
+/***************************************************************************************************
+Title : Lightbox CSS
+Author : Kevin Hale
+URL : http://particletree.com/features/lightbox-gone-wild/
+
+Created : January 13, 2006
+Modified : February 1, 2006
+
+/*******************************************/
+
+#lightbox {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 9999;
+    width: 300px;
+    height: 300px;
+    margin: -150px 0 0 -150px;
+}
+
+#lightbox[id] {
+    position: fixed;
+}
+
+#overlay {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3000px; /* IE hack */
+    height: 3000px; /* IE hack */
+    z-index: 5000;
+    background-color: snow;
+    -moz-opacity: 0.8;
+    opacity: .80;
+    filter: alpha( opacity = 80 );
+}
+
+#overlay[id] {
+    position: fixed;
+}
+
+#lightbox.done #lbLoadMessage {
+    display: none;
+}
+
+#lightbox.done #lbContent {
+    display: block;
+}
+
+#lightbox.loading #lbContent {
+    display: none;
+}
+
+#lightbox.loading #lbLoadMessage {
+    display: block;
+}
+
+/*Pop Up Menu*/
+.leftMenu {
+    float: left;
+}
+
+.subMenu2 {
+    visibility: hidden;
+    position: absolute;
+    z-index: 4;
+    background-color: white;
+    border: 1px solid black;
+    clear: both;
+    text-align:left;
+    width: 90px;
+}
+
+.subMenu2 {
+
+    border: 1px solid #093a9d;
+    background-color: #E2F0F6;
+}
+
+.subMenu2 a {
+    display: block;
+    text-decoration: none; /*margin: 4px;*/
+    font-size: 13px;
+    padding: 3px;
+}
+
+.subMenu2Sep {
+
+    border-bottom: 1px solid  #093a9d;
+}
+
+.subMenu2 a:hover, .subMenu2 .menuButton:hover {
+    background-color: #4D79CF;
+    color: white;
+}
+
+.subMenu .menuLink {
+    padding: 4px;
+}
+
+.subMenu2 .menuButton {
+    cursor: pointer;
+    font-size: 13px;
+    padding: 5px;
+    color: black;
+}
+
+/* Windoo main window and frames */
+div.windoo {
+    position: absolute;
+    /*overflow: hidden;*/
+}
+
+div.windoo .windoo-drag {
+    cursor: move;
+}
+
+div.windoo div.windoo-body {
+    position: relative;
+    overflow: auto;
+    width: auto;
+    padding: 0;
+    text-align: left;
+}
+
+div.windoo div.windoo-frame {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    line-height: 0;
+}
+
+div.windoo div.windoo-frame .strut {
+    line-height: 0;
+    font-size: 0px;
+}
+
+div.windoo div.windoo-frame .title {
+    overflow: hidden;
+}
+
+div.windoo div.windoo-frame .title .title-text {
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Windoo buttons */
+div.windoo a.windoo-button {
+    position: absolute;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    overflow: hidden;
+    text-indent: -1000em;
+    outline: none;
+    z-index: 10;
+}
+
+/* Minimized and maximazed states */
+div.windoo-maximized .windoo-sizer, div.windoo-minimized .windoo-sizer, div.windoo-rolled .windoo-sizer, div.windoo-minimized a.windoo-button {
+    display: none !important;
+}
+
+div.windoo-minimized a.windoo-restore {
+    display: block !important;
+}
+
+div.windoo-minimized div.windoo-body, div.windoo-minimized .windoo-pane,
+    div.windoo-rolled div.windoo-body, div.windoo-rolled .windoo-pane {
+    display: none !important;
+}
+
+/* Windoo sizers */
+div.windoo .windoo-sizer {
+    position: absolute;
+    overflow: hidden;
+    background: url( '../images/s.gif' );
+    z-index: 5;
+    -moz-user-select: none;
+}
+
+div.windoo .windoo-north {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    cursor: n-resize;
+}
+
+div.windoo .windoo-south {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    cursor: s-resize;
+}
+
+div.windoo .windoo-west {
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 6px;
+    cursor: w-resize;
+}
+
+div.windoo .windoo-east {
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 6px;
+    cursor: e-resize;
+}
+
+div.windoo .windoo-nw,
+    div.windoo .windoo-ne,
+    div.windoo .windoo-sw,
+    div.windoo .windoo-se {
+    width: 9px;
+    height: 9px;
+}
+
+div.windoo .windoo-nw {
+    top: 0;
+    left: 0;
+    cursor: nw-resize;
+}
+
+div.windoo .windoo-ne {
+    top: 0;
+    right: 0;
+    cursor: ne-resize;
+}
+
+div.windoo .windoo-sw {
+    bottom: 0;
+    left: 0;
+    cursor: sw-resize;
+}
+
+div.windoo .windoo-se {
+    bottom: 0;
+    right: 0;
+    cursor: se-resize;
+}
+
+/* Windoo ghost sizer */
+div.windoo-ghost {
+    border: dotted #0d0 2px;
+    position: absolute;
+    -moz-user-select: none;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background: transparent url( '../images/s.gif' );
+}
+
+/* Windoo simple shadow */
+div.windoo-shadow-simple {
+    position: absolute;
+    padding: 0;
+    overflow: hidden;
+}
+
+div.windoo-shadow-simple div.c {
+}
+
+/* Modal window shadow overlay */
+div.windoo-modal-overlay {
+}

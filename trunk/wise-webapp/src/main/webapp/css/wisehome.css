@@ -1,0 +1,718 @@
+/* GLOBAL COMPONENTS */
+@import "common.css";
+@import "commonLibs.css";
+@import "thirdparty.css";
+
+/* INTRO STYLES */
+.button {
+    cursor: pointer;
+}
+
+#intro {
+    width: 100%;
+    height: 310px;
+    border-bottom: 1px solid #bbb4d6;
+    background-color: #e5e5e5;
+}
+
+#introContent {
+    width: 800px;
+    margin: auto;
+    position: relative;
+    height: 250px;
+    clear: both;
+}
+
+#introAnimation {
+    float: left;
+    width: 510px;
+    height: 210px;
+    margin: 40px 12px 0px 10px;
+}
+
+.contentImage {
+    height: 210px;
+    width: 245px;
+    float: left;
+}
+
+.contentText {
+    float: left;
+    width: 255px;
+    margin-left: 50px;
+    margin-top: 25px;
+    font: normal 80% "trebuchet ms", verdana, arial, helvetica, sans-serif;
+}
+
+.contentTitle {
+    width: 100px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #808080;
+    margin-left: -2px;
+}
+
+.contentDescription {
+    font-size: 15px;
+    font-weight: normal;
+}
+
+#introRightContent {
+    float: left;
+    width: 190px;
+    margin-top: 20px;
+}
+
+#searchAdvance {
+    padding: 5px;
+    border: 1px dotted white;
+}
+
+#searchAdvance table {
+    padding: 5px;
+}
+
+#searchResult {
+    clear: both;
+    width: 100%;
+    height: 550px;
+    overflow: auto;
+    border: 0px solid gray;
+    background-color: white;
+    z-index: 2;
+    position: relative;
+    padding: 20px;
+}
+
+#searchResultTable table {
+    width: 100%;
+    border: 0px solid gray;
+    background-color: white;
+}
+
+#searchResultTable thead, #searchAdvance thead {
+    background-color: #093A9D;
+    font-size: 12px;
+    font-weight: normal;
+    padding: 5px;
+}
+
+#searchResultTable td {
+    text-align: center;
+    border-bottom: 1px solid #EEEEEE;
+    color: #999999;
+    font-size: 12px;
+    padding: 3px;
+}
+
+#searchResultTable th, #searchAdvance th {
+    color: white;
+    border-right: 1px dotted #ffffff;
+    font-weight: bold;
+    text-align: center;
+    font-size: 12px;
+    padding: 5px;
+}
+
+#searchResultTable tbody tr:hover {
+    background-color: #E2f0f6;
+}
+
+#searchResultTable tr {
+    padding: 5px;
+}
+
+#searchResultTable .mapTitle {
+    font-size: 13px;
+    color: #666666;
+    font-weight: bold;
+}
+
+#searchResultTable .mapTags {
+    font-size: 11px;
+    color: black;
+}
+
+#searchResult .sb-inner {
+    background: #C3DEF5;
+}
+
+#searchResult .sb-border {
+    background: #A7C6DF;
+}
+
+#search {
+    clear: both;
+    width: 200px;
+    font-size: 12px;
+    padding: 9px 9px 0px;
+}
+
+#searchTitleContainer {
+    background: url( ../images/search3.png ) no-repeat left;
+    padding-left: 35px;
+    padding-bottom: 10px;
+    behavior: url( ../css/iepngfix.htc );
+}
+
+#searchTitle {
+    height: 16px;
+    top: 3px;
+    color: #6186CB;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#searchText {
+    margin-bottom: 10px;
+}
+
+#searchField {
+    margin-bottom: 5px;
+}
+
+#searchField input {
+    color: gray;
+    width: 93%;
+}
+
+#searchButton {
+    height: 30px;
+}
+
+#searchButtonContainer {
+    float: right;
+    margin-right: 10px;
+}
+
+#searchBtnStart {
+    width: 6px;
+    height: 25px;
+    background: url( ../images/btnStart.png ) no-repeat left top;
+    behavior: url( ../css/iepngfix.htc );
+    float: left;
+}
+
+#searchBtnBody {
+    background: url( ../images/btnBody.png );
+    height: 18px;
+    float: left;
+    padding: 0px 0px;
+    padding-top: 5px;
+    text-align: center;
+    color: black;
+}
+
+#searchBtnEnd {
+    width: 7px;
+    height: 25px;
+    background: url( ../images/btnEnd.png ) no-repeat right top;
+    behavior: url( ../css/iepngfix.htc );
+    float: left;
+}
+
+#tryNow {
+    clear: both;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 10px;
+    margin-left: 20px;
+    height:70px;
+}
+
+div#tryNow a {
+    text-decoration: none;
+}
+
+div#tryNow .tryBtnStart {
+    width: 10px;
+    height: 70px;
+    background: url( ../images/tryItStartBtn2.png ) no-repeat left top;
+    behavior: url( ../css/iepngfix.htc );
+    float: left;
+}
+
+div#tryNow .tryBtnBody {
+    height: 70px;
+    background: url( ../images/tryItBodyBtn2.png );
+    float: left;
+    width: 145px;
+}
+
+div#tryNow .tryBtnEnd {
+    width: 11px;
+    height: 70px;
+    background: url( ../images/tryItEndBtn2.png ) no-repeat right top;
+    float: left;
+}
+
+div#tryNow .tryBtnText {
+    padding: 0px 20px;
+    position: relative;
+    height: 70px;
+    font-size: 20px;
+    color: #093A9D;
+    font-weight: bold;
+    top: 50%;
+    margin-top: -13px;
+    white-space: normal;
+}
+
+#video {
+    clear: both;
+    font-size: 12px;
+    text-align: center;
+    margin-top: 10px;
+    margin-left: 20px;
+    height:51px;
+}
+
+div#video .videoIconContainer {
+    display:inline;
+    height:51px;
+    margin-right:10px;
+    position:relative;
+    top:14px;
+    width:20px;
+}
+
+div#video img {
+    width:20px;
+}
+
+div#video a {
+    text-decoration: none;
+}
+
+div#video .videoBtnStart {
+    width: 10px;
+    height: 51px;
+    background: url( ../images/videoStart.png ) no-repeat left top;
+    behavior: url( ../css/iepngfix.htc );
+    float: left;
+}
+
+div#video .videoBtnBody {
+    height: 51px;
+    background: url( ../images/videoBody.png );
+    float: left;
+    width: 145px;
+}
+
+div#video .videoBtnEnd {
+    width: 10px;
+    height: 51px;
+    background: url( ../images/videoEnd.png ) no-repeat right top;
+    float: left;
+}
+
+div#video .videoBtnText {
+    position: relative;
+    height: 70px;
+    font-size: 12px;
+    color: #093A9D;
+    font-weight: bold;
+    white-space: normal;
+    display:inline;
+    width:125px;
+    
+}
+/* MAIN CONTENT STYLES */
+
+#main {
+    width: 800px;
+    margin: auto;
+    position: relative;
+    height: 315px;
+    clear: both;
+}
+
+#mainContent, #introContent {
+    padding: 10px 0 15px 0;
+    font-size: 80%;
+    width: 800px;
+}
+
+.separator {
+    width: 520px;
+    padding-bottom: 40px;
+    margin-bottom: 40px;
+}
+
+#newsAndArticles, #recentMaps, #join {
+    width: 230px;
+    float: left;
+    margin-right: 0;
+    padding: 9px;
+}
+
+#recentMaps {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+#join {
+
+}
+
+#join a {
+    text-decoration: none;
+}
+
+div#signUpButton {
+    color: black;
+    padding: 5px;
+    margin-bottom: 5px; /*text-align: center;*/
+    font-weight: bold;
+}
+
+div#signUpButton a {
+    font-size: 120%; /*color: #660066;*/
+    width: 100%;
+}
+
+div#signUpButton .signUpBtnContainer {
+    left: 60px;
+}
+
+div#signUpButton .signUpStartBtn {
+    width: 5px;
+    height: 25px;
+    background: url( ../images/signUpStartBtn.png ) no-repeat left top;
+    behavior: url( ../css/iepngfix.htc );
+    float: left;
+}
+
+div#signUpButton .signUpBodyBtn {
+    height: 25px;
+    width: 70px;
+    background: url( ../images/signUpBodyBtn.png );
+    white-space: nowrap;
+    float: left;
+
+}
+
+div#signUpButton .signUpEndBtn {
+    width: 7px;
+    height: 25px;
+    background: url( ../images/signUpEndBtn.png ) no-repeat right top;
+    behavior: url( ../css/iepngfix.htc );
+    float: left;
+}
+
+div#signUpButton .signUpText {
+    padding: 0px 20px;
+    position: relative;
+    height: 25px;
+    color: #093A9D;
+    font-weight: bold;
+    top: 50%;
+    margin-top: -7px;
+}
+
+#newsAndArticles dl, #recentMaps dl, #join dl, #search dl {
+    width: 100%; /*padding-bottom: 15px;*/
+    color: black;
+}
+
+#newsAndArticles dl dt, #join dl dt, #search dl dt {
+    margin: 0;
+    color: black;
+    font-weight: bold;
+    padding: 10px 0 5px 0;
+}
+
+#newsAndArticles dl dd, #join dl dd, #search dl dd {
+    padding: 0;
+    margin: 0;
+}
+
+div#news {
+    float: left;
+    width: 400px;
+}
+
+#recentMaps dl dt {
+    margin: 0;
+    color: black;
+    font-weight: bold;
+}
+
+#recentMaps dt {
+    padding-top: 3px;
+}
+
+#recentMaps dd {
+    padding-bottom: 3px;
+    margin: 0;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+#newsAndArticles h1, #recentMaps h1, #join h1, #search h1 {
+    color: #093A9D;
+    font-size: 150%;
+    text-align: center;
+    font-weight: bold;
+}
+
+#join dl {
+    padding-bottom: 10px;
+}
+
+#join h1 {
+    color: white;
+}
+
+#join dd {
+    color: white;
+}
+
+#join dt {
+    color: white;
+    font-size: medium;
+}
+
+#join .sb-inner {
+    background: #9a8fc3;
+}
+
+#join .sb-shadow {
+    background: white;
+}
+
+#join .sb-border {
+    background: #A29BBF;
+}
+
+#newsAndArticles .sb-inner, #recentMaps .sb-inner {
+    background: #c3def5;
+}
+
+#newsAndArticles .sb-shadow, #recentMaps .sb-shadow {
+    background: white;
+}
+
+#newsAndArticles .sb-border, #recentMaps .sb-border {
+    background: #A7C6DF;
+}
+
+#recentMapsContent, #newsContent, #joinContent {
+    padding: 5px 10px;
+}
+
+#recentMapsContent .sb-inner, #newsContent .sb-inner {
+    background: white;
+}
+
+#recentMapsContent .sb-border, #newsContent .sb-border {
+    background: #A7C6DF;
+}
+
+#search dl {
+    padding-bottom: 10px;
+}
+
+#search h1 {
+    color: white;
+}
+
+#search dd {
+    color: white;
+}
+
+#search dt {
+    color: white;
+    font-size: medium;
+}
+
+#search .sb-inner {
+    background: white;
+}
+
+#search .sb-shadow {
+    background: white;
+}
+
+#search .sb-border {
+    background: #6186CB;
+}
+
+/* Finish homepage styles  */
+
+div#mainBody {
+    margin: 10px auto;
+    width: 800px; /*margin-bottom: 100px; *//* height brokes all the tables on IE*/
+    height: 300px;
+}
+
+div#news li {
+    background: transparent url( ../images/icon_triangle_grey_12x13.gif ) no-repeat scroll 0pt;
+    list-style-image: none;
+    list-style-position: outside;
+    list-style-type: none;
+    margin-bottom: 12px;
+    padding: 2px 0pt 5px 20px;
+}
+
+div#news ul {
+    padding: 5px 40px;
+}
+
+div#news h1 {
+    font-size: 200%;
+    color: #1E4BA5;
+    font-weight: bold;
+}
+
+div#login {
+    float: right;
+    width: 350px;
+    padding: 10px;
+}
+
+div#login .sb-inner, div#forgotPasswordContainer .sb-inner, div#userRegistration .sb-inner {
+    background-color: #eeeeee;
+}
+
+#forgotPasswordContainer {
+    width: 500px;
+    padding: 10px;
+}
+
+div#login .sb-border, div#forgotPasswordContainer .sb-border, div#userRegistration .sb-border {
+    background-color: #cfcfcf;
+}
+
+/* This is used to fix IE explorer bug rendering rounded corners*/
+div#loginContent {
+    width: 100%;
+    min-height: 250px;
+}
+
+div#loginContent td, div#userRegistrationContent td, div#forgotPasswordContent td {
+    padding: 3px;
+}
+
+div#login h1, div#forgotPasswordContainer h1, div#userRegistration h1 {
+    color: gray;
+    font-size: 200%;
+    margin-bottom: 10px;
+    font-weight: normal;
+}
+
+div#forgotPasswordContainer h2, div#userRegistration h2 {
+    color: black;
+    margin-bottom: 5px;
+    font-size: 110%;
+    border: none;
+    font-weight: normal;
+}
+
+div#userRegistration {
+    padding: 10px;
+}
+
+div#register {
+    position: relative;
+    margin: 10px auto;
+    width: 800px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+div#register a {
+    color: #003399;
+    font-weight: bold;
+}
+
+/* WiseMap details */
+#detailContent {
+    width: 700px;
+    height: 100%;
+    padding: 10px;
+}
+
+#detailContent .sb-inner {
+    background: #C3DEF5;
+}
+
+#detailContent .sb-border {
+    background: #A7C6DF;
+}
+
+#detail {
+    margin: 10px auto;
+    height: 100%;
+    padding: 8px;
+}
+
+#detail table {
+    background-color: white;
+    width: 100%;
+}
+
+#detail td {
+    padding: 5px;
+    vertical-align: top;
+}
+
+#detail .sb-inner {
+    background: white;
+}
+
+#detail .sb-border {
+    background: #E5E5E5;
+}
+
+#detailTitle {
+    color: #093A9D;
+    font-weight: bold;
+    font-size: 14px;
+    padding-left: 5px;
+}
+
+#detailTitle img {
+    padding-left: 5px;
+}
+
+#detailTitle span {
+    color: #8e9181;
+    font-weight: normal;
+    font-size: 14px;
+}
+
+#detail h1 {
+    color: black;
+    font-weight: bolder;
+}
+
+#detail .evenRow {
+    background-color: #ebeef1;
+}
+
+#detail .oddRow {
+    background-color: #eff3f5;
+}
+
+div.pageBodyContent ol {
+    margin-left: 12px;
+}
+
+div.pageBodyContent ul {
+    list-style-position: outside;
+}
+
+div.pageBodyContent ol li {
+    list-style-type: decimal;
+}
+
+div.newsContainer {
+    clear:both;
+    margin-bottom:20px;
+    padding:10px;
+    width:100%;
+}
+div.newsContainer h2 {
+    padding:10px;
+    color:#6B628F;
+}

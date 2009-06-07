@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <bean id="userServiceTarget" class="com.wisemapping.service.UserServiceImpl">
+        <property name="userManager" ref="userManager"/>
+        <property name="mindmapService" ref="mindMapServiceTarget"/>
+        <property name="mailer" ref="mailer"/>
+    </bean>
+
+    <bean id="userService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager"/>
+        <property name="target">
+            <ref local="userServiceTarget"/>
+        </property>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="mindMapServiceTarget" class="com.wisemapping.service.MindmapServiceImpl">
+        <property name="mindmapManager" ref="mindmapManager"/>
+        <property name="userService" ref="userService"/>
+        <property name="mailer" ref="mailer"/>
+    </bean>
+
+    <bean id="mindmapService"
+          class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyInterfaces" value="com.wisemapping.service.MindmapService"/>
+        <property name="interceptorNames">
+            <list>
+                <value>txInterceptor</value>
+                <value>viewSecurityAdvisor</value>
+                <value>updateSecurityAdvisor</value>
+            </list>
+        </property>
+        <property name="target" ref="mindMapServiceTarget"/>
+    </bean>
+
+    <bean id="mapEditorService" class="com.wisemapping.dwr.MapEditorService">
+        <property name="mindmapService">
+            <ref local="mindmapService"/>
+        </property>
+        <property name="userService">
+            <ref local="userService"/>
+        </property>
+    </bean>
+
+    <bean id="loggerService" class="com.wisemapping.dwr.JavaScriptErrorLoggerService">
+        <property name="mindmapService">
+            <ref local="mindmapService"/>
+        </property>
+        <property name="userService">
+            <ref local="userService"/>
+        </property>
+    </bean>
+
+    <bean id="smtpAuthenticator" class="com.wisemapping.mail.SmtpAuthenticator">
+        <constructor-arg value="${mail.user}"/>
+        <constructor-arg value="${mail.password}"/>
+    </bean>
+
+    <bean id="mailSession" class="javax.mail.Session" factory-method="getInstance">
+        <constructor-arg>
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.socketFactory.port">${mail.smtp.socketFactory.port}</prop>
+                <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+                <prop key="mail.smtp.socketFactory.fallback">false</prop>
+                <prop key="mail.smtp.quitwait">false</prop>
+            </props>
+        </constructor-arg>
+        <constructor-arg ref="smtpAuthenticator"/>
+    </bean>
+
+    <bean id="mailer" class="com.wisemapping.mail.Mailer" singleton="true">
+        <constructor-arg index="0" value="${mail.registrationEmail}" />
+        <constructor-arg index="1" value="${mail.siteEmail}" />
+
+        <property name="mailSender" ref="mailSender"/>
+        <property name="velocityEngine" ref="velocityEngine"/>
+    </bean>
+
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="${mail.host}"/>
+        <!--  <property name="session" ref="mailSession"/> -->
+    </bean>
+
+    <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+        <property name="velocityProperties">
+            <value>
+                resource.loader=class
+                class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+            </value>
+        </property>
+    </bean>
+</beans>

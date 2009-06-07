@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script type="text/javascript" src="web2dLibraryLoader.js"></script>
+    <script type="text/javascript" src="utils.js"></script>
+</head>
+
+<body>
+
+<h1>Lines Render Tests </h1>
+
+<table border="1">
+<colgroup style="width:80%;">
+    <col style="width:30%"/>
+    <col style="width:60%"/>
+</colgroup>
+<tr>
+    <td>
+        Lines.
+    </td>
+    <td>
+        <div id="strokeWidthSample"/>
+    </td>
+
+</tr>
+<script type="text/javascript">
+    web2d.peer.Toolkit.init();
+    var workspaceAttributes = { width:'700px',height:'100px',coordSize:'350 50',fillColor:'#ffffcc'};
+    var strokeWidthWorkspace = new web2d.Workspace(workspaceAttributes);
+
+    var rect = new web2d.Rect();
+    rect.setSize(10, 10);
+    rect.setStroke(0);
+    rect.setPosition(250, 5);
+    strokeWidthWorkspace.appendChild(rect);
+
+    for (var i = 0; i <= 10; i++)
+    {
+        var line = new web2d.Line();
+        line.setFrom(5 + (i * 25), 5);
+        line.setTo(5 + (i * 25), 45);
+        line.setAttribute('strokeWidth', i + 1);
+        strokeWidthWorkspace.appendChild(line);
+    }
+    strokeWidthWorkspace.appendChild(rect);
+
+    strokeWidthWorkspace.addItAsChildTo($("strokeWidthSample"));
+</script>
+
+<tr>
+    <td>
+        Lines Opacity.
+    </td>
+    <td>
+        <div id="strokeOpacitySample"/>
+    </td>
+
+</tr>
+<script type="text/javascript">
+    var strokeOpacityWorkspace = new web2d.Workspace(workspaceAttributes);
+    for (var i = 0; i < 10; i++)
+    {
+        var line = new web2d.Line();
+        line.setFrom(15 + (i * 25), 5);
+        line.setTo(3 + (i * 25), 45);
+        line.setAttribute('strokeWidth', 2);
+        line.setAttribute('strokeOpacity', 1 / (i + 1));
+        line.setAttribute('strokeColor', 'red');
+        strokeOpacityWorkspace.appendChild(line);
+    }
+    strokeOpacityWorkspace.addItAsChildTo($("strokeOpacitySample"));
+</script>
+
+<tr>
+    <td>
+        Line Styles.
+    </td>
+    <td>
+        <div id="strokeStyleSample"/>
+    </td>
+
+</tr>
+
+<script type="text/javascript">
+    var strokeStyleWorkspace = new web2d.Workspace(workspaceAttributes);
+    var styles = ['solid','dot','dash','dashdot','longdash'];
+    for (var i = 0; i < styles.length; i++)
+    {
+        var line = new web2d.Line();
+        line.setFrom(25 + (i * 30), 5);
+        line.setTo(13 + (i * 30), 45);
+        line.setAttribute('strokeWidth', 2);
+        line.setAttribute('strokeColor', 'red');
+        line.setAttribute('strokeStyle', styles[i]);
+        strokeStyleWorkspace.appendChild(line);
+    }
+    strokeStyleWorkspace.addItAsChildTo($("strokeStyleSample"));
+</script>
+
+<tr>
+    <td>
+        Line Arrows.
+    </td>
+    <td>
+        <div id="strokeArrowSample"/>
+    </td>
+
+</tr>
+
+<script type="text/javascript">
+    var strokeArrowWorkspace = new web2d.Workspace(workspaceAttributes);
+    var styles = ['none ','block ','classic','diamond ','oval','open','chevron','doublechevron'];
+    for (var i = 0; i < styles.length; i++)
+    {
+        var line = new web2d.Line();
+        line.setFrom(25 + (i * 30), 5);
+        line.setTo(13 + (i * 30), 45);
+        line.setAttribute('strokeWidth', 2);
+        line.setAttribute('strokeColor', 'red');
+        line.setArrowStyle(styles[i]);
+        strokeArrowWorkspace.appendChild(line);
+    }
+    strokeArrowWorkspace.addItAsChildTo($("strokeArrowSample"));
+</script>
+
+</table>
+</body>
+</html>

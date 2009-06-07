@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
+        "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+
+<tiles-definitions>
+
+    <definition name="homepage" page="/jsp/homepage.jsp"/>
+    <definition name="mindmapList" page="/jsp/mindmapList.jsp"/>
+    <definition name="embeddedView" page="/jsp/embeddedView.jsp"/>
+    <definition name="embeddedViewImg" page="/jsp/embeddedViewImg.jsp"/>
+    <definition name="mindmapEditor" page="/jsp/mindmapEditor.jsp"/>
+    <definition name="mindmapCooker" page="/jsp/mindmapCooker.jsp"/>
+    <definition name="closeDialog" page="/jsp/closeDialog.jsp"/>
+    <definition name="embeddedViewError" page="/jsp/embeddedViewError.jsp"/>
+    <definition name="mindmapPrint" page="/jsp/mindmapPrint.jsp"/>
+
+    <!-- Template Declaration -->
+    <definition name="pageTemplate" page="/jsp/template.jsp">
+        <put name="title" value="" type="string"/>
+        <put name="details" value="" type="string"/>
+        <put name="body" value="/jsp/error.jsp" type="page"/>
+    </definition>
+
+    <definition name="formDialogTemplate" page="/jsp/formDialogTemplate.jsp">
+        <put name="title" value="title" type="string"/>
+        <put name="details" value="details" type="string"/>
+        <put name="body" value="/jsp/error.jsp" type="page"/>
+    </definition>
+
+    <definition name="errorTemplate" extends="pageTemplate">
+        <put name="body" value="/jsp/errorTemplate.jsp" type="page"/>
+    </definition>
+
+    <!-- Error Pages -->
+    <definition name="unexpectedError" extends="errorTemplate">
+        <put name="title" value="UNEXPECTED_ERROR"/>
+        <put name="details" value="UNEXPECTED_ERROR_DETAILS"/>
+    </definition>
+
+    <definition name="securityError" extends="errorTemplate">
+        <put name="title" value="NO_ENOUGH_PERMISSIONS"/>
+        <put name="details" value="NO_ENOUGH_PERMISSIONS_DETAILS"/>
+    </definition>
+
+    <definition name="emailNotExistsError" extends="errorTemplate">
+        <put name="title" value="INVALID_EMAIL_ERROR"/>
+        <put name="body" value="/jsp/emailNotExistsError.jsp"/>
+    </definition>
+
+    <!-- Main Pages -->
+    <definition name="forgotPassword" extends="pageTemplate">
+        <put name="title" value="FORGOT_PASSWORD"/>
+        <put name="body" value="/jsp/forgotPassword.jsp"/>
+    </definition>
+
+    <definition name="userRegistration" extends="pageTemplate">
+        <put name="title" value="USER_REGISTRATION"/>
+        <put name="body" value="/jsp/userRegistration.jsp"/>
+    </definition>
+
+    <definition name="userRegistrationConfirmation" extends="pageTemplate">
+        <put name="title" value="USER_REGISTRATION"/>
+        <put name="body" value="/jsp/userRegistrationConfirmation.jsp"/>
+    </definition>
+
+    <definition name="login" extends="pageTemplate">
+        <put name="title" value="LOGIN"/>
+        <put name="body" value="/jsp/login.jsp"/>
+    </definition>
+
+    <definition name="browserNotSupported" extends="pageTemplate">
+        <put name="title" value="USUPPORTED_BROWSER"/>
+        <put name="body" value="/jsp/browserNotSupported.jsp"/>
+    </definition>
+
+    <definition name="mindmapDetail" extends="pageTemplate">
+        <put name="title" value="MINDMAP_DETAIL"/>
+        <put name="body" value="/jsp/mindmapDetail.jsp"/>
+    </definition>
+
+    <definition name="search" extends="pageTemplate">
+        <put name="title" value="SEARCH"/>
+        <put name="body" value="/jsp/search.jsp"/>
+    </definition>
+
+
+    <definition name="searchResult" extends="pageTemplate">
+        <put name="title" value="SEARCH"/>
+        <put name="body" value="/jsp/searchResult.jsp"/>
+    </definition>
+
+    <definition name="mindmapPublicView" extends="pageTemplate">
+        <put name="title" value="PUBLIC_MAP_VIEW"/>
+        <put name="body" value="/jsp/mindmapPublicView.jsp"/>
+    </definition>
+
+
+    <!-- Dialog Forms -->
+    <definition name="newMap" extends="formDialogTemplate">
+        <put name="title" value="NEW_MINDMAP"/>
+        <put name="details" value="FIELD_REQUIRED_MSG"/>
+        <put name="body" value="/jsp/newMap.jsp"/>
+    </definition>
+
+    <definition name="newMapError" extends="pageTemplate">
+        <put name="title" value="NEW_MINDMAP"/>
+        <put name="details" value="FIELD_REQUIRED_MSG"/>
+        <put name="body" value="/jsp/newMapError.jsp"/>
+    </definition>
+
+    <definition name="setting" extends="formDialogTemplate">
+        <put name="title" value="SETTINGS"/>
+        <put name="details" value="SETTINGS_MSG"/>
+        <put name="body" value="/jsp/setting.jsp"/>
+    </definition>
+
+    <definition name="editProfile" extends="formDialogTemplate">
+        <put name="title" value="EDIT_PROFILE"/>
+        <put name="details" value="FIELD_REQUIRED_MSG"/>
+        <put name="body" value="/jsp/editProfile.jsp"/>
+    </definition>
+
+    <definition name="changePassword" extends="formDialogTemplate">
+        <put name="title" value="CHANGE_PASSWORD"/>
+        <put name="details" value="FIELD_REQUIRED_MSG"/>
+        <put name="body" value="/jsp/changePassword.jsp"/>
+    </definition>
+
+    <definition name="mindmapTags" extends="formDialogTemplate">
+        <put name="title" value=""/>
+        <put name="details" value=""/>
+        <put name="body" value="/jsp/mindmapTags.jsp"/>
+    </definition>
+
+    <definition name="mindmapExport" extends="formDialogTemplate">
+        <put name="title" value=""/>
+        <put name="details" value=""/>
+        <put name="body" value="/jsp/mindmapExport.jsp"/>
+    </definition>
+
+    <definition name="mindmapPublish" extends="formDialogTemplate">
+        <put name="title" value=""/>
+        <put name="details" value=""/>
+        <put name="body" value="/jsp/mindmapPublish.jsp"/>
+    </definition>
+
+    <definition name="mindmapCollaborator" extends="formDialogTemplate">
+        <put name="title" value=""/>
+        <put name="details" value=""/>
+        <put name="body" value="/jsp/mindmapCollaborator.jsp"/>
+    </definition>
+
+    <definition name="renameMap" extends="formDialogTemplate">
+        <put name="title" value="RENAME"/>
+        <put name="details" value="FIELD_REQUIRED_MSG"/>
+        <put name="body" value="/jsp/mindmapRename.jsp"/>
+    </definition>
+
+    <definition name="importMap" extends="formDialogTemplate">
+        <put name="title" value="IMPORT_MINDMAP"/>
+        <put name="details" value="IMPORT_MINDMAP_INFO"/>
+        <put name="body" value="/jsp/mindmapImport.jsp"/>
+    </definition>
+
+    <definition name="keyboard" extends="formDialogTemplate">
+        <put name="title" value="KEYBOARD"/>
+        <put name="details" value="KEYBOARD_MSG"/>
+        <put name="body" value="/jsp/keyboard.jsp"/>
+    </definition>
+
+    <definition name="importMapError" extends="pageTemplate">
+        <put name="title" value="IMPORT_MINDMAP"/>
+        <put name="details" value="IMPORT_MINDMAP_INFO"/>
+        <put name="body" value="/jsp/mindmapImportError.jsp"/>
+    </definition>
+
+    <definition name="activationAccountConfirmation" extends="pageTemplate">
+        <put name="title" value="ACCOUNT_ACTIVED"/>
+        <put name="body" value="/jsp/activationAccountConfirmation.jsp"/>
+    </definition>
+
+    <definition name="activationAccountConfirmationFail" extends="pageTemplate">
+        <put name="title" value="ACCOUNT_ACTIVED_FAIL"/>
+        <put name="body" value="/jsp/activationAccountConfirmationFail.jsp"/>
+    </definition>
+
+    <definition name="mindmapHistory" extends="formDialogTemplate">
+        <put name="title" value="HISTORY"/>
+        <put name="details" value="HISTORY_INFO"/>
+        <put name="body" value="/jsp/mindmapHistory.jsp"/>
+    </definition>
+
+</tiles-definitions>

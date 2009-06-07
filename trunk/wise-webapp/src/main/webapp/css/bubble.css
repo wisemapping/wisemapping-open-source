@@ -1,0 +1,234 @@
+.bubbleContainer {
+    position:absolute;
+    z-index:50;
+    opacity:0;
+    width:auto;
+    overflow:hidden;
+}
+
+.bublePartContainer {
+    clear:both;
+}
+
+.bubblePart {
+    float:left;
+}
+
+.bubbleLeft {
+    background: transparent url(../images/bubbleTip_left.png) top left;
+    width:12px;
+    height:4px;
+}
+
+.bubbleCenter {
+    background-color:#362d2e;
+    text-align:center;
+    z-index:60;
+}
+
+.bubbleRight {
+    background: transparent url(../images/bubbleTip_right.png) top left;
+    width:23px;
+    height:4px;
+}
+
+.bubbleTopLeft {
+    background: transparent url(../images/bubbleTip_corner_top_left.png) top left;
+    width:12px;
+    height:12px;
+}
+
+.bubbleHintTopLeft {
+    background: transparent url(../images/bubbleTip_pico_corner_top_left.png) top left;
+    width:12px;
+    height:57px;
+}
+
+.bubbleTopRight {
+    background: transparent url(../images/bubbleTip_corner_top_right.png) top left;
+    width:23px;
+    height:12px;
+}
+
+.bubbleHintTopRight {
+    background: transparent url(../images/bubbleTip_pico_corner_top_right.png) top left;
+    width:23px;
+    height:57px;
+}
+
+.bubbleTop {
+    background: transparent url(../images/bubbleTip_top.png) top left;
+    height:12px;
+    width:4px;
+}
+
+.bubbleHintTop {
+    background: transparent url(../images/bubbleTip_pico_top.png) top left;
+    height:57px;
+    width:4px;
+}
+
+.bubbleBottomLeft {
+    background: transparent url(../images/bubbleTip_corner_bottom_left.png) top left;
+    width:12px;
+    height:26px;
+}
+
+.bubbleHintBottomLeft {
+    background: transparent url(../images/bubbleTip_pico_corner_bottom_left.png) top left;
+    width:12px;
+    height:62px;
+}
+
+.bubbleBottomRight {
+    background: transparent url(../images/bubbleTip_corner_bottom_right.png) top left;
+    width:23px;
+    height:26px;
+}
+
+.bubbleHintBottomRight {
+    background: transparent url(../images/bubbleTip_pico_corner_bottom_right.png) top left;
+    width:23px;
+    height:62px;
+}
+
+.bubbleBottom {
+    background: transparent url(../images/bubbleTip_bottom.png) top left;
+    height:26px;
+    width:4px;
+}
+
+.bubbleHintBottom {
+    background: transparent url(../images/bubbleTip_pico_bottom.png) top left;
+    height:62px;
+    width:4px;
+}
+.bubbleBottomHint {
+    background: transparent url(../images/bubbleTip_bottom_pico.png) top left;
+    width:58px;
+    height:62px;
+}
+
+.bubbleTopHint {
+    background: transparent url(../images/bubbleTip_top_pico.png) top left;
+    width:58px;
+    height:57px;
+}
+
+.bubbleLeftBlue {
+    background: transparent url(../images/bubbleTip_left_blue.gif) top left;
+    width:12px;
+    height:4px;
+}
+
+.bubbleCenterBlue {
+    background-color:#BCCCE1;
+    z-index:60;
+    overflow:'hidden';
+}
+
+.bubbleRightBlue {
+    background: transparent url(../images/bubbleTip_right_blue.gif) top left;
+    width:23px;
+    height:3px;
+}
+
+.bubbleTopLeftBlue {
+    background: transparent url(../images/bubbleTip_corner_top_left_blue.gif) top left;
+    width:12px;
+    height:18px;
+}
+
+.bubbleHintTopLeftBlue {
+    background: transparent url(../images/bubbleTip_pico_corner_top_left_blue.gif) top left;
+    width:13px;
+    height:61px;
+}
+
+.bubbleTopRightBlue {
+    background: transparent url(../images/bubbleTip_corner_top_right_blue.gif) top left;
+    width:23px;
+    height:18px;
+}
+
+.bubbleHintTopRightBlue {
+    background: transparent url(../images/bubbleTip_pico_corner_top_right_blue.gif) top left;
+    width:23px;
+    height:61px;
+}
+
+.bubbleTopBlue {
+    background: transparent url(../images/bubbleTip_top_blue.gif) top left;
+    height:18px;
+    width:3px;
+}
+
+.bubbleHintTopBlue {
+    background: transparent url(../images/bubbleTip_pico_top_blue.gif) top left;
+    height:61px;
+    width:3px;
+}
+
+.bubbleBottomLeftBlue {
+    background: transparent url(../images/bubbleTip_corner_bottom_left_blue.gif) top left;
+    width:13px;
+    height:32px;
+}
+
+.bubbleHintBottomLeftBlue {
+    background: transparent url(../images/bubbleTip_pico_corner_bottom_left_blue.gif) top left;
+    width:12px;
+    height:62px;
+}
+
+.bubbleBottomRightBlue {
+    background: transparent url(../images/bubbleTip_corner_bottom_right_blue.gif) top left;
+    width:23px;
+    height:32px;
+}
+
+.bubbleHintBottomRightBlue {
+    background: transparent url(../images/bubbleTip_pico_corner_bottom_right_blue.gif) top left;
+    width:23px;
+    height:62px;
+}
+
+.bubbleBottomBlue {
+    background: transparent url(../images/bubbleTip_bottom_blue.gif) top left;
+    height:32px;
+    width:3px;
+}
+
+.bubbleHintBottomBlue {
+    background: transparent url(../images/bubbleTip_pico_bottom_blue.gif) top left;
+    height:62px;
+    width:3px;
+}
+.bubbleBottomHintBlue {
+    background: transparent url(../images/bubbleTip_bottom_pico_blue.png) top left;
+    width:58px;
+    height:62px;
+    behavior: url( ../css/iepngfix.htc );
+}
+
+.bubbleTopHintBlue {
+    background: transparent url(../images/bubbleTip_top_pico_blue.png) top left;
+    width:58px;
+    height:61px;
+    behavior: url( ../css/iepngfix.htc );
+}
+
+.btn-primary {
+    background: #3399CC;
+    border: 1px solid #006699;
+    color: #FFFFFF;
+    font-family: arial, helvetica, sans-serif;
+    font-size: 72%;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    line-height: normal;
+    overflow: visible;
+    padding: 2px 8px 1px;
+    vertical-align: middle;
+}

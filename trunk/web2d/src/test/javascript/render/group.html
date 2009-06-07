@@ -1,0 +1,480 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script type="text/javascript" src="web2dLibraryLoader.js"></script>
+    <script type="text/javascript" src="utils.js"></script>
+</head>
+
+<body>
+
+<h1>Group Render Tests.</h1>
+<table border="1">
+<colgroup style="width:80%;">
+    <col style="width:50%"/>
+    <col style="width:50%"/>
+</colgroup>
+<tr>
+    <td>
+        A group object can be used to collect shapes. In this example,
+        There is a group that contains an elipse and two lines as children.
+        Changing the group position also change the position of all contained
+        elements.
+    </td>
+    <td>
+        <div id="groupBasicContainer"/>
+    </td>
+
+</tr>
+<script type="text/javascript">
+    web2d.peer.Toolkit.init();
+
+    var basicTest = function()
+    {
+        var workspace = new web2d.Workspace();
+        workspace.setSize("150px", "150px");
+        workspace.setCoordSize(100, 100);
+
+        var group = new web2d.Group();
+        group.setSize(50, 50);
+        group.setPosition(25, 50);
+        group.setCoordSize(200, 200);
+        group.setCoordOrigin(0, 0);
+        workspace.appendChild(group);
+
+        var elipse = new web2d.Elipse();
+        elipse.setSize(200, 200);
+        elipse.setPosition(100, 100);
+        group.appendChild(elipse);
+
+        var line = new web2d.Line();
+        line.setFrom(0, 0);
+        line.setTo(200, 200);
+        line.setStroke("blue");
+        group.appendChild(line);
+
+        line = new web2d.Line();
+        line.setFrom(200, 0);
+        line.setTo(0, 200);
+        line.setStroke("blue");
+        group.appendChild(line);
+
+        workspace.addItAsChildTo($("groupBasicContainer"));
+
+
+        var xDir = 1;
+        var yDir = 1;
+        var executer = function()
+        {
+            var y = group.getPosition().y + yDir;
+            var x = group.getPosition().x + xDir;
+
+            if (x < 0)
+            {
+                xDir = 1;
+            } else if (x > 50)
+            {
+                xDir = -1;
+            }
+
+            if (y < 0)
+            {
+                yDir = 1;
+            } else if (y > 50)
+            {
+                yDir = -1;
+            }
+
+            //  Logger.logMsg("Moving group x,y:"+ x + "," + y);
+            group.setPosition(x, y);
+        };
+        executer.periodical(100);
+    };
+    basicTest();
+</script>
+<!-- ************************************************************************** -->
+<tr>
+    <td>
+        Following the bubbling event pattern, all the events over a shape are propageted to its
+        parent. In this example, both elipse objects are child of a group element and click event listeners
+        have been added to the elipse and the group.
+    </td>
+    <td>
+        <div id="groupEventsContainer"/>
+    </td>
+
+</tr>
+<script type="text/javascript">
+
+    var eventTest = function()
+    {
+        var workspace = new web2d.Workspace();
+        workspace.setSize("150px", "150px");
+        workspace.setCoordSize(100, 100);
+
+        var groupAttributes = {width:50,height:50,x:25,y:50,coordSize:'200 200',coordOrigin:'0 0'};
+        var group = new web2d.Group(groupAttributes);
+        workspace.appendChild(group);
+
+        var elipseLeft = new web2d.Elipse();
+        elipseLeft.setSize(200, 200)
+        elipseLeft.setPosition(200, 0)
+        group.appendChild(elipseLeft);
+
+        var elipseRight = new web2d.Elipse();
+        elipseRight.setSize(200, 200)
+        elipseRight.setPosition(0, 0)
+        group.appendChild(elipseRight);
+
+        var listener = function(e) {
+            alert("Click event on:" + this.getType())
+        };
+        group.addEventListener("click", listener);
+        elipseLeft.addEventListener("click", listener);
+        elipseRight.addEventListener("click", listener);
+
+        workspace.addItAsChildTo($("groupEventsContainer"));
+    }
+    eventTest();
+</script>
+<!-- ************************************************************************** -->
+<tr>
+    <td>
+        Groups can be nested as a regular shape. An important property of the groups is the ability
+        to define their own coordSize, coorOrigin and size. In this example, both shapes have been
+        created with the same properties. The red one has been added as a child element of a group with the
+        following properties:<br/>
+        <br/>
+        Size(50,50);<br/>
+        Position(25,25);<br/>
+        CoordSize(100,100);<br/>
+        CoordOrigin(0,0)<br/>
+
+        The blue one has been added as a child of another group with the following properties::<br/>
+        <br/>
+        Size(50,50);<br/>
+        Position(25,25);<br/>
+        CoordSize(100,100);<br/>
+        CoordOrigin(0,0);<br/>
+        <br/>
+        Finally, the second group has been added as a child of the first declared group.
+    </td>
+    <td>
+        <div id="groupNestedContainer"/>
+    </td>
+
+</tr>
+
+<script type="text/javascript">
+    var eventTest = function()
+    {
+        var workspace = new web2d.Workspace();
+        workspace.setSize("150px", "150px");
+        workspace.setCoordSize(200, 200);
+
+        var groupOuter = new web2d.Group();
+        groupOuter.setSize(50, 50)
+        groupOuter.setPosition(25, 25);
+        groupOuter.setCoordSize(100, 100);
+        groupOuter.setCoordOrigin(0, 0)
+        workspace.appendChild(groupOuter);
+
+        var elipseOuter = new web2d.Elipse();
+        elipseOuter.setSize(200, 200);
+        elipseOuter.setPosition(100, 100);
+        elipseOuter.setFill("red");
+        groupOuter.appendChild(elipseOuter);
+
+        var line = new web2d.Line();
+        line.setFrom(0, 0);
+        line.setTo(200, 200);
+        line.setStroke("red");
+        groupOuter.appendChild(line);
+
+        var line = new web2d.Line();
+        line.setFrom(200, 0);
+        line.setTo(0, 200);
+        line.setStroke("red");
+        groupOuter.appendChild(line);
+
+        var groupInner = new web2d.Group();
+        groupInner.setSize(50, 50);
+        groupInner.setPosition(25, 25);
+        groupInner.setCoordSize(100, 100);
+        groupInner.setCoordOrigin(0, 0);
+        groupOuter.appendChild(groupInner);
+
+        var elipse = new web2d.Elipse();
+        elipse.setSize(200, 200);
+        elipse.setPosition(100, 100);
+        groupInner.appendChild(elipse);
+
+        var line = new web2d.Line();
+        line.setFrom(0, 0);
+        line.setTo(200, 200);
+        line.setStroke("blue");
+        groupInner.appendChild(line);
+
+        var line = new web2d.Line();
+        line.setFrom(200, 0);
+        line.setTo(0, 200);
+        line.setStroke("blue");
+        groupInner.appendChild(line);
+
+        workspace.addItAsChildTo($("groupNestedContainer"));
+    };
+    eventTest();
+</script>
+
+<!-- ************************************************************************** -->
+<tr>
+    <td>
+        Group coordsize defines how many units there are along the width of the containing block.
+        In all the examples, the coordsize of the workspaces have been set to (100,100) and the circles have been
+        positioned
+        at (0,0),(0,100),(100,0),(100,100)(50,50).<br/>
+        <br/>
+        1) Group with CoordSize(100,100)<br/>
+        2) Group with CoordSize(100,200)<br/>
+        3) Group with CoordSize(200,100)<br/>
+    </td>
+    <td>
+        <div style="position:relative;width:100%;">
+            <div id="coordsizeExample100x100" style="float:left;margin:20px;">
+                (1)
+            </div>
+
+            <div id="coordsizeExample100x200" style="float:left;margin:20px;">
+                (2)
+            </div>
+
+            <div id="coordsizeExample200x100" style="float:left;margin:20px;">
+                (3)
+            </div>
+        </div>
+    </td>
+</tr>
+
+<script type="text/javascript">
+    var workspaceCoordSizeSample = function()
+    {
+
+        function groupSampleBuilder(width, height)
+        {
+            // Group with CoordSize(50,50);
+            var workspace = new web2d.Workspace();
+            workspace.setSize("100px", "100px");
+            workspace.setCoordSize(100, 100);
+
+            elipseOuter = new web2d.Elipse();
+            elipseOuter.setPosition(50, 50);
+            elipseOuter.setSize(50, 50);
+            workspace.appendChild(elipseOuter);
+
+            var group = new web2d.Group();
+            group.setSize(50, 50);
+            group.setCoordSize(width, height);
+            group.setPosition(25, 25);
+            workspace.appendChild(group);
+
+            elipseInner = new web2d.Elipse();
+            elipseInner.setPosition(50, 50);
+            elipseInner.setSize(50, 50);
+            elipseInner.setFill("red");
+            group.appendChild(elipseInner);
+
+            return workspace;
+        }
+
+        var sample100x100 = groupSampleBuilder(100, 100);
+        sample100x100.addItAsChildTo($("coordsizeExample100x100"));
+
+        var sample100x200 = groupSampleBuilder(100, 200);
+        sample100x200.addItAsChildTo($("coordsizeExample100x200"));
+
+        var sample200x100 = groupSampleBuilder(200, 100);
+        sample200x100.addItAsChildTo($("coordsizeExample200x100"));
+    };
+    workspaceCoordSizeSample();
+</script>
+
+<!-- ************************************************************************** -->
+<tr>
+    <td>
+        Group coordorigin defines the coordinate at the top left corner of the containing block.
+        In all the examples,the coordsize of the groups have been set to (100,100) and the circles have been positioned
+        at (0,0),(0,100),(100,0),(100,100)(50,50). <br/>
+        <br/>
+        1) Group with CoordOrigin(0,0)<br/>
+        2) Group with CoordOrigin(0,50)<br/>
+        3) Group with CoordOrigin(50,0)<br/>
+    </td>
+    <td>
+        <div style="position:relative;width:100%;">
+            <div id="coordOriginExample0x0" style="float:left;margin:20px;">
+                (1)
+            </div>
+
+            <div id="coordOriginExample0x50" style="float:left;margin:20px;">
+                (2)
+            </div>
+
+            <div id="coordOriginExample50x0" style="float:left;margin:20px;">
+                (3)
+            </div>
+        </div>
+    </td>
+</tr>
+
+<script type="text/javascript">
+    var workspaceCoordOriginSample = function()
+    {
+
+        function groupSampleBuilder(x, y)
+        {
+            var workspace = new web2d.Workspace();
+            workspace.setSize("100px", "100px");
+            workspace.setCoordSize(100, 100);
+
+            elipseOuter = new web2d.Elipse();
+            elipseOuter.setPosition(50, 50);
+            elipseOuter.setSize(50, 50);
+            workspace.appendChild(elipseOuter);
+
+            var group = new web2d.Group();
+            group.setSize(50, 50);
+            group.setCoordSize(100, 100);
+            group.setCoordOrigin(x, y);
+            group.setPosition(25, 25);
+            workspace.appendChild(group);
+
+            elipseInner = new web2d.Elipse();
+            elipseInner.setPosition(50, 50);
+            elipseInner.setSize(50, 50);
+            elipseInner.setFill("red");
+            group.appendChild(elipseInner);
+
+            return workspace;
+        }
+        ;
+
+        var sample0x0 = groupSampleBuilder(0, 0);
+        sample0x0.addItAsChildTo($("coordOriginExample0x0"));
+
+        var sample100x200 = groupSampleBuilder(0, 50);
+        sample100x200.addItAsChildTo($("coordOriginExample0x50"));
+
+        var sample200x100 = groupSampleBuilder(50, 0);
+        sample200x100.addItAsChildTo($("coordOriginExample50x0"));
+    }
+    workspaceCoordOriginSample();
+</script>
+
+<!-- ************************************************************************** -->
+<tr>
+    <td>
+        Visibility can be used to hide an element and disable all the element events.
+        In the case of a group, this property is applied to all the children elements.
+    </td>
+    <td>
+        <div id="visibilityExample" style="float:left;margin:20px;"></div>
+    </td>
+</tr>
+
+<script type="text/javascript">
+    var groupVisibilitySample = function()
+    {
+
+        var workspace = new web2d.Workspace();
+        workspace.setSize("100px", "100px");
+        workspace.setCoordSize(100, 100);
+
+        var group = new web2d.Group();
+        group.setSize(100, 100);
+        group.setPosition(0, 0);
+        group.setCoordSize(100, 100);
+        group.addEventListener("mouseover", function() {
+            alert("Mouse Over Group");
+        });
+        workspace.appendChild(group);
+
+        elipseOuter = new web2d.Elipse();
+        elipseOuter.setPosition(50, 50);
+        elipseOuter.setSize(50, 50);
+        group.addEventListener("mouseover", function() {
+            alert("Mouse Over elipseOuter");
+        });
+        group.appendChild(elipseOuter);
+
+        elipseInner = new web2d.Elipse();
+        elipseInner.setPosition(50, 50);
+        elipseInner.setSize(25, 25);
+        elipseInner.setFill("red");
+        group.appendChild(elipseInner);
+
+        var isVisible = true;
+        var executer = function()
+        {
+            isVisible = !isVisible;
+            group.setVisibility(isVisible);
+        };
+        executer.periodical(100);
+        workspace.addItAsChildTo($("visibilityExample"));
+
+    }
+    groupVisibilitySample();
+</script>
+
+<!-- ************************************************************************** -->
+<tr>
+    <td>
+        Scale.
+    </td>
+    <td>
+        <div id="scaleStrokeExample" style="float:left;margin:20px;"></div>
+    </td>
+</tr>
+
+<script type="text/javascript">
+    var groupVisibilitySample = function()
+    {
+
+        var workspace = new web2d.Workspace();
+        workspace.setSize("100px", "100px");
+        workspace.setCoordSize(100, 100);
+
+        var group = new web2d.Group();
+        group.setSize(100, 100);
+        group.setPosition(0, 0);
+        group.setCoordSize(100, 100);
+        workspace.appendChild(group);
+
+        elipseOuter = new web2d.Elipse();
+        elipseOuter.setPosition(50, 50);
+        elipseOuter.setSize(50, 50);
+        group.appendChild(elipseOuter);
+
+        elipseInner = new web2d.Elipse();
+        elipseInner.setPosition(50, 50);
+        elipseInner.setSize(25, 25);
+        elipseInner.setFill("red");
+        group.appendChild(elipseInner);
+
+        var width = 10;
+        var height = 10;
+        var executer = function()
+        {
+            width = (width + 10) % 100;
+            height = (height + 10) % 100;
+            group.setCoordSize(width, height);
+        };
+        executer.periodical(100);
+        workspace.addItAsChildTo($("scaleStrokeExample"));
+
+    }
+    groupVisibilitySample();
+</script>
+
+</table>
+</body>
+</html>

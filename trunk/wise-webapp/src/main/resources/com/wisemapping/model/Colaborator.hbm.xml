@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="com.wisemapping.model.Colaborator" table="COLABORATOR">
+        <id name="id">
+            <generator class="increment"/>
+        </id>
+        <property name="email"/>
+        <property name="creationDate" column="creation_date"/>
+
+        <set name="mindmapUsers"			
+			cascade="all, delete-orphan"
+			inverse="true">
+            <key column="COLABORATOR_ID" not-null="true"/>
+            <one-to-many class="com.wisemapping.model.MindmapUser"/>
+	    </set>
+
+        <joined-subclass name="com.wisemapping.model.User" table="USER">
+            <key column="COLABORATOR_ID"/>
+            <property name="username" not-null="true"/>
+            <property name="firstname"/>
+            <property name="lastname"/>
+            <property name="password"/>
+            <property name="activationDate" column="activation_date"/>
+            <property name="activationCode"/>
+            <property name="allowSendEmail"/>
+            <set name="tags" table="TAG">
+                <key column="user_id"/>
+                <element column="name" type="string"/>                
+            </set>
+        </joined-subclass>
+    </class>
+
+</hibernate-mapping>

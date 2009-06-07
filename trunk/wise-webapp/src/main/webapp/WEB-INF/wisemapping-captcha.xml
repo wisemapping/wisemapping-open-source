@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <bean id="colorGenRandomDark" class="com.octo.captcha.component.image.color.RandomRangeColorGenerator">
+        <constructor-arg index="0">
+            <list>
+                <value>0</value>
+                <value>150</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg index="1">
+            <list>
+                <value>0</value>
+                <value>150</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg index="2">
+            <list>
+                <value>0</value>
+                <value>150</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg index="3">
+            <list>
+                <value>255</value>
+                <value>255</value>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="fontArial" class="java.awt.Font">
+        <constructor-arg index="0" value="Arial"/>
+        <constructor-arg index="1" value="0"/>
+        <constructor-arg index="2" value="10"/>
+    </bean>
+
+    <bean id="fontTahoma" class="java.awt.Font">
+        <constructor-arg index="0" value="Tahoma"/>
+        <constructor-arg index="1" value="0"/>
+        <constructor-arg index="2" value="10"/>
+    </bean>
+
+    <bean id="fontVerdana" class="java.awt.Font">
+        <constructor-arg index="0" value="Verdana"/>
+        <constructor-arg index="1" value="0"/>
+        <constructor-arg index="2" value="10"/>
+    </bean>
+
+    <bean id="fontComic" class="java.awt.Font">
+        <constructor-arg index="0" value="Comic sans MS"/>
+        <constructor-arg index="1" value="0"/>
+        <constructor-arg index="2" value="10"/>
+    </bean>
+
+    <bean id="fontLucida" class="java.awt.Font">
+        <constructor-arg index="0" value="Lucida console"/>
+        <constructor-arg index="1" value="0"/>
+        <constructor-arg index="2" value="10"/>
+    </bean>
+
+    <bean id="fontGenRandom" class="com.octo.captcha.component.image.fontgenerator.RandomFontGenerator">
+        <constructor-arg index="0" value="20"/>
+        <constructor-arg index="1" value="30"/>
+        <constructor-arg index="2">
+            <list>
+                <ref bean="fontArial"/>
+                <ref bean="fontTahoma"/>
+                <ref bean="fontVerdana"/>
+                <ref bean="fontComic"/>
+                <ref bean="fontLucida"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="backGenUni" class="com.octo.captcha.component.image.backgroundgenerator.UniColorBackgroundGenerator">
+        <constructor-arg index="0" value="150"/>
+        <constructor-arg index="1" value="50"/>
+    </bean>
+
+    <bean id="path" class="java.lang.String">
+        <constructor-arg value="\home\jcaptcha\conf\gimpybackgrounds"/>
+    </bean>
+
+    <bean id="simpleColoredPaster" class="com.octo.captcha.component.image.textpaster.RandomTextPaster">
+        <constructor-arg type="java.lang.Integer" index="0" value="4"/>
+        <constructor-arg type="java.lang.Integer" index="1" value="6"/>
+        <constructor-arg type="com.octo.captcha.component.image.color.ColorGenerator" index="2"
+                         ref="colorGenRandomDark"/>
+        <constructor-arg index="3" value="true"/>
+    </bean>
+
+    <bean id="wordtoimage" class="com.octo.captcha.component.image.wordtoimage.ComposedWordToImage">
+        <constructor-arg index="0" ref="fontGenRandom"/>
+        <constructor-arg index="1" ref="backGenUni"/>
+        <constructor-arg index="2" ref="simpleColoredPaster"/>
+    </bean>
+
+    <bean id="filedict" class="com.octo.captcha.component.word.FileDictionary">
+        <constructor-arg index="0" value="toddlist"/>
+    </bean>
+
+    <bean id="wordgen" class="com.octo.captcha.component.word.wordgenerator.ComposeDictionaryWordGenerator">
+        <constructor-arg ref="filedict"/>
+    </bean>
+
+    <bean id="imageCaptchaFactory" class="com.octo.captcha.image.gimpy.GimpyFactory">
+        <constructor-arg ref="wordgen"/>
+        <constructor-arg ref="wordtoimage"/>
+    </bean>
+
+    <bean id="imageEngine" class="com.octo.captcha.engine.GenericCaptchaEngine">
+        <constructor-arg index="0">
+            <list>
+                <ref bean="imageCaptchaFactory"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="captchaService" class="com.octo.captcha.service.multitype.GenericManageableCaptchaService">
+        <constructor-arg index="0" ref="imageEngine"/>
+        <constructor-arg index="1" value="300"/>
+        <constructor-arg index="2" value="200000"/>
+        <!-- Umm...    Why this is requred ...-->
+        <constructor-arg index="3" value="200000"/>
+    </bean>
+
+</beans>

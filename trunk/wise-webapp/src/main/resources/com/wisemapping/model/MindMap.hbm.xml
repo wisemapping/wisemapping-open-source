@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="com.wisemapping.model.MindMap" table="MINDMAP">
+        <id name="id">
+            <generator class="increment"/>
+        </id>
+        <property name="title"/>
+        <property name="public"/>
+        <property name="description"/>        
+        <property name="xml" column="XML"/>
+        <property name="lastModifierUser" column="last_editor"/>
+        <property name="lastModificationTime" column="edition_date"/>
+        <property name="creationTime" column="creation_date"/>
+        <property name="creator" column="creator_user"/>
+        <property name="tags" column="tags"/>
+        <property name="properties" column="editor_properties"/>
+
+        <many-to-one name="owner" column="owner_id" unique="true" not-null="true"/>
+        <many-to-one name="nativeBrowser" column="mindMapNative_id" unique="true" not-null="true"/>
+
+        <set name="mindmapUsers"
+                cascade="all, delete-orphan"
+                inverse="true">
+            <key column="MINDMAP_ID" not-null="true"/>                
+            <one-to-many class="com.wisemapping.model.MindmapUser"/>
+        </set>        
+
+    </class>
+
+</hibernate-mapping>

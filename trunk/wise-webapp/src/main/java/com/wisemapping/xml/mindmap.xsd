@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+        attributeFormDefault="unqualified"
+        elementFormDefault="qualified"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <xsd:element name="map">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="topic" minOccurs="1" maxOccurs='unbounded'/>
+            </xsd:sequence>
+            <xsd:attribute name="name" type="xsd:string"/>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="topic" type="topicType"/>
+
+    <xsd:complexType name="topicType">
+        <xsd:sequence>
+            <xsd:element minOccurs='0' maxOccurs='unbounded' type="icon" name="icon"/>
+            <xsd:element minOccurs='0' maxOccurs='1' type="link" name="link"/>
+            <xsd:element minOccurs='0' maxOccurs='1' type="note" name="note"/>
+            <xsd:element minOccurs='0' maxOccurs='unbounded' ref="topic"/>
+        </xsd:sequence>
+        <xsd:attribute name="text" type="xsd:string"/>
+        <xsd:attribute name="shape" type="xsd:string"/>
+        <xsd:attribute name="fontStyle" type="xsd:string"/>
+        <xsd:attribute name="bgColor" type="xsd:string"/>
+        <xsd:attribute name="brColor" type="xsd:string"/>
+        <xsd:attribute name="order" type="xsd:int"/>
+        <xsd:attribute name="position" type="xsd:string"/>
+        <xsd:attribute name="central" type="xsd:boolean"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="icon">
+        <xsd:attribute name="id" type="xsd:string"/>
+        <xsd:attribute name="order" type="xsd:string"/>
+    </xsd:complexType>
+    
+    <xsd:complexType name="link">
+        <xsd:attribute name="url" type="xsd:string"/>
+        <xsd:attribute name="order" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="note">        
+        <xsd:attribute name="text" type="xsd:string"/>
+    </xsd:complexType>
+
+</xsd:schema>

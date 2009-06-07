@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:sch="http://www.wisemapping.org/ws" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:tns="http://www.wisemapping.org/ws" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  targetNamespace="http://www.wisemapping.org/ws">
+    <wsdl:types>
+        <xsd:schema xmlns:wm="http://www.wisemapping.org/mindmap" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                    attributeFormDefault="unqualified" elementFormDefault="qualified"
+                    targetNamespace="http://www.wisemapping.org/ws">
+            <xsd:import namespace="http://www.wisemapping.org/mindmap" schemaLocation="mindmap.xsd"/>
+
+            <xsd:element name="loadMindmapRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="mapdId" type="xsd:long"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="loadMindmapResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="creator" type="xsd:string"/>
+                        <xsd:element ref="wm:map"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="addMindmapRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="creator" type="xsd:string"/>
+                        <xsd:element name="title" type="xsd:string"/>
+                        <xsd:element name="description" type="xsd:string"/>
+                        <xsd:element ref="wm:map"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="addMindmapResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="mapId" type="xsd:long"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="loadMindmapResponse">
+        <wsdl:part element="tns:loadMindmapResponse" name="loadMindmapResponse">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="addMindmapRequest">
+        <wsdl:part element="tns:addMindmapRequest" name="addMindmapRequest">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="loadMindmapRequest">
+        <wsdl:part element="tns:loadMindmapRequest" name="loadMindmapRequest">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="addMindmapResponse">
+        <wsdl:part element="tns:addMindmapResponse" name="addMindmapResponse">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="WiseServicesPortType">
+        <wsdl:operation name="loadMindmap">
+            <wsdl:input message="tns:loadMindmapRequest" name="loadMindmapRequest">
+            </wsdl:input>
+            <wsdl:output message="tns:loadMindmapResponse" name="loadMindmapResponse">
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="addMindmap">
+            <wsdl:input message="tns:addMindmapRequest" name="addMindmapRequest">
+            </wsdl:input>
+            <wsdl:output message="tns:addMindmapResponse" name="addMindmapResponse">
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="WiseServicesPortTypeSoap11" type="tns:WiseServicesPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="loadMindmap">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="loadMindmapRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="loadMindmapResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="addMindmap">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="addMindmapRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="addMindmapResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="WiseServicesPortTypeService">
+        <wsdl:port binding="tns:WiseServicesPortTypeSoap11" name="WiseServicesPortTypeSoap11">
+            <soap:address location="http://localhost:8080/wise-webapp/ws/"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

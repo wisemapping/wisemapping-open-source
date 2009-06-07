@@ -1,0 +1,17 @@
+- El Logger se come el procesador en Firefox. En el ejemplo del group.html si pones un logger que haga print de
+algo periodico se cuelga el Firefox.
+- Seria bueno que el tookit se inicialice bajo demanda, sin la necesidad de hacerlo por el usuario.
+- Workspace setStroke fixiar los styles.
+- Implementar setArrowStyle de svg en caso de ser necesario. 
+
+* Las funciones deben soportar el pasar objetos.?
+
+- Delete isolated Node, throws an exception.
+
+Test:
+
+* Remove children.
+* opacity,visibility
+
+
+

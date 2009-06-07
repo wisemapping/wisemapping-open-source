@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <bean id="browserSupportInterceptor" class="com.wisemapping.filter.BrowserSupportInterceptor">
+        <property name="exclude">
+            <list>
+                <value>/</value>
+                <value>/index.jsp</value>
+                <value>/c/home.htm</value>
+                <value>/c/login.htm</value>
+                <value>/c/userRegistration.htm</value>
+                <value>/c/captcha.htm</value>
+                <value>/c/publicView.htm</value>
+                <value>/c/export.htm</value>
+                <value>/c/search.htm</value>
+                <value>/c/keyboard.htm</value>
+                <value>/c/renameMap.htm</value>
+                <value>/c/embeddedView.htm</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="exceptionHadlerResolver"
+          class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="defaultStatusCode" value="500"/>
+        <property name="defaultErrorView" value="unexpectedError"/>
+        <property name="exceptionMappings">
+            <props>
+                <prop key="com.wisemapping.exceptions.UnsupportedBrowserException">browserNotSupported</prop>
+                <!-- Security exceptions are wrapped in this exceptions -->
+                <prop key="java.lang.reflect.UndeclaredThrowableException">securityError</prop>
+                <prop key="com.wisemapping.exceptions.EmailNotExistsException">emailNotExistsError</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="paramResolverByAction"
+          class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
+        <property name="paramName" value="action"/>
+    </bean>
+
+    <bean id="paramResolverByAction2"
+          class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
+        <property name="paramName" value="actionId"/>
+    </bean>
+
+    <bean id="mindmapController" class="com.wisemapping.controller.MindmapController">
+        <property name="methodNameResolver" ref="paramResolverByAction"/>
+        <property name="mindmapService" ref="mindmapService"/>
+        <property name="userService" ref="userService"/>
+    </bean>
+
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>messages</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="localeResolver"
+          class="org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver">
+    </bean>
+
+    <bean id="homeResolver" class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+        <property name="mappings">
+            <props>
+                <prop key="/c/try.htm">tryEditor</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="homeController" class="com.wisemapping.controller.PublicPagesController">
+        <property name="methodNameResolver" ref="homeResolver"/>
+        <property name="mindmapService" ref="mindmapService"/>
+    </bean>
+
+    <bean id="editorController" class="com.wisemapping.controller.MindmapEditorController">
+        <property name="methodNameResolver" ref="paramResolverByAction"/>
+        <property name="mindmapService" ref="mindmapService"/>
+        <property name="userService" ref="userService"/>
+    </bean>
+
+    <bean id="cookerController" class="com.wisemapping.controller.MindmapCooker">
+        <property name="methodNameResolver" ref="paramResolverByAction"/>
+        <property name="mindmapService" ref="mindmapService"/>
+        <property name="userService" ref="userService"/>
+    </bean>
+
+    <bean id="loginController" class="com.wisemapping.controller.LoginController">
+        <property name="methodNameResolver" ref="paramResolverByAction"/>
+        <property name="mindmapService" ref="mindmapService"/>
+        <property name="userService" ref="userService"/>
+    </bean>
+
+    <bean id="sharingController" class="com.wisemapping.controller.MindmapSharingController">
+        <property name="methodNameResolver" ref="paramResolverByAction2"/>
+        <property name="mindmapService" ref="mindmapService"/>
+        <property name="userService" ref="userService"/>
+    </bean>
+
+    <bean id="exportController" class="com.wisemapping.controller.ExportController">
+        <property name="methodNameResolver" ref="paramResolverByAction"/>
+        <property name="mindmapService" ref="mindmapService"/>
+        <property name="userService" ref="userService"/>
+    </bean>
+    <bean id="publishController" class="com.wisemapping.controller.MindmapPublishController">
+        <property name="methodNameResolver" ref="paramResolverByAction2"/>
+        <property name="mindmapService" ref="mindmapService"/>
+        <property name="userService" ref="userService"/>
+    </bean>
+
+    <bean id="userValidator" class="com.wisemapping.validator.UserValidator">
+        <property name="userService" ref="userService"/>
+    </bean>
+
+    <bean id="userController" class="com.wisemapping.controller.UserController">
+        <property name="captchaService" ref="captchaService"/>
+        <property name="sessionForm" value="false"/>
+        <property name="commandName" value="user"/>
+        <property name="commandClass" value="com.wisemapping.view.UserBean"/>
+        <property name="validator" ref="userValidator"/>
+        <property name="formView" value="userRegistration"/>
+        <property name="successView" value="userRegistrationConfirmation"/>
+        <property name="userService" ref="userService"/>
+    </bean>
+
+    <bean id="forgotPasswordValidator" class="com.wisemapping.validator.ForgotPasswordValidator"/>
+
+    <bean id="forgotPasswordController" class="com.wisemapping.controller.ForgotPasswordController">
+        <property name="sessionForm" value="false"/>
+        <property name="commandName" value="forgotPassword"/>
+        <property name="commandClass" value="com.wisemapping.view.ForgotPasswordBean"/>
+        <property name="validator" ref="forgotPasswordValidator"/>
+        <property name="formView" value="forgotPassword"/>
+        <property name="successView" value="mindmap"/>
+        <property name="userService" ref="userService"/>
+    </bean>
+
+    <bean id="settingResolver" class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+        <property name="mappings">                                    
+            <props>
+                <prop key="/c/settings.htm">settings</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="settingsController" class="com.wisemapping.controller.SettingsController">
+        <property name="methodNameResolver" ref="settingResolver"/>
+    </bean>
+
+    <bean id="changePasswordValidator" class="com.wisemapping.validator.ChangePasswordValidator"/>
+    <bean id="changePasswordController" class="com.wisemapping.controller.ChangePasswordController">
+        <property name="sessionForm" value="false"/>
+        <property name="commandName" value="changePassword"/>
+        <property name="commandClass" value="com.wisemapping.view.ChangePasswordBean"/>
+        <property name="validator" ref="changePasswordValidator"/>
+        <property name="formView" value="changePassword"/>
+        <property name="successView" value="closeDialog"/>
+        <property name="userService" ref="userService"/>
+    </bean>
+
+    <bean id="editProfileValidator" class="com.wisemapping.validator.EditProfileValidator">
+        <property name="userService" ref="userService"/>
+    </bean>
+
+    <bean id="editProfileController" class="com.wisemapping.controller.EditProfileController">
+        <property name="sessionForm" value="false"/>
+        <property name="commandName" value="editProfile"/>
+        <property name="commandClass" value="com.wisemapping.view.UserBean"/>
+        <property name="validator" ref="editProfileValidator"/>
+        <property name="formView" value="editProfile"/>
+        <property name="successView" value="closeDialog"/>
+        <property name="userService" ref="userService"/>
+    </bean>
+
+    <bean id="renameMapValidator" class="com.wisemapping.validator.RenameMapValidator">
+        <property name="mindmapService" ref="mindmapService"/>
+    </bean>
+
+    <bean id="newMapValidator" class="com.wisemapping.validator.MapInfoValidator">
+        <property name="mindmapService" ref="mindmapService"/>
+    </bean>
+
+    <bean id="importMapValidator" class="com.wisemapping.validator.ImportMapValidator">
+        <property name="mindmapService" ref="mindmapService"/>
+    </bean>
+
+    <bean id="renameMapController" class="com.wisemapping.controller.RenameMindmapController">
+        <property name="sessionForm" value="false"/>
+        <property name="commandName" value="renameMap"/>
+        <property name="commandClass" value="com.wisemapping.view.MindMapInfoBean"/>
+        <property name="validator" ref="renameMapValidator"/>
+        <property name="formView" value="renameMap"/>
+        <property name="successView" value="closeDialog"/>
+        <property name="mindmapService" ref="mindmapService"/>
+        <property name="userService" ref="userService"/>
+    </bean>
+
+    <bean id="historyController" class="com.wisemapping.controller.HistoryController">
+        <property name="methodNameResolver" ref="paramResolverByAction"/>
+        <property name="mindmapService" ref="mindmapService"/>
+        <property name="userService" ref="userService"/>
+    </bean>
+
+    <bean id="newMapController" class="com.wisemapping.controller.NewMindmapController">
+        <property name="sessionForm" value="false"/>
+        <property name="commandName" value="newMap"/>
+        <property name="commandClass" value="com.wisemapping.view.MindMapInfoBean"/>
+        <property name="validator" ref="newMapValidator"/>
+        <property name="formView" value="newMap"/>
+        <property name="errorView" value="newMapError"/>
+        <property name="mindmapService" ref="mindmapService"/>
+        <property name="userService" ref="userService"/>
+    </bean>
+
+
+    <bean id="importMapController" class="com.wisemapping.controller.ImportController">
+        <property name="sessionForm" value="false"/>
+        <property name="commandName" value="importMap"/>
+        <property name="commandClass" value="com.wisemapping.view.ImportMapBean"/>
+        <property name="validator" ref="importMapValidator"/>
+        <property name="formView" value="importMap"/>
+        <property name="errorView" value="importMapError"/>
+        <property name="mindmapService" ref="mindmapService"/>
+        <property name="userService" ref="userService"/>
+    </bean>
+
+    <bean id="tagValidator" class="com.wisemapping.validator.TagValidator">
+    </bean>
+
+    <bean id="tagsController" class="com.wisemapping.controller.TagsController">
+        <property name="sessionForm" value="false"/>
+        <property name="commandName" value="tag"/>
+        <property name="commandClass" value="com.wisemapping.view.TagBean"/>
+        <property name="validator" ref="tagValidator"/>
+        <property name="formView" value="mindmapTags"/>
+        <property name="successView" value="closeDialog"/>
+        <property name="mindmapService" ref="mindmapService"/>
+        <property name="userService" ref="userService"/>
+    </bean>
+
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- one of the properties available; the maximum file size in bytes -->
+        <property name="maxUploadSize" value="522240"/>
+    </bean>
+
+    <bean id="activationController" class="com.wisemapping.controller.ActivationController">
+        <property name="userService" ref="userService"/>
+    </bean>
+
+    <bean id="searchController" class="com.wisemapping.controller.SearchController">
+        <property name="methodNameResolver" ref="paramResolverByAction"/>
+        <property name="mindmapService" ref="mindmapService"/>
+    </bean>
+
+    <bean id="keyboardController" class="com.wisemapping.controller.KeyboardController">
+        <property name="methodNameResolver" ref="paramResolverByAction"/>
+        <property name="mindmapService" ref="mindmapService"/>
+    </bean>
+
+    <bean id="publicView" class="com.wisemapping.controller.PublicViewController">
+        <property name="methodNameResolver" ref="paramResolverByAction"/>
+        <property name="mindmapService" ref="mindmapService"/>
+    </bean>
+
+    <bean id="embeddedView" class="com.wisemapping.controller.EmbeddedViewController">
+        <property name="methodNameResolver" ref="paramResolverByAction"/>
+        <property name="mindmapService" ref="mindmapService"/>
+    </bean>
+
+    <bean id="captchaController" class="com.wisemapping.controller.CaptchaController">
+        <property name="captchaService" ref="captchaService"/>
+    </bean>
+
+    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="interceptors">
+            <list>
+                <ref bean="browserSupportInterceptor"/>
+            </list>
+        </property>
+        <property name="mappings">
+            <props>
+                <prop key="/c/mymaps.htm">mindmapController</prop>
+                <prop key="/c/userRegistration.htm">userController</prop>
+                <prop key="/c/sharing.htm">sharingController</prop>
+                <prop key="/c/home.htm">homeController</prop>
+                <prop key="/c/login.htm">loginController</prop>
+                <prop key="/c/captcha.htm">captchaController</prop>
+                <prop key="/c/forgotPassword.htm">forgotPasswordController</prop>
+                <prop key="/c/activation.htm">activationController</prop>
+                <prop key="/c/changePassword.htm">changePasswordController</prop>
+                <prop key="/c/editor.htm">editorController</prop>
+                <prop key="/c/cooker.htm">cookerController</prop>
+                <prop key="/c/settings.htm">settingsController</prop>
+                <prop key="/c/export.htm">exportController</prop>
+                <prop key="/c/publish.htm">publishController</prop>
+                <prop key="/c/editProfile.htm">editProfileController</prop>
+                <prop key="/c/tags.htm">tagsController</prop>
+                <prop key="/c/search.htm">searchController</prop>
+                <prop key="/c/keyboard.htm">keyboardController</prop>
+                <prop key="/c/publicView.htm">publicView</prop>
+                <prop key="/c/embeddedView.htm">embeddedView</prop>
+                <prop key="/c/renameMap.htm">renameMapController</prop>
+                <prop key="/c/importMap.htm">importMapController</prop>
+                <prop key="/c/newMap.htm">newMapController</prop>
+                <prop key="/c/history.htm">historyController</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.tiles.TilesJstlView"/>
+    </bean>
+
+    <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles.TilesConfigurer">
+        <property name="definitions">
+            <list>
+                <value>/WEB-INF/defs/definitions.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--<bean id="publicViewTarget" class="com.wisemapping.controller.PublicViewController">-->
+    <!--<property name="methodNameResolver" ref="paramResolverByAction"/>-->
+    <!--<property name="mindmapService">-->
+    <!--<ref bean="mindmapService"/>-->
+    <!--</property>-->
+    <!--</bean>-->
+
+    <!--<bean id="publicView"-->
+    <!--class="org.springframework.aop.framework.ProxyFactoryBean">-->
+    <!--<property name="proxyInterfaces">-->
+    <!--<value>com.wisemapping.controller.BaseMultiActionController</value>-->
+    <!--</property>-->
+    <!--<property name="interceptorNames">-->
+    <!--<list>-->
+    <!--<value>viewsAdvisor</value>-->
+    <!--</list>-->
+    <!--</property>-->
+    <!--<property name="target">-->
+    <!--<ref bean="publicViewTarget"/>-->
+    <!--</property>-->
+    <!--</bean>-->
+
+    <!--<bean id="viewAdvice" class="com.wisemapping.aop.ViewsAdvise">-->
+    <!--<property name="mindmapService">-->
+    <!--<ref bean="mindmapService"/>-->
+    <!--</property>-->
+    <!--</bean>-->
+
+    <!--<bean id="viewsAdvisor"-->
+    <!--class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">-->
+    <!--<property name="advice">-->
+    <!--<ref bean="viewAdvice"/>-->
+    <!--</property>-->
+    <!--<property name="mappedNames">-->
+    <!--<list>-->
+    <!--<value>handleNoSuchRequestHandlingMethod</value>-->
+    <!--</list>-->
+    <!--</property>-->
+    <!--</bean>-->
+
+</beans>

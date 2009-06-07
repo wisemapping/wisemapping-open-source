@@ -1,0 +1,19 @@
+
+Pablo
+----------
+
+Paulo
+------
+* El mouse over se rompe una vez que se hace el select de algun node. Debe estar rompiendo el
+ lister o algo parecido.
+** Evitar los cambios de size inecesarios y posicion inecesarios, de esta manera menos flick. Esto en el updater.
+* Queda un ratro raro cuando se hace drag and drop en explorer.
+
+
+
+Later
+-------
+* Cuanto mas grande el grafo, mas lento de hace el primer momento del drag. Con lo cual, es conveniente reutilizar los
+nodos en vez de borrarlos.
+* Menu contextual para agregar nodos.
+* Es necesario manejar para los central topic to main topic correctamente el concepto de height.

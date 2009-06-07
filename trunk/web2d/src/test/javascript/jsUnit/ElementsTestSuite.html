@@ -1,0 +1,286 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>JsUnit Test Suite</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../libraries/jsUnit/css/jsUnitStyle.css">
+    <script language="JavaScript" type="text/javascript" src="../../../../../libraries/jsUnit/app/jsUnitCore.js"></script>    <!--<script language="JavaScript" type="text/javascript" src="../../../src/core.js"></script>-->
+    <script language="JavaScript" type="text/javascript" src="../../../src/web2d.js"></script>
+    <script type="text/javascript">
+
+        web2d.peer.Toolkit.init();
+
+    </script>
+</head>
+
+<body>
+<h1>JsUnit Test Suite</h1>
+
+<p>This page contains a suite of tests for testing JsUnit. Click <a href="../../lib/jsunit/testRunner.html">here</a> to
+    start running the test</p>
+
+<div id="divWorkspace" style="border:1px solid red;position:absolute;left:0;top:0;width:400px;height:410px;">
+</div>
+
+
+<script language="JavaScript" type="text/javascript">
+
+function setUp()
+{
+    debug("Setting up workspace");
+    workspace = new web2d.Workspace();
+    workspace.addItAsChildTo($("divWorkspace"));
+
+    group = new web2d.Group();
+    line = new web2d.Line();
+    elipse = new web2d.Elipse();
+    rect = new web2d.Rect();
+    rectArc = new web2d.Rect(0.3);
+
+}
+
+function testAppendAndRemoveElements()
+{
+    workspace.appendChild(group);
+    workspace.appendChild(line);
+    workspace.appendChild(elipse);
+    workspace.appendChild(rect);
+    workspace.appendChild(rectArc);
+
+    workspace.removeChild(group);
+    workspace.removeChild(line);
+    workspace.removeChild(elipse);
+    workspace.removeChild(rect);
+    workspace.removeChild(rectArc);
+
+    workspace.appendChild(group);
+    group.appendChild(line);
+    group.appendChild(elipse);
+    group.appendChild(rect);
+    group.appendChild(rectArc);
+
+    group.removeChild(line);
+    group.removeChild(elipse);
+    group.removeChild(rect);
+    group.removeChild(rectArc);
+    workspace.removeChild(group);
+
+}
+
+function testElementFill()
+{
+    var testFill = function(elem, parent, color, opacity, isSupported)
+    {
+        if (parent)
+        {
+            parent.appendChild(elem);
+        }
+
+        if (isSupported)
+        {
+            elem.setFill(color, opacity);
+
+            var fill = elem.getFill();
+            assertEquals(color, fill.color);
+            if (opacity)
+            {
+                assertEquals(opacity, fill.opacity);
+            }
+
+            // Set attributes
+            elem.setAttribute('fillColor', color);
+            elem.setAttribute('fillOpacity', opacity);
+
+            fill = elem.getFill();
+            assertEquals(color, fill.color);
+            if (opacity)
+            {
+                assertEquals(opacity, fill.opacity);
+            }
+
+        } else
+        {
+            var wasCatched = false;
+            try
+            {
+                line.setFill(color);
+            } catch (e)
+            {
+                wasCatched = true;
+            }
+            assertEquals(true, wasCatched);
+        }
+    };
+
+    testFill(workspace, null, 'blue', null, true);
+    testFill(elipse, workspace, 'green', 0.3, true);
+    testFill(rect, workspace, 'blue', 0.3, true);
+    testFill(rectArc, workspace, 'yellow', 0.3, true);
+    testFill(line, workspace, 'yellow', 0.3, false);
+    testFill(group, workspace, 'yellow', null, false);
+}
+
+function testElementPosition()
+{
+    var testPosition = function(elem, parent, x, y, isSupported)
+    {
+        if (isSupported)
+        {
+            // Method setting ...
+            parent.appendChild(elem);
+            elem.setPosition(x, y);
+
+            assertEquals(x, elem.getPosition().x);
+            assertEquals(y, elem.getPosition().y);
+
+            // Attribute setting
+            x = x + 10;
+            elem.setAttribute('x', x);
+            assertEquals(x, elem.getPosition().x);
+
+            y = y + 20;
+            elem.setAttribute('y', y);
+            assertEquals(y, elem.getPosition().y);
+
+            // Attribute getters
+            assertEquals(y, elem.getAttribute('y'));
+            assertEquals(x, elem.getAttribute('x'));
+
+            // Attribute setter.
+            y = y + 20;
+            x = x + 20;
+            elem.setAttribute('position', x + ' ' + y);
+
+            assertEquals(x, elem.getPosition().x);
+            assertEquals(y, elem.getPosition().y);
+
+        } else
+        {
+            var wasCatched = false;
+            try
+            {
+                line.setPosition(44, 34);
+            } catch (e)
+            {
+                wasCatched = true;
+            }
+            assertEquals(true, wasCatched);
+        }
+    };
+
+    testPosition(group, workspace, 41, 31, true);
+    testPosition(elipse, workspace, 42, 32, true);
+    testPosition(rect, workspace, 43, 33, true);
+    testPosition(rectArc, workspace, 44, 34, true);
+}
+
+function testElementSize()
+{
+
+    var testSize = function(elem, parent, width, height, isSupported)
+    {
+        if (parent)
+        {
+            parent.appendChild(elem);
+        }
+        if (isSupported)
+        {
+            // Function setter ..
+            elem.setSize(width, height);
+
+            assertEquals(width, elem.getSize().width);
+            assertEquals(height, elem.getSize().height);
+
+            // Attribute setter.
+            elem.setAttribute('width', width);
+            assertEquals(height, elem.getSize().height);
+            assertEquals(width, elem.getSize().width);
+
+            elem.setAttribute('height', height);
+            assertEquals(height, elem.getSize().height);
+            assertEquals(width, elem.getSize().width);
+
+            // Multiple setter.
+            elem.setAttribute('size', width + ' ' + height);
+
+        }
+        else {
+
+            var wasCatched = false;
+            try
+            {
+                elem.setSize(44, 34);
+            } catch (e)
+            {
+                wasCatched = true;
+            }
+            assertEquals(true, wasCatched);
+        }
+    };
+
+    testSize(workspace, null, '43mm', '43mm', true);
+    testSize(group, workspace, 10, 20, true);
+    testSize(elipse, group, 11, 21, true);
+    testSize(rect, workspace, 12, 22, true);
+    testSize(rectArc, workspace, 23, 13, true);
+    testSize(line, workspace, 13, 23, false);
+}
+
+function testElementEventHandling()
+{
+    var testEventHandling = function(elem, parent, eventType)
+    {
+        if (parent)
+        {
+            parent.appendChild(elem);
+        }
+
+        var listener = function() { /* Dummy event listener */
+        };
+        elem.addEventListener(eventType, listener);
+        elem.removeEventListener(eventType, listener);
+    };
+
+    testEventHandling(workspace, null, 'mouseover');
+    testEventHandling(group, workspace, 'mouseover');
+    testEventHandling(elipse, workspace, 'mouseover');
+    testEventHandling(rect, workspace, 'mouseover');
+    testEventHandling(rectArc, workspace, 'mouseover');
+    testEventHandling(line, workspace, 'mouseover');
+}
+;
+
+function testStroke()
+{
+    var testStroke = function(elem, parent, isSupported)
+    {
+        if (parent)
+        {
+            parent.appendChild(elem);
+        }
+        var strokeStyles = ['solid','dot','dash','dashdot','longdash'];
+        for (var i = 0; i < strokeStyles.length; i++)
+        {
+            for (var j = 0; j < 10; j++)
+            {
+                elem.setStroke(j, strokeStyles[i], 'red');
+            }
+        }
+    };
+
+    //    testStroke(workspace,null);
+    testStroke(elipse, workspace);
+    testStroke(rect, workspace);
+    testStroke(rectArc, workspace);
+    testStroke(line, workspace);
+}
+;
+
+</script>
+
+
+</body>
+</html>
+

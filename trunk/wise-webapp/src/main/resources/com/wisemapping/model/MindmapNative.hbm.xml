@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="com.wisemapping.model.MindMapNative" table="MINDMAP_NATIVE">
+        <id name="id">
+            <generator class="increment"/>
+        </id>
+
+        <property name="svgXml" type="binary">
+            <column name="SVG_XML" sql-type="blob"/>
+        </property>
+        <property name="vmlXml" type="binary">
+            <column name="VML_XML" sql-type="blob"/>
+        </property>
+    </class>
+
+</hibernate-mapping>

@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script type="text/javascript" src="web2dLibraryLoader.js"></script>
+    <script type="text/javascript" src="utils.js"></script>
+</head>
+
+<body>
+
+<h1>Chart prototype Tests </h1>
+
+<input type="button" value="Create Shape" name="Create Shape" onclick="createShape();"/>
+<input type="button" value="Zoom In" name="Create Shape" onclick="zoomIn();"/>
+<input type="button" value="Zoom Out" name="Create Shape" onclick="zoomOut();"/>
+
+
+<div id="divWorkspace" style="overflow:scroll;width:1020px;height:620px;position:relative;">
+</div>
+
+
+<script type="text/javascript">
+
+web2d.peer.Toolkit.init();
+
+var xScale = 1000;
+var yScale = 600;
+
+var workspace = new web2d.Workspace();
+workspace.setSize(xScale + "px", yScale + "px");
+workspace.setCoordSize(xScale, yScale);
+workspace.setCoordOrigin(0, 0);
+workspace.setFill("#f0f0f0");
+
+function zoomIn()
+{
+    xScale = xScale / 2;
+    yScale = yScale / 2;
+    workspace.setSize(xScale + "px", yScale + "px");
+}
+
+function zoomOut()
+{
+    xScale = xScale * 2;
+    yScale = yScale * 2;
+    workspace.setSize(xScale + "px", yScale + "px");
+}
+
+
+var shapeOrigX = 0;
+function createShape()
+{
+    // Secondary Idea...
+    var nodeGroup = new web2d.Group();
+    nodeGroup.setSize(200, 60);
+    nodeGroup.setCoordSize(200, 60);
+    nodeGroup.setPosition(700, shapeOrigX);
+    shapeOrigX = shapeOrigX + 50;
+
+    var outerRect = new web2d.Rect();
+    outerRect.setSize(200, 100);
+    outerRect.setVisibility(false);
+    outerRect.setPosition(0, 0);
+    outerRect.setFill("#3e9eff");
+    outerRect.setStroke(1, 'solid', "#878b8f");
+    nodeGroup.appendChild(outerRect);
+
+    var inerRect = new web2d.Rect(0.3);
+    inerRect.setSize(190, 85);
+    inerRect.setPosition(5, 10);
+    inerRect.setFill("white");
+    inerRect.setStroke(1, 'dash', '#878b8f');
+    nodeGroup.appendChild(inerRect);
+    nodeGroup._drag = false;
+
+    workspace.appendChild(nodeGroup);
+
+    // Add behaviour ...
+    inerRect.addEventListener("mouseover", function() {
+        outerRect.setVisibility(true);
+    });
+    inerRect.addEventListener("mouseout", function() {
+        if (!nodeGroup._drag)
+        {
+            outerRect.setVisibility(false);
+        }
+    });
+
+    nodeGroup.addEventListener("mousedown", function(e)
+    {
+        var shadowGroup = new web2d.Group();
+        shadowGroup.setSize(200, 60);
+        shadowGroup.setCoordSize(200, 60);
+
+        var position = nodeGroup.getPosition();
+        shadowGroup.setPosition(position.x, position.y);
+
+        var shadowRect = new web2d.Rect(0.3);
+        shadowRect.setSize(190, 85);
+        shadowRect.setPosition(5, 10);
+        shadowRect.setFill("white", 0.3);
+        shadowRect.setStroke(1, 'dash', '#878b8f');
+        shadowGroup.appendChild(shadowRect);
+
+        workspace.appendChild(shadowGroup);
+
+        this._shadowGroup = shadowGroup;
+        if (!this._moveFunction)
+        {
+            nodeGroup._drag = true;
+            workspace._moveFunction = function(event)
+            {
+                // Esto mas o menos funciona por que el size del workspace es 1 a uno con
+                // el del la pantalla.
+                var posx = 0;
+                var posy = 0;
+                if (event.pageX || event.pageY)
+                {
+                    posx = e.pageX;
+                    posy = e.pageY;
+                }
+                else if (event.clientX || event.clientY) {
+                    posx = event.clientX + document.body.scrollLeft
+                            + document.documentElement.scrollLeft;
+                    posy = event.clientY + document.body.scrollTop
+                            + document.documentElement.scrollTop;
+                }
+
+                shadowGroup.setPosition(posx - 50, posy - 150);
+            };
+        }
+        workspace.addEventListener("mousemove", workspace._moveFunction);
+        var mouseUp = function(e)
+        {
+
+            workspace.removeChild(shadowGroup);
+
+            var pos = shadowGroup.getPosition();
+            nodeGroup.setPosition(pos.x, pos.y);
+            nodeGroup._drag = false;
+            outerRect.setVisibility(true);
+            workspace.removeEventListener("mousemove", workspace._moveFunction);
+            workspace.removeEventListener("mouseup", mouseUp);
+
+        };
+        workspace.addEventListener("mouseup", mouseUp);
+
+    });
+
+}
+// Center Topic Rect ...
+centralRect = new web2d.Rect(0.3);
+centralRect.setSize(200, 60);
+centralRect.setPosition(300, 300);
+centralRect.setFill("#99ccff");
+centralRect.setStroke(1, 'solid', "#878b8f");
+workspace.appendChild(centralRect);
+
+workspace.addItAsChildTo($("divWorkspace"));
+</script>
+
+Notas:
+<li>El evento de mousemove se debe agregar al workspace.
+<li>Cuando se esta drageando un elemento se deberia deshabilitar los eventos del resto de los elementos.
+<li>Definir comportamiento del area.
+
+</body>
+</html>

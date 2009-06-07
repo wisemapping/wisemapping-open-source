@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://mindmap.com/xml/vmlmap"
+           xmlns:v="http://mindmap.com/xml/vmlmap">
+
+    <xs:complexType name="element">
+        <xs:attribute name="style" type="xs:string" use="optional"/>
+        <xs:attribute name="strokecolor" type="xs:string" use="required"/>
+        <xs:attribute name="fillcolor" type="xs:string" use="optional"/>
+        <xs:attribute name="strokeweight" type="xs:string" use="optional"/>
+        <xs:attribute name="opacity" use="optional" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:element name="fill">
+        <xs:complexType>
+            <xs:attribute name="opacity" use="optional" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="group">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="v:element">
+                    <xs:choice>
+                        <xs:element ref="v:group" maxOccurs="unbounded"/>
+                        <xs:element ref="v:line" maxOccurs="unbounded"/>
+                        <xs:element ref="v:oval" maxOccurs="unbounded"/>
+                        <xs:element ref="v:polyline" maxOccurs="unbounded"/>
+                        <xs:element ref="v:rect" maxOccurs="unbounded"/>
+                        <xs:element ref="v:roundrect" maxOccurs="unbounded"/>
+                        <xs:element ref="v:shape" maxOccurs="unbounded"/>
+                    </xs:choice>
+                    <xs:attribute name="coordorigin" type="xs:string" use="optional"/>
+                    <xs:attribute name="coordsize" type="xs:string" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="line">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="v:element">
+                    <xs:sequence>
+                        <xs:element ref="v:stroke"/>
+                        <xs:element ref="v:fill" minOccurs="0"/>
+                    </xs:sequence>
+                    <xs:attribute name="stroked" type="xs:NMTOKEN" use="required" fixed="t"/>
+                    <xs:attribute name="to" type="xs:string" use="required"/>
+                    <xs:attribute name="from" type="xs:string" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+
+    </xs:element>
+
+    <xs:element name="oval">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="v:element">
+                    <xs:sequence>
+                        <xs:element ref="v:stroke"/>
+                        <xs:element ref="v:fill"/>
+                    </xs:sequence>
+                    <xs:attribute name="coordsize" type="xs:string" use="required" fixed="21600,21600"/>
+                    <xs:attribute name="stroked" type="xs:NMTOKEN" use="required" fixed="t"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="polyline">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="v:element">
+
+                    <xs:sequence>
+                        <xs:element ref="v:stroke"/>
+                        <xs:element ref="v:fill" minOccurs="0"/>
+                    </xs:sequence>
+                    <xs:attribute name="points" type="xs:string" use="optional"/>
+                    <xs:attribute name="xPoints" type="xs:string" use="optional"/>
+                    <xs:attribute name="filled" type="xs:NMTOKEN" use="required" fixed="f"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="rect">
+
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="v:element">
+
+                    <xs:sequence>
+                        <xs:element ref="v:stroke"/>
+                        <xs:element ref="v:fill"/>
+                    </xs:sequence>
+                    <xs:attribute name="coordsize" type="xs:string" use="required"/>
+                    <xs:attribute name="stroked" type="xs:NMTOKEN" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+
+    </xs:element>
+
+    <xs:element name="roundrect">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="v:element">
+                    <xs:sequence>
+                        <xs:element ref="v:stroke"/>
+                        <xs:element ref="v:fill"/>
+                    </xs:sequence>
+                    <xs:attribute name="arcsize" type="xs:NMTOKEN" use="required" fixed="9830f"/>
+                    <xs:attribute name="coordsize" type="xs:string" use="required" fixed="21600,21600"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+
+    </xs:element>
+
+    <xs:element name="shape">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="v:element">
+
+                    <xs:sequence>
+                        <xs:element ref="v:textbox"/>
+                    </xs:sequence>
+                    <xs:attribute name="coordsize" type="xs:string" use="required" fixed="100,100"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+
+    </xs:element>
+
+    <xs:element name="stroke">
+        <xs:complexType>
+            <xs:attribute name="dashstyle" use="optional">
+                <xs:simpleType>
+                    <xs:restriction base="xs:NMTOKEN">
+                        <xs:enumeration value="solid"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="textbox">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="v:element">
+
+                    <xs:sequence>
+                        <xs:element name="SPAN">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="SPAN" type="xs:string"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="inset" type="xs:string" use="required" fixed="0,0,0,0"/>
+                    <xs:attribute name="xFontScale" type="xs:float" use="required"/>
+                    <xs:attribute name="xTextSize" type="xs:string" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

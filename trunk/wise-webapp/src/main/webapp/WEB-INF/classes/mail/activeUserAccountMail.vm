@@ -1,0 +1,12 @@
+<html>
+<body>
+<h3>We have a new User !!</h3>
+<p>
+    Id: ${user.id} <br/>
+	First Name: ${user.firstname} <br/>
+    Last Name: ${user.lastname} <br/>
+    Username: ${user.username} <br/>
+    Email: ${user.email} <br/>
+</p>
+</body>
+</html>

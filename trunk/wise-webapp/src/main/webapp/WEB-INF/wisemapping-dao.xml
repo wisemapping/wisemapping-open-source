@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="/WEB-INF/app.properties" />
+    </bean>
+
+    <bean id="wiseDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${database.driver}"/>
+        <property name="url" value="${database.url}"/>
+        <property name="username" value="${database.username}"/>
+        <property name="password" value="${database.password}"/>
+    </bean>
+
+     <!--Descoment this lines for production environments -->
+    <!--<bean id="wiseDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">-->
+        <!--<property name="jndiName">-->
+            <!--<value>java:comp/env/jdbc/wisemapping</value>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <bean id="mindmapSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource" ref="wiseDataSource"/>
+        <property name="mappingResources">
+            <list>
+                <value>com/wisemapping/model/Colaborator.hbm.xml</value>
+                <value>com/wisemapping/model/MindMap.hbm.xml</value>
+                <value>com/wisemapping/model/MindmapUser.hbm.xml</value>
+                <value>com/wisemapping/model/UserLogin.hbm.xml</value>
+                <value>com/wisemapping/model/MindmapNative.hbm.xml</value>
+                <value>com/wisemapping/model/MindMapHistory.hbm.xml</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">${database.hibernate.dialect}</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory">
+            <ref local="mindmapSessionFactory"/>
+        </property>
+    </bean>
+
+    <!-- Spring Data Access Exception Translator Defintion -->
+    <bean id="jdbcExceptionTranslator" class="org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator">
+        <property name="dataSource" ref="wiseDataSource"/>
+    </bean>
+
+    <!-- Hibernate Template Defintion -->
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+        <property name="sessionFactory" ref="mindmapSessionFactory"/>
+        <property name="jdbcExceptionTranslator" ref="jdbcExceptionTranslator"/>
+    </bean>
+
+    <bean id="txAttributes"
+          class="org.springframework.transaction.interceptor.NameMatchTransactionAttributeSource">
+        <property name="properties">
+            <props>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="txInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor">
+        <property name="transactionManager" ref="transactionManager"/>
+        <property name="transactionAttributeSource" ref="txAttributes"/>
+    </bean>
+
+</beans>

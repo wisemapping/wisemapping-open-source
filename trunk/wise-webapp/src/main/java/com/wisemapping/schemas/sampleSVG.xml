@@ -1,0 +1,228 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" viewBox="-433.65 -228.9 867.3 457.8"
+     height="654" width="1239" id="workspace" focusable="true">
+    <polyline points="173.5,100 183.5,100 183.5,129 188.5,134 240,134" stroke-opacity="1" stroke="#495879"
+              stroke-width="1px" fill="none"></polyline>
+    <polyline points="173.5,100 183.5,100 183.5,105 188.5,110 240,110" stroke-opacity="1" stroke="#495879"
+              stroke-width="1px" fill="none"></polyline>
+    <polyline points="173.5,100 183.5,100 183.5,91 188.5,86 240,86" stroke-opacity="1" stroke="#495879"
+              stroke-width="1px" fill="none"></polyline>
+    <polyline points="173.5,100 183.5,100 183.5,67 188.5,62 240,62" stroke-opacity="1" stroke="#495879"
+              stroke-width="1px" fill="none"></polyline>
+    <line y1="0" x1="0" y2="100" x2="-175" stroke="#495879" stroke-width="1px"></line>
+    <polyline points="-229.5,-150 -239.5,-150 -239.5,-121 -244.5,-116 -296,-116" stroke-opacity="1" stroke="#495879"
+              stroke-width="1px" fill="none"></polyline>
+    <polyline points="-229.5,-150 -239.5,-150 -239.5,-145 -244.5,-140 -296,-140" stroke-opacity="1" stroke="#495879"
+              stroke-width="1px" fill="none"></polyline>
+    <polyline points="-229.5,-150 -239.5,-150 -239.5,-159 -244.5,-164 -296,-164" stroke-opacity="1" stroke="#495879"
+              stroke-width="1px" fill="none"></polyline>
+    <polyline points="-229.5,-150 -239.5,-150 -239.5,-183 -244.5,-188 -296,-188" stroke-opacity="1" stroke="#495879"
+              stroke-width="1px" fill="none"></polyline>
+    <line y1="0" x1="0" y2="-150" x2="-163.5" stroke="#495879" stroke-width="1px"></line>
+    <polyline points="206.5,0 216.5,0 216.5,29 221.5,34 261.5,34" stroke-opacity="1" stroke="#495879" stroke-width="1px"
+              fill="none"></polyline>
+    <polyline points="206.5,0 216.5,0 216.5,5 221.5,10 263,10" stroke-opacity="1" stroke="#495879" stroke-width="1px"
+              fill="none"></polyline>
+    <polyline points="206.5,0 216.5,0 216.5,-9 221.5,-14 261.5,-14" stroke-opacity="1" stroke="#495879"
+              stroke-width="1px" fill="none"></polyline>
+    <polyline points="206.5,0 216.5,0 216.5,-33 221.5,-38 263,-38" stroke-opacity="1" stroke="#495879"
+              stroke-width="1px" fill="none"></polyline>
+    <line y1="0" x1="0" y2="0" x2="140.5" stroke="#495879" stroke-width="1px"></line>
+    <rect visibility="hidden" fill-opacity="0.4" stroke-opacity="0.4" fill="#CC0033;" stroke="#FF9933;"
+          stroke-width="1px" y="5" x="5" height="10" width="50"></rect>
+    <polyline visibility="hidden" fill-opacity="0.4" stroke-opacity="0.4" stroke="#CC0033;" stroke-width="1px"
+              fill="none"></polyline>
+    <line visibility="hidden" fill-opacity="0.4" stroke-opacity="0.4" stroke="#CC0033;" stroke-width="1px"></line>
+    <rect visibility="hidden" fill-opacity="0.4" stroke-opacity="0.4" fill="#CC0033;" stroke="#FF9933;"
+          stroke-width="1px" y="5" x="5" height="10" width="50"></rect>
+    <g transform="translate(225, -52) scale(1, 1)" height="100" width="100" focusable="true" preserveAspectRatio="none">
+        <rect fill-opacity="0" stroke-opacity="0" fill="#dbe2e6" stroke="#77555a" stroke-width="1px" y="-3" x="-2"
+              ry="3" rx="3" height="20" width="42"></rect>
+        <ellipse stroke="#023BB9" visibility="hidden" fill="#E0E5EF" stroke-width="0.5px" cy="3" cx="3" ry="3" rx="3"
+                 height="6" width="6"></ellipse>
+        <line y2="14" x2="39" y1="14" x1="-1" visibility="hidden" style="cursor: move;" stroke="#495879"
+              stroke-width="1px"></line>
+        <text x="3" y="9" style="cursor: move;" fill="#525c61" font-weight="normal" font-style="normal"
+              font-size="8.0625" font-family="verdana" focusable="true">Node 0
+        </text>
+    </g>
+    <g transform="translate(225, -28) scale(1, 1)" height="100" width="100" focusable="true" preserveAspectRatio="none">
+        <rect fill-opacity="0" stroke-opacity="0" fill="#dbe2e6" stroke="#77555a" stroke-width="1px" y="-3" x="-2"
+              ry="3" rx="3" height="20" width="41"></rect>
+        <ellipse stroke="#023BB9" visibility="hidden" fill="#E0E5EF" stroke-width="0.5px" cy="3" cx="3" ry="3" rx="3"
+                 height="6" width="6"></ellipse>
+        <line y2="14" x2="38" y1="14" x1="-1" visibility="hidden" style="cursor: move;" stroke="#495879"
+              stroke-width="1px"></line>
+        <text x="3" y="9" style="cursor: move;" fill="#525c61" font-weight="normal" font-style="normal"
+              font-size="8.0625" font-family="verdana" focusable="true">Node 1
+        </text>
+    </g>
+    <g transform="translate(225, -4) scale(1, 1)" height="100" width="100" focusable="true" preserveAspectRatio="none">
+        <rect fill-opacity="0" stroke-opacity="0" fill="#dbe2e6" stroke="#77555a" stroke-width="1px" y="-3" x="-2"
+              ry="3" rx="3" height="20" width="42"></rect>
+        <ellipse stroke="#023BB9" visibility="hidden" fill="#E0E5EF" stroke-width="0.5px" cy="3" cx="3" ry="3" rx="3"
+                 height="6" width="6"></ellipse>
+        <line y2="14" x2="39" y1="14" x1="-1" visibility="hidden" style="cursor: move;" stroke="#495879"
+              stroke-width="1px"></line>
+        <text x="3" y="9" style="cursor: move;" fill="#525c61" font-weight="normal" font-style="normal"
+              font-size="8.0625" font-family="verdana" focusable="true">Node 2
+        </text>
+    </g>
+    <g transform="translate(225, 20) scale(1, 1)" height="100" width="100" focusable="true" preserveAspectRatio="none">
+        <rect fill-opacity="0" stroke-opacity="0" fill="#dbe2e6" stroke="#77555a" stroke-width="1px" y="-3" x="-2"
+              ry="3" rx="3" height="20" width="41"></rect>
+        <ellipse stroke="#023BB9" visibility="hidden" fill="#E0E5EF" stroke-width="0.5px" cy="3" cx="3" ry="3" rx="3"
+                 height="6" width="6"></ellipse>
+        <line y2="14" x2="38" y1="14" x1="-1" visibility="hidden" style="cursor: move;" stroke="#495879"
+              stroke-width="1px"></line>
+        <text x="3" y="9" style="cursor: move;" fill="#525c61" font-weight="normal" font-style="normal"
+              font-size="8.0625" font-family="verdana" focusable="true">Node 3
+        </text>
+    </g>
+    <g transform="translate(139, -9) scale(1, 1)" height="100" width="100" focusable="true" preserveAspectRatio="none">
+        <rect fill-opacity="0" stroke-opacity="0" fill="#dbe2e6" stroke="#77555a" stroke-width="1px" y="-3" x="-2"
+              ry="3.6" rx="3.6" height="24" width="71"></rect>
+        <rect style="cursor: move;" fill="#E0E5EF" stroke="#023BB9" stroke-width="0.5px" y="0" x="0" ry="2.7" rx="2.7"
+              height="18" width="67"></rect>
+        <text x="4" y="12" style="cursor: move;" fill="#525c61" font-weight="normal" font-style="normal"
+              font-size="10.75" font-family="verdana" focusable="true">Main Topic
+        </text>
+        <ellipse stroke="#023BB9" visibility="visible" fill="#E0E5EF" stroke-width="0.5px" cy="9" cx="70" ry="3" rx="3"
+                 height="6" width="6"></ellipse>
+    </g>
+    <g transform="translate(-296, -202) scale(1, 1)" height="100" width="100" focusable="true"
+       preserveAspectRatio="none">
+        <rect fill-opacity="0" stroke-opacity="0" fill="#dbe2e6" stroke="#77555a" stroke-width="1px" y="-3" x="-2"
+              ry="3" rx="3" height="20" width="52"></rect>
+        <ellipse stroke="#023BB9" visibility="hidden" fill="#E0E5EF" stroke-width="0.5px" cy="3" cx="3" ry="3" rx="3"
+                 height="6" width="6"></ellipse>
+        <line y2="14" x2="49" y1="14" x1="-1" visibility="hidden" style="cursor: move;" stroke="#495879"
+              stroke-width="1px"></line>
+        <text x="3" y="9" style="cursor: move;" fill="#525c61" font-weight="normal" font-style="normal"
+              font-size="8.0625" font-family="verdana" focusable="true">Sub Topic
+        </text>
+    </g>
+    <g transform="translate(-296, -178) scale(1, 1)" height="100" width="100" focusable="true"
+       preserveAspectRatio="none">
+        <rect fill-opacity="0" stroke-opacity="0" fill="#dbe2e6" stroke="#77555a" stroke-width="1px" y="-3" x="-2"
+              ry="3" rx="3" height="20" width="52"></rect>
+        <ellipse stroke="#023BB9" visibility="hidden" fill="#E0E5EF" stroke-width="0.5px" cy="3" cx="3" ry="3" rx="3"
+                 height="6" width="6"></ellipse>
+        <line y2="14" x2="49" y1="14" x1="-1" visibility="hidden" style="cursor: move;" stroke="#495879"
+              stroke-width="1px"></line>
+        <text x="3" y="9" style="cursor: move;" fill="#525c61" font-weight="normal" font-style="normal"
+              font-size="8.0625" font-family="verdana" focusable="true">Sub Topic
+        </text>
+    </g>
+    <g transform="translate(-296, -154) scale(1, 1)" height="100" width="100" focusable="true"
+       preserveAspectRatio="none">
+        <rect fill-opacity="0" stroke-opacity="0" fill="#dbe2e6" stroke="#77555a" stroke-width="1px" y="-3" x="-2"
+              ry="3" rx="3" height="20" width="52"></rect>
+        <ellipse stroke="#023BB9" visibility="hidden" fill="#E0E5EF" stroke-width="0.5px" cy="3" cx="3" ry="3" rx="3"
+                 height="6" width="6"></ellipse>
+        <line y2="14" x2="49" y1="14" x1="-1" visibility="hidden" style="cursor: move;" stroke="#495879"
+              stroke-width="1px"></line>
+        <text x="3" y="9" style="cursor: move;" fill="#525c61" font-weight="normal" font-style="normal"
+              font-size="8.0625" font-family="verdana" focusable="true">Sub Topic
+        </text>
+    </g>
+    <g transform="translate(-296, -130) scale(1, 1)" height="100" width="100" focusable="true"
+       preserveAspectRatio="none">
+        <rect fill-opacity="0" stroke-opacity="0" fill="#dbe2e6" stroke="#77555a" stroke-width="1px" y="-3" x="-2"
+              ry="3" rx="3" height="20" width="52"></rect>
+        <ellipse stroke="#023BB9" visibility="hidden" fill="#E0E5EF" stroke-width="0.5px" cy="3" cx="3" ry="3" rx="3"
+                 height="6" width="6"></ellipse>
+        <line y2="14" x2="49" y1="14" x1="-1" visibility="hidden" style="cursor: move;" stroke="#495879"
+              stroke-width="1px"></line>
+        <text x="3" y="9" style="cursor: move;" fill="#525c61" font-weight="normal" font-style="normal"
+              font-size="8.0625" font-family="verdana" focusable="true">Sub Topic
+        </text>
+    </g>
+    <g transform="translate(-229, -159) scale(1, 1)" height="100" width="100" focusable="true"
+       preserveAspectRatio="none">
+        <rect fill-opacity="0" stroke-opacity="0" fill="#dbe2e6" stroke="#77555a" stroke-width="1px" y="-3" x="-2"
+              ry="3.6" rx="3.6" height="24" width="71"></rect>
+        <rect style="cursor: move;" fill="#E0E5EF" stroke="#023BB9" stroke-width="0.5px" y="0" x="0" ry="2.7" rx="2.7"
+              height="18" width="67"></rect>
+        <text x="4" y="12" style="cursor: move;" fill="#525c61" font-weight="normal" font-style="normal"
+              font-size="10.75" font-family="verdana" focusable="true">Main Topic
+        </text>
+        <ellipse stroke="#023BB9" visibility="visible" fill="#E0E5EF" stroke-width="0.5px" cy="9" cx="-3" ry="3" rx="3"
+                 height="6" width="6"></ellipse>
+    </g>
+    <g transform="translate(-241, 91) scale(1, 1)" height="100" width="100" focusable="true" preserveAspectRatio="none">
+        <rect fill-opacity="0" stroke-opacity="0" fill="#dbe2e6" stroke="#77555a" stroke-width="1px" y="-3" x="-2"
+              ry="3.6" rx="3.6" height="24" width="72"></rect>
+        <rect style="cursor: move;" fill="#E0E5EF" stroke="#023BB9" stroke-width="0.5px" y="0" x="0" ry="2.7" rx="2.7"
+              height="18" width="68"></rect>
+        <text x="4" y="12" style="cursor: move;" fill="#00cccc" font-weight="normal" font-style="italic"
+              font-size="10.75" font-family="verdana" focusable="true">Main Topic
+        </text>
+        <ellipse stroke="#023BB9" visibility="hidden" fill="#E0E5EF" stroke-width="0.5px" cy="3" cx="3" ry="3" rx="3"
+                 height="6" width="6"></ellipse>
+    </g>
+    <g transform="translate(-58, -15) scale(1, 1)" height="100" width="100" focusable="true" preserveAspectRatio="none">
+        <rect fill-opacity="0" stroke-opacity="0" fill="#dbe2e6" stroke="#77555a" stroke-width="1px" y="-3" x="-2"
+              ry="5.55" rx="5.55" height="37" width="120"></rect>
+        <rect style="cursor: default;" stroke="#023BB9" fill="#f7f7f7" stroke-width="0.5px" y="0" x="0" ry="4.65"
+              rx="4.65" height="31" width="116"></rect>
+        <text x="9" y="19" style="cursor: default;" fill="#023BB9" font-weight="bold" font-style="normal"
+              font-size="13.4375" font-family="verdana" focusable="true">Central Topic
+        </text>
+    </g>
+    <g transform="translate(192, 48) scale(1, 1)" height="100" width="100" focusable="true" preserveAspectRatio="none">
+        <rect fill-opacity="0" stroke-opacity="0" fill="#dbe2e6" stroke="#77555a" stroke-width="1px" y="-3" x="-2"
+              ry="3" rx="3" height="20" width="52"></rect>
+        <ellipse stroke="#023BB9" visibility="hidden" fill="#E0E5EF" stroke-width="0.5px" cy="3" cx="3" ry="3" rx="3"
+                 height="6" width="6"></ellipse>
+        <line y2="14" x2="49" y1="14" x1="-1" visibility="hidden" style="cursor: move;" stroke="#495879"
+              stroke-width="1px"></line>
+        <text x="3" y="9" style="cursor: move;" fill="#525c61" font-weight="normal" font-style="normal"
+              font-size="8.0625" font-family="verdana" focusable="true">Sub Topic
+        </text>
+    </g>
+    <g transform="translate(192, 72) scale(1, 1)" height="100" width="100" focusable="true" preserveAspectRatio="none">
+        <rect fill-opacity="0" stroke-opacity="0" fill="#dbe2e6" stroke="#77555a" stroke-width="1px" y="-3" x="-2"
+              ry="3" rx="3" height="20" width="52"></rect>
+        <ellipse stroke="#023BB9" visibility="hidden" fill="#E0E5EF" stroke-width="0.5px" cy="3" cx="3" ry="3" rx="3"
+                 height="6" width="6"></ellipse>
+        <line y2="14" x2="49" y1="14" x1="-1" visibility="hidden" style="cursor: move;" stroke="#495879"
+              stroke-width="1px"></line>
+        <text x="3" y="9" style="cursor: move;" fill="#525c61" font-weight="normal" font-style="normal"
+              font-size="8.0625" font-family="verdana" focusable="true">Sub Topic
+        </text>
+    </g>
+    <g transform="translate(192, 96) scale(1, 1)" height="100" width="100" focusable="true" preserveAspectRatio="none">
+        <rect fill-opacity="0" stroke-opacity="0" fill="#dbe2e6" stroke="#77555a" stroke-width="1px" y="-3" x="-2"
+              ry="3" rx="3" height="20" width="52"></rect>
+        <ellipse stroke="#023BB9" visibility="hidden" fill="#E0E5EF" stroke-width="0.5px" cy="3" cx="3" ry="3" rx="3"
+                 height="6" width="6"></ellipse>
+        <line y2="14" x2="49" y1="14" x1="-1" visibility="hidden" style="cursor: move;" stroke="#495879"
+              stroke-width="1px"></line>
+        <text x="3" y="9" style="cursor: move;" fill="#525c61" font-weight="normal" font-style="normal"
+              font-size="8.0625" font-family="verdana" focusable="true">Sub Topic
+        </text>
+    </g>
+    <g transform="translate(192, 120) scale(1, 1)" height="100" width="100" focusable="true" preserveAspectRatio="none">
+        <rect fill-opacity="0" stroke-opacity="0" fill="#dbe2e6" stroke="#77555a" stroke-width="1px" y="-3" x="-2"
+              ry="3" rx="3" height="20" width="52"></rect>
+        <ellipse stroke="#023BB9" visibility="hidden" fill="#E0E5EF" stroke-width="0.5px" cy="3" cx="3" ry="3" rx="3"
+                 height="6" width="6"></ellipse>
+        <line y2="14" x2="49" y1="14" x1="-1" visibility="hidden" style="cursor: move;" stroke="#495879"
+              stroke-width="1px"></line>
+        <text x="3" y="9" style="cursor: move;" fill="#525c61" font-weight="normal" font-style="normal"
+              font-size="8.0625" font-family="verdana" focusable="true">Sub Topic
+        </text>
+    </g>
+    <g transform="translate(86, 91) scale(1, 1)" height="100" width="100" focusable="true" preserveAspectRatio="none">
+        <rect fill-opacity="0" stroke-opacity="0" fill="#dbe2e6" stroke="#77555a" stroke-width="1px" y="-3" x="-2"
+              ry="3.6" rx="3.6" height="24" width="91"></rect>
+        <rect style="cursor: move;" fill="#E0E5EF" stroke="#023BB9" stroke-width="0.5px" y="0" x="0" ry="2.7" rx="2.7"
+              height="18" width="87"></rect>
+        <text x="4" y="12" style="cursor: move;" fill="#525c61" font-weight="normal" font-style="normal"
+              font-size="10.75" font-family="verdana" focusable="true">Isolated Topic
+        </text>
+        <ellipse stroke="#023BB9" visibility="visible" fill="#E0E5EF" stroke-width="0.5px" cy="9" cx="90" ry="3" rx="3"
+                 height="6" width="6"></ellipse>
+    </g>
+</svg>

@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>JsUnit Test Suite</title>
+    <link rel="stylesheet" type="text/css" href="../../lib/jsunit/css/jsUnitStyle.css">
+
+    <script language="JavaScript" type="text/javascript" src="../../lib/jsunit/app/jsUnitCore.js"></script>
+    <script language="JavaScript" type="text/javascript" src="../../../src/web2d.js"></script>
+    <script type="text/javascript">
+
+        web2d.peer.Toolkit.init();
+
+    </script>
+</head>
+
+<body>
+<h1>JsUnit Test Suite</h1>
+
+<p>This page contains a suite of tests for testing JsUnit. Click <a href="../../lib/jsunit/testRunner.html">here</a> to
+    start running the test</p>
+
+<div id="divWorkspace" style="border:1px solid red;position:absolute;left:0px;top:0px;width:400;height:410px;">
+</div>
+
+
+<script language="JavaScript" type="text/javascript">
+
+function setUp()
+{
+    debug("Setting up workspace");
+    workspace = new web2d.Workspace();
+    workspace.addItAsChildTo($("divWorkspace"));
+}
+
+function testGettersTest()
+{
+    // I you initialize a workspace, all default values must have valid values.
+    var fill = workspace.getFill();
+    assertEquals("white", fill.color);
+}
+
+function testSettersTest()
+{
+    // I you initialize a workspace, all default values must have valid values.
+    workspace.setFill("red");
+    var fill = workspace.getFill();
+    assertEquals("red", fill.color);
+}
+
+function testEventTest()
+{
+    var firstListener = function() {
+        alert("My Listener 1");
+    };
+    var secondListener = function() {
+        alert("My Listener 2");
+    };
+
+    workspace.addEventListener("click", firstListener);
+
+    // Handle gracefully invalid event types...
+    var catchException = false
+    try
+    {
+        workspace.addEventListener("click2", firstListener);
+    } catch(e)
+    {
+        catchException = true;
+    }
+    assert("Invalid type handling check seems to be broken", catchException);
+
+    // Test remove event functionality.
+    //// Fail if a listener is tryed to be removed and it was not previouly added.
+    catchException = false
+    try
+    {
+        workspace.removeEventListener("click", secondListener);
+    } catch(e)
+    {
+        catchException = true;
+    }
+    assert("Invalid remove operation seems to be broken", catchException);
+
+    //// Remove a valid listener.
+    workspace.removeEventListener("click", firstListener);
+
+    //// It has been removed?
+    catchException = false;
+    try
+    {
+        workspace.removeEventListener("click", firstListener);
+    } catch(e)
+    {
+        catchException = true;
+    }
+    assert("Could not remove the element", catchException);
+
+
+    // Check multiple registation of a type ...
+    //// Add two listeners ...
+    workspace.addEventListener("dblclick", firstListener);
+    workspace.addEventListener("dblclick", secondListener);
+
+    //// Remove it ...
+    workspace.removeEventListener("dblclick", firstListener);
+    workspace.removeEventListener("dblclick", secondListener);
+
+    /// Check multiple registration on different types ...
+    workspace.addEventListener("click", firstListener);
+    workspace.addEventListener("mouseover", secondListener);
+
+}
+
+function testAppendAndRemoveTest()
+{
+    // Append elements ..
+    var elipse = new web2d.Elipse();
+    var group = new web2d.Group();
+    group.appendChild(elipse);
+    workspace.appendChild(group);
+
+    // Remove elements ..
+    workspace.removeChild(group);
+    group.removeChild(elipse);
+
+}
+</script>
+
+
+</body>
+</html>
+

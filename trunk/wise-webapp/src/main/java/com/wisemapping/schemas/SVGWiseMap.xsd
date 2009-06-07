@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.w3.org/2000/svg"
+           xmlns:svg="http://www.w3.org/2000/svg">
+
+    <xs:element name="ellipse">
+        <xs:complexType>
+            <xs:attribute name="visibility" use="required">
+                <xs:simpleType>
+                    <xs:restriction base="xs:NMTOKEN">
+                        <xs:enumeration value="hidden"/>
+                        <xs:enumeration value="visible"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="ry" type="xs:float" use="required"/>
+            <xs:attribute name="width" type="xs:float" use="required"/>
+            <xs:attribute name="rx" type="xs:float" use="required"/>
+            <xs:attribute name="cy" use="required" type="xs:float"/>
+            <xs:attribute name="cx" use="required" type="xs:float"/>
+            <xs:attribute name="stroke-width" type="xs:NMTOKEN" use="required"/>
+            <xs:attribute name="height" type="xs:float" use="required"/>
+            <xs:attribute name="fill" type="xs:string" use="required" fixed="#E0E5EF"/>
+            <xs:attribute name="stroke" type="xs:string" use="required" fixed="#023BB9"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="g">
+        <xs:complexType>
+            <xs:choice>
+                <xs:element ref="svg:ellipse"/>
+                <xs:element ref="svg:line"/>
+                <xs:element ref="svg:rect"/>
+                <xs:element ref="svg:text"/>
+            </xs:choice>
+            <xs:attribute name="height" type="xs:NMTOKEN" use="required" fixed="100"/>
+            <xs:attribute name="transform" type="xs:string" use="required"/>
+            <xs:attribute name="width" type="xs:NMTOKEN" use="required" fixed="100"/>
+            <xs:attribute name="preserveAspectRatio" type="xs:NMTOKEN" use="required" fixed="none"/>
+            <xs:attribute name="focusable" type="xs:NMTOKEN" use="required" fixed="true"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="line">
+        <xs:complexType>
+            <xs:attribute name="style" type="xs:string" use="optional"/>
+            <xs:attribute name="visibility" use="optional">
+                <xs:simpleType>
+                    <xs:restriction base="xs:NMTOKEN">
+                        <xs:enumeration value="hidden"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="stroke-opacity" type="xs:NMTOKEN" use="optional"/>
+            <xs:attribute name="fill-opacity" type="xs:NMTOKEN" use="optional"/>
+            <xs:attribute name="x1" use="required" type="xs:float"/>
+            <xs:attribute name="y1" use="required" type="xs:float"/>
+            <xs:attribute name="x2" use="required" type="xs:float"/>
+            <xs:attribute name="y2" use="required" type="xs:float"/>
+            <xs:attribute name="stroke-width" type="xs:NMTOKEN" use="required" fixed="1px"/>
+            <xs:attribute name="stroke" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="polyline">
+        <xs:complexType>
+            <xs:attribute name="fill-opacity" type="xs:NMTOKEN" use="optional"/>
+            <xs:attribute name="visibility" type="xs:NMTOKEN" use="optional"/>
+            <xs:attribute name="stroke-width" type="xs:NMTOKEN" use="required" fixed="1px"/>
+            <xs:attribute name="points" type="xs:string" use="optional"/>
+            <xs:attribute name="stroke-opacity" use="required">
+                <xs:simpleType>
+                    <xs:restriction base="xs:NMTOKEN">
+                        <xs:enumeration value="0.4"/>
+                        <xs:enumeration value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="stroke" type="xs:string" use="required"/>
+            <xs:attribute name="fill" type="xs:NMTOKEN" use="required" fixed="none"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="rect">
+        <xs:complexType>
+            <xs:attribute name="visibility" type="xs:NMTOKEN" use="optional"/>
+            <xs:attribute name="style" type="xs:string" use="optional"/>
+            <xs:attribute name="ry" use="optional" type="xs:float"/>
+            <xs:attribute name="width" type="xs:NMTOKEN" use="required"/>
+            <xs:attribute name="rx" use="optional" type="xs:float"/>
+            <xs:attribute name="stroke-opacity" use="optional" type="xs:float"/>
+            <xs:attribute name="fill-opacity" use="optional" type="xs:float"/>
+            <xs:attribute name="y" use="required" type="xs:float"/>
+            <xs:attribute name="x" use="required" type="xs:float"/>
+            <xs:attribute name="stroke-width" use="required" type="xs:string"/>
+            <xs:attribute name="height" use="required" type="xs:float"/>
+            <xs:attribute name="fill" type="xs:string" use="required"/>
+            <xs:attribute name="stroke" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="svg">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="svg:polyline" maxOccurs="unbounded"/>
+                <xs:element ref="svg:line" maxOccurs="unbounded"/>
+                <xs:element ref="svg:g" maxOccurs="unbounded"/>
+                <xs:element ref="svg:rect" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute name="height" type="xs:NMTOKEN" use="required"/>
+            <xs:attribute name="width" type="xs:NMTOKEN" use="required"/>
+            <xs:attribute name="viewBox" type="xs:string" use="required"/>
+            <xs:attribute name="preserveAspectRatio" type="xs:NMTOKEN" use="required"/>
+            <xs:attribute name="focusable" type="xs:NMTOKEN" use="required"/>
+            <xs:attribute name="id" type="xs:NMTOKEN" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="text">
+        <xs:complexType mixed="true">
+            <xs:attribute name="font-style" use="required">
+                <xs:simpleType>
+                    <xs:restriction base="xs:NMTOKEN">
+                        <xs:enumeration value="italic"/>
+                        <xs:enumeration value="normal"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="style" type="xs:string" use="required"/>
+            <xs:attribute name="font-size" use="required" type="xs:float"/>
+            <xs:attribute name="font-family" type="xs:NMTOKEN" use="required" fixed="verdana"/>
+            <xs:attribute name="font-weight" use="required">
+                <xs:simpleType>
+                    <xs:restriction base="xs:NMTOKEN">
+                        <xs:enumeration value="bold"/>
+                        <xs:enumeration value="normal"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="y" use="required" type="xs:float"/>
+            <xs:attribute name="focusable" type="xs:NMTOKEN" use="required" fixed="true"/>
+            <xs:attribute name="x" use="required" type="xs:float"/>
+            <xs:attribute name="fill" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

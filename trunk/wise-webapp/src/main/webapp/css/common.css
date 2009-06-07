@@ -1,0 +1,587 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td {
+    margin: 0;
+    padding: 0;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+fieldset, img {
+    border: 0;
+}
+
+address, caption, cite, code, dfn, em, strong, th, var {
+    font-style: normal;
+    font-weight: normal;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+caption, th {
+    text-align: left;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight: normal;
+}
+
+q:before, q:after {
+    content: '';
+}
+
+abbr, acronym {
+    border: 0;
+}
+
+/**
+ * Percents could work for IE, but for backCompat purposes, we are using keywords.
+ * x-small is for IE6/7 quirks mode.
+ *
+ */
+body {
+    font: 13px arial, helvetica, clean, sans-serif;
+* font-size : small;
+* font : x-small;
+}
+
+table {
+    font-size: inherit;
+    font: 100%;
+}
+
+/**
+ * 99% for safari; 100% is too large
+ */
+select, input, textarea {
+    font: 99% arial, helvetica, clean, sans-serif;
+}
+
+/**
+ * Bump up !IE to get to 13px equivalent
+ */
+pre, code {
+    font: 115% monospace;
+* font-size : 100 %;
+}
+
+/**
+ * Default line-height based on font-size rather than "computed-value"
+ * see: http://www.w3.org/TR/CSS21/visudet.html#line-height
+ */
+
+body * {
+    line-height: 1.22em;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font: normal 80% "trebuchet ms", verdana, arial, helvetica, sans-serif;
+    background-color: #fff;
+}
+
+img {
+    border: 0;
+}
+
+form {
+    padding: 0px;
+    margin: 0px;
+}
+
+p {
+    margin: 5px 0 5px 0;
+}
+
+ul {
+    list-style-position: inside;
+}
+
+a:link, a:visited {
+    font: bold 100%;
+    text-decoration: underline;
+    color: black;
+}
+
+a:hover, a:active {
+    font: bold 100%;
+    text-decoration: underline;
+    color: black;
+}
+
+h2 {
+    font: 160%;
+    color: #8e9181;
+}
+
+h1 {
+    font: normal 180%;
+    color: white;
+    padding-bottom: 2px;
+}
+
+h3 {
+/* use as subhead on main body */
+    clear: left;
+    font: normal 130%;
+    color: #6b6f5b;
+}
+
+h4 {
+/* use as headers in footer */
+    font: bold 120%;
+    border-bottom: 1px solid #8e9181;
+    color: #e2e3dd;
+    padding-bottom: 10px;
+    width: 400px;
+}
+
+#centerContent {
+    text-align: center;
+}
+
+/* HEADER STYLES */
+
+#header {
+    margin-top: 2px;
+    height: 78px;
+    width: 100%;
+    background: white;
+    border-bottom: 1px solid #bbb4d6;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#headerToolbar {
+    height: 25px;
+    width: 100%;
+    background-color: #171a17;
+    border-top: 1px solid #999999;
+    border-bottom: 1px solid #424141;
+    color: white;
+    font-size: small;
+    font-style: normal;
+}
+
+#headerContent {
+    width: 800px;
+    height: 78px;
+    position: relative;
+    top: 0;
+    left: 0;
+    margin: auto;
+}
+
+#headerLogo {
+    margin-top: 8px;
+    height: 80px;
+    width: 200px;
+    background-image: url( "../images/logo-small.png" );
+    behavior: url( ../css/iepngfix.htc );
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#headerPBetaLogo {
+    margin-top: 30px;
+    height: 35px;
+    width: 150px;
+    background-image: url( "../images/beta.png" );
+    behavior: url( ../css/iepngfix.htc );
+    background-repeat: no-repeat;
+    position: absolute;
+    top: -4px;
+    left: 140px;
+}
+
+#headerSlogan {
+    position: absolute;
+    border-left: 1px dashed gray;
+    margin-top: 8px;
+    height: 1em;
+    width: 100px;
+    top: 47px;
+    left: 137px;
+    white-space: nowrap;
+    padding-left: 7px;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+#headerButtons {
+    position: absolute;
+    top: 65px;
+    left: 150px;
+}
+
+#newsLink, #blogLink, #aboutLink, #newsLink, #faqLink, #feedbackLink, #supportLink, #logoutLink{
+    float: right;
+    z-index: 300;
+}
+
+div#headerButtons a {
+    float: left;
+    color: #6F6F6F;
+    padding: 0 10px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 120%;
+    white-space: nowrap;
+}
+
+div#headerTitle {
+    float: left;
+    font-weight: bold;
+    font-size: 15px;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+div#printHeader {
+    background-color: black;
+    height: 35px;
+    color: white;
+}
+
+span#headerSubTitle {
+    font-weight: lighter;
+    font-size: 12px;
+}
+
+div#headerButtons a:hover {
+/*text-decoration: underline;*/
+    color: #7e72ad;
+}
+
+div#headerButtons activelink a, div#headerButtons activelink a:hover {
+    text-decoration: none;
+    border-top: 0;
+    border-bottom: 0;
+}
+
+#signUpHeader .sb-inner {
+    background-color: white;
+}
+
+#signUpHeader {
+    padding-right: 8px;
+    padding-top: 4px;
+    position: absolute;
+    right: 0;
+    z-index: 50;
+    text-align: center;
+}
+
+#signUpHeader a, #signUpHeader a:hover {
+    font-size: 100%;
+    color: #BBB4D6;
+    text-decoration: underline;
+}
+
+#editorHeader {
+    height: 40px;
+    width: 100%;
+    background: white;
+    border-bottom: 1px solid #bbb4d6;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#editorHeader #headerToolbar {
+    height: 40px;
+    width: 100%;
+    background-color: #171a17;
+    border-top: 1px solid #999999;
+    border-bottom: 1px solid #424141;
+    color: white;
+    font-size: small;
+    font-style: normal;
+}
+
+div#editorHeader div#headerTitle {
+    float: left;
+    font-weight: bold;
+    font-size: 22px;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+div#editorHeader span#headerSubTitle {
+    font-weight: lighter;
+    font-size: 12px;
+}
+
+div#editorHeader div#headerActions {
+    padding-right: 8px;
+    padding-top: 4px;
+    position: absolute;
+    right: 0;
+    top: 4px;
+    z-index: 50;
+}
+
+div#editorHeader div#headerActions a:hover, div#headerActions a:active, div#headerActions a:link, div#headerActions a:visited {
+    color: white;
+}
+
+#footer {
+    width: 100%;
+    border-top: 1px solid #8e9181;
+    text-align: center;
+    font-size: 90%;
+    background-color: white;
+    float: left;
+}
+
+div#printFooter {
+    height: 60px;
+    width: 100%;
+    background: #E5E5E5;
+    border-top: 1px solid #bbb4d6;
+}
+
+div#printLogo {
+    height: 50px;
+    width: 80px;
+    float: right;
+    margin: 1px;
+    background: url( ../images/logo-vsmall.png ) no-repeat right top;
+    behavior: url( ../css/iepngfix.htc );
+}
+
+.btn-primary {
+    background: #3399CC;
+    border: 1px solid #006699;
+    color: #FFFFFF;
+    font-family: arial, helvetica, sans-serif;
+    font-size: 92%;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: bold;
+    line-height: normal;
+    overflow: visible;
+    padding: 2px 8px 1px;
+    vertical-align: middle;
+}
+
+div#paypal {
+    float: left;
+    margin: -29px;
+}
+
+.errorMsg {
+    color: #990000;
+    font-size: 90%;
+    font-weight: bold;
+    padding-left: 5px;
+}
+
+#headerLogo {
+    cursor: pointer;
+}
+
+#headerLoading {
+    padding-left: 40px;
+    background: url( '../images/ajax-loader.gif' ) #BBB4D6 no-repeat left;
+    position: absolute;
+    right: 3px;
+    top: 5px;
+    width: 75px;
+    height: 20px;
+    color: white;
+    font-weight: bold;
+    border: 1px solid whitesmoke;
+    background-position: 5px 2px;
+    visibility: hidden;
+}
+
+div#headerActions {
+    padding-right: 8px;
+    padding-top: 4px;
+    position: absolute;
+    right: 0;
+    z-index: 50;
+}
+
+div#headerActions a:hover, div#headerActions a:active, div#headerActions a:link, div#headerActions a:visited {
+    color: white;
+}
+
+#join .sb-inner {
+    background: #9a8fc3;
+}
+
+#join .sb-shadow {
+    background: white;
+}
+
+#join .sb-border {
+    background: #A29BBF;
+}
+
+/*---   Modal Dialog Form  ---*/
+div.modalDialog {
+    padding: 15px 30px;
+}
+
+div.modalDialog td {
+    padding: 3px;
+}
+
+div.modalDialog h1 {
+    color: #093A9D;
+    font-size: 200%;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+div.modalDialog h2 {
+    color: gray;
+    font-size: 110%;
+    margin: 9px 0px;
+}
+
+div.modalDialog h5 {
+    color: gray;
+    font-size: 90%; /*border-bottom: 1px dashed #BBB4D6;*/
+}
+
+/*---   End Modal Dialog Form  ---*/
+
+/*--   Main Page Style  -- */
+div.pageBody {
+    margin: 10px auto;
+    width: 800px;
+    min-height: 500px;
+}
+
+div.pageBodyContent {
+    padding-top: 30px;
+}
+
+div.pageBodyContent h1 {
+    color: #093A9D;
+    font-size: 200%;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+div.pageBodyContent h2 {
+    color: gray;
+    font-size: 150%;
+    border-bottom: 1px dashed #BBB4D6;
+    margin: 20px 0px;
+}
+
+div.pageBodyContent ul {
+    padding: 5px;
+}
+
+div.pageBodyContent li {
+    list-style-type: disc;
+    margin-left: 12px;
+}
+
+/*--   End Main Page Style -- */
+
+/* Share Styles */
+#userEmails {
+    float: left;
+    width: 50%;
+    padding: 5px;
+}
+
+#userEmails textarea {
+    width: 100%;
+}
+
+#currentUsers {
+    float: left;
+    width: 40%;
+    height: 400px;
+    padding: 5px;
+    padding-left: 15px;
+    margin-left: 15px;
+    border-left: 1px dotted gray;
+}
+
+#currentUsers table {
+    width: 100%;
+}
+
+#invitation {
+    border: 1px dotted gray;
+}
+
+td.formLabel {
+    text-align: right;
+    padding: 2px 10px;
+    white-space: nowrap;
+    font-weight: bolder;
+    vertical-align: top;
+}
+
+span.fieldRequired {
+    font-weight: bold;
+    color: orangered;
+    margin: 0px 4px;
+}
+
+#keyboardTable {
+    clear: both;
+    width: 100%;
+    height: 300px;
+    overflow: auto;
+    border: 0px solid gray;
+    background-color: white;
+    z-index: 2;
+    position: relative;
+}
+
+#keyboardTable table {
+    width: 100%;
+    border: 0px solid gray;
+}
+
+#keyboardTable thead {
+    background-color: #093A9D;
+    font-size: 12px;
+    font-weight: normal;
+    padding: 5px;
+}
+
+#keyboardTable td {
+    border-bottom: 1px solid #EEEEEE;
+    color: #5f5f5f;
+    font-size: 12px;
+    padding: 3px;
+}
+
+#keyboardTable th {
+    color: white;
+    border-right: 1px dotted #ffffff;
+    font-weight: bold;
+    text-align: center;
+    font-size: 12px;
+    padding: 5px;
+}
+
+#keyboardTable tbody tr:hover {
+    background-color: #E2f0f6;
+}
+
+#keyboardTable tr {
+    padding: 5px;
+}
