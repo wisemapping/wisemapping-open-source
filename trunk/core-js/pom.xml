@@ -51,7 +51,7 @@
                                         <include>${basedir}/target/tmp/header-min.js</include>
                                         <include>${basedir}/target/tmp/ColorPicker-min.js</include>
                                         <include>${basedir}/target/tmp/Loader-min.js</include>
-                                        <include>${basedir}/target/tmp/Logger-min.js</include>
+                                        <include>${basedir}/target/tmp/log4js-min.js</include>
                                         <include>${basedir}/target/tmp/Monitor-min.js</include>
                                         <include>${basedir}/target/tmp/Point-min.js</include>
                                         <include>${basedir}/target/tmp/UserAgent-min.js</include>

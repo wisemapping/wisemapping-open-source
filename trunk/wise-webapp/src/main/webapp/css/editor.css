@@ -24,7 +24,7 @@ html {
     top: 30px;
 }
 
-#loadingContainer {
+#waitingContainer,#errorContainer {
     position: relative;
     top: 80px;
     height: 120px; /*background: whitesmoke;*/
@@ -36,7 +36,12 @@ html {
 
 }
 
-#loadingContainer .loadingText {
+#errorContainer {
+    width: 400px;
+    border: 1px solid red;
+}
+
+#waitingContainer .loadingText {
     position: relative;
     top: 50%;
     margin-top: -35px;
@@ -47,9 +52,32 @@ html {
     float: left;
 }
 
-#loadingContainer .loadingIcon {
+#errorContainer .loadingText {
     position: relative;
-    background: url( ../images/loadingIcon.gif ) no-repeat;
+    top: 50%;
+    margin-top: -80px;
+    font-size: 15px;
+    font-weight: bold;
+    vertical-align: text-bottom;
+    height: 30px;
+    float: right;
+    padding-left:120px;
+}
+
+#waitingContainer .loadingIcon {
+    position: relative;
+    background: url(../images/loadingIcon.gif) no-repeat;
+    top: 50%;
+    margin-top: -65px;
+    height: 100px;
+    width: 121px;
+    float: left;
+    clear: both;
+}
+
+#errorContainer .loadingIcon {
+    position: relative;
+    background: url(../images/errorIcon.png) no-repeat;
     top: 50%;
     margin-top: -65px;
     height: 100px;
@@ -107,7 +135,7 @@ div#toolbar .buttonContainer {
     border: 1px solid #BBB4D6;
     padding: 2px;
     margin: 1px;
-    padding-bottom:4px;
+    padding-bottom: 4px;
 }
 
 .buttonContainer legend {
@@ -118,8 +146,8 @@ div#toolbar .buttonContainer {
     font-size: 11px;
     text-align: right;
     margin: 0px;
-    -moz-margin-start:7px;
-    -moz-margin-end:7px;
+    -moz-margin-start: 7px;
+    -moz-margin-end: 7px;
 }
 
 div#toolbar .button {
@@ -128,7 +156,7 @@ div#toolbar .button {
     float: left;
     margin: 0px 2px 2px 2px;
     cursor: pointer;
-    text-align:center;
+    text-align: center;
 }
 
 div#toolbar .comboButton {
@@ -150,21 +178,20 @@ div#toolbar .comboButton:hover {
     width: 34px;
 }
 
-div#toolbar .button img{
+div#toolbar .button img {
     width: 30px;
     height: 30px;
-    border:0;
+    border: 0;
 }
 
-div#toolbar .toolbarLabel{
-    position:relative;
-    top:55%;
-    text-align:center;
-    width:34px;
-    height:36px;
-    font-size:10px;
+div#toolbar .toolbarLabel {
+    position: relative;
+    top: 55%;
+    text-align: center;
+    width: 34px;
+    height: 36px;
+    font-size: 10px;
 }
-
 
 .mapSeparator {
     width: 1px;
@@ -175,151 +202,149 @@ div#toolbar .toolbarLabel{
 }
 
 div#file, div#zoom, div#node, div#font, div#share {
-    position:absolute;
-    top:-6px;
-    left:3px;
+    position: absolute;
+    top: -6px;
+    left: 3px;
 }
 
 div#zoom {
-    left:229px;
+    left: 229px;
 }
 
 div#node {
-    left:311px;
+    left: 311px;
 }
 
 div#font {
-    left:619px;
-    /*left:581px;*/
+    left: 619px; /*left:581px;*/
 }
 
 div#share {
-    left:815px;
-    /*left:777px;*/
+    left: 815px; /*left:777px;*/
 }
 
 div#saveButton {
-    background: url( ../images/save.png) no-repeat center top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/save.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
 }
 
 div#discardButton {
-    background: url( ../images/close.png) no-repeat center top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/close.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
 }
 
 div#history {
-    background: url( ../images/history.png) no-repeat center top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/history.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
 }
 
 div#print {
-    background: url( ../images/file_printer.png) no-repeat center top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/file_printer.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
 }
 
 div#undoEdition {
-    background: url( ../images/file_undo_dis.png) no-repeat center top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/file_undo_dis.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
 }
 
 div#redoEdition {
-    background: url( ../images/file_redo_dis.png) no-repeat center top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/file_redo_dis.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
 }
 
 #export {
-    background: url( ../images/file_export.png) no-repeat center top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/file_export.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
 }
 
 div#zoomIn {
-    background: url( ../images/zoom_in.png ) no-repeat center top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/zoom_in.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
 }
 
 #zoomOut {
-    background: url( ../images/zoom_out.png ) no-repeat center top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/zoom_out.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
 }
 
 #addTopic {
-    background: url( ../images/topic_add.png ) no-repeat center top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/topic_add.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
 }
 
 #deleteTopic {
-    background: url( ../images/topic_delete.png ) no-repeat center top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/topic_delete.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
 }
 
 div#topicColor {
-    background: url( ../images/topic_bgcolor.png ) no-repeat center top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/topic_bgcolor.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
     z-index: 4;
 }
 
 div#topicIcon {
-    background: url( ../images/topic_icon.png ) no-repeat center top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/topic_icon.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
     z-index: 4;
 }
 
 div#topicNote {
-    background: url( ../images/note.png ) no-repeat center top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/note.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
     z-index: 4;
 }
 
 div#topicLink {
-    background: url( ../images/topic_link.png ) no-repeat center top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/topic_link.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
     z-index: 4;
 }
 
 div#topicNote {
-    background-image: url( ../images/note.png );
-    behavior: url( ../css/iepngfix.htc );
+    background-image: url(../images/note.png);
+    behavior: url(../css/iepngfix.htc);
     z-index: 4;
 }
 
 #topicBorder {
-    background: url( ../images/topic_border.png ) no-repeat center top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/topic_border.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
     width: 30px;
 }
 
 #fontFamily {
-    background: url( ../images/font_type.png ) no-repeat center top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/font_type.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
 }
 
 #topicShape {
-    background: url( ../images/topic_shape.png ) no-repeat center top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/topic_shape.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
     width: 30px;
 }
 
 #fontBold {
-    background: url( ../images/font_bold.png ) no-repeat center top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/font_bold.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
 }
 
 #fontItalic {
-    background: url( ../images/font_italic.png ) no-repeat center top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/font_italic.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
 }
 
 div#fontColor {
-    background: url( ../images/font_color.png ) no-repeat center top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/font_color.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
     z-index: 4;
 }
 
 #fontSize {
     float: left;
-    background: url( ../images/font_size.png ) no-repeat center top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/font_size.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
 }
 
 #font-size {
@@ -336,19 +361,19 @@ div#fontColor {
 }
 
 #shareIt {
-    background: url( ../images/collab_share.png ) no-repeat center top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/collab_share.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
 }
 
 #publishIt {
-    background: url( ../images/collab_publish.png) no-repeat center top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/collab_publish.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
 
 }
 
 #tagIt {
-    background: url( ../images/collab_tag.png) no-repeat center top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/collab_tag.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
 }
 
 #colorPalette {
@@ -414,7 +439,7 @@ div#actionsContainer {
     width: 190px;
     right: 0;
     margin: 10px;
-    float:left;
+    float: left;
 }
 
 #actionsContainer .button {
@@ -447,17 +472,16 @@ div#actionsContainer {
     text-decoration: none;
 }
 
-
 #actionsContainer .buttonStart {
     width: 6px;
     height: 25px;
-    background: url( ../images/btnStart2.png ) no-repeat left top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/btnStart2.png) no-repeat left top;
+    behavior: url(../css/iepngfix.htc);
     float: left;
 }
 
 #actionsContainer .buttonBody {
-    background: url( ../images/btnBody2.png );
+    background: url(../images/btnBody2.png);
     float: left;
     height: 18px;
     padding: 0px 5px;
@@ -469,8 +493,8 @@ div#actionsContainer {
 #actionsContainer .buttonEnd {
     width: 7px;
     height: 23px;
-    background: url( ../images/btnEnd2.png ) no-repeat right top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/btnEnd2.png) no-repeat right top;
+    behavior: url(../css/iepngfix.htc);
     float: left;
 }
 
@@ -489,8 +513,8 @@ div#footerEditor {
     width: 80px;
     float: right;
     margin: 5px;
-    background: url( ../images/logo-vsmall.png ) no-repeat right top;
-    behavior: url( ../css/iepngfix.htc );
+    background: url(../images/logo-vsmall.png) no-repeat right top;
+    behavior: url(../css/iepngfix.htc);
 }
 
 #footerEditor .msgLoggerContainer {
@@ -508,14 +532,14 @@ div#msgStart {
     float: left;
     height: 36px;
     width: 16px;
-    background: url( ../images/footerStart.png ) no-repeat right top;
+    background: url(../images/footerStart.png) no-repeat right top;
 }
 
 div#msgEnd {
     float: left;
     height: 36px;
     width: 16px;
-    background: url( ../images/footerEnd.png ) no-repeat right top;
+    background: url(../images/footerEnd.png) no-repeat right top;
 
 }
 
@@ -523,7 +547,7 @@ div#msgLogger {
     float: left;
     height: 36px;
     width: 500px;
-    background: url( ../images/footerBody.png ) repeat-x right top;
+    background: url(../images/footerBody.png) repeat-x right top;
     text-align: center;
     white-space: nowrap;
     padding: 5px;
@@ -567,7 +591,7 @@ ol#toc li {
 }
 
 ol#toc a {
-    background: #fff url( ../images/tab4.png );
+    background: #fff url(../images/tab4.png);
     color: #008;
     display: block;
     float: left;
@@ -597,7 +621,7 @@ ol#toc li.current span {
 }
 
 ol#toc span {
-    background: #fff url( ../images/tab4.png ) 100% 0;
+    background: #fff url(../images/tab4.png) 100% 0;
     display: block;
     line-height: 2em;
     padding-right: 10px;
@@ -612,7 +636,7 @@ ol#toc span {
 }
 
 #workspaceContainer {
-    background: url( ../images/grid.gif ) bottom left repeat !important;
+    background: url(../images/grid.gif) bottom left repeat !important;
 
 }
 
@@ -653,8 +677,8 @@ span#lastSaved {
     opacity: 0.9;
     cursor: move;
     background-color: #69686F;
-    filter: alpha( opacity = 90 );
-    color:#000c8f;
+    filter: alpha(opacity = 90);
+    color: #000c8f;
 }
 
 #tryEditorWarning a {
@@ -681,7 +705,7 @@ div#helpContainer {
     padding: 20px;
     cursor: move;
     background-color: #69686F;
-    filter: alpha( opacity = 90 );
+    filter: alpha(opacity = 90);
 }
 
 div#helpContent h1 {
@@ -703,7 +727,7 @@ div.close {
     top: 7px;
     right: 10px;
     cursor: pointer;
-    background: url( ../images/close12_1.gif ) bottom left no-repeat !important;
+    background: url(../images/close12_1.gif) bottom left no-repeat !important;
 }
 
 div#helpContent li {
@@ -716,5 +740,5 @@ div#helpContent li {
 div#small_error_icon {
     padding-left: 18px;
     min-height: 16px;
-    background: url( ../images/error_icon.png ) bottom left no-repeat !important;
+    background: url(../images/error_icon.png) bottom left no-repeat !important;
 }

@@ -77,7 +77,6 @@ web2d.peer.svg.GroupPeer.prototype.updateTransform = function()
     var cx = this._position.x - this._coordOrigin.x * sx;
     var cy = this._position.y - this._coordOrigin.y * sy;
 
-    //Logger.logMsg("Group.updateTrasform:"+"translate("+ cx + "," + cy+ ") scale("+ sx + "," + sy + ")");
     this._native.setAttribute("transform", "translate(" + cx + "," + cy + ") scale(" + sx + "," + sy + ")");
 };
 

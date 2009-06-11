@@ -31,10 +31,6 @@ core.UserAgent = {
     {
         return !core.UserAgent.isVMLSupported();
     },
-    isIframeWorkaroundRequired: function()
-    {
-        return core.UserAgent.OS == "Mac" && core.UserAgent.browser == "Firefox" && core.UserAgent.version < 3;
-    },
     isMozillaFamily: function()
     {
         return this.browser == "Netscape" || this.browser == "Firefox";

@@ -9,8 +9,8 @@
 <p>Although you can use our site with that browser, some features may not be functional.</p>
 WiseMapping is optimized for use with:
 <ul>
-    <li>Internet Explorer 6.0 or greater</li>
-    <li>Firefox 1.5 or greater</li>
+    <li>Internet Explorer 7.0 or greater</li>
+    <li>Firefox 3.0 or greater</li>
     <li>Opera 9.21 or greater</li>
 </ul>
 

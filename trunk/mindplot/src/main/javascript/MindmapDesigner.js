@@ -426,6 +426,9 @@ mindplot.MindmapDesigner.prototype.loadFromXML = function(mapId, xmlContent)
     // Place the focus on the Central Topic
     var centralTopic = this.getCentralTopic();
     this._goToNode.attempt(centralTopic, this);
+
+    this._fireEvent("loadsuccess");
+
 };
 
 mindplot.MindmapDesigner.prototype.load = function(mapId)
@@ -444,6 +447,8 @@ mindplot.MindmapDesigner.prototype.load = function(mapId)
     // Place the focus on the Central Topic
     var centralTopic = this.getCentralTopic();
     this._goToNode.attempt(centralTopic, this);
+
+    this._fireEvent("loadsuccess");
 };
 
 mindplot.MindmapDesigner.prototype._loadMap = function(mapId, mindmapModel)
@@ -466,6 +471,8 @@ mindplot.MindmapDesigner.prototype._loadMap = function(mapId, mindmapModel)
             nodeGraph.setBranchVisibility(true);
         }
     }
+    this._fireEvent("loadsuccess");
+
 };
 
 

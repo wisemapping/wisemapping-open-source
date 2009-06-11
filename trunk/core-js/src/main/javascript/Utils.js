@@ -70,21 +70,7 @@ core.assert = function(assert, message)
 
 core.findElement = function(name)
 {
-    var result;
-    if (core.UserAgent.isIframeWorkaroundRequired())
-    {
-        var iframe = $('mindplotIFrame');
-        var doc = iframe.contentDocument;
-        if (doc == undefined || doc == null)
-            doc = iframe.contentWindow.document;
-        result = $(doc.getElementById(name));
-    }
-    if (!result)
-    {
-        result = $(name);
-    }
-
-    return result;
+    return $(name);
 }
 
 Math.sign = function(value)

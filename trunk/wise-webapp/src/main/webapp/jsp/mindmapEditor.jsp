@@ -20,6 +20,9 @@
     <link rel="stylesheet" type="text/css" href="../css/bubble.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/thirdparty.css">
 
+    <script type="text/javascript" src="../dwr/engine.js"></script>
+    <script type="text/javascript" src="../dwr/interface/LoggerService.js"></script>
+
     <script type='text/javascript' src='../js/wiseLibrary.js'></script>
     <script type='text/javascript' src='../js/core.js'></script>
 
@@ -38,18 +41,35 @@
 </form>
 
 <div id="waitDialog" style="display:none">
-    <div id="loadingContainer">
+    <div id="waitingContainer">
         <div class="loadingIcon"></div>
         <div class="loadingText">
             <spring:message code="EDITOR.LOADING"/>
         </div>
     </div>
 </div>
+
+<div id="errorDialog" style="display:none">
+    <div id="errorContainer">
+        <div class="loadingIcon"></div>
+        <div class="loadingText">
+            <spring:message code="EDITOR.ERROR_LOADING"/>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
-    //Dialog box display ...
-    var loadingDialog = new core.WaitDialog('waitDialog');
-    addLightboxMarkup();
-    loadingDialog.activate(true);
+
+    var waitDialog = new core.WaitDialog();
+    waitDialog.activate(true, $("waitDialog"));
+    $(window).addEvent("error", function(event) {
+
+        // Show error dialog ...
+        waitDialog.changeContent($("errorDialog"), false);
+        return false;
+    });
+
+
     var mapId = '${mindmap.id}';
     var mapXml = '${mapXml}';
     var editorProperties = ${mindmap.properties};
@@ -100,162 +120,163 @@
 </div>
 
 <div id="toolbar">
-<div id="editTab" class="tabContent">
-<div id="file" class="buttonContainer" title="<spring:message code="FILE"/>">
-    <fieldset>
-        <legend>
-            <spring:message code="FILE"/>
-        </legend>
-        <div id="saveButton" class="button" title="<spring:message code="SAVE"/>">
-            <div class="toolbarLabel"><p><spring:message code="SAVE"/></p></div>
-        </div>
-        <div id="discardButton" class="button" title="<spring:message code="CLOSE"/>">
-            <div class="toolbarLabel"><p><spring:message code="CLOSE"/></p></div>
-        </div>
-        <div id="undoEdition" class="button" title="<spring:message code="UNDO_EDITION"/>">
-            <div class="toolbarLabel"><p><spring:message code="UNDO"/></p></div>
-        </div>
-        <div id="redoEdition" class="button" title="<spring:message code="REDO_EDITION"/>">
-            <div class="toolbarLabel"><p><spring:message code="REDO"/></p></div>
-        </div>
-        <a id="printAnchor" href="javascript:printMap();" title="<spring:message code="PRINT"/>">
-            <div id="print" class="button" title="<spring:message code="PRINT"/>">
-                <div class="toolbarLabel"><p><spring:message code="PRINT"/></p></div>
-            </div>
-        </a>
-        <a id="exportAnchor" href="export.htm?mapId=${mindmap.id}" rel="moodalbox 600px 400px"
-           title="<spring:message code="EXPORT_DETAILS"/>">
-            <div id="export" class="button" title="<spring:message code="EXPORT"/>">
-                <div class="toolbarLabel"><p><spring:message code="EXPORT"/></p></div>
-            </div>
-        </a>
-    </fieldset>
-</div>
-<div id="zoom" class="buttonContainer" title="Zoom In">
-    <fieldset>
-        <legend>
-            <spring:message code="ZOOM"/>
-        </legend>
-        <div id="zoomIn" class="button" title="<spring:message code="ZOOM_IN"/>">
-            <div class="toolbarLabel"><p><spring:message code="IN"/></p></div>
-        </div>
-        <div id="zoomOut" class="button" title="<spring:message code="ZOOM_OUT"/>">
-            <div class="toolbarLabel"><p><spring:message code="OUT"/></p></div>
-        </div>
-    </fieldset>
-</div>
-<div id="node" class="buttonContainer" title="Node Properties">
-    <fieldset>
-        <legend>
-            <spring:message code="TOPIC"/>
-        </legend>
-        <div id="topicShape" class="button comboButton" title="<spring:message code="TOPIC_SHAPE"/>">
-            <div class="toolbarLabel"><p><spring:message code="SHAPE"/></p></div>
-        </div>
-        <div id="addTopic" class="button" title="<spring:message code="TOPIC_ADD"/>">
-            <div class="toolbarLabel"><p><spring:message code="ADD"/></p></div>
-        </div>
-        <div id="deleteTopic" class="button" title="<spring:message code="TOPIC_DELETE"/>">
-            <div class="toolbarLabel"><p><spring:message code="DELETE"/></p></div>
-        </div>
-        <div id="topicBorder" class="button comboButton" title="<spring:message code="TOPIC_BORDER_COLOR"/>">
-            <div class="toolbarLabel"><p><spring:message code="BORDER"/></p></div>
-        </div>
-        <div id="topicColor" class="button comboButton" title="<spring:message code="TOPIC_BACKGROUND_COLOR"/>">
-            <div class="toolbarLabel"><p><spring:message code="COLOR"/></p></div>
-        </div>
-        <div id="topicIcon" class="button comboButton" title="<spring:message code="TOPIC_ICON"/>">
-            <div class="toolbarLabel"><p><spring:message code="ICON"/></p></div>
-        </div>
-        <div id="topicNote" class="button comboButton" title="<spring:message code="TOPIC_NOTE"/>">
-            <div class="toolbarLabel"><p><spring:message code="NOTE"/></p></div>
-        </div>
-        <div id="topicLink" class="button" title="<spring:message code="TOPIC_LINK"/>">
-            <div class="toolbarLabel"><p><spring:message code="LINK"/></p></div>
-        </div>
-    </fieldset>
-</div>
-<div id="font" class="buttonContainer" title="Font Properties">
-    <fieldset>
-        <legend>
-            <spring:message code="FONT"/>
-        </legend>
-        <div id="fontFamily" class="button comboButton" title="<spring:message code="FONT_TYPE"/>">
-            <div class="toolbarLabel"><p><spring:message code="TYPE"/></p></div>
-        </div>
-        <div id="fontSize" class="button comboButton" title="<spring:message code="FONT_SIZE"/>">
-            <div class="toolbarLabel"><p><spring:message code="SIZE"/></p></div>
-        </div>
-        <div id="fontBold" class="button" title="<spring:message code="FONT_BOLD"/>">
-            <div class="toolbarLabel"><p><spring:message code="BOLD"/></p></div>
-        </div>
-        <div id="fontItalic" class="button" title="<spring:message code="FONT_ITALIC"/>">
-            <div class="toolbarLabel"><p><spring:message code="ITALIC"/></p></div>
-        </div>
-        <div id="fontColor" class="button comboButton" title="<spring:message code="FONT_COLOR"/>">
-            <div class="toolbarLabel"><p><spring:message code="COLOR"/></p></div>
-        </div>
-    </fieldset>
-</div>
-<div id="share" class="buttonContainer" title="Share Properties">
-    <c:choose>
-        <c:when test="${editorTryMode==false}">
+    <div id="editTab" class="tabContent">
+        <div id="file" class="buttonContainer" title="<spring:message code="FILE"/>">
             <fieldset>
                 <legend>
-                    <spring:message code="COLLABORATION"/>
+                    <spring:message code="FILE"/>
                 </legend>
-                <a id="tagAnchor" href="tags.htm?mapId=${mindmap.id}" rel="moodalbox 400px 200px wizard"
-                   title="<spring:message code="TAGS_DETAILS"/>">
-                    <div id="tagIt" class="button" title="<spring:message code="TAG"/>">
-                        <div class="toolbarLabel"><p><spring:message code="TAG"/></p></div>
+                <div id="saveButton" class="button" title="<spring:message code="SAVE"/>">
+                    <div class="toolbarLabel"><p><spring:message code="SAVE"/></p></div>
+                </div>
+                <div id="discardButton" class="button" title="<spring:message code="CLOSE"/>">
+                    <div class="toolbarLabel"><p><spring:message code="CLOSE"/></p></div>
+                </div>
+                <div id="undoEdition" class="button" title="<spring:message code="UNDO_EDITION"/>">
+                    <div class="toolbarLabel"><p><spring:message code="UNDO"/></p></div>
+                </div>
+                <div id="redoEdition" class="button" title="<spring:message code="REDO_EDITION"/>">
+                    <div class="toolbarLabel"><p><spring:message code="REDO"/></p></div>
+                </div>
+                <a id="printAnchor" href="javascript:printMap();" title="<spring:message code="PRINT"/>">
+                    <div id="print" class="button" title="<spring:message code="PRINT"/>">
+                        <div class="toolbarLabel"><p><spring:message code="PRINT"/></p></div>
                     </div>
                 </a>
-                <c:choose>
-                    <c:when test="${mindmap.owner==user}">
-                        <a id="shareAnchor" href="<c:out value="${shareMap}"/>&mapId=${mindmap.id}"
-                           rel="moodalbox 780px 530px wizard" title="<spring:message code="SHARE_DETAILS"/>">
-                            <div id="shareIt" class="button" title="<spring:message code="COLLABORATION"/>">
-                                <div class="toolbarLabel"><p><spring:message code="SHARE"/></p></div>
-                            </div>
-                        </a>
-                        <a id="publishAnchor" href="publish.htm?mapId=${mindmap.id}" rel="moodalbox 600px 400px wizard"
-                           title="<spring:message code="PUBLISH_MSG"/>">
-                            <div id="publishIt" class="button" title="<spring:message code="PUBLISH"/>">
-                                <div class="toolbarLabel"><p><spring:message code="PUBLISH"/></p></div>
-                            </div>
-                        </a>
-                    </c:when>
-                </c:choose>
-                <a id="historyAnchor" href="history.htm?action=list&mapId=${mindmap.id}"
-                   rel="moodalbox 600px 400px wizard" title="<spring:message code="HISTORY_MSG"/>">
-                    <div id="history" class="button" title="<spring:message code="HISTORY_MSG"/>">
-                        <div class="toolbarLabel"><p><spring:message code="HISTORY"/></p></div>
+                <a id="exportAnchor" href="export.htm?mapId=${mindmap.id}" rel="moodalbox 600px 400px"
+                   title="<spring:message code="EXPORT_DETAILS"/>">
+                    <div id="export" class="button" title="<spring:message code="EXPORT"/>">
+                        <div class="toolbarLabel"><p><spring:message code="EXPORT"/></p></div>
                     </div>
                 </a>
             </fieldset>
-        </c:when>
-        <c:otherwise>
+        </div>
+        <div id="zoom" class="buttonContainer" title="Zoom In">
             <fieldset>
                 <legend>
-                    <spring:message code="COLLABORATION"/>
+                    <spring:message code="ZOOM"/>
                 </legend>
-                <div id="tagIt" class="button" title="<spring:message code="TAG"/>">
-                    <div class="toolbarLabel"><p><spring:message code="TAG"/></p></div>
+                <div id="zoomIn" class="button" title="<spring:message code="ZOOM_IN"/>">
+                    <div class="toolbarLabel"><p><spring:message code="IN"/></p></div>
                 </div>
-                <div id="shareIt" class="button" title="<spring:message code="COLLABORATE"/>">
-                    <div class="toolbarLabel"><p><spring:message code="SHARE"/></p></div>
-                </div>
-                <div id="publishIt" class="button" title="<spring:message code="PUBLISH"/>">
-                    <div class="toolbarLabel"><p><spring:message code="PUBLISH"/></p></div>
-                </div>
-                <div id="history" class="button" title="<spring:message code="HISTORY_MSG"/>">
-                    <div class="toolbarLabel"><p><spring:message code="HISTORY"/></p></div>
+                <div id="zoomOut" class="button" title="<spring:message code="ZOOM_OUT"/>">
+                    <div class="toolbarLabel"><p><spring:message code="OUT"/></p></div>
                 </div>
             </fieldset>
-        </c:otherwise>
-    </c:choose>
-</div>
-</div>
+        </div>
+        <div id="node" class="buttonContainer" title="Node Properties">
+            <fieldset>
+                <legend>
+                    <spring:message code="TOPIC"/>
+                </legend>
+                <div id="topicShape" class="button comboButton" title="<spring:message code="TOPIC_SHAPE"/>">
+                    <div class="toolbarLabel"><p><spring:message code="SHAPE"/></p></div>
+                </div>
+                <div id="addTopic" class="button" title="<spring:message code="TOPIC_ADD"/>">
+                    <div class="toolbarLabel"><p><spring:message code="ADD"/></p></div>
+                </div>
+                <div id="deleteTopic" class="button" title="<spring:message code="TOPIC_DELETE"/>">
+                    <div class="toolbarLabel"><p><spring:message code="DELETE"/></p></div>
+                </div>
+                <div id="topicBorder" class="button comboButton" title="<spring:message code="TOPIC_BORDER_COLOR"/>">
+                    <div class="toolbarLabel"><p><spring:message code="BORDER"/></p></div>
+                </div>
+                <div id="topicColor" class="button comboButton" title="<spring:message code="TOPIC_BACKGROUND_COLOR"/>">
+                    <div class="toolbarLabel"><p><spring:message code="COLOR"/></p></div>
+                </div>
+                <div id="topicIcon" class="button comboButton" title="<spring:message code="TOPIC_ICON"/>">
+                    <div class="toolbarLabel"><p><spring:message code="ICON"/></p></div>
+                </div>
+                <div id="topicNote" class="button comboButton" title="<spring:message code="TOPIC_NOTE"/>">
+                    <div class="toolbarLabel"><p><spring:message code="NOTE"/></p></div>
+                </div>
+                <div id="topicLink" class="button" title="<spring:message code="TOPIC_LINK"/>">
+                    <div class="toolbarLabel"><p><spring:message code="LINK"/></p></div>
+                </div>
+            </fieldset>
+        </div>
+        <div id="font" class="buttonContainer" title="Font Properties">
+            <fieldset>
+                <legend>
+                    <spring:message code="FONT"/>
+                </legend>
+                <div id="fontFamily" class="button comboButton" title="<spring:message code="FONT_TYPE"/>">
+                    <div class="toolbarLabel"><p><spring:message code="TYPE"/></p></div>
+                </div>
+                <div id="fontSize" class="button comboButton" title="<spring:message code="FONT_SIZE"/>">
+                    <div class="toolbarLabel"><p><spring:message code="SIZE"/></p></div>
+                </div>
+                <div id="fontBold" class="button" title="<spring:message code="FONT_BOLD"/>">
+                    <div class="toolbarLabel"><p><spring:message code="BOLD"/></p></div>
+                </div>
+                <div id="fontItalic" class="button" title="<spring:message code="FONT_ITALIC"/>">
+                    <div class="toolbarLabel"><p><spring:message code="ITALIC"/></p></div>
+                </div>
+                <div id="fontColor" class="button comboButton" title="<spring:message code="FONT_COLOR"/>">
+                    <div class="toolbarLabel"><p><spring:message code="COLOR"/></p></div>
+                </div>
+            </fieldset>
+        </div>
+        <div id="share" class="buttonContainer" title="Share Properties">
+            <c:choose>
+                <c:when test="${editorTryMode==false}">
+                    <fieldset>
+                        <legend>
+                            <spring:message code="COLLABORATION"/>
+                        </legend>
+                        <a id="tagAnchor" href="tags.htm?mapId=${mindmap.id}" rel="moodalbox 400px 200px wizard"
+                           title="<spring:message code="TAGS_DETAILS"/>">
+                            <div id="tagIt" class="button" title="<spring:message code="TAG"/>">
+                                <div class="toolbarLabel"><p><spring:message code="TAG"/></p></div>
+                            </div>
+                        </a>
+                        <c:choose>
+                            <c:when test="${mindmap.owner==user}">
+                                <a id="shareAnchor" href="<c:out value="${shareMap}"/>&mapId=${mindmap.id}"
+                                   rel="moodalbox 780px 530px wizard" title="<spring:message code="SHARE_DETAILS"/>">
+                                    <div id="shareIt" class="button" title="<spring:message code="COLLABORATION"/>">
+                                        <div class="toolbarLabel"><p><spring:message code="SHARE"/></p></div>
+                                    </div>
+                                </a>
+                                <a id="publishAnchor" href="publish.htm?mapId=${mindmap.id}"
+                                   rel="moodalbox 600px 400px wizard"
+                                   title="<spring:message code="PUBLISH_MSG"/>">
+                                    <div id="publishIt" class="button" title="<spring:message code="PUBLISH"/>">
+                                        <div class="toolbarLabel"><p><spring:message code="PUBLISH"/></p></div>
+                                    </div>
+                                </a>
+                            </c:when>
+                        </c:choose>
+                        <a id="historyAnchor" href="history.htm?action=list&mapId=${mindmap.id}"
+                           rel="moodalbox 600px 400px wizard" title="<spring:message code="HISTORY_MSG"/>">
+                            <div id="history" class="button" title="<spring:message code="HISTORY_MSG"/>">
+                                <div class="toolbarLabel"><p><spring:message code="HISTORY"/></p></div>
+                            </div>
+                        </a>
+                    </fieldset>
+                </c:when>
+                <c:otherwise>
+                    <fieldset>
+                        <legend>
+                            <spring:message code="COLLABORATION"/>
+                        </legend>
+                        <div id="tagIt" class="button" title="<spring:message code="TAG"/>">
+                            <div class="toolbarLabel"><p><spring:message code="TAG"/></p></div>
+                        </div>
+                        <div id="shareIt" class="button" title="<spring:message code="COLLABORATE"/>">
+                            <div class="toolbarLabel"><p><spring:message code="SHARE"/></p></div>
+                        </div>
+                        <div id="publishIt" class="button" title="<spring:message code="PUBLISH"/>">
+                            <div class="toolbarLabel"><p><spring:message code="PUBLISH"/></p></div>
+                        </div>
+                        <div id="history" class="button" title="<spring:message code="HISTORY_MSG"/>">
+                            <div class="toolbarLabel"><p><spring:message code="HISTORY"/></p></div>
+                        </div>
+                    </fieldset>
+                </c:otherwise>
+            </c:choose>
+        </div>
+    </div>
 </div>
 
 <div id="mindplot"></div>
@@ -272,14 +293,6 @@
             <div id="msgEnd"></div>
         </div>
     </div>
-    <%if (userAgent != null && !(userAgent.getOs() == UserAgent.OS.MAC && userAgent.getProduct() == UserAgent.Product.FIREFOX && userAgent.getVersionMajor() < 3)) { %>
-    <div id="helpButton"
-         style="text-align:center; width:90px; height:20px; background-color:#f5f5f5; border: 1px solid #BBB6D6; cursor:pointer; padding-left:5px; margin-left:3px;">
-        <div style="float:left; position:relative; top:50%; margin-top:-8px; margin-left:15px;"><img
-                src="../images/help.png"/></div>
-        <div style="float:left; position:relative; top:50%; margin-top:-8px; margin-left:4px;">Help</div>
-    </div>
-    <% } else {%>
     <div id="helpButtonFirstSteps"
          style="text-align:center; width:90px; height:20px; background-color:#f5f5f5; border: 1px solid #BBB6D6; cursor:pointer; padding-left:5px; margin-left:3px;float:left;">
         <div style="float:left; position:relative; top:50%; margin-top:-8px; margin-left:5px;"><img
@@ -292,7 +305,6 @@
                 src="../images/help.png"/></div>
         <div style="float:left; position:relative; top:50%; margin-top:-8px; margin-left:4px;">Shortcuts</div>
     </div>
-    <% } %>
 </div>
 <c:if test="${editorTryMode==true}">
     <div id="tryEditorWarning" class="sb">
@@ -308,8 +320,6 @@
     </div>
     <script type="text/javascript">
         // Register close event ...
-        //$('tryEditorWarning').makeRounded({radius: 8,borderColor: '#69686F',backgroundColor: '#69686F'});
-
         var tryElem = $('tryEditorWarning');
         tryElem.addClass('drag').makeDraggable();
         $('tryClose').addEvent('click', function(event) {
@@ -319,11 +329,9 @@
     </script>
 </c:if>
 <div id="ffoxworkarround" style="display:none;"><input id="ffoxWorkarroundInput" type="text"></div>
-<script type="text/javascript" src="../dwr/engine.js"></script>
 <c:if test="${editorTryMode==false}">
     <script type="text/javascript" src="../dwr/interface/MapEditorService.js"></script>
 </c:if>
-<script type="text/javascript" src="../dwr/interface/LoggerService.js"></script>
 <script type="text/javascript" src="../js/editor.js"></script>
 <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
 </script>

@@ -23,10 +23,19 @@
     </div>
 </div>
 <script type="text/javascript">
+
     //Dialog box display ...
-    var loadingDialog = new core.WaitDialog('waitDialog');
-    addLightboxMarkup();
-    loadingDialog.activate(true);
+    var waitDialog = new core.WaitDialog();
+    waitDialog.activate(true, $("waitDialog"));
+
+    $(window).addEvent("error", function(event) {
+
+        // Show error dialog ...
+        waitDialog.changeContent($("errorDialog"), false);
+        return false;
+    });
+
+
     var mapId = '${mindmap.id}';
     var mapXml = '${mapXml}';
     var editorProperties = {zoom:${zoom}};
