@@ -20,7 +20,7 @@
 // Init default logger level ...
 var wLogger = new Log4js.getLogger("WiseMapping");
 wLogger.setLevel(Log4js.Level.ALL);
-wLogger.addAppender(new Log4js.BrowserConsoleAppender());
+//wLogger.addAppender(new Log4js.BrowserConsoleAppender());
 
 // Is logger service available ?
 if (window.LoggerService)
