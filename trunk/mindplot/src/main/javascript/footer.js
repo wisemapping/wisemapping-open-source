@@ -17,7 +17,7 @@
 * $Id: file 64488 2006-03-10 17:32:09Z paulo $
 */
 
-if(afterWisemapLoading)
+if(afterMindpotLibraryLoading)
 {
-afterWisemapLoading();
+    afterMindpotLibraryLoading();
 }

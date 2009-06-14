@@ -89,15 +89,3 @@ window.onerror = function(sMsg, sUrl, sLine)
 
     return true;
 };
-
-window.__coreLoad = function()
-{
-    if (window.afterCoreLoading)
-    {
-        window.afterCoreLoading();
-    } else
-    {
-        setTimeout("window.__coreLoad()", 2000);
-    }
-}
-window.__coreLoad();

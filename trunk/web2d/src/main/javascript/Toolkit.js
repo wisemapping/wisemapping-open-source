@@ -24,7 +24,7 @@ web2d.peer.ToolkitVML =
         var domDocument = window.document;
         //ownerDocument;
         // Add VML includes and namespace
-        domDocument.namespaces.add("v", "urn:schemas-microsoft-com:vml");
+        domDocument.namespaces.add("v", "urn:schemas-microsoft-com:vml", "#default#VML");
 
         var style = domDocument.createStyleSheet();
         style.addRule('v\\:*', "behavior: url(#default#VML);");

@@ -68,10 +68,6 @@ core.assert = function(assert, message)
 
 };
 
-core.findElement = function(name)
-{
-    return $(name);
-}
 
 Math.sign = function(value)
 {

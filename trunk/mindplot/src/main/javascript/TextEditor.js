@@ -55,8 +55,8 @@ mindplot.TextEditor = function(screenManager,actionRunner)
 
                 break;
             default:
-                var span =core.findElement('spanText');
-                var input = core.findElement('inputText');
+                var span =$('spanText');
+                var input = $('inputText');
                 span.innerHTML = input.value;
                 var size = input.value.length + 1;
                 input.size= size;
@@ -90,7 +90,7 @@ mindplot.TextEditor = function(screenManager,actionRunner)
 
        if (core.UserAgent.isSVGSupported())
         {
-            setTimeout("core.findElement('ffoxWorkarroundInput').focus();", 0);
+            setTimeout("$('ffoxWorkarroundInput').focus();", 0);
         }
     };
     this.fx = new Fx.Style(this.inputText, 'opacity', { duration: 10});
@@ -262,8 +262,8 @@ mindplot.TextEditor.prototype.init = function (nodeGraph)
 
 mindplot.TextEditor.prototype.setStyle = function (fontStyle)
 {
-    var inputField = core.findElement("inputText");
-    var spanField = core.findElement("spanText");
+    var inputField = $("inputText");
+    var spanField = $("spanText");
     if (!core.Utils.isDefined(fontStyle.font))
     {
         fontStyle.font = "Arial";
@@ -293,18 +293,18 @@ mindplot.TextEditor.prototype.setStyle = function (fontStyle)
 
 mindplot.TextEditor.prototype.setText = function(text)
 {
-    var inputField = core.findElement("inputText");
+    var inputField = $("inputText");
     inputField.size = text.length + 1;
     //this._myOverlay.cfg.setProperty("width", (inputField.size * parseInt(inputField.style.fontSize) + 100) + "px");
     this._myOverlay.style.width = (inputField.size * parseInt(inputField.style.fontSize) + 100) + "px";
-    var spanField = core.findElement("spanText");
+    var spanField = $("spanText");
     spanField.innerHTML = text;
     inputField.value = text;
 };
 
 mindplot.TextEditor.prototype.getText = function()
 {
-    return core.findElement('inputText').value;
+    return $('inputText').value;
 };
 
 
@@ -320,7 +320,7 @@ mindplot.TextEditor.prototype.setEditorSize = function (width, height, scale)
 
 mindplot.TextEditor.prototype.getSize = function ()
 {
-    return {width:core.findElement("spanText").offsetWidth,height:core.findElement("spanText").offsetHeight};
+    return {width:$("spanText").offsetWidth,height:$("spanText").offsetHeight};
 };
 
 
@@ -343,12 +343,12 @@ mindplot.TextEditor.prototype.showTextEditor = function(selectText)
     //elem._myOverlay.cfg.setProperty("xy", [0, 0]);
     //elem._myOverlay.cfg.setProperty("visible", true);
     //select the text in the input
-    core.findElement('inputText').disabled = false;
+    $('inputText').disabled = false;
 
-    if (core.findElement('inputText').createTextRange) //ie
+    if ($('inputText').createTextRange) //ie
     {
-        var range = core.findElement('inputText').createTextRange();
-        var pos = core.findElement('inputText').value.length;
+        var range = $('inputText').createTextRange();
+        var pos = $('inputText').value.length;
         if(selectText)
         {
             range.select();
@@ -362,7 +362,7 @@ mindplot.TextEditor.prototype.showTextEditor = function(selectText)
     }
     else if(selectText)
     {
-        core.findElement('inputText').setSelectionRange(0, core.findElement('inputText').value.length);
+        $('inputText').setSelectionRange(0, $('inputText').value.length);
     }
 
     var executor = function(editor)
@@ -370,7 +370,7 @@ mindplot.TextEditor.prototype.showTextEditor = function(selectText)
         return function()
         {
             try {
-                core.findElement('inputText').focus();
+                $('inputText').focus();
             }
             catch (e)
             {
@@ -389,7 +389,7 @@ mindplot.TextEditor.prototype.lostFocus = function(bothBrowsers)
     if (this._isVisible())
     {
         //the editor is opened in another node. lets Finish it.
-        var fireOnThis = core.findElement('inputText');
+        var fireOnThis = $('inputText');
         fireOnThis.fireEvent('blur');
     }
 };

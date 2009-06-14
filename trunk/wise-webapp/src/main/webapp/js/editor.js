@@ -17,6 +17,23 @@
  * $Id: file 64488 2006-03-10 17:32:09Z paulo $
  */
 
+
+function afterCoreLoading()
+{
+
+    if (core.UserAgent.isVMLSupported())
+    {
+        $import("../js/mindplot.vml.js");
+    } else
+    {
+        $import("../js/mindplot.svg.js");
+
+    }
+};
+afterCoreLoading();
+
+
+
 /*Extend mootools known keys*/
 ExtendedKeys = {
     'insert': 45,
@@ -163,23 +180,9 @@ Tabs.Init();
 // Hide the content while waiting for the onload event to trigger.
 var contentId = window.location.hash || "#Introduction";
 
-function afterCoreLoading()
-{
-
-    if (core.UserAgent.isVMLSupported())
-    {
-        $import("../js/mindplot.vml.js");
-    } else
-    {
-        $import("../js/mindplot.svg.js");
-
-    }
-}
-;
-
 var iconPanel = null;
 
-function afterWisemapLoading()
+function afterMindpotLibraryLoading()
 {
     buildMindmapDesigner();
 

@@ -27,10 +27,11 @@ function afterCoreLoading()
         $import("../js/mindplot.svg.js");
 
     }
-}
-;
+};
 
-function afterWisemapLoading()
+afterCoreLoading();
+
+function afterMindpotLibraryLoading()
 {
     buildMindmapDesigner();
 
