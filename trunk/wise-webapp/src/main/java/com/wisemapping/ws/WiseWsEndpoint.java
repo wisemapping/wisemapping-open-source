@@ -22,7 +22,6 @@ package com.wisemapping.ws;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.apache.log4j.Logger;
-import com.sun.istack.internal.NotNull;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.service.UserService;
 import com.wisemapping.model.MindMap;
@@ -54,7 +53,7 @@ public class WiseWsEndpoint {
     }
 
     @PayloadRoot(localPart = "loadMindmapRequest", namespace = "http://www.wisemapping.org/ws")
-    public LoadMindmapResponse loadMindmap(final @NotNull LoadMindmapRequest request) throws Throwable {
+    public LoadMindmapResponse loadMindmap(final LoadMindmapRequest request) throws Throwable {
 
         logger.debug("Invoking loadMindmap");
         final LoadMindmapResponse result = new LoadMindmapResponse();
@@ -89,7 +88,7 @@ public class WiseWsEndpoint {
     }
 
     @PayloadRoot(localPart = "addMindmapRequest", namespace = "http://www.wisemapping.org/ws")
-    public AddMindmapResponse createMindmap(final @NotNull AddMindmapRequest request) throws Throwable {
+    public AddMindmapResponse createMindmap(final AddMindmapRequest request) throws Throwable {
 
         logger.debug("Invoking createMindmap");
         final AddMindmapResponse response = new AddMindmapResponse();
