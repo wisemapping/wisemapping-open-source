@@ -35,6 +35,90 @@
                         <configuration>
                             <tasks>
                                 <mkdir dir="${basedir}/target/classes"/>
+                                <!-- Generated for debug -->
+                                <concat destfile="${basedir}/target/tmp/mindplot.js" append="false">
+                                    <filelist dir="${basedir}/src/main/javascript/" files="header.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="Mindmap.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="NodeModel.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="MindmapDesigner.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="ScreenManager.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="Workspace.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="ShrinkConnector.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="NodeGraph.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="Topic.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="CentralTopic.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="MainTopic.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="DragTopic.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="DragManager.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="DragPivot.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="TopicBoard.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="CentralTopicBoard.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="MainTopicBoard.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="ConnectionLine.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="DragTopicPositioner.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="Board.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="TextEditor.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="VariableDistanceBoard.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="util/Shape.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="FixedDistanceBoard.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="BoardEntry.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="XMLMindmapSerializer.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="PersistanceManager.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="EditorProperties.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="IconGroup.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="BubbleTip.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="Tip.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="Icon.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="LinkIcon.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="Note.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="ImageIcon.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="IconModel.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="LinkModel.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="NoteModel.js"/>
+
+                                    <filelist dir="${basedir}/src/main/javascript/" files="Command.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="DesignerActionRunner.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="DesignerUndoManager.js"/>
+
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="commands/GenericFunctionCommand.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="commands/DeleteTopicCommand.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="commands/DragTopicCommand.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="commands/AddTopicCommand.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="commands/AddLinkToTopicCommand.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="commands/RemoveLinkFromTopicCommand.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="commands/AddIconToTopicCommand.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="commands/RemoveIconFromTopicCommand.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="commands/AddNoteToTopicCommand.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="commands/RemoveNoteFromTopicCommand.js"/>
+
+                                    <filelist dir="${basedir}/src/main/javascript/" files="footer.js"/>
+                                </concat>
+
+                                <concat destfile="${basedir}/target/classes/mindplot.vml.js" append="false">
+
+                                    <filelist dir="${basedir}/../web2d/target/classes/"
+                                              files="web2d.vml-min.js"/>
+                                    <filelist dir="${basedir}/target/tmp/"
+                                              files="mindplot.js"/>
+                                </concat>
+
+                                <concat destfile="${basedir}/target/classes/mindplot.svg.js" append="false">
+
+                                    <filelist dir="${basedir}/../web2d/target/classes/"
+                                              files="web2d.svg-min.js"/>
+                                    <filelist dir="${basedir}/target/tmp/"
+                                              files="mindplot.js"/>
+                                </concat>
                             </tasks>
                         </configuration>
                     </execution>
@@ -116,14 +200,14 @@
                                     </includes>
                                 </aggregation>
                                 <aggregation>
-                                    <output>${basedir}/target/classes/mindplot.vml.js</output>
+                                    <output>${basedir}/target/classes/mindplot.vml-min.js</output>
                                     <includes>
                                         <include>${basedir}/../web2d/target/classes/web2d.vml-min.js</include>
                                         <include>${basedir}/target/tmp/mindplot-min.js</include>
                                     </includes>
                                 </aggregation>
                                 <aggregation>
-                                    <output>${basedir}/target/classes/mindplot.svg.js</output>
+                                    <output>${basedir}/target/classes/mindplot.svg-min.js</output>
                                     <includes>
                                         <include>${basedir}/../web2d/target/classes/web2d.svg-min.js</include>
                                         <include>${basedir}/target/tmp/mindplot-min.js</include>
