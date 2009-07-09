@@ -62,9 +62,6 @@ web2d.peer.svg.ElipsePeer.prototype.setPosition = function(cx, cy)
 
 web2d.peer.svg.ElipsePeer.prototype.getPosition = function()
 {
-//    var x = this._native.getAttribute('cx');
-//    var y = this._native.getAttribute('cy');
-//    return {x:parseInt(x),y:parseInt(y)};
     return this._position;
 };
 

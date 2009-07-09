@@ -157,9 +157,23 @@ web2d.peer.vml.ElementPeer.prototype.appendChild = function(elementPeer)
     // Add native element ..
     this._native.appendChild(elementPeer._native);
 
+    elementPeer._appededToParent();
+
     // Broadcast events ...
     web2d.peer.utils.EventUtils.broadcastChangeEvent(this, "onChangeCoordSize");
 };
+
+
+// IE 8 hack ...
+web2d.peer.vml.ElementPeer.prototype._appededToParent = function()
+{
+    var fillElem = this.getVMLFill();
+    this._native.appendChild(fillElem);
+
+    var strokeElem = this.getVMLStroke();
+    this._native.appendChild(strokeElem);
+}
+
 
 web2d.peer.vml.ElementPeer.prototype.getSize = function()
 {
@@ -194,7 +208,6 @@ web2d.peer.vml.ElementPeer.prototype.getVMLFill = function()
     if (!this._vmlFill)
     {
         this._vmlFill = window.document.createElement('v:fill');
-        this._native.appendChild(this._vmlFill);
     }
     return this._vmlFill;
 };
@@ -204,12 +217,12 @@ web2d.peer.vml.ElementPeer.prototype.setFill = function(color, opacity)
     var vmlFill = this.getVMLFill();
     if (core.Utils.isDefined(color))
     {
-        vmlFill.setAttribute('color', color);
+        vmlFill.color = color;
     }
 
     if (core.Utils.isDefined(opacity))
     {
-        vmlFill.setAttribute('opacity', opacity);
+        vmlFill.opacitopacity;
     }
 
 };
@@ -230,7 +243,6 @@ web2d.peer.vml.ElementPeer.prototype.getVMLStroke = function()
     if (!this._vmlStroke)
     {
         this._vmlStroke = window.document.createElement('v:stroke');
-        this._native.appendChild(this._vmlStroke);
     }
     return this._vmlStroke;
 };

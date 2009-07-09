@@ -1,21 +1,21 @@
 /*
-* Licensed to the Apache Software Foundation (ASF) under one or more
-* contributor license agreements.  See the NOTICE file distributed with
-* this work for additional information regarding copyright ownership.
-* The ASF licenses this file to You under the Apache License, Version 2.0
-* (the "License"); you may not use this file except in compliance with
-* the License.  You may obtain a copy of the License at
-*
-*       http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*
-* $Id: file 64488 2006-03-10 17:32:09Z paulo $
-*/
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * $Id: file 64488 2006-03-10 17:32:09Z paulo $
+ */
 
 core.Utils =
 {
@@ -35,14 +35,15 @@ core.Utils =
  * A function used to extend one class with another
  *
  * @param {Object} subClass
- * 		The inheriting class, or subclass
+ *         The inheriting class, or subclass
  * @param {Object} baseClass
- * 		The class from which to inherit
+ *         The class from which to inherit
  */
 objects = {};
 objects.extend = function(subClass, baseClass) {
     function inheritance() {
     }
+
     inheritance.prototype = baseClass.prototype;
 
     subClass.prototype = new inheritance();
@@ -212,28 +213,7 @@ core.Utils.createDocumentFromText = function(/*string*/str, /*string?*/mimetype)
             domDoc.loadXML(str);
             return domDoc;
             //	DOMDocument
-        } else {
-            //dojo.debug("toXml didn't work?");
         }
-    } else {
-        //		var _document = dojo.doc();
-        //		if(_document.createElement){
-        //			// FIXME: this may change all tags to uppercase!
-        //			var tmp = _document.createElement("xml");
-        //			tmp.innerHTML = str;
-        //			if(_document.implementation && _document.implementation.createDocument){
-        //				var xmlDoc = _document.implementation.createDocument("foo", "", null);
-        //				for(var i = 0; i < tmp.childNodes.length; i++) {
-        //					xmlDoc.importNode(tmp.childNodes.item(i), true);
-        //				}
-        //				return xmlDoc;	//	DOMDocument
-        //			}
-        //			// FIXME: probably not a good idea to have to return an HTML fragment
-        //			// FIXME: the tmp.doc.firstChild is as tested from IE, so it may not
-        //			// work that way across the board
-        //			return ((tmp.document)&&
-        //				(tmp.document.firstChild ?  tmp.document.firstChild : tmp));	//	DOMDocument
-        //		}
     }
     return null;
 };

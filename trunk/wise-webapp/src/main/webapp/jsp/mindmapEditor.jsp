@@ -12,10 +12,9 @@
 </c:url>
 <html>
 <head>
-    <title>
-        <spring:message code="SITE.TITLE"/>
-        - ${mindmap.title} </title>
-    <meta http-equiv="Content-type" value="text/html; charset=utf-8">
+    <!-- Internet Explorer 8 Hack -->
+    <meta http-equiv="Content-type" value="text/html;charset=UTF-8">
+    <title><spring:message code="SITE.TITLE"/> - ${mindmap.title} </title>
     <link rel="stylesheet" type="text/css" href="../css/editor.css">
     <link rel="stylesheet" type="text/css" href="../css/bubble.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/thirdparty.css">
