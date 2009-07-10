@@ -24,10 +24,39 @@ web2d.peer.ToolkitVML =
         var domDocument = window.document;
         //ownerDocument;
         // Add VML includes and namespace
-        domDocument.namespaces.add("v", "urn:schemas-microsoft-com:vml");
-
         var style = domDocument.createStyleSheet();
-        style.addRule("v\\:*", "behavior:url(#default#VML);  display:inline-block");
+        try
+        {
+            domDocument.namespaces.add("v", "urn:schemas-microsoft-com:vml");
+        } catch(j)
+        {
+            try
+            {
+                domDocument.namespaces.add("v", "urn:schemas-microsoft-com:vml", "#default#VML");
+            } catch(k)
+            {
+
+            }
+        }
+
+        try
+        {
+            style.addRule("v\\:*", "behavior:url(#default#VML);  display:inline-block");
+        } catch(e)
+        {
+            style.addRule('v\\:polyline', 'behavior: url(#default#VML);display:inline-block');
+            style.addRule('v\\:fill', 'behavior: url(#default#VML);display:inline-block');
+            style.addRule('v\\:stroke', 'behavior: url(#default#VML);display:inline-block');
+            style.addRule('v\\:oval', 'behavior: url(#default#VML);display:inline-block');
+            style.addRule('v\\:group', 'behavior: url(#default#VML);display:inline-block');
+            style.addRule('v\\:image', 'behavior: url(#default#VML);display:inline-block');
+            style.addRule('v\\:line', 'behavior: url(#default#VML);display:inline-block');
+            style.addRule('v\\:rect', 'behavior: url(#default#VML);display:inline-block');
+            style.addRule('v\\:roundrect', 'behavior: url(#default#VML);display:inline-block');
+            style.addRule('v\\:shape', 'behavior: url(#default#VML);display:inline-block');
+            style.addRule('v\\:textbox', 'behavior: url(#default#VML);display:inline-block');
+        }
+
     },
     createWorkspace: function(element)
     {
