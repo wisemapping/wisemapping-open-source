@@ -87,5 +87,6 @@ window.onerror = function(sMsg, sUrl, sLine)
     var msg =  sMsg + ' (' + sUrl + ', line ' + sLine + ')';
     wLogger.fatal(msg);
 
-    return true;
+   $(window).fireEvent("error",null,0);  
+    return false;
 };

@@ -72,10 +72,11 @@ core.WaitDialog = new Class({
         }
     },
     displayLightbox: function(display) {
-        $('overlay').style.display = display;
-        $('lightbox').style.display = display;
         if (display != 'none')
             this.processInfo();
+        $('overlay').style.display = display;
+        $('lightbox').style.display = display;
+
     },
 
     // Display dialog content ...

@@ -28,7 +28,6 @@ function afterCoreLoading()
     } else
     {
         $import("../js/mindplot.svg.js");
-
     }
 
 //    if (core.UserAgent.isVMLSupported())
