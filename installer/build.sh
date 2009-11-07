@@ -38,7 +38,7 @@ unzip $BASE_DIR/../wise-webapp/target/wisemapping.war -d $WISE_WEBAPP_DIR >/dev/
 rm $WISE_WEBAPP_DIR/images/wisemapping.swf
 
 mkdir $WISE_WEBAPP_DIR/WEB-INF/database
-cp -r $BASE_DIR/../wise-webapp/target/db $WISE_WEBAPP_DIR/WEB-INF/database
+cp -r $BASE_DIR/../wise-webapp/target/db/* $WISE_WEBAPP_DIR/WEB-INF/database/
 cp $BASE_DIR/wisemapping.xml $JETTY_DIR/contexts/
 
 # Some replacements ...
