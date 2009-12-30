@@ -1031,11 +1031,9 @@ window.onDomReady = function(fn) {
 };
 window.extend({getWidth:function() {
     if (this.webkit419)return this.innerWidth;
-    if (this.opera)return document.body.clientWidth;
     return document.documentElement.clientWidth;
 },getHeight:function() {
     if (this.webkit419)return this.innerHeight;
-    if (this.opera)return document.body.clientHeight;
     return document.documentElement.clientHeight;
 },getScrollWidth:function() {
     if (this.ie)return Math.max(document.documentElement.offsetWidth, document.documentElement.scrollWidth);

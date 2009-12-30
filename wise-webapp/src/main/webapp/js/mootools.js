@@ -3709,7 +3709,6 @@ window.extend({
 
     getWidth: function() {
         if (this.webkit419) return this.innerWidth;
-        if (this.opera) return document.body.clientWidth;
         return document.documentElement.clientWidth;
     },
 
@@ -3720,7 +3719,6 @@ window.extend({
 
     getHeight: function() {
         if (this.webkit419) return this.innerHeight;
-        if (this.opera) return document.body.clientHeight;
         return document.documentElement.clientHeight;
     },
 
