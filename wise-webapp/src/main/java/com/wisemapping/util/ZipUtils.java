@@ -22,6 +22,7 @@ package com.wisemapping.util;
 import java.io.IOException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.Charset;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 import java.util.zip.ZipEntry;
@@ -43,7 +44,10 @@ public class ZipUtils {
             StringBuffer sb_result = new StringBuffer();
 
             while ((len = zipIn.read(buffer)) > 0) {
-                sb_result.append(new String(buffer, 0, len));
+
+
+
+                sb_result.append(new String(buffer, 0, len, Charset.forName("UTF-8")));
             }
 
             zipIn.closeEntry();
@@ -57,7 +61,9 @@ public class ZipUtils {
     public static  byte[] stringToZip(String content) throws IOException {
         ZipOutputStream zip = null;
         ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
-        ByteArrayInputStream in = new ByteArrayInputStream(content.getBytes());
+
+        
+        ByteArrayInputStream in = new ByteArrayInputStream(content.getBytes("UTF-8"));
         try {
             zip = new ZipOutputStream(byteArray);
 
