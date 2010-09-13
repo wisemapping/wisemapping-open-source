@@ -1,1 +1,0 @@
-Welcome to the wise-source wiki!
