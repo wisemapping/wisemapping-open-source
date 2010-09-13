@@ -3,3 +3,25 @@ h1. Welcome to the wisemapping wiki!
 h4. Who are we?
 
 We're a couple of friends working on an idea: "Create the best on-line collaborative mind mapping tool ever created". This has been our idea since the first day we started. We've been working on this project on our free time without any kind of economical support. If you want to contact us, send us an email to team@wisemapping.com. Let us know what do you think about WiseMapping. 
+
+h4. Frequent Asked Questions
+
+h5. Which technology do we use?
+
+We do not use Flash. Instead we use SVG for Firefox and Safari, and VML for IE and Opera.
+
+SVG (Scalable Vectorial Graphics) allows straightforward and efficient vector graphics animation and VML (Vector Markup Language) supports the markup of vector graphic information in the same way that HTML supports the markup of textual information.
+
+h5. Which Browsers do we support?
+
+We are continuosly testing the application on the following platforms:
+
+    * Microsoft Windows
+          o IE 6 and above.
+          o Firefox 1.5 and above.
+          o Safari 3: Due to some SVG bugs in WebKit, the access to the mind map editor is now a days restricted.
+    * Linux
+          o Firefox 1.5 and above.
+    * OS X
+          o Firefox 1.5 and above: Due to some SVG bugs in Firefox for OS X, you could experience some strange behaviour. Nevertheless, none of them should block you from using the application.
+          o Safari 3: Due to some SVG bugs in WebKit, the access to the mind map editor is now a days restricted.
