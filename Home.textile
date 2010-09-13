@@ -1,5 +1,5 @@
-Welcome to the wisemapping wiki!
+h1. Welcome to the wisemapping wiki!
 
-Who are we?
+h4. Who are we?
 
 We're a couple of friends working on an idea: "Create the best on-line collaborative mind mapping tool ever created". This has been our idea since the first day we started. We've been working on this project on our free time without any kind of economical support. If you want to contact us, send us an email to team@wisemapping.com. Let us know what do you think about WiseMapping. 
