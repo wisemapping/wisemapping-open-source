@@ -15,7 +15,7 @@ SVG (Scalable Vectorial Graphics) allows straightforward and efficient vector gr
 h5. Which Browsers do we support?
 
 We are continuosly testing the application on the following platforms:
-
+bq.
     * Microsoft Windows
           o IE 6 and above.
           o Firefox 1.5 and above.
@@ -25,3 +25,4 @@ We are continuosly testing the application on the following platforms:
     * OS X
           o Firefox 1.5 and above: Due to some SVG bugs in Firefox for OS X, you could experience some strange behaviour. Nevertheless, none of them should block you from using the application.
           o Safari 3: Due to some SVG bugs in WebKit, the access to the mind map editor is now a days restricted.
+bq.
