@@ -13,3 +13,8 @@ We do not use Flash. Instead we use SVG for Firefox and Safari, and VML for IE a
 SVG (Scalable Vectorial Graphics) allows straightforward and efficient vector graphics animation and VML (Vector Markup Language) supports the markup of vector graphic information in the same way that HTML supports the markup of textual information.
 
 h3. How to Install ?
+
+h3. License
+
+Licensed under the Apache License, Version 2.0 (the “License”);
+You may obtain a copy of the License at: http://www.apache.org/licenses/LICENSE-2.0
