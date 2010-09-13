@@ -11,3 +11,5 @@ h5. Which technology do we use?
 We do not use Flash. Instead we use SVG for Firefox and Safari, and VML for IE and Opera.
 
 SVG (Scalable Vectorial Graphics) allows straightforward and efficient vector graphics animation and VML (Vector Markup Language) supports the markup of vector graphic information in the same way that HTML supports the markup of textual information.
+
+h3. How to Install ?
