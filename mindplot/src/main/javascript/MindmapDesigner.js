@@ -159,17 +159,16 @@ mindplot.MindmapDesigner.prototype._registerEvents = function()
 
     if (!this._viewMode)
     {
-
         // Initialize workspace event listeners.
         // Create nodes on double click...
-        workspace.addEventListener('click', function(event)
+        screenManager.addEventListener('click', function(event)
         {
             mindmapDesigner.getEditor().lostFocus();
             // @todo: Puaj hack...
             mindmapDesigner._cleanScreen();
         });
 
-        workspace.addEventListener('dblclick', function(event)
+        screenManager.addEventListener('dblclick', function(event)
         {
             mindmapDesigner.getEditor().lostFocus();
             // Get mouse position

@@ -33,10 +33,10 @@ public class UserAgent implements Serializable {
     private final org.apache.commons.logging.Log logger = LogFactory.getLog(UserAgent.class.getName());
 
     public static void main(final String argv[]) {
-      //  UserAgent explorer = UserAgent.create("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)");
-       // UserAgent firefox = UserAgent.create("Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20050302 Firefox/0.9.6");
-        //UserAgent safari = UserAgent.create("iCab/2.9.5 (Macintosh; U; PPC; Mac OS X)");
-        //UserAgent opera = UserAgent.create("Opera/9.21 (Windows NT 5.1; U; en)");
+        UserAgent explorer = UserAgent.create("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)");
+//        UserAgent firefox = UserAgent.create("Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20050302 Firefox/0.9.6");
+        UserAgent safari = UserAgent.create("iCab/2.9.5 (Macintosh; U; PPC; Mac OS X)");
+        UserAgent opera = UserAgent.create("Opera/9.21 (Windows NT 5.1; U; en)");
 
 
 
@@ -83,7 +83,7 @@ public class UserAgent implements Serializable {
     }
 
     public enum Product {
-        EXPLORER, FIREFOX, CAMINO, NETSCAPE, OPERA, SAFARI, KONQUEOR, KMELEON, MOZILLA, LYNX, ROBOT;
+        EXPLORER, FIREFOX, CAMINO, NETSCAPE, OPERA, SAFARI, CHROME, KONQUEOR, KMELEON, MOZILLA, LYNX, ROBOT;
     }
 
     public enum OS {
@@ -131,7 +131,21 @@ public class UserAgent implements Serializable {
             } else if (userAgentHeader.indexOf("iCab") != -1 || userAgentHeader.indexOf("Safari") != -1) {
                 // Safari:
                 //Formats:  Mozilla/5.0 (Windows; U; Windows NT 5.1; en) AppleWebKit/522.13.1 (KHTML, like Gecko) Version/3.0.2 Safari/522.13.1
-                this.product = Product.SAFARI;
+                //Chrome:
+                //Formats: "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_4; en-US) AppleWebKit/534.7 (KHTML, like Gecko) Chrome/7.0.517.44 Safari/534.7"
+                String versionStr = "";
+                if(userAgentHeader.indexOf("Chrome")!=-1)
+                {
+                    this.product = Product.CHROME;
+                    versionStr = userAgentHeader.substring(userAgentHeader.indexOf("Chrome")+7,userAgentHeader.lastIndexOf(" "));
+                }
+                else
+                {
+                    this.product = Product.SAFARI;
+                    versionStr = userAgentHeader.substring(userAgentHeader.indexOf("Version")+8,userAgentHeader.lastIndexOf(" "));
+                }
+
+                parseVersion(versionStr);
 
             } else if (userAgentHeader.indexOf("Konqueror") != -1) {
                 this.product = Product.KONQUEOR;
@@ -316,6 +330,8 @@ public class UserAgent implements Serializable {
 
         result = result || product == UserAgent.Product.EXPLORER && this.isVersionGreatedOrEqualThan(6, 0) && this.getOs() == UserAgent.OS.WINDOWS;
         result = result || product == UserAgent.Product.OPERA && this.isVersionGreatedOrEqualThan(9, 2);
+        result = result || product == UserAgent.Product.CHROME && this.isVersionGreatedOrEqualThan(7, 0);
+        result = result || product == UserAgent.Product.SAFARI && this.isVersionGreatedOrEqualThan(3, 0);
         return result;
     }
 

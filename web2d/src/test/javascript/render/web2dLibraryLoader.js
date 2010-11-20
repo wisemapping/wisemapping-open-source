@@ -31,18 +31,20 @@ web2d.peer =
 web2d.peer.utils = {};
 web2d.Loader =
 {
-    load: function(scriptPath, stylePath, jsFileName)
+    load: function(scriptPath, stylePath, jsFileName, callbackFn)
     {
         var headElement = document.getElementsByTagName('head');
         var htmlDoc = headElement.item(0);
         var baseUrl = this.baseUrl(jsFileName);
+        this.files = scriptPath;
+        this.callbackFn = callbackFn;
 
         if (scriptPath && scriptPath.length > 0)
         {
             for (var i = 0; i < scriptPath.length; i++)
             {
-
-                this.includeScriptNode(baseUrl + scriptPath[i]);
+                var file = scriptPath[i];
+                this.includeScriptNode(baseUrl + file);
             }
         }
     },
@@ -79,6 +81,24 @@ web2d.Loader =
         js.setAttribute('language', 'javascript');
         js.setAttribute('type', 'text/javascript');
         js.setAttribute('src', filename);
+
+        function calltheCBcmn() {
+            web2d.Loader.checkLoaded(filename);
+        }
+
+        if(typeof(js.addEventListener) != 'undefined') {
+            /* The FF, Chrome, Safari, Opera way */
+            js.addEventListener('load',calltheCBcmn,false);
+        }
+        else {
+            /* The MS IE 8+ way (may work with others - I dunno)*/
+            var ret = js.onreadystatechange= function handleIeState() {
+                if(js.readyState == 'loaded' || js.readyState == 'complete'){
+                    calltheCBcmn();
+                }
+            };
+        }
+
         html_doc.appendChild(js);
         return false;
     },
@@ -90,6 +110,23 @@ web2d.Loader =
         js.setAttribute('href', filename);
         html_doc.appendChild(js);
         return false;
+    },
+    checkLoaded:function(name) {
+        var index = -1;
+        for(var i = 0 ; i<this.files.length; i++){
+            var names = this.files[i].split('/');
+            var chkname = name.split('/');
+            if(names[names.length-1]==chkname[chkname.length-1]){
+                index = i;
+                break;
+            }
+        }
+        if(i!=-1){
+            this.files.splice(i,1);
+            if(this.files.length==0){
+                this.callbackFn();
+            }
+        }
     }
 };
 
@@ -98,10 +135,10 @@ web2d.JsLoader =
 {
     scriptPath: [
             "/render/mootools.js",
-            "/../../../../core-js/target/classes/core.js",
+            "../../../../../core-js/target/classes/core.js",
             "/../../../src/main/javascript/EventDispatcher.js",
             "/../../../src/main/javascript/peer/vml/ElementPeer.js",
-            "/../../../src/main/javascript/peer/svg/ElementPeer.js","" +
+            "/../../../src/main/javascript/peer/svg/ElementPeer.js",
             "/../../../src/main/javascript/Element.js",
             "/../../../src/main/javascript/Workspace.js",
             "/../../../src/main/javascript/peer/svg/WorkspacePeer.js",
@@ -141,10 +178,10 @@ web2d.JsLoader =
             "/../../../src/main/javascript/peer/vml/VerdanaFont.js"],
 
     stylePath: [],
-    load: function()
+    load: function(callbackFn)
     {
-        web2d.Loader.load(this.scriptPath, this.stylePath, "web2dLibraryLoader.js");
+        web2d.Loader.load(this.scriptPath, this.stylePath, "web2dLibraryLoader.js", callbackFn);
     }
 };
 
-web2d.JsLoader.load();
+//web2d.JsLoader.load();

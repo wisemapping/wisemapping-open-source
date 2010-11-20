@@ -2,7 +2,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-      <script type="text/javascript">
+
+    <script type="text/javascript">
         web2d = {
             peer: {}
         };
@@ -58,11 +59,61 @@
     <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/TimesFont.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/ArialFont.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/VerdanaFont.js"></script>
-
     <script type="text/javascript" src="utils.js"></script>
+    <script type="text/javascript">
+        function initialize(){
+            web2d.peer.Toolkit.init();
+
+            var rectExampleTest = function ()
+            {
+                var workspace = new web2d.Workspace();
+                workspace.setSize("100px", "100px");
+                workspace.setCoordSize(100, 100);
+                workspace.setCoordOrigin(0, 0);
+
+                var rect = new web2d.Rect();
+                rect.setPosition(20, 20);
+
+                workspace.appendChild(rect);
+                workspace.addItAsChildTo($("rectExample"));
+            }
+            rectExampleTest();
+
+            var roundrectExampleTest = function ()
+            {
+                function builder(container, x, width, height)
+                {
+                    for (var i = 1; i <= 10; i++)
+                    {
+                        var rect = new web2d.Rect(i / 10);
+                        rect.setPosition(x, ((i - 1) * (50 + 5)));
+                        rect.setSize(width, height);
+                        container.appendChild(rect);
+                    }
+                }
+
+                // 50 x 50
+                var workspace = new web2d.Workspace();
+                workspace.setSize("500px", "550px");
+                workspace.setCoordOrigin(0, -4);
+                workspace.setCoordSize(500, 550);
+                workspace.addItAsChildTo($("roundRect"));
+
+                builder(workspace, 10, 50, 50);
+
+                // 100 x 50
+                builder(workspace, 70, 100, 50);
+
+                // 200 x 50
+                builder(workspace, 180, 200, 50);
+
+            }
+            roundrectExampleTest();
+        }
+    </script>
 </head>
 
-<body>
+<body onload="initialize();">
 
 
 <h1>Rect Render Tests </h1>
@@ -77,28 +128,10 @@
             Straight Lines.
         </td>
         <td>
-            <div id="rectExample"/>
+            <div id="rectExample"></div>
         </td>
 
     </tr>
-    <script type="text/javascript">
-        web2d.peer.Toolkit.init();
-
-        var rectExampleTest = function ()
-        {
-            var workspace = new web2d.Workspace();
-            workspace.setSize("100px", "100px");
-            workspace.setCoordSize(100, 100);
-            workspace.setCoordOrigin(0, 0);
-
-            var rect = new web2d.Rect();
-            rect.setPosition(20, 20);
-
-            workspace.appendChild(rect);
-            workspace.addItAsChildTo($("rectExample"));
-        }
-        rectExampleTest();
-    </script>
 
     <!-- ********************************************************** -->
     <tr>
@@ -110,39 +143,6 @@
         </td>
 
     </tr>
-    <script type="text/javascript">
-
-        var roundrectExampleTest = function ()
-        {
-            function builder(container, x, width, height)
-            {
-                for (var i = 1; i <= 10; i++)
-                {
-                    var rect = new web2d.Rect(i / 10);
-                    rect.setPosition(x, ((i - 1) * (50 + 5)));
-                    rect.setSize(width, height);
-                    container.appendChild(rect);
-                }
-            }
-
-            // 50 x 50
-            var workspace = new web2d.Workspace();
-            workspace.setSize("500px", "550px");
-            workspace.setCoordOrigin(0, -4);
-            workspace.setCoordSize(500, 550);
-            workspace.addItAsChildTo($("roundRect"));
-
-            builder(workspace, 10, 50, 50);
-
-            // 100 x 50
-            builder(workspace, 70, 100, 50);
-
-            // 200 x 50
-            builder(workspace, 180, 200, 50);
-
-        }
-        roundrectExampleTest();
-    </script>
 
 
 </table>

@@ -1,29 +1,27 @@
 /*
-* Licensed to the Apache Software Foundation (ASF) under one or more
-* contributor license agreements.  See the NOTICE file distributed with
-* this work for additional information regarding copyright ownership.
-* The ASF licenses this file to You under the Apache License, Version 2.0
-* (the "License"); you may not use this file except in compliance with
-* the License.  You may obtain a copy of the License at
-*
-*       http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*
-* $Id: file 64488 2006-03-10 17:32:09Z paulo $
-*/
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * $Id: file 64488 2006-03-10 17:32:09Z paulo $
+ */
 
 mindplot.DragManager = function(workspace)
 {
     this._workspace = workspace;
     this._listeners = {};
-    this._processMouseMoveEvent = true;
     var dragManager = this;
-    this._precitionUpdater = null;
 };
 
 mindplot.DragManager.prototype.add = function(node)
@@ -44,19 +42,14 @@ mindplot.DragManager.prototype.add = function(node)
             var dragNode = node.createDragNode();
             var mousePos = screen.getWorkspaceMousePosition(event);
             dragNode.setPosition(mousePos.x, mousePos.y);
-            var periodicalFunction = function() {
-                dragManager._processMouseMoveEvent = true;
-            };
-            // Start precision timer updater ...
-            dragManager._precitionUpdater = periodicalFunction.periodical(mindplot.DragManager.DRAG_PRECISION_IN_SEG);
 
             // Register mouse move listener ...
             var mouseMoveListener = dragManager._buildMouseMoveListener(workspace, dragNode, dragManager);
-            workspace.addEventListener('mousemove', mouseMoveListener);
+            screen.addEventListener('mousemove', mouseMoveListener);
 
             // Register mouse up listeners ...
             var mouseUpListener = dragManager._buildMouseUpListener(workspace, node, dragNode, dragManager);
-            workspace.addEventListener('mouseup', mouseUpListener);
+            screen.addEventListener('mouseup', mouseUpListener);
 
             // Execute Listeners ..
             var startDragListener = dragManager._listeners['startdragging'];
@@ -92,28 +85,26 @@ mindplot.DragManager.prototype._buildMouseMoveListener = function(workspace, dra
 {
     var screen = workspace.getScreenManager();
     var result = function(event) {
-        if (dragManager._processMouseMoveEvent)
+
+        if (!dragNode._isInTheWorkspace)
         {
-            // Disable mouse move rendering ...
-            dragManager._processMouseMoveEvent = false;
-            if (!dragNode._isInTheWorkspace)
-            {
-                // Add shadow node to the workspace.
-                workspace.appendChild(dragNode);
-                dragNode._isInTheWorkspace = true;
-            }
-
-            var pos = screen.getWorkspaceMousePosition(event);
-            dragNode.setPosition(pos.x, pos.y);
-
-            // Call mouse move listeners ...
-            var dragListener = dragManager._listeners['dragging'];
-            if (dragListener)
-            {
-                dragListener(event, dragNode);
-            }
+            // Add shadow node to the workspace.
+            workspace.appendChild(dragNode);
+            dragNode._isInTheWorkspace = true;
         }
-    };
+
+        var pos = screen.getWorkspaceMousePosition(event);
+        dragNode.setPosition(pos.x, pos.y);
+
+        // Call mouse move listeners ...
+        var dragListener = dragManager._listeners['dragging'];
+        if (dragListener)
+        {
+            dragListener(event, dragNode);
+        }
+
+        event.preventDefault();
+    }.bindWithEvent(this);
     dragManager._mouseMoveListener = result;
     return result;
 };
@@ -133,8 +124,8 @@ mindplot.DragManager.prototype._buildMouseUpListener = function(workspace, node,
         }
 
         // Remove all the events.
-        workspace.removeEventListener('mousemove', dragManager._mouseMoveListener);
-        workspace.removeEventListener('mouseup', dragManager._mouseUpListener);
+        screen.removeEventListener('mousemove', dragManager._mouseMoveListener);
+        screen.removeEventListener('mouseup', dragManager._mouseUpListener);
 
         // Help GC
         dragManager._mouseMoveListener = null;
@@ -148,10 +139,6 @@ mindplot.DragManager.prototype._buildMouseUpListener = function(workspace, node,
         {
             dragNode._isInTheWorkspace = false;
         }
-
-        // Stop presition updater listener ...
-        $clear(dragManager._precitionUpdater);
-        dragManager._precitionUpdater = null;
 
         // Change the cursor to the default.
         window.document.body.style.cursor = 'default';

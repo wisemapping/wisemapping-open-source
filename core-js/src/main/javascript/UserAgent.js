@@ -24,6 +24,9 @@ core.UserAgent = {
         if (!core.Utils.isDefined())
         {
             this._isVMLSupported = navigator.appVersion.match(/MSIE (\d\.\d)/);
+            if(this._isVMLSupported == null || parseInt(this._isVMLSupported[1])>=9){
+                this._isVMLSupported = false;
+            }
         }
         return this._isVMLSupported;
     },
@@ -74,6 +77,11 @@ core.UserAgent = {
             string: navigator.vendor,
             subString: "Apple",
             identity: "Safari"
+        },
+        {
+            string: navigator.vendor,
+            subString: "Google Inc.",
+            identity: "Chrome"
         },
         {
             prop: window.opera,

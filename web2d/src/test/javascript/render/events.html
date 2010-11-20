@@ -2,7 +2,62 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <script type="text/javascript" src="web2dLibraryLoader.js"></script>
+    <script type="text/javascript">
+        web2d = {
+            peer: {}
+        };
+
+        web2d.peer =
+        {
+            svg: {},
+            vml: {}
+        };
+
+        web2d.peer.utils = {};
+    </script>
+
+    <script type="text/javascript" src="mootools.js"></script>
+    <script type="text/javascript" src="../../../../../core-js/target/classes/core.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/EventDispatcher.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/ElementPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/ElementPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Element.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Workspace.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/WorkspacePeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/WorkspacePeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Toolkit.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Elipse.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/ElipsePeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/ElipsePeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Line.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/LinePeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/LinePeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/PolyLine.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/PolyLinePeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/PolyLinePeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Group.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/GroupPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/GroupPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Rect.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/RectPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/RectPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Text.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/TextPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/TextPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/TextBoxPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/utils/TransformUtils.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/utils/EventUtils.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Font.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/Font.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/Font.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/TahomaFont.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/TimesFont.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/ArialFont.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/VerdanaFont.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/TahomaFont.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/TimesFont.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/ArialFont.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/VerdanaFont.js"></script>
     <script type="text/javascript" src="utils.js"></script>
     <style type="text/css">
         .eventForm {
@@ -41,10 +96,95 @@
             return this._enable;
         };
 
+         function MultipleEventHandler(type, element)
+            {
+                this._listeners = [];
+                this._type = type;
+                this._element = element;
+            }
+
+            MultipleEventHandler.prototype.registerOneListener = function()
+            {
+                var count = this._listeners.length;
+                var listener = function(event) {
+                    alert("Listener #:" + count);
+                };
+                this._listeners.push(listener);
+                this._element.addEventListener(this._type, listener);
+
+            }
+
+            MultipleEventHandler.prototype.listenerCount = function()
+            {
+                return  this._listeners.length;
+            }
+
+            MultipleEventHandler.prototype.unRegisterOneListener = function()
+            {
+                if (this._listeners.length > 0)
+                {
+                    var listener = this._listeners.pop();
+                    this._element.removeEventListener(this._type, listener);
+                }
+            }
+
+        function initialize(){
+            web2d.peer.Toolkit.init();
+
+            // Workspace with CoordOrigin(100,100);
+            var workspace = new web2d.Workspace();
+            workspace.setSize("150px", "150px");
+            workspace.setCoordSize(150, 150);
+
+            var bigElipse = new web2d.Elipse();
+            bigElipse.setSize(100, 100);
+            bigElipse.setPosition(75, 75);
+            workspace.appendChild(bigElipse);
+
+            var smallElipse = new web2d.Elipse();
+            smallElipse.setSize(50, 50);
+            smallElipse.setPosition(75, 75);
+            smallElipse.setFill('red')
+            workspace.appendChild(smallElipse);
+
+            wClickEventLogger = new EventLogger('click', workspace);
+            wMouseoverEventLogger = new EventLogger('mouseover', workspace);
+            wMouseoutEventLogger = new EventLogger('mouseout', workspace);
+            wMousemoveEventLogger = new EventLogger('mousemove', workspace);
+            wDblCickEventLogger = new EventLogger('dblclick', workspace);
+
+            esClickEventLogger = new EventLogger('click', smallElipse);
+            esMouseoverEventLogger = new EventLogger('mouseover', smallElipse);
+            esMouseoutEventLogger = new EventLogger('mouseout', smallElipse);
+            esMousemoveEventLogger = new EventLogger('mousemove', smallElipse);
+            esDblCickEventLogger = new EventLogger('dblclick', smallElipse);
+
+            ebClickEventLogger = new EventLogger('click', bigElipse);
+            ebMouseoverEventLogger = new EventLogger('mouseover', bigElipse);
+            ebMouseoutEventLogger = new EventLogger('mouseout', bigElipse);
+            ebousemoveEventLogger = new EventLogger('mousemove', bigElipse);
+            ebblCickEventLogger = new EventLogger('dblclick', bigElipse);
+
+            workspace.addItAsChildTo($("workspaceContainer"));
+
+            var mEventWorkspace = new web2d.Workspace();
+            mEventWorkspace.setSize("150px", "150px");
+            mEventWorkspace.setCoordSize(150, 150);
+
+            var elipse = new web2d.Elipse();
+            elipse.setSize(100, 100);
+            elipse.setPosition(75, 75);
+            elipse.setFill('blue')
+            mEventWorkspace.appendChild(elipse);
+
+            mEventWorkspace.addItAsChildTo($("workspaceMultipleEvents"));
+            multipleHandler = new MultipleEventHandler('click', elipse);
+        }
+
     </script>
 </head>
 
-<body>
+<body onload="initialize();">
 
 <script type="text/javascript">
     //    Logger.setEnabled(true);
@@ -150,46 +290,6 @@
 </td>
 
 
-<script type="text/javascript">
-    web2d.peer.Toolkit.init();
-
-    // Workspace with CoordOrigin(100,100);
-    var workspace = new web2d.Workspace();
-    workspace.setSize("150px", "150px");
-    workspace.setCoordSize(150, 150);
-
-    var bigElipse = new web2d.Elipse();
-    bigElipse.setSize(100, 100);
-    bigElipse.setPosition(75, 75);
-    workspace.appendChild(bigElipse);
-
-    var smallElipse = new web2d.Elipse();
-    smallElipse.setSize(50, 50);
-    smallElipse.setPosition(75, 75);
-    smallElipse.setFill('red')
-    workspace.appendChild(smallElipse);
-
-    wClickEventLogger = new EventLogger('click', workspace);
-    wMouseoverEventLogger = new EventLogger('mouseover', workspace);
-    wMouseoutEventLogger = new EventLogger('mouseout', workspace);
-    wMousemoveEventLogger = new EventLogger('mousemove', workspace);
-    wDblCickEventLogger = new EventLogger('dblclick', workspace);
-
-    esClickEventLogger = new EventLogger('click', smallElipse);
-    esMouseoverEventLogger = new EventLogger('mouseover', smallElipse);
-    esMouseoutEventLogger = new EventLogger('mouseout', smallElipse);
-    esMousemoveEventLogger = new EventLogger('mousemove', smallElipse);
-    esDblCickEventLogger = new EventLogger('dblclick', smallElipse);
-
-    ebClickEventLogger = new EventLogger('click', bigElipse);
-    ebMouseoverEventLogger = new EventLogger('mouseover', bigElipse);
-    ebMouseoutEventLogger = new EventLogger('mouseout', bigElipse);
-    ebousemoveEventLogger = new EventLogger('mousemove', bigElipse);
-    ebblCickEventLogger = new EventLogger('dblclick', bigElipse);
-
-    workspace.addItAsChildTo($("workspaceContainer"));
-
-</script>
 </tr>
 <tr>
     <td>Multiple listeners can be attached to an element to handle an event type.
@@ -215,53 +315,6 @@
             </form>
 
         </div>
-        <script type="text/javascript">
-            function MultipleEventHandler(type, element)
-            {
-                this._listeners = [];
-                this._type = type;
-                this._element = element;
-            }
-
-            MultipleEventHandler.prototype.registerOneListener = function()
-            {
-                var count = this._listeners.length;
-                var listener = function(event) {
-                    alert("Listener #:" + count);
-                };
-                this._listeners.push(listener);
-                this._element.addEventListener(this._type, listener);
-
-            }
-
-            MultipleEventHandler.prototype.listenerCount = function()
-            {
-                return  this._listeners.length;
-            }
-
-            MultipleEventHandler.prototype.unRegisterOneListener = function()
-            {
-                if (this._listeners.length > 0)
-                {
-                    var listener = this._listeners.pop();
-                    this._element.removeEventListener(this._type, listener);
-                }
-            }
-
-            var mEventWorkspace = new web2d.Workspace();
-            mEventWorkspace.setSize("150px", "150px");
-            mEventWorkspace.setCoordSize(150, 150);
-
-            var elipse = new web2d.Elipse();
-            elipse.setSize(100, 100);
-            elipse.setPosition(75, 75);
-            elipse.setFill('blue')
-            mEventWorkspace.appendChild(elipse);
-
-            mEventWorkspace.addItAsChildTo($("workspaceMultipleEvents"));
-            multipleHandler = new MultipleEventHandler('click', elipse);
-
-        </script>
     </td>
 </tr>
 </tbody>

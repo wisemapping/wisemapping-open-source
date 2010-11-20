@@ -167,14 +167,16 @@ web2d.peer.svg.TextPeer.prototype.setSize = function (size)
 
 web2d.peer.svg.TextPeer.prototype.getWidth = function ()
 {
-    var width = parseInt(this._native.getComputedTextLength());
+    var computedWidth = this._native.getBBox().width;
+    var width = parseInt(computedWidth);
     width = width + this._font.getWidthMargin();
     return width;
 };
 
 web2d.peer.svg.TextPeer.prototype.getHeight = function ()
 {
-    return this._font.getGraphSize();
+    var computedHeight = this._native.getBBox().height;
+    return parseInt(computedHeight);
 };
 
 web2d.peer.svg.TextPeer.prototype.getHtmlFontSize = function ()

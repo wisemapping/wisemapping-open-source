@@ -29,6 +29,14 @@ mindplot.ScreenManager.prototype.setScale = function(scale)
     this._workspaceScale = scale;
 };
 
+mindplot.ScreenManager.prototype.addEventListener=function(event, listener){
+    $(this._divContainer).addListener(event, listener);
+};
+
+mindplot.ScreenManager.prototype.removeEventListener=function(event, listener){
+    $(this._divContainer).removeListener(event, listener);
+};
+
 mindplot.ScreenManager.prototype.getWorkspaceElementPosition = function(e)
 {
     // Retrive current element position.

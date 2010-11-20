@@ -2,10 +2,201 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <script type="text/javascript" src="web2dLibraryLoader.js"></script>
+    <script type="text/javascript">
+        web2d = {
+            peer: {}
+        };
+
+        web2d.peer =
+        {
+            svg: {},
+            vml: {}
+        };
+
+        web2d.peer.utils = {};
+    </script>
+
+    <script type="text/javascript" src="mootools.js"></script>
+    <script type="text/javascript" src="../../../../../core-js/target/classes/core.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/EventDispatcher.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/ElementPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/ElementPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Element.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Workspace.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/WorkspacePeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/WorkspacePeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Toolkit.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Elipse.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/ElipsePeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/ElipsePeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Line.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/LinePeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/LinePeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/PolyLine.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/PolyLinePeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/PolyLinePeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Group.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/GroupPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/GroupPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Rect.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/RectPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/RectPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Text.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/TextPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/TextPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/TextBoxPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/utils/TransformUtils.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/utils/EventUtils.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Font.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/Font.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/Font.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/TahomaFont.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/TimesFont.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/ArialFont.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/VerdanaFont.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/TahomaFont.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/TimesFont.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/ArialFont.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/VerdanaFont.js"></script>
+    <script type="text/javascript" src="utils.js"></script>
+    <script type="text/javascript">
+        function initialize(){
+            web2d.peer.Toolkit.init();
+
+            var overflowWorkspace = new web2d.Workspace({fillColor:'green'});
+            overflowWorkspace.setSize("100px", "100px");
+
+            var line = new web2d.PolyLine();
+            line.setTo(165, 165);
+            line.setFrom(95, 95);
+            line.setStyle("Straight");
+            line.setStroke('10');
+            overflowWorkspace.appendChild(line);
+
+
+            //    line.setTo(165, 165);
+            //    line.setFrom(95, 95);
+            //    line.setTo(165, 165);
+            //    line.setFrom(95, 95);
+            //    line.setTo(165, 165);
+            //    line.setFrom(95, 95);
+            //    line.setTo(165, 165);
+            //    line.setTo(165, 165);
+            //    line.setFrom(95, 95);
+            //    line.setTo(165, 165);
+            //    line.setFrom(95, 95);
+            //    line.setTo(165, 165);
+            //    line.setFrom(95, 95);
+            //    line.setTo(165, 165);
+            //    line.setTo(165, 165);
+            //    line.setFrom(95, 95);
+            //    line.setTo(165, 165);
+            //    line.setFrom(95, 95);
+            //    line.setTo(165, 165);
+            //    line.setFrom(95, 95);
+            //    line.setTo(165, 165);
+            //    line.setTo(165, 165);
+            //    line.setFrom(95, 95);
+            //    line.setTo(165, 165);
+            //    line.setFrom(95, 95);
+            //    line.setTo(165, 165);
+            //    line.setFrom(95, 95);
+            //    line.setTo(165, 165);
+            //    line.setTo(165, 165);
+            //    line.setFrom(95, 95);
+            //    line.setTo(165, 165);
+            //    line.setFrom(95, 95);
+            //    line.setTo(165, -1653.0000000000000000000001);
+            //    line.setFrom(95, 952);
+            //    line.setTo(165, 1651);
+            //
+            //
+            //    var line = new web2d.PolyLine();
+            //    line.setFrom(95, 90);
+            //    line.setTo(160, 20);
+            //    overflowWorkspace.appendChild(line);
+            //
+            //    var line = new web2d.PolyLine();
+            //    line.setStyle("Straight");
+            //    line.setFrom(90, -90);
+            //    line.setTo(20, 20);
+            //    overflowWorkspace.appendChild(line);
+            //
+            //    var line = new web2d.PolyLine();
+            //    line.setFrom(95, 95);
+            //    line.setTo(165, 165);
+            //    line.setStroke(1, 'solid', 'red');
+            //    overflowWorkspace.appendChild(line);
+            //
+            //    // Reference ...
+            //    var refLine = new web2d.Line();
+            //    refLine.setFrom(95, 0);
+            //    refLine.setTo(95, 200);
+            //    refLine.setStroke(1, 'solid', 'red');
+            //    overflowWorkspace.appendChild(refLine);
+            //
+            //    var refLine = new web2d.Line();
+            //    refLine.setFrom(165, 0);
+            //    refLine.setTo(165, 200);
+            //    refLine.setStroke(1, 'solid', 'red');
+            //    overflowWorkspace.appendChild(refLine);
+            //
+
+            overflowWorkspace.addItAsChildTo($("overflowExample"));
+
+
+            var overflowWorkspace = new web2d.Workspace();
+            overflowWorkspace.setSize("100px", "100px");
+            var line1 = new web2d.PolyLine();
+            line1.setFrom(95, 95);
+            line1.setTo(165, 165);
+            line1.setStyle("Curved");
+            overflowWorkspace.appendChild(line1);
+
+            var line1 = new web2d.PolyLine();
+            line1.setFrom(95, 95);
+            line1.setTo(165, 135);
+            line1.setStyle("Curved");
+            overflowWorkspace.appendChild(line1);
+
+            var line1 = new web2d.PolyLine();
+            line1.setFrom(95, 90);
+            line1.setTo(160, 20);
+            line1.setStyle("Straight");
+            overflowWorkspace.appendChild(line1);
+
+            var line1 = new web2d.PolyLine();
+            line1.setFrom(95, 90);
+            line1.setTo(160, 50);
+            line1.setStyle("Straight");
+            overflowWorkspace.appendChild(line1);
+
+            var line1 = new web2d.PolyLine();
+            line1.setFrom(90, 90);
+            line1.setTo(20, 20);
+            overflowWorkspace.appendChild(line1);
+
+            var line1 = new web2d.PolyLine();
+            line1.setFrom(90, 90);
+            line1.setTo(20, 50);
+            overflowWorkspace.appendChild(line1);
+
+            var line1 = new web2d.PolyLine();
+            line1.setFrom(90, 95);
+            line1.setTo(20, 165);
+            overflowWorkspace.appendChild(line1);
+
+            var line1 = new web2d.PolyLine();
+            line1.setFrom(90, 95);
+            line1.setTo(20, 135);
+            overflowWorkspace.appendChild(line1);
+
+            overflowWorkspace.addItAsChildTo($("multipleLineExample"));
+        }
+    </script>
 </head>
 
-<body>
+<body onload="initialize();">
 
 <h1>PolyLines Render Tests </h1>
 
@@ -23,91 +214,6 @@
     </td>
 
 </tr>
-<script type="text/javascript">
-    web2d.peer.Toolkit.init();
-
-    var overflowWorkspace = new web2d.Workspace({fillColor:'green'});
-    overflowWorkspace.setSize("100px", "100px");
-
-    var line = new web2d.PolyLine();
-    line.setTo(165, 165);
-    line.setFrom(95, 95);
-    line.setStyle("Straight");
-    line.setStroke('10');
-    overflowWorkspace.appendChild(line);
-
-
-    //    line.setTo(165, 165);
-    //    line.setFrom(95, 95);
-    //    line.setTo(165, 165);
-    //    line.setFrom(95, 95);
-    //    line.setTo(165, 165);
-    //    line.setFrom(95, 95);
-    //    line.setTo(165, 165);
-    //    line.setTo(165, 165);
-    //    line.setFrom(95, 95);
-    //    line.setTo(165, 165);
-    //    line.setFrom(95, 95);
-    //    line.setTo(165, 165);
-    //    line.setFrom(95, 95);
-    //    line.setTo(165, 165);
-    //    line.setTo(165, 165);
-    //    line.setFrom(95, 95);
-    //    line.setTo(165, 165);
-    //    line.setFrom(95, 95);
-    //    line.setTo(165, 165);
-    //    line.setFrom(95, 95);
-    //    line.setTo(165, 165);
-    //    line.setTo(165, 165);
-    //    line.setFrom(95, 95);
-    //    line.setTo(165, 165);
-    //    line.setFrom(95, 95);
-    //    line.setTo(165, 165);
-    //    line.setFrom(95, 95);
-    //    line.setTo(165, 165);
-    //    line.setTo(165, 165);
-    //    line.setFrom(95, 95);
-    //    line.setTo(165, 165);
-    //    line.setFrom(95, 95);
-    //    line.setTo(165, -1653.0000000000000000000001);
-    //    line.setFrom(95, 952);
-    //    line.setTo(165, 1651);
-    //
-    //
-    //    var line = new web2d.PolyLine();
-    //    line.setFrom(95, 90);
-    //    line.setTo(160, 20);
-    //    overflowWorkspace.appendChild(line);
-    //
-    //    var line = new web2d.PolyLine();
-    //    line.setStyle("Straight");
-    //    line.setFrom(90, -90);
-    //    line.setTo(20, 20);
-    //    overflowWorkspace.appendChild(line);
-    //
-    //    var line = new web2d.PolyLine();
-    //    line.setFrom(95, 95);
-    //    line.setTo(165, 165);
-    //    line.setStroke(1, 'solid', 'red');
-    //    overflowWorkspace.appendChild(line);
-    //
-    //    // Reference ...
-    //    var refLine = new web2d.Line();
-    //    refLine.setFrom(95, 0);
-    //    refLine.setTo(95, 200);
-    //    refLine.setStroke(1, 'solid', 'red');
-    //    overflowWorkspace.appendChild(refLine);
-    //
-    //    var refLine = new web2d.Line();
-    //    refLine.setFrom(165, 0);
-    //    refLine.setTo(165, 200);
-    //    refLine.setStroke(1, 'solid', 'red');
-    //    overflowWorkspace.appendChild(refLine);
-    //
-
-    overflowWorkspace.addItAsChildTo($("overflowExample"));
-
-</script>
 <tr>
     <td>
         This is how multiple childs will look in each style line
@@ -117,58 +223,6 @@
     </td>
 
 </tr>
-<script type="text/javascript">
-
-    var overflowWorkspace = new web2d.Workspace();
-    overflowWorkspace.setSize("100px", "100px");
-    var line1 = new web2d.PolyLine();
-    line1.setFrom(95, 95);
-    line1.setTo(165, 165);
-    line1.setStyle("Curved");
-    overflowWorkspace.appendChild(line1);
-
-    var line1 = new web2d.PolyLine();
-    line1.setFrom(95, 95);
-    line1.setTo(165, 135);
-    line1.setStyle("Curved");
-    overflowWorkspace.appendChild(line1);
-
-    var line1 = new web2d.PolyLine();
-    line1.setFrom(95, 90);
-    line1.setTo(160, 20);
-    line1.setStyle("Straight");
-    overflowWorkspace.appendChild(line1);
-
-    var line1 = new web2d.PolyLine();
-    line1.setFrom(95, 90);
-    line1.setTo(160, 50);
-    line1.setStyle("Straight");
-    overflowWorkspace.appendChild(line1);
-
-    var line1 = new web2d.PolyLine();
-    line1.setFrom(90, 90);
-    line1.setTo(20, 20);
-    overflowWorkspace.appendChild(line1);
-
-    var line1 = new web2d.PolyLine();
-    line1.setFrom(90, 90);
-    line1.setTo(20, 50);
-    overflowWorkspace.appendChild(line1);
-
-    var line1 = new web2d.PolyLine();
-    line1.setFrom(90, 95);
-    line1.setTo(20, 165);
-    overflowWorkspace.appendChild(line1);
-
-    var line1 = new web2d.PolyLine();
-    line1.setFrom(90, 95);
-    line1.setTo(20, 135);
-    overflowWorkspace.appendChild(line1);
-
-    overflowWorkspace.addItAsChildTo($("multipleLineExample"));
-
-</script>
-
 </table>
 </body>
 </html>

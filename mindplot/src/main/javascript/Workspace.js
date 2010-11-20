@@ -182,18 +182,9 @@ mindplot.Workspace.prototype._registerDragEvents = function()
 
                 var mouseDownPosition = screenManager.getWorkspaceMousePosition(event);
                 var originalCoordOrigin = workspace.getCoordOrigin();
-                var periodicalFunction = function() {
-                    mWorkspace._processMouseMoveEvent = true;
-                };
-                // Start precision timer updater ...
-                mWorkspace._precitionUpdater = periodicalFunction.periodical(mindplot.Workspace.DRAG_PRECISION_IN_SEG);
 
                 workspace.mouseMoveListener = function(event)
                 {
-                    if (mWorkspace._processMouseMoveEvent)
-                    {
-                        // Disable mouse move rendering ...
-                        mWorkspace._processMouseMoveEvent = false;
 
                         var currentMousePosition = screenManager.getWorkspaceMousePosition(event);
 
@@ -213,19 +204,16 @@ mindplot.Workspace.prototype._registerDragEvents = function()
                         {
                             window.document.body.style.cursor = "move";
                         }
-                    }
-                };
-                workspace.addEventListener('mousemove', workspace.mouseMoveListener);
+                    event.preventDefault();
+                }.bindWithEvent(this);
+                screenManager.addEventListener('mousemove', workspace.mouseMoveListener);
 
                 // Register mouse up listeners ...
                 workspace.mouseUpListener = function(event)
                 {
-                    // Stop presition updater listener ...
-                    $clear(mWorkspace._precitionUpdater);
-                    mWorkspace._precitionUpdater = null;
 
-                    workspace.removeEventListener('mousemove', workspace.mouseMoveListener);
-                    workspace.removeEventListener('mouseup', workspace.mouseUpListener);
+                    screenManager.removeEventListener('mousemove', workspace.mouseMoveListener);
+                    screenManager.removeEventListener('mouseup', workspace.mouseUpListener);
                     workspace.mouseUpListener = null;
                     workspace.mouseMoveListener = null;
                     window.document.body.style.cursor = 'default';
@@ -235,7 +223,7 @@ mindplot.Workspace.prototype._registerDragEvents = function()
                     screenManager.setOffset(coordOrigin.x, coordOrigin.y);
                     mWorkspace.enableWorkspaceEvents(true);
                 };
-                workspace.addEventListener('mouseup', workspace.mouseUpListener);
+                screenManager.addEventListener('mouseup', workspace.mouseUpListener);
             }
         } else
         {
@@ -243,7 +231,6 @@ mindplot.Workspace.prototype._registerDragEvents = function()
         }
     };
 
-    workspace.addEventListener('mousedown', mouseDownListener);
+    screenManager.addEventListener('mousedown', mouseDownListener);
 };
 
-mindplot.Workspace.DRAG_PRECISION_IN_SEG = 50;

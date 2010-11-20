@@ -101,6 +101,9 @@ core.Utils.getMousePosition = function(event)
             throw "Could not obtain mouse position";
         }
     }
+    if(core.Utils.isDefined(event.$extended)){
+        event = event.event;
+    }
     if (typeof( event.pageX ) == 'number') {
         //most browsers
         xcoord = event.pageX;

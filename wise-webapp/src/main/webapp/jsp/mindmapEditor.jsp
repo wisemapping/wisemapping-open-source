@@ -137,17 +137,17 @@
                 <div id="redoEdition" class="button" title="<spring:message code="REDO_EDITION"/>">
                     <div class="toolbarLabel"><p><spring:message code="REDO"/></p></div>
                 </div>
-                <a id="printAnchor" href="javascript:printMap();" title="<spring:message code="PRINT"/>">
-                    <div id="print" class="button" title="<spring:message code="PRINT"/>">
-                        <div class="toolbarLabel"><p><spring:message code="PRINT"/></p></div>
-                    </div>
-                </a>
-                <a id="exportAnchor" href="export.htm?mapId=${mindmap.id}" rel="moodalbox 600px 400px"
+
+                <div id="print" class="button" title="<spring:message code="PRINT"/>" onclick="printMap();">
+                    <div class="toolbarLabel"><p><spring:message code="PRINT"/></p></div>
+                </div>
+
+                <div id="export" class="button" title="<spring:message code="EXPORT"/>">
+                    <div class="toolbarLabel"><p><spring:message code="EXPORT"/></p></div>
+                    <a id="exportAnchor" href="export.htm?mapId=${mindmap.id}" rel="moodalbox 600px 400px"
                    title="<spring:message code="EXPORT_DETAILS"/>">
-                    <div id="export" class="button" title="<spring:message code="EXPORT"/>">
-                        <div class="toolbarLabel"><p><spring:message code="EXPORT"/></p></div>
-                    </div>
                 </a>
+                </div>
             </fieldset>
         </div>
         <div id="zoom" class="buttonContainer" title="Zoom In">

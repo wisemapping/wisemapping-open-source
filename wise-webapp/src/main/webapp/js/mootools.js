@@ -329,7 +329,7 @@ Properties:
 */
 
 window.xpath = !!(document.evaluate);
-if (window.ActiveXObject) window.ie = window[window.XMLHttpRequest ? 'ie7' : 'ie6'] = true;
+if (window.ActiveXObject) window.ie = window[document.createElementNS? 'ie9':window.XMLHttpRequest ? 'ie7' : 'ie6'] = true;
 else if (document.childNodes && !document.all && !navigator.taintEnabled) window.webkit = window[window.xpath ? 'webkit420' : 'webkit419'] = true;
 else if (document.getBoxObjectFor != null) window.gecko = true;
 
@@ -1733,7 +1733,7 @@ var Element = new Class({
 
     initialize: function(el, props) {
         if ($type(el) == 'string') {
-            if (window.ie && props && (props.name || props.type)) {
+            if (!window.ie9 && window.ie && props && (props.name || props.type)) {
                 var name = (props.name) ? ' name="' + props.name + '"' : '';
                 var type = (props.type) ? ' type="' + props.type + '"' : '';
                 delete props.name;
@@ -3100,7 +3100,11 @@ Elements.extend({
 
     filterByClass: function(className, nocash) {
         var elements = this.filter(function(el) {
-            return (el.className && el.className.contains(className, ' '));
+            if(el.className && el.className.contains)
+                return (el.className && el.className.contains(className, ' '));
+            else if(el.className){
+                return el.className[className]!=undefined;
+            }
         });
         return (nocash) ? elements : new Elements(elements);
     },
