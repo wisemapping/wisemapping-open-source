@@ -1,6 +1,6 @@
 h1. FAQ
 
-h2. Which technology is used to render ?
+h2. Which technology is being used to render the mind maps?
 
 We use SVG for Firefox and Safari, and VML for IE and Opera.
 
