@@ -193,18 +193,6 @@ h4 {
     left: 0;
 }
 
-#headerPBetaLogo {
-    margin-top: 30px;
-    height: 35px;
-    width: 150px;
-    background-image: url( "../images/beta.png" );
-    behavior: url( ../css/iepngfix.htc );
-    background-repeat: no-repeat;
-    position: absolute;
-    top: -4px;
-    left: 140px;
-}
-
 #headerSlogan {
     position: absolute;
     border-left: 1px dashed gray;

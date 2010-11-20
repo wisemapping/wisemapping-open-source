@@ -45,7 +45,6 @@
             <div id="headerLogo">&nbsp;</div>
         </a>
 
-        <div id="headerPBetaLogo">&nbsp;</div>
         <div id="headerSlogan">
             <spring:message code="SITE.SLOGAN"/>
         </div>
