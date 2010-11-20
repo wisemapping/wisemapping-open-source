@@ -15,3 +15,5 @@ h1. Who are we ?
 We’re a couple of friends working on an idea: “Create the best on-line collaborative mind mapping tool ever created”. This has been our idea since the first day we started.
 
 h1. [[Documentation]]
+
+h1. [[FAQ]]
