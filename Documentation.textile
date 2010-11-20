@@ -1,0 +1,3 @@
+h1. Architecture
+WiseMapping has been development mainly in Java and JavaScript.  The following diagram represents a high level overview of the product
+[[/images/wisemapping_architecture.png]]
