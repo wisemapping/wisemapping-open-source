@@ -22,6 +22,7 @@ package com.wisemapping.controller;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,22 +55,16 @@ public class CaptchaController
     	final String captchaId = request.getSession().getId();
     	
 		// call the ImageCaptchaService getChallenge method
-      final BufferedImage challenge = captchaService.getImageChallengeForID(captchaId,request.getLocale());
-        	
-		// a jpeg encoder
-		final JPEGImageEncoder jpegEncoder = JPEGCodec.createJPEGEncoder(jpegOutputStream);
-		jpegEncoder.encode(challenge);
-     
-       captchaChallengeAsJpeg = jpegOutputStream.toByteArray();
+        final BufferedImage challenge = captchaService.getImageChallengeForID(captchaId,request.getLocale());
 
-		// flush it in the response
-      response.setHeader("Cache-Control", "no-store");
-		response.setHeader("Pragma", "no-cache");
-		response.setDateHeader("Expires", 0);
-      response.setContentType("image/jpeg");
-		final ServletOutputStream responseOutputStream = response.getOutputStream();
-		responseOutputStream.write(captchaChallengeAsJpeg);
-    	responseOutputStream.flush();
+        // flush it in the response
+        response.setHeader("Cache-Control", "no-store");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+        response.setContentType("image/jpeg");
+        final ServletOutputStream responseOutputStream = response.getOutputStream();
+        ImageIO.write(challenge, "png", responseOutputStream);
+        responseOutputStream.flush();
 		responseOutputStream.close();
 		return null;	
     }	
