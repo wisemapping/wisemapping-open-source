@@ -45,23 +45,20 @@ public class CaptchaController
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) 
 		throws Exception 
     {
-    
-		byte[] captchaChallengeAsJpeg;
-		// the output stream to render the captcha image as jpeg into
-		final ByteArrayOutputStream jpegOutputStream = new ByteArrayOutputStream();
-        
-    	// get the session id that will identify the generated captcha. 
-		//the same id must be used to validate the response, the session id is a good candidate!
-    	final String captchaId = request.getSession().getId();
-    	
-		// call the ImageCaptchaService getChallenge method
-        final BufferedImage challenge = captchaService.getImageChallengeForID(captchaId,request.getLocale());
 
-        // flush it in the response
         response.setHeader("Cache-Control", "no-store");
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
-        response.setContentType("image/jpeg");
+        response.setContentType("image/png");
+
+        // get the session id that will identify the generated captcha.
+        //the same id must be used to validate the response, the session id is a good candidate!
+        final String captchaId = request.getSession().getId();
+
+        // call the ImageCaptchaService getChallenge method
+        final BufferedImage challenge = captchaService.getImageChallengeForID(captchaId,request.getLocale());
+
+        // flush it in the response
         final ServletOutputStream responseOutputStream = response.getOutputStream();
         ImageIO.write(challenge, "png", responseOutputStream);
         responseOutputStream.flush();
