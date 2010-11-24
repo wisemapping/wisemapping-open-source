@@ -16,6 +16,6 @@ We’re a couple of friends working on an idea: “Create the best on-line colla
 
 h1. [[Documentation]]
 
-h1. [[Compilation and Running]]
+h1. [[Compiling and Running]]
 
 h1. [[FAQ]]
