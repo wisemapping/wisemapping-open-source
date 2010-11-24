@@ -22,7 +22,6 @@ package com.wisemapping.controller;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 
-import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,22 +45,31 @@ public class CaptchaController
 		throws Exception 
     {
 
-        response.setHeader("Cache-Control", "no-store");
-        response.setHeader("Pragma", "no-cache");
-        response.setDateHeader("Expires", 0);
-        response.setContentType("image/png");
+		byte[] captchaChallengeAsJpeg;
+		// the output stream to render the captcha image as jpeg into
+		final ByteArrayOutputStream jpegOutputStream = new ByteArrayOutputStream();
 
-        // get the session id that will identify the generated captcha.
-        //the same id must be used to validate the response, the session id is a good candidate!
-        final String captchaId = request.getSession().getId();
+    	// get the session id that will identify the generated captcha.
+		//the same id must be used to validate the response, the session id is a good candidate!
+    	final String captchaId = request.getSession().getId();
 
-        // call the ImageCaptchaService getChallenge method
-        final BufferedImage challenge = captchaService.getImageChallengeForID(captchaId,request.getLocale());
+		// call the ImageCaptchaService getChallenge method
+      final BufferedImage challenge = captchaService.getImageChallengeForID(captchaId,request.getLocale());
 
-        // flush it in the response
-        final ServletOutputStream responseOutputStream = response.getOutputStream();
-        ImageIO.write(challenge, "png", responseOutputStream);
-        responseOutputStream.flush();
+		// a jpeg encoder
+		final JPEGImageEncoder jpegEncoder = JPEGCodec.createJPEGEncoder(jpegOutputStream);
+		jpegEncoder.encode(challenge);
+
+       captchaChallengeAsJpeg = jpegOutputStream.toByteArray();
+
+		// flush it in the response
+      response.setHeader("Cache-Control", "no-store");
+		response.setHeader("Pragma", "no-cache");
+		response.setDateHeader("Expires", 0);
+      response.setContentType("image/jpeg");
+		final ServletOutputStream responseOutputStream = response.getOutputStream();
+		responseOutputStream.write(captchaChallengeAsJpeg);
+    	responseOutputStream.flush();
 		responseOutputStream.close();
 		return null;	
     }	
