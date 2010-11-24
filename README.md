@@ -40,10 +40,10 @@ Password: test
 
 ## Author
 
-Pablo Luna
-Paulo Veiga
-Ignacio Manzano
-Nicolas Damonte
+   * Pablo Luna
+   * Paulo Veiga
+   * Ignacio Manzano
+   * Nicolas Damonte
 
 ## License
 
