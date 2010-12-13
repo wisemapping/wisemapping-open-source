@@ -28,15 +28,28 @@ objects.extend(web2d.peer.svg.LinePeer, web2d.peer.svg.ElementPeer);
 
 web2d.peer.svg.LinePeer.prototype.setFrom = function(x1, y1)
 {
+    this._x1=x1;
+    this._y1=y1;
     this._native.setAttribute('x1', x1);
     this._native.setAttribute('y1', y1);
 };
 
 web2d.peer.svg.LinePeer.prototype.setTo = function(x2, y2)
 {
+    this._x2=x2;
+    this._y2=y2;
     this._native.setAttribute('x2', x2);
     this._native.setAttribute('y2', y2);
 };
+
+web2d.peer.svg.LinePeer.prototype.getFrom = function(){
+    return new core.Point(this._x1,this._y1);
+};
+
+web2d.peer.svg.LinePeer.prototype.getTo = function(){
+    return new core.Point(this._x2,this._y2);
+};
+
 
 /*
 * http://www.zvon.org/HowTo/Output/howto_jj_svg_27.html?at=marker-end

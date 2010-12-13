@@ -74,9 +74,13 @@ web2d.peer.ToolkitVML =
     {
         return new web2d.peer.vml.LinePeer();
     },
-    createPolyLine: function()
+    createCurvedLine: function()
     {
-        return new web2d.peer.vml.PolyLinePeer();
+        return new web2d.peer.vml.CurvedLinePeer();
+    },
+    createCurvedLine: function()
+    {
+        return new web2d.peer.vml.CurvedLinePeer();
     },
     createImage: function ()
     {
@@ -134,6 +138,10 @@ web2d.peer.ToolkitSVG =
     createPolyLine: function()
     {
         return new web2d.peer.svg.PolyLinePeer();
+    },
+    createCurvedLine: function()
+    {
+        return new web2d.peer.svg.CurvedLinePeer();
     },
     createText: function ()
     {

@@ -67,7 +67,6 @@ function buildMindmapDesigner()
     var container = $('mindplot');
 
     // Initialize Editor ...
-    var persistantManager = new mindplot.PersistanceManager(window.MapEditorService);
 
     var screenWidth = window.getWidth();
     var screenHeight = window.getHeight();
@@ -77,7 +76,7 @@ function buildMindmapDesigner()
     editorProperties.height = screenHeight;
     editorProperties.viewMode = true;
 
-    designer = new mindplot.MindmapDesigner(editorProperties, container, persistantManager);
+    designer = new mindplot.MindmapDesigner(editorProperties, container);
     designer.loadFromXML(mapId, mapXml);
 
     // If a node has focus, focus can be move to another node using the keys.

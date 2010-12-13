@@ -64,7 +64,8 @@ core.assert = function(assert, message)
         {
             stack = e;
         }
-        core.Logger.logError(message + "," + stack);
+        wLogger.error(message + "," + stack);
+//        core.Logger.logError(message + "," + stack);
     }
 
 };
@@ -219,4 +220,55 @@ core.Utils.createDocumentFromText = function(/*string*/str, /*string?*/mimetype)
         }
     }
     return null;
+};
+
+core.Utils.calculateRelationShipPointCoordinates = function(topic,controlPoint){
+    var size = topic.getSize();
+    var position = topic.getPosition();
+    var m = (position.y-controlPoint.y)/(position.x-controlPoint.x);
+    var y,x;
+    var gap = 5;
+    if(controlPoint.y>position.y+(size.height/2)){
+        y = position.y+(size.height/2)+gap;
+        x = position.x-((position.y-y)/m);
+        if(x>position.x+(size.width/2)){
+            x=position.x+(size.width/2);
+        }else if(x<position.x-(size.width/2)){
+            x=position.x-(size.width/2);
+        }
+    }else if(controlPoint.y<position.y-(size.height/2)){
+        y = position.y-(size.height/2) - gap;
+        x = position.x-((position.y-y)/m);
+        if(x>position.x+(size.width/2)){
+            x=position.x+(size.width/2);
+        }else if(x<position.x-(size.width/2)){
+            x=position.x-(size.width/2);
+        }
+    }else if(controlPoint.x<(position.x-size.width/2)){
+        x = position.x-(size.width/2) -gap;
+        y = position.y-(m*(position.x-x));
+    }else{
+        x = position.x+(size.width/2) + gap;
+        y = position.y-(m*(position.x-x));
+    }
+
+    return new core.Point(x,y);
+};
+
+core.Utils.calculateDefaultControlPoints = function(srcPos, tarPos){
+    var y = srcPos.y-tarPos.y;
+    var x = srcPos.x-tarPos.x;
+    var m = y/x;
+    var l = Math.sqrt(y*y+x*x)/3;
+    var fix=1;
+    if(srcPos.x>tarPos.x){
+        fix=-1;
+    }
+    
+    var x1 = srcPos.x + Math.sqrt(l*l/(1+(m*m)))*fix;
+    var y1 = m*(x1-srcPos.x)+srcPos.y;
+    var x2 = tarPos.x + Math.sqrt(l*l/(1+(m*m)))*fix*-1;
+    var y2= m*(x2-tarPos.x)+tarPos.y;
+
+    return [new core.Point(x1,y1),new core.Point(x2,y2)];
 };

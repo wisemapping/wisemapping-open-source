@@ -22,6 +22,8 @@ mindplot.Mindmap = function()
     this._branches = [];
     this._name = null;
     this._description = null;
+    this._version=null;
+    this._relationships=[];
 };
 
 mindplot.Mindmap.prototype.getCentralTopic = function()
@@ -45,6 +47,20 @@ mindplot.Mindmap.prototype.setId = function(id)
     this._iconType = id;
 };
 
+
+mindplot.Mindmap.prototype.getVersion = function()
+{
+    return this._version;
+};
+
+
+mindplot.Mindmap.prototype.setVersion = function(version)
+{
+    this._version = version;
+};
+
+
+
 mindplot.Mindmap.prototype.addBranch = function(nodeModel)
 {
     core.assert(nodeModel && nodeModel.isNodeModel(), 'Add node must be invoked with model objects');
@@ -63,6 +79,10 @@ mindplot.Mindmap.prototype.addBranch = function(nodeModel)
 mindplot.Mindmap.prototype.getBranches = function()
 {
     return this._branches;
+};
+
+mindplot.Mindmap.prototype.getRelationships = function() {
+    return this._relationships;
 };
 
 mindplot.Mindmap.prototype.connect = function(parent, child)
@@ -118,6 +138,21 @@ mindplot.Mindmap.prototype._createNode = function(type)
     core.assert(type, 'Node type must be specified.');
     var result = new mindplot.NodeModel(type, this);
     return result;
+};
+
+mindplot.Mindmap.prototype.createRelationship = function(fromNode, toNode){
+    core.assert(fromNode, 'from node cannot be null');
+    core.assert(toNode, 'to node cannot be null');
+
+    return new mindplot.RelationshipModel(fromNode, toNode);
+};
+
+mindplot.Mindmap.prototype.addRelationship = function(relationship) {
+    this._relationships.push(relationship);
+};
+
+mindplot.Mindmap.prototype.removeRelationship = function(relationship) {
+    this._relationships.remove(relationship);
 };
 
 mindplot.Mindmap.prototype.inspect = function()

@@ -38,3 +38,8 @@ core.Point.prototype.clone = function()
 {
     return new core.Point(this.x, this.y);
 };
+
+core.Point.fromString = function(point) {
+    var values = point.split(',');
+    return new core.Point(values[0], values[1]);
+};

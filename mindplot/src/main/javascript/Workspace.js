@@ -41,6 +41,9 @@ mindplot.Workspace = function(profile, screenManager, zoom)
     // Register drag events ...
     this._registerDragEvents();
 
+    //Create CurvedLineControlPoints
+    this._createCuvedLineControlPoints();
+
     this._eventsEnabled = true;
 
 };
@@ -232,5 +235,14 @@ mindplot.Workspace.prototype._registerDragEvents = function()
     };
 
     screenManager.addEventListener('mousedown', mouseDownListener);
+};
+
+mindplot.Workspace.prototype._createCuvedLineControlPoints = function(){
+    this._lineControlPoints = new mindplot.ControlPoint();
+    this.appendChild(this._lineControlPoints);
+};
+
+mindplot.Workspace.prototype.getLineControlPoints = function(){
+    return this._lineControlPoints;
 };
 

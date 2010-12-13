@@ -25,6 +25,7 @@ mindplot.commands.DeleteTopicCommand = mindplot.Command.extend(
         this._topicId = topicsIds;
         this._deletedTopicModels = [];
         this._parentTopicIds = [];
+        this._deletedRelationships = [];
         this._id = mindplot.Command._nextUUID();
     },
     execute: function(commandContext)
@@ -34,6 +35,15 @@ mindplot.commands.DeleteTopicCommand = mindplot.Command.extend(
                 function(topic, index)
                 {
                     var model = topic.getModel().clone();
+
+                     //delete relationships
+                    var relationships = topic.getRelationships();
+                    while(relationships.length>0){
+                        var relationship = relationships[0];
+                        this._deletedRelationships.push(relationship.getModel().clone());
+                        commandContext.removeRelationship(relationship.getModel());
+                    }
+
                     this._deletedTopicModels.push(model);
 
                     // Is connected?.
@@ -49,7 +59,7 @@ mindplot.commands.DeleteTopicCommand = mindplot.Command.extend(
                     commandContext.deleteTopic(topic);
 
                 }.bind(this)
-                )
+                );
     },
     undoExecute: function(commandContext)
     {
@@ -70,9 +80,14 @@ mindplot.commands.DeleteTopicCommand = mindplot.Command.extend(
                     }
 
                 }.bind(this)
-                )
+                );
+        this._deletedRelationships.forEach(
+            function(relationship, index){
+            commandContext.createRelationship(relationship);
+        }.bind(this));
 
         this._deletedTopicModels = [];
         this._parentTopicIds = [];
+        this._deletedRelationships = [];
     }
 });

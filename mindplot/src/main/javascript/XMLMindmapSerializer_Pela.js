@@ -17,12 +17,12 @@
 * $Id: file 64488 2006-03-10 17:32:09Z paulo $
 */
 
-mindplot.XMLMindmapSerializer = function()
+mindplot.XMLMindmapSerializer_Pela = function()
 {
 
 };
 
-mindplot.XMLMindmapSerializer.prototype.toXML = function(mindmap)
+mindplot.XMLMindmapSerializer_Pela.prototype.toXML = function(mindmap)
 {
     core.assert(mindmap, "Can not save a null mindmap");
 
@@ -35,6 +35,12 @@ mindplot.XMLMindmapSerializer.prototype.toXML = function(mindmap)
     {
         mapElem.setAttribute('name', name);
     }
+    var version = mindmap.getVersion();
+    if (version)
+    {
+        mapElem.setAttribute('version', version);
+    }
+    
     document.appendChild(mapElem);
 
     // Create branches ...
@@ -46,10 +52,21 @@ mindplot.XMLMindmapSerializer.prototype.toXML = function(mindmap)
         mapElem.appendChild(topicDom);
     }
 
+    // Create Relationships
+    var relationships = mindmap.getRelationships();
+    if(relationships.length>0){
+//        var relationshipDom=document.createElement("relationships");
+//        mapElem.appendChild(relationshipDom);
+        for (var j = 0; j<relationships.length; j++){
+            var relationDom = this._relationshipToXML(document, relationships[j]);
+            mapElem.appendChild(relationDom);
+        }
+    }
+
     return document;
 };
 
-mindplot.XMLMindmapSerializer.prototype._topicToXML = function(document, topic)
+mindplot.XMLMindmapSerializer_Pela.prototype._topicToXML = function(document, topic)
 {
     var parentTopic = document.createElement("topic");
 
@@ -87,6 +104,9 @@ mindplot.XMLMindmapSerializer.prototype._topicToXML = function(document, topic)
     }
 
     // Font properties ...
+    var id = topic.getId();
+    parentTopic.setAttribute('id',id);
+
     var font = "";
 
     var fontFamily = topic.getFontFamily();
@@ -158,57 +178,93 @@ mindplot.XMLMindmapSerializer.prototype._topicToXML = function(document, topic)
     return parentTopic;
 };
 
-mindplot.XMLMindmapSerializer.prototype._iconToXML = function(document, icon)
+mindplot.XMLMindmapSerializer_Pela.prototype._iconToXML = function(document, icon)
 {
     var iconDom = document.createElement("icon");
     iconDom.setAttribute('id', icon.getIconType());
     return iconDom;
 };
 
-mindplot.XMLMindmapSerializer.prototype._linkToXML = function(document, link)
+mindplot.XMLMindmapSerializer_Pela.prototype._linkToXML = function(document, link)
 {
     var linkDom = document.createElement("link");
     linkDom.setAttribute('url', link.getUrl());
     return linkDom;
 };
 
-mindplot.XMLMindmapSerializer.prototype._noteToXML = function(document, note)
+mindplot.XMLMindmapSerializer_Pela.prototype._noteToXML = function(document, note)
 {
     var noteDom = document.createElement("note");
     noteDom.setAttribute('text', note.getText());
     return noteDom;
 };
 
-mindplot.XMLMindmapSerializer.prototype.loadFromDom = function(dom)
+mindplot.XMLMindmapSerializer_Pela.prototype._relationshipToXML = function(document,relationship){
+    var relationDom = document.createElement("relationship");
+    relationDom.setAttribute("srcTopicId",relationship.getFromNode());
+    relationDom.setAttribute("destTopicId",relationship.getToNode());
+    var lineType = relationship.getLineType();
+    relationDom.setAttribute("lineType",lineType);
+    if(lineType==mindplot.ConnectionLine.CURVED || lineType==mindplot.ConnectionLine.SIMPLE_CURVED){
+        if(core.Utils.isDefined(relationship.getSrcCtrlPoint())){
+            var srcPoint = relationship.getSrcCtrlPoint();
+            relationDom.setAttribute("srcCtrlPoint",srcPoint.x+","+srcPoint.y);
+        }
+        if(core.Utils.isDefined(relationship.getDestCtrlPoint())){
+            var destPoint = relationship.getDestCtrlPoint();
+            relationDom.setAttribute("destCtrlPoint",destPoint.x+","+destPoint.y);
+        }
+    }
+    relationDom.setAttribute("endArrow",relationship.getEndArrow());
+    return relationDom;
+};
+
+mindplot.XMLMindmapSerializer_Pela.prototype.loadFromDom = function(dom)
 {
     core.assert(dom, "Dom can not be null");
     var rootElem = dom.documentElement;
 
     // Is a wisemap?.
-    core.assert(rootElem.tagName == mindplot.XMLMindmapSerializer.MAP_ROOT_NODE, "This seem not to be a map document.");
+    core.assert(rootElem.tagName == mindplot.XMLMindmapSerializer_Pela.MAP_ROOT_NODE, "This seem not to be a map document.");
 
     // Start the loading process ...
     var mindmap = new mindplot.Mindmap();
 
+    var version = rootElem.getAttribute("version");
+    mindmap.setVersion(version);
+    
     var children = rootElem.childNodes;
     for (var i = 0; i < children.length; i++)
     {
         var child = children[i];
         if (child.nodeType == 1)
         {
-            var topic = this._deserializeNode(child, mindmap);
-            mindmap.addBranch(topic);
+            switch(child.tagName){
+                case "topic":
+                    var topic = this._deserializeNode(child, mindmap);
+                    mindmap.addBranch(topic);
+                    break;
+                case "relationship":
+                    var relationship = this._deserializeRelationship(child,mindmap);
+                    mindmap.addRelationship(relationship);
+                    break;
+            }
         }
     }
     return mindmap;
 };
 
-mindplot.XMLMindmapSerializer.prototype._deserializeNode = function(domElem, mindmap)
+mindplot.XMLMindmapSerializer_Pela.prototype._deserializeNode = function(domElem, mindmap)
 {
     var type = (domElem.getAttribute('central') != null) ? mindplot.NodeModel.CENTRAL_TOPIC_TYPE : mindplot.NodeModel.MAIN_TOPIC_TYPE;
     var topic = mindmap.createNode(type);
 
     // Load attributes...
+    var id = domElem.getAttribute('id');
+    if(id) {
+        topic.setId(id);
+    }
+    
     var text = domElem.getAttribute('text');
     if (text) {
         topic.setText(text);
@@ -303,19 +359,39 @@ mindplot.XMLMindmapSerializer.prototype._deserializeNode = function(domElem, min
     return topic;
 };
 
-mindplot.XMLMindmapSerializer.prototype._deserializeIcon = function(domElem, topic)
+mindplot.XMLMindmapSerializer_Pela.prototype._deserializeIcon = function(domElem, topic)
 {
     return topic.createIcon(domElem.getAttribute("id"));
 };
 
-mindplot.XMLMindmapSerializer.prototype._deserializeLink = function(domElem, topic)
+mindplot.XMLMindmapSerializer_Pela.prototype._deserializeLink = function(domElem, topic)
 {
     return topic.createLink(domElem.getAttribute("url"));
 };
 
-mindplot.XMLMindmapSerializer.prototype._deserializeNote = function(domElem, topic)
+mindplot.XMLMindmapSerializer_Pela.prototype._deserializeNote = function(domElem, topic)
 {
     return topic.createNote(domElem.getAttribute("text"));
 };
 
-mindplot.XMLMindmapSerializer.MAP_ROOT_NODE = 'map';
+mindplot.XMLMindmapSerializer_Pela.prototype._deserializeRelationship = function(domElement, mindmap)
+{
+    var srcId = domElement.getAttribute("srcTopicId");
+    var destId = domElement.getAttribute("destTopicId");
+    var lineType = domElement.getAttribute("lineType");
+    var srcCtrlPoint = domElement.getAttribute("srcCtrlPoint");
+    var destCtrlPoint = domElement.getAttribute("destCtrlPoint");
+    var endArrow = domElement.getAttribute("endArrow");
+    var model = mindmap.createRelationship(srcId,  destId);
+    model.setLineType(lineType);
+    if(core.Utils.isDefined(srcCtrlPoint) && srcCtrlPoint!=""){
+        model.setSrcCtrlPoint(core.Point.fromString(srcCtrlPoint));
+    }
+    if(core.Utils.isDefined(destCtrlPoint) && destCtrlPoint!=""){
+        model.setDestCtrlPoint(core.Point.fromString(destCtrlPoint));
+    }
+    model.setEndArrow(endArrow);
+    return model;
+};
+
+mindplot.XMLMindmapSerializer_Pela.MAP_ROOT_NODE = 'map';

@@ -10,10 +10,11 @@
     <xsd:complexType name="mapType">
         <xsd:sequence>
             <xsd:element ref="topic" minOccurs="1" maxOccurs='unbounded'/>
+            <xsd:element ref="relationship" minOccurs="0" maxOccurs='unbounded'/>
         </xsd:sequence>
         <xsd:attribute name="name" type="xsd:string"/>
+        <xsd:attribute name="version" type="xsd:string"/>
     </xsd:complexType>
-
 
     <xsd:element name="topic" type="topicType"/>
 
@@ -32,6 +33,7 @@
         <xsd:attribute name="order" type="xsd:int"/>
         <xsd:attribute name="position" type="xsd:string"/>
         <xsd:attribute name="central" type="xsd:boolean"/>
+        <xsd:attribute name="id" type="xsd:ID" use="optional"/>
     </xsd:complexType>
 
     <xsd:complexType name="icon">
@@ -46,6 +48,17 @@
 
     <xsd:complexType name="note">
         <xsd:attribute name="text" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:element name="relationship" type="relationshipType"/>
+    <xsd:complexType name="relationshipType">
+        <xsd:attribute name="id" type="xsd:ID"/>
+        <xsd:attribute name="srcTopicId" type="xsd:ID"/>
+        <xsd:attribute name="destTopicId" type="xsd:ID"/>
+        <xsd:attribute name="lineType" type="xsd:string"/>
+        <xsd:attribute name="srcCtrlPoint" type="xsd:string"/>
+        <xsd:attribute name="destCtrlPoint" type="xsd:string"/>
+        <xsd:attribute name="endArrow" type="xsd:boolean"/>
     </xsd:complexType>
 
 </xsd:schema>

@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!--[if gte IE 9]>
+	    <meta http-equiv="X-UA-Compatible" content="IE=9" >
+    <![endif]-->
+
+    <script type="text/javascript">
+        web2d = {
+            peer: {}
+        };
+
+        web2d.peer =
+        {
+            svg: {},
+            vml: {}
+        };
+
+        web2d.peer.utils = {};
+    </script>
+
+    <script type="text/javascript" src="mootools.js"></script>
+    <script type="text/javascript" src="../../../../../core-js/target/classes/core.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/EventDispatcher.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/ElementPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/ElementPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Element.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Workspace.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/WorkspacePeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/WorkspacePeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Toolkit.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Elipse.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/ElipsePeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/ElipsePeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Line.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/LinePeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/LinePeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/PolyLine.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/CurvedLine.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/PolyLinePeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/PolyLinePeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/CurvedLinePeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Group.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/GroupPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/GroupPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Rect.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/RectPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/RectPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Text.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/TextPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/TextPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/TextBoxPeer.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/utils/TransformUtils.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/utils/EventUtils.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Font.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/Font.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/Font.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/TahomaFont.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/TimesFont.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/ArialFont.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/VerdanaFont.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/TahomaFont.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/TimesFont.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/ArialFont.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/VerdanaFont.js"></script>
+    <script type="text/javascript" src="utils.js"></script>
+    <script type="text/javascript">
+        function initialize(){
+            web2d.peer.Toolkit.init();
+
+            var overflowWorkspace = new web2d.Workspace({fillColor:'green'});
+            overflowWorkspace.setSize("200px", "200px");
+            line1 = new web2d.CurvedLine();
+            line1.setStyle(web2d.CurvedLine.SIMPLE_LINE);
+            line1.setFrom(200, 200);
+            line1.setTo(100, 100);
+//            line1.setControlPoints({x:150,y:100},{x:150,y:200});
+            overflowWorkspace.appendChild(line1);
+            
+            overflowWorkspace.addItAsChildTo($("overflowExample"));
+
+        }
+    </script>
+</head>
+
+<body onload="initialize();">
+
+<h1>PolyLines Render Tests </h1>
+
+<table border="1">
+<colgroup style="width:80%;">
+    <col style="width:30%"/>
+    <col style="width:60%"/>
+</colgroup>
+<tr>
+    <td>
+        Different types of PolyLines that can be used.
+    </td>
+    <td>
+        <div id="overflowExample"/>
+    </td>
+
+</tr>
+<tr>
+    <td>
+        This is how multiple childs will look in each style line
+    </td>
+    <td>
+        <div id="multipleLineExample"/>
+    </td>
+
+</tr>
+</table>
+</body>
+</html>

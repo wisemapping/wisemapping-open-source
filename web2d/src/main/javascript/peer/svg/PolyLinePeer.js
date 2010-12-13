@@ -82,7 +82,7 @@ web2d.peer.svg.PolyLinePeer.prototype._updateStraightPath = function()
 {
     if (core.Utils.isDefined(this._x1) && core.Utils.isDefined(this._x2) && core.Utils.isDefined(this._y1) && core.Utils.isDefined(this._y2))
     {
-        this.buildStraightPath(this.breakDistance, this._x1, this._y1, this._x2, this._y2);
+        var path = web2d.PolyLine.buildStraightPath(this.breakDistance, this._x1, this._y1, this._x2, this._y2);
         this._native.setAttribute('points', path);
     }
 };

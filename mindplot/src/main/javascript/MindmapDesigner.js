@@ -17,9 +17,8 @@
 * $Id: file 64488 2006-03-10 17:32:09Z paulo $
 */
 
-mindplot.MindmapDesigner = function(profile, divElement, persistanManager)
+mindplot.MindmapDesigner = function(profile, divElement)
 {
-    core.assert(persistanManager, "Persistant manager must be defined");
     core.assert(core.Utils.isDefined(profile.zoom), "zoom must be defined");
 
     // Undo manager ...
@@ -53,10 +52,10 @@ mindplot.MindmapDesigner = function(profile, divElement, persistanManager)
     // Init dragger manager.
     this._dragger = this._buildDragManager(workspace);
 
-    this._persistantManager = persistanManager;
-
     // Add shapes to speed up the loading process ...
     mindplot.DragTopic.initialize(workspace);
+
+    this._relationships={};
 
     this._events = {};
 };
@@ -368,6 +367,62 @@ mindplot.MindmapDesigner.prototype.createSiblingForSelectedNode = function()
     }
 };
 
+mindplot.MindmapDesigner.prototype.addRelationShip2SelectedNode = function(event)
+{
+    var screen = this._workspace.getScreenManager();
+    var pos = screen.getWorkspaceMousePosition(event);
+    var selectedTopics = this.getSelectedNodes();
+    if(selectedTopics.length >0){
+        var fromNodePosition = selectedTopics[0].getPosition();
+        this._relationship = new web2d.CurvedLine();
+        this._relationship.setStyle(web2d.CurvedLine.SIMPLE_LINE);
+        this._relationship.setDashed(2,2);
+        this._relationship.setFrom(fromNodePosition.x, fromNodePosition.y);
+        this._relationship.setTo(pos.x, pos.y);
+        this._workspace.appendChild(this._relationship);
+        this._relationshipMouseMoveFunction = this._relationshipMouseMove.bindWithEvent(this);
+        this._relationshipMouseClickFunction = this._relationshipMouseClick.bindWithEvent(this, selectedTopics[0]);
+        this._workspace.getScreenManager().addEventListener('mousemove',this._relationshipMouseMoveFunction);
+        this._workspace.getScreenManager().addEventListener('click',this._relationshipMouseClickFunction);
+    }
+};
+
+mindplot.MindmapDesigner.prototype._relationshipMouseMove = function(event){
+    var screen = this._workspace.getScreenManager();
+    var pos = screen.getWorkspaceMousePosition(event);
+    this._relationship.setTo(pos.x-1, pos.y-1); //to prevent click event target to be the line itself
+    event.preventDefault();
+    event.stop();
+    return false;
+};
+
+mindplot.MindmapDesigner.prototype._relationshipMouseClick = function (event, fromNode) {
+    var target = event.target;
+    while(target.tagName != "g" && core.Utils.isDefined(target.parentNode)){
+        target=target.parentNode;
+    }
+    if(core.Utils.isDefined(target.virtualRef)){
+        var targetNode = target.virtualRef;
+        this.addRelationship(fromNode, targetNode);
+    }
+    this._workspace.removeChild(this._relationship);
+    this._relationship = null;
+    this._workspace.getScreenManager().removeEventListener('mousemove',this._relationshipMouseMoveFunction);
+    this._workspace.getScreenManager().removeEventListener('click',this._relationshipMouseClickFunction);
+    event.preventDefault();
+    event.stop();
+    return false;
+};
+
+mindplot.MindmapDesigner.prototype.addRelationship= function(fromNode, toNode){
+    // Create a new topic model ...
+    var mindmap = this.getMindmap();
+    var model = mindmap.createRelationship(fromNode.getModel().getId(), toNode.getModel().getId());
+
+    var command = new mindplot.commands.AddRelationshipCommand(model, mindmap);
+    this._actionRunner.execute(command);
+};
+
 mindplot.MindmapDesigner.prototype.needsSave = function()
 {
     return this._actionRunner.hasBeenChanged();
@@ -390,7 +445,7 @@ mindplot.MindmapDesigner.prototype.autoSaveEnabled = function(value)
 
 mindplot.MindmapDesigner.prototype.save = function(onSavedHandler, saveHistory)
 {
-    var persistantManager = this._persistantManager;
+    var persistantManager = mindplot.PersistanceManager;
     var mindmap = this._mindmap;
 
     var xmlChart = this._workspace.dumpNativeChart();
@@ -417,7 +472,7 @@ mindplot.MindmapDesigner.prototype.loadFromXML = function(mapId, xmlContent)
     // Explorer Hack with local files ...
     var domDocument = core.Utils.createDocumentFromText(xmlContent);
 
-    var serializer = new mindplot.XMLMindmapSerializer();
+    var serializer = mindplot.XMLMindmapSerializerFactory.getSerializerFromDocument(domDocument);
     var mindmap = serializer.loadFromDom(domDocument);
 
     this._loadMap(mapId, mindmap);
@@ -435,7 +490,7 @@ mindplot.MindmapDesigner.prototype.load = function(mapId)
     core.assert(mapId, 'mapName can not be null');
 
     // Build load function ...
-    var persistantManager = this._persistantManager;
+    var persistantManager = mindplot.PersistanceManager;
 
     // Loading mindmap ...
     var mindmap = persistantManager.load(mapId);
@@ -468,6 +523,10 @@ mindplot.MindmapDesigner.prototype._loadMap = function(mapId, mindmapModel)
 
             // Update shrink render state...
             nodeGraph.setBranchVisibility(true);
+        }
+        var relationships = mindmapModel.getRelationships();
+        for (var j=0; j<relationships.length; j++) {
+            var relationship = this._relationshipModelToRelationship(relationships[j]);            
         }
     }
     this._fireEvent("loadsuccess");
@@ -525,6 +584,86 @@ mindplot.MindmapDesigner.prototype._nodeModelToNodeGraph = function(nodeModel)
     var workspace = this._workspace;
     workspace.appendChild(nodeGraph);
     return nodeGraph;
+};
+
+mindplot.MindmapDesigner.prototype._relationshipModelToRelationship = function(model) {
+    core.assert(model, "Node model can not be null");
+    var relationship = this._buildRelationship(model);
+    var sourceTopic = relationship.getSourceTopic();
+    sourceTopic.addRelationship(relationship);
+    var targetTopic = relationship.getTargetTopic();
+    targetTopic.addRelationship(relationship);
+    var workspace = this._workspace;
+    workspace.appendChild(relationship);
+    relationship.redraw();
+    return relationship;
+};
+
+mindplot.MindmapDesigner.prototype.createRelationship= function(model){
+    this._mindmap.addRelationship(model);
+    return this._relationshipModelToRelationship(model);
+};
+
+mindplot.MindmapDesigner.prototype.removeRelationship = function(model) {
+    this._mindmap.removeRelationship(model);
+    var relationship = this._relationships[model.getId()];
+    var sourceTopic = relationship.getSourceTopic();
+    sourceTopic.removeRelationship(relationship);
+    var targetTopic = relationship.getTargetTopic();
+    targetTopic.removeRelationship(relationship);
+    this._workspace.removeChild(relationship);
+    delete this._relationships[model.getId()];
+};
+
+mindplot.MindmapDesigner.prototype._buildRelationship = function (model) {
+  var workspace = this._workspace;
+    var elem = this;
+
+    var fromNodeId = model.getFromNode();
+    var toNodeId = model.getToNode();
+
+    var fromTopic = null;
+    var toTopic = null;
+    var topics = this._topics;
+
+        for (var i = 0; i < topics.length; i++)
+        {
+            var t = topics[i];
+            if (t.getModel().getId() == fromNodeId)
+            {
+                fromTopic= t;
+                if(toTopic!=null){
+                    break;
+                }
+            }else if (t.getModel().getId() == toNodeId)
+            {
+                toTopic= t;
+                if(fromTopic!=null){
+                    break;
+                }
+            }
+        }
+    
+    // Create node graph ...
+    var relationLine = new mindplot.ConnectionLine(fromTopic, toTopic, model.getLineType());
+    relationLine.setIsRelationship(true);
+    if(core.Utils.isDefined(model.getSrcCtrlPoint())){
+        var srcPoint = model.getSrcCtrlPoint().clone();
+        relationLine.getLine().setSrcControlPoint(srcPoint);
+    }
+    if(core.Utils.isDefined(model.getDestCtrlPoint())){
+        var destPoint = model.getDestCtrlPoint().clone();
+        relationLine.getLine().setDestControlPoint(destPoint);
+    }
+
+
+    relationLine.getLine().setDashed(3,2);
+    relationLine.getLine().setShowArrow(model.getEndArrow());
+    relationLine.setModel(model);
+    // Append it to the workspace ...
+    this._relationships[model.getId()]=relationLine;
+
+    return  relationLine;
 };
 
 mindplot.MindmapDesigner.prototype.getEditor = function()

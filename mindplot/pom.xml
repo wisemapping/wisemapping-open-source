@@ -40,6 +40,7 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="header.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="Mindmap.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="NodeModel.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="RelationshipModel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="MindmapDesigner.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ScreenManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="Workspace.js"/>
@@ -62,7 +63,11 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="util/Shape.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="FixedDistanceBoard.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="BoardEntry.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="XMLMindmapSerializer.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="ModelCodeName.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="XMLMindmapSerializer_Pela.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="XMLMindmapSerializer_Beta.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="Beta2PelaMigrator.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="XMLMindmapSerializerFactory.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="PersistanceManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="EditorProperties.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="IconGroup.js"/>
@@ -75,11 +80,10 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="IconModel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="LinkModel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="NoteModel.js"/>
-
                                     <filelist dir="${basedir}/src/main/javascript/" files="Command.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="DesignerActionRunner.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="DesignerUndoManager.js"/>
-
+                                    <filelist dir="${basedir}/src/main/javascript/" files="ControlPoint.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="commands/GenericFunctionCommand.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
@@ -100,7 +104,10 @@
                                               files="commands/AddNoteToTopicCommand.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="commands/RemoveNoteFromTopicCommand.js"/>
-
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="commands/AddRelationshipCommand.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="commands/MoveControlPointCommand.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="footer.js"/>
                                 </concat>
 
@@ -144,6 +151,7 @@
                                         <include>header-min.js</include>
                                         <include>Mindmap-min.js</include>
                                         <include>NodeModel-min.js</include>
+                                        <include>RelationshipModel-min.js</include>
                                         <include>MindmapDesigner-min.js</include>
                                         <include>ScreenManager-min.js</include>
                                         <include>Workspace-min.js</include>
@@ -166,7 +174,11 @@
                                         <include>util/Shape-min.js</include>
                                         <include>FixedDistanceBoard-min.js</include>
                                         <include>BoardEntry-min.js</include>
-                                        <include>XMLMindmapSerializer-min.js</include>
+                                        <include>ModelCodeName-min.js</include>
+                                        <include>XMLMindmapSerializer_Beta-min.js</include>
+                                        <include>XMLMindmapSerializer_Pela-min.js</include>
+                                        <include>Beta2PelaMigrator-min.js</include>
+                                        <include>XMLMindmapSerializerFactory-min.js</include>
                                         <include>PersistanceManager-min.js</include>
                                         <include>EditorProperties-min.js</include>
                                         <include>IconGroup-min.js</include>
@@ -194,6 +206,8 @@
                                         <include>commands/RemoveIconFromTopicCommand-min.js</include>
                                         <include>commands/AddNoteToTopicCommand-min.js</include>
                                         <include>commands/RemoveNoteFromTopicCommand-min.js</include>
+                                        <include>commands/AddRelationshipCommand-min.js</include>
+                                        <include>commands/MoveControlPointCommand-min.js</include>
 
                                         <include>footer-min.js</include>
 

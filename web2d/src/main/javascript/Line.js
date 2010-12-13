@@ -44,6 +44,16 @@ web2d.Line.prototype.setTo = function(x, y)
     this._peer.setTo(x, y);
 };
 
+web2d.Line.prototype.getFrom = function()
+{
+    return this._peer.getFrom();
+};
+
+web2d.Line.prototype.getTo = function()
+{
+    return this._peer.getTo();
+};
+
 /**
  * Defines the start and the end line arrow style.
  * Can have values "none | block | classic | diamond | oval | open | chevron | doublechevron"

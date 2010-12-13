@@ -192,6 +192,9 @@
                 <div id="topicLink" class="button" title="<spring:message code="TOPIC_LINK"/>">
                     <div class="toolbarLabel"><p><spring:message code="LINK"/></p></div>
                 </div>
+                <div id="topicRelation" class="button" title="<spring:message code="TOPIC_RELATIONSHIP"/>">
+                    <div class="toolbarLabel"><p><spring:message code="TOPIC_RELATIONSHIP"/></p></div>
+                </div>
             </fieldset>
         </div>
         <div id="font" class="buttonContainer" title="Font Properties">
@@ -332,11 +335,11 @@
     <script type="text/javascript" src="../dwr/interface/MapEditorService.js"></script>
 </c:if>
 <script type="text/javascript" src="../js/editor.js"></script>
-<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+<%--<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
 </script>
 <script type="text/javascript">
     _uacct = "UA-2347723-1";
     urchinTracker();
-</script>
+</script>--%>
 </body>
 </html>

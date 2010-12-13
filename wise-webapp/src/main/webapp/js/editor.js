@@ -269,7 +269,7 @@ function afterMindpotLibraryLoading()
         designer.deleteCurrentNode();
     });
     var context = this;
-    var colorPicker1 = new MooRainbow('topicColor', {
+    /*var colorPicker1 = new MooRainbow('topicColor', {
         id: 'topicColor',
         imgPath: '../images/',
         startColor: [255, 255, 255],
@@ -298,10 +298,14 @@ function afterMindpotLibraryLoading()
         onComplete: function(color) {
             removeCurrentColorPicker.attempt(colorPicker2, context);
         }
-    });
+    });*/
     $('topicLink').addEvent('click', function(event) {
         designer.addLink2SelectedNode();
 
+    });
+
+    $('topicRelation').addEvent('click', function(event) {
+        designer.addRelationShip2SelectedNode(event);
     });
 
     $('topicNote').addEvent('click', function(event) {
@@ -318,7 +322,7 @@ function afterMindpotLibraryLoading()
         designer.setStyle2SelectedNode();
     });
 
-    var colorPicker3 = new MooRainbow('fontColor', {
+    /*var colorPicker3 = new MooRainbow('fontColor', {
         id: 'fontColor',
         imgPath: '../images/',
         startColor: [255, 255, 255],
@@ -332,7 +336,7 @@ function afterMindpotLibraryLoading()
         onComplete: function(color) {
             removeCurrentColorPicker.attempt(colorPicker3, context);
         }
-    });
+    });*/
 
     // Save event handler ....
     var saveButton = $('saveButton');
@@ -520,7 +524,6 @@ function buildMindmapDesigner()
     var container = $('mindplot');
 
     // Initialize Editor ...
-    var persistantManager = new mindplot.PersistanceManager(window.MapEditorService);
 
     var screenWidth = window.getWidth();
     var screenHeight = window.getHeight();
@@ -533,7 +536,7 @@ function buildMindmapDesigner()
     editorProperties.width = screenWidth;
     editorProperties.height = screenHeight;
 
-    designer = new mindplot.MindmapDesigner(editorProperties, container, persistantManager);
+    designer = new mindplot.MindmapDesigner(editorProperties, container);
     designer.loadFromXML(mapId, mapXml);
 
     // If a node has focus, focus can be move to another node using the keys.

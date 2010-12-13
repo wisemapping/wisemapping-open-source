@@ -201,13 +201,18 @@ mindplot.MainTopic.prototype.setPosition = function(point)
     topicBoard.updateChildrenPosition(this);
 };
 
-mindplot.MainTopic.prototype.workoutIncomingConnectionPoint = function(sourcePosition)
+mindplot.MainTopic.prototype.workoutIncomingConnectionPoint = function(sourcePosition, onBoundingBox)
 {
+    if(!core.Utils.isDefined(onBoundingBox)){
+        onBoundingBox=false;
+    }
+
     core.assert(sourcePosition, 'sourcePoint can not be null');
     var pos = this.getPosition();
     var size = this.getSize();
 
     var isAtRight = mindplot.util.Shape.isAtRight(sourcePosition, pos);
+
     var result = mindplot.util.Shape.calculateRectConnectionPoint(pos, size, isAtRight);
     if (this.getShapeType() == mindplot.NodeModel.SHAPE_TYPE_LINE)
     {
@@ -223,54 +228,16 @@ mindplot.MainTopic.prototype.workoutIncomingConnectionPoint = function(sourcePos
     {
         result.x = result.x - offset;
     }
-    return result;
-
-};
-
-mindplot.MainTopic.prototype.workoutOutgoingConnectionPoint = function(targetPosition)
-{
-    core.assert(targetPosition, 'targetPoint can not be null');
-    var pos = this.getPosition();
-    var size = this.getSize();
-
-    var isAtRight = mindplot.util.Shape.isAtRight(targetPosition, pos);
-    var result;
-    if (this.getShapeType() == mindplot.NodeModel.SHAPE_TYPE_LINE)
-    {
-        if (!this.isConnectedToCentralTopic())
-        {
-            result = new core.Point();
-            if (!isAtRight)
-            {
-                result.x = pos.x - (size.width / 2);
-            } else
-            {
-                result.x = pos.x + (size.width / 2);
-            }
-            result.y = pos.y + (size.height / 2);
-        } else
-        {
-            // In this case, connetion line is not used as shape figure.
-            result = mindplot.util.Shape.calculateRectConnectionPoint(pos, size, isAtRight, true);
-            result.y = pos.y + (size.height / 2);
-
-            // Correction factor ...
-            if (!isAtRight)
-            {
-                result.x = result.x + 2;
-            } else
-            {
-                result.x = result.x - 2;
-            }
-
+    if(onBoundingBox){
+        if(isAtRight){
+            result.x -= 10;
+        } else{
+            result.x += 10;
         }
-    } else
-    {
-        result = mindplot.util.Shape.calculateRectConnectionPoint(pos, size, isAtRight, true);
     }
     return result;
-};
 
+};
 
 mindplot.MainTopic.prototype.isConnectedToCentralTopic = function()
 {

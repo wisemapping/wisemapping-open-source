@@ -83,7 +83,7 @@ public final class Mailer {
                     }
                 };
 
-        this.mailSender.send(preparator);
+        //this.mailSender.send(preparator);
     }
 
     public void setMailSender(JavaMailSender mailer) {

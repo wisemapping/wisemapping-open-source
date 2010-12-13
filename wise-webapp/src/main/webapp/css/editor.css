@@ -216,11 +216,11 @@ div#node {
 }
 
 div#font {
-    left: 619px; /*left:581px;*/
+    left: 656px; /*left:581px;*/
 }
 
 div#share {
-    left: 815px; /*left:777px;*/
+    left: 852px; /*left:777px;*/
 }
 
 div#saveButton {
@@ -306,6 +306,12 @@ div#topicNote {
 }
 
 div#topicLink {
+    background: url(../images/topic_link.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
+    z-index: 4;
+}
+
+div#topicRelation {
     background: url(../images/topic_link.png) no-repeat center top;
     behavior: url(../css/iepngfix.htc);
     z-index: 4;

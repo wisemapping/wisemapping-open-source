@@ -117,6 +117,14 @@ mindplot.CommandContext = new Class({
     disconnect:function(topic)
     {
         topic.disconnect(this._designer._workspace);
+    },
+    createRelationship:function(model){
+        core.assert(model, "model cannot be null");
+        var relationship = this._designer.createRelationship(model);
+        return relationship;
+    },
+    removeRelationship:function(model) {
+        this._designer.removeRelationship(model);
     }
 });
 

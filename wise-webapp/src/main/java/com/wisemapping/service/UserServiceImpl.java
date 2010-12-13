@@ -24,6 +24,7 @@ import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.mail.Mailer;
 import com.wisemapping.model.User;
 import com.wisemapping.model.Colaborator;
+import org.apache.log4j.Logger;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -35,6 +36,7 @@ public class UserServiceImpl
     private UserManager userManager;
     private MindmapService mindmapService;
     private Mailer mailer;
+    final static Logger logger = Logger.getLogger("org.wisemapping.service");
 
     public void activateAcount(long code)
         throws InvalidActivationCodeException 
@@ -113,6 +115,7 @@ public class UserServiceImpl
         model.put("user", user);
         // TODO: ver como no hacer hardcode el url
         final String activationUrl = "http://wisemapping.com/c/activation.htm?code=" + user.getActivationCode();
+        logger.info("create User - acrivationUrl: "+activationUrl);
         model.put("emailcheck", activationUrl);
         mailer.sendEmail(mailer.getRegistrationEmail(), user.getEmail(), "Welcome to Wisemapping!", model,
                 "confirmationMail.vm");

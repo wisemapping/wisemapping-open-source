@@ -31,6 +31,8 @@ mindplot.Topic.prototype.initialize = function(topicBoard)
     this._children = [];
     this._parent = null;
     this._lastIconId = -1;
+    this._relationships = [];
+    this._isInWorkspace = false;
 
     this._topicBoard = topicBoard;
     this._buildShape();
@@ -419,6 +421,18 @@ mindplot.Topic.prototype.removeNote = function(){
     this._hasNote=false;
 }
 
+mindplot.Topic.prototype.addRelationship = function(relationship){
+    this._relationships.push(relationship);
+};
+
+mindplot.Topic.prototype.removeRelationship = function(relationship){
+    this._relationships.remove(relationship);    
+};
+
+mindplot.Topic.prototype.getRelationships = function(){
+    return this._relationships;
+};
+
 mindplot.Topic.prototype._buildTextShape = function(disableEventsListeners)
 {
     var result = new web2d.Text();
@@ -646,7 +660,7 @@ mindplot.Topic.prototype._setText = function(text, updateModel)
     {
         return function()
         {
-            elem.updateNode();
+                elem.updateNode();
         };
     };
 
@@ -741,6 +755,7 @@ mindplot.Topic.prototype._buildShape = function()
 {
     var groupAttributes = {width: 100, height:100,coordSizeWidth:100,coordSizeHeight:100};
     var group = new web2d.Group(groupAttributes);
+    group._peer._native.virtualRef=this;
     this._set2DElement(group);
 
     // Shape must be build based on the model width ...
@@ -948,6 +963,11 @@ mindplot.Topic.prototype._updateConnectionLines = function()
     for (var i = 0; i < incomingLines.length; i++)
     {
         incomingLines[i].redraw();
+    }
+
+    // Update relationship lines
+    for(var j=0; j<this._relationships.length; j++){
+        this._relationships[j].redraw();
     }
 };
 
@@ -1222,12 +1242,18 @@ mindplot.Topic.prototype.removeFromWorkspace = function(workspace)
     {
         workspace.removeChild(line);
     }
+    this._isInWorkspace=false;
 };
 
 mindplot.Topic.prototype.addToWorkspace = function(workspace)
 {
     var elem = this.get2DElement();
     workspace.appendChild(elem);
+    this._isInWorkspace=true;
+};
+
+mindplot.Topic.prototype.isInWorkspace = function(){
+    return this._isInWorkspace;
 };
 
 mindplot.Topic.prototype.getTopicBoard = function()
@@ -1250,16 +1276,78 @@ mindplot.Topic.prototype.createDragNode = function()
 
 mindplot.Topic.prototype.updateNode = function()
 {
-    var textShape = this.getTextShape();
-    var sizeWidth = textShape.getWidth();
-    var sizeHeight = textShape.getHeight();
-    var font = textShape.getFont();
-    var iconOffset = this.getIconOffset();
+    if(this.isInWorkspace()){
+        var textShape = this.getTextShape();
+        var sizeWidth = textShape.getWidth();
+        var sizeHeight = textShape.getHeight();
+        var font = textShape.getFont();
+        var iconOffset = this.getIconOffset();
 
-    var newSize = {width:sizeWidth + this._offset*2 + iconOffset,height:sizeHeight + this._offset};
-    this.setSize(newSize);
+        var newSize = {width:sizeWidth + this._offset*2 + iconOffset,height:sizeHeight + this._offset};
+        this.setSize(newSize);
 
-    // Positionate node ...
-    textShape.setPosition(iconOffset+this._offset, this._offset / 2);
-    textShape.setTextSize(sizeWidth, sizeHeight);
+        // Positionate node ...
+        textShape.setPosition(iconOffset+this._offset, this._offset / 2);
+        textShape.setTextSize(sizeWidth, sizeHeight);
+    }
+};
+
+mindplot.Topic.prototype.workoutOutgoingConnectionPoint = function(targetPosition, onBoundingBox)
+{
+    if(!core.Utils.isDefined(onBoundingBox)){
+        onBoundingBox=false;
+    }
+
+    core.assert(targetPosition, 'targetPoint can not be null');
+    var pos = this.getPosition();
+    var size = this.getSize();
+
+    var isAtRight = mindplot.util.Shape.isAtRight(targetPosition, pos);
+    var result;
+    if(onBoundingBox){
+        result = new core.Point();
+        if(isAtRight){
+            result.x = pos.x - (size.width/2)-5;
+            result.y = pos.y;
+        } else {
+            result.x = pos.x + (size.width/2)+ 5;
+            result.y = pos.y;
+        }
+    }
+    else{
+        if (this.getShapeType() == mindplot.NodeModel.SHAPE_TYPE_LINE)
+        {
+            if (!this.isConnectedToCentralTopic())
+            {
+                result = new core.Point();
+                if (!isAtRight)
+                {
+                    result.x = pos.x - (size.width / 2);
+                } else
+                {
+                    result.x = pos.x + (size.width / 2);
+                }
+                result.y = pos.y + (size.height / 2);
+            } else
+            {
+                // In this case, connetion line is not used as shape figure.
+                result = mindplot.util.Shape.calculateRectConnectionPoint(pos, size, isAtRight, true);
+                result.y = pos.y + (size.height / 2);
+
+                // Correction factor ...
+                if (!isAtRight)
+                {
+                    result.x = result.x + 2;
+                } else
+                {
+                    result.x = result.x - 2;
+                }
+
+            }
+        } else
+        {
+            result = mindplot.util.Shape.calculateRectConnectionPoint(pos, size, isAtRight, true);
+        }
+    }
+    return result;
 };

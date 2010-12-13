@@ -91,6 +91,7 @@
                                         <include>${basedir}/target/tmp/peer/svg/Font-min.js</include>
                                         <include>${basedir}/target/tmp/peer/svg/ArialFont-min.js</include>
                                         <include>${basedir}/target/tmp/peer/svg/PolyLinePeer-min.js</include>
+                                        <include>${basedir}/target/tmp/peer/svg/CurvedLinePeer-min.js</include>
                                         <include>${basedir}/target/tmp/peer/svg/TextPeer-min.js</include>
                                         <include>${basedir}/target/tmp/peer/svg/WorkspacePeer-min.js</include>
                                         <include>${basedir}/target/tmp/peer/svg/GroupPeer-min.js</include>
@@ -109,6 +110,7 @@
                                         <include>${basedir}/target/tmp/Image-min.js</include>
                                         <include>${basedir}/target/tmp/Line-min.js</include>
                                         <include>${basedir}/target/tmp/PolyLine-min.js</include>
+                                        <include>${basedir}/target/tmp/CurvedLine-min.js</include>
                                         <include>${basedir}/target/tmp/Rect-min.js</include>
                                         <include>${basedir}/target/tmp/Text-min.js</include>
                                         <include>${basedir}/target/tmp/Toolkit-min.js</include>

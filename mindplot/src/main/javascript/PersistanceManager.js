@@ -17,13 +17,9 @@
 * $Id: file 64488 2006-03-10 17:32:09Z paulo $
 */
 
-mindplot.PersistanceManager = function(editorService)
-{
-    this._editorService = editorService;
-    this._serializer = new mindplot.XMLMindmapSerializer();
-};
+mindplot.PersistanceManager = {};
 
-mindplot.PersistanceManager.prototype.save = function(mindmap, chartType, xmlChart, editorProperties, onSavedHandler,saveHistory)
+mindplot.PersistanceManager.save = function(mindmap, chartType, xmlChart, editorProperties, onSavedHandler,saveHistory)
 {
     core.assert(mindmap, "mindmap can not be null");
     core.assert(chartType, "chartType can not be null");
@@ -32,11 +28,12 @@ mindplot.PersistanceManager.prototype.save = function(mindmap, chartType, xmlCha
 
     var mapId = mindmap.getId();
 
-    var xmlMap = this._serializer.toXML(mindmap);
+    var serializer = mindplot.XMLMindmapSerializerFactory.getSerializerFromMindmap(mindmap);
+    var xmlMap = serializer.toXML(mindmap);
     var xmlMapStr = core.Utils.innerXML(xmlMap);
 
     var pref = Json.toString(editorProperties);
-    this._editorService.saveMap(mapId, xmlMapStr, chartType, xmlChart, pref,saveHistory,
+    window.MapEditorService.saveMap(mapId, xmlMapStr, chartType, xmlChart, pref,saveHistory,
     {
         callback:function(response) {
 
@@ -64,14 +61,12 @@ mindplot.PersistanceManager.prototype.save = function(mindmap, chartType, xmlCha
 
 };
 
-mindplot.PersistanceManager.prototype.load = function(mapId)
+mindplot.PersistanceManager.load = function(mapId)
 {
     core.assert(mapId, "mapId can not be null");
 
-    var deserializer = this;
     var result = {r:null};
-    var serializer = this._serializer;
-    this._editorService.loadMap(mapId, {
+    window.MapEditorService.loadMap(mapId, {
         callback:function(response) {
 
             if (response.msgCode == "OK")
@@ -79,6 +74,7 @@ mindplot.PersistanceManager.prototype.load = function(mapId)
                 // Explorer Hack with local files ...
                 var xmlContent = response.content;
                 var domDocument = core.Utils.createDocumentFromText(xmlContent);
+                var serializer = mindplot.XMLMindmapSerializerFactory.getSerializerFromDocument(domDocument);
                 var mindmap = serializer.loadFromDom(domDocument);
                 mindmap.setId(mapId);
 
