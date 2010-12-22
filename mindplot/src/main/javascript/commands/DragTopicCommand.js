@@ -22,7 +22,7 @@ mindplot.commands.DragTopicCommand = mindplot.Command.extend(
     initialize: function(topicId)
     {
         core.assert(topicId, "topicId must be defined");
-        this._topicId = topicId;
+        this._selectedObjectsIds = topicId;
         this._parentTopic = null;
         this._position = null;
         this._order = null;
@@ -31,7 +31,7 @@ mindplot.commands.DragTopicCommand = mindplot.Command.extend(
     execute: function(commandContext)
     {
 
-        var topic = commandContext.findTopics([this._topicId])[0];
+        var topic = commandContext.findTopics([this._selectedObjectsIds])[0];
 
         // Save old position ...
         var origParentTopic = topic.getOutgoingConnectedTopic();

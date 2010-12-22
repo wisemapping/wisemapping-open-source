@@ -22,11 +22,11 @@ mindplot.commands.RemoveLinkFromTopicCommand = mindplot.Command.extend(
     initialize: function(topicId)
     {
         core.assert(topicId, 'topicId can not be null');
-        this._topicId = topicId;
+        this._selectedObjectsIds = topicId;
     },
     execute: function(commandContext)
     {
-        var topic = commandContext.findTopics(this._topicId)[0];
+        var topic = commandContext.findTopics(this._selectedObjectsIds)[0];
         this._url = topic._link.getUrl();
         var updated = function() {
             topic.removeLink();
@@ -35,7 +35,7 @@ mindplot.commands.RemoveLinkFromTopicCommand = mindplot.Command.extend(
     },
     undoExecute: function(commandContext)
     {
-        var topic = commandContext.findTopics(this._topicId)[0];
+        var topic = commandContext.findTopics(this._selectedObjectsIds)[0];
         var updated = function() {
             topic.addLink(this._url,commandContext._designer);
             topic.updateNode();

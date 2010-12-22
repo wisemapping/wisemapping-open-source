@@ -22,13 +22,13 @@ mindplot.commands.AddLinkToTopicCommand = mindplot.Command.extend(
     initialize: function(topicId,url)
     {
         core.assert(topicId, 'topicId can not be null');
-        this._topicId = topicId;
+        this._selectedObjectsIds = topicId;
         this._url = url;
         this._id = mindplot.Command._nextUUID();
     },
     execute: function(commandContext)
     {
-        var topic = commandContext.findTopics(this._topicId)[0];
+        var topic = commandContext.findTopics(this._selectedObjectsIds)[0];
         var updated = function() {
             topic.addLink(this._url,commandContext._designer);
             topic.updateNode();
@@ -37,7 +37,7 @@ mindplot.commands.AddLinkToTopicCommand = mindplot.Command.extend(
     },
     undoExecute: function(commandContext)
     {
-        var topic = commandContext.findTopics(this._topicId)[0];
+        var topic = commandContext.findTopics(this._selectedObjectsIds)[0];
         var updated = function() {
             topic.removeLink();
         }.bind(this);

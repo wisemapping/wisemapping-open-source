@@ -22,13 +22,13 @@ mindplot.commands.AddNoteToTopicCommand = mindplot.Command.extend(
     initialize: function(topicId,text)
     {
         core.assert(topicId, 'topicId can not be null');
-        this._topicId = topicId;
+        this._selectedObjectsIds = topicId;
         this._text = text;
         this._id = mindplot.Command._nextUUID();
     },
     execute: function(commandContext)
     {
-        var topic = commandContext.findTopics(this._topicId)[0];
+        var topic = commandContext.findTopics(this._selectedObjectsIds)[0];
         var updated = function() {
             topic.addNote(this._text,commandContext._designer);
             topic.updateNode();
@@ -37,7 +37,7 @@ mindplot.commands.AddNoteToTopicCommand = mindplot.Command.extend(
     },
     undoExecute: function(commandContext)
     {
-        var topic = commandContext.findTopics(this._topicId)[0];
+        var topic = commandContext.findTopics(this._selectedObjectsIds)[0];
         var updated = function() {
             topic.removeNote();
         }.bind(this);

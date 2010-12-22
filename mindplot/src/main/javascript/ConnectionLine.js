@@ -1,21 +1,21 @@
 /*
-* Licensed to the Apache Software Foundation (ASF) under one or more
-* contributor license agreements.  See the NOTICE file distributed with
-* this work for additional information regarding copyright ownership.
-* The ASF licenses this file to You under the Apache License, Version 2.0
-* (the "License"); you may not use this file except in compliance with
-* the License.  You may obtain a copy of the License at
-*
-*       http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*
-* $Id: file 64488 2006-03-10 17:32:09Z paulo $
-*/
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * $Id: file 64488 2006-03-10 17:32:09Z paulo $
+ */
 
 mindplot.ConnectionLine = function(sourceNode, targetNode, lineType)
 {
@@ -25,19 +25,18 @@ mindplot.ConnectionLine = function(sourceNode, targetNode, lineType)
 
     this._targetTopic = targetNode;
     this._sourceTopic = sourceNode;
-    this._isRelationship=false;
 
     var strokeColor = mindplot.ConnectionLine.getStrokeColor();
     var line;
     if (targetNode.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE)
     {
         line = this._createLine(lineType,mindplot.ConnectionLine.SIMPLE);
-//        line = new web2d.Line();
+        //        line = new web2d.Line();
         line.setStroke(1, 'solid', strokeColor);
     } else
     {
         line = this._createLine(lineType,mindplot.ConnectionLine.POLYLINE);
-//        line = new web2d.PolyLine();
+        //        line = new web2d.PolyLine();
         line.setStroke(1, 'solid', strokeColor);
     }
 
@@ -90,26 +89,10 @@ mindplot.ConnectionLine.prototype.redraw = function()
     var targetPosition = targetTopic.getPosition();
 
     var sPos,tPos;
-    if(this._isRelationship){
-        this._line2d.setStroke(2);
-        var ctrlPoints = this._line2d.getControlPoints();
-        if(!core.Utils.isDefined(ctrlPoints[0].x) || !core.Utils.isDefined(ctrlPoints[1].x)){
-            var defaultPoints = core.Utils.calculateDefaultControlPoints(sourceTopic.getPosition(), targetTopic.getPosition());
-            ctrlPoints[0].x=defaultPoints[0].x;
-            ctrlPoints[0].y=defaultPoints[0].y;
-            ctrlPoints[1].x=defaultPoints[1].x;
-            ctrlPoints[1].y=defaultPoints[1].y;
-        }
-        sPos = core.Utils.calculateRelationShipPointCoordinates(sourceTopic,ctrlPoints[0]);
-        tPos = core.Utils.calculateRelationShipPointCoordinates(targetTopic,ctrlPoints[1]);
-    }else{
-        sPos = sourceTopic.workoutOutgoingConnectionPoint(targetPosition, false);
-        tPos = targetTopic.workoutIncomingConnectionPoint(sourcePosition, false);
-    }
-    //    console.log("source:"+sPos.x+":"+sPos.y);
+    sPos = sourceTopic.workoutOutgoingConnectionPoint(targetPosition, false);
+    tPos = targetTopic.workoutIncomingConnectionPoint(sourcePosition, false);
 
     line2d.setFrom(sPos.x, sPos.y);
-//    console.log("target:"+tPos.x+":"+tPos.y);
     line2d.setTo(tPos.x, tPos.y);
 
     line2d.moveToBack();
@@ -156,14 +139,6 @@ mindplot.ConnectionLine.prototype.setStroke = function(color, style, opacity)
 
 mindplot.ConnectionLine.prototype.addToWorkspace = function(workspace)
 {
-    if(this._line2d.getType() == "CurvedLine"){
-        this._line2d.addEventListener('click',function(event){
-            var controlPoints = workspace.getLineControlPoints();
-            controlPoints.setLine(this);
-            controlPoints.setVisibility(true);
-            event.stopPropagation();
-        }.bind(this));
-    }
     workspace.appendChild(this._line2d);
 };
 
@@ -198,12 +173,12 @@ mindplot.ConnectionLine.prototype.setModel = function(model){
     this._model = model;
 };
 
-mindplot.ConnectionLine.prototype.setIsRelationship = function(isRelationship){
-    this._isRelationship=isRelationship;
+mindplot.ConnectionLine.prototype.getType = function(){
+    return "ConnectionLine";
 };
 
-mindplot.ConnectionLine.prototype.isRelationship = function(){
-    return this._isRelationship;
+mindplot.ConnectionLine.prototype.getId = function(){
+    return this._model.getId();
 };
 
 mindplot.ConnectionLine.SIMPLE=0;

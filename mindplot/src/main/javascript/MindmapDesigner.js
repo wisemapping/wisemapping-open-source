@@ -46,9 +46,6 @@ mindplot.MindmapDesigner = function(profile, divElement)
     // Register handlers..
     this._registerEvents();
 
-    // Selected node
-    this._nodeOnFocus = null;
-
     // Init dragger manager.
     this._dragger = this._buildDragManager(workspace);
 
@@ -232,19 +229,19 @@ mindplot.MindmapDesigner.prototype._buildNodeGraph = function(model)
     return  topic;
 };
 
-mindplot.MindmapDesigner.prototype.onNodeFocusEvent = function(topicGraph, event)
+mindplot.MindmapDesigner.prototype.onObjectFocusEvent = function(currentObject, event)
 {
     this.getEditor().lostFocus();
-    var topics = this._topics;
+    var selectableObjects = this.getSelectedObjects();
     // Disable all nodes on focus but not the current if Ctrl key isn't being pressed
     if (!core.Utils.isDefined(event) || event.ctrlKey == false)
     {
-        for (var i = 0; i < topics.length; i++)
+        for (var i = 0; i < selectableObjects.length; i++)
         {
-            var node = topics[i];
-            if (node.isOnFocus() && node != topicGraph)
+            var selectableObject = selectableObjects[i];
+            if (selectableObject.isOnFocus() && selectableObject != currentObject)
             {
-                node.setOnFocus(false);
+                selectableObject.setOnFocus(false);
             }
         }
     }
@@ -257,7 +254,7 @@ mindplot.MindmapDesigner.prototype._registerListenersOnNode = function(topic)
     var topics = this._topics;
     topic.addEventListener('onfocus', function(event)
     {
-        elem.onNodeFocusEvent.attempt([topic, event], elem);
+        elem.onObjectFocusEvent.attempt([topic, event], elem);
     });
 
     // Add drag behaviour ...
@@ -645,8 +642,7 @@ mindplot.MindmapDesigner.prototype._buildRelationship = function (model) {
         }
     
     // Create node graph ...
-    var relationLine = new mindplot.ConnectionLine(fromTopic, toTopic, model.getLineType());
-    relationLine.setIsRelationship(true);
+    var relationLine = new mindplot.RelationshipLine(fromTopic, toTopic, model.getLineType());
     if(core.Utils.isDefined(model.getSrcCtrlPoint())){
         var srcPoint = model.getSrcCtrlPoint().clone();
         relationLine.getLine().setSrcControlPoint(srcPoint);
@@ -660,6 +656,14 @@ mindplot.MindmapDesigner.prototype._buildRelationship = function (model) {
     relationLine.getLine().setDashed(3,2);
     relationLine.getLine().setShowArrow(model.getEndArrow());
     relationLine.setModel(model);
+
+    //Add Listeners
+    var elem = this;
+    relationLine.addEventListener('onfocus', function(event)
+    {
+        elem.onObjectFocusEvent.attempt([relationLine, event], elem);
+    });
+
     // Append it to the workspace ...
     this._relationships[model.getId()]=relationLine;
 
@@ -701,14 +705,14 @@ mindplot.MindmapDesigner.prototype._removeNode = function(node)
 mindplot.MindmapDesigner.prototype.deleteCurrentNode = function()
 {
 
-    var validateFunc = function(topic) {
-        return topic.getTopicType() != mindplot.NodeModel.CENTRAL_TOPIC_TYPE
+    var validateFunc = function(selectedObject) {
+        return selectedObject.getType() == mindplot.RelationshipLine.type || selectedObject.getTopicType() != mindplot.NodeModel.CENTRAL_TOPIC_TYPE
     };
     var validateError = 'Central topic can not be deleted.';
-    var topicsIds = this._setValidSelectedTopicsIds(validateFunc, validateError);
-    if (topicsIds.length > 0)
+    var selectedObjects = this._getValidSelectedObjectsIds(validateFunc, validateError);
+    if (selectedObjects.nodes.length > 0 || selectedObjects.relationshipLines.length>0)
     {
-        var command = new mindplot.commands.DeleteTopicCommand(topicsIds);
+        var command = new mindplot.commands.DeleteTopicCommand(selectedObjects);
         this._actionRunner.execute(command);
     }
 
@@ -716,7 +720,8 @@ mindplot.MindmapDesigner.prototype.deleteCurrentNode = function()
 
 mindplot.MindmapDesigner.prototype.setFont2SelectedNode = function(font)
 {
-    var topicsIds = this._setValidSelectedTopicsIds();
+    var validSelectedObjects = this._getValidSelectedObjectsIds();
+    var topicsIds = validSelectedObjects.nodes;
     if (topicsIds.length > 0)
     {
         var commandFunc = function(topic, font)
@@ -737,7 +742,8 @@ mindplot.MindmapDesigner.prototype.setFont2SelectedNode = function(font)
 
 mindplot.MindmapDesigner.prototype.setStyle2SelectedNode = function()
 {
-    var topicsIds = this._setValidSelectedTopicsIds();
+    var validSelectedObjects = this._getValidSelectedObjectsIds();
+    var topicsIds = validSelectedObjects.nodes;
     if (topicsIds.length > 0)
     {
         var commandFunc = function(topic)
@@ -754,7 +760,8 @@ mindplot.MindmapDesigner.prototype.setStyle2SelectedNode = function()
 
 mindplot.MindmapDesigner.prototype.setFontColor2SelectedNode = function(color)
 {
-    var topicsIds = this._setValidSelectedTopicsIds();
+    var validSelectedObjects = this._getValidSelectedObjectsIds();
+    var topicsIds = validSelectedObjects.nodes;
     if (topicsIds.length > 0)
     {
         var commandFunc = function(topic, color)
@@ -776,7 +783,8 @@ mindplot.MindmapDesigner.prototype.setBackColor2SelectedNode = function(color)
         return topic.getShapeType() != mindplot.NodeModel.SHAPE_TYPE_LINE
     };
     var validateError = 'Color can not be setted to line topics.';
-    var topicsIds = this._setValidSelectedTopicsIds(validateFunc, validateError);
+    var validSelectedObjects = this._getValidSelectedObjectsIds(validateFunc, validateError);;
+    var topicsIds = validSelectedObjects.nodes;
 
     if (topicsIds.length > 0)
     {
@@ -793,19 +801,20 @@ mindplot.MindmapDesigner.prototype.setBackColor2SelectedNode = function(color)
 };
 
 
-mindplot.MindmapDesigner.prototype._setValidSelectedTopicsIds = function(validate, errorMsg)
+mindplot.MindmapDesigner.prototype._getValidSelectedObjectsIds = function(validate, errorMsg)
 {
-    var result = [];
+    var result = {"nodes":[],"relationshipLines":[]};
     var selectedNodes = this._getSelectedNodes();
-    if (selectedNodes.length == 0)
+    var selectedRelationshipLines = this.getSelectedRelationshipLines();
+    if (selectedNodes.length == 0 && selectedRelationshipLines.length == 0)
     {
-        core.Monitor.getInstance().logMessage('At least one topic must be selected to execute this operation.');
+        core.Monitor.getInstance().logMessage('At least one element must be selected to execute this operation.');
     } else
     {
+        var isValid = true;
         for (var i = 0; i < selectedNodes.length; i++)
         {
             var selectedNode = selectedNodes[i];
-            var isValid = true;
             if (validate)
             {
                 isValid = validate(selectedNode);
@@ -814,7 +823,21 @@ mindplot.MindmapDesigner.prototype._setValidSelectedTopicsIds = function(validat
             // Add node only if it's valid.
             if (isValid)
             {
-                result.push(selectedNode.getId());
+                result.nodes.push(selectedNode.getId());
+            } else
+            {
+                core.Monitor.getInstance().logMessage(errorMsg);
+            }
+        }
+        for( var j = 0; j< selectedRelationshipLines.length; j++){
+            var selectedLine = selectedRelationshipLines[j];
+            isValid = true;
+            if(validate){
+                isValid = validate(selectedLine);
+            }
+
+            if(isValid){
+                result.relationshipLines.push(selectedLine.getId());
             } else
             {
                 core.Monitor.getInstance().logMessage(errorMsg);
@@ -830,7 +853,8 @@ mindplot.MindmapDesigner.prototype.setBorderColor2SelectedNode = function(color)
         return topic.getShapeType() != mindplot.NodeModel.SHAPE_TYPE_LINE
     };
     var validateError = 'Color can not be setted to line topics.';
-    var topicsIds = this._setValidSelectedTopicsIds(validateFunc, validateError);
+    var validSelectedObjects = this._getValidSelectedObjectsIds(validateFunc, validateError);;
+    var topicsIds = validSelectedObjects.nodes;
 
     if (topicsIds.length > 0)
     {
@@ -848,7 +872,8 @@ mindplot.MindmapDesigner.prototype.setBorderColor2SelectedNode = function(color)
 
 mindplot.MindmapDesigner.prototype.setFontSize2SelectedNode = function(size)
 {
-    var topicsIds = this._setValidSelectedTopicsIds();
+    var validSelectedObjects = this._getValidSelectedObjectsIds();
+    var topicsIds = validSelectedObjects.nodes;
     if (topicsIds.length > 0)
     {
         var commandFunc = function(topic, size)
@@ -873,7 +898,8 @@ mindplot.MindmapDesigner.prototype.setShape2SelectedNode = function(shape)
         return !(topic.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE && shape == mindplot.NodeModel.SHAPE_TYPE_LINE)
     };
     var validateError = 'Central Topic shape can not be changed to line figure.';
-    var topicsIds = this._setValidSelectedTopicsIds(validateFunc, validateError);
+    var validSelectedObjects = this._getValidSelectedObjectsIds(validateFunc, validateError);
+    var topicsIds = validSelectedObjects.nodes;
 
     if (topicsIds.length > 0)
     {
@@ -891,7 +917,8 @@ mindplot.MindmapDesigner.prototype.setShape2SelectedNode = function(shape)
 
 mindplot.MindmapDesigner.prototype.setWeight2SelectedNode = function()
 {
-    var topicsIds = this._setValidSelectedTopicsIds();
+    var validSelectedObjects = this._getValidSelectedObjectsIds();
+    var topicsIds = validSelectedObjects.nodes;
     if (topicsIds.length > 0)
     {
         var commandFunc = function(topic)
@@ -913,8 +940,8 @@ mindplot.MindmapDesigner.prototype.setWeight2SelectedNode = function()
 
 mindplot.MindmapDesigner.prototype.addImage2SelectedNode = function(iconType)
 {
-
-    var topicsIds = this._setValidSelectedTopicsIds();
+    var validSelectedObjects = this._getValidSelectedObjectsIds();
+    var topicsIds = validSelectedObjects.nodes;
     if (topicsIds.length > 0)
     {
 
@@ -925,7 +952,8 @@ mindplot.MindmapDesigner.prototype.addImage2SelectedNode = function(iconType)
 
 mindplot.MindmapDesigner.prototype.addLink2Node = function(url)
 {
-    var topicsIds = this._setValidSelectedTopicsIds();
+    var validSelectedObjects = this._getValidSelectedObjectsIds();
+    var topicsIds = validSelectedObjects.nodes;
     if (topicsIds.length > 0)
     {
         var command = new mindplot.commands.AddLinkToTopicCommand(topicsIds[0], url);
@@ -985,7 +1013,8 @@ mindplot.MindmapDesigner.prototype.addLink2SelectedNode = function()
 
 mindplot.MindmapDesigner.prototype.addNote2Node = function(text)
 {
-    var topicsIds = this._setValidSelectedTopicsIds();
+    var validSelectedObjects = this._getValidSelectedObjectsIds();
+    var topicsIds = validSelectedObjects.nodes;
     if (topicsIds.length > 0)
     {
         var command = new mindplot.commands.AddNoteToTopicCommand(topicsIds[0], text);
@@ -1078,11 +1107,30 @@ mindplot.MindmapDesigner.prototype._getSelectedNodes = function()
     return result;
 };
 
+mindplot.MindmapDesigner.prototype.getSelectedRelationshipLines = function(){
+    var result = new Array();
+    for each (var relationship in this._relationships)
+    {
+        if (relationship.isOnFocus())
+        {
+            result.push(relationship);
+        }
+    }
+    return result;
+};
+
 mindplot.MindmapDesigner.prototype.getSelectedNodes = function()
 {
     return this._getSelectedNodes();
 };
 
+mindplot.MindmapDesigner.prototype.getSelectedObjects = function()
+{
+    var selectedNodes = this.getSelectedNodes();
+    var selectedRelationships = this.getSelectedRelationshipLines();
+    selectedRelationships.extend(selectedNodes);
+    return selectedRelationships;
+};
 
 mindplot.MindmapDesigner.prototype.keyEventHandler = function(event)
 {
@@ -1307,7 +1355,7 @@ mindplot.MindmapDesigner.prototype._goToBrother = function(node, direction)
 mindplot.MindmapDesigner.prototype._goToNode = function(node)
 {
     node.setOnFocus(true);
-    this.onNodeFocusEvent.attempt(node, this);
+    this.onObjectFocusEvent.attempt(node, this);
 };
 
 mindplot.MindmapDesigner.prototype._goToSideChild = function(node, side)

@@ -23,12 +23,12 @@ mindplot.commands.AddIconToTopicCommand = mindplot.Command.extend(
     {
         core.assert(topicId, 'topicId can not be null');
         core.assert(iconType, 'iconType can not be null');
-        this._topicId = topicId;
+        this._selectedObjectsIds = topicId;
         this._iconType = iconType;
     },
     execute: function(commandContext)
     {
-        var topic = commandContext.findTopics(this._topicId)[0];
+        var topic = commandContext.findTopics(this._selectedObjectsIds)[0];
         var updated = function() {
             var iconImg = topic.addIcon(this._iconType, commandContext._designer);
             this._iconModel = iconImg.getModel();
@@ -38,7 +38,7 @@ mindplot.commands.AddIconToTopicCommand = mindplot.Command.extend(
     },
     undoExecute: function(commandContext)
     {
-        var topic = commandContext.findTopics(this._topicId)[0];
+        var topic = commandContext.findTopics(this._selectedObjectsIds)[0];
         var updated = function() {
             topic.removeIcon(this._iconModel);
             topic.updateNode();

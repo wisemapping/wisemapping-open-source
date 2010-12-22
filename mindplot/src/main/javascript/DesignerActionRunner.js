@@ -100,7 +100,7 @@ mindplot.CommandContext = new Class({
 
         // @todo: Is this required ?
         var designer = this._designer;
-        designer.onNodeFocusEvent.attempt(topic, designer);
+        designer.onObjectFocusEvent.attempt(topic, designer);
 
         return topic;
     },
@@ -125,6 +125,16 @@ mindplot.CommandContext = new Class({
     },
     removeRelationship:function(model) {
         this._designer.removeRelationship(model);
+    },
+    findRelationships:function(lineIds){
+        var result = [];
+        lineIds.forEach(function(lineId, index){
+            var line = this._designer._relationships[lineId];
+            if(core.Utils.isDefined(line)){
+                result.push(line);
+            }
+        }.bind(this));
+        return result;
     }
 });
 

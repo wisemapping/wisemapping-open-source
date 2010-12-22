@@ -22,7 +22,7 @@ mindplot.commands.DeleteTopicCommand = mindplot.Command.extend(
     initialize: function(topicsIds)
     {
         core.assert(topicsIds, "topicsIds must be defined");
-        this._topicId = topicsIds;
+        this._selectedObjectsIds = topicsIds;
         this._deletedTopicModels = [];
         this._parentTopicIds = [];
         this._deletedRelationships = [];
@@ -30,7 +30,8 @@ mindplot.commands.DeleteTopicCommand = mindplot.Command.extend(
     },
     execute: function(commandContext)
     {
-        var topics = commandContext.findTopics(this._topicId);
+        var topics = commandContext.findTopics(this._selectedObjectsIds.nodes);
+        if(topics.length>0){
         topics.forEach(
                 function(topic, index)
                 {
@@ -59,12 +60,21 @@ mindplot.commands.DeleteTopicCommand = mindplot.Command.extend(
                     commandContext.deleteTopic(topic);
 
                 }.bind(this)
-                );
+                ); }
+        var lines = commandContext.findRelationships(this._selectedObjectsIds.relationshipLines);
+        if(lines.length>0){
+            lines.forEach(function(line,index){
+                if(line.isInWorkspace()){
+                    this._deletedRelationships.push(line.getModel().clone());
+                        commandContext.removeRelationship(line.getModel());
+                }
+            }.bind(this));
+        }
     },
     undoExecute: function(commandContext)
     {
 
-        var topics = commandContext.findTopics(this._topicId);
+        var topics = commandContext.findTopics(this._selectedObjectsIds);
         var parent = commandContext.findTopics(this._parentTopicIds);
 
         this._deletedTopicModels.forEach(

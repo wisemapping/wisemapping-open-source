@@ -24,7 +24,7 @@ mindplot.commands.GenericFunctionCommand = mindplot.Command.extend(
         core.assert(commandFunc, "commandFunc must be defined");
         core.assert(topicsIds, "topicsIds must be defined");
         this._value = value;
-        this._topicId = topicsIds;
+        this._selectedObjectsIds = topicsIds;
         this._commandFunc = commandFunc;
         this._oldValues = [];
         this._id = mindplot.Command._nextUUID();
@@ -33,7 +33,7 @@ mindplot.commands.GenericFunctionCommand = mindplot.Command.extend(
     {
         if (!this.applied)
         {
-            var topics = commandContext.findTopics(this._topicId);
+            var topics = commandContext.findTopics(this._selectedObjectsIds);
             topics.forEach(function(topic)
             {
                 var oldValue = this._commandFunc(topic, this._value);
@@ -50,7 +50,7 @@ mindplot.commands.GenericFunctionCommand = mindplot.Command.extend(
     {
        if (this.applied)
         {
-            var topics = commandContext.findTopics(this._topicId);
+            var topics = commandContext.findTopics(this._selectedObjectsIds);
             topics.forEach(function(topic,index)
             {
                 this._commandFunc(topic, this._oldValues[index]);
