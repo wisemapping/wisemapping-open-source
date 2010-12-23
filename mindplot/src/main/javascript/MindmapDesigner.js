@@ -1109,8 +1109,9 @@ mindplot.MindmapDesigner.prototype._getSelectedNodes = function()
 
 mindplot.MindmapDesigner.prototype.getSelectedRelationshipLines = function(){
     var result = new Array();
-    for each (var relationship in this._relationships)
+    for (var id in this._relationships)
     {
+        var relationship = this._relationships[id];
         if (relationship.isOnFocus())
         {
             result.push(relationship);
