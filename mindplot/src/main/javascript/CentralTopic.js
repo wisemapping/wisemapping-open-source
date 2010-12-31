@@ -29,29 +29,9 @@ mindplot.CentralTopic = function(model)
 objects.extend(mindplot.CentralTopic, mindplot.Topic);
 
 
-mindplot.CentralTopic.prototype.workoutIncomingConnectionPoint = function(sourcePosition, onBoundingBox)
+mindplot.CentralTopic.prototype.workoutIncomingConnectionPoint = function(sourcePosition)
 {
-     if(!core.Utils.isDefined(onBoundingBox)){
-        onBoundingBox=false;
-    }
-    var pos = this.getPosition();
-    var size = this.getSize();
-    var isAtRight = mindplot.util.Shape.isAtRight(sourcePosition, pos);
-    var result = null;
-    if(onBoundingBox){
-        result = new core.Point();
-        if(isAtRight){
-            console.log("incomming at right");
-            result.x = pos.x - (size.width/2)-20;
-            result.y = pos.y;
-        } else {
-            result.x = pos.x;
-            result.y = pos.y;
-        }
-    }else{
-        result = pos;
-    }
-    return result;
+    return this.getPosition();
 };
 
 mindplot.CentralTopic.prototype.getTopicType = function()

@@ -74,7 +74,7 @@ mindplot.FixedDistanceBoard.prototype.updateReferencePoint = function()
 {
     var entries = this._entries;
     var parentTopic = this.getTopic();
-    var parentPosition = parentTopic.workoutIncomingConnectionPoint(parentTopic);
+    var parentPosition = parentTopic.workoutIncomingConnectionPoint(parentTopic.getPosition());
     var referencePoint = this.getReferencePoint();
     var yOffset = parentPosition.y - referencePoint.y;
 

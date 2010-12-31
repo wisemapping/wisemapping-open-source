@@ -92,8 +92,8 @@ mindplot.ConnectionLine.prototype.redraw = function()
     sPos = sourceTopic.workoutOutgoingConnectionPoint(targetPosition, false);
     tPos = targetTopic.workoutIncomingConnectionPoint(sourcePosition, false);
 
-    line2d.setFrom(sPos.x, sPos.y);
-    line2d.setTo(tPos.x, tPos.y);
+    line2d.setFrom(tPos.x, tPos.y);
+    line2d.setTo(sPos.x, sPos.y);
 
     line2d.moveToBack();
 
