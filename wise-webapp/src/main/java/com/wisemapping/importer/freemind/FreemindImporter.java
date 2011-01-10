@@ -241,7 +241,8 @@ public class FreemindImporter
         int position = pos * 200 + (orderPosition +1)*10;
 
         mindmapTopic.setPosition( position+","+200 * orderPosition);
-        generateFontStyle(freemindNode,null);
+        String fontStyle = generateFontStyle(freemindNode,null);
+        mindmapTopic.setFontStyle(fontStyle);
     }
 
     private String generateFontStyle(Node node,Font font)
