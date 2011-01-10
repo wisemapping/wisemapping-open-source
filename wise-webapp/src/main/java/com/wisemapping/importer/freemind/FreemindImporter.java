@@ -33,6 +33,7 @@ import javax.xml.bind.JAXBException;
 import java.io.InputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.math.BigInteger;
 
@@ -60,11 +61,12 @@ public class FreemindImporter
             centralTopic.setCentral(true);
 
             setNodePropertiesToTopic(centralTopic,centralNode);
-            centralTopic.setShape(ShapeStyle.ROUNDED_RETAGLE.getStyle());
+            centralTopic.setShape(ShapeStyle.ELIPSE.getStyle());
             mindmapMap.getTopic().add(centralTopic);
             mindmapMap.setName(mapName);
 
             addTopicFromNode(centralNode,centralTopic);
+            fixCentralTopicChildOrder(centralTopic);
 
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             JAXBUtils.saveMap(mindmapMap,out,"com.wisemapping.xml.mindmap");
@@ -82,6 +84,84 @@ public class FreemindImporter
         }
 
         return map;
+    }
+
+    private void fixCentralTopicChildOrder(TopicType centralTopic){
+        List<TopicType> topics = centralTopic.getTopic();
+        List<TopicType> leftTopics = new ArrayList<TopicType>();
+        List<TopicType> rightTopics = new ArrayList<TopicType>();
+
+        for (TopicType topic : topics){
+            if(isOnLeftSide(topic)){
+                leftTopics.add(topic);
+            } else {
+                rightTopics.add(topic);
+            }
+        }
+
+        if(leftTopics.size()>0){
+            int size = leftTopics.size();
+            int index = 0;
+            int center = size/2;
+            if(size %2==0){ //Even number, then place middle point in 1 index
+                index = 1;
+                center--;
+            }
+            int index2=index;
+
+            leftTopics.get(center).setOrder(index);
+            for(int i = center-1; i>=0; i--){
+                if(index==0){
+                    index++;
+                }else{
+                    index+=2;
+                }
+                leftTopics.get(i).setOrder(index);
+            }
+            index=index2;
+            for(int i = center+1; i<size; i++){
+                if(index==1){
+                    index++;
+                }else{
+                    index+=2;
+                }
+                leftTopics.get(i).setOrder(index);
+            }
+        }
+        if(rightTopics.size()>0){
+            int size = rightTopics.size();
+            int index = 0;
+            int center = size/2;
+            if(size %2==0){ //Even number, then place middle point in 1 index
+                index = 1;
+                center--;
+            }
+            int index2=index;
+            rightTopics.get(center).setOrder(index);
+            for(int i = center-1; i>=0; i--){
+                if(index==0){
+                    index++;
+                }else{
+                    index+=2;
+                }
+                rightTopics.get(i).setOrder(index);
+            }
+            index=index2;
+            for(int i = center+1; i<size; i++){
+                if(index==1){
+                    index++;
+                }else{
+                    index+=2;
+                }
+                rightTopics.get(i).setOrder(index);
+            }
+        }
+    }
+
+    private boolean isOnLeftSide(TopicType topic) {
+        String[] position = topic.getPosition().split(",");
+        int x = Integer.parseInt(position[0]);
+        return x<0;
     }
 
     private void addTopicFromNode(Node mainNode, TopicType topic)
