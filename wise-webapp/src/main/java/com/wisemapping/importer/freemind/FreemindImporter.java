@@ -27,7 +27,9 @@ import com.wisemapping.model.ShapeStyle;
 import com.wisemapping.model.MindMapNative;
 import com.wisemapping.util.JAXBUtils;
 import com.wisemapping.xml.freemind.*;
+import com.wisemapping.xml.freemind.Map;
 import com.wisemapping.xml.freemind.Node;
+import com.wisemapping.xml.mindmap.RelationshipType;
 import com.wisemapping.xml.mindmap.TopicType;
 import com.wisemapping.xml.mindmap.Link;
 import org.w3c.dom.*;
@@ -36,8 +38,7 @@ import javax.xml.bind.JAXBException;
 import java.io.InputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.math.BigInteger;
 
 public class FreemindImporter
@@ -49,6 +50,9 @@ public class FreemindImporter
     private static final String BOLD = "bold";
     private static final String ITALIC = "italic";
     private static final String EMPTY_NOTE = "";
+    private java.util.Map<String, TopicType> nodesMap = null;
+    private List<RelationshipType> relationships = null;
+    private int currentId;
 
     public MindMap importMap(String mapName,String description,InputStream input) throws ImporterException {
 
@@ -58,18 +62,24 @@ public class FreemindImporter
             final Map freemindMap = (Map) JAXBUtils.getMapObject(input,"com.wisemapping.xml.freemind");
 
             final com.wisemapping.xml.mindmap.Map mindmapMap = mindmapObjectFactory.createMap();
+            mindmapMap.setVersion("pela");
+            currentId=0;
 
             final Node centralNode = freemindMap.getNode();
             final TopicType centralTopic = mindmapObjectFactory.createTopicType();
+            centralTopic.setId(String.valueOf(currentId++));
             centralTopic.setCentral(true);
 
             setNodePropertiesToTopic(centralTopic,centralNode);
             centralTopic.setShape(ShapeStyle.ELIPSE.getStyle());
             mindmapMap.getTopic().add(centralTopic);
             mindmapMap.setName(mapName);
-
+            nodesMap = new HashMap<String, TopicType>();
+            relationships = new ArrayList<RelationshipType>();
             addTopicFromNode(centralNode,centralTopic);
             fixCentralTopicChildOrder(centralTopic);
+
+            addRelationships(mindmapMap);
 
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             JAXBUtils.saveMap(mindmapMap,out,"com.wisemapping.xml.mindmap");
@@ -87,6 +97,17 @@ public class FreemindImporter
         }
 
         return map;
+    }
+
+    private void addRelationships(com.wisemapping.xml.mindmap.Map mindmapMap) {
+        List<RelationshipType> mapRelationships = mindmapMap.getRelationship();
+        for(RelationshipType relationship : relationships){
+            relationship.setId(String.valueOf(currentId++));
+            String destId = relationship.getDestTopicId();
+            TopicType destTopic = nodesMap.get(destId);
+            relationship.setDestTopicId(destTopic.getId());
+            mapRelationships.add(relationship);
+        }
     }
 
     private void fixCentralTopicChildOrder(TopicType centralTopic){
@@ -178,6 +199,8 @@ public class FreemindImporter
             {
                 final Node node = (Node) freemindNode;
                 TopicType newTopic = mindmapObjectFactory.createTopicType();
+                newTopic.setId(String.valueOf(currentId++));
+                nodesMap.put(node.getID(), newTopic);  //Lets use freemind id temporarily. This will be fixed when adding relationship to the map.
                 newTopic.setOrder(order++);
                 String url = node.getLINK();
                 if (url != null)
@@ -244,6 +267,20 @@ public class FreemindImporter
                     currentTopic.setNote(mindmapNote);
 
                 }
+            }
+            else if (freemindNode instanceof Arrowlink){
+                final Arrowlink arrow = (Arrowlink) freemindNode;
+                RelationshipType relationship = mindmapObjectFactory.createRelationshipType();
+                String destId = arrow.getDESTINATION();
+                relationship.setSrcTopicId(currentTopic.getId());
+                relationship.setDestTopicId(destId);
+                /*String[] inclination = arrow.getENDINCLINATION().split(";");
+                relationship.setDestCtrlPoint(inclination[0]+","+inclination[1]);
+                inclination = arrow.getSTARTINCLINATION().split(";");
+                relationship.setSrcCtrlPoint(inclination[0]+","+inclination[1]);*/
+                relationship.setEndArrow(!arrow.getENDARROW().equals("None"));
+                relationship.setLineType("3");
+                relationships.add(relationship);
             }
         }
     }

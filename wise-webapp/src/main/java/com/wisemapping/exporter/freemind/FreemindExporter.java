@@ -23,10 +23,8 @@ import com.wisemapping.exporter.ExportException;
 import com.wisemapping.exporter.Exporter;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.util.JAXBUtils;
-import com.wisemapping.xml.freemind.Font;
-import com.wisemapping.xml.freemind.Node;
-import com.wisemapping.xml.freemind.Edge;
-import com.wisemapping.xml.freemind.Hook;
+import com.wisemapping.xml.freemind.*;
+import com.wisemapping.xml.mindmap.RelationshipType;
 import com.wisemapping.xml.mindmap.TopicType;
 import com.wisemapping.xml.mindmap.Icon;
 
@@ -35,13 +33,16 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.ByteArrayInputStream;
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FreemindExporter
     implements Exporter
 {
 
     private com.wisemapping.xml.freemind.ObjectFactory freemindObjectFactory;
+    private Map<String, Node> nodesMap = null;
 
     public void export(MindMap map, OutputStream outputStream) throws ExportException {
         try {
@@ -54,6 +55,7 @@ public class FreemindExporter
     public void export(byte[] xml, OutputStream outputStream) throws ExportException {
 
         freemindObjectFactory = new com.wisemapping.xml.freemind.ObjectFactory();
+        nodesMap = new HashMap<String, Node>();
         final com.wisemapping.xml.mindmap.Map mindmapMap;
 
         try {
@@ -85,8 +87,20 @@ public class FreemindExporter
             freemindMap.setNode(main);
             if (centerTopic != null)
             {
+                nodesMap.put(centerTopic.getId(), main);
                 setTopicPropertiesToNode(main,centerTopic);
                 addNodeFromTopic(centerTopic,main);
+            }
+            List<RelationshipType> relationships = mindmapMap.getRelationship();
+            for(RelationshipType relationship : relationships){
+                Node srcNode = nodesMap.get(relationship.getSrcTopicId());
+                Arrowlink arrowlink = freemindObjectFactory.createArrowlink();
+                Node dstNode = nodesMap.get(relationship.getDestTopicId());
+                arrowlink.setDESTINATION(dstNode.getID());
+                if(relationship.isEndArrow())
+                    arrowlink.setENDARROW("Default");
+                List<Object> cloudOrEdge = srcNode.getArrowlinkOrCloudOrEdge();
+                cloudOrEdge.add(arrowlink);
             }
 
             JAXBUtils.saveMap(freemindMap,outputStream,"com.wisemapping.xml.freemind");
@@ -101,6 +115,7 @@ public class FreemindExporter
 
         for (TopicType topicType : currentTopic) {
             final Node newNode = freemindObjectFactory.createNode();
+            nodesMap.put(topicType.getId(), newNode);
             setTopicPropertiesToNode(newNode,topicType);
             destNode.getArrowlinkOrCloudOrEdge().add(newNode);
             addNodeFromTopic(topicType,newNode);
@@ -109,6 +124,7 @@ public class FreemindExporter
 
     private void setTopicPropertiesToNode(com.wisemapping.xml.freemind.Node freemindNode, com.wisemapping.xml.mindmap.TopicType mindmapTopic)
     {
+        freemindNode.setID("ID_"+mindmapTopic.getId());
         freemindNode.setTEXT(mindmapTopic.getText());
         freemindNode.setBACKGROUNDCOLOR(mindmapTopic.getBgColor());
         String style = "line"; // default style for freemind
@@ -122,7 +138,9 @@ public class FreemindExporter
         addFontNode(freemindNode,mindmapTopic);
         addEdgeNode(freemindNode,mindmapTopic);
         addNote(freemindNode,mindmapTopic);
-
+        Boolean shrink = mindmapTopic.isShrink();
+        if(shrink!=null && shrink)
+            freemindNode.setFOLDED(String.valueOf(shrink));
     }
 
     private void addNote(com.wisemapping.xml.freemind.Node freemindNode,com.wisemapping.xml.mindmap.TopicType mindmapTopic)
