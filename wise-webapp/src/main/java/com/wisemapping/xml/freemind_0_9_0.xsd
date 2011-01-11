@@ -8,7 +8,7 @@
         </xs:complexType>
     </xs:element>
     <!--Used for node notes.-->
-    <xs:element name='text' type="xs:string"/>            
+    <xs:element name='text' type="xs:string"/>
 
     <xs:element name='arrowlink'>
         <xs:complexType>
@@ -74,6 +74,33 @@
         </xs:complexType>
     </xs:element>
 
+    <xs:element name='html'>
+        <xs:complexType>
+            <xs:sequence>
+                <!--Anything that is valid XML, but should be http://www.w3.org/1999/xhtml -->
+                <xs:any namespace="##any" minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name='richcontent'>
+        <xs:complexType>
+            <!-- And contains XHTML as unique child:-->
+            <xs:sequence>
+                <xs:element ref='html' minOccurs='1' maxOccurs='1'/>
+            </xs:sequence>
+            <!--Currently, only NODE or NOTE is allowed.-->
+            <xs:attribute name='TYPE' use='required'>
+                <xs:simpleType>
+                    <xs:restriction base='xs:string'>
+                        <xs:enumeration value='NODE'/>
+                        <xs:enumeration value='NOTE'/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+
     <xs:element name='map'>
         <xs:complexType>
             <xs:sequence>
@@ -93,6 +120,8 @@
                 <xs:element ref='hook'/>
                 <xs:element ref='icon'/>
                 <xs:element ref='node'/>
+                <!-- For nodes with extended formatting content or for notes to nodes. -->
+                <xs:element ref='richcontent'/>
             </xs:choice>
             <xs:attribute name='BACKGROUND_COLOR' type='xs:string' use='optional'/>
             <xs:attribute name='COLOR' type='xs:string' use='optional'/>

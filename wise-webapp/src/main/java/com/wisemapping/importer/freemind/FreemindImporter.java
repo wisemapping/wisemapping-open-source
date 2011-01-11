@@ -19,6 +19,7 @@
 
 package com.wisemapping.importer.freemind;
 
+import com.sun.org.apache.xerces.internal.dom.TextImpl;
 import com.wisemapping.importer.Importer;
 import com.wisemapping.importer.ImporterException;
 import com.wisemapping.model.MindMap;
@@ -26,8 +27,10 @@ import com.wisemapping.model.ShapeStyle;
 import com.wisemapping.model.MindMapNative;
 import com.wisemapping.util.JAXBUtils;
 import com.wisemapping.xml.freemind.*;
+import com.wisemapping.xml.freemind.Node;
 import com.wisemapping.xml.mindmap.TopicType;
 import com.wisemapping.xml.mindmap.Link;
+import org.w3c.dom.*;
 
 import javax.xml.bind.JAXBException;
 import java.io.InputStream;
@@ -38,7 +41,7 @@ import java.util.List;
 import java.math.BigInteger;
 
 public class FreemindImporter
-    implements Importer
+        implements Importer
 {
 
     private com.wisemapping.xml.mindmap.ObjectFactory mindmapObjectFactory;
@@ -222,7 +225,83 @@ public class FreemindImporter
                     currentTopic.setNote(mindmapNote);
                 }
             }
+            else if (freemindNode instanceof Richcontent)
+            {
+                final Richcontent content = (Richcontent) freemindNode;
+                final String type = content.getTYPE();
+
+                if(type.equals("NODE")){
+                    final String text = getText(content);
+                    text.replaceAll("\n","");
+                    text.trim();
+                    currentTopic.setText(text);
+                }
+                else{
+                    String text = getRichContent(content);
+                    final com.wisemapping.xml.mindmap.Note mindmapNote = new com.wisemapping.xml.mindmap.Note();
+                    text = text!= null ? text.replaceAll("\n","%0A") : EMPTY_NOTE;
+                    mindmapNote.setText(text);
+                    currentTopic.setNote(mindmapNote);
+
+                }
+            }
         }
+    }
+
+    private String getRichContent(Richcontent content) {
+        String result = null;
+        List<Element> elementList = content.getHtml().getAny();
+
+        Element body = null;
+        for(Element elem : elementList){
+            if(elem.getNodeName().equals("body")){
+                body = elem;
+                break;
+            }
+        }
+        if(body != null){
+            result = body.getTextContent();
+        }
+        return result;
+    }
+
+    private String getText(Richcontent content) {
+        String result = "";
+        List<Element> elementList = content.getHtml().getAny();
+
+        Element body = null;
+        for(Element elem : elementList){
+            if(elem.getNodeName().equals("body")){
+                body = elem;
+                break;
+            }
+        }
+        if(body != null){
+            String textNode = buildTextFromChildren(body);
+            if(textNode!= null)
+                result = textNode.trim();
+
+        }
+        return result;
+    }
+
+    private  String buildTextFromChildren(org.w3c.dom.Node body) {
+        StringBuilder text = new StringBuilder();
+        NodeList childNodes = body.getChildNodes();
+        for(int i=0; i< childNodes.getLength(); i++){
+            org.w3c.dom.Node child = childNodes.item(i);
+            if(child instanceof TextImpl){
+                text.append(" ");
+                text.append(child.getTextContent());
+            }
+            else{
+                String textElem = buildTextFromChildren(child);
+                if(textElem!=null && !textElem.equals("")){
+                    text.append(textElem);
+                }
+            }
+        }
+        return text.toString();
     }
 
     private void setNodePropertiesToTopic( com.wisemapping.xml.mindmap.TopicType mindmapTopic,com.wisemapping.xml.freemind.Node freemindNode)
@@ -294,7 +373,7 @@ public class FreemindImporter
         }
         return fontName;
     }
-    
+
     private String getShapeFormFromNode(Node node)
     {
         String shape = node.getSTYLE();

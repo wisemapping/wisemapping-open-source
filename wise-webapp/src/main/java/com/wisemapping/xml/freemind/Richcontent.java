@@ -26,9 +26,16 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element ref="{}node"/>
+ *         &lt;element ref="{}html"/>
  *       &lt;/sequence>
- *       &lt;attribute name="version" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;attribute name="TYPE" use="required">
+ *         &lt;simpleType>
+ *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *             &lt;enumeration value="NODE"/>
+ *             &lt;enumeration value="NOTE"/>
+ *           &lt;/restriction>
+ *         &lt;/simpleType>
+ *       &lt;/attribute>
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -38,62 +45,62 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "node"
+    "html"
 })
-@XmlRootElement(name = "map")
-public class Map {
+@XmlRootElement(name = "richcontent")
+public class Richcontent {
 
     @XmlElement(required = true)
-    protected Node node;
-    @XmlAttribute(required = true)
-    protected String version;
+    protected Html html;
+    @XmlAttribute(name = "TYPE", required = true)
+    protected String type;
 
     /**
-     * Gets the value of the node property.
+     * Gets the value of the html property.
      * 
      * @return
      *     possible object is
-     *     {@link Node }
+     *     {@link Html }
      *     
      */
-    public Node getNode() {
-        return node;
+    public Html getHtml() {
+        return html;
     }
 
     /**
-     * Sets the value of the node property.
+     * Sets the value of the html property.
      * 
      * @param value
      *     allowed object is
-     *     {@link Node }
+     *     {@link Html }
      *     
      */
-    public void setNode(Node value) {
-        this.node = value;
+    public void setHtml(Html value) {
+        this.html = value;
     }
 
     /**
-     * Gets the value of the version property.
+     * Gets the value of the type property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getVersion() {
-        return version;
+    public String getTYPE() {
+        return type;
     }
 
     /**
-     * Sets the value of the version property.
+     * Sets the value of the type property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setVersion(String value) {
-        this.version = value;
+    public void setTYPE(String value) {
+        this.type = value;
     }
 
 }
