@@ -322,6 +322,10 @@ public class FreemindImporter
         mindmapTopic.setPosition( position+","+200 * orderPosition);
         String fontStyle = generateFontStyle(freemindNode,null);
         mindmapTopic.setFontStyle(fontStyle);
+        Boolean folded = Boolean.valueOf(freemindNode.getFOLDED());
+        if(folded){
+            mindmapTopic.setShrink(folded);
+        }
     }
 
     private String generateFontStyle(Node node,Font font)

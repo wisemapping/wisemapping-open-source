@@ -2,19 +2,18 @@
 <xsd:schema
         attributeFormDefault="unqualified"
         elementFormDefault="qualified"
-        xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.wisemapping.org/mindmap"
-        xmlns="http://www.wisemapping.org/mindmap">
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
-    <xsd:element name="map" type="mapType"/>
-
-    <xsd:complexType name="mapType">
-        <xsd:sequence>
-            <xsd:element ref="topic" minOccurs="1" maxOccurs='unbounded'/>
-            <xsd:element ref="relationship" minOccurs="0" maxOccurs='unbounded'/>
-        </xsd:sequence>
-        <xsd:attribute name="name" type="xsd:string"/>
-        <xsd:attribute name="version" type="xsd:string"/>
-    </xsd:complexType>
+    <xsd:element name="map">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="topic" minOccurs="1" maxOccurs='unbounded'/>
+                <xsd:element ref="relationship" minOccurs="0" maxOccurs='unbounded'/>
+            </xsd:sequence>
+            <xsd:attribute name="name" type="xsd:string"/>
+            <xsd:attribute name="version" type="xsd:string"/>
+        </xsd:complexType>
+    </xsd:element>
 
     <xsd:element name="topic" type="topicType"/>
 
@@ -33,7 +32,8 @@
         <xsd:attribute name="order" type="xsd:int"/>
         <xsd:attribute name="position" type="xsd:string"/>
         <xsd:attribute name="central" type="xsd:boolean"/>
-        <xsd:attribute name="id" type="xsd:ID" use="optional"/>
+        <xsd:attribute name="id" type="xsd:string" use="optional"/>
+        <xsd:attribute name="shrink" type="xsd:boolean"/>
     </xsd:complexType>
 
     <xsd:complexType name="icon">
@@ -52,9 +52,9 @@
 
     <xsd:element name="relationship" type="relationshipType"/>
     <xsd:complexType name="relationshipType">
-        <xsd:attribute name="id" type="xsd:ID"/>
-        <xsd:attribute name="srcTopicId" type="xsd:ID"/>
-        <xsd:attribute name="destTopicId" type="xsd:ID"/>
+        <xsd:attribute name="id" type="xsd:string"/>
+        <xsd:attribute name="srcTopicId" type="xsd:string"/>
+        <xsd:attribute name="destTopicId" type="xsd:string"/>
         <xsd:attribute name="lineType" type="xsd:string"/>
         <xsd:attribute name="srcCtrlPoint" type="xsd:string"/>
         <xsd:attribute name="destCtrlPoint" type="xsd:string"/>
