@@ -377,7 +377,7 @@ public class FreemindImporter
         {
             fontStyle.append(fixFontName(font));
             fontStyle.append(";");
-            BigInteger bigInteger = font.getSIZE().intValue() < 8 ? BigInteger.valueOf(8) : font.getSIZE();
+            BigInteger bigInteger = (font.getSIZE()==null || font.getSIZE().intValue() < 8) ? BigInteger.valueOf(8) : font.getSIZE();
             fontStyle.append(bigInteger);
             fontStyle.append(";");
             fontStyle.append(node.getCOLOR());

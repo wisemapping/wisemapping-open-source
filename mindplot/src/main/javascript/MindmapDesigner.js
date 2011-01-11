@@ -629,15 +629,13 @@ mindplot.MindmapDesigner.prototype._buildRelationship = function (model) {
             if (t.getModel().getId() == fromNodeId)
             {
                 fromTopic= t;
-                if(toTopic!=null){
-                    break;
-                }
-            }else if (t.getModel().getId() == toNodeId)
+            }
+            if (t.getModel().getId() == toNodeId)
             {
                 toTopic= t;
-                if(fromTopic!=null){
-                    break;
-                }
+            }
+            if(toTopic!=null && fromTopic!=null){
+                break;
             }
         }
     
