@@ -76,6 +76,7 @@ public class FreemindImporter
             mindmapMap.setName(mapName);
             nodesMap = new HashMap<String, TopicType>();
             relationships = new ArrayList<RelationshipType>();
+            nodesMap.put(centralNode.getID(), centralTopic);
             addTopicFromNode(centralNode,centralTopic);
             fixCentralTopicChildOrder(centralTopic);
 
@@ -103,11 +104,51 @@ public class FreemindImporter
         List<RelationshipType> mapRelationships = mindmapMap.getRelationship();
         for(RelationshipType relationship : relationships){
             relationship.setId(String.valueOf(currentId++));
+
+            fixRelationshipControlPoints(relationship);
+
+            //Fix dest ID
             String destId = relationship.getDestTopicId();
             TopicType destTopic = nodesMap.get(destId);
             relationship.setDestTopicId(destTopic.getId());
+            //Fix src ID
+            String srcId = relationship.getSrcTopicId();
+            TopicType srcTopic = nodesMap.get(srcId);
+            relationship.setSrcTopicId(srcTopic.getId());
+
             mapRelationships.add(relationship);
         }
+    }
+
+    private void fixRelationshipControlPoints(RelationshipType relationship) {
+        //Both relationship node's ids should be freemind ones at this point.
+        TopicType srcTopic = nodesMap.get(relationship.getSrcTopicId());
+        TopicType destTopicType = nodesMap.get(relationship.getDestTopicId());
+
+        //Fix x coord
+        if(isOnLeftSide(srcTopic)){
+            String[] srcCtrlPoint = relationship.getSrcCtrlPoint().split(",");
+            int x = Integer.valueOf(srcCtrlPoint[0]) * -1;
+            relationship.setSrcCtrlPoint(x+","+srcCtrlPoint[1]);
+        }
+        if(isOnLeftSide(destTopicType)){
+            String[] destCtrlPoint = relationship.getDestCtrlPoint().split(",");
+             int x = Integer.valueOf(destCtrlPoint[0]) * -1;
+            relationship.setDestCtrlPoint(x+","+destCtrlPoint[1]);
+        }
+
+        //Fix y coord
+        if(srcTopic.getOrder()%2!=0){ //Odd order.
+            String[] srcCtrlPoint = relationship.getSrcCtrlPoint().split(",");
+            int y = Integer.valueOf(srcCtrlPoint[1]) * -1;
+            relationship.setSrcCtrlPoint(srcCtrlPoint[0]+","+y);
+        }
+        if(destTopicType.getOrder()%2!=0){ //Odd order.
+            String[] destCtrlPoint = relationship.getDestCtrlPoint().split(",");
+            int y = Integer.valueOf(destCtrlPoint[1]) * -1;
+            relationship.setDestCtrlPoint(destCtrlPoint[0]+","+y);
+        }
+        
     }
 
     private void fixCentralTopicChildOrder(TopicType centralTopic){
@@ -209,6 +250,9 @@ public class FreemindImporter
                     link.setUrl(url);
                     newTopic.setLink(link);
                 }
+                if(POSITION_LEFT.equals(mainNode.getPOSITION())){
+                    node.setPOSITION(POSITION_LEFT);
+                }
                 setNodePropertiesToTopic(newTopic, node);
                 addTopicFromNode(node,newTopic);
                 if (!newTopic.equals(topic))
@@ -272,12 +316,13 @@ public class FreemindImporter
                 final Arrowlink arrow = (Arrowlink) freemindNode;
                 RelationshipType relationship = mindmapObjectFactory.createRelationshipType();
                 String destId = arrow.getDESTINATION();
-                relationship.setSrcTopicId(currentTopic.getId());
+                relationship.setSrcTopicId(mainNode.getID());
                 relationship.setDestTopicId(destId);
-                /*String[] inclination = arrow.getENDINCLINATION().split(";");
+                String[] inclination = arrow.getENDINCLINATION().split(";");
                 relationship.setDestCtrlPoint(inclination[0]+","+inclination[1]);
                 inclination = arrow.getSTARTINCLINATION().split(";");
-                relationship.setSrcCtrlPoint(inclination[0]+","+inclination[1]);*/
+                relationship.setSrcCtrlPoint(inclination[0]+","+inclination[1]);
+                //relationship.setCtrlPointRelative(true);
                 relationship.setEndArrow(!arrow.getENDARROW().equals("None"));
                 relationship.setLineType("3");
                 relationships.add(relationship);

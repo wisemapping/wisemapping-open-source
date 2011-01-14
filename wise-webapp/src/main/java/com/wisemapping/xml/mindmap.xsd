@@ -59,6 +59,7 @@
         <xsd:attribute name="srcCtrlPoint" type="xsd:string"/>
         <xsd:attribute name="destCtrlPoint" type="xsd:string"/>
         <xsd:attribute name="endArrow" type="xsd:boolean"/>
+        <xsd:attribute name="ctrlPointRelative" type="xsd:boolean"/>
     </xsd:complexType>
 
 </xsd:schema>

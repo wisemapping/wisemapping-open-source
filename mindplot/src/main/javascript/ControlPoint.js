@@ -52,14 +52,14 @@ mindplot.ControlPoint.prototype.setLine= function(line) {
 
 mindplot.ControlPoint.prototype._createControlPoint = function() {
     this._controls= this._line.getLine().getControlPoints();
-    this._controlPointsController[0].setPosition(this._controls[mindplot.ControlPoint.FROM].x, this._controls[mindplot.ControlPoint.FROM].y-3);
-    this._controlPointsController[1].setPosition(this._controls[mindplot.ControlPoint.TO].x, this._controls[mindplot.ControlPoint.TO].y-3);
     var pos = this._line.getLine().getFrom();
+    this._controlPointsController[0].setPosition(this._controls[mindplot.ControlPoint.FROM].x+pos.x, this._controls[mindplot.ControlPoint.FROM].y+pos.y-3);
     this._controlLines[0].setFrom(pos.x, pos.y);
-    this._controlLines[0].setTo(this._controls[mindplot.ControlPoint.FROM].x+3, this._controls[mindplot.ControlPoint.FROM].y);
+    this._controlLines[0].setTo(this._controls[mindplot.ControlPoint.FROM].x+pos.x+3, this._controls[mindplot.ControlPoint.FROM].y+pos.y);
     pos = this._line.getLine().getTo();
     this._controlLines[1].setFrom(pos.x, pos.y);
-    this._controlLines[1].setTo(this._controls[mindplot.ControlPoint.TO].x+3, this._controls[mindplot.ControlPoint.TO].y);
+    this._controlLines[1].setTo(this._controls[mindplot.ControlPoint.TO].x+pos.x+3, this._controls[mindplot.ControlPoint.TO].y+pos.y);
+    this._controlPointsController[1].setPosition(this._controls[mindplot.ControlPoint.TO].x+pos.x, this._controls[mindplot.ControlPoint.TO].y+pos.y-3);
 
 };
 
@@ -91,8 +91,8 @@ mindplot.ControlPoint.prototype._mouseMove = function(event, point) {
         var cords = core.Utils.calculateRelationShipPointCoordinates(this._line.getTargetTopic(),pos);
         this._line.getLine().setTo(cords.x, cords.y);
     }
-    this._controls[point].x=pos.x;
-    this._controls[point].y=pos.y;
+    this._controls[point].x=(pos.x - cords.x);
+    this._controls[point].y=(pos.y - cords.y);
     this._controlPointsController[point].setPosition(pos.x-5,pos.y-3);
     this._controlLines[point].setFrom(cords.x, cords.y);
     this._controlLines[point].setTo(pos.x-2,pos.y);

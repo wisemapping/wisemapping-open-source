@@ -10,6 +10,7 @@ mindplot.RelationshipModel = function(fromNode, toNode)
     this._srcCtrlPoint=null;
     this._destCtrlPoint=null;
     this._endArrow=true;
+    this._ctrlPointRelative=false;
 
 };
 

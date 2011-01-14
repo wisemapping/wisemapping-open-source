@@ -30,14 +30,20 @@ mindplot.RelationshipLine.prototype.redraw = function()
     this._line2d.setStroke(2);
     var ctrlPoints = this._line2d.getControlPoints();
     if(!core.Utils.isDefined(ctrlPoints[0].x) || !core.Utils.isDefined(ctrlPoints[1].x)){
-        var defaultPoints = core.Utils.calculateDefaultControlPoints(sourceTopic.getPosition(), targetTopic.getPosition());
-        ctrlPoints[0].x=defaultPoints[0].x;
-        ctrlPoints[0].y=defaultPoints[0].y;
-        ctrlPoints[1].x=defaultPoints[1].x;
-        ctrlPoints[1].y=defaultPoints[1].y;
+        var defaultPoints = core.Utils.calculateDefaultControlPoints(sourcePosition, targetPosition);
+        ctrlPoints[0].x=sourcePosition.x - defaultPoints[0].x;
+        ctrlPoints[0].y=sourcePosition.y - defaultPoints[0].y;
+        ctrlPoints[1].x=targetPosition.x - defaultPoints[1].x;
+        ctrlPoints[1].y=targetPosition.y - defaultPoints[1].y;
     }
-    sPos = core.Utils.calculateRelationShipPointCoordinates(sourceTopic,ctrlPoints[0]);
-    tPos = core.Utils.calculateRelationShipPointCoordinates(targetTopic,ctrlPoints[1]);
+    var spoint = new core.Point();
+    spoint.x=parseInt(ctrlPoints[0].x)+parseInt(sourcePosition.x);
+    spoint.y=parseInt(ctrlPoints[0].y)+parseInt(sourcePosition.y);
+    var tpoint = new core.Point();
+    tpoint.x=parseInt(ctrlPoints[1].x)+parseInt(targetPosition.x);
+    tpoint.y=parseInt(ctrlPoints[1].y)+parseInt(targetPosition.y);
+    sPos = core.Utils.calculateRelationShipPointCoordinates(sourceTopic,spoint);
+    tPos = core.Utils.calculateRelationShipPointCoordinates(targetTopic,tpoint);
 
     line2d.setFrom(sPos.x, sPos.y);
     line2d.setTo(tPos.x, tPos.y);

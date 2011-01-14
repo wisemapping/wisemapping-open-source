@@ -36,6 +36,8 @@ web2d.peer.svg.CurvedLinePeer.prototype.setSrcControlPoint = function(control){
     this._customControlPoint_1 = true;
     if(core.Utils.isDefined(control.x)){
         this._control1 = control;
+        this._control1.x = parseInt(this._control1.x);
+        this._control1.y = parseInt(this._control1.y)
     }
     this._updatePath();
 };
@@ -44,6 +46,8 @@ web2d.peer.svg.CurvedLinePeer.prototype.setDestControlPoint = function(control){
     this._customControlPoint_2 = true;
     if(core.Utils.isDefined(control.x)){
         this._control2 = control;
+        this._control2.x = parseInt(this._control2.x);
+        this._control2.y = parseInt(this._control2.y)
     }
     this._updatePath();
 };
@@ -72,23 +76,15 @@ web2d.peer.svg.CurvedLinePeer.prototype.getControlPoints = function(){
 
 web2d.peer.svg.CurvedLinePeer.prototype.setFrom = function(x1, y1)
 {
-    if(this._customControlPoint_1 && core.Utils.isDefined(this._x1)){
-        this._control1.x-=this._x1-x1;
-        this._control1.y-=this._y1-y1;
-    }
-    this._x1 = x1;
-    this._y1 = y1;
+    this._x1 = parseInt(x1);
+    this._y1 = parseInt(y1);
     this._updatePath();
 };
 
 web2d.peer.svg.CurvedLinePeer.prototype.setTo = function(x2, y2)
 {
-    if(this._customControlPoint_2 && core.Utils.isDefined(this._x2)){
-        this._control2.x-=this._x2-x2;
-        this._control2.y-=this._y2-y2;
-    }
-    this._x2 = x2;
-    this._y2 = y2;
+    this._x2 = parseInt(x2);
+    this._y2 = parseInt(y2);
     this._updatePath();
 };
 
@@ -153,8 +149,8 @@ web2d.peer.svg.CurvedLinePeer.prototype._updatePath = function(avoidControlPoint
     if(this._showArrow){
         if(this._control2.y == 0)
             this._control2.y=1;
-        var y0 = parseInt(this._control2.y) - this._y2;
-        var x0 = parseInt(this._control2.x) - this._x2;
+        var y0 = this._control2.y;
+        var x0 = this._control2.x;
         var x2=x0+y0;
         var y2 = y0-x0;
         var x3 = x0-y0;
@@ -171,13 +167,13 @@ web2d.peer.svg.CurvedLinePeer.prototype._updatePath = function(avoidControlPoint
         yp = (x3==0?l*Math.sign(y3):mp*xp);
     }
     var path = "M"+this._x1+","+this._y1
-             +" C"+this._control1.x+","+this._control1.y+" "
-                  +this._control2.x+","+this._control2.y+" "
+             +" C"+(this._control1.x+this._x1)+","+(this._control1.y+this._y1)+" "
+                  +(this._control2.x+this._x2)+","+(this._control2.y+this._y2)+" "
                   +this._x2+","+this._y2+
                   (this._lineStyle?" "
-                    +this._control2.x+","+(parseInt(this._control2.y)+3)+" "
-                    +this._control1.x+","+(parseInt(this._control1.y)+3)+" "
-                    +this._x1+","+(parseInt(this._y1)+3)+" Z"
+                    +(this._control2.x+this._x2)+","+(this._control2.y+this._y2+3)+" "
+                    +(this._control1.x+this._x1)+","+(this._control1.y+this._y1+3)+" "
+                    +this._x1+","+(this._y1+3)+" Z"
                     :""
                   )+
                   (this._showArrow?" "
