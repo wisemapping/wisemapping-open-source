@@ -216,6 +216,7 @@ mindplot.XMLMindmapSerializer_Pela.prototype._relationshipToXML = function(docum
         }
     }
     relationDom.setAttribute("endArrow",relationship.getEndArrow());
+    relationDom.setAttribute("startArrow",relationship.getStartArrow());
     return relationDom;
 };
 
@@ -382,6 +383,7 @@ mindplot.XMLMindmapSerializer_Pela.prototype._deserializeRelationship = function
     var srcCtrlPoint = domElement.getAttribute("srcCtrlPoint");
     var destCtrlPoint = domElement.getAttribute("destCtrlPoint");
     var endArrow = domElement.getAttribute("endArrow");
+    var startArrow = domElement.getAttribute("startArrow");
     var model = mindmap.createRelationship(srcId,  destId);
     model.setLineType(lineType);
     if(core.Utils.isDefined(srcCtrlPoint) && srcCtrlPoint!=""){
@@ -390,7 +392,8 @@ mindplot.XMLMindmapSerializer_Pela.prototype._deserializeRelationship = function
     if(core.Utils.isDefined(destCtrlPoint) && destCtrlPoint!=""){
         model.setDestCtrlPoint(core.Point.fromString(destCtrlPoint));
     }
-    model.setEndArrow(endArrow);
+    model.setEndArrow(endArrow=="true");
+    model.setStartArrow(startArrow=="true");
     return model;
 };
 

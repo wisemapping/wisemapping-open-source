@@ -54,12 +54,20 @@ web2d.CurvedLine.prototype.getTo = function()
     return this._peer.getTo();
 };
 
-web2d.CurvedLine.prototype.setShowArrow = function(visible){
-    this._peer.setShowArrow(visible);
+web2d.CurvedLine.prototype.setShowEndArrow = function(visible){
+    this._peer.setShowEndArrow(visible);
 };
 
-web2d.CurvedLine.prototype.isShowArrow = function(){
-    return this._peer.isShowArrow();
+web2d.CurvedLine.prototype.isShowEndArrow = function(){
+    return this._peer.isShowEndArrow();
+};
+
+web2d.CurvedLine.prototype.setShowStartArrow = function(visible){
+    this._peer.setShowStartArrow(visible);
+};
+
+web2d.CurvedLine.prototype.isShowStartArrow = function(){
+    return this._peer.isShowStartArrow();
 };
 
 web2d.CurvedLine.prototype.setSrcControlPoint = function(control){

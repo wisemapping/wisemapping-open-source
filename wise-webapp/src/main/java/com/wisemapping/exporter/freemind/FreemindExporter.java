@@ -99,6 +99,8 @@ public class FreemindExporter
                 arrowlink.setDESTINATION(dstNode.getID());
                 if(relationship.isEndArrow())
                     arrowlink.setENDARROW("Default");
+                if(relationship.isStartArrow())
+                    arrowlink.setSTARTARROW("Default");
                 List<Object> cloudOrEdge = srcNode.getArrowlinkOrCloudOrEdge();
                 cloudOrEdge.add(arrowlink);
             }

@@ -10,6 +10,7 @@ mindplot.RelationshipModel = function(fromNode, toNode)
     this._srcCtrlPoint=null;
     this._destCtrlPoint=null;
     this._endArrow=true;
+    this._startArrow=false;
     this._ctrlPointRelative=false;
 
 };
@@ -58,6 +59,14 @@ mindplot.RelationshipModel.prototype.setEndArrow= function(endArrow){
     this._endArrow = endArrow;
 };
 
+mindplot.RelationshipModel.prototype.getStartArrow= function(){
+    return this._startArrow;
+};
+
+mindplot.RelationshipModel.prototype.setStartArrow= function(startArrow){
+    this._startArrow = startArrow;
+};
+
 mindplot.RelationshipModel.prototype.clone = function(model){
     var result = new mindplot.RelationshipModel(this._fromNode, this._toNode);
     result._id = this._id;
@@ -65,6 +74,7 @@ mindplot.RelationshipModel.prototype.clone = function(model){
     result._srcCtrlPoint = this._srcCtrlPoint;
     result._destCtrlPoint = this._destCtrlPoint;
     result._endArrow = this._endArrow;
+    result._startArrow = this._startArrow;
     return result;
 };
 

@@ -323,7 +323,8 @@ public class FreemindImporter
                 inclination = arrow.getSTARTINCLINATION().split(";");
                 relationship.setSrcCtrlPoint(inclination[0]+","+inclination[1]);
                 //relationship.setCtrlPointRelative(true);
-                relationship.setEndArrow(!arrow.getENDARROW().equals("None"));
+                relationship.setEndArrow(!arrow.getENDARROW().toLowerCase().equals("none"));
+                relationship.setStartArrow(!arrow.getSTARTARROW().toLowerCase().equals("none"));
                 relationship.setLineType("3");
                 relationships.add(relationship);
             }

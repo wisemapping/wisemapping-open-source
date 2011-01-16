@@ -132,13 +132,22 @@ web2d.peer.svg.CurvedLinePeer.prototype.getLineStyle = function (){
 };
 
 
-web2d.peer.svg.CurvedLinePeer.prototype.setShowArrow = function(visible){
-    this._showArrow =visible;
+web2d.peer.svg.CurvedLinePeer.prototype.setShowEndArrow = function(visible){
+    this._showEndArrow =visible;
     this.updateLine();
 };
 
-web2d.peer.svg.CurvedLinePeer.prototype.isShowArrow = function(){
-    return this._showArrow;
+web2d.peer.svg.CurvedLinePeer.prototype.isShowEndArrow = function(){
+    return this._showEndArrow;
+};
+
+web2d.peer.svg.CurvedLinePeer.prototype.setShowStartArrow = function(visible){
+    this._showStartArrow =visible;
+    this.updateLine();
+};
+
+web2d.peer.svg.CurvedLinePeer.prototype.isShowStartArrow = function(){
+    return this._showStartArrow;
 };
 
 
@@ -146,7 +155,7 @@ web2d.peer.svg.CurvedLinePeer.prototype._updatePath = function(avoidControlPoint
 {
     this._calculateAutoControlPoints(avoidControlPointFix);
     var x,y, xp, yp;
-    if(this._showArrow){
+    if(this._showEndArrow){
         if(this._control2.y == 0)
             this._control2.y=1;
         var y0 = this._control2.y;
@@ -166,8 +175,36 @@ web2d.peer.svg.CurvedLinePeer.prototype._updatePath = function(avoidControlPoint
         xp *=Math.sign(x3);
         yp = (x3==0?l*Math.sign(y3):mp*xp);
     }
-    var path = "M"+this._x1+","+this._y1
-             +" C"+(this._control1.x+this._x1)+","+(this._control1.y+this._y1)+" "
+    var xs2,ys2, xp2, yp2;
+    if(this._showStartArrow){
+        if(this._control1.y == 0)
+            this._control1.y=1;
+        var y02 = this._control1.y;
+        var x02 = this._control1.x;
+        var x22=x02+y02;
+        var y22 = y02-x02;
+        var x32 = x02-y02;
+        var y32 = y02+x02;
+        var m2 = y22/x22;
+        var mp2 = y32/x32;
+        var l2 = 6;
+        var pow2 = Math.pow;
+        xs2 = (x22==0?0:Math.sqrt(pow2(l2,2)/(1+pow2(m2,2))));
+        xs2 *=Math.sign(x22);
+        ys2 = (x22==0?l2*Math.sign(y22):m2*xs2);
+        xp2 = (x32==0?0:Math.sqrt(pow2(l2,2)/(1+pow2(mp2,2))));
+        xp2 *=Math.sign(x32);
+        yp2 = (x32==0?l2*Math.sign(y32):mp2*xp2);
+    }
+
+    var path = (this._showStartArrow?" "
+                   +"M"+this._x1+","+this._y1+" "
+                   +"L"+(xs2+this._x1)+","+(ys2+this._y1)
+                   +"M"+this._x1+","+this._y1+" "
+                   +"L"+(xp2+this._x1)+","+(yp2+this._y1)
+                   :"")+
+                "M"+this._x1+","+this._y1
+                +" C"+(this._control1.x+this._x1)+","+(this._control1.y+this._y1)+" "
                   +(this._control2.x+this._x2)+","+(this._control2.y+this._y2)+" "
                   +this._x2+","+this._y2+
                   (this._lineStyle?" "
@@ -176,7 +213,7 @@ web2d.peer.svg.CurvedLinePeer.prototype._updatePath = function(avoidControlPoint
                     +this._x1+","+(this._y1+3)+" Z"
                     :""
                   )+
-                  (this._showArrow?" "
+                  (this._showEndArrow?" "
                    +"M"+this._x2+","+this._y2+" "
                    +"L"+(x+this._x2)+","+(y+this._y2)
                    +"M"+this._x2+","+this._y2+" "
