@@ -31,6 +31,17 @@
                 </div>
             </c:when>
         </c:choose>
+        <div class="header_languages">
+            <div class="header_language_flag">
+                <a href="?language=en"><img src="../images/uk.gif" alt="English"></a>
+            </div>
+            <div class="header_language_flag">
+                <a href="?language=fr"><img src="../images/fr.gif" alt="Frances"></a>
+            </div>
+            <div class="header_language_flag">
+                <a href="?language=es"><img src="../images/es.gif" alt="Espanol"></a>
+            </div>
+        </div>
     </div>
 </div>
 <c:if test="${param.onlyActionHeader!=true}">

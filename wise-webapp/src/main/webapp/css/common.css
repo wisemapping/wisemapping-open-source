@@ -419,6 +419,19 @@ div#headerActions a:hover, div#headerActions a:active, div#headerActions a:link,
     background: #A29BBF;
 }
 
+div.header_languages {
+    position:absolute;
+    right:0px;
+    top: 30px;
+    width:100px;
+    height:20px;
+}
+
+div.header_language_flag {
+    float:left;
+    margin-right:3px;
+}
+
 /*---   Modal Dialog Form  ---*/
 div.modalDialog {
     padding: 15px 30px;
