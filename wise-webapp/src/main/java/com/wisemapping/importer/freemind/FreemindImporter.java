@@ -38,6 +38,7 @@ import javax.xml.bind.JAXBException;
 import java.io.InputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.*;
 import java.math.BigInteger;
 
@@ -86,7 +87,7 @@ public class FreemindImporter
             JAXBUtils.saveMap(mindmapMap,out,"com.wisemapping.xml.mindmap");
 
             map = new MindMap();
-            map.setNativeXml(out.toString());
+            map.setNativeXml(new String(out.toByteArray(), Charset.forName("UTF-8")));
             map.setTitle(mapName);
             map.setDescription(description);
             map.setNativeBrowser(new MindMapNative());
