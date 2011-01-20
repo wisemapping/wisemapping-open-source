@@ -73,7 +73,7 @@ mindplot.RelationshipLine.prototype.redraw = function()
         this._refreshSelectedShape();
     }
     this._focusShape.moveToBack();
-
+    this._controlPointsController.redraw();
 };
 
 mindplot.RelationshipLine.prototype.addToWorkspace = function(workspace)

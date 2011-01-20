@@ -86,6 +86,10 @@ mindplot.commands.DragTopicCommand = mindplot.Command.extend(
     undoExecute: function(commandContext)
     {
         this.execute(commandContext);
+        var selectedRelationships = commandContext.getSelectedRelationshipLines();
+        selectedRelationships.forEach(function(relationshipLine,index){
+            relationshipLine.redraw();
+        });
 
     },
     setPosition: function(point)

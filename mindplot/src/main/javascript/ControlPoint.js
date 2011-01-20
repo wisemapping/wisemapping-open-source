@@ -49,6 +49,11 @@ mindplot.ControlPoint.prototype.setLine= function(line) {
     this._endPoint[1] = this._line.getLine().getTo().clone();
 };
 
+mindplot.ControlPoint.prototype.redraw = function(){
+    if(this._line)
+        this._createControlPoint();
+};
+
 mindplot.ControlPoint.prototype._createControlPoint = function() {
     this._controls= this._line.getLine().getControlPoints();
     var pos = this._line.getLine().getFrom();

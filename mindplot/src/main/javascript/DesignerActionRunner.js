@@ -134,6 +134,9 @@ mindplot.CommandContext = new Class({
             }
         }.bind(this));
         return result;
+    },
+    getSelectedRelationshipLines:function(){
+        return this._designer.getSelectedRelationshipLines();
     }
 });
 
