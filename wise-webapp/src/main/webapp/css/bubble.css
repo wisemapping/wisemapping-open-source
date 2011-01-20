@@ -4,6 +4,14 @@
     opacity:0;
     width:auto;
     overflow:hidden;
+    padding:20px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-color:#BCCCE1;
+    -moz-box-shadow: 5px 5px 5px #888;
+    -webkit-box-shadow: 5px 5px 5px #888;
+    box-shadow: 5px 5px 5px #888;
+    border: 1px solid black;
 }
 
 .bublePartContainer {

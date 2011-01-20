@@ -44,7 +44,7 @@ mindplot.BubbleTip.prototype.scanElements=function(form){
             }
         }, this);
     };
-mindplot.BubbleTip.prototype.buildBubble=function(invert){
+mindplot.BubbleTip.prototype.buildBubble=function(){
         var opts = this.options;
 
         var panel = new Element('div').addClass('bubbleContainer');
@@ -53,53 +53,8 @@ mindplot.BubbleTip.prototype.buildBubble=function(invert){
         if($chk(opts.width))
             panel.setStyle('width', opts.width);
 
-        var topClass="";
-        var bottomClass="Hint";
-        if($chk(invert)){
-            var tmpClass = topClass;
-            topClass=bottomClass;
-            bottomClass=tmpClass;
-        }
-
-        //build top part of bubble
-        this.topContainer = new Element('div').addClass('bublePartContainer');
-        this.topLeft = new Element('div').addClass('bubblePart').addClass('bubble'+topClass+'TopLeftBlue');
-        this.top = new Element('div').addClass('bubblePart').addClass('bubble'+topClass+'TopBlue');
-        this.topHint =new Element('div').addClass('bubblePart').addClass('bubbleTop'+topClass+'Blue').setStyle('width',58);
-        this.top2 = new Element('div').addClass('bubblePart').addClass('bubble'+topClass+'TopBlue');
-        this.topRight = new Element('div').addClass('bubblePart').addClass('bubble'+topClass+'TopRightBlue');
-        this.topLeft.inject(this.topContainer);
-        this.top.inject(this.topContainer);
-        this.topHint.inject(this.topContainer);
-        this.top2.inject(this.topContainer);
-        this.topRight.inject(this.topContainer);
-
-        //build middle part of bubble
-        this.middleContainer = new Element('div').addClass('bublePartContainer');
-        this.left = new Element('div').addClass('bubblePart').addClass('bubbleLeftBlue');
         this.center = new Element('div').addClass('bubblePart').addClass('bubbleCenterBlue');
-        this.right = new Element('div').addClass('bubblePart').addClass('bubbleRightBlue');
-        this.left.inject(this.middleContainer);
-        this.center.inject(this.middleContainer);
-        this.right.inject(this.middleContainer);
-
-        //build bottom part of bubble
-        this.bottomContainer = new Element('div').addClass('bublePartContainer');
-        this.bottomLeft = new Element('div').addClass('bubblePart').addClass('bubble'+bottomClass+'BottomLeftBlue');
-        this.bottom = new Element('div').addClass('bubblePart').addClass('bubble'+bottomClass+'BottomBlue');
-        this.bottomHint =new Element('div').addClass('bubblePart').addClass('bubbleBottom'+bottomClass+'Blue').setStyle('width',58);
-        this.bottom2 = new Element('div').addClass('bubblePart').addClass('bubble'+bottomClass+'BottomBlue');
-        this.bottomRight = new Element('div').addClass('bubblePart').addClass('bubble'+bottomClass+'BottomRightBlue');
-        this.bottomLeft.inject(this.bottomContainer);
-        this.bottom.inject(this.bottomContainer);
-        this.bottomHint.inject(this.bottomContainer);
-        this.bottom2.inject(this.bottomContainer);
-        this.bottomRight.inject(this.bottomContainer);
-
-        this.topContainer.inject(panel);
-        this.middleContainer.inject(panel);
-        this.bottomContainer.inject(panel);
-
+        this.center.inject(panel);
         if(!$chk(opts.divContainer))
         {
             opts.divContainer=document.body;
@@ -153,12 +108,6 @@ mindplot.BubbleTip.prototype.forceClose=function(){
         this.options.panel.effect('opacity',{duration:100, onComplete:function(){
             this._open=false;
             $(this.options.panel).setStyles({left:0,top:0});
-            $(this.top2).setStyle('width', 3);
-            $(this.bottom2).setStyle('width', 3);
-            $(this.top).setStyle('width', 3);
-            $(this.bottom).setStyle('width', 3);
-            $(this.left).setStyle('height', 4);
-            $(this.right).setStyle('height', 4);
             $(this.options.container).remove();
         }.bind(this)}).start(100,0);
     };
@@ -166,6 +115,7 @@ mindplot.BubbleTip.prototype.init=function(event,source){
         var opts = this.options;
         var coordinates = $(opts.panel).getCoordinates();
         var panelHeight = coordinates.height; //not total height, but close enough
+        var panelWidth = coordinates.width; //not total height, but close enough
 
         var offset = designer.getWorkSpace().getScreenManager().getWorkspaceIconPosition(source);
 
@@ -173,65 +123,26 @@ mindplot.BubbleTip.prototype.init=function(event,source){
         var screenWidth = containerCoords.width;
         var screenHeight = containerCoords.height;
 
-        var invert = false;
-        var picoFix=20;
+        var width = $(this.center).getCoordinates().width;
 
-        var centerWidth = $(this.center).getCoordinates().width;
-
-        if(offset.y > panelHeight){ //hint goes on the bottom
-            if(!$(this.topLeft).hasClass('bubbleTopLeftBlue')){
-                $(this.options.panel).remove();
-                this.buildBubble(false);
-                $(this.options.container).inject(this.center);
-            }
-        }
-        else{
-            invert=true;
-            picoFix=0;
-            if($(this.topLeft).hasClass('bubbleTopLeftBlue')){
-                $(this.options.panel).remove();
-                this.buildBubble(invert);
-                $(this.options.container).inject(this.center);
-            }
-            centerWidth = centerWidth-1;
-        }
-
-        offset.y = offset.y + picoFix;
-        var width = centerWidth - $(this.topHint).getCoordinates().width;
-
-        if((screenWidth -offset.x)>coordinates.width){
-            width= width-$(this.top).getCoordinates().width;
-            $(this.top2).setStyle('width', width);
-            $(this.bottom2).setStyle('width', width);
-        }
-        else{
-            width= width-$(this.top2).getCoordinates().width;
-            $(this.top).setStyle('width', width);
-            $(this.bottom).setStyle('width', width);
-        }
-
-        width = centerWidth + $(this.topLeft).getCoordinates().width;
-        //width = width + $(this.top).getCoordinates().width;
-        //width = width + $(this.topHint).getCoordinates().width;
-        width = width + $(this.topRight).getCoordinates().width;
+        var invert = !(offset.y > panelHeight); //hint goes on the bottom
+        var invertX = (screenWidth-offset.x > panelWidth); // hint goes on the right
+        $(this.options.panel).remove();
+        this.buildBubble();
+        $(this.options.container).inject(this.center);
 
         var height = $(this.center).getCoordinates().height;
-        $(this.left).setStyle('height', height);
-        $(this.right).setStyle('height', height);
-
-        height = height+ $(this.topLeft).getCoordinates().height;
-        height = height+ $(this.bottomLeft).getCoordinates().height;
         $(opts.panel).setStyles({width:width,height:height});
-
-        this.moveTopic(offset, $(opts.panel).getCoordinates().height, invert);
+        this.moveTopic(offset, $(opts.panel).getCoordinates().height, $(opts.panel).getCoordinates().width,  invert, invertX);
     };
-mindplot.BubbleTip.prototype.moveTopic=function(offset, panelHeight, invert){
-        var f = 1;
+mindplot.BubbleTip.prototype.moveTopic=function(offset, panelHeight, panelWidth, invert, invertX){
+        var f = 1, fX=1;
         if($chk(invert))
             f=0;
+        if($chk(invertX))
+            fX=0;
         var opts = this.options;
-        var width = $(this.bottomLeft).getCoordinates().width+$(this.bottom).getCoordinates().width-(2*(f-1));
-        $(opts.panel).setStyles({left:offset.x - width, top:offset.y - (panelHeight*f)});
+        $(opts.panel).setStyles({left:offset.x - (panelWidth*fX), top:offset.y - (panelHeight*f)});
     };
 
 mindplot.BubbleTip.getInstance = function(divContainer)
@@ -244,20 +155,3 @@ mindplot.BubbleTip.getInstance = function(divContainer)
     }
     return result;
 };
-
-
-/*
-buildAnchorContent:function(el, title){
-        var imgContainer= new Element('div');
-        var img = new Element('img');
-        img.src='http://open.thumbshots.org/image.pxf?url='+el.href;
-        img.inject(imgContainer);
-
-        var attribution = new Element('div');
-        attribution.innerHTML="<a href='http://www.thumbshots.org' target='_blank' title='About Thumbshots thumbnails'>About Thumbshots thumbnails</a>";
-
-        var element = new Element('div');
-        imgContainer.inject(element);
-        attribution.inject(element);
-        return element;
-    }*/
