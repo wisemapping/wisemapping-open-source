@@ -989,6 +989,20 @@ mindplot.Topic.prototype.setVisibility = function(value)
 
     // Hide all children...
     this._setChildrenVisibility(value);
+
+    this._setRelationshipLinesVisibility(value);
+};
+
+mindplot.Topic.prototype.isVisible = function(){
+    var elem = this.get2DElement();
+    return elem.isVisible();
+};
+
+mindplot.Topic.prototype._setRelationshipLinesVisibility = function(value){
+    var relationships = designer.findRelationShipsByTopicId(this.getId());
+    relationships.forEach(function(relationship, index){
+        relationship.setVisibility(value);
+    });
 };
 
 mindplot.Topic.prototype._setTopicVisibility = function(value)
@@ -1018,9 +1032,7 @@ mindplot.Topic.prototype._setChildrenVisibility = function(isVisible)
     for (var i = 0; i < children.length; i++)
     {
         var child = children[i];
-        child._setChildrenVisibility(isVisible);
-
-        child._setTopicVisibility(isVisible);
+        child.setVisibility(isVisible);
 
         var outgoingLine = child.getOutgoingLine();
         outgoingLine.setVisibility(isVisible);

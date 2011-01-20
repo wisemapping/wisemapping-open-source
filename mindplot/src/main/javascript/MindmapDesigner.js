@@ -589,6 +589,7 @@ mindplot.MindmapDesigner.prototype._relationshipModelToRelationship = function(m
     sourceTopic.addRelationship(relationship);
     var targetTopic = relationship.getTargetTopic();
     targetTopic.addRelationship(relationship);
+    relationship.setVisibility(sourceTopic.isVisible() && targetTopic.isVisible());
     var workspace = this._workspace;
     workspace.appendChild(relationship);
     relationship.redraw();
@@ -1419,4 +1420,15 @@ mindplot.MindmapDesigner.prototype._goToChild = function(node)
 mindplot.MindmapDesigner.prototype.getWorkSpace = function()
 {
     return this._workspace;
+};
+
+mindplot.MindmapDesigner.prototype.findRelationShipsByTopicId = function(topicId){
+    var result = [];
+    for(var relationshipId in this._relationships){
+        var relationship = this._relationships[relationshipId];
+        if(relationship.getModel().getFromNode()==topicId || relationship.getModel().getToNode()==topicId){
+            result.push(relationship);
+        }
+    }
+    return result;
 };
