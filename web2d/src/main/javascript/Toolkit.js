@@ -75,11 +75,9 @@ web2d.peer.ToolkitVML =
     },
     createCurvedLine: function()
     {
-        return new web2d.peer.vml.CurvedLinePeer();
     },
-    createCurvedLine: function()
+    createArrow: function()
     {
-        return new web2d.peer.vml.CurvedLinePeer();
     },
     createImage: function ()
     {
@@ -141,6 +139,10 @@ web2d.peer.ToolkitSVG =
     createCurvedLine: function()
     {
         return new web2d.peer.svg.CurvedLinePeer();
+    },
+    createArrow: function()
+    {
+        return new web2d.peer.svg.ArrowPeer();
     },
     createText: function ()
     {

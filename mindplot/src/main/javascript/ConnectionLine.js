@@ -74,8 +74,7 @@ mindplot.ConnectionLine.getStrokeColor = function()
 
 mindplot.ConnectionLine.prototype.setVisibility = function(value)
 {
-    var line2d = this._line2d;
-    line2d.setVisibility(value);
+    this._line2d.setVisibility(value);
 };
 
 mindplot.ConnectionLine.prototype.redraw = function()

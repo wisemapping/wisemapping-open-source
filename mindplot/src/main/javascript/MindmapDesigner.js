@@ -653,8 +653,8 @@ mindplot.MindmapDesigner.prototype._buildRelationship = function (model) {
 
 
     relationLine.getLine().setDashed(3,2);
-    relationLine.getLine().setShowEndArrow(model.getEndArrow());
-    relationLine.getLine().setShowStartArrow(model.getStartArrow());
+    relationLine.setShowEndArrow(model.getEndArrow());
+    relationLine.setShowStartArrow(model.getStartArrow());
     relationLine.setModel(model);
 
     //Add Listeners

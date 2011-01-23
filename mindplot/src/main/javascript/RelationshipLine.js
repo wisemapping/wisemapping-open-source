@@ -29,9 +29,23 @@ mindplot.RelationshipLine = function(sourceNode, targetNode, lineType)
     this._isInWorkspace = false;
     this._controlPointsController = new mindplot.ControlPoint();
 
+    var strokeColor = mindplot.ConnectionLine.getStrokeColor.call(this);
+    this._startArrow = new web2d.Arrow();
+    this._endArrow = new web2d.Arrow();
+    this._startArrow.setStrokeColor(strokeColor);
+    this._startArrow.setStrokeWidth(2);
+    this._endArrow.setStrokeColor(strokeColor);
+    this._endArrow.setStrokeWidth(2);
+
 };
 
 objects.extend(mindplot.RelationshipLine, mindplot.ConnectionLine);
+
+mindplot.RelationshipLine.prototype.setStroke = function(color, style, opacity)
+{
+    mindplot.RelationshipLine.superClass.setStroke.call(this, color, style, opacity);
+    this._startArrow.setStrokeColor(color);
+};
 
 mindplot.RelationshipLine.prototype.redraw = function()
 {
@@ -66,6 +80,9 @@ mindplot.RelationshipLine.prototype.redraw = function()
 
     line2d.moveToBack();
 
+    //Positionate Arrows
+    this._positionateArrows();
+
     // Add connector ...
     this._positionateConnector(targetTopic);
 
@@ -76,6 +93,28 @@ mindplot.RelationshipLine.prototype.redraw = function()
     this._controlPointsController.redraw();
 };
 
+mindplot.RelationshipLine.prototype._positionateArrows = function()
+{
+    this._endArrow.setVisibility(this._showEndArrow);
+    this._startArrow.setVisibility(this._showStartArrow);
+
+    var tpos = this._line2d.getTo();
+    this._endArrow.setFrom(tpos.x, tpos.y);
+    var spos = this._line2d.getFrom();
+    this._startArrow.setFrom(spos.x, spos.y);
+    this._endArrow.moveToBack();
+    this._startArrow.moveToBack();
+
+    if(this._line2d.getType() == "CurvedLine"){
+        var controlPoints = this._line2d.getControlPoints();
+        this._startArrow.setControlPoint(controlPoints[0]);
+        this._endArrow.setControlPoint(controlPoints[1]);
+    } else {
+        this._startArrow.setControlPoint(this._line2d.getTo());
+        this._endArrow.setControlPoint(this._line2d.getFrom());
+    }
+};
+
 mindplot.RelationshipLine.prototype.addToWorkspace = function(workspace)
 {
     workspace.appendChild(this._focusShape);
@@ -83,6 +122,9 @@ mindplot.RelationshipLine.prototype.addToWorkspace = function(workspace)
     this._controlPointControllerListener =this._initializeControlPointController.bindWithEvent(this,workspace);
     this._line2d.addEventListener('click', this._controlPointControllerListener);
     this._isInWorkspace = true;
+
+    workspace.appendChild(this._startArrow);
+    workspace.appendChild(this._endArrow);
 
     mindplot.RelationshipLine.superClass.addToWorkspace.call(this, workspace);
 };
@@ -96,6 +138,9 @@ mindplot.RelationshipLine.prototype.removeFromWorkspace = function(workspace){
     workspace.removeChild(this._controlPointsController);
     this._line2d.removeEventListener('click',this._controlPointControllerListener);
     this._isInWorkspace = false;
+    workspace.removeChild(this._startArrow);
+    workspace.removeChild(this._endArrow);
+    
     mindplot.RelationshipLine.superClass.removeFromWorkspace.call(this,workspace);
 };
 
@@ -151,5 +196,41 @@ mindplot.RelationshipLine.prototype.isInWorkspace = function(){
     return this._isInWorkspace;
 };
 
+mindplot.RelationshipLine.prototype.setVisibility = function(value)
+{
+    mindplot.RelationshipLine.superClass.setVisibility.call(this,value);
+    this._endArrow.setVisibility(value);
+    this._startArrow.setVisibility(value);
+};
+
+mindplot.RelationshipLine.prototype.setShowEndArrow = function(visible){
+    this._showEndArrow = visible;
+    if(this._isInWorkspace)
+        this.redraw();
+};
+
+mindplot.RelationshipLine.prototype.setShowStartArrow = function(visible){
+    this._showStartArrow = visible;
+    if(this._isInWorkspace)
+        this.redraw();
+};
+
+mindplot.RelationshipLine.prototype.isShowEndArrow = function(){
+    return this._showEndArrow;
+};
+
+mindplot.RelationshipLine.prototype.isShowStartArrow = function(){
+    return this._showStartArrow;
+};
+
+mindplot.RelationshipLine.prototype.setFrom = function(x,y){
+    this._line2d.setFrom(x,y);
+    this._startArrow.setFrom(x,y);
+};
+
+mindplot.RelationshipLine.prototype.setTo = function(x,y){
+    this._line2d.setTo(x,y);
+    this._endArrow.setFrom(x,y);
+};
 
 mindplot.RelationshipLine.type = "RelationshipLine";

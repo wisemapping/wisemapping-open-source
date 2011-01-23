@@ -196,13 +196,7 @@ web2d.peer.svg.CurvedLinePeer.prototype._updatePath = function(avoidControlPoint
         yp2 = (x32==0?l2*Math.sign(y32):mp2*xp2);
     }
 
-    var path = (this._showStartArrow?" "
-                   +"M"+this._x1+","+this._y1+" "
-                   +"L"+(xs2+this._x1)+","+(ys2+this._y1)
-                   +"M"+this._x1+","+this._y1+" "
-                   +"L"+(xp2+this._x1)+","+(yp2+this._y1)
-                   :"")+
-                "M"+this._x1+","+this._y1
+    var path = "M"+this._x1+","+this._y1
                 +" C"+(this._control1.x+this._x1)+","+(this._control1.y+this._y1)+" "
                   +(this._control2.x+this._x2)+","+(this._control2.y+this._y2)+" "
                   +this._x2+","+this._y2+
@@ -211,13 +205,7 @@ web2d.peer.svg.CurvedLinePeer.prototype._updatePath = function(avoidControlPoint
                     +(this._control1.x+this._x1)+","+(this._control1.y+this._y1+3)+" "
                     +this._x1+","+(this._y1+3)+" Z"
                     :""
-                  )+
-                  (this._showEndArrow?" "
-                   +"M"+this._x2+","+this._y2+" "
-                   +"L"+(x+this._x2)+","+(y+this._y2)
-                   +"M"+this._x2+","+this._y2+" "
-                   +"L"+(xp+this._x2)+","+(yp+this._y2)
-                   :"");
+                  );
     this._native.setAttribute("d",path);
 };
 
