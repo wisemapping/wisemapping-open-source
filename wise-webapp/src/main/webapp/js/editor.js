@@ -268,7 +268,7 @@ function afterMindpotLibraryLoading()
         designer.deleteCurrentNode();
     });
     var context = this;
-    /*var colorPicker1 = new MooRainbow('topicColor', {
+    var colorPicker1 = new MooRainbow('topicColor', {
         id: 'topicColor',
         imgPath: '../images/',
         startColor: [255, 255, 255],
@@ -297,7 +297,7 @@ function afterMindpotLibraryLoading()
         onComplete: function(color) {
             removeCurrentColorPicker.attempt(colorPicker2, context);
         }
-    });*/
+    });
     $('topicLink').addEvent('click', function(event) {
         designer.addLink2SelectedNode();
 
@@ -321,7 +321,7 @@ function afterMindpotLibraryLoading()
         designer.setStyle2SelectedNode();
     });
 
-    /*var colorPicker3 = new MooRainbow('fontColor', {
+    var colorPicker3 = new MooRainbow('fontColor', {
         id: 'fontColor',
         imgPath: '../images/',
         startColor: [255, 255, 255],
@@ -335,7 +335,7 @@ function afterMindpotLibraryLoading()
         onComplete: function(color) {
             removeCurrentColorPicker.attempt(colorPicker3, context);
         }
-    });*/
+    });
 
     // Save event handler ....
     var saveButton = $('saveButton');
