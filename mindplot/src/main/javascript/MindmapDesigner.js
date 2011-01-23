@@ -574,7 +574,8 @@ mindplot.MindmapDesigner.prototype._nodeModelToNodeGraph = function(nodeModel)
     for (var i = 0; i < children.length; i++)
     {
         var child = children[i];
-        this._nodeModelToNodeGraph(children[i]);
+        if(core.Utils.isDefined(child))
+            this._nodeModelToNodeGraph(child);
     }
 
     var workspace = this._workspace;

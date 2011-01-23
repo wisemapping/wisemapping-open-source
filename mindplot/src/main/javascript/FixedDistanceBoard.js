@@ -81,15 +81,17 @@ mindplot.FixedDistanceBoard.prototype.updateReferencePoint = function()
     {
         var entry = entries[i];
 
-        var upperLimit = entry.getUpperLimit() + yOffset;
-        var lowerLimit = entry.getLowerLimit() + yOffset;
-        entry.setUpperLimit(upperLimit);
-        entry.setLowerLimit(lowerLimit);
+        if(core.Utils.isDefined(entry)){
+            var upperLimit = entry.getUpperLimit() + yOffset;
+            var lowerLimit = entry.getLowerLimit() + yOffset;
+            entry.setUpperLimit(upperLimit);
+            entry.setLowerLimit(lowerLimit);
 
-        // Fix x position ...
-        var xPos = this.workoutXBorderDistance();
-        entry.setXPosition(xPos);
-        entry.update();
+            // Fix x position ...
+            var xPos = this.workoutXBorderDistance();
+            entry.setXPosition(xPos);
+            entry.update();
+        }
     }
     this._referencePoint = parentPosition.clone();
 
