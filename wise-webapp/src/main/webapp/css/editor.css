@@ -651,8 +651,7 @@ ol#toc span {
 }
 
 #workspaceContainer {
-    background: url(../images/grid.gif) bottom left repeat !important;
-
+    /*background: url(../images/grid.gif) bottom left repeat !important;*/
 }
 
 div#mapInfo {

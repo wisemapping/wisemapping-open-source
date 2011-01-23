@@ -113,16 +113,6 @@ div#mindplot {
     width: 100%;
 }
 
-#workspaceContainer {
-    background: url( ../images/grid.gif ) bottom left repeat !important;
-
-}
-
-#workspaceContainer {
-    background: url( ../images/grid.gif ) bottom left repeat !important;
-
-}
-
 div#mapContainer {
     border-bottom: 1px solid black;
     padding-bottom: 40px;
