@@ -426,7 +426,8 @@ public class FreemindImporter
             BigInteger bigInteger = (font.getSIZE()==null || font.getSIZE().intValue() < 8) ? BigInteger.valueOf(8) : font.getSIZE();
             fontStyle.append(bigInteger);
             fontStyle.append(";");
-            fontStyle.append(node.getCOLOR());
+            String color = node.getCOLOR();
+            fontStyle.append((color!=null && !color.equals(""))?color:"#000000");
             fontStyle.append(";");
 
             boolean hasBold = Boolean.parseBoolean(font.getBOLD());
@@ -442,7 +443,8 @@ public class FreemindImporter
         {
             fontStyle.append(";");
             fontStyle.append(";");
-            fontStyle.append(node.getCOLOR());
+            String color = node.getCOLOR();
+            fontStyle.append((color!=null && !color.equals(""))?color:"#000000");
             fontStyle.append(";");
             fontStyle.append(";");
             fontStyle.append(";");
