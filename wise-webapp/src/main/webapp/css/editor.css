@@ -216,11 +216,11 @@ div#node {
 }
 
 div#font {
-    left: 656px; /*left:581px;*/
+    left: 679px; /*left:581px;*/
 }
 
 div#share {
-    left: 852px; /*left:777px;*/
+    left: 874px; /*left:777px;*/
 }
 
 div#saveButton {
@@ -306,12 +306,6 @@ div#topicNote {
 }
 
 div#topicLink {
-    background: url(../images/topic_link.png) no-repeat center top;
-    behavior: url(../css/iepngfix.htc);
-    z-index: 4;
-}
-
-div#topicRelation {
     background: url(../images/topic_link.png) no-repeat center top;
     behavior: url(../css/iepngfix.htc);
     z-index: 4;
@@ -755,4 +749,11 @@ div#small_error_icon {
     padding-left: 18px;
     min-height: 16px;
     background: url(../images/error_icon.png) bottom left no-repeat !important;
+}
+
+div#toolbar .topicRelation {
+    width:56px;
+    background: url(../images/topic_relationship.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
+    z-index: 4;
 }
