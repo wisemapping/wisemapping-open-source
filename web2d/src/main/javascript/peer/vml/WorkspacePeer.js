@@ -1,7 +1,8 @@
 /*
 *    Copyright [2011] [wisemapping]
 *
-*   Licensed under the Apache License, Version 2.0 (the "License") plus the
+*   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+*   It is basically the Apache License, Version 2.0 (the "License") plus the
 *   "powered by wisemapping" text requirement on every single page;
 *   you may not use this file except in compliance with the License.
 *   You may obtain a copy of the license at
