@@ -61,10 +61,10 @@ mindplot.RelationshipLine.prototype.redraw = function()
     var ctrlPoints = this._line2d.getControlPoints();
     if(!core.Utils.isDefined(ctrlPoints[0].x) || !core.Utils.isDefined(ctrlPoints[1].x)){
         var defaultPoints = core.Utils.calculateDefaultControlPoints(sourcePosition, targetPosition);
-        ctrlPoints[0].x=sourcePosition.x - defaultPoints[0].x;
-        ctrlPoints[0].y=sourcePosition.y - defaultPoints[0].y;
-        ctrlPoints[1].x=targetPosition.x - defaultPoints[1].x;
-        ctrlPoints[1].y=targetPosition.y - defaultPoints[1].y;
+        ctrlPoints[0].x=defaultPoints[0].x;
+        ctrlPoints[0].y=defaultPoints[0].y;
+        ctrlPoints[1].x=defaultPoints[1].x;
+        ctrlPoints[1].y=defaultPoints[1].y;
     }
     var spoint = new core.Point();
     spoint.x=parseInt(ctrlPoints[0].x)+parseInt(sourcePosition.x);
@@ -232,5 +232,36 @@ mindplot.RelationshipLine.prototype.setTo = function(x,y){
     this._line2d.setTo(x,y);
     this._endArrow.setFrom(x,y);
 };
+
+mindplot.RelationshipLine.prototype.setSrcControlPoint = function(control){
+    this._line2d.setSrcControlPoint(control);
+    this._startArrow.setControlPoint(control);
+};
+
+mindplot.RelationshipLine.prototype.setDestControlPoint = function(control){
+    this._line2d.setDestControlPoint(control);
+    this._endArrow.setControlPoint(control);
+};
+
+mindplot.RelationshipLine.prototype.getControlPoints = function(){
+    return this._line2d.getControlPoints();
+};
+
+mindplot.RelationshipLine.prototype.isSrcControlPointCustom = function(){
+    return this._line2d..isSrcControlPointCustom();
+};
+
+mindplot.RelationshipLine.prototype.isDestControlPointCustom = function(){
+    return this._line2d.isDestControlPointCustom();
+};
+
+mindplot.RelationshipLine.prototype.setIsSrcControlPointCustom = function(isCustom){
+    this._line2d.setIsSrcControlPointCustom(isCustom);
+};
+
+mindplot.RelationshipLine.prototype.setIsDestControlPointCustom = function(isCustom){
+    this._line2d.setIsDestControlPointCustom(isCustom);
+};
+
 
 mindplot.RelationshipLine.type = "RelationshipLine";

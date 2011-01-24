@@ -645,7 +645,7 @@ ol#toc span {
 }
 
 #workspaceContainer {
-    /*background: url(../images/grid.gif) bottom left repeat !important;*/
+    background: url(../images/grid.gif) bottom left repeat !important;
 }
 
 div#mapInfo {
@@ -756,4 +756,15 @@ div#toolbar .topicRelation {
     background: url(../images/topic_relationship.png) no-repeat center top;
     behavior: url(../css/iepngfix.htc);
     z-index: 4;
+}
+
+div#toolbar .topicRelation:hover {
+    width:56px;
+    background: url(../images/topic_relationship.png) no-repeat center top;
+    behavior: url(../css/iepngfix.htc);
+    z-index: 4;
+}
+
+div#toolbar .relationshiplabel{
+    width:56px;
 }

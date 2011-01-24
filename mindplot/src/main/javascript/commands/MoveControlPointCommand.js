@@ -45,16 +45,16 @@ mindplot.commands.MoveControlPointCommand = mindplot.Command.extend(
         switch (this._point){
             case 0:
                 model.setSrcCtrlPoint(this._controlPoint.clone());
-                this._line.getLine().setFrom(this._endPoint.x, this._endPoint.y);
-                this._line.getLine().setIsSrcControlPointCustom(true);
-                this._line.getLine().setSrcControlPoint(this._controlPoint.clone());
+                this._line.setFrom(this._endPoint.x, this._endPoint.y);
+                this._line.setIsSrcControlPointCustom(true);
+                this._line.setSrcControlPoint(this._controlPoint.clone());
                 break;
             case 1:
                 model.setDestCtrlPoint(this._controlPoint.clone());
                 this._wasCustom = this._line.getLine().isDestControlPointCustom();
-                this._line.getLine().setTo(this._endPoint.x, this._endPoint.y);
-                this._line.getLine().setIsDestControlPointCustom(true);
-                this._line.getLine().setDestControlPoint(this._controlPoint.clone());
+                this._line.setTo(this._endPoint.x, this._endPoint.y);
+                this._line.setIsDestControlPointCustom(true);
+                this._line.setDestControlPoint(this._controlPoint.clone());
                 break;
         }
         if(this._line.isOnFocus()){
@@ -70,18 +70,18 @@ mindplot.commands.MoveControlPointCommand = mindplot.Command.extend(
         switch (this._point){
             case 0:
                 if(core.Utils.isDefined(this._oldControlPoint)){
-                    line.getLine().setFrom(this._originalEndPoint.x, this._originalEndPoint.y);
+                    line.setFrom(this._originalEndPoint.x, this._originalEndPoint.y);
                     model.setSrcCtrlPoint(this._oldControlPoint.clone());
-                    line.getLine().setSrcControlPoint(this._oldControlPoint.clone());
-                    line.getLine().setIsSrcControlPointCustom(this._wasCustom);
+                    line.setSrcControlPoint(this._oldControlPoint.clone());
+                    line.setIsSrcControlPointCustom(this._wasCustom);
                 }
             break;
             case 1:
                 if(core.Utils.isDefined(this._oldControlPoint)){
-                    line.getLine().setTo(this._originalEndPoint.x, this._originalEndPoint.y);
+                    line.setTo(this._originalEndPoint.x, this._originalEndPoint.y);
                     model.setDestCtrlPoint(this._oldControlPoint.clone());
-                    line.getLine().setDestControlPoint(this._oldControlPoint.clone());
-                    line.getLine().setIsDestControlPointCustom(this._wasCustom);
+                    line.setDestControlPoint(this._oldControlPoint.clone());
+                    line.setIsDestControlPointCustom(this._wasCustom);
                 }
             break;
         }

@@ -644,11 +644,11 @@ mindplot.MindmapDesigner.prototype._buildRelationship = function (model) {
     var relationLine = new mindplot.RelationshipLine(fromTopic, toTopic, model.getLineType());
     if(core.Utils.isDefined(model.getSrcCtrlPoint())){
         var srcPoint = model.getSrcCtrlPoint().clone();
-        relationLine.getLine().setSrcControlPoint(srcPoint);
+        relationLine.setSrcControlPoint(srcPoint);
     }
     if(core.Utils.isDefined(model.getDestCtrlPoint())){
         var destPoint = model.getDestCtrlPoint().clone();
-        relationLine.getLine().setDestControlPoint(destPoint);
+        relationLine.setDestControlPoint(destPoint);
     }
 
 

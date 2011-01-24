@@ -193,7 +193,7 @@
                     <div class="toolbarLabel"><p><spring:message code="LINK"/></p></div>
                 </div>
                 <div id="topicRelation" class="topicRelation button" title="<spring:message code="TOPIC_RELATIONSHIP"/>">
-                    <div class="toolbarLabel"><p><spring:message code="TOPIC_RELATIONSHIP"/></p></div>
+                    <div class="relationshiplabel toolbarLabel"><p><spring:message code="TOPIC_RELATIONSHIP"/></p></div>
                 </div>
             </fieldset>
         </div>

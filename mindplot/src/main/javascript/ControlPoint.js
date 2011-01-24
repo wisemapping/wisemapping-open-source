@@ -91,9 +91,11 @@ mindplot.ControlPoint.prototype._mouseMove = function(event, point) {
     if(point==0){
         var cords = core.Utils.calculateRelationShipPointCoordinates(this._line.getSourceTopic(),pos);
         this._line.setFrom(cords.x, cords.y);
+        this._line.setSrcControlPoint(new core.Point(pos.x - cords.x,pos.y - cords.y));
     }else{
         var cords = core.Utils.calculateRelationShipPointCoordinates(this._line.getTargetTopic(),pos);
         this._line.setTo(cords.x, cords.y);
+        this._line.setDestControlPoint(new core.Point(pos.x - cords.x,pos.y - cords.y));
     }
     this._controls[point].x=(pos.x - cords.x);
     this._controls[point].y=(pos.y - cords.y);
