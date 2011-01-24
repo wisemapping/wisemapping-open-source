@@ -29,17 +29,23 @@ mindplot.RelationshipLine = function(sourceNode, targetNode, lineType)
     this._isInWorkspace = false;
     this._controlPointsController = new mindplot.ControlPoint();
 
-    var strokeColor = mindplot.ConnectionLine.getStrokeColor.call(this);
+    var strokeColor = mindplot.RelationshipLine.getStrokeColor();
     this._startArrow = new web2d.Arrow();
     this._endArrow = new web2d.Arrow();
     this._startArrow.setStrokeColor(strokeColor);
     this._startArrow.setStrokeWidth(2);
     this._endArrow.setStrokeColor(strokeColor);
     this._endArrow.setStrokeWidth(2);
+    this._line2d.setStroke(1, 'solid', strokeColor);
 
 };
 
 objects.extend(mindplot.RelationshipLine, mindplot.ConnectionLine);
+
+mindplot.RelationshipLine.getStrokeColor = function()
+{
+    return '#9b74e6';
+};
 
 mindplot.RelationshipLine.prototype.setStroke = function(color, style, opacity)
 {

@@ -65,7 +65,7 @@ mindplot.ConnectionLine.prototype._createLine = function(lineType, defaultStyle)
             break;
     }
     return line;
-}
+};
 
 mindplot.ConnectionLine.getStrokeColor = function()
 {
