@@ -248,7 +248,7 @@ mindplot.RelationshipLine.prototype.getControlPoints = function(){
 };
 
 mindplot.RelationshipLine.prototype.isSrcControlPointCustom = function(){
-    return this._line2d..isSrcControlPointCustom();
+    return this._line2d.isSrcControlPointCustom();
 };
 
 mindplot.RelationshipLine.prototype.isDestControlPointCustom = function(){
