@@ -133,16 +133,23 @@ mindplot.MainTopic.prototype._defaultShapeType = function()
 mindplot.MainTopic.prototype.updateTopicShape = function(targetTopic, workspace)
 {
     // Change figure based on the connected topic ...
+    var model = this.getModel();
+    var shapeType = model.getShapeType();
     if (targetTopic.getType() != mindplot.NodeModel.CENTRAL_TOPIC_TYPE)
     {
-        var model = this.getModel();
-        var shapeType = model.getShapeType();
         if (!shapeType)
         {
             // Get the real shape type ...
             shapeType = this.getShapeType();
             this._setShapeType(mindplot.NodeModel.SHAPE_TYPE_LINE, false);
+        }else if(shapeType==mindplot.NodeModel.SHAPE_TYPE_LINE){
+            var innerShape = this.getInnerShape();
+            innerShape.setVisibility(false);
+
         }
+    } else {
+        var innerShape = this.getInnerShape();
+        innerShape.setVisibility(true);
     }
 };
 
@@ -159,6 +166,8 @@ mindplot.MainTopic.prototype.disconnect = function(workspace)
         shapeType = this.getShapeType();
         this._setShapeType(mindplot.NodeModel.SHAPE_TYPE_ROUNDED_RECT, false);
     }
+    var innerShape = this.getInnerShape();
+    innerShape.setVisibility(true);
 };
 
 mindplot.MainTopic.prototype.getTopicType = function()
@@ -252,6 +261,9 @@ mindplot.MainTopic.prototype.workoutOutgoingConnectionPoint = function(targetPos
             // In this case, connetion line is not used as shape figure.
             result = mindplot.util.Shape.calculateRectConnectionPoint(pos, size, isAtRight, true);
             result.y = pos.y + (size.height / 2);
+            if(result.y>0){
+                result.y+=1;
+            }
 
             // Correction factor ...
             if (!isAtRight)

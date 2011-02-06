@@ -29,8 +29,13 @@ mindplot.ConnectionLine = function(sourceNode, targetNode, lineType)
     var line;
     if (targetNode.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE)
     {
-        line = this._createLine(lineType,mindplot.ConnectionLine.SIMPLE);
+        line = this._createLine(lineType,mindplot.ConnectionLine.SIMPLE_CURVED);
         //        line = new web2d.Line();
+        if(line.getType()=="CurvedLine"){
+            var ctrlPoints = this._getCtrlPoints(sourceNode, targetNode);
+            line.setSrcControlPoint(ctrlPoints[0]);
+            line.setDestControlPoint(ctrlPoints[1]);
+        }
         line.setStroke(1, 'solid', strokeColor);
     } else
     {
@@ -40,6 +45,17 @@ mindplot.ConnectionLine = function(sourceNode, targetNode, lineType)
     }
 
     this._line2d = line;
+};
+
+mindplot.ConnectionLine.prototype._getCtrlPoints = function(sourceNode, targetNode){
+    var srcPos = sourceNode.getPosition();
+    var destPos = targetNode.getPosition();
+    var deltaX = Math.abs(Math.abs(srcPos.x) - Math.abs(destPos.x))/3;
+    var fix = 1;
+    if(mindplot.util.Shape.isAtRight(srcPos, destPos)){
+        fix=-1;
+    }
+    return [new core.Point(deltaX*fix, 0), new core.Point(deltaX*-fix, 0)];
 };
 
 mindplot.ConnectionLine.prototype._createLine = function(lineType, defaultStyle){
