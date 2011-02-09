@@ -101,8 +101,8 @@ mindplot.RelationshipLine.prototype.redraw = function()
 
 mindplot.RelationshipLine.prototype._positionateArrows = function()
 {
-    this._endArrow.setVisibility(this._showEndArrow);
-    this._startArrow.setVisibility(this._showStartArrow);
+    this._endArrow.setVisibility(this.isVisible() && this._showEndArrow);
+    this._startArrow.setVisibility(this.isVisible() && this._showStartArrow);
 
     var tpos = this._line2d.getTo();
     this._endArrow.setFrom(tpos.x, tpos.y);
@@ -205,8 +205,16 @@ mindplot.RelationshipLine.prototype.isInWorkspace = function(){
 mindplot.RelationshipLine.prototype.setVisibility = function(value)
 {
     mindplot.RelationshipLine.superClass.setVisibility.call(this,value);
-    this._endArrow.setVisibility(value);
-    this._startArrow.setVisibility(value);
+    this._endArrow.setVisibility(this._showEndArrow && value);
+    this._startArrow.setVisibility(this._showStartArrow && value);
+};
+
+mindplot.RelationshipLine.prototype.setOpacity = function(opacity){
+    mindplot.RelationshipLine.superClass.setOpacity.call(this,opacity);
+    if(this._showEndArrow)
+        this._endArrow.setOpacity(opacity);
+    if(this._showStartArrow)
+        this._startArrow.setOpacity(opacity);
 };
 
 mindplot.RelationshipLine.prototype.setShowEndArrow = function(visible){

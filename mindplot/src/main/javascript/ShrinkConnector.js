@@ -36,10 +36,10 @@ mindplot.ShirinkConnector = function(topic)
         {
             topic.setChildrenShrinked(isShrink);
             return !isShrink;
-        }
+        };
 
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, isShrink, [topicId]);
-        actionRunner.execute(command)
+        actionRunner.execute(command);
 
         new Event(event).stop();
 
@@ -92,6 +92,11 @@ mindplot.ShirinkConnector.prototype.changeRender = function(isShrink)
 mindplot.ShirinkConnector.prototype.setVisibility = function(value)
 {
     this._elipse.setVisibility(value);
+}
+
+mindplot.ShirinkConnector.prototype.setOpacity = function(opacity)
+{
+    this._elipse.setOpacity(opacity);
 }
 
 mindplot.ShirinkConnector.prototype.setFill = function(color)

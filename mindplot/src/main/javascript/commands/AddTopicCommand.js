@@ -18,33 +18,49 @@
 
 mindplot.commands.AddTopicCommand = mindplot.Command.extend(
 {
-    initialize: function(model, parentTopicId)
+    initialize: function(model, parentTopicId, animated)
     {
         core.assert(model, 'Model can not be null');
         this._model = model;
         this._parentId = parentTopicId;
         this._id = mindplot.Command._nextUUID();
+        this._animated = core.Utils.isDefined(animated)?animated:false;
     },
     execute: function(commandContext)
     {
         // Add a new topic ...
-        var topic = commandContext.createTopic(this._model);
+
+        var topic = commandContext.createTopic(this._model, !this._animated);
 
         // Connect to topic ...
         if (this._parentId)
         {
             var parentTopic = commandContext.findTopics(this._parentId)[0];
-            commandContext.connect(topic, parentTopic);
+            commandContext.connect(topic, parentTopic, !this._animated);
         }
 
-        // Finally, focus ...
-        topic.setOnFocus(true);
+        var doneFn = function(){
+            // Finally, focus ...
+            topic.setOnFocus(true);
+        };
+        
+        if(this._animated){
+            core.Utils.setVisibilityAnimated([topic,topic.getOutgoingLine()],true,doneFn);
+        } else
+            doneFn.attempt();
     },
     undoExecute: function(commandContext)
     {
         // Finally, delete the topic from the workspace ...
         var topicId = this._model.getId();
         var topic = commandContext.findTopics(topicId)[0];
-        commandContext.deleteTopic(topic);
+        var doneFn = function(){
+            commandContext.deleteTopic(topic);
+        };
+        if(this._animated){
+            core.Utils.setVisibilityAnimated([topic,topic.getOutgoingLine()],false, doneFn);
+        }
+        else
+            doneFn.attempt();
     }
 });

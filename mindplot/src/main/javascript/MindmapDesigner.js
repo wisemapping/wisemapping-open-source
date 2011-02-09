@@ -179,7 +179,7 @@ mindplot.MindmapDesigner.prototype._registerEvents = function()
             var centralTopicId = centralTopic.getId();
 
             // Execute action ...
-            var command = new mindplot.commands.AddTopicCommand(model, centralTopicId);
+            var command = new mindplot.commands.AddTopicCommand(model, centralTopicId, true);
             this._actionRunner.execute(command);
         }.bind(this));
     }
@@ -325,7 +325,7 @@ mindplot.MindmapDesigner.prototype.createChildForSelectedNode = function()
     var parentTopicId = centalTopic.getId();
     var childModel = centalTopic.createChildModel();
 
-    var command = new mindplot.commands.AddTopicCommand(childModel, parentTopicId);
+    var command = new mindplot.commands.AddTopicCommand(childModel, parentTopicId, true);
     this._actionRunner.execute(command);
 };
 
@@ -357,7 +357,7 @@ mindplot.MindmapDesigner.prototype.createSiblingForSelectedNode = function()
         var parentTopic = topic.getOutgoingConnectedTopic();
         var siblingModel = topic.createSiblingModel();
         var parentTopicId = parentTopic.getId();
-        var command = new mindplot.commands.AddTopicCommand(siblingModel, parentTopicId);
+        var command = new mindplot.commands.AddTopicCommand(siblingModel, parentTopicId, true);
 
         this._actionRunner.execute(command);
     }
@@ -545,10 +545,13 @@ mindplot.MindmapDesigner.prototype.redo = function()
     this._actionRunner.redo();
 };
 
-mindplot.MindmapDesigner.prototype._nodeModelToNodeGraph = function(nodeModel)
+mindplot.MindmapDesigner.prototype._nodeModelToNodeGraph = function(nodeModel, isVisible)
 {
     core.assert(nodeModel, "Node model can not be null");
     var nodeGraph = this._buildNodeGraph(nodeModel);
+
+    if(core.Utils.isDefined(isVisible))
+        nodeGraph.setVisibility(isVisible);
 
     var children = nodeModel.getChildren().slice();
 

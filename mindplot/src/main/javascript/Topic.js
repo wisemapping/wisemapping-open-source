@@ -848,15 +848,8 @@ mindplot.Topic.prototype.setChildrenShrinked = function(value)
     var shrinkConnector = this.getShrinkConnector();
     shrinkConnector.changeRender(value);
 
-    //  Hide branch in order to avoid flickering...
-    this._setChildrenVisibility(false);
-
-    // Update topic position based on the state ...
-    var targetTopicBoard = this.getTopicBoard();
-    targetTopicBoard.repositionate();
-
     // Hide children ...
-    this._setChildrenVisibility(!value);
+    core.Utils.setChildrenVisibilityAnimated(this, !value);
 };
 
 mindplot.Topic.prototype.getShrinkConnector = function()
@@ -999,8 +992,8 @@ mindplot.Topic.prototype.isVisible = function(){
 };
 
 mindplot.Topic.prototype._setRelationshipLinesVisibility = function(value){
-    var relationships = designer.findRelationShipsByTopicId(this.getId());
-    relationships.forEach(function(relationship, index){
+    //var relationships = designer.findRelationShipsByTopicId(this.getId());
+    this._relationships.forEach(function(relationship, index){
         relationship.setVisibility(value);
     });
 };
@@ -1019,6 +1012,16 @@ mindplot.Topic.prototype._setTopicVisibility = function(value)
     var textShape = this.getTextShape();
     textShape.setVisibility(value);
 
+};
+
+mindplot.Topic.prototype.setOpacity = function(opacity){
+    var elem = this.get2DElement();
+    elem.setOpacity(opacity);
+
+    this.getShrinkConnector().setOpacity(opacity);
+
+    var textShape = this .getTextShape();
+    textShape.setOpacity(opacity);
 };
 
 mindplot.Topic.prototype._setChildrenVisibility = function(isVisible)
@@ -1171,7 +1174,7 @@ mindplot.Topic.prototype.setOrder = function(value)
     model.setOrder(value);
 };
 
-mindplot.Topic.prototype.connectTo = function(targetTopic, workspace)
+mindplot.Topic.prototype.connectTo = function(targetTopic, workspace, isVisible)
 {
     core.assert(!this._outgoingLine, 'Could not connect an already connected node');
     core.assert(targetTopic != this, 'Cilcular connection are not allowed');
@@ -1180,6 +1183,8 @@ mindplot.Topic.prototype.connectTo = function(targetTopic, workspace)
 
     // Create a connection line ...
     var outgoingLine = new mindplot.ConnectionLine(this, targetTopic);
+    if(core.Utils.isDefined(isVisible))
+        outgoingLine.setVisibility(isVisible);
     this._outgoingLine = outgoingLine;
     workspace.appendChild(outgoingLine);
 
@@ -1293,12 +1298,20 @@ mindplot.Topic.prototype.updateNode = function()
         var sizeHeight = textShape.getHeight();
         var font = textShape.getFont();
         var iconOffset = this.getIconOffset();
+        var height = sizeHeight + this._offset;
+        var width = sizeWidth + this._offset*2 + iconOffset;
+        var pos = this._offset /2;
+        if(this.getShapeType()==mindplot.NodeModel.SHAPE_TYPE_ELIPSE){
+            var factor = 0.25;
+            height = (width*factor<height?height:width*factor);
+            pos = (height-sizeHeight+3)/2;
+        }
 
-        var newSize = {width:sizeWidth + this._offset*2 + iconOffset,height:sizeHeight + this._offset};
+        var newSize = {width:width,height:height};
         this.setSize(newSize);
 
         // Positionate node ...
-        textShape.setPosition(iconOffset+this._offset, this._offset / 2);
+        textShape.setPosition(iconOffset+this._offset, pos);
         textShape.setTextSize(sizeWidth, sizeHeight);
     }
 };

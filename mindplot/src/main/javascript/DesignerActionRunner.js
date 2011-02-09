@@ -92,10 +92,10 @@ mindplot.CommandContext = new Class({
     {
         this._designer._removeNode(topic);
     },
-    createTopic:function(model)
+    createTopic:function(model, isVisible)
     {
         core.assert(model, "model can not be null");
-        var topic = this._designer._nodeModelToNodeGraph(model);
+        var topic = this._designer._nodeModelToNodeGraph(model, isVisible);
 
         // @todo: Is this required ?
         var designer = this._designer;
@@ -109,9 +109,9 @@ mindplot.CommandContext = new Class({
         var model = mindmap.createNode(mindplot.NodeModel.MAIN_TOPIC_TYPE);
         return model;
     },
-    connect:function(childTopic, parentTopic)
+    connect:function(childTopic, parentTopic, isVisible)
     {
-        childTopic.connectTo(parentTopic, this._designer._workspace);
+        childTopic.connectTo(parentTopic, this._designer._workspace, isVisible);
     } ,
     disconnect:function(topic)
     {

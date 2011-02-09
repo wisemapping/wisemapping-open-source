@@ -271,3 +271,64 @@ core.Utils.calculateDefaultControlPoints = function(srcPos, tarPos){
 
     return [new core.Point(-srcPos.x + x1,-srcPos.y + y1),new core.Point(-tarPos.x + x2,-tarPos.y + y2)];
 };
+
+core.Utils.setVisibilityAnimated = function(elems, isVisible, doneFn){
+    core.Utils.animateVisibility(elems, isVisible, doneFn);
+};
+core.Utils.setChildrenVisibilityAnimated = function(rootElem, isVisible){
+    var children = core.Utils._addInnerChildrens(rootElem);
+    core.Utils.animateVisibility(children, isVisible);
+};
+
+core.Utils.animateVisibility = function (elems, isVisible, doneFn){
+    var _fadeEffect=null;
+    var _opacity = (isVisible?0:1);
+    if(isVisible){
+        elems.forEach(function(child, index){
+                child.setOpacity(_opacity);
+                child.setVisibility(isVisible);
+            });
+    }
+    var fadeEffect = function(index)
+    {
+        var step = 10;
+        if((_opacity<=0 && !isVisible) || (_opacity>=1 && isVisible)){
+            $clear(_fadeEffect);
+            _fadeEffect = null;
+            elems.forEach(function(child, index){
+
+                child.setVisibility(isVisible);
+
+            });
+            if(core.Utils.isDefined(doneFn))
+                doneFn.attempt();
+        }
+        else{
+            var fix = 1;
+            if(isVisible){
+                fix = -1;
+            }
+            _opacity-=(1/step)*fix;
+            elems.forEach(function(child, index){
+                child.setOpacity(_opacity);
+            });
+        }
+
+    };
+    _fadeEffect =fadeEffect.periodical(30);
+};
+
+core.Utils._addInnerChildrens = function(elem){
+    var children = [];
+    var childs = elem._getChildren();
+    for(var i = 0 ; i<childs.length; i++){
+        var child = childs[i];
+        children.push(child);
+        children.push(child.getOutgoingLine());
+        var relationships = child.getRelationships();
+        children = children.concat(relationships);
+        var innerChilds = core.Utils._addInnerChildrens(child);
+        children = children.concat(innerChilds);
+    }
+    return children;
+};

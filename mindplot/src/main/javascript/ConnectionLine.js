@@ -93,6 +93,15 @@ mindplot.ConnectionLine.prototype.setVisibility = function(value)
     this._line2d.setVisibility(value);
 };
 
+mindplot.ConnectionLine.prototype.isVisible = function()
+{
+    return this._line2d.isVisible();
+};
+
+mindplot.ConnectionLine.prototype.setOpacity = function(opacity){
+    this._line2d.setOpacity(opacity);
+};
+
 mindplot.ConnectionLine.prototype.redraw = function()
 {
     var line2d = this._line2d;
