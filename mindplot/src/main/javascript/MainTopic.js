@@ -261,9 +261,9 @@ mindplot.MainTopic.prototype.workoutOutgoingConnectionPoint = function(targetPos
             // In this case, connetion line is not used as shape figure.
             result = mindplot.util.Shape.calculateRectConnectionPoint(pos, size, isAtRight, true);
             result.y = pos.y + (size.height / 2);
-            if(result.y>0){
+            /*if(result.y>0){
                 result.y+=1;
-            }
+            }*/
 
             // Correction factor ...
             if (!isAtRight)

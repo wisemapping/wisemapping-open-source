@@ -18,14 +18,22 @@
 
 mindplot.IconGroup = function(topic) {
     var offset = topic.getOffset();
+    var text = topic.getTextShape();
+    var yOffset = text.getPosition().y;
+    var shape = topic.getShapeType();
+    if(shape==mindplot.NodeModel.SHAPE_TYPE_ELIPSE){
+        yOffset +=2;
+    } else if( shape == mindplot.NodeModel.SHAPE_TYPE_LINE){
+        yOffset -=2;
+    }
     this.options = {
         width:0,
         height:0,
         x:offset / 2,
-        y:offset / 2,
+        y:yOffset,
         icons:[],
         topic:topic,
-        nativeElem:new web2d.Group({width: 2, height:2,x: offset / 2, y:offset / 2, coordSizeWidth:1,coordSizeHeight:1})
+        nativeElem:new web2d.Group({width: 2, height:2,x: offset / 2, y:yOffset, coordSizeWidth:1,coordSizeHeight:1})
     };
     this.registerListeners();
 };
