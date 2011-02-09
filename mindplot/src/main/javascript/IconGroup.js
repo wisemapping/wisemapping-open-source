@@ -18,23 +18,16 @@
 
 mindplot.IconGroup = function(topic) {
     var offset = topic.getOffset();
-    var text = topic.getTextShape();
-    var yOffset = text.getPosition().y;
-    var shape = topic.getShapeType();
-    if(shape==mindplot.NodeModel.SHAPE_TYPE_ELIPSE){
-        yOffset +=2;
-    } else if( shape == mindplot.NodeModel.SHAPE_TYPE_LINE){
-        yOffset -=2;
-    }
     this.options = {
         width:0,
         height:0,
-        x:offset / 2,
-        y:yOffset,
+        x:offset.x / 2,
+        y:offset.y,
         icons:[],
         topic:topic,
-        nativeElem:new web2d.Group({width: 2, height:2,x: offset / 2, y:yOffset, coordSizeWidth:1,coordSizeHeight:1})
+        nativeElem:new web2d.Group({width: 2, height:2,x: offset, y:offset, coordSizeWidth:1,coordSizeHeight:1})
     };
+    this.updateIconGroupPosition();
     this.registerListeners();
 };
 
@@ -187,4 +180,19 @@ mindplot.IconGroup.prototype.registerListeners = function() {
 };
 mindplot.IconGroup.prototype.getTopic = function() {
     return this.options.topic;
+};
+
+mindplot.IconGroup.prototype.updateIconGroupPosition = function() {
+    var offsets = this._calculateOffsets();
+    this.setPosition(offsets.x, offsets.y);
+};
+
+mindplot.IconGroup.prototype._calculateOffsets = function() {
+    var offset = this.options.topic.getOffset();
+    var text = this.options.topic.getTextShape();
+    var sizeHeight = text.getHtmlFontSize();
+    var yOffset = offset;
+    var shape = this.options.topic.getShapeType();
+    yOffset = text.getPosition().y + (sizeHeight - 18)/2;
+    return {x:offset, y:yOffset};
 };

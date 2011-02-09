@@ -1313,5 +1313,8 @@ mindplot.Topic.prototype.updateNode = function()
         // Positionate node ...
         textShape.setPosition(iconOffset+this._offset, pos);
         textShape.setTextSize(sizeWidth, sizeHeight);
+        var iconGroup = this.getIconGroup();
+        if(core.Utils.isDefined(iconGroup))
+            iconGroup.updateIconGroupPosition();
     }
 };
