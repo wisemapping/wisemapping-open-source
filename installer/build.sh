@@ -1,30 +1,33 @@
 #!/bin/bash
 
-#set -x	
-WISE_VERSION=0.94
+set -e	
+
+WISE_VERSION=0.96
 BASE_DIR=`pwd`
 TARGET_DIR=$BASE_DIR/target
 JETTY_DIR=$TARGET_DIR/wisemapping-$WISE_VERSION
 WISE_WEBAPP_DIR=$JETTY_DIR/webapps/wisemapping
+JETTY_DIST_DIR=jetty-distribution-7.3.0.v20110203
+JETTY_ZIP=${JETTY_DIST_DIR}.zip
 
 # Clean ...
 mvn -f $BASE_DIR/../pom.xml clean
-mkdir target 2>/dev/null
-rm -fr $JETTY_DIR
-rm -fr $TARGET_DIR/jetty-hightide-7.0.0.v20091005
+[ ! -e target ] && mkdir target
+rm -fr ${JETTY_DIR}
+rm -fr ${TARGET_DIR}/jetty-distribution-7.3.0.v20110203
 
 # Prepare resources ..
 mvn -f $BASE_DIR/../pom.xml install
 
-if [ ! -f ./target/jetty-hightide-7.0.0.v20091005.zip  ]
+if [ ! -f ./target/${JETTY_ZIP}  ]
 then	
 	echo "Download Jetty"
-	wget http://dist.codehaus.org/jetty/jetty-7.0.0/jetty-hightide-7.0.0.v20091005.zip -P $TARGET_DIR 
+	wget http://download.eclipse.org/jetty/stable-7/dist/${JETTY_ZIP} -P $TARGET_DIR 
 fi
 
 echo "Unzip Jetty ...:"  
-unzip $TARGET_DIR/jetty-hightide-7.0.0.v20091005.zip -d $TARGET_DIR/ > /dev/null
-mv $TARGET_DIR/jetty-hightide-7.0.0.v20091005 $JETTY_DIR
+unzip ${TARGET_DIR}/${JETTY_ZIP}  -d ${TARGET_DIR}/ > /dev/null
+mv ${TARGET_DIR}/${JETTY_DIST_DIR} ${JETTY_DIR}
                    
 
 # Clean unsed files ...
