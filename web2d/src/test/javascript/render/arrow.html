@@ -38,6 +38,7 @@
     <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/LinePeer.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/PolyLine.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/CurvedLine.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Arrow.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/PolyLinePeer.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/peer/vml/PolyLinePeer.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/CurvedLinePeer.js"></script>
@@ -71,22 +72,18 @@
             web2d.peer.Toolkit.init();
 
             var overflowWorkspace = new web2d.Workspace({fillColor:'green'});
-            overflowWorkspace.setSize("400px", "400px");
-            var line1 = new web2d.CurvedLine();
-            line1.setStyle(web2d.CurvedLine.SIMPLE_LINE);
-            line1.setFrom(200, 200);
-            line1.setTo(100, 100);
-            line1.setSrcControlPoint(new core.Point(-100,0));
-            line1.setDestControlPoint(new core.Point(100,0));
-            overflowWorkspace.appendChild(line1);
-            
-            var line2 = new web2d.CurvedLine();
-            line2.setStyle(web2d.CurvedLine.NICE_LINE);
-            line2.setFrom(0, 0);
-            line2.setTo(150, 90);
-            line2.setSrcControlPoint(new core.Point(100,0));
-            line2.setDestControlPoint(new core.Point(-100,0));
-            overflowWorkspace.appendChild(line2);
+            overflowWorkspace.setSize("200px", "200px");
+            var arrow = new web2d.Arrow();
+            arrow.setFrom(50,50);
+            arrow.setControlPoint(new core.Point(-50,0));
+
+            overflowWorkspace.appendChild(arrow);
+
+            var arrow2 = new web2d.Arrow();
+            arrow2.setFrom(100,50);
+            arrow2.setControlPoint(new core.Point(50,50));
+
+            overflowWorkspace.appendChild(arrow2);
 
             overflowWorkspace.addItAsChildTo($("overflowExample"));
 
