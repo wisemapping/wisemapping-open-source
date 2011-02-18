@@ -8,5 +8,4 @@ SVG (Scalable Vectorial Graphics) allows straightforward and efficient vector gr
 
 h2. What's the source code License?
 
-The source code is Licensed under the Apache License, Version 2.0 (the “License”);
-You may obtain a copy of the License at: http://www.apache.org/licenses/LICENSE-2.0
+http://www.wisemapping.org/license
