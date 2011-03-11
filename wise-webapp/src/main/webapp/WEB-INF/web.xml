@@ -14,11 +14,9 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             /WEB-INF/wisemapping-security.xml
-            /WEB-INF/wisemapping-dao.xml                                    
+            /WEB-INF/wisemapping-dao.xml
             /WEB-INF/wisemapping-service.xml
             /WEB-INF/wisemapping-model.xml
-            /WEB-INF/wisemapping-servlet.xml
-            /WEB-INF/wisemapping-captcha.xml
             /WEB-INF/wisemapping-acegi-security.xml
         </param-value>
     </context-param>
@@ -89,6 +87,15 @@
         <servlet-name>wisemapping</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
+
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>
+                /WEB-INF/wisemapping-servlet.xml
+                /WEB-INF/wisemapping-captcha.xml
+            </param-value>
+        </init-param>
+
     </servlet>
 
     <servlet>
@@ -118,12 +125,4 @@
     <session-config>
         <session-timeout>180</session-timeout>
     </session-config>
-
-
-    <!-- This should be revired -->
-    <!--<resource-ref>-->
-    <!--<res-ref-name>jdbc/wisemapping</res-ref-name>-->
-    <!--<res-type>javax.sql.DataSource</res-type>-->
-    <!--<res-auth>Container</res-auth>-->
-    <!--</resource-ref>-->
 </web-app>
