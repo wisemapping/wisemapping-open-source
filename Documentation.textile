@@ -1,0 +1,53 @@
+h1. Documentation
+
+h2. Architecture
+
+WiseMapping has been development mainly in Java and JavaScript.  The following diagram represents a high level overview of the product
+[[http://www.wisemapping.org/_/rsrc/1257718018304/documentation/architecture/Wise%20Editor%20Architecture.png]]
+
+h2. Configuration
+
+h3. DataBase
+
+Wisemapping support a wide variety of databases, but we provide the Database’s script initialization for HSQL and MySQL Database. The initialization script are located within <WISEMAPPING_SOURCE_DIR>\trunk\wise-webapp\src\test\sql.
+
+This directory contains the following 3 scripts:: 
+create-schemas.sql: Contains all the SQL statement to create the Wisemapping’s tables.
+drop-schemas.sql:Contains all the SQL statement to drop all the Wisemapping database.
+test-data.sql: This script creates a sample data and the test user called test@wisemapping.com and password test.
+MySQL
+
+h4. Create Database User
+
+Using the MySQL Databse Tools run the following command in order to create the  database user. 
+
+CREATE DATABASE wisemapping CHARACTER SET='utf8' COLLATE='utf8_unicode_ci'; 
+CREATE USER 'wisemapping'@'localhost' IDENTIFIED BY 'd0ndu3nd3'; 
+GRANT ALL ON wisemapping.* TO 'wisemapping'@'localhost';
+
+h3. Configuration
+
+You can configure Wisemapping through the following file: 
+
+wise-webapp\src\main\webapp\WEB-INF\app.properties. 
+
+This property file contains all the properties to configure the database, mail and other resources used by Wisemapping. 
+
+Property  -> Description
+* database.url -> The Database URL(Ex. dbc:hsqldb:file:target/db/wisemapping)
+* database.driver-> The Database Driver.(Ex. org.hsqldb.jdbcDriver)
+* database.hibernate.dialect -> The Database dialect. This value is used by Spring DB.(Ex. org.hibernate.dialect.HSQLDialect)
+* database.username -> The database username
+* database.password -> The database password
+* mail.smtp.socketFactory.port -> The mail port to send email
+* mail.host -> The email server host
+* mail.user -> The mail username
+* mail.password -> The mail password
+* mail.registrationEmail -> The email used as FROM in the registration emails.
+* mail.siteEmail -> The email used as FROM in the notification emails.
+ 
+h3. Logging Properties
+
+WiseMapping uses Log4J to log all the events. The configuration file is located in : 
+
+<WISEMAPPING_DIR>\wise-webapp\src\main\webapp\WEB-INF\classes

@@ -1,0 +1,11 @@
+h1. FAQ
+
+h2. Which technology is being used to render the mind maps?
+
+We use SVG for Firefox and Safari, and VML for IE and Opera.
+
+SVG (Scalable Vectorial Graphics) allows straightforward and efficient vector graphics animation and VML (Vector Markup Language) supports the markup of vector graphic information in the same way that HTML supports the markup of textual information.
+
+h2. What's the source code License?
+
+http://www.wisemapping.org/license
