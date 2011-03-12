@@ -2,6 +2,9 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="/WEB-INF/app.properties"/>
+    </bean>
 
     <bean id="browserSupportInterceptor" class="com.wisemapping.filter.BrowserSupportInterceptor">
         <property name="exclude">
@@ -125,6 +128,7 @@
         <property name="formView" value="userRegistration"/>
         <property name="successView" value="userRegistrationConfirmation"/>
         <property name="userService" ref="userService"/>
+        <property name="emailConfirmEnabled" value="${user.confirm.registration}"/>
     </bean>
 
     <bean id="forgotPasswordValidator" class="com.wisemapping.validator.ForgotPasswordValidator"/>
@@ -140,7 +144,7 @@
     </bean>
 
     <bean id="settingResolver" class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
-        <property name="mappings">                                    
+        <property name="mappings">
             <props>
                 <prop key="/c/settings.htm">settings</prop>
             </props>
@@ -326,13 +330,13 @@
     </bean>
 
     <bean id="localeResolver"
-		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
-		<property name="defaultLocale" value="en" />
-	</bean>
+          class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+        <property name="defaultLocale" value="en"/>
+    </bean>
 
     <bean id="localeChangeInterceptor"
           class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-        <property name="paramName" value="language" />
+        <property name="paramName" value="language"/>
     </bean>
 
 

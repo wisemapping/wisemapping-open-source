@@ -33,14 +33,27 @@ import com.wisemapping.view.UserBean;
 import com.wisemapping.exceptions.WiseMappingException;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class UserController
         extends CaptchaFormController {
 
     //~ Instance fields ......................................................................................
 
+    private boolean emailConfirmEnabled;
     private UserService userService;
 
     //~ Methods ..............................................................................................
+
+
+    public boolean isEmailConfirmEnabled() {
+        return emailConfirmEnabled;
+    }
+
+    public void setEmailConfirmEnabled(boolean emailConfirmEnabled) {
+        this.emailConfirmEnabled = emailConfirmEnabled;
+    }
 
     public ModelAndView onSubmit(Object command) throws WiseMappingException {
         final UserBean userBean = ((UserBean) command);
@@ -53,10 +66,12 @@ public class UserController
             user.setFirstname(userBean.getFirstname());
             user.setLastname(userBean.getLastname());
             user.setPassword(userBean.getPassword());
-            userService.createUser(user);
+            userService.createUser(user,emailConfirmEnabled);
         }
 
-        return new ModelAndView(getSuccessView());
+        final Map<String,Object> model = new HashMap<String,Object>();
+        model.put("confirmByEmail",emailConfirmEnabled);
+        return new ModelAndView(getSuccessView(),model);
     }
 
     public void setUserService(UserService userService) {

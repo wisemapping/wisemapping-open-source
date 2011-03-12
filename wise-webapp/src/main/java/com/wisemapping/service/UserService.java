@@ -25,7 +25,7 @@ public interface UserService {
 
     public void activateAcount(long code) throws InvalidActivationCodeException;
 
-    public void createUser(User user) throws WiseMappingException;
+    public void createUser(User user, boolean emailConfirmEnabled) throws WiseMappingException;
 
     public void changePassword(User user);
 

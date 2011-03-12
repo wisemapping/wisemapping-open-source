@@ -38,8 +38,7 @@ public class UserServiceImpl
     final static Logger logger = Logger.getLogger("org.wisemapping.service");
 
     public void activateAcount(long code)
-        throws InvalidActivationCodeException 
-    {
+            throws InvalidActivationCodeException {
         final User user = userManager.getUserByActivationCode(code);
         if (user == null || user.isActive()) {
             throw new InvalidActivationCodeException("Invalid Activation Code");
@@ -67,7 +66,7 @@ public class UserServiceImpl
             changePassword(user);
             model.put("user", user);
             model.put("password", password);
-            
+
             mailer.sendEmail(mailer.getRegistrationEmail(), user.getEmail(), "WiseMapping : Recovery Password", model, "recoveryMail.vm");
         } else {
             throw new InvalidUserEmailException("The email '" + email + "' does not exists.");
@@ -91,30 +90,41 @@ public class UserServiceImpl
         return lo + i;
     }
 
-    public void createUser(User user) throws WiseMappingException {
+    public void createUser(User user, boolean emailConfirmEnabled) throws WiseMappingException {
         final UUID uuid = UUID.randomUUID();
         user.setCreationDate(Calendar.getInstance());
-        user.setActivationDate(null);
         user.setActivationCode(uuid.getLeastSignificantBits());
 
-        Colaborator col = userManager.getColaboratorBy(user.getEmail());
-        if (col != null)
-        {
-            userManager.createUser(user,col);
+        if (emailConfirmEnabled) {
+            user.setActivationDate(null);
+
+        } else {
+            user.setActivationDate(Calendar.getInstance());
         }
-        else
-        {
+
+        Colaborator col = userManager.getColaboratorBy(user.getEmail());
+        if (col != null) {
+            userManager.createUser(user, col);
+        } else {
             userManager.createUser(user);
         }
 
         //create welcome map
         mindmapService.addWelcomeMindmap(user);
 
+        // Send registration email.
+        if (emailConfirmEnabled) {
+            sendRegistrationEmail(user);
+        }
+    }
+
+    private void sendRegistrationEmail(User user) {
         final Map<String, Object> model = new HashMap<String, Object>();
         model.put("user", user);
-        // TODO: ver como no hacer hardcode el url
+
+
         final String activationUrl = "http://wisemapping.com/c/activation.htm?code=" + user.getActivationCode();
-        logger.info("create User - acrivationUrl: "+activationUrl);
+        logger.info("create User - acrivationUrl: " + activationUrl);
         model.put("emailcheck", activationUrl);
         mailer.sendEmail(mailer.getRegistrationEmail(), user.getEmail(), "Welcome to Wisemapping!", model,
                 "confirmationMail.vm");
