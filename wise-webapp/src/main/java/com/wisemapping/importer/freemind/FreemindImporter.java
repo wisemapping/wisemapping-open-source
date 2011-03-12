@@ -427,7 +427,10 @@ public class FreemindImporter
             fontStyle.append(bigInteger);
             fontStyle.append(";");
             String color = node.getCOLOR();
-            fontStyle.append((color!=null && !color.equals(""))?color:"#000000");
+            if(color!=null && !color.equals(""))
+            {
+                fontStyle.append(color);
+            }
             fontStyle.append(";");
 
             boolean hasBold = Boolean.parseBoolean(font.getBOLD());
@@ -444,7 +447,10 @@ public class FreemindImporter
             fontStyle.append(";");
             fontStyle.append(";");
             String color = node.getCOLOR();
-            fontStyle.append((color!=null && !color.equals(""))?color:"#000000");
+            if(color!=null && !color.equals(""))
+            {
+               fontStyle.append(color);
+            }
             fontStyle.append(";");
             fontStyle.append(";");
             fontStyle.append(";");
