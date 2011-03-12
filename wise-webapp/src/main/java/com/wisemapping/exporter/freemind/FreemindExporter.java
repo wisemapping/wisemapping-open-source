@@ -124,11 +124,14 @@ public class FreemindExporter
         freemindNode.setID("ID_" + mindmapTopic.getId());
         freemindNode.setTEXT(mindmapTopic.getText());
         freemindNode.setBACKGROUNDCOLOR(mindmapTopic.getBgColor());
-        String style = "line"; // default style for freemind
-        if ("rounded rectagle".equals(mindmapTopic.getShape())) {
-            style = "bubble";
+
+        if (mindmapTopic.getShape() != null && !mindmapTopic.getShape().equals("line")) {
+            String style = mindmapTopic.getShape();
+            if ("rounded rectagle".equals(mindmapTopic.getShape())) {
+                style = "bubble";
+            }
+            freemindNode.setSTYLE(style);
         }
-        freemindNode.setSTYLE(style);
         addIconNode(freemindNode, mindmapTopic);
         addLinkNode(freemindNode, mindmapTopic);
         addFontNode(freemindNode, mindmapTopic);

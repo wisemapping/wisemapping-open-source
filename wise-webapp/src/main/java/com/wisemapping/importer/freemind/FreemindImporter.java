@@ -42,8 +42,7 @@ import java.util.*;
 import java.math.BigInteger;
 
 public class FreemindImporter
-        implements Importer
-{
+        implements Importer {
 
     private com.wisemapping.xml.mindmap.ObjectFactory mindmapObjectFactory;
     private static final String POSITION_LEFT = "left";
@@ -54,36 +53,36 @@ public class FreemindImporter
     private List<RelationshipType> relationships = null;
     private int currentId;
 
-    public MindMap importMap(String mapName,String description,InputStream input) throws ImporterException {
+    public MindMap importMap(String mapName, String description, InputStream input) throws ImporterException {
 
         final MindMap map;
         mindmapObjectFactory = new com.wisemapping.xml.mindmap.ObjectFactory();
         try {
-            final Map freemindMap = (Map) JAXBUtils.getMapObject(input,"com.wisemapping.xml.freemind");
+            final Map freemindMap = (Map) JAXBUtils.getMapObject(input, "com.wisemapping.xml.freemind");
 
             final com.wisemapping.xml.mindmap.Map mindmapMap = mindmapObjectFactory.createMap();
             mindmapMap.setVersion("pela");
-            currentId=0;
+            currentId = 0;
 
             final Node centralNode = freemindMap.getNode();
             final TopicType centralTopic = mindmapObjectFactory.createTopicType();
             centralTopic.setId(String.valueOf(currentId++));
             centralTopic.setCentral(true);
 
-            setNodePropertiesToTopic(centralTopic,centralNode);
+            setNodePropertiesToTopic(centralTopic, centralNode);
             centralTopic.setShape(ShapeStyle.ELIPSE.getStyle());
             mindmapMap.getTopic().add(centralTopic);
             mindmapMap.setName(mapName);
             nodesMap = new HashMap<String, TopicType>();
             relationships = new ArrayList<RelationshipType>();
             nodesMap.put(centralNode.getID(), centralTopic);
-            addTopicFromNode(centralNode,centralTopic);
+            addTopicFromNode(centralNode, centralTopic);
             fixCentralTopicChildOrder(centralTopic);
 
             addRelationships(mindmapMap);
 
             ByteArrayOutputStream out = new ByteArrayOutputStream();
-            JAXBUtils.saveMap(mindmapMap,out,"com.wisemapping.xml.mindmap");
+            JAXBUtils.saveMap(mindmapMap, out, "com.wisemapping.xml.mindmap");
 
             map = new MindMap();
             map.setNativeXml(new String(out.toByteArray(), Charset.forName("UTF-8")));
@@ -102,7 +101,7 @@ public class FreemindImporter
 
     private void addRelationships(com.wisemapping.xml.mindmap.Map mindmapMap) {
         List<RelationshipType> mapRelationships = mindmapMap.getRelationship();
-        for(RelationshipType relationship : relationships){
+        for (RelationshipType relationship : relationships) {
             relationship.setId(String.valueOf(currentId++));
 
             fixRelationshipControlPoints(relationship);
@@ -126,97 +125,97 @@ public class FreemindImporter
         TopicType destTopicType = nodesMap.get(relationship.getDestTopicId());
 
         //Fix x coord
-        if(isOnLeftSide(srcTopic)){
+        if (isOnLeftSide(srcTopic)) {
             String[] srcCtrlPoint = relationship.getSrcCtrlPoint().split(",");
             int x = Integer.valueOf(srcCtrlPoint[0]) * -1;
-            relationship.setSrcCtrlPoint(x+","+srcCtrlPoint[1]);
+            relationship.setSrcCtrlPoint(x + "," + srcCtrlPoint[1]);
         }
-        if(isOnLeftSide(destTopicType)){
+        if (isOnLeftSide(destTopicType)) {
             String[] destCtrlPoint = relationship.getDestCtrlPoint().split(",");
-             int x = Integer.valueOf(destCtrlPoint[0]) * -1;
-            relationship.setDestCtrlPoint(x+","+destCtrlPoint[1]);
+            int x = Integer.valueOf(destCtrlPoint[0]) * -1;
+            relationship.setDestCtrlPoint(x + "," + destCtrlPoint[1]);
         }
 
         //Fix y coord
-        if(srcTopic.getOrder()%2!=0){ //Odd order.
+        if (srcTopic.getOrder() % 2 != 0) { //Odd order.
             String[] srcCtrlPoint = relationship.getSrcCtrlPoint().split(",");
             int y = Integer.valueOf(srcCtrlPoint[1]) * -1;
-            relationship.setSrcCtrlPoint(srcCtrlPoint[0]+","+y);
+            relationship.setSrcCtrlPoint(srcCtrlPoint[0] + "," + y);
         }
-        if(destTopicType.getOrder()%2!=0){ //Odd order.
+        if (destTopicType.getOrder() % 2 != 0) { //Odd order.
             String[] destCtrlPoint = relationship.getDestCtrlPoint().split(",");
             int y = Integer.valueOf(destCtrlPoint[1]) * -1;
-            relationship.setDestCtrlPoint(destCtrlPoint[0]+","+y);
+            relationship.setDestCtrlPoint(destCtrlPoint[0] + "," + y);
         }
-        
+
     }
 
-    private void fixCentralTopicChildOrder(TopicType centralTopic){
+    private void fixCentralTopicChildOrder(TopicType centralTopic) {
         List<TopicType> topics = centralTopic.getTopic();
         List<TopicType> leftTopics = new ArrayList<TopicType>();
         List<TopicType> rightTopics = new ArrayList<TopicType>();
 
-        for (TopicType topic : topics){
-            if(isOnLeftSide(topic)){
+        for (TopicType topic : topics) {
+            if (isOnLeftSide(topic)) {
                 leftTopics.add(topic);
             } else {
                 rightTopics.add(topic);
             }
         }
 
-        if(leftTopics.size()>0){
+        if (leftTopics.size() > 0) {
             int size = leftTopics.size();
             int index = 0;
-            int center = size/2;
-            if(size %2==0){ //Even number, then place middle point in 1 index
+            int center = size / 2;
+            if (size % 2 == 0) { //Even number, then place middle point in 1 index
                 index = 1;
                 center--;
             }
-            int index2=index;
+            int index2 = index;
 
             leftTopics.get(center).setOrder(index);
-            for(int i = center-1; i>=0; i--){
-                if(index==0){
+            for (int i = center - 1; i >= 0; i--) {
+                if (index == 0) {
                     index++;
-                }else{
-                    index+=2;
+                } else {
+                    index += 2;
                 }
                 leftTopics.get(i).setOrder(index);
             }
-            index=index2;
-            for(int i = center+1; i<size; i++){
-                if(index==1){
+            index = index2;
+            for (int i = center + 1; i < size; i++) {
+                if (index == 1) {
                     index++;
-                }else{
-                    index+=2;
+                } else {
+                    index += 2;
                 }
                 leftTopics.get(i).setOrder(index);
             }
         }
-        if(rightTopics.size()>0){
+        if (rightTopics.size() > 0) {
             int size = rightTopics.size();
             int index = 0;
-            int center = size/2;
-            if(size %2==0){ //Even number, then place middle point in 1 index
+            int center = size / 2;
+            if (size % 2 == 0) { //Even number, then place middle point in 1 index
                 index = 1;
                 center--;
             }
-            int index2=index;
+            int index2 = index;
             rightTopics.get(center).setOrder(index);
-            for(int i = center-1; i>=0; i--){
-                if(index==0){
+            for (int i = center - 1; i >= 0; i--) {
+                if (index == 0) {
                     index++;
-                }else{
-                    index+=2;
+                } else {
+                    index += 2;
                 }
                 rightTopics.get(i).setOrder(index);
             }
-            index=index2;
-            for(int i = center+1; i<size; i++){
-                if(index==1){
+            index = index2;
+            for (int i = center + 1; i < size; i++) {
+                if (index == 1) {
                     index++;
-                }else{
-                    index+=2;
+                } else {
+                    index += 2;
                 }
                 rightTopics.get(i).setOrder(index);
             }
@@ -226,102 +225,88 @@ public class FreemindImporter
     private boolean isOnLeftSide(TopicType topic) {
         String[] position = topic.getPosition().split(",");
         int x = Integer.parseInt(position[0]);
-        return x<0;
+        return x < 0;
     }
 
-    private void addTopicFromNode(Node mainNode, TopicType topic)
-    {
+    private void addTopicFromNode(Node mainNode, TopicType topic) {
         final List<Object> freemindNodes = mainNode.getArrowlinkOrCloudOrEdge();
         TopicType currentTopic = topic;
         int order = 0;
         for (Object freemindNode : freemindNodes) {
 
-            if (freemindNode instanceof Node)
-            {
+            if (freemindNode instanceof Node) {
                 final Node node = (Node) freemindNode;
                 TopicType newTopic = mindmapObjectFactory.createTopicType();
                 newTopic.setId(String.valueOf(currentId++));
                 nodesMap.put(node.getID(), newTopic);  //Lets use freemind id temporarily. This will be fixed when adding relationship to the map.
                 newTopic.setOrder(order++);
                 String url = node.getLINK();
-                if (url != null)
-                {
+                if (url != null) {
                     final Link link = new Link();
                     link.setUrl(url);
                     newTopic.setLink(link);
                 }
-                if(POSITION_LEFT.equals(mainNode.getPOSITION())){
+                if (POSITION_LEFT.equals(mainNode.getPOSITION())) {
                     node.setPOSITION(POSITION_LEFT);
                 }
                 setNodePropertiesToTopic(newTopic, node);
-                addTopicFromNode(node,newTopic);
-                if (!newTopic.equals(topic))
-                {
+                addTopicFromNode(node, newTopic);
+                if (!newTopic.equals(topic)) {
                     topic.getTopic().add(newTopic);
                 }
                 currentTopic = newTopic;
-            }
-            else if (freemindNode instanceof Font)
-            {
-                final Font font = (Font)freemindNode;
+            } else if (freemindNode instanceof Font) {
+                final Font font = (Font) freemindNode;
                 final String fontStyle = generateFontStyle(mainNode, font);
-                currentTopic.setFontStyle(fontStyle);
-            }
-            else if (freemindNode instanceof Edge)
-            {
-                final Edge edge = (Edge)freemindNode;
+                if (!fontStyle.isEmpty()) {
+                    currentTopic.setFontStyle(fontStyle);
+                }
+            } else if (freemindNode instanceof Edge) {
+                final Edge edge = (Edge) freemindNode;
                 currentTopic.setBrColor(edge.getCOLOR());
-            }
-            else if (freemindNode instanceof Icon)
-            {
-                final Icon freemindIcon = (Icon)freemindNode;
+            } else if (freemindNode instanceof Icon) {
+                final Icon freemindIcon = (Icon) freemindNode;
                 final com.wisemapping.xml.mindmap.Icon mindmapIcon = new com.wisemapping.xml.mindmap.Icon();
                 final String mindmapIconId = FreemindIconMapper.getMindmapIcon(freemindIcon.getBUILTIN());
                 mindmapIcon.setId(mindmapIconId);
                 currentTopic.getIcon().add(mindmapIcon);
-            }
-            else if (freemindNode instanceof Hook)
-            {
-                final Hook hook = (Hook)freemindNode;
+            } else if (freemindNode instanceof Hook) {
+                final Hook hook = (Hook) freemindNode;
                 final com.wisemapping.xml.mindmap.Note mindmapNote = new com.wisemapping.xml.mindmap.Note();
                 String textNote = hook.getText();
                 if (textNote == null) // It is not a note is a BlinkingNodeHook or AutomaticLayout Hook
                 {
-                    textNote = textNote != null ? textNote.replaceAll("\n","%0A") : EMPTY_NOTE;
+                    textNote = textNote != null ? textNote.replaceAll("\n", "%0A") : EMPTY_NOTE;
                     mindmapNote.setText(textNote);
                     currentTopic.setNote(mindmapNote);
                 }
-            }
-            else if (freemindNode instanceof Richcontent)
-            {
+            } else if (freemindNode instanceof Richcontent) {
                 final Richcontent content = (Richcontent) freemindNode;
                 final String type = content.getTYPE();
 
-                if(type.equals("NODE")){
+                if (type.equals("NODE")) {
                     final String text = getText(content);
-                    text.replaceAll("\n","");
+                    text.replaceAll("\n", "");
                     text.trim();
                     currentTopic.setText(text);
-                }
-                else{
+                } else {
                     String text = getRichContent(content);
                     final com.wisemapping.xml.mindmap.Note mindmapNote = new com.wisemapping.xml.mindmap.Note();
-                    text = text!= null ? text.replaceAll("\n","%0A") : EMPTY_NOTE;
+                    text = text != null ? text.replaceAll("\n", "%0A") : EMPTY_NOTE;
                     mindmapNote.setText(text);
                     currentTopic.setNote(mindmapNote);
 
                 }
-            }
-            else if (freemindNode instanceof Arrowlink){
+            } else if (freemindNode instanceof Arrowlink) {
                 final Arrowlink arrow = (Arrowlink) freemindNode;
                 RelationshipType relationship = mindmapObjectFactory.createRelationshipType();
                 String destId = arrow.getDESTINATION();
                 relationship.setSrcTopicId(mainNode.getID());
                 relationship.setDestTopicId(destId);
                 String[] inclination = arrow.getENDINCLINATION().split(";");
-                relationship.setDestCtrlPoint(inclination[0]+","+inclination[1]);
+                relationship.setDestCtrlPoint(inclination[0] + "," + inclination[1]);
                 inclination = arrow.getSTARTINCLINATION().split(";");
-                relationship.setSrcCtrlPoint(inclination[0]+","+inclination[1]);
+                relationship.setSrcCtrlPoint(inclination[0] + "," + inclination[1]);
                 //relationship.setCtrlPointRelative(true);
                 relationship.setEndArrow(!arrow.getENDARROW().toLowerCase().equals("none"));
                 relationship.setStartArrow(!arrow.getSTARTARROW().toLowerCase().equals("none"));
@@ -336,13 +321,13 @@ public class FreemindImporter
         List<Element> elementList = content.getHtml().getAny();
 
         Element body = null;
-        for(Element elem : elementList){
-            if(elem.getNodeName().equals("body")){
+        for (Element elem : elementList) {
+            if (elem.getNodeName().equals("body")) {
                 body = elem;
                 break;
             }
         }
-        if(body != null){
+        if (body != null) {
             result = body.getTextContent();
         }
         return result;
@@ -353,33 +338,32 @@ public class FreemindImporter
         List<Element> elementList = content.getHtml().getAny();
 
         Element body = null;
-        for(Element elem : elementList){
-            if(elem.getNodeName().equals("body")){
+        for (Element elem : elementList) {
+            if (elem.getNodeName().equals("body")) {
                 body = elem;
                 break;
             }
         }
-        if(body != null){
+        if (body != null) {
             String textNode = buildTextFromChildren(body);
-            if(textNode!= null)
+            if (textNode != null)
                 result = textNode.trim();
 
         }
         return result;
     }
 
-    private  String buildTextFromChildren(org.w3c.dom.Node body) {
+    private String buildTextFromChildren(org.w3c.dom.Node body) {
         StringBuilder text = new StringBuilder();
         NodeList childNodes = body.getChildNodes();
-        for(int i=0; i< childNodes.getLength(); i++){
+        for (int i = 0; i < childNodes.getLength(); i++) {
             org.w3c.dom.Node child = childNodes.item(i);
-            if(child instanceof TextImpl){
+            if (child instanceof TextImpl) {
                 text.append(" ");
                 text.append(child.getTextContent());
-            }
-            else{
+            } else {
                 String textElem = buildTextFromChildren(child);
-                if(textElem!=null && !textElem.equals("")){
+                if (textElem != null && !textElem.equals("")) {
                     text.append(textElem);
                 }
             }
@@ -387,48 +371,45 @@ public class FreemindImporter
         return text.toString();
     }
 
-    private void setNodePropertiesToTopic( com.wisemapping.xml.mindmap.TopicType mindmapTopic,com.wisemapping.xml.freemind.Node freemindNode)
-    {
+    private void setNodePropertiesToTopic(com.wisemapping.xml.mindmap.TopicType mindmapTopic, com.wisemapping.xml.freemind.Node freemindNode) {
         mindmapTopic.setText(freemindNode.getTEXT());
         mindmapTopic.setBgColor(freemindNode.getBACKGROUNDCOLOR());
 
         final String shape = getShapeFormFromNode(freemindNode);
         mindmapTopic.setShape(shape);
         int pos = 1;
-        if (POSITION_LEFT.equals(freemindNode.getPOSITION()))
-        {
+        if (POSITION_LEFT.equals(freemindNode.getPOSITION())) {
             pos = -1;
         }
         Integer orderPosition = mindmapTopic.getOrder() != null ? mindmapTopic.getOrder() : 0;
-        int position = pos * 200 + (orderPosition +1)*10;
+        int position = pos * 200 + (orderPosition + 1) * 10;
 
-        mindmapTopic.setPosition( position+","+200 * orderPosition);
-        String fontStyle = generateFontStyle(freemindNode,null);
-        mindmapTopic.setFontStyle(fontStyle);
+        mindmapTopic.setPosition(position + "," + 200 * orderPosition);
+        String fontStyle = generateFontStyle(freemindNode, null);
+        if (!fontStyle.isEmpty()) {
+            mindmapTopic.setFontStyle(fontStyle);
+        }
         Boolean folded = Boolean.valueOf(freemindNode.getFOLDED());
-        if(folded){
+        if (folded) {
             mindmapTopic.setShrink(folded);
         }
     }
 
-    private String generateFontStyle(Node node,Font font)
-    {
+    private String generateFontStyle(Node node, Font font) {
         /*
         * MindmapFont format : fontName ; size ; color ; bold; italic;
         * eg: Verdana;10;#ffffff;bold;italic;
         *
         */
-        StringBuilder fontStyle = new StringBuilder();
-        if (font != null)
-        {
+        final StringBuilder fontStyle = new StringBuilder();
+        if (font != null) {
             fontStyle.append(fixFontName(font));
             fontStyle.append(";");
-            BigInteger bigInteger = (font.getSIZE()==null || font.getSIZE().intValue() < 8) ? BigInteger.valueOf(8) : font.getSIZE();
+            BigInteger bigInteger = (font.getSIZE() == null || font.getSIZE().intValue() < 8) ? BigInteger.valueOf(8) : font.getSIZE();
             fontStyle.append(bigInteger);
             fontStyle.append(";");
             String color = node.getCOLOR();
-            if(color!=null && !color.equals(""))
-            {
+            if (color != null && !color.equals("")) {
                 fontStyle.append(color);
             }
             fontStyle.append(";");
@@ -442,44 +423,25 @@ public class FreemindImporter
             fontStyle.append(hasItalic ? ITALIC : null);
             fontStyle.append(";");
         }
-        else
-        {
-            fontStyle.append(";");
-            fontStyle.append(";");
-            String color = node.getCOLOR();
-            if(color!=null && !color.equals(""))
-            {
-               fontStyle.append(color);
-            }
-            fontStyle.append(";");
-            fontStyle.append(";");
-            fontStyle.append(";");
-        }
 
         return fontStyle.toString();
     }
 
-    private String fixFontName(Font font)
-    {
+    private String fixFontName(Font font) {
         String fontName = com.wisemapping.model.Font.ARIAL.getFontName(); // Default Font
-        if (com.wisemapping.model.Font.isValidFont(font.getNAME()))
-        {
+        if (com.wisemapping.model.Font.isValidFont(font.getNAME())) {
             fontName = font.getNAME();
         }
         return fontName;
     }
 
-    private String getShapeFormFromNode(Node node)
-    {
+    private String getShapeFormFromNode(Node node) {
         String shape = node.getSTYLE();
         // In freemind a node without style is a line
-        if ("bubble".equals(shape))
-        {
-            shape= ShapeStyle.ROUNDED_RETAGLE.getStyle();
-        }
-        else
-        {
-            shape=ShapeStyle.LINE.getStyle();
+        if ("bubble".equals(shape)) {
+            shape = ShapeStyle.ROUNDED_RETAGLE.getStyle();
+        } else {
+            shape = ShapeStyle.LINE.getStyle();
         }
         return shape;
     }

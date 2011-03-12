@@ -448,7 +448,6 @@
                     <suiteXmlFiles>
                         <suiteXmlFile>testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
-                    <excludedGroups>WiseWebServicesGroup</excludedGroups>
                 </configuration>
             </plugin>
 

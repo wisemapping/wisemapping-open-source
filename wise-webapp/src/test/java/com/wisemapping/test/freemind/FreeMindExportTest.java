@@ -1,4 +1,4 @@
-package wisemapping.test.freemind;
+package com.wisemapping.test.freemind;
 
 import com.wisemapping.exporter.ExportException;
 import com.wisemapping.exporter.freemind.FreemindExporter;
@@ -12,8 +12,9 @@ import org.testng.annotations.Test;
 
 import java.io.*;
 
+@Test
 public class FreeMindExportTest {
-    private static final String DATA_DIR_PATH = "wise-webapp/src/test/data/freemind/";
+    private static final String DATA_DIR_PATH = "src/test/data/freemind/";
 
     @Test
     public void exportImportExportTest() throws ImporterException, IOException, ExportException {
@@ -24,11 +25,12 @@ public class FreeMindExportTest {
         FileInputStream fileInputStream = new FileInputStream(new File(DATA_DIR_PATH, "basic.mm").getAbsolutePath());
         final MindMap mindMap = importer.importMap("basic", "basic", fileInputStream);
 
+
+
         final FreemindExporter freemindExporter = new FreemindExporter();
-        FileOutputStream fos = new FileOutputStream(new File("wise-webapp/src/test/data/freemind/","basice.mm"));
+        FileOutputStream fos = new FileOutputStream(new File(DATA_DIR_PATH,"basice.mm"));
         freemindExporter.export(mindMap,fos);
         fos.close();
-
 
     }
 
