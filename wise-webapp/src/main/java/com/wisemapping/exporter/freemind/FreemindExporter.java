@@ -41,6 +41,8 @@ public class FreemindExporter
 
     private static final String FREE_MIND_VERSION = "0.9.0";
     private static final String EMPTY_FONT_STYLE = ";;;;;";
+    private static final String POSITION_LEFT = "left";
+    private static final String POSITION_RIGHT = "right";
     private com.wisemapping.xml.freemind.ObjectFactory freemindObjectFactory;
     private Map<String, Node> nodesMap = null;
 
@@ -117,6 +119,10 @@ public class FreemindExporter
             setTopicPropertiesToNode(newNode, topicType);
             destNode.getArrowlinkOrCloudOrEdge().add(newNode);
             addNodeFromTopic(topicType, newNode);
+            String position = topicType.getPosition();
+            String xPos = position.split(",")[0];
+            int x = Integer.valueOf(xPos);
+            newNode.setPOSITION((x<0?POSITION_LEFT:POSITION_RIGHT));
         }
     }
 
