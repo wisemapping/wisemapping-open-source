@@ -120,9 +120,11 @@ public class FreemindExporter
             destNode.getArrowlinkOrCloudOrEdge().add(newNode);
             addNodeFromTopic(topicType, newNode);
             String position = topicType.getPosition();
-            String xPos = position.split(",")[0];
-            int x = Integer.valueOf(xPos);
-            newNode.setPOSITION((x<0?POSITION_LEFT:POSITION_RIGHT));
+            if(position!=null){
+                String xPos = position.split(",")[0];
+                int x = Integer.valueOf(xPos);
+                newNode.setPOSITION((x<0?POSITION_LEFT:POSITION_RIGHT));
+            }
         }
     }
 
