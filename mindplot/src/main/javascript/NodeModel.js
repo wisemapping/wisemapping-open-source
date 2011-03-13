@@ -278,7 +278,7 @@ mindplot.NodeModel.prototype.canBeConnected = function(sourceModel, sourcePositi
         var targetTopicSize = targetModel.getSize();
         var yDistance = Math.abs(sourcePosition.y - targetPosition.y);
 
-        if (yDistance <= targetTopicHeight / 2)
+        if (yDistance <= 5 + targetTopicHeight / 2)
         {
             // Circular connection ?
             if (!sourceModel._isChildNode(this))
@@ -290,14 +290,14 @@ mindplot.NodeModel.prototype.canBeConnected = function(sourceModel, sourcePositi
 
                 if (isTargetAtRightFromCentral)
                 {
-                    if (xDistance >= 0 && xDistance <= mindplot.NodeModel.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE + (targetTopicSize.width / 2))
+                    if (xDistance >= -targetTopicSize.width/2 && xDistance <= mindplot.NodeModel.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE /2 + (targetTopicSize.width / 2))
                     {
                         result = true;
                     }
 
                 } else
                 {
-                    if (xDistance <= 0 && Math.abs(xDistance) <= mindplot.NodeModel.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE + (targetTopicSize.width / 2))
+                    if (xDistance <= targetTopicSize.width/2 && Math.abs(xDistance) <= mindplot.NodeModel.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE /2 + (targetTopicSize.width / 2))
                     {
                         result = true;
                     }
