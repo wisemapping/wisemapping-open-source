@@ -30,6 +30,7 @@ public class UserAgent implements Serializable {
     private Product product;
     private OS os;
     private final org.apache.commons.logging.Log logger = LogFactory.getLog(UserAgent.class.getName());
+    private boolean hasGCFInstalled = false;
 
     public static void main(final String argv[]) {
         UserAgent explorer = UserAgent.create("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)");
@@ -63,6 +64,10 @@ public class UserAgent implements Serializable {
 
     public boolean isVersionGreatedOrEqualThan(final int mayor, final int variation) {
         return this.versionMajor > mayor || (mayor == this.versionMajor && this.versionVariation >= variation);
+    }
+
+    public boolean isVersionLessThan(final int mayor) {
+        return this.versionMajor < mayor;
     }
 
     public int getVersionMajor() {
@@ -127,6 +132,7 @@ public class UserAgent implements Serializable {
 
                 // Explorer Parse ...
                 this.product = Product.EXPLORER;
+                this.hasGCFInstalled = productDetails.indexOf("chromeframe")!=-1;
             } else if (userAgentHeader.indexOf("iCab") != -1 || userAgentHeader.indexOf("Safari") != -1) {
                 // Safari:
                 //Formats:  Mozilla/5.0 (Windows; U; Windows NT 5.1; en) AppleWebKit/522.13.1 (KHTML, like Gecko) Version/3.0.2 Safari/522.13.1
@@ -332,6 +338,11 @@ public class UserAgent implements Serializable {
         result = result || product == UserAgent.Product.CHROME && this.isVersionGreatedOrEqualThan(7, 0);
         result = result || product == UserAgent.Product.SAFARI && this.isVersionGreatedOrEqualThan(3, 0);
         return result;
+    }
+
+    public boolean needsGCF(){
+        final UserAgent.Product product = this.getProduct();
+        return product == UserAgent.Product.EXPLORER && this.isVersionLessThan(9) && this.getOs() == UserAgent.OS.WINDOWS && !this.hasGCFInstalled;
     }
 
 }

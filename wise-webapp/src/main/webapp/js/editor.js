@@ -23,7 +23,7 @@ function afterCoreLoading()
 //    Uncomment for debug ...   
     if (core.UserAgent.isVMLSupported())
     {
-        $import("../js/mindplot.vml.js");
+//        $import("../js/mindplot.vml.js");
     } else
     {
         $import("../js/mindplot.svg.js");

@@ -15,6 +15,7 @@
     <definition name="closeDialog" page="/jsp/closeDialog.jsp"/>
     <definition name="embeddedViewError" page="/jsp/embeddedViewError.jsp"/>
     <definition name="mindmapPrint" page="/jsp/mindmapPrint.jsp"/>
+    <definition name="installCFG" page="/jsp/installCFG.jsp"/>
 
     <!-- Template Declaration -->
     <definition name="pageTemplate" page="/jsp/template.jsp">

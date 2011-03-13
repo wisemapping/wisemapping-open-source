@@ -12,6 +12,10 @@
 </c:url>
 <html>
 <head>
+    <!--[if lt IE 9]>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <![endif]-->
+    
     <!-- Internet Explorer 8 Hack -->
     <meta http-equiv="Content-type" value="text/html;charset=UTF-8">
     <title><spring:message code="SITE.TITLE"/> - ${mindmap.title} </title>
