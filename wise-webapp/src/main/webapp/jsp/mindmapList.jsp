@@ -29,10 +29,6 @@
             // IE Hack ....
             function afterMindpotLibraryLoading(){};
 
-            if (core.UserAgent.isVMLSupported())
-            {
-                $import("../js/mindplot.vml.js");
-            }
         };
 
     </script>

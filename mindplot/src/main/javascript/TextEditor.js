@@ -87,10 +87,7 @@ mindplot.TextEditor = function(screenManager,actionRunner)
             this._currentNode = null;
         }
 
-       if (core.UserAgent.isSVGSupported())
-        {
             setTimeout("$('ffoxWorkarroundInput').focus();", 0);
-        }
     };
     this.fx = new Fx.Style(this.inputText, 'opacity', { duration: 10});
     this.fx.addEvent('onComplete', onComplete.bind(this));
@@ -240,11 +237,7 @@ mindplot.TextEditor.prototype.init = function (nodeGraph)
             }
             var position = {x:0,y:0};
             position.x = pos.x - ((textWidth * scale.width) / 2) + ((iconGroupSize.width * scale.width)/2);
-            var fixError = 0;
-            if (core.UserAgent.isSVGSupported())
-            {
-                fixError = 4;
-            }
+            var fixError = 4;
             position.y = pos.y - ((textHeight * scale.height) / 2) - fixError;
 
             editor.setEditorSize(elemSize.width, elemSize.height, scale);

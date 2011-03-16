@@ -445,15 +445,8 @@ mindplot.MindmapDesigner.prototype.save = function(onSavedHandler, saveHistory)
     var mindmap = this._mindmap;
 
     var xmlChart = this._workspace.dumpNativeChart();
-    var chatType = core.UserAgent.isVMLSupported() ? "VML" : "SVG";
-    if (core.UserAgent.isVMLSupported())
-    {
-        // Remove first line: "<?xml:namespace prefix = v ns = "urn:schemas-microsoft-com:vml" />"
-        xmlChart = xmlChart.replace('<?xml:namespace prefix = v ns = "urn:schemas-microsoft-com:vml" />', "");
-    }
-
     var properties = {zoom:this._zoom};
-    persistantManager.save(mindmap, chatType, xmlChart, properties, onSavedHandler, saveHistory);
+    persistantManager.save(mindmap, xmlChart, properties, onSavedHandler, saveHistory);
     this._fireEvent("save", {type:saveHistory});
 
     // Refresh undo state...

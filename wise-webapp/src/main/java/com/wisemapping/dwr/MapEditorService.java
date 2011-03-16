@@ -49,13 +49,12 @@ public class MapEditorService
         return response;
     }
 
-    public ResponseMessage saveMap(final int mapId, final String nativeXml, final String chartType,
+    public ResponseMessage saveMap(final int mapId, final String nativeXml,
                                    String chartXml, final String editorProperties,boolean saveHistory)
             throws IOException, WiseMappingException {
         final MindmapService serservice = getMindmapService();
         final MindMap mindMap = serservice.getMindmapById(mapId);
         final User user = this.getUser();
-
 
         MindMapNative nativeBrowser = mindMap.getNativeBrowser();
 
@@ -63,13 +62,8 @@ public class MapEditorService
             nativeBrowser = new MindMapNative();
         }
 
-        if ("SVG".equals(chartType)) {
-            nativeBrowser.setSvgXml(chartXml);
-            nativeBrowser.setVmlXml((byte[]) null);
-        } else {
-            nativeBrowser.setVmlXml(chartXml);
-            nativeBrowser.setSvgXml((byte[]) null);
-        }
+        nativeBrowser.setSvgXml(chartXml);
+        nativeBrowser.setVmlXml((byte[]) null);
 
         mindMap.setNativeBrowser(nativeBrowser);
         mindMap.setProperties(editorProperties);

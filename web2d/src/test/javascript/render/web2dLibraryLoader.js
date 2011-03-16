@@ -23,8 +23,7 @@ web2d = {
 
 web2d.peer =
 {
-    svg: {},
-    vml: {}
+    svg: {}
 };
 
 web2d.peer.utils = {};
@@ -136,45 +135,31 @@ web2d.JsLoader =
             "/render/mootools.js",
             "../../../../../core-js/target/classes/core.js",
             "/../../../src/main/javascript/EventDispatcher.js",
-            "/../../../src/main/javascript/peer/vml/ElementPeer.js",
             "/../../../src/main/javascript/peer/svg/ElementPeer.js",
             "/../../../src/main/javascript/Element.js",
             "/../../../src/main/javascript/Workspace.js",
             "/../../../src/main/javascript/peer/svg/WorkspacePeer.js",
-            "/../../../src/main/javascript/peer/vml/WorkspacePeer.js",
             "/../../../src/main/javascript/Toolkit.js",
             "/../../../src/main/javascript/Elipse.js",
             "/../../../src/main/javascript/peer/svg/ElipsePeer.js",
-            "/../../../src/main/javascript/peer/vml/ElipsePeer.js",
             "/../../../src/main/javascript/Line.js",
             "/../../../src/main/javascript/peer/svg/LinePeer.js",
-            "/../../../src/main/javascript/peer/vml/LinePeer.js",
             "/../../../src/main/javascript/PolyLine.js",
             "/../../../src/main/javascript/peer/svg/PolyLinePeer.js",
-            "/../../../src/main/javascript/peer/vml/PolyLinePeer.js",
             "/../../../src/main/javascript/Group.js",
             "/../../../src/main/javascript/peer/svg/GroupPeer.js",
-            "/../../../src/main/javascript/peer/vml/GroupPeer.js",
             "/../../../src/main/javascript/Rect.js",
             "/../../../src/main/javascript/peer/svg/RectPeer.js",
-            "/../../../src/main/javascript/peer/vml/RectPeer.js",
             "/../../../src/main/javascript/Text.js",
             "/../../../src/main/javascript/peer/svg/TextPeer.js",
-            "/../../../src/main/javascript/peer/vml/TextPeer.js",
-            "/../../../src/main/javascript/peer/vml/TextBoxPeer.js",
             "/../../../src/main/javascript/peer/utils/TransformUtils.js",
             "/../../../src/main/javascript/peer/utils/EventUtils.js",
             "/../../../src/main/javascript/Font.js",
             "/../../../src/main/javascript/peer/svg/Font.js",
-            "/../../../src/main/javascript/peer/vml/Font.js",
             "/../../../src/main/javascript/peer/svg/TahomaFont.js",
              "/../../../src/main/javascript/peer/svg/TimesFont.js",
             "/../../../src/main/javascript/peer/svg/ArialFont.js",
-             "/../../../src/main/javascript/peer/svg/VerdanaFont.js",
-            "/../../../src/main/javascript/peer/vml/TahomaFont.js",
-            "/../../../src/main/javascript/peer/vml/TimesFont.js",
-            "/../../../src/main/javascript/peer/vml/ArialFont.js",
-            "/../../../src/main/javascript/peer/vml/VerdanaFont.js"],
+             "/../../../src/main/javascript/peer/svg/VerdanaFont.js"],
 
     stylePath: [],
     load: function(callbackFn)

@@ -17,22 +17,6 @@
 */
 
 core.UserAgent = {
-    _isVMLSupported:null,
-    isVMLSupported: function()
-    {
-        if (!core.Utils.isDefined())
-        {
-            this._isVMLSupported = navigator.appVersion.match(/MSIE (\d\.\d)/);
-            if(this._isVMLSupported == null || parseInt(this._isVMLSupported[1])>=9){
-                this._isVMLSupported = false;
-            }
-        }
-        return this._isVMLSupported;
-    },
-    isSVGSupported: function()
-    {
-        return !core.UserAgent.isVMLSupported();
-    },
     isMozillaFamily: function()
     {
         return this.browser == "Netscape" || this.browser == "Firefox";

@@ -175,7 +175,7 @@ web2d.Workspace.prototype.getCoordOrigin = function()
 
 // Private method declaration area
 /**
- * All the VML or SVG elements will be children of this HTML element.
+ * All the SVG elements will be children of this HTML element.
  */
 web2d.Workspace.prototype._getHtmlContainer = function()
 {

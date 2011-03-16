@@ -19,7 +19,6 @@
 var web2d = {};
 web2d.peer =
 {
-svg: {},
-vml: {}
+svg: {}
 };
 web2d.peer.utils = {};

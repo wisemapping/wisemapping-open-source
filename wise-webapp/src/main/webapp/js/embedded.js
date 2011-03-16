@@ -18,14 +18,7 @@
 
 function afterCoreLoading()
 {
-    if (core.UserAgent.isVMLSupported())
-    {
-        $import("../js/mindplot.vml-min.js");
-    } else
-    {
-        $import("../js/mindplot.svg-min.js");
-
-    }
+        $import("../js/mindplot-min.js");
 };
 
 afterCoreLoading();

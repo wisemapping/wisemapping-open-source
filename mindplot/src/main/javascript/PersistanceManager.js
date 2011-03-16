@@ -18,10 +18,9 @@
 
 mindplot.PersistanceManager = {};
 
-mindplot.PersistanceManager.save = function(mindmap, chartType, xmlChart, editorProperties, onSavedHandler,saveHistory)
+mindplot.PersistanceManager.save = function(mindmap, xmlChart, editorProperties, onSavedHandler,saveHistory)
 {
     core.assert(mindmap, "mindmap can not be null");
-    core.assert(chartType, "chartType can not be null");
     core.assert(xmlChart, "xmlChart can not be null");
     core.assert(editorProperties, "editorProperties can not be null");
 
@@ -32,7 +31,7 @@ mindplot.PersistanceManager.save = function(mindmap, chartType, xmlChart, editor
     var xmlMapStr = core.Utils.innerXML(xmlMap);
 
     var pref = Json.toString(editorProperties);
-    window.MapEditorService.saveMap(mapId, xmlMapStr, chartType, xmlChart, pref,saveHistory,
+    window.MapEditorService.saveMap(mapId, xmlMapStr, xmlChart, pref,saveHistory,
     {
         callback:function(response) {
 

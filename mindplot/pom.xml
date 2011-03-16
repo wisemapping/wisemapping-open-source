@@ -112,14 +112,6 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="footer.js"/>
                                 </concat>
 
-                                <concat destfile="${basedir}/target/classes/mindplot.vml.js" append="false">
-
-                                    <filelist dir="${basedir}/../web2d/target/classes/"
-                                              files="web2d.vml-min.js"/>
-                                    <filelist dir="${basedir}/target/tmp/"
-                                              files="mindplot.js"/>
-                                </concat>
-
                                 <concat destfile="${basedir}/target/classes/mindplot.svg.js" append="false">
 
                                     <filelist dir="${basedir}/../web2d/target/classes/"
@@ -213,13 +205,6 @@
 
                                         <include>footer-min.js</include>
 
-                                    </includes>
-                                </aggregation>
-                                <aggregation>
-                                    <output>${basedir}/target/classes/mindplot.vml-min.js</output>
-                                    <includes>
-                                        <include>${basedir}/../web2d/target/classes/web2d.vml-min.js</include>
-                                        <include>${basedir}/target/tmp/mindplot-min.js</include>
                                     </includes>
                                 </aggregation>
                                 <aggregation>

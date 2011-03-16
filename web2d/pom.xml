@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>web2d</artifactId>
     <packaging>jar</packaging>
-    <name>Web 2D SVG/VML Abstraction</name>
+    <name>Web 2D SVG Abstraction</name>
 
     <parent>
         <groupId>org.wisemapping</groupId>
@@ -44,42 +44,6 @@
                             <sourceDirectory>src/main/javascript/</sourceDirectory>
                             <outputDirectory>target/tmp/</outputDirectory>
                             <aggregations>
-                                <aggregation>
-                                    <output>${basedir}/target/classes/web2d.vml-min.js</output>
-                                    <includes>
-                                        <include>${basedir}/target/tmp/header-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/utils/EventUtils-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/utils/TransformUtils-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/vml/ElementPeer-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/vml/Font-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/vml/ArialFont-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/vml/PolyLinePeer-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/vml/TextBoxPeer-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/vml/VerdanaFont-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/vml/GroupPeer-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/vml/RectPeer-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/vml/ImagePeer-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/vml/TextPeer-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/vml/WorkspacePeer-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/vml/ElipsePeer-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/vml/LinePeer-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/vml/TahomaFont-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/vml/TimesFont-min.js</include>
-
-                                        <include>${basedir}/target/tmp/Element-min.js</include>
-                                        <include>${basedir}/target/tmp/Elipse-min.js</include>
-                                        <include>${basedir}/target/tmp/EventDispatcher-min.js</include>
-                                        <include>${basedir}/target/tmp/Font-min.js</include>
-                                        <include>${basedir}/target/tmp/Group-min.js</include>
-                                        <include>${basedir}/target/tmp/Image-min.js</include>
-                                        <include>${basedir}/target/tmp/Line-min.js</include>
-                                        <include>${basedir}/target/tmp/PolyLine-min.js</include>
-                                        <include>${basedir}/target/tmp/Rect-min.js</include>
-                                        <include>${basedir}/target/tmp/Text-min.js</include>
-                                        <include>${basedir}/target/tmp/Toolkit-min.js</include>
-                                        <include>${basedir}/target/tmp/Workspace-min.js</include>
-                                    </includes>
-                                </aggregation>
                                 <aggregation>
                                     <output>${basedir}/target/classes/web2d.svg-min.js</output>
                                     <includes>

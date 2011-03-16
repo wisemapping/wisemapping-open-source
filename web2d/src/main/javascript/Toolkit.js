@@ -16,101 +16,6 @@
 *   limitations under the License.
  */
 
-web2d.peer.ToolkitVML =
-{
-    init: function()
-    {
-        var domDocument = window.document;
-        //ownerDocument;
-        // Add VML includes and namespace
-        var style = domDocument.createStyleSheet();
-        try
-        {
-            domDocument.namespaces.add("v", "urn:schemas-microsoft-com:vml");
-        } catch(j)
-        {
-            try
-            {
-                domDocument.namespaces.add("v", "urn:schemas-microsoft-com:vml", "#default#VML");
-            } catch(k)
-            {
-
-            }
-        }
-
-        try
-        {
-            style.addRule("v\\:*", "behavior:url(#default#VML);  display:inline-block");
-        } catch(e)
-        {
-            style.addRule('v\\:polyline', 'behavior: url(#default#VML);display:inline-block');
-            style.addRule('v\\:fill', 'behavior: url(#default#VML);display:inline-block');
-            style.addRule('v\\:stroke', 'behavior: url(#default#VML);display:inline-block');
-            style.addRule('v\\:oval', 'behavior: url(#default#VML);display:inline-block');
-            style.addRule('v\\:group', 'behavior: url(#default#VML);display:inline-block');
-            style.addRule('v\\:image', 'behavior: url(#default#VML);display:inline-block');
-            style.addRule('v\\:line', 'behavior: url(#default#VML);display:inline-block');
-            style.addRule('v\\:rect', 'behavior: url(#default#VML);display:inline-block');
-            style.addRule('v\\:roundrect', 'behavior: url(#default#VML);display:inline-block');
-            style.addRule('v\\:shape', 'behavior: url(#default#VML);display:inline-block');
-            style.addRule('v\\:textbox', 'behavior: url(#default#VML);display:inline-block');
-        }
-
-    },
-    createWorkspace: function(element)
-    {
-        return new web2d.peer.vml.WorkspacePeer(element);
-    },
-    createGroup: function()
-    {
-        return new web2d.peer.vml.GroupPeer();
-    },
-    createElipse: function()
-    {
-        return new web2d.peer.vml.ElipsePeer();
-    },
-    createLine: function()
-    {
-        return new web2d.peer.vml.LinePeer();
-    },
-    createCurvedLine: function()
-    {
-    },
-    createArrow: function()
-    {
-    },
-    createImage: function ()
-    {
-        return new web2d.peer.vml.ImagePeer();
-    },
-    createText: function ()
-    {
-        return new web2d.peer.vml.TextBoxPeer();
-    },
-    createRect: function(arc)
-
-    {
-        return new web2d.peer.vml.RectPeer(arc);
-    },
-    createArialFont: function()
-    {
-        return new web2d.peer.vml.ArialFont();
-    },
-    createTimesFont: function()
-    {
-        return new web2d.peer.vml.TimesFont();
-    },
-    createVerdanaFont: function()
-    {
-        return new web2d.peer.vml.VerdanaFont();
-    },
-    createTahomaFont: function()
-    {
-        return new web2d.peer.vml.TahomaFont();
-    }
-
-};
-
 web2d.peer.ToolkitSVG =
 {
     init: function()
@@ -174,10 +79,4 @@ web2d.peer.ToolkitSVG =
     }
 };
 
-if (core.UserAgent.isSVGSupported())
-{
-    web2d.peer.Toolkit = web2d.peer.ToolkitSVG;
-} else
-{
-    web2d.peer.Toolkit = web2d.peer.ToolkitVML;
-}
+web2d.peer.Toolkit = web2d.peer.ToolkitSVG;
