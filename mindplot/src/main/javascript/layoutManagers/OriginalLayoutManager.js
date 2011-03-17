@@ -138,5 +138,10 @@ mindplot.layoutManagers.OriginalLayoutManager = mindplot.layoutManagers.BaseLayo
     _isCentralTopic:function(node){
         var type = node.getModel().getType();
         return type == mindplot.NodeModel.CENTRAL_TOPIC_TYPE;
+    },
+    getType:function(){
+        return mindplot.layoutManagers.OriginalLayoutManager.NAME;
     }
 });
+
+mindplot.layoutManagers.OriginalLayoutManager.NAME ="OriginalLayoutManager"; 

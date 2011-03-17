@@ -20,8 +20,7 @@ mindplot.MainTopic = function(model)
 {
     core.assert(model, "Model can not be null");
     this.setModel(model);
-    var topicBoard = new mindplot.MainTopicBoard(this);
-    mindplot.MainTopic.superClass.initialize.call(this, topicBoard);
+    mindplot.MainTopic.superClass.initialize.call(this);
 };
 
 objects.extend(mindplot.MainTopic, mindplot.Topic);

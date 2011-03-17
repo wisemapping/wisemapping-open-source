@@ -455,6 +455,25 @@ mindplot.MindmapDesigner.prototype._nodeModelToNodeGraph = function(nodeModel, i
 
     var children = nodeModel.getChildren().slice();
 
+    // Sort children by order to solve adding order in for OriginalLayoutManager...
+    if (this._layoutManager.getType() == mindplot.layoutManagers.OriginalLayoutManager.NAME && nodeGraph.getTopicType()!=mindplot.NodeModel.CENTRAL_TOPIC_TYPE && children.length > 0)
+    {
+        var oldChildren = children;
+        children = [];
+        for (var i = 0; i < oldChildren.length; i++)
+        {
+            var child = oldChildren[i];
+            var order = child.getOrder();
+            if (order != null)
+            {
+                children[order] = child;
+            } else
+            {
+                children.push(child);
+            }
+        }
+    }
+
     for (var i = 0; i < children.length; i++)
     {
         var child = children[i];

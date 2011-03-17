@@ -34,8 +34,13 @@ mindplot.layoutManagers.BaseLayoutManager = new Class({
     },
     getDesigner:function(){
         return this._designer;
+    },
+    getType:function(){
+        return mindplot.layoutManagers.BaseLayoutManager.NAME;
     }
 });
+
+mindplot.layoutManagers.BaseLayoutManager.NAME ="BaseLayoutManager"; 
 
 mindplot.layoutManagers.BaseLayoutManager.implement(new Events);
 mindplot.layoutManagers.BaseLayoutManager.implement(new Options);
