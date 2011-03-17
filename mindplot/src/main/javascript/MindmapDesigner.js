@@ -40,26 +40,15 @@ mindplot.MindmapDesigner = function(profile, divElement)
 
     // Init layout managers ...
     this._topics = [];
-    this._dragTopicPositioner = new mindplot.DragTopicPositioner(this._workspace, this._topics);
+    var layoutManagerClass = mindplot.layoutManagers.LayoutManagerFactory.getManagerByName(mindplot.EditorOptions.LayoutManager);
+    this._layoutManager = new layoutManagerClass(this);
 
     // Register handlers..
     this._registerEvents();
 
-    // Init dragger manager.
-    this._dragger = this._buildDragManager(workspace);
-
-    // Add shapes to speed up the loading process ...
-    mindplot.DragTopic.initialize(workspace);
-
     this._relationships={};
 
     this._events = {};
-};
-
-
-mindplot.MindmapDesigner.prototype.getDragTopicPositioner = function()
-{
-    return this._dragTopicPositioner;
 };
 
 mindplot.MindmapDesigner.prototype._getTopics = function()
@@ -89,62 +78,6 @@ mindplot.MindmapDesigner.prototype._fireEvent = function(eventType, event)
         listener(event);
     }
 }
-
-mindplot.MindmapDesigner.prototype._buildDragManager = function(workspace)
-{
-    // Init dragger manager.
-    var dragger = new mindplot.DragManager(workspace);
-    var screen = workspace.getScreenManager();
-    var topics = this._getTopics();
-
-    var dragTopicPositioner = this.getDragTopicPositioner();
-    var mindmapDesigner = this;
-    var elem = this;
-
-    dragger.addEventListener('startdragging', function(event, node)
-    {
-        // Enable all mouse events.
-        for (var i = 0; i < topics.length; i++)
-        {
-            topics[i].setMouseEventsEnabled(false);
-        }
-    });
-
-    dragger.addEventListener('dragging', function(event, dragTopic)
-    {
-        // Update the state and connections of the topic ...
-        dragTopicPositioner.positionateDragTopic(dragTopic);
-    });
-
-    dragger.addEventListener('enddragging', function(event, dragTopic)
-    {
-        // Enable all mouse events.
-        for (var i = 0; i < topics.length; i++)
-        {
-            topics[i].setMouseEventsEnabled(true);
-        }
-        // Topic must be positioned in the real board postion.
-        if (dragTopic._isInTheWorkspace)
-        {
-            var draggedTopic = dragTopic.getDraggedTopic();
-
-            // Hide topic during draw ...
-            draggedTopic.setBranchVisibility(false);
-            var parentNode = draggedTopic.getParent();
-            dragTopic.updateDraggedTopic(workspace);
-
-
-            // Make all node visible ...
-            draggedTopic.setVisibility(true);
-            if (parentNode != null)
-            {
-                parentNode.setBranchVisibility(true);
-            }
-        }
-    });
-
-    return dragger;
-};
 
 mindplot.MindmapDesigner.prototype._registerEvents = function()
 {
@@ -199,7 +132,7 @@ mindplot.MindmapDesigner.prototype._buildNodeGraph = function(model)
     topics.push(topic);
 
     // Add Topic events ...
-    this._registerListenersOnNode(topic);
+    this._layoutManager.registerListenersOnNode(topic);
 
     // Connect Topic ...
     var isConnected = model.isConnected();
@@ -246,32 +179,6 @@ mindplot.MindmapDesigner.prototype.onObjectFocusEvent = function(currentObject, 
     }
 };
 
-mindplot.MindmapDesigner.prototype._registerListenersOnNode = function(topic)
-{
-    // Register node listeners ...
-    var elem = this;
-    var topics = this._topics;
-    topic.addEventListener('onfocus', function(event)
-    {
-        elem.onObjectFocusEvent.attempt([topic, event], elem);
-    });
-
-    // Add drag behaviour ...
-    if (topic.getType() != mindplot.NodeModel.CENTRAL_TOPIC_TYPE)
-    {
-
-        // Central Topic doesn't support to be dragged
-        var dragger = this._dragger;
-        dragger.add(topic);
-    }
-
-    // Register editor events ...
-    if (!this._viewMode)
-    {
-        this._editor.listenEventOnNode(topic, 'dblclick', true);
-    }
-
-};
 mindplot.MindmapDesigner.prototype.zoomOut = function()
 {
     var scale = this._zoom * 1.2;
@@ -547,25 +454,6 @@ mindplot.MindmapDesigner.prototype._nodeModelToNodeGraph = function(nodeModel, i
         nodeGraph.setVisibility(isVisible);
 
     var children = nodeModel.getChildren().slice();
-
-    // Sort children by order to solve adding order ...
-    if (nodeGraph.getTopicType()!=mindplot.NodeModel.CENTRAL_TOPIC_TYPE && children.length > 0)
-    {
-        var oldChildren = children;
-        children = [];
-        for (var i = 0; i < oldChildren.length; i++)
-        {
-            var child = oldChildren[i];
-            var order = child.getOrder();
-            if (order != null)
-            {
-                children[order] = child;
-            } else
-            {
-                children.push(child);
-            }
-        }
-    }
 
     for (var i = 0; i < children.length; i++)
     {

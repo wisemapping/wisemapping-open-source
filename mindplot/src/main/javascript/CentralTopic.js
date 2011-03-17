@@ -20,8 +20,7 @@ mindplot.CentralTopic = function(model)
 {
     core.assert(model, "Model can not be null");
     this.setModel(model);
-    var topicBoard = new mindplot.CentralTopicBoard(this);
-    mindplot.CentralTopic.superClass.initialize.call(this, topicBoard);
+    mindplot.CentralTopic.superClass.initialize.call(this);
     this.__onLoad = true;
 };
 
@@ -93,20 +92,6 @@ mindplot.CentralTopic.prototype._updatePositionOnChangeSize = function(oldSize, 
     // Center main topic ...
     var zeroPoint = new core.Point(0, 0);
     this.setPosition(zeroPoint);
-
-    // Update children position based on the new figure size ...
-    var xOffset = newSize.width - oldSize.width;
-    xOffset = Math.round(xOffset / 2);
-
-    if (!this.__onLoad)
-    {
-        // HACK: on load ignore changes of position in order to avoid adding
-        // several times the central topic distance to all the child nodes...
-
-        var topicBoard = this.getTopicBoard();
-        topicBoard.updateChildrenPosition(this, xOffset);
-        this.__onLoad = false;
-    }
 };
 
 mindplot.CentralTopic.prototype._defaultText = function()

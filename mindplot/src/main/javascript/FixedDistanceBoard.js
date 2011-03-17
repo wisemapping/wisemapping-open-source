@@ -16,9 +16,10 @@
 *   limitations under the License.
 */
 
-mindplot.FixedDistanceBoard = function(defaultHeight, topic)
+mindplot.FixedDistanceBoard = function(defaultHeight, topic, layoutManager)
 {
     this._topic = topic;
+    this._layoutManager = layoutManager;
     var reference = topic.getPosition();
     mindplot.FixedDistanceBoard.superClass.initialize.call(this, defaultHeight, reference);
     this._height = defaultHeight;
@@ -161,7 +162,7 @@ mindplot.FixedDistanceBoard.prototype.repositionate = function()
             if (e && e.getTopic())
             {
                 var topic = e.getTopic();
-                var topicBoard = topic.getTopicBoard();
+                var topicBoard = this._layoutManager.getTopicBoardForTopic(topic);
                 var topicBoardHeight = topicBoard.getHeight();
 
 
@@ -184,7 +185,7 @@ mindplot.FixedDistanceBoard.prototype.repositionate = function()
         var parentTopic = topic.getParent();
         if (parentTopic != null)
         {
-            var board = parentTopic.getTopicBoard();
+            var board = this._layoutManager.getTopicBoardForTopic(parentTopic);
             board.repositionate();
         }
     }
@@ -218,7 +219,7 @@ mindplot.FixedDistanceBoard.prototype.repositionate = function()
             e.setLowerLimit(lowerLimit);
 
             // Update entry ...
-            var topicBoard = currentTopic.getTopicBoard();
+            var topicBoard = this._layoutManager.getTopicBoardForTopic(currentTopic);
             var topicBoardHeight = topicBoard.getHeight();
 
             upperLimit = lowerLimit + topicBoardHeight + mindplot.FixedDistanceBoard.INTER_TOPIC_DISTANCE;

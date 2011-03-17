@@ -85,9 +85,7 @@ mindplot.DragTopic.prototype.canBeConnectedTo = function(targetTopic)
             var targetTopicModel = targetTopic.getModel();
             var childTopicModel = draggedNode.getModel();
 
-            var targetTopicBoard = targetTopic.getTopicBoard();
-            var height = targetTopicBoard.getHeight();
-            result = targetTopicModel.canBeConnected(childTopicModel, topicPosition, height);
+           result = targetTopicModel.canBeConnected(childTopicModel, topicPosition, 18);
         }
     } else
     {

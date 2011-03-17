@@ -190,13 +190,6 @@ mindplot.MainTopic.prototype._updatePositionOnChangeSize = function(oldSize, new
             pos.x = pos.x - xOffset;
         }
         this.setPosition(pos);
-
-        // If height has changed, I must repositionate all elements ...
-        if (oldSize.height != newSize.height)
-        {
-            var topicBoard = this.getTopicBoard();
-            // topicBoard.repositionate();
-        }
     }
 };
 
@@ -205,8 +198,7 @@ mindplot.MainTopic.prototype.setPosition = function(point)
     mindplot.MainTopic.superClass.setPosition.call(this, point);
 
     // Update board zero entry position...
-    var topicBoard = this.getTopicBoard();
-    topicBoard.updateChildrenPosition(this);
+    mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMoveEvent,[this]);
 };
 
 mindplot.MainTopic.prototype.workoutIncomingConnectionPoint = function(sourcePosition)

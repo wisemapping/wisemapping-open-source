@@ -23,9 +23,8 @@ mindplot.Topic = function()
 
 objects.extend(mindplot.Topic, mindplot.NodeGraph);
 
-mindplot.Topic.prototype.initialize = function(topicBoard)
+mindplot.Topic.prototype.initialize = function()
 {
-    core.assert(core.Utils.isDefined(topicBoard), 'topic board can not be null.');
 
     this._children = [];
     this._parent = null;
@@ -33,14 +32,13 @@ mindplot.Topic.prototype.initialize = function(topicBoard)
     this._relationships = [];
     this._isInWorkspace = false;
 
-    this._topicBoard = topicBoard;
     this._buildShape();
     this.setMouseEventsEnabled(true);
 
     // Positionate topic ....
     var model = this.getModel();
     var pos = model.getPosition();
-    if (pos != null)
+    if (pos != null && model.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE)
     {
         this.setPosition(pos);
     }
@@ -1103,6 +1101,9 @@ mindplot.Topic.prototype.setSize = function(size, force)
 
         // Update the figure position(ej: central topic must be centered) and children position.
         this._updatePositionOnChangeSize(oldSize, size);
+
+        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeResizeEvent,[this]);
+        
     }
 };
 
@@ -1131,8 +1132,7 @@ mindplot.Topic.prototype.disconnect = function(workspace)
         outgoingLine.removeFromWorkspace(workspace);
 
         // Remove from workspace.
-        var topicBoard = targetTopic.getTopicBoard();
-        topicBoard.removeTopicFromBoard(this);
+        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeDisconnectEvent,[targetTopic, this]);
 
         // Change text based on the current connection ...
         var model = this.getModel();
@@ -1215,8 +1215,7 @@ mindplot.Topic.prototype.connectTo = function(targetTopic, workspace, isVisible)
     var textShape = this.getTextShape();
 
     // Update topic position based on the state ...
-    var targetTopicBoard = targetTopic.getTopicBoard();
-    targetTopicBoard.addBranch(this);
+    mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeConnectEvent,[targetTopic, this]);
 
     // Display connection node...
     var connector = targetTopic.getShrinkConnector();
@@ -1270,11 +1269,6 @@ mindplot.Topic.prototype.addToWorkspace = function(workspace)
 
 mindplot.Topic.prototype.isInWorkspace = function(){
     return this._isInWorkspace;
-};
-
-mindplot.Topic.prototype.getTopicBoard = function()
-{
-    return this._topicBoard;
 };
 
 mindplot.Topic.prototype.createDragNode = function()

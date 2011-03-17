@@ -16,13 +16,12 @@
 *   limitations under the License.
 */
 
-mindplot.DragTopicPositioner = function(workspace, topics)
+mindplot.DragTopicPositioner = function(layoutManager)
 {
-    core.assert(workspace, 'workspace can not be null');
-    core.assert(topics, 'topics can not be null');
-
-    this._workspace = workspace;
-    this._topics = topics;
+    core.assert(layoutManager, 'layoutManager can not be null');
+    this._layoutManager = layoutManager;
+    this._topics = layoutManager.getDesigner()._getTopics();
+    this._workspace = layoutManager.getDesigner().getWorkSpace();
 };
 
 mindplot.DragTopicPositioner.prototype.positionateDragTopic = function(dragTopic)
@@ -38,7 +37,7 @@ mindplot.DragTopicPositioner.prototype.positionateDragTopic = function(dragTopic
     if (dragTopic.isConnected())
     {
         var targetTopic = dragTopic.getConnectedToTopic();
-        var topicBoard = targetTopic.getTopicBoard();
+        var topicBoard = this._layoutManager.getTopicBoardForTopic(targetTopic);
         topicBoard.positionateDragTopic(dragTopic);
     }
 };

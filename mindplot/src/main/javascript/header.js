@@ -25,3 +25,4 @@
 var mindplot = {};
 mindplot.util = {};
 mindplot.commands = {};
+mindplot.layoutManagers = {};

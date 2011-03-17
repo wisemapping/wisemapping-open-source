@@ -76,15 +76,15 @@ mindplot.XMLMindmapSerializer_Pela.prototype._topicToXML = function(document, to
     } else
     {
         var parent = topic.getParent();
-        if (parent == null || parent.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE)
-        {
+//        if (parent == null || parent.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE)
+//        {
             var pos = topic.getPosition();
             parentTopic.setAttribute("position", pos.x + ',' + pos.y);
-        } else
-        {
+//        } else
+//        {
             var order = topic.getOrder();
             parentTopic.setAttribute("order", order);
-        }
+//        }
     }
 
     var text = topic.getText();

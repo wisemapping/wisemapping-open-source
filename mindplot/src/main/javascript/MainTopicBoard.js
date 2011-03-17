@@ -16,8 +16,9 @@
 *   limitations under the License.
 */
 
-mindplot.MainTopicBoard = function(topic)
+mindplot.MainTopicBoard = function(topic, layoutManager)
 {
+    this._layoutManager = layoutManager;
     this._topic = topic;
     this._board = null;
     this._height = 0;
@@ -32,7 +33,7 @@ mindplot.MainTopicBoard.prototype._getBoard = function()
     if (!this._board)
     {
         var topic = this._topic;
-        this._board = new mindplot.FixedDistanceBoard(mindplot.MainTopicBoard.DEFAULT_MAIN_TOPIC_HEIGHT, topic);
+        this._board = new mindplot.FixedDistanceBoard(mindplot.MainTopicBoard.DEFAULT_MAIN_TOPIC_HEIGHT, topic, this._layoutManager);
     }
     return this._board;
 };
@@ -116,8 +117,7 @@ mindplot.MainTopicBoard.prototype.addBranch = function(topic)
     if (currentTopic.getOutgoingConnectedTopic())
     {
         var parentTopic = currentTopic.getOutgoingConnectedTopic();
-        var parentTopicBoard = parentTopic.getTopicBoard();
-        parentTopicBoard.repositionate();
+        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeRepositionateEvent,[parentTopic]);
     }
 };
 
@@ -137,7 +137,6 @@ mindplot.MainTopicBoard.prototype.removeTopicFromBoard = function(topic)
     if (parentTopic.getOutgoingConnectedTopic())
     {
         var connectedTopic = parentTopic.getOutgoingConnectedTopic();
-        var topicBoard = connectedTopic.getTopicBoard();
-        topicBoard.repositionate();
+        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeRepositionateEvent,[connectedTopic]);
     }
 };

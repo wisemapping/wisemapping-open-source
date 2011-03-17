@@ -38,6 +38,7 @@
                                 <!-- Generated for debug -->
                                 <concat destfile="${basedir}/target/tmp/mindplot.js" append="false">
                                     <filelist dir="${basedir}/src/main/javascript/" files="header.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="EventBus.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="Mindmap.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="NodeModel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="RelationshipModel.js"/>
@@ -85,6 +86,7 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="DesignerActionRunner.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="DesignerUndoManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ControlPoint.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="EditorOptions.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="commands/GenericFunctionCommand.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
@@ -109,6 +111,12 @@
                                               files="commands/AddRelationshipCommand.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="commands/MoveControlPointCommand.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="layoutManagers/BaseLayoutManager.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="layoutManagers/OriginalLayoutManager.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="layoutManagers/LayoutManagerFactory.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="footer.js"/>
                                 </concat>
 
@@ -142,6 +150,7 @@
                                     <output>${basedir}/target/tmp/mindplot-min.js</output>
                                     <includes>
                                         <include>header-min.js</include>
+                                        <include>EventBus-min.js</include>
                                         <include>Mindmap-min.js</include>
                                         <include>NodeModel-min.js</include>
                                         <include>RelationshipModel-min.js</include>
@@ -185,6 +194,7 @@
                                         <include>IconModel-min.js</include>
                                         <include>LinkModel-min.js</include>
                                         <include>NoteModel-min.js</include>
+                                        <include>EditorOptions-min.js</include>
 
                                         <include>Command-min.js</include>
                                         <include>DesignerActionRunner-min.js</include>
@@ -202,6 +212,10 @@
                                         <include>commands/RemoveNoteFromTopicCommand-min.js</include>
                                         <include>commands/AddRelationshipCommand-min.js</include>
                                         <include>commands/MoveControlPointCommand-min.js</include>
+
+                                        <include>layoutManagers/BaseLayoutManager-min.js</include>
+                                        <include>layoutManagers/OriginalLayoutManager-min.js</include>
+                                        <include>layoutManagers/LayoutManagerFactory-min.js</include>
 
                                         <include>footer-min.js</include>
 

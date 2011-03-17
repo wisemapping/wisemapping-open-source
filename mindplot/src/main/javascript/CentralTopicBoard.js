@@ -16,9 +16,10 @@
 *   limitations under the License.
 */
 
-mindplot.CentralTopicBoard = function(centralTopic)
+mindplot.CentralTopicBoard = function(centralTopic, layoutManager)
 {
     var point = new core.Point(0, 0);
+    this._layoutManager = layoutManager;
     this._rightBoard = new mindplot.VariableDistanceBoard(50, point);
     this._leftBoard = new mindplot.VariableDistanceBoard(50, point);
     this._centralTopic = centralTopic;
@@ -35,7 +36,6 @@ mindplot.CentralTopicBoard.prototype._updateHeight = function()
 {
 
 };
-
 
 mindplot.CentralTopicBoard.prototype.positionateDragTopic = function(dragTopic)
 {
