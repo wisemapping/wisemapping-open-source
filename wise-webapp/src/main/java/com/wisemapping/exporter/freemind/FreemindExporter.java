@@ -26,6 +26,7 @@ import com.wisemapping.xml.freemind.*;
 import com.wisemapping.xml.mindmap.RelationshipType;
 import com.wisemapping.xml.mindmap.TopicType;
 import com.wisemapping.xml.mindmap.Icon;
+import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
@@ -110,7 +111,7 @@ public class FreemindExporter
         }
     }
 
-    private void addNodeFromTopic(TopicType mainTopic, Node destNode) {
+    private void addNodeFromTopic(@NotNull final TopicType mainTopic, @NotNull final Node destNode) {
         final List<TopicType> currentTopic = mainTopic.getTopic();
 
         for (TopicType topicType : currentTopic) {
@@ -120,10 +121,10 @@ public class FreemindExporter
             destNode.getArrowlinkOrCloudOrEdge().add(newNode);
             addNodeFromTopic(topicType, newNode);
             String position = topicType.getPosition();
-            if(position!=null){
+            if (position != null) {
                 String xPos = position.split(",")[0];
                 int x = Integer.valueOf(xPos);
-                newNode.setPOSITION((x<0?POSITION_LEFT:POSITION_RIGHT));
+                newNode.setPOSITION((x < 0 ? POSITION_LEFT : POSITION_RIGHT));
             }
         }
     }
