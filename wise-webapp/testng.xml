@@ -6,4 +6,9 @@
             <package name="com.wisemapping.test.freemind"/>
         </packages>
     </test>
+       <test name="Model Tests">
+        <packages>
+            <package name="com.wisemapping.test.model"/>
+        </packages>
+    </test>
 </suite>

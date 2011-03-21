@@ -35,16 +35,13 @@ final public class FreemindIconConverter {
     private final static Map<String, MindmapIcon> freeIdToIcon = new HashMap<String, MindmapIcon>();
     private final static Map<MindmapIcon, String> iconToFreeId = new HashMap<MindmapIcon, String>();
 
-    private static final MindmapIcon DEFAULT_ICON = MindmapIcons.getIconByFamily(IconFamily.BULLET).get(3);
-
     private FreemindIconConverter() {
-
     }
 
     @Nullable
     public static String toWiseId(@NotNull String iconId) {
         final MindmapIcon result = freeIdToIcon.get(iconId);
-        return result!=null?result.getId():null;
+        return result != null ? result.getId() : null;
     }
 
     @Nullable
@@ -55,19 +52,18 @@ final public class FreemindIconConverter {
 
     static {
 
-        // Load bullets image mapping ...
+        // Map numbers icons family ...
         final List<MindmapIcon> bulletsImages = MindmapIcons.getIconByFamily(IconFamily.BULLET);
+
         for (int i = 0; i < bulletsImages.size(); i++) {
             final MindmapIcon icon = bulletsImages.get(i);
             iconToFreeId.put(icon, "full-" + i);
         }
 
-        final List<MindmapIcon> bulbImages = MindmapIcons.getIconByFamily(IconFamily.BULB);
-        iconToFreeId.put(bulbImages.get(0), "idea");
-
-        final List<MindmapIcon> tickImages = MindmapIcons.getIconByFamily(IconFamily.TICK);
-        iconToFreeId.put(tickImages.get(0), "button_ok");
-        iconToFreeId.put(tickImages.get(1), "button_cancel");
+        // Generic mapping ...
+        iconToFreeId.put(MindmapIcons.BULB_LIGHT_ON, "idea");
+        iconToFreeId.put(MindmapIcons.TICK_TICK, "button_ok");
+        iconToFreeId.put(MindmapIcons.TICK_CROSS, "button_cancel");
 
         // Map arrow icons ...
         iconToFreeId.put(MindmapIcons.ARROW_UP, "up");

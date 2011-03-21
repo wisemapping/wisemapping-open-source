@@ -36,7 +36,7 @@ mindplot.ImageIcon = function(iconModel, topic, designer) {
 
     var container = new Element('div');
     var removeImage = new Element('img');
-    removeImage.src = "../images/bin.png";
+    removeImage.src = "../icons/bin.png";
     removeImage.inject(container);
 
     if (!designer._viewMode)
@@ -263,87 +263,87 @@ mindplot.ImageIcon.ICON_TYPE_TASK_FIVE = mindplot.ImageIcon.ICON_FAMILIY_TASK_PR
 
 mindplot.ImageIcon.prototype.ICON_IMAGE_MAP = new Object();
 //FLAG
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FLAG_BLUE] = "../images/flag_blue.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FLAG_GREEN] = "../images/flag_green.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FLAG_ORANGE] = "../images/flag_orange.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FLAG_PINK] = "../images/flag_pink.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FLAG_PURPLE] = "../images/flag_purple.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FLAG_YELLOW] = "../images/flag_yellow.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FLAG_BLUE] = "../icons/flag_blue.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FLAG_GREEN] = "../icons/flag_green.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FLAG_ORANGE] = "../icons/flag_orange.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FLAG_PINK] = "../icons/flag_pink.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FLAG_PURPLE] = "../icons/flag_purple.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FLAG_YELLOW] = "../icons/flag_yellow.png";
 //BULLET
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_BULLET_BLACK] = "../images/bullet_black.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_BULLET_BLUE] = "../images/bullet_blue.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_BULLET_GREEN] = "../images/bullet_blue.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_BULLET_ORANGE] = "../images/bullet_green.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_BULLET_RED] = "../images/bullet_orange.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_BULLET_PINK] = "../images/bullet_pink.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_BULLET_PURPLE] = "../images/bullet_purple.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_BULLET_BLACK] = "../icons/bullet_black.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_BULLET_BLUE] = "../icons/bullet_blue.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_BULLET_GREEN] = "../icons/bullet_blue.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_BULLET_ORANGE] = "../icons/bullet_green.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_BULLET_RED] = "../icons/bullet_orange.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_BULLET_PINK] = "../icons/bullet_pink.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_BULLET_PURPLE] = "../icons/bullet_purple.png";
 //TAGS
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_TAG_BLUE] = "../images/tag_blue.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_TAG_GREEN] = "../images/tag_green.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_TAG_ORANGE] = "../images/tag_orange.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_TAG_RED] = "../images/tag_red.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_TAG_PINK] = "../images/tag_pink.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_TAG_YELLOW] = "../images/tag_yellow.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_TAG_PURPLE] = "../images/tag_purple.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_TAG_BLUE] = "../icons/tag_blue.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_TAG_GREEN] = "../icons/tag_green.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_TAG_ORANGE] = "../icons/tag_orange.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_TAG_RED] = "../icons/tag_red.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_TAG_PINK] = "../icons/tag_pink.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_TAG_YELLOW] = "../icons/tag_yellow.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_TAG_PURPLE] = "../icons/tag_purple.png";
 //FACES
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_FUNY_ANGEL] = "../images/face-angel.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_FUNY_DEVIL] = "../images/face-devilish.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_FUNY_GLASSES] = "../images/face-glasses.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_FUNY_KISS] = "../images/face-kiss.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_FUNY_MONKEY] = "../images/face-monkey.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_PLAIN] = "../images/face-plain.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_CRYING] = "../images/face-crying.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_SAD] = "../images/face-sad.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_SMILE] = "../images/face-smile.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_SURPRISE] = "../images/face-surprise.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_WINK] = "../images/face-wink.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_FUNY_ANGEL] = "../icons/face-angel.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_FUNY_DEVIL] = "../icons/face-devilish.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_FUNY_GLASSES] = "../icons/face-glasses.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_FUNY_KISS] = "../icons/face-kiss.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_FUNY_MONKEY] = "../icons/face-monkey.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_PLAIN] = "../icons/face-plain.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_CRYING] = "../icons/face-crying.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_SAD] = "../icons/face-sad.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_SMILE] = "../icons/face-smile.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_SURPRISE] = "../icons/face-surprise.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_WINK] = "../icons/face-wink.png";
 
 //ARROWS
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ARROW_UP] = "../images/arrow_up.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ARROW_DOWN] = "../images/arrow_down.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ARROW_LEFT] = "../images/arrow_left.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ARROW_RIGHT] = "../images/arrow_right.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ARROW_UP] = "../icons/arrow_up.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ARROW_DOWN] = "../icons/arrow_down.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ARROW_LEFT] = "../icons/arrow_left.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ARROW_RIGHT] = "../icons/arrow_right.png";
 
 // ARROWS COMPLEX.
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ARROWC_TURN_LEFT] = "../images/arrow_turn_left.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ARROWC_TURN_RIGHT] = "../images/arrow_turn_right.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ARROWC_UNDO] = "../images/arrow_undo.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ARROWC_ANTICLOCKWISE] = "../images/arrow_rotate_anticlockwise.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ARROWC_CLOCKWISE] = "../images/arrow_rotate_clockwise.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ARROWC_TURN_LEFT] = "../icons/arrow_turn_left.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ARROWC_TURN_RIGHT] = "../icons/arrow_turn_right.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ARROWC_UNDO] = "../icons/arrow_undo.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ARROWC_ANTICLOCKWISE] = "../icons/arrow_rotate_anticlockwise.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ARROWC_CLOCKWISE] = "../icons/arrow_rotate_clockwise.png";
 
 //CHARTS
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_CHART_BAR] = "../images/chart_bar.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_CHART_LINE] = "../images/chart_line.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_CHART_CURVE] = "../images/chart_curve.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_CHART_PIE] = "../images/chart_pie.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_CHART_ORGANISATION] = "../images/chart_organisation.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_CHART_BAR] = "../icons/chart_bar.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_CHART_LINE] = "../icons/chart_line.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_CHART_CURVE] = "../icons/chart_curve.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_CHART_PIE] = "../icons/chart_pie.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_CHART_ORGANISATION] = "../icons/chart_organisation.png";
 
 // THUMB
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ONOFF_THUMB_UP] = "../images/thumb_up.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ONOFF_THUMB_DOWN] = "../images/thumb_down.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ONOFF_THUMB_UP] = "../icons/thumb_up.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ONOFF_THUMB_DOWN] = "../icons/thumb_down.png";
 
 // ON OFF
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_TICK_ON] = "../images/tick.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_TICK_OFF] = "../images/cross.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_TICK_ON] = "../icons/tick.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_TICK_OFF] = "../icons/cross.png";
 
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_BULB_ON] = "../images/lightbulb.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_BULB_OFF] = "../images/lightbulb_off.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_BULB_ON] = "../icons/lightbulb.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_BULB_OFF] = "../icons/lightbulb_off.png";
 
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_CONNECT_ON] = "../images/connect.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_CONNECT_OFF] = "../images/disconnect.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_CONNECT_ON] = "../icons/connect.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_CONNECT_OFF] = "../icons/disconnect.png";
 
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ONOFF_CLOCK] = "../images/clock.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ONOFF_CLOCK_RED] = "../images/clock_red.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ONOFF_ADD] = "../images/add.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ONOFF_DELETE] = "../images/delete.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ONOFF_CLOCK] = "../icons/clock.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ONOFF_CLOCK_RED] = "../icons/clock_red.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ONOFF_ADD] = "../icons/add.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ONOFF_DELETE] = "../icons/delete.png";
 //MONEY
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_MONEY_MONEY] = "../images/money.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_MONEY_DOLLAR] = "../images/money_dollar.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_MONEY_EURO] = "../images/money_euro.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_MONEY_POUND] = "../images/money_pound.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_MONEY_YEN] = "../images/money_yen.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_MONEY_COINS] = "../images/coins.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_MONEY_RUBY] = "../images/ruby.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_MONEY_MONEY] = "../icons/money.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_MONEY_DOLLAR] = "../icons/money_dollar.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_MONEY_EURO] = "../icons/money_euro.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_MONEY_POUND] = "../icons/money_pound.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_MONEY_YEN] = "../icons/money_yen.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_MONEY_COINS] = "../icons/coins.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_MONEY_RUBY] = "../icons/ruby.png";
 
 
 //FAMILIES
