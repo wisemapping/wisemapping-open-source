@@ -266,17 +266,22 @@ public class FreemindImporter
                 currentTopic.setBrColor(edge.getCOLOR());
             } else if (freemindNode instanceof Icon) {
                 final Icon freemindIcon = (Icon) freemindNode;
-                final com.wisemapping.xml.mindmap.Icon mindmapIcon = new com.wisemapping.xml.mindmap.Icon();
-                final String mindmapIconId = FreemindIconMapper.getMindmapIcon(freemindIcon.getBUILTIN());
-                mindmapIcon.setId(mindmapIconId);
-                currentTopic.getIcon().add(mindmapIcon);
+
+                String iconId = freemindIcon.getBUILTIN();
+                final String wiseIconId = FreemindIconConverter.toWiseId(iconId);
+                if (wiseIconId != null) {
+                    final com.wisemapping.xml.mindmap.Icon mindmapIcon = new com.wisemapping.xml.mindmap.Icon();
+                    mindmapIcon.setId(wiseIconId);
+                    currentTopic.getIcon().add(mindmapIcon);
+                }
+
             } else if (freemindNode instanceof Hook) {
                 final Hook hook = (Hook) freemindNode;
                 final com.wisemapping.xml.mindmap.Note mindmapNote = new com.wisemapping.xml.mindmap.Note();
                 String textNote = hook.getText();
                 if (textNote == null) // It is not a note is a BlinkingNodeHook or AutomaticLayout Hook
                 {
-                    textNote = textNote != null ? textNote.replaceAll("\n", "%0A") : EMPTY_NOTE;
+                    textNote = EMPTY_NOTE;
                     mindmapNote.setText(textNote);
                     currentTopic.setNote(mindmapNote);
                 }
@@ -285,9 +290,9 @@ public class FreemindImporter
                 final String type = content.getTYPE();
 
                 if (type.equals("NODE")) {
-                    final String text = getText(content);
-                    text.replaceAll("\n", "");
-                    text.trim();
+                    String text = getText(content);
+                    text = text.replaceAll("\n", "");
+                    text = text.trim();
                     currentTopic.setText(text);
                 } else {
                     String text = getRichContent(content);

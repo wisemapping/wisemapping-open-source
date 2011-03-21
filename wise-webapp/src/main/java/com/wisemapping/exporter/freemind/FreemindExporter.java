@@ -20,6 +20,7 @@ package com.wisemapping.exporter.freemind;
 
 import com.wisemapping.exporter.ExportException;
 import com.wisemapping.exporter.Exporter;
+import com.wisemapping.importer.freemind.FreemindIconConverter;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.util.JAXBUtils;
 import com.wisemapping.xml.freemind.*;
@@ -174,10 +175,13 @@ public class FreemindExporter
             final List<Icon> iconsList = mindmapTopic.getIcon();
             for (Icon icon : iconsList) {
                 final String id = icon.getId();
-                com.wisemapping.xml.freemind.Icon freemindIcon = new com.wisemapping.xml.freemind.Icon();
-                final String freemindIconId = FreemindIconMapper.getFreemindIcon(id);
-                freemindIcon.setBUILTIN(freemindIconId);
-                freemindNode.getArrowlinkOrCloudOrEdge().add(freemindIcon);
+                final String freemindIconId = FreemindIconConverter.toFreemindId(id);
+                if (freemindIconId != null) {
+
+                    com.wisemapping.xml.freemind.Icon freemindIcon = new com.wisemapping.xml.freemind.Icon();
+                    freemindIcon.setBUILTIN(freemindIconId);
+                    freemindNode.getArrowlinkOrCloudOrEdge().add(freemindIcon);
+                }
             }
         }
     }

@@ -18,37 +18,29 @@
 
 package com.wisemapping.model;
 
-public enum ImageFamily {
-    FLAG("FLAG","flag_"),
-    BULLET("BULLET","bullet_"),
-    TAG("TAG","tag_"),
-    NUMBER("NUMBER","number_"),
-    FACE("FACE","face_"),
-    FACE_FUNY("FACEFUNY","facefuny_"),
-    ARROW("ARROW","arrow_"),
-    ARROWC("ARROWC","arrowc_"),
-    CONN("CONN","conn_"),
-    BULB("BULB","bulb_"),
-    THUMB("THUMB","thumb_"),
-    TICK("TICK","tick_"),
-    ONOFF("ONOFF","onoff_"),
-    MONEY("MONEY","money_"),
-    CHART("CHART","chart_"),
-    TASK("TASK","task_");
-
-    private String prefix;
+public class MindmapIcon
+{
     private String name;
+    private IconFamily family;
 
-    ImageFamily(String name, String prefix) {
+    MindmapIcon(IconFamily family, String name)
+    {
         this.name = name;
-        this.prefix = prefix;
+        this.family = family;
     }
 
-    public String getPrefix() {
-        return prefix;
-    }
-
-    public String getName() {
+    public String getName()
+    {
         return name;
+    }
+
+    public IconFamily getFamily()
+    {
+        return family;
+    }
+
+    public String getId()
+    {
+        return family.getPrefix() + name;
     }
 }
