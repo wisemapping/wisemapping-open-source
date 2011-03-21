@@ -36,7 +36,7 @@ mindplot.ImageIcon = function(iconModel, topic, designer) {
 
     var container = new Element('div');
     var removeImage = new Element('img');
-    removeImage.src = "../icons/bin.png";
+    removeImage.src = "../images/bin.png";
     removeImage.inject(container);
 
     if (!designer._viewMode)
@@ -286,17 +286,17 @@ mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_TAG_PIN
 mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_TAG_YELLOW] = "../icons/tag_yellow.png";
 mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_TAG_PURPLE] = "../icons/tag_purple.png";
 //FACES
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_FUNY_ANGEL] = "../icons/face-angel.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_FUNY_DEVIL] = "../icons/face-devilish.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_FUNY_GLASSES] = "../icons/face-glasses.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_FUNY_KISS] = "../icons/face-kiss.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_FUNY_MONKEY] = "../icons/face-monkey.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_PLAIN] = "../icons/face-plain.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_CRYING] = "../icons/face-crying.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_SAD] = "../icons/face-sad.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_SMILE] = "../icons/face-smile.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_SURPRISE] = "../icons/face-surprise.png";
-mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_WINK] = "../icons/face-wink.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_FUNY_ANGEL] = "../icons/face-_angel.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_FUNY_DEVIL] = "../icons/face_devilish.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_FUNY_GLASSES] = "../icons/face_glasses.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_FUNY_KISS] = "../icons/face_kiss.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_FUNY_MONKEY] = "../icons/face_monkey.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_PLAIN] = "../icons/face_plain.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_CRYING] = "../icons/face_crying.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_SAD] = "../icons/face_sad.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_SMILE] = "../icons/face_smile.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_SURPRISE] = "../icons/face_surprise.png";
+mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_FACE_WINK] = "../icons/face_wink.png";
 
 //ARROWS
 mindplot.ImageIcon.prototype.ICON_IMAGE_MAP[mindplot.ImageIcon.ICON_TYPE_ARROW_UP] = "../icons/arrow_up.png";

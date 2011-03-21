@@ -24,7 +24,6 @@ public enum IconFamily {
     TAG("TAG","tag_"),
     NUMBER("NUMBER","number_"),
     SMILEY("FACE","face_"),
-    FACE_FUNY("FACEFUNY","facefuny_"),
     ARROW("ARROW","arrow_"),
     ARROWC("ARROWC","arrowc_"),
     CONN("CONN","conn_"),
