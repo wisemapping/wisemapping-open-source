@@ -18,29 +18,24 @@
 
 package com.wisemapping.model;
 
-public class MindmapIcon
-{
+public class MindmapIcon {
     private String name;
     private IconFamily family;
 
-    MindmapIcon(IconFamily family, String name)
-    {
+    MindmapIcon(IconFamily family, String name) {
         this.name = name;
         this.family = family;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public IconFamily getFamily()
-    {
+    public IconFamily getFamily() {
         return family;
     }
 
-    public String getId()
-    {
-        return family.getPrefix() + name;
+    public String getId() {
+        return family.name().toLowerCase() + "_" + name;
     }
 }

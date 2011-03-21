@@ -19,35 +19,20 @@
 package com.wisemapping.model;
 
 public enum IconFamily {
-    FLAG("FLAG","flag_"),
-    BULLET("BULLET","bullet_"),
-    TAG("TAG","tag_"),
-    NUMBER("NUMBER","number_"),
-    SMILEY("FACE","face_"),
-    ARROW("ARROW","arrow_"),
-    ARROWC("ARROWC","arrowc_"),
-    CONN("CONN","conn_"),
-    BULB("BULB","bulb_"),
-    THUMB("THUMB","thumb_"),
-    TICK("TICK","tick_"),
-    ONOFF("ONOFF","onoff_"),
-    MONEY("MONEY","money_"),
-    CHART("CHART","chart_"),
-    TASK("TASK","task_");
+    FLAG(),
+    BULLET(),
+    TAG(),
+    //    NUMBER("NUMBER","number_"),
+    FACE(),
+    FUNY(),
+    ARROW(),
+    ARROWC(),
+    CONN(),
+    BULB(),
+    THUMB(),
+    TICK(),
+    ONOFF(),
+    MONEY(),
+    CHART();
 
-    private String prefix;
-    private String name;
-
-    IconFamily(String name, String prefix) {
-        this.name = name;
-        this.prefix = prefix;
-    }
-
-    public String getPrefix() {
-        return prefix;
-    }
-
-    public String getName() {
-        return name;
-    }
 }

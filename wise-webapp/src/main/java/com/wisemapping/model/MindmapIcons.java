@@ -29,12 +29,12 @@ public class MindmapIcons {
 
     private static Map<IconFamily, List<MindmapIcon>> iconsByFamily;
 
-    public static final MindmapIcon FACE_PLAIN = new MindmapIcon(IconFamily.SMILEY, "plain");
-    public static final MindmapIcon FACE_SAD = new MindmapIcon(IconFamily.SMILEY, "sad");
-    public static final MindmapIcon FACE_CRYING = new MindmapIcon(IconFamily.SMILEY, "crying");
-    public static final MindmapIcon FACE_SMILE = new MindmapIcon(IconFamily.SMILEY, "smile");
-    public static final MindmapIcon FACE_SURPRISE = new MindmapIcon(IconFamily.SMILEY, "surprise");
-    public static final MindmapIcon FACE_WINK = new MindmapIcon(IconFamily.SMILEY, "wink");
+    public static final MindmapIcon FACE_PLAIN = new MindmapIcon(IconFamily.FACE, "plain");
+    public static final MindmapIcon FACE_SAD = new MindmapIcon(IconFamily.FACE, "sad");
+    public static final MindmapIcon FACE_CRYING = new MindmapIcon(IconFamily.FACE, "crying");
+    public static final MindmapIcon FACE_SMILE = new MindmapIcon(IconFamily.FACE, "smile");
+    public static final MindmapIcon FACE_SURPRISE = new MindmapIcon(IconFamily.FACE, "surprise");
+    public static final MindmapIcon FACE_WINK = new MindmapIcon(IconFamily.FACE, "wink");
 
     public static final MindmapIcon THUMB__UP = new MindmapIcon(IconFamily.THUMB, "thumb_up");
     public static final MindmapIcon THUMB_DOWN = new MindmapIcon(IconFamily.THUMB, "thumb_down");
@@ -44,13 +44,13 @@ public class MindmapIcons {
     public static final MindmapIcon ARROW_LEFT = new MindmapIcon(IconFamily.ARROW, "left");
     public static final MindmapIcon ARROW_RIGHT = new MindmapIcon(IconFamily.ARROW, "right");
 
-    public static final MindmapIcon TASK_ONE = new MindmapIcon(IconFamily.TASK, "one");
-    public static final MindmapIcon TASK_TWO = new MindmapIcon(IconFamily.TASK, "two");
-    public static final MindmapIcon TASK_THREE = new MindmapIcon(IconFamily.TASK, "three");
-    public static final MindmapIcon TASK_FOUR = new MindmapIcon(IconFamily.TASK, "four");
-    public static final MindmapIcon TASK_FIVE = new MindmapIcon(IconFamily.TASK, "five");
+//    public static final MindmapIcon TASK_ONE = new MindmapIcon(IconFamily.TASK, "one");
+//    public static final MindmapIcon TASK_TWO = new MindmapIcon(IconFamily.TASK, "two");
+//    public static final MindmapIcon TASK_THREE = new MindmapIcon(IconFamily.TASK, "three");
+//    public static final MindmapIcon TASK_FOUR = new MindmapIcon(IconFamily.TASK, "four");
+//    public static final MindmapIcon TASK_FIVE = new MindmapIcon(IconFamily.TASK, "five");
 
-    public static final MindmapIcon ARROWC_UNDO = new MindmapIcon(IconFamily.ARROWC, "undo");
+    //    public static final MindmapIcon ARROWC_UNDO = new MindmapIcon(IconFamily.ARROWC, "undo");
     public static final MindmapIcon ARROWC_ANTICLOCK_WISE = new MindmapIcon(IconFamily.ARROWC, "rotate_anticlockwise");
     public static final MindmapIcon ARROWC_CLOCK_WISE = new MindmapIcon(IconFamily.ARROWC, "rotate_clockwise");
     public static final MindmapIcon ARROWC_LEFT = new MindmapIcon(IconFamily.ARROWC, "turn_left");
@@ -80,15 +80,23 @@ public class MindmapIcons {
     public static final MindmapIcon TAG_PINK = new MindmapIcon(IconFamily.TAG, "pink");
     public static final MindmapIcon TAG_YELLOW = new MindmapIcon(IconFamily.TAG, "yellow");
 
-    public static final MindmapIcon NUMBER_ONE = new MindmapIcon(IconFamily.NUMBER, "one");
-    public static final MindmapIcon NUMBER_TWO = new MindmapIcon(IconFamily.NUMBER, "two");
-    public static final MindmapIcon NUMBER_THREE = new MindmapIcon(IconFamily.NUMBER, "three");
-    public static final MindmapIcon NUMBER_FOUR = new MindmapIcon(IconFamily.NUMBER, "four");
-    public static final MindmapIcon NUMBER_FIVE = new MindmapIcon(IconFamily.NUMBER, "five");
-    public static final MindmapIcon NUMBER_SIX = new MindmapIcon(IconFamily.NUMBER, "six");
-    public static final MindmapIcon NUMBER_SEVEN = new MindmapIcon(IconFamily.NUMBER, "seven");
-    public static final MindmapIcon NUMBER_EIGHT = new MindmapIcon(IconFamily.NUMBER, "eight");
-    public static final MindmapIcon NUMBER_NINE = new MindmapIcon(IconFamily.NUMBER, "nine");
+//    public static final MindmapIcon NUMBER_ONE = new MindmapIcon(IconFamily.NUMBER, "one");
+//    public static final MindmapIcon NUMBER_TWO = new MindmapIcon(IconFamily.NUMBER, "two");
+//    public static final MindmapIcon NUMBER_THREE = new MindmapIcon(IconFamily.NUMBER, "three");
+//    public static final MindmapIcon NUMBER_FOUR = new MindmapIcon(IconFamily.NUMBER, "four");
+//    public static final MindmapIcon NUMBER_FIVE = new MindmapIcon(IconFamily.NUMBER, "five");
+//    public static final MindmapIcon NUMBER_SIX = new MindmapIcon(IconFamily.NUMBER, "six");
+//    public static final MindmapIcon NUMBER_SEVEN = new MindmapIcon(IconFamily.NUMBER, "seven");
+//    public static final MindmapIcon NUMBER_EIGHT = new MindmapIcon(IconFamily.NUMBER, "eight");
+//    public static final MindmapIcon NUMBER_NINE = new MindmapIcon(IconFamily.NUMBER, "nine");
+
+
+    public static final MindmapIcon FUNNY_ANGEL = new MindmapIcon(IconFamily.FUNY, "angel");
+    public static final MindmapIcon FUNNY_DEVILISH = new MindmapIcon(IconFamily.FUNY, "devilish");
+    public static final MindmapIcon FUNNY_GLASSES = new MindmapIcon(IconFamily.FUNY, "glasses");
+    public static final MindmapIcon FUNNY_GRIN = new MindmapIcon(IconFamily.FUNY, "grin");
+    public static final MindmapIcon FUNNY_KISS = new MindmapIcon(IconFamily.FUNY, "kiss");
+    public static final MindmapIcon FUNNY_MONKEY = new MindmapIcon(IconFamily.FUNY, "monkey");
 
     public static final MindmapIcon FLAG_BLUE = new MindmapIcon(IconFamily.FLAG, "blue");
     public static final MindmapIcon FLAG_GREEN = new MindmapIcon(IconFamily.FLAG, "green");

@@ -461,7 +461,7 @@ function buildIconChooser() {
     var count = 0;
     for (var i = 0; i < mindplot.ImageIcon.prototype.ICON_FAMILIES.length; i = i + 1)
     {
-        var familyIcons = mindplot.ImageIcon.prototype.ICON_FAMILIES[i];
+        var familyIcons = mindplot.ImageIcon.prototype.ICON_FAMILIES[i].icons;
         for (var j = 0; j < familyIcons.length; j = j + 1)
         {
             // Separate icons by line ...
