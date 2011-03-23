@@ -457,7 +457,7 @@ function afterMindpotLibraryLoading()
 }
 
 function buildIconChooser() {
-    var content = new Element('div').setStyles({width:330,height:340,padding:5});
+    var content = new Element('div').setStyles({width:250,height:250,padding:5});
     var count = 0;
     for (var i = 0; i < mindplot.ImageIcon.prototype.ICON_FAMILIES.length; i = i + 1)
     {

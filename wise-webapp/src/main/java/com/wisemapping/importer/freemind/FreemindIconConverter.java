@@ -46,7 +46,8 @@ final public class FreemindIconConverter {
 
     @Nullable
     public static String toFreemindId(@NotNull String iconId) {
-        return iconToFreeId.get(MindmapIcons.findById(iconId));
+        String result = iconToFreeId.get(MindmapIcons.findById(iconId));
+        return result != null ? result : iconId;
     }
 
 
@@ -76,6 +77,7 @@ final public class FreemindIconConverter {
         // Map arrow icons ...
         iconToFreeId.put(MindmapIcons.ARROW_RIGHT, "back");
         iconToFreeId.put(MindmapIcons.ARROW_LEFT, "forward");
+        iconToFreeId.put(MindmapIcons.ONOFF_DELETE, "closed");
 
         // Map smile icons ...
         iconToFreeId.put(MindmapIcons.FACE_PLAIN, "smiley-neutral");
@@ -91,11 +93,12 @@ final public class FreemindIconConverter {
         iconToFreeId.put(MindmapIcons.OBJECT_CLIP, "attach");
         iconToFreeId.put(MindmapIcons.OBJECT_MUSIC, "knotify");
         iconToFreeId.put(MindmapIcons.OBJECT_HOUSE, "gohome");
-
+        iconToFreeId.put(MindmapIcons.ONOFF_STATUS_ONLINE, "licq");
 
         // Sign mapping ...
         iconToFreeId.put(MindmapIcons.SIGN_WARNING, "messagebox_warning");
         iconToFreeId.put(MindmapIcons.SIGN_STOP, "stop-sign");
+
 
         // Mail mappings
         iconToFreeId.put(MindmapIcons.MAIL_ENVELOP, "Mail");

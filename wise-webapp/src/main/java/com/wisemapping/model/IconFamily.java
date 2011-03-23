@@ -37,6 +37,9 @@ public enum IconFamily {
     TIME,
     CHART,
     SIGN,
+    HARD,
+    SOFT,
+    PEOPLE,
     MAIL,
     OBJECT;
 }

@@ -24,7 +24,7 @@ import java.lang.IllegalStateException;
 import java.lang.reflect.Field;
 import java.util.*;
 
-@SuppressWarnings("all")
+@SuppressWarnings({"UnusedDeclaration"})
 public class MindmapIcons {
 
     private static Map<IconFamily, List<MindmapIcon>> iconsByFamily;
@@ -38,6 +38,7 @@ public class MindmapIcons {
 
     public static final MindmapIcon THUMB__UP = new MindmapIcon(IconFamily.THUMB, "thumb_up");
     public static final MindmapIcon THUMB_DOWN = new MindmapIcon(IconFamily.THUMB, "thumb_down");
+
 
     public static final MindmapIcon ARROW_UP = new MindmapIcon(IconFamily.ARROW, "up");
     public static final MindmapIcon ARROW_DOWN = new MindmapIcon(IconFamily.ARROW, "down");
@@ -72,6 +73,9 @@ public class MindmapIcons {
     public static final MindmapIcon ONOFF_CLOCK__RED = new MindmapIcon(IconFamily.ONOFF, "clock_red");
     public static final MindmapIcon ONOFF_ADD = new MindmapIcon(IconFamily.ONOFF, "add");
     public static final MindmapIcon ONOFF_DELETE = new MindmapIcon(IconFamily.ONOFF, "delete");
+    public static final MindmapIcon ONOFF_STATUS_OFFLINE = new MindmapIcon(IconFamily.ONOFF, "status_offline");
+    public static final MindmapIcon ONOFF_STATUS_ONLINE = new MindmapIcon(IconFamily.ONOFF, "status_online");
+
 
     public static final MindmapIcon TAG_BLUE = new MindmapIcon(IconFamily.TAG, "blue");
     public static final MindmapIcon TAG_GREEN = new MindmapIcon(IconFamily.TAG, "green");
@@ -145,7 +149,6 @@ public class MindmapIcons {
     public static final MindmapIcon OBJECT_MAGNIFIER = new MindmapIcon(IconFamily.OBJECT, "magnifier");
     public static final MindmapIcon OBJECT_CLIP = new MindmapIcon(IconFamily.OBJECT, "clip");
     public static final MindmapIcon OBJECT_MUSIC = new MindmapIcon(IconFamily.OBJECT, "music");
-    public static final MindmapIcon OBJECT_CD = new MindmapIcon(IconFamily.OBJECT, "cd");
     public static final MindmapIcon OBJECT_STAR = new MindmapIcon(IconFamily.OBJECT, "star");
     public static final MindmapIcon OBJECT_WIZARD = new MindmapIcon(IconFamily.OBJECT, "wizard");
     public static final MindmapIcon OBJECT_HOUSE = new MindmapIcon(IconFamily.OBJECT, "house");
@@ -153,12 +156,37 @@ public class MindmapIcons {
     public static final MindmapIcon MAIL_ENVELOP = new MindmapIcon(IconFamily.MAIL, "envelop");
     public static final MindmapIcon MAIL_MAILBOX = new MindmapIcon(IconFamily.MAIL, "mailbox");
     public static final MindmapIcon MAIL_EDIT = new MindmapIcon(IconFamily.MAIL, "edit");
+    public static final MindmapIcon MAIL_LIST = new MindmapIcon(IconFamily.MAIL, "list");
+
 
     public static final MindmapIcon SIGN_WARNING = new MindmapIcon(IconFamily.SIGN, "warning");
     public static final MindmapIcon SIGN_INFO = new MindmapIcon(IconFamily.SIGN, "info");
     public static final MindmapIcon SIGN_STOP = new MindmapIcon(IconFamily.SIGN, "stop");
     public static final MindmapIcon SIGN_HELP = new MindmapIcon(IconFamily.SIGN, "help");
-    public static final MindmapIcon SIGN_CANCEL = new MindmapIcon(IconFamily.SIGN   , "cancel");
+    public static final MindmapIcon SIGN_CANCEL = new MindmapIcon(IconFamily.SIGN, "cancel");
+
+    public static final MindmapIcon HARD_CD = new MindmapIcon(IconFamily.HARD, "cd");
+    public static final MindmapIcon HARD_COMPUTER = new MindmapIcon(IconFamily.HARD, "computer");
+    public static final MindmapIcon HARD_CONTROLLER = new MindmapIcon(IconFamily.HARD, "controller");
+    public static final MindmapIcon HARD_DRIVER_DISK = new MindmapIcon(IconFamily.HARD, "driver_disk");
+    public static final MindmapIcon HARD_IPOD = new MindmapIcon(IconFamily.HARD, "ipod");
+    public static final MindmapIcon HARD_KEYBOARD = new MindmapIcon(IconFamily.HARD, "keyboard");
+    public static final MindmapIcon HARD_MOUSE = new MindmapIcon(IconFamily.HARD, "mouse");
+    public static final MindmapIcon HARD_PRINTER = new MindmapIcon(IconFamily.HARD, "printer");
+
+    public static final MindmapIcon SOFT_BUG = new MindmapIcon(IconFamily.SOFT, "bug");
+    public static final MindmapIcon SOFT_CURSOR = new MindmapIcon(IconFamily.SOFT, "cursor");
+    public static final MindmapIcon SOFT_DATABASE_TABLE = new MindmapIcon(IconFamily.SOFT, "database_table");
+    public static final MindmapIcon SOFT_DATABASE = new MindmapIcon(IconFamily.SOFT, "database");
+    public static final MindmapIcon SOFT_FEED = new MindmapIcon(IconFamily.SOFT, "feed");
+    public static final MindmapIcon SOFT_FOLDER_EXPORE = new MindmapIcon(IconFamily.SOFT, "folder_explore");
+    public static final MindmapIcon SOFT_RSS = new MindmapIcon(IconFamily.SOFT, "rss");
+
+    public static final MindmapIcon PEOPLE_GROUP = new MindmapIcon(IconFamily.PEOPLE, "group");
+    public static final MindmapIcon PEOPLE_MALE = new MindmapIcon(IconFamily.PEOPLE, "male1");
+    public static final MindmapIcon PEOPLE_MALE2 = new MindmapIcon(IconFamily.PEOPLE, "male2");
+    public static final MindmapIcon PEOPLE_FEMALE = new MindmapIcon(IconFamily.PEOPLE, "female1");
+    public static final MindmapIcon PEOPLE_FEMALE2 = new MindmapIcon(IconFamily.PEOPLE, "female2");
 
     @NotNull
     public static List<MindmapIcon> getIconByFamily(@NotNull IconFamily family) {
