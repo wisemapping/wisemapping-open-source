@@ -24,7 +24,7 @@ import java.lang.IllegalStateException;
 import java.lang.reflect.Field;
 import java.util.*;
 
-
+@SuppressWarnings("all")
 public class MindmapIcons {
 
     private static Map<IconFamily, List<MindmapIcon>> iconsByFamily;
@@ -122,6 +122,43 @@ public class MindmapIcons {
     public static final MindmapIcon MONEY_RUBY = new MindmapIcon(IconFamily.MONEY, "ruby");
     public static final MindmapIcon MONEY_CONNECT = new MindmapIcon(IconFamily.CONN, "connect");
     public static final MindmapIcon MONEY_DISCONNECT = new MindmapIcon(IconFamily.CONN, "disconnect");
+
+    public static final MindmapIcon SPORT_BASKETBALL = new MindmapIcon(IconFamily.SPORT, "basketball");
+    public static final MindmapIcon SPORT_FOOTBALL = new MindmapIcon(IconFamily.SPORT, "football");
+    public static final MindmapIcon SPORT_GOLF = new MindmapIcon(IconFamily.SPORT, "golf");
+    public static final MindmapIcon SPORT_RAQUET = new MindmapIcon(IconFamily.SPORT, "raquet");
+    public static final MindmapIcon SPORT_SHUTTLECLOCK = new MindmapIcon(IconFamily.SPORT, "shuttlecock");
+    public static final MindmapIcon SPORT_SOURCE = new MindmapIcon(IconFamily.SPORT, "soccer");
+    public static final MindmapIcon SPORT_TENNIS = new MindmapIcon(IconFamily.SPORT, "tennis");
+
+    public static final MindmapIcon TIME_CALENDAR = new MindmapIcon(IconFamily.TIME, "calendar");
+    public static final MindmapIcon TIME_CLOCK = new MindmapIcon(IconFamily.TIME, "clock");
+    public static final MindmapIcon TIME_HOURGLASS = new MindmapIcon(IconFamily.TIME, "hourglass");
+
+
+    public static final MindmapIcon OBJECT_PENGUIN = new MindmapIcon(IconFamily.OBJECT, "penguin");
+    public static final MindmapIcon OBJECT_BELL = new MindmapIcon(IconFamily.OBJECT, "bell");
+    public static final MindmapIcon OBJECT_BOMB = new MindmapIcon(IconFamily.OBJECT, "clanbomber");
+    public static final MindmapIcon OBJECT_KEY = new MindmapIcon(IconFamily.OBJECT, "key");
+    public static final MindmapIcon OBJECT_PENCIL = new MindmapIcon(IconFamily.OBJECT, "pencil");
+    public static final MindmapIcon OBJECT_PHONE = new MindmapIcon(IconFamily.OBJECT, "phone");
+    public static final MindmapIcon OBJECT_MAGNIFIER = new MindmapIcon(IconFamily.OBJECT, "magnifier");
+    public static final MindmapIcon OBJECT_CLIP = new MindmapIcon(IconFamily.OBJECT, "clip");
+    public static final MindmapIcon OBJECT_MUSIC = new MindmapIcon(IconFamily.OBJECT, "music");
+    public static final MindmapIcon OBJECT_CD = new MindmapIcon(IconFamily.OBJECT, "cd");
+    public static final MindmapIcon OBJECT_STAR = new MindmapIcon(IconFamily.OBJECT, "star");
+    public static final MindmapIcon OBJECT_WIZARD = new MindmapIcon(IconFamily.OBJECT, "wizard");
+    public static final MindmapIcon OBJECT_HOUSE = new MindmapIcon(IconFamily.OBJECT, "house");
+
+    public static final MindmapIcon MAIL_ENVELOP = new MindmapIcon(IconFamily.MAIL, "envelop");
+    public static final MindmapIcon MAIL_MAILBOX = new MindmapIcon(IconFamily.MAIL, "mailbox");
+    public static final MindmapIcon MAIL_EDIT = new MindmapIcon(IconFamily.MAIL, "edit");
+
+    public static final MindmapIcon SIGN_WARNING = new MindmapIcon(IconFamily.SIGN, "warning");
+    public static final MindmapIcon SIGN_INFO = new MindmapIcon(IconFamily.SIGN, "info");
+    public static final MindmapIcon SIGN_STOP = new MindmapIcon(IconFamily.SIGN, "stop");
+    public static final MindmapIcon SIGN_HELP = new MindmapIcon(IconFamily.SIGN, "help");
+    public static final MindmapIcon SIGN_CANCEL = new MindmapIcon(IconFamily.SIGN   , "cancel");
 
     @NotNull
     public static List<MindmapIcon> getIconByFamily(@NotNull IconFamily family) {

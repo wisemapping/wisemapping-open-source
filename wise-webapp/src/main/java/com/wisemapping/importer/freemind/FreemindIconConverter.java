@@ -52,9 +52,17 @@ final public class FreemindIconConverter {
 
     static {
 
-        // Map numbers icons family ...
-        final List<MindmapIcon> bulletsImages = MindmapIcons.getIconByFamily(IconFamily.BULLET);
+        // By default, do a default mapping of all. The overwrite.
+        IconFamily[] families = IconFamily.values();
+        for (IconFamily family : families) {
+            final List<MindmapIcon> images = MindmapIcons.getIconByFamily(family);
+            for (MindmapIcon mindmapIcon : images) {
+                iconToFreeId.put(mindmapIcon, mindmapIcon.getName());
+            }
+        }
 
+        // Now overwrite that are different ...
+        final List<MindmapIcon> bulletsImages = MindmapIcons.getIconByFamily(IconFamily.BULLET);
         for (int i = 0; i < bulletsImages.size(); i++) {
             final MindmapIcon icon = bulletsImages.get(i);
             iconToFreeId.put(icon, "full-" + i);
@@ -66,8 +74,6 @@ final public class FreemindIconConverter {
         iconToFreeId.put(MindmapIcons.TICK_CROSS, "button_cancel");
 
         // Map arrow icons ...
-        iconToFreeId.put(MindmapIcons.ARROW_UP, "up");
-        iconToFreeId.put(MindmapIcons.ARROW_DOWN, "down");
         iconToFreeId.put(MindmapIcons.ARROW_RIGHT, "back");
         iconToFreeId.put(MindmapIcons.ARROW_LEFT, "forward");
 
@@ -77,6 +83,23 @@ final public class FreemindIconConverter {
         iconToFreeId.put(MindmapIcons.FACE_SURPRISE, "smiley-oh");
         iconToFreeId.put(MindmapIcons.FACE_SAD, "smiley_bad");
 
+        // Objects mappings
+        iconToFreeId.put(MindmapIcons.OBJECT_KEY, "password");
+        iconToFreeId.put(MindmapIcons.OBJECT_PHONE, "kaddressbook");
+        iconToFreeId.put(MindmapIcons.OBJECT_STAR, "bookmark");
+        iconToFreeId.put(MindmapIcons.OBJECT_MAGNIFIER, "xmag");
+        iconToFreeId.put(MindmapIcons.OBJECT_CLIP, "attach");
+        iconToFreeId.put(MindmapIcons.OBJECT_MUSIC, "knotify");
+        iconToFreeId.put(MindmapIcons.OBJECT_HOUSE, "gohome");
+
+
+        // Sign mapping ...
+        iconToFreeId.put(MindmapIcons.SIGN_WARNING, "messagebox_warning");
+        iconToFreeId.put(MindmapIcons.SIGN_STOP, "stop-sign");
+
+        // Mail mappings
+        iconToFreeId.put(MindmapIcons.MAIL_ENVELOP, "Mail");
+        iconToFreeId.put(MindmapIcons.MAIL_MAILBOX, "korn");
 
         // Maps Flag familly Icons ...
         final List<MindmapIcon> flagImages = MindmapIcons.getIconByFamily(IconFamily.FLAG);
