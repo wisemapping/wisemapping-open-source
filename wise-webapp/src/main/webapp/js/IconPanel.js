@@ -18,9 +18,9 @@
 
 var IconPanel = new Class({
     options:{
-        width:250,
+        width:253,
         initialWidth:0,
-        height:250,
+        height:200,
         content:null,
         panel:null,
         button:null,

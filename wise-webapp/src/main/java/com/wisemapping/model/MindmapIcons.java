@@ -140,7 +140,6 @@ public class MindmapIcons {
     public static final MindmapIcon TIME_HOURGLASS = new MindmapIcon(IconFamily.TIME, "hourglass");
 
 
-    public static final MindmapIcon OBJECT_PENGUIN = new MindmapIcon(IconFamily.OBJECT, "penguin");
     public static final MindmapIcon OBJECT_BELL = new MindmapIcon(IconFamily.OBJECT, "bell");
     public static final MindmapIcon OBJECT_BOMB = new MindmapIcon(IconFamily.OBJECT, "clanbomber");
     public static final MindmapIcon OBJECT_KEY = new MindmapIcon(IconFamily.OBJECT, "key");
@@ -152,6 +151,11 @@ public class MindmapIcons {
     public static final MindmapIcon OBJECT_STAR = new MindmapIcon(IconFamily.OBJECT, "star");
     public static final MindmapIcon OBJECT_WIZARD = new MindmapIcon(IconFamily.OBJECT, "wizard");
     public static final MindmapIcon OBJECT_HOUSE = new MindmapIcon(IconFamily.OBJECT, "house");
+    public static final MindmapIcon OBJECT_CAKE = new MindmapIcon(IconFamily.OBJECT, "cake");
+    public static final MindmapIcon OBJECT_CAMERA= new MindmapIcon(IconFamily.OBJECT, "camera");
+    public static final MindmapIcon OBJECT_PALETTE = new MindmapIcon(IconFamily.OBJECT, "palette");
+    public static final MindmapIcon OBJECT_RAINBOW = new MindmapIcon(IconFamily.OBJECT, "rainbow");
+
 
     public static final MindmapIcon MAIL_ENVELOP = new MindmapIcon(IconFamily.MAIL, "envelop");
     public static final MindmapIcon MAIL_MAILBOX = new MindmapIcon(IconFamily.MAIL, "mailbox");
@@ -181,6 +185,7 @@ public class MindmapIcons {
     public static final MindmapIcon SOFT_FEED = new MindmapIcon(IconFamily.SOFT, "feed");
     public static final MindmapIcon SOFT_FOLDER_EXPORE = new MindmapIcon(IconFamily.SOFT, "folder_explore");
     public static final MindmapIcon SOFT_RSS = new MindmapIcon(IconFamily.SOFT, "rss");
+    public static final MindmapIcon SOFT_PENGUIN = new MindmapIcon(IconFamily.SOFT, "penguin");
 
     public static final MindmapIcon PEOPLE_GROUP = new MindmapIcon(IconFamily.PEOPLE, "group");
     public static final MindmapIcon PEOPLE_MALE = new MindmapIcon(IconFamily.PEOPLE, "male1");

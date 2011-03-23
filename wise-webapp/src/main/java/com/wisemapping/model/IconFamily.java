@@ -19,14 +19,11 @@
 package com.wisemapping.model;
 
 public enum IconFamily {
-    FLAG,
-    BULLET,
-    TAG,
+
     //    NUMBER("NUMBER","number_"),
     FACE,
     FUNY,
-    ARROW,
-    ARROWC,
+
     CONN,
     SPORT,
     BULB,
@@ -39,7 +36,12 @@ public enum IconFamily {
     SIGN,
     HARD,
     SOFT,
+    ARROW,
+    ARROWC,
     PEOPLE,
     MAIL,
+    FLAG,
+    BULLET,
+    TAG,
     OBJECT;
 }

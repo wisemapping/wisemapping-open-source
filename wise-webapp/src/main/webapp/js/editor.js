@@ -457,7 +457,7 @@ function afterMindpotLibraryLoading()
 }
 
 function buildIconChooser() {
-    var content = new Element('div').setStyles({width:250,height:250,padding:5});
+    var content = new Element('div').setStyles({width:253,height:200,padding:5});
     var count = 0;
     for (var i = 0; i < mindplot.ImageIcon.prototype.ICON_FAMILIES.length; i = i + 1)
     {
@@ -466,7 +466,7 @@ function buildIconChooser() {
         {
             // Separate icons by line ...
             var familyContent;
-            if ((count % 9) == 0)
+            if ((count % 12) == 0)
             {
                 familyContent = new Element('div').inject(content);
             }
