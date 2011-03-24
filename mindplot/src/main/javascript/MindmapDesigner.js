@@ -456,7 +456,7 @@ mindplot.MindmapDesigner.prototype._nodeModelToNodeGraph = function(nodeModel, i
     var children = nodeModel.getChildren().slice();
 
     // Sort children by order to solve adding order in for OriginalLayoutManager...
-    if (this._layoutManager.getType() == mindplot.layoutManagers.OriginalLayoutManager.NAME && nodeGraph.getTopicType()!=mindplot.NodeModel.CENTRAL_TOPIC_TYPE && children.length > 0)
+    if (this._layoutManager.getClassName() == mindplot.layoutManagers.OriginalLayoutManager.NAME && nodeGraph.getTopicType()!=mindplot.NodeModel.CENTRAL_TOPIC_TYPE && children.length > 0)
     {
         var oldChildren = children;
         children = [];

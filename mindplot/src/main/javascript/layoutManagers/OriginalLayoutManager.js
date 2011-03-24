@@ -4,7 +4,6 @@ mindplot.layoutManagers.OriginalLayoutManager = mindplot.layoutManagers.BaseLayo
     },
     initialize:function(designer, options){
         this.parent(designer, options);
-        this._boards = new Hash();
         this._dragTopicPositioner = new mindplot.DragTopicPositioner(this);
         // Init dragger manager.
         var workSpace = this.getDesigner().getWorkSpace();
@@ -12,26 +11,11 @@ mindplot.layoutManagers.OriginalLayoutManager = mindplot.layoutManagers.BaseLayo
 
         // Add shapes to speed up the loading process ...
         mindplot.DragTopic.initialize(workSpace);
-
-        mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeResizeEvent,this._nodeResizeEvent.bind(this));
-        mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeMoveEvent,this._nodeMoveEvent.bind(this));
-        mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeDisconnectEvent,this._nodeDisconnectEvent.bind(this));
-        mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeConnectEvent,this._nodeConnectEvent.bind(this));
-        mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeRepositionateEvent,this._NodeRepositionateEvent.bind(this));
     },
     _nodeResizeEvent:function(node){
         var size = node.getSize();
         if(!this._isCentralTopic(node))
             this.getTopicBoardForTopic(node).updateChildrenPosition(node,size.height/2);
-    },
-    _nodeMoveEvent:function(node){
-        this.getTopicBoardForTopic(node).updateChildrenPosition(node);
-    },
-    _nodeDisconnectEvent:function(targetNode, node){
-        this.getTopicBoardForTopic(targetNode).removeTopicFromBoard(node);
-    },
-    _nodeConnectEvent:function(targetNode, node){
-        this.getTopicBoardForTopic(targetNode).addBranch(node);
     },
     _NodeRepositionateEvent:function(node){
         this.getTopicBoardForTopic(node).repositionate();
@@ -117,29 +101,13 @@ mindplot.layoutManagers.OriginalLayoutManager = mindplot.layoutManagers.BaseLayo
         }*/
 
     },
-    getTopicBoardForTopic:function(node){
-        var id = node.getId()
-        var result = this._boards[id];
-        if(!result){
-            result = this.addNode(node);
-        }
-        return result;
+    _createMainTopicBoard:function(node){
+        return new mindplot.MainTopicBoard(node, this);
     },
-    addNode:function(node){
-        var boardClass = mindplot.MainTopicBoard;
-        if (this._isCentralTopic(node))
-            boardClass = mindplot.CentralTopicBoard;
-        var board = new boardClass(node, this);
-        var id = node.getId();
-        this._boards[id]=board;
-        this.parent();
-        return board;
+    _createCentralTopicBoard:function(node){
+        return new mindplot.CentralTopicBoard(node,this);
     },
-    _isCentralTopic:function(node){
-        var type = node.getModel().getType();
-        return type == mindplot.NodeModel.CENTRAL_TOPIC_TYPE;
-    },
-    getType:function(){
+    getClassName:function(){
         return mindplot.layoutManagers.OriginalLayoutManager.NAME;
     }
 });

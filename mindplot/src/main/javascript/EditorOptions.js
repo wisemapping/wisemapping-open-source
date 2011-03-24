@@ -1,5 +1,5 @@
 mindplot.EditorOptions =
 {
     LayoutManager:"OriginalLayout"
-//    NodeLayoutManager:"FreeLayout"
+    //    LayoutManager:"FreeMindLayout"
 };

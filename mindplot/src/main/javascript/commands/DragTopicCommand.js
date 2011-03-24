@@ -36,14 +36,14 @@ mindplot.commands.DragTopicCommand = mindplot.Command.extend(
         var origParentTopic = topic.getOutgoingConnectedTopic();
         var origOrder = null;
         var origPosition = null;
-        if (topic.getType() == mindplot.NodeModel.MAIN_TOPIC_TYPE && origParentTopic != null && origParentTopic.getType() == mindplot.NodeModel.MAIN_TOPIC_TYPE)
-        {
+//        if (topic.getType() == mindplot.NodeModel.MAIN_TOPIC_TYPE && origParentTopic != null && origParentTopic.getType() == mindplot.NodeModel.MAIN_TOPIC_TYPE)
+//        {
             // In this case, topics are positioned using order ...
             origOrder = topic.getOrder();
-        } else
-        {
+//        } else
+//        {
             origPosition = topic.getPosition().clone();
-        }
+//        }
 
         // Disconnect topic ..
         if (origParentTopic)

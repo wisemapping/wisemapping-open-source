@@ -24,7 +24,7 @@ mindplot.MainTopicBoard = function(topic, layoutManager)
     this._height = 0;
 };
 
-objects.extend(mindplot.MainTopicBoard, mindplot.TopicBoard);
+objects.extend(mindplot.MainTopicBoard, mindplot.Board);
 
 mindplot.MainTopicBoard.DEFAULT_MAIN_TOPIC_HEIGHT = 18;
 

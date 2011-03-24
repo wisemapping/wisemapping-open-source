@@ -192,12 +192,13 @@ mindplot.MainTopic.prototype._updatePositionOnChangeSize = function(oldSize, new
     }
 };
 
-mindplot.MainTopic.prototype.setPosition = function(point)
+mindplot.MainTopic.prototype.setPosition = function(point, fireEvent)
 {
     mindplot.MainTopic.superClass.setPosition.call(this, point);
 
     // Update board zero entry position...
-    mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMoveEvent,[this]);
+    if(fireEvent != false)
+        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMoveEvent,[this]);
 };
 
 mindplot.MainTopic.prototype.workoutIncomingConnectionPoint = function(sourcePosition)

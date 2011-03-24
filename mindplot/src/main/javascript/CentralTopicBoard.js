@@ -25,7 +25,7 @@ mindplot.CentralTopicBoard = function(centralTopic, layoutManager)
     this._centralTopic = centralTopic;
 };
 
-objects.extend(mindplot.CentralTopicBoard, mindplot.TopicBoard);
+objects.extend(mindplot.CentralTopicBoard, mindplot.Board);
 
 mindplot.CentralTopicBoard.prototype._getBoard = function(position)
 {

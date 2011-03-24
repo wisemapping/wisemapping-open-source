@@ -19,7 +19,20 @@
             <version>1.0-SNAPSHOT</version>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>com.google.jstestdriver</groupId>
+            <artifactId>maven-jstestdriver-plugin</artifactId>
+            <version>1.2.2-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>jstd-maven-plugin google code repo</id>
+            <url>http://jstd-maven-plugin.googlecode.com/svn/maven2</url>
+        </repository>
+  </repositories>
 
     <build>
         <plugins>
@@ -111,12 +124,28 @@
                                               files="commands/AddRelationshipCommand.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="commands/MoveControlPointCommand.js"/>
+
+
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="layoutManagers/boards/Board.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="layoutManagers/boards/freeMindBoards/Board.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="layoutManagers/boards/freeMindBoards/Entry.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="layoutManagers/boards/freeMindBoards/CentralTopicBoard.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="layoutManagers/boards/freeMindBoards/MainTopicBoard.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="layoutManagers/BaseLayoutManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="layoutManagers/OriginalLayoutManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
+                                              files="layoutManagers/FreeMindLayoutManager.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
                                               files="layoutManagers/LayoutManagerFactory.js"/>
+
+
                                     <filelist dir="${basedir}/src/main/javascript/" files="footer.js"/>
                                 </concat>
 
@@ -213,8 +242,14 @@
                                         <include>commands/AddRelationshipCommand-min.js</include>
                                         <include>commands/MoveControlPointCommand-min.js</include>
 
+                                        <include>layoutManagers/boards/Board-min.js</include>
+                                        <include>layoutManagers/boards/freeMindBoards/Board-min.js</include>
+                                        <include>layoutManagers/boards/freeMindBoards/Entry-min.js</include>
+                                        <include>layoutManagers/boards/freeMindBoards/CentralTopicBoard-min.js</include>
+                                        <include>layoutManagers/boards/freeMindBoards/MainTopicBoard-min.js</include>
                                         <include>layoutManagers/BaseLayoutManager-min.js</include>
                                         <include>layoutManagers/OriginalLayoutManager-min.js</include>
+                                        <include>layoutManagers/FreeMindLayoutManager-min.js</include>
                                         <include>layoutManagers/LayoutManagerFactory-min.js</include>
 
                                         <include>footer-min.js</include>
@@ -231,6 +266,33 @@
                             </aggregations>
                             <nomunge>true</nomunge>
                             <jswarn>false</jswarn>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.4.2</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.google.jstestdriver</groupId>
+                <artifactId>maven-jstestdriver-plugin</artifactId>
+                <version>1.2.2-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <id>run-tests</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <debug>true</debug>
+                            <config>src/test/resources/jsTestDriver.conf</config>
                         </configuration>
                     </execution>
                 </executions>

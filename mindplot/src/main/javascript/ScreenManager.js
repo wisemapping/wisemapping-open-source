@@ -29,11 +29,11 @@ mindplot.ScreenManager.prototype.setScale = function(scale)
 };
 
 mindplot.ScreenManager.prototype.addEventListener=function(event, listener){
-    $(this._divContainer).addListener(event, listener);
+    $(this._divContainer).addEvent(event, listener);
 };
 
 mindplot.ScreenManager.prototype.removeEventListener=function(event, listener){
-    $(this._divContainer).removeListener(event, listener);
+    $(this._divContainer).removeEvent(event, listener);
 };
 
 mindplot.ScreenManager.prototype.getWorkspaceElementPosition = function(e)

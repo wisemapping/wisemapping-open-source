@@ -16,12 +16,12 @@
 *   limitations under the License.
 */
 
-mindplot.TopicBoard = function()
+mindplot.Board = function()
 {
     this._height = null;
 };
 
-mindplot.TopicBoard.prototype._removeEntryByOrder = function(order, position)
+mindplot.Board.prototype._removeEntryByOrder = function(order, position)
 {
     var board = this._getBoard(position);
     var entry = board.lookupEntryByOrder(order);
@@ -31,7 +31,7 @@ mindplot.TopicBoard.prototype._removeEntryByOrder = function(order, position)
     board.update(entry);
 };
 
-mindplot.TopicBoard.prototype.removeTopicFromBoard = function(topic)
+mindplot.Board.prototype.removeTopicFromBoard = function(topic)
 {
     var position = topic.getPosition();
     var order = topic.getOrder();
@@ -40,12 +40,12 @@ mindplot.TopicBoard.prototype.removeTopicFromBoard = function(topic)
     topic.setOrder(null);
 };
 
-mindplot.TopicBoard.prototype.positionateDragTopic = function(dragTopic)
+mindplot.Board.prototype.positionateDragTopic = function(dragTopic)
 {
     throw "this method must be overrided";
 };
 
-mindplot.TopicBoard.prototype.getHeight = function()
+mindplot.Board.prototype.getHeight = function()
 {
     var board = this._getBoard();
     return board.getHeight();
