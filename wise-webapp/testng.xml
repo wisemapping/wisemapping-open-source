@@ -4,6 +4,7 @@
     <test name="FreeMind Import Export Tests">
         <packages>
             <package name="com.wisemapping.test.freemind"/>
+            <package name="com.wisemapping.test.export"/>
         </packages>
     </test>
        <test name="Model Tests">
