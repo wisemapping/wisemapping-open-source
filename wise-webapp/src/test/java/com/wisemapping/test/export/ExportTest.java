@@ -48,6 +48,8 @@ public class ExportTest {
         final ExportProperties properties = ExportProperties.create(format);
         final ExportProperties.ImageProperties imageProperties = (ExportProperties.ImageProperties) properties;
         imageProperties.setSize(ExportProperties.ImageProperties.Size.LARGE);
+        String baseUrl = "file://"+svgFile.getParentFile().getAbsolutePath()+"/../../../main/webapp/images";
+        properties.setBaseImagePath(baseUrl);
 
         // Write content ...
         MindMap mindMap = new MindMap();
