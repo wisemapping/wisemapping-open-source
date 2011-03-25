@@ -291,8 +291,7 @@
                             <goal>test</goal>
                         </goals>
                         <configuration>
-                            <debug>true</debug>
-                            <config>src/test/resources/jsTestDriver.conf</config>
+                            <config>${basedir}/src/test/jsTestDriver.conf</config>
                         </configuration>
                     </execution>
                 </executions>
