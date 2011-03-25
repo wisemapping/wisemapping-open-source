@@ -379,11 +379,6 @@ mindplot.NodeModel.prototype.getOrder = function()
     return this._order;
 };
 
-mindplot.NodeModel.prototype.setFontFamily = function(value)
-{
-    this._fontFamily = value;
-};
-
 mindplot.NodeModel.prototype.getFontFamily = function()
 {
     return this._fontFamily;
