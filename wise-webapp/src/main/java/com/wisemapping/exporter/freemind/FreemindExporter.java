@@ -42,10 +42,11 @@ public class FreemindExporter
         implements Exporter {
 
     private static final String FREE_MIND_VERSION = "0.9.0";
-    private static final String EMPTY_FONT_STYLE = ";;;;;";
     private static final String POSITION_LEFT = "left";
     private static final String POSITION_RIGHT = "right";
-    private com.wisemapping.xml.freemind.ObjectFactory freemindObjectFactory;
+    private com.wisemapping.xml.freemind.ObjectFactory objectFactory;
+    private static final String EMPTY_FONT_STYLE = ";;;;;";
+
     private Map<String, Node> nodesMap = null;
 
     public void export(MindMap map, OutputStream outputStream) throws ExportException {
@@ -58,7 +59,7 @@ public class FreemindExporter
 
     public void export(byte[] xml, OutputStream outputStream) throws ExportException {
 
-        freemindObjectFactory = new com.wisemapping.xml.freemind.ObjectFactory();
+        objectFactory = new com.wisemapping.xml.freemind.ObjectFactory();
         nodesMap = new HashMap<String, Node>();
         final com.wisemapping.xml.mindmap.Map mindmapMap;
 
@@ -66,7 +67,7 @@ public class FreemindExporter
             final ByteArrayInputStream stream = new ByteArrayInputStream(xml);
             mindmapMap = (com.wisemapping.xml.mindmap.Map) JAXBUtils.getMapObject(stream, "com.wisemapping.xml.mindmap");
 
-            final com.wisemapping.xml.freemind.Map freemindMap = freemindObjectFactory.createMap();
+            final com.wisemapping.xml.freemind.Map freemindMap = objectFactory.createMap();
             freemindMap.setVersion(FREE_MIND_VERSION);
 
 
@@ -85,7 +86,7 @@ public class FreemindExporter
                 centerTopic = topics.get(0);
             }
 
-            final Node main = freemindObjectFactory.createNode();
+            final Node main = objectFactory.createNode();
             freemindMap.setNode(main);
             if (centerTopic != null) {
                 nodesMap.put(centerTopic.getId(), main);
@@ -95,7 +96,7 @@ public class FreemindExporter
             List<RelationshipType> relationships = mindmapMap.getRelationship();
             for (RelationshipType relationship : relationships) {
                 Node srcNode = nodesMap.get(relationship.getSrcTopicId());
-                Arrowlink arrowlink = freemindObjectFactory.createArrowlink();
+                Arrowlink arrowlink = objectFactory.createArrowlink();
                 Node dstNode = nodesMap.get(relationship.getDestTopicId());
                 arrowlink.setDESTINATION(dstNode.getID());
                 if (relationship.isEndArrow())
@@ -116,7 +117,7 @@ public class FreemindExporter
         final List<TopicType> currentTopic = mainTopic.getTopic();
 
         for (TopicType topicType : currentTopic) {
-            final Node newNode = freemindObjectFactory.createNode();
+            final Node newNode = objectFactory.createNode();
             nodesMap.put(topicType.getId(), newNode);
             setTopicPropertiesToNode(newNode, topicType);
             destNode.getArrowlinkOrCloudOrEdge().add(newNode);
@@ -188,7 +189,7 @@ public class FreemindExporter
 
     private void addEdgeNode(com.wisemapping.xml.freemind.Node freemindNode, com.wisemapping.xml.mindmap.TopicType mindmapTopic) {
         if (mindmapTopic.getBrColor() != null) {
-            final Edge edgeNode = freemindObjectFactory.createEdge();
+            final Edge edgeNode = objectFactory.createEdge();
             edgeNode.setCOLOR(mindmapTopic.getBrColor());
             freemindNode.getArrowlinkOrCloudOrEdge().add(edgeNode);
         }
@@ -199,20 +200,21 @@ public class FreemindExporter
      * eg: Verdana;10;#ffffff;bold;italic;
      *
      */
-    private void addFontNode(com.wisemapping.xml.freemind.Node freemindNode, com.wisemapping.xml.mindmap.TopicType mindmapTopic) {
+    private void addFontNode(@NotNull com.wisemapping.xml.freemind.Node freemindNode, com.wisemapping.xml.mindmap.TopicType mindmapTopic) {
         final String fontStyle = mindmapTopic.getFontStyle();
         if (fontStyle != null && fontStyle.length() != 0) {
-            final Font font = freemindObjectFactory.createFont();
+            final Font font = objectFactory.createFont();
             final String[] part = fontStyle.split(";", 6);
             int countParts = part.length;
+            boolean updated = false;
 
             if (!fontStyle.endsWith(EMPTY_FONT_STYLE)) {
-
-
                 int idx = 0;
+
                 // Font name
                 if (idx < countParts && part[idx].length() != 0) {
                     font.setNAME(part[idx]);
+                    updated = true;
                 }
                 idx++;
 
@@ -220,6 +222,7 @@ public class FreemindExporter
                 if (idx < countParts && part[idx].length() != 0) {
                     String size = part[idx];
                     font.setSIZE(new BigInteger(size));
+                    updated = true;
                 }
                 idx++;
 
@@ -232,15 +235,18 @@ public class FreemindExporter
                 // Font Styles
                 if (idx < countParts && part[idx].length() != 0) {
                     font.setBOLD(Boolean.TRUE.toString());
+                    updated = true;
                 }
                 idx++;
 
                 if (idx < countParts && part[idx].length() != 0) {
                     font.setITALIC(Boolean.TRUE.toString());
+                    updated = true;
                 }
 
-
-                freemindNode.getArrowlinkOrCloudOrEdge().add(font);
+                if (updated) {
+                    freemindNode.getArrowlinkOrCloudOrEdge().add(font);
+                }
             }
         }
     }

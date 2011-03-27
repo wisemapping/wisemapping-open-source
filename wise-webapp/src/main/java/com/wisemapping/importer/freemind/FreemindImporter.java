@@ -32,6 +32,7 @@ import com.wisemapping.xml.mindmap.RelationshipType;
 import com.wisemapping.xml.mindmap.TopicType;
 import com.wisemapping.xml.mindmap.Link;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.*;
 
 import javax.xml.bind.JAXBException;
@@ -52,6 +53,8 @@ public class FreemindImporter
     private static final String EMPTY_NOTE = "";
     private java.util.Map<String, TopicType> nodesMap = null;
     private List<RelationshipType> relationships = null;
+    private static final String EMPTY_FONT_STYLE = ";;;;;";
+
     private int currentId;
 
     public MindMap importMap(String mapName, String description, InputStream input) throws ImporterException {
@@ -259,7 +262,7 @@ public class FreemindImporter
             } else if (freemindNode instanceof Font) {
                 final Font font = (Font) freemindNode;
                 final String fontStyle = generateFontStyle(mainNode, font);
-                if (!fontStyle.isEmpty()) {
+                if (fontStyle!=null) {
                     currentTopic.setFontStyle(fontStyle);
                 }
             } else if (freemindNode instanceof Edge) {
@@ -391,8 +394,8 @@ public class FreemindImporter
         int position = pos * 200 + (orderPosition + 1) * 10;
 
         mindmapTopic.setPosition(position + "," + 200 * orderPosition);
-        String fontStyle = generateFontStyle(freemindNode, null);
-        if (!fontStyle.isEmpty()) {
+        final String fontStyle = generateFontStyle(freemindNode, null);
+        if (fontStyle!=null) {
             mindmapTopic.setFontStyle(fontStyle);
         }
         Boolean folded = Boolean.valueOf(freemindNode.getFOLDED());
@@ -401,39 +404,55 @@ public class FreemindImporter
         }
     }
 
-    private String generateFontStyle(Node node, Font font) {
+    private @Nullable String generateFontStyle(@NotNull Node node, @Nullable Font font) {
         /*
         * MindmapFont format : fontName ; size ; color ; bold; italic;
         * eg: Verdana;10;#ffffff;bold;italic;
         *
         */
+
+        // Font name ...
         final StringBuilder fontStyle = new StringBuilder();
         if (font != null) {
             fontStyle.append(fixFontName(font));
-            fontStyle.append(";");
-            BigInteger bigInteger = (font.getSIZE() == null || font.getSIZE().intValue() < 8) ? BigInteger.valueOf(8) : font.getSIZE();
+        }
+        fontStyle.append(";");
+
+        // Size ...
+        if (font != null) {
+            final BigInteger bigInteger = (font.getSIZE() == null || font.getSIZE().intValue() < 8) ? BigInteger.valueOf(8) : font.getSIZE();
             fontStyle.append(bigInteger);
-            fontStyle.append(";");
-            String color = node.getCOLOR();
-            if (color != null && !color.equals("")) {
-                fontStyle.append(color);
-            }
-            fontStyle.append(";");
+        }
+        fontStyle.append(";");
 
+        // Color ...
+        final String color = node.getCOLOR();
+        if (color != null && !color.equals("")) {
+            fontStyle.append(color);
+        }
+        fontStyle.append(";");
+
+        // Bold ...
+        if (font != null) {
             boolean hasBold = Boolean.parseBoolean(font.getBOLD());
-
             fontStyle.append(hasBold ? BOLD : "");
-            fontStyle.append(";");
+        }
+        fontStyle.append(";");
 
+        // Italic ...
+        if (font != null) {
             boolean hasItalic = Boolean.parseBoolean(font.getITALIC());
             fontStyle.append(hasItalic ? ITALIC : "");
-            fontStyle.append(";");
         }
+        fontStyle.append(";");
 
-        return fontStyle.toString();
+        final String result = fontStyle.toString();
+        return result.equals(EMPTY_FONT_STYLE) ? null : result;
     }
 
-    private @NotNull String fixFontName(@NotNull Font font) {
+    private
+    @NotNull
+    String fixFontName(@NotNull Font font) {
         String result = com.wisemapping.model.Font.ARIAL.getFontName(); // Default Font
         if (com.wisemapping.model.Font.isValidFont(font.getNAME())) {
             result = font.getNAME();
