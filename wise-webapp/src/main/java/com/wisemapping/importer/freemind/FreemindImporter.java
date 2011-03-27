@@ -77,6 +77,7 @@ public class FreemindImporter
             centralTopic.setShape(ShapeStyle.ELIPSE.getStyle());
             mindmapMap.getTopic().add(centralTopic);
             mindmapMap.setName(mapName);
+
             nodesMap = new HashMap<String, TopicType>();
             relationships = new ArrayList<RelationshipType>();
             nodesMap.put(centralNode.getID(), centralTopic);
@@ -232,7 +233,7 @@ public class FreemindImporter
         return x < 0;
     }
 
-    private void addTopicFromNode(Node mainNode, TopicType topic) {
+    private void addTopicFromNode(@NotNull Node mainNode, @NotNull TopicType topic) {
         final List<Object> freemindNodes = mainNode.getArrowlinkOrCloudOrEdge();
         TopicType currentTopic = topic;
         int order = 0;
@@ -244,25 +245,30 @@ public class FreemindImporter
                 newTopic.setId(String.valueOf(currentId++));
                 nodesMap.put(node.getID(), newTopic);  //Lets use freemind id temporarily. This will be fixed when adding relationship to the map.
                 newTopic.setOrder(order++);
-                String url = node.getLINK();
+
+                // Is there any link ?
+                final String url = node.getLINK();
                 if (url != null) {
                     final Link link = new Link();
                     link.setUrl(url);
                     newTopic.setLink(link);
                 }
+
                 if (POSITION_LEFT.equals(mainNode.getPOSITION())) {
                     node.setPOSITION(POSITION_LEFT);
                 }
+
                 setNodePropertiesToTopic(newTopic, node);
                 addTopicFromNode(node, newTopic);
                 if (!newTopic.equals(topic)) {
                     topic.getTopic().add(newTopic);
                 }
                 currentTopic = newTopic;
+
             } else if (freemindNode instanceof Font) {
                 final Font font = (Font) freemindNode;
                 final String fontStyle = generateFontStyle(mainNode, font);
-                if (fontStyle!=null) {
+                if (fontStyle != null) {
                     currentTopic.setFontStyle(fontStyle);
                 }
             } else if (freemindNode instanceof Edge) {
@@ -380,31 +386,44 @@ public class FreemindImporter
         return text.toString();
     }
 
-    private void setNodePropertiesToTopic(com.wisemapping.xml.mindmap.TopicType mindmapTopic, com.wisemapping.xml.freemind.Node freemindNode) {
-        mindmapTopic.setText(freemindNode.getTEXT());
-        mindmapTopic.setBgColor(freemindNode.getBACKGROUNDCOLOR());
+    private void setNodePropertiesToTopic(@NotNull com.wisemapping.xml.mindmap.TopicType wiseTopic, @NotNull com.wisemapping.xml.freemind.Node freemindNode) {
+        wiseTopic.setText(freemindNode.getTEXT());
+        wiseTopic.setBgColor(freemindNode.getBACKGROUNDCOLOR());
 
         final String shape = getShapeFormFromNode(freemindNode);
-        mindmapTopic.setShape(shape);
+        wiseTopic.setShape(shape);
         int pos = 1;
         if (POSITION_LEFT.equals(freemindNode.getPOSITION())) {
             pos = -1;
         }
-        Integer orderPosition = mindmapTopic.getOrder() != null ? mindmapTopic.getOrder() : 0;
+        Integer orderPosition = wiseTopic.getOrder() != null ? wiseTopic.getOrder() : 0;
         int position = pos * 200 + (orderPosition + 1) * 10;
 
-        mindmapTopic.setPosition(position + "," + 200 * orderPosition);
+        wiseTopic.setPosition(position + "," + 200 * orderPosition);
         final String fontStyle = generateFontStyle(freemindNode, null);
-        if (fontStyle!=null) {
-            mindmapTopic.setFontStyle(fontStyle);
+        if (fontStyle != null) {
+            wiseTopic.setFontStyle(fontStyle);
         }
-        Boolean folded = Boolean.valueOf(freemindNode.getFOLDED());
+
+        // Is there any link ?
+        final String url = freemindNode.getLINK();
+        if (url != null) {
+            final Link link = new Link();
+            link.setUrl(url);
+            wiseTopic.setLink(link);
+        }
+
+        final Boolean folded = Boolean.valueOf(freemindNode.getFOLDED());
         if (folded) {
-            mindmapTopic.setShrink(folded);
+            wiseTopic.setShrink(folded);
         }
+
+
     }
 
-    private @Nullable String generateFontStyle(@NotNull Node node, @Nullable Font font) {
+    private
+    @Nullable
+    String generateFontStyle(@NotNull Node node, @Nullable Font font) {
         /*
         * MindmapFont format : fontName ; size ; color ; bold; italic;
         * eg: Verdana;10;#ffffff;bold;italic;

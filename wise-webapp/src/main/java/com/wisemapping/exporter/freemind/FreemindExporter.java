@@ -122,7 +122,7 @@ public class FreemindExporter
             setTopicPropertiesToNode(newNode, topicType);
             destNode.getArrowlinkOrCloudOrEdge().add(newNode);
             addNodeFromTopic(topicType, newNode);
-            String position = topicType.getPosition();
+            final String position = topicType.getPosition();
             if (position != null) {
                 String xPos = position.split(",")[0];
                 int x = Integer.valueOf(xPos);
@@ -144,10 +144,13 @@ public class FreemindExporter
             freemindNode.setSTYLE(style);
         }
         addIconNode(freemindNode, mindmapTopic);
+
         addLinkNode(freemindNode, mindmapTopic);
+
         addFontNode(freemindNode, mindmapTopic);
         addEdgeNode(freemindNode, mindmapTopic);
         addNote(freemindNode, mindmapTopic);
+
         Boolean shrink = mindmapTopic.isShrink();
         if (shrink != null && shrink)
             freemindNode.setFOLDED(String.valueOf(shrink));

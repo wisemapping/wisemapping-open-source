@@ -1,1 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?><map version="0.9.0"><node TEXT="Node Links" STYLE="elipse" ID="ID_0"/></map>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><map version="0.9.0"><node TEXT="Node Links" STYLE="elipse" LINK="http://www.google.com" ID="ID_0"><icon BUILTIN="closed"/><node TEXT="Link Topic" POSITION="right" LINK="http://www.bing.com" ID="ID_1" FOLDED="true"><icon BUILTIN="info"/><node TEXT="Link Topic Topic" POSITION="right" LINK="http://bing.com" ID="ID_2"><icon BUILTIN="messagebox_warning"/></node></node></node></map>
