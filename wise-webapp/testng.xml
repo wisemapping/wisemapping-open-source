@@ -1,7 +1,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="WiseMapping Java Tests" verbose="1">
-    <test name="FreeMind Import Export Tests">
+    <test name="FreeMind Export Tests">
         <packages>
             <package name="com.wisemapping.test.freemind"/>
             <package name="com.wisemapping.test.export"/>

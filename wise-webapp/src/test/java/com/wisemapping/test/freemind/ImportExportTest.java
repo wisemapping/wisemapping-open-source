@@ -6,7 +6,6 @@ import com.wisemapping.importer.ImportFormat;
 import com.wisemapping.importer.Importer;
 import com.wisemapping.importer.ImporterException;
 import com.wisemapping.importer.ImporterFactory;
-
 import com.wisemapping.model.MindMap;
 import org.jetbrains.annotations.NotNull;
 import org.testng.Assert;
@@ -14,11 +13,9 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.*;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
 
 @Test
-public class FreeMindExportTest {
+public class ImportExportTest {
     private static final String DATA_DIR_PATH = "src/test/data/freemind/";
 
     @Test(dataProvider = "Data-Provider-Function")
