@@ -31,6 +31,7 @@ import com.wisemapping.xml.freemind.Node;
 import com.wisemapping.xml.mindmap.RelationshipType;
 import com.wisemapping.xml.mindmap.TopicType;
 import com.wisemapping.xml.mindmap.Link;
+import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.*;
 
 import javax.xml.bind.JAXBException;
@@ -421,23 +422,23 @@ public class FreemindImporter
 
             boolean hasBold = Boolean.parseBoolean(font.getBOLD());
 
-            fontStyle.append(hasBold ? BOLD : null);
+            fontStyle.append(hasBold ? BOLD : "");
             fontStyle.append(";");
 
             boolean hasItalic = Boolean.parseBoolean(font.getITALIC());
-            fontStyle.append(hasItalic ? ITALIC : null);
+            fontStyle.append(hasItalic ? ITALIC : "");
             fontStyle.append(";");
         }
 
         return fontStyle.toString();
     }
 
-    private String fixFontName(Font font) {
-        String fontName = com.wisemapping.model.Font.ARIAL.getFontName(); // Default Font
+    private @NotNull String fixFontName(@NotNull Font font) {
+        String result = com.wisemapping.model.Font.ARIAL.getFontName(); // Default Font
         if (com.wisemapping.model.Font.isValidFont(font.getNAME())) {
-            fontName = font.getNAME();
+            result = font.getNAME();
         }
-        return fontName;
+        return result;
     }
 
     private String getShapeFormFromNode(Node node) {

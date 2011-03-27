@@ -18,6 +18,8 @@
 
 package com.wisemapping.model;
 
+import org.jetbrains.annotations.NotNull;
+
 public enum Font {
 
     VERDANA("Verdana"),
@@ -37,7 +39,7 @@ public enum Font {
         return fontName;
     }
 
-    public static boolean isValidFont(String font) {
+    public static boolean isValidFont(@NotNull String font) {
         boolean isValid = false;
         try {
             if (font != null) {
@@ -45,6 +47,7 @@ public enum Font {
             }
         }
         catch (IllegalArgumentException ignote) {
+            // Ignore ...
         }
 
         return isValid;
