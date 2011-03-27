@@ -16,7 +16,6 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/thirdparty.css">
     <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/core.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/wiseLibrary.js"></script>
 
     <script type="text/javascript">
@@ -25,10 +24,6 @@
             boxGenerator.render('recentFiles');
             boxGenerator.render('recentItems');
             $('mydocs').makeRounded({radius: 16,borderColor: '#a7c6df',backgroundColor: '#c3def5'});
-
-            // IE Hack ....
-            function afterMindpotLibraryLoading(){};
-
         };
 
     </script>
