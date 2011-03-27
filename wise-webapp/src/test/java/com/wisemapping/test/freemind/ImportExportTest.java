@@ -17,16 +17,23 @@ import java.io.*;
 @Test
 public class ImportExportTest {
     private static final String DATA_DIR_PATH = "src/test/data/freemind/";
+    final private Importer importer;
+    final private FreemindExporter exporter;
+
+    public ImportExportTest() throws ImporterException {
+        ImporterFactory exporterFactory = ImporterFactory.getInstance();
+        importer = exporterFactory.getImporter(ImportFormat.FREEMIND);
+        exporter = new FreemindExporter();
+
+    }
+
 
     @Test(dataProvider = "Data-Provider-Function")
     public void exportImportExportTest(@NotNull final File freeMindFile, @NotNull final File recFile) throws ImporterException, IOException, ExportException {
 
-        ImporterFactory instance = ImporterFactory.getInstance();
-        Importer importer = instance.getImporter(ImportFormat.FREEMIND);
 
         FileInputStream fileInputStream = new FileInputStream(freeMindFile.getAbsolutePath());
         final MindMap mindMap = importer.importMap("basic", "basic", fileInputStream);
-        final FreemindExporter freemindExporter = new FreemindExporter();
 
         if (recFile.exists()) {
             // Compare rec and file ...
@@ -48,17 +55,16 @@ public class ImportExportTest {
 
             // Export mile content ...
             final ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            freemindExporter.export(mindMap, bos);
+            exporter.export(mindMap, bos);
             final String exportContent = new String(bos.toByteArray());
 
             Assert.assertEquals(recContent.toString(), exportContent);
 
         } else {
             final FileOutputStream fos = new FileOutputStream(recFile);
-            freemindExporter.export(mindMap, fos);
+            exporter.export(mindMap, fos);
             fos.close();
         }
-
 
     }
 
