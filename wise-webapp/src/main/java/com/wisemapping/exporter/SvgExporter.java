@@ -187,13 +187,18 @@ public class SvgExporter {
                 Element elem = (Element) node;
 
                 // Cook image href ...
-                String imgName = elem.getAttribute("href");
-                int index = imgName.lastIndexOf("/");
+                final String imgUrl = elem.getAttribute("href");
+                int index = imgUrl.lastIndexOf("/");
                 elem.removeAttribute("href");
-                if (index != -1)
-                {
-                    imgName = imgName.substring(index);
-                    final String imgPath = imgBaseUrl + imgName;                    
+                if (index != -1) {
+                    final String iconName = imgUrl.substring(index);
+                    // Hack for backward compatibility . This can be removed in 2012. :)
+                    String imgPath;
+                    if (imgUrl.contains("images")) {
+                        imgPath = imgBaseUrl + "../images/" + imgUrl;
+                    } else {
+                        imgPath = imgBaseUrl + imgUrl;
+                    }
                     elem.setAttribute("xlink:href", imgPath);
                 }
             }
@@ -231,7 +236,7 @@ public class SvgExporter {
                 final NodeList groupChildren = node.getChildNodes();
                 for (int idx = 0; idx < groupChildren.getLength(); idx++) {
                     final Node rectNode = groupChildren.item(idx);
-                    float curentHeight = 0 ;
+                    float curentHeight = 0;
                     float curentWidth = 0;
 
                     // If has a rect use the rect to calcular the real width of the topic
