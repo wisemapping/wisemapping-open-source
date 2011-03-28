@@ -197,14 +197,15 @@ function afterMindpotLibraryLoading()
             firstStepWindow.moveTo(0, 0);
             firstStepWindow.resizeTo(screen.availWidth, screen.availHeight);
         });
+    }
 
+    if ($('helpButtonKeyboard') != null)
+    {
         var keyboardPanel = $('helpButtonKeyboard')
         keyboardPanel.addEvent('click', function(event) {
             MOOdalBox.open('keyboard.htm', 'KeyBoard Shortcuts', '500px 400px', false)
         });
-
     }
-
 
     var iconChooser = buildIconChooser();
     iconPanel = new IconPanel({button:$('topicIcon'), onStart:cleanScreenEvent, content:iconChooser});

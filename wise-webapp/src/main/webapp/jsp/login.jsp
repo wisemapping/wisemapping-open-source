@@ -11,16 +11,12 @@
 <div id="loginContent">
 
     <div id="news" class="sb">
-        <h1>What's New:</h1>
+        <h1>What is New: </h1>
         <ul>
-            <li>New Toolbar</li>
-            <li>Add icons to Topics</li>
-            <li>History changes for the last 10 modifications</li>
-            <li>Auto Save</li>
-        </ul>
-        <h1>Upcoming Features:</h1>
-            <li>Add notes to Topics</li>
-        <ul>
+            <li>Links Between Nodes</li>
+            <li>FreeMind 0.9 Update</li>
+            <li>Pure HTML 5.0 Support</li>
+            <li>Firefox 4.0 is officially supported</li>
         </ul>
     </div>
     <div id="login" class="sb">

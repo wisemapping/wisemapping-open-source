@@ -1,9 +1,7 @@
 <%--@elvariable id="mindmap" type="com.wisemapping.model.MindMap"--%>
 <%--@elvariable id="editorTryMode" type="java.lang.Boolean"--%>
 <%--@elvariable id="user" type="com.wisemapping.model.User"--%>
-
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML>
 
 <%@ include file="/jsp/init.jsp" %>
 <c:url value="mymaps.htm" var="shareMap">
@@ -298,12 +296,6 @@
             <div id='msgLogger'></div>
             <div id="msgEnd"></div>
         </div>
-    </div>
-    <div id="helpButtonFirstSteps"
-         style="text-align:center; width:90px; height:20px; background-color:#f5f5f5; border: 1px solid #BBB6D6; cursor:pointer; padding-left:5px; margin-left:3px;float:left;">
-        <div style="float:left; position:relative; top:50%; margin-top:-8px; margin-left:5px;"><img
-                src="../images/help.png"/></div>
-        <div style="float:left; position:relative; top:50%; margin-top:-8px; margin-left:4px;">First Steps</div>
     </div>
     <div id="helpButtonKeyboard"
          style="text-align:center; width:100px; height:20px; background-color:#f5f5f5; border: 1px solid #BBB6D6; cursor:pointer; padding-left:5px; margin-left:3px;float:left;">
