@@ -31,7 +31,7 @@ public class ExportTest {
     private static final String DATA_DIR_PATH = "src/test/data/svg/";
 
     @Test(dataProvider = "Data-Provider-Function")
-    public void exportSvgTest(@NotNull final File svgFile, @NotNull final File pngFile) throws ImporterException, IOException, ExportException {
+    public void exportSvgTest(@NotNull final File svgFile, @NotNull final File pngFile) throws ImporterException, IOException, ExportException, TransformerException, XMLStreamException, JAXBException, SAXException, TranscoderException, ParserConfigurationException {
 
         BufferedReader reader = null;
         StringBuffer buffer = new StringBuffer();
@@ -57,27 +57,44 @@ public class ExportTest {
         nativeBrowser.setSvgXml(svgXml);
         mindMap.setNativeBrowser(nativeBrowser);
 
-        //Export to PNG
-            OutputStream outputStream = new FileOutputStream(pngFile, false);
-            try {
-                mindMap.export(properties, outputStream);
-                outputStream.close();
-                System.out.println("finished");
-            } catch (JAXBException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (TranscoderException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (TransformerException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (ParserConfigurationException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (SAXException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (XMLStreamException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        if(pngFile.exists()){
+            // Export mile content ...
+            final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            mindMap.export(properties, bos);
+
+            // Load rec file co
+            final FileInputStream fis = new FileInputStream(pngFile);
+            final InputStreamReader isr = new InputStreamReader(fis);
+            final BufferedReader br = new BufferedReader(isr);
+
+            final StringBuilder recContent = new StringBuilder();
+            String line = br.readLine();
+            while (line != null) {
+                recContent.append(line);
+                line = br.readLine();
             }
 
+            fis.close();
 
+            //Since line separator chenges between \r and \n, lets read line by line
+            final String exportContent = new String(bos.toByteArray());
+            BufferedReader expBuf = new BufferedReader(new StringReader(exportContent));
+            final StringBuilder expContent = new StringBuilder();
+            String expLine = expBuf.readLine();
+            while (expLine != null) {
+                expContent.append(expLine);
+                expLine = expBuf.readLine();
+
+            }
+
+            Assert.assertEquals(expContent.toString().trim(), expContent.toString().trim());
+
+        }
+        else{
+            OutputStream outputStream = new FileOutputStream(pngFile, false);
+            mindMap.export(properties, outputStream);
+            outputStream.close();
+        }
     }
 
     //This function will provide the parameter data
