@@ -22,7 +22,9 @@ import com.wisemapping.exporter.ExportException;
 import com.wisemapping.exporter.Exporter;
 import com.wisemapping.importer.freemind.FreemindIconConverter;
 import com.wisemapping.model.MindMap;
+import com.wisemapping.model.ShapeStyle;
 import com.wisemapping.util.JAXBUtils;
+import com.wisemapping.xml.Style;
 import com.wisemapping.xml.freemind.*;
 import com.wisemapping.xml.mindmap.RelationshipType;
 import com.wisemapping.xml.mindmap.TopicType;
@@ -90,7 +92,7 @@ public class FreemindExporter
             freemindMap.setNode(main);
             if (centerTopic != null) {
                 nodesMap.put(centerTopic.getId(), main);
-                setTopicPropertiesToNode(main, centerTopic);
+                setTopicPropertiesToNode(main, centerTopic, true);
                 addNodeFromTopic(centerTopic, main);
             }
             List<RelationshipType> relationships = mindmapMap.getRelationship();
@@ -119,7 +121,7 @@ public class FreemindExporter
         for (TopicType topicType : currentTopic) {
             final Node newNode = objectFactory.createNode();
             nodesMap.put(topicType.getId(), newNode);
-            setTopicPropertiesToNode(newNode, topicType);
+            setTopicPropertiesToNode(newNode, topicType, false);
             destNode.getArrowlinkOrCloudOrEdge().add(newNode);
             addNodeFromTopic(topicType, newNode);
             final String position = topicType.getPosition();
@@ -131,29 +133,33 @@ public class FreemindExporter
         }
     }
 
-    private void setTopicPropertiesToNode(com.wisemapping.xml.freemind.Node freemindNode, com.wisemapping.xml.mindmap.TopicType mindmapTopic) {
+    private void setTopicPropertiesToNode(@NotNull com.wisemapping.xml.freemind.Node freemindNode, @NotNull com.wisemapping.xml.mindmap.TopicType mindmapTopic, boolean isRoot) {
         freemindNode.setID("ID_" + mindmapTopic.getId());
         freemindNode.setTEXT(mindmapTopic.getText());
         freemindNode.setBACKGROUNDCOLOR(mindmapTopic.getBgColor());
 
-        if (mindmapTopic.getShape() != null && !mindmapTopic.getShape().equals("line")) {
-            String style = mindmapTopic.getShape();
-            if ("rounded rectagle".equals(mindmapTopic.getShape())) {
-                style = "bubble";
+        final String shape = mindmapTopic.getShape();
+        if (shape != null && !shape.isEmpty()) {
+            if ( isRoot && !ShapeStyle.ROUNDED_RETAGLE.getStyle().endsWith(shape) || !isRoot && !ShapeStyle.LINE.getStyle().endsWith(shape) ) {
+
+                String style = shape;
+                if (ShapeStyle.ROUNDED_RETAGLE.getStyle().equals(shape)) {
+                    style = "bubble";
+                }
+                freemindNode.setSTYLE(style);
             }
-            freemindNode.setSTYLE(style);
+            addIconNode(freemindNode, mindmapTopic);
+
+            addLinkNode(freemindNode, mindmapTopic);
+
+            addFontNode(freemindNode, mindmapTopic);
+            addEdgeNode(freemindNode, mindmapTopic);
+            addNote(freemindNode, mindmapTopic);
+
+            Boolean shrink = mindmapTopic.isShrink();
+            if (shrink != null && shrink)
+                freemindNode.setFOLDED(String.valueOf(shrink));
         }
-        addIconNode(freemindNode, mindmapTopic);
-
-        addLinkNode(freemindNode, mindmapTopic);
-
-        addFontNode(freemindNode, mindmapTopic);
-        addEdgeNode(freemindNode, mindmapTopic);
-        addNote(freemindNode, mindmapTopic);
-
-        Boolean shrink = mindmapTopic.isShrink();
-        if (shrink != null && shrink)
-            freemindNode.setFOLDED(String.valueOf(shrink));
     }
 
     private void addNote(com.wisemapping.xml.freemind.Node freemindNode, com.wisemapping.xml.mindmap.TopicType mindmapTopic) {

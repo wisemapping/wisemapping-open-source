@@ -18,7 +18,8 @@
 
 mindplot.Tip = function(divContainer){
     this.initialize(divContainer);
-    };
+};
+
 mindplot.Tip.prototype.initialize=function(divContainer){
     this.options={
         panel:null,
@@ -34,7 +35,8 @@ mindplot.Tip.prototype.initialize=function(divContainer){
         this.buildTip();
         this._isMouseOver=false;
         this._open=false;
-    };
+};
+
 mindplot.Tip.prototype.buildTip=function(){
         var opts = this.options;
         var panel = new Element('div').addClass('bubbleContainer');
@@ -52,15 +54,18 @@ mindplot.Tip.prototype.buildTip=function(){
         opts.panel.addEvent('mouseover',function(){this._isMouseOver=true;}.bind(this));
         opts.panel.addEvent('mouseleave',function(event){this.close(event);}.bindWithEvent(this));//this.close.bindWithEvent(this)
 
-    };
+};
+
 mindplot.Tip.prototype.click= function(event, el) {
         return this.open(event, el);
-    };
+};
+
 mindplot.Tip.prototype.open= function(event, content, source){
         this._isMouseOver=true;
         this._evt = new Event(event);
         this.doOpen.delay(500, this,[content,source]);
-    };
+};
+
 mindplot.Tip.prototype.doOpen= function(content, source){
     if($chk(this._isMouseOver) &&!$chk(this._open) && !$chk(this._opening))
         {
@@ -73,14 +78,17 @@ mindplot.Tip.prototype.doOpen= function(content, source){
             this.init(this._evt,source);
             $(this.options.panel).effect('opacity',{duration:500, onComplete:function(){this._open=true; this._opening = false;}.bind(this)}).start(0,100);
         }
-    };
+};
+
 mindplot.Tip.prototype.updatePosition=function(event){
         this._evt = new Event(event);
-    };
+};
+
 mindplot.Tip.prototype.close=function(event){
         this._isMouseOver=false;
         this.doClose.delay(50,this,new Event(event));
-    };
+};
+
 mindplot.Tip.prototype.doClose=function(event){
 
         if(!$chk(this._isMouseOver) && $chk(this._opening))
@@ -90,14 +98,16 @@ mindplot.Tip.prototype.doClose=function(event){
         {
             this.forceClose();
         }
-    };
+};
+
 mindplot.Tip.prototype.forceClose=function(){
         this.options.panel.effect('opacity',{duration:100, onComplete:function(){
             this._open=false;
             $(this.options.panel).setStyles({left:0,top:0});
             $(this.options.container).remove();
         }.bind(this)}).start(100,0);
-    };
+};
+
 mindplot.Tip.prototype.init=function(event,source){
         var opts = this.options;
         var coordinates = $(opts.panel).getCoordinates();
@@ -114,13 +124,13 @@ mindplot.Tip.prototype.init=function(event,source){
         this.buildTip();
         $(this.options.container).inject(this.options.panel);
         this.moveTopic(offset, $(opts.panel).getCoordinates().height);
-    };
+};
 
 mindplot.Tip.prototype.moveTopic=function(offset, panelHeight){
         var opts = this.options;
         var width = $(opts.panel).getCoordinates().width;
-        $(opts.panel).setStyles({left:offset.x - (width/2), top:offset.y - (panelHeight*2)});
-    };
+        $(opts.panel).setStyles({left:offset.x - (width/2), top:offset.y - (panelHeight*2) + 35});
+};
 
 mindplot.Tip.getInstance = function(divContainer)
 {

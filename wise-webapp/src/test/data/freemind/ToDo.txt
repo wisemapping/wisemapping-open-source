@@ -1,4 +1,4 @@
-- Node Links
+- Done: Node Links
 - Relationship between nodes
 - HTML embedded in nodes.
 

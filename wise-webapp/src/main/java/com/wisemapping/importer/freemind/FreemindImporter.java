@@ -74,7 +74,7 @@ public class FreemindImporter
             centralTopic.setCentral(true);
 
             setNodePropertiesToTopic(centralTopic, centralNode);
-            centralTopic.setShape(ShapeStyle.ELIPSE.getStyle());
+            centralTopic.setShape(ShapeStyle.ROUNDED_RETAGLE.getStyle());
             mindmapMap.getTopic().add(centralTopic);
             mindmapMap.setName(mapName);
 
@@ -104,7 +104,7 @@ public class FreemindImporter
         return map;
     }
 
-    private void addRelationships(com.wisemapping.xml.mindmap.Map mindmapMap) {
+    private void addRelationships(@NotNull com.wisemapping.xml.mindmap.Map mindmapMap) {
         List<RelationshipType> mapRelationships = mindmapMap.getRelationship();
         for (RelationshipType relationship : relationships) {
             relationship.setId(String.valueOf(currentId++));
@@ -155,7 +155,7 @@ public class FreemindImporter
 
     }
 
-    private void fixCentralTopicChildOrder(TopicType centralTopic) {
+    private void fixCentralTopicChildOrder(@NotNull TopicType centralTopic) {
         List<TopicType> topics = centralTopic.getTopic();
         List<TopicType> leftTopics = new ArrayList<TopicType>();
         List<TopicType> rightTopics = new ArrayList<TopicType>();
@@ -479,14 +479,14 @@ public class FreemindImporter
         return result;
     }
 
-    private String getShapeFormFromNode(Node node) {
-        String shape = node.getSTYLE();
+    private @NotNull String getShapeFormFromNode(@NotNull Node node) {
+        String result = node.getSTYLE();
         // In freemind a node without style is a line
-        if ("bubble".equals(shape)) {
-            shape = ShapeStyle.ROUNDED_RETAGLE.getStyle();
+        if ("bubble".equals(result)) {
+            result = ShapeStyle.ROUNDED_RETAGLE.getStyle();
         } else {
-            shape = ShapeStyle.LINE.getStyle();
+            result = ShapeStyle.LINE.getStyle();
         }
-        return shape;
+        return result;
     }
 }
