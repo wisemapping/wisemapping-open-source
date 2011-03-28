@@ -39,6 +39,7 @@ import java.io.IOException;
 public class ExportController extends BaseMultiActionController {
     private static final String IMG_EXPORT_FORMAT = "IMG_EXPORT_FORMAT";
     private static final String MAP_ID_PARAMETER = "mapId";
+    private static final String MAP_SVG_PARAMETER = "mapSvg";
     private static final String EXPORT_FORMAT_PARAMETER = "exportFormat";
     private static final String IMG_SIZE_PARAMETER = "imgSize";
 
@@ -57,6 +58,8 @@ public class ExportController extends BaseMultiActionController {
             try {
 
                 int mindmapId = Integer.parseInt(mapIdStr);
+
+                final String mapSvg = request.getParameter(MAP_SVG_PARAMETER);
 
                 String formatStr = request.getParameter(EXPORT_FORMAT_PARAMETER);
                 if (IMG_EXPORT_FORMAT.endsWith(formatStr)) {
@@ -93,7 +96,7 @@ public class ExportController extends BaseMultiActionController {
 
                 // Write content ...
                 final ServletOutputStream outputStream = response.getOutputStream();
-                mindMap.export(properties, outputStream);
+                mindMap.export(properties, outputStream, mapSvg);
 
 
             } catch (Throwable e) {
@@ -136,6 +139,8 @@ public class ExportController extends BaseMultiActionController {
             logger.info("Export Controller: generating image WiseMap action");
 
             final String mapIdStr = request.getParameter(MAP_ID_PARAMETER);
+            final String mapSvg = request.getParameter(MAP_SVG_PARAMETER);
+
             int mindmapId = Integer.parseInt(mapIdStr);
             final MindmapService service = getMindmapService();
             final MindMap mindMap = service.getMindmapById(mindmapId);
@@ -155,7 +160,7 @@ public class ExportController extends BaseMultiActionController {
 
             // Write content ...
             final ServletOutputStream outputStream = response.getOutputStream();
-            mindMap.export(imageProperties, outputStream);
+            mindMap.export(imageProperties, outputStream, mapSvg);
 
 
         } catch (Throwable e) {

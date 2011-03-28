@@ -3,11 +3,7 @@ package com.wisemapping.test.export;
 import com.wisemapping.exporter.ExportException;
 import com.wisemapping.exporter.ExportFormat;
 import com.wisemapping.exporter.ExportProperties;
-import com.wisemapping.exporter.freemind.FreemindExporter;
-import com.wisemapping.importer.ImportFormat;
-import com.wisemapping.importer.Importer;
 import com.wisemapping.importer.ImporterException;
-import com.wisemapping.importer.ImporterFactory;
 
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.MindMapNative;
@@ -23,15 +19,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.TransformerException;
 import java.io.*;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
 
 @Test
 public class ExportTest {
     private static final String DATA_DIR_PATH = "src/test/data/svg/";
 
     @Test(dataProvider = "Data-Provider-Function")
-    public void exportSvgTest(@NotNull final File svgFile, @NotNull final File pngFile) throws ImporterException, IOException, ExportException {
+    public void exportSvgTest(@NotNull final File svgFile, @NotNull final File pngFile) throws ImporterException, IOException, ExportException, TransformerException, XMLStreamException, JAXBException, SAXException, TranscoderException, ParserConfigurationException {
 
         BufferedReader reader = null;
         StringBuffer buffer = new StringBuffer();
@@ -57,27 +51,44 @@ public class ExportTest {
         nativeBrowser.setSvgXml(svgXml);
         mindMap.setNativeBrowser(nativeBrowser);
 
-        //Export to PNG
-            OutputStream outputStream = new FileOutputStream(pngFile, false);
-            try {
-                mindMap.export(properties, outputStream);
-                outputStream.close();
-                System.out.println("finished");
-            } catch (JAXBException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (TranscoderException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (TransformerException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (ParserConfigurationException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (SAXException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (XMLStreamException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        if(pngFile.exists()){
+            // Export mile content ...
+            final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            mindMap.export(properties, bos, svgXml);
+
+            // Load rec file co
+            final FileInputStream fis = new FileInputStream(pngFile);
+            final InputStreamReader isr = new InputStreamReader(fis);
+            final BufferedReader br = new BufferedReader(isr);
+
+            final StringBuilder recContent = new StringBuilder();
+            String line = br.readLine();
+            while (line != null) {
+                recContent.append(line);
+                line = br.readLine();
             }
 
+            fis.close();
 
+            //Since line separator chenges between \r and \n, lets read line by line
+            final String exportContent = new String(bos.toByteArray());
+            BufferedReader expBuf = new BufferedReader(new StringReader(exportContent));
+            final StringBuilder expContent = new StringBuilder();
+            String expLine = expBuf.readLine();
+            while (expLine != null) {
+                expContent.append(expLine);
+                expLine = expBuf.readLine();
+
+            }
+
+            Assert.assertEquals(expContent.toString().trim(), expContent.toString().trim());
+
+        }
+        else{
+            OutputStream outputStream = new FileOutputStream(pngFile, false);
+            mindMap.export(properties, outputStream, svgXml);
+            outputStream.close();
+        }
     }
 
     //This function will provide the parameter data

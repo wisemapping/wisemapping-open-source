@@ -38,6 +38,7 @@
 <form method="post" id="printForm" name="printForm" action='<c:url value="export.htm"/>' style="height:100%;" target="${mindmap.title}">
     <input type="hidden" name="action" value="print" >
     <input type="hidden" name="mapId" value="${mindmap.id}" >
+    <input type="hidden" name="mapSvg" value="">
 </form>
 
 <div id="waitDialog" style="display:none">
@@ -76,6 +77,7 @@
     var isTryMode = ${editorTryMode};
 
     function printMap() {
+        document.printForm.mapSvg.value = $("workspaceContainer").innerHTML;
         document.printForm.submit();
     }
 </script>
