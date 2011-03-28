@@ -7,6 +7,7 @@
     <form method="post" id="exportForm" name="exportForm" action="<c:url value="export.htm"/>" style="height:100%;">
         <input type="hidden" name="action" value="export"/>
         <input type="hidden" name="mapId" value="${mindmap.id}"/>
+        <input type="hidden" name="mapSvg" value=""/>
         <table>
             <tbody>
                 <tr>
@@ -87,5 +88,7 @@
         MOOdalBox.close();
 
     });
+
+    document.exportForm.mapSvg.value = $("workspaceContainer").innerHTML;
 
 </script>

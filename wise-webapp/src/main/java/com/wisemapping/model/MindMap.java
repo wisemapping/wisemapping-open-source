@@ -215,10 +215,13 @@ public class MindMap {
         return tags;
     }
 
-    public char[] generateSvgXml()
+    public char[] generateSvgXml(String mapSvg)
             throws IOException, JAXBException {
+        String svgText = mapSvg;
         final MindMapNative mindmapNativeBrowser = this.getNativeBrowser();
-        String svgText = mindmapNativeBrowser.getUnzippedSvgXml();
+        if(svgText==null){
+            svgText = mindmapNativeBrowser.getUnzippedSvgXml();
+        }
 
         if (svgText == null || svgText.length() == 0) {
             // The map must be saved using IE. Convert VML to SVG.
@@ -265,8 +268,8 @@ public class MindMap {
         this.creationTime = creationTime;
     }
 
-    public void export(final ExportProperties properties, OutputStream output) throws JAXBException, TranscoderException, TransformerException, IOException, ParserConfigurationException, ExportException, SAXException, XMLStreamException {
-        SvgExporter.export(properties, this, output);
+    public void export(final ExportProperties properties, OutputStream output, String mapSvg) throws JAXBException, TranscoderException, TransformerException, IOException, ParserConfigurationException, ExportException, SAXException, XMLStreamException {
+        SvgExporter.export(properties, this, output, mapSvg);
     }
 
     public void setOwner(User owner) {

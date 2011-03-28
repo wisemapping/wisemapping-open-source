@@ -52,7 +52,7 @@ public class SvgExporter {
     private SvgExporter() {
     }
 
-    public static void export(ExportProperties properties, MindMap map, OutputStream output) throws TranscoderException, IOException, ParserConfigurationException, SAXException, XMLStreamException, TransformerException, JAXBException, ExportException {
+    public static void export(ExportProperties properties, MindMap map, OutputStream output, String mapSvg) throws TranscoderException, IOException, ParserConfigurationException, SAXException, XMLStreamException, TransformerException, JAXBException, ExportException {
         final ExportFormat format = properties.getFormat();
 
         final String imgPath = properties.getBaseImgPath();
@@ -66,7 +66,7 @@ public class SvgExporter {
                 transcoder.addTranscodingHint(ImageTranscoder.KEY_WIDTH, size.getWidth());
 
                 // Create the transcoder input.
-                char[] xml = map.generateSvgXml();
+                char[] xml = map.generateSvgXml(mapSvg);
                 xml = normalizeSvg(xml, imgPath);
                 final CharArrayReader is = new CharArrayReader(xml);
                 TranscoderInput input = new TranscoderInput(is);
@@ -87,7 +87,7 @@ public class SvgExporter {
                 transcoder.addTranscodingHint(ImageTranscoder.KEY_WIDTH, size.getWidth());
 
                 // Create the transcoder input.
-                final char[] xml = map.generateSvgXml();
+                final char[] xml = map.generateSvgXml(mapSvg);
                 char[] svgXml = normalizeSvg(xml, imgPath);
                 final CharArrayReader is = new CharArrayReader(svgXml);
                 TranscoderInput input = new TranscoderInput(is);
@@ -102,7 +102,7 @@ public class SvgExporter {
                 final Transcoder transcoder = new PDFTranscoder();
 
                 // Create the transcoder input.
-                final char[] xml = map.generateSvgXml();
+                final char[] xml = map.generateSvgXml(mapSvg);
                 char[] svgXml = normalizeSvg(xml, imgPath);
                 final CharArrayReader is = new CharArrayReader(svgXml);
                 TranscoderInput input = new TranscoderInput(is);
@@ -113,7 +113,7 @@ public class SvgExporter {
                 break;
             }
             case SVG: {
-                final char[] xml = map.generateSvgXml();
+                final char[] xml = map.generateSvgXml(mapSvg);
                 char[] svgXml = normalizeSvg(xml, imgPath);
                 output.write(new String(svgXml).getBytes("UTF-8"));
                 break;

@@ -3,11 +3,7 @@ package com.wisemapping.test.export;
 import com.wisemapping.exporter.ExportException;
 import com.wisemapping.exporter.ExportFormat;
 import com.wisemapping.exporter.ExportProperties;
-import com.wisemapping.exporter.freemind.FreemindExporter;
-import com.wisemapping.importer.ImportFormat;
-import com.wisemapping.importer.Importer;
 import com.wisemapping.importer.ImporterException;
-import com.wisemapping.importer.ImporterFactory;
 
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.MindMapNative;
@@ -23,8 +19,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.TransformerException;
 import java.io.*;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
 
 @Test
 public class ExportTest {
@@ -60,7 +54,7 @@ public class ExportTest {
         if(pngFile.exists()){
             // Export mile content ...
             final ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            mindMap.export(properties, bos);
+            mindMap.export(properties, bos, svgXml);
 
             // Load rec file co
             final FileInputStream fis = new FileInputStream(pngFile);
@@ -92,7 +86,7 @@ public class ExportTest {
         }
         else{
             OutputStream outputStream = new FileOutputStream(pngFile, false);
-            mindMap.export(properties, outputStream);
+            mindMap.export(properties, outputStream, svgXml);
             outputStream.close();
         }
     }

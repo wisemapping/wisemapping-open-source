@@ -227,10 +227,10 @@
                                         <spring:message code="PUBLISH"/>
                                     </a>
                                 </c:if>
-                                <a href="export.htm?mapId=${mindmap.id}"
+                                <%--<a href="export.htm?mapId=${mindmap.id}"
                                    rel="moodalbox 600px 400px" title="<spring:message code="EXPORT_DETAILS"/>">
                                     <spring:message code="EXPORT"/>
-                                </a>
+                                </a>--%>
                                 <a href="javascript:printMap(${mindmap.id});">
                                     <spring:message code="PRINT"/>
                                 </a>
