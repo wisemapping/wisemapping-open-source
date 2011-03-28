@@ -103,7 +103,7 @@
 <div id="topicShapePanel" class="toolbarPanel">
     <!--<div id="automatic" class="toolbarPanelLink">Automatic</div>-->
     <div id="rectagle" class="toolbarPanelLink"><img src="../images/shape-rectangle.png" alt="Rectangle" width="40" height="25"></div>
-    <div id="rounded rectagle" class="toolbarPanelLink"><img src="../images/shape-rectangle-rounded.png" alt="Rounded Rectangle" width="40" height="25"></div>
+    <div id="rounded_rectagle" class="toolbarPanelLink"><img src="../images/shape-rectangle-rounded.png" alt="Rounded Rectangle" width="40" height="25"></div>
     <div id="line" class="toolbarPanelLink"><img src="../images/shape-line.png" alt="Line" width="40" height="7"></div>
     <div id="elipse" class="toolbarPanelLink"><img src="../images/shape-elipse.png" alt="Elipse" width="40" height="25"></div>
 </div>
