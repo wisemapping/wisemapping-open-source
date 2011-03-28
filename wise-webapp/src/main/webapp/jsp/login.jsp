@@ -27,8 +27,8 @@
         <form action="<c:url value='j_acegi_security_check'/>" method="POST">
             <table>
                 <tbody>
+                    <c:if test="${not empty param.login_error}">
                     <tr>
-                        <c:if test="${not empty param.login_error}">
                         <td>
                             &nbsp;
                         </td>

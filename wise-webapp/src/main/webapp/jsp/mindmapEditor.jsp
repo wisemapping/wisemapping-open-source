@@ -15,11 +15,11 @@
     <![endif]-->
     
     <!-- Internet Explorer 8 Hack -->
-    <meta http-equiv="Content-type" value="text/html;charset=UTF-8">
+    <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
     <title><spring:message code="SITE.TITLE"/> - ${mindmap.title} </title>
-    <link rel="stylesheet" type="text/css" href="../css/editor.css">
-    <link rel="stylesheet" type="text/css" href="../css/bubble.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/thirdparty.css">
+    <link rel="stylesheet" type="text/css" href="../css/editor.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/bubble.css"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/thirdparty.css"/>
 
     <script type="text/javascript" src="../dwr/engine.js"></script>
     <script type="text/javascript" src="../dwr/interface/LoggerService.js"></script>
