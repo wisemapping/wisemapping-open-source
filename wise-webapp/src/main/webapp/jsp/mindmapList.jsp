@@ -10,12 +10,12 @@
     <title>
         <spring:message code="SITE.TITLE"/>
     </title>
-    <meta http-equiv="Content-type" value="text/html; charset=utf-8">
-    <link rel="stylesheet" type="text/css" href="../css/mymaps.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/commonLibs.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/thirdparty.css">
-    <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../css/mymaps.css"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/commonLibs.css"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/thirdparty.css"/>
+    <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/wiseLibrary.js"></script>
 
     <script type="text/javascript">

@@ -35,10 +35,9 @@
     <jsp:param name="onlyActionHeader" value="true"/>
 </jsp:include>
 
-<form method="post" id="printForm" name="printForm" action='<c:url value="export.htm"/>' style="height:100%;"
-      target="${mindmap.title}">
-    <input type="hidden" name="action" value="print"/>
-    <input type="hidden" name="mapId" value="${mindmap.id}"/>
+<form method="post" id="printForm" name="printForm" action='<c:url value="export.htm"/>' style="height:100%;" target="${mindmap.title}">
+    <input type="hidden" name="action" value="print" >
+    <input type="hidden" name="mapId" value="${mindmap.id}" >
 </form>
 
 <div id="waitDialog" style="display:none">
@@ -101,14 +100,10 @@
 
 <div id="topicShapePanel" class="toolbarPanel">
     <!--<div id="automatic" class="toolbarPanelLink">Automatic</div>-->
-    <div id="rectagle" class="toolbarPanelLink"><img src="../images/shape-rectangle.png" alt="Rectangle" width="40px"
-                                                     height="25px"></div>
-    <div id="rounded rectagle" class="toolbarPanelLink"><img src="../images/shape-rectangle-rounded.png"
-                                                             alt="Rounded Rectangle" width="40px" height="25px"></div>
-    <div id="line" class="toolbarPanelLink"><img src="../images/shape-line.png" alt="Line" width="40px" height="7px">
-    </div>
-    <div id="elipse" class="toolbarPanelLink"><img src="../images/shape-elipse.png" alt="Elipse" width="40px"
-                                                   height="25px"></div>
+    <div id="rectagle" class="toolbarPanelLink"><img src="../images/shape-rectangle.png" alt="Rectangle" width="40" height="25"></div>
+    <div id="rounded rectagle" class="toolbarPanelLink"><img src="../images/shape-rectangle-rounded.png" alt="Rounded Rectangle" width="40" height="25"></div>
+    <div id="line" class="toolbarPanelLink"><img src="../images/shape-line.png" alt="Line" width="40" height="7"></div>
+    <div id="elipse" class="toolbarPanelLink"><img src="../images/shape-elipse.png" alt="Elipse" width="40" height="25"></div>
 </div>
 
 <div id="actionsContainer">
@@ -236,7 +231,7 @@
                         </a>
                         <c:choose>
                             <c:when test="${mindmap.owner==user}">
-                                <a id="shareAnchor" href="<c:out value="${shareMap}"/>&mapId=${mindmap.id}"
+                                <a id="shareAnchor" href="<c:out value="${shareMap}"/>&amp;mapId=${mindmap.id}"
                                    rel="moodalbox 780px 530px wizard" title="<spring:message code="SHARE_DETAILS"/>">
                                     <div id="shareIt" class="button" title="<spring:message code="COLLABORATION"/>">
                                         <div class="toolbarLabel"><p><spring:message code="SHARE"/></p></div>
@@ -251,7 +246,7 @@
                                 </a>
                             </c:when>
                         </c:choose>
-                        <a id="historyAnchor" href="history.htm?action=list&mapId=${mindmap.id}"
+                        <a id="historyAnchor" href="history.htm?action=list&amp;mapId=${mindmap.id}"
                            rel="moodalbox 600px 400px wizard" title="<spring:message code="HISTORY_MSG"/>">
                             <div id="history" class="button" title="<spring:message code="HISTORY_MSG"/>">
                                 <div class="toolbarLabel"><p><spring:message code="HISTORY"/></p></div>
