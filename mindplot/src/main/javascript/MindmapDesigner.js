@@ -91,6 +91,7 @@ mindplot.MindmapDesigner.prototype._registerEvents = function()
         // Create nodes on double click...
         screenManager.addEventListener('click', function(event)
         {
+            var t = mindmapDesigner.getEditor()._isVisible();
             mindmapDesigner.getEditor().lostFocus();
             // @todo: Puaj hack...
             mindmapDesigner._cleanScreen();

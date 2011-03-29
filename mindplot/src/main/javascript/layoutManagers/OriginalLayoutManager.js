@@ -94,11 +94,11 @@ mindplot.layoutManagers.OriginalLayoutManager = mindplot.layoutManagers.BaseLayo
             dragger.add(topic);
         }
 
-        /*// Register editor events ...
-        if (!this._viewMode)
+        // Register editor events ...
+        if (!this.getDesigner()._viewMode)
         {
-            this._editor.listenEventOnNode(topic, 'dblclick', true);
-        }*/
+            this.getDesigner()._editor.listenEventOnNode(topic, 'dblclick', true);
+        }
 
     },
     _createMainTopicBoard:function(node){

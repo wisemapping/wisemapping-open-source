@@ -68,6 +68,7 @@ mindplot.TextEditor = function(screenManager,actionRunner)
     };
     //Register onLostFocus/onBlur event
     $(this.inputText).addEvent('blur', this.lostFocusEvent.bind(this));
+    $(this.inputText).addEvent('click', this.clickEvent.bindWithEvent(this));
 
 
     var elem = this;
@@ -98,6 +99,7 @@ mindplot.TextEditor.prototype.lostFocusEvent = function ()
 {
     this.fx.options.duration = 10;
     this.fx.start(1, 0);
+    designer.getWorkSpace().enableWorkspaceEvents(true);
     //myAnim.animate();
 };
 
@@ -384,5 +386,19 @@ mindplot.TextEditor.prototype.lostFocus = function(bothBrowsers)
         var fireOnThis = $('inputText');
         fireOnThis.fireEvent('blur');
     }
+};
+
+mindplot.TextEditor.prototype.clickEvent = function(event){
+    designer.getWorkSpace().enableWorkspaceEvents(false);
+    if(this._isVisible()){
+        if (event.stopPropagation)
+        {
+            event.stopPropagation(true);
+        } else
+        {
+            event.cancelBubble = true;
+        }
+    }
+    event.preventDefault();
 };
 
