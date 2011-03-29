@@ -11,19 +11,10 @@ WiseMapping is optimized for use with:
 <ul>
     <li>Internet Explorer 7.0 or greater</li>
     <li>Firefox 3.0 or greater</li>
-    <li>Opera 9.21 or greater</li>
+    <li>Opera 11 or greater</li>
+    <li>Safari 5 or greater</li>
 </ul>
 
-<p style="font-weight:bold;">
-    We suggest Firefox for an optimal experience.
-</p>
-
-<p>
-    <a href="http://www.mozilla.com/en/firefox/" target="_blank"><img src="../images/firefox.gif"
-                                                                      alt="Get Firefox!" align="absmiddle"
-                                                                      border="0" height="48" width="143"></a>
-</p>
-</br>
 <p>
     We are working to support more browser in the future. Stay tuned !
 

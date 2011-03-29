@@ -39,24 +39,21 @@ public class UserAgent implements Serializable {
         UserAgent opera = UserAgent.create("Opera/9.21 (Windows NT 5.1; U; en)");
 
 
+        UserAgent firefox = UserAgent.create("Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20050302 Firefox/1.9.6");
+        assert firefox.isBrowserSupported();
 
-          UserAgent firefox = UserAgent.create("Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20050302 Firefox/1.9.6");
-         assert firefox.isBrowserSupported();
 
+        firefox = UserAgent.create("Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.8.1.7) Gecko/20070914 Firefox/2.0.0.7 Creative ZENcast v1.02.08 FirePHP/0.0.5.13");
+        assert firefox.isBrowserSupported();
 
-         firefox = UserAgent.create("Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.8.1.7) Gecko/20070914 Firefox/2.0.0.7 Creative ZENcast v1.02.08 FirePHP/0.0.5.13");
-         assert firefox.isBrowserSupported();
-
-         firefox = UserAgent.create("Mozilla/5.0 (X11; U; Linux i686; es-ES; rv:1.8.0.12) Gecko/20070731 Ubuntu/dapper-security Firefox/1.5.0.12");
-         assert firefox.isBrowserSupported();
+        firefox = UserAgent.create("Mozilla/5.0 (X11; U; Linux i686; es-ES; rv:1.8.0.12) Gecko/20070731 Ubuntu/dapper-security Firefox/1.5.0.12");
+        assert firefox.isBrowserSupported();
 
         firefox = UserAgent.create("'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.7) Gecko/20070914 firefox 2.0'");
         assert firefox.isBrowserSupported();
 
         firefox = UserAgent.create("Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.8.1.12) Gecko/20080129 Iceweasel/2.0.0.12 (Debian-2.0.0.12-0etch1)");
         assert firefox.isBrowserSupported();
-
-
 
 
     }
@@ -132,22 +129,19 @@ public class UserAgent implements Serializable {
 
                 // Explorer Parse ...
                 this.product = Product.EXPLORER;
-                this.hasGCFInstalled = productDetails.indexOf("chromeframe")!=-1;
+                this.hasGCFInstalled = productDetails.indexOf("chromeframe") != -1;
             } else if (userAgentHeader.indexOf("iCab") != -1 || userAgentHeader.indexOf("Safari") != -1) {
                 // Safari:
                 //Formats:  Mozilla/5.0 (Windows; U; Windows NT 5.1; en) AppleWebKit/522.13.1 (KHTML, like Gecko) Version/3.0.2 Safari/522.13.1
                 //Chrome:
                 //Formats: "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_4; en-US) AppleWebKit/534.7 (KHTML, like Gecko) Chrome/7.0.517.44 Safari/534.7"
                 String versionStr = "";
-                if(userAgentHeader.indexOf("Chrome")!=-1)
-                {
+                if (userAgentHeader.indexOf("Chrome") != -1) {
                     this.product = Product.CHROME;
-                    versionStr = userAgentHeader.substring(userAgentHeader.indexOf("Chrome")+7,userAgentHeader.lastIndexOf(" "));
-                }
-                else
-                {
+                    versionStr = userAgentHeader.substring(userAgentHeader.indexOf("Chrome") + 7, userAgentHeader.lastIndexOf(" "));
+                } else {
                     this.product = Product.SAFARI;
-                    versionStr = userAgentHeader.substring(userAgentHeader.indexOf("Version")+8,userAgentHeader.lastIndexOf(" "));
+                    versionStr = userAgentHeader.substring(userAgentHeader.indexOf("Version") + 8, userAgentHeader.lastIndexOf(" "));
                 }
 
                 parseVersion(versionStr);
@@ -169,7 +163,7 @@ public class UserAgent implements Serializable {
 
                 // Remove gecko string
                 // Debian Firefox is remamed to  iceweasel.
-                productAddition = productAddition.replace("Iceweasel","firefox");
+                productAddition = productAddition.replace("Iceweasel", "firefox");
 
 
                 productAddition = productAddition.substring(productAddition.indexOf(' ') + 1);
@@ -190,16 +184,14 @@ public class UserAgent implements Serializable {
                 }
 
                 // Now, parse product version ...
-                if(prodDesc!=null)
-                {
+                if (prodDesc != null) {
                     int sI = productAddition.indexOf(prodDesc) + prodDesc.length() + 1;
-                    int eI = productAddition.indexOf(' ',sI);
-                    if(eI==-1)
-                    {
+                    int eI = productAddition.indexOf(' ', sI);
+                    if (eI == -1) {
                         eI = productAddition.length();
                     }
 
-                    final String productVersion = productAddition.substring(sI,eI);
+                    final String productVersion = productAddition.substring(sI, eI);
                     parseVersion(productVersion);
 
                 }
@@ -331,15 +323,15 @@ public class UserAgent implements Serializable {
     public boolean isBrowserSupported() {
         // Is it a supported browser ?.
         final UserAgent.Product product = this.getProduct();
-        boolean result = product == UserAgent.Product.FIREFOX && ((this.isVersionGreatedOrEqualThan(1, 5) && this.getOs() != UserAgent.OS.MAC) || (this.isVersionGreatedOrEqualThan(3, 0) && this.getOs() == UserAgent.OS.MAC));
+        boolean result = product == UserAgent.Product.FIREFOX && this.isVersionGreatedOrEqualThan(3, 0);
         result = result || product == UserAgent.Product.EXPLORER && this.isVersionGreatedOrEqualThan(7, 0) && this.getOs() == UserAgent.OS.WINDOWS;
-        result = result || product == UserAgent.Product.OPERA && this.isVersionGreatedOrEqualThan(9, 2);
-        result = result || product == UserAgent.Product.CHROME && this.isVersionGreatedOrEqualThan(7, 0);
-        result = result || product == UserAgent.Product.SAFARI && this.isVersionGreatedOrEqualThan(3, 0);
+        result = result || product == UserAgent.Product.OPERA && this.isVersionGreatedOrEqualThan(9, 0);
+        result = result || product == UserAgent.Product.CHROME && this.isVersionGreatedOrEqualThan(8, 0);
+        result = result || product == UserAgent.Product.SAFARI && this.isVersionGreatedOrEqualThan(5, 0);
         return result;
     }
 
-    public boolean needsGCF(){
+    public boolean needsGCF() {
         final UserAgent.Product product = this.getProduct();
         return product == UserAgent.Product.EXPLORER && this.isVersionLessThan(9) && this.getOs() == UserAgent.OS.WINDOWS && !this.hasGCFInstalled;
     }

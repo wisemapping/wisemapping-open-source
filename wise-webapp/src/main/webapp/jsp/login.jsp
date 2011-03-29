@@ -15,7 +15,7 @@
         <ul>
             <li>Links Between Nodes</li>
             <li>FreeMind 0.9 Update</li>
-            <li>Pure HTML 5.0 Support</li>
+            <li>Improved HTML 5.0 Support</li>
             <li>Firefox 4.0 is officially supported</li>
         </ul>
     </div>
