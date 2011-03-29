@@ -31,7 +31,8 @@ html {
     opacity: .99;
     padding: 15px;
     width: 100%;
-    border: 1px solid darkgray;
+    border: 1px solid;
+    border-color:#a9a9a9;
 
 }
 
