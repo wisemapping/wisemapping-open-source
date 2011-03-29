@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML>
 
 <%@ page import="com.wisemapping.view.MindMapBean" %>
 <%@ page import="java.util.List" %>
@@ -103,7 +103,7 @@
                                                     },
                                                     'onConfirm':function(){
                                                         $(document.toolbarForm.mindmapIds).value=$('selectedMapIds').value;
-                                                        $(document.toolbarForm).action='${deleteSelectedMapUrl}';
+                                                        $(document.toolbarForm).action='<c:out value="${deleteSelectedMapUrl}" escapeXml="true"/>';
                                                         $(document.toolbarForm).submit();
                                                     }
                                                 });">
@@ -131,19 +131,19 @@
     <div id="docTable">
         <table>
             <colgroup>
-                <col width="3%"/>
-                <col width="3%"/>
-                <col width="15%"/>
-                <col width="30%"/>
-                <col width="14%"/>
-                <col width="10%"/>
-                <col width="20%"/>
-                <col width="5%"/>
+                <col style="width:3%;"/>
+                <col style="width:3%;"/>
+                <col style="width:15%;"/>
+                <col style="width:30%;"/>
+                <col style="width:14%;"/>
+                <col style="width:10%;"/>
+                <col style="width:20%;"/>
+                <col style="width:5%;"/>
             </colgroup>
             <thead>
             <tr>
                 <th style="text-align:center">
-                    <input id="checkAll" type="checkbox" onchange="selectAllMaps(this);">
+                    <label for="checkAll"></label><input id="checkAll" type="checkbox" onchange="selectAllMaps(this);">
                 </th>
                 <th>
                     <spring:message code="FILE"/>
@@ -172,29 +172,21 @@
             <c:forEach items="${wisemapsList}" var="mindmap">
                 <tr>
                     <td>
-                        <div align="center"><input type="checkbox" name="chk" id="chk${mindmap.id}"
-                                                   onclick="addToSelectedMapList(this);"></div>
+                        <div style="text-align:center;"><input type="checkbox" name="chk" id="chk${mindmap.id}" onclick="addToSelectedMapList(this);"></div>
                     </td>
                     <td>
                         <div class="leftMenu">
-                            <img src="../images/icon_list.png" border="0" class="button"
-                                 style="display:block;">
-
+                            <img src="../images/icon_list.png" class="button" style="display:block;border:0;">
                             <div class="subMenu2">
-                                <a href="javascript:openMap('${mindmap.id}')"
-                                   title="<spring:message code="OPEN_MSG"/>">
+                                <a href="javascript:openMap('${mindmap.id}')" title="<spring:message code="OPEN_MSG"/>">
                                     <spring:message code="OPEN"/>
                                 </a>
                                 <c:if test="${mindmap.owner==requestScope.user}">
-                                    <a href="renameMap.htm?mapId=${mindmap.id}"
-                                       rel="moodalbox 400px 180px wizard"
-                                       title="<spring:message code="RENAME_DETAILS"/>">
+                                    <a href="renameMap.htm?mapId=${mindmap.id}" rel="moodalbox 400px 180px wizard" title="<spring:message code="RENAME_DETAILS"/>">
                                         <spring:message code="RENAME"/>
                                     </a>
                                 </c:if>
-                                <a href="history.htm?action=list&goToMindmapList&mapId=${mindmap.id}"
-                                   rel="moodalbox 600px 400px wizard"
-                                   title="<spring:message code="HISTORY_INFO"/>">
+                                <a href="history.htm?action=list&amp;goToMindmapList&amp;mapId=${mindmap.id}" rel="moodalbox 600px 400px wizard" title="<spring:message code="HISTORY_INFO"/>">
                                     <spring:message code="HISTORY"/>
                                 </a>
 
@@ -204,26 +196,20 @@
                                                                      title:'<spring:message code="DELETE_MAP"/>'
                                                    },
                                                     'onConfirm':function(){
-                                                        var form = new Element('form').setProperties({action: '${deleteMapUrl}&mapId=${mindmap.id}', method:'post'}).injectInside(document.body);
+                                                        var form = new Element('form').setProperties({action: '<c:out value="${deleteMapUrl}" escapeXml="true"/>&amp;mapId=${mindmap.id}', method:'post'}).injectInside(document.body);
                                                         form.submit();
                                                     }
                                                 });">
                                     <spring:message code="DELETE"/>
                                 </div>
-                                <a href="tags.htm?mapId=${mindmap.id}"
-                                   rel="moodalbox 400px 200px wizard"
-                                   title="<spring:message code="TAGS_DETAILS"/>">
+                                <a href="tags.htm?mapId=${mindmap.id}" rel="moodalbox 400px 200px wizard" title="<spring:message code="TAGS_DETAILS"/>">
                                     <spring:message code="TAGS"/>
                                 </a>
                                 <c:if test="${mindmap.owner==requestScope.user}">
-                                    <a href="${shareMap}&mapId=${mindmap.id}"
-                                       rel="moodalbox 780px 530px wizard"
-                                       title="<spring:message code="SHARE_DETAILS"/>">
+                                    <a href="<c:out value="${shareMap}" escapeXml="true"/>&amp;mapId=${mindmap.id}" rel="moodalbox 780px 530px wizard" title="<spring:message code="SHARE_DETAILS"/>">
                                         <spring:message code="COLLABORATION"/>
                                     </a>
-                                    <a class="subMenu2Sep" href="publish.htm?mapId=${mindmap.id}"
-                                       rel="moodalbox 600px 400px wizard"
-                                       title="<spring:message code="PUBLISH_MSG"/>">
+                                    <a class="subMenu2Sep" href="publish.htm?mapId=${mindmap.id}" rel="moodalbox 600px 400px wizard" title="<spring:message code="PUBLISH_MSG"/>">
                                         <spring:message code="PUBLISH"/>
                                     </a>
                                 </c:if>
@@ -260,16 +246,14 @@
                                      alt="<spring:message code="PRIVATE"/>"/>
                             </c:when>
                             <c:otherwise>
-                                <img src="../images/world2.png "
-                                     title="<spring:message code="PUBLIC"/>: <spring:message code="ALL_VIEW_PUBLIC"/>"
-                                     alt="title="
+                                <img src="../images/world2.png" title="<spring:message code="PUBLIC"/>: <spring:message code="ALL_VIEW_PUBLIC"/>" alt="World"
                                 <spring:message code="PUBLIC"/>
                             </c:otherwise>
                         </c:choose>
                     </td>
                     <td>${mindmap.creationUser}</td>
                     <td>${mindmap.lastEditDate} by ${mindmap.lastEditor}</td>
-                    <td><a href="${mapDetail}&mapId=${mindmap.id}">
+                    <td><a href="<c:out value="${mapDetail}" escapeXml="true"/>&amp;mapId=${mindmap.id}">
                         <spring:message code="DETAIL"/>
                     </a>
                     </td>
@@ -282,24 +266,20 @@
 </div>
 
 <div id="ds1" class="submenu" style="display:none;">
-    <a href="${deleteSelectedMapUrl}&mindmapIds=" rel="moodalbox 300px 120px">Delete</a>
+    <a href="<c:out value="${deleteSelectedMapUrl}" escapeXml="true"/>&amp;mindmapIds=" rel="moodalbox 300px 120px">Delete</a>
     <a href="#">Tag</a>
     <a href="#">Publish</a>
 </div>
 
 <div id="ds2" class="submenu" style="position:absolute; display:none;">
-    <a href="${shareMap}&mapId=" rel="moodalbox 780px 530px"
-       title="Share WiseMap">Share</a>
-    <a href="publish.htm?mapId=" rel="moodalbox 600px 400px wizard"
-       title="<spring:message code="PUBLISH_DETAILS"/>">
+    <a href="<c:out value="${shareMap}" escapeXml="true"/>&amp;mapId=" rel="moodalbox 780px 530px" title="Share WiseMap">Share</a>
+    <a href="publish.htm?mapId=" rel="moodalbox 600px 400px wizard" title="<spring:message code="PUBLISH_DETAILS"/>">
         <spring:message code="PUBLISH"/>
     </a>
-    <a href="${deleteMapUrl}&mapId=" rel="moodalbox 300px 120px"
-       title="Delete Confirmation">
+    <a href="<c:out value="${deleteMapUrl}" escapeXml="true"/>&amp;mapId=" rel="moodalbox 300px 120px" title="Delete Confirmation">
         Delete
     </a>
-    <a href="export.htm?mapId=" rel="moodalbox 750px 400px"
-       title="<spring:message code="EXPORT_DETAILS"/>">
+    <a href="export.htm?mapId=" rel="moodalbox 750px 400px" title="<spring:message code="EXPORT_DETAILS"/>">
         <spring:message code="EXPORT"/>
     </a>
 
