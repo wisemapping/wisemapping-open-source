@@ -188,9 +188,7 @@ h4 {
     margin-top: 8px;
     height: 80px;
     width: 134px;
-    background-image: url("../images/logo-small.png");
-    behavior: url(../css/iepngfix.htc);
-    background-repeat: no-repeat;
+    background: url("../images/logo-small.png") no-repeat;
     position: absolute;
     top: 0;
     left: 0;
@@ -349,7 +347,6 @@ div#printLogo {
     float: right;
     margin: 1px;
     background: url(../images/logo-vsmall.png) no-repeat right top;
-    behavior: url(../css/iepngfix.htc);
 }
 
 .btn-primary {

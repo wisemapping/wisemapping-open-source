@@ -218,14 +218,12 @@
     background: transparent url(../images/bubbleTip_bottom_pico_blue.png) top left;
     width: 58px;
     height: 62px;
-    behavior: url(../css/iepngfix.htc);
 }
 
 .bubbleTopHintBlue {
     background: transparent url(../images/bubbleTip_top_pico_blue.png) top left;
     width: 58px;
     height: 61px;
-    behavior: url(../css/iepngfix.htc);
 }
 
 .btn-primary {

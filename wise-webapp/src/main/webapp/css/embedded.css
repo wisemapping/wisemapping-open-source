@@ -63,7 +63,7 @@ div#embFooter {
     height: 35px;
     width: 100%;
     bottom: 0;
-    left: 0px;
+    left: 0;
     border-top: 1px solid black;
     background: #E5E5E5;
 }
@@ -73,7 +73,6 @@ div#logo {
     width: 80px;
     position: absolute;
     background: url( ../images/logo-vvsmall.png ) no-repeat right top;
-    behavior: url( ../css/iepngfix.htc );
     right: 10px;
     top: -10px;
 }
@@ -96,14 +95,12 @@ div#logo {
 
 #zoomIn {
     background: url( ../images/zoom_in.png ) no-repeat left top;;
-    behavior: url( ../css/iepngfix.htc );
     margin-top: 10px;
     margin-left: 10px;
 }
 
 #zoomOut {
     background: url( ../images/zoom_out.png ) no-repeat left top;;
-    behavior: url( ../css/iepngfix.htc );
     margin-top: 10px
 }
 

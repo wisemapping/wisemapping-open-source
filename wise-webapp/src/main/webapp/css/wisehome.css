@@ -152,7 +152,6 @@
     background: url( ../images/search3.png ) no-repeat left;
     padding-left: 35px;
     padding-bottom: 10px;
-    behavior: url( ../css/iepngfix.htc );
 }
 
 #searchTitle {
@@ -189,7 +188,6 @@
     width: 6px;
     height: 25px;
     background: url( ../images/btnStart.png ) no-repeat left top;
-    behavior: url( ../css/iepngfix.htc );
     float: left;
 }
 
@@ -197,8 +195,7 @@
     background: url( ../images/btnBody.png );
     height: 18px;
     float: left;
-    padding: 0px 0px;
-    padding-top: 5px;
+    padding: 5px 0 0;
     text-align: center;
     color: black;
 }
@@ -207,7 +204,6 @@
     width: 7px;
     height: 25px;
     background: url( ../images/btnEnd.png ) no-repeat right top;
-    behavior: url( ../css/iepngfix.htc );
     float: left;
 }
 
@@ -228,7 +224,6 @@ div#tryNow .tryBtnStart {
     width: 10px;
     height: 70px;
     background: url( ../images/tryItStartBtn2.png ) no-repeat left top;
-    behavior: url( ../css/iepngfix.htc );
     float: left;
 }
 
@@ -247,7 +242,7 @@ div#tryNow .tryBtnEnd {
 }
 
 div#tryNow .tryBtnText {
-    padding: 0px 20px;
+    padding: 0 20px;
     position: relative;
     height: 70px;
     font-size: 20px;
@@ -288,7 +283,6 @@ div#video .videoBtnStart {
     width: 10px;
     height: 51px;
     background: url( ../images/videoStart.png ) no-repeat left top;
-    behavior: url( ../css/iepngfix.htc );
     float: left;
 }
 
@@ -379,7 +373,6 @@ div#signUpButton .signUpStartBtn {
     width: 5px;
     height: 25px;
     background: url( ../images/signUpStartBtn.png ) no-repeat left top;
-    behavior: url( ../css/iepngfix.htc );
     float: left;
 }
 
@@ -396,7 +389,6 @@ div#signUpButton .signUpEndBtn {
     width: 7px;
     height: 25px;
     background: url( ../images/signUpEndBtn.png ) no-repeat right top;
-    behavior: url( ../css/iepngfix.htc );
     float: left;
 }
 
