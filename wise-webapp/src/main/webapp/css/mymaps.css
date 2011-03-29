@@ -6,8 +6,7 @@
     width: 100px;
     font-size: 12px;
     font-weight: bold;
-    padding: 5px;
-    padding-left: 0;
+    padding: 10px 5px 5px 0;
     color: #808080;
 }
 
@@ -17,11 +16,10 @@
 }
 
 #recentFiles {
-    margin: 10px auto;
+    margin: 10px auto 5px;
     width: 900px;
     height: 100%;
     padding: 8px;
-    margin-bottom: 5px;
 }
 
 #recentFiles a {
@@ -36,18 +34,20 @@
 #recentFiles .recentItemContainer {
     height: 20px;
     background-color: white;
+    padding: 0 0 0 7px;
+    margin-top: 4px;
 }
 
 #recentFiles .recentItemIcon {
     float: left;
     width: 20px;
     height: 15px;
-    background: url( ../images/icon_list.png ) no-repeat left;
+    background: url(../images/icon_list.png) no-repeat left;
 }
 
 #recentFiles .recentItemTitle {
     float: left;
-    padding-left: 0px;
+    padding-left: 0;
     padding-right: 10px;
     font-size: 12px;
 }
@@ -91,8 +91,7 @@
     float: left;
     position: relative;
     top: 50%;
-    margin: 0px 5px;
-    margin-top: -12px;
+    margin: -12px 5px 0;
     height: 24px;
 }
 
@@ -105,29 +104,28 @@
     float: left;
     width: 3px;
     height: 24px;
-    background: url( ../images/start_btn.gif ) no-repeat left;
+    background: url(../images/start_btn.gif) no-repeat left;
 }
 
 #toolbar .buttonBody {
     float: left;
     height: 19px;
-    padding: 5px 5px 0px;
-    background: url( ../images/body_btn.gif );
+    padding: 5px 5px 0;
+    background: url(../images/body_btn.gif);
 }
 
 #toolbar .buttonEnd {
     float: left;
     width: 3px;
     height: 24px;
-    background: url( ../images/end_btn.gif ) no-repeat left;
+    background: url(../images/end_btn.gif) no-repeat left;
 }
 
 #actionsBtn {
     float: left;
     position: relative;
     top: 50%;
-    margin: 0px 5px;
-    margin-top: -15px;
+    margin: -15px 5px 0;
     width: 78px;
     height: 30px;
 }
@@ -136,8 +134,7 @@
     float: left;
     position: relative;
     top: 50%;
-    margin: 0px 5px;
-    margin-top: -15px;
+    margin: -15px 5px 0;
     width: 78px;
     height: 30px;
 }
@@ -158,7 +155,7 @@
     width: 100%;
     height: 250px;
     overflow: auto;
-    border: 0px solid gray;
+    border: 0 solid gray;
     background-color: white;
     z-index: 2;
     position: relative;
@@ -166,7 +163,7 @@
 
 #docTable table {
     width: 100%;
-    border: 0px solid gray;
+    border: 0 solid gray;
 }
 
 #docTable thead {

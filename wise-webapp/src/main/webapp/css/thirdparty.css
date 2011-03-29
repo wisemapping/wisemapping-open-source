@@ -291,7 +291,7 @@ div.windoo-wise a.windoo-maximize-disabled, div.windoo-wise a.windoo-maximize-di
 }
 
 div.windoo-wise a.windoo-minimize {
-    top: 0px;
+    top: 0;
     right: 56px;
     background-position: 0 0;
 }
@@ -308,7 +308,7 @@ div.windoo-wise a.windoo-minimize-disabled, div.windoo-wise a.windoo-minimize-di
 
 div.windoo-wise a.windoo-restore {
     display: none;
-    top: 0px;
+    top: 0;
     right: 15px;
     background-position: -46px 0;
 }

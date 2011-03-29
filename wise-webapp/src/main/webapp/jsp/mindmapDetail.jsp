@@ -22,11 +22,11 @@
     <c:out value="${wisemapDetail.title}"/>
     <c:choose>
         <c:when test="${not wisemapDetail.public}">
-            <img src="../images/key.png" title="<spring:message code="PRIVATE"/>"/>
+            <img src="../images/key.png" alt="<spring:message code="PRIVATE"/>" title="<spring:message code="PRIVATE"/>"/>
             <span>(<spring:message code="PRIVATE"/>)</span>
         </c:when>
         <c:otherwise>
-            <img src="../images/world2.png " title="<spring:message code="PUBLIC"/>"/>
+            <img src="../images/world2.png" alt="<spring:message code="PUBLIC"/>" title="<spring:message code="PUBLIC"/>"/>
             <span>(<spring:message code="PUBLIC"/>)</span>
         </c:otherwise>
     </c:choose>
@@ -64,7 +64,7 @@
     <td class="formLabel">
         <c:choose>
             <c:when test="${wisemapDetail.owner==requestScope.user}">
-                <a href="<c:out value="${shareMap}"/>&mapId=${wisemapDetail.id}" rel="moodalbox 780px 530px wizard"
+                <a href="<c:out value="${shareMap}"/>&amp;mapId=${wisemapDetail.id}" rel="moodalbox 780px 530px wizard"
                    title="<spring:message code="SHARE_DETAILS"/>">
                     <spring:message code="COLLABORATORS"/>
                 </a>
@@ -137,7 +137,7 @@
             </c:otherwise>
         </c:choose>
         :
-        <div id="divSendLink"/>
+        <div id="divSendLink"></div>
     </td>
     <td>
         <c:choose>
@@ -184,7 +184,7 @@
                                           readonly="readonly">
                                     &lt;iframe
                                     style="border:0;width:600px;height:400px;border: 1px solid black"
-                                    src="http://www.wisemapping.com/c/embeddedView.htm?mapId=${wisemapDetail.id}&zoom=1"&gt;
+                                    src="http://www.wisemapping.com/c/embeddedView.htm?mapId=${wisemapDetail.id}&amp;amzoom=1"&gt;
                                     &lt;/iframe&gt;
                                 </textarea>
 

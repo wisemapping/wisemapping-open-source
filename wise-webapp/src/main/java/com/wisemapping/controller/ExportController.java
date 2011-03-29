@@ -25,6 +25,7 @@ import com.wisemapping.view.MindMapBean;
 import com.wisemapping.exporter.ExportProperties;
 import com.wisemapping.filter.UserAgent;
 import org.apache.batik.transcoder.TranscoderException;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
 
@@ -109,14 +110,14 @@ public class ExportController extends BaseMultiActionController {
         return null;
     }
 
-    private void setBaseBaseImgUrl(ExportFormat format, ExportProperties properties) {
+    private void setBaseBaseImgUrl(ExportFormat format, @NotNull ExportProperties properties) {
 
         final String baseUrl;
         if (format == ExportFormat.SVG) {
             baseUrl = "http://www.wisemapping.com/images";
         } else {
             final ServletContext servletContext = this.getServletContext();
-            baseUrl = "file://" + servletContext.getRealPath("/images/");
+            baseUrl = "file://" + servletContext.getRealPath("/icons/");
         }
         properties.setBaseImagePath(baseUrl);
     }

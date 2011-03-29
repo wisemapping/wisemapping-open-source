@@ -589,15 +589,16 @@ function fontFamilyPanel()
 
 function shapeTypePanel()
 {
-    var shapeTypePanel = ['rectagle','rounded rectagle','line','elipse'];
+    var shapeTypePanel = ['rectagle','rounded_rectagle','line','elipse'];
     var updateFunction = function(value)
     {
-        designer.setShape2SelectedNode(value);
+        designer.setShape2SelectedNode(value.replace('_',' '));
     };
 
     var onFocusValue = function(selectedNode)
     {
-        return selectedNode.getShapeType();
+
+        return selectedNode.getShapeType().replace(' ','_');
     };
 
     buildPanel('topicShape', 'topicShapePanel', shapeTypePanel, updateFunction, onFocusValue);
