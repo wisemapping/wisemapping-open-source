@@ -13,9 +13,11 @@ mindplot.layoutManagers.OriginalLayoutManager = mindplot.layoutManagers.BaseLayo
         mindplot.DragTopic.initialize(workSpace);
     },
     _nodeResizeEvent:function(node){
-        var size = node.getSize();
-        if(!this._isCentralTopic(node))
-            this.getTopicBoardForTopic(node).updateChildrenPosition(node,size.height/2);
+        if(this._isCentralTopic(node)){
+            var size = node.getSize();
+            if(!this._isCentralTopic(node))
+                this.getTopicBoardForTopic(node).updateChildrenPosition(node,size.height/2);
+        }
     },
     _NodeRepositionateEvent:function(node){
         this.getTopicBoardForTopic(node).repositionate();
