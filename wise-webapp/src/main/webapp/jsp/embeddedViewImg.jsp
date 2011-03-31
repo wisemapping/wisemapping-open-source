@@ -17,7 +17,7 @@
 <div id="mapContainer">
     <div id='mindplot'
          style='background: url( ../images/grid.gif ) bottom left repeat !important;overflow:hidden;width:100%;height:100%;'>
-        <div style="100%;height:100%;background: url( ${exportImgUrl} );background-position: 0px -100px;background-repeat: no-repeat;"></div>
+        <div style="width:100%;height:100%;background: url( ${exportImgUrl} );background-position: 0px -100px;background-repeat: no-repeat;"></div>
     </div>
     <div id="embFooter">
         <a href="${pageContext.request.contextPath}/c/home.htm" target="new">
