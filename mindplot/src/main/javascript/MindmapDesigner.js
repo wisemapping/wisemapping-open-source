@@ -352,9 +352,8 @@ mindplot.MindmapDesigner.prototype.save = function(onSavedHandler, saveHistory)
     var persistantManager = mindplot.PersistanceManager;
     var mindmap = this._mindmap;
 
-    var xmlChart = this._workspace.dumpNativeChart();
     var properties = {zoom:this._zoom};
-    persistantManager.save(mindmap, xmlChart, properties, onSavedHandler, saveHistory);
+    persistantManager.save(mindmap, properties, onSavedHandler, saveHistory);
     this._fireEvent("save", {type:saveHistory});
 
     // Refresh undo state...

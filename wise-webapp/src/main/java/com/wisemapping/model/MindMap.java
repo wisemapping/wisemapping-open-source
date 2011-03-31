@@ -64,7 +64,7 @@ public class MindMap {
     private String lastModifierUser;
 
     private Set<MindmapUser> mindmapUsers = new HashSet<MindmapUser>();
-    private MindMapNative nativeBrowser;
+    private MindMapNative nativeBrowser = new MindMapNative();
     private User owner;
     private String properties;
     private String tags;
@@ -218,38 +218,15 @@ public class MindMap {
     public char[] generateSvgXml(String mapSvg)
             throws IOException, JAXBException {
         String svgText = mapSvg;
-        final MindMapNative mindmapNativeBrowser = this.getNativeBrowser();
-        if(svgText==null){
-            svgText = mindmapNativeBrowser.getUnzippedSvgXml();
-        }
 
-        if (svgText == null || svgText.length() == 0) {
-            // The map must be saved using IE. Convert VML to SVG.
 
-            // Add namespace to the converter ...
-            String vmlXml = mindmapNativeBrowser.getUnzippedVmlXml();
-            vmlXml = vmlXml.replaceFirst("<v:group ", "<v:group xmlns:v=\"http://wisemapping.com/xml/vmlmap\" ");
+        String result = "<?xml version='1.0' encoding='UTF-8'?>\n" + svgText;
 
-            char[] bytes = vmlXml.toCharArray();
-            final CharArrayReader is = new CharArrayReader(bytes);
-
-            // Convert Map ...
-            final VmlToSvgConverter converter = new VmlToSvgConverter();
-            converter.convert(is);
-
-            final CharArrayWriter os = new CharArrayWriter();
-            converter.toXml(os);
-
-            return os.toCharArray();
-        } else {
-            String result = "<?xml version='1.0' encoding='UTF-8'?>\n" + svgText;
-
-            // Add namespace...
-            result = result.replaceFirst("<svg ", "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
+        // Add namespace...
+        result = result.replaceFirst("<svg ", "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
 //            result = result.replaceAll("<image([^>]+)>", "<image$1/>");
 
-            return result.toCharArray();
-        }
+        return result.toCharArray();
     }
 
     public String getDescription() {

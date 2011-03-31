@@ -10,6 +10,7 @@
     <definition name="mindmapList" page="/jsp/mindmapList.jsp"/>
     <definition name="embeddedView" page="/jsp/embeddedView.jsp"/>
     <definition name="embeddedViewImg" page="/jsp/embeddedViewImg.jsp"/>
+    <definition name="embeddedViewNotSupported" page="/jsp/embeddedViewNotSupported.jsp"/>
     <definition name="mindmapEditor" page="/jsp/mindmapEditor.jsp"/>
     <definition name="mindmapCooker" page="/jsp/mindmapCooker.jsp"/>
     <definition name="closeDialog" page="/jsp/closeDialog.jsp"/>

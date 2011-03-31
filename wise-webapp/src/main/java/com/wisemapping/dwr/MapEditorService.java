@@ -32,7 +32,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import com.wisemapping.model.MindMap;
-import com.wisemapping.model.MindMapNative;
 import com.wisemapping.model.User;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.exceptions.WiseMappingException;
@@ -50,22 +49,12 @@ public class MapEditorService
     }
 
     public ResponseMessage saveMap(final int mapId, final String nativeXml,
-                                   String chartXml, final String editorProperties,boolean saveHistory)
+                                   final String editorProperties,boolean saveHistory)
             throws IOException, WiseMappingException {
         final MindmapService serservice = getMindmapService();
         final MindMap mindMap = serservice.getMindmapById(mapId);
         final User user = this.getUser();
 
-        MindMapNative nativeBrowser = mindMap.getNativeBrowser();
-
-        if (nativeBrowser == null) {
-            nativeBrowser = new MindMapNative();
-        }
-
-        nativeBrowser.setSvgXml(chartXml);
-        nativeBrowser.setVmlXml((byte[]) null);
-
-        mindMap.setNativeBrowser(nativeBrowser);
         mindMap.setProperties(editorProperties);
 
         final Calendar now = Calendar.getInstance();

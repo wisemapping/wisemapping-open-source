@@ -229,12 +229,6 @@ public class MindmapServiceImpl
             welcomeMap.setDescription(savedWelcome.getDescription());
             welcomeMap.setXml(savedWelcome.getXml());
 
-            final MindMapNative mindmapNative = new MindMapNative();
-            mindmapNative.setSvgXml(savedWelcome.getNativeBrowser().getSvgXml());
-            mindmapNative.setVmlXml(savedWelcome.getNativeBrowser().getVmlXml());
-
-            welcomeMap.setNativeBrowser(mindmapNative);
-
             addMindmap(welcomeMap, user);
         }
     }

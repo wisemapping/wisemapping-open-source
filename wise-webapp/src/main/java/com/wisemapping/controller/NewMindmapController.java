@@ -20,7 +20,6 @@ package com.wisemapping.controller;
 
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.MindMap;
-import com.wisemapping.model.MindMapNative;
 import com.wisemapping.model.User;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapService;
@@ -55,8 +54,6 @@ public class NewMindmapController
         final String defaultNativeMap = getDefaultMindmapXml(title);
         mindmap.setNativeXml(defaultNativeMap);
 
-        final MindMapNative nativeBrowser = new MindMapNative();
-        mindmap.setNativeBrowser(nativeBrowser);
         final User dbUSer = getUserService().getUserBy(user.getId());
 
         service.addMindmap(mindmap, dbUSer);

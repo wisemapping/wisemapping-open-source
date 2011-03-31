@@ -6,7 +6,6 @@ import com.wisemapping.exporter.ExportProperties;
 import com.wisemapping.importer.ImporterException;
 
 import com.wisemapping.model.MindMap;
-import com.wisemapping.model.MindMapNative;
 import org.apache.batik.transcoder.TranscoderException;
 import org.jetbrains.annotations.NotNull;
 import org.testng.Assert;
@@ -47,9 +46,6 @@ public class ExportTest {
 
         // Write content ...
         MindMap mindMap = new MindMap();
-        MindMapNative nativeBrowser = new MindMapNative();
-        nativeBrowser.setSvgXml(svgXml);
-        mindMap.setNativeBrowser(nativeBrowser);
 
         if(pngFile.exists()){
             // Export mile content ...

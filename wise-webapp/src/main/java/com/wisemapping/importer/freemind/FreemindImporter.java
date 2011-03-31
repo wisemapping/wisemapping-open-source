@@ -23,7 +23,6 @@ import com.wisemapping.importer.Importer;
 import com.wisemapping.importer.ImporterException;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.ShapeStyle;
-import com.wisemapping.model.MindMapNative;
 import com.wisemapping.util.JAXBUtils;
 import com.wisemapping.xml.freemind.*;
 import com.wisemapping.xml.freemind.Map;
@@ -93,7 +92,6 @@ public class FreemindImporter
             map.setNativeXml(new String(out.toByteArray(), Charset.forName("UTF-8")));
             map.setTitle(mapName);
             map.setDescription(description);
-            map.setNativeBrowser(new MindMapNative());
 
         } catch (JAXBException e) {
             throw new ImporterException(e);

@@ -64,8 +64,7 @@ public class EmbeddedViewController extends BaseMultiActionController {
 
             } else {
 
-                view = new ModelAndView("embeddedViewImg");
-                view.addObject("mindmap", mindmap);
+                view = new ModelAndView("embeddedViewNotSupported");
             }
             view.addObject("fullView", fullView);
 
