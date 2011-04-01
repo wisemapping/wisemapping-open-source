@@ -52,6 +52,10 @@ public class PublicPagesController extends BaseMultiActionController {
         return new ModelAndView("privacyPolicy");
     }
 
+    public ModelAndView installCFG(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
+        return new ModelAndView("installCFG");
+    }
+
     public ModelAndView home(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
         return new ModelAndView("homepage");
     }

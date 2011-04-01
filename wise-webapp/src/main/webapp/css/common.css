@@ -587,3 +587,26 @@ span.fieldRequired {
 #keyboardTable tr {
     padding: 5px;
 }
+
+
+div.installCFG {
+    width:100%;
+    font-size:130%;
+}
+
+div.installCFG h1{
+    width:100%;
+    font-size:130%;
+}
+
+div.installCFG h2{
+    font-size:100%;
+    border-bottom:0 solid black;
+}
+
+.chromeFrameInstallDefaultStyle {
+    position:relative;
+    left:0;
+    top:0;
+    margin:0;
+}

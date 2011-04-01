@@ -41,23 +41,26 @@ public class MindmapEditorController extends BaseMultiActionController {
 
         ModelAndView view;
 
-        UserAgent userAgent = UserAgent.create(httpServletRequest);
-        if(userAgent.needsGCF()){
-            view = new ModelAndView("installCFG");
-        }
-        else{
         final String mindmapId = httpServletRequest.getParameter(MINDMAP_ID_PARAMETER);
         final int mapId = Integer.parseInt(mindmapId);
-        final MindMap mindmap = getMindmapService().getMindmapById(mapId);
 
-        // Mark as try mode...
-        view = new ModelAndView("mindmapEditor", "mindmap", mindmap);
-        view.addObject("editorTryMode", false);
-        final boolean showHelp = isWelcomeMap(mindmap);
-        view.addObject("showHelp", showHelp);
-        final String xmlMap = mindmap.getNativeXmlAsJsLiteral();
-        view.addObject(MAP_XML_PARAM, xmlMap);
-        view.addObject("user", Utils.getUser());
+        UserAgent userAgent = UserAgent.create(httpServletRequest);
+        if(userAgent.needsGCF()){
+            view = new ModelAndView("gcfPluginNeeded");
+            view.addObject(MINDMAP_ID_PARAMETER, mindmapId);
+        }
+        else{
+
+            final MindMap mindmap = getMindmapService().getMindmapById(mapId);
+
+            // Mark as try mode...
+            view = new ModelAndView("mindmapEditor", "mindmap", mindmap);
+            view.addObject("editorTryMode", false);
+            final boolean showHelp = isWelcomeMap(mindmap);
+            view.addObject("showHelp", showHelp);
+            final String xmlMap = mindmap.getNativeXmlAsJsLiteral();
+            view.addObject(MAP_XML_PARAM, xmlMap);
+            view.addObject("user", Utils.getUser());
         }
         return view;
     }

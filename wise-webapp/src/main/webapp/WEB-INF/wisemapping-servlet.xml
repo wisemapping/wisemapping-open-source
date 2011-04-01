@@ -71,6 +71,7 @@
         <property name="mappings">
             <props>
                 <prop key="/c/try.htm">tryEditor</prop>
+                <prop key="/c/installCFG.htm">installCFG</prop>
             </props>
         </property>
     </bean>
@@ -313,6 +314,7 @@
                 <prop key="/c/importMap.htm">importMapController</prop>
                 <prop key="/c/newMap.htm">newMapController</prop>
                 <prop key="/c/history.htm">historyController</prop>
+                <prop key="/c/installCFG.htm">homeController</prop>
             </props>
         </property>
     </bean>

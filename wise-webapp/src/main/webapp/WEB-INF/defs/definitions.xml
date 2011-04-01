@@ -16,7 +16,6 @@
     <definition name="closeDialog" page="/jsp/closeDialog.jsp"/>
     <definition name="embeddedViewError" page="/jsp/embeddedViewError.jsp"/>
     <definition name="mindmapPrint" page="/jsp/mindmapPrint.jsp"/>
-    <definition name="installCFG" page="/jsp/installCFG.jsp"/>
 
     <!-- Template Declaration -->
     <definition name="pageTemplate" page="/jsp/template.jsp">
@@ -33,6 +32,16 @@
 
     <definition name="errorTemplate" extends="pageTemplate">
         <put name="body" value="/jsp/errorTemplate.jsp" type="page"/>
+    </definition>
+
+    <definition name="gcfPluginNeeded" extends="pageTemplate">
+        <put name="body" value="/jsp/gcfPluginNeeded.jsp" type="page"/>
+        <put name="title" value="INSTALL_CFG"/>
+    </definition>
+
+    <definition name="installCFG" extends="pageTemplate">
+        <put name="body" value="/jsp/installCFG.jsp" type="page"/>
+        <put name="title" value="INSTALL_CFG"/>
     </definition>
 
     <!-- Error Pages -->
