@@ -30,6 +30,7 @@ import java.util.Calendar;
 
 public class LoginController
         extends BaseMultiActionController {
+    private String driver;
 
     protected ModelAndView handleNoSuchRequestHandlingMethod(NoSuchRequestHandlingMethodException noSuchRequestHandlingMethodException, HttpServletRequest request, HttpServletResponse httpServletResponse) throws Exception {
         // Reload user only in case of beeing necessary...
@@ -41,6 +42,7 @@ public class LoginController
 
         } else {
             result = new ModelAndView("login");
+            result.addObject("isHsql", driver.indexOf("hsql")!=-1);
         }
 
         return result;
@@ -58,5 +60,13 @@ public class LoginController
         //userManager.auditLogin(userLogin);
 
         return new ModelAndView("forward:/c/mymaps.htm");
+    }
+
+    public void setDriver(String driver) {
+        this.driver = driver;
+    }
+
+    public String getDriver() {
+        return driver;
     }
 }

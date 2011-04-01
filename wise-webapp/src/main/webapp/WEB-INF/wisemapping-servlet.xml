@@ -97,6 +97,7 @@
         <property name="methodNameResolver" ref="paramResolverByAction"/>
         <property name="mindmapService" ref="mindmapService"/>
         <property name="userService" ref="userService"/>
+        <property name="driver" value="${database.driver}"/>
     </bean>
 
     <bean id="sharingController" class="com.wisemapping.controller.MindmapSharingController">

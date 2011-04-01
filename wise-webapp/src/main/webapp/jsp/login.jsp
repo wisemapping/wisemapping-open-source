@@ -11,6 +11,10 @@
 <div id="loginContent">
 
     <div id="news" class="sb">
+        
+        <c:if test="${isHsql== 'true'}">
+            <h2 style="border:0; color:red;"> You are using an HSQL database. You shouldn't use this environment for production!</h2>
+        </c:if>
         <h1>What is New: </h1>
         <ul>
             <li>Links Between Nodes</li>
