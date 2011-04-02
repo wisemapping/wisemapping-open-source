@@ -401,6 +401,12 @@
                             <statistics>false</statistics>
                         </configuration>
                     </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>net.sf.alchim</groupId>
+                <artifactId>yuicompressor-maven-plugin</artifactId>
+                <executions>
                     <execution>
                         <phase>generate-resources</phase>
                         <goals>
