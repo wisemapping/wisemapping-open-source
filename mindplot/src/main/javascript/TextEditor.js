@@ -69,7 +69,7 @@ mindplot.TextEditor = function(screenManager,actionRunner)
     //Register onLostFocus/onBlur event
     $(this.inputText).addEvent('blur', this.lostFocusEvent.bind(this));
     $(this.inputText).addEvent('click', this.clickEvent.bindWithEvent(this));
-
+    $(this.inputText).addEvent('dblclick', this.clickEvent.bindWithEvent(this));    
 
     var elem = this;
     var onComplete = function() {
