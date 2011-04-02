@@ -19,12 +19,12 @@
             <version>1.0-SNAPSHOT</version>
             <scope>runtime</scope>
         </dependency>
-        <dependency>
+        <!-- <dependency>
             <groupId>com.google.jstestdriver</groupId>
             <artifactId>maven-jstestdriver-plugin</artifactId>
             <version>1.2.2-SNAPSHOT</version>
             <scope>test</scope>
-        </dependency>
+        </dependency> -->
     </dependencies>
 
     <repositories>
@@ -279,7 +279,7 @@
                 </configuration>
             </plugin>
 
-            <plugin>
+<!--           <plugin>
                 <groupId>com.google.jstestdriver</groupId>
                 <artifactId>maven-jstestdriver-plugin</artifactId>
                 <version>1.2.2-SNAPSHOT</version>
@@ -295,7 +295,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin> -->
         </plugins>
     </build>
 </project>
