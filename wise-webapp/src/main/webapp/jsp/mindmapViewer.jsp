@@ -6,6 +6,9 @@
         <spring:message code="SITE.TITLE"/>
         -</title>
     <link rel="stylesheet" type="text/css" href="../css/wisehome.css">
+    !--[if lt IE 9]>
+    <link rel="stylesheet" type="text/css" href="../css/wisehomeOldIE.css"/>
+    <![endif]-->
 
     <script type="text/javascript">
         function removeViewer(viewerEmail)

@@ -1,9 +1,11 @@
 <%@ include file="/jsp/init.jsp" %>
 <script type="text/javascript">
-    window.onload = function() {
-        var boxGenerator = RUZEE.ShadedBorder.create({ corner:16,  border:1 });
-        boxGenerator.render('userRegistration');
-    };
+    if(typeof isOldIE != "undefined"){
+        window.onload = function() {
+            var boxGenerator = RUZEE.ShadedBorder.create({ corner:16,  border:1 });
+            boxGenerator.render('userRegistration');
+        };
+    }
 </script>
 <div id="userRegistrationBody">
 <div id="userRegistrationContent">

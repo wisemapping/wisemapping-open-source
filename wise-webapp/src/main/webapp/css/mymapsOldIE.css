@@ -1,0 +1,71 @@
+@import "commonOldIE.css";
+
+#mapListContainer .sb-inner {
+    background: white;
+}
+
+#mapListContainer .sb-shadow {
+    background: white;
+}
+
+#mapListContainer .sb-border {
+    background: #A29BBF;
+}
+
+#recentFiles .sb-inner {
+    background: #EEEEEE;
+}
+
+#recentFiles .sb-border {
+    background: #E5E5E5;
+}
+
+#toolbar .sb-border {
+    background: #A7C6DF;
+}
+
+#toolbar .sb-inner {
+    background: #C3DEF5;
+}
+
+#mydocs .sb-inner {
+    background: #C3DEF5;
+}
+
+#mydocs .sb-border {
+    background: #A7C6DF;
+}
+
+#recentItems .sb-inner {
+    background: white;
+}
+
+#recentItems .sb-border {
+    background: #E5E5E5;
+}
+
+#recentFiles.sb {
+    background: transparent;
+    border:0 solid #A7C6DF;
+    -moz-border-radius: 0px;
+    -khtml-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    border-radius:0px;
+}
+
+#recentItems.sb {
+    background: transparent;
+    border:0 solid #A7C6DF;
+    -moz-border-radius: 0px;
+    -khtml-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    border-radius:0px;
+}
+
+#mydocs {
+    -moz-border-radius: 0px;
+    -khtml-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    border-radius:0px;
+}
+

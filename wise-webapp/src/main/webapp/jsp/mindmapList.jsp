@@ -12,12 +12,13 @@
     </title>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" type="text/css" href="../css/mymaps.css"/>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/commonLibs.css"/>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/thirdparty.css"/>
     <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/wiseLibrary.js"></script>
-
+    <!--[if lt IE 9]>
+    <link rel="stylesheet" type="text/css" href="../css/mymapsOldIE.css"/>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/shadedborder.js"></script>    
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/transcorners.js"></script>    
     <script type="text/javascript">
         window.onload = function() {
             var boxGenerator = RUZEE.ShadedBorder.create({ corner:16,  border:1 });
@@ -27,6 +28,7 @@
         };
 
     </script>
+    <![endif]-->
 
 </head>
 <body>

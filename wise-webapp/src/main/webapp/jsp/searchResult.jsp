@@ -1,13 +1,15 @@
 <%@ include file="/jsp/init.jsp" %>
 <script type="text/javascript">
-    window.onload = function() {
-        var boxGenerator = RUZEE.ShadedBorder.create({ corner:16,  border:1 });
-        boxGenerator.render('searchResult');
+    if(typeof isOldIE != "undefined"){
+        window.onload = function() {
+            var boxGenerator = RUZEE.ShadedBorder.create({ corner:16,  border:1 });
+            boxGenerator.render('searchResult');
 
-        $("broweButton").addEvent('click', function() {
-            window.location = "${pageContext.request.contextPath}/c/search.htm?action=showAll";
-        });
-    };
+            $("broweButton").addEvent('click', function() {
+                window.location = "${pageContext.request.contextPath}/c/search.htm?action=showAll";
+            });
+        };
+    }
 
     function toogleAdvanceSearch() {
         var searchDiv = document.getElementById("searchAdvance");

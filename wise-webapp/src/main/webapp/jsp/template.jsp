@@ -24,6 +24,13 @@
     <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/wiseLibrary.js"></script>
+    <!--[if lt IE 9]>
+    <link rel="stylesheet" type="text/css" href="../css/wisehomeOldIE.css"/>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/shadedborder.js"></script>
+    <script type="text/javascript">
+        var isOldIE = true;
+    </script>
+    <![endif]-->
 </head>
 <body>
 

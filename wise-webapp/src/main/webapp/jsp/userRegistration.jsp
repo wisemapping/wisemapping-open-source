@@ -1,13 +1,15 @@
 <%@ include file="/jsp/init.jsp" %>
 
 <script type="text/javascript">
-    window.onload = function() {
-        var simpleButtonGenerator = RUZEE.ShadedBorder.create({ corner:8,  border:1 });
-        simpleButtonGenerator.render('userRegistration');
+    if(typeof isOldIE != "undefined"){
+        window.onload = function() {
+            var simpleButtonGenerator = RUZEE.ShadedBorder.create({ corner:8,  border:1 });
+            simpleButtonGenerator.render('userRegistration');
 
-        $('submitButton').addEvent('click', displayLoading);
+            $('submitButton').addEvent('click', displayLoading);
 
-    };
+        };
+    }
 </script>
 
 <div id="userRegistrationContent">

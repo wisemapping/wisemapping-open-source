@@ -224,46 +224,27 @@
     padding: 10px;
 }
 
-#mapListContainer .sb-inner {
-    background: white;
-}
-
-#mapListContainer .sb-shadow {
-    background: white;
-}
-
-#mapListContainer .sb-border {
-    background: #A29BBF;
-}
-
-#recentFiles .sb-inner {
+#recentFiles.sb {
     background: #EEEEEE;
+    border:1px solid #E5E5E5;
+    -moz-border-radius: 16px;
+    -khtml-border-radius: 16px;
+    -webkit-border-radius: 16px;
+    border-radius:16px;
 }
 
-#recentFiles .sb-border {
-    background: #E5E5E5;
-}
-
-#toolbar .sb-border {
-    background: #A7C6DF;
-}
-
-#toolbar .sb-inner {
-    background: #C3DEF5;
-}
-
-#mydocs .sb-inner {
-    background: #C3DEF5;
-}
-
-#mydocs .sb-border {
-    background: #A7C6DF;
-}
-
-#recentItems .sb-inner {
+#recentItems.sb {
     background: white;
+    border:1px solid #E5E5E5;
+    -moz-border-radius: 16px;
+    -khtml-border-radius: 16px;
+    -webkit-border-radius: 16px;
+    border-radius:16px;
 }
 
-#recentItems .sb-border {
-    background: #E5E5E5;
+#mydocs {
+    -moz-border-radius: 16px;
+    -khtml-border-radius: 16px;
+    -webkit-border-radius: 16px;
+    border-radius:16px;
 }

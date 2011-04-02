@@ -391,11 +391,28 @@
                                     <includes>
                                         <include>mootools.js</include>
                                         <include>common.js</include>
-                                        <include>shadedborder.js</include>
-                                        <include>transcorners.js</include>
                                         <include>windoo.js</include>
-                                        <include>menu.js</include>
-                                        <include>slideShow.js</include>
+                                    </includes>
+                                </aggregation>
+                            </aggregations>
+                            <nosuffix>true</nosuffix>
+                            <nomunge>true</nomunge>
+                            <jswarn>false</jswarn>
+                            <statistics>false</statistics>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>compress</goal>
+                        </goals>
+                        <configuration>
+                            <aggregations>
+                                <aggregation>
+                                    <output>
+                                        ${project.build.directory}/${project.build.finalName}/js/wiseEditorLibrary.js
+                                    </output>
+                                    <includes>
                                         <include>mooRainbow.js</include>
                                         <include>help.js</include>
                                         <include>helpPanel.js</include>

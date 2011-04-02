@@ -259,10 +259,6 @@ div#headerButtons activelink a, div#headerButtons activelink a:hover {
     border-bottom: 0;
 }
 
-#signUpHeader .sb-inner {
-    background-color: white;
-}
-
 #signUpHeader {
     padding-right: 8px;
     padding-top: 4px;
@@ -406,18 +402,6 @@ div#headerActions {
 
 div#headerActions a:hover, div#headerActions a:active, div#headerActions a:link, div#headerActions a:visited {
     color: white;
-}
-
-#join .sb-inner {
-    background: #9a8fc3;
-}
-
-#join .sb-shadow {
-    background: white;
-}
-
-#join .sb-border {
-    background: #A29BBF;
 }
 
 div.header_languages {

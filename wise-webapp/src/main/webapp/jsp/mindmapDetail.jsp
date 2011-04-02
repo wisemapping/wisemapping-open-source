@@ -2,11 +2,13 @@
 <%--@elvariable id="wisemapDetail" type="com.wisemapping.view.MindMapBean"--%>
 
 <script type="text/javascript">
-    window.onload = function() {
-        var boxGenerator = RUZEE.ShadedBorder.create({ corner:16,  border:1 });
-        boxGenerator.render('detailContent');
-        boxGenerator.render('detail');
-    };
+    if(typeof isOldIE != "undefined"){
+        window.onload = function() {
+            var boxGenerator = RUZEE.ShadedBorder.create({ corner:16,  border:1 });
+            boxGenerator.render('detailContent');
+            boxGenerator.render('detail');
+        };
+    }
 
     MOOdalBox.reloadRequered = true;
 

@@ -10,6 +10,9 @@
     <link rel="stylesheet" type="text/css" href="../css/embedded.css">
     <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon">
+    <!--[if lt IE 9]>
+    <link rel="stylesheet" type="text/css" href="../css/wisehomeOldIE.css"/>
+    <![endif]-->
 </head>
 <body>
 

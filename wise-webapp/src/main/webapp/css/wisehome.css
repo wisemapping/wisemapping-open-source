@@ -133,14 +133,6 @@
     color: black;
 }
 
-#searchResult .sb-inner {
-    background: #C3DEF5;
-}
-
-#searchResult .sb-border {
-    background: #A7C6DF;
-}
-
 #search {
     clear: both;
     width: 200px;
@@ -464,40 +456,8 @@ div#news {
     font-size: medium;
 }
 
-#join .sb-inner {
-    background: #9a8fc3;
-}
-
-#join .sb-shadow {
-    background: white;
-}
-
-#join .sb-border {
-    background: #A29BBF;
-}
-
-#newsAndArticles .sb-inner, #recentMaps .sb-inner {
-    background: #c3def5;
-}
-
-#newsAndArticles .sb-shadow, #recentMaps .sb-shadow {
-    background: white;
-}
-
-#newsAndArticles .sb-border, #recentMaps .sb-border {
-    background: #A7C6DF;
-}
-
 #recentMapsContent, #newsContent, #joinContent {
     padding: 5px 10px;
-}
-
-#recentMapsContent .sb-inner, #newsContent .sb-inner {
-    background: white;
-}
-
-#recentMapsContent .sb-border, #newsContent .sb-border {
-    background: #A7C6DF;
 }
 
 #search dl {
@@ -515,18 +475,6 @@ div#news {
 #search dt {
     color: white;
     font-size: medium;
-}
-
-#search .sb-inner {
-    background: white;
-}
-
-#search .sb-shadow {
-    background: white;
-}
-
-#search .sb-border {
-    background: #6186CB;
 }
 
 /* Finish homepage styles  */
@@ -560,17 +508,9 @@ div#login {
     padding: 10px;
 }
 
-div#login .sb-inner, div#forgotPasswordContainer .sb-inner, div#userRegistration .sb-inner {
-    background-color: #eeeeee;
-}
-
 #forgotPasswordContainer {
     width: 500px;
     padding: 10px;
-}
-
-div#login .sb-border, div#forgotPasswordContainer .sb-border, div#userRegistration .sb-border {
-    background-color: #cfcfcf;
 }
 
 /* This is used to fix IE explorer bug rendering rounded corners*/
@@ -622,14 +562,6 @@ div#register a {
     padding: 10px;
 }
 
-#detailContent .sb-inner {
-    background: #C3DEF5;
-}
-
-#detailContent .sb-border {
-    background: #A7C6DF;
-}
-
 #detail {
     margin: 10px auto;
     height: 100%;
@@ -644,14 +576,6 @@ div#register a {
 #detail td {
     padding: 5px;
     vertical-align: top;
-}
-
-#detail .sb-inner {
-    background: white;
-}
-
-#detail .sb-border {
-    background: #E5E5E5;
 }
 
 #detailTitle {
@@ -706,3 +630,49 @@ div.newsContainer h2 {
     padding:10px;
     color:#6B628F;
 }
+
+#login.sb, #userRegistration.sb, #forgotPasswordContainer.sb {
+    background: #eeeeee;
+    border:1px solid #cfcfcf;
+    -moz-border-radius: 8px;
+    -khtml-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius:8px;
+}
+
+#detailContent.sb {
+    background: #C3DEF5;
+    border:1px solid #A7C6DF;
+    -moz-border-radius: 16px;
+    -khtml-border-radius: 16px;
+    -webkit-border-radius: 16px;
+    border-radius:16px;
+}
+
+#detail.sb {
+    background: white;
+    border:1px solid #E5E5E5;
+    -moz-border-radius: 16px;
+    -khtml-border-radius: 16px;
+    -webkit-border-radius: 16px;
+    border-radius:16px;
+}
+
+#userRegistration.sb {
+    background: #eeeeee;
+    border:1px solid #cfcfcf;
+    -moz-border-radius: 8px;
+    -khtml-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius:16px;
+}
+
+#searchResult.sb {
+    background: #C3DEF5;
+    border:1px solid #A7C6DF;
+    -moz-border-radius: 16px;
+    -khtml-border-radius: 16px;
+    -webkit-border-radius: 16px;
+    border-radius:16px;
+}
+
