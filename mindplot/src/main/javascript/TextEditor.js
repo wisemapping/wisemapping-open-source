@@ -326,6 +326,7 @@ mindplot.TextEditor.prototype.setPosition = function (x, y, scale)
 
 mindplot.TextEditor.prototype.showTextEditor = function(selectText)
 {
+    designer.getWorkSpace().enableWorkspaceEvents(false);
     //this._myOverlay.show();
     //var myAnim = new YAHOO.util.Anim('inputText',{opacity: {to:1}}, 0.10, YAHOO.util.Easing.easeOut);
     //$('inputText').style.opacity='1';
@@ -389,7 +390,6 @@ mindplot.TextEditor.prototype.lostFocus = function(bothBrowsers)
 };
 
 mindplot.TextEditor.prototype.clickEvent = function(event){
-    designer.getWorkSpace().enableWorkspaceEvents(false);
     if(this._isVisible()){
         if (event.stopPropagation)
         {
