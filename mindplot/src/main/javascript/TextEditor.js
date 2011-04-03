@@ -68,8 +68,9 @@ mindplot.TextEditor = function(screenManager,actionRunner)
     };
     //Register onLostFocus/onBlur event
     $(this.inputText).addEvent('blur', this.lostFocusEvent.bind(this));
-    $(this.inputText).addEvent('click', this.clickEvent.bindWithEvent(this));
-    $(this.inputText).addEvent('dblclick', this.clickEvent.bindWithEvent(this));    
+    $(this._myOverlay).addEvent('click', this.clickEvent.bindWithEvent(this));
+    $(this._myOverlay).addEvent('dblclick', this.clickEvent.bindWithEvent(this));
+    $(this._myOverlay).addEvent('mousedown', this.mouseDownEvent.bindWithEvent(this));
 
     var elem = this;
     var onComplete = function() {
@@ -99,7 +100,6 @@ mindplot.TextEditor.prototype.lostFocusEvent = function ()
 {
     this.fx.options.duration = 10;
     this.fx.start(1, 0);
-    designer.getWorkSpace().enableWorkspaceEvents(true);
     //myAnim.animate();
 };
 
@@ -326,7 +326,6 @@ mindplot.TextEditor.prototype.setPosition = function (x, y, scale)
 
 mindplot.TextEditor.prototype.showTextEditor = function(selectText)
 {
-    designer.getWorkSpace().enableWorkspaceEvents(false);
     //this._myOverlay.show();
     //var myAnim = new YAHOO.util.Anim('inputText',{opacity: {to:1}}, 0.10, YAHOO.util.Easing.easeOut);
     //$('inputText').style.opacity='1';
@@ -398,7 +397,19 @@ mindplot.TextEditor.prototype.clickEvent = function(event){
         {
             event.cancelBubble = true;
         }
+        event.preventDefault();
     }
-    event.preventDefault();
+};
+
+mindplot.TextEditor.prototype.mouseDownEvent = function(event){
+    if(this._isVisible()){
+        if (event.stopPropagation)
+        {
+            event.stopPropagation(true);
+        } else
+        {
+            event.cancelBubble = true;
+        }
+    }
 };
 

@@ -58,7 +58,7 @@ mindplot.DragManager.prototype.add = function(node)
             window.document.body.style.cursor = 'move';
         }
     };
-    dragManager._mouseMoveListener = mouseDownListener;
+    dragManager._mouseDownListener = mouseDownListener;
 
     node.addEventListener('mousedown', mouseDownListener);
 };
