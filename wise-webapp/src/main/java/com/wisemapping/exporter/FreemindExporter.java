@@ -16,7 +16,7 @@
 *   limitations under the License.
 */
 
-package com.wisemapping.exporter.freemind;
+package com.wisemapping.exporter;
 
 import com.wisemapping.exporter.ExportException;
 import com.wisemapping.exporter.Exporter;

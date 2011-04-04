@@ -19,6 +19,7 @@
 package com.wisemapping.controller;
 
 import com.wisemapping.exporter.ExportFormat;
+import com.wisemapping.exporter.ExporterFactory;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.view.MindMapBean;
@@ -60,6 +61,11 @@ public class ExportController extends BaseMultiActionController {
                 int mindmapId = Integer.parseInt(mapIdStr);
 
                 final String mapSvg = request.getParameter(MAP_SVG_PARAMETER);
+                logger.debug("SVG Map to export:"+mapSvg);
+                if(mapSvg==null || mapSvg.isEmpty())
+                {
+                    throw new IllegalArgumentException("SVG map could not be null");
+                }
 
                 String formatStr = request.getParameter(EXPORT_FORMAT_PARAMETER);
                 if (IMG_EXPORT_FORMAT.endsWith(formatStr)) {
@@ -96,7 +102,7 @@ public class ExportController extends BaseMultiActionController {
 
                 // Write content ...
                 final ServletOutputStream outputStream = response.getOutputStream();
-                mindMap.export(properties, outputStream, mapSvg);
+                ExporterFactory.export(properties, mindMap, outputStream, mapSvg);
 
 
             } catch (Throwable e) {
@@ -141,9 +147,7 @@ public class ExportController extends BaseMultiActionController {
             final String mapIdStr = request.getParameter(MAP_ID_PARAMETER);
             final String mapSvg = request.getParameter(MAP_SVG_PARAMETER);
 
-            int mindmapId = Integer.parseInt(mapIdStr);
             final MindmapService service = getMindmapService();
-            final MindMap mindMap = service.getMindmapById(mindmapId);
 
             //Image Format
             ExportFormat imageFormat = ExportFormat.PNG;
@@ -160,7 +164,7 @@ public class ExportController extends BaseMultiActionController {
 
             // Write content ...
             final ServletOutputStream outputStream = response.getOutputStream();
-            mindMap.export(imageProperties, outputStream, mapSvg);
+            ExporterFactory.export(imageProperties, null, outputStream, mapSvg);
 
 
         } catch (Throwable e) {

@@ -27,23 +27,10 @@
 
 package com.wisemapping.model;
 
-import com.wisemapping.exporter.ExportProperties;
-import com.wisemapping.exporter.SvgExporter;
 import com.wisemapping.util.ZipUtils;
-import com.wisemapping.xml.VmlToSvgConverter;
-import com.wisemapping.exporter.ExportException;
-import org.apache.batik.transcoder.TranscoderException;
 import org.apache.log4j.Logger;
-import org.xml.sax.SAXException;
 
-import javax.xml.bind.JAXBException;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.transform.TransformerException;
-import java.io.CharArrayReader;
-import java.io.CharArrayWriter;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -215,20 +202,6 @@ public class MindMap {
         return tags;
     }
 
-    public char[] generateSvgXml(String mapSvg)
-            throws IOException, JAXBException {
-        String svgText = mapSvg;
-
-
-        String result = "<?xml version='1.0' encoding='UTF-8'?>\n" + svgText;
-
-        // Add namespace...
-        result = result.replaceFirst("<svg ", "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
-//            result = result.replaceAll("<image([^>]+)>", "<image$1/>");
-
-        return result.toCharArray();
-    }
-
     public String getDescription() {
         return description;
     }
@@ -243,10 +216,6 @@ public class MindMap {
 
     public void setCreationTime(Calendar creationTime) {
         this.creationTime = creationTime;
-    }
-
-    public void export(final ExportProperties properties, OutputStream output, String mapSvg) throws JAXBException, TranscoderException, TransformerException, IOException, ParserConfigurationException, ExportException, SAXException, XMLStreamException {
-        SvgExporter.export(properties, this, output, mapSvg);
     }
 
     public void setOwner(User owner) {
