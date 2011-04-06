@@ -135,8 +135,12 @@ public class ExportController extends BaseMultiActionController {
         int mindmapId = Integer.parseInt(mapIdStr);
         final MindmapService service = getMindmapService();
         final MindMap mindMap = service.getMindmapById(mindmapId);
+        final String mapSvg = request.getParameter(MAP_SVG_PARAMETER);
 
-        return new ModelAndView("mindmapPrint", "mindmap", mindMap);
+
+        ModelAndView view = new ModelAndView("mindmapPrint", "mindmap", mindMap);
+        view.addObject(MAP_SVG_PARAMETER, mapSvg);
+        return view;
 
     }
 
