@@ -50,10 +50,12 @@ public class ExporterFactory {
     private static final String RECT_NODE_NAME = "rect";
     private static final String IMAGE_NODE_NAME = "image";
 
-    private ExporterFactory() {
+
+    private ExporterFactory() throws ParserConfigurationException {
+
     }
 
-    public static void export(@NotNull ExportProperties properties, @Nullable MindMap map, @NotNull  OutputStream output, @NotNull String mapSvg) throws TranscoderException, IOException, ParserConfigurationException, SAXException, XMLStreamException, TransformerException, JAXBException, ExportException {
+    public static void export(@NotNull ExportProperties properties, @Nullable MindMap map, @NotNull OutputStream output, @NotNull String mapSvg) throws TranscoderException, IOException, ParserConfigurationException, SAXException, XMLStreamException, TransformerException, JAXBException, ExportException {
         final ExportFormat format = properties.getFormat();
 
         final String imgPath = properties.getBaseImgPath();
@@ -67,10 +69,10 @@ public class ExporterFactory {
                 transcoder.addTranscodingHint(ImageTranscoder.KEY_WIDTH, size.getWidth());
 
                 // Create the transcoder input.
-                char[] xml = convertBrowserSvgToXmlSvg(mapSvg);
-                xml = normalizeSvg(xml, imgPath);
-                final CharArrayReader is = new CharArrayReader(xml);
-                TranscoderInput input = new TranscoderInput(is);
+                final Document document = normalizeSvg(mapSvg, imgPath);
+                final String svgString = domToString(document);
+                final TranscoderInput input = new TranscoderInput(new CharArrayReader(svgString.toCharArray()));
+
                 TranscoderOutput trascoderOutput = new TranscoderOutput(output);
 
                 // Save the image.
@@ -88,10 +90,10 @@ public class ExporterFactory {
                 transcoder.addTranscodingHint(ImageTranscoder.KEY_WIDTH, size.getWidth());
 
                 // Create the transcoder input.
-                final char[] xml = convertBrowserSvgToXmlSvg(mapSvg);
-                char[] svgXml = normalizeSvg(xml, imgPath);
-                final CharArrayReader is = new CharArrayReader(svgXml);
-                TranscoderInput input = new TranscoderInput(is);
+                final Document document = normalizeSvg(mapSvg, imgPath);
+                final String svgString = domToString(document);
+                final TranscoderInput input = new TranscoderInput(new CharArrayReader(svgString.toCharArray()));
+
                 TranscoderOutput trascoderOutput = new TranscoderOutput(output);
 
                 // Save the image.
@@ -103,10 +105,10 @@ public class ExporterFactory {
                 final Transcoder transcoder = new PDFTranscoder();
 
                 // Create the transcoder input.
-                final char[] xml = convertBrowserSvgToXmlSvg(mapSvg);
-                char[] svgXml = normalizeSvg(xml, imgPath);
-                final CharArrayReader is = new CharArrayReader(svgXml);
-                TranscoderInput input = new TranscoderInput(is);
+                final Document document = normalizeSvg(mapSvg, imgPath);
+                final String svgString = domToString(document);
+                final TranscoderInput input = new TranscoderInput(new CharArrayReader(svgString.toCharArray()));
+
                 TranscoderOutput trascoderOutput = new TranscoderOutput(output);
 
                 // Save the image.
@@ -114,9 +116,9 @@ public class ExporterFactory {
                 break;
             }
             case SVG: {
-                final char[] xml = convertBrowserSvgToXmlSvg(mapSvg);
-                char[] svgXml = normalizeSvg(xml, imgPath);
-                output.write(new String(svgXml).getBytes("UTF-8"));
+                final Document dom = normalizeSvg(mapSvg, imgPath);
+                String s = domToString(dom);
+                output.write(null);
                 break;
             }
             case FREEMIND: {
@@ -129,30 +131,39 @@ public class ExporterFactory {
         }
     }
 
-    private static char[] normalizeSvg(final char[] svgXml, final String imgBaseUrl) throws XMLStreamException, ParserConfigurationException, IOException, SAXException, TransformerException {
-        final Reader in = new CharArrayReader(svgXml);
+    private static Document normalizeSvg(String svgXml, final String imgBaseUrl) throws XMLStreamException, ParserConfigurationException, IOException, SAXException, TransformerException {
+
+        final DocumentBuilder documentBuilder = getDocumentBuilder();
+        svgXml = svgXml.replaceFirst("<svg ", "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
+
+        final Reader in = new CharArrayReader(svgXml.toCharArray());
 
         // Load document ...
         final InputSource is = new InputSource(in);
 
+        final Document document = documentBuilder.parse(is);
+
+        fitSvg(document);
+
+        fixImageTagHref(document, imgBaseUrl);
+
+        return document;
+
+    }
+
+    private static DocumentBuilder getDocumentBuilder() throws ParserConfigurationException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = factory.newDocumentBuilder();
+        return factory.newDocumentBuilder();
+    }
 
-        final Document svgDocument = documentBuilder.parse(is);
-
-        fitSvg(svgDocument);
-
-        fixImageTagHref(svgDocument, imgBaseUrl);
-
-        DOMSource domSource = new DOMSource(svgDocument);
-
-        // Save document ...
+    private static String domToString(@NotNull Document document) throws TransformerException {
+        DOMSource domSource = new DOMSource(document);
 
         // Create a string writer
-        final CharArrayWriter outDocument = new CharArrayWriter();
+        final CharArrayWriter result = new CharArrayWriter();
 
-        // Create the result stream for the transform
-        StreamResult result = new StreamResult(outDocument);
+        // Create the stream stream for the transform
+        StreamResult stream = new StreamResult(result);
 
         // Create a Transformer to serialize the document
         TransformerFactory tFactory = TransformerFactory.newInstance();
@@ -160,19 +171,18 @@ public class ExporterFactory {
         Transformer transformer = tFactory.newTransformer();
         transformer.setOutputProperty("indent", "yes");
 
-        // Transform the document to the result stream
-        transformer.transform(domSource, result);
+        // Transform the document to the stream stream
+        transformer.transform(domSource, stream);
 
-        return outDocument.toCharArray();
-
+        return result.toString();
     }
 
-    private static void fixImageTagHref(Document svgDocument, String imgBaseUrl) {
-        final Node child = svgDocument.getFirstChild();
-        fixImageTagHref((Element) child, imgBaseUrl);
+    private static void fixImageTagHref(Document document, String imgBaseUrl) {
+        final Node child = document.getFirstChild();
+        fixImageTagHref(document, (Element) child, imgBaseUrl);
     }
 
-    private static void fixImageTagHref(Element element, String imgBaseUrl) {
+    private static void fixImageTagHref(@NotNull Document document, @NotNull Element element, String imgBaseUrl) {
 
         final NodeList list = element.getChildNodes();
 
@@ -181,7 +191,7 @@ public class ExporterFactory {
             // find all groups
             if (GROUP_NODE_NAME.equals(node.getNodeName())) {
                 // Must continue looking ....
-                fixImageTagHref((Element) node, imgBaseUrl);
+                fixImageTagHref(document,(Element) node, imgBaseUrl);
 
             } else if (IMAGE_NODE_NAME.equals(node.getNodeName())) {
 
@@ -196,11 +206,12 @@ public class ExporterFactory {
                     // Hack for backward compatibility . This can be removed in 2012. :)
                     String imgPath;
                     if (imgUrl.contains("images")) {
-                        imgPath = imgBaseUrl + "../images/" + imgUrl;
+                        imgPath = imgBaseUrl + "../images/" + iconName;
                     } else {
                         imgPath = imgBaseUrl + imgUrl;
                     }
                     elem.setAttribute("xlink:href", imgPath);
+                    elem.appendChild(document.createTextNode(" "));
                 }
             }
         }
@@ -279,16 +290,34 @@ public class ExporterFactory {
         return transate.split(",");
     }
 
-    @NotNull
-    static private char[] convertBrowserSvgToXmlSvg(@NotNull String mapSvg)
-            throws IOException, JAXBException {
-        String result = "<?xml version='1.0' encoding='UTF-8'?>\n" + mapSvg;
+//    @NotNull
+//    static private String convertBrowserSvgToXmlSvg(@NotNull String mapSvg)
+//            throws IOException, JAXBException, SAXException, TransformerException {
+//        String buff = "<?xml version='1.0' encoding='UTF-8'?>\n" + mapSvg;
+//
+//        // Add namespace...
+//        buff = buff.replaceFirst("<svg ", "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
+//
+//        final Document document = documentBuilder.parse(buff);
+//
+//        TransformerFactory transfac = TransformerFactory.newInstance();
+//        Transformer trans = transfac.newTransformer();
+//
+//        //create string from xml tree
+//        StringWriter sw = new StringWriter();
+//        StreamResult result = new StreamResult(sw);
+//        DOMSource source = new DOMSource(document);
+//        trans.transform(source, result);
+//
+//        return result.toString();
+//    }
 
-        // Add namespace...
-        result = result.replaceFirst("<svg ", "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
+}
+
+
+/*
         result = result.replaceAll("<image([^>]+)>", "<image$1/>");
         result = result.replaceAll("<image([^>]+)//+>", "<image$1></image>");
         return result.toCharArray();
-    }
-
-}
+=======
+*/
