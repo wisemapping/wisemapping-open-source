@@ -131,7 +131,7 @@ public class ExportController extends BaseMultiActionController {
             baseUrl = "http://www.wisemapping.com/images";
         } else {
             final ServletContext servletContext = this.getServletContext();
-            baseUrl = "file://" + servletContext.getRealPath("/icons/");
+            baseUrl = "file://" + servletContext.getRealPath("/icons/")+"/";
         }
         properties.setBaseImagePath(baseUrl);
     }
