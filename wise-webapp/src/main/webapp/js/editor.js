@@ -343,7 +343,7 @@ function afterMindpotLibraryLoading()
             saveFunc.delay(1);
         } else
         {
-            new Windoo.Confirm('This option is not enabled in try mode. You must by signed in order to execute this action.',
+            new Windoo.Confirm('This option is not enabled in try mode. You must by signed in order to execute this action.<br/> to create an account click <a href="userRegistration.htm">here</a>',
             {
                 'window': {theme:Windoo.Themes.wise,
                     title:''
@@ -361,14 +361,10 @@ function afterMindpotLibraryLoading()
             window.document.location = "mymaps.htm";
         } else
         {
-            new Windoo.Confirm('This option is not enabled in try mode. You must by signed in order to execute this action.',
-            {
-                'window': {theme:Windoo.Themes.wise,
-                    title:''
+            displayLoading();
+            window.document.location = "home.htm";
                 }
             });
-        }
-    });
 
     if (isTryMode)
     {
