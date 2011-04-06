@@ -18,7 +18,6 @@
 
 package com.wisemapping.exporter;
 
-import com.wisemapping.exporter.freemind.FreemindExporter;
 import com.wisemapping.model.MindMap;
 import org.apache.batik.transcoder.Transcoder;
 import org.apache.batik.transcoder.TranscoderException;
@@ -28,6 +27,8 @@ import org.apache.batik.transcoder.image.ImageTranscoder;
 import org.apache.batik.transcoder.image.JPEGTranscoder;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.apache.fop.svg.PDFTranscoder;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -44,15 +45,15 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 
-public class SvgExporter {
+public class ExporterFactory {
     private static final String GROUP_NODE_NAME = "g";
     private static final String RECT_NODE_NAME = "rect";
     private static final String IMAGE_NODE_NAME = "image";
 
-    private SvgExporter() {
+    private ExporterFactory() {
     }
 
-    public static void export(ExportProperties properties, MindMap map, OutputStream output, String mapSvg) throws TranscoderException, IOException, ParserConfigurationException, SAXException, XMLStreamException, TransformerException, JAXBException, ExportException {
+    public static void export(@NotNull ExportProperties properties, @Nullable MindMap map, @NotNull  OutputStream output, @NotNull String mapSvg) throws TranscoderException, IOException, ParserConfigurationException, SAXException, XMLStreamException, TransformerException, JAXBException, ExportException {
         final ExportFormat format = properties.getFormat();
 
         final String imgPath = properties.getBaseImgPath();
@@ -66,7 +67,7 @@ public class SvgExporter {
                 transcoder.addTranscodingHint(ImageTranscoder.KEY_WIDTH, size.getWidth());
 
                 // Create the transcoder input.
-                char[] xml = map.generateSvgXml(mapSvg);
+                char[] xml = convertBrowserSvgToXmlSvg(mapSvg);
                 xml = normalizeSvg(xml, imgPath);
                 final CharArrayReader is = new CharArrayReader(xml);
                 TranscoderInput input = new TranscoderInput(is);
@@ -87,7 +88,7 @@ public class SvgExporter {
                 transcoder.addTranscodingHint(ImageTranscoder.KEY_WIDTH, size.getWidth());
 
                 // Create the transcoder input.
-                final char[] xml = map.generateSvgXml(mapSvg);
+                final char[] xml = convertBrowserSvgToXmlSvg(mapSvg);
                 char[] svgXml = normalizeSvg(xml, imgPath);
                 final CharArrayReader is = new CharArrayReader(svgXml);
                 TranscoderInput input = new TranscoderInput(is);
@@ -102,7 +103,7 @@ public class SvgExporter {
                 final Transcoder transcoder = new PDFTranscoder();
 
                 // Create the transcoder input.
-                final char[] xml = map.generateSvgXml(mapSvg);
+                final char[] xml = convertBrowserSvgToXmlSvg(mapSvg);
                 char[] svgXml = normalizeSvg(xml, imgPath);
                 final CharArrayReader is = new CharArrayReader(svgXml);
                 TranscoderInput input = new TranscoderInput(is);
@@ -113,7 +114,7 @@ public class SvgExporter {
                 break;
             }
             case SVG: {
-                final char[] xml = map.generateSvgXml(mapSvg);
+                final char[] xml = convertBrowserSvgToXmlSvg(mapSvg);
                 char[] svgXml = normalizeSvg(xml, imgPath);
                 output.write(new String(svgXml).getBytes("UTF-8"));
                 break;
@@ -277,4 +278,16 @@ public class SvgExporter {
         final String transate = value.substring(initTranslate + 1, endTranslate);
         return transate.split(",");
     }
+
+    @NotNull
+    static private char[] convertBrowserSvgToXmlSvg(@NotNull String mapSvg)
+            throws IOException, JAXBException {
+        String result = "<?xml version='1.0' encoding='UTF-8'?>\n" + mapSvg;
+
+        // Add namespace...
+        result = result.replaceFirst("<svg ", "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
+
+        return result.toCharArray();
+    }
+
 }

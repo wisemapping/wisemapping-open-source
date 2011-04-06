@@ -1,7 +1,7 @@
 package com.wisemapping.test.freemind;
 
 import com.wisemapping.exporter.ExportException;
-import com.wisemapping.exporter.freemind.FreemindExporter;
+import com.wisemapping.exporter.FreemindExporter;
 import com.wisemapping.importer.ImportFormat;
 import com.wisemapping.importer.Importer;
 import com.wisemapping.importer.ImporterException;
