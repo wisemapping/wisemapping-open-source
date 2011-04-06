@@ -9,11 +9,6 @@
 %>
 <!DOCTYPE HTML PUBLIC>
 <%@ include file="/jsp/init.jsp" %>
-<c:url value="export.htm" var="exportUrl">
-    <c:param name="action" value="image"/>
-    <c:param name="mapId" value="${mindmap.id}"/>
-    <c:param name="mapSvg" value="${mapSvg}"/>
-</c:url>
 <html>
 <head>
     <title>
@@ -27,7 +22,7 @@
         <div id="headerTitle">${mindmap.title}<span id="headerSubTitle">&nbsp;(<%=todayString%>)</span></div>
     </div>
     <center>
-        <img src="${exportUrl}" alt="${mindmap.title}"/>
+        <img src="${mapSvg}" alt="${mindmap.title}"/>
     </center>
 </body>
 </html>

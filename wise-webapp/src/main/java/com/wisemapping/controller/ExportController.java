@@ -18,6 +18,7 @@
 
 package com.wisemapping.controller;
 
+import com.wisemapping.exporter.ExportException;
 import com.wisemapping.exporter.ExportFormat;
 import com.wisemapping.exporter.ExporterFactory;
 import com.wisemapping.model.MindMap;
@@ -29,13 +30,20 @@ import org.apache.batik.transcoder.TranscoderException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
+import org.xml.sax.SAXException;
+import sun.misc.BASE64Encoder;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.transform.TransformerException;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 public class ExportController extends BaseMultiActionController {
     private static final String IMG_EXPORT_FORMAT = "IMG_EXPORT_FORMAT";
@@ -137,9 +145,20 @@ public class ExportController extends BaseMultiActionController {
         final MindMap mindMap = service.getMindmapById(mindmapId);
         final String mapSvg = request.getParameter(MAP_SVG_PARAMETER);
 
+        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        try {
+            exportImage(response, mapSvg, bos, false);
+        } catch (Throwable e) {
+            logger.error("Unexpexted error generating the image", e);
+        }
+
+        BASE64Encoder encoder = new BASE64Encoder();
+        String content = encoder.encode(bos.toByteArray());
+        final String exportContent = "data:image/png;base64,"+content;
+        bos.close();
 
         ModelAndView view = new ModelAndView("mindmapPrint", "mindmap", mindMap);
-        view.addObject(MAP_SVG_PARAMETER, mapSvg);
+        view.addObject(MAP_SVG_PARAMETER, exportContent);
         return view;
 
     }
@@ -150,30 +169,34 @@ public class ExportController extends BaseMultiActionController {
 
             final String mapIdStr = request.getParameter(MAP_ID_PARAMETER);
             final String mapSvg = request.getParameter(MAP_SVG_PARAMETER);
-
-            final MindmapService service = getMindmapService();
-
-            //Image Format
-            ExportFormat imageFormat = ExportFormat.PNG;
-
-            // Build format properties ...
-            final ExportProperties.ImageProperties imageProperties = new ExportProperties.ImageProperties(imageFormat);
-            imageProperties.setSize(ExportProperties.ImageProperties.Size.XMEDIUM);
-
-            // Change image link URL.
-            setBaseBaseImgUrl(imageFormat, imageProperties);
-
-            // Set format content type...
-            response.setContentType(imageFormat.getContentType());
-
-            // Write content ...
             final ServletOutputStream outputStream = response.getOutputStream();
-            ExporterFactory.export(imageProperties, null, outputStream, mapSvg);
+
+            exportImage(response, mapSvg, outputStream, true);
 
 
         } catch (Throwable e) {
             logger.error("Unexpexted error generating the image", e);
         }
         return null;
+    }
+
+    private void exportImage(HttpServletResponse response, String mapSvg, OutputStream outputStream, boolean setOutput) throws TranscoderException, IOException, ParserConfigurationException, SAXException, XMLStreamException, TransformerException, JAXBException, ExportException {
+
+        //Image Format
+        ExportFormat imageFormat = ExportFormat.PNG;
+
+        // Build format properties ...
+        final ExportProperties.ImageProperties imageProperties = new ExportProperties.ImageProperties(imageFormat);
+        imageProperties.setSize(ExportProperties.ImageProperties.Size.XMEDIUM);
+
+        // Change image link URL.
+        setBaseBaseImgUrl(imageFormat, imageProperties);
+
+        // Set format content type...
+        if(setOutput)
+            response.setContentType(imageFormat.getContentType());
+
+        // Write content ...
+        ExporterFactory.export(imageProperties, null, outputStream, mapSvg);
     }
 }
