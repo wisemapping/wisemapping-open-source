@@ -220,9 +220,9 @@
                                    rel="moodalbox 600px 400px" title="<spring:message code="EXPORT_DETAILS"/>">
                                     <spring:message code="EXPORT"/>
                                 </a>--%>
-                                <a href="javascript:printMap(${mindmap.id});">
+                                <%--<a href="javascript:printMap(${mindmap.id});">
                                     <spring:message code="PRINT"/>
-                                </a>
+                                </a>--%>
                             </div>
                         </div>
                     </td>
