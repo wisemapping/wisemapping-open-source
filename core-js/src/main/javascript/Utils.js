@@ -315,7 +315,7 @@ core.Utils.animateVisibility = function (elems, isVisible, doneFn){
         }
 
     };
-    _fadeEffect =fadeEffect.periodical(30);
+    _fadeEffect =fadeEffect.periodical(10);
 };
 
 core.Utils._addInnerChildrens = function(elem){
