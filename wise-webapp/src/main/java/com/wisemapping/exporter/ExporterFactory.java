@@ -131,17 +131,27 @@ public class ExporterFactory {
         }
     }
 
-    private static Document normalizeSvg(String svgXml, final String imgBaseUrl) throws XMLStreamException, ParserConfigurationException, IOException, SAXException, TransformerException {
+    private static Document normalizeSvg(@NotNull String svgXml, final String imgBaseUrl) throws XMLStreamException, ParserConfigurationException, IOException, SAXException, TransformerException {
 
         final DocumentBuilder documentBuilder = getDocumentBuilder();
         svgXml = svgXml.replaceFirst("<svg ", "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
 
-        final Reader in = new CharArrayReader(svgXml.toCharArray());
 
-        // Load document ...
-        final InputSource is = new InputSource(in);
+        Document document;
+        try {
+            final Reader in = new CharArrayReader(svgXml.toCharArray());
+            final InputSource is = new InputSource(in);
 
-        final Document document = documentBuilder.parse(is);
+            document = documentBuilder.parse(is);
+        } catch (SAXException e) {
+            // It must be a corrupted SVG format. Try to hack it and try again ...
+            svgXml = svgXml.replaceAll("<image([^>]+)>", "<image$1/>");
+
+            final Reader in = new CharArrayReader(svgXml.toCharArray());
+            final InputSource is = new InputSource(in);
+            document = documentBuilder.parse(is);
+        }
+
 
         fitSvg(document);
 
@@ -191,7 +201,7 @@ public class ExporterFactory {
             // find all groups
             if (GROUP_NODE_NAME.equals(node.getNodeName())) {
                 // Must continue looking ....
-                fixImageTagHref(document,(Element) node, imgBaseUrl);
+                fixImageTagHref(document, (Element) node, imgBaseUrl);
 
             } else if (IMAGE_NODE_NAME.equals(node.getNodeName())) {
 
@@ -290,34 +300,4 @@ public class ExporterFactory {
         return transate.split(",");
     }
 
-//    @NotNull
-//    static private String convertBrowserSvgToXmlSvg(@NotNull String mapSvg)
-//            throws IOException, JAXBException, SAXException, TransformerException {
-//        String buff = "<?xml version='1.0' encoding='UTF-8'?>\n" + mapSvg;
-//
-//        // Add namespace...
-//        buff = buff.replaceFirst("<svg ", "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
-//
-//        final Document document = documentBuilder.parse(buff);
-//
-//        TransformerFactory transfac = TransformerFactory.newInstance();
-//        Transformer trans = transfac.newTransformer();
-//
-//        //create string from xml tree
-//        StringWriter sw = new StringWriter();
-//        StreamResult result = new StreamResult(sw);
-//        DOMSource source = new DOMSource(document);
-//        trans.transform(source, result);
-//
-//        return result.toString();
-//    }
-
 }
-
-
-/*
-        result = result.replaceAll("<image([^>]+)>", "<image$1/>");
-        result = result.replaceAll("<image([^>]+)//+>", "<image$1></image>");
-        return result.toCharArray();
-=======
-*/

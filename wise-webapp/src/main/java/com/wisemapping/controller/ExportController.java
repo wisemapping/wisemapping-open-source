@@ -150,6 +150,7 @@ public class ExportController extends BaseMultiActionController {
             exportImage(response, mapSvg, bos, false);
         } catch (Throwable e) {
             logger.error("Unexpexted error generating the image", e);
+            logger.error("map: "+mapSvg);
         }
 
         BASE64Encoder encoder = new BASE64Encoder();
@@ -164,11 +165,11 @@ public class ExportController extends BaseMultiActionController {
     }
 
     public ModelAndView image(HttpServletRequest request, HttpServletResponse response) throws TranscoderException, IOException, JAXBException {
-        try {
-            logger.info("Export Controller: generating image WiseMap action");
+        logger.info("Export Controller: generating image WiseMap action");
 
-            final String mapIdStr = request.getParameter(MAP_ID_PARAMETER);
-            final String mapSvg = request.getParameter(MAP_SVG_PARAMETER);
+        final String mapIdStr = request.getParameter(MAP_ID_PARAMETER);
+        final String mapSvg = request.getParameter(MAP_SVG_PARAMETER);
+        try {
             final ServletOutputStream outputStream = response.getOutputStream();
 
             exportImage(response, mapSvg, outputStream, true);
@@ -176,6 +177,7 @@ public class ExportController extends BaseMultiActionController {
 
         } catch (Throwable e) {
             logger.error("Unexpexted error generating the image", e);
+            logger.error("map: "+mapSvg);
         }
         return null;
     }
