@@ -117,8 +117,7 @@ public class ExporterFactory {
             }
             case SVG: {
                 final Document dom = normalizeSvg(mapSvg, imgPath);
-                String s = domToString(dom);
-                output.write(null);
+                output.write(domToString(dom).getBytes("UTF-8"));
                 break;
             }
             case FREEMIND: {
