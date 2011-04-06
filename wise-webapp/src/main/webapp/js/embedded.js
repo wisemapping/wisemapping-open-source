@@ -18,7 +18,7 @@
 
 function afterCoreLoading()
 {
-        $import("../js/mindplot-min.js");
+        $import("../js/mindplot.svg-min.js");
 };
 
 afterCoreLoading();
