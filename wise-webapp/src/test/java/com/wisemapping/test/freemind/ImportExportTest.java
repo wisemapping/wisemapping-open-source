@@ -29,43 +29,63 @@ public class ImportExportTest {
 
 
     @Test(dataProvider = "Data-Provider-Function")
-    public void exportImportExportTest(@NotNull final File freeMindFile, @NotNull final File recFile) throws ImporterException, IOException, ExportException {
+    public void exportImportExportTest(@NotNull final File freeMindFile, @NotNull final File wiseFile, @NotNull final File freeRecFile) throws ImporterException, IOException, ExportException {
 
 
-        FileInputStream fileInputStream = new FileInputStream(freeMindFile.getAbsolutePath());
+        final FileInputStream fileInputStream = new FileInputStream(freeMindFile.getAbsolutePath());
         final MindMap mindMap = importer.importMap("basic", "basic", fileInputStream);
 
-        if (recFile.exists()) {
+
+        // Compare mindmap output ...
+        if (wiseFile.exists()) {
             // Compare rec and file ...
+            final String recContent = readFile(wiseFile);
 
-            // Load rec file co
-            final FileInputStream fis = new FileInputStream(recFile);
-            final InputStreamReader isr = new InputStreamReader(fis);
-            final BufferedReader br = new BufferedReader(isr);
+            // Export mile content ...
+            Assert.assertEquals(mindMap.getUnzippedXml(), recContent);
 
-            final StringBuilder recContent = new StringBuilder();
-            String line = br.readLine();
-            while (line != null) {
-                recContent.append(line);
-                line = br.readLine();
+        } else {
+            final FileOutputStream fos = new FileOutputStream(wiseFile);
+            fos.write(mindMap.getUnzippedXml().getBytes());
+            fos.close();
+        }
 
-            }
-
-            fis.close();
+        // Compare freemind output ...
+        if (freeRecFile.exists()) {
+            // Compare rec and file ...
+            final String recContent = readFile(freeRecFile);
 
             // Export mile content ...
             final ByteArrayOutputStream bos = new ByteArrayOutputStream();
             exporter.export(mindMap, bos);
             final String exportContent = new String(bos.toByteArray());
 
-            Assert.assertEquals(recContent.toString(), exportContent);
+            Assert.assertEquals(exportContent, recContent);
 
         } else {
-            final FileOutputStream fos = new FileOutputStream(recFile);
+            final FileOutputStream fos = new FileOutputStream(freeRecFile);
             exporter.export(mindMap, fos);
             fos.close();
         }
 
+    }
+
+    private String readFile(@NotNull File file) throws IOException {
+        // Load rec file co
+        final FileInputStream fis = new FileInputStream(file);
+        final InputStreamReader isr = new InputStreamReader(fis);
+        final BufferedReader br = new BufferedReader(isr);
+
+        final StringBuilder result = new StringBuilder();
+        String line = br.readLine();
+        while (line != null) {
+            result.append(line);
+            line = br.readLine();
+
+        }
+
+        fis.close();
+        return result.toString();
     }
 
     //This function will provide the parameter data
@@ -84,7 +104,8 @@ public class ImportExportTest {
         for (int i = 0; i < freeMindFiles.length; i++) {
             File freeMindFile = freeMindFiles[i];
             final String name = freeMindFile.getName();
-            result[i] = new Object[]{freeMindFile, new File(DATA_DIR_PATH, name.substring(0, name.lastIndexOf(".")) + ".mmr")};
+            String testName = name.substring(0, name.lastIndexOf("."));
+            result[i] = new Object[]{freeMindFile, new File(DATA_DIR_PATH, testName + ".wxml"), new File(DATA_DIR_PATH, testName + ".mmr")};
         }
 
         return result;

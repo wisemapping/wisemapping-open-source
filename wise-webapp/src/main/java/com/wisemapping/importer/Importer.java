@@ -20,6 +20,7 @@ package com.wisemapping.importer;
 
 import com.wisemapping.model.MindMap;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 public interface Importer

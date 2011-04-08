@@ -18,28 +18,47 @@
 
 package com.wisemapping.util;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JAXBUtils {
 
-    public static Object getMapObject(InputStream stream,String pakage) throws JAXBException {
+    private final static Map<String, JAXBContext> context = new HashMap<String, JAXBContext>();
 
-        final JAXBContext context = JAXBContext.newInstance(pakage);
-        final Unmarshaller unmarshaller = context.createUnmarshaller() ;
+    public static Object getMapObject(@NotNull InputStream stream, @NotNull final String pakage) throws JAXBException {
 
-        return unmarshaller.unmarshal (stream) ;
+        final JAXBContext context = getInstance(pakage);
+        final Unmarshaller unmarshaller = context.createUnmarshaller();
+
+        return unmarshaller.unmarshal(stream);
     }
 
-    public static void saveMap(Object obj, OutputStream out,String pakage) throws JAXBException {
+    private static JAXBContext getInstance(@NotNull String pakage) throws JAXBException {
 
-        final JAXBContext context = JAXBContext.newInstance(pakage);
-        final Marshaller marshaller =   context.createMarshaller();
+        JAXBContext result = context.get(pakage);
+        if (result == null) {
+            synchronized (context) {
+                result = JAXBContext.newInstance(pakage);
+                context.put(pakage, result);
+            }
+        }
+        return result;
 
-        marshaller.marshal(obj, out) ;
+    }
+
+    public static void saveMap(@NotNull Object obj, @NotNull OutputStream out, String pachage) throws JAXBException {
+
+        final JAXBContext context = getInstance(pachage);
+        final Marshaller marshaller = context.createMarshaller();
+
+        marshaller.marshal(obj, out);
     }
 }
