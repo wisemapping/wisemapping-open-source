@@ -13,17 +13,17 @@ mindplot.layoutManagers.boards.Board = new Class({
     getClassName:function(){
         return mindplot.layoutManagers.boards.Board.NAME;
     },
-    removeTopicFromBoard:function(node){
-        core.Utils.assert(false, "no Board implementation found!");
+    removeTopicFromBoard:function(node, modifiedTopics){
+        core.assert(false, "no Board implementation found!");
     },
-    addBranch:function(node){
-        core.Utils.assert(false, "no Board implementation found!");
+    addBranch:function(node, modifiedTopics){
+        core.assert(false, "no Board implementation found!");
     },
-    updateChildrenPosition:function(node){
-        core.Utils.assert(false, "no Board implementation found!");
+    updateChildrenPosition:function(node, modifiedTopics){
+        core.assert(false, "no Board implementation found!");
     },
     setNodeMarginTop:function(node, delta){
-        core.Utils.assert(false, "no Board implementation found!");
+        core.assert(false, "no Board implementation found!");
     }
 });
 

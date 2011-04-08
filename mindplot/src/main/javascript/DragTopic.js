@@ -207,7 +207,7 @@ mindplot.DragTopic.prototype.updateDraggedTopic = function(workspace)
         command = new mindplot.commands.DragTopicCommand(topicId, dragPosition);
         command.setPosition(dragPosition);
     }
-    actionRunner.execute(command)
+    actionRunner.execute(command);
 };
 
 mindplot.DragTopic.prototype.setBoardPosition = function(point)

@@ -516,7 +516,7 @@ mindplot.Topic.prototype.setFontFamily = function(value, updateModel)
     {
         return function()
         {
-            elem.updateNode();
+            elem.updateNode(updateModel);
         };
     };
 
@@ -537,7 +537,7 @@ mindplot.Topic.prototype.setFontSize = function(value, updateModel)
     {
         return function()
         {
-            elem.updateNode();
+            elem.updateNode(updateModel);
         };
     };
 
@@ -559,7 +559,7 @@ mindplot.Topic.prototype.setFontStyle = function(value, updateModel)
     {
         return function()
         {
-            elem.updateNode();
+            elem.updateNode(updateModel);
         };
     };
 
@@ -657,7 +657,7 @@ mindplot.Topic.prototype._setText = function(text, updateModel)
     {
         return function()
         {
-                elem.updateNode();
+                elem.updateNode(updateModel);
         };
     };
 
@@ -1092,7 +1092,7 @@ mindplot.Topic.prototype._setSize = function(size)
     innerShape.setSize(size.width, size.height);
 };
 
-mindplot.Topic.prototype.setSize = function(size, force)
+mindplot.Topic.prototype.setSize = function(size, force, updatePosition)
 {
     var oldSize = this.getSize();
     if (oldSize.width != size.width || oldSize.height != size.height || force)
@@ -1100,14 +1100,14 @@ mindplot.Topic.prototype.setSize = function(size, force)
         this._setSize(size);
 
         // Update the figure position(ej: central topic must be centered) and children position.
-        this._updatePositionOnChangeSize(oldSize, size);
+        this._updatePositionOnChangeSize(oldSize, size, updatePosition);
 
         mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeResizeEvent,[this]);
         
     }
 };
 
-mindplot.Topic.prototype._updatePositionOnChangeSize = function(oldSize, newSize) {
+mindplot.Topic.prototype._updatePositionOnChangeSize = function(oldSize, newSize, updatePosition) {
     core.assert(false, "this method must be overided");
 };
 
@@ -1284,7 +1284,7 @@ mindplot.Topic.prototype.createDragNode = function()
     return dragNode;
 };
 
-mindplot.Topic.prototype.updateNode = function()
+mindplot.Topic.prototype.updateNode = function(updatePosition)
 {
     if(this.isInWorkspace()){
         var textShape = this.getTextShape();
@@ -1302,7 +1302,7 @@ mindplot.Topic.prototype.updateNode = function()
         }
 
         var newSize = {width:width,height:height};
-        this.setSize(newSize);
+        this.setSize(newSize, false, updatePosition);
 
         // Positionate node ...
         textShape.setPosition(iconOffset+this._offset, pos);

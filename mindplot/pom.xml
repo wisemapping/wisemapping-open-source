@@ -124,6 +124,8 @@
                                               files="commands/AddRelationshipCommand.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="commands/MoveControlPointCommand.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="commands/freeMind/DragTopicCommand.js"/>
 
 
                                     <filelist dir="${basedir}/src/main/javascript/"
@@ -241,6 +243,7 @@
                                         <include>commands/RemoveNoteFromTopicCommand-min.js</include>
                                         <include>commands/AddRelationshipCommand-min.js</include>
                                         <include>commands/MoveControlPointCommand-min.js</include>
+                                        <include>commands/freeMind/DragTopicCommand-min.js</include>
 
                                         <include>layoutManagers/boards/Board-min.js</include>
                                         <include>layoutManagers/boards/freeMindBoards/Board-min.js</include>

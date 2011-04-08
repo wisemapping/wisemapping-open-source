@@ -97,10 +97,6 @@ mindplot.CommandContext = new Class({
         core.assert(model, "model can not be null");
         var topic = this._designer._nodeModelToNodeGraph(model, isVisible);
 
-        // @todo: Is this required ?
-        var designer = this._designer;
-        designer.onObjectFocusEvent.attempt(topic, designer);
-
         return topic;
     },
     createModel:function()

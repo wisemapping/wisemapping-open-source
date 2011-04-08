@@ -16,7 +16,7 @@ mindplot.layoutManagers.OriginalLayoutManager = mindplot.layoutManagers.BaseLayo
         if(this._isCentralTopic(node)){
             var size = node.getSize();
             if(!this._isCentralTopic(node))
-                this.getTopicBoardForTopic(node).updateChildrenPosition(node,size.height/2);
+                this.getTopicBoardForTopic(node).updateChildrenPosition(node,size.height/2, []);
         }
     },
     _NodeRepositionateEvent:function(node){

@@ -257,14 +257,14 @@ mindplot.XMLMindmapSerializer_Pela.prototype.loadFromDom = function(dom)
 mindplot.XMLMindmapSerializer_Pela.prototype._deserializeNode = function(domElem, mindmap)
 {
     var type = (domElem.getAttribute('central') != null) ? mindplot.NodeModel.CENTRAL_TOPIC_TYPE : mindplot.NodeModel.MAIN_TOPIC_TYPE;
-    var topic = mindmap.createNode(type);
-
     // Load attributes...
     var id = domElem.getAttribute('id');
     if(id) {
-        topic.setId(id);
+        id=parseInt(id);
     }
-    
+
+    var topic = mindmap.createNode(type, id);
+
     var text = domElem.getAttribute('text');
     if (text) {
         topic.setText(text);
@@ -330,6 +330,7 @@ mindplot.XMLMindmapSerializer_Pela.prototype._deserializeNode = function(domElem
     if (position) {
         var pos = position.split(',');
         topic.setPosition(pos[0], pos[1]);
+        topic.setFinalPosition(pos[0], pos[1]);
     }
 
     //Creating icons and children nodes

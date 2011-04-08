@@ -64,11 +64,11 @@ public class ExportController extends BaseMultiActionController {
 
         final String mapIdStr = request.getParameter(MAP_ID_PARAMETER);
         if (mapIdStr != null) {
+            final String mapSvg = request.getParameter(MAP_SVG_PARAMETER);
             try {
 
                 int mindmapId = Integer.parseInt(mapIdStr);
 
-                final String mapSvg = request.getParameter(MAP_SVG_PARAMETER);
                 logger.debug("SVG Map to export:"+mapSvg);
                 if(mapSvg==null || mapSvg.isEmpty())
                 {
@@ -116,6 +116,7 @@ public class ExportController extends BaseMultiActionController {
             } catch (Throwable e) {
                 logger.error("Unexpexted error during export process", e);
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                logger.error("map: "+mapSvg);
             }
         } else {
             logger.warn("mapIdStr is null.Image could not be imported. UserAgent:" + request.getHeaders(UserAgent.USER_AGENT_HEADER));

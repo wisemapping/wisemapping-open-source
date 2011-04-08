@@ -103,7 +103,7 @@ mindplot.CentralTopicBoard.prototype.addBranch = function(topic)
     board.update(entry);
 };
 
-mindplot.CentralTopicBoard.prototype.updateChildrenPosition = function(topic, xOffset)
+mindplot.CentralTopicBoard.prototype.updateChildrenPosition = function(topic, xOffset, modifiedTopics)
 {
     var board = this._rightBoard;
     var oldReferencePosition = board.getReferencePoint();

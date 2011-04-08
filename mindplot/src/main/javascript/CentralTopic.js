@@ -87,7 +87,7 @@ mindplot.CentralTopic.prototype.updateTopicShape = function()
 {
 
 };
-mindplot.CentralTopic.prototype._updatePositionOnChangeSize = function(oldSize, newSize) {
+mindplot.CentralTopic.prototype._updatePositionOnChangeSize = function(oldSize, newSize, updatePosition) {
 
     // Center main topic ...
     var zeroPoint = new core.Point(0, 0);

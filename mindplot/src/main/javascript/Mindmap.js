@@ -126,16 +126,16 @@ mindplot.Mindmap.prototype.hasAlreadyAdded = function(node)
     }
 };
 
-mindplot.Mindmap.prototype.createNode = function(type)
+mindplot.Mindmap.prototype.createNode = function(type, id)
 {
     core.assert(type, "node type can not be null");
-    return this._createNode(type);
+    return this._createNode(type, id);
 };
 
-mindplot.Mindmap.prototype._createNode = function(type)
+mindplot.Mindmap.prototype._createNode = function(type, id)
 {
     core.assert(type, 'Node type must be specified.');
-    var result = new mindplot.NodeModel(type, this);
+    var result = new mindplot.NodeModel(type, this, id);
     return result;
 };
 

@@ -175,20 +175,25 @@ mindplot.MainTopic.prototype.getTopicType = function()
 };
 
 
-mindplot.MainTopic.prototype._updatePositionOnChangeSize = function(oldSize, newSize) {
+mindplot.MainTopic.prototype._updatePositionOnChangeSize = function(oldSize, newSize, updatePosition) {
 
-    var xOffset = (newSize.width - oldSize.width) / 2;
-    var pos = this.getPosition();
-    if (core.Utils.isDefined(pos))
-    {
-        if (pos.x > 0)
+    if(!updatePosition && this.getModel().getFinalPosition()){
+        this.setPosition(this.getModel().getFinalPosition(), false);
+    }
+    else{
+        var xOffset = Math.round((newSize.width - oldSize.width) / 2);
+        var pos = this.getPosition();
+        if (core.Utils.isDefined(pos))
         {
-            pos.x = pos.x + xOffset;
-        } else
-        {
-            pos.x = pos.x - xOffset;
+            if (pos.x > 0)
+            {
+                pos.x = pos.x + xOffset;
+            } else
+            {
+                pos.x = pos.x - xOffset;
+            }
+            this.setPosition(pos);
         }
-        this.setPosition(pos);
     }
 };
 

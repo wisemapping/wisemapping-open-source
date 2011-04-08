@@ -141,7 +141,7 @@ mindplot.ConnectionLine.prototype._positionateConnector = function(targetTopic)
     y = y - offset;
 
     var connector = targetTopic.getShrinkConnector();
-    if (targetPosition.x >= 0)
+    if (Math.sign(targetPosition.x) > 0)
     {
         var x = targetTopicSize.width;
         connector.setPosition(x, y);

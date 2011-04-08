@@ -16,7 +16,7 @@
 *   limitations under the License.
 */
 
-mindplot.NodeModel = function(type, mindmap)
+mindplot.NodeModel = function(type, mindmap, id)
 {
     core.assert(type, 'Node type can not be null');
     core.assert(mindmap, 'mindmap can not be null');
@@ -29,7 +29,14 @@ mindplot.NodeModel = function(type, mindmap)
     this._notes = [];
     this._size = {width:50,height:20};
     this._position = null;
-    this._id = mindplot.NodeModel._nextUUID();
+    if(core.Utils.isDefined(id)){
+        if(!mindplot.NodeModel._uuid || id>mindplot.NodeModel._uuid){
+            mindplot.NodeModel._uuid = id;
+        }
+        this._id = id;
+    } else {
+        this._id = mindplot.NodeModel._nextUUID();
+    }
     this._mindmap = mindmap;
     this._text = null;
     this._shapeType = null;
@@ -95,6 +102,9 @@ mindplot.NodeModel.prototype.getId = function()
 mindplot.NodeModel.prototype.setId = function(id)
 {
     this._id = id;
+    if(mindplot.NodeModel._uuid<id){
+        mindplot.NodeModel._uuid = id;
+    }
 };
 
 mindplot.NodeModel.prototype.getType = function()
@@ -211,6 +221,24 @@ mindplot.NodeModel.prototype.setPosition = function(x, y)
 mindplot.NodeModel.prototype.getPosition = function()
 {
     return this._position;
+};
+
+mindplot.NodeModel.prototype.setFinalPosition = function(x, y)
+{
+    core.assert(core.Utils.isDefined(x), "x coordinate must be defined");
+    core.assert(core.Utils.isDefined(y), "y coordinate must be defined");
+
+    if (!core.Utils.isDefined(this._finalPosition))
+    {
+        this._finalPosition = new core.Point();
+    }
+    this._finalPosition.x = parseInt(x);
+    this._finalPosition.y = parseInt(y);
+};
+
+mindplot.NodeModel.prototype.getFinalPosition = function()
+{
+    return this._finalPosition;
 };
 
 mindplot.NodeModel.prototype.setSize = function(width, height)
