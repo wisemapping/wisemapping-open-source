@@ -17,19 +17,19 @@
     <!-- Internet Explorer 8 Hack -->
     <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
     <title><spring:message code="SITE.TITLE"/> - ${mindmap.title} </title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/editor.css"/>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/bubble.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/editor.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/bubble.css"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/thirdparty.css"/>
 
-    <script type="text/javascript" src="${pageContext.request.contextPath}/dwr/engine.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/dwr/interface/LoggerService.js"></script>
+    <script type="text/javascript" src="../dwr/engine.js"></script>
+    <script type="text/javascript" src="../dwr/interface/LoggerService.js"></script>
 
-    <script type='text/javascript' src='${pageContext.request.contextPath}/js/wiseLibrary.js'></script>
-    <script type='text/javascript' src='${pageContext.request.contextPath}/js/wiseEditorLibrary.js'></script>
-    <script type='text/javascript' src='${pageContext.request.contextPath}/js/core.js'></script>
+    <script type='text/javascript' src='../js/wiseLibrary.js'></script>
+    <script type='text/javascript' src='../js/wiseEditorLibrary.js'></script>
+    <script type='text/javascript' src='../js/core.js'></script>
 
-    <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
 </head>
 <body>
 <jsp:include page="editorHeader.jsp">
@@ -103,10 +103,10 @@
 
 <div id="topicShapePanel" class="toolbarPanel">
     <!--<div id="automatic" class="toolbarPanelLink">Automatic</div>-->
-    <div id="rectagle" class="toolbarPanelLink"><img src="${pageContext.request.contextPath}/images/shape-rectangle.png" alt="Rectangle" width="40" height="25"></div>
-    <div id="rounded_rectagle" class="toolbarPanelLink"><img src="${pageContext.request.contextPath}/images/shape-rectangle-rounded.png" alt="Rounded Rectangle" width="40" height="25"></div>
-    <div id="line" class="toolbarPanelLink"><img src="${pageContext.request.contextPath}/images/shape-line.png" alt="Line" width="40" height="7"></div>
-    <div id="elipse" class="toolbarPanelLink"><img src="${pageContext.request.contextPath}/images/shape-elipse.png" alt="Elipse" width="40" height="25"></div>
+    <div id="rectagle" class="toolbarPanelLink"><img src="../images/shape-rectangle.png" alt="Rectangle" width="40" height="25"></div>
+    <div id="rounded_rectagle" class="toolbarPanelLink"><img src="../images/shape-rectangle-rounded.png" alt="Rounded Rectangle" width="40" height="25"></div>
+    <div id="line" class="toolbarPanelLink"><img src="../images/shape-line.png" alt="Line" width="40" height="7"></div>
+    <div id="elipse" class="toolbarPanelLink"><img src="../images/shape-elipse.png" alt="Elipse" width="40" height="25"></div>
 </div>
 
 <div id="actionsContainer">
@@ -298,7 +298,7 @@
     <div id="helpButtonKeyboard"
          style="text-align:center; width:100px; height:20px; background-color:#f5f5f5; border: 1px solid #BBB6D6; cursor:pointer; padding-left:5px; margin-left:3px;float:left;">
         <div style="float:left; position:relative; top:50%; margin-top:-8px; margin-left:5px;"><img
-                src="${pageContext.request.contextPath}/images/help.png"/></div>
+                src="../images/help.png"/></div>
         <div style="float:left; position:relative; top:50%; margin-top:-8px; margin-left:4px;">Shortcuts</div>
     </div>
 </div>
@@ -326,9 +326,9 @@
 </c:if>
 <div id="ffoxworkarround" style="display:none;"><input id="ffoxWorkarroundInput" type="text"></div>
 <c:if test="${editorTryMode==false}">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/dwr/interface/MapEditorService.js"></script>
+    <script type="text/javascript" src="../dwr/interface/MapEditorService.js"></script>
 </c:if>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/editor.js"></script>
+<script type="text/javascript" src="../js/editor.js"></script>
 <%--<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
 </script>
 <script type="text/javascript">
