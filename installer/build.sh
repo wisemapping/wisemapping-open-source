@@ -1,8 +1,9 @@
 #!/bin/bash
 
 set -e	
+set -u
 
-WISE_VERSION=0.96
+WISE_VERSION=$1
 BASE_DIR=`pwd`
 TARGET_DIR=$BASE_DIR/target
 JETTY_DIR=$TARGET_DIR/wisemapping-$WISE_VERSION
@@ -12,12 +13,12 @@ JETTY_ZIP=${JETTY_DIST_DIR}.zip
 
 # Clean ...
 mvn -f $BASE_DIR/../pom.xml clean
-[ ! -e target ] && mkdir target
+[ ! -e target ] && mkdir target 
 rm -fr ${JETTY_DIR}
 rm -fr ${TARGET_DIR}/jetty-distribution-7.3.0.v20110203
 
 # Prepare resources ..
-mvn -f $BASE_DIR/../pom.xml install
+mvn -f $BASE_DIR/../pom.xml install -Dmaven.test.skip=true
 
 if [ ! -f ./target/${JETTY_ZIP}  ]
 then	
@@ -29,7 +30,6 @@ echo "Unzip Jetty ...:"
 unzip ${TARGET_DIR}/${JETTY_ZIP}  -d ${TARGET_DIR}/ > /dev/null
 mv ${TARGET_DIR}/${JETTY_DIST_DIR} ${JETTY_DIR}
                    
-
 # Clean unsed files ...
 rm -r $JETTY_DIR/webapps/*
 rm -r $JETTY_DIR/contexts/*
@@ -48,7 +48,11 @@ cp $BASE_DIR/wisemapping.xml $JETTY_DIR/contexts/
 sed 's/target\/db\/wisemapping/webapps\/wisemapping\/WEB-INF\/database\/wisemapping/' $WISE_WEBAPP_DIR/WEB-INF/app.properties > $WISE_WEBAPP_DIR/WEB-INF/app.properties2
 mv $WISE_WEBAPP_DIR/WEB-INF/app.properties2 $WISE_WEBAPP_DIR/WEB-INF/app.properties
 
-#Build final Zip
+
+# Distribute scripts
+cp -r $BASE_DIR/../wise-webapp/src/test/sql $TARGET_DIR/wisemapping-$WISE_VERSION/config
+
+# Zip all ...
 cd $TARGET_DIR
 zip -r wisemapping-$WISE_VERSION.zip wisemapping-$WISE_VERSION
 cd ..
