@@ -329,5 +329,11 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/dwr/interface/MapEditorService.js"></script>
 </c:if>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/editor.js"></script>
+<%--<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+    _uacct = "UA-2347723-1";
+    urchinTracker();
+</script>--%>
 </body>
 </html>
