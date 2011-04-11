@@ -149,6 +149,9 @@
             <xs:attribute name='MODIFIED' type='xs:integer' use='optional'/>
             <xs:attribute name='HGAP' type='xs:integer' use='optional'/>
             <xs:attribute name='VGAP' type='xs:integer' use='optional'/>
+            <xs:attribute name='WCOORDS' type='xs:string' use='optional'/>
+            <xs:attribute name='WORDER' type='xs:integer' use='optional'/>
+
             <xs:attribute name='VSHIFT' type='xs:integer' use='optional'/>
             <xs:attribute name='ENCRYPTED_CONTENT' type='xs:string' use='optional'/>
         </xs:complexType>

@@ -26,9 +26,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ * <p/>
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ * <p/>
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -75,25 +75,23 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "arrowlinkOrCloudOrEdge"
+        "arrowlinkOrCloudOrEdge"
 })
 @XmlRootElement(name = "node")
 public class Node {
 
     @XmlElements({
-        @XmlElement(name = "icon", type = Icon.class),
-        @XmlElement(name = "node", type = Node.class),
-        @XmlElement(name = "edge", type = Edge.class),
-        @XmlElement(name = "arrowlink", type = Arrowlink.class),
-        @XmlElement(name = "font", type = Font.class),
-        @XmlElement(name = "hook", type = Hook.class),
-        @XmlElement(name = "richcontent", type = Richcontent.class),
-        @XmlElement(name = "cloud", type = Cloud.class)
+            @XmlElement(name = "icon", type = Icon.class),
+            @XmlElement(name = "node", type = Node.class),
+            @XmlElement(name = "edge", type = Edge.class),
+            @XmlElement(name = "arrowlink", type = Arrowlink.class),
+            @XmlElement(name = "font", type = Font.class),
+            @XmlElement(name = "hook", type = Hook.class),
+            @XmlElement(name = "richcontent", type = Richcontent.class),
+            @XmlElement(name = "cloud", type = Cloud.class)
     })
     protected List<Object> arrowlinkOrCloudOrEdge;
     @XmlAttribute(name = "BACKGROUND_COLOR")
@@ -123,28 +121,35 @@ public class Node {
     protected BigInteger hgap;
     @XmlAttribute(name = "VGAP")
     protected BigInteger vgap;
+
     @XmlAttribute(name = "VSHIFT")
     protected BigInteger vshift;
     @XmlAttribute(name = "ENCRYPTED_CONTENT")
     protected String encryptedcontent;
 
+    // Wise Extensions
+    @XmlAttribute(name = "wCOORDS")
+    protected String wcoords;
+    @XmlAttribute(name = "WORDER")
+    protected BigInteger worder;
+
     /**
      * Gets the value of the arrowlinkOrCloudOrEdge property.
-     * 
-     * <p>
+     * <p/>
+     * <p/>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the arrowlinkOrCloudOrEdge property.
-     * 
-     * <p>
+     * <p/>
+     * <p/>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getArrowlinkOrCloudOrEdge().add(newItem);
      * </pre>
-     * 
-     * 
-     * <p>
+     * <p/>
+     * <p/>
+     * <p/>
      * Objects of the following type(s) are allowed in the list
      * {@link Icon }
      * {@link Node }
@@ -154,8 +159,6 @@ public class Node {
      * {@link Hook }
      * {@link Richcontent }
      * {@link Cloud }
-     * 
-     * 
      */
     public List<Object> getArrowlinkOrCloudOrEdge() {
         if (arrowlinkOrCloudOrEdge == null) {
@@ -166,11 +169,9 @@ public class Node {
 
     /**
      * Gets the value of the backgroundcolor property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     *         {@link String }
      */
     public String getBACKGROUNDCOLOR() {
         return backgroundcolor;
@@ -178,11 +179,9 @@ public class Node {
 
     /**
      * Sets the value of the backgroundcolor property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setBACKGROUNDCOLOR(String value) {
         this.backgroundcolor = value;
@@ -190,23 +189,27 @@ public class Node {
 
     /**
      * Gets the value of the color property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     *         {@link String }
      */
     public String getCOLOR() {
         return color;
     }
 
+    public BigInteger getWorder() {
+        return worder;
+    }
+
+    public void setWorder(BigInteger worder) {
+        this.worder = worder;
+    }
+
     /**
      * Sets the value of the color property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCOLOR(String value) {
         this.color = value;
@@ -214,11 +217,9 @@ public class Node {
 
     /**
      * Gets the value of the folded property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     *         {@link String }
      */
     public String getFOLDED() {
         return folded;
@@ -226,11 +227,9 @@ public class Node {
 
     /**
      * Sets the value of the folded property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setFOLDED(String value) {
         this.folded = value;
@@ -238,11 +237,9 @@ public class Node {
 
     /**
      * Gets the value of the id property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     *         {@link String }
      */
     public String getID() {
         return id;
@@ -250,11 +247,9 @@ public class Node {
 
     /**
      * Sets the value of the id property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setID(String value) {
         this.id = value;
@@ -262,11 +257,9 @@ public class Node {
 
     /**
      * Gets the value of the link property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     *         {@link String }
      */
     public String getLINK() {
         return link;
@@ -274,11 +267,9 @@ public class Node {
 
     /**
      * Sets the value of the link property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setLINK(String value) {
         this.link = value;
@@ -286,11 +277,9 @@ public class Node {
 
     /**
      * Gets the value of the position property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     *         {@link String }
      */
     public String getPOSITION() {
         return position;
@@ -298,11 +287,9 @@ public class Node {
 
     /**
      * Sets the value of the position property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setPOSITION(String value) {
         this.position = value;
@@ -310,11 +297,9 @@ public class Node {
 
     /**
      * Gets the value of the style property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     *         {@link String }
      */
     public String getSTYLE() {
         return style;
@@ -322,11 +307,9 @@ public class Node {
 
     /**
      * Sets the value of the style property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setSTYLE(String value) {
         this.style = value;
@@ -334,11 +317,9 @@ public class Node {
 
     /**
      * Gets the value of the text property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     *         {@link String }
      */
     public String getTEXT() {
         return text;
@@ -346,11 +327,9 @@ public class Node {
 
     /**
      * Sets the value of the text property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setTEXT(String value) {
         this.text = value;
@@ -358,11 +337,9 @@ public class Node {
 
     /**
      * Gets the value of the created property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @return possible object is
+     *         {@link BigInteger }
      */
     public BigInteger getCREATED() {
         return created;
@@ -370,11 +347,9 @@ public class Node {
 
     /**
      * Sets the value of the created property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link BigInteger }
      */
     public void setCREATED(BigInteger value) {
         this.created = value;
@@ -382,23 +357,27 @@ public class Node {
 
     /**
      * Gets the value of the modified property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @return possible object is
+     *         {@link BigInteger }
      */
     public BigInteger getMODIFIED() {
         return modified;
     }
 
+    public String getWcoords() {
+        return wcoords;
+    }
+
+    public void setWcoords(String wcoords) {
+        this.wcoords = wcoords;
+    }
+
     /**
      * Sets the value of the modified property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link BigInteger }
      */
     public void setMODIFIED(BigInteger value) {
         this.modified = value;
@@ -406,11 +385,9 @@ public class Node {
 
     /**
      * Gets the value of the hgap property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @return possible object is
+     *         {@link BigInteger }
      */
     public BigInteger getHGAP() {
         return hgap;
@@ -418,11 +395,9 @@ public class Node {
 
     /**
      * Sets the value of the hgap property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link BigInteger }
      */
     public void setHGAP(BigInteger value) {
         this.hgap = value;
@@ -430,11 +405,9 @@ public class Node {
 
     /**
      * Gets the value of the vgap property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @return possible object is
+     *         {@link BigInteger }
      */
     public BigInteger getVGAP() {
         return vgap;
@@ -442,11 +415,9 @@ public class Node {
 
     /**
      * Sets the value of the vgap property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link BigInteger }
      */
     public void setVGAP(BigInteger value) {
         this.vgap = value;
@@ -454,11 +425,9 @@ public class Node {
 
     /**
      * Gets the value of the vshift property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @return possible object is
+     *         {@link BigInteger }
      */
     public BigInteger getVSHIFT() {
         return vshift;
@@ -466,11 +435,9 @@ public class Node {
 
     /**
      * Sets the value of the vshift property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link BigInteger }
      */
     public void setVSHIFT(BigInteger value) {
         this.vshift = value;
@@ -478,11 +445,9 @@ public class Node {
 
     /**
      * Gets the value of the encryptedcontent property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     *         {@link String }
      */
     public String getENCRYPTEDCONTENT() {
         return encryptedcontent;
@@ -490,11 +455,9 @@ public class Node {
 
     /**
      * Sets the value of the encryptedcontent property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setENCRYPTEDCONTENT(String value) {
         this.encryptedcontent = value;

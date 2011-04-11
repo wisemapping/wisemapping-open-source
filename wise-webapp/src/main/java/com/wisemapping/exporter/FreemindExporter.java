@@ -18,13 +18,11 @@
 
 package com.wisemapping.exporter;
 
-import com.wisemapping.exporter.ExportException;
-import com.wisemapping.exporter.Exporter;
+
 import com.wisemapping.importer.freemind.FreemindIconConverter;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.ShapeStyle;
 import com.wisemapping.util.JAXBUtils;
-import com.wisemapping.xml.Style;
 import com.wisemapping.xml.freemind.*;
 import com.wisemapping.xml.mindmap.RelationshipType;
 import com.wisemapping.xml.mindmap.TopicType;
@@ -140,7 +138,7 @@ public class FreemindExporter
 
         final String shape = mindmapTopic.getShape();
         if (shape != null && !shape.isEmpty()) {
-            if ( isRoot && !ShapeStyle.ROUNDED_RETAGLE.getStyle().endsWith(shape) || !isRoot && !ShapeStyle.LINE.getStyle().endsWith(shape) ) {
+            if (isRoot && !ShapeStyle.ROUNDED_RETAGLE.getStyle().endsWith(shape) || !isRoot && !ShapeStyle.LINE.getStyle().endsWith(shape)) {
 
                 String style = shape;
                 if (ShapeStyle.ROUNDED_RETAGLE.getStyle().equals(shape)) {
@@ -155,6 +153,16 @@ public class FreemindExporter
             addFontNode(freemindNode, mindmapTopic);
             addEdgeNode(freemindNode, mindmapTopic);
             addNote(freemindNode, mindmapTopic);
+
+            final String position = mindmapTopic.getPosition();
+            if (position != null && !position.isEmpty()) {
+                freemindNode.setWcoords(position);
+            }
+
+            final Integer order = mindmapTopic.getOrder();
+            if (order != null) {
+                freemindNode.setWorder(BigInteger.valueOf(order));
+            }
 
             Boolean shrink = mindmapTopic.isShrink();
             if (shrink != null && shrink)
