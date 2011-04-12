@@ -27,7 +27,7 @@ objects.extend(mindplot.MainTopic, mindplot.Topic);
 
 mindplot.MainTopic.prototype.INNER_RECT_ATTRIBUTES = {stroke:'0.5 solid #009900'};
 
-mindplot.MainTopic.prototype.createSiblingModel = function()
+mindplot.MainTopic.prototype.createSiblingModel = function(positionate)
 {
     var siblingModel = null;
     var parentTopic = this.getOutgoingConnectedTopic();
@@ -39,7 +39,7 @@ mindplot.MainTopic.prototype.createSiblingModel = function()
         siblingModel = mindmap.createNode(mindplot.NodeModel.MAIN_TOPIC_TYPE);
 
         // Positionate following taking into account the sibling positon.
-        if (parentTopic.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE)
+        if (positionate && parentTopic.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE)
         {
             var pos = this.getPosition();
             siblingModel.setPosition(pos.x, pos.y);
@@ -52,7 +52,7 @@ mindplot.MainTopic.prototype.createSiblingModel = function()
     return siblingModel;
 };
 
-mindplot.MainTopic.prototype.createChildModel = function()
+mindplot.MainTopic.prototype.createChildModel = function(prepositionate)
 {
     // Create a new node ...
     var model = this.getModel();
@@ -150,6 +150,9 @@ mindplot.MainTopic.prototype.updateTopicShape = function(targetTopic, workspace)
         var innerShape = this.getInnerShape();
         innerShape.setVisibility(true);
     }
+    this._helpers.forEach(function(helper){
+        helper.moveToFront();
+    });
 };
 
 mindplot.MainTopic.prototype.disconnect = function(workspace)
@@ -177,7 +180,7 @@ mindplot.MainTopic.prototype.getTopicType = function()
 
 mindplot.MainTopic.prototype._updatePositionOnChangeSize = function(oldSize, newSize, updatePosition) {
 
-    if(!updatePosition && this.getModel().getFinalPosition()){
+    if(updatePosition==false && this.getModel().getFinalPosition()){
         this.setPosition(this.getModel().getFinalPosition(), false);
     }
     else{

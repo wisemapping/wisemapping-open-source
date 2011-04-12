@@ -48,29 +48,30 @@ mindplot.CentralTopic.prototype.isConnectedToCentralTopic = function()
     return false;
 };
 
-mindplot.CentralTopic.prototype.createChildModel = function()
+mindplot.CentralTopic.prototype.createChildModel = function(prepositionate)
 {
     // Create a new node ...
     var model = this.getModel();
     var mindmap = model.getMindmap();
     var childModel = mindmap.createNode(mindplot.NodeModel.MAIN_TOPIC_TYPE);
 
-    if (!core.Utils.isDefined(this.___siblingDirection))
-    {
-        this.___siblingDirection = 1;
+    if(prepositionate){
+        if (!core.Utils.isDefined(this.___siblingDirection))
+        {
+            this.___siblingDirection = 1;
+        }
+
+        // Positionate following taking into account this internal flag ...
+        if (this.___siblingDirection == 1)
+        {
+
+            childModel.setPosition(100, 0);
+        } else
+        {
+            childModel.setPosition(-100, 0);
+        }
+        this.___siblingDirection = -this.___siblingDirection;
     }
-
-    // Positionate following taking into account this internal flag ...
-    if (this.___siblingDirection == 1)
-    {
-
-        childModel.setPosition(100, 0);
-    } else
-    {
-        childModel.setPosition(-100, 0);
-    }
-    this.___siblingDirection = -this.___siblingDirection;
-
     // Create a new node ...
     childModel.setOrder(0);
 

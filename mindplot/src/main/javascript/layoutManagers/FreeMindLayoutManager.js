@@ -6,9 +6,29 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
         this.parent(designer, options);
     },
     _nodeConnectEvent:function(targetNode, node){
-        if(!this._isCentralTopic(node)){
+        if(node.relationship){
+            this._movingNode(targetNode, node);
+        }
+        else if(!this._isCentralTopic(node)){
             this.parent(targetNode, node);
         }
+    },
+    _nodeDisconnectEvent:function(targetNode, node){
+        if(node.relationship){
+        }
+        else{
+            this.parent(targetNode, node);
+            this._updateBoard(targetNode,[]);
+        }
+    },
+    _nodeShrinkEvent:function(node){
+        this._updateBoard(node,[]);
+    },
+    prepareChildrenList:function(node, children){
+        var result = children.sort(function(n1, n2){
+            return n1.getPosition().y>n2.getPosition().y;
+        });
+        return result;
     },
     registerListenersOnNode : function(topic)
     {
@@ -23,7 +43,7 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
         // Add drag behaviour ...
         if (topic.getType() != mindplot.NodeModel.CENTRAL_TOPIC_TYPE)
         {
-            topic.addEventListener("mousedown",this._mousedownListener.bindWithEvent(this,[topic]));
+            topic.addEventListener("mousedown",this._reconnectMouseDownListener.bindWithEvent(this,[topic]));
         }
 
          // Register editor events ...
@@ -57,7 +77,10 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
             var screen = workSpace.getScreenManager();
 
             // Set initial position.
-            //        var mousePos = screen.getWorkspaceMousePosition(event);
+            this._mouseInitialPos = screen.getWorkspaceMousePosition(event);
+            var pos = topic.getPosition();
+            this._mouseInitialPos.x = 0;
+            this._mouseInitialPos.y = pos.y - Math.round(this._mouseInitialPos.y);
 
             this._isMovingNode=false;
 
@@ -78,6 +101,8 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
             this._isMovingNode=true;
             var screen = this._designer.getWorkSpace().getScreenManager();
             var nodePos = node.getPosition().clone();
+            nodePos.x-=this._mouseInitialPos.x;
+            nodePos.y-=this._mouseInitialPos.y;
             var pos = screen.getWorkspaceMousePosition(event);
             pos.x = Math.round(pos.x);
             pos.y = Math.round(pos.y);
@@ -92,7 +117,6 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
                 var parentBoard = this.getTopicBoardForTopic(node.getParent());
                 var entryObj = parentBoard.findNodeEntryIndex(node);
                 var entry = entryObj.table[entryObj.index];
-                //.removeTopicFromBoard(node,this._modifiedTopics);
                 parentBoard._removeEntry(node, entryObj.table, entryObj.index, this._modifiedTopics);
                 this._changeChildrenSide(node, pos, this._modifiedTopics);
                 node.setPosition(pos.clone(), false);
@@ -106,7 +130,6 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
                 entryObj = parentBoard.findNewNodeEntryIndex(entry);
                 parentBoard._addEntry(entry, entryObj.table, entryObj.index);
                 parentBoard._updateTable(entryObj.index,  entryObj.table, this._modifiedTopics, true);
-                //this.getTopicBoardForTopic(node.getParent()).addBranch(node,this._modifiedTopics);
 
             }
             this._isMovingNode=false;
@@ -119,16 +142,16 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
             var refPos = node.getPosition();
             for( var i = 0 ; i< children.length ; i++){
                 var child = children[i];
-                this._changeChildrenSide(child);
-                var childPos = child.getPosition();
+                var childPos = child.getPosition().clone();
                 var oldPos=childPos.clone();
                 childPos.x = newPos.x +(childPos.x - refPos.x)*-1;
                 childPos.y = newPos.y +(childPos.y - refPos.y);
+                this._changeChildrenSide(child, childPos, modifiedTopics);
                 child.setPosition(childPos, false);
                 if(modifiedTopics.set){
                     var key = node.getId();
                     if(modifiedTopics.hasKey(key)){
-                        childPos = this._modifiedTopics.get(key).originalPos;
+                        oldPos = this._modifiedTopics.get(key).originalPos;
                     }
                     this._modifiedTopics.set(key,{originalPos:oldPos, newPos:childPos});
                 }
@@ -136,7 +159,6 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
         }
     },
     _mouseUpListener:function(event, node){
-        var id = node.getId();
 
         var screen = this._designer.getWorkSpace().getScreenManager();
         // Remove all the events.
@@ -162,10 +184,8 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
         actionRunner.execute(this._command);
         this._command=null;
         this._modifiedTopics=null;
+        this._mouseInitialPos=null;
 
-//        var topicId = draggedTopic.getId();
-//        var command = new mindplot.commands.DragTopicCommand(topicId);
-        
     },
     getClassName:function(){
         return mindplot.layoutManagers.FreeMindLayoutManager.NAME;
@@ -175,9 +195,13 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
     },
     _createCentralTopicBoard:function(node){
         return new mindplot.layoutManagers.boards.freeMindBoards.CentralTopicBoard(node, this);
-    },
+    }
+    ,
     _updateParentBoard:function(node, modifiedTopics){
-        var parent = node.getParent();
+        this._updateBoard(node.getParent(), modifiedTopics);
+    },
+    _updateBoard:function(node, modifiedTopics){
+        var parent = node;
         if(!this._isCentralTopic(parent)){
             var parentBoard = this.getTopicBoardForTopic(parent.getParent());
             var result = parentBoard.findNodeEntryIndex(parent);
@@ -191,8 +215,11 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
                 var lastChild = table[table.length-1];
                 var marginBottom = (lastChild.getPosition()+lastChild.getTotalMarginBottom())-parentEntry.getPosition();
                 parentBoard.setNodeChildrenMarginBottom(parentEntry,marginBottom);
-                parentBoard._updateTable(result.index, result.table, modifiedTopics, false);
+            } else {
+                parentBoard.setNodeChildrenMarginTop(parentEntry, 0);
+                parentBoard.setNodeChildrenMarginBottom(parentEntry, 0);
             }
+            parentBoard._updateTable(result.index, result.table, modifiedTopics, false);
             this._updateParentBoard(parent, modifiedTopics);
         }
     },
@@ -202,7 +229,353 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
         for(var i=0; i<topics.length; i++){
             board._updateEntryPos(topics[i],delta, modifiedTopics, false);
         }
+    },
+    addHelpers:function(node){
+        if (node.getType() != mindplot.NodeModel.CENTRAL_TOPIC_TYPE)
+            this._addMoveHelper(node);
+    },
+    _addMoveHelper:function(node){
+        var moveShape = new mindplot.ActionIcon(node, mindplot.layoutManagers.FreeMindLayoutManager.MOVE_IMAGE_URL);
+        moveShape.setCursor('move');
+        var positionate = function(node){
+            if(node.getId() == this.getNode().getId()){
+                var size = this.getNode().getSize();
+                this.setPosition(size.width/2,0);
+            }
+        }.bind(moveShape);
+        positionate(node);
+        moveShape.setVisibility(false);
+        mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeResizeEvent,positionate);
+        var show = function(node){
+            if(node.getId() == this.getNode().getId()){
+                this.setVisibility(true);
+            }
+        }.bind(moveShape);
+        var hide = function(node){
+            if(node.getId() == this.getNode().getId()){
+                this.setVisibility(false);
+            }
+        }.bind(moveShape);
+        mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeMouseOverEvent,show);
+        mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeMouseOutEvent,hide);
+        node.addHelper(moveShape);
+        moveShape.addEventListener("mousedown",this._mousedownListener.bindWithEvent(this,[node]));
+
+    },
+    needsPrepositioning:function(){
+        return false;
+    },
+    _reconnectMouseDownListener:function(event, topic){
+        var workSpace = this._designer.getWorkSpace();
+        if (workSpace.isWorkspaceEventsEnabled())
+        {
+            // Disable double drag...
+            workSpace.enableWorkspaceEvents(false);
+
+            var id = topic.getId();
+            this._command = new mindplot.commands.freeMind.ReconnectTopicCommand();
+            this._modifiedTopics = new Hash();
+            this._mouseOverListeners = new Hash();
+            this._mouseOutListeners = new Hash();
+
+            var topics = this.getDesigner()._getTopics();
+            // Disable all mouse events.
+            for (var i = 0; i < topics.length; i++)
+            {
+                topics[i].setMouseEventsEnabled(false);
+                if(topics[i].getId()!=topic.getId()){
+                    var overListener = this._reconnectMouseOverListener.bindWithEvent(topics[i],[this]);
+                    topics[i].addEventListener('mouseover',overListener);
+                    this._mouseOverListeners.set(topics[i].getId(),overListener);
+                    var outListener = this._reconnectMouseOutListener.bindWithEvent(topics[i],[this]);
+                    topics[i].addEventListener('mouseout',outListener);
+                    this._mouseOutListeners.set(topics[i].getId(),outListener);
+                }
+            }
+            this._updateTopicsForReconnect(topic, mindplot.layoutManagers.FreeMindLayoutManager.RECONNECT_NODES_OPACITY);
+            var line = topic.getOutgoingLine();
+            if(line){
+                line.setVisibility(false);
+            }
+            this._createIndicatorShapes();
+
+            var ev = new Event(event);
+
+            var screen = workSpace.getScreenManager();
+
+            this._isMovingNode=false;
+
+            // Register mouse move listener ...
+            this._mouseMoveListenerInstance = this._reconnectMouseMoveListener.bindWithEvent(this,[topic]);
+            screen.addEventListener('mousemove', this._mouseMoveListenerInstance);
+
+            // Register mouse up listeners ...
+            this._mouseUpListenerInstance = this._reconnectMouseUpListener.bindWithEvent(this,[topic]);
+            screen.addEventListener('mouseup', this._mouseUpListenerInstance);
+
+            // Change cursor.
+            window.document.body.style.cursor = 'move';
+        }
+    },
+    _reconnectMouseMoveListener:function(event, node){
+        if(!this._isMovingNode){
+            this._isMovingNode=true;
+            var screen = this._designer.getWorkSpace().getScreenManager();
+            var nodePos = node.getPosition().clone();
+            var pos = screen.getWorkspaceMousePosition(event);
+            pos.x = Math.round(pos.x);
+            pos.y = Math.round(pos.y);
+            //If still in same side
+            if(Math.sign(nodePos.x)==Math.sign(pos.x)){
+                var x = nodePos.x - pos.x;
+                var y = nodePos.y - pos.y;
+                var delta = new core.Point(Math.round(x), Math.round(y));
+                var newPos = new core.Point(nodePos.x-(delta.x==null?0:delta.x), nodePos.y-delta.y);
+                node.setPosition(newPos, false);
+                this._updateChildrenBoards(node, delta, this._modifiedTopics);
+            } else {
+                this._changeChildrenSide(node, pos, this._modifiedTopics);
+                node.setPosition(pos.clone(), false);
+//                entryObj = parentBoard.findNewNodeEntryIndex(entry);
+//                parentBoard._addEntry(entry, entryObj.table, entryObj.index);
+//                parentBoard._updateTable(entryObj.index,  entryObj.table, this._modifiedTopics, true);
+
+            }
+            if(this._modifiedTopics.set){
+                var key = node.getId();
+                if(this._modifiedTopics.hasKey(key)){
+                    nodePos = this._modifiedTopics.get(key).originalPos;
+                }
+                this._modifiedTopics.set(key,{originalPos:nodePos, newPos:pos});
+            }
+            this._isMovingNode=false;
+        }
+        event.preventDefault();
+    },
+    _reconnectMouseUpListener:function(event, node){
+         var screen = this._designer.getWorkSpace().getScreenManager();
+        // Remove all the events.
+        screen.removeEventListener('mousemove', this._mouseMoveListenerInstance);
+        screen.removeEventListener('mouseup', this._mouseUpListenerInstance);
+        delete this._mouseMoveListenerInstance;
+        delete this._mouseUpListenerInstance;
+
+        var topics = this.getDesigner()._getTopics();
+        // Disable all mouse events.
+        for (var i = topics.length-1; i >=0; i--)
+        {
+            topics[i].setMouseEventsEnabled(true);
+            if(topics[i].getId()!=node.getId()){
+                var overListener = this._mouseOverListeners.get(topics[i].getId());
+                topics[i].removeEventListener('mouseover',overListener);
+                var outListener = this._mouseOutListeners.get(topics[i].getId());
+                topics[i].removeEventListener('mouseout',outListener);
+            }
+        }
+
+        this._restoreTopicsForReconnect(node);
+
+        this._removeIndicatorShapes(node);
+
+        if(this._createShape == null){
+            //cancel everything.
+            var line = node.getOutgoingLine();
+            if(line){
+                line.setVisibility(true);
+            }
+            core.Utils.animatePosition(this._modifiedTopics, null, this.getDesigner());
+        }else{
+            this._command.setModifiedTopics(this._modifiedTopics);
+            this._command.setDraggedTopic(node);
+            this._command.setTargetNode(this._targetNode);
+            this._command.setAs(this._createShape);
+            //todo:Create command
+            var actionRunner = mindplot.DesignerActionRunner.getInstance();
+            actionRunner.execute(this._command);
+        }
+
+        // Change the cursor to the default.
+        window.document.body.style.cursor = 'default';
+
+        this._designer.getWorkSpace().enableWorkspaceEvents(true);
+
+        this._command=null;
+        this._modifiedTopics=null;
+        this._mouseInitialPos=null;
+        this._mouseOverListeners=null;
+        this._mouseOutListeners=null;
+        this._targetNode = null;
+        this._createShape = null;
+    },
+    //function binded to the node with the over event
+    _reconnectMouseOverListener:function(event, layoutManager){
+        var size = this.getSize();
+        var screen = layoutManager.getDesigner().getWorkSpace().getScreenManager();
+        var pos = screen.getWorkspaceMousePosition(event);
+        pos.x = Math.round(pos.x);
+        pos.y = Math.round(pos.y);
+        var nodePos = this.getPosition();
+        //if it is on the child half side, or it is central topic add it as child
+        if(layoutManager._isCentralTopic(this) || ((Math.sign(nodePos.x)>0 && pos.x>nodePos.x) || (Math.sign(nodePos.x)<0 && pos.x<nodePos.x))){
+            layoutManager._updateIndicatorShapes(this, mindplot.layoutManagers.FreeMindLayoutManager.RECONNECT_SHAPE_CHILD, pos);
+        }else{
+            //is a sibling. if mouse in top half sibling goes above this one
+            if(pos.y<nodePos.y){
+                layoutManager._updateIndicatorShapes(this, mindplot.layoutManagers.FreeMindLayoutManager.RECONNECT_SHAPE_SIBLING_TOP);
+            }else{
+                //if mouse in bottom half sibling goes below this one
+                layoutManager._updateIndicatorShapes(this, mindplot.layoutManagers.FreeMindLayoutManager.RECONNECT_SHAPE_SIBLING_BOTTOM);
+            }
+        }
+    },
+    _createIndicatorShapes:function(){
+        if(!core.Utils.isDefined(this._createChildShape) || !core.Utils.isDefined(this._createSiblingShape)){
+            var rectAttributes = {fillColor:'#CC0033',opacity:0.4,width:30,height:30,strokeColor:'#FF9933'};
+            var rect = new web2d.Rect(0, rectAttributes);
+            rect.setVisibility(false);
+            this._createChildShape = rect;
+
+            rect = new web2d.Rect(0, rectAttributes);
+            rect.setVisibility(false);
+            this._createSiblingShape = rect;
+        }
+    },
+    _updateIndicatorShapes:function(topic, shape, mousePos){
+        if(this._createChildShape.getParent()!=null|| this._createSiblingShape.getParent()!=null){
+            this._createChildShape.getParent().removeChild(this._createChildShape._peer);
+            this._createSiblingShape.getParent().removeChild(this._createSiblingShape._peer);
+        }
+        topic.get2DElement().appendChild(this._createChildShape);
+        topic.get2DElement().appendChild(this._createSiblingShape);
+        var size = topic.getSize();
+        var position = topic.getPosition();
+        if(shape == mindplot.layoutManagers.FreeMindLayoutManager.RECONNECT_SHAPE_CHILD){
+            this._createChildShape.setSize(size.width/2, size.height);
+            var sign = mousePos?Math.sign(mousePos.x):Math.sign(position.x);
+            this._createChildShape.setPosition(sign>0?size.width/2:0, 0);
+            this._createChildShape.setVisibility(true);
+            this._createSiblingShape.setVisibility(false);
+            this._createShape = "Child";
+            this._targetNode = topic;
+        } else if(shape == mindplot.layoutManagers.FreeMindLayoutManager.RECONNECT_SHAPE_SIBLING_TOP){
+            this._createSiblingShape.setSize(size.width,size.height/2);
+            this._createSiblingShape.setPosition(0,0);
+            this._createSiblingShape.setVisibility(true);
+            this._createChildShape.setVisibility(false);
+            this._createShape = "Sibling_top";
+            this._targetNode = topic;
+        }else if(shape == mindplot.layoutManagers.FreeMindLayoutManager.RECONNECT_SHAPE_SIBLING_BOTTOM){
+            this._createSiblingShape.setSize(size.width,size.height/2);
+            this._createSiblingShape.setPosition(0,size.height/2);
+            this._createSiblingShape.setVisibility(true);
+            this._createChildShape.setVisibility(false);
+            this._createShape = "Sibling_bottom";
+            this._targetNode = topic;
+        } else {
+            this._createSiblingShape.setVisibility(false);
+            this._createChildShape.setVisibility(false);
+            this._createShape = null;
+            this._targetNode = null;
+        }
+    },
+    _removeIndicatorShapes:function(node){
+        if(this._createChildShape.getParent()!=null|| this._createSiblingShape.getParent()!=null){
+            this._createChildShape.getParent().removeChild(this._createChildShape._peer);
+            this._createSiblingShape.getParent().removeChild(this._createSiblingShape._peer);
+        }
+    },
+    _reconnectMouseOutListener:function(event, layoutManager){
+        layoutManager._updateIndicatorShapes(this, null);
+    },
+    _updateTopicsForReconnect:function(topic, opacity){
+        topic.setOpacity(opacity);
+        topic.moveToBack();
+        var children = topic._getChildren();
+        for(var k = 0; k<children.length; k++){
+            this._updateTopicsForReconnect(children[k], opacity);
+        }
+    },
+    _restoreTopicsForReconnect:function(topic){
+        var children = topic._getChildren();
+        for(var k = 0; k<children.length; k++){
+            this._restoreTopicsForReconnect(children[k]);
+        }
+        topic.setOpacity(1);
+        topic.moveToFront();
+    },
+    _movingNode:function(targetNode, node){
+        var parentBoard = this.getTopicBoardForTopic(node._relationship_oldParent);
+        var entryObj;
+        if(this._isCentralTopic(node._relationship_oldParent)){
+            var oldPos = node._originalPosition;
+                entryObj = parentBoard.findNodeEntryIndex(node,oldPos);
+        }else{
+            entryObj = parentBoard.findNodeEntryIndex(node);
+        }
+        var entry = entryObj.table[entryObj.index];
+        parentBoard._removeEntry(node, entryObj.table, entryObj.index, this._modifiedTopics);
+        var targetBoard = this.getTopicBoardForTopic(targetNode);
+        var table = targetBoard._getTableForNode(node);
+        var index;
+        if(node.relationship == "Child"){
+
+            var newNodePos=new core.Point();
+            if(table.length>0){
+                //if no children use the position set by Entry initializer. Otherwise place as last child
+                var lastChild = table[table.length-1];
+                newNodePos.y = lastChild.getPosition()+lastChild.getTotalMarginBottom() + entry.getTotalMarginTop();
+            } else {
+                newNodePos.y = targetNode.getPosition().y;
+            }
+            var parentPos = targetNode.getPosition();
+            var pwidth = targetNode.getSize().width;
+            var width = node.getSize().width;
+            if(this._isCentralTopic(targetNode)){
+                newNodePos.x = Math.sign(node.getPosition().x) * (entry._DEFAULT_X_GAP + pwidth/2 + width/2)
+            }
+            else{
+                newNodePos.x = parentPos.x + Math.sign(parentPos.x) * (entry._DEFAULT_X_GAP + pwidth/2 + width/2);
+            }
+
+            index = table.length;
+        } else {
+            //moving as sibling of targetNode
+
+            var sibObj = targetBoard.findNodeEntryIndex(node._relationship_sibling_node);
+            var siblingEntry =sibObj.table[sibObj.index];
+
+            var newNodePos=new core.Point();
+            if(node.relationship == "Sibling_top"){
+                newNodePos.y =siblingEntry.getPosition()-siblingEntry.getTotalMarginTop()+entry.getTotalMarginTop();
+                index = sibObj.index==0?0:sibObj.index-1;
+            }
+            else{
+                newNodePos.y = siblingEntry.getPosition()+siblingEntry.getTotalMarginBottom() + entry.getTotalMarginTop();
+                index = sibObj.index+1;
+            }
+            var parentPos = targetNode.getPosition();
+            var pwidth = targetNode.getSize().width;
+            var width = node.getSize().width;
+            newNodePos.x = parentPos.x + Math.sign(parentPos.x) * (entry._DEFAULT_X_GAP + pwidth/2 + width/2);
+        }
+        var nodePos = node.getPosition();
+        var x = nodePos.x - newNodePos.x;
+        var y = nodePos.y - newNodePos.y;
+        var delta = new core.Point(Math.round(x), Math.round(y));
+        entry.setPosition(newNodePos.x, newNodePos.y);
+        this._updateChildrenBoards(node, delta, this._modifiedTopics);
+
+        targetBoard._addEntry(entry, table, index);
+        targetBoard._updateTable(index,  table, [], true);
+        this._updateBoard(targetNode,[]);
+        this._updateBoard(node._relationship_oldParent,[]);
+        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMouseOutEvent,[node ]);
     }
 });
 
-mindplot.layoutManagers.FreeMindLayoutManager.NAME ="FreeMindLayoutManager"; 
+mindplot.layoutManagers.FreeMindLayoutManager.NAME ="FreeMindLayoutManager";
+mindplot.layoutManagers.FreeMindLayoutManager.MOVE_IMAGE_URL = "../images/move.png";
+mindplot.layoutManagers.FreeMindLayoutManager.RECONNECT_NODES_OPACITY = 0.4;
+mindplot.layoutManagers.FreeMindLayoutManager.RECONNECT_SHAPE_CHILD = "child";
+mindplot.layoutManagers.FreeMindLayoutManager.RECONNECT_SHAPE_SIBLING_TOP = "top";
+mindplot.layoutManagers.FreeMindLayoutManager.RECONNECT_SHAPE_SIBLING_BOTTOM = "bottom";

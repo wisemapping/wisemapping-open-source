@@ -83,9 +83,9 @@ mindplot.layoutManagers.boards.freeMindBoards.Entry = new Class({
         return this._marginBottomChildren;
     },
     getTotalMarginTop:function(){
-        return this._marginTopChildren+this._marginTop;
+        return (this._node.areChildrenShrinked()?0:this._marginTopChildren)+this._marginTop;
     },
     getTotalMarginBottom:function(){
-        return this._marginBottomChildren + this._marginBottom;
+        return (this._node.areChildrenShrinked()?0:this._marginBottomChildren) + this._marginBottom;
     }
 });

@@ -11,24 +11,13 @@ mindplot.layoutManagers.boards.freeMindBoards.Board = mindplot.layoutManagers.bo
     _createTables:function(){
         core.assert(false, "no Board implementation found!")
     },
-    _getTableForNode:function(node){
+    _getTableForNode:function(node, position){
         core.assert(false, "no Board implementation found!")
     },
     removeTopicFromBoard:function(node, modifiedTopics){
-        var table = this._getTableForNode(node);
-        var id = node.getId();
-
-        //search for position
-        var i;
-        for(i = 0; i< table.length ; i++){
-            var entry = table[i];
-            if (entry.getId() == id){
-                break;
-            }
-        }
-        core.assert(i<table.length,"node not found. Could not remove");
-        this._removeEntry(node, table, i, modifiedTopics);
-        this._updateTable(0,table, modifiedTopics, true);
+        var result = this.findNodeEntryIndex(node);
+        core.assert(result.index<result.table.length,"node not found. Could not remove");
+        this._removeEntry(node, result.table, result.index, modifiedTopics);
     },
     addBranch:function(node,modifiedTopics){
         var pos = (this._layoutManager._isMovingNode?node.getPosition():node.getModel().getFinalPosition() || node.getPosition());
@@ -38,23 +27,33 @@ mindplot.layoutManagers.boards.freeMindBoards.Board = mindplot.layoutManagers.bo
         // if creating a sibling or child
         if(!this._layoutManager._isMovingNode && this._layoutManager.getDesigner().getSelectedNodes().length>0){
             var selectedNode = this._layoutManager.getDesigner().getSelectedNodes()[0];
-            if(selectedNode.getParent()!= null && node.getParent().getId() == selectedNode.getParent().getId() && !this._layoutManager._isCentralTopic(node.getParent())){
-                //creating a sibling - Lets put the new node below the selected node.
-                var parentBoard = this._layoutManager.getTopicBoardForTopic(selectedNode.getParent());
-                var selectedNodeResult = parentBoard.findNodeEntryIndex(selectedNode);
-                var selectedNodeEntry = selectedNodeResult.table[selectedNodeResult.index];
-                entry.setPosition(null, selectedNodeEntry.getPosition()+selectedNodeEntry.getTotalMarginBottom() + entry.getMarginTop());
-                result.index = selectedNodeResult.index+1;
-            } else if(node.getParent().getId() == selectedNode.getId()){
-                //creating a child node - Lest put the new node as the last child.
-                var selectedNodeBoard = this._layoutManager.getTopicBoardForTopic(selectedNode);
-                var table = selectedNodeBoard._getTableForNode(node);
-                if(table.length>0){
-                    //if no children use the position set by Entry initializer. Otherwise place as last child
-                    var lastChild = table[table.length-1];
-                    entry.setPosition(null, lastChild.getPosition()+lastChild.getTotalMarginBottom() + entry.getMarginTop());
+            if(!pos){
+                if(selectedNode.getParent()!= null && node.getParent().getId() == selectedNode.getParent().getId()){
+                    //creating a sibling - Lets put the new node below the selected node.
+                    var parentBoard = this._layoutManager.getTopicBoardForTopic(selectedNode.getParent());
+                    var selectedNodeResult = parentBoard.findNodeEntryIndex(selectedNode);
+                    var selectedNodeEntry = selectedNodeResult.table[selectedNodeResult.index];
+                    var x = null;
+                    if(this._layoutManager._isCentralTopic(selectedNode.getParent())){
+                        var nodeX = entry.getNode().getPosition().x;
+                        if(Math.sign(nodeX)!=Math.sign(selectedNode.getPosition().x)){
+                            x =nodeX *-1;
+                        }
+                        result.table = selectedNodeResult.table;
+                    }
+                    entry.setPosition(x, selectedNodeEntry.getPosition()+selectedNodeEntry.getTotalMarginBottom() + entry.getMarginTop());
+                    result.index = selectedNodeResult.index+1;
+                } else if(node.getParent().getId() == selectedNode.getId()){
+                    //creating a child node - Lest put the new node as the last child.
+                    var selectedNodeBoard = this._layoutManager.getTopicBoardForTopic(selectedNode);
+                    var table = selectedNodeBoard._getTableForNode(node);
+                    if(table.length>0){
+                        //if no children use the position set by Entry initializer. Otherwise place as last child
+                        var lastChild = table[table.length-1];
+                        entry.setPosition(null, lastChild.getPosition()+lastChild.getTotalMarginBottom() + entry.getMarginTop());
+                    }
+                    result.index = table.length;
                 }
-                result.index = table.length;
             }
         }
         this._addEntry(entry, result.table, result.index);
@@ -89,7 +88,7 @@ mindplot.layoutManagers.boards.freeMindBoards.Board = mindplot.layoutManagers.bo
     },
     _removeEntry:function(node, table, index, modifiedTopics){
         table.splice(index, 1);
-        this._updateTable(index, table, modifiedTopics, false);
+        this._updateTable(index>0?index-1:index, table, modifiedTopics, false);
     },
     _addEntry:function(entry, table, index){
         table.splice(index, 0, entry);
@@ -136,18 +135,13 @@ mindplot.layoutManagers.boards.freeMindBoards.Board = mindplot.layoutManagers.bo
             }
         }
 
-//        if(updateParents && (i==0 || i==table.length-1)){
-//            this._layoutManager._updateParentBoard(table[i].getNode(), modifiedTopics);
-//        }
     },
     updateChildrenPosition:function(node, modifiedTopics){
         var result = this.findNodeEntryIndex(node);
         this._updateTable(result.index, result.table, modifiedTopics, false);
     },
-    findNodeEntryIndex:function(node){
-        var table = this._getTableForNode(node);
-        var position = node.getPosition();
-        var y = position.y;
+    findNodeEntryIndex:function(node, position){
+        var table = this._getTableForNode(node, position);
 
         //search for position
         var i;
@@ -181,11 +175,9 @@ mindplot.layoutManagers.boards.freeMindBoards.Board = mindplot.layoutManagers.bo
         entry.setMarginBottom(marginBottom);
     },
     setNodeChildrenMarginTop:function(entry, delta){
-        var marginTop = entry.getChildrenMarginTop()-delta.y;
         entry.setChildrenMarginTop(delta);
     },
     setNodeChildrenMarginBottom:function(entry, delta){
-        var marginBottom = entry.getChildrenMarginBottom()-delta.y;
         entry.setChildrenMarginBottom(delta);
     },
     updateEntry:function(node, delta, modifiedTopics){
@@ -204,8 +196,6 @@ mindplot.layoutManagers.boards.freeMindBoards.Board = mindplot.layoutManagers.bo
         var newPos = new core.Point(pos.x-(delta.x==null?0:delta.x), pos.y-delta.y);
         entry.setPosition(newPos.x, newPos.y);
         this._layoutManager._updateChildrenBoards(entry.getNode(), delta, modifiedTopics);
-//        if(updateParents)
-//            this._layoutManager._updateParentBoard(entry.getNode(), modifiedTopics);
         if(modifiedTopics.set){
             var key = entry.getId();
             if(modifiedTopics.hasKey(key)){

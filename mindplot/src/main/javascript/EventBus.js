@@ -16,7 +16,10 @@ mindplot.EventBus.events ={
     NodeMoveEvent:'NodeMoveEvent',
     NodeDisconnectEvent:'NodeDisconnectEvent',
     NodeConnectEvent:'NodeConnectEvent',
-    NodeRepositionateEvent:'NodeRepositionateEvent'
+    NodeRepositionateEvent:'NodeRepositionateEvent',
+    NodeShrinkEvent:'NodeShrinkEvent',
+    NodeMouseOverEvent:'NodeMouseOverEvent',
+    NodeMouseOutEvent:'NodeMouseOutEvent'
 };
 
 mindplot.EventBus.instance = new mindplot.EventBus();

@@ -120,3 +120,13 @@ mindplot.ShirinkConnector.prototype.setPosition = function(x, y)
 {
     this._elipse.setPosition(x, y);
 }
+
+mindplot.ShirinkConnector.prototype.moveToBack = function()
+{
+    this._elipse.moveToBack();
+}
+
+mindplot.ShirinkConnector.prototype.moveToFront = function()
+{
+    this._elipse.moveToFront();
+}

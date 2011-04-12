@@ -128,6 +128,8 @@ mindplot.MindmapDesigner.prototype._buildNodeGraph = function(model)
     // Create node graph ...
     var topic = mindplot.NodeGraph.create(model);
 
+    this._layoutManager.addHelpers(topic);
+
     // Append it to the workspace ...
     var topics = this._topics;
     topics.push(topic);
@@ -231,7 +233,7 @@ mindplot.MindmapDesigner.prototype.createChildForSelectedNode = function()
     // Add new node ...
     var centalTopic = nodes[0];
     var parentTopicId = centalTopic.getId();
-    var childModel = centalTopic.createChildModel();
+    var childModel = centalTopic.createChildModel(this._layoutManager.needsPrepositioning());
 
     var command = new mindplot.commands.AddTopicCommand(childModel, parentTopicId, true);
     this._actionRunner.execute(command);
@@ -263,7 +265,7 @@ mindplot.MindmapDesigner.prototype.createSiblingForSelectedNode = function()
     } else
     {
         var parentTopic = topic.getOutgoingConnectedTopic();
-        var siblingModel = topic.createSiblingModel();
+        var siblingModel = topic.createSiblingModel(this._layoutManager.needsPrepositioning());
         var parentTopicId = parentTopic.getId();
         var command = new mindplot.commands.AddTopicCommand(siblingModel, parentTopicId, true);
 
@@ -425,6 +427,10 @@ mindplot.MindmapDesigner.prototype._loadMap = function(mapId, mindmapModel)
             var relationship = this._relationshipModelToRelationship(relationships[j]);            
         }
     }
+    core.Executor.instance.setLoading(false);
+    this._getTopics().forEach(function(topic){
+        delete topic.getModel()._finalPosition;
+    });
     this._fireEvent("loadsuccess");
 
 };
@@ -455,24 +461,7 @@ mindplot.MindmapDesigner.prototype._nodeModelToNodeGraph = function(nodeModel, i
 
     var children = nodeModel.getChildren().slice();
 
-    // Sort children by order to solve adding order in for OriginalLayoutManager...
-    if (this._layoutManager.getClassName() == mindplot.layoutManagers.OriginalLayoutManager.NAME && nodeGraph.getTopicType()!=mindplot.NodeModel.CENTRAL_TOPIC_TYPE && children.length > 0)
-    {
-        var oldChildren = children;
-        children = [];
-        for (var i = 0; i < oldChildren.length; i++)
-        {
-            var child = oldChildren[i];
-            var order = child.getOrder();
-            if (order != null)
-            {
-                children[order] = child;
-            } else
-            {
-                children.push(child);
-            }
-        }
-    }
+    children = this._layoutManager.prepareChildrenList(nodeGraph, children);
 
     for (var i = 0; i < children.length; i++)
     {
@@ -632,10 +621,11 @@ mindplot.MindmapDesigner.prototype.setFont2SelectedNode = function(font)
             var result = topic.getFontFamily();
             topic.setFontFamily(font, true);
 
-            var updated = function() {
+            core.Executor.instance.delay(topic.updateNode, 0,topic);
+            /*var updated = function() {
                 topic.updateNode();
             };
-            updated.delay(0);
+            updated.delay(0);*/
             return result;
         }
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, font, topicsIds);
@@ -784,10 +774,11 @@ mindplot.MindmapDesigner.prototype.setFontSize2SelectedNode = function(size)
             var result = topic.getFontSize();
             topic.setFontSize(size, true);
 
-            var updated = function() {
+            core.Executor.instance.delay(topic.updateNode, 0,topic);
+            /*var updated = function() {
                 topic.updateNode();
             };
-            updated.delay(0);
+            updated.delay(0);*/
             return result;
         }
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, size, topicsIds);
@@ -830,10 +821,11 @@ mindplot.MindmapDesigner.prototype.setWeight2SelectedNode = function()
             var weight = (result == "bold") ? "normal" : "bold";
             topic.setFontWeight(weight, true);
 
-            var updated = function() {
+            core.Executor.instance.delay(topic.updateNode, 0,topic);
+            /*var updated = function() {
                 topic.updateNode();
             };
-            updated.delay(0);
+            updated.delay(0);*/
             return result;
         }
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, "", topicsIds);
@@ -984,7 +976,8 @@ mindplot.MindmapDesigner.prototype.removeLastImageFromSelectedNode = function()
     {
         var elem = nodes[0];
         elem.removeLastIcon(this);
-        var executor = function(editor)
+        core.Executor.instance.delay(elem.updateNode, 0,elem);
+        /*var executor = function(editor)
         {
             return function()
             {
@@ -992,7 +985,7 @@ mindplot.MindmapDesigner.prototype.removeLastImageFromSelectedNode = function()
             };
         };
 
-        setTimeout(executor(this), 0);
+        setTimeout(executor(this), 0);*/
     }
 };
 

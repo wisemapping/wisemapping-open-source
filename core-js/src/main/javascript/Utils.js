@@ -318,6 +318,47 @@ core.Utils.animateVisibility = function (elems, isVisible, doneFn){
     _fadeEffect =fadeEffect.periodical(10);
 };
 
+core.Utils.animatePosition = function (elems, doneFn, designer){
+    var _moveEffect = null;
+    var i = 10;
+    var step = 10;
+    var moveEffect = function (){
+        if(i>0){
+            var keys = elems.keys();
+            for(var j = 0; j<keys.length; j++){
+                var id = keys[j];
+                var mod = elems.get(id);
+                var allTopics = designer._getTopics();
+                var currentTopic = allTopics.filter(function(node){
+                    return node.getId()== id;
+                })[0];
+                var xStep= (mod.originalPos.x -mod.newPos.x)/step;
+                var yStep= (mod.originalPos.y -mod.newPos.y)/step;
+                var newPos = currentTopic.getPosition().clone();
+                newPos.x +=xStep;
+                newPos.y +=yStep;
+                currentTopic.setPosition(newPos, false);
+            }
+        } else {
+            $clear(_moveEffect);
+            var keys = elems.keys();
+            for(var j = 0; j<keys.length; j++){
+                var id = keys[j];
+                var mod = elems.get(id);
+                var allTopics = designer._getTopics();
+                var currentTopic = allTopics.filter(function(node){
+                    return node.getId()== id;
+                })[0];
+                currentTopic.setPosition(mod.originalPos, false);
+            }
+            if(core.Utils.isDefined(doneFn))
+                doneFn.attempt();
+        }
+        i--;
+    };
+    _moveEffect =moveEffect.periodical(10);
+};
+
 core.Utils._addInnerChildrens = function(elem){
     var children = [];
     var childs = elem._getChildren();

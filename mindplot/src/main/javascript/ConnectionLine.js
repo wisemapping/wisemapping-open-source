@@ -204,6 +204,14 @@ mindplot.ConnectionLine.prototype.getId = function(){
     return this._model.getId();
 };
 
+mindplot.ConnectionLine.prototype.moveToBack = function(){
+    this._line2d.moveToBack();
+};
+
+mindplot.ConnectionLine.prototype.moveToFront = function(){
+    this._line2d.moveToFront();
+};
+
 mindplot.ConnectionLine.SIMPLE=0;
 mindplot.ConnectionLine.POLYLINE=1;
 mindplot.ConnectionLine.CURVED=2;

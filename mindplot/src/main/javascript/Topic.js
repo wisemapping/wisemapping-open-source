@@ -31,6 +31,7 @@ mindplot.Topic.prototype.initialize = function()
     this._lastIconId = -1;
     this._relationships = [];
     this._isInWorkspace = false;
+    this._helpers = [];
 
     this._buildShape();
     this.setMouseEventsEnabled(true);
@@ -75,7 +76,7 @@ mindplot.Topic.prototype._setShapeType = function(type, updateModel)
         innerShape = this.getInnerShape();
 
         //Let's register all the events. The first one is the default one. The others will be copied.
-        this._registerDefaultListenersToElement(innerShape, this);
+        //this._registerDefaultListenersToElement(innerShape, this);
 
         var dispatcher = dispatcherByEventType['mousedown'];
         if(dispatcher)
@@ -389,7 +390,7 @@ mindplot.Topic.prototype.removeLink = function(){
     }
     this._link=null;
     this._hasLink=false;
-}
+};
 
 mindplot.Topic.prototype.removeNote = function(){
     var model = this.getModel();
@@ -404,7 +405,7 @@ mindplot.Topic.prototype.removeNote = function(){
             this._icon=null;
         }
     }
-    var elem = this;
+    /*var elem = this;
     var executor = function(editor)
     {
         return function()
@@ -413,10 +414,11 @@ mindplot.Topic.prototype.removeNote = function(){
         };
     };
 
-    setTimeout(executor(this), 0);
+    setTimeout(executor(this), 0);*/
+    core.Executor.instance.delay(this.updateNode, 0,this);
     this._note=null;
     this._hasNote=false;
-}
+};
 
 mindplot.Topic.prototype.addRelationship = function(relationship){
     this._relationships.push(relationship);
@@ -511,7 +513,7 @@ mindplot.Topic.prototype.setFontFamily = function(value, updateModel)
         var model = this.getModel();
         model.setFontFamily(value);
     }
-    var elem = this;
+    /*var elem = this;
     var executor = function(editor)
     {
         return function()
@@ -520,7 +522,8 @@ mindplot.Topic.prototype.setFontFamily = function(value, updateModel)
         };
     };
 
-    setTimeout(executor(this), 0);
+    setTimeout(executor(this), 0);*/
+    core.Executor.instance.delay(this.updateNode, 0,this, [updateModel]);
 };
 
 mindplot.Topic.prototype.setFontSize = function(value, updateModel)
@@ -532,7 +535,7 @@ mindplot.Topic.prototype.setFontSize = function(value, updateModel)
         var model = this.getModel();
         model.setFontSize(value);
     }
-    var elem = this;
+    /*var elem = this;
     var executor = function(editor)
     {
         return function()
@@ -541,7 +544,8 @@ mindplot.Topic.prototype.setFontSize = function(value, updateModel)
         };
     };
 
-    setTimeout(executor(this), 0);
+    setTimeout(executor(this), 0);*/
+    core.Executor.instance.delay(this.updateNode, 0,this, [updateModel]);
 
 };
 
@@ -554,7 +558,7 @@ mindplot.Topic.prototype.setFontStyle = function(value, updateModel)
         var model = this.getModel();
         model.setFontStyle(value);
     }
-    var elem = this;
+    /*var elem = this;
     var executor = function(editor)
     {
         return function()
@@ -563,7 +567,8 @@ mindplot.Topic.prototype.setFontStyle = function(value, updateModel)
         };
     };
 
-    setTimeout(executor(this), 0);
+    setTimeout(executor(this), 0);*/
+    core.Executor.instance.delay(this.updateNode, 0,this, [updateModel]);
 };
 
 mindplot.Topic.prototype.setFontWeight = function(value, updateModel)
@@ -652,7 +657,7 @@ mindplot.Topic.prototype._setText = function(text, updateModel)
 {
     var textShape = this.getTextShape();
     textShape.setText(text);
-    var elem = this;
+    /*var elem = this;
     var executor = function(editor)
     {
         return function()
@@ -661,7 +666,8 @@ mindplot.Topic.prototype._setText = function(text, updateModel)
         };
     };
 
-    setTimeout(executor(this), 0);
+    setTimeout(executor(this), 0);*/
+    core.Executor.instance.delay(this.updateNode, 0,this, [updateModel]);
 
     if (updateModel)
     {
@@ -782,9 +788,9 @@ mindplot.Topic.prototype._buildShape = function()
     }
 
     // Register listeners ...
-    this._registerDefaultListenersToElement(outerShape, this);
-    this._registerDefaultListenersToElement(innerShape, this);
-    this._registerDefaultListenersToElement(textShape, this);
+    this._registerDefaultListenersToElement(group, this);
+//    this._registerDefaultListenersToElement(innerShape, this);
+//    this._registerDefaultListenersToElement(textShape, this);
 
 };
 
@@ -848,6 +854,7 @@ mindplot.Topic.prototype.setChildrenShrinked = function(value)
 
     // Hide children ...
     core.Utils.setChildrenVisibilityAnimated(this, !value);
+    mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeShrinkEvent,[this]);
 };
 
 mindplot.Topic.prototype.getShrinkConnector = function()
@@ -867,6 +874,7 @@ mindplot.Topic.prototype.handleMouseOver = function(event)
 {
     var outerShape = this.getOuterShape();
     outerShape.setOpacity(1);
+    mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMouseOverEvent,[this]);
 };
 
 mindplot.Topic.prototype.handleMouseOut = function(event)
@@ -876,6 +884,7 @@ mindplot.Topic.prototype.handleMouseOut = function(event)
     {
         outerShape.setOpacity(0);
     }
+    mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMouseOutEvent,[this]);
 };
 
 /**
@@ -984,6 +993,40 @@ mindplot.Topic.prototype.setVisibility = function(value)
     this._setRelationshipLinesVisibility(value);
 };
 
+mindplot.Topic.prototype.moveToBack = function(){
+//    this._helpers.forEach(function(helper, index){
+//        helper.moveToBack();
+//    });
+    this.get2DElement().moveToBack();
+    var outgoingLine = this.getOutgoingLine();
+
+    var connector = this.getShrinkConnector();
+    if(connector){
+        connector.moveToBack();
+    }
+
+    if(outgoingLine){
+        outgoingLine.moveToBack();
+    }
+
+};
+
+mindplot.Topic.prototype.moveToFront = function(){
+
+    var outgoingLine = this.getOutgoingLine();
+    if(outgoingLine){
+        outgoingLine.moveToFront();
+    }
+    var connector = this.getShrinkConnector();
+    if(connector){
+        connector.moveToFront();
+    }
+    this.get2DElement().moveToFront();
+//    this._helpers.forEach(function(helper, index){
+//        helper.moveToFront();
+//    });
+};
+
 mindplot.Topic.prototype.isVisible = function(){
     var elem = this.get2DElement();
     return elem.isVisible();
@@ -1066,14 +1109,36 @@ mindplot.Topic.prototype.addEventListener = function(type, listener)
         type = 'mousedown';
     }
 
-    var textShape = this.getTextShape();
+   /* var textShape = this.getTextShape();
     textShape.addEventListener(type, listener);
 
     var outerShape = this.getOuterShape();
     outerShape.addEventListener(type, listener);
 
     var innerShape = this.getInnerShape();
-    innerShape.addEventListener(type, listener);
+    innerShape.addEventListener(type, listener);*/
+    var shape = this.get2DElement();
+    shape.addEventListener(type, listener);
+};
+
+mindplot.Topic.prototype.removeEventListener = function(type, listener)
+{
+    // Translate to web 2d events ...
+    if (type == 'onfocus')
+    {
+        type = 'mousedown';
+    }
+    /*var textShape = this.getTextShape();
+    textShape.removeEventListener(type, listener);
+
+    var outerShape = this.getOuterShape();
+    outerShape.removeEventListener(type, listener);
+
+    var innerShape = this.getInnerShape();
+    innerShape.removeEventListener(type, listener);*/
+
+    var shape = this.get2DElement();
+    shape.removeEventListener(type, listener);
 };
 
 
@@ -1181,21 +1246,24 @@ mindplot.Topic.prototype.connectTo = function(targetTopic, workspace, isVisible)
     core.assert(targetTopic, 'Parent Graph can not be null');
     core.assert(workspace, 'Workspace can not be null');
 
+    // Connect Graphical Nodes ...
+    targetTopic._appendChild(this);
+    this._parent = targetTopic;
+
+// Update model ...
+    var targetModel = targetTopic.getModel();
+    var childModel = this.getModel();
+    childModel.connectTo(targetModel);
+
+// Update topic position based on the state ...
+    mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeConnectEvent,[targetTopic, this]);
+
     // Create a connection line ...
     var outgoingLine = new mindplot.ConnectionLine(this, targetTopic);
     if(core.Utils.isDefined(isVisible))
         outgoingLine.setVisibility(isVisible);
     this._outgoingLine = outgoingLine;
     workspace.appendChild(outgoingLine);
-
-    // Connect Graphical Nodes ...
-    targetTopic._appendChild(this);
-    this._parent = targetTopic;
-
-    // Update model ...
-    var targetModel = targetTopic.getModel();
-    var childModel = this.getModel();
-    childModel.connectTo(targetModel);
 
     // Update figure is necessary.
     this.updateTopicShape(targetTopic);
@@ -1213,9 +1281,6 @@ mindplot.Topic.prototype.connectTo = function(targetTopic, workspace, isVisible)
         this.setFontSize(size, false);
     }
     var textShape = this.getTextShape();
-
-    // Update topic position based on the state ...
-    mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeConnectEvent,[targetTopic, this]);
 
     // Display connection node...
     var connector = targetTopic.getShrinkConnector();
@@ -1311,4 +1376,9 @@ mindplot.Topic.prototype.updateNode = function(updatePosition)
         if(core.Utils.isDefined(iconGroup))
             iconGroup.updateIconGroupPosition();
     }
+};
+
+mindplot.Topic.prototype.addHelper = function(helper){
+    helper.addToGroup(this.get2DElement());
+    this._helpers.push(helper);
 };

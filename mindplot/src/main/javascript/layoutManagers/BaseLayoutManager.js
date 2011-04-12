@@ -12,7 +12,8 @@ mindplot.layoutManagers.BaseLayoutManager = new Class({
         mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeMoveEvent,this._nodeMoveEvent.bind(this));
         mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeDisconnectEvent,this._nodeDisconnectEvent.bind(this));
         mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeConnectEvent,this._nodeConnectEvent.bind(this));
-        mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeRepositionateEvent,this._NodeRepositionateEvent.bind(this));
+        mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeRepositionateEvent,this._nodeRepositionateEvent.bind(this));
+        mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeShrinkEvent,this._nodeShrinkEvent.bind(this));
     },
     _nodeResizeEvent:function(node){
     },
@@ -28,7 +29,9 @@ mindplot.layoutManagers.BaseLayoutManager = new Class({
         var modifiedTopics = [];
         this.getTopicBoardForTopic(targetNode).addBranch(node,modifiedTopics);
     },
-    _NodeRepositionateEvent:function(node){
+    _nodeRepositionateEvent:function(node){
+    },
+    _NodeShrinkEvent:function(node){
     },
     _createBoard:function(){
         this._boards = new Hash();
@@ -56,6 +59,15 @@ mindplot.layoutManagers.BaseLayoutManager = new Class({
     },
     _createCentralTopicBoard:function(node){
         return new mindplot.layoutManagers.boards.Board(node, this);
+    },
+    prepareChildrenList:function(node, children){
+
+    },
+    addHelpers:function(node){
+
+    },
+    needsPrepositioning:function(){
+        return true;
     },
     getDesigner:function(){
         return this._designer;
