@@ -390,7 +390,8 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
                 }
             }else if(node.getParent().getId() == this._targetNode.getParent().getId()){
                 var chkboard = this.getTopicBoardForTopic(this._targetNode.getParent());
-                var chk = chkboard.findNodeEntryIndex(node);
+                var mod = this._modifiedTopics.get(node.getId());
+                var chk = chkboard.findNodeEntryIndex(node, mod.originalPos);
                 if(this._createShape == "Sibling_top"){
                     if(chk.table>this._currentIndex+1){
                         var nextEntry = chk.table[this._currentIndex+1];
@@ -583,11 +584,10 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
                 if(node.relationship == "Sibling_top"){
                     if(sibObj.index==0){
                         newNodePos.y = siblingEntry.getPosition();
-                        index = 0;
                     }else{
                         newNodePos.y =siblingEntry.getPosition()-siblingEntry.getTotalMarginTop()+entry.getTotalMarginTop();
-                        index = sibObj.index-1;
                     }
+                    index = sibObj.index;
                 }
                 else{
                     newNodePos.y = siblingEntry.getPosition()+siblingEntry.getTotalMarginBottom() + entry.getTotalMarginTop();
