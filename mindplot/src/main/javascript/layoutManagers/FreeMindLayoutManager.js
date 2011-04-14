@@ -278,6 +278,9 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
             this._mouseOverListeners = new Hash();
             this._mouseOutListeners = new Hash();
 
+            var board = this.getTopicBoardForTopic(topic.getParent());
+            this._currentIndex = board.findNodeEntryIndex(topic).index;
+
             var topics = this.getDesigner()._getTopics();
             // Disable all mouse events.
             for (var i = 0; i < topics.length; i++)
@@ -377,6 +380,33 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
 
         this._removeIndicatorShapes(node);
 
+        //Check that it has to be relocated
+        if(this._createShape !=null){
+            if(this._createShape == "Child"){
+                if(node.getParent().getId() == this._targetNode.getId()){
+                    var mod = this._modifiedTopics.get(node.getId());
+                    if(Math.sign(mod.originalPos.x) == Math.sign(node.getPosition().x))
+                        this._createShape = null;
+                }
+            }else if(node.getParent().getId() == this._targetNode.getParent().getId()){
+                var chkboard = this.getTopicBoardForTopic(this._targetNode.getParent());
+                var chk = chkboard.findNodeEntryIndex(node);
+                if(this._createShape == "Sibling_top"){
+                    if(chk.table>this._currentIndex+1){
+                        var nextEntry = chk.table[this._currentIndex+1];
+                        if(nextEntry.getNode().getId() == this._targetNode.getId()){
+                            this._createShape = null;
+                        }
+                    }
+                } else if(this._currentIndex>0){
+                    var prevEntry = chk.table[this._currentIndex-1];
+                    if(prevEntry.getNode().getId() == this._targetNode.getId()){
+                        this._createShape = null;
+                    }
+                }
+            }
+        }
+
         if(this._createShape == null){
             //cancel everything.
             var line = node.getOutgoingLine();
@@ -386,7 +416,7 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
             core.Utils.animatePosition(this._modifiedTopics, null, this.getDesigner());
         }else{
             this._command.setModifiedTopics(this._modifiedTopics);
-            this._command.setDraggedTopic(node);
+            this._command.setDraggedTopic(node, this._currentIndex);
             this._command.setTargetNode(this._targetNode);
             this._command.setAs(this._createShape);
             //todo:Create command
@@ -513,58 +543,73 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
             entryObj = parentBoard.findNodeEntryIndex(node);
         }
         var entry = entryObj.table[entryObj.index];
-        parentBoard._removeEntry(node, entryObj.table, entryObj.index, this._modifiedTopics);
+        parentBoard._removeEntry(node, entryObj.table, entryObj.index, []);
         var targetBoard = this.getTopicBoardForTopic(targetNode);
         var table = targetBoard._getTableForNode(node);
         var index;
-        if(node.relationship == "Child"){
+        if(node.relationship == 'undo'){
+            index = node._relationship_index;
+            //I need to update all entries because nodes position have been changed by command
 
-            var newNodePos=new core.Point();
-            if(table.length>0){
-                //if no children use the position set by Entry initializer. Otherwise place as last child
-                var lastChild = table[table.length-1];
-                newNodePos.y = lastChild.getPosition()+lastChild.getTotalMarginBottom() + entry.getTotalMarginTop();
+        }else{
+            if(node.relationship == "Child"){
+
+                var newNodePos=new core.Point();
+                if(table.length>0){
+                    //if no children use the position set by Entry initializer. Otherwise place as last child
+                    var lastChild = table[table.length-1];
+                    newNodePos.y = lastChild.getPosition()+lastChild.getTotalMarginBottom() + entry.getTotalMarginTop();
+                } else {
+                    newNodePos.y = targetNode.getPosition().y;
+                }
+                var parentPos = targetNode.getPosition();
+                var pwidth = targetNode.getSize().width;
+                var width = node.getSize().width;
+                if(this._isCentralTopic(targetNode)){
+                    newNodePos.x = Math.sign(node.getPosition().x) * (entry._DEFAULT_X_GAP + pwidth/2 + width/2)
+                }
+                else{
+                    newNodePos.x = parentPos.x + Math.sign(parentPos.x) * (entry._DEFAULT_X_GAP + pwidth/2 + width/2);
+                }
+
+                index = table.length;
             } else {
-                newNodePos.y = targetNode.getPosition().y;
-            }
-            var parentPos = targetNode.getPosition();
-            var pwidth = targetNode.getSize().width;
-            var width = node.getSize().width;
-            if(this._isCentralTopic(targetNode)){
-                newNodePos.x = Math.sign(node.getPosition().x) * (entry._DEFAULT_X_GAP + pwidth/2 + width/2)
-            }
-            else{
-                newNodePos.x = parentPos.x + Math.sign(parentPos.x) * (entry._DEFAULT_X_GAP + pwidth/2 + width/2);
-            }
+                //moving as sibling of targetNode
 
-            index = table.length;
-        } else {
-            //moving as sibling of targetNode
+                var sibObj = targetBoard.findNodeEntryIndex(node._relationship_sibling_node);
+                var siblingEntry =sibObj.table[sibObj.index];
 
-            var sibObj = targetBoard.findNodeEntryIndex(node._relationship_sibling_node);
-            var siblingEntry =sibObj.table[sibObj.index];
-
-            var newNodePos=new core.Point();
-            if(node.relationship == "Sibling_top"){
-                newNodePos.y =siblingEntry.getPosition()-siblingEntry.getTotalMarginTop()+entry.getTotalMarginTop();
-                index = sibObj.index==0?0:sibObj.index-1;
+                var newNodePos=new core.Point();
+                if(node.relationship == "Sibling_top"){
+                    if(sibObj.index==0){
+                        newNodePos.y = siblingEntry.getPosition();
+                        index = 0;
+                    }else{
+                        newNodePos.y =siblingEntry.getPosition()-siblingEntry.getTotalMarginTop()+entry.getTotalMarginTop();
+                        index = sibObj.index-1;
+                    }
+                }
+                else{
+                    newNodePos.y = siblingEntry.getPosition()+siblingEntry.getTotalMarginBottom() + entry.getTotalMarginTop();
+                    index = sibObj.index+1;
+                }
+                var parentPos = targetNode.getPosition();
+                var pwidth = targetNode.getSize().width;
+                var width = node.getSize().width;
+                if(this._isCentralTopic(targetNode)){
+                    newNodePos.x = Math.sign(node.getPosition().x) * (entry._DEFAULT_X_GAP + pwidth/2 + width/2)
+                }
+                else{
+                    newNodePos.x = parentPos.x + Math.sign(parentPos.x) * (entry._DEFAULT_X_GAP + pwidth/2 + width/2);
+                }
             }
-            else{
-                newNodePos.y = siblingEntry.getPosition()+siblingEntry.getTotalMarginBottom() + entry.getTotalMarginTop();
-                index = sibObj.index+1;
-            }
-            var parentPos = targetNode.getPosition();
-            var pwidth = targetNode.getSize().width;
-            var width = node.getSize().width;
-            newNodePos.x = parentPos.x + Math.sign(parentPos.x) * (entry._DEFAULT_X_GAP + pwidth/2 + width/2);
+            var nodePos = node.getPosition();
+            var x = nodePos.x - newNodePos.x;
+            var y = nodePos.y - newNodePos.y;
+            var delta = new core.Point(Math.round(x), Math.round(y));
+            entry.setPosition(newNodePos.x, newNodePos.y);
+            this._updateChildrenBoards(node, delta, []);
         }
-        var nodePos = node.getPosition();
-        var x = nodePos.x - newNodePos.x;
-        var y = nodePos.y - newNodePos.y;
-        var delta = new core.Point(Math.round(x), Math.round(y));
-        entry.setPosition(newNodePos.x, newNodePos.y);
-        this._updateChildrenBoards(node, delta, this._modifiedTopics);
-
         targetBoard._addEntry(entry, table, index);
         targetBoard._updateTable(index,  table, [], true);
         this._updateBoard(targetNode,[]);

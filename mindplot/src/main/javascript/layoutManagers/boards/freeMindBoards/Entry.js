@@ -18,7 +18,6 @@ mindplot.layoutManagers.boards.freeMindBoards.Entry = new Class({
 
             }
         }
-        this._position = pos.y;
         this._DEFAULT_GAP = 10;
         var height = this.getNode().getSize().height;
         this._minimalMargin = this._DEFAULT_GAP + height/2;
@@ -34,7 +33,7 @@ mindplot.layoutManagers.boards.freeMindBoards.Entry = new Class({
         return this.getNode().getId();
     },
     getPosition:function(){
-        return this._position;
+        return this._node.getPosition().y;
     },
     setPosition:function(x,y){
         var position = this._node.getPosition().clone();
@@ -44,7 +43,6 @@ mindplot.layoutManagers.boards.freeMindBoards.Entry = new Class({
         }
 
         this._node.setPosition(position, false);
-        this._position = y;
     },
     getMarginTop:function(){
         return this._marginTop;

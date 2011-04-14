@@ -48,6 +48,7 @@ mindplot.commands.freeMind.ReconnectTopicCommand = mindplot.Command.extend(
         var oldParent = commandContext.findTopics(parseInt(this._oldParent))[0];
         node.relationship = this._relationship;
         node._relationship_oldParent = oldParent;
+        node._relationship_index = this._index;
         commandContext.disconnect(node);
         var parentNode = targetNode;
         if(this._relationship != "Child"){
@@ -58,6 +59,7 @@ mindplot.commands.freeMind.ReconnectTopicCommand = mindplot.Command.extend(
         delete node.relationship;
         delete node._relationship_oldParent;
         delete node._relationship_sibling_node;
+        delete node._relationship_index;
     },
     undoExecute: function(commandContext)
     {
@@ -76,23 +78,29 @@ mindplot.commands.freeMind.ReconnectTopicCommand = mindplot.Command.extend(
                 topic.setPosition(pos.clone(), true);
             }
             if(id = this._node){
-                node._originalPosition = modTopic.originalPos;
+                node._originalPosition = modTopic.newPos;
             }
         }
         var oldParent = commandContext.findTopics(parseInt(this._targetNode))[0];
-        node.relationship = this._relationship;
+        if(this._relationship != "Child"){
+            oldParent = oldParent.getParent();
+        }
+        node.relationship = "undo";
         node._relationship_oldParent = oldParent;
+        node._relationship_index = this._index;
         commandContext.disconnect(node);
         commandContext.connect(node, targetNode);
         delete node.relationship;
         delete node._relationship_oldParent;
+        delete node._relationship_index;
     },
     setModifiedTopics:function(modifiedTopics){
         this._modifiedTopics = modifiedTopics;
     },
-    setDraggedTopic:function(node){
+    setDraggedTopic:function(node, index){
         this._node = node.getId();
         this._oldParent = node.getOutgoingConnectedTopic().getId();
+        this._index = index;
     },
     setTargetNode:function(node){
         this._targetNode = node.getId();
