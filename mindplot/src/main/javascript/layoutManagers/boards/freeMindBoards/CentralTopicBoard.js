@@ -11,7 +11,7 @@ mindplot.layoutManagers.boards.freeMindBoards.CentralTopicBoard = mindplot.layou
     _getTableForNode:function(node, altPosition){
         var i = 0;
         var position = node.getPosition();
-        if(typeof altPosition != "undefined")
+        if(typeof altPosition != "undefined" && altPosition!=null)
         {
             position = altPosition;
         }

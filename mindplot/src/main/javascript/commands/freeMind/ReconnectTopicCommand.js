@@ -45,7 +45,7 @@ mindplot.commands.freeMind.ReconnectTopicCommand = mindplot.Command.extend(
                 node._originalPosition = modTopic.originalPos;
             }
         }
-        var oldParent = commandContext.findTopics(parseInt(this._oldParent))[0];
+        var oldParent = this._oldParent!=null?commandContext.findTopics(parseInt(this._oldParent))[0]:null;
         node.relationship = this._relationship;
         node._relationship_oldParent = oldParent;
         node._relationship_index = this._index;
@@ -60,11 +60,12 @@ mindplot.commands.freeMind.ReconnectTopicCommand = mindplot.Command.extend(
         delete node._relationship_oldParent;
         delete node._relationship_sibling_node;
         delete node._relationship_index;
+        delete node._originalPosition;
     },
     undoExecute: function(commandContext)
     {
         var node = commandContext.findTopics(parseInt(this._node))[0];
-        var targetNode = commandContext.findTopics(parseInt(this._oldParent))[0];
+        var targetNode = this._oldParent!=null?commandContext.findTopics(parseInt(this._oldParent))[0]:null;
 
         var keys = this._modifiedTopics.keys();
         for(var i=0; i<keys.length; i++){
@@ -85,21 +86,27 @@ mindplot.commands.freeMind.ReconnectTopicCommand = mindplot.Command.extend(
         if(this._relationship != "Child"){
             oldParent = oldParent.getParent();
         }
-        node.relationship = "undo";
-        node._relationship_oldParent = oldParent;
-        node._relationship_index = this._index;
+        if(targetNode!=null){
+            node.relationship = "undo";
+            node._relationship_oldParent = oldParent;
+            node._relationship_index = this._index;
+        }
         commandContext.disconnect(node);
-        commandContext.connect(node, targetNode);
-        delete node.relationship;
-        delete node._relationship_oldParent;
-        delete node._relationship_index;
+        if(targetNode!=null){
+            commandContext.connect(node, targetNode);
+            delete node.relationship;
+            delete node._relationship_oldParent;
+            delete node._relationship_index;
+        }
+        delete node._originalPosition;
     },
     setModifiedTopics:function(modifiedTopics){
         this._modifiedTopics = modifiedTopics;
     },
     setDraggedTopic:function(node, index){
         this._node = node.getId();
-        this._oldParent = node.getOutgoingConnectedTopic().getId();
+        var outgoingConnectedTopic = node.getOutgoingConnectedTopic();
+        this._oldParent = outgoingConnectedTopic!=null?outgoingConnectedTopic.getId():null;
         this._index = index;
     },
     setTargetNode:function(node){

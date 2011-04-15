@@ -31,7 +31,7 @@ mindplot.layoutManagers.BaseLayoutManager = new Class({
     },
     _nodeRepositionateEvent:function(node){
     },
-    _NodeShrinkEvent:function(node){
+    _nodeShrinkEvent:function(node){
     },
     _createBoard:function(){
         this._boards = new Hash();

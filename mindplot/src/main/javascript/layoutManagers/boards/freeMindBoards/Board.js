@@ -15,7 +15,10 @@ mindplot.layoutManagers.boards.freeMindBoards.Board = mindplot.layoutManagers.bo
         core.assert(false, "no Board implementation found!")
     },
     removeTopicFromBoard:function(node, modifiedTopics){
-        var result = this.findNodeEntryIndex(node);
+        var pos;
+        if(node._originalPosition)
+            pos = node._originalPosition;
+        var result = this.findNodeEntryIndex(node, pos);
         core.assert(result.index<result.table.length,"node not found. Could not remove");
         this._removeEntry(node, result.table, result.index, modifiedTopics);
     },
@@ -67,7 +70,7 @@ mindplot.layoutManagers.boards.freeMindBoards.Board = mindplot.layoutManagers.bo
                 nextEntry.setMarginTop((nextEntry.getPosition() - nextEntry.getTotalMarginTop())-pos.y);
             }
             var parent = node.getParent();
-            if(!this._layoutManager._isCentralTopic(parent) && (result.index == 0 || result.index==result.table.length-1)){
+            if(!this._layoutManager._isCentralTopic(parent) && parent.getParent()!=null && (result.index == 0 || result.index==result.table.length-1)){
                 var board = this._layoutManager.getTopicBoardForTopic(parent.getParent());
                 var res2 = board.findNodeEntryIndex(parent);
                 var parentEntry = res2.table[res2.index];

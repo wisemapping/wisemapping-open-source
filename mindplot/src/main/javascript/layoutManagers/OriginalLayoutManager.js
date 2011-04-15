@@ -33,11 +33,7 @@ mindplot.layoutManagers.OriginalLayoutManager = mindplot.layoutManagers.BaseLayo
         return result;
     },
     _nodeResizeEvent:function(node){
-        if(this._isCentralTopic(node)){
-            var size = node.getSize();
-            if(!this._isCentralTopic(node))
-                this.getTopicBoardForTopic(node).updateChildrenPosition(node,size.height/2, []);
-        }
+
     },
     _nodeRepositionateEvent:function(node){
         this.getTopicBoardForTopic(node).repositionate();

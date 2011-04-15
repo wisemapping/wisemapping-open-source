@@ -1193,6 +1193,8 @@ mindplot.Topic.prototype.disconnect = function(workspace)
         var childModel = this.getModel();
         childModel.disconnect();
 
+        this._parent = null;
+
         // Remove graphical element from the workspace...
         outgoingLine.removeFromWorkspace(workspace);
 
