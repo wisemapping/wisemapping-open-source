@@ -24,13 +24,20 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
     _nodeShrinkEvent:function(node){
         this._updateBoard(node,[]);
     },
-    prepareChildrenList:function(node, children){
-        var result = children.sort(function(n1, n2){
-            if(n1.getPosition() && n2.getPosition())
-                return n1.getPosition().y>n2.getPosition().y;
-            else
-                return true;
-        });
+    prepareNode:function(node, children){
+        var layoutManagerName = editorProperties.layoutManager;
+        //if last layout used is this one
+        if(typeof layoutManagerName != "undefined" && layoutManagerName == this.getClassName()){
+            var result = children.sort(function(n1, n2){
+                if(n1.getPosition() && n2.getPosition())
+                    return n1.getPosition().y>n2.getPosition().y;
+                else
+                    return true;
+            });
+        } else {
+            delete node.getModel()._finalPosition;
+            result = children;
+        }
         return result;
     },
     registerListenersOnNode : function(topic)

@@ -354,7 +354,7 @@ mindplot.MindmapDesigner.prototype.save = function(onSavedHandler, saveHistory)
     var persistantManager = mindplot.PersistanceManager;
     var mindmap = this._mindmap;
 
-    var properties = {zoom:this._zoom};
+    var properties = {zoom:this._zoom, layoutManager:this._layoutManager.getClassName()};
     persistantManager.save(mindmap, properties, onSavedHandler, saveHistory);
     this._fireEvent("save", {type:saveHistory});
 
@@ -461,7 +461,7 @@ mindplot.MindmapDesigner.prototype._nodeModelToNodeGraph = function(nodeModel, i
 
     var children = nodeModel.getChildren().slice();
 
-    children = this._layoutManager.prepareChildrenList(nodeGraph, children);
+    children = this._layoutManager.prepareNode(nodeGraph, children);
 
     for (var i = 0; i < children.length; i++)
     {

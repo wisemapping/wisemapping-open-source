@@ -227,6 +227,7 @@ mindplot.XMLMindmapSerializer_Pela.prototype.loadFromDom = function(dom)
     // Is a wisemap?.
     core.assert(rootElem.tagName == mindplot.XMLMindmapSerializer_Pela.MAP_ROOT_NODE, "This seem not to be a map document.");
 
+    this._idsMap = new Hash();
     // Start the loading process ...
     var mindmap = new mindplot.Mindmap();
 
@@ -251,6 +252,7 @@ mindplot.XMLMindmapSerializer_Pela.prototype.loadFromDom = function(dom)
             }
         }
     }
+    this._idsMap=null;
     return mindmap;
 };
 
@@ -263,6 +265,12 @@ mindplot.XMLMindmapSerializer_Pela.prototype._deserializeNode = function(domElem
         id=parseInt(id);
     }
 
+    if(this._idsMap.hasKey(id)){
+        id=null;
+    }else{
+        this._idsMap.set(id,domElem);
+    }
+
     var topic = mindmap.createNode(type, id);
 
     var text = domElem.getAttribute('text');
@@ -272,7 +280,7 @@ mindplot.XMLMindmapSerializer_Pela.prototype._deserializeNode = function(domElem
 
     var order = domElem.getAttribute('order');
     if (order) {
-        topic.setOrder(order);
+        topic.setOrder(parseInt(order));
     }
 
     var shape = domElem.getAttribute('shape');

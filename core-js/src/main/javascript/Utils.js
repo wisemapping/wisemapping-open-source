@@ -20,7 +20,7 @@ core.Utils =
 {
     isDefined: function(val)
     {
-        return val !== null && val !== undefined;
+        return val !== null && val !== undefined && typeof val !="undefined";
     },
     escapeInvalidTags: function (text)
     {

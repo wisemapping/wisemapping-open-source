@@ -12,24 +12,34 @@ mindplot.layoutManagers.OriginalLayoutManager = mindplot.layoutManagers.BaseLayo
         // Add shapes to speed up the loading process ...
         mindplot.DragTopic.initialize(workSpace);
     },
-    prepareChildrenList:function(node, children){
+    prepareNode:function(node, children){
         // Sort children by order to solve adding order in for OriginalLayoutManager...
+        var nodesByOrder = new Hash();
+        var maxOrder =0;
         var result = [];
-        if (node.getTopicType()!=mindplot.NodeModel.CENTRAL_TOPIC_TYPE && children.length > 0)
+        if (children.length > 0)
         {
             for (var i = 0; i < children.length; i++)
             {
                 var child = children[i];
                 var order = child.getOrder();
-                if (order != null)
+                if (!core.Utils.isDefined(order))
                 {
-                    result[order] = child;
-                } else
-                {
-                    result.push(child);
+                    order = maxOrder++;
                 }
+
+                if(nodesByOrder.hasKey(order)){
+                    //duplicated order. Change order to next available.
+                    order = maxOrder++;
+                }else{
+                    nodesByOrder.set(order, child);
+                    if(order>maxOrder)
+                        maxOrder=order;
+                }
+                result[order] = child;
             }
         }
+        nodesByOrder=null;
         return result;
     },
     _nodeResizeEvent:function(node){

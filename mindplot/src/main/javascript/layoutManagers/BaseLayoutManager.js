@@ -60,7 +60,7 @@ mindplot.layoutManagers.BaseLayoutManager = new Class({
     _createCentralTopicBoard:function(node){
         return new mindplot.layoutManagers.boards.Board(node, this);
     },
-    prepareChildrenList:function(node, children){
+    prepareNode:function(node, children){
 
     },
     addHelpers:function(node){
