@@ -18,14 +18,16 @@
 
 package com.wisemapping.importer;
 
+import com.sun.istack.internal.NotNull;
+
 public class ImporterException
     extends Exception
 {
-    public ImporterException(String str)
+    public ImporterException(@NotNull String str)
     {
         super(str);
     }
-    public ImporterException(Throwable exc)
+    public ImporterException(@NotNull Throwable exc)
     {
         super(exc);
     }

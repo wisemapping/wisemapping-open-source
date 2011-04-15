@@ -21,6 +21,7 @@ package com.wisemapping.importer.freemind;
 import com.sun.org.apache.xerces.internal.dom.TextImpl;
 import com.wisemapping.importer.Importer;
 import com.wisemapping.importer.ImporterException;
+import com.wisemapping.importer.VersionNumber;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.ShapeStyle;
 import com.wisemapping.util.JAXBUtils;
@@ -57,6 +58,8 @@ public class FreemindImporter
     private static final String EMPTY_FONT_STYLE = ";;;;;";
     private final static Charset UTF_8_CHARSET = Charset.forName("UTF-8");
     private final static int ORDER_SEPARATION_FACTOR = 2;
+    private static final VersionNumber SUPPORTED_FREEMIND_VERSION = new VersionNumber("0.9.0");
+
 
     private int currentId;
 
@@ -98,6 +101,16 @@ public class FreemindImporter
         try {
             String wiseXml;
             final Map freemindMap = (Map) JAXBUtils.getMapObject(input, "com.wisemapping.xml.freemind");
+
+            final String version = freemindMap.getVersion();
+            if (version != null) {
+                final VersionNumber mapVersion = new VersionNumber(version);
+                if (SUPPORTED_FREEMIND_VERSION.isGreaterThan(mapVersion)) {
+                    throw new ImporterException("FreeMind map has been created with '" + mapVersion.getVersion() + "'. Supported FreeMind version is '" + SUPPORTED_FREEMIND_VERSION.getVersion() + "' or greater.");
+                }
+            }
+
+
             final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
             final com.wisemapping.xml.mindmap.Map mindmapMap = mindmapObjectFactory.createMap();
