@@ -110,23 +110,7 @@ mindplot.MainTopic.prototype._buildDragShape = function()
 
 mindplot.MainTopic.prototype._defaultShapeType = function()
 {
-    var targetTopic = this.getOutgoingConnectedTopic();
-    var result;
-    if (targetTopic)
-    {
-        if (targetTopic.getType() != mindplot.NodeModel.CENTRAL_TOPIC_TYPE)
-        {
-            result = mindplot.NodeModel.SHAPE_TYPE_LINE;
-
-        } else
-        {
-            result = mindplot.NodeModel.SHAPE_TYPE_ROUNDED_RECT;
-        }
-    } else
-    {
-        result = mindplot.NodeModel.SHAPE_TYPE_ROUNDED_RECT;
-    }
-    return result;
+    return mindplot.NodeModel.SHAPE_TYPE_LINE;
 };
 
 mindplot.MainTopic.prototype.updateTopicShape = function(targetTopic, workspace)
@@ -140,15 +124,8 @@ mindplot.MainTopic.prototype.updateTopicShape = function(targetTopic, workspace)
         {
             // Get the real shape type ...
             shapeType = this.getShapeType();
-            this._setShapeType(mindplot.NodeModel.SHAPE_TYPE_LINE, false);
-        }else if(shapeType==mindplot.NodeModel.SHAPE_TYPE_LINE){
-            var innerShape = this.getInnerShape();
-            innerShape.setVisibility(false);
-
+            this._setShapeType(shapeType, false);
         }
-    } else {
-        var innerShape = this.getInnerShape();
-        innerShape.setVisibility(true);
     }
     this._helpers.forEach(function(helper){
         helper.moveToFront();
@@ -245,25 +222,25 @@ mindplot.MainTopic.prototype.workoutOutgoingConnectionPoint = function(targetPos
     var result;
     if (this.getShapeType() == mindplot.NodeModel.SHAPE_TYPE_LINE)
     {
-        if (!this.isConnectedToCentralTopic())
-        {
+//        if (!this.isConnectedToCentralTopic())
+//        {
             result = new core.Point();
             if (!isAtRight)
             {
-                result.x = pos.x - (size.width / 2);
+                result.x = pos.x + (size.width / 2);
             } else
             {
-                result.x = pos.x + (size.width / 2);
+                result.x = pos.x - (size.width / 2);
             }
             result.y = pos.y + (size.height / 2);
-        } else
+        /*} else
         {
             // In this case, connetion line is not used as shape figure.
             result = mindplot.util.Shape.calculateRectConnectionPoint(pos, size, isAtRight, true);
             result.y = pos.y + (size.height / 2);
-            /*if(result.y>0){
+            *//*if(result.y>0){
                 result.y+=1;
-            }*/
+            }*//*
 
             // Correction factor ...
             if (!isAtRight)
@@ -274,7 +251,7 @@ mindplot.MainTopic.prototype.workoutOutgoingConnectionPoint = function(targetPos
                 result.x = result.x - 2;
             }
 
-        }
+        }*/
     } else
     {
         result = mindplot.util.Shape.calculateRectConnectionPoint(pos, size, isAtRight, true);

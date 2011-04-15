@@ -22,7 +22,7 @@ mindplot.util.Shape =
     {
         core.assert(sourcePoint, "Source can not be null");
         core.assert(targetPoint, "Target can not be null");
-        return (targetPoint.x - sourcePoint.x) > 0;
+        return sourcePoint.x < targetPoint.x;
     },
     workoutDistance: function(sourceNode, targetNode)
     {

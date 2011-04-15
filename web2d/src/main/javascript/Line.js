@@ -19,7 +19,7 @@
 web2d.Line = function(attributes)
 {
     var peer = web2d.peer.Toolkit.createLine();
-    var defaultAttributes = {strokeColor:'#495879',strokeWidth:1};
+    var defaultAttributes = {strokeColor:'#495879',strokeWidth:1, strokeOpacity:1};
     for (var key in attributes)
     {
         defaultAttributes[key] = attributes[key];

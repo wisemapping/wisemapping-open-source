@@ -39,7 +39,12 @@ mindplot.ConnectionLine = function(sourceNode, targetNode, lineType)
         line.setStroke(1, 'solid', strokeColor);
     } else
     {
-        line = this._createLine(lineType,mindplot.ConnectionLine.POLYLINE);
+        line = this._createLine(lineType,mindplot.ConnectionLine.SIMPLE_CURVED);
+        if(line.getType()=="CurvedLine"){
+            var ctrlPoints = this._getCtrlPoints(sourceNode, targetNode);
+            line.setSrcControlPoint(ctrlPoints[0]);
+            line.setDestControlPoint(ctrlPoints[1]);
+        }
         //        line = new web2d.PolyLine();
         line.setStroke(1, 'solid', strokeColor);
     }
@@ -48,14 +53,10 @@ mindplot.ConnectionLine = function(sourceNode, targetNode, lineType)
 };
 
 mindplot.ConnectionLine.prototype._getCtrlPoints = function(sourceNode, targetNode){
-    var srcPos = sourceNode.getPosition();
-    var destPos = targetNode.getPosition();
-    var deltaX = Math.abs(Math.abs(srcPos.x) - Math.abs(destPos.x))/3;
-    var fix = 1;
-    if(mindplot.util.Shape.isAtRight(srcPos, destPos)){
-        fix=-1;
-    }
-    return [new core.Point(deltaX*fix, 0), new core.Point(deltaX*-fix, 0)];
+    var srcPos = sourceNode.workoutOutgoingConnectionPoint(targetNode.getPosition());
+    var destPos = targetNode.workoutIncomingConnectionPoint(sourceNode.getPosition());
+    var deltaX = (srcPos.x -destPos.x)/3;
+    return [new core.Point(deltaX, 0), new core.Point(-deltaX, 0)];
 };
 
 mindplot.ConnectionLine.prototype._createLine = function(lineType, defaultStyle){
@@ -118,6 +119,11 @@ mindplot.ConnectionLine.prototype.redraw = function()
     line2d.setFrom(tPos.x, tPos.y);
     line2d.setTo(sPos.x, sPos.y);
 
+    if(line2d.getType()=="CurvedLine"){
+        var ctrlPoints = this._getCtrlPoints(this._sourceTopic, this._targetTopic);
+        line2d.setSrcControlPoint(ctrlPoints[0]);
+        line2d.setDestControlPoint(ctrlPoints[1]);
+    }
     line2d.moveToBack();
 
     // Add connector ...

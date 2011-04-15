@@ -62,8 +62,11 @@ web2d.peer.svg.TextPeer.prototype.getText = function()
 web2d.peer.svg.TextPeer.prototype.setPosition = function(x, y)
 {
     this._position = {x:x, y:y};
-    var size = parseInt(this._font.getSize());
-    this._native.setAttribute('y', y + size);
+    var height = this._font.getSize();
+    if(this._parent && this._native.getBBox)
+        height = this.getHeight();
+    var size = parseInt(height);
+    this._native.setAttribute('y', y+size*3/4);
     //y+size/2
     this._native.setAttribute('x', x);
 };

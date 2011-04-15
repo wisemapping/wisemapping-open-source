@@ -238,8 +238,8 @@ mindplot.TextEditor.prototype.init = function (nodeGraph)
                 iconGroupSize = {width:0, height:0};
             }
             var position = {x:0,y:0};
-            position.x = pos.x - ((textWidth * scale.width) / 2) + ((iconGroupSize.width * scale.width)/2);
-            var fixError = 4;
+            position.x = pos.x - ((textWidth * scale.width) / 2) + (((iconGroupSize.width) * scale.width)/2);
+            var fixError =1;
             position.y = pos.y - ((textHeight * scale.height) / 2) - fixError;
 
             editor.setEditorSize(elemSize.width, elemSize.height, scale);

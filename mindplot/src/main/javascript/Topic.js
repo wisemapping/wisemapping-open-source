@@ -86,11 +86,6 @@ mindplot.Topic.prototype._setShapeType = function(type, updateModel)
                 innerShape.addEventListener('mousedown', dispatcher._listeners[i]);
             }
         }
-        if (!this.isConnectedToCentralTopic() && type == mindplot.NodeModel.SHAPE_TYPE_LINE)
-        {
-            // In this case, The normal connection line is not used.
-            innerShape.setVisibility(false);
-        }
 
         // Update figure size ...
         var size = model.getSize();
@@ -183,7 +178,7 @@ mindplot.Topic.prototype.buildShape = function(attributes, type)
     }
     else if (type == mindplot.NodeModel.SHAPE_TYPE_LINE)
     {
-        result = new web2d.Line();
+        result = new web2d.Line({strokeWidth:1, strokeOpacity:1});
         result.setSize = function(width, height)
         {
             this.size = {width:width, height:height};
@@ -1360,8 +1355,8 @@ mindplot.Topic.prototype.updateNode = function(updatePosition)
         var font = textShape.getFont();
         var iconOffset = this.getIconOffset();
         var height = sizeHeight + this._offset;
-        var width = sizeWidth + this._offset*2 + iconOffset;
-        var pos = this._offset /2;
+        var width = sizeWidth + this._offset*2 + iconOffset +2;
+        var pos = this._offset /2 -1;
         if(this.getShapeType()==mindplot.NodeModel.SHAPE_TYPE_ELIPSE){
             var factor = 0.25;
             height = (width*factor<height?height:width*factor);
@@ -1372,7 +1367,7 @@ mindplot.Topic.prototype.updateNode = function(updatePosition)
         this.setSize(newSize, false, updatePosition);
 
         // Positionate node ...
-        textShape.setPosition(iconOffset+this._offset, pos);
+        textShape.setPosition(iconOffset+this._offset+2, pos);
         textShape.setTextSize(sizeWidth, sizeHeight);
         var iconGroup = this.getIconGroup();
         if(core.Utils.isDefined(iconGroup))

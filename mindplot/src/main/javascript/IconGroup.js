@@ -193,6 +193,6 @@ mindplot.IconGroup.prototype._calculateOffsets = function() {
     var sizeHeight = text.getHtmlFontSize();
     var yOffset = offset;
     var shape = this.options.topic.getShapeType();
-    yOffset = text.getPosition().y + (sizeHeight - 18)/2;
+    yOffset = text.getPosition().y + (sizeHeight - 18)/2 + 1;
     return {x:offset, y:yOffset};
 };
