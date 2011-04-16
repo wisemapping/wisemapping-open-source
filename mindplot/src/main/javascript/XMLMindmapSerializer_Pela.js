@@ -30,12 +30,12 @@ mindplot.XMLMindmapSerializer_Pela.prototype.toXML = function(mindmap)
     // Store map attributes ...
     var mapElem = document.createElement("map");
     var name = mindmap.getId();
-    if (name)
+    if (core.Utils.isDefined(name))
     {
         mapElem.setAttribute('name', name);
     }
     var version = mindmap.getVersion();
-    if (version)
+    if (core.Utils.isDefined(version))
     {
         mapElem.setAttribute('version', version);
     }
@@ -88,12 +88,12 @@ mindplot.XMLMindmapSerializer_Pela.prototype._topicToXML = function(document, to
     }
 
     var text = topic.getText();
-    if (text) {
+    if (core.Utils.isDefined(text)) {
         parentTopic.setAttribute('text', text);
     }
 
     var shape = topic.getShapeType();
-    if (shape) {
+    if (core.Utils.isDefined(shape)) {
         parentTopic.setAttribute('shape', shape);
     }
 
@@ -123,18 +123,19 @@ mindplot.XMLMindmapSerializer_Pela.prototype._topicToXML = function(document, to
     var fontStyle = topic.getFontStyle();
     font += (fontStyle ? fontStyle : '') + ';';
 
-    if (fontFamily || fontSize || fontColor || fontWeight || fontStyle)
+    if (core.Utils.isDefined(fontFamily) || core.Utils.isDefined(fontSize) || core.Utils.isDefined(fontColor)
+            || core.Utils.isDefined(fontWeight) || core.Utils.isDefined(fontStyle))
     {
         parentTopic.setAttribute('fontStyle', font);
     }
 
     var bgColor = topic.getBackgroundColor();
-    if (bgColor) {
+    if (core.Utils.isDefined(bgColor)) {
         parentTopic.setAttribute('bgColor', bgColor);
     }
 
     var brColor = topic.getBorderColor();
-    if (brColor) {
+    if (core.Utils.isDefined(brColor)) {
         parentTopic.setAttribute('brColor', brColor);
     }
 
@@ -261,7 +262,7 @@ mindplot.XMLMindmapSerializer_Pela.prototype._deserializeNode = function(domElem
     var type = (domElem.getAttribute('central') != null) ? mindplot.NodeModel.CENTRAL_TOPIC_TYPE : mindplot.NodeModel.MAIN_TOPIC_TYPE;
     // Load attributes...
     var id = domElem.getAttribute('id');
-    if(id) {
+    if(core.Utils.isDefined(id)) {
         id=parseInt(id);
     }
 
@@ -274,28 +275,28 @@ mindplot.XMLMindmapSerializer_Pela.prototype._deserializeNode = function(domElem
     var topic = mindmap.createNode(type, id);
 
     var text = domElem.getAttribute('text');
-    if (text) {
+    if (core.Utils.isDefined(text)) {
         topic.setText(text);
     }
 
     var order = domElem.getAttribute('order');
-    if (order) {
+    if (core.Utils.isDefined(order)) {
         topic.setOrder(parseInt(order));
     }
 
     var shape = domElem.getAttribute('shape');
-    if (shape) {
+    if (core.Utils.isDefined(shape)) {
         topic.setShapeType(shape);
     }
 
     var isShrink = domElem.getAttribute('shrink');
-    if(isShrink)
+    if(core.Utils.isDefined(isShrink))
     {
         topic.setChildrenShrinked(isShrink);
     }
 
     var fontStyle = domElem.getAttribute('fontStyle');
-    if (fontStyle) {
+    if (core.Utils.isDefined(fontStyle)) {
         var font = fontStyle.split(';');
 
         if (font[0])
@@ -325,17 +326,17 @@ mindplot.XMLMindmapSerializer_Pela.prototype._deserializeNode = function(domElem
     }
 
     var bgColor = domElem.getAttribute('bgColor');
-    if (bgColor) {
+    if (core.Utils.isDefined(bgColor)) {
         topic.setBackgroundColor(bgColor);
     }
 
     var borderColor = domElem.getAttribute('brColor');
-    if (borderColor) {
+    if (core.Utils.isDefined(borderColor)) {
         topic.setBorderColor(borderColor);
     }
 
     var position = domElem.getAttribute('position');
-    if (position) {
+    if (core.Utils.isDefined(position)) {
         var pos = position.split(',');
         topic.setPosition(pos[0], pos[1]);
         topic.setFinalPosition(pos[0], pos[1]);

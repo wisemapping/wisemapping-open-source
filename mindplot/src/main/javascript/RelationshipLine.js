@@ -18,6 +18,8 @@
 mindplot.RelationshipLine = function(sourceNode, targetNode, lineType)
 {
     mindplot.ConnectionLine.call(this,sourceNode, targetNode, lineType);
+    this._line2d.setIsSrcControlPointCustom(false);
+    this._line2d.setIsDestControlPointCustom(false);
     this._isOnfocus = false;
     this._focusShape = this._createLine(this.getLineType(), mindplot.ConnectionLine.SIMPLE_CURVED);
     this._focusShape.setStroke(2, "solid", "#3f96ff");

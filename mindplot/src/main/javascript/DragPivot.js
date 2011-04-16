@@ -152,7 +152,7 @@ mindplot.DragPivot.prototype.setVisibility = function(value)
 
     var connectRect = this._connectRect;
     connectRect.setVisibility(value);
-    if (this._line)
+    if (core.Utils.isDefined(this._line))
     {
         this._line.setVisibility(value);
     }
@@ -193,12 +193,12 @@ mindplot.DragPivot.prototype.removeFromWorkspace = function(workspace)
     var connectToRect = this._connectRect;
     workspace.removeChild(connectToRect);
 
-    if (this._straightLine)
+    if (core.Utils.isDefined(this._straightLine))
     {
         workspace.removeChild(this._straightLine);
     }
 
-    if (this._curvedLine)
+    if (core.Utils.isDefined(this._curvedLine))
     {
         workspace.removeChild(this._curvedLine);
     }
@@ -225,13 +225,13 @@ mindplot.DragPivot.prototype.connectTo = function(targetTopic)
     // Connected to Rect ...
     var connectRect = this._connectRect;
     var targetSize = targetTopic.getSize();
-    var width = targetSize.width + 6;
-    var height = targetSize.height + 6;
+    var width = targetSize.width;
+    var height = targetSize.height;
     connectRect.setSize(width, height);
 
     var targetPosition = targetTopic.getPosition();
-    var cx = Math.round(targetPosition.x - (width / 2));
-    var cy = Math.round(targetPosition.y - (height / 2));
+    var cx = Math.ceil(targetPosition.x - (width / 2));
+    var cy = Math.ceil(targetPosition.y - (height / 2));
     connectRect.setPosition(cx, cy);
 
     // Change elements position ...

@@ -39,7 +39,7 @@ mindplot.layoutManagers.BaseLayoutManager = new Class({
     getTopicBoardForTopic:function(node){
         var id = node.getId();
         var result = this._boards[id];
-        if(!result){
+        if(!core.Utils.isDefined(result)){
             result = this._addNode(node);
         }
         return result;

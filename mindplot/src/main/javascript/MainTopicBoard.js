@@ -30,7 +30,7 @@ mindplot.MainTopicBoard.DEFAULT_MAIN_TOPIC_HEIGHT = 18;
 
 mindplot.MainTopicBoard.prototype._getBoard = function()
 {
-    if (!this._board)
+    if (!core.Utils.isDefined(this._board))
     {
         var topic = this._topic;
         this._board = new mindplot.FixedDistanceBoard(mindplot.MainTopicBoard.DEFAULT_MAIN_TOPIC_HEIGHT, topic, this._layoutManager);

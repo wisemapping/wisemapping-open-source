@@ -39,7 +39,7 @@ mindplot.ImageIcon = function(iconModel, topic, designer) {
     removeImage.src = "../images/bin.png";
     removeImage.inject(container);
 
-    if (!designer._viewMode)
+    if (!core.Utils.isDefined(designer._viewMode)|| (core.Utils.isDefined(designer._viewMode) && !designer._viewMode))
     {
 
         removeImage.addEvent('click', function(event) {

@@ -120,7 +120,7 @@ mindplot.MainTopic.prototype.updateTopicShape = function(targetTopic, workspace)
     var shapeType = model.getShapeType();
     if (targetTopic.getType() != mindplot.NodeModel.CENTRAL_TOPIC_TYPE)
     {
-        if (!shapeType)
+        if (!core.Utils.isDefined(shapeType))
         {
             // Get the real shape type ...
             shapeType = this.getShapeType();
@@ -139,7 +139,7 @@ mindplot.MainTopic.prototype.disconnect = function(workspace)
 
     var model = this.getModel();
     var shapeType = model.getShapeType();
-    if (!shapeType)
+    if (!core.Utils.isDefined(shapeType))
     {
         // Change figure ...
         shapeType = this.getShapeType();
@@ -208,6 +208,9 @@ mindplot.MainTopic.prototype.workoutIncomingConnectionPoint = function(sourcePos
     {
         result.x = result.x - offset;
     }
+
+    result.x = Math.ceil(result.x);
+    result.y = Math.ceil(result.y);
     return result;
 
 };
@@ -256,6 +259,8 @@ mindplot.MainTopic.prototype.workoutOutgoingConnectionPoint = function(targetPos
     {
         result = mindplot.util.Shape.calculateRectConnectionPoint(pos, size, isAtRight, true);
     }
+    result.x = Math.ceil(result.x);
+    result.y = Math.ceil(result.y);
     return result;
 };
 
@@ -272,7 +277,7 @@ mindplot.MainTopic.prototype._defaultText = function()
 {
     var targetTopic = this.getOutgoingConnectedTopic();
     var result = "";
-    if (targetTopic)
+    if (core.Utils.isDefined(targetTopic))
     {
         if (targetTopic.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE)
         {
@@ -292,7 +297,7 @@ mindplot.MainTopic.prototype._defaultFontStyle = function()
 {
     var targetTopic = this.getOutgoingConnectedTopic();
     var result;
-    if (targetTopic)
+    if (core.Utils.isDefined(targetTopic))
     {
         if (targetTopic.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE)
         {

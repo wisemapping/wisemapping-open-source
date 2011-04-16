@@ -47,8 +47,8 @@ mindplot.DragTopic.prototype.setPosition = function(x, y)
     var draggedNode = this._draggedNode;
     var size = draggedNode.getSize();
 
-    var cx = x - (size.width / 2);
-    var cy = y - (size.height / 2);
+    var cx = Math.ceil(x - (size.width / 2));
+    var cy = Math.ceil(y - (size.height / 2));
 
     // Update visual position.
     this._elem2d.setPosition(cx, cy);
@@ -135,7 +135,7 @@ mindplot.DragTopic.prototype._getDragPivot = function()
 mindplot.DragTopic.__getDragPivot = function()
 {
     var result = mindplot.DragTopic._dragPivot;
-    if (!result)
+    if (!core.Utils.isDefined(result))
     {
         result = new mindplot.DragPivot();
         mindplot.DragTopic._dragPivot = result;

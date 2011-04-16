@@ -92,8 +92,8 @@ core.Utils.getMousePosition = function(event)
     var xcoord = -1;
     var ycoord = -1;
 
-    if (!event) {
-        if (window.event) {
+    if (!core.Utils.isDefined(event)) {
+        if (core.Utils.isDefined(window.event)) {
             //Internet Explorer
             event = window.event;
         } else {
@@ -143,7 +143,7 @@ core.Utils.workOutDivElementPosition = function(divElement)
 {
     var curleft = 0;
     var curtop = 0;
-    if (divElement.offsetParent) {
+    if (core.Utils.isDefined(divElement.offsetParent)) {
         curleft = divElement.offsetLeft;
         curtop = divElement.offsetTop;
         while (divElement = divElement.offsetParent) {
@@ -158,13 +158,13 @@ core.Utils.workOutDivElementPosition = function(divElement)
 core.Utils.innerXML = function(/*Node*/node) {
     //	summary:
     //		Implementation of MS's innerXML function.
-    if (node.innerXML) {
+    if (core.Utils.isDefined(node.innerXML)) {
         return node.innerXML;
         //	string
-    } else if (node.xml) {
+    } else if (core.Utils.isDefined(node.xml)) {
         return node.xml;
         //	string
-    } else if (typeof XMLSerializer != "undefined") {
+    } else if (core.Utils.isDefined(XMLSerializer)) {
         return (new XMLSerializer()).serializeToString(node);
         //	string
     }
@@ -175,7 +175,7 @@ core.Utils.createDocument = function() {
     //		cross-browser implementation of creating an XML document object.
     var doc = null;
     var _document = window.document;
-    if (window.ActiveXObject) {
+    if (core.Utils.isDefined(window.ActiveXObject)) {
         var prefixes = [ "MSXML2", "Microsoft", "MSXML", "MSXML3" ];
         for (var i = 0; i < prefixes.length; i++) {
             try {
@@ -184,7 +184,7 @@ core.Utils.createDocument = function() {
             }
             ;
 
-            if (doc) {
+            if (core.Utils.isDefined(doc)) {
                 break;
             }
         }
@@ -201,17 +201,17 @@ core.Utils.createDocumentFromText = function(/*string*/str, /*string?*/mimetype)
     //	summary:
     //		attempts to create a Document object based on optional mime-type,
     //		using str as the contents of the document
-    if (!mimetype) {
+    if (!core.Utils.isDefined(mimetype)) {
         mimetype = "text/xml";
     }
-    if (window.DOMParser)
+    if (core.Utils.isDefined(window.DOMParser))
     {
         var parser = new DOMParser();
         return parser.parseFromString(str, mimetype);
         //	DOMDocument
-    } else if (window.ActiveXObject) {
+    } else if (core.Utils.isDefined(window.ActiveXObject)) {
         var domDoc = core.Utils.createDocument();
-        if (domDoc) {
+        if (core.Utils.isDefined(domDoc)) {
             domDoc.async = false;
             domDoc.loadXML(str);
             return domDoc;
@@ -269,7 +269,7 @@ core.Utils.calculateDefaultControlPoints = function(srcPos, tarPos){
     var x2 = tarPos.x + Math.sqrt(l*l/(1+(m*m)))*fix*-1;
     var y2= m*(x2-tarPos.x)+tarPos.y;
 
-    return [new core.Point(-srcPos.x + x1,-srcPos.y + y1),new core.Point(-tarPos.x + x2,-tarPos.y + y2)];
+    return [new core.Point(srcPos.x - x1,srcPos.y - y1),new core.Point(tarPos.x - x2,tarPos.y - y2)];
 };
 
 core.Utils.setVisibilityAnimated = function(elems, isVisible, doneFn){
@@ -285,8 +285,10 @@ core.Utils.animateVisibility = function (elems, isVisible, doneFn){
     var _opacity = (isVisible?0:1);
     if(isVisible){
         elems.forEach(function(child, index){
-                child.setOpacity(_opacity);
-                child.setVisibility(isVisible);
+                if(core.Utils.isDefined(child)){
+                    child.setOpacity(_opacity);
+                    child.setVisibility(isVisible);
+                }
             });
     }
     var fadeEffect = function(index)
@@ -296,8 +298,9 @@ core.Utils.animateVisibility = function (elems, isVisible, doneFn){
             $clear(_fadeEffect);
             _fadeEffect = null;
             elems.forEach(function(child, index){
-
-                child.setVisibility(isVisible);
+                if(core.Utils.isDefined(child)){
+                    child.setVisibility(isVisible);
+                }
 
             });
             if(core.Utils.isDefined(doneFn))
@@ -310,7 +313,9 @@ core.Utils.animateVisibility = function (elems, isVisible, doneFn){
             }
             _opacity-=(1/step)*fix;
             elems.forEach(function(child, index){
-                child.setOpacity(_opacity);
+                if(core.Utils.isDefined(child)){
+                    child.setOpacity(_opacity);
+                }
             });
         }
 

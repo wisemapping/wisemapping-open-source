@@ -3,12 +3,12 @@ mindplot.layoutManagers.boards.freeMindBoards.Entry = new Class({
         this._node = node;
         this._DEFAULT_X_GAP = 30;
         var pos = node.getModel().getFinalPosition();
-        if(useFinalPosition && pos){
+        if(useFinalPosition && core.Utils.isDefined(pos)){
             this.setPosition(pos.x, pos.y);
         }
         else{
             pos = node.getPosition();
-            if(!pos){
+            if(!core.Utils.isDefined(pos)){
                 var parent = node.getParent();
                 pos = parent.getPosition().clone();
                 var pwidth = parent.getSize().width;

@@ -388,7 +388,7 @@ public class FreemindImporter
                     || freeChild.getPOSITION()==null && isOnLeftSide(wiseParent))
                 fix=BigInteger.valueOf(-1L);
             BigInteger firstLevelDistance = BigInteger.valueOf(0L);
-            BigInteger defaultXDistance = BigInteger.valueOf(100L);
+            BigInteger defaultXDistance = BigInteger.valueOf(200L);
             if(depth==1){
                 firstLevelDistance = BigInteger.valueOf(200L);
                 defaultXDistance = BigInteger.valueOf(0L);

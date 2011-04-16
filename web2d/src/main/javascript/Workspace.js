@@ -56,7 +56,7 @@ web2d.Workspace.prototype._disableTextSelection = function()
     contaier.onselectstart = new Function("return false");
 
     //if the browser is NS6
-    if (window.sidebar)
+    if (core.Utils.isDefined(window.sidebar))
     {
         contaier.onmousedown = disabletext;
         contaier.onclick = reEnable;
@@ -73,7 +73,7 @@ web2d.Workspace.prototype.getType = function()
  */
 web2d.Workspace.prototype.appendChild = function(element)
 {
-    if (!element)
+    if (!core.Utils.isDefined(element))
     {
         throw "Child element can not be null";
     }
@@ -96,7 +96,7 @@ web2d.Workspace.prototype.appendChild = function(element)
  */
 web2d.Workspace.prototype.addItAsChildTo = function(element)
 {
-    if (!element)
+    if (!core.Utils.isDefined(element))
     {
         throw "Workspace div container can not be null";
     }
@@ -232,7 +232,7 @@ web2d.Workspace.prototype.getCoordSize = function()
  */
 web2d.Workspace.prototype.removeChild = function(element)
 {
-    if (!element)
+    if (!core.Utils.isDefined(element))
     {
         throw "Child element can not be null";
     }

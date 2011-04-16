@@ -174,7 +174,7 @@ mindplot.TextEditor.prototype.listenEventOnNode = function(topic, eventName, sto
 
         if (stopPropagation)
         {
-            if (event.stopPropagation)
+            if (core.Utils.isDefined(event.stopPropagation))
             {
                 event.stopPropagation(true);
             } else
@@ -390,7 +390,7 @@ mindplot.TextEditor.prototype.lostFocus = function(bothBrowsers)
 
 mindplot.TextEditor.prototype.clickEvent = function(event){
     if(this._isVisible()){
-        if (event.stopPropagation)
+        if (core.Utils.isDefined(event.stopPropagation))
         {
             event.stopPropagation(true);
         } else
@@ -403,7 +403,7 @@ mindplot.TextEditor.prototype.clickEvent = function(event){
 
 mindplot.TextEditor.prototype.mouseDownEvent = function(event){
     if(this._isVisible()){
-        if (event.stopPropagation)
+        if (core.Utils.isDefined(event.stopPropagation))
         {
             event.stopPropagation(true);
         } else

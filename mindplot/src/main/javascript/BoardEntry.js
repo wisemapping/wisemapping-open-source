@@ -18,7 +18,7 @@
 
 mindplot.BoardEntry = function(lowerLimit, upperLimit, order)
 {
-    if (lowerLimit && upperLimit)
+    if (core.Utils.isDefined(lowerLimit) && core.Utils.isDefined(upperLimit))
     {
         core.assert(lowerLimit < upperLimit, 'lowerLimit can not be greater that upperLimit');
     }
@@ -102,20 +102,20 @@ mindplot.BoardEntry.prototype.update = function()
 
 mindplot.BoardEntry.prototype.setTopic = function(topic, updatePosition)
 {
-    if (!core.Utils.isDefined(updatePosition))
+    if (!core.Utils.isDefined(updatePosition) || (core.Utils.isDefined(updatePosition) && !updatePosition))
     {
         updatePosition = true;
     }
 
     this._topic = topic;
-    if (topic)
+    if (core.Utils.isDefined(topic))
     {
         // Fixed positioning. Only for main topic ...
         var position = null;
         var topicPosition = topic.getPosition();
 
         // Must update position base on the border limits?
-        if (this._xPos)
+        if (core.Utils.isDefined(this._xPos))
         {
             position = new core.Point();
 

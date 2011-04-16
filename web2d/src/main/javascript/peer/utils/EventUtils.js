@@ -21,7 +21,7 @@ web2d.peer.utils.EventUtils =
     broadcastChangeEvent:function (elementPeer, type)
     {
         var listeners = elementPeer.getChangeEventListeners(type);
-        if (listeners)
+        if (core.Utils.isDefined(listeners))
         {
             for (var i = 0; i < listeners.length; i++)
             {

@@ -50,7 +50,7 @@ mindplot.ControlPoint.prototype.setLine= function(line) {
 };
 
 mindplot.ControlPoint.prototype.redraw = function(){
-    if(this._line)
+    if(core.Utils.isDefined(this._line))
         this._createControlPoint();
 };
 

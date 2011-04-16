@@ -127,7 +127,7 @@ mindplot.layoutManagers.OriginalLayoutManager = mindplot.layoutManagers.BaseLayo
         }
 
         // Register editor events ...
-        if (!this.getDesigner()._viewMode)
+        if (!core.Utils.isDefined(this.getDesigner()._viewMode)|| (core.Utils.isDefined(this.getDesigner()._viewMode) && !this.getDesigner()._viewMode))
         {
             this.getDesigner()._editor.listenEventOnNode(topic, 'dblclick', true);
         }

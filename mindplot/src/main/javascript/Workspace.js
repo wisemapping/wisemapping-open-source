@@ -76,7 +76,7 @@ mindplot.Workspace.prototype._createWorkspace = function(profile)
 
 mindplot.Workspace.prototype.appendChild = function(shape)
 {
-    if (shape.addToWorkspace)
+    if (core.Utils.isDefined(shape.addToWorkspace))
     {
         shape.addToWorkspace(this);
     } else
@@ -88,7 +88,7 @@ mindplot.Workspace.prototype.appendChild = function(shape)
 mindplot.Workspace.prototype.removeChild = function(shape)
 {
     // Element is a node, not a web2d element?
-    if (shape.removeFromWorkspace)
+    if (core.Utils.isDefined(shape.removeFromWorkspace))
     {
         shape.removeFromWorkspace(this);
     } else
@@ -173,7 +173,7 @@ mindplot.Workspace.prototype._registerDragEvents = function()
     var mWorkspace = this;
     var mouseDownListener = function(event)
     {
-        if (!workspace.mouseMoveListener)
+        if (!core.Utils.isDefined(workspace.mouseMoveListener))
         {
             if (mWorkspace.isWorkspaceEventsEnabled())
             {

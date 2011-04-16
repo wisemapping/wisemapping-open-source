@@ -16,7 +16,7 @@
 *   limitations under the License.
 */
 
-if(afterMindpotLibraryLoading)
+if(core.Utils.isDefined(afterMindpotLibraryLoading))
 {
     afterMindpotLibraryLoading();
 }

@@ -135,7 +135,7 @@ mindplot.Tip.prototype.moveTopic=function(offset, panelHeight){
 mindplot.Tip.getInstance = function(divContainer)
 {
     var result = mindplot.Tip.instance;
-    if(!result)
+    if(!core.Utils.isDefined(result))
     {
         mindplot.Tip.instance = new mindplot.Tip(divContainer);
         result = mindplot.Tip.instance;

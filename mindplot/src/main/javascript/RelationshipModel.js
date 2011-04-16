@@ -100,7 +100,7 @@ mindplot.RelationshipModel.prototype.clone = function(model){
  */
 mindplot.RelationshipModel._nextUUID = function()
 {
-    if (!this._uuid)
+    if (!core.Utils.isDefined(this._uuid))
     {
         this._uuid = 0;
     }

@@ -15,7 +15,7 @@ mindplot.layoutManagers.boards.freeMindBoards.CentralTopicBoard = mindplot.layou
         {
             position = altPosition;
         }
-        if(!position){
+        if(!core.Utils.isDefined(position)){
             if(Math.sign(node.getParent().getPosition().x) == -1){
                 i=1;
             }

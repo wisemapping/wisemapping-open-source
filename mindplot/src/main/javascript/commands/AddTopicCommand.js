@@ -33,7 +33,7 @@ mindplot.commands.AddTopicCommand = mindplot.Command.extend(
         var topic = commandContext.createTopic(this._model, !this._animated);
 
         // Connect to topic ...
-        if (this._parentId)
+        if (core.Utils.isDefined(this._parentId))
         {
             var parentTopic = commandContext.findTopics(this._parentId)[0];
             commandContext.connect(topic, parentTopic, !this._animated);

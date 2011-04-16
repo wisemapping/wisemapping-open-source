@@ -68,7 +68,7 @@ mindplot.util.Shape =
         var y = sPos.y - tPos.y;
 
         var gradient = 0;
-        if (x)
+        if (core.Utils.isDefined(x))
         {
             gradient = y / x;
         }

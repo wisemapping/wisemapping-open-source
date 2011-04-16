@@ -45,7 +45,7 @@ web2d.peer.svg.TextPeer.prototype.setText = function(text)
 {
     text = core.Utils.escapeInvalidTags(text);
     var child = this._native.firstChild;
-    if (child)
+    if (core.Utils.isDefined(child))
     {
         this._native.removeChild(child);
     }
@@ -63,7 +63,7 @@ web2d.peer.svg.TextPeer.prototype.setPosition = function(x, y)
 {
     this._position = {x:x, y:y};
     var height = this._font.getSize();
-    if(this._parent && this._native.getBBox)
+    if(core.Utils.isDefined(this._parent) && core.Utils.isDefined(this._native.getBBox))
         height = this.getHeight();
     var size = parseInt(height);
     this._native.setAttribute('y', y+size*3/4);

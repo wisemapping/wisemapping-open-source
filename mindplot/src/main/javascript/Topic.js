@@ -60,7 +60,7 @@ mindplot.Topic.prototype._setShapeType = function(type, updateModel)
 {
     // Remove inner shape figure ...
     var model = this.getModel();
-    if (updateModel)
+    if (core.Utils.isDefined(updateModel)&& updateModel)
     {
         model.setShapeType(type);
     }
@@ -79,7 +79,7 @@ mindplot.Topic.prototype._setShapeType = function(type, updateModel)
         //this._registerDefaultListenersToElement(innerShape, this);
 
         var dispatcher = dispatcherByEventType['mousedown'];
-        if(dispatcher)
+        if(core.Utils.isDefined(dispatcher))
         {
             for(var i = 1; i<dispatcher._listeners.length; i++)
             {
@@ -103,6 +103,17 @@ mindplot.Topic.prototype._setShapeType = function(type, updateModel)
         if($chk(iconGroup)){
             iconGroup.moveToFront();
         }
+        //Move connector to front
+        var connector = this.getShrinkConnector();
+        if($chk(connector)){
+            connector.moveToFront();
+        }
+
+        //Move helpers to front
+        this._helpers.forEach(function(helper){
+            helper.moveToFront();
+        });
+
     }
 
 };
@@ -111,7 +122,7 @@ mindplot.Topic.prototype.getShapeType = function()
 {
     var model = this.getModel();
     var result = model.getShapeType();
-    if (!result)
+    if (!core.Utils.isDefined(result))
     {
         result = this._defaultShapeType();
     }
@@ -129,7 +140,7 @@ mindplot.Topic.prototype._removeInnerShape = function()
 mindplot.Topic.prototype.INNER_RECT_ATTRIBUTES = {stroke:'0.5 solid'};
 mindplot.Topic.prototype.getInnerShape = function()
 {
-    if (!this._innerShape)
+    if (!core.Utils.isDefined(this._innerShape))
     {
         // Create inner box.
         this._innerShape = this.buildShape(this.INNER_RECT_ATTRIBUTES);
@@ -236,7 +247,7 @@ mindplot.Topic.OUTER_SHAPE_ATTRIBUTES = {fillColor:'#dbe2e6',stroke:'1 solid #77
 
 mindplot.Topic.prototype.getOuterShape = function()
 {
-    if (!this._outerShape)
+    if (!core.Utils.isDefined(this._outerShape))
     {
         var rect = this.buildShape(mindplot.Topic.OUTER_SHAPE_ATTRIBUTES, mindplot.NodeModel.SHAPE_TYPE_ROUNDED_RECT);
         rect.setPosition(-2, -3);
@@ -249,7 +260,7 @@ mindplot.Topic.prototype.getOuterShape = function()
 
 mindplot.Topic.prototype.getTextShape = function()
 {
-    if (!this._text)
+    if (!core.Utils.isDefined(this._text))
     {
         var model = this.getModel();
         this._text = this._buildTextShape();
@@ -263,7 +274,7 @@ mindplot.Topic.prototype.getTextShape = function()
 
 mindplot.Topic.prototype.getOrBuildIconGroup = function()
 {
-    if (!this._icon)
+    if (!core.Utils.isDefined(this._icon))
     {
         this._icon = this._buildIconGroup();
         var group = this.get2DElement();
@@ -448,7 +459,7 @@ mindplot.Topic.prototype._buildTextShape = function(disableEventsListeners)
         result.addEventListener('mousedown', function(event)
         {
             var eventDispatcher = topic.getInnerShape()._dispatcherByEventType['mousedown'];
-            if (eventDispatcher)
+            if (core.Utils.isDefined(eventDispatcher))
             {
                 eventDispatcher.eventListener(event);
             }
@@ -503,7 +514,7 @@ mindplot.Topic.prototype.setFontFamily = function(value, updateModel)
 {
     var textShape = this.getTextShape();
     textShape.setFontFamily(value);
-    if (updateModel)
+    if (core.Utils.isDefined(updateModel) && updateModel)
     {
         var model = this.getModel();
         model.setFontFamily(value);
@@ -525,7 +536,7 @@ mindplot.Topic.prototype.setFontSize = function(value, updateModel)
 {
     var textShape = this.getTextShape();
     textShape.setSize(value);
-    if (updateModel)
+    if (core.Utils.isDefined(updateModel) && updateModel)
     {
         var model = this.getModel();
         model.setFontSize(value);
@@ -548,7 +559,7 @@ mindplot.Topic.prototype.setFontStyle = function(value, updateModel)
 {
     var textShape = this.getTextShape();
     textShape.setStyle(value);
-    if (updateModel)
+    if (core.Utils.isDefined(updateModel) && updateModel)
     {
         var model = this.getModel();
         model.setFontStyle(value);
@@ -570,7 +581,7 @@ mindplot.Topic.prototype.setFontWeight = function(value, updateModel)
 {
     var textShape = this.getTextShape();
     textShape.setWeight(value);
-    if (updateModel)
+    if (core.Utils.isDefined(updateModel) && updateModel)
     {
         var model = this.getModel();
         model.setFontWeight(value);
@@ -581,7 +592,7 @@ mindplot.Topic.prototype.getFontWeight = function()
 {
     var model = this.getModel();
     var result = model.getFontWeight();
-    if (!result)
+    if (!core.Utils.isDefined(result))
     {
         var font = this._defaultFontStyle();
         result = font.weight;
@@ -593,7 +604,7 @@ mindplot.Topic.prototype.getFontFamily = function()
 {
     var model = this.getModel();
     var result = model.getFontFamily();
-    if (!result)
+    if (!core.Utils.isDefined(result))
     {
         var font = this._defaultFontStyle();
         result = font.font;
@@ -605,7 +616,7 @@ mindplot.Topic.prototype.getFontColor = function()
 {
     var model = this.getModel();
     var result = model.getFontColor();
-    if (!result)
+    if (!core.Utils.isDefined(result))
     {
         var font = this._defaultFontStyle();
         result = font.color;
@@ -617,7 +628,7 @@ mindplot.Topic.prototype.getFontStyle = function()
 {
     var model = this.getModel();
     var result = model.getFontStyle();
-    if (!result)
+    if (!core.Utils.isDefined(result))
     {
         var font = this._defaultFontStyle();
         result = font.style;
@@ -629,7 +640,7 @@ mindplot.Topic.prototype.getFontSize = function()
 {
     var model = this.getModel();
     var result = model.getFontSize();
-    if (!result)
+    if (!core.Utils.isDefined(result))
     {
         var font = this._defaultFontStyle();
         result = font.size;
@@ -641,7 +652,7 @@ mindplot.Topic.prototype.setFontColor = function(value, updateModel)
 {
     var textShape = this.getTextShape();
     textShape.setColor(value);
-    if (updateModel)
+    if (core.Utils.isDefined(updateModel) && updateModel)
     {
         var model = this.getModel();
         model.setFontColor(value);
@@ -664,7 +675,7 @@ mindplot.Topic.prototype._setText = function(text, updateModel)
     setTimeout(executor(this), 0);*/
     core.Executor.instance.delay(this.updateNode, 0,this, [updateModel]);
 
-    if (updateModel)
+    if (core.Utils.isDefined(updateModel) && updateModel)
     {
         var model = this.getModel();
         model.setText(text);
@@ -680,7 +691,7 @@ mindplot.Topic.prototype.getText = function()
 {
     var model = this.getModel();
     var result = model.getText();
-    if (!result)
+    if (!core.Utils.isDefined(result))
     {
         result = this._defaultText();
     }
@@ -699,7 +710,7 @@ mindplot.Topic.prototype._setBackgroundColor = function(color, updateModel)
 
     var connector = this.getShrinkConnector();
     connector.setFill(color);
-    if (updateModel)
+    if (core.Utils.isDefined(updateModel) && updateModel)
     {
         var model = this.getModel();
         model.setBackgroundColor(color);
@@ -710,7 +721,7 @@ mindplot.Topic.prototype.getBackgroundColor = function()
 {
     var model = this.getModel();
     var result = model.getBackgroundColor();
-    if (!result)
+    if (!core.Utils.isDefined(result))
     {
         result = this._defaultBackgroundColor();
     }
@@ -731,7 +742,7 @@ mindplot.Topic.prototype._setBorderColor = function(color, updateModel)
     connector.setAttribute('strokeColor', color);
 
 
-    if (updateModel)
+    if (core.Utils.isDefined(updateModel) && updateModel)
     {
         var model = this.getModel();
         model.setBorderColor(color);
@@ -742,7 +753,7 @@ mindplot.Topic.prototype.getBorderColor = function()
 {
     var model = this.getModel();
     var result = model.getBorderColor();
-    if (!result)
+    if (!core.Utils.isDefined(result))
     {
         result = this._defaultBorderColor();
     }
@@ -923,7 +934,7 @@ mindplot.Topic.prototype.getIncomingLines = function()
     {
         var node = children[i];
         var line = node.getOutgoingLine();
-        if (line)
+        if (core.Utils.isDefined(line))
         {
             result.push(line);
         }
@@ -935,7 +946,7 @@ mindplot.Topic.prototype.getOutgoingConnectedTopic = function()
 {
     var result = null;
     var line = this.getOutgoingLine();
-    if (line)
+    if (core.Utils.isDefined(line))
     {
         result = line.getTargetTopic();
     }
@@ -947,7 +958,7 @@ mindplot.Topic.prototype._updateConnectionLines = function()
 {
     // Update this to parent line ...
     var outgoingLine = this.getOutgoingLine();
-    if (outgoingLine)
+    if (core.Utils.isDefined(outgoingLine))
     {
         outgoingLine.redraw();
     }
@@ -997,7 +1008,7 @@ mindplot.Topic.prototype.moveToBack = function(){
         this._relationships[j].moveToBack();
     }
     var connector = this.getShrinkConnector();
-    if(connector){
+    if(core.Utils.isDefined(connector)){
         connector.moveToBack();
     }
 
@@ -1010,7 +1021,7 @@ mindplot.Topic.prototype.moveToFront = function(){
 
     this.get2DElement().moveToFront();
     var connector = this.getShrinkConnector();
-    if(connector){
+    if(core.Utils.isDefined(connector)){
         connector.moveToFront();
     }
     // Update relationship lines
@@ -1175,7 +1186,7 @@ mindplot.Topic.prototype._updatePositionOnChangeSize = function(oldSize, newSize
 mindplot.Topic.prototype.disconnect = function(workspace)
 {
     var outgoingLine = this.getOutgoingLine();
-    if (outgoingLine)
+    if (core.Utils.isDefined(outgoingLine))
     {
         core.assert(workspace, 'workspace can not be null');
 
@@ -1298,7 +1309,7 @@ mindplot.Topic.prototype._removeChild = function(child)
 mindplot.Topic.prototype._getChildren = function()
 {
     var result = this._children;
-    if (!result)
+    if (!core.Utils.isDefined(result))
     {
         this._children = [];
         result = this._children;
@@ -1311,7 +1322,7 @@ mindplot.Topic.prototype.removeFromWorkspace = function(workspace)
     var elem2d = this.get2DElement();
     workspace.removeChild(elem2d);
     var line = this.getOutgoingLine();
-    if (line)
+    if (core.Utils.isDefined(line))
     {
         workspace.removeChild(line);
     }
@@ -1335,7 +1346,7 @@ mindplot.Topic.prototype.createDragNode = function()
 
     // Is the node already connected ?
     var targetTopic = this.getOutgoingConnectedTopic();
-    if (targetTopic)
+    if (core.Utils.isDefined(targetTopic))
     {
         dragNode.connectTo(targetTopic);
     }

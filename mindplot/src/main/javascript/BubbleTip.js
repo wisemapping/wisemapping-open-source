@@ -148,7 +148,7 @@ mindplot.BubbleTip.prototype.moveTopic=function(offset, panelHeight, panelWidth,
 mindplot.BubbleTip.getInstance = function(divContainer)
 {
     var result = mindplot.BubbleTip.instance;
-    if(!result)
+    if(!core.Utils.isDefined(result))
     {
         mindplot.BubbleTip.instance = new mindplot.BubbleTip(divContainer);
         result = mindplot.BubbleTip.instance;

@@ -38,7 +38,7 @@ mindplot.Command = new Class(
 
 mindplot.Command._nextUUID = function()
 {
-    if (!mindplot.Command._uuid)
+    if (!core.Utils.isDefined(mindplot.Command._uuid))
     {
         mindplot.Command._uuid = 1;
     }

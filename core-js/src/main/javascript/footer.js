@@ -22,7 +22,7 @@ wLogger.setLevel(Log4js.Level.ALL);
 //wLogger.addAppender(new Log4js.BrowserConsoleAppender());
 
 // Is logger service available ?
-if (window.LoggerService)
+if (core.Utils.isDefined(window.LoggerService))
 {
     Log4js.WiseServerAppender = function()
     {

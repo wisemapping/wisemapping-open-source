@@ -42,7 +42,7 @@ web2d.Element.prototype._initialize = function(attributes)
     {
         var funcName = this._attributeNameToFuncName(key, 'set');
         var funcArgs = batchExecute[funcName];
-        if (!funcArgs)
+        if (!core.Utils.isDefined(funcArgs))
         {
             funcArgs = [];
         }
@@ -63,7 +63,7 @@ web2d.Element.prototype._initialize = function(attributes)
     for (var key in batchExecute)
     {
         var func = this[key];
-        if (!func)
+        if (!core.Utils.isDefined(func))
         {
             throw "Could not find function: " + key;
         }
@@ -223,7 +223,7 @@ web2d.Element.prototype._propertyNameToSignature =
 web2d.Element.prototype._attributeNameToFuncName = function(attributeKey, prefix)
 {
     var signature = this._propertyNameToSignature[attributeKey];
-    if (!signature)
+    if (!core.Utils.isDefined(signature))
     {
         throw "Unsupported attribute: " + attributeKey;
     }
@@ -292,13 +292,13 @@ web2d.Element.prototype.getAttribute = function(key)
 
     var getterResult = getter.apply(this, []);
     var attibuteName = signature[2];
-    if (!attibuteName)
+    if (!core.Utils.isDefined(attibuteName))
     {
         throw "Could not find attribute mapping for:" + key;
     }
 
     var result = getterResult[attibuteName];
-    if (!result)
+    if (!core.Utils.isDefined(result))
     {
         throw "Could not find attribute with name:" + attibuteName;
     }

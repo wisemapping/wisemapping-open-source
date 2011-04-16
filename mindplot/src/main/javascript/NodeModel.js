@@ -30,7 +30,7 @@ mindplot.NodeModel = function(type, mindmap, id)
     this._size = {width:50,height:20};
     this._position = null;
     if(core.Utils.isDefined(id)){
-        if(!mindplot.NodeModel._uuid || id>mindplot.NodeModel._uuid){
+        if(!core.Utils.isDefined(mindplot.NodeModel._uuid) || id>mindplot.NodeModel._uuid){
             mindplot.NodeModel._uuid = id;
         }
         this._id = id;
@@ -485,7 +485,7 @@ mindplot.NodeModel.prototype.deleteNode = function()
     }
 
     var parent = this._parent;
-    if (parent)
+    if (core.Utils.isDefined(parent))
     {
         // if it is connected, I must remove it from the parent..
         mindmap.disconnect(this);
@@ -502,7 +502,7 @@ mindplot.NodeModel.prototype.deleteNode = function()
  */
 mindplot.NodeModel._nextUUID = function()
 {
-    if (!this._uuid)
+    if (!core.Utils.isDefined(this._uuid))
     {
         this._uuid = 0;
     }

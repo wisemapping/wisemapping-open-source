@@ -85,7 +85,7 @@ mindplot.MindmapDesigner.prototype._registerEvents = function()
     var workspace = this._workspace;
     var screenManager = workspace.getScreenManager();
 
-    if (!this._viewMode)
+    if (!core.Utils.isDefined(this._viewMode) || (core.Utils.isDefined(this._viewMode) && !this._viewMode))
     {
         // Initialize workspace event listeners.
         // Create nodes on double click...
@@ -278,7 +278,8 @@ mindplot.MindmapDesigner.prototype.addRelationShip2SelectedNode = function(event
     var screen = this._workspace.getScreenManager();
     var pos = screen.getWorkspaceMousePosition(event);
     var selectedTopics = this.getSelectedNodes();
-    if(selectedTopics.length >0){
+    if(selectedTopics.length >0 &&
+       (!core.Utils.isDefined(this._creatingRelationship) || (core.Utils.isDefined(this._creatingRelationship) && !this._creatingRelationship))){
         var fromNodePosition = selectedTopics[0].getPosition();
         this._relationship = new web2d.CurvedLine();
         this._relationship.setStyle(web2d.CurvedLine.SIMPLE_LINE);
@@ -286,6 +287,7 @@ mindplot.MindmapDesigner.prototype.addRelationShip2SelectedNode = function(event
         this._relationship.setFrom(fromNodePosition.x, fromNodePosition.y);
         this._relationship.setTo(pos.x, pos.y);
         this._workspace.appendChild(this._relationship);
+        this._creatingRelationship=true;
         this._relationshipMouseMoveFunction = this._relationshipMouseMove.bindWithEvent(this);
         this._relationshipMouseClickFunction = this._relationshipMouseClick.bindWithEvent(this, selectedTopics[0]);
         this._workspace.getScreenManager().addEventListener('mousemove',this._relationshipMouseMoveFunction);
@@ -315,6 +317,7 @@ mindplot.MindmapDesigner.prototype._relationshipMouseClick = function (event, fr
     this._relationship = null;
     this._workspace.getScreenManager().removeEventListener('mousemove',this._relationshipMouseMoveFunction);
     this._workspace.getScreenManager().removeEventListener('click',this._relationshipMouseClickFunction);
+    this._creatingRelationship=false;
     event.preventDefault();
     event.stop();
     return false;
@@ -336,7 +339,7 @@ mindplot.MindmapDesigner.prototype.needsSave = function()
 
 mindplot.MindmapDesigner.prototype.autoSaveEnabled = function(value)
 {
-    if (value)
+    if (core.Utils.isDefined(value) && value)
     {
         var autosave = function() {
 
@@ -587,7 +590,7 @@ mindplot.MindmapDesigner.prototype._removeNode = function(node)
         var model = node.getModel();
         model.deleteNode();
 
-        if (parent)
+        if (core.Utils.isDefined(parent))
         {
             this._goToNode(parent);
         }
@@ -708,7 +711,7 @@ mindplot.MindmapDesigner.prototype._getValidSelectedObjectsIds = function(valida
         for (var i = 0; i < selectedNodes.length; i++)
         {
             var selectedNode = selectedNodes[i];
-            if (validate)
+            if (core.Utils.isDefined(validate))
             {
                 isValid = validate(selectedNode);
             }
@@ -725,7 +728,7 @@ mindplot.MindmapDesigner.prototype._getValidSelectedObjectsIds = function(valida
         for( var j = 0; j< selectedRelationshipLines.length; j++){
             var selectedLine = selectedRelationshipLines[j];
             isValid = true;
-            if(validate){
+            if(core.Utils.isDefined(validate)){
                 isValid = validate(selectedLine);
             }
 
@@ -1035,9 +1038,9 @@ mindplot.MindmapDesigner.prototype.keyEventHandler = function(event)
 
     if (evt.keyCode == 8)
     {
-        if (event)
+        if (core.Utils.isDefined(event))
         {
-            if (event.preventDefault) {
+            if (core.Utils.isDefined(event.preventDefault)) {
                 event.preventDefault();
             } else {
                 event.returnValue = false;

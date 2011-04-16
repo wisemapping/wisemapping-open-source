@@ -36,7 +36,7 @@ web2d.peer.svg.ElementPeer.prototype.setChildren = function(children)
 web2d.peer.svg.ElementPeer.prototype.getChildren = function()
 {
     var result = this._children;
-    if (!result)
+    if (!core.Utils.isDefined(result))
     {
         result = [];
         this._children = result;
@@ -270,7 +270,7 @@ web2d.peer.svg.ElementPeer.prototype.updateStrokeStyle = function()
 web2d.peer.svg.ElementPeer.prototype.attachChangeEventListener = function(type, listener)
 {
     var listeners = this.getChangeEventListeners(type);
-    if (!listener)
+    if (!core.Utils.isDefined(listener))
     {
         throw "Listener can not be null";
     }
@@ -280,7 +280,7 @@ web2d.peer.svg.ElementPeer.prototype.attachChangeEventListener = function(type, 
 web2d.peer.svg.ElementPeer.prototype.getChangeEventListeners = function(type)
 {
     var listeners = this._changeListeners[type];
-    if (!listeners)
+    if (!core.Utils.isDefined(listeners))
     {
         listeners = [];
         this._changeListeners[type] = listeners;

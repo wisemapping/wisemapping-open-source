@@ -34,7 +34,7 @@ mindplot.VariableDistanceBoard.prototype.lookupEntryByOrder = function(order)
     var index = this._orderToIndex(order);
 
     var result = entries.get(index);
-    if (!result)
+    if (!core.Utils.isDefined(result))
     {
         // I've not found a entry. I have to create a new one.
         var i = 1;
@@ -145,7 +145,7 @@ mindplot.VariableDistanceBoard.prototype.lookupEntryByPosition = function(pos)
         // Move to the next entry ...
         var index = i * sign;
         var entry = entries.get(index);
-        if (entry)
+        if (core.Utils.isDefined(entry))
         {
             currentEntry = entry;
         } else
@@ -252,7 +252,7 @@ mindplot.VariableDistanceBoard.prototype.freeEntry = function(entry)
     while (currentTopic)
     {
         var e = entries.get(i, indexSign);
-        if (currentTopic && !e)
+        if (core.Utils.isDefined(currentTopic) && !core.Utils.isDefined(e))
         {
             var entryOrder = this._indexToOrder(i * indexSign);
             e = this.lookupEntryByOrder(entryOrder);
@@ -260,10 +260,10 @@ mindplot.VariableDistanceBoard.prototype.freeEntry = function(entry)
 
         // Move the topic to the next entry ...
         var topic = null;
-        if (e)
+        if (core.Utils.isDefined(e))
         {
             topic = e.getTopic();
-            if (currentTopic)
+            if (core.Utils.isDefined(currentTopic))
             {
                 e.setTopic(currentTopic);
             }

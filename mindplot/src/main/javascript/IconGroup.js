@@ -156,7 +156,7 @@ mindplot.IconGroup.prototype.moveToFront = function() {
 mindplot.IconGroup.prototype.registerListeners = function() {
     this.options.nativeElem.addEventListener('click', function(event) {
         // Avoid node creation ...
-        if (event.stopPropagation)
+        if (core.Utils.isDefined(event.stopPropagation))
         {
             event.stopPropagation(true);
         } else
@@ -168,7 +168,7 @@ mindplot.IconGroup.prototype.registerListeners = function() {
     this.options.nativeElem.addEventListener('dblclick', function(event)
     {
         // Avoid node creation ...
-        if (event.stopPropagation)
+        if (core.Utils.isDefined(event.stopPropagation))
         {
             event.stopPropagation(true);
         } else
