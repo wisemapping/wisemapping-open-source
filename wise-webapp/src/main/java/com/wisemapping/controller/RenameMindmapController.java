@@ -40,7 +40,7 @@ public class RenameMindmapController
         final MindMap mindMap = getMindmapFromRequest(httpServletRequest);
         User user = Utils.getUser();
         if (!mindMap.getOwner().equals(user)) {
-            throw new IllegalStateException("No enought right to execute this operation");
+            throw new IllegalStateException("No enough right to execute this operation");
         }
 
 

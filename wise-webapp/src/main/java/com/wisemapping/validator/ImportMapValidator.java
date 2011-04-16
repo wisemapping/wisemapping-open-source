@@ -50,7 +50,8 @@ public class ImportMapValidator extends MapInfoValidator {
             bean.setImportedMap(map);
 
         } catch (ImporterException e) {
-              errors.rejectValue("mapFile",Messages.IMPORT_MAP_ERROR);
+              Object[] errorArgs  = new Object[]{e.getMessage()};
+              errors.rejectValue("mapFile", Messages.IMPORT_MAP_ERROR,errorArgs,"FreeMind could not be imported.");
         }
     }
 }

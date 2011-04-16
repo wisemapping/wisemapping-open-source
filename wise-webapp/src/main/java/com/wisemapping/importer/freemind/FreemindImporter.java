@@ -106,7 +106,7 @@ public class FreemindImporter
             if (version != null) {
                 final VersionNumber mapVersion = new VersionNumber(version);
                 if (SUPPORTED_FREEMIND_VERSION.isGreaterThan(mapVersion)) {
-                    throw new ImporterException("FreeMind map has been created with '" + mapVersion.getVersion() + "'. Supported FreeMind version is '" + SUPPORTED_FREEMIND_VERSION.getVersion() + "' or greater.");
+                    throw new ImporterException("FreeMind version " + mapVersion.getVersion() + " is not supported.");
                 }
             }
 

@@ -41,6 +41,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.TransformerException;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -97,8 +98,13 @@ public class ExportController extends BaseMultiActionController {
                     }
                 }
 
+                final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
                 // Change image link URL.
                 setBaseBaseImgUrl(format, properties);
+                ExporterFactory.export(properties, mindMap, bos, mapSvg);
+
+                // If the export goes ok, write the map to the stream ...
 
                 // Set format content type...
                 final String contentType = format.getContentType();
@@ -110,7 +116,7 @@ public class ExportController extends BaseMultiActionController {
 
                 // Write content ...
                 final ServletOutputStream outputStream = response.getOutputStream();
-                ExporterFactory.export(properties, mindMap, outputStream, mapSvg);
+                outputStream.write(bos.toByteArray());
 
 
             } catch (Throwable e) {
@@ -125,7 +131,7 @@ public class ExportController extends BaseMultiActionController {
         return null;
     }
 
-    private void setBaseBaseImgUrl(ExportFormat format, @NotNull ExportProperties properties) {
+    private void setBaseBaseImgUrl(@NotNull ExportFormat format, @NotNull ExportProperties properties) {
 
         final String baseUrl;
         if (format == ExportFormat.SVG) {
