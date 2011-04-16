@@ -84,7 +84,7 @@ mindplot.RelationshipLine.prototype.redraw = function()
     line2d.setFrom(sPos.x, sPos.y);
     line2d.setTo(tPos.x, tPos.y);
 
-    line2d.moveToBack();
+    line2d.moveToFront();
 
     //Positionate Arrows
     this._positionateArrows();

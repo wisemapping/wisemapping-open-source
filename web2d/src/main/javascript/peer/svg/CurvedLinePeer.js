@@ -20,7 +20,7 @@ web2d.peer.svg.CurvedLinePeer = function()
 {
     var svgElement = window.document.createElementNS(this.svgNamespace, 'path');
     web2d.peer.svg.ElementPeer.call(this, svgElement);
-    this._style={fill:'gray'};
+    this._style={fill:'#c8e794'};
     this._updateStyle();
     this._customControlPoint_1 = false;
     this._customControlPoint_2 = false;
@@ -159,8 +159,8 @@ web2d.peer.svg.CurvedLinePeer.prototype._updatePath = function(avoidControlPoint
                   +this._x2+","+this._y2+
                   (this._lineStyle?" "
                     +(this._control2.x+this._x2)+","+(this._control2.y+this._y2+3)+" "
-                    +(this._control1.x+this._x1)+","+(this._control1.y+this._y1+3)+" "
-                    +this._x1+","+(this._y1+3)+" Z"
+                    +(this._control1.x+this._x1)+","+(this._control1.y+this._y1+5)+" "
+                    +this._x1+","+(this._y1+7)+" Z"
                     :""
                   );
     this._native.setAttribute("d",path);

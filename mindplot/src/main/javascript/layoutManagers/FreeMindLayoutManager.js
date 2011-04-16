@@ -35,6 +35,13 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
                     return true;
             });
         } else {
+            //sort childs by order
+            var result = children.sort(function(n1, n2){
+                if(n1.getOrder() && n2.getOrder())
+                    return n1.getOrder()>n2.getOrder();
+                else
+                    return true;
+            });
             delete node.getModel()._finalPosition;
             result = children;
         }

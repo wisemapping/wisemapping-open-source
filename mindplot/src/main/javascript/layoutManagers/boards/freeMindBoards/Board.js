@@ -69,22 +69,6 @@ mindplot.layoutManagers.boards.freeMindBoards.Board = mindplot.layoutManagers.bo
                 var nextEntry = result.table[1];
                 nextEntry.setMarginTop((nextEntry.getPosition() - nextEntry.getTotalMarginTop())-pos.y);
             }
-            var parent = node.getParent();
-            if(!this._layoutManager._isCentralTopic(parent) && parent.getParent()!=null && (result.index == 0 || result.index==result.table.length-1)){
-                var board = this._layoutManager.getTopicBoardForTopic(parent.getParent());
-                var res2 = board.findNodeEntryIndex(parent);
-                var parentEntry = res2.table[res2.index];
-                var totalMarginTop = parentEntry.getTotalMarginTop();
-                var totalMarginBottom = parentEntry.getTotalMarginBottom();
-                var parentPosition = parentEntry.getPosition();
-                if(result.index==0 && pos.y < parentPosition){
-                    var childrenMarginTop = parentEntry.getPosition()-(pos.y-entry.getTotalMarginTop());
-                    parentEntry.setMarginTop(totalMarginTop-childrenMarginTop);
-                }else if(result.index==result.table.length-1 && pos.y>parentPosition){
-                    var childrenMarginBottom = (pos.y+entry.getTotalMarginBottom())-parentEntry.getPosition();
-                    parentEntry.setMarginBottom(totalMarginBottom - childrenMarginBottom);
-                }
-            }
         }
         this._updateTable(result.index, result.table,modifiedTopics, false);
         this._layoutManager._updateParentBoard(node, modifiedTopics);

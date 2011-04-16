@@ -41,20 +41,23 @@ mindplot.ShirinkConnector = function(topic)
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, isShrink, [topicId]);
         actionRunner.execute(command);
 
-        new Event(event).stop();
+        var event = new Event(event).stop();
+        event.preventDefault();
 
     });
 
-    elipse.addEventListener('click', function(event)
+    elipse.addEventListener('mousedown', function(event)
     {
         // Avoid node creation ...
-        new Event(event).stop();
+        var event = new Event(event).stop();
+        event.preventDefault();
     });
 
     elipse.addEventListener('dblclick', function(event)
     {
         // Avoid node creation ...
-        new Event(event).stop();
+        event = new Event(event).stop();
+        event.preventDefault();
 
     });
 

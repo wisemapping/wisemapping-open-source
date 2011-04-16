@@ -121,6 +121,7 @@ public class FreemindImporter
             final TopicType wiseTopic = mindmapObjectFactory.createTopicType();
             wiseTopic.setId(String.valueOf(currentId++));
             wiseTopic.setCentral(true);
+            wiseTopic.setPosition("0,0");
 
             convertNodeProperties(freeNode, wiseTopic);
 
@@ -190,12 +191,12 @@ public class FreemindImporter
         }
 
         //Fix coord
-        if (srcTopic.getOrder() % 2 != 0) { //Odd order.
+        if (srcTopic.getOrder()!=null && srcTopic.getOrder() % 2 != 0) { //Odd order.
             String[] srcCtrlPoint = relationship.getSrcCtrlPoint().split(",");
             int y = Integer.valueOf(srcCtrlPoint[1]) * -1;
             relationship.setSrcCtrlPoint(srcCtrlPoint[0] + "," + y);
         }
-        if (destTopicType.getOrder() % 2 != 0) { //Odd order.
+        if (destTopicType.getOrder()!=null && destTopicType.getOrder() % 2 != 0) { //Odd order.
             String[] destCtrlPoint = relationship.getDestCtrlPoint().split(",");
             int y = Integer.valueOf(destCtrlPoint[1]) * -1;
             relationship.setDestCtrlPoint(destCtrlPoint[0] + "," + y);
@@ -373,35 +374,28 @@ public class FreemindImporter
         // Which side must be the node be positioned ?
         String result = freeChild.getWcoords();
         if (result == null) {
-
-            final int xaxis;
-            int y;
-            if (depth == 1) {
-
-                final String side = freeChild.getPOSITION();
-                assert side != null : "This should not happen";
-                xaxis = POSITION_LEFT.equals(side) ? -1 : 1;
-
-                // 3 = -100  1
-                // 1 = -50   2
-                // 0 =  0    3
-                // 2 = 50    4
-                // 4 = 100   5
-                if (order % 2 == 0) {
-                    y = HALF_ROOT_TOPICS_SEPARATION * order;
-                } else {
-                    y = -HALF_ROOT_TOPICS_SEPARATION * (order + 1);
-                }
-
-            } else {
-                final String position = wiseParent.getPosition();
-                xaxis = isOnLeftSide(position) ? -1 : 1;
-                y = 100 * depth; // Todo: This is not right at all. This must be changed. Position must be calculated based on the parent position
-
+            BigInteger vgap = freeChild.getVSHIFT();
+            BigInteger hgap = freeChild.getHGAP();
+            if(hgap==null){
+                hgap = BigInteger.valueOf(0L);
             }
-            int x = xaxis * 200 * depth;
-            result = x + "," + y;
-
+            if(vgap == null){
+                vgap = BigInteger.valueOf(20L*order);
+            }
+            String[] position = wiseParent.getPosition().split(",");
+            BigInteger fix = BigInteger.valueOf(1L);
+            if((freeChild.getPOSITION() !=null && POSITION_LEFT.equals(freeChild.getPOSITION().toLowerCase()))
+                    || freeChild.getPOSITION()==null && isOnLeftSide(wiseParent))
+                fix=BigInteger.valueOf(-1L);
+            BigInteger firstLevelDistance = BigInteger.valueOf(0L);
+            BigInteger defaultXDistance = BigInteger.valueOf(100L);
+            if(depth==1){
+                firstLevelDistance = BigInteger.valueOf(200L);
+                defaultXDistance = BigInteger.valueOf(0L);
+            }
+            BigInteger x = BigInteger.valueOf(Integer.valueOf(position[0])).add(hgap.multiply(fix).add(firstLevelDistance.multiply(fix)).add(defaultXDistance.multiply(fix)));
+            BigInteger y = BigInteger.valueOf(Integer.valueOf(position[1])).add(vgap);
+            result = x.toString()+","+y.toString();
         }
         return result;
     }

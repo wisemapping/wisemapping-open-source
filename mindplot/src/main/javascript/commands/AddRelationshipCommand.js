@@ -27,6 +27,10 @@ mindplot.commands.AddRelationshipCommand = mindplot.Command.extend(
     execute: function(commandContext)
     {
         var relationship = commandContext.createRelationship(this._model);
+        // Finally, focus ...
+        var designer = commandContext._designer;
+        designer.onObjectFocusEvent.attempt(relationship, designer);
+        relationship.setOnFocus(true);
     },
     undoExecute: function(commandContext)
     {

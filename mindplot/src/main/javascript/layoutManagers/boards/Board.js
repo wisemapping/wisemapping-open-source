@@ -24,6 +24,9 @@ mindplot.layoutManagers.boards.Board = new Class({
     },
     setNodeMarginTop:function(node, delta){
         core.assert(false, "no Board implementation found!");
+    },
+    getNode:function(){
+        return this._node;
     }
 });
 

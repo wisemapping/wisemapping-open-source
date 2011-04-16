@@ -178,7 +178,7 @@ mindplot.Topic.prototype.buildShape = function(attributes, type)
     }
     else if (type == mindplot.NodeModel.SHAPE_TYPE_LINE)
     {
-        result = new web2d.Line({strokeWidth:1, strokeOpacity:1});
+        result = new web2d.Line({strokeColor:"#c8e794",strokeWidth:1, strokeOpacity:1});
         result.setSize = function(width, height)
         {
             this.size = {width:width, height:height};
@@ -992,31 +992,32 @@ mindplot.Topic.prototype.moveToBack = function(){
 //    this._helpers.forEach(function(helper, index){
 //        helper.moveToBack();
 //    });
-    this.get2DElement().moveToBack();
-    var outgoingLine = this.getOutgoingLine();
-
+    // Update relationship lines
+    for(var j=0; j<this._relationships.length; j++){
+        this._relationships[j].moveToBack();
+    }
     var connector = this.getShrinkConnector();
     if(connector){
         connector.moveToBack();
     }
 
-    if(outgoingLine){
-        outgoingLine.moveToBack();
-    }
+    this.get2DElement().moveToBack();
+
 
 };
 
 mindplot.Topic.prototype.moveToFront = function(){
 
-    var outgoingLine = this.getOutgoingLine();
-    if(outgoingLine){
-        outgoingLine.moveToFront();
-    }
+    this.get2DElement().moveToFront();
     var connector = this.getShrinkConnector();
     if(connector){
         connector.moveToFront();
     }
-    this.get2DElement().moveToFront();
+    // Update relationship lines
+    for(var j=0; j<this._relationships.length; j++){
+        this._relationships[j].moveToFront();
+    }
+
 //    this._helpers.forEach(function(helper, index){
 //        helper.moveToFront();
 //    });
@@ -1225,11 +1226,6 @@ mindplot.Topic.prototype.getOrder = function()
     return model.getOrder();
 };
 
-mindplot.Topic.prototype.moveToFront = function()
-{
-    var elem2d = this.get2DElement();
-    elem2d.moveToFront();
-};
 mindplot.Topic.prototype.setOrder = function(value)
 {
     var model = this.getModel();
