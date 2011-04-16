@@ -152,7 +152,7 @@ mindplot.NodeModel.prototype._removeLink = function(link)
 
 mindplot.NodeModel.prototype.createNote = function(text)
 {
-    core.assert(text, 'note text must be specified.');
+    core.assert(text!=null, 'note text must be specified.');
     return new mindplot.NoteModel(text, this);
 };
 

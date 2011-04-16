@@ -25,12 +25,16 @@ mindplot.layoutManagers.OriginalLayoutManager = mindplot.layoutManagers.BaseLayo
                 var order = child.getOrder();
                 if (!core.Utils.isDefined(order))
                 {
-                    order = maxOrder++;
+                    order = ++maxOrder;
+                    child.setOrder(order);
                 }
 
                 if(nodesByOrder.hasKey(order)){
-                    //duplicated order. Change order to next available.
-                    order = maxOrder++;
+                    if(Math.sign(child.getPosition().x) == Math.sign(nodesByOrder.get(order).getPosition().x)){
+                        //duplicated order. Change order to next available.
+                        order = ++maxOrder;
+                        child.setOrder(order);
+                    }
                 }else{
                     nodesByOrder.set(order, child);
                     if(order>maxOrder)
@@ -40,7 +44,7 @@ mindplot.layoutManagers.OriginalLayoutManager = mindplot.layoutManagers.BaseLayo
             }
         }
         nodesByOrder=null;
-        return result;
+        return node.getTopicType()!=mindplot.NodeModel.CENTRAL_TOPIC_TYPE?result:children;
     },
     _nodeResizeEvent:function(node){
 

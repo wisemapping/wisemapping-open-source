@@ -199,7 +199,12 @@ mindplot.FixedDistanceBoard.prototype.repositionate = function()
     var lowerLimit;
     if (entries.length > 0)
     {
-        var topic = entries[0].getTopic();
+        var l = 0;
+        for(l=0; l<entries.length; l++){
+            if(core.Utils.isDefined(entries[l]))
+                break;
+        }
+        var topic = entries[l].getTopic();
         var firstNodeHeight = topic.getSize().height;
         lowerLimit = refence.y - (height / 2) - (firstNodeHeight / 2) + 1;
     }

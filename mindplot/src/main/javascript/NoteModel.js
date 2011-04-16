@@ -18,7 +18,7 @@
 
 mindplot.NoteModel = function(text, topic)
 {
-    core.assert(text, 'note text can not be null');
+    core.assert(text!=null, 'note text can not be null');
     core.assert(topic, 'mindmap can not be null');
     this._text = text;
     this._topic = topic;
