@@ -269,7 +269,7 @@ core.Utils.calculateDefaultControlPoints = function(srcPos, tarPos){
     var x2 = tarPos.x + Math.sqrt(l*l/(1+(m*m)))*fix*-1;
     var y2= m*(x2-tarPos.x)+tarPos.y;
 
-    return [new core.Point(srcPos.x - x1,srcPos.y - y1),new core.Point(tarPos.x - x2,tarPos.y - y2)];
+    return [new core.Point(-srcPos.x + x1,-srcPos.y + y1),new core.Point(-tarPos.x + x2,-tarPos.y + y2)];
 };
 
 core.Utils.setVisibilityAnimated = function(elems, isVisible, doneFn){

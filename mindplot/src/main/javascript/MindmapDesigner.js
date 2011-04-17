@@ -280,6 +280,7 @@ mindplot.MindmapDesigner.prototype.addRelationShip2SelectedNode = function(event
     var selectedTopics = this.getSelectedNodes();
     if(selectedTopics.length >0 &&
        (!core.Utils.isDefined(this._creatingRelationship) || (core.Utils.isDefined(this._creatingRelationship) && !this._creatingRelationship))){
+        this._workspace.enableWorkspaceEvents(false);
         var fromNodePosition = selectedTopics[0].getPosition();
         this._relationship = new web2d.CurvedLine();
         this._relationship.setStyle(web2d.CurvedLine.SIMPLE_LINE);
@@ -318,6 +319,7 @@ mindplot.MindmapDesigner.prototype._relationshipMouseClick = function (event, fr
     this._workspace.getScreenManager().removeEventListener('mousemove',this._relationshipMouseMoveFunction);
     this._workspace.getScreenManager().removeEventListener('click',this._relationshipMouseClickFunction);
     this._creatingRelationship=false;
+    this._workspace.enableWorkspaceEvents(true);
     event.preventDefault();
     event.stop();
     return false;

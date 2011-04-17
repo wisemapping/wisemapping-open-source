@@ -67,7 +67,7 @@ mindplot.RelationshipLine.prototype.redraw = function()
     var sPos,tPos;
     this._line2d.setStroke(2);
     var ctrlPoints = this._line2d.getControlPoints();
-    if(!core.Utils.isDefined(ctrlPoints[0].x) || !core.Utils.isDefined(ctrlPoints[1].x)){
+    if(!this._line2d.isDestControlPointCustom() && !this._line2d.isSrcControlPointCustom()){
         var defaultPoints = core.Utils.calculateDefaultControlPoints(sourcePosition, targetPosition);
         ctrlPoints[0].x=defaultPoints[0].x;
         ctrlPoints[0].y=defaultPoints[0].y;
