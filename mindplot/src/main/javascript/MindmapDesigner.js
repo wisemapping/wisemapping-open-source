@@ -31,11 +31,12 @@ mindplot.MindmapDesigner = function(profile, divElement)
     // Init Screen manager..
     var screenManager = new mindplot.ScreenManager(profile.width, profile.height, divElement);
 
-    //create editor
-    this._editor = new mindplot.TextEditor(screenManager, this._actionRunner);
-
     var workspace = new mindplot.Workspace(profile, screenManager, this._zoom);
     this._workspace = workspace;
+
+    //create editor
+    var editorClass = mindplot.TextEditorFactory.getTextEditorFromName(mindplot.EditorOptions.textEditor);
+    this._editor = new editorClass(this, this._actionRunner);
 
 
     // Init layout managers ...
@@ -91,30 +92,34 @@ mindplot.MindmapDesigner.prototype._registerEvents = function()
         // Create nodes on double click...
         screenManager.addEventListener('click', function(event)
         {
-            var t = mindmapDesigner.getEditor()._isVisible();
-            mindmapDesigner.getEditor().lostFocus();
-            // @todo: Puaj hack...
-            mindmapDesigner._cleanScreen();
+            if(workspace.isWorkspaceEventsEnabled()){
+                var t = mindmapDesigner.getEditor().isVisible();
+                mindmapDesigner.getEditor().lostFocus();
+                // @todo: Puaj hack...
+                mindmapDesigner._cleanScreen();
+            }
         });
 
         screenManager.addEventListener('dblclick', function(event)
         {
-            mindmapDesigner.getEditor().lostFocus();
-            // Get mouse position
-            var pos = screenManager.getWorkspaceMousePosition(event);
+            if(workspace.isWorkspaceEventsEnabled()){
+                mindmapDesigner.getEditor().lostFocus();
+                // Get mouse position
+                var pos = screenManager.getWorkspaceMousePosition(event);
 
-            // Create a new topic model ...
-            var mindmap = mindmapDesigner.getMindmap();
-            var model = mindmap.createNode(mindplot.NodeModel.MAIN_TOPIC_TYPE);
-            model.setPosition(pos.x, pos.y);
+                // Create a new topic model ...
+                var mindmap = mindmapDesigner.getMindmap();
+                var model = mindmap.createNode(mindplot.NodeModel.MAIN_TOPIC_TYPE);
+                model.setPosition(pos.x, pos.y);
 
-            // Get central topic ...
-            var centralTopic = mindmapDesigner.getCentralTopic();
-            var centralTopicId = centralTopic.getId();
+                // Get central topic ...
+                var centralTopic = mindmapDesigner.getCentralTopic();
+                var centralTopicId = centralTopic.getId();
 
-            // Execute action ...
-            var command = new mindplot.commands.AddTopicCommand(model, centralTopicId, true);
-            this._actionRunner.execute(command);
+                // Execute action ...
+                var command = new mindplot.commands.AddTopicCommand(model, centralTopicId, true);
+                this._actionRunner.execute(command);
+            }
         }.bind(this));
     }
     ;
@@ -1036,6 +1041,7 @@ mindplot.MindmapDesigner.prototype.getSelectedObjects = function()
 
 mindplot.MindmapDesigner.prototype.keyEventHandler = function(event)
 {
+    if(this._workspace.isWorkspaceEventsEnabled()){
     var evt = (event) ? event : window.event;
 
     if (evt.keyCode == 8)
@@ -1056,7 +1062,7 @@ mindplot.MindmapDesigner.prototype.keyEventHandler = function(event)
     {
         evt = new Event(event);
         var key = evt.key;
-        if (!this._editor._isVisible())
+        if (!this._editor.isVisible())
         {
             if (((evt.code >= 65 && evt.code <= 90) || (evt.code >= 48 && evt.code <= 57)) && !(evt.control || evt.meta))
             {
@@ -1192,6 +1198,7 @@ mindplot.MindmapDesigner.prototype.keyEventHandler = function(event)
             }
             evt.stop();
         }
+    }
     }
 };
 

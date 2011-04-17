@@ -1,5 +1,8 @@
 mindplot.EditorOptions =
 {
 //    LayoutManager:"OriginalLayout"
-        LayoutManager:"FreeMindLayout"
+    LayoutManager:"FreeMindLayout",
+//    textEditor:"TextEditor"
+    textEditor:"RichTextEditor"
+
 };

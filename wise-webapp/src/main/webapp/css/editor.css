@@ -736,3 +736,7 @@ div#toolbar .topicRelation:hover {
 div#toolbar .relationshiplabel{
     width:56px;
 }
+
+.nicEdit-main {
+    outline:none;
+}

@@ -74,6 +74,8 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="DragTopicPositioner.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="Board.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="TextEditor.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="RichTextEditor.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="TextEditorFactory.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="VariableDistanceBoard.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="util/Shape.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="FixedDistanceBoard.js"/>
@@ -207,6 +209,8 @@
                                         <include>DragTopicPositioner-min.js</include>
                                         <include>Board-min.js</include>
                                         <include>TextEditor-min.js</include>
+                                        <include>RichTextEditor-min.js</include>
+                                        <include>TextEditorFactory-min.js</include>
                                         <include>VariableDistanceBoard-min.js</include>
                                         <include>util/Shape-min.js</include>
                                         <include>FixedDistanceBoard-min.js</include>
