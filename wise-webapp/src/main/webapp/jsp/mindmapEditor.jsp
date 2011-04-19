@@ -26,7 +26,6 @@
 
     <script type='text/javascript' src='../js/wiseLibrary.js'></script>
     <script type='text/javascript' src='../js/wiseEditorLibrary.js'></script>
-    <script type='text/javascript' src='../js/nicEdit.js'></script>
     <script type='text/javascript' src='../js/core.js'></script>
 
     <link rel="icon" href="../images/favicon.ico" type="image/x-icon">

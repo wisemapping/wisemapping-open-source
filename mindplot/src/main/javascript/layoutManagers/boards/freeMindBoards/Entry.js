@@ -19,8 +19,7 @@ mindplot.layoutManagers.boards.freeMindBoards.Entry = new Class({
             }
         }
         this._DEFAULT_GAP = 10;
-        var height = this.getNode().getSize().height;
-        this._minimalMargin = this._DEFAULT_GAP + height/2;
+        this.updateMinimumMargin();
         this._marginTop = this._minimalMargin;
         this._marginBottom = this._minimalMargin;
         this._marginTopChildren=0;
@@ -85,5 +84,15 @@ mindplot.layoutManagers.boards.freeMindBoards.Entry = new Class({
     },
     getTotalMarginBottom:function(){
         return (this._node.areChildrenShrinked()?0:this._marginBottomChildren) + this._marginBottom;
+    },
+    updateMinimumMargin:function(){
+        var height = this.getNode().getSize().height;
+        this._minimalMargin = this._DEFAULT_GAP + height/2;
+        if(this.getMarginTop()<this._minimalMargin){
+            this.setMarginTop(this._minimalMargin);
+        }
+        if(this.getMarginBottom()<this._minimalMargin){
+            this.setMarginBottom(this._minimalMargin);
+        }
     }
 });

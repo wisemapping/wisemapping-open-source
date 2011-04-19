@@ -53,6 +53,10 @@ web2d.peer.ToolkitSVG =
     {
         return new web2d.peer.svg.TextPeer();
     },
+    createHtmlBox: function ()
+    {
+        return new web2d.peer.svg.HtmlBoxPeer();
+    },
     createImage: function ()
     {
         return new web2d.peer.svg.ImagePeer();

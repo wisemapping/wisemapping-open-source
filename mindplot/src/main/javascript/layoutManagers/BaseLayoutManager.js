@@ -15,7 +15,7 @@ mindplot.layoutManagers.BaseLayoutManager = new Class({
         mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeRepositionateEvent,this._nodeRepositionateEvent.bind(this));
         mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeShrinkEvent,this._nodeShrinkEvent.bind(this));
     },
-    _nodeResizeEvent:function(node){
+    _nodeResizeEvent:function(node, oldSize){
     },
     _nodeMoveEvent:function(node){
         var modifiedTopics = [];

@@ -89,7 +89,7 @@ mindplot.XMLMindmapSerializer_Pela.prototype._topicToXML = function(document, to
 
     var text = topic.getText();
     if (core.Utils.isDefined(text)) {
-        parentTopic.setAttribute('text', text);
+        parentTopic.setAttribute('text', "<![CDATA["+text+"]]");
     }
 
     var shape = topic.getShapeType();
@@ -276,6 +276,9 @@ mindplot.XMLMindmapSerializer_Pela.prototype._deserializeNode = function(domElem
 
     var text = domElem.getAttribute('text');
     if (core.Utils.isDefined(text)) {
+        if(text.indexOf("<![CDATA[")!=-1){
+            text = text.substr(9,text.length-9-2);
+        }
         topic.setText(text);
     }
 

@@ -20,7 +20,7 @@ web2d.peer.svg.CurvedLinePeer = function()
 {
     var svgElement = window.document.createElementNS(this.svgNamespace, 'path');
     web2d.peer.svg.ElementPeer.call(this, svgElement);
-    this._style={fill:'#c8e794'};
+    this._style={fill:'gray'};
     this._updateStyle();
     this._customControlPoint_1 = false;
     this._customControlPoint_2 = false;

@@ -399,11 +399,11 @@ var nicEditor = bkClass.extend({
 	selectCheck : function(e,t) {
 		var found = false;
 		do{
-			if(t.className && t.className.indexOf && t.className.indexOf('nicEdit') != -1) {
+			if(t.className && t.className.indexOf && (t.className.indexOf('nicEdit') != -1 || t.className.indexOf('nicEdit-mainContainer') != -1)) {
 				return false;
 			}
 		} while(t = t.parentNode);
-		this.fireEvent('blur',this.<selectedInstance,t);
+		this.fireEvent('blur',this.selectedInstance,t);
 		this.lastSelectedInstance = this.selectedInstance;
 		this.selectedInstance = null;
 		return false;
@@ -433,7 +433,7 @@ var nicEditorInstance = bkClass.extend({
 			var ie7s = (bkLib.isMSIE && !((typeof document.body.style.maxHeight != "undefined") && document.compatMode == "CSS1Compat"))
 			var s = {width: newX+'px', border : 0, overflowY : 'auto', overflowX: 'hidden' };
 			s[(ie7s) ? 'height' : 'maxHeight'] = (this.ne.options.maxHeight) ? this.ne.options.maxHeight+'px' : null;
-			this.editorContain = new bkElement('DIV').setStyle(s).appendBefore(e);
+			this.editorContain = new bkElement('DIV').setStyle(s).addClass('nicEdit-mainContainer').appendBefore(e);
 			var editorElm = new bkElement('DIV').setStyle({width : (newX-8)+'px', margin: '4px', minHeight : newY+'px'}).addClass('main').appendTo(this.editorContain);
 
 			e.setStyle({display : 'none'});
@@ -1149,7 +1149,7 @@ var nicEditorSelect = bkClass.extend({
 });
 
 var nicEditorFontSizeSelect = nicEditorSelect.extend({
-	sel : {1 : '1&nbsp;(8pt)', 2 : '2&nbsp;(10pt)', 3 : '3&nbsp;(12pt)', 4 : '4&nbsp;(14pt)', 5 : '5&nbsp;(18pt)', 6 : '6&nbsp;(24pt)'},
+	sel : {1 : '1&nbsp;(6pt)', 2 : '2&nbsp;(8pt)', 3 : '3&nbsp;(10pt)', 4 : '4&nbsp;(15pt)'},
 	init : function() {
 		this.setDisplay('Font&nbsp;Size...');
 		for(itm in this.sel) {
@@ -1159,7 +1159,7 @@ var nicEditorFontSizeSelect = nicEditorSelect.extend({
 });
 
 var nicEditorFontFamilySelect = nicEditorSelect.extend({
-	sel : {'arial' : 'Arial','comic sans ms' : 'Comic Sans','courier new' : 'Courier New','georgia' : 'Georgia', 'helvetica' : 'Helvetica', 'impact' : 'Impact', 'times new roman' : 'Times', 'trebuchet ms' : 'Trebuchet', 'verdana' : 'Verdana'},
+	sel : {'arial' : 'Arial', 'times new roman' : 'Times', 'tahoma' : 'tahoma', 'verdana' : 'Verdana'},
 	
 	init : function() {
 		this.setDisplay('Font&nbsp;Family...');

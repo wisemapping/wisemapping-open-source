@@ -5,6 +5,19 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
     initialize:function(designer, options){
         this.parent(designer, options);
     },
+    _nodeResizeEvent:function(node, oldSize){
+        var size = node.getSize();
+        var sign = -Math.sign(node.getPosition().x);
+        var delta = new core.Point((size.width-oldSize.width)*sign, (-size.height + oldSize.height)/2);
+        if(node.getParent()!=null){
+            var board = this.getTopicBoardForTopic(node.getParent());
+            var result = board.findNodeEntryIndex(node);
+            var entry = result.table[result.index];
+            entry.updateMinimumMargin();
+        }
+        this._updateChildrenBoards(node, delta, []);
+        this._updateBoard(node,[]);
+    },
     _nodeConnectEvent:function(targetNode, node){
         if(core.Utils.isDefined(node.relationship)){
             this._movingNode(targetNode, node);
@@ -260,11 +273,16 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
         }
     },
     _updateChildrenBoards:function(node, delta, modifiedTopics){
-        var board = this.getTopicBoardForTopic(node);
-        var topics = board._getTableForNode(null);
-        for(var i=0; i<topics.length; i++){
-            board._updateEntryPos(topics[i],delta, modifiedTopics, false);
+
+        if(this._isCentralTopic(node)){
+            delta.x = delta.x/2;
         }
+        var board = this.getTopicBoardForTopic(node);
+        board._positionTables.forEach(function(topics){
+            for(var i=0; i<topics.length; i++){
+                board._updateEntryPos(topics[i],delta, modifiedTopics, false);
+            }
+        });
     },
     addHelpers:function(node){
         if (node.getType() != mindplot.NodeModel.CENTRAL_TOPIC_TYPE)
@@ -485,7 +503,7 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
         pos.y = Math.round(pos.y);
         var nodePos = this.getPosition();
         //if it is on the child half side, or it is central topic add it as child
-        if(layoutManager._isCentralTopic(this) || this.getParent()==null || ((Math.sign(nodePos.x)>0 && pos.x>nodePos.x) || (Math.sign(nodePos.x)<0 && pos.x<nodePos.x))){
+        if(!this.areChildrenShrinked() && (layoutManager._isCentralTopic(this) || this.getParent()==null || ((Math.sign(nodePos.x)>0 && pos.x>nodePos.x) || (Math.sign(nodePos.x)<0 && pos.x<nodePos.x)))){
             layoutManager._updateIndicatorShapes(this, mindplot.layoutManagers.FreeMindLayoutManager.RECONNECT_SHAPE_CHILD, pos);
         }else{
             //is a sibling. if mouse in top half sibling goes above this one

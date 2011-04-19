@@ -24,7 +24,9 @@ mindplot.ActionIcon = function(topic, url) {
 objects.extend(mindplot.ActionIcon, mindplot.Icon);
 
 mindplot.ActionIcon.prototype.initialize = function() {
-
+    var pos = this.getImage.getPosition();
+    var size = this.getSize();
+    this._position = new core.Point(pos.x - size.width/2, pos.y - size.height/2);
 };
 
 mindplot.ActionIcon.prototype.getNode = function(){
@@ -33,7 +35,12 @@ mindplot.ActionIcon.prototype.getNode = function(){
 
 mindplot.ActionIcon.prototype.setPosition = function(x,y){
     var size = this.getSize();
+    this._position = new core.Point(x,y);
     this.getImage().setPosition(x-size.width/2, y-size.height/2);
+};
+
+mindplot.ActionIcon.prototype.getPosition = function(){
+    return this._position;
 };
 
 mindplot.ActionIcon.prototype.addEventListener = function(event, fn){

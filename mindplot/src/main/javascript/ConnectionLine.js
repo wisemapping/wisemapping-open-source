@@ -29,7 +29,7 @@ mindplot.ConnectionLine = function(sourceNode, targetNode, lineType)
     var line;
     if (targetNode.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE)
     {
-        line = this._createLine(lineType,mindplot.ConnectionLine.CURVED);
+        line = this._createLine(lineType,mindplot.ConnectionLine.SIMPLE_CURVED);
         //        line = new web2d.Line();
         if(line.getType()=="CurvedLine"){
             var ctrlPoints = this._getCtrlPoints(sourceNode, targetNode);
@@ -86,7 +86,7 @@ mindplot.ConnectionLine.prototype._createLine = function(lineType, defaultStyle)
 
 mindplot.ConnectionLine.getStrokeColor = function()
 {
-    return '#c8e794';
+    return '#495879';
 };
 
 mindplot.ConnectionLine.prototype.setVisibility = function(value)

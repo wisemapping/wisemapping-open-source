@@ -443,7 +443,7 @@
                                         <include>help.js</include>
                                         <include>helpPanel.js</include>
                                         <include>IconPanel.js</include>
-                                        <!--<include>nicEdit.js</include>-->
+                                        <include>nicEdit.js</include>
                                     </includes>
                                 </aggregation>
                             </aggregations>
