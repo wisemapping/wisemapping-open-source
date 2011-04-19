@@ -98,11 +98,11 @@ mindplot.FixedDistanceBoard.prototype.updateReferencePoint = function()
 
 };
 
-mindplot.FixedDistanceBoard.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE = 20;
+mindplot.FixedDistanceBoard.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE = 30;
 
 
 /**
- * This x distance does't take into account the size of the shape.
+ * This x distance doesn't take into account the size of the shape.
  */
 mindplot.FixedDistanceBoard.prototype.workoutXBorderDistance = function()
 {

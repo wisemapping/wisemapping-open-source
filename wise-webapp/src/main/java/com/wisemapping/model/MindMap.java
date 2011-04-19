@@ -100,7 +100,7 @@ public class MindMap {
     public String getProperties() {
         String ret;
         if (properties == null) {
-            ret = "{zoom:0.7,saveOnLoad:true}";
+            ret = "{zoom:0.85,saveOnLoad:true}";
         } else {
             ret = properties;
         }

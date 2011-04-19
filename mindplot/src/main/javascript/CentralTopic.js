@@ -61,14 +61,14 @@ mindplot.CentralTopic.prototype.createChildModel = function(prepositionate)
             this.___siblingDirection = 1;
         }
 
-        // Positionate following taking into account this internal flag ...
+        // Position following taking into account this internal flag ...
         if (this.___siblingDirection == 1)
         {
 
-            childModel.setPosition(100, 0);
+            childModel.setPosition(150, 0);
         } else
         {
-            childModel.setPosition(-100, 0);
+            childModel.setPosition(-150, 0);
         }
         this.___siblingDirection = -this.___siblingDirection;
     }
