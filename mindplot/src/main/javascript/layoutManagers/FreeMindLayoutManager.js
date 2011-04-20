@@ -485,7 +485,7 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
         pos.y = Math.round(pos.y);
         var nodePos = this.getPosition();
         //if it is on the child half side, or it is central topic add it as child
-        if(layoutManager._isCentralTopic(this) || this.getParent()==null || ((Math.sign(nodePos.x)>0 && pos.x>nodePos.x) || (Math.sign(nodePos.x)<0 && pos.x<nodePos.x))){
+        if(!this.areChildrenShrinked() && (layoutManager._isCentralTopic(this) || this.getParent()==null || ((Math.sign(nodePos.x)>0 && pos.x>nodePos.x) || (Math.sign(nodePos.x)<0 && pos.x<nodePos.x)))){
             layoutManager._updateIndicatorShapes(this, mindplot.layoutManagers.FreeMindLayoutManager.RECONNECT_SHAPE_CHILD, pos);
         }else{
             //is a sibling. if mouse in top half sibling goes above this one

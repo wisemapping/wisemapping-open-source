@@ -189,7 +189,7 @@ mindplot.Topic.prototype.buildShape = function(attributes, type)
     }
     else if (type == mindplot.NodeModel.SHAPE_TYPE_LINE)
     {
-        result = new web2d.Line({strokeColor:"#c8e794",strokeWidth:1, strokeOpacity:1});
+        result = new web2d.Line({strokeColor:"#495879",strokeWidth:1, strokeOpacity:1});
         result.setSize = function(width, height)
         {
             this.size = {width:width, height:height};

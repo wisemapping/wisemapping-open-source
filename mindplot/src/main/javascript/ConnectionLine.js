@@ -86,7 +86,7 @@ mindplot.ConnectionLine.prototype._createLine = function(lineType, defaultStyle)
 
 mindplot.ConnectionLine.getStrokeColor = function()
 {
-    return '#c8e794';
+    return '#495879';
 };
 
 mindplot.ConnectionLine.prototype.setVisibility = function(value)

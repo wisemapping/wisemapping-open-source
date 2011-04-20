@@ -403,7 +403,7 @@ var nicEditor = bkClass.extend({
 				return false;
 			}
 		} while(t = t.parentNode);
-		this.fireEvent('blur',this.<selectedInstance,t);
+		this.fireEvent('blur',this.selectedInstance,t);
 		this.lastSelectedInstance = this.selectedInstance;
 		this.selectedInstance = null;
 		return false;
