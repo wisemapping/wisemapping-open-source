@@ -737,14 +737,6 @@ div#toolbar .relationshiplabel{
     width:56px;
 }
 
-#mindplot ul{
-    list-style:disc inside none;
-}
-
-#mindplot ol{
-    list-style:decimal inside none;
-}
-
 .nicEdit-main {
     outline:none;
 }

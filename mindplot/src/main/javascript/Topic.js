@@ -189,7 +189,7 @@ mindplot.Topic.prototype.buildShape = function(attributes, type)
     }
     else if (type == mindplot.NodeModel.SHAPE_TYPE_LINE)
     {
-        result = new web2d.Line({strokeColor:"#495879",strokeWidth:1, strokeOpacity:1});
+        result = new web2d.Line({strokeColor:"#c8e794",strokeWidth:1, strokeOpacity:1});
         result.setSize = function(width, height)
         {
             this.size = {width:width, height:height};
@@ -440,7 +440,7 @@ mindplot.Topic.prototype.getRelationships = function(){
 
 mindplot.Topic.prototype._buildTextShape = function(disableEventsListeners)
 {
-    var result = new web2d.HtmlBox();
+    var result = new web2d.Text();
     var font = {};
 
     var family = this.getFontFamily();
@@ -1174,7 +1174,7 @@ mindplot.Topic.prototype.setSize = function(size, force, updatePosition)
         // Update the figure position(ej: central topic must be centered) and children position.
         this._updatePositionOnChangeSize(oldSize, size, updatePosition);
 
-        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeResizeEvent,[this, oldSize]);
+        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeResizeEvent,[this]);
         
     }
 };
@@ -1359,10 +1359,11 @@ mindplot.Topic.prototype.updateNode = function(updatePosition)
         var textShape = this.getTextShape();
         var sizeWidth = textShape.getWidth();
         var sizeHeight = textShape.getHeight();
+        var font = textShape.getFont();
         var iconOffset = this.getIconOffset();
         var height = sizeHeight + this._offset;
         var width = sizeWidth + this._offset*2 + iconOffset +2;
-        var pos = height/2 - sizeHeight/2;
+        var pos = this._offset /2 -1;
         if(this.getShapeType()==mindplot.NodeModel.SHAPE_TYPE_ELIPSE){
             var factor = 0.25;
             height = (width*factor<height?height:width*factor);
@@ -1378,13 +1379,6 @@ mindplot.Topic.prototype.updateNode = function(updatePosition)
         var iconGroup = this.getIconGroup();
         if(core.Utils.isDefined(iconGroup))
             iconGroup.updateIconGroupPosition();
-
-        //Positionate Helpers
-        this._helpers.forEach(function(helper){
-            var pos = helper.getPosition();
-            var x = width/2;
-            helper.setPosition(x, pos.y);
-        });
     }
 };
 

@@ -90,21 +90,8 @@ mindplot.RichTextEditor = mindplot.TextEditor.extend({
             }
         }.bind(this);
         _animEffect = effect.periodical(10);
-        var text;
-        this._selectText=true;
-        if(this.initialText && this.initialText!="")
-        {
-            text = this.initialText;
-            this.initialText=null;
-            this._selectText=false;
-        }
-        else
-            text = node.getText();
-        $(this.inputText).value = text;
-        this._editor = new nicEditor({iconsPath: '../images/nicEditorIcons.gif', buttonList : ['bold','italic','underline','ol','ul','image','link','unlink','forecolor','removeformat','fontSize','fontFamily'], maxHeight:152}).panelInstance("inputText2");
-        this._editor.addEvent('key',function(instance,event){
-            console.log("key");
-        });
+        $(this.inputText).value = core.Utils.isDefined(this.initialText)&& this.initialText!=""? this.initialText: node.getText();
+        this._editor = new nicEditor({iconsPath: '../images/nicEditorIcons.gif', buttonList : ['bold','italic','underline','removeformat','forecolor', 'fontSize', 'fontFamily', 'xhtml']}).panelInstance("inputText2");
     },
     init:function(node){
         this._currentNode = node;
@@ -112,21 +99,7 @@ mindplot.RichTextEditor = mindplot.TextEditor.extend({
         $(this._myOverlay.setStyle('display','block'));
         inst = this._editor.instanceById("inputText2");
         inst.elm.focus();
-        if(this._selectText){
-            document.execCommand('selectAll', false, null);
-        }
-        else{
-            var length = $(this.inputText).value.length;
-            if (document.selection) {
-                var sel = document.selection.createRange();
-                sel.moveStart('character', length);
-                sel.select();
-            }
-            else {
-                sel = window.getSelection();
-                sel.collapse(inst.elm.firstChild, length);
-            }
-        }
+
 
 
         //becarefull this._editor is not mootools!!
@@ -137,6 +110,7 @@ mindplot.RichTextEditor = mindplot.TextEditor.extend({
                 if(text!=this._text){
                     this.applyChanges = true;
                 }
+                console.log('bye');
                 this.lostFocusListener();
                 this._editor.removeInstance("inputText2");
                 this._editor.destruct();

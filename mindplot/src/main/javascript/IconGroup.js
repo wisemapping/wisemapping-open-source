@@ -189,12 +189,10 @@ mindplot.IconGroup.prototype.updateIconGroupPosition = function() {
 
 mindplot.IconGroup.prototype._calculateOffsets = function() {
     var offset = this.options.topic.getOffset();
-    /*var text = this.options.topic.getTextShape();
+    var text = this.options.topic.getTextShape();
     var sizeHeight = text.getHtmlFontSize();
     var yOffset = offset;
     var shape = this.options.topic.getShapeType();
-    yOffset = text.getPosition().y + (sizeHeight - 18)/2 + 1;*/
-    var height = this.options.topic.getSize().height;
-    var yOffset = (height/2)-this.getSize().height/2;
+    yOffset = text.getPosition().y + (sizeHeight - 18)/2 + 1;
     return {x:offset, y:yOffset};
 };

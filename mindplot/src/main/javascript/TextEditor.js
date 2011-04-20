@@ -192,7 +192,7 @@ mindplot.TextEditor = new Class({
             text = nodeText.getText();
 
         var font = nodeText.getFont();
-        font.size = nodeText.getSize();
+        font.size = nodeText.getHtmlFontSize();
         font.color = nodeText.getColor();
 
         this.setStyle(font);
