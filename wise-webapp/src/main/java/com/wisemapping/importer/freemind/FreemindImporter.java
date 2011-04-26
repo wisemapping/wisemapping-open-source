@@ -47,7 +47,10 @@ public class FreemindImporter
         implements Importer {
 
     public static final String CODE_VERSION = "pela";
-    public static final int HALF_ROOT_TOPICS_SEPARATION = 25;
+    public static final int SECOND_LEVEL_TOPIC_HEIGHT = 25;
+    public static final int ROOT_LEVEL_TOPIC_HEIGHT = SECOND_LEVEL_TOPIC_HEIGHT;
+    public static final int CENTRAL_TO_TOPIC_DISTANCE = 200;
+    public static final int TOPIC_TO_TOPIC_DISTANCE = 90;
     private com.wisemapping.xml.mindmap.ObjectFactory mindmapObjectFactory;
     private static final String POSITION_LEFT = "left";
     private static final String BOLD = "bold";
@@ -133,7 +136,8 @@ public class FreemindImporter
 
             convertChildNodes(freeNode, wiseTopic, 1);
 
-            addRelationships(mindmapMap);
+            // @Todo: Pablo, tenemos que ver como arreglamos esto. No estoy seteando a los hijos la posicion.
+            //addRelationships(mindmapMap);
 
             JAXBUtils.saveMap(mindmapMap, baos, "com.wisemapping.xml.mindmap");
 
@@ -173,47 +177,34 @@ public class FreemindImporter
         }
     }
 
-    private void fixRelationshipControlPoints(@NotNull RelationshipType relationship) {
+    private void fixRelationshipControlPoints(@NotNull RelationshipType rel) {
         //Both relationship node's ids should be freemind ones at this point.
-        TopicType srcTopic = nodesMap.get(relationship.getSrcTopicId());
-        TopicType destTopicType = nodesMap.get(relationship.getDestTopicId());
+        TopicType srcTopic = nodesMap.get(rel.getSrcTopicId());
+        TopicType destTopicType = nodesMap.get(rel.getDestTopicId());
 
         //Fix x coord
-        if (isOnLeftSide(srcTopic)) {
-            String[] srcCtrlPoint = relationship.getSrcCtrlPoint().split(",");
-            int x = Integer.valueOf(srcCtrlPoint[0]) * -1;
-            relationship.setSrcCtrlPoint(x + "," + srcCtrlPoint[1]);
+        final Coord srcCtrlCoord = Coord.parse(rel.getSrcCtrlPoint());
+        final Coord destCtrlCoord = Coord.parse(rel.getDestCtrlPoint());
+
+        if (Coord.parse(srcTopic.getPosition()).isOnLeftSide()) {
+            int x = srcCtrlCoord.x * -1;
+            rel.setSrcCtrlPoint(x + "," + srcCtrlCoord.y);
         }
-        if (isOnLeftSide(destTopicType)) {
-            String[] destCtrlPoint = relationship.getDestCtrlPoint().split(",");
-            int x = Integer.valueOf(destCtrlPoint[0]) * -1;
-            relationship.setDestCtrlPoint(x + "," + destCtrlPoint[1]);
+        if (Coord.parse(destTopicType.getPosition()).isOnLeftSide()) {
+            int x = destCtrlCoord.x * -1;
+            rel.setDestCtrlPoint(x + "," + destCtrlCoord.y);
         }
 
         //Fix coord
-        if (srcTopic.getOrder()!=null && srcTopic.getOrder() % 2 != 0) { //Odd order.
-            String[] srcCtrlPoint = relationship.getSrcCtrlPoint().split(",");
-            int y = Integer.valueOf(srcCtrlPoint[1]) * -1;
-            relationship.setSrcCtrlPoint(srcCtrlPoint[0] + "," + y);
+        if (srcTopic.getOrder() != null && srcTopic.getOrder() % 2 != 0) { //Odd order.
+            int y = srcCtrlCoord.y * -1;
+            rel.setSrcCtrlPoint(srcCtrlCoord.x + "," + y);
         }
-        if (destTopicType.getOrder()!=null && destTopicType.getOrder() % 2 != 0) { //Odd order.
-            String[] destCtrlPoint = relationship.getDestCtrlPoint().split(",");
-            int y = Integer.valueOf(destCtrlPoint[1]) * -1;
-            relationship.setDestCtrlPoint(destCtrlPoint[0] + "," + y);
+        if (destTopicType.getOrder() != null && destTopicType.getOrder() % 2 != 0) { //Odd order.
+            int y = destCtrlCoord.y * -1;
+            rel.setDestCtrlPoint(destCtrlCoord.x + "," + y);
         }
 
-    }
-
-    private boolean isOnLeftSide(TopicType topic) {
-        String[] position = topic.getPosition().split(",");
-        int x = Integer.parseInt(position[0]);
-        return x < 0;
-    }
-
-    private boolean isOnLeftSide(@NotNull String pos) {
-        String[] position = pos.split(",");
-        int x = Integer.parseInt(position[0]);
-        return x < 0;
     }
 
     private void convertChildNodes(@NotNull Node freeParent, @NotNull TopicType wiseParent, final int depth) {
@@ -242,9 +233,14 @@ public class FreemindImporter
                 }
                 wiseChild.setOrder(norder);
 
-                // Convert node position ...
-                final String position = convertPosition(wiseParent, freeChild, depth, norder);
-                wiseChild.setPosition(position);
+
+                // @Todo: This is required in the old layout. Pablo, we need to discuss this.
+                if (depth == 1) {
+                    // Convert node position
+                    int childrenCount = freeChilden.size();
+                    final String position = convertPosition(wiseParent, freeChild, depth, norder, childrenCount);
+                    wiseChild.setPosition(position);
+                }
 
                 // Convert the rest of the node properties ...
                 convertNodeProperties(freeChild, wiseChild);
@@ -305,29 +301,40 @@ public class FreemindImporter
                 }
             } else if (element instanceof Arrowlink) {
                 final Arrowlink arrow = (Arrowlink) element;
-                RelationshipType relationship = mindmapObjectFactory.createRelationshipType();
+                RelationshipType relt = mindmapObjectFactory.createRelationshipType();
                 String destId = arrow.getDESTINATION();
-                relationship.setSrcTopicId(freeParent.getID());
-                relationship.setDestTopicId(destId);
+                relt.setSrcTopicId(freeParent.getID());
+                relt.setDestTopicId(destId);
                 String[] inclination = arrow.getENDINCLINATION().split(";");
-                relationship.setDestCtrlPoint(inclination[0] + "," + inclination[1]);
+                relt.setDestCtrlPoint(inclination[0] + "," + inclination[1]);
                 inclination = arrow.getSTARTINCLINATION().split(";");
-                relationship.setSrcCtrlPoint(inclination[0] + "," + inclination[1]);
+                relt.setSrcCtrlPoint(inclination[0] + "," + inclination[1]);
                 //relationship.setCtrlPointRelative(true);
-                relationship.setEndArrow(!arrow.getENDARROW().toLowerCase().equals("none"));
-                relationship.setStartArrow(!arrow.getSTARTARROW().toLowerCase().equals("none"));
-                relationship.setLineType("3");
-                relationships.add(relationship);
+                relt.setEndArrow(!arrow.getENDARROW().toLowerCase().equals("none"));
+                relt.setStartArrow(!arrow.getSTARTARROW().toLowerCase().equals("none"));
+                relt.setLineType("3");
+                relationships.add(relt);
             }
         }
     }
 
+    /**
+     * Sort the freemind node following this pattern:
+     * <p/>
+     * 0 -> 3
+     * 1 -> 1
+     * 2 -> 0
+     * 3 -> 2
+     * 4 -> 4
+     */
     private int calcFirstLevelOrder(@NotNull List<Object> freeChilden, @NotNull Node freeChild) {
         final List<Node> nodes = new ArrayList<Node>();
         int result;
+
         if (freeChild.getWorder() != null) {
             result = freeChild.getWorder().intValue();
         } else {
+            // Collect all the nodes of the same side ...
             for (Object child : freeChilden) {
                 if (child instanceof Node) {
                     Node node = (Node) child;
@@ -348,14 +355,15 @@ public class FreemindImporter
                 nodeIndex++;
             }
 
-            int size = ORDER_SEPARATION_FACTOR * nodes.size();
+            int size = nodes.size();
             int center = (size - 1) / 2;
-            result = (nodeIndex * ORDER_SEPARATION_FACTOR) - center + ((size % 2 == 0) ? 0 : 1);
+            result = nodeIndex - center;
 
-            if (result > 0) {
-                result = (result - 1) * 2;
+            if (result < 0) {
+                result = (result * ORDER_SEPARATION_FACTOR * -2) - 1;
+
             } else {
-                result = (result * -2) + 1;
+                result = result * ORDER_SEPARATION_FACTOR * 2;
             }
 
         }
@@ -369,37 +377,103 @@ public class FreemindImporter
      */
     private
     @NotNull
-    String convertPosition(@NotNull TopicType wiseParent, @NotNull Node freeChild, final int depth, int order) {
+    String convertPosition(@NotNull TopicType wiseParent, @NotNull Node freeChild, final int depth, int order, int childrenCount) {
 
         // Which side must be the node be positioned ?
         String result = freeChild.getWcoords();
         if (result == null) {
-            BigInteger vgap = freeChild.getVSHIFT();
-            BigInteger hgap = freeChild.getHGAP();
-            if(hgap==null){
-                hgap = BigInteger.valueOf(0L);
+
+            // Calculate X ...
+
+            // Problem on setting X position:
+            // Text Size is not taken into account ...
+            int x = CENTRAL_TO_TOPIC_DISTANCE + ((depth - 1) * TOPIC_TO_TOPIC_DISTANCE);
+            if (depth == 1) {
+
+                final String side = freeChild.getPOSITION();
+                assert side != null : "This should not happen";
+                x = x * (POSITION_LEFT.equals(side) ? -1 : 1);
+            } else {
+                final Coord coord = Coord.parse(wiseParent.getPosition());
+                x = x * (coord.isOnLeftSide() ? -1 : 1);
             }
-            if(vgap == null){
-                vgap = BigInteger.valueOf(20L*order);
+
+
+            // Calculate y ...
+            int y;
+            if (depth == 1) {
+
+                // Follow the following algorithm ...
+                // Order: 3 = -100  1
+                // Order: 1 = -50   2
+                // Order: 0 =  0    3
+                // Order: 2 = 50    4
+                // Order: 4 = 100   5
+                if (order % 2 == 0) {
+                    y = ROOT_LEVEL_TOPIC_HEIGHT * order;
+                } else {
+                    y = -ROOT_LEVEL_TOPIC_HEIGHT * (order + 1);
+                }
+            } else {
+
+                // Problem: What happen if the node is more tall than what is defined here.
+                Coord coord = Coord.parse(wiseParent.getPosition());
+                int parentY = coord.y;
+                y = parentY - ((childrenCount / 2) * SECOND_LEVEL_TOPIC_HEIGHT - (order * SECOND_LEVEL_TOPIC_HEIGHT));
+
+
             }
-            String[] position = wiseParent.getPosition().split(",");
-            BigInteger fix = BigInteger.valueOf(1L);
-            if((freeChild.getPOSITION() !=null && POSITION_LEFT.equals(freeChild.getPOSITION().toLowerCase()))
-                    || freeChild.getPOSITION()==null && isOnLeftSide(wiseParent))
-                fix=BigInteger.valueOf(-1L);
-            BigInteger firstLevelDistance = BigInteger.valueOf(0L);
-            BigInteger defaultXDistance = BigInteger.valueOf(200L);
-            if(depth==1){
-                firstLevelDistance = BigInteger.valueOf(200L);
-                defaultXDistance = BigInteger.valueOf(0L);
-            }
-            BigInteger x = BigInteger.valueOf(Integer.valueOf(position[0])).add(hgap.multiply(fix).add(firstLevelDistance.multiply(fix)).add(defaultXDistance.multiply(fix)));
-            BigInteger y = BigInteger.valueOf(Integer.valueOf(position[1])).add(vgap);
-            result = x.toString()+","+y.toString();
+            result = x + "," + y;
+
         }
         return result;
     }
 
+    /**
+     * Position is (x,y).
+     * x values greater than 0 are right axis
+     * x values lower than 0 are left axis
+     */
+//    private
+//    @NotNull
+//    String convertPosition(@NotNull TopicType wiseParent, @NotNull Node freeChild, final int depth, int order) {
+//
+//        // Which side must be the node be positioned ?
+//        String result = freeChild.getWcoords();
+//        if (result == null) {
+//            BigInteger vgap = freeChild.getVSHIFT();
+//            BigInteger hgap = freeChild.getHGAP();
+//
+//            if (hgap == null) {
+//                hgap = BigInteger.valueOf(0L);
+//            }
+//
+//            if (vgap == null) {
+//                vgap = BigInteger.valueOf(HALF_ROOT_TOPICS_SEPARATION * order);
+//            }
+//
+//
+//            final String[] position = wiseParent.getPosition().split(",");
+//            BigInteger fix = BigInteger.valueOf(1L);
+//            if ((freeChild.getPOSITION() != null && POSITION_LEFT.equals(freeChild.getPOSITION().toLowerCase()))
+//                    || freeChild.getPOSITION() == null && isOnLeftSide(wiseParent)) {
+//                fix = BigInteger.valueOf(-1L);
+//
+//            }
+//
+//            BigInteger firstLevelDistance = BigInteger.valueOf(0L);
+//            BigInteger defaultXDistance = BigInteger.valueOf(200L);
+//            if (depth == 1) {
+//                firstLevelDistance = BigInteger.valueOf(200L);
+//                defaultXDistance = BigInteger.valueOf(0L);
+//            }
+//
+//            BigInteger x = BigInteger.valueOf(Integer.valueOf(position[0])).add(hgap.multiply(fix).add(firstLevelDistance.multiply(fix)).add(defaultXDistance.multiply(fix)));
+//            BigInteger y = BigInteger.valueOf(Integer.valueOf(position[1])).add(vgap);
+//            result = x.toString() + "," + y.toString();
+//        }
+//        return result;
+//    }
     private String getRichContent(Richcontent content) {
         String result = null;
         List<Element> elementList = content.getHtml().getAny();
@@ -556,5 +630,24 @@ public class FreemindImporter
             result = ShapeStyle.LINE.getStyle();
         }
         return result;
+    }
+
+    static private class Coord {
+        private int y;
+        private int x;
+
+        private Coord(@NotNull String pos) {
+            final String[] split = pos.split(",");
+            x = Integer.parseInt(split[0]);
+            y = Integer.parseInt(split[1]);
+        }
+
+        public static Coord parse(@NotNull String position) {
+            return new Coord(position);
+        }
+
+        private boolean isOnLeftSide() {
+            return x < 0;
+        }
     }
 }

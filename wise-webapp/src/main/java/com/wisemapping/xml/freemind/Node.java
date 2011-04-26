@@ -130,7 +130,7 @@ public class Node {
     // Wise Extensions
     @XmlAttribute(name = "wCOORDS")
     protected String wcoords;
-    @XmlAttribute(name = "WORDER")
+    @XmlAttribute(name = "wORDER")
     protected BigInteger worder;
 
     /**
