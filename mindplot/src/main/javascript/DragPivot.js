@@ -58,11 +58,11 @@ mindplot.DragPivot.prototype._redraw = function(pivotPosition)
     core.assert(this.getTargetTopic(), 'Illegal invocation. Target node can not be null');
 
     var pivotRect = this._getPivotRect();
-    var currentPivotPositon = pivotRect.getPosition();
+    var currentPivotPosition = pivotRect.getPosition();
 
     // Pivot position has not changed. In this case, position change is not required.
     var targetTopic = this.getTargetTopic();
-    if (currentPivotPositon.x != pivotPosition.x || currentPivotPositon.y != pivotPosition.y)
+    if (currentPivotPosition.x != pivotPosition.x || currentPivotPosition.y != pivotPosition.y)
     {
         var position = this._position;
         var fromPoint = targetTopic.workoutIncomingConnectionPoint(position);
@@ -80,7 +80,7 @@ mindplot.DragPivot.prototype._redraw = function(pivotPosition)
         // Update rect position
         pivotRect.setPosition(pivotPosition.x, pivotPosition.y);
 
-        // Display elements if it's requiered...
+        // Display elements if it's required...
         if (!pivotRect.isVisible())
         {
             // Make line visible only when the position has been already changed.

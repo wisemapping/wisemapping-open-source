@@ -175,7 +175,7 @@ mindplot.DragTopic.prototype.updateDraggedTopic = function(workspace)
             // Update topic position ...
             var dragPivotPosition = dragPivot.getPosition();
 
-            // Must positionate the dragged topic taking into account the current node size.
+            // Must position the dragged topic taking into account the current node size.
             var pivotSize = dragPivot.getSize();
             var draggedTopicSize = draggedTopic.getSize();
             var xOffset = draggedTopicSize.width - pivotSize.width;

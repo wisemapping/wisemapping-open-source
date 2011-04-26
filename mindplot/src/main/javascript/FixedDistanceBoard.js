@@ -98,7 +98,7 @@ mindplot.FixedDistanceBoard.prototype.updateReferencePoint = function()
 
 };
 
-mindplot.FixedDistanceBoard.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE = 30;
+mindplot.FixedDistanceBoard.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE = 60;
 
 
 /**
