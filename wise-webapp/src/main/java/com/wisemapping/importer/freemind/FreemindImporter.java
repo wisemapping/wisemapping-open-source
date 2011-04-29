@@ -135,9 +135,7 @@ public class FreemindImporter
             nodesMap.put(freeNode.getID(), wiseTopic);
 
             convertChildNodes(freeNode, wiseTopic, 1);
-
-            // @Todo: Pablo, tenemos que ver como arreglamos esto. No estoy seteando a los hijos la posicion.
-            //addRelationships(mindmapMap);
+            addRelationships(mindmapMap);
 
             JAXBUtils.saveMap(mindmapMap, baos, "com.wisemapping.xml.mindmap");
 
@@ -233,14 +231,10 @@ public class FreemindImporter
                 }
                 wiseChild.setOrder(norder);
 
-
-                // @Todo: This is required in the old layout. Pablo, we need to discuss this.
-                if (depth == 1) {
-                    // Convert node position
-                    int childrenCount = freeChilden.size();
-                    final String position = convertPosition(wiseParent, freeChild, depth, norder, childrenCount);
-                    wiseChild.setPosition(position);
-                }
+                // Convert node position
+                int childrenCount = freeChilden.size();
+                final String position = convertPosition(wiseParent, freeChild, depth, norder, childrenCount);
+                wiseChild.setPosition(position);
 
                 // Convert the rest of the node properties ...
                 convertNodeProperties(freeChild, wiseChild);
