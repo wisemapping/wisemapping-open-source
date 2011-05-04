@@ -19,7 +19,7 @@
 package com.wisemapping.exporter;
 
 public enum ExportFormat {
-    SVG("image/svg+xml", "xml"),
+    SVG("image/svg+xml", "svg"),
     JPEG("image/jpeg", "jpg"),
     PNG("image/png", "png"),
     MINDJET("text/xml", "xml"),
