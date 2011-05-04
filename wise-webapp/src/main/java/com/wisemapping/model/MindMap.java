@@ -183,7 +183,7 @@ public class MindMap {
         String xml = getNativeXml();
         if (xml != null) {
             xml = xml.replace("'", "\\'");
-            xml = xml.replace("\n", "");
+            xml = xml.replaceAll("\\r|\\n", "");
             xml = xml.trim();
         }
         return xml;

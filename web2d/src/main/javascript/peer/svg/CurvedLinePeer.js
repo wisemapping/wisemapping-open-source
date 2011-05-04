@@ -152,18 +152,21 @@ web2d.peer.svg.CurvedLinePeer.prototype.isShowStartArrow = function(){
 
 web2d.peer.svg.CurvedLinePeer.prototype._updatePath = function(avoidControlPointFix)
 {
-    this._calculateAutoControlPoints(avoidControlPointFix);
-    var path = "M"+this._x1+","+this._y1
-                +" C"+(this._control1.x+this._x1)+","+(this._control1.y+this._y1)+" "
-                  +(this._control2.x+this._x2)+","+(this._control2.y+this._y2)+" "
-                  +this._x2+","+this._y2+
-                  (this._lineStyle?" "
-                    +(this._control2.x+this._x2)+","+(this._control2.y+this._y2+3)+" "
-                    +(this._control1.x+this._x1)+","+(this._control1.y+this._y1+5)+" "
-                    +this._x1+","+(this._y1+7)+" Z"
-                    :""
-                  );
-    this._native.setAttribute("d",path);
+    if(core.Utils.isDefined(this._x1) && core.Utils.isDefined(this._y1))
+    {
+        this._calculateAutoControlPoints(avoidControlPointFix);
+        var path = "M"+this._x1+","+this._y1
+                    +" C"+(this._control1.x + this._x1)+","+(this._control1.y+this._y1)+" "
+                      +(this._control2.x+this._x2)+","+(this._control2.y+this._y2)+" "
+                      +this._x2+","+this._y2+
+                      (this._lineStyle?" "
+                        +(this._control2.x+this._x2)+","+(this._control2.y+this._y2+3)+" "
+                        +(this._control1.x+this._x1)+","+(this._control1.y+this._y1+5)+" "
+                        +this._x1+","+(this._y1+7)+" Z"
+                        :""
+                      );
+        this._native.setAttribute("d",path);
+    }
 };
 
 web2d.peer.svg.CurvedLinePeer.prototype._updateStyle = function()
