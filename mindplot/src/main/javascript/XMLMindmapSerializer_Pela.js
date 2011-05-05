@@ -248,7 +248,8 @@ mindplot.XMLMindmapSerializer_Pela.prototype.loadFromDom = function(dom)
                     break;
                 case "relationship":
                     var relationship = this._deserializeRelationship(child,mindmap);
-                    mindmap.addRelationship(relationship);
+                    if(relationship!=null)
+                        mindmap.addRelationship(relationship);
                     break;
             }
         }
@@ -393,6 +394,10 @@ mindplot.XMLMindmapSerializer_Pela.prototype._deserializeRelationship = function
     var destCtrlPoint = domElement.getAttribute("destCtrlPoint");
     var endArrow = domElement.getAttribute("endArrow");
     var startArrow = domElement.getAttribute("startArrow");
+    //If for some reason a relationship lines has source and dest nodes the same, don't import it.
+    if(srcId==destId){
+        return null;
+    }
     var model = mindmap.createRelationship(srcId,  destId);
     model.setLineType(lineType);
     if(core.Utils.isDefined(srcCtrlPoint) && srcCtrlPoint!=""){
