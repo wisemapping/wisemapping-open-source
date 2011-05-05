@@ -217,7 +217,7 @@ public class ExporterFactory {
                     if (imgUrl.contains("images")) {
                         imgPath = imgBaseUrl + "/../images/" + iconName;
                     } else {
-                        imgPath = imgBaseUrl + imgUrl;
+                        imgPath = imgBaseUrl + "/" + imgUrl;
                     }
                     elem.setAttribute("xlink:href", imgPath);
                     elem.appendChild(document.createTextNode(" "));
