@@ -18,14 +18,19 @@
 
 package com.wisemapping.security;
 
+import com.wisemapping.dao.UserManager;
+import com.wisemapping.model.UserLogin;
 import org.acegisecurity.ui.rememberme.TokenBasedRememberMeServices;
 import org.acegisecurity.Authentication;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Calendar;
 
 public class CustomTokenBasedRememberMeServices extends
         TokenBasedRememberMeServices {
+    private UserManager userManager;
+
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
     {
      if(authentication!=null)
@@ -37,4 +42,24 @@ public class CustomTokenBasedRememberMeServices extends
      }
     }
 
+    @Override
+    public void loginSuccess(HttpServletRequest request, HttpServletResponse response, Authentication successfulAuthentication) {
+        final User user = (User)successfulAuthentication.getPrincipal();
+
+        final UserLogin userLogin = new UserLogin();
+        final Calendar now = Calendar.getInstance();
+        userLogin.setLoginDate(now);
+        userLogin.setEmail(user.getUsername());
+        userManager.auditLogin(userLogin);
+
+        super.loginSuccess(request, response, successfulAuthentication);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    public void setUserManager(UserManager userManager) {
+        this.userManager = userManager;
+    }
+
+    public UserManager getUserManager() {
+        return userManager;
+    }
 }

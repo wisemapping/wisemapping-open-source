@@ -123,6 +123,7 @@
     <bean id="rememberMeServices" class="com.wisemapping.security.CustomTokenBasedRememberMeServices">
         <property name="userDetailsService" ref="userDetailsService"/>
         <property name="key" value="changeThis"/>
+        <property name="userManager" ref="userManager"/>
     </bean>
 
     <bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager">
