@@ -41,6 +41,13 @@ mindplot.layoutManagers.OriginalLayoutManager = mindplot.layoutManagers.BaseLayo
                         maxOrder=order;
                 }
                 result[order] = child;
+
+                //remove position for all childs in depth >1
+                var parent = node.getParent();
+                if(core.Utils.isDefined(parent)){
+                    child._position = null;
+                    child._finalPosition = null;
+                }
             }
         }
         nodesByOrder=null;
