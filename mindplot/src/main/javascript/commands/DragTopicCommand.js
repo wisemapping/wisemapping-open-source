@@ -52,15 +52,15 @@ mindplot.commands.DragTopicCommand = mindplot.Command.extend(
         }
 
 
-        // Set topic position ...
-        if (this._position != null)
+        // Set topic order ...
+        if (this._order != null)
+        {
+            topic.setOrder(this._order);
+        } else if (this._position != null)
         {
             // Set position ...
             topic.setPosition(this._position);
 
-        } else if (this._order != null)
-        {
-            topic.setOrder(this._order);
         } else
         {
             core.assert("Illegal commnad state exception.");
