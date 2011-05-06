@@ -152,13 +152,13 @@ web2d.peer.svg.ElementPeer.prototype.removeEventListener = function(type, listen
 
 web2d.peer.svg.ElementPeer.prototype.setSize = function(width, height)
 {
-    if (core.Utils.isDefined(width))
+    if (core.Utils.isDefined(width) && this._size.width != parseInt(width))
     {
         this._size.width = parseInt(width);
         this._native.setAttribute('width', parseInt(width));
     }
 
-    if (core.Utils.isDefined(height))
+    if (core.Utils.isDefined(height) && this._size.height != parseInt(height))
     {
         this._size.height = parseInt(height);
         this._native.setAttribute('height', parseInt(height));

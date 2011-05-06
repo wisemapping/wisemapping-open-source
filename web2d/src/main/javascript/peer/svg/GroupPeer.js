@@ -36,9 +36,11 @@ objects.extend(web2d.peer.svg.GroupPeer, web2d.peer.svg.ElementPeer);
 
 web2d.peer.svg.GroupPeer.prototype.setCoordSize = function(width, height)
 {
+    var change = this._coordSize.width!=width || this._coordSize.height!=height;
     this._coordSize.width = width;
     this._coordSize.height = height;
-    this.updateTransform();
+    if(change)
+        this.updateTransform();
     web2d.peer.utils.EventUtils.broadcastChangeEvent(this, "strokeStyle");
 };
 
@@ -81,6 +83,7 @@ web2d.peer.svg.GroupPeer.prototype.updateTransform = function()
 
 web2d.peer.svg.GroupPeer.prototype.setCoordOrigin = function(x, y)
 {
+    var change = x!=this._coordOrigin.x || y!=this._coordOrigin.y;
     if (core.Utils.isDefined(x))
     {
         this._coordOrigin.x = x;
@@ -90,17 +93,21 @@ web2d.peer.svg.GroupPeer.prototype.setCoordOrigin = function(x, y)
     {
         this._coordOrigin.y = y;
     }
-    this.updateTransform();
+    if(change)
+        this.updateTransform();
 };
 
 web2d.peer.svg.GroupPeer.prototype.setSize = function(width, height)
 {
+    var change = width != this._size.width || height!=this._size.height;
     web2d.peer.svg.GroupPeer.superClass.setSize.call(this, width, height);
-    this.updateTransform();
+    if(change)
+        this.updateTransform();
 };
 
 web2d.peer.svg.GroupPeer.prototype.setPosition = function(x, y)
 {
+    var change = x!=this._position.x || y!=this._position.y;
     if (core.Utils.isDefined(x))
     {
         this._position.x = parseInt(x);
@@ -110,7 +117,8 @@ web2d.peer.svg.GroupPeer.prototype.setPosition = function(x, y)
     {
         this._position.y = parseInt(y);
     }
-    this.updateTransform();
+    if(change)
+        this.updateTransform();
 };
 
 web2d.peer.svg.GroupPeer.prototype.getPosition = function()

@@ -33,22 +33,26 @@ objects.extend(web2d.peer.svg.CurvedLinePeer, web2d.peer.svg.ElementPeer);
 
 web2d.peer.svg.CurvedLinePeer.prototype.setSrcControlPoint = function(control){
     this._customControlPoint_1 = true;
+    var change = this._control1.x!=control.x || this._control1.y!=control.y;
     if(core.Utils.isDefined(control.x)){
         this._control1 = control;
         this._control1.x = parseInt(this._control1.x);
         this._control1.y = parseInt(this._control1.y)
     }
-    this._updatePath();
+    if(change)
+        this._updatePath();
 };
 
 web2d.peer.svg.CurvedLinePeer.prototype.setDestControlPoint = function(control){
     this._customControlPoint_2 = true;
+    var change = this._control2.x!=control.x || this._control2.y!=control.y;
     if(core.Utils.isDefined(control.x)){
         this._control2 = control;
         this._control2.x = parseInt(this._control2.x);
         this._control2.y = parseInt(this._control2.y)
     }
-    this._updatePath();
+    if(change)
+        this._updatePath();
 };
 
 web2d.peer.svg.CurvedLinePeer.prototype.isSrcControlPointCustom = function() {
@@ -75,16 +79,20 @@ web2d.peer.svg.CurvedLinePeer.prototype.getControlPoints = function(){
 
 web2d.peer.svg.CurvedLinePeer.prototype.setFrom = function(x1, y1)
 {
+    var change = this._x1!=parseInt(x1) || this._y1!=parseInt(y1);
     this._x1 = parseInt(x1);
     this._y1 = parseInt(y1);
-    this._updatePath();
+    if(change)
+        this._updatePath();
 };
 
 web2d.peer.svg.CurvedLinePeer.prototype.setTo = function(x2, y2)
 {
+    var change = this._x2!=parseInt(x2) || this._y2!=parseInt(y2);
     this._x2 = parseInt(x2);
     this._y2 = parseInt(y2);
-    this._updatePath();
+    if(change)
+        this._updatePath();
 };
 
 web2d.peer.svg.CurvedLinePeer.prototype.getFrom = function()
@@ -152,7 +160,7 @@ web2d.peer.svg.CurvedLinePeer.prototype.isShowStartArrow = function(){
 
 web2d.peer.svg.CurvedLinePeer.prototype._updatePath = function(avoidControlPointFix)
 {
-    if(core.Utils.isDefined(this._x1) && core.Utils.isDefined(this._y1))
+    if(core.Utils.isDefined(this._x1) && core.Utils.isDefined(this._y1) && core.Utils.isDefined(this._x2) && core.Utils.isDefined(this._y2))
     {
         this._calculateAutoControlPoints(avoidControlPointFix);
         var path = "M"+this._x1+","+this._y1
@@ -179,7 +187,6 @@ web2d.peer.svg.CurvedLinePeer.prototype._updateStyle = function()
 };
 
 web2d.peer.svg.CurvedLinePeer.prototype._calculateAutoControlPoints = function(avoidControlPointFix){
-    if(core.Utils.isDefined(this._x1) && core.Utils.isDefined(this._x2)){
         //Both points available, calculate real points
         var defaultpoints = core.Utils.calculateDefaultControlPoints(new core.Point(this._x1, this._y1),new core.Point(this._x2,this._y2));
         if(!this._customControlPoint_1 && !(core.Utils.isDefined(avoidControlPointFix) && avoidControlPointFix==0)){
@@ -190,7 +197,6 @@ web2d.peer.svg.CurvedLinePeer.prototype._calculateAutoControlPoints = function(a
             this._control2.x = defaultpoints[1].x;
             this._control2.y = defaultpoints[1].y;
         }
-    }
 };
 
 web2d.peer.svg.CurvedLinePeer.prototype.setDashed = function(length,spacing){

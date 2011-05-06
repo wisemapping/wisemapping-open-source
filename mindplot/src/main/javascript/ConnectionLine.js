@@ -124,7 +124,7 @@ mindplot.ConnectionLine.prototype.redraw = function()
         line2d.setSrcControlPoint(ctrlPoints[0]);
         line2d.setDestControlPoint(ctrlPoints[1]);
     }
-    line2d.moveToBack();
+//    line2d.moveToBack();
 
     // Add connector ...
     this._positionateConnector(targetTopic);
@@ -169,6 +169,7 @@ mindplot.ConnectionLine.prototype.setStroke = function(color, style, opacity)
 mindplot.ConnectionLine.prototype.addToWorkspace = function(workspace)
 {
     workspace.appendChild(this._line2d);
+    this._line2d.moveToBack();
 };
 
 mindplot.ConnectionLine.prototype.removeFromWorkspace = function(workspace)
