@@ -83,7 +83,10 @@ mindplot.XMLMindmapSerializer_Pela.prototype._topicToXML = function(document, to
 //        } else
 //        {
             var order = topic.getOrder();
-            parentTopic.setAttribute("order", order);
+            if(core.Utils.isDefined(order) && !isNaN(order-0))
+            {
+                parentTopic.setAttribute("order", order);
+            }
 //        }
     }
 
@@ -281,7 +284,7 @@ mindplot.XMLMindmapSerializer_Pela.prototype._deserializeNode = function(domElem
     }
 
     var order = domElem.getAttribute('order');
-    if (core.Utils.isDefined(order)) {
+    if (core.Utils.isDefined(order) && !isNaN(order-0)) {
         topic.setOrder(parseInt(order));
     }
 

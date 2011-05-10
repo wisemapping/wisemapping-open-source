@@ -13,7 +13,7 @@ import org.testng.annotations.Test;
 import java.io.*;
 
 @Test
-public class ExportTest {
+public class FreemindExportTest {
     private static final String DATA_DIR_PATH = "src/test/data/wisemaps/";
 
     @Test(dataProvider = "Data-Provider-Function")
@@ -85,7 +85,7 @@ public class ExportTest {
         final File[] freeMindFiles = dataDir.listFiles(new FilenameFilter() {
 
             public boolean accept(File dir, String name) {
-                return name.endsWith(".xml");
+                return name.endsWith(".wxml");
             }
         });
 
