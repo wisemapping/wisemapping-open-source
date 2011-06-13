@@ -307,8 +307,8 @@ mindplot.FixedDistanceBoard.prototype.lookupEntryByPosition = function(pos)
             if (pos.y < firstEntry.getLowerLimit())
             {
                 var upperLimit = firstEntry.getLowerLimit();
-                var lowerLimit = upperLimit + defaultHeight;
-                result = this.createBoardEntry(lowerLimit, upperLimit, -1);
+                var lowerLimit = upperLimit - defaultHeight;
+                result = this.createBoardEntry(lowerLimit, upperLimit, 0);
             } else
             {
                 var entriesLenght = entries.length;
