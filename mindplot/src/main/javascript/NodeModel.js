@@ -305,8 +305,12 @@ mindplot.NodeModel.prototype.canBeConnected = function(sourceModel, sourcePositi
         // Finally, check current node ubication.
         var targetTopicSize = targetModel.getSize();
         var yDistance = Math.abs(sourcePosition.y - targetPosition.y);
+        var gap = 35 + targetTopicHeight / 2;
+        if(targetModel.getChildren().length>0){
+            gap += Math.abs(targetPosition.y - targetModel.getChildren()[0].getPosition().y);
+        }
 
-        if (yDistance <= 5 + targetTopicHeight / 2)
+        if (yDistance <= gap)
         {
             // Circular connection ?
             if (!sourceModel._isChildNode(this))
@@ -339,7 +343,7 @@ mindplot.NodeModel.prototype.canBeConnected = function(sourceModel, sourcePositi
     return result;
 };
 
-mindplot.NodeModel.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE = 60;
+mindplot.NodeModel.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE = 220;
 
 mindplot.NodeModel.prototype._isChildNode = function(node)
 {

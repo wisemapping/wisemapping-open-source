@@ -42,7 +42,7 @@ mindplot.DragTopicPositioner.prototype.positionateDragTopic = function(dragTopic
     }
 };
 
-mindplot.DragTopicPositioner.CENTRAL_TO_MAINTOPIC_MAX_HORIZONTAL_DISTANCE = 300;
+mindplot.DragTopicPositioner.CENTRAL_TO_MAINTOPIC_MAX_HORIZONTAL_DISTANCE = 400;
 
 mindplot.DragTopicPositioner.prototype._checkDragTopicConnection = function(dragTopic)
 {
@@ -99,6 +99,7 @@ mindplot.DragTopicPositioner.prototype._lookUpForMainTopicToMainTopicConnection 
     var result = null;
     var clouserDistance = -1;
     var draggedNode = dragTopic.getDraggedTopic();
+    var distance = null;
 
     // Check MainTopic->MainTopic connection...
     for (var i = 0; i < topics.length; i++)
@@ -110,8 +111,19 @@ mindplot.DragTopicPositioner.prototype._lookUpForMainTopicToMainTopicConnection 
             var canBeConnected = dragTopic.canBeConnectedTo(targetTopic);
             if (canBeConnected)
             {
-                result = targetTopic;
-                break;
+                var targetPosition = targetTopic.getPosition();
+                var fix = position.y>targetPosition.y;
+                var gap = 0;
+                if(targetTopic._getChildren().length>0){
+                    gap = Math.abs(targetPosition.y - targetTopic._getChildren()[0].getPosition().y)
+                }
+                var yDistance = Math.abs(position.y -fix*gap - targetPosition.y);
+                if(distance==null || yDistance<distance)
+                {
+                     result = targetTopic;
+                    distance = yDistance;
+                }
+
             }
         }
     }
