@@ -36,7 +36,8 @@ mindplot.DragPivot.prototype.getTargetTopic = function()
 
 mindplot.DragPivot.prototype._buildStraightLine = function()
 {
-    var line = new web2d.Line();
+    var line = new web2d.CurvedLine();
+    line.setStyle(web2d.CurvedLine.SIMPLE_LINE);
     line.setStroke(1, 'solid', '#CC0033');
     line.setOpacity(0.4);
     line.setVisibility(false);
@@ -45,7 +46,8 @@ mindplot.DragPivot.prototype._buildStraightLine = function()
 
 mindplot.DragPivot.prototype._buildCurvedLine = function()
 {
-    var line = new web2d.PolyLine();
+    var line = new web2d.CurvedLine();
+    line.setStyle(web2d.CurvedLine.SIMPLE_LINE);
     line.setStroke(1, 'solid', '#CC0033');
     line.setOpacity(0.4);
     line.setVisibility(false);
