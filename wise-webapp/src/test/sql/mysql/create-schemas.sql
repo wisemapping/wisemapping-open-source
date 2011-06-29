@@ -14,7 +14,7 @@ password varchar(255) CHARACTER SET utf8 NOT NULL,
 activationCode BIGINT(20) NOT NULL,
 activation_date date,
 allowSendEmail char(1) CHARACTER SET utf8 NOT NULL default 0,
-FOREIGN KEY(colaborator_id) REFERENCES colaborator(id)
+FOREIGN KEY(colaborator_id) REFERENCES COLABORATOR(id)
 ) CHARACTER SET utf8 ;
 
 CREATE TABLE MINDMAP (
@@ -31,7 +31,7 @@ tags varchar(1014) CHARACTER SET utf8 ,
 last_editor varchar(255) CHARACTER SET utf8 ,
 creator_user varchar(255) CHARACTER SET utf8 ,
 editor_properties varchar(512) CHARACTER SET utf8 ,
-FOREIGN KEY(owner_id) REFERENCES user(colaborator_id)
+FOREIGN KEY(owner_id) REFERENCES USER(colaborator_id)
 ) CHARACTER SET utf8 ;
 
 CREATE TABLE MINDMAP_NATIVE
@@ -55,15 +55,15 @@ id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
 colaborator_id INTEGER NOT NULL,
 mindmap_id INTEGER NOT NULL,
 role_id INTEGER NOT NULL,
-FOREIGN KEY(colaborator_id) REFERENCES colaborator(id),
-FOREIGN KEY(mindmap_id) REFERENCES mindmap(id)
+FOREIGN KEY(colaborator_id) REFERENCES COLABORATOR(id),
+FOREIGN KEY(mindmap_id) REFERENCES MINDMAP(id)
 ) CHARACTER SET utf8 ;
 
 CREATE TABLE TAG(
 id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
 name varchar(255) CHARACTER SET utf8 NOT NULL,
 user_id INTEGER NOT NULL,
-FOREIGN KEY(user_id) REFERENCES user(colaborator_id)
+FOREIGN KEY(user_id) REFERENCES USER(colaborator_id)
 ) CHARACTER SET utf8 ;
 
 CREATE TABLE USER_LOGIN (
