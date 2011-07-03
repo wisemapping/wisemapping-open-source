@@ -29,6 +29,7 @@ package com.wisemapping.model;
 
 import com.wisemapping.util.ZipUtils;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -189,7 +190,7 @@ public class MindMap {
         return xml;
     }
 
-    public void setNativeXml(String nativeXml)
+    public void setNativeXml(@NotNull String nativeXml)
             throws IOException {
         this.xml = ZipUtils.stringToZip(nativeXml);
     }

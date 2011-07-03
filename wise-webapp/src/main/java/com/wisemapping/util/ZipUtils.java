@@ -40,7 +40,7 @@ public class ZipUtils {
             byte[] buffer = new byte[512];
 
             int len;
-            StringBuffer sb_result = new StringBuffer();
+            StringBuilder sb_result = new StringBuilder();
 
             while ((len = zipIn.read(buffer)) > 0) {
 

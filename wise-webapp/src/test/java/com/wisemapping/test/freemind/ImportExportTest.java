@@ -29,7 +29,7 @@ public class ImportExportTest {
 
 
     @Test(dataProvider = "Data-Provider-Function")
-    public void exportImportExportTest(@NotNull final File freeMindFile, @NotNull final File wiseFile, @NotNull final File freeRecFile) throws ImporterException, IOException, ExportException {
+    public void exportImportTest(@NotNull final File freeMindFile, @NotNull final File wiseFile, @NotNull final File freeRecFile) throws ImporterException, IOException, ExportException {
 
 
         final FileInputStream fileInputStream = new FileInputStream(freeMindFile.getAbsolutePath());
@@ -46,7 +46,7 @@ public class ImportExportTest {
 
         } else {
             final FileOutputStream fos = new FileOutputStream(wiseFile);
-            fos.write(mindMap.getUnzippedXml().getBytes());
+            fos.write(mindMap.getUnzippedXml().getBytes("UTF-8"));
             fos.close();
         }
 
@@ -55,12 +55,11 @@ public class ImportExportTest {
             // Compare rec and file ...
             final String recContent = readFile(freeRecFile);
 
-            // Export mile content ...
+            // Export content ...
             final ByteArrayOutputStream bos = new ByteArrayOutputStream();
             exporter.export(mindMap, bos);
-            final String exportContent = new String(bos.toByteArray());
 
-            Assert.assertEquals(exportContent, recContent);
+            Assert.assertEquals(bos.toByteArray(), recContent.getBytes("UTF-8"));
 
         } else {
             final FileOutputStream fos = new FileOutputStream(freeRecFile);

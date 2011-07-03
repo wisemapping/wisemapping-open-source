@@ -24,16 +24,13 @@ import com.wisemapping.model.IconFamily;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 final public class FreemindIconConverter {
 
 
-    private final static Map<String, MindmapIcon> freeIdToIcon = new HashMap<String, MindmapIcon>();
-    private final static Map<MindmapIcon, String> iconToFreeId = new HashMap<MindmapIcon, String>();
+    private final static Map<String, MindmapIcon> freeIdToIcon = new TreeMap<String, MindmapIcon>();
+    private final static Map<MindmapIcon, String> iconToFreeId = new TreeMap<MindmapIcon, String>();
 
     private FreemindIconConverter() {
     }

@@ -94,7 +94,7 @@ public class FreemindImporter
 
     }
 
-    public MindMap importMap(String mapName, String description, InputStream input) throws ImporterException {
+    public MindMap importMap(@NotNull String mapName, @NotNull  String description, @NotNull InputStream input) throws ImporterException {
 
         final MindMap result = new MindMap();
         nodesMap = new HashMap<String, TopicType>();
