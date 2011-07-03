@@ -91,11 +91,13 @@ public class ImportExportTest {
     @DataProvider(name = "Data-Provider-Function")
     public Object[][] parameterIntTestProvider() {
 
+        final String testNameToRun = System.getProperty("wise.test.name");
+
         final File dataDir = new File(DATA_DIR_PATH);
         final File[] freeMindFiles = dataDir.listFiles(new FilenameFilter() {
 
             public boolean accept(File dir, String name) {
-                return name.endsWith(".mm");
+                return name.endsWith(".mm") && (testNameToRun==null || name.startsWith(testNameToRun));
             }
         });
 
