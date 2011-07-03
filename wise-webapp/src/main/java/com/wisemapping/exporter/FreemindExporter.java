@@ -51,7 +51,7 @@ public class FreemindExporter
 
     public void export(MindMap map, OutputStream outputStream) throws ExportException {
         try {
-            export(map.getUnzippedXml().getBytes(), outputStream);
+            export(map.getUnzippedXml().getBytes("UTF-8"), outputStream);
         } catch (IOException e) {
             throw new ExportException(e);
         }

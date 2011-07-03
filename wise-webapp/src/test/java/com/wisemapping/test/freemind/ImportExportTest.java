@@ -72,7 +72,7 @@ public class ImportExportTest {
     private String readFile(@NotNull File file) throws IOException {
         // Load rec file co
         final FileInputStream fis = new FileInputStream(file);
-        final InputStreamReader isr = new InputStreamReader(fis);
+        final InputStreamReader isr = new InputStreamReader(fis,"UTF-8");
         final BufferedReader br = new BufferedReader(isr);
 
         final StringBuilder result = new StringBuilder();
