@@ -28,7 +28,7 @@ public class FreemindExportTest {
 
             // Load rec file co
             final FileInputStream fis = new FileInputStream(recFile);
-            final InputStreamReader isr = new InputStreamReader(fis);
+            final InputStreamReader isr = new InputStreamReader(fis,"UTF-8");
             final BufferedReader br = new BufferedReader(isr);
 
             final StringBuilder recContent = new StringBuilder();
@@ -59,7 +59,7 @@ public class FreemindExportTest {
 
     private MindMap load(@NotNull File wisemap) throws IOException {
         final FileInputStream fis = new FileInputStream(wisemap);
-        final InputStreamReader isr = new InputStreamReader(fis);
+        final InputStreamReader isr = new InputStreamReader(fis,"UTF-8");
         final BufferedReader br = new BufferedReader(isr);
 
         final StringBuilder content = new StringBuilder();
