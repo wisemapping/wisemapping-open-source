@@ -73,7 +73,7 @@ public class FreemindExporter
 
             final List<TopicType> topics = mindmapMap.getTopic();
 
-            // Insolated Topic doesn´t exists in Freemind only take the center topic
+            // Isolated Topic does not exist in Freemind only take the center topic
             TopicType centerTopic = null;
             if (topics.size() > 1) {
                 for (TopicType topic : topics) {

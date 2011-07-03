@@ -54,9 +54,9 @@ public class JAXBUtils {
 
     }
 
-    public static void saveMap(@NotNull Object obj, @NotNull OutputStream out, String pachage) throws JAXBException {
+    public static void saveMap(@NotNull Object obj, @NotNull OutputStream out, String packag) throws JAXBException {
 
-        final JAXBContext context = getInstance(pachage);
+        final JAXBContext context = getInstance(packag);
         final Marshaller marshaller = context.createMarshaller();
 
         marshaller.marshal(obj, out);

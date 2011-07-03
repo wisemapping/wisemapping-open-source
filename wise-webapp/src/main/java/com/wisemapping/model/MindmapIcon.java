@@ -18,7 +18,7 @@
 
 package com.wisemapping.model;
 
-public class MindmapIcon {
+public class MindmapIcon implements Comparable{
     private String name;
     private IconFamily family;
 
@@ -37,5 +37,9 @@ public class MindmapIcon {
 
     public String getId() {
         return family.name().toLowerCase() + "_" + name;
+    }
+
+    public int compareTo(Object o) {
+        return ((MindmapIcon)o).getId().compareTo(this.getId());
     }
 }

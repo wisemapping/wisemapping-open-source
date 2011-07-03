@@ -44,7 +44,7 @@ public class FreemindExportTest {
             // Export mile content ...
             final ByteArrayOutputStream bos = new ByteArrayOutputStream();
             freemindExporter.export(mindmap, bos);
-            final String exportContent = new String(bos.toByteArray());
+            final String exportContent = new String(bos.toByteArray(),"UTF-8");
 
             Assert.assertEquals(recContent.toString(), exportContent);
 
@@ -72,7 +72,7 @@ public class FreemindExportTest {
         fis.close();
 
         final MindMap result = new MindMap();
-        result.setXml(content.toString().getBytes());
+        result.setXml(content.toString().getBytes("UTF-8"));
         result.setNativeXml(content.toString());
         return result;
     }

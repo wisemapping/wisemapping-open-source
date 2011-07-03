@@ -203,7 +203,7 @@ public class MindmapIcons {
     private static void load() {
         try {
             if (iconsByFamily == null) {
-                iconsByFamily = new HashMap<IconFamily, List<MindmapIcon>>();
+                iconsByFamily = new TreeMap<IconFamily, List<MindmapIcon>>();
 
                 Field[] fields = MindmapIcons.class.getDeclaredFields();
                 for (Field field : fields) {
