@@ -8,17 +8,17 @@ BASE_DIR=`pwd`
 TARGET_DIR=$BASE_DIR/target
 JETTY_DIR=$TARGET_DIR/wisemapping-$WISE_VERSION
 WISE_WEBAPP_DIR=$JETTY_DIR/webapps/wisemapping
-JETTY_DIST_DIR=jetty-distribution-7.3.0.v20110203
+JETTY_DIST_DIR=jetty-distribution-7.4.3.v20110701
 JETTY_ZIP=${JETTY_DIST_DIR}.zip
 
 # Clean ...
-mvn -f $BASE_DIR/../pom.xml clean
+mvn -o -f $BASE_DIR/../pom.xml clean
 [ ! -e target ] && mkdir target 
 rm -fr ${JETTY_DIR}
-rm -fr ${TARGET_DIR}/jetty-distribution-7.3.0.v20110203
+rm -fr ${TARGET_DIR}/${JETTY_DIST_DIR}
 
 # Prepare resources ..
-mvn -f $BASE_DIR/../pom.xml install
+mvn -o -f $BASE_DIR/../pom.xml install
 
 if [ ! -f ./target/${JETTY_ZIP}  ]
 then	
