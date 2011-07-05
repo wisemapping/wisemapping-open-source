@@ -18,7 +18,7 @@ rm -fr ${JETTY_DIR}
 rm -fr ${TARGET_DIR}/jetty-distribution-7.3.0.v20110203
 
 # Prepare resources ..
-mvn -f $BASE_DIR/../pom.xml install -Dmaven.test.skip=true
+mvn -f $BASE_DIR/../pom.xml install
 
 if [ ! -f ./target/${JETTY_ZIP}  ]
 then	
