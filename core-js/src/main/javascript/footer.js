@@ -79,13 +79,13 @@ if (core.Utils.isDefined(window.LoggerService))
 }
 
 
-// Handle error events ...
-window.onerror = function(sMsg, sUrl, sLine)
-{
-    window.hasUnexpectedErrors = true;
-    var msg =  sMsg + ' (' + sUrl + ', line ' + sLine + ')';
-    wLogger.fatal(msg);
-
-   $(window).fireEvent("error",null,0);  
-    return false;
-};
+//// Handle error events ...
+//window.onerror = function(sMsg, sUrl, sLine)
+//{
+//    window.hasUnexpectedErrors = true;
+//    var msg =  sMsg + ' (' + sUrl + ', line ' + sLine + ')';
+//    wLogger.fatal(msg);
+//
+//   $(window).fireEvent("error",null,0);
+//    return false;
+//};

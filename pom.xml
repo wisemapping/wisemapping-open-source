@@ -67,7 +67,7 @@
         <module>web2d</module>
         <module>core-js</module>
         <module>mindplot</module>
-        <module>wise-webapp</module>
+        <module>wise-doc</module>
     </modules>
 </project>
 
