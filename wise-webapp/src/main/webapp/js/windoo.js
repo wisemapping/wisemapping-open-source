@@ -50,8 +50,10 @@ var Ajax = new Class({
     },
 
     onComplete: function() {
-        if (this.options.update) $(this.options.update).empty().setHTML(this.response.text);
-        if (this.options.evalScripts || this.options.evalResponse) this.evalScripts();
+        if (this.options.update)
+            $(this.options.update).empty().innerHTML = this.response.text;
+        if (this.options.evalScripts || this.options.evalResponse)
+            this.evalScripts();
         this.fireEvent('onComplete', [this.response.text, this.response.xml], 20);
     },
 
@@ -347,28 +349,28 @@ Element.$overlay = function(hide, deltaZ) {
         'width': pos.width + 'px', 'height': pos.height + 'px'});
 };
 
-Element.extend({
-
-    fixOverlay: window.ie6 ? Element.$overlay : function() {
-        return false;
-    },
-
-    remove: function(trash) {
-        if (this.fixOverlayElement) {
-            this.fixOverlayElement.remove();
-            if (trash) {
-                Garbage.trash([this.fixOverlayElement]);
-            }
-        }
-        this.parentNode.removeChild(this);
-        if (trash) {
-            Garbage.trash([this.empty()]);
-            return false;
-        }
-        return this;
-    }
-
-});
+//Element.extend({
+//
+//    fixOverlay: window.ie6 ? Element.$overlay : function() {
+//        return false;
+//    },
+//
+//    remove: function(trash) {
+//        if (this.fixOverlayElement) {
+//            this.fixOverlayElement.remove();
+//            if (trash) {
+//                Garbage.trash([this.fixOverlayElement]);
+//            }
+//        }
+//        this.parentNode.removeChild(this);
+//        if (trash) {
+//            Garbage.trash([this.empty()]);
+//            return false;
+//        }
+//        return this;
+//    }
+//
+//});
 Drag.Transition = {
     linear:{
         step: function(start, current, direction) {
@@ -840,6 +842,8 @@ Drag.ResizeImage = new Class({
 });
 
 var Windoo = new Class({
+    Extends: Options,
+    Implements: Events,
     options: {
         type: 'dom',
         url: false,
@@ -963,20 +967,24 @@ var Windoo = new Class({
         var $row = function(prefix, contentClass) {
             return '<div class="' + prefix + '-left ' + _p + '-drag"><div class="' + prefix + '-right"><div class="' + contentClass + '"></div></div></div>';
         };
-        var iefix = window.ie && this.options.type != 'iframe',
-            innerContent = '<div class="' + _p + '-frame">' + $row("top", "title") + $row("bot", "strut") + '</div><div class="' + _p + '-body">' + (iefix ? Windoo.ieTableCell : '') + '</div>';
-        this.el.setHTML(innerContent).inject(this.options.container);
+        var iefix = window.ie && this.options.type != 'iframe';
+        this.el.innerHTML = '<div class="' + _p + '-frame">' + $row("top", "title") + $row("bot", "strut") + '</div><div class="' + _p + '-body">' + (iefix ? Windoo.ieTableCell : '') + '</div>';
+        this.el.inject(this.options.container);
+
+
         if (window.ie) this.el.addClass(_p + '-' + theme.name + '-ie');
 
         var frame = this.el.getFirst(),
             body = this.el.getLast(),
             title = frame.getElement('.title'),
             titleText = new Element('div', {'class': 'title-text'}).inject(title);
+
+        frame.getElement('.strut').innerHTML = '&nbsp;',
         this.dom = {
             frame: frame,
             body: body,
             title: titleText,
-            strut: frame.getElement('.strut').setHTML('&nbsp;'),
+            strut: frame.getElement('.strut'),
             content: iefix ? body.getElement('td') : body
         };
         this.dom.title.addEvent('dblclick', this.maximize.bind(this));
@@ -1008,7 +1016,8 @@ var Windoo = new Class({
             self.bound[name] = action;
             if (opt) {
                 var klass = _p + '-button ' + _p + '-' + name + ( opt == 'disabled' ? ' ' + _p + '-' + name + '-disabled' : '' );
-                self.dom[name] = new Element('a', {'class': klass, 'href': '#', 'title': title}).setHTML('x').inject(self.el);
+                self.dom[name] = new Element('a', {'class': klass, 'href': '#', 'title': title}).innerHTML = 'x';
+                self.dom[name].inject(self.el);
                 self.dom[name].addEvent('click', opt == 'disabled' ? self.bound.noaction : action);
             }
         };
@@ -1047,7 +1056,7 @@ var Windoo = new Class({
     },
 
     setHTML: function(content) {
-        if (!this.dom.iframe) this.dom.content.empty().setHTML(content);
+        if (!this.dom.iframe) this.dom.content.empty().innerHTML = content;
         return this;
     },
 
@@ -1084,7 +1093,7 @@ var Windoo = new Class({
     },
 
     setTitle: function(title) {
-        this.dom.title.setHTML(title || '&nbsp;');
+        this.dom.title.innerHTML = title || '&nbsp;';
         return this;
     },
 
@@ -1121,7 +1130,7 @@ var Windoo = new Class({
     },
 
     fix: function(hide) {
-        this.el.fixOverlay(hide || !this.visible);
+        this.el.$overlay(hide || !this.visible);
         return this.fixShadow(hide);
     },
 
@@ -1310,7 +1319,8 @@ var Windoo = new Class({
         return this.setZIndex(this.wm.maxZIndex());
     }
 });
-Windoo.implement(new Events, new Options);
+//Windoo.implement(new Events, new Options);
+
 Windoo.ieTableCell = '<table style="position:absolute;top:0;left:0;border:none;border-collapse:collapse;padding:0;"><tr><td style="border:none;overflow:auto;position:relative;padding:0;"></td></tr></table>';
 
 Windoo.Themes = {
@@ -1558,7 +1568,7 @@ Windoo.Themes.aqua = {
 
 Windoo.Ajax = Ajax.extend({
     onComplete: function() {
-        if (this.options.window) this.options.window.setHTML(this.response.text);
+        if (this.options.window) this.options.window.innerHTML = this.response.text;
         this.parent();
     }
 });
@@ -1695,7 +1705,8 @@ Windoo.Dialog = Windoo.extend({
         dialog.dom.panel = new Element('div', $merge({'class': this.classPrefix(klass + '-pane')}, dialog.options.panel));
         for (var btn in buttons) if (buttons[btn]) dialog.dom.panel.adopt(dialog.buttons[btn]);
         dialog.dom.message = new Element('div', $merge({'class': this.classPrefix(klass + '-message')}, dialog.options.message));
-        return this.addPanel(dialog.dom.panel).adopt(dialog.dom.message.setHTML(dialog.message));
+        dialog.dom.message.innerHTML = dialog.message;
+        return this.addPanel(dialog.dom.panel).adopt(dialog.dom.message);
     }
 
 });

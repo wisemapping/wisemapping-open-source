@@ -101,7 +101,7 @@ mindplot.TextEditor = new Class({
 
             setTimeout("$('ffoxWorkarroundInput').focus();", 0);
         };
-        this.fx = new Fx.Morph(this.inputText, 'opacity', { duration: 10});
+        this.fx = new Fx.Tween(this.inputText, {property: 'opacity', duration: 10});
         this.fx.addEvent('onComplete', onComplete.bind(this));
     },
     lostFocusEvent : function ()

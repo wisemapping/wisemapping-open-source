@@ -320,17 +320,6 @@ function afterMindpotLibraryLoading() {
         window.document.location = "mymaps.htm";
     });
 
-
-    var autosave = function() {
-
-        if (designer.needsSave()) {
-            designer.save(function() {
-                var monitor = core.Monitor.getInstance();
-            }, false);
-        }
-    };
-    autosave.periodical(30000);
-
     // To prevent the user from leaving the page with changes ...
     window.onbeforeunload = function confirmExit() {
         if (designer.needsSave()) {
