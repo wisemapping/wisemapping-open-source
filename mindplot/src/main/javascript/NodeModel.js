@@ -147,7 +147,7 @@ mindplot.NodeModel.prototype.addLink = function(link)
 mindplot.NodeModel.prototype._removeLink = function(link)
 {
     core.assert(link && link.isLinkModel(), 'Only LinkModel can be appended to Mindmap object as links');
-    this._links.remove(link);
+    this._links.erase(link);
 };
 
 mindplot.NodeModel.prototype.createNote = function(text)
@@ -165,7 +165,7 @@ mindplot.NodeModel.prototype.addNote = function(note)
 mindplot.NodeModel.prototype._removeNote = function(note)
 {
     core.assert(note && note.isNoteModel(), 'Only NoteModel can be appended to Mindmap object as links');
-    this._notes.remove(note);
+    this._notes.erase(note);
 };
 
 mindplot.NodeModel.prototype.createIcon = function(iconType)
@@ -183,7 +183,7 @@ mindplot.NodeModel.prototype.addIcon = function(icon)
 mindplot.NodeModel.prototype._removeIcon = function(icon)
 {
     core.assert(icon && icon.isIconModel(), 'Only IconModel can be appended to Mindmap object as icons');
-    this._icons.remove(icon);
+    this._icons.erase(icon);
 };
 
 mindplot.NodeModel.prototype.removeLastIcon = function()
@@ -201,7 +201,7 @@ mindplot.NodeModel.prototype._appendChild = function(child)
 mindplot.NodeModel.prototype._removeChild = function(child)
 {
     core.assert(child && child.isNodeModel(), 'Only NodeModel can be appended to Mindmap object.');
-    this._children.remove(child);
+    this._children.erase(child);
     child._parent = null;
 };
 
@@ -497,7 +497,7 @@ mindplot.NodeModel.prototype.deleteNode = function()
 
     // It's an isolated node. It must be a hole branch ...
     var branches = mindmap.getBranches();
-    branches.remove(this);
+    branches.erase(this);
 
 };
 

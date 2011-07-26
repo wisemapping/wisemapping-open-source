@@ -34,11 +34,11 @@ mindplot.TextEditor = new Class({
     _createUI:function(){
         this._size = {width:500, height:100};
         this._myOverlay = new Element('div').setStyles({position:"absolute", display: "none", zIndex: "8", top: 0, left:0, width:"500px", height:"100px"});
-        var inputContainer = new Element('div').setStyles({border:"none", overflow:"auto"}).injectInside(this._myOverlay);
-        this.inputText = new Element('input').setProperties({type:"text", tabindex:'-1', id:"inputText", value:""}).setStyles({border:"none", background:"transparent"}).injectInside(inputContainer);
-        var spanContainer = new Element('div').setStyle('visibility', "hidden").injectInside(this._myOverlay);
-        this._spanText = new Element('span').setProperties({id: "spanText", tabindex:"-1"}).setStyle('white-space', "nowrap").setStyle('nowrap', 'nowrap').injectInside(spanContainer);
-        this._myOverlay.injectInside(this._container);
+        var inputContainer = new Element('div').setStyles({border:"none", overflow:"auto"}).inject(this._myOverlay);
+        this.inputText = new Element('input').setProperties({type:"text", tabindex:'-1', id:"inputText", value:""}).setStyles({border:"none", background:"transparent"}).inject(inputContainer);
+        var spanContainer = new Element('div').setStyle('visibility', "hidden").inject(this._myOverlay);
+        this._spanText = new Element('span').setProperties({id: "spanText", tabindex:"-1"}).setStyle('white-space', "nowrap").setStyle('nowrap', 'nowrap').inject(spanContainer);
+        this._myOverlay.inject(this._container);
     },
     _addListeners:function(){
         var elem = this;
@@ -101,7 +101,7 @@ mindplot.TextEditor = new Class({
 
             setTimeout("$('ffoxWorkarroundInput').focus();", 0);
         };
-        this.fx = new Fx.Style(this.inputText, 'opacity', { duration: 10});
+        this.fx = new Fx.Morph(this.inputText, 'opacity', { duration: 10});
         this.fx.addEvent('onComplete', onComplete.bind(this));
     },
     lostFocusEvent : function ()

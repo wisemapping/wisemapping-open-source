@@ -52,7 +52,7 @@ web2d.EventDispatcher.prototype.removeListener = function(type, listener)
     //    var found = false;
     var length = this._listeners.length;
 
-    this._listeners.remove(listener);
+    this._listeners.erase(listener);
 
     var newLength = this._listeners.length;
 

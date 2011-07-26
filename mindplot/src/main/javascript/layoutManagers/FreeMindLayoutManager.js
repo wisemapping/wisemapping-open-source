@@ -157,7 +157,7 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
                     node.setPosition(pos.clone(), false);
                     if(core.Utils.isDefined(this._modifiedTopics.set)){
                         var key = node.getId();
-                        if(this._modifiedTopics.hasKey(key)){
+                        if(this._modifiedTopics.has(key)){
                             nodePos = this._modifiedTopics.get(key).originalPos;
                         }
                         this._modifiedTopics.set(key,{originalPos:nodePos, newPos:pos});
@@ -186,7 +186,7 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
                 child.setPosition(childPos, false);
                 if(core.Utils.isDefined(modifiedTopics.set)){
                     var key = node.getId();
-                    if(modifiedTopics.hasKey(key)){
+                    if(modifiedTopics.has(key)){
                         oldPos = this._modifiedTopics.get(key).originalPos;
                     }
                     this._modifiedTopics.set(key,{originalPos:oldPos, newPos:childPos});
@@ -384,7 +384,7 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
             }
             if(core.Utils.isDefined(this._modifiedTopics.set)){
                 var key = node.getId();
-                if(this._modifiedTopics.hasKey(key)){
+                if(this._modifiedTopics.has(key)){
                     nodePos = this._modifiedTopics.get(key).originalPos;
                 }
                 this._modifiedTopics.set(key,{originalPos:nodePos, newPos:pos});
@@ -678,7 +678,7 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
     },
     _addToModifiedList:function(modifiedTopics, key, originalpos, newPos){
         if(core.Utils.isDefined(modifiedTopics.set)){
-            if(modifiedTopics.hasKey(key)){
+            if(modifiedTopics.has(key)){
                 originalpos = modifiedTopics.get(key).originalPos;
             }
             modifiedTopics.set(key,{originalPos:originalpos, newPos:newPos});

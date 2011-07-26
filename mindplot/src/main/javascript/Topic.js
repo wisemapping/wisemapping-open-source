@@ -431,7 +431,7 @@ mindplot.Topic.prototype.addRelationship = function(relationship){
 };
 
 mindplot.Topic.prototype.removeRelationship = function(relationship){
-    this._relationships.remove(relationship);    
+    this._relationships.erase(relationship);
 };
 
 mindplot.Topic.prototype.getRelationships = function(){
@@ -1303,7 +1303,7 @@ mindplot.Topic.prototype._appendChild = function(child)
 mindplot.Topic.prototype._removeChild = function(child)
 {
     var children = this._getChildren();
-    children.remove(child);
+    children.erase(child);
 };
 
 mindplot.Topic.prototype._getChildren = function()

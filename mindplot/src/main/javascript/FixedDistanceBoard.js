@@ -250,7 +250,7 @@ mindplot.FixedDistanceBoard.prototype.removeTopic = function(topic)
 
     entry.setTopic(null);
     topic.setOrder(null);
-    this._entries.remove(entry);
+    this._entries.erase(entry);
 
     // Repositionate all elements ...
     this.repositionate();

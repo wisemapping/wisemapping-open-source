@@ -201,7 +201,7 @@ var MooRainbow = new Class({
         var lim, curH, curW, inputs;
         curH = this.snippet('curSize', 'int').h;
         curW = this.snippet('curSize', 'int').w;
-        inputs = this.arrRGB.copy().concat(this.arrHSB, this.hexInput);
+        inputs = this.arrRGB.clone().concat(this.arrHSB, this.hexInput);
 
         document.addEvent('click', function() {
             if (this.visible) this.hide(this.layout);
@@ -228,7 +228,7 @@ var MooRainbow = new Class({
             y: [0 - curH, (this.layout.overlay.height - curH)]
         };
 
-        this.layout.drag = new Drag.Base(this.layout.cursor, {
+        this.layout.drag = new Drag(this.layout.cursor, {
             limit: lim,
             onStart: this.overlayDrag.bind(this),
             onDrag: this.overlayDrag.bind(this),
@@ -272,7 +272,7 @@ var MooRainbow = new Class({
         var arwH = this.snippet('arrSize', 'int'), lim;
 
         lim = [0 + this.snippet('slider') - arwH, this.layout.slider.height - arwH + this.snippet('slider')];
-        this.layout.sliderDrag = new Drag.Base(this.layout.arrows, {
+        this.layout.sliderDrag = new Drag(this.layout.arrows, {
             limit: {y: lim},
             modifiers: {x: false},
             onStart: this.sliderDrag.bind(this),
@@ -308,7 +308,7 @@ var MooRainbow = new Class({
     },
 
     wheelEvents: function() {
-        var arrColors = this.arrRGB.copy().extend(this.arrHSB);
+        var arrColors = this.arrRGB.clone().extend(this.arrHSB);
 
         arrColors.each(function(el) {
             el.addEvents({
@@ -530,7 +530,10 @@ var MooRainbow = new Class({
         inputHU.inject(HU).addClass(prefix + 'HueInput');
         SA.appendText(' %');
         BR.appendText(' %');
-        new Element('span', {'styles': {'position': 'absolute'}, 'class': prefix + 'ballino'}).setHTML(" &deg;").injectAfter(HU);
+
+        var spanElem = new Element('span', {'styles': {'position': 'absolute'}, 'class': prefix + 'ballino'});
+        spanElem.innerHTML = " &deg;";
+        spanElem.inject(HU,'after');
 
         var inputHex = new Element('input').addClass(prefix + 'hexInput');
         var hex = new Element('label').inject(box).setStyle('position', 'absolute').addClass(prefix + 'hexLabel').appendText('#hex: ').adopt(inputHex);

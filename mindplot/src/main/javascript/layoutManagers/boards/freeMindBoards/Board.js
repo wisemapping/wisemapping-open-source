@@ -185,7 +185,7 @@ mindplot.layoutManagers.boards.freeMindBoards.Board = mindplot.layoutManagers.bo
         this._layoutManager._updateChildrenBoards(entry.getNode(), delta, modifiedTopics);
         if(core.Utils.isDefined(modifiedTopics.set)){
             var key = entry.getId();
-            if(modifiedTopics.hasKey(key)){
+            if(modifiedTopics.has(key)){
                 pos = modifiedTopics.get(key).originalPos;
             }
             modifiedTopics.set(key,{originalPos:pos, newPos:newPos});

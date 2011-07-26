@@ -13,7 +13,9 @@
     <link rel="stylesheet" type="text/css" href="../css/bubble.css"/>
 
     <!--<script type='text/javascript' src='../js/wiseLibrary.js'></script>-->
-    <script type='text/javascript' src='../js/mootools.js'></script>
+    <script type='text/javascript' src='../js/mootools-core-1.3.2-full-compat.js'></script>
+    <script type='text/javascript' src='../js/mootools-more-1.3.2.1-yui.js'></script>
+
     <script type='text/javascript' src='../../../../../wise-webapp/src/main/webapp/js/common.js'></script>
     <script type='text/javascript' src='../../../../../wise-webapp/src/main/webapp/js/windoo.js'></script>
 
@@ -71,7 +73,7 @@
     var mapXml = '<map name="38298" version="pela"><topic central="true" text="test" id="1"/></map>';
 
     // @Todo: This must be persiste in the map properties ...
-    var editorProperties = "{zoom:0.85,saveOnLoad:true}";
+    var editorProperties = {zoom:0.85,saveOnLoad:true};
 
     function printMap() {
         document.printForm.mapSvg.value = $("workspaceContainer").innerHTML;

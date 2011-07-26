@@ -94,7 +94,7 @@ mindplot.Mindmap.prototype.connect = function(parent, child)
     parent._appendChild(child);
 
     // Remove from the branch ...
-    branches.remove(child);
+    branches.erase(child);
 };
 
 mindplot.Mindmap.prototype.disconnect = function(child)
@@ -151,7 +151,7 @@ mindplot.Mindmap.prototype.addRelationship = function(relationship) {
 };
 
 mindplot.Mindmap.prototype.removeRelationship = function(relationship) {
-    this._relationships.remove(relationship);
+    this._relationships.erase(relationship);
 };
 
 mindplot.Mindmap.prototype.inspect = function()

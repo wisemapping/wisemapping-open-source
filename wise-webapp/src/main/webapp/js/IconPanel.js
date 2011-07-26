@@ -17,6 +17,7 @@
 */
 
 var IconPanel = new Class({
+    Extends:Options,
     options:{
         width:253,
         initialWidth:0,
@@ -96,5 +97,3 @@ var IconPanel = new Class({
         }.bindWithEvent(this));
     }
 });
-
-IconPanel.implement(new Events, new Options);

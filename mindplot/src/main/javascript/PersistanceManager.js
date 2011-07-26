@@ -29,7 +29,7 @@ mindplot.PersistanceManager.save = function(mindmap, editorProperties, onSavedHa
     var xmlMap = serializer.toXML(mindmap);
     var xmlMapStr = core.Utils.innerXML(xmlMap);
 
-    var pref = Json.toString(editorProperties);
+    var pref = JSON.toString(editorProperties);
     window.MapEditorService.saveMap(mapId, xmlMapStr, pref,saveHistory,
     {
         callback:function(response) {

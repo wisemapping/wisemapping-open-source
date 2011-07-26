@@ -17,27 +17,7 @@
  */
 
 
-function afterCoreLoading()
-{
-
-//    Uncomment for debug ...   
-    $import("../js/mindplot.svg.js");
-
-//        $import("../js/mindplot.svg-min.js");
-
-};
-afterCoreLoading();
-
-
-
-/*Extend mootools known keys*/
-ExtendedKeys = {
-    'insert': 45,
-    'f2':113,
-    'ctrl-enter':17
-};
-
-$extend(Event.keys, ExtendedKeys);
+$import("../js/mindplot.svg.js");
 
 var designer = null;
 /* JavaScript tabs changer */

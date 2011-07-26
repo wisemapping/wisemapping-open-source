@@ -16,8 +16,9 @@
 *   limitations under the License.
 */
 
-mindplot.commands.AddTopicCommand = mindplot.Command.extend(
+mindplot.commands.AddTopicCommand = new Class(
 {
+    Extends:mindplot.Command,
     initialize: function(model, parentTopicId, animated)
     {
         core.assert(model, 'Model can not be null');

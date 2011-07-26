@@ -81,12 +81,12 @@ core.WaitDialog = new Class({
     // Display dialog content ...
     processInfo: function() {
         if ($('lbContent'))
-            $('lbContent').remove();
+            $('lbContent').dispose();
 
         var lbContentElement = new Element('div').setProperty('id', 'lbContent');
-        lbContentElement.setHTML(this.content.innerHTML);
+        lbContentElement.innerHTML = this.content.innerHTML;
 
-        lbContentElement.injectBefore($('lbLoadMessage'));
+        lbContentElement.inject($('lbLoadMessage'),'before');
         $('lightbox').className = "done";
     },
 
@@ -109,7 +109,7 @@ core.WaitDialog = new Class({
     deactivate: function(time) {
 
         if ($('lbContent'))
-            $('lbContent').remove();
+            $('lbContent').dispose();
 
         this.displayLightbox("none");
 
@@ -120,16 +120,16 @@ core.WaitDialog = new Class({
         // Add overlay element inside body ...
         var bodyElem = document.getElementsByTagName('body')[0];
         var overlayElem = new Element('div').setProperty('id', 'overlay');
-        overlayElem.injectInside(bodyElem);
+        overlayElem.inject(bodyElem);
 
         // Add lightbox element inside body ...
         var lightboxElem = new Element('div').setProperty('id', 'lightbox');
         lightboxElem.addClass('loading');
 
         var lbLoadMessageElem = new Element('div').setProperty('id', 'lbLoadMessage');
-        lbLoadMessageElem.injectInside(lightboxElem);
+        lbLoadMessageElem.inject(lightboxElem);
 
-        lightboxElem.injectInside(bodyElem);
+        lightboxElem.inject(bodyElem);
 
     }
 });

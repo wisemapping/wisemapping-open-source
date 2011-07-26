@@ -267,7 +267,7 @@ mindplot.XMLMindmapSerializer_Pela.prototype._deserializeNode = function(domElem
         id=parseInt(id);
     }
 
-    if(this._idsMap.hasKey(id)){
+    if(this._idsMap.has(id)){
         id=null;
     }else{
         this._idsMap.set(id,domElem);

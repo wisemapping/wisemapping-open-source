@@ -132,7 +132,7 @@ mindplot.IconGroup.prototype.findIconFromModel=function(iconModel){
 
 mindplot.IconGroup.prototype._removeIcon = function(icon) {
     var nativeImage = icon.getImage();
-    this.options.icons.remove(icon);
+    this.options.icons.erase(icon);
     var iconSize = nativeImage.getSize();
     var size = this.options.nativeElem.getSize();
     var position = nativeImage.getPosition();

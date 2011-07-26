@@ -16,8 +16,9 @@
 *   limitations under the License.
 */
 
-mindplot.commands.DragTopicCommand = mindplot.Command.extend(
+mindplot.commands.DragTopicCommand = new Class(
 {
+    Extends:mindplot.Command,
     initialize: function(topicId)
     {
         core.assert(topicId, "topicId must be defined");

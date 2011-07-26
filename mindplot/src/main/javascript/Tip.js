@@ -104,7 +104,7 @@ mindplot.Tip.prototype.forceClose=function(){
         this.options.panel.effect('opacity',{duration:100, onComplete:function(){
             this._open=false;
             $(this.options.panel).setStyles({left:0,top:0});
-            $(this.options.container).remove();
+            $(this.options.container).dispose();
         }.bind(this)}).start(100,0);
 };
 
@@ -120,7 +120,7 @@ mindplot.Tip.prototype.init=function(event,source){
         var screenWidth = containerCoords.width;
         var screenHeight = containerCoords.height;
 
-        $(this.options.panel).remove();
+        $(this.options.panel).dispose();
         this.buildTip();
         $(this.options.container).inject(this.options.panel);
         this.moveTopic(offset, $(opts.panel).getCoordinates().height);

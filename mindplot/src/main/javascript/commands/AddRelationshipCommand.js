@@ -15,8 +15,9 @@
 *   See the License for the specific language governing permissions and
 *   limitations under the License.
 */
-mindplot.commands.AddRelationshipCommand = mindplot.Command.extend(
+mindplot.commands.AddRelationshipCommand = new Class(
 {
+    Extends:mindplot.Command,
     initialize: function(model, mindmap)
     {
         core.assert(model, 'Relationship model can not be null');

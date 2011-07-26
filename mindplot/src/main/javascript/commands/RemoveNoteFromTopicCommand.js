@@ -16,8 +16,9 @@
 *   limitations under the License.
 */
 
-mindplot.commands.RemoveNoteFromTopicCommand = mindplot.Command.extend(
+mindplot.commands.RemoveNoteFromTopicCommand = new Class(
 {
+    Extends:mindplot.Command,
     initialize: function(topicId)
     {
         core.assert(topicId, 'topicId can not be null');

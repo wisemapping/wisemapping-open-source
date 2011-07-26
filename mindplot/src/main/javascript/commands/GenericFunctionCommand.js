@@ -16,8 +16,9 @@
 *   limitations under the License.
 */
 
-mindplot.commands.GenericFunctionCommand = mindplot.Command.extend(
+mindplot.commands.GenericFunctionCommand =new Class(
 {
+    Extends:mindplot.Command,
    initialize: function(commandFunc,value,topicsIds)
     {
         core.assert(commandFunc, "commandFunc must be defined");

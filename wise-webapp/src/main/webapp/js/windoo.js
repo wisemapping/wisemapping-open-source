@@ -1,23 +1,284 @@
-/*
-*    Copyright [2011] [wisemapping]
-*
-*   Licensed under WiseMapping Public License, Version 1.0 (the "License").
-*   It is basically the Apache License, Version 2.0 (the "License") plus the
-*   "powered by wisemapping" text requirement on every single page;
-*   you may not use this file except in compliance with the License.
-*   You may obtain a copy of the license at
-*
-*       http://www.wisemapping.org/license
-*
-*   Unless required by applicable law or agreed to in writing, software
-*   distributed under the License is distributed on an "AS IS" BASIS,
-*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*   See the License for the specific language governing permissions and
-*   limitations under the License.
-*/
-
 //Windoo: Mootools window class <http://code.google.com/p/windoo>. Copyright (c) 2007 Yevgen Gorshkov, MIT Style License.
 
+
+/*
+Class: Ajax
+	An Ajax class, For all your asynchronous needs.
+	Inherits methods, properties, options and events from <XHR>.
+
+Arguments:
+	url - the url pointing to the server-side script.
+	options - optional, an object containing options.
+
+Options:
+	data - you can write parameters here. Can be a querystring, an object or a Form element.
+	update - $(element) to insert the response text of the XHR into, upon completion of the request.
+	evalScripts - boolean; default is false. Execute scripts in the response text onComplete. When the response is javascript the whole response is evaluated.
+	evalResponse - boolean; default is false. Force global evalulation of the whole response, no matter what content-type it is.
+
+Events:
+	onComplete - function to execute when the ajax request completes.
+
+Example:
+	>var myAjax = new Ajax(url, {method: 'get'}).request();
+*/
+
+var Ajax = new Class({
+//    Extends: XHR,
+    options: {
+        data: null,
+        update: null,
+        onComplete: Class.empty,
+        evalScripts: false,
+        evalResponse: false
+    },
+
+    initialize: function(url, options) {
+        this.addEvent('onSuccess', this.onComplete);
+        this.setOptions(options);
+        /*compatibility*/
+        this.options.data = this.options.data || this.options.postBody;
+        /*end compatibility*/
+        if (!['post', 'get'].contains(this.options.method)) {
+            this._method = '_method=' + this.options.method;
+            this.options.method = 'post';
+        }
+        this.parent();
+        this.setHeader('X-Requested-With', 'XMLHttpRequest');
+        this.setHeader('Accept', 'text/javascript, text/html, application/xml, text/xml, */*');
+        this.url = url;
+    },
+
+    onComplete: function() {
+        if (this.options.update) $(this.options.update).empty().setHTML(this.response.text);
+        if (this.options.evalScripts || this.options.evalResponse) this.evalScripts();
+        this.fireEvent('onComplete', [this.response.text, this.response.xml], 20);
+    },
+
+/*
+    Property: request
+        Executes the ajax request.
+
+    Example:
+        >var myAjax = new Ajax(url, {method: 'get'});
+        >myAjax.request();
+
+        OR
+
+        >new Ajax(url, {method: 'get'}).request();
+    */
+
+    request: function(data) {
+        data = data || this.options.data;
+        switch ($type(data)) {
+            case 'element': data = $(data).toQueryString(); break;
+            case 'object': data = Object.toQueryString(data);
+        }
+        if (this._method) data = (data) ? [this._method, data].join('&') : this._method;
+        return this.send(this.url, data);
+    },
+
+/*
+    Property: evalScripts
+        Executes scripts in the response text
+    */
+
+    evalScripts: function() {
+        var script, scripts;
+        if (this.options.evalResponse || (/(ecma|java)script/).test(this.getHeader('Content-type'))) scripts = this.response.text;
+        else {
+            scripts = [];
+            var regexp = /<script[^>]*>([\s\S]*?)<\/script>/gi;
+            while ((script = regexp.exec(this.response.text))) scripts.push(script[1]);
+            scripts = scripts.join('\n');
+        }
+        if (scripts) (window.execScript) ? window.execScript(scripts) : window.setTimeout(scripts, 0);
+    },
+
+/*
+    Property: getHeader
+        Returns the given response header or null
+    */
+
+    getHeader: function(name) {
+        try {
+            return this.transport.getResponseHeader(name);
+        } catch(e) {
+        }
+        ;
+        return null;
+    }
+
+});
+
+/*
+Script: XHR.js
+	Contains the basic XMLHttpRequest Class Wrapper.
+
+License:
+	MIT-style license.
+*/
+
+/*
+Class: XHR
+	Basic XMLHttpRequest Wrapper.
+
+Arguments:
+	options - an object with options names as keys. See options below.
+
+Options:
+	method - 'post' or 'get' - the protocol for the request; optional, defaults to 'post'.
+	async - boolean: asynchronous option; true uses asynchronous requests. Defaults to true.
+	encoding - the encoding, defaults to utf-8.
+	autoCancel - cancels the already running request if another one is sent. defaults to false.
+	headers - accepts an object, that will be set to request headers.
+
+Events:
+	onRequest - function to execute when the XHR request is fired.
+	onSuccess - function to execute when the XHR request completes.
+	onStateChange - function to execute when the state of the XMLHttpRequest changes.
+	onFailure - function to execute when the state of the XMLHttpRequest changes.
+
+Properties:
+	running - true if the request is running.
+	response - object, text and xml as keys. You can access this property in the onSuccess event.
+
+Example:
+	>var myXHR = new XHR({method: 'get'}).send('http://site.com/requestHandler.php', 'name=john&lastname=dorian');
+*/
+
+var XHR = new Class({
+
+    options: {
+        method: 'post',
+        async: true,
+        onRequest: Class.empty,
+        onSuccess: Class.empty,
+        onFailure: Class.empty,
+        urlEncoded: true,
+        encoding: 'utf-8',
+        autoCancel: false,
+        headers: {}
+    },
+
+    setTransport: function() {
+        this.transport = (window.XMLHttpRequest) ? new XMLHttpRequest() : (window.ie ? new ActiveXObject('Microsoft.XMLHTTP') : false);
+        return this;
+    },
+
+    initialize: function(options) {
+        this.setTransport().setOptions(options);
+        this.options.isSuccess = this.options.isSuccess || this.isSuccess;
+        this.headers = {};
+        if (this.options.urlEncoded && this.options.method == 'post') {
+            var encoding = (this.options.encoding) ? '; charset=' + this.options.encoding : '';
+            this.setHeader('Content-type', 'application/x-www-form-urlencoded' + encoding);
+        }
+        if (this.options.initialize) this.options.initialize.call(this);
+    },
+
+    onStateChange: function() {
+        if (this.transport.readyState != 4 || !this.running) return;
+        this.running = false;
+        var status = 0;
+        try {
+            status = this.transport.status;
+        } catch(e) {
+        }
+        ;
+        if (this.options.isSuccess.call(this, status)) this.onSuccess();
+        else this.onFailure();
+        this.transport.onreadystatechange = Class.empty;
+    },
+
+    isSuccess: function(status) {
+        return ((status >= 200) && (status < 300));
+    },
+
+    onSuccess: function() {
+        this.response = {
+            'text': this.transport.responseText,
+            'xml': this.transport.responseXML
+        };
+        this.fireEvent('onSuccess', [this.response.text, this.response.xml]);
+        this.callChain();
+    },
+
+    onFailure: function() {
+        this.fireEvent('onFailure', this.transport);
+    },
+
+/*
+    Property: setHeader
+        Add/modify an header for the request. It will not override headers from the options.
+
+    Example:
+        >var myXhr = new XHR(url, {method: 'get', headers: {'X-Request': 'JSON'}});
+        >myXhr.setHeader('Last-Modified','Sat, 1 Jan 2005 05:00:00 GMT');
+    */
+
+    setHeader: function(name, value) {
+        this.headers[name] = value;
+        return this;
+    },
+
+/*
+    Property: send
+        Opens the XHR connection and sends the data. Data has to be null or a string.
+
+    Example:
+        >var myXhr = new XHR({method: 'post'});
+        >myXhr.send(url, querystring);
+        >
+        >var syncXhr = new XHR({async: false, method: 'post'});
+        >syncXhr.send(url, null);
+        >
+    */
+
+    send: function(url, data) {
+        if (this.options.autoCancel) this.cancel();
+        else if (this.running) return this;
+        this.running = true;
+        if (data && this.options.method == 'get') {
+            url = url + (url.contains('?') ? '&' : '?') + data;
+            data = null;
+        }
+        this.transport.open(this.options.method.toUpperCase(), url, this.options.async);
+        this.transport.onreadystatechange = this.onStateChange.bind(this);
+        if ((this.options.method == 'post') && this.transport.overrideMimeType) this.setHeader('Connection', 'close');
+        $extend(this.headers, this.options.headers);
+        for (var type in this.headers) try {
+            this.transport.setRequestHeader(type, this.headers[type]);
+        } catch(e) {
+        }
+        ;
+        this.fireEvent('onRequest');
+        this.transport.send($pick(data, null));
+        return this;
+    },
+
+/*
+    Property: cancel
+        Cancels the running request. No effect if the request is not running.
+
+    Example:
+        >var myXhr = new XHR({method: 'get'}).send(url);
+        >myXhr.cancel();
+    */
+
+    cancel: function() {
+        if (!this.running) return this;
+        this.running = false;
+        this.transport.abort();
+        this.transport.onreadystatechange = Class.empty;
+        this.setTransport();
+        this.fireEvent('onCancel');
+        return this;
+    }
+
+});
+
+XHR.implement(new Chain, new Events, new Options);
 
 Fx.Overlay = new Class({
 
@@ -119,7 +380,9 @@ Drag.Transition = {
     }
 };
 
-Drag.Multi = Drag.Base.extend({
+// @Todo: Check this. Required for migration to new mootools.
+//Drag.Multi = Drag.Base.extend({
+Drag.Multi = Drag.extend({
 
     options: {
         handle: false,
@@ -398,12 +661,15 @@ Drag.Resize = new Class({
             var generator = function(lim) {
                 return function(mod) {
                     var cc = self.options.container.getCoordinates(),
-                            ec = mod.element.getCoordinates();
+                        ec = mod.element.getCoordinates();
                     var value = sign * (cc[props[0]] - ec[props[1]]);
                     switch ($type(lim)) {
-                        case 'number': return Math.min(value, lim);
-                        case 'function': return Math.min(value, lim(mod));
-                        default: return value;
+                        case 'number':
+                            return Math.min(value, lim);
+                        case 'function':
+                            return Math.min(value, lim(mod));
+                        default:
+                            return value;
                     }
                 };
             };
@@ -419,12 +685,15 @@ Drag.Resize = new Class({
                 };
                 return function(mod) {
                     var cc = container.getCoordinates(),
-                            ec = mod.element.getCoordinates();
+                        ec = mod.element.getCoordinates();
                     var value = ec[props[1]] - cc[props[0]] - rlim;
                     switch (lim_type) {
-                        case 'number': return Math[op](value, lim);
-                        case 'function': return Math[op](value, lim(mod));
-                        default: return value;
+                        case 'number':
+                            return Math[op](value, lim);
+                        case 'function':
+                            return Math[op](value, lim(mod));
+                        default:
+                            return value;
                     }
                 };
             };
@@ -541,7 +810,7 @@ Element.extend({
     makeResizable: function(options) {
         options = options || {};
         if (options.handle)
-            return new Drag.Base(this, $merge({modifiers: {'x': 'width', 'y': 'height'}}, options));
+            return new Drag(this, $merge({modifiers: {'x': 'width', 'y': 'height'}}, options));
         return new Drag.Resize(this, options);
     }
 
@@ -557,8 +826,8 @@ Drag.ResizeImage = new Class({
             'width': this.image.offsetWidth,
             'height': this.image.offsetHeight
         })}).injectBefore(this.image).adopt(
-                this.image.remove().setStyles({'position': 'absolute', 'top':'0', 'left':'0', 'margin':'0', 'width': '100%', 'height': '100%', 'zIndex': '0'})
-                );
+            this.image.remove().setStyles({'position': 'absolute', 'top':'0', 'left':'0', 'margin':'0', 'width': '100%', 'height': '100%', 'zIndex': '0'})
+        );
         this.fx = new Drag.Resize(this.wrapper, $merge({'preserveRatio': true}, options));
     },
 
@@ -659,9 +928,9 @@ var Windoo = new Class({
         }, this);
 
         this.buildDOM()
-                .setSize(this.options.width, this.options.height)
-                .setTitle(this.options.title)
-                .fix();
+            .setSize(this.options.width, this.options.height)
+            .setTitle(this.options.title)
+            .fix();
         if (this.options.position == 'center') this.positionAtCenter();
 
         this.minimized = false;
@@ -695,14 +964,14 @@ var Windoo = new Class({
             return '<div class="' + prefix + '-left ' + _p + '-drag"><div class="' + prefix + '-right"><div class="' + contentClass + '"></div></div></div>';
         };
         var iefix = window.ie && this.options.type != 'iframe',
-                innerContent = '<div class="' + _p + '-frame">' + $row("top", "title") + $row("bot", "strut") + '</div><div class="' + _p + '-body">' + (iefix ? Windoo.ieTableCell : '') + '</div>';
+            innerContent = '<div class="' + _p + '-frame">' + $row("top", "title") + $row("bot", "strut") + '</div><div class="' + _p + '-body">' + (iefix ? Windoo.ieTableCell : '') + '</div>';
         this.el.setHTML(innerContent).inject(this.options.container);
         if (window.ie) this.el.addClass(_p + '-' + theme.name + '-ie');
 
         var frame = this.el.getFirst(),
-                body = this.el.getLast(),
-                title = frame.getElement('.title'),
-                titleText = new Element('div', {'class': 'title-text'}).inject(title);
+            body = this.el.getLast(),
+            title = frame.getElement('.title'),
+            titleText = new Element('div', {'class': 'title-text'}).inject(title);
         this.dom = {
             frame: frame,
             body: body,
@@ -874,7 +1143,7 @@ var Windoo = new Class({
 
     getState: function() {
         var outer = this.el.getCoordinates(), container = this.options.container,
-                cont = container === $(document.body) ? {'top': 0, 'left': 0} : container.getCoordinates();
+            cont = container === $(document.body) ? {'top': 0, 'left': 0} : container.getCoordinates();
         outer.top -= cont.top;
         outer.right -= cont.left;
         outer.bottom -= cont.top;
@@ -895,9 +1164,9 @@ var Windoo = new Class({
         var container = this.options.container;
         if (container === document.body) container = window;
         var s = container.getSize(), esize = this.el.getSize().size,
-                fn = function(z) {
-                    return Math.max(0, offset[z] + s.scroll[z] + (s.size[z] - esize[z]) / 2);
-                };
+            fn = function(z) {
+                return Math.max(0, offset[z] + s.scroll[z] + (s.size[z] - esize[z]) / 2);
+            };
         this.el.setStyles({'left': fn('x'), 'top': fn('y')});
         return this.fix();
     },
@@ -960,8 +1229,8 @@ var Windoo = new Class({
             if (limit) for (var z in limit) s.size[z] = bound(s.size[z], limit[z]);
             this.el.addClass(klass);
             this.setSize(s.size.x, s.size.y)
-                    .setPosition(s.scroll.x, s.scroll.y)
-                    .fireEvent('onMaximize');
+                .setPosition(s.scroll.x, s.scroll.y)
+                .fireEvent('onMaximize');
         } else {
             this.el.removeClass(klass);
             this.restoreState(this.$restoreMaxi).fireEvent('onRestore', 'maximize');
@@ -979,8 +1248,8 @@ var Windoo = new Class({
             var s = container.getSize(), height = this.theme.padding.top + this.theme.padding.bottom;
             this.el.addClass(klass);
             this.setSize('auto', height)
-                    .setPosition(s.scroll.x + 10, s.scroll.y + s.size.y - height - 10)
-                    .fireEvent('onMinimize');
+                .setPosition(s.scroll.x + 10, s.scroll.y + s.size.y - height - 10)
+                .fireEvent('onMinimize');
         } else {
             this.el.removeClass(klass);
             this.restoreState(this.$restoreMini).fireEvent('onRestore', 'minimize');
@@ -1068,6 +1337,7 @@ if (window.gecko && navigator.appVersion.indexOf('acintosh') >= 0) window.addEve
 });
 
 Windoo.Manager = new Class({
+    Implements: Options,
     focused: false,
     options: {
         zIndex: 100,
@@ -1298,15 +1568,22 @@ Windoo.implement({
     addPanel: function(element, position) {
         position = $pick(position, 'bottom');
         var dim, ndim,
-                size = this.el.getSize().size,
-                styles = {'position': 'absolute'},
-                panel = {'element': $(element), 'position': position, 'fx': []};
+            size = this.el.getSize().size,
+            styles = {'position': 'absolute'},
+            panel = {'element': $(element), 'position': position, 'fx': []};
         switch (position) {
             case 'top':
-            case 'bottom': dim = 'x'; ndim = 'y'; break;
+            case 'bottom':
+                dim = 'x';
+                ndim = 'y';
+                break;
             case 'left':
-            case 'right': dim = 'y'; ndim = 'x'; break;
-            default: return this;
+            case 'right':
+                dim = 'y';
+                ndim = 'x';
+                break;
+            default:
+                return this;
         }
         var options = Windoo.panelOptions[dim];
         styles[position] = this.padding[position];

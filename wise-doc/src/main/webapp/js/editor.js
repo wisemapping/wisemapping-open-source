@@ -17,27 +17,9 @@
  */
 
 
-function afterCoreLoading() {
-
-
-//    Uncomment for debug ...   
-    $import("../../../../../mindplot/target/classes/mindplot.svg.js");
-
-}
-;
-afterCoreLoading();
-
-/*Extend mootools known keys*/
-ExtendedKeys = {
-    'insert': 45,
-    'f2':113,
-    'ctrl-enter':17
-};
-
-$extend(Event.keys, ExtendedKeys);
+$import("../../../../../mindplot/target/classes/mindplot.svg.js");
 
 var designer = null;
-/* JavaScript tabs changer */
 
 // CSS helper functions
 CSS = {
@@ -219,6 +201,7 @@ function afterMindpotLibraryLoading() {
     $('redoEdition').addEvent('click', function(event) {
         designer.redo();
     });
+
     designer.addEventListener("change", function(event) {
         if (event.undoSteps > 0) {
             $("undoEdition").setStyle("background-image", "url(../images/file_undo.png)");
@@ -237,10 +220,12 @@ function afterMindpotLibraryLoading() {
     $('addTopic').addEvent('click', function(event) {
         designer.createSiblingForSelectedNode();
     });
+
     $('deleteTopic').addEvent('click', function(event) {
         var topics = designer.getSelectedNodes();
         designer.deleteCurrentNode();
     });
+
     var context = this;
     var colorPicker1 = new MooRainbow('topicColor', {
         id: 'topicColor',
@@ -358,7 +343,7 @@ function afterMindpotLibraryLoading() {
     shapeTypePanel();
     fontSizePanel();
 
-    // If not problem has occured, I close the dialod ...
+    // If not problem has occured, I close the dialog ...
     var closeDialog = function() {
 
         if (!window.hasUnexpectedErrors) {
@@ -394,7 +379,7 @@ function buildIconChooser() {
 
     return content;
 }
-;
+
 
 
 function setCurrentColorPicker(colorPicker) {
@@ -414,11 +399,9 @@ function buildMindmapDesigner() {
     var container = $('mindplot');
 
     // Initialize Editor ...
-
     var screenWidth = window.getWidth();
     var screenHeight = window.getHeight();
 
-    // Positionate node ...
     // header - footer
     screenHeight = screenHeight - 90 - 61;
 
@@ -431,18 +414,7 @@ function buildMindmapDesigner() {
 
     // If a node has focus, focus can be move to another node using the keys.
     designer._cleanScreen = cleanScreenEvent.bind(this);
-
-
-    // Save map on load ....
-    if (editorProperties.saveOnLoad) {
-        var saveOnLoad = function() {
-            designer.save(function() {
-            }, false);
-        }.delay(1000)
-    }
-
 }
-;
 
 function createColorPalette(container, onSelectFunction, event) {
     cleanScreenEvent();

@@ -24,17 +24,13 @@ mindplot.RichTextEditor = mindplot.TextEditor.extend({
         //Create editor ui
         this._size = {width:440, height:200};
         this._myOverlay = new Element('div').setStyles({position:"absolute", display: "none", zIndex: "8", top: "50%", left:"50%", marginLeft:"-200px", marginTop:"-90px", width:"400px", height:"180px"});
-        var inputContainer = new Element('div').setStyles({border:"none", overflow:"auto"}).injectInside(this._myOverlay);
-        this.inputText = new Element('textarea').setProperties({tabindex:'-1', id:"inputText2", value:""}).setStyles({width:"398px", height:"175px", border:"none", background:"transparent"}).injectInside(inputContainer);
-        /*var spanContainer = new Element('div').setStyle('visibility', "hidden").injectInside(this._myOverlay);
-        this._spanText = new Element('span').setProperties({id: "spanText2", tabindex:"-1"}).setStyle('white-space', "nowrap").setStyle('nowrap', 'nowrap').injectInside(spanContainer);
-        */this._myOverlay.injectInside(this._screenManager.getContainer());
+        var inputContainer = new Element('div').setStyles({border:"none", overflow:"auto"}).inject(this._myOverlay);
+        this.inputText = new Element('textarea').setProperties({tabindex:'-1', id:"inputText2", value:""}).setStyles({width:"398px", height:"175px", border:"none", background:"transparent"}).inject(inputContainer);
+        this._myOverlay.inject(this._screenManager.getContainer());
         this._editorNode = new web2d.Rect(0.3,mindplot.Topic.OUTER_SHAPE_ATTRIBUTES);
         this._editorNode.setSize(50,20);
         this._editorNode.setVisibility(false);
         this._designer.getWorkSpace().appendChild(this._editorNode);
-
-//        $(this.inputText).setStyle('display','block');
         this._addListeners();
     },
     _addListeners:function(){

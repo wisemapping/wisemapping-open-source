@@ -16,8 +16,9 @@
 *   limitations under the License.
 */
 
-mindplot.commands.AddLinkToTopicCommand = mindplot.Command.extend(
+mindplot.commands.AddLinkToTopicCommand =new Class(
 {
+    Extends:mindplot.Command,
     initialize: function(topicId,url)
     {
         core.assert(topicId, 'topicId can not be null');

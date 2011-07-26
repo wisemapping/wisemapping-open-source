@@ -16,8 +16,9 @@
 *   limitations under the License.
 */
 
-mindplot.commands.DeleteTopicCommand = mindplot.Command.extend(
+mindplot.commands.DeleteTopicCommand = new Class(
 {
+    Extends:mindplot.Command,
     initialize: function(topicsIds)
     {
         core.assert(topicsIds, "topicsIds must be defined");

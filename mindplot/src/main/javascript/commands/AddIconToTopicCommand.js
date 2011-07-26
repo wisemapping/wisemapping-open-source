@@ -16,8 +16,9 @@
 *   limitations under the License.
 */
 
-mindplot.commands.AddIconToTopicCommand = mindplot.Command.extend(
+mindplot.commands.AddIconToTopicCommand = new Class(
 {
+    Extends:mindplot.Command,
     initialize: function(topicId, iconType)
     {
         core.assert(topicId, 'topicId can not be null');

@@ -1,20 +1,20 @@
 /*
-*    Copyright [2011] [wisemapping]
-*
-*   Licensed under WiseMapping Public License, Version 1.0 (the "License").
-*   It is basically the Apache License, Version 2.0 (the "License") plus the
-*   "powered by wisemapping" text requirement on every single page;
-*   you may not use this file except in compliance with the License.
-*   You may obtain a copy of the license at
-*
-*       http://www.wisemapping.org/license
-*
-*   Unless required by applicable law or agreed to in writing, software
-*   distributed under the License is distributed on an "AS IS" BASIS,
-*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*   See the License for the specific language governing permissions and
-*   limitations under the License.
-*/
+ *    Copyright [2011] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 
 /******************************************************************/
 /*                        MOOdalBox 1.3.b4                        */
@@ -39,8 +39,8 @@
 // (defined as vars, because of MSIE's lack of support for const)
 
 var _ERROR_MESSAGE = "Oops.. there was a problem with your request.<br /><br />" +
-                     "Please try again.<br /><br />" +
-                     "<em>Click anywhere to close.</em>";
+    "Please try again.<br /><br />" +
+    "<em>Click anywhere to close.</em>";
 // the error message displayed when the request has a problem
 var _RESIZE_DURATION = 400;
 // Duration of height and width resizing (ms)
@@ -96,26 +96,30 @@ var MOOdalBox = {
         this.forms = [];
         this.scanForms(document.body, false);
         // add event listeners
-        this.eventKeyDown = this.keyboardListener.bindWithEvent(this);
+
+        // @Todo: Deprecated method ...
+        // this.eventKeyDown = this.keyboardListener.bindWithEvent(this);
+
+
         this.eventPosition = this.position.bind(this);
 
         // init the HTML elements
         // the overlay (clickable to close)
-        this.overlay = new Element('div').setProperty('id', 'mb_overlay').injectInside(document.body);
+        this.overlay = new Element('div').setProperty('id', 'mb_overlay').inject(document.body);
 
-        this.overlayDiv = new Element('div').setOpacity(0).setStyles({position: 'absolute', border: 0, width: '100%', backgroundColor: "black", zIndex: 98}).injectInside(document.body);
+        this.overlayDiv = new Element('div').setOpacity(0).setStyles({position: 'absolute', border: 0, width: '100%', backgroundColor: "black", zIndex: 98}).inject(document.body);
         // the center element
-        this.center = new Element('div').setProperty('id', 'mb_center').setStyles({width: this.options.initialWidth + 'px', height: this.options.initialHeight + 'px', marginLeft: '-' + (this.options.initialWidth / 2) + 'px', display: 'none'}).injectInside(document.body);
+        this.center = new Element('div').setProperty('id', 'mb_center').setStyles({width: this.options.initialWidth + 'px', height: this.options.initialHeight + 'px', marginLeft: '-' + (this.options.initialWidth / 2) + 'px', display: 'none'}).inject(document.body);
         // the actual page contents
-        this.contents = new Element('div').setProperty('id', 'mb_contents').injectInside(this.center);
+        this.contents = new Element('div').setProperty('id', 'mb_contents').inject(this.center);
 
         // the bottom part (caption / close)
-        this.bottom = new Element('div').setProperty('id', 'mb_bottom').setStyle('display', 'none').injectInside(document.body);
-        this.closelink = new Element('a').setProperties({id: 'mb_close_link', href: '#'}).injectInside(this.bottom);
-        this.caption = new Element('div').setProperty('id', 'mb_caption').injectInside(this.bottom);
-        new Element('div').setStyle('clear', 'both').injectInside(this.bottom);
+        this.bottom = new Element('div').setProperty('id', 'mb_bottom').setStyle('display', 'none').inject(document.body);
+        this.closelink = new Element('a').setProperties({id: 'mb_close_link', href: '#'}).inject(this.bottom);
+        this.caption = new Element('div').setProperty('id', 'mb_caption').inject(this.bottom);
+        new Element('div').setStyle('clear', 'both').inject(this.bottom);
 
-        this.error = new Element('div').setProperty('id', 'mb_error').setHTML(_ERROR_MESSAGE);
+        this.error = new Element('div').setProperty('id', 'mb_error').innerHTML = _ERROR_MESSAGE;
 
         // attach the close event to the close button / the overlay
         this.closelink.onclick = this.overlay.onclick = this.close.bind(this);
@@ -123,7 +127,7 @@ var MOOdalBox = {
         // init the effects
         var nextEffect = this.nextEffect.bind(this);
         this.fx = {
-            overlay:     this.overlay.effect('opacity', { duration: 500 }).hide(),
+            overlay:     new Fx.Morph(this.overlay).set({'opacity':0, duration: 500 }).hide(),
             resize:     this.center.effects({ onComplete: nextEffect }),
             contents:     this.contents.effect('opacity', { duration: 500, onComplete: nextEffect }),
             bottom:     this.bottom.effects({ duration: 400, onComplete: nextEffect })
@@ -308,8 +312,8 @@ var MOOdalBox = {
     },
 
     ajaxFailure: function () {
-        this.contents.setHTML('');
-        this.error.clone().injectInside(this.contents);
+        this.contents.innerHTML = '';
+        this.error.clone().inject(this.contents);
         this.nextEffect();
         this.center.setStyle('cursor', 'pointer');
         this.bottom.setStyle('cursor', 'pointer');
@@ -323,13 +327,13 @@ var MOOdalBox = {
     nextEffect: function() {
         switch (this.step++) {
             case 1:
-            // remove previous styling from the elements
-            // (e.g. styling applied in case of an error)
+                // remove previous styling from the elements
+                // (e.g. styling applied in case of an error)
                 this.center.className = '';
                 this.center.setStyle('cursor', 'default');
                 this.bottom.setStyle('cursor', 'default');
                 this.center.onclick = this.bottom.onclick = '';
-                this.caption.setHTML(this.title);
+                this.caption.innerHTML = this.title;
 
                 this.contents.setStyles({width: this.options.contentsWidth + "px", height: this.options.contentsHeight + "px"});
 
@@ -339,7 +343,6 @@ var MOOdalBox = {
                     break;
                 }
                 this.step++;
-
 
 
             case 2:
@@ -352,7 +355,7 @@ var MOOdalBox = {
             case 3:
                 this.bottom.setStyles({top: (this.top + this.center.clientHeight) + 'px', width: this.contents.style.width, marginLeft: this.center.style.marginLeft, display: ''});
 
-            // check to see if in wizard mode and parse links
+                // check to see if in wizard mode and parse links
                 if (this.wizardMode) this.scanAnchors(this.contents, true);
                 if (this.wizardMode) this.scanForms(this.contents, true);
 
@@ -403,10 +406,9 @@ var MOOdalBox = {
 };
 
 // Moodal Dialog startup
-Window.onDomReady(MOOdalBox.init.bind(MOOdalBox));
+//window.addEvent('domready', MOOdalBox.init.bind(MOOdalBox));
 
 
-function displayLoading()
-{
+function displayLoading() {
     $('headerLoading').style.visibility = 'visible';
 }

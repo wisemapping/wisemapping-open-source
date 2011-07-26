@@ -78,7 +78,7 @@ web2d.peer.svg.ElementPeer.prototype.removeChild = function(elementPeer)
     // Remove from children array ...
     var length = children.length;
 
-    children.remove(elementPeer);
+    children.erase(elementPeer);
 
     var newLength = children.length;
     if (newLength >= length)

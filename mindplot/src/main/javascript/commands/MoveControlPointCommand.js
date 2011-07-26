@@ -15,8 +15,9 @@
 *   See the License for the specific language governing permissions and
 *   limitations under the License.
 */
-mindplot.commands.MoveControlPointCommand = mindplot.Command.extend(
+mindplot.commands.MoveControlPointCommand = new Class(
 {
+    Extends:mindplot.Command,
     initialize: function(ctrlPointController, point)
     {
         core.assert(ctrlPointController, 'line can not be null');

@@ -41,8 +41,9 @@ mindplot.MindmapDesigner = function(profile, divElement)
 
     // Init layout managers ...
     this._topics = [];
-    var layoutManagerClass = mindplot.layoutManagers.LayoutManagerFactory.getManagerByName(mindplot.EditorOptions.LayoutManager);
-    this._layoutManager = new layoutManagerClass(this);
+//    var layoutManagerClass = mindplot.layoutManagers.LayoutManagerFactory.getManagerByName(mindplot.EditorOptions.LayoutManager);
+//    this._layoutManager = new layoutManagerClass(this);
+     this._layoutManager = new mindplot.layoutManagers.OriginalLayoutManager(this);
 
     // Register handlers..
     this._registerEvents();
@@ -591,7 +592,7 @@ mindplot.MindmapDesigner.prototype._removeNode = function(node)
         }
 
         this._workspace.removeChild(node);
-        this._topics.remove(node);
+        this._topics.erase(node);
 
         // Delete this node from the model...
         var model = node.getModel();

@@ -16,8 +16,9 @@
 *   limitations under the License.
 */
 
-mindplot.commands.RemoveIconFromTopicCommand = mindplot.Command.extend(
+mindplot.commands.RemoveIconFromTopicCommand = new Class(
 {
+    Extends:mindplot.Command,
     initialize: function(topicId, iconModel)
     {
         core.assert(topicId, 'topicId can not be null');
