@@ -24,7 +24,7 @@ mindplot.DesignerActionRunner = new Class({
     },
 
     execute:function(command) {
-        core.assert(command, "command can not be null");
+        $assert(command, "command can not be null");
         // Execute action ...
         command.execute(this._context);
 
@@ -86,7 +86,7 @@ mindplot.CommandContext = new Class({
         this._designer._removeNode(topic);
     },
     createTopic:function(model, isVisible) {
-        core.assert(model, "model can not be null");
+        $assert(model, "model can not be null");
         var topic = this._designer._nodeModelToNodeGraph(model, isVisible);
 
         return topic;
@@ -103,7 +103,7 @@ mindplot.CommandContext = new Class({
         topic.disconnect(this._designer._workspace);
     },
     createRelationship:function(model) {
-        core.assert(model, "model cannot be null");
+        $assert(model, "model cannot be null");
         var relationship = this._designer.createRelationship(model);
         return relationship;
     },

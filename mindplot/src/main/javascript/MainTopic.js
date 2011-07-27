@@ -18,7 +18,7 @@
 
 mindplot.MainTopic = function(model)
 {
-    core.assert(model, "Model can not be null");
+    $assert(model, "Model can not be null");
     this.setModel(model);
     mindplot.MainTopic.superClass.initialize.call(this);
 };
@@ -188,7 +188,7 @@ mindplot.MainTopic.prototype.setPosition = function(point, fireEvent)
 
 mindplot.MainTopic.prototype.workoutIncomingConnectionPoint = function(sourcePosition)
 {
-    core.assert(sourcePosition, 'sourcePoint can not be null');
+    $assert(sourcePosition, 'sourcePoint can not be null');
     var pos = this.getPosition();
     var size = this.getSize();
 
@@ -217,7 +217,7 @@ mindplot.MainTopic.prototype.workoutIncomingConnectionPoint = function(sourcePos
 
 mindplot.MainTopic.prototype.workoutOutgoingConnectionPoint = function(targetPosition)
 {
-    core.assert(targetPosition, 'targetPoint can not be null');
+    $assert(targetPosition, 'targetPoint can not be null');
     var pos = this.getPosition();
     var size = this.getSize();
 

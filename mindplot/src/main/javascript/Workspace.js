@@ -19,7 +19,7 @@
 mindplot.Workspace = new Class({
     initialize: function(profile, screenManager, zoom) {
         // Create a suitable container ...
-        core.assert(screenManager, 'Div container can not be null');
+        $assert(screenManager, 'Div container can not be null');
         this._zoom = zoom;
         this._screenManager = screenManager;
         this._screenWidth = profile.width;

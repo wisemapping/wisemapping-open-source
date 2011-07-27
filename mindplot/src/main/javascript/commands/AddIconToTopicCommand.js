@@ -21,8 +21,8 @@ mindplot.commands.AddIconToTopicCommand = new Class(
     Extends:mindplot.Command,
     initialize: function(topicId, iconType)
     {
-        core.assert(topicId, 'topicId can not be null');
-        core.assert(iconType, 'iconType can not be null');
+        $assert(topicId, 'topicId can not be null');
+        $assert(iconType, 'iconType can not be null');
         this._selectedObjectsIds = topicId;
         this._iconType = iconType;
     },

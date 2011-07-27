@@ -21,7 +21,7 @@ mindplot.commands.RemoveLinkFromTopicCommand =new Class(
     Extends:mindplot.Command,
     initialize: function(topicId)
     {
-        core.assert(topicId, 'topicId can not be null');
+        $assert(topicId, 'topicId can not be null');
         this._selectedObjectsIds = topicId;
     },
     execute: function(commandContext)

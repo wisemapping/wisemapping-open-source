@@ -9,17 +9,17 @@ mindplot.layoutManagers.boards.freeMindBoards.Board = mindplot.layoutManagers.bo
         this._positionTables = this._createTables();
     },
     _createTables:function(){
-        core.assert(false, "no Board implementation found!")
+        $assert(false, "no Board implementation found!")
     },
     _getTableForNode:function(node, position){
-        core.assert(false, "no Board implementation found!")
+        $assert(false, "no Board implementation found!")
     },
     removeTopicFromBoard:function(node, modifiedTopics){
         var pos;
         if($defined(node._originalPosition))
             pos = node._originalPosition;
         var result = this.findNodeEntryIndex(node, pos);
-        core.assert(result.index<result.table.length,"node not found. Could not remove");
+        $assert(result.index<result.table.length,"node not found. Could not remove");
         this._removeEntry(node, result.table, result.index, modifiedTopics);
     },
     addBranch:function(node,modifiedTopics){

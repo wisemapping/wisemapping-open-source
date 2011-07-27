@@ -18,8 +18,8 @@
 
 mindplot.NodeModel = new Class({
     initialize:function(type, mindmap, id) {
-        core.assert(type, 'Node type can not be null');
-        core.assert(mindmap, 'mindmap can not be null');
+        $assert(type, 'Node type can not be null');
+        $assert(mindmap, 'mindmap can not be null');
 
         this._order = null;
         this._type = type;
@@ -122,47 +122,47 @@ mindplot.NodeModel = new Class({
     },
 
     createLink  : function(url) {
-        core.assert(url, 'Link URL must be specified.');
+        $assert(url, 'Link URL must be specified.');
         return new mindplot.LinkModel(url, this);
     },
 
     addLink  : function(link) {
-        core.assert(link && link.isLinkModel(), 'Only LinkModel can be appended to Mindmap object as links');
+        $assert(link && link.isLinkModel(), 'Only LinkModel can be appended to Mindmap object as links');
         this._links.push(link);
     },
 
     _removeLink  : function(link) {
-        core.assert(link && link.isLinkModel(), 'Only LinkModel can be appended to Mindmap object as links');
+        $assert(link && link.isLinkModel(), 'Only LinkModel can be appended to Mindmap object as links');
         this._links.erase(link);
     },
 
     createNote  : function(text) {
-        core.assert(text != null, 'note text must be specified.');
+        $assert(text != null, 'note text must be specified.');
         return new mindplot.NoteModel(text, this);
     },
 
     addNote  : function(note) {
-        core.assert(note && note.isNoteModel(), 'Only NoteModel can be appended to Mindmap object as links');
+        $assert(note && note.isNoteModel(), 'Only NoteModel can be appended to Mindmap object as links');
         this._notes.push(note);
     },
 
     _removeNote  : function(note) {
-        core.assert(note && note.isNoteModel(), 'Only NoteModel can be appended to Mindmap object as links');
+        $assert(note && note.isNoteModel(), 'Only NoteModel can be appended to Mindmap object as links');
         this._notes.erase(note);
     },
 
     createIcon  : function(iconType) {
-        core.assert(iconType, 'IconType must be specified.');
+        $assert(iconType, 'IconType must be specified.');
         return new mindplot.IconModel(iconType, this);
     },
 
     addIcon  : function(icon) {
-        core.assert(icon && icon.isIconModel(), 'Only IconModel can be appended to Mindmap object as icons');
+        $assert(icon && icon.isIconModel(), 'Only IconModel can be appended to Mindmap object as icons');
         this._icons.push(icon);
     },
 
     _removeIcon  : function(icon) {
-        core.assert(icon && icon.isIconModel(), 'Only IconModel can be appended to Mindmap object as icons');
+        $assert(icon && icon.isIconModel(), 'Only IconModel can be appended to Mindmap object as icons');
         this._icons.erase(icon);
     },
 
@@ -171,20 +171,20 @@ mindplot.NodeModel = new Class({
     },
 
     _appendChild  : function(child) {
-        core.assert(child && child.isNodeModel(), 'Only NodeModel can be appended to Mindmap object');
+        $assert(child && child.isNodeModel(), 'Only NodeModel can be appended to Mindmap object');
         this._children.push(child);
         child._parent = this;
     },
 
     _removeChild  : function(child) {
-        core.assert(child && child.isNodeModel(), 'Only NodeModel can be appended to Mindmap object.');
+        $assert(child && child.isNodeModel(), 'Only NodeModel can be appended to Mindmap object.');
         this._children.erase(child);
         child._parent = null;
     },
 
     setPosition  : function(x, y) {
-        core.assert($defined(x), "x coordinate must be defined");
-        core.assert($defined(y), "y coordinate must be defined");
+        $assert($defined(x), "x coordinate must be defined");
+        $assert($defined(y), "y coordinate must be defined");
 
         if (!$defined(this._position)) {
             this._position = new core.Point();
@@ -198,8 +198,8 @@ mindplot.NodeModel = new Class({
     },
 
     setFinalPosition  : function(x, y) {
-        core.assert($defined(x), "x coordinate must be defined");
-        core.assert($defined(y), "y coordinate must be defined");
+        $assert($defined(x), "x coordinate must be defined");
+        $assert($defined(y), "y coordinate must be defined");
 
         if (!$defined(this._finalPosition)) {
             this._finalPosition = new core.Point();
@@ -246,14 +246,14 @@ mindplot.NodeModel = new Class({
     },
 
     setParent  : function(parent) {
-        core.assert(parent != this, 'The same node can not be parent and child if itself.');
+        $assert(parent != this, 'The same node can not be parent and child if itself.');
         this._parent = parent;
     },
 
     canBeConnected  : function(sourceModel, sourcePosition, targetTopicHeight) {
-        core.assert(sourceModel != this, 'The same node can not be parent and child if itself.');
-        core.assert(sourcePosition, 'childPosition can not be null.');
-        core.assert($defined(targetTopicHeight), 'childrenWidth can not be null.');
+        $assert(sourceModel != this, 'The same node can not be parent and child if itself.');
+        $assert(sourcePosition, 'childPosition can not be null.');
+        $assert($defined(targetTopicHeight), 'childrenWidth can not be null.');
 
         // Only can be connected if the node is in the left or rigth.
         var targetModel = this;

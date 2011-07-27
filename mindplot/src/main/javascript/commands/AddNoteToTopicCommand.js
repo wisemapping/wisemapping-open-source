@@ -21,7 +21,7 @@ mindplot.commands.AddNoteToTopicCommand = new Class(
     Extends:mindplot.Command,
     initialize: function(topicId,text)
     {
-        core.assert(topicId, 'topicId can not be null');
+        $assert(topicId, 'topicId can not be null');
         this._selectedObjectsIds = topicId;
         this._text = text;
         this._id = mindplot.Command._nextUUID();

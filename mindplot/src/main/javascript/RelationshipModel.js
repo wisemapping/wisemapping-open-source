@@ -17,8 +17,8 @@
 */
 mindplot.RelationshipModel = function(fromNode, toNode)
 {
-    core.assert(fromNode, 'from node type can not be null');
-    core.assert(toNode, 'to node type can not be null');
+    $assert(fromNode, 'from node type can not be null');
+    $assert(toNode, 'to node type can not be null');
 
     this._id = mindplot.RelationshipModel._nextUUID();
     this._fromNode = fromNode;

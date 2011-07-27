@@ -20,8 +20,8 @@ mindplot.PersistanceManager = {};
 
 mindplot.PersistanceManager.save = function(mindmap, editorProperties, onSavedHandler,saveHistory)
 {
-    core.assert(mindmap, "mindmap can not be null");
-    core.assert(editorProperties, "editorProperties can not be null");
+    $assert(mindmap, "mindmap can not be null");
+    $assert(editorProperties, "editorProperties can not be null");
 
     var mapId = mindmap.getId();
 
@@ -60,7 +60,7 @@ mindplot.PersistanceManager.save = function(mindmap, editorProperties, onSavedHa
 
 mindplot.PersistanceManager.load = function(mapId)
 {
-    core.assert(mapId, "mapId can not be null");
+    $assert(mapId, "mapId can not be null");
 
     var result = {r:null};
     window.MapEditorService.loadMap(mapId, {

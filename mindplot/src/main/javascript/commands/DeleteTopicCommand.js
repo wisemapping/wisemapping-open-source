@@ -21,7 +21,7 @@ mindplot.commands.DeleteTopicCommand = new Class(
     Extends:mindplot.Command,
     initialize: function(topicsIds)
     {
-        core.assert(topicsIds, "topicsIds must be defined");
+        $assert(topicsIds, "topicsIds must be defined");
         this._selectedObjectsIds = topicsIds;
         this._deletedTopicModels = [];
         this._parentTopicIds = [];

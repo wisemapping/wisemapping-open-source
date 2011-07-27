@@ -52,12 +52,12 @@ mindplot.Mindmap = new Class({
         },
 
         addBranch : function(nodeModel) {
-            core.assert(nodeModel && nodeModel.isNodeModel(), 'Add node must be invoked with model objects');
+            $assert(nodeModel && nodeModel.isNodeModel(), 'Add node must be invoked with model objects');
             if (this._branches.length == 0) {
-                core.assert(nodeModel.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE, "First element must be the central topic");
+                $assert(nodeModel.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE, "First element must be the central topic");
                 nodeModel.setPosition(0, 0);
             } else {
-                core.assert(nodeModel.getType() != mindplot.NodeModel.CENTRAL_TOPIC_TYPE, "Mindmaps only have one cental topic");
+                $assert(nodeModel.getType() != mindplot.NodeModel.CENTRAL_TOPIC_TYPE, "Mindmaps only have one cental topic");
             }
 
             this._branches.push(nodeModel);
@@ -74,7 +74,7 @@ mindplot.Mindmap = new Class({
         connect : function(parent, child) {
             // Child already has a parent ?
             var branches = this.getBranches();
-            core.assert(!child.getParent(), 'Child model seems to be already connected');
+            $assert(!child.getParent(), 'Child model seems to be already connected');
 
             //  Connect node...
             parent._appendChild(child);
@@ -85,8 +85,8 @@ mindplot.Mindmap = new Class({
 
         disconnect : function(child) {
             var parent = child.getParent();
-            core.assert(child, 'Child can not be null.');
-            core.assert(parent, 'Child model seems to be already connected');
+            $assert(child, 'Child can not be null.');
+            $assert(parent, 'Child model seems to be already connected');
 
             parent._removeChild(child);
 
@@ -109,19 +109,19 @@ mindplot.Mindmap = new Class({
         },
 
         createNode : function(type, id) {
-            core.assert(type, "node type can not be null");
+            $assert(type, "node type can not be null");
             return this._createNode(type, id);
         },
 
         _createNode : function(type, id) {
-            core.assert(type, 'Node type must be specified.');
+            $assert(type, 'Node type must be specified.');
             var result = new mindplot.NodeModel(type, this, id);
             return result;
         },
 
         createRelationship : function(fromNode, toNode) {
-            core.assert(fromNode, 'from node cannot be null');
-            core.assert(toNode, 'to node cannot be null');
+            $assert(fromNode, 'from node cannot be null');
+            $assert(toNode, 'to node cannot be null');
 
             return new mindplot.RelationshipModel(fromNode, toNode);
         },

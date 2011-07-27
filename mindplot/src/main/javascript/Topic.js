@@ -223,7 +223,7 @@ mindplot.Topic.prototype.buildShape = function(attributes, type)
     }
     else
     {
-        core.assert(false, "Unsupported figure type:" + type);
+        $assert(false, "Unsupported figure type:" + type);
     }
 
     result.setPosition(0, 0);
@@ -1100,7 +1100,7 @@ mindplot.Topic.prototype.invariant = function()
     // Check consitency...
     if ((isConnected && !line) || (!isConnected && line))
     {
-        // core.assert(false,'Illegal state exception.');
+        // $assert(false,'Illegal state exception.');
     }
 };
 
@@ -1151,8 +1151,8 @@ mindplot.Topic.prototype.removeEventListener = function(type, listener)
 
 mindplot.Topic.prototype._setSize = function(size)
 {
-    core.assert(size, "size can not be null");
-    core.assert($defined(size.width), "size seem not to be a valid element");
+    $assert(size, "size can not be null");
+    $assert($defined(size.width), "size seem not to be a valid element");
 
     mindplot.Topic.superClass.setSize.call(this, size);
 
@@ -1180,7 +1180,7 @@ mindplot.Topic.prototype.setSize = function(size, force, updatePosition)
 };
 
 mindplot.Topic.prototype._updatePositionOnChangeSize = function(oldSize, newSize, updatePosition) {
-    core.assert(false, "this method must be overided");
+    $assert(false, "this method must be overided");
 };
 
 mindplot.Topic.prototype.disconnect = function(workspace)
@@ -1188,7 +1188,7 @@ mindplot.Topic.prototype.disconnect = function(workspace)
     var outgoingLine = this.getOutgoingLine();
     if ($defined(outgoingLine))
     {
-        core.assert(workspace, 'workspace can not be null');
+        $assert(workspace, 'workspace can not be null');
 
         this._outgoingLine = null;
 
@@ -1245,10 +1245,10 @@ mindplot.Topic.prototype.setOrder = function(value)
 
 mindplot.Topic.prototype.connectTo = function(targetTopic, workspace, isVisible)
 {
-    core.assert(!this._outgoingLine, 'Could not connect an already connected node');
-    core.assert(targetTopic != this, 'Cilcular connection are not allowed');
-    core.assert(targetTopic, 'Parent Graph can not be null');
-    core.assert(workspace, 'Workspace can not be null');
+    $assert(!this._outgoingLine, 'Could not connect an already connected node');
+    $assert(targetTopic != this, 'Cilcular connection are not allowed');
+    $assert(targetTopic, 'Parent Graph can not be null');
+    $assert(workspace, 'Workspace can not be null');
 
     // Connect Graphical Nodes ...
     targetTopic._appendChild(this);

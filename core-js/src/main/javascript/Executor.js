@@ -33,7 +33,7 @@ core.Executor = new Class({
         if(!isLoading){
             this._pendingFunctions.forEach(function(item){
                 var result = item.fn.attempt(item.args, item.bind);
-                core.assert(result!=false, "execution failed");
+                $assert(result!=false, "execution failed");
             });
             this._pendingFunctions=[];
         }

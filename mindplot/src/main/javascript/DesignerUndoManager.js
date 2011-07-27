@@ -24,7 +24,7 @@ mindplot.DesignerUndoManager = new Class({
     },
 
     enqueue:function(command) {
-        core.assert(command, "Command can  not be null");
+        $assert(command, "Command can  not be null");
         var length = this._undoQueue.length;
         if (command.discartDuplicated && length > 0) {
             // Skip duplicated events ...

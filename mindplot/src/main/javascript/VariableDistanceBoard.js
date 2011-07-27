@@ -103,7 +103,7 @@ mindplot.VariableDistanceBoard = new Class({
         },
 
         lookupEntryByPosition:function(pos) {
-            core.assert($defined(pos), 'position can not be null');
+            $assert($defined(pos), 'position can not be null');
             var entries = this._entries;
             var zeroEntry = entries.get(0);
             if (zeroEntry.isCoordinateIn(pos.y)) {
@@ -156,7 +156,7 @@ mindplot.VariableDistanceBoard = new Class({
         },
 
         update:function(entry) {
-            core.assert(entry, 'Entry can not be null');
+            $assert(entry, 'Entry can not be null');
             var order = entry.getOrder();
             var index = this._orderToIndex(order);
 

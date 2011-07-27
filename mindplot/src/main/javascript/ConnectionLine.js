@@ -18,9 +18,9 @@
 
 mindplot.ConnectionLine = new Class({
     initialize:function(sourceNode, targetNode, lineType) {
-        core.assert(targetNode, 'parentNode node can not be null');
-        core.assert(sourceNode, 'childNode node can not be null');
-        core.assert(sourceNode != targetNode, 'Cilcular connection');
+        $assert(targetNode, 'parentNode node can not be null');
+        $assert(sourceNode, 'childNode node can not be null');
+        $assert(sourceNode != targetNode, 'Cilcular connection');
 
         this._targetTopic = targetNode;
         this._sourceTopic = sourceNode;

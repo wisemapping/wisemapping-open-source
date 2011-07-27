@@ -31,8 +31,8 @@ mindplot.CentralTopicBoard = new Class({
     },
 
     positionateDragTopic : function(dragTopic) {
-        core.assert(dragTopic != null, 'dragTopic can not be null');
-        core.assert(dragTopic.isDragTopic, 'dragTopic must be DragTopic instance');
+        $assert(dragTopic != null, 'dragTopic can not be null');
+        $assert(dragTopic.isDragTopic, 'dragTopic must be DragTopic instance');
 
         // This node is a main topic node. Position
         var dragPos = dragTopic.getPosition();

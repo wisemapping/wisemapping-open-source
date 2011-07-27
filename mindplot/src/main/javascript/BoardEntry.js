@@ -19,7 +19,7 @@
 mindplot.BoardEntry = new Class({
     initialize:function(lowerLimit, upperLimit, order) {
         if ($defined(lowerLimit) && $defined(upperLimit)) {
-            core.assert(lowerLimit < upperLimit, 'lowerLimit can not be greater that upperLimit');
+            $assert(lowerLimit < upperLimit, 'lowerLimit can not be greater that upperLimit');
         }
         this._upperLimit = upperLimit;
         this._lowerLimit = lowerLimit;
@@ -42,8 +42,8 @@ mindplot.BoardEntry = new Class({
     },
 
     setUpperLimit : function(value) {
-        core.assert($defined(value), "upper limit can not be null");
-        core.assert(!isNaN(value), "illegal value");
+        $assert($defined(value), "upper limit can not be null");
+        $assert(!isNaN(value), "illegal value");
         this._upperLimit = value;
     },
 
@@ -56,8 +56,8 @@ mindplot.BoardEntry = new Class({
     },
 
     setLowerLimit : function(value) {
-        core.assert($defined(value), "upper limit can not be null");
-        core.assert(!isNaN(value), "illegal value");
+        $assert($defined(value), "upper limit can not be null");
+        $assert(!isNaN(value), "illegal value");
         this._lowerLimit = value;
     },
 
@@ -76,7 +76,7 @@ mindplot.BoardEntry = new Class({
 
 
     removeTopic : function() {
-        core.assert(!this.isAvailable(), "Entry doesn't have a topic.");
+        $assert(!this.isAvailable(), "Entry doesn't have a topic.");
         var topic = this.getTopic();
         this.setTopic(null);
         topic.setOrder(null);

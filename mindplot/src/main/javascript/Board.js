@@ -18,7 +18,7 @@
 
 mindplot.Board = new Class({
     initialize : function(defaultHeight, referencePoint) {
-        core.assert(referencePoint, "referencePoint can not be null");
+        $assert(referencePoint, "referencePoint can not be null");
         this._defaultWidth = defaultHeight;
         this._entries = new mindplot.BidirectionalArray();
         this._referencePoint = referencePoint;
@@ -32,7 +32,7 @@ mindplot.Board = new Class({
         var board = this._getBoard(position);
         var entry = board.lookupEntryByOrder(order);
 
-        core.assert(!entry.isAvailable(), 'Entry must not be available in order to be removed.Entry Order:' + order);
+        $assert(!entry.isAvailable(), 'Entry must not be available in order to be removed.Entry Order:' + order);
         entry.removeTopic();
         board.update(entry);
     },
@@ -66,9 +66,9 @@ mindplot.BidirectionalArray = new Class({
     },
 
     get :function(index, sign) {
-        core.assert($defined(index), 'Illegal argument, index must be passed.');
+        $assert($defined(index), 'Illegal argument, index must be passed.');
         if ($defined(sign)) {
-            core.assert(index >= 0, 'Illegal absIndex value');
+            $assert(index >= 0, 'Illegal absIndex value');
             index = index * sign;
         }
 
@@ -82,14 +82,14 @@ mindplot.BidirectionalArray = new Class({
     },
 
     set : function(index, elem) {
-        core.assert($defined(index), 'Illegal index value');
+        $assert($defined(index), 'Illegal index value');
 
         var array = (index >= 0) ? this._rightElem : this._leftElem;
         array[Math.abs(index)] = elem;
     },
 
     length : function(index) {
-        core.assert($defined(index), 'Illegal index value');
+        $assert($defined(index), 'Illegal index value');
         return (index >= 0) ? this._rightElem.length : this._leftElem.length;
     },
 

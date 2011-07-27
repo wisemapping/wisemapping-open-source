@@ -18,8 +18,8 @@
 
 mindplot.DragTopic = function(dragShape, draggedNode)
 {
-    core.assert($defined(dragShape), 'Rect can not be null.');
-    core.assert($defined(draggedNode), 'draggedNode can not be null.');
+    $assert($defined(dragShape), 'Rect can not be null.');
+    $assert($defined(draggedNode), 'draggedNode can not be null.');
 
     this._elem2d = dragShape;
     this._order = null;
@@ -68,7 +68,7 @@ mindplot.DragTopic.prototype.disconnect = function(workspace)
 
 mindplot.DragTopic.prototype.canBeConnectedTo = function(targetTopic)
 {
-    core.assert($defined(targetTopic), 'parent can not be null');
+    $assert($defined(targetTopic), 'parent can not be null');
 
     var result = true;
     if (!targetTopic.areChildrenShrinked() && !targetTopic.isCollapsed())
@@ -96,7 +96,7 @@ mindplot.DragTopic.prototype.canBeConnectedTo = function(targetTopic)
 
 mindplot.DragTopic.prototype.connectTo = function(parent)
 {
-    core.assert(parent, 'Parent connection node can not be null.');
+    $assert(parent, 'Parent connection node can not be null.');
 
     var dragPivot = this._getDragPivot();
     dragPivot.connectTo(parent);
@@ -156,7 +156,7 @@ mindplot.DragTopic.prototype.isDragTopic = function()
 
 mindplot.DragTopic.prototype.updateDraggedTopic = function(workspace)
 {
-    core.assert(workspace, 'workspace can not be null');
+    $assert(workspace, 'workspace can not be null');
 
     var dragPivot = this._getDragPivot();
     var draggedTopic = this.getDraggedTopic();
@@ -212,7 +212,7 @@ mindplot.DragTopic.prototype.updateDraggedTopic = function(workspace)
 
 mindplot.DragTopic.prototype.setBoardPosition = function(point)
 {
-    core.assert(point, 'point can not be null');
+    $assert(point, 'point can not be null');
     var dragPivot = this._getDragPivot();
     dragPivot.setPosition(point);
 };
@@ -220,7 +220,7 @@ mindplot.DragTopic.prototype.setBoardPosition = function(point)
 
 mindplot.DragTopic.prototype.getBoardPosition = function(point)
 {
-    core.assert(point, 'point can not be null');
+    $assert(point, 'point can not be null');
     var dragPivot = this._getDragPivot();
     return dragPivot.getPosition();
 };

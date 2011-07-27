@@ -21,9 +21,9 @@ mindplot.commands.ChangeIconFromTopicCommand = new Class(
     Extends:mindplot.Command,
     initialize: function(topicId, iconId, iconType)
     {
-        core.assert(topicId, 'topicId can not be null');
-        core.assert(iconId, 'iconId can not be null');
-        core.assert(iconType, 'iconType can not be null');
+        $assert(topicId, 'topicId can not be null');
+        $assert(iconId, 'iconId can not be null');
+        $assert(iconType, 'iconType can not be null');
         this._selectedObjectsIds = topicId;
         this._iconModel = iconId;
         this._iconType = iconType;

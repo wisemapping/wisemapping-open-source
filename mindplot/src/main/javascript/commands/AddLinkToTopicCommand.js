@@ -21,7 +21,7 @@ mindplot.commands.AddLinkToTopicCommand =new Class(
     Extends:mindplot.Command,
     initialize: function(topicId,url)
     {
-        core.assert(topicId, 'topicId can not be null');
+        $assert(topicId, 'topicId can not be null');
         this._selectedObjectsIds = topicId;
         this._url = url;
         this._id = mindplot.Command._nextUUID();

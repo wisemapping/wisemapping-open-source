@@ -20,8 +20,8 @@ mindplot.util.Shape =
 {
     isAtRight: function(sourcePoint, targetPoint)
     {
-        core.assert(sourcePoint, "Source can not be null");
-        core.assert(targetPoint, "Target can not be null");
+        $assert(sourcePoint, "Source can not be null");
+        $assert(targetPoint, "Target can not be null");
         return sourcePoint.x < targetPoint.x;
     },
     workoutDistance: function(sourceNode, targetNode)
@@ -37,9 +37,9 @@ mindplot.util.Shape =
     },
     calculateRectConnectionPoint: function(rectCenterPoint, rectSize, isAtRight)
     {
-        core.assert(rectCenterPoint, 'rectCenterPoint can  not be null');
-        core.assert(rectSize, 'rectSize can  not be null');
-        core.assert($defined(isAtRight), 'isRight can  not be null');
+        $assert(rectCenterPoint, 'rectCenterPoint can  not be null');
+        $assert(rectSize, 'rectSize can  not be null');
+        $assert($defined(isAtRight), 'isRight can  not be null');
 
         // Node is placed at the right ?
         var result = new core.Point();

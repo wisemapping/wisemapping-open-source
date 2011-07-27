@@ -18,8 +18,8 @@
 
 mindplot.IconModel = function(iconType, topic)
 {
-    core.assert(iconType, 'Icon id can not be null');
-    core.assert(topic, 'topic can not be null');
+    $assert(iconType, 'Icon id can not be null');
+    $assert(topic, 'topic can not be null');
     this._iconType = iconType;
     this._id = mindplot.IconModel._nextUUID();
     this._topic = topic;

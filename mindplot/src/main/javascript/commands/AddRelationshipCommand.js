@@ -20,7 +20,7 @@ mindplot.commands.AddRelationshipCommand = new Class(
     Extends:mindplot.Command,
     initialize: function(model, mindmap)
     {
-        core.assert(model, 'Relationship model can not be null');
+        $assert(model, 'Relationship model can not be null');
         this._model = model;
         this._mindmap = mindmap;
         this._id = mindplot.Command._nextUUID();

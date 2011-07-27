@@ -53,7 +53,7 @@ mindplot.DragPivot = new Class({
 
     _redraw : function(pivotPosition) {
         // Update line position.
-        core.assert(this.getTargetTopic(), 'Illegal invocation. Target node can not be null');
+        $assert(this.getTargetTopic(), 'Illegal invocation. Target node can not be null');
 
         var pivotRect = this._getPivotRect();
         var currentPivotPosition = pivotRect.getPosition();
@@ -187,9 +187,9 @@ mindplot.DragPivot = new Class({
     },
 
     connectTo : function(targetTopic) {
-        core.assert(!this._outgoingLine, 'Could not connect an already connected node');
-        core.assert(targetTopic != this, 'Cilcular connection are not allowed');
-        core.assert(targetTopic, 'parent can not be null');
+        $assert(!this._outgoingLine, 'Could not connect an already connected node');
+        $assert(targetTopic != this, 'Cilcular connection are not allowed');
+        $assert(targetTopic, 'parent can not be null');
 
         this._targetTopic = targetTopic;
         if (targetTopic.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE) {
@@ -217,8 +217,8 @@ mindplot.DragPivot = new Class({
     },
 
     disconnect : function(workspace) {
-        core.assert(workspace, 'workspace can not be null.');
-        core.assert(this._targetTopic, 'There are not connected topic.');
+        $assert(workspace, 'workspace can not be null.');
+        $assert(this._targetTopic, 'There are not connected topic.');
 
         this.setVisibility(false);
         this._targetTopic = null;

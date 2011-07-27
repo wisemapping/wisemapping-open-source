@@ -21,7 +21,7 @@ mindplot.XMLMindmapSerializer_Beta = function()
 
 mindplot.XMLMindmapSerializer_Beta.prototype.toXML = function(mindmap)
 {
-    core.assert(mindmap, "Can not save a null mindmap");
+    $assert(mindmap, "Can not save a null mindmap");
 
     var document = core.Utils.createDocument();
 
@@ -179,11 +179,11 @@ mindplot.XMLMindmapSerializer_Beta.prototype._noteToXML = function(document, not
 
 mindplot.XMLMindmapSerializer_Beta.prototype.loadFromDom = function(dom)
 {
-    core.assert(dom, "Dom can not be null");
+    $assert(dom, "Dom can not be null");
     var rootElem = dom.documentElement;
 
     // Is a wisemap?.
-    core.assert(rootElem.tagName == mindplot.XMLMindmapSerializer_Beta.MAP_ROOT_NODE, "This seem not to be a map document.");
+    $assert(rootElem.tagName == mindplot.XMLMindmapSerializer_Beta.MAP_ROOT_NODE, "This seem not to be a map document.");
 
     // Start the loading process ...
     var mindmap = new mindplot.Mindmap();    
@@ -281,7 +281,7 @@ mindplot.XMLMindmapSerializer_Beta.prototype._deserializeNode = function(domElem
         var child = children[i];
         if (child.nodeType == 1)
         {
-            core.assert(child.tagName == "topic" || child.tagName == "icon" || child.tagName == "link" || child.tagName == "note", 'Illegal node type:' + child.tagName);
+            $assert(child.tagName == "topic" || child.tagName == "icon" || child.tagName == "link" || child.tagName == "note", 'Illegal node type:' + child.tagName);
             if (child.tagName == "topic") {
                 var childTopic = this._deserializeNode(child, mindmap);
                 childTopic.connectTo(topic);

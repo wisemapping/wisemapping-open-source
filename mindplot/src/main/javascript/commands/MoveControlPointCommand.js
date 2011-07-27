@@ -20,7 +20,7 @@ mindplot.commands.MoveControlPointCommand = new Class(
     Extends:mindplot.Command,
     initialize: function(ctrlPointController, point)
     {
-        core.assert(ctrlPointController, 'line can not be null');
+        $assert(ctrlPointController, 'line can not be null');
         this._ctrlPointControler = ctrlPointController;
         this._line = ctrlPointController._line;
         var model = this._line.getModel();

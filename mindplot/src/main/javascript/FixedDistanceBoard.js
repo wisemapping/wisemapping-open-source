@@ -214,7 +214,7 @@ mindplot.FixedDistanceBoard = new Class({
     removeTopic : function(topic) {
         var order = topic.getOrder();
         var entry = this.lookupEntryByOrder(order);
-        core.assert(!entry.isAvailable(), "Illegal state");
+        $assert(!entry.isAvailable(), "Illegal state");
 
         entry.setTopic(null);
         topic.setOrder(null);
@@ -245,7 +245,7 @@ mindplot.FixedDistanceBoard = new Class({
     },
 
     lookupEntryByPosition : function(pos) {
-        core.assert($defined(pos), 'position can not be null');
+        $assert($defined(pos), 'position can not be null');
 
         var entries = this._entries;
         var result = null;

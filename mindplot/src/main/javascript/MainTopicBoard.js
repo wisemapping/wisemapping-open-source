@@ -44,8 +44,8 @@ mindplot.MainTopicBoard = new Class({
     },
 
     positionateDragTopic : function(dragTopic) {
-        core.assert(dragTopic != null, 'dragTopic can not be null');
-        core.assert(dragTopic.isDragTopic, 'dragTopic must be DragTopic instance');
+        $assert(dragTopic != null, 'dragTopic can not be null');
+        $assert(dragTopic.isDragTopic, 'dragTopic must be DragTopic instance');
 
         // This node is a main topic node. Position
         var dragPos = dragTopic.getPosition();
@@ -82,14 +82,14 @@ mindplot.MainTopicBoard = new Class({
      * This x distance doesn't take into account the size of the shape.
      */
     _workoutXBorderDistance : function(topic) {
-        core.assert(topic, 'topic can not be null');
+        $assert(topic, 'topic can not be null');
         var board = this._getBoard();
         return board.workoutXBorderDistance(topic);
     },
 
     addBranch : function(topic) {
         var order = topic.getOrder();
-        core.assert($defined(order), "Order must be defined");
+        $assert($defined(order), "Order must be defined");
 
         // If the entry is not available, I must swap the the entries...
         var board = this._getBoard();

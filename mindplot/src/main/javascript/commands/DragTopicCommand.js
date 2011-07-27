@@ -21,7 +21,7 @@ mindplot.commands.DragTopicCommand = new Class(
     Extends:mindplot.Command,
     initialize: function(topicId)
     {
-        core.assert(topicId, "topicId must be defined");
+        $assert(topicId, "topicId must be defined");
         this._selectedObjectsIds = topicId;
         this._parentTopic = null;
         this._position = null;
@@ -64,7 +64,7 @@ mindplot.commands.DragTopicCommand = new Class(
 
         } else
         {
-            core.assert("Illegal commnad state exception.");
+            $assert("Illegal commnad state exception.");
         }
         this._order = origOrder;
         this._position = origPosition;

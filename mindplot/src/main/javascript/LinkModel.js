@@ -18,8 +18,8 @@
 
 mindplot.LinkModel = function(url, topic)
 {
-    core.assert(url, 'link url can not be null');
-    core.assert(topic, 'mindmap can not be null');
+    $assert(url, 'link url can not be null');
+    $assert(topic, 'mindmap can not be null');
     this._url = url;
     this._topic = topic;
 };

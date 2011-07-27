@@ -27,7 +27,7 @@ mindplot.TopicBoard = new Class({
             var board = this._getBoard(position);
             var entry = board.lookupEntryByOrder(order);
 
-            core.assert(!entry.isAvailable(), 'Entry must not be available in order to be removed.Entry Order:' + order);
+            $assert(!entry.isAvailable(), 'Entry must not be available in order to be removed.Entry Order:' + order);
             entry.removeTopic();
             board.update(entry);
         },

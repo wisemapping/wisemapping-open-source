@@ -112,7 +112,7 @@ mindplot.DragManager.prototype._buildMouseUpListener = function(workspace, node,
     var screen = workspace.getScreenManager();
     var result = function(event) {
 
-        core.assert(dragNode.isDragTopic, 'dragNode must be an DragTopic');
+        $assert(dragNode.isDragTopic, 'dragNode must be an DragTopic');
 
         // Remove drag node from the workspace.
         var hasBeenDragged = dragNode._isInTheWorkspace;

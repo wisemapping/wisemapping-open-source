@@ -18,8 +18,8 @@
 
 core.Monitor = function(fadeElement, logContentElem)
 {
-    core.assert(fadeElement, "fadeElement can not be null");
-    core.assert(logContentElem, "logContentElem can not be null");
+    $assert(fadeElement, "fadeElement can not be null");
+    $assert(logContentElem, "logContentElem can not be null");
 
     this.pendingMessages = [];
     this.inProgress = false;

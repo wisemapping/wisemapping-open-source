@@ -58,7 +58,7 @@ objects.extend = function(subClass, baseClass) {
     subClass.superClass = baseClass.prototype;
 };
 
-core.assert = function(assert, message) {
+$assert = function(assert, message) {
     if (!assert) {
         var stack;
         try {

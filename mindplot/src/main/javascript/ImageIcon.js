@@ -18,9 +18,9 @@
 
 mindplot.ImageIcon = function(iconModel, topic, designer) {
 
-    core.assert(iconModel, 'iconModel can not be null');
-    core.assert(topic, 'topic can not be null');
-    core.assert(designer, 'designer can not be null');
+    $assert(iconModel, 'iconModel can not be null');
+    $assert(topic, 'topic can not be null');
+    $assert(designer, 'designer can not be null');
     this._topic = topic;
     this._iconModel = iconModel;
     this._designer = designer;
@@ -99,7 +99,7 @@ mindplot.ImageIcon.prototype.getModel = function() {
 mindplot.ImageIcon.prototype._getNextFamilyIconId = function(iconId) {
 
     var familyIcons = this._getFamilyIcons(iconId);
-    core.assert(familyIcons != null, "Family Icon not found!");
+    $assert(familyIcons != null, "Family Icon not found!");
 
     var result = null;
     for (var i = 0; i < familyIcons.length && result == null; i++)
@@ -120,8 +120,8 @@ mindplot.ImageIcon.prototype._getNextFamilyIconId = function(iconId) {
 };
 
 mindplot.ImageIcon.prototype._getFamilyIcons = function(iconId) {
-    core.assert(iconId != null, "id must not be null");
-    core.assert(iconId.indexOf("_") != -1, "Invalid icon id (it must contain '_')");
+    $assert(iconId != null, "id must not be null");
+    $assert(iconId.indexOf("_") != -1, "Invalid icon id (it must contain '_')");
 
     var result = null;
     for (var i = 0; i < mindplot.ImageIcon.prototype.ICON_FAMILIES.length; i++)

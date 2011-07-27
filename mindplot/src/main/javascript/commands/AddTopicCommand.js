@@ -21,7 +21,7 @@ mindplot.commands.AddTopicCommand = new Class(
     Extends:mindplot.Command,
     initialize: function(model, parentTopicId, animated)
     {
-        core.assert(model, 'Model can not be null');
+        $assert(model, 'Model can not be null');
         this._model = model;
         this._parentId = parentTopicId;
         this._id = mindplot.Command._nextUUID();

@@ -47,7 +47,7 @@ mindplot.NodeGraph.prototype._set2DElement = function(elem2d)
 
 mindplot.NodeGraph.prototype.get2DElement = function()
 {
-    core.assert(this._elem2d, 'NodeGraph has not been initialized propertly');
+    $assert(this._elem2d, 'NodeGraph has not been initialized propertly');
     return this._elem2d;
 };
 
@@ -92,10 +92,10 @@ mindplot.NodeGraph.prototype.setSize = function(size)
 
 mindplot.NodeGraph.create = function(nodeModel)
 {
-    core.assert(nodeModel, 'Model can not be null');
+    $assert(nodeModel, 'Model can not be null');
 
     var type = nodeModel.getType();
-    core.assert(type, 'Node model type can not be null');
+    $assert(type, 'Node model type can not be null');
 
     var result;
     if (type == mindplot.NodeModel.CENTRAL_TOPIC_TYPE)
@@ -115,13 +115,13 @@ mindplot.NodeGraph.create = function(nodeModel)
 
 mindplot.NodeGraph.prototype.getModel = function()
 {
-    core.assert(this._model, 'Model has not been initialized yet');
+    $assert(this._model, 'Model has not been initialized yet');
     return  this._model;
 };
 
 mindplot.NodeGraph.prototype.setModel = function(model)
 {
-    core.assert(model, 'Model can not be null');
+    $assert(model, 'Model can not be null');
     this._model = model;
 };
 
@@ -167,7 +167,7 @@ mindplot.NodeGraph.prototype.createDragNode = function()
 
 mindplot.NodeGraph.prototype._buildDragShape = function()
 {
-    core.assert(false, '_buildDragShape must be implemented by all nodes.');
+    $assert(false, '_buildDragShape must be implemented by all nodes.');
 };
 
 mindplot.NodeGraph.prototype.getPosition = function()

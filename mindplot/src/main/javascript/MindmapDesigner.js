@@ -18,7 +18,7 @@
 
 mindplot.MindmapDesigner = function(profile, divElement)
 {
-    core.assert($defined(profile.zoom), "zoom must be defined");
+    $assert($defined(profile.zoom), "zoom must be defined");
 
     // Undo manager ...
     this._actionRunner = new mindplot.DesignerActionRunner(this);
@@ -163,7 +163,7 @@ mindplot.MindmapDesigner.prototype._buildNodeGraph = function(model)
                 break;
             }
         }
-        core.assert(targetTopic, "Could not find a topic to connect");
+        $assert(targetTopic, "Could not find a topic to connect");
         topic.connectTo(targetTopic, workspace);
     }
 
@@ -375,8 +375,8 @@ mindplot.MindmapDesigner.prototype.save = function(onSavedHandler, saveHistory)
 
 mindplot.MindmapDesigner.prototype.loadFromXML = function(mapId, xmlContent)
 {
-    core.assert(xmlContent, 'mindmapId can not be null');
-    core.assert(xmlContent, 'xmlContent can not be null');
+    $assert(xmlContent, 'mindmapId can not be null');
+    $assert(xmlContent, 'xmlContent can not be null');
 
     // Explorer Hack with local files ...
     var domDocument = core.Utils.createDocumentFromText(xmlContent);
@@ -396,7 +396,7 @@ mindplot.MindmapDesigner.prototype.loadFromXML = function(mapId, xmlContent)
 
 mindplot.MindmapDesigner.prototype.load = function(mapId)
 {
-    core.assert(mapId, 'mapName can not be null');
+    $assert(mapId, 'mapName can not be null');
 
     // Build load function ...
     var persistantManager = mindplot.PersistanceManager;
@@ -464,7 +464,7 @@ mindplot.MindmapDesigner.prototype.redo = function()
 
 mindplot.MindmapDesigner.prototype._nodeModelToNodeGraph = function(nodeModel, isVisible)
 {
-    core.assert(nodeModel, "Node model can not be null");
+    $assert(nodeModel, "Node model can not be null");
     var nodeGraph = this._buildNodeGraph(nodeModel);
 
     if($defined(isVisible))
@@ -487,7 +487,7 @@ mindplot.MindmapDesigner.prototype._nodeModelToNodeGraph = function(nodeModel, i
 };
 
 mindplot.MindmapDesigner.prototype._relationshipModelToRelationship = function(model) {
-    core.assert(model, "Node model can not be null");
+    $assert(model, "Node model can not be null");
     var relationship = this._buildRelationship(model);
     var sourceTopic = relationship.getSourceTopic();
     sourceTopic.addRelationship(relationship);

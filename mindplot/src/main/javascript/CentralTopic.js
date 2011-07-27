@@ -18,7 +18,7 @@
 
 mindplot.CentralTopic = function(model)
 {
-    core.assert(model, "Model can not be null");
+    $assert(model, "Model can not be null");
     this.setModel(model);
     mindplot.CentralTopic.superClass.initialize.call(this);
     this.__onLoad = true;
