@@ -20,7 +20,6 @@ mindplot.DragManager = function(workspace)
 {
     this._workspace = workspace;
     this._listeners = {};
-    var dragManager = this;
 };
 
 mindplot.DragManager.prototype.add = function(node)

@@ -1,24 +1,29 @@
 /*
-*    Copyright [2011] [wisemapping]
-*
-*   Licensed under WiseMapping Public License, Version 1.0 (the "License").
-*   It is basically the Apache License, Version 2.0 (the "License") plus the
-*   "powered by wisemapping" text requirement on every single page;
-*   you may not use this file except in compliance with the License.
-*   You may obtain a copy of the license at
-*
-*       http://www.wisemapping.org/license
-*
-*   Unless required by applicable law or agreed to in writing, software
-*   distributed under the License is distributed on an "AS IS" BASIS,
-*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*   See the License for the specific language governing permissions and
-*   limitations under the License.
-*/
+ *    Copyright [2011] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 
 mindplot.DesignerActionRunner = new Class({
-    execute:function(command)
-    {
+    initialize: function(designer) {
+        this._designer = designer;
+        this._undoManager = new mindplot.DesignerUndoManager();
+        this._context = new mindplot.CommandContext(this._designer);
+    },
+
+    execute:function(command) {
         core.assert(command, "command can not be null");
         // Execute action ...
         command.execute(this._context);
@@ -30,22 +35,16 @@ mindplot.DesignerActionRunner = new Class({
         var event = this._undoManager._buildEvent();
         this._designer._fireEvent("change", event);
     },
-    initialize: function(designer)
-    {
-        this._designer = designer;
-        this._undoManager = new mindplot.DesignerUndoManager();
-        this._context = new mindplot.CommandContext(this._designer);
-    },
-    undo: function()
-    {
+
+    undo: function() {
         this._undoManager.execUndo(this._context);
 
         // Fire event
         var event = this._undoManager._buildEvent();
         this._designer._fireEvent("change", event);
     },
-    redo: function()
-    {
+
+    redo: function() {
         this._undoManager.execRedo(this._context);
 
         // Fire event
@@ -53,33 +52,28 @@ mindplot.DesignerActionRunner = new Class({
         this._designer._fireEvent("change", event);
 
     },
-    markAsChangeBase: function()
-    {
+
+    markAsChangeBase: function() {
         return this._undoManager.markAsChangeBase();
     },
-    hasBeenChanged: function()
-    {
+    hasBeenChanged: function() {
         return this._undoManager.hasBeenChanged();
     }
 });
 
 mindplot.CommandContext = new Class({
-    initialize: function(designer)
-    {
+    initialize: function(designer) {
         this._designer = designer;
     },
-    findTopics:function(topicsIds)
-    {
+    findTopics:function(topicsIds) {
         var designerTopics = this._designer._topics;
-        if (!(topicsIds instanceof Array))
-        {
+        if (!(topicsIds instanceof Array)) {
             topicsIds = [topicsIds];
         }
 
         var result = designerTopics.filter(function(topic) {
             var found = false;
-            if (topic != null)
-            {
+            if (topic != null) {
                 var topicId = topic.getId();
                 found = topicsIds.contains(topicId);
             }
@@ -88,32 +82,27 @@ mindplot.CommandContext = new Class({
         });
         return result;
     },
-    deleteTopic:function(topic)
-    {
+    deleteTopic:function(topic) {
         this._designer._removeNode(topic);
     },
-    createTopic:function(model, isVisible)
-    {
+    createTopic:function(model, isVisible) {
         core.assert(model, "model can not be null");
         var topic = this._designer._nodeModelToNodeGraph(model, isVisible);
 
         return topic;
     },
-    createModel:function()
-    {
+    createModel:function() {
         var mindmap = this._designer.getMindmap();
         var model = mindmap.createNode(mindplot.NodeModel.MAIN_TOPIC_TYPE);
         return model;
     },
-    connect:function(childTopic, parentTopic, isVisible)
-    {
+    connect:function(childTopic, parentTopic, isVisible) {
         childTopic.connectTo(parentTopic, this._designer._workspace, isVisible);
     } ,
-    disconnect:function(topic)
-    {
+    disconnect:function(topic) {
         topic.disconnect(this._designer._workspace);
     },
-    createRelationship:function(model){
+    createRelationship:function(model) {
         core.assert(model, "model cannot be null");
         var relationship = this._designer.createRelationship(model);
         return relationship;
@@ -121,27 +110,25 @@ mindplot.CommandContext = new Class({
     removeRelationship:function(model) {
         this._designer.removeRelationship(model);
     },
-    findRelationships:function(lineIds){
+    findRelationships:function(lineIds) {
         var result = [];
-        lineIds.forEach(function(lineId, index){
+        lineIds.forEach(function(lineId, index) {
             var line = this._designer._relationships[lineId];
-            if(core.Utils.isDefined(line)){
+            if (core.Utils.isDefined(line)) {
                 result.push(line);
             }
         }.bind(this));
         return result;
     },
-    getSelectedRelationshipLines:function(){
+    getSelectedRelationshipLines:function() {
         return this._designer.getSelectedRelationshipLines();
     }
 });
 
-mindplot.DesignerActionRunner.setInstance = function(actionRunner)
-{
+mindplot.DesignerActionRunner.setInstance = function(actionRunner) {
     mindplot.DesignerActionRunner._instance = actionRunner;
 };
 
-mindplot.DesignerActionRunner.getInstance = function()
-{
+mindplot.DesignerActionRunner.getInstance = function() {
     return mindplot.DesignerActionRunner._instance;
 };

@@ -1,225 +1,209 @@
 /*
-*    Copyright [2011] [wisemapping]
-*
-*   Licensed under WiseMapping Public License, Version 1.0 (the "License").
-*   It is basically the Apache License, Version 2.0 (the "License") plus the
-*   "powered by wisemapping" text requirement on every single page;
-*   you may not use this file except in compliance with the License.
-*   You may obtain a copy of the license at
-*
-*       http://www.wisemapping.org/license
-*
-*   Unless required by applicable law or agreed to in writing, software
-*   distributed under the License is distributed on an "AS IS" BASIS,
-*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*   See the License for the specific language governing permissions and
-*   limitations under the License.
+ *    Copyright [2011] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
  */
 
-mindplot.ConnectionLine = function(sourceNode, targetNode, lineType)
-{
-    core.assert(targetNode, 'parentNode node can not be null');
-    core.assert(sourceNode, 'childNode node can not be null');
-    core.assert(sourceNode != targetNode, 'Cilcular connection');
+mindplot.ConnectionLine = new Class({
+    initialize:function(sourceNode, targetNode, lineType) {
+        core.assert(targetNode, 'parentNode node can not be null');
+        core.assert(sourceNode, 'childNode node can not be null');
+        core.assert(sourceNode != targetNode, 'Cilcular connection');
 
-    this._targetTopic = targetNode;
-    this._sourceTopic = sourceNode;
+        this._targetTopic = targetNode;
+        this._sourceTopic = sourceNode;
 
-    var strokeColor = mindplot.ConnectionLine.getStrokeColor();
-    var line;
-    if (targetNode.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE)
-    {
-        line = this._createLine(lineType,mindplot.ConnectionLine.CURVED);
-        //        line = new web2d.Line();
-        if(line.getType()=="CurvedLine"){
-            var ctrlPoints = this._getCtrlPoints(sourceNode, targetNode);
-            line.setSrcControlPoint(ctrlPoints[0]);
-            line.setDestControlPoint(ctrlPoints[1]);
+        var strokeColor = mindplot.ConnectionLine.getStrokeColor();
+        var line;
+        if (targetNode.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE) {
+            line = this._createLine(lineType, mindplot.ConnectionLine.CURVED);
+            //        line = new web2d.Line();
+            if (line.getType() == "CurvedLine") {
+                var ctrlPoints = this._getCtrlPoints(sourceNode, targetNode);
+                line.setSrcControlPoint(ctrlPoints[0]);
+                line.setDestControlPoint(ctrlPoints[1]);
+            }
+            line.setStroke(1, 'solid', strokeColor);
+        } else {
+            line = this._createLine(lineType, mindplot.ConnectionLine.SIMPLE_CURVED);
+            if (line.getType() == "CurvedLine") {
+                var ctrlPoints = this._getCtrlPoints(sourceNode, targetNode);
+                line.setSrcControlPoint(ctrlPoints[0]);
+                line.setDestControlPoint(ctrlPoints[1]);
+            }
+            //        line = new web2d.PolyLine();
+            line.setStroke(1, 'solid', strokeColor);
         }
-        line.setStroke(1, 'solid', strokeColor);
-    } else
-    {
-        line = this._createLine(lineType,mindplot.ConnectionLine.SIMPLE_CURVED);
-        if(line.getType()=="CurvedLine"){
-            var ctrlPoints = this._getCtrlPoints(sourceNode, targetNode);
-            line.setSrcControlPoint(ctrlPoints[0]);
-            line.setDestControlPoint(ctrlPoints[1]);
+
+        this._line2d = line;
+    },
+
+    _getCtrlPoints : function(sourceNode, targetNode) {
+        var srcPos = sourceNode.workoutOutgoingConnectionPoint(targetNode.getPosition());
+        var destPos = targetNode.workoutIncomingConnectionPoint(sourceNode.getPosition());
+        var deltaX = (srcPos.x - destPos.x) / 3;
+        return [new core.Point(deltaX, 0), new core.Point(-deltaX, 0)];
+    },
+
+    _createLine : function(lineType, defaultStyle) {
+        if (!core.Utils.isDefined(lineType)) {
+            lineType = defaultStyle;
         }
-        //        line = new web2d.PolyLine();
-        line.setStroke(1, 'solid', strokeColor);
+        lineType = parseInt(lineType);
+        this._lineType = lineType;
+        var line = null;
+        switch (lineType) {
+            case mindplot.ConnectionLine.POLYLINE:
+                line = new web2d.PolyLine();
+                break;
+            case mindplot.ConnectionLine.CURVED:
+                line = new web2d.CurvedLine();
+                break;
+            case mindplot.ConnectionLine.SIMPLE_CURVED:
+                line = new web2d.CurvedLine();
+                line.setStyle(web2d.CurvedLine.SIMPLE_LINE);
+                break;
+            default:
+                line = new web2d.Line();
+                break;
+        }
+        return line;
+    },
+
+    setVisibility : function(value) {
+        this._line2d.setVisibility(value);
+    },
+
+    isVisible : function() {
+        return this._line2d.isVisible();
+    },
+
+    setOpacity : function(opacity) {
+        this._line2d.setOpacity(opacity);
+    },
+
+    redraw : function() {
+        var line2d = this._line2d;
+        var sourceTopic = this._sourceTopic;
+        var sourcePosition = sourceTopic.getPosition();
+
+        var targetTopic = this._targetTopic;
+        var targetPosition = targetTopic.getPosition();
+
+        var sPos,tPos;
+        sPos = sourceTopic.workoutOutgoingConnectionPoint(targetPosition, false);
+        tPos = targetTopic.workoutIncomingConnectionPoint(sourcePosition, false);
+
+        line2d.setFrom(tPos.x, tPos.y);
+        line2d.setTo(sPos.x, sPos.y);
+
+        if (line2d.getType() == "CurvedLine") {
+            var ctrlPoints = this._getCtrlPoints(this._sourceTopic, this._targetTopic);
+            line2d.setSrcControlPoint(ctrlPoints[0]);
+            line2d.setDestControlPoint(ctrlPoints[1]);
+        }
+//    line2d.moveToBack();
+
+        // Add connector ...
+        this._positionateConnector(targetTopic);
+
+    },
+
+    _positionateConnector : function(targetTopic) {
+        var targetPosition = targetTopic.getPosition();
+        var offset = mindplot.Topic.CONNECTOR_WIDTH / 2;
+        var targetTopicSize = targetTopic.getSize();
+        var y;
+        if (targetTopic.getShapeType() == mindplot.NodeModel.SHAPE_TYPE_LINE) {
+            y = targetTopicSize.height;
+        } else {
+            y = targetTopicSize.height / 2;
+        }
+        y = y - offset;
+
+        var connector = targetTopic.getShrinkConnector();
+        if (Math.sign(targetPosition.x) > 0) {
+            var x = targetTopicSize.width;
+            connector.setPosition(x, y);
+        }
+        else {
+            var x = -mindplot.Topic.CONNECTOR_WIDTH;
+            connector.setPosition(x, y);
+        }
+    },
+
+    setStroke : function(color, style, opacity) {
+        var line2d = this._line2d;
+        this._line2d.setStroke(null, null, color, opacity);
+    },
+
+    addToWorkspace : function(workspace) {
+        workspace.appendChild(this._line2d);
+        this._line2d.moveToBack();
+    },
+
+    removeFromWorkspace : function(workspace) {
+        workspace.removeChild(this._line2d);
+    },
+
+    getTargetTopic : function() {
+        return this._targetTopic;
+    },
+
+    getSourceTopic : function() {
+        return this._sourceTopic;
+    },
+
+    getLineType : function() {
+        return this._lineType;
+    },
+
+    getLine : function() {
+        return this._line2d;
+    },
+
+    getModel : function() {
+        return this._model;
+    },
+
+    setModel : function(model) {
+        this._model = model;
+    },
+
+    getType : function() {
+        return "ConnectionLine";
+    },
+
+    getId : function() {
+        return this._model.getId();
+    },
+
+    moveToBack : function() {
+        this._line2d.moveToBack();
+    },
+
+    moveToFront : function() {
+        this._line2d.moveToFront();
     }
+});
 
-    this._line2d = line;
-};
-
-mindplot.ConnectionLine.prototype._getCtrlPoints = function(sourceNode, targetNode){
-    var srcPos = sourceNode.workoutOutgoingConnectionPoint(targetNode.getPosition());
-    var destPos = targetNode.workoutIncomingConnectionPoint(sourceNode.getPosition());
-    var deltaX = (srcPos.x -destPos.x)/3;
-    return [new core.Point(deltaX, 0), new core.Point(-deltaX, 0)];
-};
-
-mindplot.ConnectionLine.prototype._createLine = function(lineType, defaultStyle){
-    if(!core.Utils.isDefined(lineType)){
-        lineType = defaultStyle;
-    }
-    lineType = parseInt(lineType);
-    this._lineType = lineType;
-    var line = null;
-    switch(lineType){
-        case mindplot.ConnectionLine.POLYLINE:
-            line = new web2d.PolyLine();
-            break;
-        case mindplot.ConnectionLine.CURVED:
-            line = new web2d.CurvedLine();
-            break;
-        case mindplot.ConnectionLine.SIMPLE_CURVED:
-            line = new web2d.CurvedLine();
-            line.setStyle(web2d.CurvedLine.SIMPLE_LINE);
-            break;
-        default:
-            line = new web2d.Line();
-            break;
-    }
-    return line;
-};
-
-mindplot.ConnectionLine.getStrokeColor = function()
-{
+mindplot.ConnectionLine.getStrokeColor = function() {
     return '#495879';
 };
 
-mindplot.ConnectionLine.prototype.setVisibility = function(value)
-{
-    this._line2d.setVisibility(value);
-};
-
-mindplot.ConnectionLine.prototype.isVisible = function()
-{
-    return this._line2d.isVisible();
-};
-
-mindplot.ConnectionLine.prototype.setOpacity = function(opacity){
-    this._line2d.setOpacity(opacity);
-};
-
-mindplot.ConnectionLine.prototype.redraw = function()
-{
-    var line2d = this._line2d;
-    var sourceTopic = this._sourceTopic;
-    var sourcePosition = sourceTopic.getPosition();
-
-    var targetTopic = this._targetTopic;
-    var targetPosition = targetTopic.getPosition();
-
-    var sPos,tPos;
-    sPos = sourceTopic.workoutOutgoingConnectionPoint(targetPosition, false);
-    tPos = targetTopic.workoutIncomingConnectionPoint(sourcePosition, false);
-
-    line2d.setFrom(tPos.x, tPos.y);
-    line2d.setTo(sPos.x, sPos.y);
-
-    if(line2d.getType()=="CurvedLine"){
-        var ctrlPoints = this._getCtrlPoints(this._sourceTopic, this._targetTopic);
-        line2d.setSrcControlPoint(ctrlPoints[0]);
-        line2d.setDestControlPoint(ctrlPoints[1]);
-    }
-//    line2d.moveToBack();
-
-    // Add connector ...
-    this._positionateConnector(targetTopic);
-
-};
-
-mindplot.ConnectionLine.prototype._positionateConnector = function(targetTopic)
-{
-    var targetPosition = targetTopic.getPosition();
-    var offset = mindplot.Topic.CONNECTOR_WIDTH / 2;
-    var targetTopicSize = targetTopic.getSize();
-    var y;
-    if (targetTopic.getShapeType() == mindplot.NodeModel.SHAPE_TYPE_LINE)
-    {
-        y = targetTopicSize.height;
-    } else
-    {
-        y = targetTopicSize.height / 2;
-    }
-    y = y - offset;
-
-    var connector = targetTopic.getShrinkConnector();
-    if (Math.sign(targetPosition.x) > 0)
-    {
-        var x = targetTopicSize.width;
-        connector.setPosition(x, y);
-    }
-    else
-    {
-        var x = -mindplot.Topic.CONNECTOR_WIDTH;
-        connector.setPosition(x, y);
-    }
-};
-
-mindplot.ConnectionLine.prototype.setStroke = function(color, style, opacity)
-{
-    var line2d = this._line2d;
-    this._line2d.setStroke(null, null, color, opacity);
-};
-
-
-mindplot.ConnectionLine.prototype.addToWorkspace = function(workspace)
-{
-    workspace.appendChild(this._line2d);
-    this._line2d.moveToBack();
-};
-
-mindplot.ConnectionLine.prototype.removeFromWorkspace = function(workspace)
-{
-    workspace.removeChild(this._line2d);
-};
-
-mindplot.ConnectionLine.prototype.getTargetTopic = function()
-{
-    return this._targetTopic;
-};
-
-mindplot.ConnectionLine.prototype.getSourceTopic = function()
-{
-    return this._sourceTopic;
-};
-
-mindplot.ConnectionLine.prototype.getLineType = function(){
-    return this._lineType;
-};
-
-mindplot.ConnectionLine.prototype.getLine = function(){
-    return this._line2d;
-};
-
-mindplot.ConnectionLine.prototype.getModel = function(){
-    return this._model;
-};
-
-mindplot.ConnectionLine.prototype.setModel = function(model){
-    this._model = model;
-};
-
-mindplot.ConnectionLine.prototype.getType = function(){
-    return "ConnectionLine";
-};
-
-mindplot.ConnectionLine.prototype.getId = function(){
-    return this._model.getId();
-};
-
-mindplot.ConnectionLine.prototype.moveToBack = function(){
-    this._line2d.moveToBack();
-};
-
-mindplot.ConnectionLine.prototype.moveToFront = function(){
-    this._line2d.moveToFront();
-};
-
-mindplot.ConnectionLine.SIMPLE=0;
-mindplot.ConnectionLine.POLYLINE=1;
-mindplot.ConnectionLine.CURVED=2;
-mindplot.ConnectionLine.SIMPLE_CURVED=3;
+mindplot.ConnectionLine.SIMPLE = 0;
+mindplot.ConnectionLine.POLYLINE = 1;
+mindplot.ConnectionLine.CURVED = 2;
+mindplot.ConnectionLine.SIMPLE_CURVED = 3;

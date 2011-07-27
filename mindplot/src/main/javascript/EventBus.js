@@ -1,17 +1,16 @@
 mindplot.EventBus = new Class({
+    Extends:Options,
+    Implements:Events,
     options: {
 
     },
-
     initialize: function(options) {
         this.setOptions(options);
     }
 
 });
-mindplot.EventBus.implement(new Events);
-mindplot.EventBus.implement(new Options);
 
-mindplot.EventBus.events ={
+mindplot.EventBus.events = {
     NodeResizeEvent:'NodeResizeEvent',
     NodeMoveEvent:'NodeMoveEvent',
     NodeDisconnectEvent:'NodeDisconnectEvent',

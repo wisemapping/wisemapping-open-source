@@ -4,5 +4,4 @@ mindplot.EditorOptions =
 //    LayoutManager:"FreeMindLayout",
     textEditor:"TextEditor"
 //    textEditor:"RichTextEditor"
-
 };

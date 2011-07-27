@@ -58,72 +58,75 @@ mindplot.Board = new Class({
 /**
  * ---------------------------------------
  */
-mindplot.BidirectionalArray = function() {
-    this._leftElem = [];
-    this._rightElem = [];
-};
+mindplot.BidirectionalArray = new Class({
 
-mindplot.BidirectionalArray.prototype.get = function(index, sign) {
-    core.assert(core.Utils.isDefined(index), 'Illegal argument, index must be passed.');
-    if (core.Utils.isDefined(sign)) {
-        core.assert(index >= 0, 'Illegal absIndex value');
-        index = index * sign;
-    }
+    initialize: function() {
+        this._leftElem = [];
+        this._rightElem = [];
+    },
 
-    var result = null;
-    if (index >= 0 && index < this._rightElem.length) {
-        result = this._rightElem[index];
-    } else if (index < 0 && Math.abs(index) < this._leftElem.length) {
-        result = this._leftElem[Math.abs(index)];
-    }
-    return result;
-};
-
-mindplot.BidirectionalArray.prototype.set = function(index, elem) {
-    core.assert(core.Utils.isDefined(index), 'Illegal index value');
-
-    var array = (index >= 0) ? this._rightElem : this._leftElem;
-    array[Math.abs(index)] = elem;
-};
-
-mindplot.BidirectionalArray.prototype.length = function(index) {
-    core.assert(core.Utils.isDefined(index), 'Illegal index value');
-    return (index >= 0) ? this._rightElem.length : this._leftElem.length;
-};
-
-mindplot.BidirectionalArray.prototype.upperLength = function() {
-    return this.length(1);
-};
-
-mindplot.BidirectionalArray.prototype.lowerLength = function() {
-    return this.length(-1);
-};
-
-mindplot.BidirectionalArray.prototype.inspect = function() {
-    var result = '{';
-    var lenght = this._leftElem.length;
-    for (var i = 0; i < lenght; i++) {
-        var entry = this._leftElem[lenght - i - 1];
-        if (entry != null) {
-            if (i != 0) {
-                result += ', ';
-            }
-            result += entry.inspect();
+    get :function(index, sign) {
+        core.assert(core.Utils.isDefined(index), 'Illegal argument, index must be passed.');
+        if (core.Utils.isDefined(sign)) {
+            core.assert(index >= 0, 'Illegal absIndex value');
+            index = index * sign;
         }
-    }
 
-    lenght = this._rightElem.length;
-    for (var i = 0; i < lenght; i++) {
-        var entry = this._rightElem[i];
-        if (entry != null) {
-            if (i != 0) {
-                result += ', ';
-            }
-            result += entry.inspect();
+        var result = null;
+        if (index >= 0 && index < this._rightElem.length) {
+            result = this._rightElem[index];
+        } else if (index < 0 && Math.abs(index) < this._leftElem.length) {
+            result = this._leftElem[Math.abs(index)];
         }
+        return result;
+    },
+
+    set : function(index, elem) {
+        core.assert(core.Utils.isDefined(index), 'Illegal index value');
+
+        var array = (index >= 0) ? this._rightElem : this._leftElem;
+        array[Math.abs(index)] = elem;
+    },
+
+    length : function(index) {
+        core.assert(core.Utils.isDefined(index), 'Illegal index value');
+        return (index >= 0) ? this._rightElem.length : this._leftElem.length;
+    },
+
+    upperLength : function() {
+        return this.length(1);
+    },
+
+    lowerLength : function() {
+        return this.length(-1);
+    },
+
+    inspect : function() {
+        var result = '{';
+        var lenght = this._leftElem.length;
+        for (var i = 0; i < lenght; i++) {
+            var entry = this._leftElem[lenght - i - 1];
+            if (entry != null) {
+                if (i != 0) {
+                    result += ', ';
+                }
+                result += entry.inspect();
+            }
+        }
+
+        lenght = this._rightElem.length;
+        for (var i = 0; i < lenght; i++) {
+            var entry = this._rightElem[i];
+            if (entry != null) {
+                if (i != 0) {
+                    result += ', ';
+                }
+                result += entry.inspect();
+            }
+        }
+        result += '}';
+
+        return result;
+
     }
-    result += '}';
-
-    return result;
-
-};
+});
