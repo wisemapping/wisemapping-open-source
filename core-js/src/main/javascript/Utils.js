@@ -59,7 +59,7 @@ objects.extend = function(subClass, baseClass) {
 };
 
 $assert = function(assert, message) {
-    if (!assert) {
+    if (!$defined(assert) || !assert) {
         var stack;
         try {
             null.eval();

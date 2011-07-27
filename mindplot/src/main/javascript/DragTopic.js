@@ -18,8 +18,8 @@
 
 mindplot.DragTopic = function(dragShape, draggedNode)
 {
-    $assert($defined(dragShape), 'Rect can not be null.');
-    $assert($defined(draggedNode), 'draggedNode can not be null.');
+    $assert(dragShape, 'Rect can not be null.');
+    $assert(draggedNode, 'draggedNode can not be null.');
 
     this._elem2d = dragShape;
     this._order = null;
@@ -68,7 +68,7 @@ mindplot.DragTopic.prototype.disconnect = function(workspace)
 
 mindplot.DragTopic.prototype.canBeConnectedTo = function(targetTopic)
 {
-    $assert($defined(targetTopic), 'parent can not be null');
+    $assert(targetTopic, 'parent can not be null');
 
     var result = true;
     if (!targetTopic.areChildrenShrinked() && !targetTopic.isCollapsed())

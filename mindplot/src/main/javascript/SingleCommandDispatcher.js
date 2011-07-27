@@ -16,10 +16,10 @@
  *   limitations under the License.
  */
 
-mindplot.SingleCommandDispatcher = new Class({
+mindplot.SingleCommandDispatcher = new Class(
+{
     Extends:mindplot.BaseCommandDispatcher,
-    initialize: function()
-    {
+    initialize: function() {
 
     },
     addIconToTopic: function() {

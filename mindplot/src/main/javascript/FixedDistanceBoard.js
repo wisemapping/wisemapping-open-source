@@ -245,7 +245,7 @@ mindplot.FixedDistanceBoard = new Class({
     },
 
     lookupEntryByPosition : function(pos) {
-        $assert($defined(pos), 'position can not be null');
+        $assert(pos, 'position can not be null');
 
         var entries = this._entries;
         var result = null;

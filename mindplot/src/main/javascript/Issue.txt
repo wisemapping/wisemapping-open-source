@@ -17,3 +17,9 @@ Later
 nodos en vez de borrarlos.
 * Menu contextual para agregar nodos.
 * Es necesario manejar para los central topic to main topic correctamente el concepto de height.
+
+
+
+From: RelationshipLine
+- Falta topic...
+XMLMindmapSerializer_Beta

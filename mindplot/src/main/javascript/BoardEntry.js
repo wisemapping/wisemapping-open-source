@@ -42,7 +42,7 @@ mindplot.BoardEntry = new Class({
     },
 
     setUpperLimit : function(value) {
-        $assert($defined(value), "upper limit can not be null");
+        $assert(value, "upper limit can not be null");
         $assert(!isNaN(value), "illegal value");
         this._upperLimit = value;
     },
@@ -56,7 +56,7 @@ mindplot.BoardEntry = new Class({
     },
 
     setLowerLimit : function(value) {
-        $assert($defined(value), "upper limit can not be null");
+        $assert(value, "upper limit can not be null");
         $assert(!isNaN(value), "illegal value");
         this._lowerLimit = value;
     },

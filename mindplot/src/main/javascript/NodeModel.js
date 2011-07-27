@@ -183,8 +183,8 @@ mindplot.NodeModel = new Class({
     },
 
     setPosition  : function(x, y) {
-        $assert($defined(x), "x coordinate must be defined");
-        $assert($defined(y), "y coordinate must be defined");
+        $assert(x, "x coordinate must be defined");
+        $assert(y, "y coordinate must be defined");
 
         if (!$defined(this._position)) {
             this._position = new core.Point();
@@ -198,8 +198,8 @@ mindplot.NodeModel = new Class({
     },
 
     setFinalPosition  : function(x, y) {
-        $assert($defined(x), "x coordinate must be defined");
-        $assert($defined(y), "y coordinate must be defined");
+        $assert(x, "x coordinate must be defined");
+        $assert(y, "y coordinate must be defined");
 
         if (!$defined(this._finalPosition)) {
             this._finalPosition = new core.Point();
@@ -253,7 +253,7 @@ mindplot.NodeModel = new Class({
     canBeConnected  : function(sourceModel, sourcePosition, targetTopicHeight) {
         $assert(sourceModel != this, 'The same node can not be parent and child if itself.');
         $assert(sourcePosition, 'childPosition can not be null.');
-        $assert($defined(targetTopicHeight), 'childrenWidth can not be null.');
+        $assert(targetTopicHeight, 'childrenWidth can not be null.');
 
         // Only can be connected if the node is in the left or rigth.
         var targetModel = this;

@@ -39,7 +39,7 @@ mindplot.util.Shape =
     {
         $assert(rectCenterPoint, 'rectCenterPoint can  not be null');
         $assert(rectSize, 'rectSize can  not be null');
-        $assert($defined(isAtRight), 'isRight can  not be null');
+        $assert(isAtRight, 'isRight can  not be null');
 
         // Node is placed at the right ?
         var result = new core.Point();

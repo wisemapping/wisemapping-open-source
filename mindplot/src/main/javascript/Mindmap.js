@@ -41,7 +41,6 @@ mindplot.Mindmap = new Class({
             this._iconType = id;
         },
 
-
         getVersion : function() {
             return this._version;
         },

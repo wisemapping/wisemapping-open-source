@@ -150,8 +150,7 @@ mindplot.Workspace = new Class({
         var screenManager = this._screenManager;
         this._dragging = true;
         var mWorkspace = this;
-        var mouseDownListener = function(event)
-        {
+        var mouseDownListener = function(event) {
             if (!$defined(workspace.mouseMoveListener)) {
                 if (mWorkspace.isWorkspaceEventsEnabled()) {
                     mWorkspace.enableWorkspaceEvents(false);

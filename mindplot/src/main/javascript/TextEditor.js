@@ -17,13 +17,12 @@
  */
 
 mindplot.TextEditor = new Class({
-    initialize:function(designer,actionRunner)
-    {
+    initialize:function(designer, actionRunner) {
         this._designer = designer;
         this._screenManager = designer.getWorkSpace().getScreenManager();
         this._container = this._screenManager.getContainer();
         this._actionRunner = actionRunner;
-        this._isVisible=false;
+        this._isVisible = false;
 
         //Create editor ui
         this._createUI();
@@ -31,7 +30,8 @@ mindplot.TextEditor = new Class({
         this._addListeners();
 
     },
-    _createUI:function(){
+
+    _createUI:function() {
         this._size = {width:500, height:100};
         this._myOverlay = new Element('div').setStyles({position:"absolute", display: "none", zIndex: "8", top: 0, left:0, width:"500px", height:"100px"});
         var inputContainer = new Element('div').setStyles({border:"none", overflow:"auto"}).inject(this._myOverlay);
@@ -40,21 +40,19 @@ mindplot.TextEditor = new Class({
         this._spanText = new Element('span').setProperties({id: "spanText", tabindex:"-1"}).setStyle('white-space', "nowrap").setStyle('nowrap', 'nowrap').inject(spanContainer);
         this._myOverlay.inject(this._container);
     },
-    _addListeners:function(){
+
+    _addListeners:function() {
         var elem = this;
-        this.applyChanges=true;
+        this.applyChanges = true;
         this.inputText.onkeyup = function (evt) {
             var event = new Event(evt);
             var key = event.key;
-            switch(key)
-            {
+            switch (key) {
                 case 'esc':
-                    elem.applyChanges=false;
+                    elem.applyChanges = false;
                 case 'enter':
-                    var executor = function(editor)
-                    {
-                        return function()
-                        {
+                    var executor = function(editor) {
+                        return function() {
                             elem.lostFocus(true);
                             $(document.documentElement).fireEvent('focus');
                         };
@@ -63,13 +61,12 @@ mindplot.TextEditor = new Class({
 
                     break;
                 default:
-                    var span =$('spanText');
+                    var span = $('spanText');
                     var input = $('inputText');
                     span.innerHTML = input.value;
                     var size = input.value.length + 1;
-                    input.size= size;
-                    if (span.offsetWidth > (parseInt(elem._myOverlay.style.width) - 100))
-                    {
+                    input.size = size;
+                    if (span.offsetWidth > (parseInt(elem._myOverlay.style.width) - 100)) {
                         elem._myOverlay.style.width = (span.offsetWidth + 100) + "px";
                     }
                     break;
@@ -84,18 +81,16 @@ mindplot.TextEditor = new Class({
         var elem = this;
         var onComplete = function() {
             this._myOverlay.setStyle('display', "none");
-            this._isVisible=false;
+            this._isVisible = false;
             this.inputText.setStyle('opacity', 1);
 
             this.setPosition(0, 0);
-            if (elem._currentNode != null)
-            {
+            if (elem._currentNode != null) {
                 this._currentNode.getTextShape().setVisibility(true);
-                if(this.applyChanges)
-                {
+                if (this.applyChanges) {
                     this._updateNode();
                 }
-                this.applyChanges=true;
+                this.applyChanges = true;
                 this._currentNode = null;
             }
 
@@ -104,76 +99,69 @@ mindplot.TextEditor = new Class({
         this.fx = new Fx.Tween(this.inputText, {property: 'opacity', duration: 10});
         this.fx.addEvent('onComplete', onComplete.bind(this));
     },
-    lostFocusEvent : function ()
-    {
+
+    lostFocusEvent : function () {
         this.fx.options.duration = 10;
         this.fx.start(1, 0);
         //myAnim.animate();
     },
-    isVisible : function ()
-    {
+
+    isVisible : function () {
         return this._isVisible;
     },
-    getFocusEvent: function (node)
-    {
+
+    getFocusEvent: function (node) {
         //console.log('focus event');
-        if (this.isVisible())
-        {
+        if (this.isVisible()) {
             this.getFocusEvent.delay(10, this);
         }
-        else
-        {
+        else {
             //console.log('calling init');
             this.init(node);
         }
         //console.log('focus event done');
     },
-    setInitialText : function (text)
-    {
-        this.initialText=text;
-    },
-    _updateNode : function ()
-    {
 
-        if ($defined(this._currentNode) && this._currentNode.getText() != this.getText())
-        {
+    setInitialText : function (text) {
+        this.initialText = text;
+    },
+
+    _updateNode : function () {
+
+        if ($defined(this._currentNode) && this._currentNode.getText() != this.getText()) {
             var text = this.getText();
             var topicId = this._currentNode.getId();
 
-            var commandFunc = function(topic,value)
-            {
+            var commandFunc = function(topic, value) {
                 var result = topic.getText();
                 topic.setText(value);
                 return result;
             };
-            var command = new mindplot.commands.GenericFunctionCommand(commandFunc,text,[topicId]);
+            var command = new mindplot.commands.GenericFunctionCommand(commandFunc, text, [topicId]);
             this._actionRunner.execute(command);
         }
     },
-    listenEventOnNode : function(topic, eventName, stopPropagation)
-    {
+
+    listenEventOnNode : function(topic, eventName, stopPropagation) {
         var elem = this;
         topic.addEventListener(eventName, function (event) {
-            if(elem._designer.getWorkSpace().isWorkspaceEventsEnabled()){
-                mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMouseOutEvent,[topic ]);
+            if (elem._designer.getWorkSpace().isWorkspaceEventsEnabled()) {
+                mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMouseOutEvent, [topic ]);
                 elem.lostFocus();
                 elem.getFocusEvent.attempt(topic, elem);
 
-                if (stopPropagation)
-                {
-                    if ($defined(event.stopPropagation))
-                    {
+                if (stopPropagation) {
+                    if ($defined(event.stopPropagation)) {
                         event.stopPropagation(true);
-                    } else
-                    {
+                    } else {
                         event.cancelBubble = true;
                     }
                 }
             }
         });
     },
-    init : function (nodeGraph)
-    {
+
+    init : function (nodeGraph) {
         //console.log('init method');
         nodeGraph.getTextShape().setVisibility(false);
         this._currentNode = nodeGraph;
@@ -181,12 +169,11 @@ mindplot.TextEditor = new Class({
         //set Editor Style
         var nodeText = nodeGraph.getTextShape();
         var text;
-        var selectText=true;
-        if(this.initialText && this.initialText!="")
-        {
+        var selectText = true;
+        if (this.initialText && this.initialText != "") {
             text = this.initialText;
-            this.initialText=null;
-            selectText=false;
+            this.initialText = null;
+            selectText = false;
         }
         else
             text = nodeText.getText();
@@ -202,10 +189,8 @@ mindplot.TextEditor = new Class({
 
         //set editor's initial size
         var editor = this;
-        var executor = function(editor)
-        {
-            return function()
-            {
+        var executor = function(editor) {
+            return function() {
                 //console.log('setting editor in init thread');
                 var scale = web2d.peer.utils.TransformUtil.workoutScale(editor._currentNode.getTextShape()._peer);
                 var elemSize = editor._currentNode.getSize();
@@ -216,17 +201,15 @@ mindplot.TextEditor = new Class({
                 var textHeight = editor._currentNode.getTextShape().getHeight();
                 var iconGroup = editor._currentNode.getIconGroup();
                 var iconGroupSize;
-                if($chk(iconGroup))
-                {
+                if ($chk(iconGroup)) {
                     iconGroupSize = editor._currentNode.getIconGroup().getSize();
                 }
-                else
-                {
+                else {
                     iconGroupSize = {width:0, height:0};
                 }
                 var position = {x:0,y:0};
-                position.x = pos.x - ((textWidth * scale.width) / 2) + (((iconGroupSize.width) * scale.width)/2);
-                var fixError =1;
+                position.x = pos.x - ((textWidth * scale.width) / 2) + (((iconGroupSize.width) * scale.width) / 2);
+                var fixError = 1;
                 position.y = pos.y - ((textHeight * scale.height) / 2) - fixError;
 
                 editor.setEditorSize(elemSize.width, elemSize.height, scale);
@@ -240,24 +223,20 @@ mindplot.TextEditor = new Class({
         setTimeout(executor(this), 10);
         //console.log('init done');
     },
-    setStyle : function (fontStyle)
-    {
+
+    setStyle : function (fontStyle) {
         var inputField = $("inputText");
         var spanField = $("spanText");
-        if (!$defined(fontStyle.font))
-        {
+        if (!$defined(fontStyle.font)) {
             fontStyle.font = "Arial";
         }
-        if (!$defined(fontStyle.style))
-        {
+        if (!$defined(fontStyle.style)) {
             fontStyle.style = "normal";
         }
-        if (!$defined(fontStyle.weight))
-        {
+        if (!$defined(fontStyle.weight)) {
             fontStyle.weight = "normal";
         }
-        if (!$defined(fontStyle.size))
-        {
+        if (!$defined(fontStyle.size)) {
             fontStyle.size = 12;
         }
         inputField.style.fontSize = fontStyle.size + "px";
@@ -270,8 +249,8 @@ mindplot.TextEditor = new Class({
         spanField.style.fontWeight = fontStyle.weight;
         spanField.style.fontSize = fontStyle.size + "px";
     },
-    setText : function(text)
-    {
+
+    setText : function(text) {
         var inputField = $("inputText");
         inputField.size = text.length + 1;
         //this._myOverlay.cfg.setProperty("width", (inputField.size * parseInt(inputField.style.fontSize) + 100) + "px");
@@ -280,12 +259,12 @@ mindplot.TextEditor = new Class({
         spanField.innerHTML = text;
         inputField.value = text;
     },
-    getText : function()
-    {
+
+    getText : function() {
         return $('inputText').value;
     },
-    setEditorSize : function (width, height, scale)
-    {
+
+    setEditorSize : function (width, height, scale) {
         //var scale = web2d.peer.utils.TransformUtil.workoutScale(this._currentNode.getTextShape()._peer);
         this._size = {width:width * scale.width, height:height * scale.height};
         //this._myOverlay.cfg.setProperty("width",this._size.width*2+"px");
@@ -293,17 +272,17 @@ mindplot.TextEditor = new Class({
         //this._myOverlay.cfg.setProperty("height",this._size.height+"px");
         this._myOverlay.style.height = this._size.height + "px";
     },
-    getSize : function ()
-    {
+
+    getSize : function () {
         return {width:$("spanText").offsetWidth,height:$("spanText").offsetHeight};
     },
-    setPosition : function (x, y, scale)
-    {
+
+    setPosition : function (x, y, scale) {
         $(this._myOverlay).setStyles({top : y + "px", left: x + "px"});
         //this._myOverlay.style.left = x + "px";
     },
-    showTextEditor : function(selectText)
-    {
+
+    showTextEditor : function(selectText) {
         //this._myOverlay.show();
         //var myAnim = new YAHOO.util.Anim('inputText',{opacity: {to:1}}, 0.10, YAHOO.util.Easing.easeOut);
         //$('inputText').style.opacity='1';
@@ -311,7 +290,7 @@ mindplot.TextEditor = new Class({
         //myAnim.onComplete.subscribe(function(){
         //elem._myOverlay.show();
         elem._myOverlay.setStyle('display', "block");
-        this._isVisible=true;
+        this._isVisible = true;
         //elem.cfg.setProperty("visible", false);
         //elem._myOverlay.cfg.setProperty("xy", [0, 0]);
         //elem._myOverlay.cfg.setProperty("visible", true);
@@ -322,31 +301,25 @@ mindplot.TextEditor = new Class({
         {
             var range = $('inputText').createTextRange();
             var pos = $('inputText').value.length;
-            if(selectText)
-            {
+            if (selectText) {
                 range.select();
                 range.move("character", pos);
             }
-            else
-            {
+            else {
                 range.move("character", pos);
                 range.select();
             }
         }
-        else if(selectText)
-        {
+        else if (selectText) {
             $('inputText').setSelectionRange(0, $('inputText').value.length);
         }
 
-        var executor = function(editor)
-        {
-            return function()
-            {
+        var executor = function(editor) {
+            return function() {
                 try {
                     $('inputText').focus();
                 }
-                catch (e)
-                {
+                catch (e) {
 
                 }
             };
@@ -356,35 +329,30 @@ mindplot.TextEditor = new Class({
         //myAnim.animate();
 
     },
-    lostFocus : function(bothBrowsers)
-    {
-        if (this.isVisible())
-        {
+
+    lostFocus : function(bothBrowsers) {
+        if (this.isVisible()) {
             //the editor is opened in another node. lets Finish it.
             var fireOnThis = $('inputText');
             fireOnThis.fireEvent('blur');
         }
     },
-    clickEvent : function(event){
-        if(this.isVisible()){
-            if ($defined(event.stopPropagation))
-            {
+    clickEvent : function(event) {
+        if (this.isVisible()) {
+            if ($defined(event.stopPropagation)) {
                 event.stopPropagation(true);
-            } else
-            {
+            } else {
                 event.cancelBubble = true;
             }
             event.preventDefault();
         }
 
     },
-    mouseDownEvent : function(event){
-        if(this.isVisible()){
-            if ($defined(event.stopPropagation))
-            {
+    mouseDownEvent : function(event) {
+        if (this.isVisible()) {
+            if ($defined(event.stopPropagation)) {
                 event.stopPropagation(true);
-            } else
-            {
+            } else {
                 event.cancelBubble = true;
             }
         }

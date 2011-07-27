@@ -18,6 +18,7 @@
 
 mindplot.Icon = new Class({
     initialize:function(url) {
+        $assert(url, 'topic can not be null');
         this._image = new web2d.Image();
         this._image.setHref(url);
         this._image.setSize(12, 12);
