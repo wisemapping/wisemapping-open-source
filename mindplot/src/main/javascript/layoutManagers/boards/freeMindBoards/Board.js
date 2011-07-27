@@ -16,7 +16,7 @@ mindplot.layoutManagers.boards.freeMindBoards.Board = mindplot.layoutManagers.bo
     },
     removeTopicFromBoard:function(node, modifiedTopics){
         var pos;
-        if(core.Utils.isDefined(node._originalPosition))
+        if($defined(node._originalPosition))
             pos = node._originalPosition;
         var result = this.findNodeEntryIndex(node, pos);
         core.assert(result.index<result.table.length,"node not found. Could not remove");
@@ -30,7 +30,7 @@ mindplot.layoutManagers.boards.freeMindBoards.Board = mindplot.layoutManagers.bo
         // if creating a sibling or child
         if(!this._layoutManager._isMovingNode && this._layoutManager.getDesigner().getSelectedNodes().length>0){
             var selectedNode = this._layoutManager.getDesigner().getSelectedNodes()[0];
-            if(!core.Utils.isDefined(pos)){
+            if(!$defined(pos)){
                 if(selectedNode.getParent()!= null && node.getParent().getId() == selectedNode.getParent().getId()){
                     //creating a sibling - Lets put the new node below the selected node.
                     var parentBoard = this._layoutManager.getTopicBoardForTopic(selectedNode.getParent());
@@ -60,7 +60,7 @@ mindplot.layoutManagers.boards.freeMindBoards.Board = mindplot.layoutManagers.bo
             }
         }
         this._addEntry(entry, result.table, result.index);
-        if(core.Utils.isDefined(pos)){
+        if($defined(pos)){
             if(result.index>0){
                 var prevEntry =result.table[result.index-1];
                 entry.setMarginTop(pos.y-(prevEntry.getPosition() + prevEntry.getTotalMarginBottom()));
@@ -183,7 +183,7 @@ mindplot.layoutManagers.boards.freeMindBoards.Board = mindplot.layoutManagers.bo
         var newPos = new core.Point(pos.x-(delta.x==null?0:delta.x), pos.y-delta.y);
         entry.setPosition(newPos.x, newPos.y);
         this._layoutManager._updateChildrenBoards(entry.getNode(), delta, modifiedTopics);
-        if(core.Utils.isDefined(modifiedTopics.set)){
+        if($defined(modifiedTopics.set)){
             var key = entry.getId();
             if(modifiedTopics.has(key)){
                 pos = modifiedTopics.get(key).originalPos;

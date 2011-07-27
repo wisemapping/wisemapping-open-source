@@ -40,7 +40,7 @@ mindplot.layoutManagers.OriginalLayoutManager = new Class({
             for (var i = 0; i < children.length; i++) {
                 var child = children[i];
                 var order = child.getOrder();
-                if (!core.Utils.isDefined(order)) {
+                if (!$defined(order)) {
                     order = ++maxOrder;
                     child.setOrder(order);
                 }
@@ -131,7 +131,7 @@ mindplot.layoutManagers.OriginalLayoutManager = new Class({
         }
 
         // Register editor events ...
-        if (!core.Utils.isDefined(this.getDesigner()._viewMode) || (core.Utils.isDefined(this.getDesigner()._viewMode) && !this.getDesigner()._viewMode)) {
+        if (!$defined(this.getDesigner()._viewMode) || ($defined(this.getDesigner()._viewMode) && !this.getDesigner()._viewMode)) {
             this.getDesigner()._editor.listenEventOnNode(topic, 'dblclick', true);
         }
 

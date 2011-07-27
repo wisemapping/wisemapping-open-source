@@ -46,12 +46,12 @@ web2d.peer.svg.WorkspacePeer.prototype.setCoordSize = function(width, height)
     {
         coords = viewBox.split(/ /);
     }
-    if (core.Utils.isDefined(width))
+    if ($defined(width))
     {
         coords[2] = width;
     }
 
-    if (core.Utils.isDefined(height))
+    if ($defined(height))
     {
         coords[3] = height;
     }
@@ -83,12 +83,12 @@ web2d.peer.svg.WorkspacePeer.prototype.setCoordOrigin = function(x, y)
         coords = viewBox.split(/ /);
     }
 
-    if (core.Utils.isDefined(x))
+    if ($defined(x))
     {
         coords[0] = x;
     }
 
-    if (core.Utils.isDefined(y))
+    if ($defined(y))
     {
         coords[1] = y;
     }

@@ -84,12 +84,12 @@ web2d.peer.svg.GroupPeer.prototype.updateTransform = function()
 web2d.peer.svg.GroupPeer.prototype.setCoordOrigin = function(x, y)
 {
     var change = x!=this._coordOrigin.x || y!=this._coordOrigin.y;
-    if (core.Utils.isDefined(x))
+    if ($defined(x))
     {
         this._coordOrigin.x = x;
     }
 
-    if (core.Utils.isDefined(y))
+    if ($defined(y))
     {
         this._coordOrigin.y = y;
     }
@@ -108,12 +108,12 @@ web2d.peer.svg.GroupPeer.prototype.setSize = function(width, height)
 web2d.peer.svg.GroupPeer.prototype.setPosition = function(x, y)
 {
     var change = x!=this._position.x || y!=this._position.y;
-    if (core.Utils.isDefined(x))
+    if ($defined(x))
     {
         this._position.x = parseInt(x);
     }
 
-    if (core.Utils.isDefined(y))
+    if ($defined(y))
     {
         this._position.y = parseInt(y);
     }

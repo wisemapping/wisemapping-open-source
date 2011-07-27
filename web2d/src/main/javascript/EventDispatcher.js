@@ -35,7 +35,7 @@ web2d.EventDispatcher = function(element)
 
 web2d.EventDispatcher.prototype.addListener = function(type, listener)
 {
-    if (!core.Utils.isDefined(listener))
+    if (!$defined(listener))
     {
         throw "Listener can not be null.";
     }
@@ -44,7 +44,7 @@ web2d.EventDispatcher.prototype.addListener = function(type, listener)
 
 web2d.EventDispatcher.prototype.removeListener = function(type, listener)
 {
-    if (!core.Utils.isDefined(listener))
+    if (!$defined(listener))
     {
         throw "Listener can not be null.";
     }

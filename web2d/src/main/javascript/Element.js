@@ -25,7 +25,7 @@ web2d.Element = function(peer, attributes)
     }
 
     this._dispatcherByEventType = new Hash({});
-    if (core.Utils.isDefined(attributes))
+    if ($defined(attributes))
     {
         this._initialize(attributes);
     }
@@ -42,7 +42,7 @@ web2d.Element.prototype._initialize = function(attributes)
     {
         var funcName = this._attributeNameToFuncName(key, 'set');
         var funcArgs = batchExecute[funcName];
-        if (!core.Utils.isDefined(funcArgs))
+        if (!$defined(funcArgs))
         {
             funcArgs = [];
         }
@@ -63,7 +63,7 @@ web2d.Element.prototype._initialize = function(attributes)
     for (var key in batchExecute)
     {
         var func = this[key];
-        if (!core.Utils.isDefined(func))
+        if (!$defined(func))
         {
             throw "Could not find function: " + key;
         }
@@ -223,7 +223,7 @@ web2d.Element.prototype._propertyNameToSignature =
 web2d.Element.prototype._attributeNameToFuncName = function(attributeKey, prefix)
 {
     var signature = this._propertyNameToSignature[attributeKey];
-    if (!core.Utils.isDefined(signature))
+    if (!$defined(signature))
     {
         throw "Unsupported attribute: " + attributeKey;
     }
@@ -292,13 +292,13 @@ web2d.Element.prototype.getAttribute = function(key)
 
     var getterResult = getter.apply(this, []);
     var attibuteName = signature[2];
-    if (!core.Utils.isDefined(attibuteName))
+    if (!$defined(attibuteName))
     {
         throw "Could not find attribute mapping for:" + key;
     }
 
     var result = getterResult[attibuteName];
-    if (!core.Utils.isDefined(result))
+    if (!$defined(result))
     {
         throw "Could not find attribute with name:" + attibuteName;
     }

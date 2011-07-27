@@ -48,8 +48,7 @@ Arguments:
 
 function $defined(obj) {
     return (obj != undefined);
-}
-;
+};
 
 /*
 Function: $type

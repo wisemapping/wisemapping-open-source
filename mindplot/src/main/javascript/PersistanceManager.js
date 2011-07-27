@@ -41,7 +41,7 @@ mindplot.PersistanceManager.save = function(mindmap, editorProperties, onSavedHa
             } else
             {
                 // Execute on success handler ...
-                if (core.Utils.isDefined(onSavedHandler))
+                if ($defined(onSavedHandler))
                 {
                     onSavedHandler();
                 }

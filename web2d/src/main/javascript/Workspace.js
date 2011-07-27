@@ -56,7 +56,7 @@ web2d.Workspace.prototype._disableTextSelection = function()
     contaier.onselectstart = new Function("return false");
 
     //if the browser is NS6
-    if (core.Utils.isDefined(window.sidebar))
+    if ($defined(window.sidebar))
     {
         contaier.onmousedown = disabletext;
         contaier.onclick = reEnable;
@@ -73,7 +73,7 @@ web2d.Workspace.prototype.getType = function()
  */
 web2d.Workspace.prototype.appendChild = function(element)
 {
-    if (!core.Utils.isDefined(element))
+    if (!$defined(element))
     {
         throw "Child element can not be null";
     }
@@ -96,7 +96,7 @@ web2d.Workspace.prototype.appendChild = function(element)
  */
 web2d.Workspace.prototype.addItAsChildTo = function(element)
 {
-    if (!core.Utils.isDefined(element))
+    if (!$defined(element))
     {
         throw "Workspace div container can not be null";
     }
@@ -131,13 +131,13 @@ web2d.Workspace.prototype._createDivContainer = function(domElement)
 web2d.Workspace.prototype.setSize = function(width, height)
 {
     // HTML container must have the size of the group element.
-    if (core.Utils.isDefined(width))
+    if ($defined(width))
     {
         this._htmlContainer.style.width = width;
 
     }
 
-    if (core.Utils.isDefined(height))
+    if ($defined(height))
     {
         this._htmlContainer.style.height = height;
     }
@@ -232,7 +232,7 @@ web2d.Workspace.prototype.getCoordSize = function()
  */
 web2d.Workspace.prototype.removeChild = function(element)
 {
-    if (!core.Utils.isDefined(element))
+    if (!$defined(element))
     {
         throw "Child element can not be null";
     }

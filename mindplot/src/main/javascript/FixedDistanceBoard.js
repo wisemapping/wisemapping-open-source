@@ -72,7 +72,7 @@ mindplot.FixedDistanceBoard = new Class({
         for (var i = 0; i < entries.length; i++) {
             var entry = entries[i];
 
-            if (core.Utils.isDefined(entry)) {
+            if ($defined(entry)) {
                 var upperLimit = entry.getUpperLimit() + yOffset;
                 var lowerLimit = entry.getLowerLimit() + yOffset;
                 entry.setUpperLimit(upperLimit);
@@ -172,7 +172,7 @@ mindplot.FixedDistanceBoard = new Class({
         if (entries.length > 0) {
             var l = 0;
             for (l = 0; l < entries.length; l++) {
-                if (core.Utils.isDefined(entries[l]))
+                if ($defined(entries[l]))
                     break;
             }
             var topic = entries[l].getTopic();
@@ -245,7 +245,7 @@ mindplot.FixedDistanceBoard = new Class({
     },
 
     lookupEntryByPosition : function(pos) {
-        core.assert(core.Utils.isDefined(pos), 'position can not be null');
+        core.assert($defined(pos), 'position can not be null');
 
         var entries = this._entries;
         var result = null;

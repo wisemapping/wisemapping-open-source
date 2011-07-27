@@ -18,7 +18,7 @@
 
 mindplot.BoardEntry = new Class({
     initialize:function(lowerLimit, upperLimit, order) {
-        if (core.Utils.isDefined(lowerLimit) && core.Utils.isDefined(upperLimit)) {
+        if ($defined(lowerLimit) && $defined(upperLimit)) {
             core.assert(lowerLimit < upperLimit, 'lowerLimit can not be greater that upperLimit');
         }
         this._upperLimit = upperLimit;
@@ -42,7 +42,7 @@ mindplot.BoardEntry = new Class({
     },
 
     setUpperLimit : function(value) {
-        core.assert(core.Utils.isDefined(value), "upper limit can not be null");
+        core.assert($defined(value), "upper limit can not be null");
         core.assert(!isNaN(value), "illegal value");
         this._upperLimit = value;
     },
@@ -56,7 +56,7 @@ mindplot.BoardEntry = new Class({
     },
 
     setLowerLimit : function(value) {
-        core.assert(core.Utils.isDefined(value), "upper limit can not be null");
+        core.assert($defined(value), "upper limit can not be null");
         core.assert(!isNaN(value), "illegal value");
         this._lowerLimit = value;
     },
@@ -89,18 +89,18 @@ mindplot.BoardEntry = new Class({
     },
 
     setTopic : function(topic, updatePosition) {
-        if (!core.Utils.isDefined(updatePosition) || (core.Utils.isDefined(updatePosition) && !updatePosition)) {
+        if (!$defined(updatePosition) || ($defined(updatePosition) && !updatePosition)) {
             updatePosition = true;
         }
 
         this._topic = topic;
-        if (core.Utils.isDefined(topic)) {
+        if ($defined(topic)) {
             // Fixed positioning. Only for main topic ...
             var position = null;
             var topicPosition = topic.getPosition();
 
             // Must update position base on the border limits?
-            if (core.Utils.isDefined(this._xPos)) {
+            if ($defined(this._xPos)) {
                 position = new core.Point();
 
                 // Update x position ...
@@ -128,7 +128,7 @@ mindplot.BoardEntry = new Class({
     },
 
     isAvailable : function() {
-        return !core.Utils.isDefined(this._topic);
+        return !$defined(this._topic);
     },
 
     getOrder : function() {

@@ -58,7 +58,7 @@ mindplot.ConnectionLine = new Class({
     },
 
     _createLine : function(lineType, defaultStyle) {
-        if (!core.Utils.isDefined(lineType)) {
+        if (!$defined(lineType)) {
             lineType = defaultStyle;
         }
         lineType = parseInt(lineType);

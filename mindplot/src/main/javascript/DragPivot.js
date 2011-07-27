@@ -139,7 +139,7 @@ mindplot.DragPivot = new Class({
 
         var connectRect = this._connectRect;
         connectRect.setVisibility(value);
-        if (core.Utils.isDefined(this._line)) {
+        if ($defined(this._line)) {
             this._line.setVisibility(value);
         }
     },
@@ -177,11 +177,11 @@ mindplot.DragPivot = new Class({
         var connectToRect = this._connectRect;
         workspace.removeChild(connectToRect);
 
-        if (core.Utils.isDefined(this._straightLine)) {
+        if ($defined(this._straightLine)) {
             workspace.removeChild(this._straightLine);
         }
 
-        if (core.Utils.isDefined(this._curvedLine)) {
+        if ($defined(this._curvedLine)) {
             workspace.removeChild(this._curvedLine);
         }
     },

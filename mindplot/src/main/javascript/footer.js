@@ -16,7 +16,7 @@
 *   limitations under the License.
 */
 
-if(core.Utils.isDefined(afterMindpotLibraryLoading))
+if($defined(afterMindpotLibraryLoading))
 {
     afterMindpotLibraryLoading();
 }

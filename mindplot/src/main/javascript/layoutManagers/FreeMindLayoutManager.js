@@ -6,7 +6,7 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
         this.parent(designer, options);
     },
     _nodeConnectEvent:function(targetNode, node){
-        if(core.Utils.isDefined(node.relationship)){
+        if($defined(node.relationship)){
             this._movingNode(targetNode, node);
         }
         else if(!this._isCentralTopic(node)){
@@ -14,7 +14,7 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
         }
     },
     _nodeDisconnectEvent:function(targetNode, node){
-        if(core.Utils.isDefined(node.relationship)){
+        if($defined(node.relationship)){
         }
         else{
             this.parent(targetNode, node);
@@ -64,7 +64,7 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
         }
 
          // Register editor events ...
-        if (!core.Utils.isDefined(this.getDesigner()._viewMode)|| (core.Utils.isDefined(this.getDesigner()._viewMode) && !this.getDesigner()._viewMode))
+        if (!$defined(this.getDesigner()._viewMode)|| ($defined(this.getDesigner()._viewMode) && !this.getDesigner()._viewMode))
         {
             this.getDesigner()._editor.listenEventOnNode(topic, 'dblclick', true);
         }
@@ -155,7 +155,7 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
                     parentBoard._removeEntry(node, entryObj.table, entryObj.index, this._modifiedTopics);
                     this._changeChildrenSide(node, pos, this._modifiedTopics);
                     node.setPosition(pos.clone(), false);
-                    if(core.Utils.isDefined(this._modifiedTopics.set)){
+                    if($defined(this._modifiedTopics.set)){
                         var key = node.getId();
                         if(this._modifiedTopics.has(key)){
                             nodePos = this._modifiedTopics.get(key).originalPos;
@@ -184,7 +184,7 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
                 childPos.y = newPos.y +(childPos.y - refPos.y);
                 this._changeChildrenSide(child, childPos, modifiedTopics);
                 child.setPosition(childPos, false);
-                if(core.Utils.isDefined(modifiedTopics.set)){
+                if($defined(modifiedTopics.set)){
                     var key = node.getId();
                     if(modifiedTopics.has(key)){
                         oldPos = this._modifiedTopics.get(key).originalPos;
@@ -335,7 +335,7 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
             }
             this._updateTopicsForReconnect(topic, mindplot.layoutManagers.FreeMindLayoutManager.RECONNECT_NODES_OPACITY);
             var line = topic.getOutgoingLine();
-            if(core.Utils.isDefined(line)){
+            if($defined(line)){
                 line.setVisibility(false);
             }
             this._createIndicatorShapes();
@@ -382,7 +382,7 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
 //                parentBoard._updateTable(entryObj.index,  entryObj.table, this._modifiedTopics, true);
 
             }
-            if(core.Utils.isDefined(this._modifiedTopics.set)){
+            if($defined(this._modifiedTopics.set)){
                 var key = node.getId();
                 if(this._modifiedTopics.has(key)){
                     nodePos = this._modifiedTopics.get(key).originalPos;
@@ -449,7 +449,7 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
         if(this._createShape == null){
             //cancel everything.
             var line = node.getOutgoingLine();
-            if(core.Utils.isDefined(line)){
+            if($defined(line)){
                 line.setVisibility(true);
             }
             core.Utils.animatePosition(this._modifiedTopics, null, this.getDesigner());
@@ -498,7 +498,7 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
         }
     },
     _createIndicatorShapes:function(){
-        if(!core.Utils.isDefined(this._createChildShape) || !core.Utils.isDefined(this._createSiblingShape)){
+        if(!$defined(this._createChildShape) || !$defined(this._createSiblingShape)){
             var rectAttributes = {fillColor:'#CC0033',opacity:0.4,width:30,height:30,strokeColor:'#FF9933'};
             var rect = new web2d.Rect(0, rectAttributes);
             rect.setVisibility(false);
@@ -677,7 +677,7 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
         mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMouseOutEvent,[node ]);
     },
     _addToModifiedList:function(modifiedTopics, key, originalpos, newPos){
-        if(core.Utils.isDefined(modifiedTopics.set)){
+        if($defined(modifiedTopics.set)){
             if(modifiedTopics.has(key)){
                 originalpos = modifiedTopics.get(key).originalPos;
             }

@@ -135,7 +135,7 @@ mindplot.TextEditor = new Class({
     _updateNode : function ()
     {
 
-        if (core.Utils.isDefined(this._currentNode) && this._currentNode.getText() != this.getText())
+        if ($defined(this._currentNode) && this._currentNode.getText() != this.getText())
         {
             var text = this.getText();
             var topicId = this._currentNode.getId();
@@ -161,7 +161,7 @@ mindplot.TextEditor = new Class({
 
                 if (stopPropagation)
                 {
-                    if (core.Utils.isDefined(event.stopPropagation))
+                    if ($defined(event.stopPropagation))
                     {
                         event.stopPropagation(true);
                     } else
@@ -244,19 +244,19 @@ mindplot.TextEditor = new Class({
     {
         var inputField = $("inputText");
         var spanField = $("spanText");
-        if (!core.Utils.isDefined(fontStyle.font))
+        if (!$defined(fontStyle.font))
         {
             fontStyle.font = "Arial";
         }
-        if (!core.Utils.isDefined(fontStyle.style))
+        if (!$defined(fontStyle.style))
         {
             fontStyle.style = "normal";
         }
-        if (!core.Utils.isDefined(fontStyle.weight))
+        if (!$defined(fontStyle.weight))
         {
             fontStyle.weight = "normal";
         }
-        if (!core.Utils.isDefined(fontStyle.size))
+        if (!$defined(fontStyle.size))
         {
             fontStyle.size = 12;
         }
@@ -367,7 +367,7 @@ mindplot.TextEditor = new Class({
     },
     clickEvent : function(event){
         if(this.isVisible()){
-            if (core.Utils.isDefined(event.stopPropagation))
+            if ($defined(event.stopPropagation))
             {
                 event.stopPropagation(true);
             } else
@@ -380,7 +380,7 @@ mindplot.TextEditor = new Class({
     },
     mouseDownEvent : function(event){
         if(this.isVisible()){
-            if (core.Utils.isDefined(event.stopPropagation))
+            if ($defined(event.stopPropagation))
             {
                 event.stopPropagation(true);
             } else

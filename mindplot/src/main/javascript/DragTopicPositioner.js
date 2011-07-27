@@ -46,7 +46,7 @@ mindplot.DragTopicPositioner = new Class({
         // Must be disconnected from their current connection ?.
         var mainTopicToMainTopicConnection = this._lookUpForMainTopicToMainTopicConnection(dragTopic);
         var currentConnection = dragTopic.getConnectedToTopic();
-        if (core.Utils.isDefined(currentConnection)) {
+        if ($defined(currentConnection)) {
             // MainTopic->MainTopicConnection.
             if (currentConnection.getType() == mindplot.NodeModel.MAIN_TOPIC_TYPE) {
                 if (mainTopicToMainTopicConnection != currentConnection) {
@@ -58,7 +58,7 @@ mindplot.DragTopicPositioner = new Class({
                 var dragXPosition = dragTopic.getPosition().x;
                 var currentXPosition = currentConnection.getPosition().x;
 
-                if (core.Utils.isDefined(mainTopicToMainTopicConnection)) {
+                if ($defined(mainTopicToMainTopicConnection)) {
                     // I have to change the current connection to a main topic.
                     dragTopic.disconnect(this._workspace);
                 } else
@@ -71,7 +71,7 @@ mindplot.DragTopicPositioner = new Class({
         // Finally, connect nodes ...
         if (!dragTopic.isConnected()) {
             var centalTopic = topics[0];
-            if (core.Utils.isDefined(mainTopicToMainTopicConnection)) {
+            if ($defined(mainTopicToMainTopicConnection)) {
                 dragTopic.connectTo(mainTopicToMainTopicConnection);
             } else if (Math.abs(dragTopic.getPosition().x - centalTopic.getPosition().x) <= mindplot.DragTopicPositioner.CENTRAL_TO_MAINTOPIC_MAX_HORIZONTAL_DISTANCE) {
                 dragTopic.connectTo(centalTopic);

@@ -36,7 +36,7 @@ web2d.peer.svg.ElementPeer.prototype.setChildren = function(children)
 web2d.peer.svg.ElementPeer.prototype.getChildren = function()
 {
     var result = this._children;
-    if (!core.Utils.isDefined(result))
+    if (!$defined(result))
     {
         result = [];
         this._children = result;
@@ -152,13 +152,13 @@ web2d.peer.svg.ElementPeer.prototype.removeEventListener = function(type, listen
 
 web2d.peer.svg.ElementPeer.prototype.setSize = function(width, height)
 {
-    if (core.Utils.isDefined(width) && this._size.width != parseInt(width))
+    if ($defined(width) && this._size.width != parseInt(width))
     {
         this._size.width = parseInt(width);
         this._native.setAttribute('width', parseInt(width));
     }
 
-    if (core.Utils.isDefined(height) && this._size.height != parseInt(height))
+    if ($defined(height) && this._size.height != parseInt(height))
     {
         this._size.height = parseInt(height);
         this._native.setAttribute('height', parseInt(height));
@@ -174,11 +174,11 @@ web2d.peer.svg.ElementPeer.prototype.getSize = function()
 
 web2d.peer.svg.ElementPeer.prototype.setFill = function(color, opacity)
 {
-    if (core.Utils.isDefined(color))
+    if ($defined(color))
     {
         this._native.setAttribute('fill', color);
     }
-    if (core.Utils.isDefined(opacity))
+    if ($defined(opacity))
     {
         this._native.setAttribute('fill-opacity', opacity);
     }
@@ -204,15 +204,15 @@ web2d.peer.svg.ElementPeer.prototype.getStroke = function()
 web2d.peer.svg.ElementPeer.prototype.__stokeStyleToStrokDasharray = {solid:[],dot:[1,3],dash:[4,3],longdash:[10,2],dashdot:[5,3,1,3]};
 web2d.peer.svg.ElementPeer.prototype.setStroke = function(width, style, color, opacity)
 {
-    if (core.Utils.isDefined(width))
+    if ($defined(width))
     {
         this._native.setAttribute('stroke-width', width + "px");
     }
-    if (core.Utils.isDefined(color))
+    if ($defined(color))
     {
         this._native.setAttribute('stroke', color);
     }
-    if (core.Utils.isDefined(style))
+    if ($defined(style))
     {
         // Scale the dash array in order to be equal to VML. In VML, stroke style doesn't scale.
         var dashArrayPoints = this.__stokeStyleToStrokDasharray[style];
@@ -235,7 +235,7 @@ web2d.peer.svg.ElementPeer.prototype.setStroke = function(width, style, color, o
         this._stokeStyle = style;
     }
 
-    if (core.Utils.isDefined(opacity))
+    if ($defined(opacity))
     {
         this._native.setAttribute('stroke-opacity', opacity);
     }
@@ -270,7 +270,7 @@ web2d.peer.svg.ElementPeer.prototype.updateStrokeStyle = function()
 web2d.peer.svg.ElementPeer.prototype.attachChangeEventListener = function(type, listener)
 {
     var listeners = this.getChangeEventListeners(type);
-    if (!core.Utils.isDefined(listener))
+    if (!$defined(listener))
     {
         throw "Listener can not be null";
     }
@@ -280,7 +280,7 @@ web2d.peer.svg.ElementPeer.prototype.attachChangeEventListener = function(type, 
 web2d.peer.svg.ElementPeer.prototype.getChangeEventListeners = function(type)
 {
     var listeners = this._changeListeners[type];
-    if (!core.Utils.isDefined(listeners))
+    if (!$defined(listeners))
     {
         listeners = [];
         this._changeListeners[type] = listeners;

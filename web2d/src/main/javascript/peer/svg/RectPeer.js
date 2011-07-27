@@ -31,11 +31,11 @@ objects.extend(web2d.peer.svg.RectPeer, web2d.peer.svg.ElementPeer);
 
 web2d.peer.svg.RectPeer.prototype.setPosition = function(x, y)
 {
-    if (core.Utils.isDefined(x))
+    if ($defined(x))
     {
         this._native.setAttribute('x', parseInt(x));
     }
-    if (core.Utils.isDefined(y))
+    if ($defined(y))
     {
         this._native.setAttribute('y', parseInt(y));
     }
@@ -53,7 +53,7 @@ web2d.peer.svg.RectPeer.prototype.setSize = function(width, height)
     web2d.peer.svg.RectPeer.superClass.setSize.call(this, width, height);
 
     var min = width < height?width:height;
-    if (core.Utils.isDefined(this._arc))
+    if ($defined(this._arc))
     {
         // Transform percentages to SVG format.
         var arc = (min / 2) * this._arc;

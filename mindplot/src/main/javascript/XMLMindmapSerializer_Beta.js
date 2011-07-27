@@ -28,7 +28,7 @@ mindplot.XMLMindmapSerializer_Beta.prototype.toXML = function(mindmap)
     // Store map attributes ...
     var mapElem = document.createElement("map");
     var name = mindmap.getId();
-    if (core.Utils.isDefined(name))
+    if ($defined(name))
     {
         mapElem.setAttribute('name', name);
     }
@@ -69,12 +69,12 @@ mindplot.XMLMindmapSerializer_Beta.prototype._topicToXML = function(document, to
     }
 
     var text = topic.getText();
-    if (core.Utils.isDefined(text)) {
+    if ($defined(text)) {
         parentTopic.setAttribute('text', text);
     }
 
     var shape = topic.getShapeType();
-    if (core.Utils.isDefined(shape)) {
+    if ($defined(shape)) {
         parentTopic.setAttribute('shape', shape);
     }
 
@@ -101,19 +101,19 @@ mindplot.XMLMindmapSerializer_Beta.prototype._topicToXML = function(document, to
     var fontStyle = topic.getFontStyle();
     font += (fontStyle ? fontStyle : '') + ';';
 
-    if (core.Utils.isDefined(fontFamily) || core.Utils.isDefined(fontSize) || core.Utils.isDefined(fontColor)
-            || core.Utils.isDefined(fontWeight )|| core.Utils.isDefined(fontStyle))
+    if ($defined(fontFamily) || $defined(fontSize) || $defined(fontColor)
+            || $defined(fontWeight )|| $defined(fontStyle))
     {
         parentTopic.setAttribute('fontStyle', font);
     }
 
     var bgColor = topic.getBackgroundColor();
-    if (core.Utils.isDefined(bgColor)) {
+    if ($defined(bgColor)) {
         parentTopic.setAttribute('bgColor', bgColor);
     }
 
     var brColor = topic.getBorderColor();
-    if (core.Utils.isDefined(brColor)) {
+    if ($defined(brColor)) {
         parentTopic.setAttribute('brColor', brColor);
     }
 
@@ -208,28 +208,28 @@ mindplot.XMLMindmapSerializer_Beta.prototype._deserializeNode = function(domElem
 
     // Load attributes...
     var text = domElem.getAttribute('text');
-    if (core.Utils.isDefined(text)) {
+    if ($defined(text)) {
         topic.setText(text);
     }
 
     var order = domElem.getAttribute('order');
-    if (core.Utils.isDefined(order)) {
+    if ($defined(order)) {
         topic.setOrder(order);
     }
 
     var shape = domElem.getAttribute('shape');
-    if (core.Utils.isDefined(shape)) {
+    if ($defined(shape)) {
         topic.setShapeType(shape);
     }
 
     var isShrink = domElem.getAttribute('shrink');
-    if(core.Utils.isDefined(isShrink))
+    if($defined(isShrink))
     {
         topic.setChildrenShrinked(isShrink);
     }
 
     var fontStyle = domElem.getAttribute('fontStyle');
-    if (core.Utils.isDefined(fontStyle)) {
+    if ($defined(fontStyle)) {
         var font = fontStyle.split(';');
 
         if (font[0])
@@ -259,17 +259,17 @@ mindplot.XMLMindmapSerializer_Beta.prototype._deserializeNode = function(domElem
     }
 
     var bgColor = domElem.getAttribute('bgColor');
-    if (core.Utils.isDefined(bgColor)) {
+    if ($defined(bgColor)) {
         topic.setBackgroundColor(bgColor);
     }
 
     var borderColor = domElem.getAttribute('brColor');
-    if (core.Utils.isDefined(borderColor)) {
+    if ($defined(borderColor)) {
         topic.setBorderColor(borderColor);
     }
 
     var position = domElem.getAttribute('position');
-    if (core.Utils.isDefined(position)) {
+    if ($defined(position)) {
         var pos = position.split(',');
         topic.setPosition(pos[0], pos[1]);
     }

@@ -18,8 +18,8 @@
 
 mindplot.DragTopic = function(dragShape, draggedNode)
 {
-    core.assert(core.Utils.isDefined(dragShape), 'Rect can not be null.');
-    core.assert(core.Utils.isDefined(draggedNode), 'draggedNode can not be null.');
+    core.assert($defined(dragShape), 'Rect can not be null.');
+    core.assert($defined(draggedNode), 'draggedNode can not be null.');
 
     this._elem2d = dragShape;
     this._order = null;
@@ -68,7 +68,7 @@ mindplot.DragTopic.prototype.disconnect = function(workspace)
 
 mindplot.DragTopic.prototype.canBeConnectedTo = function(targetTopic)
 {
-    core.assert(core.Utils.isDefined(targetTopic), 'parent can not be null');
+    core.assert($defined(targetTopic), 'parent can not be null');
 
     var result = true;
     if (!targetTopic.areChildrenShrinked() && !targetTopic.isCollapsed())
@@ -135,7 +135,7 @@ mindplot.DragTopic.prototype._getDragPivot = function()
 mindplot.DragTopic.__getDragPivot = function()
 {
     var result = mindplot.DragTopic._dragPivot;
-    if (!core.Utils.isDefined(result))
+    if (!$defined(result))
     {
         result = new mindplot.DragPivot();
         mindplot.DragTopic._dragPivot = result;

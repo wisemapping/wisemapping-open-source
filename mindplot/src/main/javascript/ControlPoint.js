@@ -38,7 +38,7 @@ mindplot.ControlPoint = new Class({
     },
 
     setLine  : function(line) {
-        if (core.Utils.isDefined(this._line)) {
+        if ($defined(this._line)) {
             this._removeLine();
         }
         this._line = line;
@@ -52,7 +52,7 @@ mindplot.ControlPoint = new Class({
     },
 
     redraw  : function() {
-        if (core.Utils.isDefined(this._line))
+        if ($defined(this._line))
             this._createControlPoint();
     },
 

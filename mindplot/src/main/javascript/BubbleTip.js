@@ -151,7 +151,7 @@ mindplot.BubbleTip = new Class({
 
 mindplot.BubbleTip.getInstance = function(divContainer) {
     var result = mindplot.BubbleTip.instance;
-    if (!core.Utils.isDefined(result)) {
+    if (!$defined(result)) {
         mindplot.BubbleTip.instance = new mindplot.BubbleTip(divContainer);
         result = mindplot.BubbleTip.instance;
     }

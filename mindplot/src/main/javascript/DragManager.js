@@ -96,7 +96,7 @@ mindplot.DragManager.prototype._buildMouseMoveListener = function(workspace, dra
 
         // Call mouse move listeners ...
         var dragListener = dragManager._listeners['dragging'];
-        if (core.Utils.isDefined(dragListener))
+        if ($defined(dragListener))
         {
             dragListener(event, dragNode);
         }

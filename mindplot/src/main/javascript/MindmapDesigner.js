@@ -18,7 +18,7 @@
 
 mindplot.MindmapDesigner = function(profile, divElement)
 {
-    core.assert(core.Utils.isDefined(profile.zoom), "zoom must be defined");
+    core.assert($defined(profile.zoom), "zoom must be defined");
 
     // Undo manager ...
     this._actionRunner = new mindplot.DesignerActionRunner(this);
@@ -87,7 +87,7 @@ mindplot.MindmapDesigner.prototype._registerEvents = function()
     var workspace = this._workspace;
     var screenManager = workspace.getScreenManager();
 
-    if (!core.Utils.isDefined(this._viewMode) || (core.Utils.isDefined(this._viewMode) && !this._viewMode))
+    if (!$defined(this._viewMode) || ($defined(this._viewMode) && !this._viewMode))
     {
         // Initialize workspace event listeners.
         // Create nodes on double click...
@@ -175,7 +175,7 @@ mindplot.MindmapDesigner.prototype.onObjectFocusEvent = function(currentObject, 
     this.getEditor().lostFocus();
     var selectableObjects = this.getSelectedObjects();
     // Disable all nodes on focus but not the current if Ctrl key isn't being pressed
-    if (!core.Utils.isDefined(event) || event.ctrlKey == false)
+    if (!$defined(event) || event.ctrlKey == false)
     {
         for (var i = 0; i < selectableObjects.length; i++)
         {
@@ -285,7 +285,7 @@ mindplot.MindmapDesigner.prototype.addRelationShip2SelectedNode = function(event
     var pos = screen.getWorkspaceMousePosition(event);
     var selectedTopics = this.getSelectedNodes();
     if(selectedTopics.length >0 &&
-       (!core.Utils.isDefined(this._creatingRelationship) || (core.Utils.isDefined(this._creatingRelationship) && !this._creatingRelationship))){
+       (!$defined(this._creatingRelationship) || ($defined(this._creatingRelationship) && !this._creatingRelationship))){
         this._workspace.enableWorkspaceEvents(false);
         var fromNodePosition = selectedTopics[0].getPosition();
         this._relationship = new web2d.CurvedLine();
@@ -313,10 +313,10 @@ mindplot.MindmapDesigner.prototype._relationshipMouseMove = function(event){
 
 mindplot.MindmapDesigner.prototype._relationshipMouseClick = function (event, fromNode) {
     var target = event.target;
-    while(target.tagName != "g" && core.Utils.isDefined(target.parentNode)){
+    while(target.tagName != "g" && $defined(target.parentNode)){
         target=target.parentNode;
     }
-    if(core.Utils.isDefined(target.virtualRef)){
+    if($defined(target.virtualRef)){
         var targetNode = target.virtualRef;
         this.addRelationship(fromNode, targetNode);
     }
@@ -347,7 +347,7 @@ mindplot.MindmapDesigner.prototype.needsSave = function()
 
 mindplot.MindmapDesigner.prototype.autoSaveEnabled = function(value)
 {
-    if (core.Utils.isDefined(value) && value)
+    if ($defined(value) && value)
     {
         var autosave = function() {
 
@@ -467,7 +467,7 @@ mindplot.MindmapDesigner.prototype._nodeModelToNodeGraph = function(nodeModel, i
     core.assert(nodeModel, "Node model can not be null");
     var nodeGraph = this._buildNodeGraph(nodeModel);
 
-    if(core.Utils.isDefined(isVisible))
+    if($defined(isVisible))
         nodeGraph.setVisibility(isVisible);
 
     var children = nodeModel.getChildren().slice();
@@ -477,7 +477,7 @@ mindplot.MindmapDesigner.prototype._nodeModelToNodeGraph = function(nodeModel, i
     for (var i = 0; i < children.length; i++)
     {
         var child = children[i];
-        if(core.Utils.isDefined(child))
+        if($defined(child))
             this._nodeModelToNodeGraph(child);
     }
 
@@ -545,11 +545,11 @@ mindplot.MindmapDesigner.prototype._buildRelationship = function (model) {
     
     // Create node graph ...
     var relationLine = new mindplot.RelationshipLine(fromTopic, toTopic, model.getLineType());
-    if(core.Utils.isDefined(model.getSrcCtrlPoint())){
+    if($defined(model.getSrcCtrlPoint())){
         var srcPoint = model.getSrcCtrlPoint().clone();
         relationLine.setSrcControlPoint(srcPoint);
     }
-    if(core.Utils.isDefined(model.getDestCtrlPoint())){
+    if($defined(model.getDestCtrlPoint())){
         var destPoint = model.getDestCtrlPoint().clone();
         relationLine.setDestControlPoint(destPoint);
     }
@@ -598,7 +598,7 @@ mindplot.MindmapDesigner.prototype._removeNode = function(node)
         var model = node.getModel();
         model.deleteNode();
 
-        if (core.Utils.isDefined(parent))
+        if ($defined(parent))
         {
             this._goToNode(parent);
         }
@@ -719,7 +719,7 @@ mindplot.MindmapDesigner.prototype._getValidSelectedObjectsIds = function(valida
         for (var i = 0; i < selectedNodes.length; i++)
         {
             var selectedNode = selectedNodes[i];
-            if (core.Utils.isDefined(validate))
+            if ($defined(validate))
             {
                 isValid = validate(selectedNode);
             }
@@ -736,7 +736,7 @@ mindplot.MindmapDesigner.prototype._getValidSelectedObjectsIds = function(valida
         for( var j = 0; j< selectedRelationshipLines.length; j++){
             var selectedLine = selectedRelationshipLines[j];
             isValid = true;
-            if(core.Utils.isDefined(validate)){
+            if($defined(validate)){
                 isValid = validate(selectedLine);
             }
 
@@ -1047,9 +1047,9 @@ mindplot.MindmapDesigner.prototype.keyEventHandler = function(event)
 
     if (evt.keyCode == 8)
     {
-        if (core.Utils.isDefined(event))
+        if ($defined(event))
         {
-            if (core.Utils.isDefined(event.preventDefault)) {
+            if ($defined(event.preventDefault)) {
                 event.preventDefault();
             } else {
                 event.returnValue = false;

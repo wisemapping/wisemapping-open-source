@@ -156,7 +156,7 @@ mindplot.IconGroup = new Class({
     registerListeners : function() {
         this.options.nativeElem.addEventListener('click', function(event) {
             // Avoid node creation ...
-            if (core.Utils.isDefined(event.stopPropagation)) {
+            if ($defined(event.stopPropagation)) {
                 event.stopPropagation(true);
             } else {
                 event.cancelBubble = true;
@@ -165,7 +165,7 @@ mindplot.IconGroup = new Class({
         });
         this.options.nativeElem.addEventListener('dblclick', function(event) {
             // Avoid node creation ...
-            if (core.Utils.isDefined(event.stopPropagation)) {
+            if ($defined(event.stopPropagation)) {
                 event.stopPropagation(true);
             } else {
                 event.cancelBubble = true;

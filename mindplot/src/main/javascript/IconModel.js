@@ -57,7 +57,7 @@ mindplot.IconModel.prototype.isIconModel = function()
  */
 mindplot.IconModel._nextUUID = function()
 {
-    if (!core.Utils.isDefined(this._uuid))
+    if (!$defined(this._uuid))
     {
         this._uuid = 0;
     }

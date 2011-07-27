@@ -56,7 +56,7 @@ mindplot.CentralTopic.prototype.createChildModel = function(prepositionate)
     var childModel = mindmap.createNode(mindplot.NodeModel.MAIN_TOPIC_TYPE);
 
     if(prepositionate){
-        if (!core.Utils.isDefined(this.___siblingDirection))
+        if (!$defined(this.___siblingDirection))
         {
             this.___siblingDirection = 1;
         }

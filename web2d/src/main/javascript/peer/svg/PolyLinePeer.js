@@ -79,7 +79,7 @@ web2d.peer.svg.PolyLinePeer.prototype._updatePath = function()
 
 web2d.peer.svg.PolyLinePeer.prototype._updateStraightPath = function()
 {
-    if (core.Utils.isDefined(this._x1) && core.Utils.isDefined(this._x2) && core.Utils.isDefined(this._y1) && core.Utils.isDefined(this._y2))
+    if ($defined(this._x1) && $defined(this._x2) && $defined(this._y1) && $defined(this._y2))
     {
         var path = web2d.PolyLine.buildStraightPath(this.breakDistance, this._x1, this._y1, this._x2, this._y2);
         this._native.setAttribute('points', path);
@@ -92,7 +92,7 @@ web2d.peer.svg.PolyLinePeer.prototype._updateMiddleCurvePath = function()
     var y1 = this._y1;
     var x2 = this._x2;
     var y2 = this._y2;
-    if (core.Utils.isDefined(x1) && core.Utils.isDefined(x2) && core.Utils.isDefined(y1) && core.Utils.isDefined(y2))
+    if ($defined(x1) && $defined(x2) && $defined(y1) && $defined(y2))
     {
         var diff = x2 - x1;
         var middlex = (diff / 2) + x1;
@@ -113,7 +113,7 @@ web2d.peer.svg.PolyLinePeer.prototype._updateMiddleCurvePath = function()
 
 web2d.peer.svg.PolyLinePeer.prototype._updateCurvePath = function()
 {
-    if (core.Utils.isDefined(this._x1) && core.Utils.isDefined(this._x2) && core.Utils.isDefined(this._y1) && core.Utils.isDefined(this._y2))
+    if ($defined(this._x1) && $defined(this._x2) && $defined(this._y1) && $defined(this._y2))
     {
         var path = web2d.PolyLine.buildCurvedPath(this.breakDistance, this._x1, this._y1, this._x2, this._y2);
         this._native.setAttribute('points', path);

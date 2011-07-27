@@ -29,12 +29,12 @@ objects.extend(web2d.peer.svg.ElipsePeer, web2d.peer.svg.ElementPeer);
 web2d.peer.svg.ElipsePeer.prototype.setSize = function(width, height)
 {
     web2d.peer.svg.ElipsePeer.superClass.setSize.call(this, width, height);
-    if (core.Utils.isDefined(width))
+    if ($defined(width))
     {
         this._native.setAttribute('rx', width / 2);
     }
 
-    if (core.Utils.isDefined(height))
+    if ($defined(height))
     {
         this._native.setAttribute('ry', height / 2);
     }
@@ -48,12 +48,12 @@ web2d.peer.svg.ElipsePeer.prototype.setPosition = function(cx, cy)
     var size =this.getSize();
     cx =cx + size.width/2;
     cy =cy + size.height/2;
-    if (core.Utils.isDefined(cx))
+    if ($defined(cx))
     {
         this._native.setAttribute('cx', cx);
     }
 
-    if (core.Utils.isDefined(cy))
+    if ($defined(cy))
     {
         this._native.setAttribute('cy', cy);
     }

@@ -27,7 +27,7 @@ mindplot.MainTopicBoard = new Class({
 
 
     _getBoard: function() {
-        if (!core.Utils.isDefined(this._board)) {
+        if (!$defined(this._board)) {
             var topic = this._topic;
             this._board = new mindplot.FixedDistanceBoard(mindplot.MainTopicBoard.DEFAULT_MAIN_TOPIC_HEIGHT, topic, this._layoutManager);
         }
@@ -89,7 +89,7 @@ mindplot.MainTopicBoard = new Class({
 
     addBranch : function(topic) {
         var order = topic.getOrder();
-        core.assert(core.Utils.isDefined(order), "Order must be defined");
+        core.assert($defined(order), "Order must be defined");
 
         // If the entry is not available, I must swap the the entries...
         var board = this._getBoard();

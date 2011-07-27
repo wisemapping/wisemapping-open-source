@@ -30,7 +30,7 @@ mindplot.VariableDistanceBoard = new Class({
             var index = this._orderToIndex(order);
 
             var result = entries.get(index);
-            if (!core.Utils.isDefined(result)) {
+            if (!$defined(result)) {
                 // I've not found a entry. I have to create a new one.
                 var i = 1;
                 var zeroEntry = entries.get(0);
@@ -103,7 +103,7 @@ mindplot.VariableDistanceBoard = new Class({
         },
 
         lookupEntryByPosition:function(pos) {
-            core.assert(core.Utils.isDefined(pos), 'position can not be null');
+            core.assert($defined(pos), 'position can not be null');
             var entries = this._entries;
             var zeroEntry = entries.get(0);
             if (zeroEntry.isCoordinateIn(pos.y)) {
@@ -123,7 +123,7 @@ mindplot.VariableDistanceBoard = new Class({
                 // Move to the next entry ...
                 var index = i * sign;
                 var entry = entries.get(index);
-                if (core.Utils.isDefined(entry)) {
+                if ($defined(entry)) {
                     currentEntry = entry;
                 } else {
                     // Calculate boundaries...
@@ -174,16 +174,16 @@ mindplot.VariableDistanceBoard = new Class({
             var i = Math.abs(index) + 1;
             while (currentTopic) {
                 var e = entries.get(i, indexSign);
-                if (core.Utils.isDefined(currentTopic) && !core.Utils.isDefined(e)) {
+                if ($defined(currentTopic) && !$defined(e)) {
                     var entryOrder = this._indexToOrder(i * indexSign);
                     e = this.lookupEntryByOrder(entryOrder);
                 }
 
                 // Move the topic to the next entry ...
                 var topic = null;
-                if (core.Utils.isDefined(e)) {
+                if ($defined(e)) {
                     topic = e.getTopic();
-                    if (core.Utils.isDefined(currentTopic)) {
+                    if ($defined(currentTopic)) {
                         e.setTopic(currentTopic);
                     }
                     this.update(e);

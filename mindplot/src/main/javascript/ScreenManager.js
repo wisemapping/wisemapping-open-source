@@ -24,7 +24,7 @@ mindplot.ScreenManager = function(width, height, divElement)
 
 mindplot.ScreenManager.prototype.setScale = function(scale)
 {
-    core.assert(core.Utils.isDefined(scale), 'Screen scale can not be null');
+    core.assert($defined(scale), 'Screen scale can not be null');
     this._workspaceScale = scale;
 };
 

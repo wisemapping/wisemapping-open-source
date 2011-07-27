@@ -73,7 +73,7 @@ mindplot.Workspace = new Class({
     },
 
     appendChild: function(shape) {
-        if (core.Utils.isDefined(shape.addToWorkspace)) {
+        if ($defined(shape.addToWorkspace)) {
             shape.addToWorkspace(this);
         } else {
             this._workspace.appendChild(shape);
@@ -82,7 +82,7 @@ mindplot.Workspace = new Class({
 
     removeChild: function(shape) {
         // Element is a node, not a web2d element?
-        if (core.Utils.isDefined(shape.removeFromWorkspace)) {
+        if ($defined(shape.removeFromWorkspace)) {
             shape.removeFromWorkspace(this);
         } else {
             this._workspace.removeChild(shape);
@@ -152,7 +152,7 @@ mindplot.Workspace = new Class({
         var mWorkspace = this;
         var mouseDownListener = function(event)
         {
-            if (!core.Utils.isDefined(workspace.mouseMoveListener)) {
+            if (!$defined(workspace.mouseMoveListener)) {
                 if (mWorkspace.isWorkspaceEventsEnabled()) {
                     mWorkspace.enableWorkspaceEvents(false);
 

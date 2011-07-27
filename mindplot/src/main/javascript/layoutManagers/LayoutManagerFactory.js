@@ -5,7 +5,7 @@ mindplot.layoutManagers.LayoutManagerFactory.managers = {
 };
 mindplot.layoutManagers.LayoutManagerFactory.getManagerByName = function(name){
     var manager = mindplot.layoutManagers.LayoutManagerFactory.managers[name+"Manager"];
-    if(core.Utils.isDefined(manager)){
+    if($defined(manager)){
         return manager;
     }
     else{

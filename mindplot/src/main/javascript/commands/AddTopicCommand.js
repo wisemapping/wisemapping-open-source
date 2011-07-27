@@ -25,7 +25,7 @@ mindplot.commands.AddTopicCommand = new Class(
         this._model = model;
         this._parentId = parentTopicId;
         this._id = mindplot.Command._nextUUID();
-        this._animated = core.Utils.isDefined(animated)?animated:false;
+        this._animated = $defined(animated)?animated:false;
     },
     execute: function(commandContext)
     {
@@ -34,7 +34,7 @@ mindplot.commands.AddTopicCommand = new Class(
         var topic = commandContext.createTopic(this._model, !this._animated);
 
         // Connect to topic ...
-        if (core.Utils.isDefined(this._parentId))
+        if ($defined(this._parentId))
         {
             var parentTopic = commandContext.findTopics(this._parentId)[0];
             commandContext.connect(topic, parentTopic, !this._animated);

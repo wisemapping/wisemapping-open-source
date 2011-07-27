@@ -51,7 +51,7 @@ web2d.peer.svg.ArrowPeer.prototype.setStrokeWidth = function(width)
 };
 
 web2d.peer.svg.ArrowPeer.prototype.setDashed = function(isDashed, length, spacing){
-    if(core.Utils.isDefined(isDashed) && isDashed && core.Utils.isDefined(length) && core.Utils.isDefined(spacing)){
+    if($defined(isDashed) && isDashed && $defined(length) && $defined(spacing)){
         this._native.setAttribute("stroke-dasharray",length+","+spacing);
     } else {
         this._native.setAttribute("stroke-dasharray","");

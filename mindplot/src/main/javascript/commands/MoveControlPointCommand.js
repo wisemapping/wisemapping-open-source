@@ -70,7 +70,7 @@ mindplot.commands.MoveControlPointCommand = new Class(
         var model = line.getModel();
         switch (this._point){
             case 0:
-                if(core.Utils.isDefined(this._oldControlPoint)){
+                if($defined(this._oldControlPoint)){
                     line.setFrom(this._originalEndPoint.x, this._originalEndPoint.y);
                     model.setSrcCtrlPoint(this._oldControlPoint.clone());
                     line.setSrcControlPoint(this._oldControlPoint.clone());
@@ -78,7 +78,7 @@ mindplot.commands.MoveControlPointCommand = new Class(
                 }
             break;
             case 1:
-                if(core.Utils.isDefined(this._oldControlPoint)){
+                if($defined(this._oldControlPoint)){
                     line.setTo(this._originalEndPoint.x, this._originalEndPoint.y);
                     model.setDestCtrlPoint(this._oldControlPoint.clone());
                     line.setDestControlPoint(this._oldControlPoint.clone());

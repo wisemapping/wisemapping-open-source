@@ -28,7 +28,7 @@ mindplot.XMLMindmapSerializerFactory.getSerializerFromDocument = function(domDoc
 
 
 mindplot.XMLMindmapSerializerFactory.getSerializer = function(version){
-    if(!core.Utils.isDefined(version)){
+    if(!$defined(version)){
         version = mindplot.ModelCodeName.BETA;
     }
     var codeNames = mindplot.XMLMindmapSerializerFactory._codeNames;

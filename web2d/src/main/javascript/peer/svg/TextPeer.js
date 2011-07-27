@@ -45,7 +45,7 @@ web2d.peer.svg.TextPeer.prototype.setText = function(text)
 {
     text = core.Utils.escapeInvalidTags(text);
     var child = this._native.firstChild;
-    if (core.Utils.isDefined(child))
+    if ($defined(child))
     {
         this._native.removeChild(child);
     }
@@ -63,7 +63,7 @@ web2d.peer.svg.TextPeer.prototype.setPosition = function(x, y)
 {
     this._position = {x:x, y:y};
     var height = this._font.getSize();
-    if(core.Utils.isDefined(this._parent) && core.Utils.isDefined(this._native.getBBox))
+    if($defined(this._parent) && $defined(this._native.getBBox))
         height = this.getHeight();
     var size = parseInt(height);
     this._native.setAttribute('y', y+size*3/4);
@@ -78,19 +78,19 @@ web2d.peer.svg.TextPeer.prototype.getPosition = function()
 
 web2d.peer.svg.TextPeer.prototype.setFont = function(font, size, style, weight)
 {
-    if (core.Utils.isDefined(font))
+    if ($defined(font))
     {
         this._font = new web2d.Font(font, this);
     }
-    if (core.Utils.isDefined(style))
+    if ($defined(style))
     {
         this._font.setStyle(style);
     }
-    if (core.Utils.isDefined(weight))
+    if ($defined(weight))
     {
         this._font.setWeight(weight);
     }
-    if (core.Utils.isDefined(size))
+    if ($defined(size))
     {
         this._font.setSize(size);
     }

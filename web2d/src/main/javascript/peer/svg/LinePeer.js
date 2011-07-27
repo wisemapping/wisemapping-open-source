@@ -55,12 +55,12 @@ web2d.peer.svg.LinePeer.prototype.getTo = function(){
 */
 web2d.peer.svg.LinePeer.prototype.setArrowStyle = function(startStyle, endStyle)
 {
-    if (core.Utils.isDefined(startStyle))
+    if ($defined(startStyle))
     {
         // Todo: This must be implemented ...
     }
 
-    if (core.Utils.isDefined(endStyle))
+    if ($defined(endStyle))
     {
         // Todo: This must be implemented ...
     }

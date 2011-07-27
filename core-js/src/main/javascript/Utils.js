@@ -1,33 +1,40 @@
 /*
-*    Copyright [2011] [wisemapping]
-*
-*   Licensed under WiseMapping Public License, Version 1.0 (the "License").
-*   It is basically the Apache License, Version 2.0 (the "License") plus the
-*   "powered by wisemapping" text requirement on every single page;
-*   you may not use this file except in compliance with the License.
-*   You may obtain a copy of the license at
-*
-*       http://www.wisemapping.org/license
-*
-*   Unless required by applicable law or agreed to in writing, software
-*   distributed under the License is distributed on an "AS IS" BASIS,
-*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*   See the License for the specific language governing permissions and
-*   limitations under the License.
+ *    Copyright [2011] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
  */
 
 core.Utils =
 {
-    isDefined: function(val)
-    {
-        return val !== null && val !== undefined && typeof val !="undefined";
-    },
-    escapeInvalidTags: function (text)
-    {
+    escapeInvalidTags: function (text) {
         //todo:Pablo. scape invalid tags in a text
         return text;
     }
 };
+
+/*
+ Function: $defined
+ Returns true if the passed in value/object is defined, that means is not null or undefined.
+
+ Arguments:
+ obj - object to inspect
+ */
+function $defined(obj) {
+    return (obj != undefined);
+}
+;
 
 /**
  * http://kevlindev.com/tutorials/javascript/inheritance/index.htm
@@ -51,16 +58,12 @@ objects.extend = function(subClass, baseClass) {
     subClass.superClass = baseClass.prototype;
 };
 
-core.assert = function(assert, message)
-{
-    if (!assert)
-    {
+core.assert = function(assert, message) {
+    if (!assert) {
         var stack;
-        try
-        {
+        try {
             null.eval();
-        } catch(e)
-        {
+        } catch(e) {
             stack = e;
         }
         wLogger.error(message + "," + stack);
@@ -70,8 +73,7 @@ core.assert = function(assert, message)
 };
 
 
-Math.sign = function(value)
-{
+Math.sign = function(value) {
     return (value >= 0) ? 1 : -1;
 };
 
@@ -87,13 +89,12 @@ function $import(src) {
 /**
  *  Retrieve the mouse position.
  */
-core.Utils.getMousePosition = function(event)
-{
+core.Utils.getMousePosition = function(event) {
     var xcoord = -1;
     var ycoord = -1;
 
-    if (!core.Utils.isDefined(event)) {
-        if (core.Utils.isDefined(window.event)) {
+    if (!$defined(event)) {
+        if ($defined(window.event)) {
             //Internet Explorer
             event = window.event;
         } else {
@@ -101,7 +102,7 @@ core.Utils.getMousePosition = function(event)
             throw "Could not obtain mouse position";
         }
     }
-    if(core.Utils.isDefined(event.$extended)){
+    if ($defined(event.$extended)) {
         event = event.event;
     }
     if (typeof( event.pageX ) == 'number') {
@@ -114,8 +115,8 @@ core.Utils.getMousePosition = function(event)
         xcoord = event.clientX;
         ycoord = event.clientY;
         var badOldBrowser = ( window.navigator.userAgent.indexOf('Opera') + 1 ) ||
-                            ( window.ScriptEngine && ScriptEngine().indexOf('InScript') + 1 ) ||
-                            ( navigator.vendor == 'KDE' );
+            ( window.ScriptEngine && ScriptEngine().indexOf('InScript') + 1 ) ||
+            ( navigator.vendor == 'KDE' );
         if (!badOldBrowser) {
             if (document.body && ( document.body.scrollLeft || document.body.scrollTop )) {
                 //IE 4, 5 & 6 (in non-standards compliant mode)
@@ -139,11 +140,10 @@ core.Utils.getMousePosition = function(event)
 /**
  * Calculate the position of the passed element.
  */
-core.Utils.workOutDivElementPosition = function(divElement)
-{
+core.Utils.workOutDivElementPosition = function(divElement) {
     var curleft = 0;
     var curtop = 0;
-    if (core.Utils.isDefined(divElement.offsetParent)) {
+    if ($defined(divElement.offsetParent)) {
         curleft = divElement.offsetLeft;
         curtop = divElement.offsetTop;
         while (divElement = divElement.offsetParent) {
@@ -158,13 +158,13 @@ core.Utils.workOutDivElementPosition = function(divElement)
 core.Utils.innerXML = function(/*Node*/node) {
     //	summary:
     //		Implementation of MS's innerXML function.
-    if (core.Utils.isDefined(node.innerXML)) {
+    if ($defined(node.innerXML)) {
         return node.innerXML;
         //	string
-    } else if (core.Utils.isDefined(node.xml)) {
+    } else if ($defined(node.xml)) {
         return node.xml;
         //	string
-    } else if (core.Utils.isDefined(XMLSerializer)) {
+    } else if ($defined(XMLSerializer)) {
         return (new XMLSerializer()).serializeToString(node);
         //	string
     }
@@ -175,7 +175,7 @@ core.Utils.createDocument = function() {
     //		cross-browser implementation of creating an XML document object.
     var doc = null;
     var _document = window.document;
-    if (core.Utils.isDefined(window.ActiveXObject)) {
+    if ($defined(window.ActiveXObject)) {
         var prefixes = [ "MSXML2", "Microsoft", "MSXML", "MSXML3" ];
         for (var i = 0; i < prefixes.length; i++) {
             try {
@@ -184,12 +184,12 @@ core.Utils.createDocument = function() {
             }
             ;
 
-            if (core.Utils.isDefined(doc)) {
+            if ($defined(doc)) {
                 break;
             }
         }
     } else if ((_document.implementation) &&
-               (_document.implementation.createDocument)) {
+        (_document.implementation.createDocument)) {
         doc = _document.implementation.createDocument("", "", null);
     }
 
@@ -201,17 +201,16 @@ core.Utils.createDocumentFromText = function(/*string*/str, /*string?*/mimetype)
     //	summary:
     //		attempts to create a Document object based on optional mime-type,
     //		using str as the contents of the document
-    if (!core.Utils.isDefined(mimetype)) {
+    if (!$defined(mimetype)) {
         mimetype = "text/xml";
     }
-    if (core.Utils.isDefined(window.DOMParser))
-    {
+    if ($defined(window.DOMParser)) {
         var parser = new DOMParser();
         return parser.parseFromString(str, mimetype);
         //	DOMDocument
-    } else if (core.Utils.isDefined(window.ActiveXObject)) {
+    } else if ($defined(window.ActiveXObject)) {
         var domDoc = core.Utils.createDocument();
-        if (core.Utils.isDefined(domDoc)) {
+        if ($defined(domDoc)) {
             domDoc.async = false;
             domDoc.loadXML(str);
             return domDoc;
@@ -221,153 +220,152 @@ core.Utils.createDocumentFromText = function(/*string*/str, /*string?*/mimetype)
     return null;
 };
 
-core.Utils.calculateRelationShipPointCoordinates = function(topic,controlPoint){
+core.Utils.calculateRelationShipPointCoordinates = function(topic, controlPoint) {
     var size = topic.getSize();
     var position = topic.getPosition();
-    var m = (position.y-controlPoint.y)/(position.x-controlPoint.x);
+    var m = (position.y - controlPoint.y) / (position.x - controlPoint.x);
     var y,x;
     var gap = 5;
-    if(controlPoint.y>position.y+(size.height/2)){
-        y = position.y+(size.height/2)+gap;
-        x = position.x-((position.y-y)/m);
-        if(x>position.x+(size.width/2)){
-            x=position.x+(size.width/2);
-        }else if(x<position.x-(size.width/2)){
-            x=position.x-(size.width/2);
+    if (controlPoint.y > position.y + (size.height / 2)) {
+        y = position.y + (size.height / 2) + gap;
+        x = position.x - ((position.y - y) / m);
+        if (x > position.x + (size.width / 2)) {
+            x = position.x + (size.width / 2);
+        } else if (x < position.x - (size.width / 2)) {
+            x = position.x - (size.width / 2);
         }
-    }else if(controlPoint.y<position.y-(size.height/2)){
-        y = position.y-(size.height/2) - gap;
-        x = position.x-((position.y-y)/m);
-        if(x>position.x+(size.width/2)){
-            x=position.x+(size.width/2);
-        }else if(x<position.x-(size.width/2)){
-            x=position.x-(size.width/2);
+    } else if (controlPoint.y < position.y - (size.height / 2)) {
+        y = position.y - (size.height / 2) - gap;
+        x = position.x - ((position.y - y) / m);
+        if (x > position.x + (size.width / 2)) {
+            x = position.x + (size.width / 2);
+        } else if (x < position.x - (size.width / 2)) {
+            x = position.x - (size.width / 2);
         }
-    }else if(controlPoint.x<(position.x-size.width/2)){
-        x = position.x-(size.width/2) -gap;
-        y = position.y-(m*(position.x-x));
-    }else{
-        x = position.x+(size.width/2) + gap;
-        y = position.y-(m*(position.x-x));
+    } else if (controlPoint.x < (position.x - size.width / 2)) {
+        x = position.x - (size.width / 2) - gap;
+        y = position.y - (m * (position.x - x));
+    } else {
+        x = position.x + (size.width / 2) + gap;
+        y = position.y - (m * (position.x - x));
     }
 
-    return new core.Point(x,y);
+    return new core.Point(x, y);
 };
 
-core.Utils.calculateDefaultControlPoints = function(srcPos, tarPos){
-    var y = srcPos.y-tarPos.y;
-    var x = srcPos.x-tarPos.x;
-    var m = y/x;
-    var l = Math.sqrt(y*y+x*x)/3;
-    var fix=1;
-    if(srcPos.x>tarPos.x){
-        fix=-1;
+core.Utils.calculateDefaultControlPoints = function(srcPos, tarPos) {
+    var y = srcPos.y - tarPos.y;
+    var x = srcPos.x - tarPos.x;
+    var m = y / x;
+    var l = Math.sqrt(y * y + x * x) / 3;
+    var fix = 1;
+    if (srcPos.x > tarPos.x) {
+        fix = -1;
     }
-    
-    var x1 = srcPos.x + Math.sqrt(l*l/(1+(m*m)))*fix;
-    var y1 = m*(x1-srcPos.x)+srcPos.y;
-    var x2 = tarPos.x + Math.sqrt(l*l/(1+(m*m)))*fix*-1;
-    var y2= m*(x2-tarPos.x)+tarPos.y;
 
-    return [new core.Point(-srcPos.x + x1,-srcPos.y + y1),new core.Point(-tarPos.x + x2,-tarPos.y + y2)];
+    var x1 = srcPos.x + Math.sqrt(l * l / (1 + (m * m))) * fix;
+    var y1 = m * (x1 - srcPos.x) + srcPos.y;
+    var x2 = tarPos.x + Math.sqrt(l * l / (1 + (m * m))) * fix * -1;
+    var y2 = m * (x2 - tarPos.x) + tarPos.y;
+
+    return [new core.Point(-srcPos.x + x1, -srcPos.y + y1),new core.Point(-tarPos.x + x2, -tarPos.y + y2)];
 };
 
-core.Utils.setVisibilityAnimated = function(elems, isVisible, doneFn){
+core.Utils.setVisibilityAnimated = function(elems, isVisible, doneFn) {
     core.Utils.animateVisibility(elems, isVisible, doneFn);
 };
-core.Utils.setChildrenVisibilityAnimated = function(rootElem, isVisible){
+core.Utils.setChildrenVisibilityAnimated = function(rootElem, isVisible) {
     var children = core.Utils._addInnerChildrens(rootElem);
     core.Utils.animateVisibility(children, isVisible);
 };
 
-core.Utils.animateVisibility = function (elems, isVisible, doneFn){
-    var _fadeEffect=null;
-    var _opacity = (isVisible?0:1);
-    if(isVisible){
-        elems.forEach(function(child, index){
-                if(core.Utils.isDefined(child)){
-                    child.setOpacity(_opacity);
-                    child.setVisibility(isVisible);
-                }
-            });
+core.Utils.animateVisibility = function (elems, isVisible, doneFn) {
+    var _fadeEffect = null;
+    var _opacity = (isVisible ? 0 : 1);
+    if (isVisible) {
+        elems.forEach(function(child, index) {
+            if ($defined(child)) {
+                child.setOpacity(_opacity);
+                child.setVisibility(isVisible);
+            }
+        });
     }
-    var fadeEffect = function(index)
-    {
+    var fadeEffect = function(index) {
         var step = 10;
-        if((_opacity<=0 && !isVisible) || (_opacity>=1 && isVisible)){
+        if ((_opacity <= 0 && !isVisible) || (_opacity >= 1 && isVisible)) {
             $clear(_fadeEffect);
             _fadeEffect = null;
-            elems.forEach(function(child, index){
-                if(core.Utils.isDefined(child)){
+            elems.forEach(function(child, index) {
+                if ($defined(child)) {
                     child.setVisibility(isVisible);
                 }
 
             });
-            if(core.Utils.isDefined(doneFn))
+            if ($defined(doneFn))
                 doneFn.attempt();
         }
-        else{
+        else {
             var fix = 1;
-            if(isVisible){
+            if (isVisible) {
                 fix = -1;
             }
-            _opacity-=(1/step)*fix;
-            elems.forEach(function(child, index){
-                if(core.Utils.isDefined(child)){
+            _opacity -= (1 / step) * fix;
+            elems.forEach(function(child, index) {
+                if ($defined(child)) {
                     child.setOpacity(_opacity);
                 }
             });
         }
 
     };
-    _fadeEffect =fadeEffect.periodical(10);
+    _fadeEffect = fadeEffect.periodical(10);
 };
 
-core.Utils.animatePosition = function (elems, doneFn, designer){
+core.Utils.animatePosition = function (elems, doneFn, designer) {
     var _moveEffect = null;
     var i = 10;
     var step = 10;
-    var moveEffect = function (){
-        if(i>0){
+    var moveEffect = function () {
+        if (i > 0) {
             var keys = elems.keys();
-            for(var j = 0; j<keys.length; j++){
+            for (var j = 0; j < keys.length; j++) {
                 var id = keys[j];
                 var mod = elems.get(id);
                 var allTopics = designer._getTopics();
-                var currentTopic = allTopics.filter(function(node){
-                    return node.getId()== id;
+                var currentTopic = allTopics.filter(function(node) {
+                    return node.getId() == id;
                 })[0];
-                var xStep= (mod.originalPos.x -mod.newPos.x)/step;
-                var yStep= (mod.originalPos.y -mod.newPos.y)/step;
+                var xStep = (mod.originalPos.x - mod.newPos.x) / step;
+                var yStep = (mod.originalPos.y - mod.newPos.y) / step;
                 var newPos = currentTopic.getPosition().clone();
-                newPos.x +=xStep;
-                newPos.y +=yStep;
+                newPos.x += xStep;
+                newPos.y += yStep;
                 currentTopic.setPosition(newPos, false);
             }
         } else {
             $clear(_moveEffect);
             var keys = elems.keys();
-            for(var j = 0; j<keys.length; j++){
+            for (var j = 0; j < keys.length; j++) {
                 var id = keys[j];
                 var mod = elems.get(id);
                 var allTopics = designer._getTopics();
-                var currentTopic = allTopics.filter(function(node){
-                    return node.getId()== id;
+                var currentTopic = allTopics.filter(function(node) {
+                    return node.getId() == id;
                 })[0];
                 currentTopic.setPosition(mod.originalPos, false);
             }
-            if(core.Utils.isDefined(doneFn))
+            if ($defined(doneFn))
                 doneFn.attempt();
         }
         i--;
     };
-    _moveEffect =moveEffect.periodical(10);
+    _moveEffect = moveEffect.periodical(10);
 };
 
-core.Utils._addInnerChildrens = function(elem){
+core.Utils._addInnerChildrens = function(elem) {
     var children = [];
     var childs = elem._getChildren();
-    for(var i = 0 ; i<childs.length; i++){
+    for (var i = 0; i < childs.length; i++) {
         var child = childs[i];
         children.push(child);
         children.push(child.getOutgoingLine());

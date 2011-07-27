@@ -114,7 +114,7 @@ mindplot.CommandContext = new Class({
         var result = [];
         lineIds.forEach(function(lineId, index) {
             var line = this._designer._relationships[lineId];
-            if (core.Utils.isDefined(line)) {
+            if ($defined(line)) {
                 result.push(line);
             }
         }.bind(this));

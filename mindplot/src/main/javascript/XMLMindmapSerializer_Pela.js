@@ -30,12 +30,12 @@ mindplot.XMLMindmapSerializer_Pela.prototype.toXML = function(mindmap)
     // Store map attributes ...
     var mapElem = document.createElement("map");
     var name = mindmap.getId();
-    if (core.Utils.isDefined(name))
+    if ($defined(name))
     {
         mapElem.setAttribute('name', name);
     }
     var version = mindmap.getVersion();
-    if (core.Utils.isDefined(version))
+    if ($defined(version))
     {
         mapElem.setAttribute('version', version);
     }
@@ -88,12 +88,12 @@ mindplot.XMLMindmapSerializer_Pela.prototype._topicToXML = function(document, to
     }
 
     var text = topic.getText();
-    if (core.Utils.isDefined(text)) {
+    if ($defined(text)) {
         parentTopic.setAttribute('text', text);
     }
 
     var shape = topic.getShapeType();
-    if (core.Utils.isDefined(shape)) {
+    if ($defined(shape)) {
         parentTopic.setAttribute('shape', shape);
     }
 
@@ -123,19 +123,19 @@ mindplot.XMLMindmapSerializer_Pela.prototype._topicToXML = function(document, to
     var fontStyle = topic.getFontStyle();
     font += (fontStyle ? fontStyle : '') + ';';
 
-    if (core.Utils.isDefined(fontFamily) || core.Utils.isDefined(fontSize) || core.Utils.isDefined(fontColor)
-            || core.Utils.isDefined(fontWeight) || core.Utils.isDefined(fontStyle))
+    if ($defined(fontFamily) || $defined(fontSize) || $defined(fontColor)
+            || $defined(fontWeight) || $defined(fontStyle))
     {
         parentTopic.setAttribute('fontStyle', font);
     }
 
     var bgColor = topic.getBackgroundColor();
-    if (core.Utils.isDefined(bgColor)) {
+    if ($defined(bgColor)) {
         parentTopic.setAttribute('bgColor', bgColor);
     }
 
     var brColor = topic.getBorderColor();
-    if (core.Utils.isDefined(brColor)) {
+    if ($defined(brColor)) {
         parentTopic.setAttribute('brColor', brColor);
     }
 
@@ -206,11 +206,11 @@ mindplot.XMLMindmapSerializer_Pela.prototype._relationshipToXML = function(docum
     var lineType = relationship.getLineType();
     relationDom.setAttribute("lineType",lineType);
     if(lineType==mindplot.ConnectionLine.CURVED || lineType==mindplot.ConnectionLine.SIMPLE_CURVED){
-        if(core.Utils.isDefined(relationship.getSrcCtrlPoint())){
+        if($defined(relationship.getSrcCtrlPoint())){
             var srcPoint = relationship.getSrcCtrlPoint();
             relationDom.setAttribute("srcCtrlPoint",srcPoint.x+","+srcPoint.y);
         }
-        if(core.Utils.isDefined(relationship.getDestCtrlPoint())){
+        if($defined(relationship.getDestCtrlPoint())){
             var destPoint = relationship.getDestCtrlPoint();
             relationDom.setAttribute("destCtrlPoint",destPoint.x+","+destPoint.y);
         }
@@ -263,7 +263,7 @@ mindplot.XMLMindmapSerializer_Pela.prototype._deserializeNode = function(domElem
     var type = (domElem.getAttribute('central') != null) ? mindplot.NodeModel.CENTRAL_TOPIC_TYPE : mindplot.NodeModel.MAIN_TOPIC_TYPE;
     // Load attributes...
     var id = domElem.getAttribute('id');
-    if(core.Utils.isDefined(id)) {
+    if($defined(id)) {
         id=parseInt(id);
     }
 
@@ -276,28 +276,28 @@ mindplot.XMLMindmapSerializer_Pela.prototype._deserializeNode = function(domElem
     var topic = mindmap.createNode(type, id);
 
     var text = domElem.getAttribute('text');
-    if (core.Utils.isDefined(text)) {
+    if ($defined(text)) {
         topic.setText(text);
     }
 
     var order = domElem.getAttribute('order');
-    if (core.Utils.isDefined(order)) {
+    if ($defined(order)) {
         topic.setOrder(parseInt(order));
     }
 
     var shape = domElem.getAttribute('shape');
-    if (core.Utils.isDefined(shape)) {
+    if ($defined(shape)) {
         topic.setShapeType(shape);
     }
 
     var isShrink = domElem.getAttribute('shrink');
-    if(core.Utils.isDefined(isShrink))
+    if($defined(isShrink))
     {
         topic.setChildrenShrinked(isShrink);
     }
 
     var fontStyle = domElem.getAttribute('fontStyle');
-    if (core.Utils.isDefined(fontStyle)) {
+    if ($defined(fontStyle)) {
         var font = fontStyle.split(';');
 
         if (font[0])
@@ -327,17 +327,17 @@ mindplot.XMLMindmapSerializer_Pela.prototype._deserializeNode = function(domElem
     }
 
     var bgColor = domElem.getAttribute('bgColor');
-    if (core.Utils.isDefined(bgColor)) {
+    if ($defined(bgColor)) {
         topic.setBackgroundColor(bgColor);
     }
 
     var borderColor = domElem.getAttribute('brColor');
-    if (core.Utils.isDefined(borderColor)) {
+    if ($defined(borderColor)) {
         topic.setBorderColor(borderColor);
     }
 
     var position = domElem.getAttribute('position');
-    if (core.Utils.isDefined(position)) {
+    if ($defined(position)) {
         var pos = position.split(',');
         topic.setPosition(pos[0], pos[1]);
         topic.setFinalPosition(pos[0], pos[1]);
@@ -400,10 +400,10 @@ mindplot.XMLMindmapSerializer_Pela.prototype._deserializeRelationship = function
     }
     var model = mindmap.createRelationship(srcId,  destId);
     model.setLineType(lineType);
-    if(core.Utils.isDefined(srcCtrlPoint) && srcCtrlPoint!=""){
+    if($defined(srcCtrlPoint) && srcCtrlPoint!=""){
         model.setSrcCtrlPoint(core.Point.fromString(srcCtrlPoint));
     }
-    if(core.Utils.isDefined(destCtrlPoint) && destCtrlPoint!=""){
+    if($defined(destCtrlPoint) && destCtrlPoint!=""){
         model.setDestCtrlPoint(core.Point.fromString(destCtrlPoint));
     }
     model.setEndArrow(endArrow=="true");

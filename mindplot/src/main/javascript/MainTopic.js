@@ -120,7 +120,7 @@ mindplot.MainTopic.prototype.updateTopicShape = function(targetTopic, workspace)
     var shapeType = model.getShapeType();
     if (targetTopic.getType() != mindplot.NodeModel.CENTRAL_TOPIC_TYPE)
     {
-        if (!core.Utils.isDefined(shapeType))
+        if (!$defined(shapeType))
         {
             // Get the real shape type ...
             shapeType = this.getShapeType();
@@ -139,7 +139,7 @@ mindplot.MainTopic.prototype.disconnect = function(workspace)
 
     var model = this.getModel();
     var shapeType = model.getShapeType();
-    if (!core.Utils.isDefined(shapeType))
+    if (!$defined(shapeType))
     {
         // Change figure ...
         shapeType = this.getShapeType();
@@ -163,7 +163,7 @@ mindplot.MainTopic.prototype._updatePositionOnChangeSize = function(oldSize, new
     else{
         var xOffset = Math.round((newSize.width - oldSize.width) / 2);
         var pos = this.getPosition();
-        if (core.Utils.isDefined(pos))
+        if ($defined(pos))
         {
             if (pos.x > 0)
             {
@@ -277,7 +277,7 @@ mindplot.MainTopic.prototype._defaultText = function()
 {
     var targetTopic = this.getOutgoingConnectedTopic();
     var result = "";
-    if (core.Utils.isDefined(targetTopic))
+    if ($defined(targetTopic))
     {
         if (targetTopic.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE)
         {
@@ -297,7 +297,7 @@ mindplot.MainTopic.prototype._defaultFontStyle = function()
 {
     var targetTopic = this.getOutgoingConnectedTopic();
     var result;
-    if (core.Utils.isDefined(targetTopic))
+    if ($defined(targetTopic))
     {
         if (targetTopic.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE)
         {

@@ -86,7 +86,7 @@ mindplot.RichTextEditor = mindplot.TextEditor.extend({
             }
         }.bind(this);
         _animEffect = effect.periodical(10);
-        $(this.inputText).value = core.Utils.isDefined(this.initialText)&& this.initialText!=""? this.initialText: node.getText();
+        $(this.inputText).value = $defined(this.initialText)&& this.initialText!=""? this.initialText: node.getText();
         this._editor = new nicEditor({iconsPath: '../images/nicEditorIcons.gif', buttonList : ['bold','italic','underline','removeformat','forecolor', 'fontSize', 'fontFamily', 'xhtml']}).panelInstance("inputText2");
     },
     init:function(node){

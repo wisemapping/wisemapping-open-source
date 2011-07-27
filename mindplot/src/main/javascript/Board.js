@@ -66,8 +66,8 @@ mindplot.BidirectionalArray = new Class({
     },
 
     get :function(index, sign) {
-        core.assert(core.Utils.isDefined(index), 'Illegal argument, index must be passed.');
-        if (core.Utils.isDefined(sign)) {
+        core.assert($defined(index), 'Illegal argument, index must be passed.');
+        if ($defined(sign)) {
             core.assert(index >= 0, 'Illegal absIndex value');
             index = index * sign;
         }
@@ -82,14 +82,14 @@ mindplot.BidirectionalArray = new Class({
     },
 
     set : function(index, elem) {
-        core.assert(core.Utils.isDefined(index), 'Illegal index value');
+        core.assert($defined(index), 'Illegal index value');
 
         var array = (index >= 0) ? this._rightElem : this._leftElem;
         array[Math.abs(index)] = elem;
     },
 
     length : function(index) {
-        core.assert(core.Utils.isDefined(index), 'Illegal index value');
+        core.assert($defined(index), 'Illegal index value');
         return (index >= 0) ? this._rightElem.length : this._leftElem.length;
     },
 

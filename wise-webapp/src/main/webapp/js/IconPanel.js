@@ -17,7 +17,7 @@
 */
 
 var IconPanel = new Class({
-    Extends:Options,
+    Implements:[Options,Events],
     options:{
         width:253,
         initialWidth:0,
@@ -28,16 +28,19 @@ var IconPanel = new Class({
         onStart:Class.empty,
         state:'close'
     },
+
     initialize:function(options){
         this.setOptions(options);
-        if($chk(this.options.button))
+        if($defined(this.options.button))
         {
             this.init();
         }
     },
+
     setButton:function(button){
         this.options.button=button;
     },
+
     init:function(){
         var panel = new Element('div');
         var coord = this.options.button.getCoordinates();
@@ -54,25 +57,28 @@ var IconPanel = new Class({
         panel.inject($(document.body));
         this.registerOpenPanel();
     },
+
     open:function(){
         if(this.options.state=='close')
         {
-            if(!$chk(this.options.panel))
+            if(!$defined(this.options.panel))
             {
                 this.init();
             }
             var panel = this.options.panel;
-            var options = this.options;
             panel.setStyles({border: '1px solid #636163', opacity:100});
             this.fireEvent('onStart');
+
             var fx = panel.effects({duration:500, onComplete:function(){
                 this.registerClosePanel();
             }.bind(this)});
+
             fx.start({'height':[0,this.options.height], 'width':[this.options.initialWidth, this.options.width]});
             this.options.state='open';
 
         }
     },
+
     close:function(){
         if(this.options.state=='open')
         {
@@ -84,12 +90,14 @@ var IconPanel = new Class({
             this.options.state = 'close';
         }
     },
+
     registerOpenPanel:function(){
         this.options.button.removeEvents('click');
         this.options.button.addEvent('click',function(event){
             this.open();
         }.bindWithEvent(this));
     },
+
     registerClosePanel:function(){
         this.options.button.removeEvents('click');
         this.options.button.addEvent('click', function(event){

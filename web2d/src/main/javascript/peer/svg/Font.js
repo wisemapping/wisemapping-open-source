@@ -25,15 +25,15 @@ web2d.peer.svg.Font = function()
 
 web2d.peer.svg.Font.prototype.init = function(args)
 {
-    if (core.Utils.isDefined(args.size))
+    if ($defined(args.size))
     {
         this._size = parseInt(args.size);
     }
-    if (core.Utils.isDefined(args.style))
+    if ($defined(args.style))
     {
         this._style = args.style;
     }
-    if (core.Utils.isDefined(args.weight))
+    if ($defined(args.weight))
     {
         this._weight = args.weight;
     }

@@ -47,7 +47,7 @@ mindplot.commands.DragTopicCommand = new Class(
 //        }
 
         // Disconnect topic ..
-        if (core.Utils.isDefined(origParentTopic))
+        if ($defined(origParentTopic))
         {
             commandContext.disconnect(topic);
         }
@@ -70,7 +70,7 @@ mindplot.commands.DragTopicCommand = new Class(
         this._position = origPosition;
 
         // Finally, connect topic ...
-        if (core.Utils.isDefined(this._parentId))
+        if ($defined(this._parentId))
         {
             var parentTopic = commandContext.findTopics([this._parentId])[0];
             commandContext.connect(topic, parentTopic);
@@ -78,7 +78,7 @@ mindplot.commands.DragTopicCommand = new Class(
 
         // Backup old parent id ...
         this._parentId = null;
-        if (core.Utils.isDefined(origParentTopic))
+        if ($defined(origParentTopic))
         {
             this._parentId = origParentTopic.getId();
         }

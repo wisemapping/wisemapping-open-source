@@ -29,8 +29,8 @@ mindplot.NodeModel = new Class({
         this._notes = [];
         this._size = {width:50,height:20};
         this._position = null;
-        if (core.Utils.isDefined(id)) {
-            if (!core.Utils.isDefined(mindplot.NodeModel._uuid) || id > mindplot.NodeModel._uuid) {
+        if ($defined(id)) {
+            if (!$defined(mindplot.NodeModel._uuid) || id > mindplot.NodeModel._uuid) {
                 mindplot.NodeModel._uuid = id;
             }
             this._id = id;
@@ -183,10 +183,10 @@ mindplot.NodeModel = new Class({
     },
 
     setPosition  : function(x, y) {
-        core.assert(core.Utils.isDefined(x), "x coordinate must be defined");
-        core.assert(core.Utils.isDefined(y), "y coordinate must be defined");
+        core.assert($defined(x), "x coordinate must be defined");
+        core.assert($defined(y), "y coordinate must be defined");
 
-        if (!core.Utils.isDefined(this._position)) {
+        if (!$defined(this._position)) {
             this._position = new core.Point();
         }
         this._position.x = parseInt(x);
@@ -198,10 +198,10 @@ mindplot.NodeModel = new Class({
     },
 
     setFinalPosition  : function(x, y) {
-        core.assert(core.Utils.isDefined(x), "x coordinate must be defined");
-        core.assert(core.Utils.isDefined(y), "y coordinate must be defined");
+        core.assert($defined(x), "x coordinate must be defined");
+        core.assert($defined(y), "y coordinate must be defined");
 
-        if (!core.Utils.isDefined(this._finalPosition)) {
+        if (!$defined(this._finalPosition)) {
             this._finalPosition = new core.Point();
         }
         this._finalPosition.x = parseInt(x);
@@ -253,7 +253,7 @@ mindplot.NodeModel = new Class({
     canBeConnected  : function(sourceModel, sourcePosition, targetTopicHeight) {
         core.assert(sourceModel != this, 'The same node can not be parent and child if itself.');
         core.assert(sourcePosition, 'childPosition can not be null.');
-        core.assert(core.Utils.isDefined(targetTopicHeight), 'childrenWidth can not be null.');
+        core.assert($defined(targetTopicHeight), 'childrenWidth can not be null.');
 
         // Only can be connected if the node is in the left or rigth.
         var targetModel = this;
@@ -412,7 +412,7 @@ mindplot.NodeModel = new Class({
         }
 
         var parent = this._parent;
-        if (core.Utils.isDefined(parent)) {
+        if ($defined(parent)) {
             // if it is connected, I must remove it from the parent..
             mindmap.disconnect(this);
         }
@@ -443,7 +443,7 @@ mindplot.NodeModel.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE = 220;
  * @todo: This method must be implemented.
  */
 mindplot.NodeModel._nextUUID = function() {
-    if (!core.Utils.isDefined(this._uuid)) {
+    if (!$defined(this._uuid)) {
         this._uuid = 0;
     }
 

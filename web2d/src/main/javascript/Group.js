@@ -37,7 +37,7 @@ objects.extend(web2d.Group, web2d.Element);
  */
 web2d.Group.prototype.removeChild = function(element)
 {
-    if (!core.Utils.isDefined(element))
+    if (!$defined(element))
     {
         throw "Child element can not be null";
     }
@@ -61,7 +61,7 @@ web2d.Group.prototype.removeChild = function(element)
  */
 web2d.Group.prototype.appendChild = function(element)
 {
-    if (!core.Utils.isDefined(element))
+    if (!$defined(element))
     {
         throw "Child element can not be null";
     }
@@ -144,7 +144,7 @@ web2d.Group.prototype.getCoordSize = function()
 
 web2d.Group.prototype.appendDomChild = function(DomElement)
 {
-        if (!core.Utils.isDefined(DomElement))
+        if (!$defined(DomElement))
     {
         throw "Child element can not be null";
     }

@@ -39,7 +39,7 @@ mindplot.util.Shape =
     {
         core.assert(rectCenterPoint, 'rectCenterPoint can  not be null');
         core.assert(rectSize, 'rectSize can  not be null');
-        core.assert(core.Utils.isDefined(isAtRight), 'isRight can  not be null');
+        core.assert($defined(isAtRight), 'isRight can  not be null');
 
         // Node is placed at the right ?
         var result = new core.Point();
@@ -68,7 +68,7 @@ mindplot.util.Shape =
         var y = sPos.y - tPos.y;
 
         var gradient = 0;
-        if (core.Utils.isDefined(x))
+        if ($defined(x))
         {
             gradient = y / x;
         }
