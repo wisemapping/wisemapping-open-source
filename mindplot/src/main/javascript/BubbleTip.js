@@ -29,7 +29,7 @@ mindplot.BubbleTip = new Class({
             height:null,
             form:null
         };
-        if ($chk(this.options.form))
+        if ($defined(this.options.form))
             this.scanElements(this.options.form);
         this.buildBubble();
         this._isMouseOver = false;
@@ -46,14 +46,14 @@ mindplot.BubbleTip = new Class({
         var opts = this.options;
 
         var panel = new Element('div').addClass('bubbleContainer');
-        if ($chk(opts.height))
+        if ($defined(opts.height))
             panel.setStyle('height', opts.height);
-        if ($chk(opts.width))
+        if ($defined(opts.width))
             panel.setStyle('width', opts.width);
 
         this.center = new Element('div').addClass('bubblePart').addClass('bubbleCenterBlue');
         this.center.inject(panel);
-        if (!$chk(opts.divContainer)) {
+        if (!$defined(opts.divContainer)) {
             opts.divContainer = document.body;
         }
         panel.injectTop(opts.divContainer);
@@ -76,7 +76,7 @@ mindplot.BubbleTip = new Class({
         this.doOpen.delay(500, this, [content,source]);
     },
     doOpen : function(content, source) {
-        if ($chk(this._isMouseOver) && !$chk(this._open) && !$chk(this._opening)) {
+        if ($defined(this._isMouseOver) && !$defined(this._open) && !$defined(this._opening)) {
             this._opening = true;
             var container = new Element('div');
             $(content).inject(container);
@@ -99,10 +99,10 @@ mindplot.BubbleTip = new Class({
     },
     doClose : function(event) {
 
-        if (!$chk(this._isMouseOver) && $chk(this._opening))
+        if (!$defined(this._isMouseOver) && $defined(this._opening))
             this.doClose.delay(500, this, this._evt);
 
-        if (!$chk(this._isMouseOver) && $chk(this._open)) {
+        if (!$defined(this._isMouseOver) && $defined(this._open)) {
             this.forceClose();
         }
     },
@@ -139,9 +139,9 @@ mindplot.BubbleTip = new Class({
     },
     moveTopic : function(offset, panelHeight, panelWidth, invert, invertX) {
         var f = 1, fX = 1;
-        if ($chk(invert))
+        if ($defined(invert))
             f = 0;
-        if ($chk(invertX))
+        if ($defined(invertX))
             fX = 0;
         var opts = this.options;
         $(opts.panel).setStyles({left:offset.x - (panelWidth * fX), top:offset.y - (panelHeight * f)});

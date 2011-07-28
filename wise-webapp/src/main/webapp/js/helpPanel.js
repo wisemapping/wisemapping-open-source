@@ -38,7 +38,7 @@ var Panel = new Class({
     buildBody:function(){
         var opts = this.options;
         opts.frame = new Element('div');
-        if($chk(opts.content))
+        if($defined(opts.content))
         {
             this.setContent(opts.content);
         }

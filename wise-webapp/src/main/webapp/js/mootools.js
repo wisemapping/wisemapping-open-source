@@ -204,7 +204,7 @@ Arguments:
 	obj - object to inspect
 */
 
-function $chk(obj) {
+function $defined(obj) {
     return !!(obj || obj === 0);
 }
 ;
@@ -1445,7 +1445,7 @@ Function.extend({
             'periodical': false,
             'attempt': false
         }, options);
-        if ($chk(options.arguments) && $type(options.arguments) != 'array') options.arguments = [options.arguments];
+        if ($defined(options.arguments) && $type(options.arguments) != 'array') options.arguments = [options.arguments];
         return function(event) {
             var args;
             if (options.event) {
@@ -2261,7 +2261,7 @@ Element.extend({
     getStyle: function(property) {
         property = property.camelCase();
         var result = this.style[property];
-        if (!$chk(result)) {
+        if (!$defined(result)) {
             if (property == 'opacity') return this.$tmp.opacity;
             result = [];
             for (var style in Element.Styles) {
@@ -2575,7 +2575,7 @@ Element.extend({
 });
 
 Element.fixStyle = function(property, result, element) {
-    if ($chk(parseInt(result))) return result;
+    if ($defined(parseInt(result))) return result;
     if (['height', 'width'].contains(property)) {
         var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'];
         var size = 0;
@@ -3955,7 +3955,7 @@ Fx.CSS = {
     parse: function(el, property, fromTo) {
         if (!fromTo.push) fromTo = [fromTo];
         var from = fromTo[0], to = fromTo[1];
-        if (!$chk(to)) {
+        if (!$defined(to)) {
             to = from;
             from = el.getStyle(property);
         }
@@ -4409,7 +4409,7 @@ Fx.Scroll = Fx.Base.extend({
         var values = {'x': x, 'y': y};
         for (var z in el.size) {
             var max = el.scrollSize[z] - el.size[z];
-            if ($chk(values[z])) values[z] = ($type(values[z]) == 'number') ? values[z].limit(0, max) : max;
+            if ($defined(values[z])) values[z] = ($type(values[z]) == 'number') ? values[z].limit(0, max) : max;
             else values[z] = el.scroll[z];
             values[z] += this.options.offset[z];
         }
@@ -4932,7 +4932,7 @@ Drag.Base = new Class({
             this.mouse.pos[z] = event.page[z] - this.value.now[z];
             if (limit && limit[z]) {
                 for (var i = 0; i < 2; i++) {
-                    if ($chk(limit[z][i])) this.limit[z][i] = ($type(limit[z][i]) == 'function') ? limit[z][i]() : limit[z][i];
+                    if ($defined(limit[z][i])) this.limit[z][i] = ($type(limit[z][i]) == 'function') ? limit[z][i]() : limit[z][i];
                 }
             }
         }
@@ -4961,10 +4961,10 @@ Drag.Base = new Class({
             if (!this.options.modifiers[z]) continue;
             this.value.now[z] = this.mouse.now[z] - this.mouse.pos[z];
             if (this.limit[z]) {
-                if ($chk(this.limit[z][1]) && (this.value.now[z] > this.limit[z][1])) {
+                if ($defined(this.limit[z][1]) && (this.value.now[z] > this.limit[z][1])) {
                     this.value.now[z] = this.limit[z][1];
                     this.out = true;
-                } else if ($chk(this.limit[z][0]) && (this.value.now[z] < this.limit[z][0])) {
+                } else if ($defined(this.limit[z][0]) && (this.value.now[z] < this.limit[z][0])) {
                     this.value.now[z] = this.limit[z][0];
                     this.out = true;
                 }
@@ -5055,11 +5055,11 @@ Drag.Move = Drag.Base.extend({
         var top = this.element.getStyle('top').toInt();
         var left = this.element.getStyle('left').toInt();
         if (this.position.element == 'absolute' && !['relative', 'absolute', 'fixed'].contains(this.position.container)) {
-            top = $chk(top) ? top : this.element.getTop(this.options.overflown);
-            left = $chk(left) ? left : this.element.getLeft(this.options.overflown);
+            top = $defined(top) ? top : this.element.getTop(this.options.overflown);
+            left = $defined(left) ? left : this.element.getLeft(this.options.overflown);
         } else {
-            top = $chk(top) ? top : 0;
-            left = $chk(left) ? left : 0;
+            top = $defined(top) ? top : 0;
+            left = $defined(left) ? left : 0;
         }
         this.element.setStyles({'top': top, 'left': left, 'position': this.position.element});
         this.parent(this.element);
@@ -7079,7 +7079,7 @@ var Accordion = Fx.Elements.extend({
         this.setOptions(options);
         this.previous = -1;
         if (this.options.alwaysHide) this.options.wait = true;
-        if ($chk(this.options.show)) {
+        if ($defined(this.options.show)) {
             this.options.display = false;
             this.previous = this.options.show;
         }
@@ -7100,7 +7100,7 @@ var Accordion = Fx.Elements.extend({
             }
         }, this);
         this.parent(this.elements);
-        if ($chk(this.options.display)) this.display(this.options.display);
+        if ($defined(this.options.display)) this.display(this.options.display);
     },
 
 /*

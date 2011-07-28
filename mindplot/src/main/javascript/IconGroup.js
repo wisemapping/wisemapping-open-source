@@ -104,7 +104,7 @@ mindplot.IconGroup = new Class({
     getImageIcon : function(icon) {
         var result = null;
         this.options.icons.each(function(el, index) {
-            if (result == null && $chk(el.getModel().isIconModel) && el.getId() == icon.getId() && el.getUiId() == icon.getUiId()) {
+            if (result == null && $defined(el.getModel().isIconModel) && el.getId() == icon.getId() && el.getUiId() == icon.getUiId()) {
                 result = el;
             }
         }, this);
@@ -115,7 +115,7 @@ mindplot.IconGroup = new Class({
         var result = null;
         this.options.icons.each(function(el, index) {
             var elModel = el.getModel();
-            if (result == null && $chk(elModel.isIconModel) && elModel.getId() == iconModel.getId()) {
+            if (result == null && $defined(elModel.isIconModel) && elModel.getId() == iconModel.getId()) {
                 result = el;
             }
         }, this);

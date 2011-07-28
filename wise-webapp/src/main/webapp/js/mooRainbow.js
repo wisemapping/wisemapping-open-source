@@ -169,7 +169,7 @@ var MooRainbow = new Class({
             hex: hex
         };
 
-        if (!$chk(this.pickerPos.x))
+        if (!$defined(this.pickerPos.x))
             this.autoSet(hsb);
 
         this.RedInput.value = rgb[0];
@@ -382,7 +382,7 @@ var MooRainbow = new Class({
     eventKeyup: function(e, el) {
         var n = e.code, k = e.key, pass, prefix, chr = el.value.charAt(0);
 
-        if (!$chk(el.value)) return;
+        if (!$defined(el.value)) return;
         if (el.className.test(/hexInput/)) {
             if (chr != "#" && el.value.length != 6) return;
             if (chr == '#' && el.value.length != 7) return;
@@ -419,7 +419,7 @@ var MooRainbow = new Class({
             pass = el.value.hexToRgb(true);
             if (isNaN(pass[0]) || isNaN(pass[1]) || isNaN(pass[2])) return;
 
-            if ($chk(pass)) {
+            if ($defined(pass)) {
                 this.manualSet(pass);
                 this.fireEvent('onChange', [this.sets, this]);
             }

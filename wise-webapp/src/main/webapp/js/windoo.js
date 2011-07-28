@@ -469,7 +469,7 @@ Drag.Multi = Drag.extend({
                 mod.$limit = [];
                 var limit = mod.limit;
                 if (limit) for (var i = 0; i < 2; i++) {
-                    if ($chk(limit[i])) mod.$limit[i] = ($type(limit[i]) == 'function') ? limit[i](mod) : limit[i];
+                    if ($defined(limit[i])) mod.$limit[i] = ($type(limit[i]) == 'function') ? limit[i](mod) : limit[i];
                 }
             }, this);
         }
@@ -483,10 +483,10 @@ Drag.Multi = Drag.extend({
         var z = mod.modifier, mouse = this.mouse.now[z];
         mod.out = false;
         mod.now = mod.fn.step(mod.start, mod.bind ? mod.bind.inverse : mouse, mod.direction);
-        if (mod.$limit && $chk(mod.$limit[1]) && (mod.now > mod.$limit[1])) {
+        if (mod.$limit && $defined(mod.$limit[1]) && (mod.now > mod.$limit[1])) {
             mod.now = mod.$limit[1];
             mod.out = true;
-        } else if (mod.$limit && $chk(mod.$limit[0]) && (mod.now < mod.$limit[0])) {
+        } else if (mod.$limit && $defined(mod.$limit[0]) && (mod.now < mod.$limit[0])) {
             mod.now = mod.$limit[0];
             mod.out = true;
         }

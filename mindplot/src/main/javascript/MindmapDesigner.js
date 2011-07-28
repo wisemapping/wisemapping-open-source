@@ -779,7 +779,7 @@ mindplot.MindmapDesigner = new Class({
             var topic = null;
             if (selectedTopics.length > 0) {
                 topic = selectedTopics[0];
-                if (!$chk(topic._hasLink)) {
+                if (!$defined(topic._hasLink)) {
                     var msg = new Element('div');
                     var urlText = new Element('div').inject(msg);
                     urlText.innerHTML = "URL:"
@@ -832,7 +832,7 @@ mindplot.MindmapDesigner = new Class({
             var topic = null;
             if (selectedTopics.length > 0) {
                 topic = selectedTopics[0];
-                if (!$chk(topic._hasNote)) {
+                if (!$defined(topic._hasNote)) {
                     var msg = new Element('div');
                     var text = new Element('div').inject(msg);
                     var formElem = new Element('form', {'action': 'none', 'id':'noteFormId'});
@@ -944,7 +944,7 @@ mindplot.MindmapDesigner = new Class({
                     var key = evt.key;
                     if (!this._editor.isVisible()) {
                         if (((evt.code >= 65 && evt.code <= 90) || (evt.code >= 48 && evt.code <= 57)) && !(evt.control || evt.meta)) {
-                            if ($chk(evt.shift)) {
+                            if ($defined(evt.shift)) {
                                 key = key.toUpperCase();
                             }
                             this._showEditor(key);

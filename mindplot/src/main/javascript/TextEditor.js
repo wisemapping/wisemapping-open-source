@@ -201,7 +201,7 @@ mindplot.TextEditor = new Class({
                 var textHeight = editor._currentNode.getTextShape().getHeight();
                 var iconGroup = editor._currentNode.getIconGroup();
                 var iconGroupSize;
-                if ($chk(iconGroup)) {
+                if ($defined(iconGroup)) {
                     iconGroupSize = editor._currentNode.getIconGroup().getSize();
                 }
                 else {

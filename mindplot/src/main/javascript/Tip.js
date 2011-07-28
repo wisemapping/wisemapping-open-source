@@ -37,11 +37,11 @@ mindplot.Tip = new Class({
     buildTip  : function() {
         var opts = this.options;
         var panel = new Element('div').addClass('bubbleContainer');
-        if ($chk(opts.height))
+        if ($defined(opts.height))
             panel.setStyle('height', opts.height);
-        if ($chk(opts.width))
+        if ($defined(opts.width))
             panel.setStyle('width', opts.width);
-        if (!$chk(opts.divContainer)) {
+        if (!$defined(opts.divContainer)) {
             opts.divContainer = document.body;
         }
         panel.injectTop(opts.divContainer);
@@ -67,7 +67,7 @@ mindplot.Tip = new Class({
     },
 
     doOpen  : function(content, source) {
-        if ($chk(this._isMouseOver) && !$chk(this._open) && !$chk(this._opening)) {
+        if ($defined(this._isMouseOver) && !$defined(this._open) && !$defined(this._opening)) {
             this._opening = true;
             var container = new Element('div');
             $(content).inject(container);
@@ -93,10 +93,10 @@ mindplot.Tip = new Class({
 
     doClose  : function(event) {
 
-        if (!$chk(this._isMouseOver) && $chk(this._opening))
+        if (!$defined(this._isMouseOver) && $defined(this._opening))
             this.doClose.delay(500, this, this._evt);
 
-        if (!$chk(this._isMouseOver) && $chk(this._open)) {
+        if (!$defined(this._isMouseOver) && $defined(this._open)) {
             this.forceClose();
         }
     },

@@ -100,12 +100,12 @@ mindplot.Topic.prototype._setShapeType = function(type, updateModel)
 
         //Move iconGroup to front ...
         var iconGroup = this.getIconGroup();
-        if($chk(iconGroup)){
+        if($defined(iconGroup)){
             iconGroup.moveToFront();
         }
         //Move connector to front
         var connector = this.getShrinkConnector();
-        if($chk(connector)){
+        if($defined(connector)){
             connector.moveToFront();
         }
 
@@ -368,7 +368,7 @@ mindplot.Topic.prototype.removeIcon = function(iconModel){
 
     //Removing the icon from UI
     var iconGroup = this.getIconGroup();
-    if($chk(iconGroup))
+    if($defined(iconGroup))
     {
         var imgIcon = iconGroup.findIconFromModel(iconModel);
         iconGroup.removeImageIcon(imgIcon);
@@ -385,7 +385,7 @@ mindplot.Topic.prototype.removeLink = function(){
     var links = model.getLinks();
     model._removeLink(links[0]);
     var iconGroup = this.getIconGroup();
-    if($chk(iconGroup))
+    if($defined(iconGroup))
     {
         iconGroup.removeIcon(mindplot.LinkIcon.IMAGE_URL);
         if(iconGroup.getIcons().length==0){
@@ -403,7 +403,7 @@ mindplot.Topic.prototype.removeNote = function(){
     var notes = model.getNotes();
     model._removeNote(notes[0]);
     var iconGroup = this.getIconGroup();
-    if($chk(iconGroup))
+    if($defined(iconGroup))
     {
         iconGroup.removeIcon(mindplot.Note.IMAGE_URL);
         if(iconGroup.getIcons().length==0){
@@ -484,7 +484,7 @@ mindplot.Topic.prototype._buildTextShape = function(disableEventsListeners)
 mindplot.Topic.prototype.getIconOffset = function(){
     var iconGroup = this.getIconGroup();
     var size = 0;
-    if($chk(iconGroup))
+    if($defined(iconGroup))
     {
         size = iconGroup.getSize().width;
     }
