@@ -1,4 +1,4 @@
-mindplot.layoutManagers.boards.freeMindBoards.Entry = new Class({
+mindplot.layout.boards.freemind.Entry = new Class({
     initialize:function(node, useFinalPosition){
         this._node = node;
         this._DEFAULT_X_GAP = 30;

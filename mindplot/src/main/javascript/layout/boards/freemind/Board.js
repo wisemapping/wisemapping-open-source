@@ -1,6 +1,6 @@
-mindplot.layoutManagers.boards.freeMindBoards={};
+mindplot.layout.boards.freemind = {};
 
-mindplot.layoutManagers.boards.freeMindBoards.Board = mindplot.layoutManagers.boards.Board.extend({
+mindplot.layout.boards.freemind.Board = mindplot.layout.boards.Board.extend({
     options:{
 
     },
@@ -24,7 +24,7 @@ mindplot.layoutManagers.boards.freeMindBoards.Board = mindplot.layoutManagers.bo
     },
     addBranch:function(node,modifiedTopics){
         var pos = (this._layoutManager._isMovingNode?node.getPosition():node.getModel().getFinalPosition() || node.getPosition());
-        var entry = new mindplot.layoutManagers.boards.freeMindBoards.Entry(node, !this._layoutManager._isMovingNode);
+        var entry = new mindplot.layout.boards.freemind.Entry(node, !this._layoutManager._isMovingNode);
         var result = this.findNewNodeEntryIndex(entry);
 
         // if creating a sibling or child

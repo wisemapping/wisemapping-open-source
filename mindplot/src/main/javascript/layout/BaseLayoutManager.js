@@ -1,4 +1,4 @@
-mindplot.layoutManagers.BaseLayoutManager = new Class({
+mindplot.layout.BaseLayoutManager = new Class({
 
     options: {
 
@@ -55,10 +55,10 @@ mindplot.layoutManagers.BaseLayoutManager = new Class({
         return board;
     },
     _createMainTopicBoard:function(node){
-        return new mindplot.layoutManagers.boards.Board(node, this);
+        return new mindplot.layout.boards.Board(node, this);
     },
     _createCentralTopicBoard:function(node){
-        return new mindplot.layoutManagers.boards.Board(node, this);
+        return new mindplot.layout.boards.Board(node, this);
     },
     prepareNode:function(node, children){
 
@@ -77,11 +77,11 @@ mindplot.layoutManagers.BaseLayoutManager = new Class({
         return type == mindplot.NodeModel.CENTRAL_TOPIC_TYPE;
     },
     getClassName:function(){
-        return mindplot.layoutManagers.BaseLayoutManager.NAME;
+        return mindplot.layout.BaseLayoutManager.NAME;
     }
 });
 
-mindplot.layoutManagers.BaseLayoutManager.NAME ="BaseLayoutManager"; 
+mindplot.layout.BaseLayoutManager.NAME ="BaseLayoutManager";
 
-mindplot.layoutManagers.BaseLayoutManager.implement(new Events);
-mindplot.layoutManagers.BaseLayoutManager.implement(new Options);
+mindplot.layout.BaseLayoutManager.implement(new Events);
+mindplot.layout.BaseLayoutManager.implement(new Options);

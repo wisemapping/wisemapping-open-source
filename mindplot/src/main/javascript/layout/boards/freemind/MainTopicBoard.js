@@ -1,4 +1,4 @@
-mindplot.layoutManagers.boards.freeMindBoards.MainTopicBoard = mindplot.layoutManagers.boards.freeMindBoards.Board.extend({
+mindplot.layout.boards.freemind.MainTopicBoard = mindplot.layout.boards.freemind.Board.extend({
     options:{
 
     },

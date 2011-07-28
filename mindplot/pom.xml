@@ -32,7 +32,7 @@
             <id>jstd-maven-plugin google code repo</id>
             <url>http://jstd-maven-plugin.googlecode.com/svn/maven2</url>
         </repository>
-  </repositories>
+    </repositories>
 
     <build>
         <plugins>
@@ -81,10 +81,13 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="FixedDistanceBoard.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="BoardEntry.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ModelCodeName.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="XMLMindmapSerializer_Pela.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="XMLMindmapSerializer_Beta.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="XMLMindmapSerializer_Pela.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="XMLMindmapSerializer_Beta.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="Beta2PelaMigrator.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="XMLMindmapSerializerFactory.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="XMLMindmapSerializerFactory.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="PersistanceManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="EditorProperties.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="IconGroup.js"/>
@@ -134,23 +137,23 @@
 
 
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layoutManagers/boards/Board.js"/>
+                                              files="layout/boards/Board.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layoutManagers/boards/freeMindBoards/Board.js"/>
+                                              files="layout/boards/freemind/Board.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layoutManagers/boards/freeMindBoards/Entry.js"/>
+                                              files="layout/boards/freemind/Entry.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layoutManagers/boards/freeMindBoards/CentralTopicBoard.js"/>
+                                              files="layout/boards/freemind/CentralTopicBoard.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layoutManagers/boards/freeMindBoards/MainTopicBoard.js"/>
+                                              files="layout/boards/freemind/MainTopicBoard.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layoutManagers/BaseLayoutManager.js"/>
+                                              files="layout/BaseLayoutManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layoutManagers/OriginalLayoutManager.js"/>
+                                              files="layout/OriginalLayoutManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layoutManagers/FreeMindLayoutManager.js"/>
+                                              files="layout/FreeMindLayoutManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layoutManagers/LayoutManagerFactory.js"/>
+                                              files="layout/LayoutManagerFactory.js"/>
 
 
                                     <filelist dir="${basedir}/src/main/javascript/" files="footer.js"/>
@@ -254,15 +257,15 @@
                                         <include>commands/freeMind/DragTopicCommand-min.js</include>
                                         <include>commands/freeMind/ReconnectTopicCommand-min.js</include>
 
-                                        <include>layoutManagers/boards/Board-min.js</include>
-                                        <include>layoutManagers/boards/freeMindBoards/Board-min.js</include>
-                                        <include>layoutManagers/boards/freeMindBoards/Entry-min.js</include>
-                                        <include>layoutManagers/boards/freeMindBoards/CentralTopicBoard-min.js</include>
-                                        <include>layoutManagers/boards/freeMindBoards/MainTopicBoard-min.js</include>
-                                        <include>layoutManagers/BaseLayoutManager-min.js</include>
-                                        <include>layoutManagers/OriginalLayoutManager-min.js</include>
-                                        <include>layoutManagers/FreeMindLayoutManager-min.js</include>
-                                        <include>layoutManagers/LayoutManagerFactory-min.js</include>
+                                        <include>layout/boards/Board-min.js</include>
+                                        <include>layout/boards/freemind/Board-min.js</include>
+                                        <include>layout/boards/freemind/Entry-min.js</include>
+                                        <include>layout/boards/freemind/CentralTopicBoard-min.js</include>
+                                        <include>layout/boards/freemind/MainTopicBoard-min.js</include>
+                                        <include>layout/BaseLayoutManager-min.js</include>
+                                        <include>layout/OriginalLayoutManager-min.js</include>
+                                        <include>layout/FreeMindLayoutManager-min.js</include>
+                                        <include>layout/LayoutManagerFactory-min.js</include>
 
                                         <include>footer-min.js</include>
 
@@ -291,23 +294,23 @@
                 </configuration>
             </plugin>
 
-<!--           <plugin>
-                <groupId>com.google.jstestdriver</groupId>
-                <artifactId>maven-jstestdriver-plugin</artifactId>
-                <version>1.2.2-SNAPSHOT</version>
-                <executions>
-                    <execution>
-                        <id>run-tests</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <configuration>
-                            <config>${basedir}/src/test/jsTestDriver.conf</config>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin> -->
+            <!--           <plugin>
+               <groupId>com.google.jstestdriver</groupId>
+               <artifactId>maven-jstestdriver-plugin</artifactId>
+               <version>1.2.2-SNAPSHOT</version>
+               <executions>
+                   <execution>
+                       <id>run-tests</id>
+                       <phase>test</phase>
+                       <goals>
+                           <goal>test</goal>
+                       </goals>
+                       <configuration>
+                           <config>${basedir}/src/test/jsTestDriver.conf</config>
+                       </configuration>
+                   </execution>
+               </executions>
+           </plugin> -->
         </plugins>
     </build>
 </project>

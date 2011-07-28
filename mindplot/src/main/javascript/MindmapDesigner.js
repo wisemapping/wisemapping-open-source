@@ -42,9 +42,9 @@ mindplot.MindmapDesigner = new Class({
 
             // Init layout managers ...
             this._topics = [];
-//    var layoutManagerClass = mindplot.layoutManagers.LayoutManagerFactory.getManagerByName(mindplot.EditorOptions.LayoutManager);
+//    var layoutManagerClass = mindplot.layout.LayoutManagerFactory.getManagerByName(mindplot.EditorOptions.LayoutManager);
 //    this._layoutManager = new layoutManagerClass(this);
-            this._layoutManager = new mindplot.layoutManagers.OriginalLayoutManager(this);
+            this._layoutManager = new mindplot.layout.OriginalLayoutManager(this);
 
             // Register handlers..
             this._registerEvents();

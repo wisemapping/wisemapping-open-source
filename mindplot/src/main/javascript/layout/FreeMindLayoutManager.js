@@ -1,4 +1,4 @@
-mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayoutManager.extend({
+mindplot.layout.FreeMindLayoutManager = mindplot.layout.BaseLayoutManager.extend({
     options:{
 
     },
@@ -224,13 +224,13 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
 
     },
     getClassName:function(){
-        return mindplot.layoutManagers.FreeMindLayoutManager.NAME;
+        return mindplot.layout.FreeMindLayoutManager.NAME;
     },
     _createMainTopicBoard:function(node){
-        return new mindplot.layoutManagers.boards.freeMindBoards.MainTopicBoard(node, this);
+        return new mindplot.layout.boards.freemind.MainTopicBoard(node, this);
     },
     _createCentralTopicBoard:function(node){
-        return new mindplot.layoutManagers.boards.freeMindBoards.CentralTopicBoard(node, this);
+        return new mindplot.layout.boards.freemind.CentralTopicBoard(node, this);
     }
     ,
     _updateParentBoard:function(node, modifiedTopics){
@@ -271,7 +271,7 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
             this._addMoveHelper(node);
     },
     _addMoveHelper:function(node){
-        var moveShape = new mindplot.ActionIcon(node, mindplot.layoutManagers.FreeMindLayoutManager.MOVE_IMAGE_URL);
+        var moveShape = new mindplot.ActionIcon(node, mindplot.layout.FreeMindLayoutManager.MOVE_IMAGE_URL);
         moveShape.setCursor('move');
         var positionate = function(node){
             if(node.getId() == this.getNode().getId()){
@@ -333,7 +333,7 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
                     this._mouseOutListeners.set(topics[i].getId(),outListener);
                 }
             }
-            this._updateTopicsForReconnect(topic, mindplot.layoutManagers.FreeMindLayoutManager.RECONNECT_NODES_OPACITY);
+            this._updateTopicsForReconnect(topic, mindplot.layout.FreeMindLayoutManager.RECONNECT_NODES_OPACITY);
             var line = topic.getOutgoingLine();
             if($defined(line)){
                 line.setVisibility(false);
@@ -486,14 +486,14 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
         var nodePos = this.getPosition();
         //if it is on the child half side, or it is central topic add it as child
         if(!this.areChildrenShrinked() && (layoutManager._isCentralTopic(this) || this.getParent()==null || ((Math.sign(nodePos.x)>0 && pos.x>nodePos.x) || (Math.sign(nodePos.x)<0 && pos.x<nodePos.x)))){
-            layoutManager._updateIndicatorShapes(this, mindplot.layoutManagers.FreeMindLayoutManager.RECONNECT_SHAPE_CHILD, pos);
+            layoutManager._updateIndicatorShapes(this, mindplot.layout.FreeMindLayoutManager.RECONNECT_SHAPE_CHILD, pos);
         }else{
             //is a sibling. if mouse in top half sibling goes above this one
             if(pos.y<nodePos.y){
-                layoutManager._updateIndicatorShapes(this, mindplot.layoutManagers.FreeMindLayoutManager.RECONNECT_SHAPE_SIBLING_TOP);
+                layoutManager._updateIndicatorShapes(this, mindplot.layout.FreeMindLayoutManager.RECONNECT_SHAPE_SIBLING_TOP);
             }else{
                 //if mouse in bottom half sibling goes below this one
-                layoutManager._updateIndicatorShapes(this, mindplot.layoutManagers.FreeMindLayoutManager.RECONNECT_SHAPE_SIBLING_BOTTOM);
+                layoutManager._updateIndicatorShapes(this, mindplot.layout.FreeMindLayoutManager.RECONNECT_SHAPE_SIBLING_BOTTOM);
             }
         }
     },
@@ -518,7 +518,7 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
         topic.get2DElement().appendChild(this._createSiblingShape);
         var size = topic.getSize();
         var position = topic.getPosition();
-        if(shape == mindplot.layoutManagers.FreeMindLayoutManager.RECONNECT_SHAPE_CHILD){
+        if(shape == mindplot.layout.FreeMindLayoutManager.RECONNECT_SHAPE_CHILD){
             this._createChildShape.setSize(size.width/2, size.height);
             var sign = mousePos?Math.sign(mousePos.x):Math.sign(position.x);
             this._createChildShape.setPosition(sign>0?size.width/2:0, 0);
@@ -526,14 +526,14 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
             this._createSiblingShape.setVisibility(false);
             this._createShape = "Child";
             this._targetNode = topic;
-        } else if(shape == mindplot.layoutManagers.FreeMindLayoutManager.RECONNECT_SHAPE_SIBLING_TOP){
+        } else if(shape == mindplot.layout.FreeMindLayoutManager.RECONNECT_SHAPE_SIBLING_TOP){
             this._createSiblingShape.setSize(size.width,size.height/2);
             this._createSiblingShape.setPosition(0,0);
             this._createSiblingShape.setVisibility(true);
             this._createChildShape.setVisibility(false);
             this._createShape = "Sibling_top";
             this._targetNode = topic;
-        }else if(shape == mindplot.layoutManagers.FreeMindLayoutManager.RECONNECT_SHAPE_SIBLING_BOTTOM){
+        }else if(shape == mindplot.layout.FreeMindLayoutManager.RECONNECT_SHAPE_SIBLING_BOTTOM){
             this._createSiblingShape.setSize(size.width,size.height/2);
             this._createSiblingShape.setPosition(0,size.height/2);
             this._createSiblingShape.setVisibility(true);
@@ -588,7 +588,7 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
         }
         else{
             //if is an isolated topic, create entry and update margins.
-            entry = new mindplot.layoutManagers.boards.freeMindBoards.Entry(node, false);
+            entry = new mindplot.layout.boards.freemind.Entry(node, false);
             var board = this.getTopicBoardForTopic(node);
             var table = board._getTableForNode(null);
             if(table.length>0){
@@ -686,9 +686,9 @@ mindplot.layoutManagers.FreeMindLayoutManager = mindplot.layoutManagers.BaseLayo
     }
 });
 
-mindplot.layoutManagers.FreeMindLayoutManager.NAME ="FreeMindLayoutManager";
-mindplot.layoutManagers.FreeMindLayoutManager.MOVE_IMAGE_URL = "../images/move.png";
-mindplot.layoutManagers.FreeMindLayoutManager.RECONNECT_NODES_OPACITY = 0.4;
-mindplot.layoutManagers.FreeMindLayoutManager.RECONNECT_SHAPE_CHILD = "child";
-mindplot.layoutManagers.FreeMindLayoutManager.RECONNECT_SHAPE_SIBLING_TOP = "top";
-mindplot.layoutManagers.FreeMindLayoutManager.RECONNECT_SHAPE_SIBLING_BOTTOM = "bottom";
+mindplot.layout.FreeMindLayoutManager.NAME ="FreeMindLayoutManager";
+mindplot.layout.FreeMindLayoutManager.MOVE_IMAGE_URL = "../images/move.png";
+mindplot.layout.FreeMindLayoutManager.RECONNECT_NODES_OPACITY = 0.4;
+mindplot.layout.FreeMindLayoutManager.RECONNECT_SHAPE_CHILD = "child";
+mindplot.layout.FreeMindLayoutManager.RECONNECT_SHAPE_SIBLING_TOP = "top";
+mindplot.layout.FreeMindLayoutManager.RECONNECT_SHAPE_SIBLING_BOTTOM = "bottom";
