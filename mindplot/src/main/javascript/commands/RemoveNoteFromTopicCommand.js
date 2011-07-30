@@ -16,8 +16,7 @@
 *   limitations under the License.
 */
 
-mindplot.commands.RemoveNoteFromTopicCommand = new Class(
-{
+mindplot.commands.RemoveNoteFromTopicCommand = new Class({
     Extends:mindplot.Command,
     initialize: function(topicId)
     {

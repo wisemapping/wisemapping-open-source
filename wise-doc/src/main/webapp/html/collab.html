@@ -1,0 +1,47 @@
+<html>
+<body>
+<script type="text/javascript" src="http://docs.google.com/brix/static/api/js/jsapi.nocache.js"></script>
+<script type="text/javascript">
+    var collabOnLoad = function() {
+        app = new goog.collab.CollaborativeApp();
+        app.start();
+
+        app.addListener('modelLoad', function(model) {
+            var root = app.getModel().getRoot();
+            if (!root.get("mindmap7")) {
+
+                console.log("Creating empty map ...");
+
+//                var topics = app.getModel().create("List");
+                root.put("mindmap7", "start_");
+            }
+
+            root.addListener('valueChanged', function(e) {
+                console.log("New item added ...:");
+                console.log(app.getModel().getRoot().get("mindmap7"));
+            });
+        });
+    };
+
+    function addTopic() {
+
+        console.log("Adding new item ver:2 ...");
+
+        var root = app.getModel().getRoot();
+        var topics = root.get("mindmap7");
+
+//        var topic = app.getModel().create("Map");
+//        topic.put("id", "topic_x");
+//        topic.put("text", "topic X text");
+//        topics.add(topic);
+
+//        root.put("mindmap7", topics);
+          root.put("mindmap7", app.getModel().getRoot().get("mindmap7") + "_algo");
+    }
+
+</script>
+
+Este es este no ?
+<input style="font-size:20px;width:50px;height:50px;" type="button" value=" " id="a2" onclick="addTopic(this)"/>
+</body>
+</html>

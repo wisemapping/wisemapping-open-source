@@ -48,10 +48,12 @@ mindplot.MindmapDesigner = new Class({
 
             // Register handlers..
             this._registerEvents();
-
             this._relationships = {};
-
             this._events = {};
+
+            // Action !
+
+
         },
 
         _getTopics : function() {
