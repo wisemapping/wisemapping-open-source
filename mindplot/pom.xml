@@ -67,7 +67,6 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="DragManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="DragPivot.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="Board.js"/>
-                                    <!--<filelist dir="${basedir}/src/main/javascript/" files="TopicBoard.js"/>-->
                                     <filelist dir="${basedir}/src/main/javascript/" files="CentralTopicBoard.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="MainTopicBoard.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ConnectionLine.js"/>
@@ -154,8 +153,6 @@
                                               files="layout/FreeMindLayoutManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="layout/LayoutManagerFactory.js"/>
-
-
                                     <filelist dir="${basedir}/src/main/javascript/" files="footer.js"/>
                                 </concat>
 

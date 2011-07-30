@@ -221,7 +221,6 @@ mindplot.TextEditor = new Class({
         };
 
         setTimeout(executor(this), 10);
-        //console.log('init done');
     },
 
     setStyle : function (fontStyle) {

@@ -33,7 +33,7 @@ mindplot.CentralTopic = new Class({
 
     setCursor : function(type) {
         type = (type == 'move') ? 'default' : type;
-        mindplot.Topic.prototype.setCursor.call(this, type);
+        this.parent(type);
     },
 
     isConnectedToCentralTopic : function() {

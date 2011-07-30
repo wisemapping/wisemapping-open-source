@@ -78,14 +78,6 @@ Math.sign = function(value) {
 };
 
 
-// Extensions ....
-function $import(src) {
-    var scriptElem = document.createElement('script');
-    scriptElem.setAttribute('src', src);
-    scriptElem.setAttribute('type', 'text/javascript');
-    document.getElementsByTagName('head')[0].appendChild(scriptElem);
-}
-
 /**
  *  Retrieve the mouse position.
  */
@@ -274,6 +266,7 @@ core.Utils.calculateDefaultControlPoints = function(srcPos, tarPos) {
 core.Utils.setVisibilityAnimated = function(elems, isVisible, doneFn) {
     core.Utils.animateVisibility(elems, isVisible, doneFn);
 };
+
 core.Utils.setChildrenVisibilityAnimated = function(rootElem, isVisible) {
     var children = core.Utils._addInnerChildrens(rootElem);
     core.Utils.animateVisibility(children, isVisible);

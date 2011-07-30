@@ -21,7 +21,7 @@ mindplot.Note = new Class({
     initialize : function(textModel, topic, designer) {
         var divContainer = designer.getWorkSpace().getScreenManager().getContainer();
         var bubbleTip = mindplot.BubbleTip.getInstance(divContainer);
-        mindplot.Icon.call(this, mindplot.Note.IMAGE_URL);
+        this.parent(mindplot.Note.IMAGE_URL);
         this._noteModel = textModel;
         this._topic = topic;
         this._designer = designer;

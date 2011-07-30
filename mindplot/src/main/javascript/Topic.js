@@ -1013,7 +1013,6 @@ mindplot.Topic = new Class({
 
         var outerShape = this.getOuterShape();
         var innerShape = this.getInnerShape();
-        var connector = this.getShrinkConnector();
 
         outerShape.setSize(size.width + 4, size.height + 6);
         innerShape.setSize(size.width, size.height);
@@ -1177,7 +1176,7 @@ mindplot.Topic = new Class({
     },
 
     createDragNode : function() {
-        var dragNode =  mindplot.NodeGraph.prototype.createDragNode.call(this);
+        this.parent();
 
         // Is the node already connected ?
         var targetTopic = this.getOutgoingConnectedTopic();

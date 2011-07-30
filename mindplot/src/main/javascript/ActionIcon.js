@@ -19,7 +19,7 @@
 mindplot.ActionIcon = new Class({
     Extends:mindplot.Icon,
     initialize: function(topic, url) {
-        mindplot.Icon.call(this, url);
+        this.parent(url);
         this._node = topic;
     },
     getNode:function() {
