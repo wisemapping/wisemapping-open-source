@@ -1176,14 +1176,14 @@ mindplot.Topic = new Class({
     },
 
     createDragNode : function() {
-        this.parent();
+        var result = this.parent();
 
         // Is the node already connected ?
         var targetTopic = this.getOutgoingConnectedTopic();
         if ($defined(targetTopic)) {
-            dragNode.connectTo(targetTopic);
+            result.connectTo(targetTopic);
         }
-        return dragNode;
+        return result;
     },
 
     updateNode : function(updatePosition) {
