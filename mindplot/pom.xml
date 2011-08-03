@@ -55,6 +55,9 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="Mindmap.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="NodeModel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="RelationshipModel.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="ActionDispatcher.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="BrixActionDispatcher.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="LocalActionDispatcher.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="MindmapDesigner.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ScreenManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="Workspace.js"/>

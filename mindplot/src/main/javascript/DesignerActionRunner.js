@@ -16,8 +16,10 @@
  *   limitations under the License.
  */
 
+// @Todo: Why the whole desginer ?. Must decouple this...
 mindplot.DesignerActionRunner = new Class({
     initialize: function(designer) {
+        $assert(designer, "designer can not be null");
         this._designer = designer;
         this._undoManager = new mindplot.DesignerUndoManager();
         this._context = new mindplot.CommandContext(this._designer);
@@ -124,11 +126,3 @@ mindplot.CommandContext = new Class({
         return this._designer.getSelectedRelationshipLines();
     }
 });
-
-mindplot.DesignerActionRunner.setInstance = function(actionRunner) {
-    mindplot.DesignerActionRunner._instance = actionRunner;
-};
-
-mindplot.DesignerActionRunner.getInstance = function() {
-    return mindplot.DesignerActionRunner._instance;
-};

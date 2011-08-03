@@ -17,11 +17,10 @@
  */
 
 mindplot.TextEditor = new Class({
-    initialize:function(designer, actionRunner) {
+    initialize:function(designer) {
         this._designer = designer;
         this._screenManager = designer.getWorkSpace().getScreenManager();
         this._container = this._screenManager.getContainer();
-        this._actionRunner = actionRunner;
         this._isVisible = false;
 
         //Create editor ui

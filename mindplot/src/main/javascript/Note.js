@@ -50,8 +50,9 @@ mindplot.Note = new Class({
             removeBtn.setStyle("margin-left", "3px");
 
             removeBtn.addEvent('click', function(event) {
-                var command = new mindplot.commands.RemoveNoteFromTopicCommand(this._topic.getId());
-                designer._actionRunner.execute(command);
+                var actionDispatcher = mindplot.ActionDispatcher.getInstance();
+                actionDispatcher.removeNoteFromTopic(this._topic.getId());
+
                 bubbleTip.forceClose();
             }.bindWithEvent(this));
 

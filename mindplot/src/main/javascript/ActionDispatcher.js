@@ -16,7 +16,8 @@
  *   limitations under the License.
  */
 
-mindplot.BaseCommandDispatcher = new Class({
+//noinspection JSUnusedLocalSymbols
+mindplot.ActionDispatcher = new Class({
 
     initialize: function() {
     },
@@ -41,19 +42,15 @@ mindplot.BaseCommandDispatcher = new Class({
         throw "method must be implemented.";
     },
 
-    changeIcon: function(topicId, iconId, iconType) {
+    deleteTopics: function(topicsIds) {
         throw "method must be implemented.";
     },
 
-    deleteTopic: function(topicsIds) {
+    dragTopic: function(topicId, position, order, parentTopic) {
         throw "method must be implemented.";
     },
 
-    dragTopic: function(topicId) {
-        throw "method must be implemented.";
-    },
-
-    moveControlPoint: function(trlPointController, point) {
+    moveControlPoint: function(ctrlPoint, point) {
         throw "method must be implemented.";
     },
 
@@ -65,8 +62,46 @@ mindplot.BaseCommandDispatcher = new Class({
         throw "method must be implemented.";
     },
 
-    removeNodeFromTopic: function(topicId) {
+    removeNoteFromTopic: function(topicId) {
         throw "method must be implemented.";
+    },
+
+    changeFontFamilyToTopic: function(topicIds, fontFamily) {
+        throw "method must be implemented.";
+    },
+
+    changeFontStyleToTopic: function(topicsIds) {
+        throw "method must be implemented.";
+    },
+
+    changeFontColorToTopic: function(topicsIds, color) {
+        throw "method must be implemented.";
+    },
+
+    changeBackgroundColorToTopic: function(topicsIds, color) {
+        throw "method must be implemented.";
+    },
+
+    changeBorderColorToTopic: function(topicsIds, color) {
+        throw "method must be implemented.";
+    },
+
+    changeShapeToTopic : function(topicsIds, shapeType) {
+        throw "method must be implemented.";
+    },
+
+    changeFontWeightToTopic : function(topicsIds) {
+        throw "method must be implemented.";
+
     }
+
 });
+
+mindplot.ActionDispatcher.setInstance = function(dispatcher) {
+    mindplot.ActionDispatcher._instance = dispatcher;
+};
+
+mindplot.ActionDispatcher.getInstance = function() {
+    return mindplot.ActionDispatcher._instance;
+};
 

@@ -26,10 +26,11 @@ mindplot.commands.AddTopicCommand = new Class(
             this._id = mindplot.Command._nextUUID();
             this._animated = $defined(animated) ? animated : false;
         },
-        execute: function(commandContext) {
-            // Add a new topic ...
 
-            var topic = commandContext.createTopic(this._model, !this._animated);
+        execute: function(commandContext) {
+
+            // Add a new topic ...
+           var topic = commandContext.createTopic(this._model, !this._animated);
 
             // Connect to topic ...
             if ($defined(this._parentId)) {
@@ -49,6 +50,7 @@ mindplot.commands.AddTopicCommand = new Class(
             } else
                 doneFn.attempt();
         },
+
         undoExecute: function(commandContext) {
             // Finally, delete the topic from the workspace ...
             var topicId = this._model.getId();

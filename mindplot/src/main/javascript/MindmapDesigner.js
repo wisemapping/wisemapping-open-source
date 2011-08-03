@@ -22,9 +22,11 @@ mindplot.MindmapDesigner = new Class({
             $assert(profile.zoom, "zoom must be defined");
             $assert(divElement, "divElement must be defined");
 
-            // Undo manager ...
-            this._actionRunner = new mindplot.DesignerActionRunner(this);
-            mindplot.DesignerActionRunner.setInstance(this._actionRunner);
+            // Dispatcher manager ...
+            // @Todo: Remove this static. Sucks...
+            this._actionDispatcher = new mindplot.LocalActionDispatcher(this);
+            mindplot.ActionDispatcher.setInstance(this._actionDispatcher);
+
 
             // Initial Zoom
             this._zoom = profile.zoom;
@@ -39,21 +41,14 @@ mindplot.MindmapDesigner = new Class({
             var editorClass = mindplot.TextEditorFactory.getTextEditorFromName(mindplot.EditorOptions.textEditor);
             this._editor = new editorClass(this, this._actionRunner);
 
-
             // Init layout managers ...
             this._topics = [];
-//    var layoutManagerClass = mindplot.layout.LayoutManagerFactory.getManagerByName(mindplot.EditorOptions.LayoutManager);
-//    this._layoutManager = new layoutManagerClass(this);
             this._layoutManager = new mindplot.layout.OriginalLayoutManager(this);
 
             // Register handlers..
             this._registerEvents();
             this._relationships = {};
             this._events = {};
-
-            // Action !
-
-
         },
 
         _getTopics : function() {
@@ -112,8 +107,7 @@ mindplot.MindmapDesigner = new Class({
                         var centralTopicId = centralTopic.getId();
 
                         // Execute action ...
-                        var command = new mindplot.commands.AddTopicCommand(model, centralTopicId, true);
-                        this._actionRunner.execute(command);
+                        this._actionDispatcher.addTopic(model, centralTopicId, true);
                     }
                 }.bind(this));
             }
@@ -216,8 +210,9 @@ mindplot.MindmapDesigner = new Class({
             var parentTopicId = centalTopic.getId();
             var childModel = centalTopic.createChildModel(this._layoutManager.needsPrepositioning());
 
-            var command = new mindplot.commands.AddTopicCommand(childModel, parentTopicId, true);
-            this._actionRunner.execute(command);
+            // Execute event ...
+            this._actionDispatcher.addTopic(childModel, parentTopicId, true);
+
         },
 
         createSiblingForSelectedNode : function() {
@@ -243,9 +238,8 @@ mindplot.MindmapDesigner = new Class({
                 var parentTopic = topic.getOutgoingConnectedTopic();
                 var siblingModel = topic.createSiblingModel(this._layoutManager.needsPrepositioning());
                 var parentTopicId = parentTopic.getId();
-                var command = new mindplot.commands.AddTopicCommand(siblingModel, parentTopicId, true);
 
-                this._actionRunner.execute(command);
+                this._actionDispatcher.addTopic(siblingModel, parentTopicId, true);
             }
         },
 
@@ -305,8 +299,8 @@ mindplot.MindmapDesigner = new Class({
             var mindmap = this.getMindmap();
             var model = mindmap.createRelationship(fromNode.getModel().getId(), toNode.getModel().getId());
 
-            var command = new mindplot.commands.AddRelationshipCommand(model, mindmap);
-            this._actionRunner.execute(command);
+            this._actionDispatcher.addRelationship(model, mindmap);
+
         },
 
         needsSave : function() {
@@ -558,8 +552,7 @@ mindplot.MindmapDesigner = new Class({
             var validateError = 'Central topic can not be deleted.';
             var selectedObjects = this._getValidSelectedObjectsIds(validateFunc, validateError);
             if (selectedObjects.nodes.length > 0 || selectedObjects.relationshipLines.length > 0) {
-                var command = new mindplot.commands.DeleteTopicCommand(selectedObjects);
-                this._actionRunner.execute(command);
+                this._actionDispatcher.deleteTopics(selectedObjects);
             }
 
         },
@@ -568,19 +561,8 @@ mindplot.MindmapDesigner = new Class({
             var validSelectedObjects = this._getValidSelectedObjectsIds();
             var topicsIds = validSelectedObjects.nodes;
             if (topicsIds.length > 0) {
-                var commandFunc = function(topic, font) {
-                    var result = topic.getFontFamily();
-                    topic.setFontFamily(font, true);
+                this._actionDispatcher.changeFontFamilyToTopic(topicsIds, font);
 
-                    core.Executor.instance.delay(topic.updateNode, 0, topic);
-                    /*var updated = function() {
-                     topic.updateNode();
-                     };
-                     updated.delay(0);*/
-                    return result;
-                }
-                var command = new mindplot.commands.GenericFunctionCommand(commandFunc, font, topicsIds);
-                this._actionRunner.execute(command);
             }
         },
 
@@ -588,14 +570,7 @@ mindplot.MindmapDesigner = new Class({
             var validSelectedObjects = this._getValidSelectedObjectsIds();
             var topicsIds = validSelectedObjects.nodes;
             if (topicsIds.length > 0) {
-                var commandFunc = function(topic) {
-                    var result = topic.getFontStyle();
-                    var style = (result == "italic") ? "normal" : "italic";
-                    topic.setFontStyle(style, true);
-                    return result;
-                }
-                var command = new mindplot.commands.GenericFunctionCommand(commandFunc, "", topicsIds);
-                this._actionRunner.execute(command);
+                this._actionDispatcher.changeFontStyleToTopic(topicsIds);
             }
         },
 
@@ -603,14 +578,7 @@ mindplot.MindmapDesigner = new Class({
             var validSelectedObjects = this._getValidSelectedObjectsIds();
             var topicsIds = validSelectedObjects.nodes;
             if (topicsIds.length > 0) {
-                var commandFunc = function(topic, color) {
-                    var result = topic.getFontColor();
-                    topic.setFontColor(color, true);
-                    return result;
-                }
-                var command = new mindplot.commands.GenericFunctionCommand(commandFunc, color, topicsIds);
-                command.discartDuplicated = "fontColorCommandId";
-                this._actionRunner.execute(command);
+                this._actionDispatcher.changeFontColorToTopic(topicsIds, color);
             }
         },
 
@@ -619,20 +587,11 @@ mindplot.MindmapDesigner = new Class({
             var validateFunc = function(topic) {
                 return topic.getShapeType() != mindplot.NodeModel.SHAPE_TYPE_LINE
             };
-            var validateError = 'Color can not be setted to line topics.';
+            var validateError = 'Color can not be set to line topics.';
             var validSelectedObjects = this._getValidSelectedObjectsIds(validateFunc, validateError);
-            ;
             var topicsIds = validSelectedObjects.nodes;
-
             if (topicsIds.length > 0) {
-                var commandFunc = function(topic, color) {
-                    var result = topic.getBackgroundColor();
-                    topic.setBackgroundColor(color);
-                    return result;
-                }
-                var command = new mindplot.commands.GenericFunctionCommand(commandFunc, color, topicsIds);
-                command.discartDuplicated = "backColor";
-                this._actionRunner.execute(command);
+                this._actionDispatcher.changeBackgroundColorToTopic(topicsIds, color);
             }
         },
 
@@ -679,20 +638,12 @@ mindplot.MindmapDesigner = new Class({
             var validateFunc = function(topic) {
                 return topic.getShapeType() != mindplot.NodeModel.SHAPE_TYPE_LINE
             };
-            var validateError = 'Color can not be setted to line topics.';
+            var validateError = 'Color can not be set to line topics.';
             var validSelectedObjects = this._getValidSelectedObjectsIds(validateFunc, validateError);
-            ;
             var topicsIds = validSelectedObjects.nodes;
 
             if (topicsIds.length > 0) {
-                var commandFunc = function(topic, color) {
-                    var result = topic.getBorderColor();
-                    topic.setBorderColor(color);
-                    return result;
-                }
-                var command = new mindplot.commands.GenericFunctionCommand(commandFunc, color, topicsIds);
-                command.discartDuplicated = "borderColorCommandId";
-                this._actionRunner.execute(command);
+                this._actionDispatcher.changeBorderColorToTopic(topicsIds, color);
             }
         },
 
@@ -700,19 +651,7 @@ mindplot.MindmapDesigner = new Class({
             var validSelectedObjects = this._getValidSelectedObjectsIds();
             var topicsIds = validSelectedObjects.nodes;
             if (topicsIds.length > 0) {
-                var commandFunc = function(topic, size) {
-                    var result = topic.getFontSize();
-                    topic.setFontSize(size, true);
-
-                    core.Executor.instance.delay(topic.updateNode, 0, topic);
-                    /*var updated = function() {
-                     topic.updateNode();
-                     };
-                     updated.delay(0);*/
-                    return result;
-                }
-                var command = new mindplot.commands.GenericFunctionCommand(commandFunc, size, topicsIds);
-                this._actionRunner.execute(command);
+                this._actionDispatcher.changeFontSizeToTopic(topicsIds, size);
             }
         },
 
@@ -725,13 +664,7 @@ mindplot.MindmapDesigner = new Class({
             var topicsIds = validSelectedObjects.nodes;
 
             if (topicsIds.length > 0) {
-                var commandFunc = function(topic, size) {
-                    var result = topic.getShapeType();
-                    topic.setShapeType(size, true);
-                    return result;
-                }
-                var command = new mindplot.commands.GenericFunctionCommand(commandFunc, shape, topicsIds);
-                this._actionRunner.execute(command);
+                this._actionDispatcher.changeShapeToTopic(topicsIds, shape);
             }
         },
 
@@ -740,20 +673,7 @@ mindplot.MindmapDesigner = new Class({
             var validSelectedObjects = this._getValidSelectedObjectsIds();
             var topicsIds = validSelectedObjects.nodes;
             if (topicsIds.length > 0) {
-                var commandFunc = function(topic) {
-                    var result = topic.getFontWeight();
-                    var weight = (result == "bold") ? "normal" : "bold";
-                    topic.setFontWeight(weight, true);
-
-                    core.Executor.instance.delay(topic.updateNode, 0, topic);
-                    /*var updated = function() {
-                     topic.updateNode();
-                     };
-                     updated.delay(0);*/
-                    return result;
-                }
-                var command = new mindplot.commands.GenericFunctionCommand(commandFunc, "", topicsIds);
-                this._actionRunner.execute(command);
+                this._actionDispatcher.changeFontWeightToTopic(topicsIds);
             }
         },
 
@@ -761,9 +681,7 @@ mindplot.MindmapDesigner = new Class({
             var validSelectedObjects = this._getValidSelectedObjectsIds();
             var topicsIds = validSelectedObjects.nodes;
             if (topicsIds.length > 0) {
-
-                var command = new mindplot.commands.AddIconToTopicCommand(topicsIds[0], iconType);
-                this._actionRunner.execute(command);
+                this._actionDispatcher.addIconToTopic(topicsIds[0], iconType);
             }
         },
 
@@ -771,8 +689,7 @@ mindplot.MindmapDesigner = new Class({
             var validSelectedObjects = this._getValidSelectedObjectsIds();
             var topicsIds = validSelectedObjects.nodes;
             if (topicsIds.length > 0) {
-                var command = new mindplot.commands.AddLinkToTopicCommand(topicsIds[0], url);
-                this._actionRunner.execute(command);
+                this._actionDispatcher.addLinkToTopic(topicsIds[0], url);
             }
         },
 
@@ -784,11 +701,11 @@ mindplot.MindmapDesigner = new Class({
                 if (!$defined(topic._hasLink)) {
                     var msg = new Element('div');
                     var urlText = new Element('div').inject(msg);
-                    urlText.innerHTML = "URL:"
+                    urlText.innerHTML = "URL:";
                     var formElem = new Element('form', {'action': 'none', 'id':'linkFormId'});
                     var urlInput = new Element('input', {'type': 'text', 'size':30});
                     urlInput.inject(formElem);
-                    formElem.inject(msg)
+                    formElem.inject(msg);
 
                     var okButtonId = "linkOkButtonId";
                     formElem.addEvent('submit', function(e) {
@@ -824,8 +741,7 @@ mindplot.MindmapDesigner = new Class({
             var validSelectedObjects = this._getValidSelectedObjectsIds();
             var topicsIds = validSelectedObjects.nodes;
             if (topicsIds.length > 0) {
-                var command = new mindplot.commands.AddNoteToTopicCommand(topicsIds[0], text);
-                this._actionRunner.execute(command);
+                this._actionDispatcher.addNoteToTopic(topicsIds[0], text);
             }
         },
 

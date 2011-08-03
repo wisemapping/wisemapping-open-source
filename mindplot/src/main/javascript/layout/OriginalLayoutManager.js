@@ -24,12 +24,13 @@ mindplot.layout.OriginalLayoutManager = new Class({
     initialize:function(designer, options) {
         this.parent(designer, options);
         this._dragTopicPositioner = new mindplot.DragTopicPositioner(this);
-        // Init dragger manager.
+
+        // Init drag manager.
         var workSpace = this.getDesigner().getWorkSpace();
         this._dragger = this._buildDragManager(workSpace);
 
         // Add shapes to speed up the loading process ...
-        mindplot.DragTopic.initialize(workSpace);
+        mindplot.DragTopic.init(workSpace);
     },
     prepareNode:function(node, children) {
         // Sort children by order to solve adding order in for OriginalLayoutManager...

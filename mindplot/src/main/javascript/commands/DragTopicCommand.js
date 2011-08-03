@@ -18,12 +18,15 @@
 
 mindplot.commands.DragTopicCommand = new Class({
     Extends:mindplot.Command,
-    initialize: function(topicId) {
-        $assert(topicId, "topicId must be defined");
-        this._selectedObjectsIds = topicId;
-        this._parentTopic = null;
-        this._position = null;
-        this._order = null;
+    initialize: function(topicIds, position, order, parentTopic) {
+        $assert(topicIds, "topicIds must be defined");
+
+        this._selectedObjectsIds = topicIds;
+        if ($defined(parentTopic))
+            this._parentId = parentTopic.getId();
+
+        this._position = position;
+        this._order = order;
         this._id = mindplot.Command._nextUUID();
     },
     execute: function(commandContext) {
@@ -78,19 +81,9 @@ mindplot.commands.DragTopicCommand = new Class({
     undoExecute: function(commandContext) {
         this.execute(commandContext);
         var selectedRelationships = commandContext.getSelectedRelationshipLines();
-        selectedRelationships.forEach(function(relationshipLine, index) {
+        selectedRelationships.forEach(function(relationshipLine) {
             relationshipLine.redraw();
         });
 
-    },
-    setPosition: function(point) {
-        this._position = point;
-    },
-    setParetTopic: function(topic) {
-        this._parentId = topic.getId();
-
-    },
-    setOrder: function(order) {
-        this._order = order
     }
 });
