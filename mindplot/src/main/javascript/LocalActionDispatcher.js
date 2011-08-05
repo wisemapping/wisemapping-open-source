@@ -220,6 +220,18 @@ mindplot.LocalActionDispatcher = new Class({
         this.execute(command);
     },
 
+    shrinkBranch : function(topicsIds, collapse) {
+        $assert(topicsIds, "topicsIds can not be null");
+
+        var commandFunc = function(topic, isShrink) {
+            topic.setChildrenShrinked(isShrink);
+            return !isShrink;
+        };
+
+        var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicsIds, collapse);
+        this.execute(command);
+    },
+
     execute:function(command) {
         this._actionRunner.execute(command);
     }

@@ -94,7 +94,13 @@ mindplot.ActionDispatcher = new Class({
     changeFontWeightToTopic : function(topicsIds) {
         throw "method must be implemented.";
     },
+
     changeTextOnTopic : function(topicsIds, text) {
+        throw "method must be implemented.";
+    },
+
+    shrinkBranch : function(topicsIds, collapse)
+    {
         throw "method must be implemented.";
     }
 

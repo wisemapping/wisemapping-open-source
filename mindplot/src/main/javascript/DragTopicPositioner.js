@@ -71,7 +71,8 @@ mindplot.DragTopicPositioner = new Class({
         // Finally, connect nodes ...
         if (!dragTopic.isConnected()) {
             var centalTopic = topics[0];
-            if ($defined(mainTopicToMainTopicConnection)) {
+            if ($defined(mainTopicToMainTopicConnection))
+            {
                 dragTopic.connectTo(mainTopicToMainTopicConnection);
             } else if (Math.abs(dragTopic.getPosition().x - centalTopic.getPosition().x) <= mindplot.DragTopicPositioner.CENTRAL_TO_MAINTOPIC_MAX_HORIZONTAL_DISTANCE) {
                 dragTopic.connectTo(centalTopic);
@@ -82,7 +83,6 @@ mindplot.DragTopicPositioner = new Class({
     _lookUpForMainTopicToMainTopicConnection : function(dragTopic) {
         var topics = this._topics;
         var result = null;
-        var clouserDistance = -1;
         var draggedNode = dragTopic.getDraggedTopic();
         var distance = null;
 

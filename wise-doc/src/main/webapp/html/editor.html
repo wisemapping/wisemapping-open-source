@@ -12,7 +12,9 @@
     <link rel="stylesheet" type="text/css" href="../css/editor.css"/>
     <link rel="stylesheet" type="text/css" href="../css/bubble.css"/>
 
+    <!--<script type='text/javascript' src='http://docs.google.com/brix/static/api/js/jsapi.nocache.js'></script>-->
     <!--<script type='text/javascript' src='../js/wiseLibrary.js'></script>-->
+
     <script type='text/javascript' src='../js/mootools-core-1.3.2-full-compat.js'></script>
     <script type='text/javascript' src='../js/mootools-more-1.3.2.1-yui.js'></script>
 
@@ -24,6 +26,9 @@
     <script type='text/javascript' src='../../../../../wise-webapp/src/main/webapp/js/mooRainbow.js'></script>
 
     <script type='text/javascript' src='../../../../../core-js/target/classes/core.js'></script>
+
+'></script>
+
 
     <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
@@ -69,14 +74,10 @@
     // @Todo: This must be persited in the map properties ...
     var mapId = '1';
     var mapXml = '<map name="38298" version="pela"><topic central="true" text="test" id="1"/></map>';
-
-
     var editorProperties = {zoom:0.85,saveOnLoad:true};
 
-    function printMap() {
-        document.printForm.mapSvg.value = $("workspaceContainer").innerHTML;
-        document.printForm.submit();
-    }
+
+
 </script>
 
 <div id="colorPalette">

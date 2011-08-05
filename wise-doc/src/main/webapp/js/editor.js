@@ -365,7 +365,7 @@ function buildMindmapDesigner() {
     var screenHeight = window.getHeight();
 
     // header - footer
-    screenHeight = screenHeight-115;
+    screenHeight = screenHeight - 115;
 
     // body margin ...
     editorProperties.width = screenWidth;
@@ -391,8 +391,7 @@ function createColorPalette(container, onSelectFunction, event) {
     var colorPaletteElement = $("colorPalette");
     colorPaletteElement.setStyle('left', (mouseCoords.x - 80) + "px");
     colorPaletteElement.setStyle('display', "block");
-}
-;
+};
 
 function cleanScreenEvent() {
     if (this.currentColorPicker) {
@@ -435,9 +434,8 @@ function shapeTypePanel() {
 function fontSizePanel() {
     var shapeTypePanel = ['small','normal','large','huge'];
     var map = {small:'6',normal:'8',large:'10',huge:'15'};
-    var updateFunction = function(value) {
-        var nodes = designer.getSelectedNodes();
-        var value = map[value];
+    var updateFunction = function(key) {
+        var value = map[key];
         designer.setFontSize2SelectedNode(value);
     };
 
@@ -488,7 +486,6 @@ function buildPanel(buttonElemId, elemLinksContainer, elemLinkIds, updateFunctio
         if (!isRendered) {
             container.setStyle('left', (mouseCoords.x - 10) + "px");
         }
-
     });
 
     var fontOnClick = function(event) {
