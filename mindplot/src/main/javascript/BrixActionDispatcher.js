@@ -18,9 +18,8 @@
 
 mindplot.BrixActionDispatcher = new Class({
     Extends: mindplot.ActionDispatcher,
-    initialize: function(designer) {
-        $assert(designer, "designer can not be null");
-
+    initialize: function(commandContext, fireOnChange) {
+        this.parent(commandContext, fireOnChange);
     }
 });
 

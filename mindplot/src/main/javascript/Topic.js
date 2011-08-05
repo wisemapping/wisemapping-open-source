@@ -906,7 +906,6 @@ mindplot.Topic = new Class({
     },
 
     _setRelationshipLinesVisibility : function(value) {
-        //var relationships = designer.findRelationShipsByTopicId(this.getId());
         this._relationships.forEach(function(relationship, index) {
             relationship.setVisibility(value);
         });

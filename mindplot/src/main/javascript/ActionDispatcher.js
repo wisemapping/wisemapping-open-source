@@ -18,8 +18,9 @@
 
 //noinspection JSUnusedLocalSymbols
 mindplot.ActionDispatcher = new Class({
-
-    initialize: function() {
+    Implements:[Events],
+    initialize: function(commandContext) {
+        $assert(commandContext, "commandContext can not be null");
     },
 
     addIconToTopic: function(topicId, iconType) {
@@ -92,7 +93,9 @@ mindplot.ActionDispatcher = new Class({
 
     changeFontWeightToTopic : function(topicsIds) {
         throw "method must be implemented.";
-
+    },
+    changeTextOnTopic : function(topicsIds, text) {
+        throw "method must be implemented.";
     }
 
 });

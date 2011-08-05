@@ -131,13 +131,8 @@ mindplot.TextEditor = new Class({
             var text = this.getText();
             var topicId = this._currentNode.getId();
 
-            var commandFunc = function(topic, value) {
-                var result = topic.getText();
-                topic.setText(value);
-                return result;
-            };
-            var command = new mindplot.commands.GenericFunctionCommand(commandFunc, text, [topicId]);
-            this._actionRunner.execute(command);
+            var actionDispatcher = mindplot.ActionDispatcher.getInstance();
+            actionDispatcher.changeTextOnTopic([topicId], text);
         }
     },
 

@@ -205,7 +205,8 @@ function afterMindpotLibraryLoading() {
     $('redoEdition').addEvent('click', function(event) {
         designer.redo();
     });
-    designer.addEventListener("change", function(event) {
+
+    designer.addEventListener("modelUpdate", function(event) {
         if (event.undoSteps > 0) {
             $("undoEdition").setStyle("background-image", "url(../images/file_undo.png)");
         } else {
@@ -223,6 +224,7 @@ function afterMindpotLibraryLoading() {
     $('addTopic').addEvent('click', function(event) {
         designer.createSiblingForSelectedNode();
     });
+
     $('deleteTopic').addEvent('click', function(event) {
         var topics = designer.getSelectedNodes();
         designer.deleteCurrentNode();

@@ -1,7 +1,7 @@
 mindplot.layout.boards = {};
 
 mindplot.layout.boards.Board = new Class({
-
+    Implements: [Events,Options],
     options: {
 
     },
@@ -31,6 +31,3 @@ mindplot.layout.boards.Board = new Class({
 });
 
 mindplot.layout.boards.Board.NAME = "Board";
-
-mindplot.layout.boards.Board.implement(new Events);
-mindplot.layout.boards.Board.implement(new Options);

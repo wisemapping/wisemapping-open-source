@@ -18,9 +18,9 @@
 
 mindplot.LocalActionDispatcher = new Class({
     Extends: mindplot.ActionDispatcher,
-    initialize: function(designer) {
-        $assert(designer, "designer can not be null");
-        this._actionRunner = new mindplot.DesignerActionRunner(designer);
+    initialize: function(commandContext) {
+        this.parent(commandContext);
+        this._actionRunner = new mindplot.DesignerActionRunner(commandContext,this);
     },
 
     addIconToTopic: function(topicId, iconType) {
@@ -87,6 +87,20 @@ mindplot.LocalActionDispatcher = new Class({
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicsIds);
         this._actionRunner.execute(command);
 
+    },
+
+    changeTextOnTopic : function(topicsIds, text) {
+        $assert(topicsIds, "topicsIds can not be null");
+
+        var commandFunc = function(topic, value) {
+
+            var result = topic.getText();
+            topic.setText(value);
+            return result;
+        };
+
+        var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicsIds, text);
+        this._actionRunner.execute(command);
     },
 
     changeFontFamilyToTopic: function(topicIds, fontFamily) {
@@ -206,4 +220,74 @@ mindplot.LocalActionDispatcher = new Class({
     }
 
 });
+
+mindplot.CommandContext = new Class({
+    initialize: function(designer) {
+        $assert(designer, "designer can not be null");
+        this._designer = designer;
+    },
+    findTopics:function(topicsIds) {
+        var designerTopics = this._designer._topics;
+        if (!(topicsIds instanceof Array)) {
+            topicsIds = [topicsIds];
+        }
+
+        var result = designerTopics.filter(function(topic) {
+            var found = false;
+            if (topic != null) {
+                var topicId = topic.getId();
+                found = topicsIds.contains(topicId);
+            }
+            return found;
+
+        });
+        return result;
+    },
+
+    deleteTopic:function(topic) {
+        this._designer._removeNode(topic);
+    },
+
+    createTopic:function(model, isVisible) {
+        $assert(model, "model can not be null");
+        return this._designer._nodeModelToNodeGraph(model, isVisible);
+    },
+
+    createModel:function() {
+        var mindmap = this._designer.getMindmap();
+        return mindmap.createNode(mindplot.NodeModel.MAIN_TOPIC_TYPE);
+    },
+
+    connect:function(childTopic, parentTopic, isVisible) {
+        childTopic.connectTo(parentTopic, this._designer._workspace, isVisible);
+    } ,
+
+    disconnect:function(topic) {
+        topic.disconnect(this._designer._workspace);
+    },
+
+    createRelationship:function(model) {
+        $assert(model, "model cannot be null");
+        return this._designer.createRelationship(model);
+    },
+    removeRelationship:function(model) {
+        this._designer.removeRelationship(model);
+    },
+
+    findRelationships:function(lineIds) {
+        var result = [];
+        lineIds.forEach(function(lineId, index) {
+            var line = this._designer._relationships[lineId];
+            if ($defined(line)) {
+                result.push(line);
+            }
+        }.bind(this));
+        return result;
+    },
+
+    getSelectedRelationshipLines:function() {
+        return this._designer.getSelectedRelationshipLines();
+    }
+});
+
 

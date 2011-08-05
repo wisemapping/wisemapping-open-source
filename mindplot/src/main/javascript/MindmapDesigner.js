@@ -23,10 +23,13 @@ mindplot.MindmapDesigner = new Class({
             $assert(divElement, "divElement must be defined");
 
             // Dispatcher manager ...
-            // @Todo: Remove this static. Sucks...
-            this._actionDispatcher = new mindplot.LocalActionDispatcher(this);
-            mindplot.ActionDispatcher.setInstance(this._actionDispatcher);
+            var commandContext = new mindplot.CommandContext(this);
+            this._actionDispatcher = new mindplot.LocalActionDispatcher(commandContext);
+            this._actionDispatcher.addEvent("modelUpdate", function(event) {
+                this._fireEvent("modelUpdate", event);
+            }.bind(this));
 
+            mindplot.ActionDispatcher.setInstance(this._actionDispatcher);
 
             // Initial Zoom
             this._zoom = profile.zoom;
@@ -59,7 +62,6 @@ mindplot.MindmapDesigner = new Class({
             var topics = this._getTopics();
             return topics[0];
         },
-
 
         addEventListener : function(eventType, listener) {
 
@@ -156,7 +158,7 @@ mindplot.MindmapDesigner = new Class({
             this.getEditor().lostFocus();
             var selectableObjects = this.getSelectedObjects();
             // Disable all nodes on focus but not the current if Ctrl key isn't being pressed
-            if (!$defined(event) || event.ctrlKey == false) {
+            if (!$defined(event) || event.ctrlKey) {
                 for (var i = 0; i < selectableObjects.length; i++) {
                     var selectableObject = selectableObjects[i];
                     if (selectableObject.isOnFocus() && selectableObject != currentObject) {
@@ -788,27 +790,6 @@ mindplot.MindmapDesigner = new Class({
             }
         },
 
-        removeLastImageFromSelectedNode : function() {
-            var nodes = this._getSelectedNodes();
-            if (nodes.length == 0) {
-                core.Monitor.getInstance().logMessage('A topic must be selected in order to execute this operation.');
-            } else {
-                var elem = nodes[0];
-                elem.removeLastIcon(this);
-                core.Executor.instance.delay(elem.updateNode, 0, elem);
-                /*var executor = function(editor)
-                 {
-                 return function()
-                 {
-                 elem.updateNode();
-                 };
-                 };
-
-                 setTimeout(executor(this), 0);*/
-            }
-        },
-
-
         _getSelectedNodes : function() {
             var result = new Array();
             for (var i = 0; i < this._topics.length; i++) {
@@ -858,6 +839,7 @@ mindplot.MindmapDesigner = new Class({
                         evt.returnValue = false;
                 }
                 else {
+                    // @ToDo: I think that some of the keys has been removed ... Check this...
                     evt = new Event(event);
                     var key = evt.key;
                     if (!this._editor.isVisible()) {
@@ -1077,17 +1059,6 @@ mindplot.MindmapDesigner = new Class({
 
         getWorkSpace : function() {
             return this._workspace;
-        },
-
-        findRelationShipsByTopicId : function(topicId) {
-            var result = [];
-            for (var relationshipId in this._relationships) {
-                var relationship = this._relationships[relationshipId];
-                if (relationship.getModel().getFromNode() == topicId || relationship.getModel().getToNode() == topicId) {
-                    result.push(relationship);
-                }
-            }
-            return result;
         }
     }
 );
