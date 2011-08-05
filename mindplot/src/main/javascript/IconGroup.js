@@ -55,9 +55,12 @@ mindplot.IconGroup = new Class({
     },
 
     addIcon : function(icon) {
+        $defined(icon,"icon is not defined");
         icon.setGroup(this);
+
         var newIcon = icon.getImage();
         var nativeElem = this.options.nativeElem;
+
         var iconSize = newIcon.getSize();
         var size = nativeElem.getSize();
         newIcon.setPosition(size.width, 0);
@@ -186,8 +189,10 @@ mindplot.IconGroup = new Class({
     _calculateOffsets : function() {
         var offset = this.options.topic.getOffset();
         var text = this.options.topic.getTextShape();
+
         var sizeHeight = text.getHtmlFontSize();
         var yOffset = offset;
+
         var shape = this.options.topic.getShapeType();
         yOffset = text.getPosition().y + (sizeHeight - 18) / 2 + 1;
         return {x:offset, y:yOffset};

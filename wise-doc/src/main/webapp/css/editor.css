@@ -123,7 +123,7 @@ html {
     color: #ffffff;
     border-bottom: 2px solid black;
     position: absolute;
-    top: 35px;
+    top: 0;
 }
 
 div#toolbar .buttonContainer {
@@ -134,9 +134,8 @@ div#toolbar .buttonContainer {
 
 .buttonContainer fieldset {
     border: 1px solid #BBB4D6;
-    padding: 2px;
-    margin: 1px;
-    padding-bottom: 4px;
+    padding: 2px 2px 4px;
+    margin: 8px 1px 1px;
 }
 
 .buttonContainer legend {
@@ -209,15 +208,15 @@ div#file, div#zoom, div#node, div#font, div#share {
 }
 
 div#zoom {
-    left: 229px;
+    left: 84px;
 }
 
 div#node {
-    left: 311px;
+    left: 165px;
 }
 
 div#font {
-    left: 679px; /*left:581px;*/
+    left: 532px; /*left:581px;*/
 }
 
 div#share {
@@ -547,7 +546,7 @@ div#tabs {
 div.tabContent {
     clear: left;
     width: 100%;
-    height: 63px;
+    height: 50px;
     border-bottom: 1px solid #bbb4d6;
     border-top: 1px solid #bbb4d6;
     background: #E5E5E5;
@@ -608,7 +607,7 @@ ol#toc span {
 
 #mindplot {
     position: relative;
-    top: 103px;
+    top: 53px;
     left: 0;
     width: 100%;
     border: 0;

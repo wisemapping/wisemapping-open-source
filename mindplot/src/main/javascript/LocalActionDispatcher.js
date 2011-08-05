@@ -20,7 +20,12 @@ mindplot.LocalActionDispatcher = new Class({
     Extends: mindplot.ActionDispatcher,
     initialize: function(commandContext) {
         this.parent(commandContext);
-        this._actionRunner = new mindplot.DesignerActionRunner(commandContext,this);
+        this._actionRunner = new mindplot.DesignerActionRunner(commandContext, this);
+    },
+
+    hasBeenChanged: function() {
+        // @todo: This don't seems to belong here.
+        this._actionRunner.hasBeenChanged();
     },
 
     addIconToTopic: function(topicId, iconType) {

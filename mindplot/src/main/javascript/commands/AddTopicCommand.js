@@ -41,7 +41,7 @@ mindplot.commands.AddTopicCommand = new Class(
             var doneFn = function() {
                 // Finally, focus ...
                 var designer = commandContext._designer;
-                designer.onObjectFocusEvent.attempt(topic, designer);
+                designer.onObjectFocusEvent(topic);
                 topic.setOnFocus(true);
             };
 

@@ -41,7 +41,7 @@
     <div id="waitingContainer">
         <div class="loadingIcon"></div>
         <div class="loadingText">
-            SYMB_EDITOR.LOADING
+            Loading ...
         </div>
     </div>
 </div>
@@ -50,7 +50,7 @@
     <div id="errorContainer">
         <div class="loadingIcon"></div>
         <div class="loadingText">
-            SYMB_EDITOR.ERROR_LOADING
+            Unexpected error loading your map :(
         </div>
     </div>
 </div>
@@ -98,7 +98,6 @@
 </div>
 
 <div id="topicShapePanel" class="toolbarPanel">
-    <!--<div id="automatic" class="toolbarPanelLink">Automatic</div>-->
     <div id="rectagle" class="toolbarPanelLink"><img src="../images/shape-rectangle.png" alt="Rectangle" width="40"
                                                      height="25"></div>
     <div id="rounded_rectagle" class="toolbarPanelLink"><img src="../images/shape-rectangle-rounded.png"
@@ -112,231 +111,114 @@
 </div>
 
 <div id="toolbar">
-<div id="editTab" class="tabContent">
-<div id="file" class="buttonContainer" title="SYMB_ FILE">
-    <fieldset>
-        <legend>
-            SYMB_FILE
-        </legend>
-        <div id="saveButton" class="button" title="SYMB_SAVE">
-            <div class="toolbarLabel">
-                <p>
-                    SYMB_SAVE
-                </p>
-            </div>
+    <div id="editTab" class="tabContent">
+        <div id="file" class="buttonContainer" title="SYMB_ FILE">
+            <fieldset>
+                <div id="undoEdition" class="button" title="Undo Edition">
+                    <div class="toolbarLabel">
+                        <p>Undo</p>
+                    </div>
+                </div>
+                <div id="redoEdition" class="button" title="Redo Edition">
+                    <div class="toolbarLabel">
+                        <p>Redo</p>
+                    </div>
+                </div>
+            </fieldset>
         </div>
-        <div id="discardButton" class="button" title="SYMB_ CLOSE">
-            <div class="toolbarLabel">
-                <p>
-                    SYMB_CLOSE
-                </p>
-            </div>
+        <div id="zoom" class="buttonContainer" title="Zoom In">
+            <fieldset>
+                <div id="zoomIn" class="button" title="Zoom In">
+                    <div class="toolbarLabel">
+                        <p>In</p>
+                    </div>
+                </div>
+                <div id="zoomOut" class="button" title="Zoom Out">
+                    <div class="toolbarLabel">
+                        <p>Out</p>
+                    </div>
+                </div>
+            </fieldset>
         </div>
-        <div id="undoEdition" class="button" title="SYMB_ UNDO_EDITION">
-            <div class="toolbarLabel">
-                <p>
-                    SYMB_UNDO
-                </p>
-            </div>
+        <div id="node" class="buttonContainer" title="Node Properties">
+            <fieldset>
+                <div id="topicShape" class="button comboButton" title="SYMB_TOPIC_SHAPE">
+                    <div class="toolbarLabel">
+                        <p>Shape</p>
+                    </div>
+                </div>
+                <div id="addTopic" class="button" title="SYMB_ TOPIC_ADD">
+                    <div class="toolbarLabel">
+                        <p>Add</p>
+                    </div>
+                </div>
+                <div id="deleteTopic" class="button" title="SYMB_ TOPIC_DELETE">
+                    <div class="toolbarLabel">
+                        <p>Delete</p>
+                    </div>
+                </div>
+                <div id="topicBorder" class="button comboButton" title="SYMB_ TOPIC_BORDER_COLOR">
+                    <div class="toolbarLabel">
+                        <p>Border</p>
+                    </div>
+                </div>
+                <div id="topicColor" class="button comboButton" title="Background Color">
+                    <div class="toolbarLabel">
+                        <p>Color</p>
+                    </div>
+                </div>
+                <div id="topicIcon" class="button comboButton" title="Change Icon">
+                    <div class="toolbarLabel">
+                        <p>Icon</p>
+                    </div>
+                </div>
+                <div id="topicNote" class="button comboButton" title="Add Note">
+                    <div class="toolbarLabel">
+                        <p>Note</p>
+                    </div>
+                </div>
+                <div id="topicLink" class="button" title="Add Link">
+                    <div class="toolbarLabel">
+                        <p>Link</p>
+                    </div>
+                </div>
+                <div id="topicRelation" class="topicRelation button" title="Add Relationship">
+                    <div class="relationshiplabel toolbarLabel">
+                        <p>Relationship</p>
+                    </div>
+                </div>
+            </fieldset>
         </div>
-        <div id="redoEdition" class="button" title="SYMB_ REDO_EDITION">
-            <div class="toolbarLabel">
-                <p>
-                    SYMB_REDO
-                </p>
-            </div>
+        <div id="font" class="buttonContainer" title="Font Properties">
+            <fieldset>
+                <div id="fontFamily" class="button comboButton" title="Font Style">
+                    <div class="toolbarLabel">
+                        <p>Style</p>
+                    </div>
+                </div>
+                <div id="fontSize" class="button comboButton" title="Font Size">
+                    <div class="toolbarLabel">
+                        <p>Size</p>
+                    </div>
+                </div>
+                <div id="fontBold" class="button" title="Bold Style">
+                    <div class="toolbarLabel">
+                        <p>Bold</p>
+                    </div>
+                </div>
+                <div id="fontItalic" class="button" title="Italic Style">
+                    <div class="toolbarLabel">
+                        <p>Italic</p>
+                    </div>
+                </div>
+                <div id="fontColor" class="button comboButton" title="Fond Color">
+                    <div class="toolbarLabel">
+                        <p>Color</p>
+                    </div>
+                </div>
+            </fieldset>
         </div>
-
-        <div id="print" class="button" title="SYMB_ PRINT" onclick="printMap();">
-            <div class="toolbarLabel">
-                <p>
-                    SYMB_PRINT
-                </p>
-            </div>
-        </div>
-
-        <div id="export" class="button" title="SYMB_ EXPORT">
-            <div class="toolbarLabel">
-                <p>
-                    SYMB_EXPORT
-                </p>
-            </div>
-            <a id="exportAnchor" href="export.htm?mapId=${mindmap.id}" rel="moodalbox 600px 400px"
-               title="SYMB_ EXPORT_DETAILS">
-            </a>
-        </div>
-    </fieldset>
-</div>
-<div id="zoom" class="buttonContainer" title="Zoom In">
-    <fieldset>
-        <legend>
-            SYMB_ZOOM
-        </legend>
-        <div id="zoomIn" class="button" title="SYMB_ ZOOM_IN">
-            <div class="toolbarLabel">
-                <p>
-                    SYMB_IN
-                </p>
-            </div>
-        </div>
-        <div id="zoomOut" class="button" title="SYMB_ ZOOM_OUT">
-            <div class="toolbarLabel">
-                <p>
-                    SYMB_OUT
-                </p>
-            </div>
-        </div>
-    </fieldset>
-</div>
-<div id="node" class="buttonContainer" title="Node Properties">
-    <fieldset>
-        <legend>
-            SYMB_TOPIC
-        </legend>
-        <div id="topicShape" class="button comboButton" title="SYMB_ TOPIC_SHAPE">
-            <div class="toolbarLabel">
-                <p>
-                    SYMB_SHAPE
-                </p>
-            </div>
-        </div>
-        <div id="addTopic" class="button" title="SYMB_ TOPIC_ADD">
-            <div class="toolbarLabel">
-                <p>
-                    SYMB_ADD
-                </p>
-            </div>
-        </div>
-        <div id="deleteTopic" class="button" title="SYMB_ TOPIC_DELETE">
-            <div class="toolbarLabel">
-                <p>
-                    SYMB_DELETE
-                </p>
-            </div>
-        </div>
-        <div id="topicBorder" class="button comboButton" title="SYMB_ TOPIC_BORDER_COLOR">
-            <div class="toolbarLabel">
-                <p>
-                    SYMB_BORDER
-                </p>
-            </div>
-        </div>
-        <div id="topicColor" class="button comboButton" title="SYMB_ TOPIC_BACKGROUND_COLOR">
-            <div class="toolbarLabel">
-                <p>
-                    SYMB_COLOR
-                </p>
-            </div>
-        </div>
-        <div id="topicIcon" class="button comboButton" title="SYMB_ TOPIC_ICON">
-            <div class="toolbarLabel">
-                <p>
-                    SYMB_ICON
-                </p>
-            </div>
-        </div>
-        <div id="topicNote" class="button comboButton" title="SYMB_ TOPIC_NOTE">
-            <div class="toolbarLabel">
-                <p>
-                    SYMB_NOTE
-                </p>
-            </div>
-        </div>
-        <div id="topicLink" class="button" title="SYMB_ TOPIC_LINK">
-            <div class="toolbarLabel">
-                <p>
-                    SYMB_LINK
-                </p>
-            </div>
-        </div>
-        <div id="topicRelation" class="topicRelation button" title="SYMB_ TOPIC_RELATIONSHIP">
-            <div class="relationshiplabel toolbarLabel">
-                <p>
-                    SYMB_TOPIC_RELATIONSHIP
-                </p>
-            </div>
-        </div>
-    </fieldset>
-</div>
-<div id="font" class="buttonContainer" title="Font Properties">
-    <fieldset>
-        <legend>
-            SYMB_FONT
-        </legend>
-        <div id="fontFamily" class="button comboButton" title="SYMB_ FONT_TYPE">
-            <div class="toolbarLabel">
-                <p>
-                    SYMB_TYPE
-                </p>
-            </div>
-        </div>
-        <div id="fontSize" class="button comboButton" title="SYMB_ FONT_SIZE">
-            <div class="toolbarLabel">
-                <p>
-                    SYMB_SIZE
-                </p>
-            </div>
-        </div>
-        <div id="fontBold" class="button" title="SYMB_ FONT_BOLD">
-            <div class="toolbarLabel">
-                <p>
-                    SYMB_BOLD
-                </p>
-            </div>
-        </div>
-        <div id="fontItalic" class="button" title="SYMB_ FONT_ITALIC">
-            <div class="toolbarLabel">
-                <p>
-                    SYMB_ITALIC
-                </p>
-            </div>
-        </div>
-        <div id="fontColor" class="button comboButton" title="SYMB_ FONT_COLOR">
-            <div class="toolbarLabel">
-                <p>
-                    SYMB_COLOR
-                </p>
-            </div>
-        </div>
-    </fieldset>
-</div>
-<div id="share" class="buttonContainer" title="Share Properties">
-
-    <fieldset>
-        <legend>
-            SYMB_COLLABORATION
-        </legend>
-        <div id="tagIt" class="button" title="SYMB_ TAG">
-            <div class="toolbarLabel">
-                <p>
-                    SYMB_TAG
-                </p>
-            </div>
-        </div>
-        <div id="shareIt" class="button" title="SYMB_ COLLABORATE">
-            <div class="toolbarLabel">
-                <p>
-                    SYMB_SHARE
-                </p>
-            </div>
-        </div>
-        <div id="publishIt" class="button" title="SYMB_ PUBLISH">
-            <div class="toolbarLabel">
-                <p>
-                    SYMB_PUBLISH
-                </p>
-            </div>
-        </div>
-        <div id="history" class="button" title="SYMB_ HISTORY_MSG">
-            <div class="toolbarLabel">
-                <p>
-                    SYMB_HISTORY
-                </p>
-            </div>
-        </div>
-    </fieldset>
-</div>
-</div>
+    </div>
 </div>
 
 <div id="mindplot"></div>

@@ -179,10 +179,12 @@ function afterMindpotLibraryLoading() {
 
     var iconChooser = buildIconChooser();
     iconPanel = new IconPanel({button:$('topicIcon'), onStart:cleanScreenEvent, content:iconChooser});
+
     // Register Events ...
     $(document).addEvent('keydown', designer.keyEventHandler.bindWithEvent(designer));
     $("ffoxWorkarroundInput").addEvent('keydown', designer.keyEventHandler.bindWithEvent(designer));
-    //
+
+
     $('zoomIn').addEvent('click', function(event) {
         designer.zoomIn();
     });
@@ -219,7 +221,6 @@ function afterMindpotLibraryLoading() {
     });
 
     $('deleteTopic').addEvent('click', function(event) {
-        var topics = designer.getSelectedNodes();
         designer.deleteCurrentNode();
     });
 
@@ -254,7 +255,8 @@ function afterMindpotLibraryLoading() {
             removeCurrentColorPicker.attempt(colorPicker2, context);
         }
     });
-    $('topicLink').addEvent('click', function(event) {
+
+    $('topicLink').addEvent('click', function() {
         designer.addLink2SelectedNode();
 
     });
@@ -263,17 +265,16 @@ function afterMindpotLibraryLoading() {
         designer.addRelationShip2SelectedNode(event);
     });
 
-    $('topicNote').addEvent('click', function(event) {
+    $('topicNote').addEvent('click', function() {
         designer.addNote2SelectedNode();
 
     });
 
-
-    $('fontBold').addEvent('click', function(event) {
+    $('fontBold').addEvent('click', function() {
         designer.setWeight2SelectedNode();
     });
 
-    $('fontItalic').addEvent('click', function(event) {
+    $('fontItalic').addEvent('click', function() {
         designer.setStyle2SelectedNode();
     });
 
@@ -293,43 +294,19 @@ function afterMindpotLibraryLoading() {
         }
     });
 
-    // Save event handler ....
-    var saveButton = $('saveButton');
-    saveButton.addEvent('click', function(event) {
-
-
-        saveButton.setStyle('cursor', 'wait');
-        var saveFunc = function() {
-            designer.save(function() {
-                var monitor = core.Monitor.getInstance();
-                monitor.logMessage('Save completed successfully');
-                saveButton.setStyle('cursor', 'pointer');
-            }, true);
-        }
-        saveFunc.delay(1);
-
-    });
-
-    var discardButton = $('discardButton');
-    discardButton.addEvent('click', function(event) {
-
-        displayLoading();
-        window.document.location = "mymaps.htm";
-    });
-
     // To prevent the user from leaving the page with changes ...
-    window.onbeforeunload = function confirmExit() {
+    window.onbeforeunload = function () {
         if (designer.needsSave()) {
             designer.save(null, false)
         }
-    }
+    };
 
     // Build panels ...
     fontFamilyPanel();
     shapeTypePanel();
     fontSizePanel();
 
-    // If not problem has occured, I close the dialog ...
+    // If not problem has arisen, close the dialog ...
     var closeDialog = function() {
 
         if (!window.hasUnexpectedErrors) {
@@ -388,7 +365,7 @@ function buildMindmapDesigner() {
     var screenHeight = window.getHeight();
 
     // header - footer
-    screenHeight = screenHeight - 90 - 61;
+    screenHeight = screenHeight-115;
 
     // body margin ...
     editorProperties.width = screenWidth;
@@ -561,7 +538,7 @@ function JSPomLoader(pomUrl, callback) {
                         callback();
                 } else {
                     var url = urls.pop();
-                    console.log("load url:" + url);
+//                    console.log("load url:" + url);
                     Asset.javascript(url, {
                         onLoad: function() {
                             jsRecLoad(urls)

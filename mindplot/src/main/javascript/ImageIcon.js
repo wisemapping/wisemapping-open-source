@@ -22,6 +22,7 @@ mindplot.ImageIcon = new Class({
             $assert(iconModel, 'iconModel can not be null');
             $assert(topic, 'topic can not be null');
             $assert(designer, 'designer can not be null');
+
             this._topic = topic;
             this._iconModel = iconModel;
             this._designer = designer;
@@ -47,11 +48,12 @@ mindplot.ImageIcon = new Class({
                     var actionDispatcher = mindplot.ActionDispatcher.getInstance();
                     actionDispatcher.removeIconFromTopic(this._topic.getId(), iconModel);
                     tip.forceClose();
-                }.bindWithEvent(this));
+                });
 
                 //Icon
                 var image = this.getImage();
                 image.addEventListener('click', function() {
+
                     var iconType = iconModel.getIconType();
                     var newIconType = this._getNextFamilyIconId(iconType);
                     iconModel.setIconType(newIconType);
@@ -59,21 +61,16 @@ mindplot.ImageIcon = new Class({
                     var imgUrl = this._getImageUrl(newIconType);
                     this._image.setHref(imgUrl);
 
-                    //        // @Todo: Support revert of change icon ...
-                    //        var actionRunner = designer._actionRunner;
-                    //        var command = new mindplot.commands.ChangeIconFromTopicCommand(this._topic.getId());
-                    //        this._actionRunner.execute(command);
+                }.bind(this));
 
-
-                }.bindWithEvent(this));
-
-                var imageIcon = this;
                 image.addEventListener('mouseover', function(event) {
-                    tip.open(event, container, imageIcon);
-                });
+                    tip.open(event, container, this);
+                }.bind(this));
+
                 image.addEventListener('mouseout', function(event) {
                     tip.close(event);
                 });
+
                 image.addEventListener('mousemove', function(event) {
                     tip.updatePosition(event);
                 });
