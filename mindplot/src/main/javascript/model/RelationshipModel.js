@@ -15,12 +15,12 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.RelationshipModel = new Class({
+mindplot.model.RelationshipModel = new Class({
     initialize:function(fromNode, toNode) {
         $assert(fromNode, 'from node type can not be null');
         $assert(toNode, 'to node type can not be null');
 
-        this._id = mindplot.RelationshipModel._nextUUID();
+        this._id = mindplot.model.RelationshipModel._nextUUID();
         this._fromNode = fromNode;
         this._toNode = toNode;
         this._lineType = mindplot.ConnectionLine.SIMPLE_CURVED;
@@ -83,7 +83,7 @@ mindplot.RelationshipModel = new Class({
     },
 
     clone : function(model) {
-        var result = new mindplot.RelationshipModel(this._fromNode, this._toNode);
+        var result = new mindplot.model.RelationshipModel(this._fromNode, this._toNode);
         result._id = this._id;
         result._lineType = this._lineType;
         result._srcCtrlPoint = this._srcCtrlPoint;
@@ -102,7 +102,7 @@ mindplot.RelationshipModel = new Class({
 /**
  * @todo: This method must be implemented.
  */
-mindplot.RelationshipModel._nextUUID = function() {
+mindplot.model.RelationshipModel._nextUUID = function() {
     if (!$defined(this._uuid)) {
         this._uuid = 0;
     }

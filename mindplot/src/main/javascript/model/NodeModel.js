@@ -16,7 +16,7 @@
  *   limitations under the License.
  */
 
-mindplot.NodeModel = new Class({
+mindplot.model.NodeModel = new Class({
     initialize:function(type, mindmap, id) {
         $assert(type, 'Node type can not be null');
         $assert(mindmap, 'mindmap can not be null');
@@ -30,12 +30,12 @@ mindplot.NodeModel = new Class({
         this._size = {width:50,height:20};
         this._position = null;
         if ($defined(id)) {
-            if (!$defined(mindplot.NodeModel._uuid) || id > mindplot.NodeModel._uuid) {
-                mindplot.NodeModel._uuid = id;
+            if (!$defined(mindplot.model.NodeModel._uuid) || id > mindplot.model.NodeModel._uuid) {
+                mindplot.model.NodeModel._uuid = id;
             }
             this._id = id;
         } else {
-            this._id = mindplot.NodeModel._nextUUID();
+            this._id = mindplot.model.NodeModel._nextUUID();
         }
         this._mindmap = mindmap;
         this._text = null;
@@ -51,7 +51,7 @@ mindplot.NodeModel = new Class({
     },
 
     clone  : function() {
-        var result = new mindplot.NodeModel(this._type, this._mindmap);
+        var result = new mindplot.model.NodeModel(this._type, this._mindmap);
         result._order = this._order;
         result._type = this._type;
         result._children = this._children.map(function(item, index) {
@@ -96,8 +96,8 @@ mindplot.NodeModel = new Class({
 
     setId  : function(id) {
         this._id = id;
-        if (mindplot.NodeModel._uuid < id) {
-            mindplot.NodeModel._uuid = id;
+        if (mindplot.model.NodeModel._uuid < id) {
+            mindplot.model.NodeModel._uuid = id;
         }
     },
 
@@ -123,7 +123,7 @@ mindplot.NodeModel = new Class({
 
     createLink  : function(url) {
         $assert(url, 'Link URL must be specified.');
-        return new mindplot.LinkModel(url, this);
+        return new mindplot.model.LinkModel(url, this);
     },
 
     addLink  : function(link) {
@@ -138,7 +138,7 @@ mindplot.NodeModel = new Class({
 
     createNote  : function(text) {
         $assert(text != null, 'note text must be specified.');
-        return new mindplot.NoteModel(text, this);
+        return new mindplot.model.NoteModel(text, this);
     },
 
     addNote  : function(note) {
@@ -153,7 +153,7 @@ mindplot.NodeModel = new Class({
 
     createIcon  : function(iconType) {
         $assert(iconType, 'IconType must be specified.');
-        return new mindplot.IconModel(iconType, this);
+        return new mindplot.model.IconModel(iconType, this);
     },
 
     addIcon  : function(icon) {
@@ -261,7 +261,7 @@ mindplot.NodeModel = new Class({
         var targetPosition = targetModel.getPosition();
         var result = false;
 
-        if (sourceModel.getType() == mindplot.NodeModel.MAIN_TOPIC_TYPE) {
+        if (sourceModel.getType() == mindplot.model.NodeModel.MAIN_TOPIC_TYPE) {
             // Finally, check current node ubication.
             var targetTopicSize = targetModel.getSize();
             var yDistance = Math.abs(sourcePosition.y - targetPosition.y);
@@ -279,12 +279,12 @@ mindplot.NodeModel = new Class({
                     var isTargetAtRightFromCentral = targetPosition.x >= 0;
 
                     if (isTargetAtRightFromCentral) {
-                        if (xDistance >= -targetTopicSize.width / 2 && xDistance <= mindplot.NodeModel.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE / 2 + (targetTopicSize.width / 2)) {
+                        if (xDistance >= -targetTopicSize.width / 2 && xDistance <= mindplot.model.NodeModel.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE / 2 + (targetTopicSize.width / 2)) {
                             result = true;
                         }
 
                     } else {
-                        if (xDistance <= targetTopicSize.width / 2 && Math.abs(xDistance) <= mindplot.NodeModel.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE / 2 + (targetTopicSize.width / 2)) {
+                        if (xDistance <= targetTopicSize.width / 2 && Math.abs(xDistance) <= mindplot.model.NodeModel.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE / 2 + (targetTopicSize.width / 2)) {
                             result = true;
                         }
                     }
@@ -428,21 +428,21 @@ mindplot.NodeModel = new Class({
     }
 });
 
-mindplot.NodeModel.CENTRAL_TOPIC_TYPE = 'CentralTopic';
-mindplot.NodeModel.MAIN_TOPIC_TYPE = 'MainTopic';
-mindplot.NodeModel.DRAGGED_TOPIC_TYPE = 'DraggedTopic';
+mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE = 'CentralTopic';
+mindplot.model.NodeModel.MAIN_TOPIC_TYPE = 'MainTopic';
+mindplot.model.NodeModel.DRAGGED_TOPIC_TYPE = 'DraggedTopic';
 
-mindplot.NodeModel.SHAPE_TYPE_RECT = 'rectagle';
-mindplot.NodeModel.SHAPE_TYPE_ROUNDED_RECT = 'rounded rectagle';
-mindplot.NodeModel.SHAPE_TYPE_ELIPSE = 'elipse';
-mindplot.NodeModel.SHAPE_TYPE_LINE = 'line';
+mindplot.model.NodeModel.SHAPE_TYPE_RECT = 'rectagle';
+mindplot.model.NodeModel.SHAPE_TYPE_ROUNDED_RECT = 'rounded rectagle';
+mindplot.model.NodeModel.SHAPE_TYPE_ELIPSE = 'elipse';
+mindplot.model.NodeModel.SHAPE_TYPE_LINE = 'line';
 
-mindplot.NodeModel.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE = 220;
+mindplot.model.NodeModel.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE = 220;
 
 /**
  * @todo: This method must be implemented.
  */
-mindplot.NodeModel._nextUUID = function() {
+mindplot.model.NodeModel._nextUUID = function() {
     if (!$defined(this._uuid)) {
         this._uuid = 0;
     }

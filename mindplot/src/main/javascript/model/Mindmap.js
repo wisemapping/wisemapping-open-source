@@ -15,8 +15,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-
-mindplot.Mindmap = new Class({
+mindplot.model = {};
+mindplot.model.Mindmap = new Class({
         initialize : function() {
             this._branches = [];
             this._description = null;
@@ -53,10 +53,10 @@ mindplot.Mindmap = new Class({
         addBranch : function(nodeModel) {
             $assert(nodeModel && nodeModel.isNodeModel(), 'Add node must be invoked with model objects');
             if (this._branches.length == 0) {
-                $assert(nodeModel.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE, "First element must be the central topic");
+                $assert(nodeModel.getType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE, "First element must be the central topic");
                 nodeModel.setPosition(0, 0);
             } else {
-                $assert(nodeModel.getType() != mindplot.NodeModel.CENTRAL_TOPIC_TYPE, "Mindmaps only have one cental topic");
+                $assert(nodeModel.getType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE, "Mindmaps only have one cental topic");
             }
 
             this._branches.push(nodeModel);
@@ -114,7 +114,7 @@ mindplot.Mindmap = new Class({
 
         _createNode : function(type, id) {
             $assert(type, 'Node type must be specified.');
-            var result = new mindplot.NodeModel(type, this, id);
+            var result = new mindplot.model.NodeModel(type, this, id);
             return result;
         },
 
@@ -122,7 +122,7 @@ mindplot.Mindmap = new Class({
             $assert(fromNode, 'from node cannot be null');
             $assert(toNode, 'to node cannot be null');
 
-            return new mindplot.RelationshipModel(fromNode, toNode);
+            return new mindplot.model.RelationshipModel(fromNode, toNode);
         },
 
         addRelationship : function(relationship) {

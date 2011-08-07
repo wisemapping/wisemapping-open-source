@@ -102,7 +102,7 @@ mindplot.MindmapDesigner = new Class({
 
                         // Create a new topic model ...
                         var mindmap = mindmapDesigner.getMindmap();
-                        var model = mindmap.createNode(mindplot.NodeModel.MAIN_TOPIC_TYPE);
+                        var model = mindmap.createNode(mindplot.model.NodeModel.MAIN_TOPIC_TYPE);
                         model.setPosition(pos.x, pos.y);
 
                         // Get central topic ...
@@ -233,7 +233,7 @@ mindplot.MindmapDesigner = new Class({
             }
 
             var topic = nodes[0];
-            if (topic.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE) {
+            if (topic.getType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
                 // Central topic doesn't have siblings ...
                 this.createChildForSelectedNode();
 
@@ -333,6 +333,17 @@ mindplot.MindmapDesigner = new Class({
 
             // Refresh undo state...
             this._actionRunner.markAsChangeBase();
+        },
+
+        loadFromCollaborativeModel: function(collaborationManager){
+            var mindmap = collaborationManager.buildWiseModel();
+            this._loadMap(1, mindmap);
+
+            // Place the focus on the Central Topic
+            var centralTopic = this.getCentralTopic();
+            this._goToNode.attempt(centralTopic, this);
+
+            this._fireEvent("loadsuccess");
         },
 
         loadFromXML : function(mapId, xmlContent) {
@@ -526,7 +537,7 @@ mindplot.MindmapDesigner = new Class({
         },
 
         _removeNode : function(node) {
-            if (node.getTopicType() != mindplot.NodeModel.CENTRAL_TOPIC_TYPE) {
+            if (node.getTopicType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
                 var parent = node._parent;
                 node.disconnect(this._workspace);
 
@@ -551,7 +562,7 @@ mindplot.MindmapDesigner = new Class({
         deleteCurrentNode : function() {
 
             var validateFunc = function(selectedObject) {
-                return selectedObject.getType() == mindplot.RelationshipLine.type || selectedObject.getTopicType() != mindplot.NodeModel.CENTRAL_TOPIC_TYPE
+                return selectedObject.getType() == mindplot.RelationshipLine.type || selectedObject.getTopicType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE
             };
             var validateError = 'Central topic can not be deleted.';
             var selectedObjects = this._getValidSelectedObjectsIds(validateFunc, validateError);
@@ -615,7 +626,7 @@ mindplot.MindmapDesigner = new Class({
         setBackColor2SelectedNode : function(color) {
 
             var validateFunc = function(topic) {
-                return topic.getShapeType() != mindplot.NodeModel.SHAPE_TYPE_LINE
+                return topic.getShapeType() != mindplot.model.NodeModel.SHAPE_TYPE_LINE
             };
             var validateError = 'Color can not be setted to line topics.';
             var validSelectedObjects = this._getValidSelectedObjectsIds(validateFunc, validateError);
@@ -675,7 +686,7 @@ mindplot.MindmapDesigner = new Class({
 
         setBorderColor2SelectedNode : function(color) {
             var validateFunc = function(topic) {
-                return topic.getShapeType() != mindplot.NodeModel.SHAPE_TYPE_LINE
+                return topic.getShapeType() != mindplot.model.NodeModel.SHAPE_TYPE_LINE
             };
             var validateError = 'Color can not be setted to line topics.';
             var validSelectedObjects = this._getValidSelectedObjectsIds(validateFunc, validateError);
@@ -716,7 +727,7 @@ mindplot.MindmapDesigner = new Class({
 
         setShape2SelectedNode : function(shape) {
             var validateFunc = function(topic) {
-                return !(topic.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE && shape == mindplot.NodeModel.SHAPE_TYPE_LINE)
+                return !(topic.getType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE && shape == mindplot.model.NodeModel.SHAPE_TYPE_LINE)
             };
             var validateError = 'Central Topic shape can not be changed to line figure.';
             var validSelectedObjects = this._getValidSelectedObjectsIds(validateFunc, validateError);
@@ -966,7 +977,7 @@ mindplot.MindmapDesigner = new Class({
                                     var nodes = this._getSelectedNodes();
                                     if (nodes.length > 0) {
                                         var node = nodes[0];
-                                        if (node.getTopicType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE) {
+                                        if (node.getTopicType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
                                             this._goToSideChild(node, 'RIGHT');
                                         }
                                         else {
@@ -983,7 +994,7 @@ mindplot.MindmapDesigner = new Class({
                                     var nodes = this._getSelectedNodes();
                                     if (nodes.length > 0) {
                                         var node = nodes[0];
-                                        if (node.getTopicType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE) {
+                                        if (node.getTopicType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
                                             this._goToSideChild(node, 'LEFT');
                                         }
                                         else {
@@ -1000,7 +1011,7 @@ mindplot.MindmapDesigner = new Class({
                                     var nodes = this._getSelectedNodes();
                                     if (nodes.length > 0) {
                                         var node = nodes[0];
-                                        if (node.getTopicType() != mindplot.NodeModel.CENTRAL_TOPIC_TYPE) {
+                                        if (node.getTopicType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
                                             this._goToBrother(node, 'UP');
                                         }
                                     }
@@ -1009,7 +1020,7 @@ mindplot.MindmapDesigner = new Class({
                                     var nodes = this._getSelectedNodes();
                                     if (nodes.length > 0) {
                                         var node = nodes[0];
-                                        if (node.getTopicType() != mindplot.NodeModel.CENTRAL_TOPIC_TYPE) {
+                                        if (node.getTopicType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
                                             this._goToBrother(node, 'DOWN');
                                         }
                                     }

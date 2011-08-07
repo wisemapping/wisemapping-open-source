@@ -74,7 +74,7 @@ mindplot.layout.BaseLayoutManager = new Class({
     },
     _isCentralTopic:function(node){
         var type = node.getModel().getType();
-        return type == mindplot.NodeModel.CENTRAL_TOPIC_TYPE;
+        return type == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE;
     },
     getClassName:function(){
         return mindplot.layout.BaseLayoutManager.NAME;

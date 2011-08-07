@@ -28,7 +28,7 @@ mindplot.CentralTopic = new Class({
     },
 
     getTopicType : function() {
-        return mindplot.NodeModel.CENTRAL_TOPIC_TYPE;
+        return mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE;
     },
 
     setCursor : function(type) {
@@ -44,7 +44,7 @@ mindplot.CentralTopic = new Class({
         // Create a new node ...
         var model = this.getModel();
         var mindmap = model.getMindmap();
-        var childModel = mindmap.createNode(mindplot.NodeModel.MAIN_TOPIC_TYPE);
+        var childModel = mindmap.createNode(mindplot.model.NodeModel.MAIN_TOPIC_TYPE);
 
         if (prepositionate) {
             if (!$defined(this.___siblingDirection)) {
@@ -67,7 +67,7 @@ mindplot.CentralTopic = new Class({
     },
 
     _defaultShapeType : function() {
-        return  mindplot.NodeModel.SHAPE_TYPE_ROUNDED_RECT;
+        return  mindplot.model.NodeModel.SHAPE_TYPE_ROUNDED_RECT;
     },
 
 

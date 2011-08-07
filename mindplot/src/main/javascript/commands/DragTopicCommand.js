@@ -37,7 +37,7 @@ mindplot.commands.DragTopicCommand = new Class(
         var origParentTopic = topic.getOutgoingConnectedTopic();
         var origOrder = null;
         var origPosition = null;
-//        if (topic.getType() == mindplot.NodeModel.MAIN_TOPIC_TYPE && origParentTopic != null && origParentTopic.getType() == mindplot.NodeModel.MAIN_TOPIC_TYPE)
+//        if (topic.getType() == mindplot.model.NodeModel.MAIN_TOPIC_TYPE && origParentTopic != null && origParentTopic.getType() == mindplot.model.NodeModel.MAIN_TOPIC_TYPE)
 //        {
             // In this case, topics are positioned using order ...
             origOrder = topic.getOrder();

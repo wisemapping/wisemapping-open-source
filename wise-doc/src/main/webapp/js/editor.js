@@ -17,7 +17,7 @@
  */
 
 
-$import("../../../../../mindplot/target/classes/mindplot.svg.js");
+$import("../js/mindplot.svg.js");
 
 var designer = null;
 
@@ -181,7 +181,7 @@ function afterMindpotLibraryLoading() {
     }
 
     var iconChooser = buildIconChooser();
-    iconPanel = new IconPanel({button:$('topicIcon'), onStart:cleanScreenEvent, content:iconChooser});
+//    iconPanel = new IconPanel({button:$('topicIcon'), onStart:cleanScreenEvent, content:iconChooser});
     // Register Events ...
     $(document).addEvent('keydown', designer.keyEventHandler.bindWithEvent(designer));
     $("ffoxWorkarroundInput").addEvent('keydown', designer.keyEventHandler.bindWithEvent(designer));
@@ -227,7 +227,7 @@ function afterMindpotLibraryLoading() {
     });
 
     var context = this;
-    var colorPicker1 = new MooRainbow('topicColor', {
+    /*var colorPicker1 = new MooRainbow('topicColor', {
         id: 'topicColor',
         imgPath: '../images/',
         startColor: [255, 255, 255],
@@ -256,7 +256,7 @@ function afterMindpotLibraryLoading() {
         onComplete: function(color) {
             removeCurrentColorPicker.attempt(colorPicker2, context);
         }
-    });
+    });*/
     $('topicLink').addEvent('click', function(event) {
         designer.addLink2SelectedNode();
 
@@ -280,7 +280,7 @@ function afterMindpotLibraryLoading() {
         designer.setStyle2SelectedNode();
     });
 
-    var colorPicker3 = new MooRainbow('fontColor', {
+    /*var colorPicker3 = new MooRainbow('fontColor', {
         id: 'fontColor',
         imgPath: '../images/',
         startColor: [255, 255, 255],
@@ -294,7 +294,7 @@ function afterMindpotLibraryLoading() {
         onComplete: function(color) {
             removeCurrentColorPicker.attempt(colorPicker3, context);
         }
-    });
+    });*/
 
     // Save event handler ....
     var saveButton = $('saveButton');
@@ -380,7 +380,6 @@ function removeCurrentColorPicker(colorPicker) {
 }
 
 function buildMindmapDesigner() {
-
     // Initialize message logger ...
 //    var monitor = new core.Monitor($('msgLoggerContainer'), $('msgLogger'));
 //    core.Monitor.setInstance(monitor);
@@ -397,12 +396,30 @@ function buildMindmapDesigner() {
     // body margin ...
     editorProperties.width = screenWidth;
     editorProperties.height = screenHeight;
-
     designer = new mindplot.MindmapDesigner(editorProperties, container);
+
+    if($wise_collaborationManager.isCollaborationFrameworkAvailable()){
+        buildCollaborativeMindmapDesigner();
+    }else{
+        buildStandaloneMindmapDesigner();
+    }
+}
+
+function buildStandaloneMindmapDesigner(){
     designer.loadFromXML(mapId, mapXml);
 
     // If a node has focus, focus can be move to another node using the keys.
     designer._cleanScreen = cleanScreenEvent.bind(this);
+}
+
+function buildCollaborativeMindmapDesigner(){
+    if($wise_collaborationManager.isCollaborativeFrameworkReady()){
+        designer.loadFromCollaborativeModel($wise_collaborationManager);
+        // If a node has focus, focus can be move to another node using the keys.
+        designer._cleanScreen = cleanScreenEvent.bind(this);
+    }else{
+        $wise_collaborationManager.setWiseReady(true);
+    }
 }
 
 function createColorPalette(container, onSelectFunction, event) {
@@ -422,13 +439,13 @@ function createColorPalette(container, onSelectFunction, event) {
 ;
 
 function cleanScreenEvent() {
-    if (this.currentColorPicker) {
+    /*if (this.currentColorPicker) {
         this.currentColorPicker.hide();
-    }
+    }*/
     $("fontFamilyPanel").setStyle('display', "none");
     $("fontSizePanel").setStyle('display', "none");
     $("topicShapePanel").setStyle('display', "none");
-    iconPanel.close();
+//    iconPanel.close();
 }
 
 function fontFamilyPanel() {

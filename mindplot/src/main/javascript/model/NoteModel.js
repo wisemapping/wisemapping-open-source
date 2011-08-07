@@ -16,7 +16,7 @@
  *   limitations under the License.
  */
 
-mindplot.NoteModel = new Class({
+mindplot.model.NoteModel = new Class({
     initialize : function(text, topic) {
         $assert(text != null, 'note text can not be null');
         $assert(topic, 'mindmap can not be null');

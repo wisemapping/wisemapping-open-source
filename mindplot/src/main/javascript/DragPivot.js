@@ -192,7 +192,7 @@ mindplot.DragPivot = new Class({
         $assert(targetTopic, 'parent can not be null');
 
         this._targetTopic = targetTopic;
-        if (targetTopic.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE) {
+        if (targetTopic.getType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
             this._line = this._straightLine;
         } else {
             this._line = this._curvedLine;

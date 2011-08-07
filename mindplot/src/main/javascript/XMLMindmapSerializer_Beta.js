@@ -44,11 +44,11 @@ mindplot.XMLMindmapSerializer_Beta = new Class({
         var parentTopic = document.createElement("topic");
 
         // Set topic attributes...
-        if (topic.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE) {
+        if (topic.getType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
             parentTopic.setAttribute("central", true);
         } else {
             var parent = topic.getParent();
-            if (parent == null || parent.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE) {
+            if (parent == null || parent.getType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
                 var pos = topic.getPosition();
                 parentTopic.setAttribute("position", pos.x + ',' + pos.y);
             } else {
@@ -165,7 +165,7 @@ mindplot.XMLMindmapSerializer_Beta = new Class({
         $assert(rootElem.tagName == mindplot.XMLMindmapSerializer_Beta.MAP_ROOT_NODE, "This seem not to be a map document.");
 
         // Start the loading process ...
-        var mindmap = new mindplot.Mindmap();
+        var mindmap = new mindplot.model.Mindmap();
 
         var children = rootElem.childNodes;
         for (var i = 0; i < children.length; i++) {
@@ -179,7 +179,7 @@ mindplot.XMLMindmapSerializer_Beta = new Class({
     },
 
     _deserializeNode : function(domElem, mindmap) {
-        var type = (domElem.getAttribute('central') != null) ? mindplot.NodeModel.CENTRAL_TOPIC_TYPE : mindplot.NodeModel.MAIN_TOPIC_TYPE;
+        var type = (domElem.getAttribute('central') != null) ? mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE : mindplot.model.NodeModel.MAIN_TOPIC_TYPE;
         var topic = mindmap.createNode(type);
 
         // Load attributes...

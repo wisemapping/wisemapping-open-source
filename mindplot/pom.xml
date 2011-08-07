@@ -52,9 +52,9 @@
                                 <concat destfile="${basedir}/target/tmp/mindplot.js" append="false">
                                     <filelist dir="${basedir}/src/main/javascript/" files="header.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="EventBus.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="Mindmap.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="NodeModel.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="RelationshipModel.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="model/Mindmap.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="model/NodeModel.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="model/RelationshipModel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="MindmapDesigner.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ScreenManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="Workspace.js"/>
@@ -98,9 +98,9 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="Note.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ActionIcon.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ImageIcon.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="IconModel.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="LinkModel.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="NoteModel.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="model/IconModel.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="model/LinkModel.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="model/NoteModel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="Command.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="DesignerActionRunner.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="DesignerUndoManager.js"/>
@@ -155,6 +155,21 @@
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="layout/LayoutManagerFactory.js"/>
 
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="collaboration/CollaborationManager.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="collaboration/frameworks/AbstractCollaborativeFramework.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="collaboration/frameworks/AbstractCollaborativeModelFactory.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="collaboration/frameworks/brix/model/NodeModel.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="collaboration/frameworks/brix/model/Mindmap.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="collaboration/frameworks/brix/BrixCollaborativeModelFactory.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                    files="collaboration/frameworks/brix/BrixFramework.js"/>
+
 
                                     <filelist dir="${basedir}/src/main/javascript/" files="footer.js"/>
                                 </concat>
@@ -190,9 +205,9 @@
                                     <includes>
                                         <include>header-min.js</include>
                                         <include>EventBus-min.js</include>
-                                        <include>Mindmap-min.js</include>
-                                        <include>NodeModel-min.js</include>
-                                        <include>RelationshipModel-min.js</include>
+                                        <include>model/Mindmap-min.js</include>
+                                        <include>model/NodeModel-min.js</include>
+                                        <include>model/RelationshipModel-min.js</include>
                                         <include>MindmapDesigner-min.js</include>
                                         <include>ScreenManager-min.js</include>
                                         <include>Workspace-min.js</include>
@@ -233,9 +248,9 @@
                                         <include>Note-min.js</include>
                                         <include>ActionIcon-min.js</include>
                                         <include>ImageIcon-min.js</include>
-                                        <include>IconModel-min.js</include>
-                                        <include>LinkModel-min.js</include>
-                                        <include>NoteModel-min.js</include>
+                                        <include>model/IconModel-min.js</include>
+                                        <include>model/LinkModel-min.js</include>
+                                        <include>model/NoteModel-min.js</include>
                                         <include>EditorOptions-min.js</include>
 
                                         <include>Command-min.js</include>
@@ -266,6 +281,14 @@
                                         <include>layout/OriginalLayoutManager-min.js</include>
                                         <include>layout/FreeMindLayoutManager-min.js</include>
                                         <include>layout/LayoutManagerFactory-min.js</include>
+
+                                        <include>collaboration/CollaborationManager-min.js</include>
+                                        <include>collaboration/frameworks/AbstractCollaborativeFramework-min.js</include>
+                                        <include>collaboration/frameworks/AbstractCollaborativeModelFactory-min.js</include>
+                                        <include>collaboration/frameworks/brix/model/NodeModel-min.js</include>
+                                        <include>collaboration/frameworks/brix/model/Mindmap-min.js</include>
+                                        <include>collaboration/frameworks/brix/BrixCollaborativeModelFactory-min.js</include>
+                                        <include>collaboration/frameworks/brix/BrixFramework-min.js</include>
 
                                         <include>footer-min.js</include>
 

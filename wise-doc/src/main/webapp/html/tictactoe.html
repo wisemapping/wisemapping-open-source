@@ -1,0 +1,80 @@
+<html>
+<body>
+<script type="text/javascript" src="http://docs.google.com/brix/static/api/js/jsapi.nocache.js"></script>
+<script type="text/javascript">
+    var app;
+
+    collabOnLoad = function() {
+        app = new goog.collab.CollaborativeApp();
+        app.start();
+        app.addListener('modelLoad', function(model) {
+            var root = app.getModel().getRoot();
+            if (root.isEmpty()) {
+                root.put("a1", ' ');
+                root.put("a2", " ");
+                root.put("a3", " ");
+                root.put("b1", " ");
+                root.put("b2", " ");
+                root.put("b3", " ");
+                root.put("c1", " ");
+                root.put("c2", " ");
+                root.put("c3", " ");
+                root.put("turn", "X");
+            }
+            var list1 = app.getModel().create("List");
+            root.put("list",list1);
+
+            document.getElementById("a1").value = root.get("a1");
+            document.getElementById("a2").value = root.get("a2");
+            document.getElementById("a3").value = root.get("a3");
+            document.getElementById("b1").value = root.get("b1");
+            document.getElementById("b2").value = root.get("b2");
+            document.getElementById("b3").value = root.get("b3");
+            document.getElementById("c1").value = root.get("c1");
+            document.getElementById("c2").value = root.get("c2");
+            document.getElementById("c3").value = root.get("c3");
+            relabelTurn(root.get("turn"));
+
+            root.addListener('valueChanged', function(e) {
+                document.getElementById(e.getProperty()).value = e.getNewValue();
+                relabelTurn(root.get("turn"));
+            });
+        });
+    };
+
+    function move(square) {
+        app.getModel().getRoot().put(square.id, app.getModel().getRoot().get("turn"));
+        var turn = app.getModel().getRoot().get("turn") == "X" ? "O" : "X";
+        app.getModel().getRoot().put("turn", turn);
+        relabelTurn(app.getModel().getRoot().get("turn"));
+        app.getModel().getRoot().get("list").add(turn);
+    }
+
+    function relabelTurn(turn) {
+        document.getElementById("turn").innerHTML = "Next move is: " + turn;
+    }
+
+</script>
+<p>
+    TIC TAC TOE!
+<p>
+    <span id=turn></span>
+<table>
+    <tr>
+        <td><input style="font-size:20px;width:50px;height:50px;" type="button" value=" " id="a1" onclick="move(this)"></td>
+        <td><input style="font-size:20px;width:50px;height:50px;" type="button" value=" " id="b1" onclick="move(this)"></td>
+        <td><input style="font-size:20px;width:50px;height:50px;" type="button" value=" " id="c1" onclick="move(this)"></td>
+    </tr>
+    <tr>
+        <td><input style="font-size:20px;width:50px;height:50px;" type="button" value=" " id="a2" onclick="move(this)"></td>
+        <td><input style="font-size:20px;width:50px;height:50px;" type="button" value=" " id="b2" onclick="move(this)"></td>
+        <td><input style="font-size:20px;width:50px;height:50px;" type="button" value=" " id="c2" onclick="move(this)"></td>
+    </tr>
+    <tr>
+        <td><input style="font-size:20px;width:50px;height:50px;" type="button" value=" " id="a3" onclick="move(this)"></td>
+        <td><input style="font-size:20px;width:50px;height:50px;" type="button" value=" " id="b3" onclick="move(this)"></td>
+        <td><input style="font-size:20px;width:50px;height:50px;" type="button" value=" " id="c3" onclick="move(this)"></td>
+    </tr>
+</table>
+</body>
+</html>

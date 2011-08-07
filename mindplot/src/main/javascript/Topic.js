@@ -33,7 +33,7 @@ mindplot.Topic = new Class({
         // Positionate topic ....
         var model = this.getModel();
         var pos = model.getPosition();
-        if (pos != null && model.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE) {
+        if (pos != null && model.getType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
             this.setPosition(pos);
         }
     },
@@ -134,7 +134,7 @@ mindplot.Topic = new Class({
             this._setBorderColor(brColor, false);
 
             // Define the pointer ...
-            if (this.getType() != mindplot.NodeModel.CENTRAL_TOPIC_TYPE) {
+            if (this.getType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
                 this._innerShape.setCursor('move');
             } else {
                 this._innerShape.setCursor('default');
@@ -151,16 +151,16 @@ mindplot.Topic = new Class({
             type = this.getShapeType();
         }
 
-        if (type == mindplot.NodeModel.SHAPE_TYPE_RECT) {
+        if (type == mindplot.model.NodeModel.SHAPE_TYPE_RECT) {
             result = new web2d.Rect(0, attributes);
         }
-        else if (type == mindplot.NodeModel.SHAPE_TYPE_ELIPSE) {
+        else if (type == mindplot.model.NodeModel.SHAPE_TYPE_ELIPSE) {
             result = new web2d.Elipse(attributes);
         }
-        else if (type == mindplot.NodeModel.SHAPE_TYPE_ROUNDED_RECT) {
+        else if (type == mindplot.model.NodeModel.SHAPE_TYPE_ROUNDED_RECT) {
             result = new web2d.Rect(0.3, attributes);
         }
-        else if (type == mindplot.NodeModel.SHAPE_TYPE_LINE) {
+        else if (type == mindplot.model.NodeModel.SHAPE_TYPE_LINE) {
             result = new web2d.Line({strokeColor:"#495879",strokeWidth:1, strokeOpacity:1});
             result.setSize = function(width, height) {
                 this.size = {width:width, height:height};
@@ -210,7 +210,7 @@ mindplot.Topic = new Class({
 
     getOuterShape : function() {
         if (!$defined(this._outerShape)) {
-            var rect = this.buildShape(mindplot.Topic.OUTER_SHAPE_ATTRIBUTES, mindplot.NodeModel.SHAPE_TYPE_ROUNDED_RECT);
+            var rect = this.buildShape(mindplot.Topic.OUTER_SHAPE_ATTRIBUTES, mindplot.model.NodeModel.SHAPE_TYPE_ROUNDED_RECT);
             rect.setPosition(-2, -3);
             rect.setOpacity(0);
             this._outerShape = rect;
@@ -410,7 +410,7 @@ mindplot.Topic = new Class({
                 }
             });
 
-            if (this.getType() != mindplot.NodeModel.CENTRAL_TOPIC_TYPE) {
+            if (this.getType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
                 result.setCursor('move');
             } else {
                 result.setCursor('default');
@@ -436,9 +436,9 @@ mindplot.Topic = new Class({
     getOffset : function(value, updateModel) {
         var offset = 18;
 
-        if (mindplot.NodeModel.MAIN_TOPIC_TYPE == this.getType()) {
+        if (mindplot.model.NodeModel.MAIN_TOPIC_TYPE == this.getType()) {
             var parent = this.getModel().getParent();
-            if (parent && mindplot.NodeModel.MAIN_TOPIC_TYPE == parent.getType()) {
+            if (parent && mindplot.model.NodeModel.MAIN_TOPIC_TYPE == parent.getType()) {
                 offset = 6;
             }
             else {
@@ -689,7 +689,7 @@ mindplot.Topic = new Class({
             iconGroup = this.getOrBuildIconGroup();
         }
 
-        if (this.getType() != mindplot.NodeModel.CENTRAL_TOPIC_TYPE) {
+        if (this.getType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
             shrinkConnector.addToWorkspace(group);
         }
 
@@ -852,7 +852,7 @@ mindplot.Topic = new Class({
     setBranchVisibility : function(value) {
         var current = this;
         var parent = this;
-        while (parent != null && parent.getType() != mindplot.NodeModel.CENTRAL_TOPIC_TYPE) {
+        while (parent != null && parent.getType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
             current = parent;
             parent = current.getParent();
         }
@@ -1197,7 +1197,7 @@ mindplot.Topic = new Class({
             var height = sizeHeight + this._offset;
             var width = sizeWidth + this._offset * 2 + iconOffset + 2;
             var pos = this._offset / 2 - 1;
-            if (this.getShapeType() == mindplot.NodeModel.SHAPE_TYPE_ELIPSE) {
+            if (this.getShapeType() == mindplot.model.NodeModel.SHAPE_TYPE_ELIPSE) {
                 var factor = 0.25;
                 height = (width * factor < height ? height : width * factor);
                 pos = (height - sizeHeight + 3) / 2;

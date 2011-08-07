@@ -16,29 +16,47 @@
  *   limitations under the License.
  */
 
-mindplot.LinkModel = new Class({
-    initialize : function(url, topic) {
-        $assert(url, 'url can not be null');
-        $assert(topic, 'mindmap can not be null');
+mindplot.model.IconModel = new Class({
+    initialize:function(iconType, topic) {
+        $assert(iconType, 'Icon id can not be null');
+        $assert(topic, 'topic can not be null');
 
-        this._url = url;
+        this._iconType = iconType;
+        this._id = mindplot.model.IconModel._nextUUID();
         this._topic = topic;
     },
 
-    getUrl : function() {
-        return this._url;
+    getId : function() {
+        return this._id;
     },
 
-    setUrl : function(url) {
-        $assert(url, 'url can not be null');
-        this._url = url;
+    getIconType : function() {
+        return this._iconType;
+    },
+
+
+    setIconType : function(iconType) {
+        this._iconType = iconType;
     },
 
     getTopic : function() {
         return this._topic;
     },
 
-    isLinkModel : function() {
+    isIconModel : function() {
         return true;
+    }});
+
+
+/**
+ * @todo: This method must be implemented.
+ */
+mindplot.model.IconModel._nextUUID = function() {
+    if (!$defined(this._uuid)) {
+        this._uuid = 0;
     }
-});
+
+    this._uuid = this._uuid + 1;
+    return this._uuid;
+};
+

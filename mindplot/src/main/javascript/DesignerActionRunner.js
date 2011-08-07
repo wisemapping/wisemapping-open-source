@@ -93,7 +93,7 @@ mindplot.CommandContext = new Class({
     },
     createModel:function() {
         var mindmap = this._designer.getMindmap();
-        var model = mindmap.createNode(mindplot.NodeModel.MAIN_TOPIC_TYPE);
+        var model = mindmap.createNode(mindplot.model.NodeModel.MAIN_TOPIC_TYPE);
         return model;
     },
     connect:function(childTopic, parentTopic, isVisible) {
