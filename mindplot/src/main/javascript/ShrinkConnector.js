@@ -26,18 +26,11 @@ mindplot.ShirinkConnector = new Class({
         elipse.setSize(mindplot.Topic.CONNECTOR_WIDTH, mindplot.Topic.CONNECTOR_WIDTH);
         elipse.addEventListener('click', function(event) {
             var model = topic.getModel();
-            var isShrink = !model.areChildrenShrinked();
+            var collapse = !model.areChildrenShrinked();
 
-            var actionRunner = mindplot.DesignerActionRunner.getInstance();
             var topicId = topic.getId();
-
-            var commandFunc = function(topic, isShrink) {
-                topic.setChildrenShrinked(isShrink);
-                return !isShrink;
-            };
-
-            var command = new mindplot.commands.GenericFunctionCommand(commandFunc, isShrink, [topicId]);
-            actionRunner.execute(command);
+           var actionDispatcher = mindplot.ActionDispatcher.getInstance();
+            actionDispatcher.shrinkBranch([topicId],collapse);
 
             var e = new Event(event).stop();
             e.preventDefault();

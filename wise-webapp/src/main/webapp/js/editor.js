@@ -1,23 +1,26 @@
 /*
-*    Copyright [2011] [wisemapping]
-*
-*   Licensed under WiseMapping Public License, Version 1.0 (the "License").
-*   It is basically the Apache License, Version 2.0 (the "License") plus the
-*   "powered by wisemapping" text requirement on every single page;
-*   you may not use this file except in compliance with the License.
-*   You may obtain a copy of the license at
-*
-*       http://www.wisemapping.org/license
-*
-*   Unless required by applicable law or agreed to in writing, software
-*   distributed under the License is distributed on an "AS IS" BASIS,
-*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*   See the License for the specific language governing permissions and
-*   limitations under the License.
+ *    Copyright [2011] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
  */
-
-
-$import("../js/mindplot.svg.js");
+Asset.javascript('../js/mindplot.svg.js', {
+    id: 'MindplotSVGLib',
+    onLoad: function() {
+        afterMindpotLibraryLoading();
+    }
+});
 
 var designer = null;
 /* JavaScript tabs changer */
@@ -76,8 +79,7 @@ Tabs = {
             if (div.className.match(/\btabContent\b/i)) {
                 if (div.id == "_" + contentId)
                     div.style.display = "block";
-                else
-                {
+                else {
                     divsToHide.push(div);
                 }
             }
@@ -102,8 +104,7 @@ Tabs = {
     },
 
     Init: function () {
-        if (!document.getElementsByTagName)
-        {
+        if (!document.getElementsByTagName) {
             return;
         }
 
@@ -158,18 +159,15 @@ var contentId = window.location.hash || "#Introduction";
 
 var iconPanel = null;
 
-function afterMindpotLibraryLoading()
-{
+function afterMindpotLibraryLoading() {
     buildMindmapDesigner();
 
-    if ($('helpButton') != null)
-    {
+    if ($('helpButton') != null) {
         var helpPanel = new Panel({panelButton:$('helpButton'), backgroundColor:'black'});
         helpPanel.setContent(Help.buildHelp(helpPanel));
     }
 
-    if ($('helpButtonFirstSteps') != null)
-    {
+    if ($('helpButtonFirstSteps') != null) {
         var firstStepsPanel = $('helpButtonFirstSteps')
         firstStepsPanel.addEvent('click', function(event) {
             var firstStepWindow = window.open("firststeps.htm", "WiseMapping", "width=100px, height=100px");
@@ -179,16 +177,19 @@ function afterMindpotLibraryLoading()
         });
     }
 
-    if ($('helpButtonKeyboard') != null)
-    {
+    if ($('helpButtonKeyboard') != null) {
         var keyboardPanel = $('helpButtonKeyboard')
         keyboardPanel.addEvent('click', function(event) {
             MOOdalBox.open('keyboard.htm', 'KeyBoard Shortcuts', '500px 400px', false)
         });
     }
 
-    var iconChooser = buildIconChooser();
-    iconPanel = new IconPanel({button:$('topicIcon'), onStart:cleanScreenEvent, content:iconChooser});
+    // Crate icon panel dialog ...
+    iconPanel = new mindplot.widget.IconPanel({button:$('topicIcon'), onStart:cleanScreenEvent});
+    iconPanel.addEvent("selected", function(event) {
+        designer.addIconType2SelectedNode(event.iconType);
+    });
+
     // Register Events ...
     $(document).addEvent('keydown', designer.keyEventHandler.bindWithEvent(designer));
     $("ffoxWorkarroundInput").addEvent('keydown', designer.keyEventHandler.bindWithEvent(designer));
@@ -208,20 +209,17 @@ function afterMindpotLibraryLoading()
     $('redoEdition').addEvent('click', function(event) {
         designer.redo();
     });
-    designer.addEventListener("change", function(event) {
-        if (event.undoSteps > 0)
-        {
+
+    designer.addEventListener("modelUpdate", function(event) {
+        if (event.undoSteps > 0) {
             $("undoEdition").setStyle("background-image", "url(../images/file_undo.png)");
-        } else
-        {
+        } else {
             $("undoEdition").setStyle("background-image", "url(../images/file_undo_dis.png)");
         }
 
-        if (event.redoSteps > 0)
-        {
+        if (event.redoSteps > 0) {
             $("redoEdition").setStyle("background-image", "url(../images/file_redo.png)");
-        } else
-        {
+        } else {
             $("redoEdition").setStyle("background-image", "url(../images/file_redo_dis.png)");
         }
 
@@ -230,10 +228,11 @@ function afterMindpotLibraryLoading()
     $('addTopic').addEvent('click', function(event) {
         designer.createSiblingForSelectedNode();
     });
+
     $('deleteTopic').addEvent('click', function(event) {
-        var topics = designer.getSelectedNodes();
         designer.deleteCurrentNode();
     });
+
     var context = this;
     var colorPicker1 = new MooRainbow('topicColor', {
         id: 'topicColor',
@@ -250,6 +249,7 @@ function afterMindpotLibraryLoading()
             removeCurrentColorPicker.attempt(colorPicker1, context);
         }
     });
+
     var colorPicker2 = new MooRainbow('topicBorder', {
         id: 'topicBorder',
         imgPath: '../images/',
@@ -265,6 +265,7 @@ function afterMindpotLibraryLoading()
             removeCurrentColorPicker.attempt(colorPicker2, context);
         }
     });
+
     $('topicLink').addEvent('click', function(event) {
         designer.addLink2SelectedNode();
 
@@ -278,7 +279,6 @@ function afterMindpotLibraryLoading()
         designer.addNote2SelectedNode();
 
     });
-
 
     $('fontBold').addEvent('click', function(event) {
         designer.setWeight2SelectedNode();
@@ -308,101 +308,87 @@ function afterMindpotLibraryLoading()
     var saveButton = $('saveButton');
     saveButton.addEvent('click', function(event) {
 
-        if (!isTryMode)
-        {
+        if (!isTryMode) {
             saveButton.setStyle('cursor', 'wait');
-            var saveFunc = function()
-            {
-                designer.save(function()
-                {
+            var saveFunc = function() {
+                designer.save(function() {
                     var monitor = core.Monitor.getInstance();
                     monitor.logMessage('Save completed successfully');
                     saveButton.setStyle('cursor', 'pointer');
                 }, true);
             }
             saveFunc.delay(1);
-        } else
-        {
+        } else {
             new Windoo.Confirm('This option is not enabled in try mode. You must by signed in order to execute this action.<br/> to create an account click <a href="userRegistration.htm">here</a>',
-            {
-                'window': {theme:Windoo.Themes.wise,
-                    title:''
-                }
-            });
+                {
+                    'window': {theme:Windoo.Themes.wise,
+                        title:''
+                    }
+                });
         }
     });
 
     var discardButton = $('discardButton');
     discardButton.addEvent('click', function(event) {
 
-        if (!isTryMode)
-        {
+        if (!isTryMode) {
             displayLoading();
             window.document.location = "mymaps.htm";
-        } else
-        {
+        } else {
             displayLoading();
             window.document.location = "home.htm";
-                }
-            });
+        }
+    });
 
-    if (isTryMode)
-    {
-        $('tagIt').addEvent('click', function(event)
-        {
+    if (isTryMode) {
+        $('tagIt').addEvent('click', function(event) {
             new Windoo.Confirm('This option is not enabled in try mode. You must by signed in order to execute this action.',
-            {
-                'window': {theme:Windoo.Themes.wise,
-                    title:''
-                }
-            });
+                {
+                    'window': {theme:Windoo.Themes.wise,
+                        title:''
+                    }
+                });
 
         });
 
-        $('shareIt').addEvent('click', function(event)
-        {
+        $('shareIt').addEvent('click', function(event) {
             new Windoo.Confirm('This option is not enabled in try mode. You must by signed in order to execute this action.',
-            {
-                'window': {theme:Windoo.Themes.wise,
-                    title:''
-                }
-            });
+                {
+                    'window': {theme:Windoo.Themes.wise,
+                        title:''
+                    }
+                });
 
         });
 
-        $('publishIt').addEvent('click', function(event)
-        {
+        $('publishIt').addEvent('click', function(event) {
             new Windoo.Confirm('This option is not enabled in try mode. You must by signed in order to execute this action.',
-            {
-                'window': {theme:Windoo.Themes.wise,
-                    title:''
-                }
-            });
+                {
+                    'window': {theme:Windoo.Themes.wise,
+                        title:''
+                    }
+                });
 
         });
 
-        $('history').addEvent('click', function(event)
-        {
+        $('history').addEvent('click', function(event) {
             new Windoo.Confirm('This option is not enabled in try mode. You must by signed in order to execute this action.',
-            {
-                'window': {theme:Windoo.Themes.wise,
-                    title:''
-                }
-            });
+                {
+                    'window': {theme:Windoo.Themes.wise,
+                        title:''
+                    }
+                });
 
         });
 
     }
 
     // Autosave ...
-    if (!isTryMode)
-    {
+    if (!isTryMode) {
         var autosave = function() {
 
-            if (designer.needsSave())
-            {
-                designer.save(function()
-                {
+            if (designer.needsSave()) {
+                designer.save(function() {
                     var monitor = core.Monitor.getInstance();
                 }, false);
             }
@@ -410,74 +396,35 @@ function afterMindpotLibraryLoading()
         autosave.periodical(30000);
 
         // To prevent the user from leaving the page with changes ...
-        window.onbeforeunload = function confirmExit()
-        {
-            if (designer.needsSave())
-            {
+        window.onbeforeunload = function() {
+            if (designer.needsSave()) {
                 designer.save(null, false)
             }
         }
     }
     // Build panels ...
-    fontFamilyPanel();
-    shapeTypePanel();
-    fontSizePanel();
+    var fontPanel = new mindplot.widget.FontFamilyPanel();
+//    shapeTypePanel();
+//    fontSizePanel();
 
     // If not problem has occured, I close the dialod ...
-    var closeDialog = function(){
+    var closeDialog = function() {
 
-        if(!window.hasUnexpectedErrors)
-        {
+        if (!window.hasUnexpectedErrors) {
             waitDialog.deactivate();
         }
     }.delay(500);
 }
 
-function buildIconChooser() {
-    var content = new Element('div').setStyles({width:253,height:200,padding:5});
-    var count = 0;
-    for (var i = 0; i < mindplot.ImageIcon.prototype.ICON_FAMILIES.length; i = i + 1)
-    {
-        var familyIcons = mindplot.ImageIcon.prototype.ICON_FAMILIES[i].icons;
-        for (var j = 0; j < familyIcons.length; j = j + 1)
-        {
-            // Separate icons by line ...
-            var familyContent;
-            if ((count % 12) == 0)
-            {
-                familyContent = new Element('div').inject(content);
-            }
-
-
-            var iconId = familyIcons[j];
-            var img = new Element('img').setStyles({width:16,height:16,padding:"0px 2px"}).inject(familyContent);
-            img.id = iconId;
-            img.src = mindplot.ImageIcon.prototype._getImageUrl(iconId);
-            img.addEvent('click', function(event, id) {
-                designer.addImage2SelectedNode(this.id);
-            }.bindWithEvent(img));
-            count = count + 1;
-        }
-
-    }
-
-    return content;
-}
-;
-
-
-function setCurrentColorPicker(colorPicker)
-{
+function setCurrentColorPicker(colorPicker) {
     this.currentColorPicker = colorPicker;
 }
 
-function removeCurrentColorPicker(colorPicker)
-{
+function removeCurrentColorPicker(colorPicker) {
     $clear(this.currentColorPicker);
 }
 
-function buildMindmapDesigner()
-{
+function buildMindmapDesigner() {
 
     // Initialize message logger ...
     var monitor = new core.Monitor($('msgLoggerContainer'), $('msgLogger'));
@@ -506,19 +453,16 @@ function buildMindmapDesigner()
 
 
     // Save map on load ....
-    if (editorProperties.saveOnLoad)
-    {
+    if (editorProperties.saveOnLoad) {
         var saveOnLoad = function() {
             designer.save(function() {
             }, false);
         }.delay(1000)
     }
 
-}
-;
+};
 
-function createColorPalette(container, onSelectFunction, event)
-{
+function createColorPalette(container, onSelectFunction, event) {
     cleanScreenEvent();
     _colorPalette = new core.ColorPicker();
     _colorPalette.onSelect = function(color) {
@@ -534,10 +478,8 @@ function createColorPalette(container, onSelectFunction, event)
 }
 ;
 
-function cleanScreenEvent()
-{
-    if (this.currentColorPicker)
-    {
+function cleanScreenEvent() {
+    if (this.currentColorPicker) {
         this.currentColorPicker.hide();
     }
     $("fontFamilyPanel").setStyle('display', "none");
@@ -546,66 +488,39 @@ function cleanScreenEvent()
     iconPanel.close();
 }
 
-function fontFamilyPanel()
-{
-    var supportedFonts = ['times','arial','tahoma','verdana'];
-    var updateFunction = function(value)
-    {
-        value = value.charAt(0).toUpperCase() + value.substring(1, value.length);
-        designer.setFont2SelectedNode(value);
-    };
-
-    var onFocusValue = function(selectedNode)
-    {
-        return selectedNode.getFontFamily();
-    };
-
-    buildPanel('fontFamily', 'fontFamilyPanel', supportedFonts, updateFunction, onFocusValue);
-}
-
-function shapeTypePanel()
-{
+function shapeTypePanel() {
     var shapeTypePanel = ['rectagle','rounded_rectagle','line','elipse'];
-    var updateFunction = function(value)
-    {
-        designer.setShape2SelectedNode(value.replace('_',' '));
+    var updateFunction = function(value) {
+        designer.setShape2SelectedNode(value.replace('_', ' '));
     };
 
-    var onFocusValue = function(selectedNode)
-    {
+    var onFocusValue = function(selectedNode) {
 
-        return selectedNode.getShapeType().replace(' ','_');
+        return selectedNode.getShapeType().replace(' ', '_');
     };
 
     buildPanel('topicShape', 'topicShapePanel', shapeTypePanel, updateFunction, onFocusValue);
 }
 
-function fontSizePanel()
-{
+function fontSizePanel() {
     var shapeTypePanel = ['small','normal','large','huge'];
     var map = {small:'6',normal:'8',large:'10',huge:'15'};
-    var updateFunction = function(value)
-    {
+    var updateFunction = function(value) {
         var nodes = designer.getSelectedNodes();
         var value = map[value];
         designer.setFontSize2SelectedNode(value);
     };
 
-    var onFocusValue = function(selectedNode)
-    {
+    var onFocusValue = function(selectedNode) {
         var fontSize = selectedNode.getFontSize();
         var result = "";
-        if (fontSize <= 6)
-        {
+        if (fontSize <= 6) {
             result = 'small';
-        } else if (fontSize <= 8)
-        {
+        } else if (fontSize <= 8) {
             result = 'normal';
-        } else if (fontSize <= 10)
-        {
+        } else if (fontSize <= 10) {
             result = 'large';
-        } else if (fontSize >= 15)
-        {
+        } else if (fontSize >= 15) {
             result = 'huge';
         }
         return result;
@@ -613,18 +528,15 @@ function fontSizePanel()
     buildPanel('fontSize', 'fontSizePanel', shapeTypePanel, updateFunction, onFocusValue);
 }
 
-function buildPanel(buttonElemId, elemLinksContainer, elemLinkIds, updateFunction, onFocusValue)
-{
+function buildPanel(buttonElemId, elemLinksContainer, elemLinkIds, updateFunction, onFocusValue) {
     // Font family event handling ....
-    $(buttonElemId).addEvent('click', function(event)
-    {
+    $(buttonElemId).addEvent('click', function(event) {
         var container = $(elemLinksContainer);
         var isRendered = container.getStyle('display') == 'block';
         cleanScreenEvent();
 
         // Restore default css.
-        for (var i = 0; i < elemLinkIds.length; i++)
-        {
+        for (var i = 0; i < elemLinkIds.length; i++) {
             var elementId = elemLinkIds[i];
             $(elementId).className = 'toolbarPanelLink';
         }
@@ -632,8 +544,7 @@ function buildPanel(buttonElemId, elemLinksContainer, elemLinkIds, updateFunctio
         // Select current element ...
         var nodes = designer.getSelectedNodes();
         var lenght = nodes.length;
-        if (lenght == 1)
-        {
+        if (lenght == 1) {
             var selectedNode = nodes[0];
             var selectedElementId = onFocusValue(selectedNode);
             selectedElementId = selectedElementId.toLowerCase();
@@ -644,23 +555,20 @@ function buildPanel(buttonElemId, elemLinksContainer, elemLinkIds, updateFunctio
         container.setStyle('display', 'block');
 
         var mouseCoords = core.Utils.getMousePosition(event);
-        if (!isRendered)
-        {
+        if (!isRendered) {
             container.setStyle('left', (mouseCoords.x - 10) + "px");
         }
 
     });
 
-    var fontOnClick = function(event)
-    {
+    var fontOnClick = function(event) {
         var value = this.getAttribute('id');
         updateFunction(value);
         cleanScreenEvent();
     };
 
     // Register event listeners on elements ...
-    for (var i = 0; i < elemLinkIds.length; i++)
-    {
+    for (var i = 0; i < elemLinkIds.length; i++) {
         var elementId = elemLinkIds[i];
         $(elementId).addEvent('click', fontOnClick.bind($(elementId)));
     }

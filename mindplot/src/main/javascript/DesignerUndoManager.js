@@ -17,10 +17,12 @@
  */
 
 mindplot.DesignerUndoManager = new Class({
-    initialize: function() {
+    initialize: function(fireChange) {
         this._undoQueue = [];
         this._redoQueue = [];
         this._baseId = 0;
+        this._fireChange = fireChange;
+
     },
 
     enqueue:function(command) {
@@ -55,7 +57,7 @@ mindplot.DesignerUndoManager = new Class({
         }
     },
 
-    _buildEvent: function() {
+    buildEvent: function() {
         return {undoSteps: this._undoQueue.length, redoSteps:this._redoQueue.length};
     },
 

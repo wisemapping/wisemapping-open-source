@@ -18,7 +18,7 @@
 
 mindplot.NodeGraph = new Class({
     initialize:function(nodeModel) {
-        $assert(nodeModel,"model can not be null");
+        $assert(nodeModel, "model can not be null");
         this._mouseEvents = true;
         this.setModel(nodeModel);
         this._onFocus = false;
@@ -74,13 +74,10 @@ mindplot.NodeGraph = new Class({
         this._model.setSize(size.width, size.height);
     },
 
-    getModel
-        :
-        function() {
-            $assert(this._model, 'Model has not been initialized yet');
-            return  this._model;
-        }
-    ,
+    getModel:function() {
+        $assert(this._model, 'Model has not been initialized yet');
+        return  this._model;
+    },
 
     setModel : function(model) {
         $assert(model, 'Model can not be null');

@@ -29,6 +29,7 @@ mindplot.collaboration.frameworks.brix.BrixFramework.instanciate=function(){
     if($defined(isGoogleBrix) && !instanciated){
         instanciated=true;
         var app = new goog.collab.CollaborativeApp();
+        mindplot.collaboration.frameworks.brix.BrixFramework.buildMenu(app);
         app.start();
         app.addListener('modelLoad', function(model){
             var framework = new mindplot.collaboration.frameworks.brix.BrixFramework(model, app);
@@ -37,6 +38,32 @@ mindplot.collaboration.frameworks.brix.BrixFramework.instanciate=function(){
     }
 };
 
+mindplot.collaboration.frameworks.brix.BrixFramework.buildMenu=function(app){
+    var menuBar = new goog.collab.ui.MenuBar();
+
+        // Configure toolbar menu ...
+        var fileMenu = menuBar.addSubMenu("File");
+        fileMenu.addItem("Save", function() {
+        });
+        fileMenu.addItem("Export", function() {
+        });
+
+        var editMenu = menuBar.addSubMenu("Edit");
+        editMenu.addItem("Undo", function() {
+        });
+        editMenu.addItem("Redo", function() {
+        });
+
+        var formatMenu = menuBar.addSubMenu("Format");
+        formatMenu.addItem("Bold", function() {
+        });
+
+        var helpMenu = menuBar.addSubMenu("Help");
+        helpMenu.addItem("Shortcuts", function() {
+        });
+
+       app.setMenuBar(menuBar);
+};
 mindplot.collaboration.frameworks.brix.BrixFramework.instanciate();
 
 

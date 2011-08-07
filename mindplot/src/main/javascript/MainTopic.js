@@ -119,7 +119,7 @@ mindplot.MainTopic = new Class({
     },
 
     disconnect : function(workspace) {
-        mindplot.Topic.prototype.disconnect.call(this, workspace);
+        this.parent(workspace);
         var size = this.getSize();
 
         var model = this.getModel();

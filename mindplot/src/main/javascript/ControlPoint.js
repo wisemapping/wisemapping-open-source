@@ -113,8 +113,10 @@ mindplot.ControlPoint = new Class({
     _mouseUp  : function(event, point) {
         this._workspace.getScreenManager().removeEventListener('mousemove', this._mouseMoveFunction);
         this._workspace.getScreenManager().removeEventListener('mouseup', this._mouseUpFunction);
-        var command = new mindplot.commands.MoveControlPointCommand(this, point);
-        designer._actionRunner.execute(command); //todo:Uggly!! designer is global!!
+
+        var actionDispatcher = mindplot.ActionDispatcher.getInstance();
+        actionDispatcher.moveControlPoint(this, point);
+
         this._isBinded = false;
         /*event.preventDefault();
          event.stop();

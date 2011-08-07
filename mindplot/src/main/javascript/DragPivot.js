@@ -201,8 +201,11 @@ mindplot.DragPivot = new Class({
         // Connected to Rect ...
         var connectRect = this._connectRect;
         var targetSize = targetTopic.getSize();
-        var width = targetSize.width;
-        var height = targetSize.height;
+
+        // Add 4 pixel in order to keep create a rect bigger than the topic.
+        var width = targetSize.width + 4;
+        var height = targetSize.height + 4;
+
         connectRect.setSize(width, height);
 
         var targetPosition = targetTopic.getPosition();

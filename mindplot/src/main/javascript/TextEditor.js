@@ -17,11 +17,10 @@
  */
 
 mindplot.TextEditor = new Class({
-    initialize:function(designer, actionRunner) {
+    initialize:function(designer) {
         this._designer = designer;
         this._screenManager = designer.getWorkSpace().getScreenManager();
         this._container = this._screenManager.getContainer();
-        this._actionRunner = actionRunner;
         this._isVisible = false;
 
         //Create editor ui
@@ -132,13 +131,8 @@ mindplot.TextEditor = new Class({
             var text = this.getText();
             var topicId = this._currentNode.getId();
 
-            var commandFunc = function(topic, value) {
-                var result = topic.getText();
-                topic.setText(value);
-                return result;
-            };
-            var command = new mindplot.commands.GenericFunctionCommand(commandFunc, text, [topicId]);
-            this._actionRunner.execute(command);
+            var actionDispatcher = mindplot.ActionDispatcher.getInstance();
+            actionDispatcher.changeTextOnTopic([topicId], text);
         }
     },
 
@@ -221,7 +215,6 @@ mindplot.TextEditor = new Class({
         };
 
         setTimeout(executor(this), 10);
-        //console.log('init done');
     },
 
     setStyle : function (fontStyle) {

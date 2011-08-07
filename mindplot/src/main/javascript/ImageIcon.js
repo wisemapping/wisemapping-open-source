@@ -16,13 +16,13 @@
  *   limitations under the License.
  */
 
-mindplot.ImageIcon = new Class(
-    {
+mindplot.ImageIcon = new Class({
         Extends:mindplot.Icon,
         initialize:function(iconModel, topic, designer) {
             $assert(iconModel, 'iconModel can not be null');
             $assert(topic, 'topic can not be null');
             $assert(designer, 'designer can not be null');
+
             this._topic = topic;
             this._iconModel = iconModel;
             this._designer = designer;
@@ -44,16 +44,16 @@ mindplot.ImageIcon = new Class(
 
             if (!$defined(designer._viewMode) || ($defined(designer._viewMode) && !designer._viewMode)) {
 
-                removeImage.addEvent('click', function(event) {
-                    var actionRunner = designer._actionRunner;
-                    var command = new mindplot.commands.RemoveIconFromTopicCommand(this._topic.getId(), iconModel);
-                    actionRunner.execute(command);
+                removeImage.addEvent('click', function() {
+                    var actionDispatcher = mindplot.ActionDispatcher.getInstance();
+                    actionDispatcher.removeIconFromTopic(this._topic.getId(), iconModel);
                     tip.forceClose();
-                }.bindWithEvent(this));
+                });
 
                 //Icon
                 var image = this.getImage();
-                image.addEventListener('click', function(event) {
+                image.addEventListener('click', function() {
+
                     var iconType = iconModel.getIconType();
                     var newIconType = this._getNextFamilyIconId(iconType);
                     iconModel.setIconType(newIconType);
@@ -61,21 +61,16 @@ mindplot.ImageIcon = new Class(
                     var imgUrl = this._getImageUrl(newIconType);
                     this._image.setHref(imgUrl);
 
-                    //        // @Todo: Support revert of change icon ...
-                    //        var actionRunner = designer._actionRunner;
-                    //        var command = new mindplot.commands.ChangeIconFromTopicCommand(this._topic.getId());
-                    //        this._actionRunner.execute(command);
+                }.bind(this));
 
-
-                }.bindWithEvent(this));
-
-                var imageIcon = this;
                 image.addEventListener('mouseover', function(event) {
-                    tip.open(event, container, imageIcon);
-                });
+                    tip.open(event, container, this);
+                }.bind(this));
+
                 image.addEventListener('mouseout', function(event) {
                     tip.close(event);
                 });
+
                 image.addEventListener('mousemove', function(event) {
                     tip.updatePosition(event);
                 });
@@ -83,7 +78,7 @@ mindplot.ImageIcon = new Class(
             }
         },
 
-      _getImageUrl : function(iconId) {
+        _getImageUrl : function(iconId) {
             return "../icons/" + iconId + ".png";
         },
 
@@ -99,7 +94,6 @@ mindplot.ImageIcon = new Class(
             var result = null;
             for (var i = 0; i < familyIcons.length && result == null; i++) {
                 if (familyIcons[i] == iconId) {
-                    var nextIconId;
                     //Is last one?
                     if (i == (familyIcons.length - 1)) {
                         result = familyIcons[0];
@@ -164,7 +158,7 @@ mindplot.ImageIcon.prototype.ICON_FAMILIES = [
     {"id": "bullet", "icons" : ["bullet_black","bullet_blue","bullet_green","bullet_orange","bullet_red","bullet_pink","bullet_purple"]},
     {"id": "tag", "icons" : ["tag_blue","tag_green","tag_orange","tag_red","tag_pink","tag_yellow"]},
     {"id": "object", "icons" : ["object_bell","object_clanbomber","object_key","object_pencil","object_phone","object_magnifier","object_clip","object_music","object_star","object_wizard","object_house","object_cake","object_camera","object_palette","object_rainbow"]}
-]
+];
 
 
 

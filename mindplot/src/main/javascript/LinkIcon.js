@@ -90,8 +90,9 @@ mindplot.LinkIcon = new Class({
             removeBtn.setStyle("margin-left", "3px");
 
             removeBtn.addEvent('click', function(event) {
-                var command = new mindplot.commands.RemoveLinkFromTopicCommand(this._topic.getId());
-                designer._actionRunner.execute(command);
+
+                var actionDispatcher = mindplot.ActionDispatcher.getInstance();
+                actionDispatcher.removeLinkFromTopic(this._topic.getId());
                 bubbleTip.forceClose();
             }.bindWithEvent(this));
 
@@ -148,7 +149,7 @@ mindplot.LinkIcon = new Class({
         });
     },
 
-  getUrl : function() {
+    getUrl : function() {
         return this._url;
     },
 

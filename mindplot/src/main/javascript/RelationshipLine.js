@@ -45,8 +45,7 @@ mindplot.RelationshipLine = new Class({
     },
 
     setStroke : function(color, style, opacity) {
-        // @Todo: How this is supported in mootools ?
-        mindplot.ConnectionLine.prototype.setStroke.call(this, color, style, opacity);
+        this.parent(color, style, opacity);
         this._startArrow.setStrokeColor(color);
     },
 
@@ -126,7 +125,7 @@ mindplot.RelationshipLine = new Class({
         workspace.appendChild(this._startArrow);
         workspace.appendChild(this._endArrow);
 
-        mindplot.ConnectionLine.prototype.addToWorkspace.call(this, workspace);
+        this.parent(workspace);
     },
 
     _initializeControlPointController : function(event, workspace) {
@@ -141,7 +140,7 @@ mindplot.RelationshipLine = new Class({
         workspace.removeChild(this._startArrow);
         workspace.removeChild(this._endArrow);
 
-        mindplot.ConnectionLine.prototype.removeFromWorkspace.call(this, workspace);
+        this.parent(workspace);
     },
 
     getType : function() {
@@ -195,13 +194,13 @@ mindplot.RelationshipLine = new Class({
     },
 
     setVisibility : function(value) {
-        mindplot.ConnectionLine.prototype.setVisibility.call(this, value);
+        this.parent(value);
         this._endArrow.setVisibility(this._showEndArrow && value);
         this._startArrow.setVisibility(this._showStartArrow && value);
     },
 
     setOpacity : function(opacity) {
-        mindplot.ConnectionLine.prototype.setOpacity.call(this, opacity);
+        this.parent(opacity);
         if (this._showEndArrow)
             this._endArrow.setOpacity(opacity);
         if (this._showStartArrow)

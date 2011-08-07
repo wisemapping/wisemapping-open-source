@@ -17,40 +17,34 @@
  */
 
 mindplot.DesignerActionRunner = new Class({
-    initialize: function(designer) {
-        this._designer = designer;
+    initialize: function(commandContext, notifier) {
+        $assert(commandContext, "commandContext can not be null");
+
         this._undoManager = new mindplot.DesignerUndoManager();
-        this._context = new mindplot.CommandContext(this._designer);
+        this._context = commandContext;
+        this._notifier = notifier;
     },
 
     execute:function(command) {
         $assert(command, "command can not be null");
-        // Execute action ...
         command.execute(this._context);
-
-        // Enqueue it ...
         this._undoManager.enqueue(command);
-
-        // Fire event
-        var event = this._undoManager._buildEvent();
-        this._designer._fireEvent("change", event);
+        this.fireChangeEvent();
     },
 
     undo: function() {
         this._undoManager.execUndo(this._context);
-
-        // Fire event
-        var event = this._undoManager._buildEvent();
-        this._designer._fireEvent("change", event);
+        this.fireChangeEvent();
     },
 
     redo: function() {
         this._undoManager.execRedo(this._context);
+        this.fireChangeEvent();
+    },
 
-        // Fire event
-        var event = this._undoManager._buildEvent();
-        this._designer._fireEvent("change", event);
-
+    fireChangeEvent : function () {
+        var event = this._undoManager.buildEvent();
+        this._notifier.fireEvent("modelUpdate", event);
     },
 
     markAsChangeBase: function() {
@@ -60,75 +54,3 @@ mindplot.DesignerActionRunner = new Class({
         return this._undoManager.hasBeenChanged();
     }
 });
-
-mindplot.CommandContext = new Class({
-    initialize: function(designer) {
-        this._designer = designer;
-    },
-    findTopics:function(topicsIds) {
-        var designerTopics = this._designer._topics;
-        if (!(topicsIds instanceof Array)) {
-            topicsIds = [topicsIds];
-        }
-
-        var result = designerTopics.filter(function(topic) {
-            var found = false;
-            if (topic != null) {
-                var topicId = topic.getId();
-                found = topicsIds.contains(topicId);
-            }
-            return found;
-
-        });
-        return result;
-    },
-    deleteTopic:function(topic) {
-        this._designer._removeNode(topic);
-    },
-    createTopic:function(model, isVisible) {
-        $assert(model, "model can not be null");
-        var topic = this._designer._nodeModelToNodeGraph(model, isVisible);
-
-        return topic;
-    },
-    createModel:function() {
-        var mindmap = this._designer.getMindmap();
-        var model = mindmap.createNode(mindplot.model.NodeModel.MAIN_TOPIC_TYPE);
-        return model;
-    },
-    connect:function(childTopic, parentTopic, isVisible) {
-        childTopic.connectTo(parentTopic, this._designer._workspace, isVisible);
-    } ,
-    disconnect:function(topic) {
-        topic.disconnect(this._designer._workspace);
-    },
-    createRelationship:function(model) {
-        $assert(model, "model cannot be null");
-        var relationship = this._designer.createRelationship(model);
-        return relationship;
-    },
-    removeRelationship:function(model) {
-        this._designer.removeRelationship(model);
-    },
-    findRelationships:function(lineIds) {
-        var result = [];
-        lineIds.forEach(function(lineId, index) {
-            var line = this._designer._relationships[lineId];
-            if ($defined(line)) {
-                result.push(line);
-            }
-        }.bind(this));
-        return result;
-    },
-    getSelectedRelationshipLines:function() {
-        return this._designer.getSelectedRelationshipLines();
-    }
-});
-
-mindplot.DesignerActionRunner.setInstance = function(actionRunner) {
-    mindplot.DesignerActionRunner._instance = actionRunner;
-};
-
-mindplot.DesignerActionRunner.getInstance = function() {
-    return mindplot.DesignerActionRunner._instance;
-};

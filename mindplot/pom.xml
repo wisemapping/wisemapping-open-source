@@ -55,6 +55,9 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="model/Mindmap.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="model/NodeModel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="model/RelationshipModel.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="ActionDispatcher.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="BrixActionDispatcher.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="LocalActionDispatcher.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="MindmapDesigner.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ScreenManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="Workspace.js"/>
@@ -67,7 +70,6 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="DragManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="DragPivot.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="Board.js"/>
-                                    <!--<filelist dir="${basedir}/src/main/javascript/" files="TopicBoard.js"/>-->
                                     <filelist dir="${basedir}/src/main/javascript/" files="CentralTopicBoard.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="MainTopicBoard.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ConnectionLine.js"/>
@@ -171,6 +173,18 @@
                                     files="collaboration/frameworks/brix/BrixFramework.js"/>
 
 
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="widget/IconPanel.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="widget/ToolbarPanel.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="widget/FontFamilyPanel.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="widget/FontSizePanel.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="widget/TopicShapePanel.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="widget/Menu.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="footer.js"/>
                                 </concat>
 

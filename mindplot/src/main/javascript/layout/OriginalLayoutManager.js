@@ -24,12 +24,13 @@ mindplot.layout.OriginalLayoutManager = new Class({
     initialize:function(designer, options) {
         this.parent(designer, options);
         this._dragTopicPositioner = new mindplot.DragTopicPositioner(this);
-        // Init dragger manager.
+
+        // Init drag manager.
         var workSpace = this.getDesigner().getWorkSpace();
         this._dragger = this._buildDragManager(workSpace);
 
         // Add shapes to speed up the loading process ...
-        mindplot.DragTopic.initialize(workSpace);
+        mindplot.DragTopic.init(workSpace);
     },
     prepareNode:function(node, children) {
         // Sort children by order to solve adding order in for OriginalLayoutManager...
@@ -62,15 +63,19 @@ mindplot.layout.OriginalLayoutManager = new Class({
         nodesByOrder = null;
         return node.getTopicType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE ? result : children;
     },
+
     _nodeResizeEvent:function(node) {
 
     },
+
     _nodeRepositionateEvent:function(node) {
         this.getTopicBoardForTopic(node).repositionate();
     },
+
     getDragTopicPositioner : function() {
         return this._dragTopicPositioner;
     },
+
     _buildDragManager: function(workspace) {
         // Init dragger manager.
         var dragger = new mindplot.DragManager(workspace);
@@ -115,11 +120,12 @@ mindplot.layout.OriginalLayoutManager = new Class({
 
         return dragger;
     },
+
     registerListenersOnNode : function(topic) {
         // Register node listeners ...
         var designer = this.getDesigner();
         topic.addEventListener('onfocus', function(event) {
-            designer.onObjectFocusEvent.attempt([topic, event], designer);
+            designer.onObjectFocusEvent(topic, event);
         });
 
         // Add drag behaviour ...
@@ -136,12 +142,15 @@ mindplot.layout.OriginalLayoutManager = new Class({
         }
 
     },
+
     _createMainTopicBoard:function(node) {
         return new mindplot.MainTopicBoard(node, this);
     },
+
     _createCentralTopicBoard:function(node) {
         return new mindplot.CentralTopicBoard(node, this);
     },
+
     getClassName:function() {
         return mindplot.layout.OriginalLayoutManager.NAME;
     }
