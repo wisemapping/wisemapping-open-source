@@ -681,7 +681,7 @@ mindplot.MindmapDesigner = new Class({
             }
         },
 
-        addImage2SelectedNode : function(iconType) {
+        addIconType2SelectedNode : function(iconType) {
             var validSelectedObjects = this._getValidSelectedObjectsIds();
             var topicsIds = validSelectedObjects.nodes;
             if (topicsIds.length > 0) {

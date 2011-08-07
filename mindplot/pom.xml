@@ -156,6 +156,18 @@
                                               files="layout/FreeMindLayoutManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="layout/LayoutManagerFactory.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="widget/IconPanel.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="widget/ToolbarPanel.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="widget/FontFamilyPanel.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="widget/FontSizePanel.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="widget/TopicShapePanel.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="widget/Menu.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="footer.js"/>
                                 </concat>
 

@@ -26,3 +26,4 @@ var mindplot = {};
 mindplot.util = {};
 mindplot.commands = {};
 mindplot.layout = {};
+mindplot.widget = {};

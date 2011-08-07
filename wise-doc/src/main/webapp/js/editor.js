@@ -177,14 +177,11 @@ function afterMindpotLibraryLoading() {
         });
     }
 
-    var iconChooser = buildIconChooser();
-    iconPanel = new IconPanel({button:$('topicIcon'), onStart:cleanScreenEvent, content:iconChooser});
+    // Register Key Events ...
+    $(document).addEvent('keydown', designer.keyEventHandler.bind(designer));
+    $("ffoxWorkarroundInput").addEvent('keydown', designer.keyEventHandler.bind(designer));
 
-    // Register Events ...
-    $(document).addEvent('keydown', designer.keyEventHandler.bindWithEvent(designer));
-    $("ffoxWorkarroundInput").addEvent('keydown', designer.keyEventHandler.bindWithEvent(designer));
-
-
+    // Register toolbar events ...
     $('zoomIn').addEvent('click', function(event) {
         designer.zoomIn();
     });
@@ -224,38 +221,6 @@ function afterMindpotLibraryLoading() {
         designer.deleteCurrentNode();
     });
 
-    var context = this;
-    var colorPicker1 = new MooRainbow('topicColor', {
-        id: 'topicColor',
-        imgPath: '../images/',
-        startColor: [255, 255, 255],
-        onInit: function(color) {
-            cleanScreenEvent.bind(context).attempt();
-            setCurrentColorPicker.attempt(colorPicker1, context);
-        },
-        onChange: function(color) {
-            designer.setBackColor2SelectedNode(color.hex);
-        },
-        onComplete: function(color) {
-            removeCurrentColorPicker.attempt(colorPicker1, context);
-        }
-    });
-    var colorPicker2 = new MooRainbow('topicBorder', {
-        id: 'topicBorder',
-        imgPath: '../images/',
-        startColor: [255, 255, 255],
-        onInit: function(color) {
-            cleanScreenEvent.bind(context).attempt();
-            setCurrentColorPicker.attempt(colorPicker2, context);
-        },
-        onChange: function(color) {
-            designer.setBorderColor2SelectedNode(color.hex);
-        },
-        onComplete: function(color) {
-            removeCurrentColorPicker.attempt(colorPicker2, context);
-        }
-    });
-
     $('topicLink').addEvent('click', function() {
         designer.addLink2SelectedNode();
 
@@ -278,78 +243,25 @@ function afterMindpotLibraryLoading() {
         designer.setStyle2SelectedNode();
     });
 
-    var colorPicker3 = new MooRainbow('fontColor', {
-        id: 'fontColor',
-        imgPath: '../images/',
-        startColor: [255, 255, 255],
-        onInit: function(color) {
-            cleanScreenEvent.bind(context).attempt();
-            setCurrentColorPicker.attempt(colorPicker3, context);
-        },
-        onChange: function(color) {
-            designer.setFontColor2SelectedNode(color.hex);
-        },
-        onComplete: function(color) {
-            removeCurrentColorPicker.attempt(colorPicker3, context);
-        }
-    });
-
     // To prevent the user from leaving the page with changes ...
     window.onbeforeunload = function () {
         if (designer.needsSave()) {
             designer.save(null, false)
         }
     };
+    var menu = new mindplot.widget.Menu(designer);
 
-    // Build panels ...
-    fontFamilyPanel();
-    shapeTypePanel();
-    fontSizePanel();
+    //  If a node has focus, focus can be move to another node using the keys.
+    designer._cleanScreen = function(){menu.clear()};
 
-    // If not problem has arisen, close the dialog ...
+
+  // If not problem has arisen, close the dialog ...
     var closeDialog = function() {
 
         if (!window.hasUnexpectedErrors) {
             waitDialog.deactivate();
         }
     }.delay(500);
-}
-
-function buildIconChooser() {
-    var content = new Element('div').setStyles({width:253,height:200,padding:5});
-    var count = 0;
-    for (var i = 0; i < mindplot.ImageIcon.prototype.ICON_FAMILIES.length; i = i + 1) {
-        var familyIcons = mindplot.ImageIcon.prototype.ICON_FAMILIES[i].icons;
-        for (var j = 0; j < familyIcons.length; j = j + 1) {
-            // Separate icons by line ...
-            var familyContent;
-            if ((count % 12) == 0) {
-                familyContent = new Element('div').inject(content);
-            }
-
-
-            var iconId = familyIcons[j];
-            var img = new Element('img').setStyles({width:16,height:16,padding:"0px 2px"}).inject(familyContent);
-            img.id = iconId;
-            img.src = mindplot.ImageIcon.prototype._getImageUrl(iconId);
-            img.addEvent('click', function(event, id) {
-                designer.addImage2SelectedNode(this.id);
-            }.bindWithEvent(img));
-            count = count + 1;
-        }
-
-    }
-
-    return content;
-}
-
-
-function setCurrentColorPicker(colorPicker) {
-    this.currentColorPicker = colorPicker;
-}
-
-function removeCurrentColorPicker(colorPicker) {
-    $clear(this.currentColorPicker);
 }
 
 function buildMindmapDesigner() {
@@ -373,132 +285,6 @@ function buildMindmapDesigner() {
 
     designer = new mindplot.MindmapDesigner(editorProperties, container);
     designer.loadFromXML(mapId, mapXml);
-
-    // If a node has focus, focus can be move to another node using the keys.
-    designer._cleanScreen = cleanScreenEvent.bind(this);
-}
-
-function createColorPalette(container, onSelectFunction, event) {
-    cleanScreenEvent();
-    _colorPalette = new core.ColorPicker();
-    _colorPalette.onSelect = function(color) {
-        onSelectFunction.call(this, color);
-        cleanScreenEvent();
-    };
-
-    //    dojo.event.kwConnect({srcObj: this._colorPalette,srcFunc:"onColorSelect",targetObj:this._colorPalette, targetFunc:"onSelect", once:true});
-    var mouseCoords = core.Utils.getMousePosition(event);
-    var colorPaletteElement = $("colorPalette");
-    colorPaletteElement.setStyle('left', (mouseCoords.x - 80) + "px");
-    colorPaletteElement.setStyle('display', "block");
-};
-
-function cleanScreenEvent() {
-    if (this.currentColorPicker) {
-        this.currentColorPicker.hide();
-    }
-    $("fontFamilyPanel").setStyle('display', "none");
-    $("fontSizePanel").setStyle('display', "none");
-    $("topicShapePanel").setStyle('display', "none");
-    iconPanel.close();
-}
-
-function fontFamilyPanel() {
-    var supportedFonts = ['times','arial','tahoma','verdana'];
-    var updateFunction = function(value) {
-        value = value.charAt(0).toUpperCase() + value.substring(1, value.length);
-        designer.setFont2SelectedNode(value);
-    };
-
-    var onFocusValue = function(selectedNode) {
-        return selectedNode.getFontFamily();
-    };
-
-    buildPanel('fontFamily', 'fontFamilyPanel', supportedFonts, updateFunction, onFocusValue);
-}
-
-function shapeTypePanel() {
-    var shapeTypePanel = ['rectagle','rounded_rectagle','line','elipse'];
-    var updateFunction = function(value) {
-        designer.setShape2SelectedNode(value.replace('_', ' '));
-    };
-
-    var onFocusValue = function(selectedNode) {
-
-        return selectedNode.getShapeType().replace(' ', '_');
-    };
-
-    buildPanel('topicShape', 'topicShapePanel', shapeTypePanel, updateFunction, onFocusValue);
-}
-
-function fontSizePanel() {
-    var shapeTypePanel = ['small','normal','large','huge'];
-    var map = {small:'6',normal:'8',large:'10',huge:'15'};
-    var updateFunction = function(key) {
-        var value = map[key];
-        designer.setFontSize2SelectedNode(value);
-    };
-
-    var onFocusValue = function(selectedNode) {
-        var fontSize = selectedNode.getFontSize();
-        var result = "";
-        if (fontSize <= 6) {
-            result = 'small';
-        } else if (fontSize <= 8) {
-            result = 'normal';
-        } else if (fontSize <= 10) {
-            result = 'large';
-        } else if (fontSize >= 15) {
-            result = 'huge';
-        }
-        return result;
-    };
-    buildPanel('fontSize', 'fontSizePanel', shapeTypePanel, updateFunction, onFocusValue);
-}
-
-function buildPanel(buttonElemId, elemLinksContainer, elemLinkIds, updateFunction, onFocusValue) {
-    // Font family event handling ....
-    $(buttonElemId).addEvent('click', function(event) {
-        var container = $(elemLinksContainer);
-        var isRendered = container.getStyle('display') == 'block';
-        cleanScreenEvent();
-
-        // Restore default css.
-        for (var i = 0; i < elemLinkIds.length; i++) {
-            var elementId = elemLinkIds[i];
-            $(elementId).className = 'toolbarPanelLink';
-        }
-
-        // Select current element ...
-        var nodes = designer.getSelectedNodes();
-        var lenght = nodes.length;
-        if (lenght == 1) {
-            var selectedNode = nodes[0];
-            var selectedElementId = onFocusValue(selectedNode);
-            selectedElementId = selectedElementId.toLowerCase();
-            var selectedElement = $(selectedElementId);
-            selectedElement.className = 'toolbarPanelLinkSelectedLink';
-        }
-
-        container.setStyle('display', 'block');
-
-        var mouseCoords = core.Utils.getMousePosition(event);
-        if (!isRendered) {
-            container.setStyle('left', (mouseCoords.x - 10) + "px");
-        }
-    });
-
-    var fontOnClick = function(event) {
-        var value = this.getAttribute('id');
-        updateFunction(value);
-        cleanScreenEvent();
-    };
-
-    // Register event listeners on elements ...
-    for (var i = 0; i < elemLinkIds.length; i++) {
-        var elementId = elemLinkIds[i];
-        $(elementId).addEvent('click', fontOnClick.bind($(elementId)));
-    }
 }
 
 //######################### Libraries Loading ##################################

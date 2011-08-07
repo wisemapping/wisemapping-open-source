@@ -184,8 +184,12 @@ function afterMindpotLibraryLoading() {
         });
     }
 
-    var iconChooser = buildIconChooser();
-    iconPanel = new IconPanel({button:$('topicIcon'), onStart:cleanScreenEvent, content:iconChooser});
+    // Crate icon panel dialog ...
+    iconPanel = new mindplot.widget.IconPanel({button:$('topicIcon'), onStart:cleanScreenEvent});
+    iconPanel.addEvent("selected", function(event) {
+        designer.addIconType2SelectedNode(event.iconType);
+    });
+
     // Register Events ...
     $(document).addEvent('keydown', designer.keyEventHandler.bindWithEvent(designer));
     $("ffoxWorkarroundInput").addEvent('keydown', designer.keyEventHandler.bindWithEvent(designer));
@@ -399,9 +403,9 @@ function afterMindpotLibraryLoading() {
         }
     }
     // Build panels ...
-    fontFamilyPanel();
-    shapeTypePanel();
-    fontSizePanel();
+    var fontPanel = new mindplot.widget.FontFamilyPanel();
+//    shapeTypePanel();
+//    fontSizePanel();
 
     // If not problem has occured, I close the dialod ...
     var closeDialog = function() {
@@ -411,36 +415,6 @@ function afterMindpotLibraryLoading() {
         }
     }.delay(500);
 }
-
-function buildIconChooser() {
-    var content = new Element('div').setStyles({width:253,height:200,padding:5});
-    var count = 0;
-    for (var i = 0; i < mindplot.ImageIcon.prototype.ICON_FAMILIES.length; i = i + 1) {
-        var familyIcons = mindplot.ImageIcon.prototype.ICON_FAMILIES[i].icons;
-        for (var j = 0; j < familyIcons.length; j = j + 1) {
-            // Separate icons by line ...
-            var familyContent;
-            if ((count % 12) == 0) {
-                familyContent = new Element('div').inject(content);
-            }
-
-
-            var iconId = familyIcons[j];
-            var img = new Element('img').setStyles({width:16,height:16,padding:"0px 2px"}).inject(familyContent);
-            img.id = iconId;
-            img.src = mindplot.ImageIcon.prototype._getImageUrl(iconId);
-            img.addEvent('click', function(event, id) {
-                designer.addImage2SelectedNode(this.id);
-            }.bindWithEvent(img));
-            count = count + 1;
-        }
-
-    }
-
-    return content;
-}
-;
-
 
 function setCurrentColorPicker(colorPicker) {
     this.currentColorPicker = colorPicker;
@@ -486,8 +460,7 @@ function buildMindmapDesigner() {
         }.delay(1000)
     }
 
-}
-;
+};
 
 function createColorPalette(container, onSelectFunction, event) {
     cleanScreenEvent();
@@ -513,20 +486,6 @@ function cleanScreenEvent() {
     $("fontSizePanel").setStyle('display', "none");
     $("topicShapePanel").setStyle('display', "none");
     iconPanel.close();
-}
-
-function fontFamilyPanel() {
-    var supportedFonts = ['times','arial','tahoma','verdana'];
-    var updateFunction = function(value) {
-        value = value.charAt(0).toUpperCase() + value.substring(1, value.length);
-        designer.setFont2SelectedNode(value);
-    };
-
-    var onFocusValue = function(selectedNode) {
-        return selectedNode.getFontFamily();
-    };
-
-    buildPanel('fontFamily', 'fontFamilyPanel', supportedFonts, updateFunction, onFocusValue);
 }
 
 function shapeTypePanel() {
