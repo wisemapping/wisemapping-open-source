@@ -135,7 +135,7 @@ mindplot.DragTopic = new Class({
         if (isDragConnected) {
 
             var targetTopic = this.getConnectedToTopic();
-            if (targetTopic.getType() == mindplot.NodeModel.CENTRAL_TOPIC_TYPE) {
+            if (targetTopic.getType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
                 // Update topic position ...
                 var dragPivotPosition = dragPivot.getPosition();
 
