@@ -157,8 +157,6 @@ Tabs.Init();
 // Hide the content while waiting for the onload event to trigger.
 var contentId = window.location.hash || "#Introduction";
 
-var iconPanel = null;
-
 function afterMindpotLibraryLoading() {
     buildMindmapDesigner();
 
@@ -184,125 +182,11 @@ function afterMindpotLibraryLoading() {
         });
     }
 
-    // Crate icon panel dialog ...
-    iconPanel = new mindplot.widget.IconPanel({button:$('topicIcon'), onStart:cleanScreenEvent});
-    iconPanel.addEvent("selected", function(event) {
-        designer.addIconType2SelectedNode(event.iconType);
-    });
-
     // Register Events ...
     $(document).addEvent('keydown', designer.keyEventHandler.bindWithEvent(designer));
     $("ffoxWorkarroundInput").addEvent('keydown', designer.keyEventHandler.bindWithEvent(designer));
-    //
-    $('zoomIn').addEvent('click', function(event) {
-        designer.zoomIn();
-    });
 
-    $('zoomOut').addEvent('click', function(event) {
-        designer.zoomOut();
-    });
 
-    $('undoEdition').addEvent('click', function(event) {
-        designer.undo();
-    });
-
-    $('redoEdition').addEvent('click', function(event) {
-        designer.redo();
-    });
-
-    designer.addEventListener("modelUpdate", function(event) {
-        if (event.undoSteps > 0) {
-            $("undoEdition").setStyle("background-image", "url(../images/file_undo.png)");
-        } else {
-            $("undoEdition").setStyle("background-image", "url(../images/file_undo_dis.png)");
-        }
-
-        if (event.redoSteps > 0) {
-            $("redoEdition").setStyle("background-image", "url(../images/file_redo.png)");
-        } else {
-            $("redoEdition").setStyle("background-image", "url(../images/file_redo_dis.png)");
-        }
-
-    });
-
-    $('addTopic').addEvent('click', function(event) {
-        designer.createSiblingForSelectedNode();
-    });
-
-    $('deleteTopic').addEvent('click', function(event) {
-        designer.deleteCurrentNode();
-    });
-
-    var context = this;
-    var colorPicker1 = new MooRainbow('topicColor', {
-        id: 'topicColor',
-        imgPath: '../images/',
-        startColor: [255, 255, 255],
-        onInit: function(color) {
-            cleanScreenEvent.bind(context).attempt();
-            setCurrentColorPicker.attempt(colorPicker1, context);
-        },
-        onChange: function(color) {
-            designer.setBackColor2SelectedNode(color.hex);
-        },
-        onComplete: function(color) {
-            removeCurrentColorPicker.attempt(colorPicker1, context);
-        }
-    });
-
-    var colorPicker2 = new MooRainbow('topicBorder', {
-        id: 'topicBorder',
-        imgPath: '../images/',
-        startColor: [255, 255, 255],
-        onInit: function(color) {
-            cleanScreenEvent.bind(context).attempt();
-            setCurrentColorPicker.attempt(colorPicker2, context);
-        },
-        onChange: function(color) {
-            designer.setBorderColor2SelectedNode(color.hex);
-        },
-        onComplete: function(color) {
-            removeCurrentColorPicker.attempt(colorPicker2, context);
-        }
-    });
-
-    $('topicLink').addEvent('click', function(event) {
-        designer.addLink2SelectedNode();
-
-    });
-
-    $('topicRelation').addEvent('click', function(event) {
-        designer.addRelationShip2SelectedNode(event);
-    });
-
-    $('topicNote').addEvent('click', function(event) {
-        designer.addNote2SelectedNode();
-
-    });
-
-    $('fontBold').addEvent('click', function(event) {
-        designer.setWeight2SelectedNode();
-    });
-
-    $('fontItalic').addEvent('click', function(event) {
-        designer.setStyle2SelectedNode();
-    });
-
-    var colorPicker3 = new MooRainbow('fontColor', {
-        id: 'fontColor',
-        imgPath: '../images/',
-        startColor: [255, 255, 255],
-        onInit: function(color) {
-            cleanScreenEvent.bind(context).attempt();
-            setCurrentColorPicker.attempt(colorPicker3, context);
-        },
-        onChange: function(color) {
-            designer.setFontColor2SelectedNode(color.hex);
-        },
-        onComplete: function(color) {
-            removeCurrentColorPicker.attempt(colorPicker3, context);
-        }
-    });
 
     // Save event handler ....
     var saveButton = $('saveButton');
@@ -402,10 +286,11 @@ function afterMindpotLibraryLoading() {
             }
         }
     }
-    // Build panels ...
-    var fontPanel = new mindplot.widget.FontFamilyPanel();
-//    shapeTypePanel();
-//    fontSizePanel();
+
+    var menu = new mindplot.widget.Menu(designer);
+
+    //  If a node has focus, focus can be move to another node using the keys.
+    designer._cleanScreen = function(){menu.clear()};
 
     // If not problem has occured, I close the dialod ...
     var closeDialog = function() {
@@ -414,14 +299,6 @@ function afterMindpotLibraryLoading() {
             waitDialog.deactivate();
         }
     }.delay(500);
-}
-
-function setCurrentColorPicker(colorPicker) {
-    this.currentColorPicker = colorPicker;
-}
-
-function removeCurrentColorPicker(colorPicker) {
-    $clear(this.currentColorPicker);
 }
 
 function buildMindmapDesigner() {
@@ -448,10 +325,6 @@ function buildMindmapDesigner() {
     designer = new mindplot.MindmapDesigner(editorProperties, container);
     designer.loadFromXML(mapId, mapXml);
 
-    // If a node has focus, focus can be move to another node using the keys.
-    designer._cleanScreen = cleanScreenEvent.bind(this);
-
-
     // Save map on load ....
     if (editorProperties.saveOnLoad) {
         var saveOnLoad = function() {
@@ -462,114 +335,3 @@ function buildMindmapDesigner() {
 
 };
 
-function createColorPalette(container, onSelectFunction, event) {
-    cleanScreenEvent();
-    _colorPalette = new core.ColorPicker();
-    _colorPalette.onSelect = function(color) {
-        onSelectFunction.call(this, color);
-        cleanScreenEvent();
-    };
-
-    //    dojo.event.kwConnect({srcObj: this._colorPalette,srcFunc:"onColorSelect",targetObj:this._colorPalette, targetFunc:"onSelect", once:true});
-    var mouseCoords = core.Utils.getMousePosition(event);
-    var colorPaletteElement = $("colorPalette");
-    colorPaletteElement.setStyle('left', (mouseCoords.x - 80) + "px");
-    colorPaletteElement.setStyle('display', "block");
-}
-;
-
-function cleanScreenEvent() {
-    if (this.currentColorPicker) {
-        this.currentColorPicker.hide();
-    }
-    $("fontFamilyPanel").setStyle('display', "none");
-    $("fontSizePanel").setStyle('display', "none");
-    $("topicShapePanel").setStyle('display', "none");
-    iconPanel.close();
-}
-
-function shapeTypePanel() {
-    var shapeTypePanel = ['rectagle','rounded_rectagle','line','elipse'];
-    var updateFunction = function(value) {
-        designer.setShape2SelectedNode(value.replace('_', ' '));
-    };
-
-    var onFocusValue = function(selectedNode) {
-
-        return selectedNode.getShapeType().replace(' ', '_');
-    };
-
-    buildPanel('topicShape', 'topicShapePanel', shapeTypePanel, updateFunction, onFocusValue);
-}
-
-function fontSizePanel() {
-    var shapeTypePanel = ['small','normal','large','huge'];
-    var map = {small:'6',normal:'8',large:'10',huge:'15'};
-    var updateFunction = function(value) {
-        var nodes = designer.getSelectedNodes();
-        var value = map[value];
-        designer.setFontSize2SelectedNode(value);
-    };
-
-    var onFocusValue = function(selectedNode) {
-        var fontSize = selectedNode.getFontSize();
-        var result = "";
-        if (fontSize <= 6) {
-            result = 'small';
-        } else if (fontSize <= 8) {
-            result = 'normal';
-        } else if (fontSize <= 10) {
-            result = 'large';
-        } else if (fontSize >= 15) {
-            result = 'huge';
-        }
-        return result;
-    };
-    buildPanel('fontSize', 'fontSizePanel', shapeTypePanel, updateFunction, onFocusValue);
-}
-
-function buildPanel(buttonElemId, elemLinksContainer, elemLinkIds, updateFunction, onFocusValue) {
-    // Font family event handling ....
-    $(buttonElemId).addEvent('click', function(event) {
-        var container = $(elemLinksContainer);
-        var isRendered = container.getStyle('display') == 'block';
-        cleanScreenEvent();
-
-        // Restore default css.
-        for (var i = 0; i < elemLinkIds.length; i++) {
-            var elementId = elemLinkIds[i];
-            $(elementId).className = 'toolbarPanelLink';
-        }
-
-        // Select current element ...
-        var nodes = designer.getSelectedNodes();
-        var lenght = nodes.length;
-        if (lenght == 1) {
-            var selectedNode = nodes[0];
-            var selectedElementId = onFocusValue(selectedNode);
-            selectedElementId = selectedElementId.toLowerCase();
-            var selectedElement = $(selectedElementId);
-            selectedElement.className = 'toolbarPanelLinkSelectedLink';
-        }
-
-        container.setStyle('display', 'block');
-
-        var mouseCoords = core.Utils.getMousePosition(event);
-        if (!isRendered) {
-            container.setStyle('left', (mouseCoords.x - 10) + "px");
-        }
-
-    });
-
-    var fontOnClick = function(event) {
-        var value = this.getAttribute('id');
-        updateFunction(value);
-        cleanScreenEvent();
-    };
-
-    // Register event listeners on elements ...
-    for (var i = 0; i < elemLinkIds.length; i++) {
-        var elementId = elemLinkIds[i];
-        $(elementId).addEvent('click', fontOnClick.bind($(elementId)));
-    }
-}

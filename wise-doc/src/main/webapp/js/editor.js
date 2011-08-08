@@ -181,68 +181,6 @@ function afterMindpotLibraryLoading() {
     $(document).addEvent('keydown', designer.keyEventHandler.bind(designer));
     $("ffoxWorkarroundInput").addEvent('keydown', designer.keyEventHandler.bind(designer));
 
-    // Register toolbar events ...
-    $('zoomIn').addEvent('click', function(event) {
-        designer.zoomIn();
-    });
-
-    $('zoomOut').addEvent('click', function(event) {
-        designer.zoomOut();
-    });
-
-    $('undoEdition').addEvent('click', function(event) {
-        designer.undo();
-    });
-
-    $('redoEdition').addEvent('click', function(event) {
-        designer.redo();
-    });
-
-    designer.addEventListener("modelUpdate", function(event) {
-        if (event.undoSteps > 0) {
-            $("undoEdition").setStyle("background-image", "url(../images/file_undo.png)");
-        } else {
-            $("undoEdition").setStyle("background-image", "url(../images/file_undo_dis.png)");
-        }
-
-        if (event.redoSteps > 0) {
-            $("redoEdition").setStyle("background-image", "url(../images/file_redo.png)");
-        } else {
-            $("redoEdition").setStyle("background-image", "url(../images/file_redo_dis.png)");
-        }
-
-    });
-
-    $('addTopic').addEvent('click', function(event) {
-        designer.createSiblingForSelectedNode();
-    });
-
-    $('deleteTopic').addEvent('click', function(event) {
-        designer.deleteCurrentNode();
-    });
-
-    $('topicLink').addEvent('click', function() {
-        designer.addLink2SelectedNode();
-
-    });
-
-    $('topicRelation').addEvent('click', function(event) {
-        designer.addRelationShip2SelectedNode(event);
-    });
-
-    $('topicNote').addEvent('click', function() {
-        designer.addNote2SelectedNode();
-
-    });
-
-    $('fontBold').addEvent('click', function() {
-        designer.setWeight2SelectedNode();
-    });
-
-    $('fontItalic').addEvent('click', function() {
-        designer.setStyle2SelectedNode();
-    });
-
     // To prevent the user from leaving the page with changes ...
     window.onbeforeunload = function () {
         if (designer.needsSave()) {
@@ -252,10 +190,12 @@ function afterMindpotLibraryLoading() {
     var menu = new mindplot.widget.Menu(designer);
 
     //  If a node has focus, focus can be move to another node using the keys.
-    designer._cleanScreen = function(){menu.clear()};
+    designer._cleanScreen = function() {
+        menu.clear()
+    };
 
 
-  // If not problem has arisen, close the dialog ...
+    // If not problem has arisen, close the dialog ...
     var closeDialog = function() {
 
         if (!window.hasUnexpectedErrors) {
@@ -283,7 +223,7 @@ function buildMindmapDesigner() {
     editorProperties.height = screenHeight;
     designer = new mindplot.MindmapDesigner(editorProperties, container);
 
-    if($wise_collaborationManager.isCollaborationFrameworkAvailable()){
+    if(mindplot.collaboration.CollaborationManager.getInstance().isCollaborationFrameworkAvailable()){
         buildCollaborativeMindmapDesigner();
     }else{
         buildStandaloneMindmapDesigner();
@@ -295,10 +235,11 @@ function buildStandaloneMindmapDesigner(){
 }
 
 function buildCollaborativeMindmapDesigner(){
-    if($wise_collaborationManager.isCollaborativeFrameworkReady()){
-        designer.loadFromCollaborativeModel($wise_collaborationManager);
+    var collaborationManager = mindplot.collaboration.CollaborationManager.getInstance();
+    if(collaborationManager.isCollaborativeFrameworkReady()){
+        designer.loadFromCollaborativeModel(collaborationManager);
     }else{
-        $wise_collaborationManager.setWiseReady(true);
+        collaborationManager.setWiseReady(true);
     }
 }
 

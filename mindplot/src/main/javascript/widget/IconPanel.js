@@ -69,6 +69,8 @@ mindplot.widget.IconPanel = new Class({
 
     show:function() {
         this.fireEvent("show");
+        $(this._buttonId).className = 'buttonActive';
+
         if (this.options.state == 'close') {
             if (!$defined(this.options.panel)) {
                 this.init();
@@ -84,7 +86,6 @@ mindplot.widget.IconPanel = new Class({
             this.fireEvent('onStart');
             this.registerClosePanel();
             this.options.state = 'open';
-
         }
     },
 
@@ -94,6 +95,7 @@ mindplot.widget.IconPanel = new Class({
             this.options.panel.setStyles({border: '1px solid transparent', opacity:0});
             this.registerOpenPanel();
             this.options.state = 'close';
+            $(this._buttonId).className = 'button';
         }
     },
 

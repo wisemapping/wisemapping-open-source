@@ -25,15 +25,15 @@ mindplot.BrixActionDispatcher = new Class({
     },
 
     changeTextOnTopic : function(topicsIds, text) {
-        var framework=$wise_collaborationManager.getCollaborativeFramework();
+        var framework = mindplot.collaboration.CollaborationManager.getInstance().getCollaborativeFramework();
         if (!(topicsIds instanceof Array)) {
             topicsIds = [topicsIds];
         }
         var topic = framework.getTopic(topicsIds[0]);
-        var callback = function(event, topic){
+        var callback = function(event, topic) {
             topic.getBrixModel().removeListener("valueChanged", callback);
-            this._actionDispatcher.changeTextOnTopic(topic.getId(),event.getNewValue());
-        }.bindWithEvent(this,topic);
+            this._actionDispatcher.changeTextOnTopic(topic.getId(), event.getNewValue());
+        }.bindWithEvent(this, topic);
         topic.setText(text, true, callback);
     }
 });

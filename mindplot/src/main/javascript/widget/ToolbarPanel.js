@@ -22,6 +22,7 @@ mindplot.widget.ToolbarPanel = new Class({
         $assert(buttonId, "buttonId can not be null");
         $assert(model, "model can not be null");
         this._model = model;
+        this._buttonId = buttonId;
         this._panelId = this.initPanel(buttonId);
     },
 
@@ -42,10 +43,11 @@ mindplot.widget.ToolbarPanel = new Class({
         // Register on toolbar elements ...
         var menuElems = panelElem.getElements('div');
         menuElems.forEach(function(elem) {
-            elem.addEvent('click', function() {
+            elem.addEvent('click', function(event) {
                 var value = $defined(elem.getAttribute('model')) ? elem.getAttribute('model') : elem.id;
                 this._model.setValue(value);
                 this.hide();
+                event.stopPropagation();
             }.bind(this));
         }.bind(this));
 
@@ -77,10 +79,14 @@ mindplot.widget.ToolbarPanel = new Class({
         });
         $(this._panelId).setStyle('display', 'block');
 
+        // Mark the button as active...
+        $(this._buttonId).className = 'buttonActive';
     },
 
     hide : function() {
         $(this._panelId).setStyle('display', 'none');
+        $(this._buttonId).className = 'button';
+
     },
 
     isVisible : function() {

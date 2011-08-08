@@ -37,7 +37,9 @@ mindplot.widget.Menu = new Class({
             }
         };
         var fontFamilyPanel = new mindplot.widget.FontFamilyPanel("fontFamily", fontFamilyModel);
-        fontFamilyPanel.addEvent('show',function(){this.clear()}.bind(this));
+        fontFamilyPanel.addEvent('show', function() {
+            this.clear()
+        }.bind(this));
         this._toolbarElems.push(fontFamilyPanel);
 
         var fontSizeModel = {
@@ -53,7 +55,9 @@ mindplot.widget.Menu = new Class({
             }
         };
         var fontSizePanel = new mindplot.widget.FontSizePanel("fontSize", fontSizeModel);
-        fontSizePanel.addEvent('show',function(){this.clear()}.bind(this));
+        fontSizePanel.addEvent('show', function() {
+            this.clear()
+        }.bind(this));
         this._toolbarElems.push(fontSizePanel);
 
         var topicShapeModel = {
@@ -69,7 +73,9 @@ mindplot.widget.Menu = new Class({
             }
         };
         var topicShapePanel = new mindplot.widget.TopicShapePanel("topicShape", topicShapeModel);
-        topicShapePanel.addEvent('show',function(){this.clear()}.bind(this));
+        topicShapePanel.addEvent('show', function() {
+            this.clear()
+        }.bind(this));
         this._toolbarElems.push(topicShapePanel);
 
         // Create icon panel dialog ...
@@ -82,11 +88,13 @@ mindplot.widget.Menu = new Class({
             }
         };
         var iconPanel = new mindplot.widget.IconPanel('topicIcon', topicIconModel);
-        iconPanel.addEvent('show',function(){this.clear()}.bind(this));
+        iconPanel.addEvent('show', function() {
+            this.clear()
+        }.bind(this));
         this._toolbarElems.push(iconPanel);
 
 
-        var topicColorPicker = new MooRainbow('topicColor', {
+        var colorPickerOptions = {
             id: 'topicColor',
             imgPath: '../images/',
             startColor: [255, 255, 255],
@@ -100,7 +108,8 @@ mindplot.widget.Menu = new Class({
             onComplete: function() {
                 this.clear();
             }.bind(this)
-        });
+        };
+        var topicColorPicker = new MooRainbow('topicColor', colorPickerOptions);
         this._colorPickers.push(topicColorPicker);
 
         var borderColorPicker = new MooRainbow('topicBorder', {
@@ -135,6 +144,72 @@ mindplot.widget.Menu = new Class({
             }.bind(this)
         });
         this._colorPickers.push(fontColorPicker);
+
+
+        // Register Events ...
+        $('zoomIn').addEvent('click', function(event) {
+            designer.zoomIn();
+        });
+
+        $('zoomOut').addEvent('click', function(event) {
+            designer.zoomOut();
+        });
+
+        $('undoEdition').addEvent('click', function(event) {
+            designer.undo();
+        });
+
+        $('redoEdition').addEvent('click', function(event) {
+            designer.redo();
+        });
+
+        designer.addEventListener("modelUpdate", function(event) {
+            if (event.undoSteps > 0) {
+                $("undoEdition").setStyle("background-image", "url(../images/file_undo.png)");
+            } else {
+                $("undoEdition").setStyle("background-image", "url(../images/file_undo_dis.png)");
+            }
+
+            if (event.redoSteps > 0) {
+                $("redoEdition").setStyle("background-image", "url(../images/file_redo.png)");
+            } else {
+                $("redoEdition").setStyle("background-image", "url(../images/file_redo_dis.png)");
+            }
+
+        });
+
+        $('addTopic').addEvent('click', function(event) {
+            designer.createSiblingForSelectedNode();
+        });
+
+        $('deleteTopic').addEvent('click', function(event) {
+            designer.deleteCurrentNode();
+        });
+
+
+        $('topicLink').addEvent('click', function(event) {
+            designer.addLink2SelectedNode();
+
+        });
+
+        $('topicRelation').addEvent('click', function(event) {
+            designer.addRelationShip2SelectedNode(event);
+        });
+
+        $('topicNote').addEvent('click', function(event) {
+            designer.addNote2SelectedNode();
+
+        });
+
+        $('fontBold').addEvent('click', function(event) {
+            designer.setWeight2SelectedNode();
+        });
+
+        $('fontItalic').addEvent('click', function(event) {
+            designer.setStyle2SelectedNode();
+        });
+
+
     },
 
     clear : function() {

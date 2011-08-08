@@ -177,6 +177,27 @@ div#toolbar .button:hover {
     border: 1px solid black;
     border-top-color: white;
     border-left-color: white;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+div#toolbar .buttonActive {
+    width: 32px;
+    height: 36px;
+    float: left;
+    margin: 0 1px;
+    cursor: pointer;
+    border: 1px solid black;
+    border-top-color: white;
+    border-left-color: white;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 
 div#toolbar .comboButton:hover {
@@ -395,19 +416,13 @@ div#fontColor {
 
 div.toolbarPanelLink {
     cursor: pointer;
-    font-size: 14px;
     color: black;
     font-weight: bold;
     padding: 0 3px 0 4px;
     margin: 1px;
-}
-
-div.toolbarPanelLink {
     cursor: pointer;
     font-size: 12px;
     font-weight: bold;
-    padding: 0 3px 0 4px;
-    margin: 1px;
 }
 
 div.toolbarPanelLink:hover {
