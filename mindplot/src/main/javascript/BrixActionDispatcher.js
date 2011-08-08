@@ -20,6 +20,21 @@ mindplot.BrixActionDispatcher = new Class({
     Extends: mindplot.ActionDispatcher,
     initialize: function(commandContext, fireOnChange) {
         this.parent(commandContext, fireOnChange);
+        this._commandContext = commandContext;
+        this._actionDispatcher = new mindplot.LocalActionDispatcher(commandContext);
+    },
+
+    changeTextOnTopic : function(topicsIds, text) {
+        var framework=$wise_collaborationManager.getCollaborativeFramework();
+        if (!(topicsIds instanceof Array)) {
+            topicsIds = [topicsIds];
+        }
+        var topic = framework.getTopic(topicsIds[0]);
+        var callback = function(event, topic){
+            topic.getBrixModel().removeListener("valueChanged", callback);
+            this._actionDispatcher.changeTextOnTopic(topic.getId(),event.getNewValue());
+        }.bindWithEvent(this,topic);
+        topic.setText(text, true, callback);
     }
 });
 

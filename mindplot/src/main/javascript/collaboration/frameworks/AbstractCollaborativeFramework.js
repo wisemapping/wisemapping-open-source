@@ -7,6 +7,7 @@ mindplot.collaboration.frameworks.AbstractCollaborativeFramework = new Class({
             model = this._buildInitialCollaborativeModel();
         }
         this._model = model;
+        this._actionDispatcher = null;
     },
     getModel: function(){
         return this._model;
@@ -31,6 +32,22 @@ mindplot.collaboration.frameworks.AbstractCollaborativeFramework = new Class({
         mindmap.addBranch(centralTopic);
         return mindmap;
     },
-    addMindmap:function(model){}
+    addMindmap:function(model){},
+    getTopic:function(id){
+        var branches = this.getModel().getBranches();
+        for(var i = 0; i<branches.length; i++){
+            if(branches[i].getId()==id){
+                return branches[i];
+            }
+        }
+        return null;
+    },
+    getActionDispatcher:function(){
+        if(this._actionDispatcher == null){
+            var context = mindplot.ActionDispatcher.getInstance()._commandContext;
+            this._actionDispatcher = new mindplot.LocalActionDispatcher(context);
+        }
+        return this._actionDispatcher;
+    }
 
 });

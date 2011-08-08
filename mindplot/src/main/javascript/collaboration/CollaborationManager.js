@@ -23,6 +23,9 @@ mindplot.collaboration.CollaborationManager = new Class({
     },
     buildWiseModel: function(){
         return this._collaborativeFramework.buildWiseModel();
+    },
+    getCollaborativeFramework:function(){
+        return this._collaborativeFramework;
     }
 });
 

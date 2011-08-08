@@ -29,7 +29,17 @@ mindplot.collaboration.frameworks.brix.model.NodeModel = new Class({
         this.parent(type, mindmap, id);
         if(!$defined(this._brixModel)){
             this._brixModel = this._createBrixModel();
+        }else{
+            var text = this._brixModel.get("text");
+            this.setText(text, false);
         }
+        this._addBrixListeners();
+    },
+    _addBrixListeners:function(){
+        this._brixModel.addListener("valueChanged", this._valuechangeListener.bindWithEvent(this));
+    },
+    _valuechangeListener:function(event){
+        this._brixFramework.getActionDispatcher().changeTextOnTopic(this.getId(),event.getNewValue());
     },
     _createBrixModel:function(){
         var model = this._brixFramework.getBrixModel().create("Map");
@@ -100,9 +110,12 @@ mindplot.collaboration.frameworks.brix.model.NodeModel = new Class({
         return this._type;
     },
 
-    setText  : function(text) {
+    setText  : function(text,updateModel, callback) {
         this.parent(text);
-        this._brixModel.set("text",text);
+        if($defined(updateModel) && updateModel){
+            this._brixModel.addListener("valueChanged",callback);
+            this._brixModel.put("text",text);
+        }
     },
 
     getText  : function() {
