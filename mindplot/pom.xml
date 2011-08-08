@@ -170,9 +170,12 @@
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="collaboration/frameworks/brix/BrixCollaborativeModelFactory.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                    files="collaboration/frameworks/brix/BrixFramework.js"/>
+                                              files="collaboration/frameworks/brix/BrixFramework.js"/>
 
-
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="widget/ToolbarItem.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="widget/ColorPickerPanel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="widget/IconPanel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
@@ -297,11 +300,14 @@
                                         <include>layout/LayoutManagerFactory-min.js</include>
 
                                         <include>collaboration/CollaborationManager-min.js</include>
-                                        <include>collaboration/frameworks/AbstractCollaborativeFramework-min.js</include>
-                                        <include>collaboration/frameworks/AbstractCollaborativeModelFactory-min.js</include>
+                                        <include>collaboration/frameworks/AbstractCollaborativeFramework-min.js
+                                        </include>
+                                        <include>collaboration/frameworks/AbstractCollaborativeModelFactory-min.js
+                                        </include>
                                         <include>collaboration/frameworks/brix/model/NodeModel-min.js</include>
                                         <include>collaboration/frameworks/brix/model/Mindmap-min.js</include>
-                                        <include>collaboration/frameworks/brix/BrixCollaborativeModelFactory-min.js</include>
+                                        <include>collaboration/frameworks/brix/BrixCollaborativeModelFactory-min.js
+                                        </include>
                                         <include>collaboration/frameworks/brix/BrixFramework-min.js</include>
 
                                         <include>footer-min.js</include>

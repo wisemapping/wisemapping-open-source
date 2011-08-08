@@ -187,7 +187,7 @@ function afterMindpotLibraryLoading() {
             designer.save(null, false)
         }
     };
-    var menu = new mindplot.widget.Menu(designer);
+    var menu = new mindplot.widget.Menu(designer,'toolbar');
 
     //  If a node has focus, focus can be move to another node using the keys.
     designer._cleanScreen = function() {

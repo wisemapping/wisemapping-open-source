@@ -17,24 +17,19 @@
  */
 
 mindplot.widget.ToolbarPanel = new Class({
-    Implements:[Events],
+    Extends: mindplot.widget.ToolbarItem,
     initialize : function(buttonId, model) {
-        $assert(buttonId, "buttonId can not be null");
-        $assert(model, "model can not be null");
-        this._model = model;
-        this._buttonId = buttonId;
-        this._panelId = this.initPanel(buttonId);
+        this.parent(buttonId, model);
+        this._panelId = this.initPanel();
     },
 
     buildPanel : function() {
         throw "Method must be implemented";
     }.protect(),
 
-    initPanel: function (buttonId) {
-        $assert(buttonId, "buttonId can not be null");
-
+    initPanel: function () {
         var panelElem = this.buildPanel();
-        var buttonElem = $(buttonId);
+        var buttonElem = this.getButtonElem();
 
         // Add panel content ..
         panelElem.setStyle('display', 'none');
@@ -45,14 +40,13 @@ mindplot.widget.ToolbarPanel = new Class({
         menuElems.forEach(function(elem) {
             elem.addEvent('click', function(event) {
                 var value = $defined(elem.getAttribute('model')) ? elem.getAttribute('model') : elem.id;
-                this._model.setValue(value);
+                this.getModel().setValue(value);
                 this.hide();
-                event.stopPropagation();
             }.bind(this));
         }.bind(this));
 
         // Font family event handling ....
-        buttonElem.addEvent('click', function() {
+        buttonElem.addEvent('click', function(event) {
 
             // Is the panel being displayed ?
             if (this.isVisible()) {
@@ -66,10 +60,10 @@ mindplot.widget.ToolbarPanel = new Class({
     },
 
     show : function() {
-        this.fireEvent('show');
+        this.parent();
 
         var menuElems = $(this._panelId).getElements('div');
-        var value = this._model.getValue();
+        var value = this.getModel().getValue();
         menuElems.forEach(function(elem) {
             var elemValue = $defined(elem.getAttribute('model')) ? elem.getAttribute('model') : elem.id;
             if (elemValue == value)
@@ -79,13 +73,11 @@ mindplot.widget.ToolbarPanel = new Class({
         });
         $(this._panelId).setStyle('display', 'block');
 
-        // Mark the button as active...
-        $(this._buttonId).className = 'buttonActive';
     },
 
     hide : function() {
+        this.parent();
         $(this._panelId).setStyle('display', 'none');
-        $(this._buttonId).className = 'button';
 
     },
 

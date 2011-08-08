@@ -17,11 +17,25 @@
  */
 
 mindplot.widget.Menu = new Class({
-    initialize : function(designer) {
+    initialize : function(designer, containerId) {
+        $assert(designer, "designer can not be null");
+        $assert(containerId, "containerId can not be null");
+
+        // Init variables ...
         this._designer = designer;
         this._toolbarElems = [];
-        this._colorPickers = [];
+        this._containerId = containerId;
 
+        // Stop event propagation ...
+        $(this._containerId).addEvent('click', function(event) {
+            event.stopPropagation();
+        });
+
+        $(this._containerId).addEvent('dblclick', function(event) {
+            event.stopPropagation();
+        });
+
+        // Create panels ...
         var fontFamilyModel = {
             getValue: function() {
                 var nodes = designer.getSelectedNodes();
@@ -36,11 +50,7 @@ mindplot.widget.Menu = new Class({
 
             }
         };
-        var fontFamilyPanel = new mindplot.widget.FontFamilyPanel("fontFamily", fontFamilyModel);
-        fontFamilyPanel.addEvent('show', function() {
-            this.clear()
-        }.bind(this));
-        this._toolbarElems.push(fontFamilyPanel);
+        this._toolbarElems.push(new mindplot.widget.FontFamilyPanel("fontFamily", fontFamilyModel));
 
         var fontSizeModel = {
             getValue: function() {
@@ -54,11 +64,7 @@ mindplot.widget.Menu = new Class({
                 designer.setFontSize2SelectedNode(value);
             }
         };
-        var fontSizePanel = new mindplot.widget.FontSizePanel("fontSize", fontSizeModel);
-        fontSizePanel.addEvent('show', function() {
-            this.clear()
-        }.bind(this));
-        this._toolbarElems.push(fontSizePanel);
+        this._toolbarElems.push(new mindplot.widget.FontSizePanel("fontSize", fontSizeModel));
 
         var topicShapeModel = {
             getValue: function() {
@@ -72,11 +78,7 @@ mindplot.widget.Menu = new Class({
                 designer.setShape2SelectedNode(value);
             }
         };
-        var topicShapePanel = new mindplot.widget.TopicShapePanel("topicShape", topicShapeModel);
-        topicShapePanel.addEvent('show', function() {
-            this.clear()
-        }.bind(this));
-        this._toolbarElems.push(topicShapePanel);
+        this._toolbarElems.push(new mindplot.widget.TopicShapePanel("topicShape", topicShapeModel));
 
         // Create icon panel dialog ...
         var topicIconModel = {
@@ -87,63 +89,51 @@ mindplot.widget.Menu = new Class({
                 designer.addIconType2SelectedNode(value);
             }
         };
-        var iconPanel = new mindplot.widget.IconPanel('topicIcon', topicIconModel);
-        iconPanel.addEvent('show', function() {
-            this.clear()
-        }.bind(this));
-        this._toolbarElems.push(iconPanel);
+        this._toolbarElems.push(new mindplot.widget.IconPanel('topicIcon', topicIconModel));
 
-
-        var colorPickerOptions = {
-            id: 'topicColor',
-            imgPath: '../images/',
-            startColor: [255, 255, 255],
-            onInit: function() {
-                this.clear();
-            }.bind(this),
-
-            onChange: function(color) {
-                designer.setBackColor2SelectedNode(color.hex);
+        // Topic color item ...
+        var topicColorModel =
+        {
+            getValue : function() {
+                return null;
             },
-            onComplete: function() {
-                this.clear();
-            }.bind(this)
+            setValue : function (hex) {
+                designer.setBackColor2SelectedNode(hex);
+            }
         };
-        var topicColorPicker = new MooRainbow('topicColor', colorPickerOptions);
-        this._colorPickers.push(topicColorPicker);
+        this._toolbarElems.push(new mindplot.widget.ColorPicker('topicColor', topicColorModel));
 
-        var borderColorPicker = new MooRainbow('topicBorder', {
-            id: 'topicBorder',
-            imgPath: '../images/',
-            startColor: [255, 255, 255],
-            onInit: function() {
-                this.clear();
-            }.bind(this),
-            onChange: function(color) {
-                designer.setBorderColor2SelectedNode(color.hex);
+        // Border color item ...
+        var borderColorModel =
+        {
+            getValue : function() {
+                return null;
             },
-            onComplete: function() {
-                this.clear();
-            }.bind(this)
+            setValue : function (hex) {
+                designer.setBorderColor2SelectedNode(hex);
+            }
+        };
+        this._toolbarElems.push(new mindplot.widget.ColorPicker('topicBorder', borderColorModel));
 
-        });
-        this._colorPickers.push(borderColorPicker);
-
-        var fontColorPicker = new MooRainbow('fontColor', {
-            id: 'fontColor',
-            imgPath: '../images/',
-            startColor: [255, 255, 255],
-            onInit: function() {
-                this.clear();
-            }.bind(this),
-            onChange: function(color) {
-                designer.setFontColor2SelectedNode(color.hex);
+        // Font color item ...
+        var fontColorModel =
+        {
+            getValue : function() {
+                return null;
             },
-            onComplete: function() {
-                this.clear();
-            }.bind(this)
-        });
-        this._colorPickers.push(fontColorPicker);
+            setValue : function (hex) {
+                designer.setFontColor2SelectedNode(hex);
+            }
+        };
+        var fontColorPicker = new mindplot.widget.ColorPicker('fontColor', fontColorModel);
+        this._toolbarElems.push(fontColorPicker);
+
+        // Register on close events ...
+        this._toolbarElems.forEach(function(elem) {
+            elem.addEvent('show', function() {
+                this.clear()
+            }.bind(this));
+        }.bind(this));
 
 
         // Register Events ...
@@ -161,21 +151,6 @@ mindplot.widget.Menu = new Class({
 
         $('redoEdition').addEvent('click', function(event) {
             designer.redo();
-        });
-
-        designer.addEventListener("modelUpdate", function(event) {
-            if (event.undoSteps > 0) {
-                $("undoEdition").setStyle("background-image", "url(../images/file_undo.png)");
-            } else {
-                $("undoEdition").setStyle("background-image", "url(../images/file_undo_dis.png)");
-            }
-
-            if (event.redoSteps > 0) {
-                $("redoEdition").setStyle("background-image", "url(../images/file_redo.png)");
-            } else {
-                $("redoEdition").setStyle("background-image", "url(../images/file_redo_dis.png)");
-            }
-
         });
 
         $('addTopic').addEvent('click', function(event) {
@@ -209,16 +184,26 @@ mindplot.widget.Menu = new Class({
             designer.setStyle2SelectedNode();
         });
 
+        designer.addEventListener("modelUpdate", function(event) {
+            if (event.undoSteps > 0) {
+                $("undoEdition").setStyle("background-image", "url(../images/file_undo.png)");
+            } else {
+                $("undoEdition").setStyle("background-image", "url(../images/file_undo_dis.png)");
+            }
+
+            if (event.redoSteps > 0) {
+                $("redoEdition").setStyle("background-image", "url(../images/file_redo.png)");
+            } else {
+                $("redoEdition").setStyle("background-image", "url(../images/file_redo_dis.png)");
+            }
+
+        });
+
 
     },
 
     clear : function() {
         this._toolbarElems.forEach(function(elem) {
-            elem.hide();
-        });
-
-        this._colorPickers.forEach(function(elem) {
-            $clear(elem);
             elem.hide();
         });
     }

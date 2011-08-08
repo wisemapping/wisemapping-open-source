@@ -17,7 +17,8 @@
  */
 
 mindplot.widget.IconPanel = new Class({
-    Implements:[Options,Events],
+    Extends:mindplot.widget.ToolbarItem,
+    Implements:[Options],
     options:{
         width:253,
         initialWidth:0,
@@ -28,17 +29,14 @@ mindplot.widget.IconPanel = new Class({
     },
 
     initialize:function(buttonId, model) {
-        this._buttonId = buttonId;
-        this._model = model;
-
+        this.parent(buttonId, model);
         this.options.content = this._build();
         this.init();
-
     },
 
     init:function() {
         var panel = new Element('div');
-        var buttonElem = $(this._buttonId);
+        var buttonElem = this.getButtonElem();
 
         var coord = buttonElem.getCoordinates();
         var top = buttonElem.getTop() + coord.height + 2;
@@ -68,9 +66,7 @@ mindplot.widget.IconPanel = new Class({
     },
 
     show:function() {
-        this.fireEvent("show");
-        $(this._buttonId).className = 'buttonActive';
-
+        this.parent();
         if (this.options.state == 'close') {
             if (!$defined(this.options.panel)) {
                 this.init();
@@ -90,25 +86,25 @@ mindplot.widget.IconPanel = new Class({
     },
 
     hide:function() {
+        this.parent();
         if (this.options.state == 'open') {
             // Magic, disappear effect ;)
             this.options.panel.setStyles({border: '1px solid transparent', opacity:0});
             this.registerOpenPanel();
             this.options.state = 'close';
-            $(this._buttonId).className = 'button';
         }
     },
 
     registerOpenPanel:function() {
-        $(this._buttonId).removeEvents('click');
-        $(this._buttonId).addEvent('click', function() {
+        this.getButtonElem().removeEvents('click');
+        this.getButtonElem().addEvent('click', function() {
             this.show();
         }.bind(this));
     },
 
     registerClosePanel:function() {
-        $(this._buttonId).removeEvents('click');
-        $(this._buttonId).addEvent('click', function() {
+        this.getButtonElem().removeEvents('click');
+        this.getButtonElem().addEvent('click', function() {
             this.hide();
         }.bind(this));
     } ,
@@ -131,7 +127,7 @@ mindplot.widget.IconPanel = new Class({
                 img.src = mindplot.ImageIcon.prototype._getImageUrl(iconId);
 
                 img.addEvent('click', function() {
-                    this._model.setValue(img.id);
+                    this.getModel().setValue(img.id);
                 }.bind(this));
 
                 count = count + 1;

@@ -169,7 +169,7 @@ mindplot.IconGroup = new Class({
         this.options.nativeElem.addEventListener('dblclick', function(event) {
             // Avoid node creation ...
             if ($defined(event.stopPropagation)) {
-                event.stopPropagation(true);
+                event.stopPropagation();
             } else {
                 event.cancelBubble = true;
             }
