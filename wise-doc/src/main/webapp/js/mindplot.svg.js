@@ -2474,8 +2474,7 @@ mindplot.MindmapDesigner = new Class({
                 return topic.getShapeType() != mindplot.model.NodeModel.SHAPE_TYPE_LINE
             };
             var validateError = 'Color can not be setted to line topics.';
-            var validSelectedObjects = this._getValidSelectedObjectsIds(validateFunc, validateError);
-            ;
+            var validSelectedObjects = this._getValidSelectedObjectsIds(validateFunc, validateError);;
             var topicsIds = validSelectedObjects.nodes;
 
             if (topicsIds.length > 0) {

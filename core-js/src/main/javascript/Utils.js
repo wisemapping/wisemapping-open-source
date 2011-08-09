@@ -24,18 +24,6 @@ core.Utils =
     }
 };
 
-/*
- Function: $defined
- Returns true if the passed in value/object is defined, that means is not null or undefined.
-
- Arguments:
- obj - object to inspect
- */
-function $defined(obj) {
-    return (obj != undefined);
-}
-;
-
 /**
  * http://kevlindev.com/tutorials/javascript/inheritance/index.htm
  * A function used to extend one class with another
@@ -57,21 +45,6 @@ objects.extend = function(subClass, baseClass) {
     subClass.baseConstructor = baseClass;
     subClass.superClass = baseClass.prototype;
 };
-
-$assert = function(assert, message) {
-    if (!$defined(assert) || !assert) {
-        var stack;
-        try {
-            null.eval();
-        } catch(e) {
-            stack = e;
-        }
-        wLogger.error(message + "," + stack);
-//        core.Logger.logError(message + "," + stack);
-    }
-
-};
-
 
 Math.sign = function(value) {
     return (value >= 0) ? 1 : -1;

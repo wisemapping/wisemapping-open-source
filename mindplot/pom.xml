@@ -177,6 +177,8 @@
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="widget/ColorPickerPanel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
+                                              files="widget/ColorPalettePanel.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
                                               files="widget/IconPanel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="widget/ToolbarPanel.js"/>
@@ -236,7 +238,6 @@
                                         <include>DragTopic-min.js</include>
                                         <include>DragManager-min.js</include>
                                         <include>DragPivot-min.js</include>
-                                        <include>TopicBoard-min.js</include>
                                         <include>CentralTopicBoard-min.js</include>
                                         <include>MainTopicBoard-min.js</include>
                                         <include>ConnectionLine-min.js</include>
@@ -324,6 +325,7 @@
                             </aggregations>
                             <nomunge>true</nomunge>
                             <jswarn>false</jswarn>
+                            <force>true</force>
                         </configuration>
                     </execution>
                 </executions>

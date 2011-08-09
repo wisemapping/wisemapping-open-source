@@ -16,7 +16,7 @@
  *   limitations under the License.
  */
 
-mindplot.widget.ColorPicker = new Class({
+mindplot.widget.ColorPickerPanel = new Class({
     Extends: mindplot.widget.ToolbarItem,
     initialize : function(buttonId, model) {
         this.parent(buttonId, model);
@@ -29,7 +29,7 @@ mindplot.widget.ColorPicker = new Class({
             }.bind(this),
             onChange: function(color) {
                 this.getModel().setValue(color.hex);
-            },
+            }.bind(this),
             onComplete: function() {
                 this.hide();
             }.bind(this)

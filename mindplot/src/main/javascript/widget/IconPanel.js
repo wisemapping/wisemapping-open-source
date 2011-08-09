@@ -39,16 +39,17 @@ mindplot.widget.IconPanel = new Class({
         var buttonElem = this.getButtonElem();
 
         var coord = buttonElem.getCoordinates();
-        var top = buttonElem.getTop() + coord.height + 2;
-        var left = buttonElem.getLeft();
+        var top = buttonElem.getTop() + coord.height + 7;
+        var left = buttonElem.getLeft() - 6;
 
         panel.setStyles({
                 width:this.options.initialWidth,
-                height:0,position:'absolute',
+                height:0,
+                position:'absolute',
                 top:top,
                 left:left,
-                background:'#e5e5e5',
-                border:'1px solid #BBB4D6',
+                background:'#ffffff',
+                'border-color':'#CCC #666 #666 #CCC;',
                 zIndex:20,
                 overflow:'hidden'}
         );

@@ -20,6 +20,8 @@ mindplot.widget.Menu = new Class({
     initialize : function(designer, containerId) {
         $assert(designer, "designer can not be null");
         $assert(containerId, "containerId can not be null");
+        // @Todo: Remove hardcode ...
+        var baseUrl = "/mindplot/src/main/javascript/widget";
 
         // Init variables ...
         this._designer = designer;
@@ -29,18 +31,19 @@ mindplot.widget.Menu = new Class({
         // Stop event propagation ...
         $(this._containerId).addEvent('click', function(event) {
             event.stopPropagation();
+            return false;
         });
 
         $(this._containerId).addEvent('dblclick', function(event) {
             event.stopPropagation();
+            return false;
         });
 
         // Create panels ...
         var fontFamilyModel = {
             getValue: function() {
                 var nodes = designer.getSelectedNodes();
-                var length = nodes.length;
-                if (length == 1) {
+                if (nodes.length == 1) {
                     return nodes[0].getFontFamily();
                 }
             },
@@ -55,8 +58,7 @@ mindplot.widget.Menu = new Class({
         var fontSizeModel = {
             getValue: function() {
                 var nodes = designer.getSelectedNodes();
-                var length = nodes.length;
-                if (length == 1) {
+                if (nodes.length == 1) {
                     return nodes[0].getFontSize();
                 }
             },
@@ -69,8 +71,7 @@ mindplot.widget.Menu = new Class({
         var topicShapeModel = {
             getValue: function() {
                 var nodes = designer.getSelectedNodes();
-                var length = nodes.length;
-                if (length == 1) {
+                if (nodes.length == 1) {
                     return nodes[0].getShapeType();
                 }
             },
@@ -95,38 +96,47 @@ mindplot.widget.Menu = new Class({
         var topicColorModel =
         {
             getValue : function() {
+                var nodes = designer.getSelectedNodes();
+                if (nodes.length == 1) {
+                    return nodes[0].getBackgroundColor();
+                }
                 return null;
             },
             setValue : function (hex) {
                 designer.setBackColor2SelectedNode(hex);
             }
         };
-        this._toolbarElems.push(new mindplot.widget.ColorPicker('topicColor', topicColorModel));
+        this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('topicColor', topicColorModel, baseUrl));
 
         // Border color item ...
         var borderColorModel =
         {
             getValue : function() {
-                return null;
+                var nodes = designer.getSelectedNodes();
+                if (nodes.length == 1) {
+                    return nodes[0].getBorderColor();
+                }
             },
             setValue : function (hex) {
                 designer.setBorderColor2SelectedNode(hex);
             }
         };
-        this._toolbarElems.push(new mindplot.widget.ColorPicker('topicBorder', borderColorModel));
+        this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('topicBorder', borderColorModel, baseUrl));
 
         // Font color item ...
         var fontColorModel =
         {
             getValue : function() {
-                return null;
+                var nodes = designer.getSelectedNodes();
+                if (nodes.length == 1) {
+                    return nodes[0].getFontColor();
+                }
             },
             setValue : function (hex) {
                 designer.setFontColor2SelectedNode(hex);
             }
         };
-        var fontColorPicker = new mindplot.widget.ColorPicker('fontColor', fontColorModel);
-        this._toolbarElems.push(fontColorPicker);
+        this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('fontColor', fontColorModel, baseUrl));
 
         // Register on close events ...
         this._toolbarElems.forEach(function(elem) {
@@ -198,8 +208,6 @@ mindplot.widget.Menu = new Class({
             }
 
         });
-
-
     },
 
     clear : function() {

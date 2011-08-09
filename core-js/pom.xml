@@ -50,7 +50,7 @@
                                     <includes>
                                         <include>${basedir}/target/tmp/header-min.js</include>
                                         <include>${basedir}/target/tmp/ColorPicker-min.js</include>
-                                        <include>${basedir}/target/tmp/Loader-min.js</include>
+                                        <include>${basedir}/target/tmp/Functions-min.js</include>
                                         <include>${basedir}/target/tmp/log4js-min.js</include>
                                         <include>${basedir}/target/tmp/Monitor-min.js</include>
                                         <include>${basedir}/target/tmp/Point-min.js</include>
@@ -64,6 +64,7 @@
                             </aggregations>
                             <nomunge>true</nomunge>
                             <jswarn>false</jswarn>
+                            <force>true</force>
                         </configuration>
                     </execution>
                 </executions>

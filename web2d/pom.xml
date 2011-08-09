@@ -86,6 +86,7 @@
                             </aggregations>
                             <nomunge>true</nomunge>
                             <jswarn>false</jswarn>
+                            <force>true</force>
                         </configuration>
                     </execution>
                 </executions>
