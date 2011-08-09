@@ -22,14 +22,14 @@ mindplot.collaboration.frameworks.AbstractCollaborativeFramework = new Class({
             var node = mindmap.createNode(type,id);
             node.setText(branch.getText());
             mindmap.addBranch(node);
-        }.bind(this))
+        }.bind(this));
         return mindmap;
     },
     _buildInitialCollaborativeModel: function(){
         var mindmap = this._collaborativeModelFactory.buildMindMap();
-        this.addMindmap(mindmap);
         var centralTopic = mindmap.createNode(mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE);
-        mindmap.addBranch(centralTopic);
+        mindmap.addBranch(centralTopic, true);
+        this.addMindmap(mindmap);
         return mindmap;
     },
     addMindmap:function(model){},

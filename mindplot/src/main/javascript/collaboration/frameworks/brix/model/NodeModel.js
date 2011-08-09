@@ -46,14 +46,10 @@ mindplot.collaboration.frameworks.brix.model.NodeModel = new Class({
         model.put("type",this._type);
         model.put("id",this._id);
         model.put("text",this._type==mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE?"Central Topic":"Main Topic");
-        model.addListener("valueChanged",this._valueChangedListener.bind(this));
         return model;
     },
     getBrixModel:function(){
         return this._brixModel;
-    },
-    _valueChangedListener:function(event){
-        console.log("property: "+ event.getProperty()+" value: "+event.getNewValue());
     },
     clone  : function() {
         var result = new mindplot.model.NodeModel(this._type, this._mindmap);
@@ -110,10 +106,9 @@ mindplot.collaboration.frameworks.brix.model.NodeModel = new Class({
         return this._type;
     },
 
-    setText  : function(text,updateModel, callback) {
+    setText  : function(text,updateModel) {
         this.parent(text);
         if($defined(updateModel) && updateModel){
-            this._brixModel.addListener("valueChanged",callback);
             this._brixModel.put("text",text);
         }
     },
