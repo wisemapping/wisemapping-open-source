@@ -43,9 +43,16 @@ mindplot.widget.Menu = new Class({
         var fontFamilyModel = {
             getValue: function() {
                 var nodes = designer.getSelectedNodes();
-                if (nodes.length == 1) {
-                    return nodes[0].getFontFamily();
+                var result = null;
+                for (var i=0; i < nodes.length; i++) {
+                    var fontFamily = nodes[i].getFontFamily();
+                    if (result != null && result != fontFamily) {
+                        result = null;
+                        break;
+                    }
+                    result = fontFamily;
                 }
+                return result;
             },
 
             setValue: function(value) {
@@ -58,9 +65,16 @@ mindplot.widget.Menu = new Class({
         var fontSizeModel = {
             getValue: function() {
                 var nodes = designer.getSelectedNodes();
-                if (nodes.length == 1) {
-                    return nodes[0].getFontSize();
+                var result = null;
+                for (var i=0; i < nodes.length; i++) {
+                    var fontSize = nodes[i].getFontSize();
+                    if (result != null && result != fontSize) {
+                        result = null;
+                        break;
+                    }
+                    result = fontSize;
                 }
+                return result;
             },
             setValue: function(value) {
                 designer.setFontSize2SelectedNode(value);
@@ -71,9 +85,16 @@ mindplot.widget.Menu = new Class({
         var topicShapeModel = {
             getValue: function() {
                 var nodes = designer.getSelectedNodes();
-                if (nodes.length == 1) {
-                    return nodes[0].getShapeType();
+                var result = null;
+                for (var i=0; i < nodes.length; i++) {
+                    var shapeType = nodes[i].getShapeType();
+                    if (result != null && result != shapeType) {
+                        result = null;
+                        break;
+                    }
+                    result = shapeType;
                 }
+                return result;
             },
             setValue: function(value) {
                 designer.setShape2SelectedNode(value);
@@ -97,10 +118,16 @@ mindplot.widget.Menu = new Class({
         {
             getValue : function() {
                 var nodes = designer.getSelectedNodes();
-                if (nodes.length == 1) {
-                    return nodes[0].getBackgroundColor();
+                var result = null;
+                for (var i=0; i < nodes.length; i++) {
+                    var color = nodes[i].getBackgroundColor();
+                    if (result != null && result != color) {
+                        result = null;
+                        break;
+                    }
+                    result = color;
                 }
-                return null;
+                return result;
             },
             setValue : function (hex) {
                 designer.setBackColor2SelectedNode(hex);
@@ -113,9 +140,16 @@ mindplot.widget.Menu = new Class({
         {
             getValue : function() {
                 var nodes = designer.getSelectedNodes();
-                if (nodes.length == 1) {
-                    return nodes[0].getBorderColor();
+                var result = null;
+                for (var i=0; i < nodes.length; i++) {
+                    var color = nodes[i].getBorderColor();
+                    if (result != null && result != color) {
+                        result = null;
+                        break;
+                    }
+                    result = color;
                 }
+                return result;
             },
             setValue : function (hex) {
                 designer.setBorderColor2SelectedNode(hex);
@@ -127,10 +161,17 @@ mindplot.widget.Menu = new Class({
         var fontColorModel =
         {
             getValue : function() {
+                var result = null;
                 var nodes = designer.getSelectedNodes();
-                if (nodes.length == 1) {
-                    return nodes[0].getFontColor();
+                for (var i=0; i < nodes.length; i++) {
+                    var color = nodes[i].getFontColor();
+                    if (result != null && result != color) {
+                        result = null;
+                        break;
+                    }
+                    result = color;
                 }
+                return result;
             },
             setValue : function (hex) {
                 designer.setFontColor2SelectedNode(hex);

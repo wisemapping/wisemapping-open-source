@@ -101,7 +101,7 @@ mindplot.widget.ColorPalettePanel = new Class({
     },
 
     show : function() {
-       if (!this.isVisible()) {
+        if (!this.isVisible()) {
 
             this.parent();
             var panelElem = this._getPanelElem();
@@ -115,9 +115,10 @@ mindplot.widget.ColorPalettePanel = new Class({
             // Mark the cell as selected ...
             var colorCells = panelElem.getElements('div[class=palette-colorswatch]');
             var model = this.getModel();
+            var modelValue = model.getValue();
             colorCells.forEach(function(elem) {
                 var color = elem.getStyle("background-color");
-                if (model.getValue() == color) {
+                if (modelValue == color) {
                     elem.parentNode.className = 'palette-cell palette-cell-selected';
                 }
             });
