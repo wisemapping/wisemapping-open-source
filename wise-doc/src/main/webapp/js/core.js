@@ -849,11 +849,7 @@ try{null.eval()
 }};
 Math.sign=function(value){return(value>=0)?1:-1
 };
-function $import(src){var scriptElem=document.createElement("script");
-scriptElem.setAttribute("src",src);
-scriptElem.setAttribute("type","text/javascript");
-document.getElementsByTagName("head")[0].appendChild(scriptElem)
-}core.Utils.getMousePosition=function(event){var xcoord=-1;
+core.Utils.getMousePosition=function(event){var xcoord=-1;
 var ycoord=-1;
 if(!$defined(event)){if($defined(window.event)){event=window.event
 }else{throw"Could not obtain mouse position"

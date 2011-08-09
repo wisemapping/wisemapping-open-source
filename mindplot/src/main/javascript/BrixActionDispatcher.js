@@ -30,11 +30,7 @@ mindplot.BrixActionDispatcher = new Class({
             topicsIds = [topicsIds];
         }
         var topic = framework.getTopic(topicsIds[0]);
-        var callback = function(event, topic) {
-            topic.getBrixModel().removeListener("valueChanged", callback);
-            this._actionDispatcher.changeTextOnTopic(topic.getId(), event.getNewValue());
-        }.bindWithEvent(this, topic);
-        topic.setText(text, true, callback);
+        topic.setText(text, true);
     }
 });
 

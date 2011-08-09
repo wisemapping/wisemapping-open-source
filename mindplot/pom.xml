@@ -227,6 +227,9 @@
                                         <include>model/Mindmap-min.js</include>
                                         <include>model/NodeModel-min.js</include>
                                         <include>model/RelationshipModel-min.js</include>
+                                        <include>ActionDispatcher-min.js</include>
+                                        <include>BrixActionDispatcher-min.js</include>
+                                        <include>LocalActionDispatcher-min.js</include>
                                         <include>MindmapDesigner-min.js</include>
                                         <include>ScreenManager-min.js</include>
                                         <include>Workspace-min.js</include>
@@ -310,6 +313,13 @@
                                         <include>collaboration/frameworks/brix/BrixCollaborativeModelFactory-min.js
                                         </include>
                                         <include>collaboration/frameworks/brix/BrixFramework-min.js</include>
+
+                                        <include>widget/IconPanel-min.js</include>
+                                        <include>widget/ToolbarPanel-min.js</include>
+                                        <include>widget/FontFamilyPanel-min.js</include>
+                                        <include>widget/FontSizePanel-min.js</include>
+                                        <include>widget/TopicShapePanel-min.js</include>
+                                        <include>widget/Menu-min.js</include>
 
                                         <include>footer-min.js</include>
 
