@@ -159,7 +159,7 @@ mindplot.MindmapDesigner = new Class({
             var selectableObjects = this.getSelectedObjects();
 
             // Disable all nodes on focus but not the current if Ctrl key isn't being pressed
-            if (!$defined(event) || event.ctrlKey == false) {
+            if (!$defined(event) || (event.ctrlKey == false && event.metaKey == false)) {
                 selectableObjects.forEach(function(selectableObject) {
                     if (selectableObject.isOnFocus() && selectableObject != currentObject) {
                         selectableObject.setOnFocus(false);
@@ -333,7 +333,7 @@ mindplot.MindmapDesigner = new Class({
             this._actionRunner.markAsChangeBase();
         },
 
-        loadFromCollaborativeModel: function(collaborationManager){
+        loadFromCollaborativeModel: function(collaborationManager) {
             var mindmap = collaborationManager.buildWiseModel();
             this._loadMap(1, mindmap);
 
@@ -745,7 +745,7 @@ mindplot.MindmapDesigner = new Class({
                     dialog.adopt(msg).show();
 
                     // IE doesn't like too much this focus action...
-                    if (!core.UserAgent.isIE()) {
+                    if (!Browser.ie) {
                         urlInput.focus();
                     }
                 }

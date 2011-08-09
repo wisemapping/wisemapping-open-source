@@ -54,7 +54,6 @@
                                         <include>${basedir}/target/tmp/log4js-min.js</include>
                                         <include>${basedir}/target/tmp/Monitor-min.js</include>
                                         <include>${basedir}/target/tmp/Point-min.js</include>
-                                        <include>${basedir}/target/tmp/UserAgent-min.js</include>
                                         <include>${basedir}/target/tmp/Utils-min.js</include>
                                         <include>${basedir}/target/tmp/WaitDialog-min.js</include>
                                         <include>${basedir}/target/tmp/footer-min.js</include>
