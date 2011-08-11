@@ -171,7 +171,7 @@ mindplot.Workspace = new Class({
                         workspace.setCoordOrigin(coordOriginX, coordOriginY);
 
                         // Change cursor.
-                        if (core.UserAgent.isMozillaFamily()) {
+                        if (Browser.firefox) {
                             window.document.body.style.cursor = "-moz-grabbing";
                         } else {
                             window.document.body.style.cursor = "move";

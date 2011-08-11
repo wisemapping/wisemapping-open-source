@@ -98,7 +98,7 @@ TestCase("Mindplot test",{
 
 var fireNativeEvent = function(type, target, position){
     var event;
-    if(core.UserAgent.isIE()){
+    if(Browser.ie){
         event = document.createEventObject();
         event.screenX = position.x;
         event.screenY = position.y;
