@@ -32,20 +32,47 @@ mindplot.collaboration.frameworks.brix.model.NodeModel = new Class({
         }else{
             var text = this._brixModel.get("text");
             this.setText(text, false);
+            var position = this._brixModel.get("position");
+            this.setPosition(position.get("x"),position.get("y"), false);
+            var children = this._brixModel.get("children");
+            for(var i=0; i<children.size(); i++){
+                var bChild = children.get(i);
+                var child= new mindplot.collaboration.frameworks.brix.model.NodeModel(bChild, this._brixFramework, null, mindmap);
+                this._appendChild(child, false);
+            }
         }
         this._addBrixListeners();
     },
     _addBrixListeners:function(){
         this._brixModel.addListener("valueChanged", this._valuechangeListener.bindWithEvent(this));
+        this._brixModel.get("children").addListener("valuesAdded", this._childAddedListener.bindWithEvent(this));
     },
     _valuechangeListener:function(event){
         this._brixFramework.getActionDispatcher().changeTextOnTopic(this.getId(),event.getNewValue());
+    },
+    _childAddedListener:function(event){
+        var newValue = event.getValues().get(0);
+        var cmodel = new mindplot.collaboration.frameworks.brix.model.NodeModel(newValue,this._brixFramework, null, this.getMindmap());
+        this._appendChild(cmodel, false);
+
+        var model = new mindplot.model.NodeModel(newValue.get("type"),designer.getMindmap(), newValue.get("id"));
+        var position = newValue.get("position");
+        var x = position.get("x");
+        var y = position.get("y");
+        model.setPosition(x, y);
+        this._brixFramework.getActionDispatcher().addTopic(model, this.getId(), true);
     },
     _createBrixModel:function(){
         var model = this._brixFramework.getBrixModel().create("Map");
         model.put("type",this._type);
         model.put("id",this._id);
         model.put("text",this._type==mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE?"Central Topic":"Main Topic");
+        var position = this._brixFramework.getBrixModel().create("Map");
+        position.put("x",0);
+        position.put("y",0);
+        model.put("position",position);
+        var children = this._brixFramework.getBrixModel().create("List");
+        model.put("children", children);
         return model;
     },
     getBrixModel:function(){
@@ -174,10 +201,11 @@ mindplot.collaboration.frameworks.brix.model.NodeModel = new Class({
         this._icons.pop();
     },
 
-    _appendChild  : function(child) {
-        $assert(child && child.isNodeModel(), 'Only NodeModel can be appended to Mindmap object');
-        this._children.push(child);
-        child._parent = this;
+    _appendChild  : function(child, updateModel) {
+        this.parent(child);
+        if(!$defined(updateModel) || ($defined(updateModel) && updateModel)){
+            this.getBrixModel().get("children").add(child.getBrixModel());
+        }
     },
 
     _removeChild  : function(child) {
@@ -186,19 +214,13 @@ mindplot.collaboration.frameworks.brix.model.NodeModel = new Class({
         child._parent = null;
     },
 
-    setPosition  : function(x, y) {
-        $assert(x, "x coordinate must be defined");
-        $assert(y, "y coordinate must be defined");
-
-        if (!$defined(this._position)) {
-            this._position = new core.Point();
+    setPosition  : function(x, y, updateModel) {
+        this.parent(x,y);
+        if(!$defined(updateModel) || ($defined(updateModel) && updateModel)){
+            var position = this.getBrixModel().get("position");
+            position.put("x",this._position.x);
+            position.put("y",this._position.y);
         }
-        this._position.x = parseInt(x);
-        this._position.y = parseInt(y);
-    },
-
-    getPosition  : function() {
-        return this._position;
     },
 
     setFinalPosition  : function(x, y) {
@@ -316,12 +338,6 @@ mindplot.collaboration.frameworks.brix.model.NodeModel = new Class({
         }
         return result;
 
-    },
-
-    connectTo  : function(parent) {
-        var mindmap = this.getMindmap();
-        mindmap.connect(parent, this);
-        this._parent = parent;
     },
 
     disconnect  : function() {

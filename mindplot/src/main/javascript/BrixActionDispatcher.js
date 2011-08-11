@@ -31,6 +31,16 @@ mindplot.BrixActionDispatcher = new Class({
         }
         var topic = framework.getTopic(topicsIds[0]);
         topic.setText(text, true);
+    },
+
+    addTopic:function(model, parentTopicId, animated) {
+        var framework = mindplot.collaboration.CollaborationManager.getInstance().getCollaborativeFramework();
+        var mindmap = framework.getModel();
+        var centralTopic = mindmap.getCentralTopic();
+        var newNode = mindmap.createNode(model.getType(), model.getId());
+        var position = model.getPosition();
+        newNode.setPosition(position.x, position.y);
+        newNode.connectTo(centralTopic);
     }
 });
 

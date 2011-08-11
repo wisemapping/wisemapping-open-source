@@ -27,7 +27,7 @@ mindplot.collaboration.frameworks.brix.model.Mindmap = new Class({
                 var branches = this._brixModel.get("branches");
                 for(var i=0; i<branches.size(); i++){
                     var node = branches.get(i);
-                    var nodeModel = new mindplot.collaboration.frameworks.brix.model.NodeModel(node, this._brixFramework);
+                    var nodeModel = new mindplot.collaboration.frameworks.brix.model.NodeModel(node, this._brixFramework, null, this);
                     this.addBranch(nodeModel, false);
                 }
             }
