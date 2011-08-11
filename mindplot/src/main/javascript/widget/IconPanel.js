@@ -37,13 +37,16 @@ mindplot.widget.IconPanel = new Class({
                 }
 
                 var iconId = familyIcons[j];
-                var img = new Element('img').setStyles({width:16,height:16,padding:"0px 2px"}).inject(familyContent);
-                img.id = iconId;
-                img.src = mindplot.ImageIcon.prototype._getImageUrl(iconId);
+                var img = new Element('img', {
+                    id:iconId,
+                    src:mindplot.ImageIcon.prototype._getImageUrl(iconId)
+                });
+                img.setStyles({width:16,height:16,padding:"0px 2px"}).inject(familyContent);
 
+                var model = this.getModel();
                 img.addEvent('click', function() {
-                    this.getModel().setValue(img.id);
-                }.bind(this));
+                    model.setValue(this.id);
+                }.bind(img));
 
                 count = count + 1;
             }
