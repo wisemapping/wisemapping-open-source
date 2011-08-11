@@ -169,7 +169,7 @@
                 <legend>
                     <spring:message code="TOPIC"/>
                 </legend>
-                <div id="topicShape" class="button comboButton" title="<spring:message code="TOPIC_SHAPE"/>">
+                <div id="topicShape" class="button" title="<spring:message code="TOPIC_SHAPE"/>">
                     <div class="toolbarLabel"><p><spring:message code="SHAPE"/></p></div>
                 </div>
                 <div id="addTopic" class="button" title="<spring:message code="TOPIC_ADD"/>">
@@ -178,16 +178,16 @@
                 <div id="deleteTopic" class="button" title="<spring:message code="TOPIC_DELETE"/>">
                     <div class="toolbarLabel"><p><spring:message code="DELETE"/></p></div>
                 </div>
-                <div id="topicBorder" class="button comboButton" title="<spring:message code="TOPIC_BORDER_COLOR"/>">
+                <div id="topicBorder" class="button" title="<spring:message code="TOPIC_BORDER_COLOR"/>">
                     <div class="toolbarLabel"><p><spring:message code="BORDER"/></p></div>
                 </div>
-                <div id="topicColor" class="button comboButton" title="<spring:message code="TOPIC_BACKGROUND_COLOR"/>">
+                <div id="topicColor" class="button" title="<spring:message code="TOPIC_BACKGROUND_COLOR"/>">
                     <div class="toolbarLabel"><p><spring:message code="COLOR"/></p></div>
                 </div>
-                <div id="topicIcon" class="button comboButton" title="<spring:message code="TOPIC_ICON"/>">
+                <div id="topicIcon" class="button" title="<spring:message code="TOPIC_ICON"/>">
                     <div class="toolbarLabel"><p><spring:message code="ICON"/></p></div>
                 </div>
-                <div id="topicNote" class="button comboButton" title="<spring:message code="TOPIC_NOTE"/>">
+                <div id="topicNote" class="button" title="<spring:message code="TOPIC_NOTE"/>">
                     <div class="toolbarLabel"><p><spring:message code="NOTE"/></p></div>
                 </div>
                 <div id="topicLink" class="button" title="<spring:message code="TOPIC_LINK"/>">
@@ -203,10 +203,10 @@
                 <legend>
                     <spring:message code="FONT"/>
                 </legend>
-                <div id="fontFamily" class="button comboButton" title="<spring:message code="FONT_TYPE"/>">
+                <div id="fontFamily" class="button" title="<spring:message code="FONT_TYPE"/>">
                     <div class="toolbarLabel"><p><spring:message code="TYPE"/></p></div>
                 </div>
-                <div id="fontSize" class="button comboButton" title="<spring:message code="FONT_SIZE"/>">
+                <div id="fontSize" class="button" title="<spring:message code="FONT_SIZE"/>">
                     <div class="toolbarLabel"><p><spring:message code="SIZE"/></p></div>
                 </div>
                 <div id="fontBold" class="button" title="<spring:message code="FONT_BOLD"/>">
@@ -215,7 +215,7 @@
                 <div id="fontItalic" class="button" title="<spring:message code="FONT_ITALIC"/>">
                     <div class="toolbarLabel"><p><spring:message code="ITALIC"/></p></div>
                 </div>
-                <div id="fontColor" class="button comboButton" title="<spring:message code="FONT_COLOR"/>">
+                <div id="fontColor" class="button" title="<spring:message code="FONT_COLOR"/>">
                     <div class="toolbarLabel"><p><spring:message code="COLOR"/></p></div>
                 </div>
             </fieldset>

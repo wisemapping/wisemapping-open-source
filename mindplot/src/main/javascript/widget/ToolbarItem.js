@@ -23,7 +23,31 @@ mindplot.widget.ToolbarItem = new Class({
         $assert(model, "model can not be null");
         this._model = model;
         this._buttonId = buttonId;
+        this._panelId = this._init().id;
     },
+
+    _init:function () {
+        // Load the context of the panel ...
+        var panelElem = this.buildPanel();
+        var buttonElem = this.getButtonElem();
+
+        // Add panel content ..
+        panelElem.setStyle('display', 'none');
+        panelElem.inject(buttonElem);
+
+        // Add events for button click ...
+        this.getButtonElem().addEvent('click', function() {
+            // Is the panel being displayed ?
+            if (this.isVisible()) {
+                this.hide();
+            } else {
+                this.show();
+            }
+
+        }.bind(this));
+
+        return panelElem;
+   },
 
     getModel : function() {
         return this._model;
@@ -31,19 +55,36 @@ mindplot.widget.ToolbarItem = new Class({
 
     getButtonElem : function() {
         var elem = $(this._buttonId);
-        $assert(elem,"Could not find element for " + this._buttonId);
+        $assert(elem, "Could not find element for " + this._buttonId);
         return elem;
     }.protect(),
 
-    show : function() {
-        this.fireEvent('show');
+    getPanelElem : function() {
+        return $(this._panelId);
+    }.protect(),
 
-        // Mark the button as active...
-        this.getButtonElem().className = 'buttonActive';
+    show : function() {
+        if (!this.isVisible()) {
+            this.fireEvent('show');
+            this.getButtonElem().className = 'buttonActive';
+            this.getPanelElem().setStyle('display', 'block');
+        }
     },
 
     hide : function() {
-        this.fireEvent('hide');
-        this.getButtonElem().className = 'button';
-    }
+        if (this.isVisible()) {
+            this.getButtonElem().className = 'button';
+            this.getPanelElem().setStyle('display', 'none');
+            this.fireEvent('hide');
+        }
+    },
+
+    isVisible : function() {
+        return this.getPanelElem().getStyle('display') == 'block';
+    },
+
+    buildPanel : function() {
+        throw "Method must be implemented";
+    }.protect()
+
 });

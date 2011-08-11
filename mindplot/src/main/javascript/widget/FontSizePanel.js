@@ -17,7 +17,7 @@
  */
 
 mindplot.widget.FontSizePanel = new Class({
-    Extends : mindplot.widget.ToolbarPanel,
+    Extends : mindplot.widget.ListToolbarPanel,
     initialize : function(buttonId, model) {
         this.parent(buttonId, model);
     },

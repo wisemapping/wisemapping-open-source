@@ -164,10 +164,6 @@ div#toolbar .button {
     user-select: none;
 }
 
-div#toolbar .comboButton {
-    width: 34px;
-}
-
 div#toolbar .button:hover {
     width: 32px;
     height: 36px;
@@ -198,10 +194,6 @@ div#toolbar .buttonActive {
     -moz-user-select: none;
     -o-user-select: none;
     user-select: none;
-}
-
-div#toolbar .comboButton:hover {
-    width: 34px;
 }
 
 div#toolbar .button img {
@@ -242,27 +234,11 @@ div#node {
 }
 
 div#font {
-    left: 532px; /*left:581px;*/
-}
-
-div#share {
-    left: 874px; /*left:777px;*/
+    left: 522px; /*left:581px;*/
 }
 
 div#saveButton {
     background: url(../images/save.png) no-repeat center top;
-}
-
-div#discardButton {
-    background: url(../images/close.png) no-repeat center top;
-}
-
-div#history {
-    background: url(../images/history.png) no-repeat center top;
-}
-
-div#print {
-    background: url(../images/file_printer.png) no-repeat center top;
 }
 
 div#undoEdition {
@@ -441,69 +417,6 @@ div.toolbarPanelLinkSelectedLink {
     padding: 0 3px 0 4px;
     margin: 1px;
     background-color: #c3def5;
-}
-
-div#actionsContainer {
-    position: absolute;
-    z-index: 50;
-    top: 35px;
-    width: 190px;
-    right: 0;
-    margin: 10px;
-    float: left;
-}
-
-#actionsContainer .button {
-    float: right;
-    font-size: 12px;
-    font-weight: bold;
-    white-space: nowrap;
-    color: #ffffff;
-    cursor: pointer;
-    margin: 2px;
-    z-index: 4;
-}
-
-#actionsContainer .button:hover {
-    color: blue;
-}
-
-#actionsContainer .mainButton {
-    float: right;
-    font-size: 12px;
-    font-weight: bold;
-    white-space: nowrap;
-    color: #ffffff;
-    cursor: pointer;
-    margin: 2px;
-    z-index: 4;
-}
-
-#actionsContainer a {
-    text-decoration: none;
-}
-
-#actionsContainer .buttonStart {
-    width: 6px;
-    height: 25px;
-    background: url(../images/btnStart2.png) no-repeat left top;
-    float: left;
-}
-
-#actionsContainer .buttonBody {
-    background: url(../images/btnBody2.png);
-    float: left;
-    height: 18px;
-    padding: 5px 5px 0;
-    text-align: center;
-    color: black;
-}
-
-#actionsContainer .buttonEnd {
-    width: 7px;
-    height: 23px;
-    background: url(../images/btnEnd2.png) no-repeat right top;
-    float: left;
 }
 
 /* ------------- Footer Styles -------------------------*/

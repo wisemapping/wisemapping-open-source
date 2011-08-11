@@ -160,10 +160,6 @@ div#toolbar .button {
     text-align: center;
 }
 
-div#toolbar .comboButton {
-    width: 34px;
-}
-
 div#toolbar .button:hover {
     width: 32px;
     height: 36px;
@@ -173,10 +169,6 @@ div#toolbar .button:hover {
     border: 1px solid black;
     border-top-color: white;
     border-left-color: white;
-}
-
-div#toolbar .comboButton:hover {
-    width: 34px;
 }
 
 div#toolbar .button img {

@@ -179,9 +179,7 @@
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="widget/ColorPalettePanel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="widget/IconPanel.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="widget/ToolbarPanel.js"/>
+                                              files="widget/ListToolbarPanel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="widget/FontFamilyPanel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
@@ -189,7 +187,10 @@
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="widget/TopicShapePanel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
+                                              files="widget/IconPanel.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
                                               files="widget/Menu.js"/>
+
                                     <filelist dir="${basedir}/src/main/javascript/" files="footer.js"/>
                                 </concat>
 

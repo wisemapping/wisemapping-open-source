@@ -16,27 +16,16 @@
  *   limitations under the License.
  */
 
-mindplot.widget.ToolbarPanel = new Class({
+mindplot.widget.ListToolbarPanel = new Class({
     Extends: mindplot.widget.ToolbarItem,
     initialize : function(buttonId, model) {
         this.parent(buttonId, model);
-        this._panelId = this.initPanel();
+        this._initPanel();
     },
 
-    buildPanel : function() {
-        throw "Method must be implemented";
-    }.protect(),
-
-    initPanel: function () {
-        var panelElem = this.buildPanel();
-        var buttonElem = this.getButtonElem();
-
-        // Add panel content ..
-        panelElem.setStyle('display', 'none');
-        panelElem.inject(buttonElem);
-
+    _initPanel: function () {
         // Register on toolbar elements ...
-        var menuElems = panelElem.getElements('div');
+        var menuElems = this.getPanelElem().getElements('div');
         menuElems.forEach(function(elem) {
             elem.addEvent('click', function(event) {
                 var value = $defined(elem.getAttribute('model')) ? elem.getAttribute('model') : elem.id;
@@ -45,24 +34,11 @@ mindplot.widget.ToolbarPanel = new Class({
                 this.hide();
             }.bind(this));
         }.bind(this));
-
-        // Font family event handling ....
-        buttonElem.addEvent('click', function(event) {
-
-            // Is the panel being displayed ?
-            if (this.isVisible()) {
-                this.hide();
-            } else {
-                this.show();
-            }
-        }.bind(this));
-        return panelElem.id;
     },
 
     show : function() {
         if (!this.isVisible()) {
-            this.parent();
-            var menuElems = $(this._panelId).getElements('div');
+            var menuElems = this.getPanelElem().getElements('div');
             var value = this.getModel().getValue();
             menuElems.forEach(function(elem) {
                 var elemValue = $defined(elem.getAttribute('model')) ? elem.getAttribute('model') : elem.id;
@@ -71,18 +47,8 @@ mindplot.widget.ToolbarPanel = new Class({
                 else
                     elem.className = "toolbarPanelLink";
             });
-            $(this._panelId).setStyle('display', 'block');
-        }
-    },
 
-    hide : function() {
-        if (this.isVisible()) {
             this.parent();
-            $(this._panelId).setStyle('display', 'none');
-        }
-    },
-
-    isVisible : function() {
-        return $(this._panelId).getStyle('display') == 'block';
+      }
     }
 });

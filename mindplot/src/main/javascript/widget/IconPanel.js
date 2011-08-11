@@ -17,101 +17,15 @@
  */
 
 mindplot.widget.IconPanel = new Class({
-    Extends:mindplot.widget.ToolbarItem,
-    Implements:[Options],
-    options:{
-        width:253,
-        initialWidth:0,
-        height:200,
-        panel:null,
-        onStart:Class.empty,
-        state:'close'
-    },
-
-    initialize:function(buttonId, model) {
+    Extends: mindplot.widget.ToolbarItem,
+    initialize : function(buttonId, model) {
         this.parent(buttonId, model);
-        this.options.content = this._build();
-        this.init();
     },
 
-    init:function() {
-        var panel = new Element('div');
-        var buttonElem = this.getButtonElem();
+    buildPanel: function() {
+        var content = new Element('div', {'class':'toolbarPanel','id':'IconsPanel'});
+        content.setStyles({width:253,height:200,padding:5});
 
-        var coord = buttonElem.getCoordinates();
-        var top = buttonElem.getTop() + coord.height + 7;
-        var left = buttonElem.getLeft() - 6;
-
-        panel.setStyles({
-                width:this.options.initialWidth,
-                height:0,
-                position:'absolute',
-                top:top,
-                left:left,
-                background:'#ffffff',
-                'border-color':'#CCC #666 #666 #CCC;',
-                zIndex:20,
-                overflow:'hidden'}
-        );
-
-        this.options.panel = panel;
-        this.options.content.inject(panel);
-
-        this.options.content.addEvent('click', function() {
-            this.hide();
-        }.bind(this));
-
-        panel.setStyle('opacity', 0);
-        panel.inject($(document.body));
-        this.registerOpenPanel();
-    },
-
-    show:function() {
-        this.parent();
-        if (this.options.state == 'close') {
-            if (!$defined(this.options.panel)) {
-                this.init();
-            }
-
-            var panel = this.options.panel;
-            panel.setStyles({
-                border: '1px solid #636163',
-                opacity:100,
-                height:this.options.height,
-                width:this.options.width
-            });
-            this.fireEvent('onStart');
-            this.registerClosePanel();
-            this.options.state = 'open';
-        }
-    },
-
-    hide:function() {
-        this.parent();
-        if (this.options.state == 'open') {
-            // Magic, disappear effect ;)
-            this.options.panel.setStyles({border: '1px solid transparent', opacity:0});
-            this.registerOpenPanel();
-            this.options.state = 'close';
-        }
-    },
-
-    registerOpenPanel:function() {
-        this.getButtonElem().removeEvents('click');
-        this.getButtonElem().addEvent('click', function() {
-            this.show();
-        }.bind(this));
-    },
-
-    registerClosePanel:function() {
-        this.getButtonElem().removeEvents('click');
-        this.getButtonElem().addEvent('click', function() {
-            this.hide();
-        }.bind(this));
-    } ,
-
-    _build : function() {
-        var content = new Element('div').setStyles({width:253,height:200,padding:5});
         var count = 0;
         for (var i = 0; i < mindplot.ImageIcon.prototype.ICON_FAMILIES.length; i = i + 1) {
             var familyIcons = mindplot.ImageIcon.prototype.ICON_FAMILIES[i].icons;
@@ -136,5 +50,4 @@ mindplot.widget.IconPanel = new Class({
         }
         return content;
     }
-
 });
