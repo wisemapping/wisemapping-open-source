@@ -63,7 +63,6 @@ mindplot.Topic = new Class({
             innerShape = this.getInnerShape();
 
             //Let's register all the events. The first one is the default one. The others will be copied.
-            //this._registerDefaultListenersToElement(innerShape, this);
             var dispatcher = dispatcherByEventType['mousedown'];
 
             if ($defined(dispatcher)) {
@@ -416,7 +415,7 @@ mindplot.Topic = new Class({
             }
         }
 
-        // Positionate node ...
+        // Position node ...
         this._offset = this.getOffset();
         var iconOffset = this.getIconOffset();
         result.setPosition(iconOffset + this._offset, this._offset / 2);
@@ -664,9 +663,6 @@ mindplot.Topic = new Class({
 
         // Register listeners ...
         this._registerDefaultListenersToElement(group, this);
-//    this._registerDefaultListenersToElement(innerShape, this);
-//    this._registerDefaultListenersToElement(textShape, this);
-
     },
 
     _registerDefaultListenersToElement : function(elem, topic) {
@@ -1051,12 +1047,12 @@ mindplot.Topic = new Class({
         targetTopic._appendChild(this);
         this._parent = targetTopic;
 
-// Update model ...
+        // Update model ...
         var targetModel = targetTopic.getModel();
         var childModel = this.getModel();
         childModel.connectTo(targetModel);
 
-// Update topic position based on the state ...
+        // Update topic position based on the state ...
         mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeConnectEvent, [targetTopic, this]);
 
         // Create a connection line ...

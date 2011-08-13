@@ -20,6 +20,7 @@ mindplot.DragManager = function(workspace)
 {
     this._workspace = workspace;
     this._listeners = {};
+
 };
 
 mindplot.DragManager.prototype.add = function(node)
@@ -43,11 +44,11 @@ mindplot.DragManager.prototype.add = function(node)
 
             // Register mouse move listener ...
             var mouseMoveListener = dragManager._buildMouseMoveListener(workspace, dragNode, dragManager);
-            screen.addEventListener('mousemove', mouseMoveListener);
+            screen.addEvent('mousemove', mouseMoveListener);
 
             // Register mouse up listeners ...
             var mouseUpListener = dragManager._buildMouseUpListener(workspace, node, dragNode, dragManager);
-            screen.addEventListener('mouseup', mouseUpListener);
+            screen.addEvent('mouseup', mouseUpListener);
 
             // Execute Listeners ..
             var startDragListener = dragManager._listeners['startdragging'];
@@ -57,8 +58,6 @@ mindplot.DragManager.prototype.add = function(node)
             window.document.body.style.cursor = 'move';
         }
     };
-    dragManager._mouseDownListener = mouseDownListener;
-
     node.addEventListener('mousedown', mouseDownListener);
 };
 
@@ -102,7 +101,8 @@ mindplot.DragManager.prototype._buildMouseMoveListener = function(workspace, dra
         }
 
         event.preventDefault();
-    }.bindWithEvent(this);
+
+    }.bind(this);
     dragManager._mouseMoveListener = result;
     return result;
 };
@@ -122,8 +122,8 @@ mindplot.DragManager.prototype._buildMouseUpListener = function(workspace, node,
         }
 
         // Remove all the events.
-        screen.removeEventListener('mousemove', dragManager._mouseMoveListener);
-        screen.removeEventListener('mouseup', dragManager._mouseUpListener);
+        screen.removeEvent('mousemove', dragManager._mouseMoveListener);
+        screen.removeEvent('mouseup', dragManager._mouseUpListener);
 
         // Help GC
         dragManager._mouseMoveListener = null;
@@ -158,5 +158,3 @@ mindplot.DragManager.prototype. addEventListener = function(type, listener)
 {
     this._listeners[type] = listener;
 };
-
-mindplot.DragManager.DRAG_PRECISION_IN_SEG = 100;

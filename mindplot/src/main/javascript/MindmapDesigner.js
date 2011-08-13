@@ -24,8 +24,8 @@ mindplot.MindmapDesigner = new Class({
 
             // Dispatcher manager ...
             var commandContext = new mindplot.CommandContext(this);
-            this._actionDispatcher = new mindplot.BrixActionDispatcher(commandContext);
-//            this._actionDispatcher = new mindplot.LocalActionDispatcher(commandContext);
+//            this._actionDispatcher = new mindplot.BrixActionDispatcher(commandContext);
+            this._actionDispatcher = new mindplot.LocalActionDispatcher(commandContext);
 
             this._actionDispatcher.addEvent("modelUpdate", function(event) {
                 this._fireEvent("modelUpdate", event);
@@ -39,7 +39,6 @@ mindplot.MindmapDesigner = new Class({
 
             // Init Screen manager..
             var screenManager = new mindplot.ScreenManager(profile.width, profile.height, divElement);
-
             this._workspace = new mindplot.Workspace(profile, screenManager, this._zoom);
 
             //create editor
@@ -77,35 +76,37 @@ mindplot.MindmapDesigner = new Class({
         },
 
         _registerEvents : function() {
-            var mindmapDesigner = this;
             var workspace = this._workspace;
             var screenManager = workspace.getScreenManager();
 
             if (!$defined(this._viewMode) || ($defined(this._viewMode) && !this._viewMode)) {
                 // Initialize workspace event listeners.
-                // Create nodes on double click...
-                screenManager.addEventListener('click', function(event) {
-                    if (workspace.isWorkspaceEventsEnabled()) {
-                        mindmapDesigner.getEditor().isVisible();
-                        mindmapDesigner.getEditor().lostFocus();
-                        // @todo: Puaj hack...
-                        mindmapDesigner._cleanScreen();
-                    }
-                });
+                screenManager.addEvent('drag', function(event) {
+                    // Clean some selected nodes on envet ..
+                    this.getEditor().lostFocus();
+                    this._cleanScreen();
+                }.bind(this));
 
-                screenManager.addEventListener('dblclick', function(event) {
+                // Deselect on click ...
+                // @Todo: Arreglar en el screen manager que si hay drag, no hay click...
+                screenManager.addEvent('click', function(event) {
+                    this.onObjectFocusEvent(null, event);
+                }.bind(this));
+
+                // Create nodes on double click...
+                screenManager.addEvent('dblclick', function(event) {
                     if (workspace.isWorkspaceEventsEnabled()) {
-                        mindmapDesigner.getEditor().lostFocus();
+                        this.getEditor().lostFocus();
                         // Get mouse position
                         var pos = screenManager.getWorkspaceMousePosition(event);
 
                         // Create a new topic model ...
-                        var mindmap = mindmapDesigner.getMindmap();
+                        var mindmap = this.getMindmap();
                         var model = mindmap.createNode(mindplot.model.NodeModel.MAIN_TOPIC_TYPE);
                         model.setPosition(pos.x, pos.y);
 
                         // Get central topic ...
-                        var centralTopic = mindmapDesigner.getCentralTopic();
+                        var centralTopic = this.getCentralTopic();
                         var centralTopicId = centralTopic.getId();
 
                         // Execute action ...
@@ -159,7 +160,7 @@ mindplot.MindmapDesigner = new Class({
             var selectableObjects = this.getSelectedObjects();
 
             // Disable all nodes on focus but not the current if Ctrl key isn't being pressed
-            if (!$defined(event) || (event.ctrlKey == false && event.metaKey == false)) {
+            if (!$defined(event) || (!event.ctrlKey && !event.metaKey)) {
                 selectableObjects.forEach(function(selectableObject) {
                     if (selectableObject.isOnFocus() && selectableObject != currentObject) {
                         selectableObject.setOnFocus(false);
@@ -262,8 +263,9 @@ mindplot.MindmapDesigner = new Class({
                 this._creatingRelationship = true;
                 this._relationshipMouseMoveFunction = this._relationshipMouseMove.bindWithEvent(this);
                 this._relationshipMouseClickFunction = this._relationshipMouseClick.bindWithEvent(this, selectedTopics[0]);
-                this._workspace.getScreenManager().addEventListener('mousemove', this._relationshipMouseMoveFunction);
-                this._workspace.getScreenManager().addEventListener('click', this._relationshipMouseClickFunction);
+
+                screen.addEvent('mousemove', this._relationshipMouseMoveFunction);
+                screen.addEvent('click', this._relationshipMouseClickFunction);
             }
         },
 
@@ -287,8 +289,8 @@ mindplot.MindmapDesigner = new Class({
             }
             this._workspace.removeChild(this._relationship);
             this._relationship = null;
-            this._workspace.getScreenManager().removeEventListener('mousemove', this._relationshipMouseMoveFunction);
-            this._workspace.getScreenManager().removeEventListener('click', this._relationshipMouseClickFunction);
+            this._workspace.getScreenManager().removeEvent('mousemove', this._relationshipMouseMoveFunction);
+            this._workspace.getScreenManager().removeEvent('click', this._relationshipMouseClickFunction);
             this._creatingRelationship = false;
             this._workspace.enableWorkspaceEvents(true);
             event.preventDefault();
@@ -894,6 +896,8 @@ mindplot.MindmapDesigner = new Class({
                                                 this._goToChild(node);
                                             }
                                         }
+                                    } else {
+                                        this._goToNode(this._topics[0]);
                                     }
                                     break;
                                 case 'left':
@@ -911,6 +915,8 @@ mindplot.MindmapDesigner = new Class({
                                                 this._goToChild(node);
                                             }
                                         }
+                                    } else {
+                                        this._goToNode(this._topics[0]);
                                     }
                                     break;
                                 case'up':
@@ -920,6 +926,8 @@ mindplot.MindmapDesigner = new Class({
                                         if (node.getTopicType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
                                             this._goToBrother(node, 'UP');
                                         }
+                                    } else {
+                                        this._goToNode(this._topics[0]);
                                     }
                                     break;
                                 case 'down':
@@ -929,6 +937,8 @@ mindplot.MindmapDesigner = new Class({
                                         if (node.getTopicType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
                                             this._goToBrother(node, 'DOWN');
                                         }
+                                    } else {
+                                        this._goToNode(this._topics[0]);
                                     }
                                     break;
                                 case 'f2':

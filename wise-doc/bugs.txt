@@ -1,4 +1,4 @@
-- Select and unselect de un nodo.
-- metaKey for mac
-- Si todos los nodos tienen las mismas propiedades, las opciones deberian aparecer marcadas.
 - Ver de que algunos de los colores de las paleta sean los utilizados.
+- Que el click del workspace unseleccione los nodos.
+- Resize de la ventana ajuste el workspace
+- Fixiar metodo de drag del workspace...

@@ -21,6 +21,10 @@ mindplot.ScreenManager = new Class({
         $assert(divElement, "can not be null");
         this._divContainer = divElement;
         this._offset = {x:0,y:0};
+
+        // Ignore default click event propagation. Prevent 'click' event on drad.
+        this._clickEvents = [];
+        this._divContainer.addEvent('click',function(event){event.stopPropagation()});
     },
 
     setScale : function(scale) {
@@ -28,12 +32,30 @@ mindplot.ScreenManager = new Class({
         this._workspaceScale = scale;
     },
 
-    addEventListener : function(event, listener) {
-        $(this._divContainer).addEvent(event, listener);
+    addEvent : function(event, listener) {
+        if (event == 'click')
+            this._clickEvents.push(listener);
+        else
+            $(this._divContainer).addEvent(event, listener);
     },
 
-    removeEventListener : function(event, listener) {
-        $(this._divContainer).removeEvent(event, listener);
+    removeEvent : function(event, listener) {
+        if (event == 'click')
+            this._clickEvents.remove(listener);
+        else
+            $(this._divContainer).removeEvent(event, listener);
+    },
+
+    fireEvent : function(type, event) {
+        if (type == 'click') {
+            this._clickEvents.forEach(function(listener)
+            {
+               listener(type,event);
+            });
+        }
+        else {
+            $(this._divContainer).fireEvent(type, event);
+        }
     },
 
     getWorkspaceElementPosition : function(e) {
@@ -94,7 +116,7 @@ mindplot.ScreenManager = new Class({
     },
 
     getWorkspaceMousePosition : function(e) {
-        // Retrive current mouse position.
+        // Retrieve current mouse position.
         var mousePosition = this._getMousePosition(e);
         var x = mousePosition.x;
         var y = mousePosition.y;

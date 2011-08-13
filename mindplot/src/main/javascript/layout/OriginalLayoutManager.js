@@ -124,8 +124,11 @@ mindplot.layout.OriginalLayoutManager = new Class({
     registerListenersOnNode : function(topic) {
         // Register node listeners ...
         var designer = this.getDesigner();
-        topic.addEventListener('onfocus', function(event) {
+        topic.addEventListener('click', function(event) {
             designer.onObjectFocusEvent(topic, event);
+
+            // Prevent click on the topics being propagated ...
+            event.stopPropagation();
         });
 
         // Add drag behaviour ...

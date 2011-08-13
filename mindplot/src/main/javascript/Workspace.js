@@ -142,23 +142,25 @@ mindplot.Workspace = new Class({
     },
 
     dumpNativeChart: function() {
-        var workspace = this._workspace;
-        return workspace.dumpNativeChart();
+        return this._workspace.dumpNativeChart();
     },
+
     _registerDragEvents: function() {
         var workspace = this._workspace;
         var screenManager = this._screenManager;
-        this._dragging = true;
         var mWorkspace = this;
         var mouseDownListener = function(event) {
-            if (!$defined(workspace.mouseMoveListener)) {
-                if (mWorkspace.isWorkspaceEventsEnabled()) {
+            if (!$defined(workspace._mouseMoveListener))
+            {
+                if (mWorkspace.isWorkspaceEventsEnabled())
+                {
                     mWorkspace.enableWorkspaceEvents(false);
 
                     var mouseDownPosition = screenManager.getWorkspaceMousePosition(event);
                     var originalCoordOrigin = workspace.getCoordOrigin();
 
-                    workspace.mouseMoveListener = function(event) {
+                    var wasDragged = false;
+                    workspace._mouseMoveListener = function(event) {
 
                         var currentMousePosition = screenManager.getWorkspaceMousePosition(event);
 
@@ -177,30 +179,41 @@ mindplot.Workspace = new Class({
                             window.document.body.style.cursor = "move";
                         }
                         event.preventDefault();
-                    }.bindWithEvent(this);
-                    screenManager.addEventListener('mousemove', workspace.mouseMoveListener);
+
+                        // Fire drag event ...
+                        screenManager.fireEvent('drag',new Event());
+                        wasDragged = true;
+
+                        
+                    }.bind(this);
+                    screenManager.addEvent('mousemove', workspace._mouseMoveListener);
 
                     // Register mouse up listeners ...
-                    workspace.mouseUpListener = function(event) {
+                    workspace._mouseUpListener = function(event) {
 
-                        screenManager.removeEventListener('mousemove', workspace.mouseMoveListener);
-                        screenManager.removeEventListener('mouseup', workspace.mouseUpListener);
-                        workspace.mouseUpListener = null;
-                        workspace.mouseMoveListener = null;
+                        screenManager.removeEvent('mousemove', workspace._mouseMoveListener);
+                        screenManager.removeEvent('mouseup', workspace._mouseUpListener);
+                        workspace._mouseUpListener = null;
+                        workspace._mouseMoveListener = null;
                         window.document.body.style.cursor = 'default';
 
                         // Update screen manager offset.
                         var coordOrigin = workspace.getCoordOrigin();
                         screenManager.setOffset(coordOrigin.x, coordOrigin.y);
                         mWorkspace.enableWorkspaceEvents(true);
-                    },
-                        screenManager.addEventListener('mouseup', workspace.mouseUpListener);
+
+                        if(!wasDragged)
+                        {
+                            screenManager.fireEvent('click',new Event());
+                        }
+                    };
+                    screenManager.addEvent('mouseup', workspace._mouseUpListener);
                 }
             } else {
-                workspace.mouseUpListener();
+                workspace._mouseUpListener();
             }
         };
-        screenManager.addEventListener('mousedown', mouseDownListener);
+        screenManager.addEvent('mousedown', mouseDownListener);
     }
 });
 
