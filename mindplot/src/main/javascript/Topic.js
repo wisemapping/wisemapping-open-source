@@ -35,6 +35,16 @@ mindplot.Topic = new Class({
         if (pos != null && model.getType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
             this.setPosition(pos);
         }
+
+        this.registerEvents();
+    },
+
+    registerEvents:function () {
+
+        // Prevent click on the topics being propagated ...
+        this.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
     },
 
     setShapeType : function(type) {

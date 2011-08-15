@@ -126,9 +126,6 @@ mindplot.layout.OriginalLayoutManager = new Class({
         var designer = this.getDesigner();
         topic.addEventListener('click', function(event) {
             designer.onObjectFocusEvent(topic, event);
-
-            // Prevent click on the topics being propagated ...
-            event.stopPropagation();
         });
 
         // Add drag behaviour ...

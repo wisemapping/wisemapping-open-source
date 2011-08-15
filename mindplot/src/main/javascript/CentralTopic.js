@@ -21,6 +21,18 @@ mindplot.CentralTopic = new Class({
     Extends:mindplot.Topic,
     initialize: function(model) {
         this.parent(model);
+        this.registerEvents();
+    },
+
+    registerEvents : function() {
+        // Prevent click on the topics being propagated ...
+        this.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+
+        this.addEventListener('mousedown', function(event) {
+            event.stopPropagation();
+        });
     },
 
     workoutIncomingConnectionPoint : function(sourcePosition) {

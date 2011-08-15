@@ -38,7 +38,7 @@ mindplot.NodeGraph = new Class({
     },
 
     get2DElement : function() {
-        $assert(this._elem2d, 'NodeGraph has not been initialized propertly');
+        $assert(this._elem2d, 'NodeGraph has not been initialized properly');
         return this._elem2d;
     },
 
@@ -52,10 +52,6 @@ mindplot.NodeGraph = new Class({
     addEventListener : function(type, listener) {
         var elem = this.get2DElement();
         elem.addEventListener(type, listener);
-    },
-
-    isNodeGraph : function() {
-        return true;
     },
 
     setMouseEventsEnabled : function(isEnabled) {
