@@ -81,7 +81,7 @@ mindplot.LinkIcon = new Class({
         attribution.inject(element);
         element.inject(container);
 
-        if (!$defined(designer._viewMode) || ($defined(designer._viewMode) && !designer._viewMode)) {
+        if (!$defined(designer._readOnly) || ($defined(designer._readOnly) && !designer._readOnly)) {
             var buttonContainer = new Element('div').setStyles({paddingTop:5, textAlign:'center'});
             var editBtn = new Element('input', {type:'button', 'class':'btn-primary', value:'Edit'}).addClass('button').inject(buttonContainer);
             var removeBtn = new Element('input', {type:'button', value:'Remove','class':'btn-primary'}).addClass('button').inject(buttonContainer);

@@ -22,6 +22,8 @@ mindplot.NodeGraph = new Class({
         this._mouseEvents = true;
         this.setModel(nodeModel);
         this._onFocus = false;
+        this._textEditor = new mindplot.TextEditor(this);
+
     },
 
     getType : function() {
@@ -93,11 +95,13 @@ mindplot.NodeGraph = new Class({
 
         } else {
             // @todo: node must not know about the topic.
-
             outerShape.setFill(mindplot.Topic.OUTER_SHAPE_ATTRIBUTES.fillColor);
             outerShape.setOpacity(0);
         }
         this.setCursor('move');
+
+        // In any case, always try to hide the editor ...
+        this._textEditor.close();
     },
 
     isOnFocus : function() {

@@ -64,7 +64,7 @@ mindplot.layout.FreeMindLayoutManager = mindplot.layout.BaseLayoutManager.extend
         }
 
          // Register editor events ...
-        if (!$defined(this.getDesigner()._viewMode)|| ($defined(this.getDesigner()._viewMode) && !this.getDesigner()._viewMode))
+        if (!$defined(this.getDesigner()._readOnly)|| ($defined(this.getDesigner()._readOnly) && !this.getDesigner()._readOnly))
         {
             this.getDesigner()._editor.listenEventOnNode(topic, 'dblclick', true);
         }

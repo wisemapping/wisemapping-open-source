@@ -183,9 +183,6 @@ mindplot.model.NodeModel = new Class({
     },
 
     setPosition  : function(x, y) {
-        $assert(x, "x coordinate must be defined");
-        $assert(y, "y coordinate must be defined");
-
         if (!$defined(this._position)) {
             this._position = new core.Point();
         }

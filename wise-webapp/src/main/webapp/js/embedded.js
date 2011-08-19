@@ -62,7 +62,7 @@ function buildMindmapDesigner() {
     // body margin ...
     editorProperties.width = screenWidth;
     editorProperties.height = screenHeight;
-    editorProperties.viewMode = true;
+    editorProperties.readOnly = true;
 
     designer = new mindplot.MindmapDesigner(editorProperties, container);
     designer.loadFromXML(mapId, mapXml);

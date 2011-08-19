@@ -21,15 +21,12 @@ mindplot.CentralTopic = new Class({
     Extends:mindplot.Topic,
     initialize: function(model) {
         this.parent(model);
-        this.registerEvents();
     },
 
-    registerEvents : function() {
-        // Prevent click on the topics being propagated ...
-        this.addEventListener('click', function(event) {
-            event.stopPropagation();
-        });
+    _registerEvents : function() {
+        this.parent();
 
+        // This disable the drag of the central topic. But solves the problem of deselecting the nodes when the screen is clicked.
         this.addEventListener('mousedown', function(event) {
             event.stopPropagation();
         });

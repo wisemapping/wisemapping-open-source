@@ -17,209 +17,176 @@
  */
 
 mindplot.TextEditor = new Class({
-    initialize:function(designer) {
-        this._designer = designer;
-        this._screenManager = designer.getWorkSpace().getScreenManager();
-        this._container = this._screenManager.getContainer();
-        this._isVisible = false;
-
-        //Create editor ui
-        this._createUI();
-
-        this._addListeners();
-
+    initialize:function(topic) {
+        this._topic = topic;
     },
 
-    _createUI:function() {
+    _buildEditor : function() {
+
         this._size = {width:500, height:100};
-        this._myOverlay = new Element('div').setStyles({position:"absolute", display: "none", zIndex: "8", top: 0, left:0, width:"500px", height:"100px"});
-        var inputContainer = new Element('div').setStyles({border:"none", overflow:"auto"}).inject(this._myOverlay);
-        this.inputText = new Element('input').setProperties({type:"text", tabindex:'-1', id:"inputText", value:""}).setStyles({border:"none", background:"transparent"}).inject(inputContainer);
-        var spanContainer = new Element('div').setStyle('visibility', "hidden").inject(this._myOverlay);
-        this._spanText = new Element('span').setProperties({id: "spanText", tabindex:"-1"}).setStyle('white-space', "nowrap").setStyle('nowrap', 'nowrap').inject(spanContainer);
-        this._myOverlay.inject(this._container);
+        var result = new Element('div');
+        result.setStyles({
+                position:"absolute",
+                display: "none",
+                zIndex: "8",
+                top: 0,
+                left:0,
+                width:"500px",
+                height:"100px"}
+        );
+
+        var inputContainer = new Element('div');
+        inputContainer.setStyles({
+            border:"none",
+            overflow:"auto"});
+        inputContainer.inject(result);
+
+        var inputText = new Element('input', {type:"text",tabindex:'-1', value:""});
+        inputText.setStyles({
+            border:"none",
+            background:"transparent"
+        });
+        inputText.inject(inputContainer);
+
+        var spanContainer = new Element('div');
+        spanContainer.setStyle('visibility', "hidden");
+        spanContainer.inject(result);
+
+        var spanElem = new Element('span', {tabindex:"-1"});
+        spanElem.setStyle('white-space', "nowrap");
+        spanElem.setStyle('nowrap', 'nowrap');
+        spanElem.inject(spanContainer);
+
+        return result;
     },
 
-    _addListeners:function() {
-        var elem = this;
-        this.applyChanges = true;
-        this.inputText.onkeyup = function (evt) {
-            var event = new Event(evt);
-            var key = event.key;
-            switch (key) {
-                case 'esc':
-                    elem.applyChanges = false;
-                case 'enter':
-                    var executor = function(editor) {
-                        return function() {
-                            elem.lostFocus(true);
-                            $(document.documentElement).fireEvent('focus');
-                        };
-                    };
-                    setTimeout(executor(this), 3);
+    _registerEvents : function(divElem) {
+        var inputElem = this._getInputElem();
+        var spanElem = this._getSpanElem();
 
+        divElem.addEvent('keydown', function (event) {
+            switch (event.key) {
+                case 'esc':
+                    this.close(false);
+                    break;
+                case 'enter':
+                    this.close(true);
                     break;
                 default:
-                    var span = $('spanText');
-                    var input = $('inputText');
-                    span.innerHTML = input.value;
-                    var size = input.value.length + 1;
-                    input.size = size;
-                    if (span.offsetWidth > (parseInt(elem._myOverlay.style.width) - 100)) {
-                        elem._myOverlay.style.width = (span.offsetWidth + 100) + "px";
+                    spanElem.innerHTML = inputElem.value;
+                    var size = inputElem.value.length + 1;
+                    inputElem.size = size;
+                    if (spanElem.offsetWidth > (parseInt(divElem.style.width) - 100)) {
+                        divElem.style.width = (spanElem.offsetWidth + 100) + "px";
                     }
                     break;
             }
-        };
-        //Register onLostFocus/onBlur event
-        $(this.inputText).addEvent('blur', this.lostFocusEvent.bind(this));
-        $(this._myOverlay).addEvent('click', this.clickEvent.bindWithEvent(this));
-        $(this._myOverlay).addEvent('dblclick', this.clickEvent.bindWithEvent(this));
-        $(this._myOverlay).addEvent('mousedown', this.mouseDownEvent.bindWithEvent(this));
+            event.stopPropagation();
+        }.bind(this));
 
-        var elem = this;
-        var onComplete = function() {
-            this._myOverlay.setStyle('display', "none");
-            this._isVisible = false;
-            this.inputText.setStyle('opacity', 1);
-
-            this.setPosition(0, 0);
-            if (elem._currentNode != null) {
-                this._currentNode.getTextShape().setVisibility(true);
-                if (this.applyChanges) {
-                    this._updateNode();
-                }
-                this.applyChanges = true;
-                this._currentNode = null;
-            }
-
-            setTimeout("$('ffoxWorkarroundInput').focus();", 0);
-        };
-        this.fx = new Fx.Tween(this.inputText, {property: 'opacity', duration: 10});
-        this.fx.addEvent('onComplete', onComplete.bind(this));
-    },
-
-    lostFocusEvent : function () {
-        this.fx.options.duration = 10;
-        this.fx.start(1, 0);
-        //myAnim.animate();
+        // If the user clicks on the input, all event must be ignored ...
+        divElem.addEvent('click', function(event) {
+            event.stopPropagation();
+        });
+        divElem.addEvent('dblclick', function(event) {
+            event.stopPropagation();
+        });
+        divElem.addEvent('mousedown', function(event) {
+            event.stopPropagation();
+        });
     },
 
     isVisible : function () {
-        return this._isVisible;
+        return $defined(this._divElem) && this._divElem.getStyle('display') == 'block';
     },
 
-    getFocusEvent: function (node) {
-        //console.log('focus event');
-        if (this.isVisible()) {
-            this.getFocusEvent.delay(10, this);
-        }
-        else {
-            //console.log('calling init');
-            this.init(node);
-        }
-        //console.log('focus event done');
-    },
+    _updateModel : function () {
 
-    setInitialText : function (text) {
-        this.initialText = text;
-    },
-
-    _updateNode : function () {
-
-        if ($defined(this._currentNode) && this._currentNode.getText() != this.getText()) {
-            var text = this.getText();
-            var topicId = this._currentNode.getId();
+        if (this._topic.getText() != this._getText()) {
+            var text = this._getText();
+            var topicId = this._topic.getId();
 
             var actionDispatcher = mindplot.ActionDispatcher.getInstance();
             actionDispatcher.changeTextOnTopic([topicId], text);
         }
     },
 
-    listenEventOnNode : function(topic, eventName, stopPropagation) {
-        var elem = this;
-        topic.addEventListener(eventName, function (event) {
-            if (elem._designer.getWorkSpace().isWorkspaceEventsEnabled()) {
-                mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMouseOutEvent, [topic ]);
-                elem.lostFocus();
-                elem.getFocusEvent.attempt(topic, elem);
+    show : function (text) {
 
-                if (stopPropagation) {
-                    if ($defined(event.stopPropagation)) {
-                        event.stopPropagation(true);
-                    } else {
-                        event.cancelBubble = true;
-                    }
-                }
-            }
-        });
+        if (!this.isVisible()) {
+            //Create editor ui
+            var editorElem = this._buildEditor();
+            // @Todo: What element associate ?
+            editorElem.inject($('mindplot'));
+
+            this._divElem = editorElem;
+            this._registerEvents(editorElem);
+            this._showEditor(text);
+        }
     },
 
-    init : function (nodeGraph) {
-        //console.log('init method');
-        nodeGraph.getTextShape().setVisibility(false);
-        this._currentNode = nodeGraph;
+    _showEditor : function (defaultText) {
 
-        //set Editor Style
-        var nodeText = nodeGraph.getTextShape();
-        var text;
-        var selectText = true;
-        if (this.initialText && this.initialText != "") {
-            text = this.initialText;
-            this.initialText = null;
-            selectText = false;
-        }
-        else
-            text = nodeText.getText();
+        var topic = this._topic;
 
+        // Hide topic text ...
+        topic.getTextShape().setVisibility(false);
+
+        // Set Editor Style
+        var nodeText = topic.getTextShape();
         var font = nodeText.getFont();
         font.size = nodeText.getHtmlFontSize();
         font.color = nodeText.getColor();
+        this._setStyle(font);
 
-        this.setStyle(font);
+        // Set editor's initial text
+        var text = $defined(defaultText) ? defaultText : topic.getText();
+        this._setText(text);
 
-        //set editor's initial text
-        this.setText(text);
+        // Set editor's initial size
+        var displayFunc = function() {
+            var textShape = topic.getTextShape();
+            var scale = web2d.peer.utils.TransformUtil.workoutScale(textShape._peer);
 
-        //set editor's initial size
-        var editor = this;
-        var executor = function(editor) {
-            return function() {
-                //console.log('setting editor in init thread');
-                var scale = web2d.peer.utils.TransformUtil.workoutScale(editor._currentNode.getTextShape()._peer);
-                var elemSize = editor._currentNode.getSize();
-                //var textSize = editor.getSize();
-                var pos = editor._screenManager.getWorkspaceElementPosition(editor._currentNode);
+            var screenPosition = mindplot.util.Converter.topicToScreenPosition(topic);
+            var textWidth = textShape.getWidth();
+            var textHeight = textShape.getHeight();
+            var iconGroup = topic.getIconGroup();
+            var iconGroupSize;
 
-                var textWidth = editor._currentNode.getTextShape().getWidth();
-                var textHeight = editor._currentNode.getTextShape().getHeight();
-                var iconGroup = editor._currentNode.getIconGroup();
-                var iconGroupSize;
-                if ($defined(iconGroup)) {
-                    iconGroupSize = editor._currentNode.getIconGroup().getSize();
-                }
-                else {
-                    iconGroupSize = {width:0, height:0};
-                }
-                var position = {x:0,y:0};
-                position.x = pos.x - ((textWidth * scale.width) / 2) + (((iconGroupSize.width) * scale.width) / 2);
-                var fixError = 1;
-                position.y = pos.y - ((textHeight * scale.height) / 2) - fixError;
+            if ($defined(iconGroup)) {
+                iconGroupSize = topic.getIconGroup().getSize();
+            }
+            else {
+                iconGroupSize = {width:0, height:0};
+            }
 
-                editor.setEditorSize(elemSize.width, elemSize.height, scale);
-                //console.log('setting position:'+pos.x+';'+pos.y);
-                editor.setPosition(position.x, position.y, scale);
-                editor.showTextEditor(selectText);
-                //console.log('setting editor done');
-            };
-        };
+            var position = {x:0,y:0};
+            position.x = screenPosition.x - ((textWidth * scale.width) / 2) + (((iconGroupSize.width) * scale.width) / 2);
+            var fixError = 1;
+            position.y = screenPosition.y - ((textHeight * scale.height) / 2) - fixError;
 
-        setTimeout(executor(this), 10);
+            var elemSize = topic.getSize();
+
+            // Position the editor and set the size...
+            this._setEditorSize(elemSize.width, elemSize.height, scale);
+            this._setPosition(position.x, position.y, scale);
+
+            // Make the editor visible ....
+            this._divElem.setStyle('display', 'block');
+
+            var inputElem = this._getInputElem();
+            inputElem.focus();
+            this._changeCursor(inputElem, $defined(defaultText));
+
+        }.bind(this);
+
+        displayFunc.delay(10);
     },
 
-    setStyle : function (fontStyle) {
-        var inputField = $("inputText");
-        var spanField = $("spanText");
+    _setStyle : function (fontStyle) {
+        var inputField = this._getInputElem();
+        var spanField = this._getSpanElem();
         if (!$defined(fontStyle.font)) {
             fontStyle.font = "Arial";
         }
@@ -243,58 +210,48 @@ mindplot.TextEditor = new Class({
         spanField.style.fontSize = fontStyle.size + "px";
     },
 
-    setText : function(text) {
-        var inputField = $("inputText");
+    _setText : function(text) {
+        var inputField = this._getInputElem();
         inputField.size = text.length + 1;
-        //this._myOverlay.cfg.setProperty("width", (inputField.size * parseInt(inputField.style.fontSize) + 100) + "px");
-        this._myOverlay.style.width = (inputField.size * parseInt(inputField.style.fontSize) + 100) + "px";
-        var spanField = $("spanText");
+        this._divElem.style.width = (inputField.size * parseInt(inputField.style.fontSize) + 100) + "px";
+        var spanField = this._getSpanElem();
         spanField.innerHTML = text;
         inputField.value = text;
     },
 
-    getText : function() {
-        return $('inputText').value;
+    _getText : function() {
+        return this._getInputElem().value;
     },
 
-    setEditorSize : function (width, height, scale) {
-        //var scale = web2d.peer.utils.TransformUtil.workoutScale(this._currentNode.getTextShape()._peer);
+    _getInputElem : function() {
+        return this._divElem.getElement('input');
+    },
+
+    _getSpanElem : function() {
+        return this._divElem.getElement('span');
+    },
+
+    _setEditorSize : function (width, height, scale) {
         this._size = {width:width * scale.width, height:height * scale.height};
-        //this._myOverlay.cfg.setProperty("width",this._size.width*2+"px");
-        this._myOverlay.style.width = this._size.width * 2 + "px";
-        //this._myOverlay.cfg.setProperty("height",this._size.height+"px");
-        this._myOverlay.style.height = this._size.height + "px";
+        this._divElem.style.width = this._size.width * 2 + "px";
+        this._divElem.style.height = this._size.height + "px";
     },
 
-    getSize : function () {
-        return {width:$("spanText").offsetWidth,height:$("spanText").offsetHeight};
+    _setPosition : function (x, y) {
+        $(this._divElem).setStyles({top : y + "px", left: x + "px"});
     },
 
-    setPosition : function (x, y, scale) {
-        $(this._myOverlay).setStyles({top : y + "px", left: x + "px"});
-        //this._myOverlay.style.left = x + "px";
+    _showTextElem : function(selectText) {
+
     },
 
-    showTextEditor : function(selectText) {
-        //this._myOverlay.show();
-        //var myAnim = new YAHOO.util.Anim('inputText',{opacity: {to:1}}, 0.10, YAHOO.util.Easing.easeOut);
-        //$('inputText').style.opacity='1';
-        var elem = this;
-        //myAnim.onComplete.subscribe(function(){
-        //elem._myOverlay.show();
-        elem._myOverlay.setStyle('display', "block");
-        this._isVisible = true;
-        //elem.cfg.setProperty("visible", false);
-        //elem._myOverlay.cfg.setProperty("xy", [0, 0]);
-        //elem._myOverlay.cfg.setProperty("visible", true);
-        //select the text in the input
-        $('inputText').disabled = false;
-
-        if ($('inputText').createTextRange) //ie
+    _changeCursor : function(inputElem, selectText) {
+        // Select text if it's required ...
+        if (inputElem.createTextRange) //ie
         {
-            var range = $('inputText').createTextRange();
-            var pos = $('inputText').value.length;
-            if (selectText) {
+            var range = inputElem.createTextRange();
+            var pos = inputElem.value.length;
+            if (!selectText) {
                 range.select();
                 range.move("character", pos);
             }
@@ -303,53 +260,26 @@ mindplot.TextEditor = new Class({
                 range.select();
             }
         }
-        else if (selectText) {
-            $('inputText').setSelectionRange(0, $('inputText').value.length);
-        }
-
-        var executor = function(editor) {
-            return function() {
-                try {
-                    $('inputText').focus();
-                }
-                catch (e) {
-
-                }
-            };
-        };
-        setTimeout(executor(this), 0);
-        //});
-        //myAnim.animate();
-
-    },
-
-    lostFocus : function(bothBrowsers) {
-        if (this.isVisible()) {
-            //the editor is opened in another node. lets Finish it.
-            var fireOnThis = $('inputText');
-            fireOnThis.fireEvent('blur');
+        else if (!selectText) {
+            inputElem.setSelectionRange(0, inputElem.value.length);
         }
     },
-    clickEvent : function(event) {
+
+    close : function(update) {
         if (this.isVisible()) {
-            if ($defined(event.stopPropagation)) {
-                event.stopPropagation(true);
-            } else {
-                event.cancelBubble = true;
+
+            // Update changes ...
+            if (!$defined(update) || update) {
+                this._updateModel();
             }
-            event.preventDefault();
-        }
 
-    },
-    mouseDownEvent : function(event) {
-        if (this.isVisible()) {
-            if ($defined(event.stopPropagation)) {
-                event.stopPropagation(true);
-            } else {
-                event.cancelBubble = true;
-            }
+            // Let make the visible text in the node visible again ...
+            this._topic.getTextShape().setVisibility(true);
+
+            // Remove it form the screen ...
+            this._divElem.dispose();
+            this._divElem = null;
         }
     }
-
 });
 

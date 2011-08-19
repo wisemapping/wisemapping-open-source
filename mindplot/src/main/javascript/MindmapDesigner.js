@@ -35,24 +35,79 @@ mindplot.MindmapDesigner = new Class({
 
             // Initial Zoom
             this._zoom = profile.zoom;
-            this._viewMode = profile.viewMode;
 
             // Init Screen manager..
             var screenManager = new mindplot.ScreenManager(profile.width, profile.height, divElement);
             this._workspace = new mindplot.Workspace(profile, screenManager, this._zoom);
-
-            //create editor
-            var editorClass = mindplot.TextEditorFactory.getTextEditorFromName(mindplot.EditorOptions.textEditor);
-            this._editor = new editorClass(this, this._actionRunner);
+            this._readOnly = profile.readOnly;
 
             // Init layout managers ...
             this._topics = [];
             this._layoutManager = new mindplot.layout.OriginalLayoutManager(this);
 
             // Register handlers..
-            this._registerEvents();
             this._relationships = {};
             this._events = {};
+
+            // Register events
+            if (!profile.readOnly) {
+                this._registerEvents();
+            }
+
+        },
+
+        _registerEvents : function() {
+            // Register mouse events ...
+            this._registerMouseEvents();
+
+            // Register keyboard events ...
+            var keyboard = new mindplot.DesignerKeyboard(this);
+            keyboard.activate();
+
+            // To prevent the user from leaving the page with changes ...
+            window.addEvent('beforeunload', function () {
+                if (this.needsSave()) {
+                    this.save(null, false)
+                }
+            }.bind(this));
+        },
+
+        _registerMouseEvents : function() {
+            var workspace = this._workspace;
+            var screenManager = workspace.getScreenManager();
+
+            // Initialize workspace event listeners.
+            screenManager.addEvent('drag', function(event) {
+                // Clean some selected nodes on event ..
+                this._cleanScreen();
+
+
+            }.bind(this));
+
+            // Deselect on click ...
+            screenManager.addEvent('click', function(event) {
+                this.onObjectFocusEvent(null, event);
+            }.bind(this));
+
+            // Create nodes on double click...
+            screenManager.addEvent('dblclick', function(event) {
+                if (workspace.isWorkspaceEventsEnabled()) {
+                    // Get mouse position
+                    var pos = screenManager.getWorkspaceMousePosition(event);
+
+                    // Create a new topic model ...
+                    var mindmap = this.getMindmap();
+                    var model = mindmap.createNode(mindplot.model.NodeModel.MAIN_TOPIC_TYPE);
+                    model.setPosition(pos.x, pos.y);
+
+                    // Get central topic ...
+                    var centralTopic = this.getCentralTopic();
+                    var centralTopicId = centralTopic.getId();
+
+                    // Execute action ...
+                    this._actionDispatcher.addTopic(model, centralTopicId, true);
+                }
+            }.bind(this));
         },
 
         _getTopics : function() {
@@ -75,46 +130,6 @@ mindplot.MindmapDesigner = new Class({
             }
         },
 
-        _registerEvents : function() {
-            var workspace = this._workspace;
-            var screenManager = workspace.getScreenManager();
-
-            if (!$defined(this._viewMode) || ($defined(this._viewMode) && !this._viewMode)) {
-                // Initialize workspace event listeners.
-                screenManager.addEvent('drag', function(event) {
-                    // Clean some selected nodes on envet ..
-                    this.getEditor().lostFocus();
-                    this._cleanScreen();
-                }.bind(this));
-
-                // Deselect on click ...
-                // @Todo: Arreglar en el screen manager que si hay drag, no hay click...
-                screenManager.addEvent('click', function(event) {
-                    this.onObjectFocusEvent(null, event);
-                }.bind(this));
-
-                // Create nodes on double click...
-                screenManager.addEvent('dblclick', function(event) {
-                    if (workspace.isWorkspaceEventsEnabled()) {
-                        this.getEditor().lostFocus();
-                        // Get mouse position
-                        var pos = screenManager.getWorkspaceMousePosition(event);
-
-                        // Create a new topic model ...
-                        var mindmap = this.getMindmap();
-                        var model = mindmap.createNode(mindplot.model.NodeModel.MAIN_TOPIC_TYPE);
-                        model.setPosition(pos.x, pos.y);
-
-                        // Get central topic ...
-                        var centralTopic = this.getCentralTopic();
-                        var centralTopicId = centralTopic.getId();
-
-                        // Execute action ...
-                        this._actionDispatcher.addTopic(model, centralTopicId, true);
-                    }
-                }.bind(this));
-            }
-        },
 
         _buildNodeGraph : function(model) {
             var workspace = this._workspace;
@@ -153,17 +168,17 @@ mindplot.MindmapDesigner = new Class({
             }
 
             return  topic;
-        },
+        }
+        ,
 
         onObjectFocusEvent : function(currentObject, event) {
-            this.getEditor().lostFocus();
-            var selectableObjects = this.getSelectedObjects();
+            var objects = this.getObjects();
 
             // Disable all nodes on focus but not the current if Ctrl key isn't being pressed
             if (!$defined(event) || (!event.ctrlKey && !event.metaKey)) {
-                selectableObjects.forEach(function(selectableObject) {
-                    if (selectableObject.isOnFocus() && selectableObject != currentObject) {
-                        selectableObject.setOnFocus(false);
+                objects.forEach(function(object) {
+                    if (object.isOnFocus() && object != currentObject) {
+                        object.setOnFocus(false);
                     }
                 });
             }
@@ -181,6 +196,20 @@ mindplot.MindmapDesigner = new Class({
 
         },
 
+        selectAll : function() {
+            var objects = this.getObjects();
+            objects.forEach(function(object) {
+                object.setOnFocus(true);
+            });
+        },
+
+        deselectAll : function() {
+            var objects = this.getObjects();
+            objects.forEach(function(object) {
+                object.setOnFocus(false);
+            });
+        },
+
         zoomIn : function() {
             var scale = this._zoom / 1.2;
             if (scale >= 0.3) {
@@ -190,11 +219,12 @@ mindplot.MindmapDesigner = new Class({
             else {
                 core.Monitor.getInstance().logMessage('Sorry, no more zoom can be applied. \n Why do you need more?');
             }
-        },
+        }
+        ,
 
         createChildForSelectedNode : function() {
 
-            var nodes = this._getSelectedNodes();
+            var nodes = this.getSelectedNodes();
             if (nodes.length <= 0) {
                 // If there are more than one node selected,
                 core.Monitor.getInstance().logMessage('Could not create a topic. Only one node must be selected.');
@@ -216,10 +246,11 @@ mindplot.MindmapDesigner = new Class({
             // Execute event ...
             this._actionDispatcher.addTopic(childModel, parentTopicId, true);
 
-        },
+        }
+        ,
 
         createSiblingForSelectedNode : function() {
-            var nodes = this._getSelectedNodes();
+            var nodes = this.getSelectedNodes();
             if (nodes.length <= 0) {
                 // If there are more than one node selected,
                 core.Monitor.getInstance().logMessage('Could not create a topic. Only one node must be selected.');
@@ -244,7 +275,8 @@ mindplot.MindmapDesigner = new Class({
 
                 this._actionDispatcher.addTopic(siblingModel, parentTopicId, true);
             }
-        },
+        }
+        ,
 
         addRelationShip2SelectedNode : function(event) {
             var screen = this._workspace.getScreenManager();
@@ -267,7 +299,8 @@ mindplot.MindmapDesigner = new Class({
                 screen.addEvent('mousemove', this._relationshipMouseMoveFunction);
                 screen.addEvent('click', this._relationshipMouseClickFunction);
             }
-        },
+        }
+        ,
 
         _relationshipMouseMove : function(event) {
             var screen = this._workspace.getScreenManager();
@@ -276,7 +309,8 @@ mindplot.MindmapDesigner = new Class({
             event.preventDefault();
             event.stop();
             return false;
-        },
+        }
+        ,
 
         _relationshipMouseClick : function (event, fromNode) {
             var target = event.target;
@@ -296,7 +330,8 @@ mindplot.MindmapDesigner = new Class({
             event.preventDefault();
             event.stop();
             return false;
-        },
+        }
+        ,
 
         addRelationship : function(fromNode, toNode) {
             // Create a new topic model ...
@@ -305,7 +340,8 @@ mindplot.MindmapDesigner = new Class({
 
             this._actionDispatcher.addRelationship(model, mindmap);
 
-        },
+        }
+        ,
 
         needsSave : function() {
             return this._actionRunner.hasBeenChanged();
@@ -314,7 +350,6 @@ mindplot.MindmapDesigner = new Class({
         autoSaveEnabled : function(value) {
             if ($defined(value) && value) {
                 var autosave = function() {
-
                     if (this.needsSave()) {
                         this.save(null, false);
                     }
@@ -333,7 +368,8 @@ mindplot.MindmapDesigner = new Class({
 
             // Refresh undo state...
             this._actionRunner.markAsChangeBase();
-        },
+        }
+        ,
 
         loadFromCollaborativeModel: function(collaborationManager) {
             var mindmap = collaborationManager.buildWiseModel();
@@ -341,10 +377,11 @@ mindplot.MindmapDesigner = new Class({
 
             // Place the focus on the Central Topic
             var centralTopic = this.getCentralTopic();
-            this._goToNode.attempt(centralTopic, this);
+            this.goToNode.attempt(centralTopic, this);
 
             this._fireEvent("loadsuccess");
-        },
+        }
+        ,
 
         loadFromXML : function(mapId, xmlContent) {
             $assert(xmlContent, 'mindmapId can not be null');
@@ -360,7 +397,7 @@ mindplot.MindmapDesigner = new Class({
 
             // Place the focus on the Central Topic
             var centralTopic = this.getCentralTopic();
-            this._goToNode.attempt(centralTopic, this);
+            this.goToNode.attempt(centralTopic, this);
 
             this._fireEvent("loadsuccess");
 
@@ -381,7 +418,7 @@ mindplot.MindmapDesigner = new Class({
 
             // Place the focus on the Central Topic
             var centralTopic = this.getCentralTopic();
-            this._goToNode.attempt(centralTopic, this);
+            this.goToNode.attempt(centralTopic, this);
 
             this._fireEvent("loadsuccess");
         }
@@ -467,12 +504,14 @@ mindplot.MindmapDesigner = new Class({
             workspace.appendChild(relationship);
             relationship.redraw();
             return relationship;
-        },
+        }
+        ,
 
         createRelationship : function(model) {
             this._mindmap.addRelationship(model);
             return this._relationshipModelToRelationship(model);
-        },
+        }
+        ,
 
         removeRelationship : function(model) {
             this._mindmap.removeRelationship(model);
@@ -483,7 +522,8 @@ mindplot.MindmapDesigner = new Class({
             targetTopic.removeRelationship(relationship);
             this._workspace.removeChild(relationship);
             delete this._relationships[model.getId()];
-        },
+        }
+        ,
 
         _buildRelationship : function (model) {
             var elem = this;
@@ -534,11 +574,8 @@ mindplot.MindmapDesigner = new Class({
             this._relationships[model.getId()] = relationLine;
 
             return  relationLine;
-        },
-
-        getEditor : function() {
-            return this._editor;
-        },
+        }
+        ,
 
         _removeNode : function(node) {
             if (node.getTopicType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
@@ -558,10 +595,11 @@ mindplot.MindmapDesigner = new Class({
                 model.deleteNode();
 
                 if ($defined(parent)) {
-                    this._goToNode(parent);
+                    this.goToNode(parent);
                 }
             }
-        },
+        }
+        ,
 
         deleteCurrentNode : function() {
 
@@ -574,7 +612,8 @@ mindplot.MindmapDesigner = new Class({
                 this._actionDispatcher.deleteTopics(selectedObjects);
             }
 
-        },
+        }
+        ,
 
         setFont2SelectedNode : function(font) {
             var validSelectedObjects = this._getValidSelectedObjectsIds();
@@ -583,7 +622,8 @@ mindplot.MindmapDesigner = new Class({
                 this._actionDispatcher.changeFontFamilyToTopic(topicsIds, font);
 
             }
-        },
+        }
+        ,
 
         setStyle2SelectedNode : function() {
             var validSelectedObjects = this._getValidSelectedObjectsIds();
@@ -591,7 +631,8 @@ mindplot.MindmapDesigner = new Class({
             if (topicsIds.length > 0) {
                 this._actionDispatcher.changeFontStyleToTopic(topicsIds);
             }
-        },
+        }
+        ,
 
         setFontColor2SelectedNode : function(color) {
             var validSelectedObjects = this._getValidSelectedObjectsIds();
@@ -599,7 +640,8 @@ mindplot.MindmapDesigner = new Class({
             if (topicsIds.length > 0) {
                 this._actionDispatcher.changeFontColorToTopic(topicsIds, color);
             }
-        },
+        }
+        ,
 
         setBackColor2SelectedNode : function(color) {
 
@@ -612,12 +654,13 @@ mindplot.MindmapDesigner = new Class({
             if (topicsIds.length > 0) {
                 this._actionDispatcher.changeBackgroundColorToTopic(topicsIds, color);
             }
-        },
+        }
+        ,
 
 
         _getValidSelectedObjectsIds : function(validate, errorMsg) {
             var result = {"nodes":[],"relationshipLines":[]};
-            var selectedNodes = this._getSelectedNodes();
+            var selectedNodes = this.getSelectedNodes();
             var selectedRelationshipLines = this.getSelectedRelationshipLines();
             if (selectedNodes.length == 0 && selectedRelationshipLines.length == 0) {
                 core.Monitor.getInstance().logMessage('At least one element must be selected to execute this operation.');
@@ -651,7 +694,8 @@ mindplot.MindmapDesigner = new Class({
                 }
             }
             return result;
-        },
+        }
+        ,
 
         setBorderColor2SelectedNode : function(color) {
             var validateFunc = function(topic) {
@@ -664,7 +708,8 @@ mindplot.MindmapDesigner = new Class({
             if (topicsIds.length > 0) {
                 this._actionDispatcher.changeBorderColorToTopic(topicsIds, color);
             }
-        },
+        }
+        ,
 
         setFontSize2SelectedNode : function(size) {
             var validSelectedObjects = this._getValidSelectedObjectsIds();
@@ -672,7 +717,8 @@ mindplot.MindmapDesigner = new Class({
             if (topicsIds.length > 0) {
                 this._actionDispatcher.changeFontSizeToTopic(topicsIds, size);
             }
-        },
+        }
+        ,
 
         setShape2SelectedNode : function(shape) {
             var validateFunc = function(topic) {
@@ -685,7 +731,8 @@ mindplot.MindmapDesigner = new Class({
             if (topicsIds.length > 0) {
                 this._actionDispatcher.changeShapeToTopic(topicsIds, shape);
             }
-        },
+        }
+        ,
 
 
         setWeight2SelectedNode : function() {
@@ -694,7 +741,8 @@ mindplot.MindmapDesigner = new Class({
             if (topicsIds.length > 0) {
                 this._actionDispatcher.changeFontWeightToTopic(topicsIds);
             }
-        },
+        }
+        ,
 
         addIconType2SelectedNode : function(iconType) {
             var validSelectedObjects = this._getValidSelectedObjectsIds();
@@ -702,7 +750,8 @@ mindplot.MindmapDesigner = new Class({
             if (topicsIds.length > 0) {
                 this._actionDispatcher.addIconToTopic(topicsIds[0], iconType);
             }
-        },
+        }
+        ,
 
         addLink2Node : function(url) {
             var validSelectedObjects = this._getValidSelectedObjectsIds();
@@ -807,7 +856,7 @@ mindplot.MindmapDesigner = new Class({
             }
         },
 
-        _getSelectedNodes : function() {
+        getSelectedNodes : function() {
             var result = new Array();
             for (var i = 0; i < this._topics.length; i++) {
                 if (this._topics[i].isOnFocus()) {
@@ -828,259 +877,17 @@ mindplot.MindmapDesigner = new Class({
             return result;
         },
 
-        getSelectedNodes : function() {
-            return this._getSelectedNodes();
-        },
-
-        getSelectedObjects : function() {
-            var selectedNodes = this.getSelectedNodes();
-            var selectedRelationships = this.getSelectedRelationshipLines();
-            selectedRelationships.extend(selectedNodes);
-            return selectedRelationships;
-        },
-
-        keyEventHandler : function(event) {
-            if (this._workspace.isWorkspaceEventsEnabled()) {
-                var evt = (event) ? event : window.event;
-
-                if (evt.keyCode == 8) {
-                    if ($defined(event)) {
-                        if ($defined(event.preventDefault)) {
-                            event.preventDefault();
-                        } else {
-                            event.returnValue = false;
-                        }
-                        new Event(event).stop();
-                    }
-                    else
-                        evt.returnValue = false;
-                }
-                else {
-                    // @ToDo: I think that some of the keys has been removed ... Check this...
-                    evt = new Event(event);
-                    var key = evt.key;
-                    if (!this._editor.isVisible()) {
-                        if (((evt.code >= 65 && evt.code <= 90) || (evt.code >= 48 && evt.code <= 57)) && !(evt.control || evt.meta)) {
-                            if ($defined(evt.shift)) {
-                                key = key.toUpperCase();
-                            }
-                            this._showEditor(key);
-                        }
-                        else {
-                            var nodes;
-                            var node;
-                            switch (key) {
-                                case 'delete':
-                                    this.deleteCurrentNode();
-                                    break;
-                                case 'enter':
-                                    if (!evt.meta) {
-                                        this.createSiblingForSelectedNode();
-                                        break;
-                                    }
-                                case 'insert':
-                                    this.createChildForSelectedNode();
-                                    break;
-                                case 'right':
-                                    nodes = this._getSelectedNodes();
-                                    if (nodes.length > 0) {
-                                        node = nodes[0];
-                                        if (node.getTopicType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
-                                            this._goToSideChild(node, 'RIGHT');
-                                        }
-                                        else {
-                                            if (node.getPosition().x < 0) {
-                                                this._goToParent(node);
-                                            }
-                                            else if (!node.areChildrenShrinked()) {
-                                                this._goToChild(node);
-                                            }
-                                        }
-                                    } else {
-                                        this._goToNode(this._topics[0]);
-                                    }
-                                    break;
-                                case 'left':
-                                    nodes = this._getSelectedNodes();
-                                    if (nodes.length > 0) {
-                                        node = nodes[0];
-                                        if (node.getTopicType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
-                                            this._goToSideChild(node, 'LEFT');
-                                        }
-                                        else {
-                                            if (node.getPosition().x > 0) {
-                                                this._goToParent(node);
-                                            }
-                                            else if (!node.areChildrenShrinked()) {
-                                                this._goToChild(node);
-                                            }
-                                        }
-                                    } else {
-                                        this._goToNode(this._topics[0]);
-                                    }
-                                    break;
-                                case'up':
-                                    nodes = this._getSelectedNodes();
-                                    if (nodes.length > 0) {
-                                        node = nodes[0];
-                                        if (node.getTopicType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
-                                            this._goToBrother(node, 'UP');
-                                        }
-                                    } else {
-                                        this._goToNode(this._topics[0]);
-                                    }
-                                    break;
-                                case 'down':
-                                    nodes = this._getSelectedNodes();
-                                    if (nodes.length > 0) {
-                                        node = nodes[0];
-                                        if (node.getTopicType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
-                                            this._goToBrother(node, 'DOWN');
-                                        }
-                                    } else {
-                                        this._goToNode(this._topics[0]);
-                                    }
-                                    break;
-                                case 'f2':
-                                    this._showEditor();
-                                    break;
-                                case 'space':
-                                    nodes = this._getSelectedNodes();
-                                    if (nodes.length > 0) {
-                                        var topic = nodes[0];
-
-                                        var model = topic.getModel();
-                                        var isShrink = !model.areChildrenShrinked();
-                                        topic.setChildrenShrinked(isShrink);
-                                    }
-                                    break;
-                                case 'backspace':
-                                    evt.preventDefault();
-                                    break;
-                                case 'esc':
-                                    nodes = this._getSelectedNodes();
-                                    for (var i = 0; i < nodes.length; i++) {
-                                        node = nodes[i];
-                                        node.setOnFocus(false);
-                                    }
-                                    break;
-                                case 'z':
-                                    if (evt.control || evt.meta) {
-                                        if (evt.shift) {
-                                            this.redo();
-                                        }
-                                        else {
-                                            this.undo();
-                                        }
-                                    }
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        evt.stop();
-                    }
-                }
+        getObjects : function() {
+            var result = [].append(this._topics);
+            for (var id in this._relationships) {
+                result.push(this._relationships[id]);
             }
+            return result;
         },
 
-        _showEditor : function(key) {
-            var nodes = this._getSelectedNodes();
-            if (nodes.length == 1) {
-                var node = nodes[0];
-                if (key && key != "") {
-                    this._editor.setInitialText(key);
-                }
-                this._editor.getFocusEvent.attempt(node, this._editor);
-            }
-        },
-
-        _goToBrother : function(node, direction) {
-            var brothers = node._parent._getChildren();
-            var target = node;
-            var y = node.getPosition().y;
-            var x = node.getPosition().x;
-            var dist = null;
-            for (var i = 0; i < brothers.length; i++) {
-                var sameSide = (x * brothers[i].getPosition().x) >= 0;
-                if (brothers[i] != node && sameSide) {
-                    var brother = brothers[i];
-                    var brotherY = brother.getPosition().y;
-                    if (direction == "DOWN" && brotherY > y) {
-                        var distancia = y - brotherY;
-                        if (distancia < 0) {
-                            distancia = distancia * (-1);
-                        }
-                        if (dist == null || dist > distancia) {
-                            dist = distancia;
-                            target = brothers[i];
-                        }
-                    }
-                    else if (direction == "UP" && brotherY < y) {
-                        var distancia = y - brotherY;
-                        if (distancia < 0) {
-                            distancia = distancia * (-1);
-                        }
-                        if (dist == null || dist > distancia) {
-                            dist = distancia;
-                            target = brothers[i];
-                        }
-                    }
-                }
-            }
-            this._goToNode(target);
-        },
-
-        _goToNode : function(node) {
+        goToNode : function(node) {
             node.setOnFocus(true);
-            this.onObjectFocusEvent.attempt(node, this);
-        },
-
-        _goToSideChild : function(node, side) {
-            var children = node._getChildren();
-            if (children.length > 0) {
-                var target = children[0];
-                var top = null;
-                for (var i = 0; i < children.length; i++) {
-                    var child = children[i];
-                    var childY = child.getPosition().y;
-                    if (side == 'LEFT' && child.getPosition().x < 0) {
-                        if (top == null || childY < top) {
-                            target = child;
-                            top = childY;
-                        }
-                    }
-                    if (side == 'RIGHT' && child.getPosition().x > 0) {
-                        if (top == null || childY < top) {
-                            target = child;
-                            top = childY;
-                        }
-                    }
-                }
-
-                this._goToNode(target);
-            }
-        },
-
-        _goToParent : function(node) {
-            var parent = node._parent;
-            this._goToNode(parent);
-        },
-
-        _goToChild : function(node) {
-            var children = node._getChildren();
-            if (children.length > 0) {
-                var target = children[0];
-                var top = target.getPosition().y;
-                for (var i = 0; i < children.length; i++) {
-                    var child = children[i];
-                    if (child.getPosition().y < top) {
-                        top = child.getPosition().y;
-                        target = child;
-                    }
-                }
-                this._goToNode(target);
-            }
+            this.onObjectFocusEvent(node);
         },
 
         getWorkSpace : function() {

@@ -62,6 +62,7 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="ScreenManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="Workspace.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ShrinkConnector.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="DesignerKeyboard.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="NodeGraph.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="Topic.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="CentralTopic.js"/>
@@ -80,6 +81,7 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="TextEditorFactory.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="VariableDistanceBoard.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="util/Shape.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="util/Converter.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="FixedDistanceBoard.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="BoardEntry.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ModelCodeName.js"/>

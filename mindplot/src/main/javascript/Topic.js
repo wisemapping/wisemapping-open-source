@@ -26,9 +26,7 @@ mindplot.Topic = new Class({
         this._relationships = [];
         this._isInWorkspace = false;
         this._helpers = [];
-
         this._buildShape();
-        this.setMouseEventsEnabled(true);
 
         // Position a topic ....
         var pos = model.getPosition();
@@ -36,15 +34,31 @@ mindplot.Topic = new Class({
             this.setPosition(pos);
         }
 
-        this.registerEvents();
+        // Register events for the topic ...
+        this._registerEvents();
     },
 
-    registerEvents:function () {
+    _registerEvents : function() {
+
+        this.setMouseEventsEnabled(true);
 
         // Prevent click on the topics being propagated ...
         this.addEventListener('click', function(event) {
             event.stopPropagation();
         });
+
+        this.addEventListener('dblclick', function (event) {
+            this._textEditor.show();
+            event.stopPropagation(true);
+        }.bind(this));
+
+        this.addEventListener('keydown', function(event) {
+            if (this.isOnFocus()) {
+                this._textEditor.show();
+
+            }
+        }.bind(this));
+
     },
 
     setShapeType : function(type) {

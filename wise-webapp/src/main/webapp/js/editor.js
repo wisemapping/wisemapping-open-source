@@ -182,12 +182,6 @@ function afterMindpotLibraryLoading() {
         });
     }
 
-    // Register Events ...
-    $(document).addEvent('keydown', designer.keyEventHandler.bindWithEvent(designer));
-    $("ffoxWorkarroundInput").addEvent('keydown', designer.keyEventHandler.bindWithEvent(designer));
-
-
-
     // Save event handler ....
     var saveButton = $('saveButton');
     saveButton.addEvent('click', function(event) {
@@ -269,15 +263,14 @@ function afterMindpotLibraryLoading() {
 
     // Autosave ...
     if (!isTryMode) {
-        var autosave = function() {
+        (function() {
 
             if (designer.needsSave()) {
                 designer.save(function() {
                     var monitor = core.Monitor.getInstance();
                 }, false);
             }
-        };
-        autosave.periodical(30000);
+        }).periodical(30000);
 
         // To prevent the user from leaving the page with changes ...
         window.onbeforeunload = function() {
@@ -290,7 +283,9 @@ function afterMindpotLibraryLoading() {
     var menu = new mindplot.widget.Menu(designer);
 
     //  If a node has focus, focus can be move to another node using the keys.
-    designer._cleanScreen = function(){menu.clear()};
+    designer._cleanScreen = function() {
+        menu.clear()
+    };
 
     // If not problem has occured, I close the dialod ...
     var closeDialog = function() {
@@ -333,5 +328,6 @@ function buildMindmapDesigner() {
         }.delay(1000)
     }
 
-};
+}
+;
 

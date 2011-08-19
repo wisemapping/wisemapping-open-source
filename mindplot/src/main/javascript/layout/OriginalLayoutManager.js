@@ -135,12 +135,6 @@ mindplot.layout.OriginalLayoutManager = new Class({
             var dragger = this._dragger;
             dragger.add(topic);
         }
-
-        // Register editor events ...
-        if (!$defined(this.getDesigner()._viewMode) || ($defined(this.getDesigner()._viewMode) && !this.getDesigner()._viewMode)) {
-            this.getDesigner()._editor.listenEventOnNode(topic, 'dblclick', true);
-        }
-
     },
 
     _createMainTopicBoard:function(node) {

@@ -20,7 +20,7 @@ mindplot.RichTextEditor = mindplot.TextEditor.extend({
     initialize:function(screenManager,actionRunner){
         this.parent(screenManager, actionRunner);
     },
-    _createUI:function(){
+    _buildEditor:function(){
         //Create editor ui
         this._size = {width:440, height:200};
         this._myOverlay = new Element('div').setStyles({position:"absolute", display: "none", zIndex: "8", top: "50%", left:"50%", marginLeft:"-200px", marginTop:"-90px", width:"400px", height:"180px"});
@@ -33,7 +33,7 @@ mindplot.RichTextEditor = mindplot.TextEditor.extend({
         this._designer.getWorkSpace().appendChild(this._editorNode);
         this._addListeners();
     },
-    _addListeners:function(){
+    _registerListeners:function(){
 
         $(this._myOverlay).addEvent('click', function(event){
             event.preventDefault();
@@ -91,7 +91,7 @@ mindplot.RichTextEditor = mindplot.TextEditor.extend({
     },
     init:function(node){
         this._currentNode = node;
-        this.applyChanges = false;
+        this._applyChanges = false;
         $(this._myOverlay.setStyle('display','block'));
         inst = this._editor.instanceById("inputText2");
         inst.elm.focus();
@@ -104,7 +104,7 @@ mindplot.RichTextEditor = mindplot.TextEditor.extend({
                 var text = this._text;
                 this._text = this._editor.instanceById("inputText2").getContent();
                 if(text!=this._text){
-                    this.applyChanges = true;
+                    this._applyChanges = true;
                 }
                 console.log('bye');
                 this.lostFocusListener();
@@ -124,11 +124,11 @@ mindplot.RichTextEditor = mindplot.TextEditor.extend({
         this._hideNode();
         if (this._currentNode != null)
             {
-                if(this.applyChanges)
+                if(this._applyChanges)
                 {
-                    this._updateNode();
+                    this._updateModel();
                 }
-                this.applyChanges=true;
+                this._applyChanges=true;
                 this._currentNode = null;
             }
     },

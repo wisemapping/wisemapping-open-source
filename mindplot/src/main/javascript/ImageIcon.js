@@ -42,7 +42,7 @@ mindplot.ImageIcon = new Class({
             removeImage.src = "../images/bin.png";
             removeImage.inject(container);
 
-            if (!$defined(designer._viewMode) || ($defined(designer._viewMode) && !designer._viewMode)) {
+            if (!$defined(designer._readOnly) || ($defined(designer._readOnly) && !designer._readOnly)) {
 
                 removeImage.addEvent('click', function() {
                     var actionDispatcher = mindplot.ActionDispatcher.getInstance();

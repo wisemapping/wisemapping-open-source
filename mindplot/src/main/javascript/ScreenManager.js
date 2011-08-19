@@ -25,6 +25,9 @@ mindplot.ScreenManager = new Class({
         // Ignore default click event propagation. Prevent 'click' event on drad.
         this._clickEvents = [];
         this._divContainer.addEvent('click',function(event){event.stopPropagation()});
+
+        // @Todo: This must be resolved in other way ...
+        mindplot.util.Converter.setScreenManager(this);
     },
 
     setScale : function(scale) {
@@ -59,7 +62,7 @@ mindplot.ScreenManager = new Class({
     },
 
     getWorkspaceElementPosition : function(e) {
-        // Retrive current element position.
+        // Retrieve current element position.
         var elementPosition = e.getPosition();
         var x = elementPosition.x;
         var y = elementPosition.y;
@@ -68,15 +71,9 @@ mindplot.ScreenManager = new Class({
         x = x - this._offset.x;
         y = y - this._offset.y;
 
-        // Scale coordinate in order to be relative to the workspace. That's coordSize/size;
+        // Scale coordinate in order to be relative to the workspace. That's coord/size;
         x = x / this._workspaceScale;
         y = y / this._workspaceScale;
-
-        // Subtract div position.
-        /*    var containerElem = this.getContainer();
-         var containerPosition = core.Utils.workOutDivElementPosition(containerElem);
-         x = x + containerPosition.x;
-         y = y + containerPosition.y;*/
 
         // Remove decimal part..
         return {x:x,y:y};

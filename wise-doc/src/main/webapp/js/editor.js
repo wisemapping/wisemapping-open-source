@@ -150,8 +150,6 @@ Tabs.Init();
 // Hide the content while waiting for the onload event to trigger.
 var contentId = window.location.hash || "#Introduction";
 
-var iconPanel = null;
-
 function afterMindpotLibraryLoading() {
     buildMindmapDesigner();
 
@@ -177,31 +175,19 @@ function afterMindpotLibraryLoading() {
         });
     }
 
-    // Register Key Events ...
-    $(document).addEvent('keydown', designer.keyEventHandler.bind(designer));
-    $("ffoxWorkarroundInput").addEvent('keydown', designer.keyEventHandler.bind(designer));
-
-    // To prevent the user from leaving the page with changes ...
-    window.onbeforeunload = function () {
-        if (designer.needsSave()) {
-            designer.save(null, false)
-        }
-    };
-    var menu = new mindplot.widget.Menu(designer,'toolbar');
+    var menu = new mindplot.widget.Menu(designer, 'toolbar');
 
     //  If a node has focus, focus can be move to another node using the keys.
     designer._cleanScreen = function() {
         menu.clear()
     };
 
-
     // If not problem has arisen, close the dialog ...
-    var closeDialog = function() {
-
+    (function() {
         if (!window.hasUnexpectedErrors) {
             waitDialog.deactivate();
         }
-    }.delay(500);
+    }).delay(500);
 }
 
 function buildMindmapDesigner() {
@@ -223,22 +209,22 @@ function buildMindmapDesigner() {
     editorProperties.height = screenHeight;
     designer = new mindplot.MindmapDesigner(editorProperties, container);
 
-    if(mindplot.collaboration.CollaborationManager.getInstance().isCollaborationFrameworkAvailable()){
+    if (mindplot.collaboration.CollaborationManager.getInstance().isCollaborationFrameworkAvailable()) {
         buildCollaborativeMindmapDesigner();
-    }else{
+    } else {
         buildStandaloneMindmapDesigner();
     }
 }
 
-function buildStandaloneMindmapDesigner(){
+function buildStandaloneMindmapDesigner() {
     designer.loadFromXML(mapId, mapXml);
 }
 
-function buildCollaborativeMindmapDesigner(){
+function buildCollaborativeMindmapDesigner() {
     var collaborationManager = mindplot.collaboration.CollaborationManager.getInstance();
-    if(collaborationManager.isCollaborativeFrameworkReady()){
+    if (collaborationManager.isCollaborativeFrameworkReady()) {
         designer.loadFromCollaborativeModel(collaborationManager);
-    }else{
+    } else {
         collaborationManager.setWiseReady(true);
     }
 }
