@@ -95,7 +95,7 @@ mindplot.DragTopic = new Class({
         // Remove drag shadow.
         workspace.removeChild(this._elem2d);
 
-        // Remove pivot shape. To improve performace it will not be removed. Only the visilility will be changed.
+        // Remove pivot shape. To improve performace it will not be removed. Only the visibility will be changed.
         var dragPivot = this._getDragPivot();
         dragPivot.setVisibility(false);
     },

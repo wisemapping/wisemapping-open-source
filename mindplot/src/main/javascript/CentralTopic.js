@@ -19,8 +19,8 @@
 mindplot.CentralTopic = new Class({
 
     Extends:mindplot.Topic,
-    initialize: function(model) {
-        this.parent(model);
+    initialize: function(model,options) {
+        this.parent(model,options);
     },
 
     _registerEvents : function() {

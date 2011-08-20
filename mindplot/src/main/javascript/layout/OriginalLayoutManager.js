@@ -123,12 +123,6 @@ mindplot.layout.OriginalLayoutManager = new Class({
 
     registerListenersOnNode : function(topic) {
         // Register node listeners ...
-        var designer = this.getDesigner();
-        topic.addEventListener('click', function(event) {
-            designer.onObjectFocusEvent(topic, event);
-        });
-
-        // Add drag behaviour ...
         if (topic.getType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
 
             // Central Topic doesn't support to be dragged

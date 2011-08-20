@@ -24,26 +24,19 @@ mindplot.DesignerKeyboard = new Class({
         this._registerEvents(designer);
     },
 
+
     _registerEvents : function(designer) {
+
+
         // Try with the keyboard ..
-        this.addEvents({
-            'esc' : function(event) {
-                var nodes = this.getSelectedNodes();
-                for (var i = 0; i < nodes.length; i++) {
-                    node = nodes[i];
-                    node.setOnFocus(false);
-                }
-                event.stopPropagation();
-
-            }.bind(designer),
-
+        var keyboardEvents = {
             'backspace':function(event) {
                 event.preventDefault();
                 event.stopPropagation();
             }.bind(this),
 
             'space' : function() {
-                var nodes = this.getSelectedNodes();
+                var nodes = designer.getSelectedNodes();
                 if (nodes.length > 0) {
                     var topic = nodes[0];
 
@@ -54,8 +47,12 @@ mindplot.DesignerKeyboard = new Class({
             }.bind(this),
 
             'f2' : function() {
-                // @todo:
-                console.log("f2 Must be implented");
+                var nodes = designer.getSelectedNodes();
+                if (nodes.length > 0) {
+                    var topic = nodes[0];
+                    topic.showTextEditor();
+                }
+
             }.bind(this),
 
             'delete' : function() {
@@ -89,6 +86,17 @@ mindplot.DesignerKeyboard = new Class({
 
             'ctrl+a' : function(event) {
                 designer.selectAll();
+                event.preventDefault();
+
+            },
+
+            'meta+shift+a' : function(event) {
+                designer.deselectAll();
+                event.preventDefault();
+            },
+
+            'ctrl+shift+a' : function(event) {
+                designer.deselectAll();
                 event.preventDefault();
 
             },
@@ -141,7 +149,6 @@ mindplot.DesignerKeyboard = new Class({
             }.bind(this),
 
             'up' : function() {
-                // @ToDo: Ups, accessing a private method ...
                 var nodes = designer.getSelectedNodes();
                 if (nodes.length > 0) {
                     var node = nodes[0];
@@ -166,8 +173,43 @@ mindplot.DesignerKeyboard = new Class({
                     this._goToNode(designer, centralTopic);
                 }
             }.bind(this)
+        };
+        this.addEvents(keyboardEvents);
 
+        var regex = /^(?:shift|control|ctrl|alt|meta)$/;
+        var modifiers = ['shift', 'control', 'alt', 'meta'];
+        var excludes = ['esc','capslock','tab'];
+
+        $(document).addEvent('keydown', function(event) {
+
+            // Convert key to mootool keyboard event format...
+            var keys = [];
+            modifiers.each(function(mod) {
+                if (event[mod]) keys.push(mod);
+            });
+            if (!regex.test(event.key))
+                keys.push(event.key);
+            var key = keys.join('+');
+
+            // Is the pressed key one of the already registered in the keyboard  ?
+            var isRegistered = false;
+            for (var eKey in  keyboardEvents) {
+                if (eKey == key) {
+                    isRegistered = true;
+                    break;
+                }
+            }
+
+            // If it's not registered, let's
+            if (!isRegistered && !excludes.contains(key) && !modifiers.contains(key) && !key.contains('meta') && !key.contains('ctrl') &&  !key.contains('control')) {
+                var nodes = designer.getSelectedNodes();
+                if (nodes.length > 0) {
+                    nodes[0].showTextEditor(event.key);
+                    event.stopPropagation();
+                }
+            }
         });
+
     },
 
     _goToBrother : function(designer, node, direction) {
@@ -235,7 +277,7 @@ mindplot.DesignerKeyboard = new Class({
 
     _goToParent : function(designer, node) {
         var parent = node._parent;
-        this._goToNode(designer,parent);
+        this._goToNode(designer, parent);
     },
 
     _goToChild : function(designer, node) {
@@ -250,7 +292,7 @@ mindplot.DesignerKeyboard = new Class({
                     target = child;
                 }
             }
-            this._goToNode(designer,target);
+            this._goToNode(designer, target);
         }
     },
 
@@ -261,6 +303,9 @@ mindplot.DesignerKeyboard = new Class({
         // Give focus to the selected node....
         node.setOnFocus(true);
     }
-
-
 });
+
+mindplot.DesignerKeyboard.register = function(designer) {
+    this._instance = new mindplot.DesignerKeyboard(designer);
+    this._instance.activate();
+}

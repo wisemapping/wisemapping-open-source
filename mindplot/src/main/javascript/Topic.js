@@ -51,14 +51,6 @@ mindplot.Topic = new Class({
             this._textEditor.show();
             event.stopPropagation(true);
         }.bind(this));
-
-        this.addEventListener('keydown', function(event) {
-            if (this.isOnFocus()) {
-                this._textEditor.show();
-
-            }
-        }.bind(this));
-
     },
 
     setShapeType : function(type) {
@@ -243,8 +235,7 @@ mindplot.Topic = new Class({
 
     getTextShape : function() {
         if (!$defined(this._text)) {
-            var model = this.getModel();
-            this._text = this._buildTextShape();
+            this._text = this._buildTextShape(false);
 
             // Set Text ...
             var text = this.getText();
@@ -411,8 +402,6 @@ mindplot.Topic = new Class({
 
     _buildTextShape : function(disableEventsListeners) {
         var result = new web2d.Text();
-        var font = {};
-
         var family = this.getFontFamily();
         var size = this.getFontSize();
         var weight = this.getFontWeight();
@@ -572,16 +561,6 @@ mindplot.Topic = new Class({
     _setText : function(text, updateModel) {
         var textShape = this.getTextShape();
         textShape.setText(text);
-        /*var elem = this;
-         var executor = function(editor)
-         {
-         return function()
-         {
-         elem.updateNode(updateModel);
-         };
-         };
-
-         setTimeout(executor(this), 0);*/
         core.Executor.instance.delay(this.updateNode, 0, this, [updateModel]);
 
         if ($defined(updateModel) && updateModel) {

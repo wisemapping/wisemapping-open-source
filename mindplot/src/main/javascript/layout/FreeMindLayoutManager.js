@@ -52,7 +52,7 @@ mindplot.layout.FreeMindLayoutManager = mindplot.layout.BaseLayoutManager.extend
         var id = topic.getId();
         // Register node listeners ...
         var designer = this.getDesigner();
-        topic.addEventListener('onfocus', function(event)
+        topic.addEventListener('click', function(event)
         {
             designer.onObjectFocusEvent.attempt([topic, event], designer);
         });
@@ -61,12 +61,6 @@ mindplot.layout.FreeMindLayoutManager = mindplot.layout.BaseLayoutManager.extend
         if (topic.getType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE)
         {
             topic.addEventListener("mousedown",this._reconnectMouseDownListener.bindWithEvent(this,[topic]));
-        }
-
-         // Register editor events ...
-        if (!$defined(this.getDesigner()._readOnly)|| ($defined(this.getDesigner()._readOnly) && !this.getDesigner()._readOnly))
-        {
-            this.getDesigner()._editor.listenEventOnNode(topic, 'dblclick', true);
         }
 
     },

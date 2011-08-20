@@ -39,9 +39,7 @@ mindplot.Workspace = new Class({
 
         // Register drag events ...
         this._registerDragEvents();
-
-        this._eventsEnabled = true;
-
+       this._eventsEnabled = true;
     },
 
     _updateScreenManager: function() {
@@ -127,6 +125,9 @@ mindplot.Workspace = new Class({
         // Update screen.
         this._screenManager.setOffset(coordOriginX, coordOriginY);
         this._screenManager.setScale(zoom);
+
+        // Some changes in the screen. Let's fire an update event...
+        this._screenManager.fireEvent('update', new Event());
     },
 
     getScreenManager: function() {
@@ -150,10 +151,8 @@ mindplot.Workspace = new Class({
         var screenManager = this._screenManager;
         var mWorkspace = this;
         var mouseDownListener = function(event) {
-            if (!$defined(workspace._mouseMoveListener))
-            {
-                if (mWorkspace.isWorkspaceEventsEnabled())
-                {
+            if (!$defined(workspace._mouseMoveListener)) {
+                if (mWorkspace.isWorkspaceEventsEnabled()) {
                     mWorkspace.enableWorkspaceEvents(false);
 
                     var mouseDownPosition = screenManager.getWorkspaceMousePosition(event);
@@ -181,10 +180,10 @@ mindplot.Workspace = new Class({
                         event.preventDefault();
 
                         // Fire drag event ...
-                        screenManager.fireEvent('drag',new Event());
+                        screenManager.fireEvent('update', new Event());
                         wasDragged = true;
 
-                        
+
                     }.bind(this);
                     screenManager.addEvent('mousemove', workspace._mouseMoveListener);
 
@@ -202,9 +201,8 @@ mindplot.Workspace = new Class({
                         screenManager.setOffset(coordOrigin.x, coordOrigin.y);
                         mWorkspace.enableWorkspaceEvents(true);
 
-                        if(!wasDragged)
-                        {
-                            screenManager.fireEvent('click',new Event());
+                        if (!wasDragged) {
+                            screenManager.fireEvent('click', new Event());
                         }
                     };
                     screenManager.addEvent('mouseup', workspace._mouseUpListener);

@@ -38,7 +38,8 @@ mindplot.TextEditor = new Class({
         var inputContainer = new Element('div');
         inputContainer.setStyles({
             border:"none",
-            overflow:"auto"});
+            overflow:"auto"
+        });
         inputContainer.inject(result);
 
         var inputText = new Element('input', {type:"text",tabindex:'-1', value:""});
@@ -241,10 +242,6 @@ mindplot.TextEditor = new Class({
         $(this._divElem).setStyles({top : y + "px", left: x + "px"});
     },
 
-    _showTextElem : function(selectText) {
-
-    },
-
     _changeCursor : function(inputElem, selectText) {
         // Select text if it's required ...
         if (inputElem.createTextRange) //ie
@@ -267,7 +264,6 @@ mindplot.TextEditor = new Class({
 
     close : function(update) {
         if (this.isVisible()) {
-
             // Update changes ...
             if (!$defined(update) || update) {
                 this._updateModel();
@@ -279,6 +275,8 @@ mindplot.TextEditor = new Class({
             // Remove it form the screen ...
             this._divElem.dispose();
             this._divElem = null;
+
+            console.log("closing ....");
         }
     }
 });

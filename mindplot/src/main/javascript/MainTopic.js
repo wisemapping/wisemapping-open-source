@@ -18,8 +18,8 @@
 
 mindplot.MainTopic = new Class({
     Extends: mindplot.Topic,
-    initialize : function(model) {
-        this.parent(model);
+    initialize : function(model, options) {
+        this.parent(model, options);
     },
 
     INNER_RECT_ATTRIBUTES : {stroke:'0.5 solid #009900'},

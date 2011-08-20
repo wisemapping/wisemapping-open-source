@@ -1,4 +1,6 @@
 - Ver de que algunos de los colores de las paleta sean los utilizados.
-- Que el click del workspace unseleccione los nodos.
 - Resize de la ventana ajuste el workspace
 - Fixiar metodo de drag del workspace...
+- Cambiar el nodo on type
+- f2
+- documentar el select and unselect all

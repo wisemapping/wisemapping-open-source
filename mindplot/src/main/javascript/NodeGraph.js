@@ -17,13 +17,14 @@
  */
 
 mindplot.NodeGraph = new Class({
-    initialize:function(nodeModel) {
+    initialize:function(nodeModel, options) {
         $assert(nodeModel, "model can not be null");
+
+        this._options = options;
         this._mouseEvents = true;
         this.setModel(nodeModel);
         this._onFocus = false;
         this._textEditor = new mindplot.TextEditor(this);
-
     },
 
     getType : function() {
@@ -101,7 +102,7 @@ mindplot.NodeGraph = new Class({
         this.setCursor('move');
 
         // In any case, always try to hide the editor ...
-        this._textEditor.close();
+        this.closeEditors();
     },
 
     isOnFocus : function() {
@@ -109,6 +110,7 @@ mindplot.NodeGraph = new Class({
     },
 
     dispose : function(workspace) {
+        this.setOnFocus(false);
         workspace.removeChild(this);
     },
 
@@ -124,10 +126,18 @@ mindplot.NodeGraph = new Class({
     getPosition : function() {
         var model = this.getModel();
         return model.getPosition();
+    },
+
+    showTextEditor : function(text) {
+        this._textEditor.show(text);
+    },
+
+    closeEditors : function() {
+        this._textEditor.close(true);
     }
 });
 
-mindplot.NodeGraph.create = function(nodeModel) {
+mindplot.NodeGraph.create = function(nodeModel, options) {
     $assert(nodeModel, 'Model can not be null');
 
     var type = nodeModel.getType();
@@ -135,10 +145,10 @@ mindplot.NodeGraph.create = function(nodeModel) {
 
     var result;
     if (type == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
-        result = new mindplot.CentralTopic(nodeModel);
+        result = new mindplot.CentralTopic(nodeModel, options);
     } else
     if (type == mindplot.model.NodeModel.MAIN_TOPIC_TYPE) {
-        result = new mindplot.MainTopic(nodeModel);
+        result = new mindplot.MainTopic(nodeModel, options);
     } else {
         assert(false, "unsupported node type:" + type);
     }

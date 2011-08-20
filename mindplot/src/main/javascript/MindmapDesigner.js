@@ -61,8 +61,7 @@ mindplot.MindmapDesigner = new Class({
             this._registerMouseEvents();
 
             // Register keyboard events ...
-            var keyboard = new mindplot.DesignerKeyboard(this);
-            keyboard.activate();
+            mindplot.DesignerKeyboard.register(this);
 
             // To prevent the user from leaving the page with changes ...
             window.addEvent('beforeunload', function () {
@@ -77,10 +76,15 @@ mindplot.MindmapDesigner = new Class({
             var screenManager = workspace.getScreenManager();
 
             // Initialize workspace event listeners.
-            screenManager.addEvent('drag', function(event) {
+            screenManager.addEvent('update', function() {
+                // Topic must be set to his original state. All editors must be closed.
+                var objects = this.getObjects();
+                objects.forEach(function(object) {
+                    object.closeEditors();
+                });
+
                 // Clean some selected nodes on event ..
                 this._cleanScreen();
-
 
             }.bind(this));
 
@@ -143,8 +147,17 @@ mindplot.MindmapDesigner = new Class({
             var topics = this._topics;
             topics.push(topic);
 
+
             // Add Topic events ...
-            this._layoutManager.registerListenersOnNode(topic);
+            if (!this._readOnly) {
+                // Add drag behaviour ...
+                this._layoutManager.registerListenersOnNode(topic);
+
+                // If a node had gained focus, clean the rest of the nodes ...
+                topic.addEventListener('mousedown', function(event) {
+                    this.onObjectFocusEvent(topic, event);
+                }.bind(this));
+            }
 
             // Connect Topic ...
             var isConnected = model.isConnected();
@@ -168,20 +181,25 @@ mindplot.MindmapDesigner = new Class({
             }
 
             return  topic;
-        }
-        ,
+        },
 
         onObjectFocusEvent : function(currentObject, event) {
-            var objects = this.getObjects();
+            // Close node editors ..
+            var topics = this._getTopics();
+            topics.forEach(function(topic) {
+                topic.closeEditors();
+            });
 
-            // Disable all nodes on focus but not the current if Ctrl key isn't being pressed
-            if (!$defined(event) || (!event.ctrlKey && !event.metaKey)) {
-                objects.forEach(function(object) {
+            var objects = this.getObjects();
+            objects.forEach(function(object) {
+                // Disable all nodes on focus but not the current if Ctrl key isn't being pressed
+                if (!$defined(event) || (!event.ctrlKey && !event.metaKey)) {
                     if (object.isOnFocus() && object != currentObject) {
                         object.setOnFocus(false);
                     }
-                });
-            }
+                }
+            });
+
         },
 
         zoomOut : function() {
@@ -246,8 +264,7 @@ mindplot.MindmapDesigner = new Class({
             // Execute event ...
             this._actionDispatcher.addTopic(childModel, parentTopicId, true);
 
-        }
-        ,
+        },
 
         createSiblingForSelectedNode : function() {
             var nodes = this.getSelectedNodes();
@@ -299,8 +316,7 @@ mindplot.MindmapDesigner = new Class({
                 screen.addEvent('mousemove', this._relationshipMouseMoveFunction);
                 screen.addEvent('click', this._relationshipMouseClickFunction);
             }
-        }
-        ,
+        },
 
         _relationshipMouseMove : function(event) {
             var screen = this._workspace.getScreenManager();
@@ -309,8 +325,7 @@ mindplot.MindmapDesigner = new Class({
             event.preventDefault();
             event.stop();
             return false;
-        }
-        ,
+        },
 
         _relationshipMouseClick : function (event, fromNode) {
             var target = event.target;
@@ -330,8 +345,7 @@ mindplot.MindmapDesigner = new Class({
             event.preventDefault();
             event.stop();
             return false;
-        }
-        ,
+        },
 
         addRelationship : function(fromNode, toNode) {
             // Create a new topic model ...
@@ -397,7 +411,7 @@ mindplot.MindmapDesigner = new Class({
 
             // Place the focus on the Central Topic
             var centralTopic = this.getCentralTopic();
-            this.goToNode.attempt(centralTopic, this);
+            this.goToNode(centralTopic);
 
             this._fireEvent("loadsuccess");
 
@@ -510,8 +524,7 @@ mindplot.MindmapDesigner = new Class({
         createRelationship : function(model) {
             this._mindmap.addRelationship(model);
             return this._relationshipModelToRelationship(model);
-        }
-        ,
+        },
 
         removeRelationship : function(model) {
             this._mindmap.removeRelationship(model);
@@ -522,8 +535,7 @@ mindplot.MindmapDesigner = new Class({
             targetTopic.removeRelationship(relationship);
             this._workspace.removeChild(relationship);
             delete this._relationships[model.getId()];
-        }
-        ,
+        },
 
         _buildRelationship : function (model) {
             var elem = this;
@@ -574,8 +586,7 @@ mindplot.MindmapDesigner = new Class({
             this._relationships[model.getId()] = relationLine;
 
             return  relationLine;
-        }
-        ,
+        },
 
         _removeNode : function(node) {
             if (node.getTopicType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
@@ -598,8 +609,7 @@ mindplot.MindmapDesigner = new Class({
                     this.goToNode(parent);
                 }
             }
-        }
-        ,
+        },
 
         deleteCurrentNode : function() {
 
@@ -612,8 +622,7 @@ mindplot.MindmapDesigner = new Class({
                 this._actionDispatcher.deleteTopics(selectedObjects);
             }
 
-        }
-        ,
+        },
 
         setFont2SelectedNode : function(font) {
             var validSelectedObjects = this._getValidSelectedObjectsIds();
@@ -622,8 +631,7 @@ mindplot.MindmapDesigner = new Class({
                 this._actionDispatcher.changeFontFamilyToTopic(topicsIds, font);
 
             }
-        }
-        ,
+        },
 
         setStyle2SelectedNode : function() {
             var validSelectedObjects = this._getValidSelectedObjectsIds();
@@ -631,8 +639,7 @@ mindplot.MindmapDesigner = new Class({
             if (topicsIds.length > 0) {
                 this._actionDispatcher.changeFontStyleToTopic(topicsIds);
             }
-        }
-        ,
+        },
 
         setFontColor2SelectedNode : function(color) {
             var validSelectedObjects = this._getValidSelectedObjectsIds();
@@ -640,8 +647,7 @@ mindplot.MindmapDesigner = new Class({
             if (topicsIds.length > 0) {
                 this._actionDispatcher.changeFontColorToTopic(topicsIds, color);
             }
-        }
-        ,
+        },
 
         setBackColor2SelectedNode : function(color) {
 
@@ -654,9 +660,7 @@ mindplot.MindmapDesigner = new Class({
             if (topicsIds.length > 0) {
                 this._actionDispatcher.changeBackgroundColorToTopic(topicsIds, color);
             }
-        }
-        ,
-
+        },
 
         _getValidSelectedObjectsIds : function(validate, errorMsg) {
             var result = {"nodes":[],"relationshipLines":[]};
@@ -694,8 +698,7 @@ mindplot.MindmapDesigner = new Class({
                 }
             }
             return result;
-        }
-        ,
+        },
 
         setBorderColor2SelectedNode : function(color) {
             var validateFunc = function(topic) {
@@ -708,8 +711,7 @@ mindplot.MindmapDesigner = new Class({
             if (topicsIds.length > 0) {
                 this._actionDispatcher.changeBorderColorToTopic(topicsIds, color);
             }
-        }
-        ,
+        },
 
         setFontSize2SelectedNode : function(size) {
             var validSelectedObjects = this._getValidSelectedObjectsIds();
@@ -731,9 +733,7 @@ mindplot.MindmapDesigner = new Class({
             if (topicsIds.length > 0) {
                 this._actionDispatcher.changeShapeToTopic(topicsIds, shape);
             }
-        }
-        ,
-
+        },
 
         setWeight2SelectedNode : function() {
             var validSelectedObjects = this._getValidSelectedObjectsIds();
@@ -741,8 +741,7 @@ mindplot.MindmapDesigner = new Class({
             if (topicsIds.length > 0) {
                 this._actionDispatcher.changeFontWeightToTopic(topicsIds);
             }
-        }
-        ,
+        },
 
         addIconType2SelectedNode : function(iconType) {
             var validSelectedObjects = this._getValidSelectedObjectsIds();
@@ -750,8 +749,7 @@ mindplot.MindmapDesigner = new Class({
             if (topicsIds.length > 0) {
                 this._actionDispatcher.addIconToTopic(topicsIds[0], iconType);
             }
-        }
-        ,
+        },
 
         addLink2Node : function(url) {
             var validSelectedObjects = this._getValidSelectedObjectsIds();
