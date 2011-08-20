@@ -36,10 +36,8 @@ mindplot.DesignerKeyboard = new Class({
             }.bind(this),
 
             'space' : function() {
-                var nodes = designer.getSelectedNodes();
-                if (nodes.length > 0) {
-                    var topic = nodes[0];
-
+                var node = this._getSelectedNode(designer);
+                if (node) {
                     var model = topic.getModel();
                     var isShrink = !model.areChildrenShrinked();
                     topic.setChildrenShrinked(isShrink);
@@ -47,12 +45,11 @@ mindplot.DesignerKeyboard = new Class({
             }.bind(this),
 
             'f2' : function() {
-                var nodes = designer.getSelectedNodes();
-                if (nodes.length > 0) {
+                var node = this._getSelectedNode(designer);
+                if (node) {
                     var topic = nodes[0];
                     topic.showTextEditor();
                 }
-
             }.bind(this),
 
             'delete' : function() {
@@ -87,7 +84,22 @@ mindplot.DesignerKeyboard = new Class({
             'ctrl+a' : function(event) {
                 designer.selectAll();
                 event.preventDefault();
+            },
 
+            'ctrl+b' : function() {
+                designer.changeFontWeight();
+            },
+
+            'meta+b' : function() {
+                designer.changeFontWeight();
+            },
+
+            'ctrl+i' : function() {
+                designer.changeFontStyle();
+            },
+
+            'meta+i' : function() {
+                designer.changeFontStyle();
             },
 
             'meta+shift+a' : function(event) {
@@ -107,9 +119,8 @@ mindplot.DesignerKeyboard = new Class({
             },
 
             'right' : function() {
-                var nodes = designer.getSelectedNodes();
-                if (nodes.length > 0) {
-                    var node = nodes[0];
+                var node = this._getSelectedNode(designer);
+                if (node) {
                     if (node.getTopicType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
                         this._goToSideChild(designer, node, 'RIGHT');
                     }
@@ -128,9 +139,8 @@ mindplot.DesignerKeyboard = new Class({
             }.bind(this),
 
             'left' : function() {
-                var nodes = designer.getSelectedNodes();
-                if (nodes.length > 0) {
-                    var node = nodes[0];
+                var node = this._getSelectedNode(designer);
+                if (node) {
                     if (node.getTopicType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
                         this._goToSideChild(designer, node, 'LEFT');
                     }
@@ -149,9 +159,8 @@ mindplot.DesignerKeyboard = new Class({
             }.bind(this),
 
             'up' : function() {
-                var nodes = designer.getSelectedNodes();
-                if (nodes.length > 0) {
-                    var node = nodes[0];
+                var node = this._getSelectedNode(designer);
+                if (node) {
                     if (node.getTopicType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
                         this._goToBrother(designer, node, 'UP');
                     }
@@ -162,9 +171,8 @@ mindplot.DesignerKeyboard = new Class({
             }.bind(this),
 
             'down' : function() {
-                var nodes = designer.getSelectedNodes();
-                if (nodes.length > 0) {
-                    var node = nodes[0];
+                var node = this._getSelectedNode(designer);
+                if (node) {
                     if (node.getTopicType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
                         this._goToBrother(designer, node, 'DOWN');
                     }
@@ -201,7 +209,7 @@ mindplot.DesignerKeyboard = new Class({
             }
 
             // If it's not registered, let's
-            if (!isRegistered && !excludes.contains(key) && !modifiers.contains(key) && !key.contains('meta') && !key.contains('ctrl') &&  !key.contains('control')) {
+            if (!isRegistered && !excludes.contains(key) && !modifiers.contains(key) && !key.contains('meta') && !key.contains('ctrl') && !key.contains('control')) {
                 var nodes = designer.getSelectedNodes();
                 if (nodes.length > 0) {
                     nodes[0].showTextEditor(event.key);
@@ -302,10 +310,15 @@ mindplot.DesignerKeyboard = new Class({
 
         // Give focus to the selected node....
         node.setOnFocus(true);
+    },
+
+    _getSelectedNode : function(designer) {
+        var nodes = designer.getSelectedNodes();
+        return (nodes.length > 0) ? nodes[0] : null;
     }
 });
 
 mindplot.DesignerKeyboard.register = function(designer) {
     this._instance = new mindplot.DesignerKeyboard(designer);
     this._instance.activate();
-}
+};

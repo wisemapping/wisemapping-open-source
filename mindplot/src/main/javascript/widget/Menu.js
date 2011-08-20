@@ -228,11 +228,11 @@ mindplot.widget.Menu = new Class({
         });
 
         $('fontBold').addEvent('click', function(event) {
-            designer.setWeight2SelectedNode();
+            designer.changeFontWeight();
         });
 
         $('fontItalic').addEvent('click', function(event) {
-            designer.setStyle2SelectedNode();
+            designer.changeFontStyle();
         });
 
         designer.addEventListener("modelUpdate", function(event) {

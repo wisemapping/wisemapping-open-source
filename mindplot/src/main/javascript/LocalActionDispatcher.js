@@ -81,6 +81,7 @@ mindplot.LocalActionDispatcher = new Class({
         var command = new mindplot.commands.RemoveNoteFromTopicCommand(topicId);
         this.execute(command);
     },
+
     changeFontStyleToTopic: function(topicsIds) {
 
         var commandFunc = function(topic) {

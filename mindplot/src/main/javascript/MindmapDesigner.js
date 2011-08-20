@@ -633,7 +633,7 @@ mindplot.MindmapDesigner = new Class({
             }
         },
 
-        setStyle2SelectedNode : function() {
+        changeFontStyle : function() {
             var validSelectedObjects = this._getValidSelectedObjectsIds();
             var topicsIds = validSelectedObjects.nodes;
             if (topicsIds.length > 0) {
@@ -735,7 +735,7 @@ mindplot.MindmapDesigner = new Class({
             }
         },
 
-        setWeight2SelectedNode : function() {
+        changeFontWeight : function() {
             var validSelectedObjects = this._getValidSelectedObjectsIds();
             var topicsIds = validSelectedObjects.nodes;
             if (topicsIds.length > 0) {
