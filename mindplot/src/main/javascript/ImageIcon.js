@@ -52,7 +52,7 @@ mindplot.ImageIcon = new Class({
 
                 //Icon
                 var image = this.getImage();
-                image.addEventListener('click', function() {
+                image.addEvent('click', function() {
 
                     var iconType = iconModel.getIconType();
                     var newIconType = this._getNextFamilyIconId(iconType);
@@ -63,15 +63,15 @@ mindplot.ImageIcon = new Class({
 
                 }.bind(this));
 
-                image.addEventListener('mouseover', function(event) {
+                image.addEvent('mouseover', function(event) {
                     tip.open(event, container, this);
                 }.bind(this));
 
-                image.addEventListener('mouseout', function(event) {
+                image.addEvent('mouseout', function(event) {
                     tip.close(event);
                 });
 
-                image.addEventListener('mousemove', function(event) {
+                image.addEvent('mousemove', function(event) {
                     tip.updatePosition(event);
                 });
 

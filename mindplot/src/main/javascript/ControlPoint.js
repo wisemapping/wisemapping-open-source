@@ -24,12 +24,12 @@ mindplot.ControlPoint = new Class({
             new web2d.Line({strokeColor:"#6589de", strokeWidth:1, opacity:0.3})];
 
         this._isBinded = false;
-        this._controlPointsController[0].addEventListener('mousedown', this._mouseDown.bindWithEvent(this, mindplot.ControlPoint.FROM));
-        this._controlPointsController[0].addEventListener('click', this._mouseClick.bindWithEvent(this));
-        this._controlPointsController[0].addEventListener('dblclick', this._mouseClick.bindWithEvent(this));
-        this._controlPointsController[1].addEventListener('mousedown', this._mouseDown.bindWithEvent(this, mindplot.ControlPoint.TO));
-        this._controlPointsController[1].addEventListener('click', this._mouseClick.bindWithEvent(this));
-        this._controlPointsController[1].addEventListener('dblclick', this._mouseClick.bindWithEvent(this));
+        this._controlPointsController[0].addEvent('mousedown', this._mouseDown.bindWithEvent(this, mindplot.ControlPoint.FROM));
+        this._controlPointsController[0].addEvent('click', this._mouseClick.bindWithEvent(this));
+        this._controlPointsController[0].addEvent('dblclick', this._mouseClick.bindWithEvent(this));
+        this._controlPointsController[1].addEvent('mousedown', this._mouseDown.bindWithEvent(this, mindplot.ControlPoint.TO));
+        this._controlPointsController[1].addEvent('click', this._mouseClick.bindWithEvent(this));
+        this._controlPointsController[1].addEvent('dblclick', this._mouseClick.bindWithEvent(this));
     },
 
 
@@ -77,9 +77,9 @@ mindplot.ControlPoint = new Class({
         if (!this._isBinded) {
             this._isBinded = true;
             this._mouseMoveFunction = this._mouseMove.bindWithEvent(this, point);
-            this._workspace.getScreenManager().addEventListener('mousemove', this._mouseMoveFunction);
+            this._workspace.getScreenManager().addEvent('mousemove', this._mouseMoveFunction);
             this._mouseUpFunction = this._mouseUp.bindWithEvent(this, point);
-            this._workspace.getScreenManager().addEventListener('mouseup', this._mouseUpFunction);
+            this._workspace.getScreenManager().addEvent('mouseup', this._mouseUpFunction);
         }
         event.preventDefault();
         event.stop();
@@ -111,8 +111,8 @@ mindplot.ControlPoint = new Class({
     },
 
     _mouseUp  : function(event, point) {
-        this._workspace.getScreenManager().removeEventListener('mousemove', this._mouseMoveFunction);
-        this._workspace.getScreenManager().removeEventListener('mouseup', this._mouseUpFunction);
+        this._workspace.getScreenManager().removeEvent('mousemove', this._mouseMoveFunction);
+        this._workspace.getScreenManager().removeEvent('mouseup', this._mouseUpFunction);
 
         var actionDispatcher = mindplot.ActionDispatcher.getInstance();
         actionDispatcher.moveControlPoint(this, point);

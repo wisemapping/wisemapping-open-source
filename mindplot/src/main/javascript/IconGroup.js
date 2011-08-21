@@ -55,7 +55,7 @@ mindplot.IconGroup = new Class({
     },
 
     addIcon : function(icon) {
-        $defined(icon,"icon is not defined");
+        $defined(icon, "icon is not defined");
         icon.setGroup(this);
 
         var newIcon = icon.getImage();
@@ -136,7 +136,6 @@ mindplot.IconGroup = new Class({
         var iconSize = nativeImage.getSize();
         var size = this.options.nativeElem.getSize();
         var position = nativeImage.getPosition();
-        var childs = this.options.nativeElem.removeChild(nativeImage);
         this.options.icons.each(function(icon, index) {
             var img = icon.getImage();
             var pos = img.getPosition();
@@ -148,7 +147,7 @@ mindplot.IconGroup = new Class({
         this.setSize(size.width, size.height);
     },
 
-   getNativeElement : function() {
+    getNativeElement : function() {
         return this.options.nativeElem;
     },
 
@@ -157,22 +156,13 @@ mindplot.IconGroup = new Class({
     },
 
     registerListeners : function() {
-        this.options.nativeElem.addEventListener('click', function(event) {
+        this.options.nativeElem.addEvent('click', function(event) {
             // Avoid node creation ...
-            if ($defined(event.stopPropagation)) {
-                event.stopPropagation(true);
-            } else {
-                event.cancelBubble = true;
-            }
+            event.stopPropagation();
 
         });
-        this.options.nativeElem.addEventListener('dblclick', function(event) {
-            // Avoid node creation ...
-            if ($defined(event.stopPropagation)) {
-                event.stopPropagation();
-            } else {
-                event.cancelBubble = true;
-            }
+        this.options.nativeElem.addEvent('dblclick', function(event) {
+            event.stopPropagation();
 
         });
     },

@@ -56,7 +56,7 @@ mindplot.widget.Menu = new Class({
             },
 
             setValue: function(value) {
-                designer.setFont2SelectedNode(value);
+                designer.changeFontFamily(value);
 
             }
         };
@@ -77,7 +77,7 @@ mindplot.widget.Menu = new Class({
                 return result;
             },
             setValue: function(value) {
-                designer.setFontSize2SelectedNode(value);
+                designer.changeFontSize(value);
             }
         };
         this._toolbarElems.push(new mindplot.widget.FontSizePanel("fontSize", fontSizeModel));
@@ -97,7 +97,7 @@ mindplot.widget.Menu = new Class({
                 return result;
             },
             setValue: function(value) {
-                designer.setShape2SelectedNode(value);
+                designer.changeTopicShape(value);
             }
         };
         this._toolbarElems.push(new mindplot.widget.TopicShapePanel("topicShape", topicShapeModel));
@@ -108,7 +108,7 @@ mindplot.widget.Menu = new Class({
                 return null;
             },
             setValue: function(value) {
-                designer.addIconType2SelectedNode(value);
+                designer.addIconType(value);
             }
         };
         this._toolbarElems.push(new mindplot.widget.IconPanel('topicIcon', topicIconModel));
@@ -130,7 +130,7 @@ mindplot.widget.Menu = new Class({
                 return result;
             },
             setValue : function (hex) {
-                designer.setBackColor2SelectedNode(hex);
+                designer.changeBackgroundColor(hex);
             }
         };
         this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('topicColor', topicColorModel, baseUrl));
@@ -152,7 +152,7 @@ mindplot.widget.Menu = new Class({
                 return result;
             },
             setValue : function (hex) {
-                designer.setBorderColor2SelectedNode(hex);
+                designer.changeBorderColor(hex);
             }
         };
         this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('topicBorder', borderColorModel, baseUrl));
@@ -174,7 +174,7 @@ mindplot.widget.Menu = new Class({
                 return result;
             },
             setValue : function (hex) {
-                designer.setFontColor2SelectedNode(hex);
+                designer.changeFontColor(hex);
             }
         };
         this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('fontColor', fontColorModel, baseUrl));
@@ -214,16 +214,16 @@ mindplot.widget.Menu = new Class({
 
 
         $('topicLink').addEvent('click', function(event) {
-            designer.addLink2SelectedNode();
+            designer.addLink();
 
         });
 
         $('topicRelation').addEvent('click', function(event) {
-            designer.addRelationShip2SelectedNode(event);
+            designer.addRelationShip(event);
         });
 
         $('topicNote').addEvent('click', function(event) {
-            designer.addNote2SelectedNode();
+            designer.addNote();
 
         });
 
@@ -235,7 +235,7 @@ mindplot.widget.Menu = new Class({
             designer.changeFontStyle();
         });
 
-        designer.addEventListener("modelUpdate", function(event) {
+        designer.addEvent("modelUpdate", function(event) {
             if (event.undoSteps > 0) {
                 $("undoEdition").setStyle("background-image", "url(../images/file_undo.png)");
             } else {

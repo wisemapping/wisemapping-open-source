@@ -31,8 +31,8 @@ mindplot.ActionIcon = new Class({
         this.getImage().setPosition(x - size.width / 2, y - size.height / 2);
     },
 
-    addEventListener:function(event, fn) {
-        this.getImage().addEventListener(event, fn);
+    addEvent:function(event, fn) {
+        this.getImage().addEvent(event, fn);
     },
 
     addToGroup:function(group) {

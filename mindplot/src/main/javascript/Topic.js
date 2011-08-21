@@ -43,11 +43,11 @@ mindplot.Topic = new Class({
         this.setMouseEventsEnabled(true);
 
         // Prevent click on the topics being propagated ...
-        this.addEventListener('click', function(event) {
+        this.addEvent('click', function(event) {
             event.stopPropagation();
         });
 
-        this.addEventListener('dblclick', function (event) {
+        this.addEvent('dblclick', function (event) {
             this._textEditor.show();
             event.stopPropagation(true);
         }.bind(this));
@@ -83,7 +83,7 @@ mindplot.Topic = new Class({
 
             if ($defined(dispatcher)) {
                 for (var i = 1; i < dispatcher._listeners.length; i++) {
-                    innerShape.addEventListener('mousedown', dispatcher._listeners[i]);
+                    innerShape.addEvent('mousedown', dispatcher._listeners[i]);
                 }
             }
 
@@ -373,17 +373,8 @@ mindplot.Topic = new Class({
                 this._icon = null;
             }
         }
-        /*var elem = this;
-         var executor = function(editor)
-         {
-         return function()
-         {
-         elem.updateNode();
-         };
-         };
 
-         setTimeout(executor(this), 0);*/
-        core.Executor.instance.delay(this.updateNode, 0, this);
+        this.updateNode.delay(0, this);
         this._note = null;
         this._hasNote = false;
     },
@@ -414,7 +405,7 @@ mindplot.Topic = new Class({
         if (!disableEventsListeners) {
             // Propagate mouse events ...
             var topic = this;
-            result.addEventListener('mousedown', function(event) {
+            result.addEvent('mousedown', function(event) {
                 var eventDispatcher = topic.getInnerShape()._dispatcherByEventType['mousedown'];
                 if ($defined(eventDispatcher)) {
                     eventDispatcher.eventListener(event);
@@ -466,7 +457,7 @@ mindplot.Topic = new Class({
             var model = this.getModel();
             model.setFontFamily(value);
         }
-        core.Executor.instance.delay(this.updateNode, 0, this, [updateModel]);
+        this.updateNode.delay(0, this, [updateModel]);
     },
 
     setFontSize : function(value, updateModel) {
@@ -476,7 +467,7 @@ mindplot.Topic = new Class({
             var model = this.getModel();
             model.setFontSize(value);
         }
-        core.Executor.instance.delay(this.updateNode, 0, this, [updateModel]);
+        this.updateNode.delay(0, this, [updateModel]);
 
     },
 
@@ -487,7 +478,7 @@ mindplot.Topic = new Class({
             var model = this.getModel();
             model.setFontStyle(value);
         }
-        core.Executor.instance.delay(this.updateNode, 0, this, [updateModel]);
+        this.updateNode.delay(0, this, [updateModel]);
     },
 
     setFontWeight : function(value, updateModel) {
@@ -561,7 +552,7 @@ mindplot.Topic = new Class({
     _setText : function(text, updateModel) {
         var textShape = this.getTextShape();
         textShape.setText(text);
-        core.Executor.instance.delay(this.updateNode, 0, this, [updateModel]);
+        this.updateNode.delay(0, this, [updateModel]);
 
         if ($defined(updateModel) && updateModel) {
             var model = this.getModel();
@@ -674,14 +665,14 @@ mindplot.Topic = new Class({
                 topic.handleMouseOver(event);
             }
         };
-        elem.addEventListener('mouseover', mouseOver);
+        elem.addEvent('mouseover', mouseOver);
 
         var outout = function(event) {
             if (topic.isMouseEventsEnabled()) {
                 topic.handleMouseOut(event);
             }
         };
-        elem.addEventListener('mouseout', outout);
+        elem.addEvent('mouseout', outout);
 
         // Focus events ...
         var mouseDown = function(event) {
@@ -693,7 +684,7 @@ mindplot.Topic = new Class({
             }
             topic.setOnFocus(value);
         }.bind(this);
-        elem.addEventListener('mousedown', mouseDown);
+        elem.addEvent('mousedown', mouseDown);
     },
 
     areChildrenShrinked : function() {
@@ -937,23 +928,23 @@ mindplot.Topic = new Class({
      * type:
      *    onfocus
      */
-    addEventListener : function(type, listener) {
+    addEvent : function(type, listener) {
         // Translate to web 2d events ...
         if (type == 'onfocus') {
             type = 'mousedown';
         }
 
         var shape = this.get2DElement();
-        shape.addEventListener(type, listener);
+        shape.addEvent(type, listener);
     },
 
-    removeEventListener : function(type, listener) {
+    removeEvent : function(type, listener) {
         // Translate to web 2d events ...
         if (type == 'onfocus') {
             type = 'mousedown';
         }
         var shape = this.get2DElement();
-        shape.removeEventListener(type, listener);
+        shape.removeEvent(type, listener);
     },
 
 
@@ -1135,6 +1126,10 @@ mindplot.Topic = new Class({
         if ($defined(targetTopic)) {
             result.connectTo(targetTopic);
         }
+
+        // If a drag node is create for it, let's hide the editor.
+        this._textEditor.close();
+
         return result;
     },
 

@@ -45,7 +45,7 @@ mindplot.TextEditor = new Class({
         var inputText = new Element('input', {type:"text",tabindex:'-1', value:""});
         inputText.setStyles({
             border:"none",
-            background:"transparent"
+            background:"red"
         });
         inputText.inject(inputContainer);
 

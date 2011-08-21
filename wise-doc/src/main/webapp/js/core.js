@@ -68,7 +68,7 @@ return false
 }if(!Log4js.loggers[categoryName]){Log4js.loggers[categoryName]=new Log4js.Logger(categoryName)
 }return Log4js.loggers[categoryName]
 },getDefaultLogger:function(){return Log4js.getLogger("[default]")
-},attachEvent:function(element,name,observer){if(element.addEventListener){element.addEventListener(name,observer,false)
+},attachEvent:function(element,name,observer){if(element.addEvent){element.addEvent(name,observer,false)
 }else{if(element.attachEvent){element.attachEvent("on"+name,observer)
 }}}};
 Log4js.extend=function(destination,source){for(property in source){destination[property]=source[property]

@@ -73,10 +73,10 @@
             this._enable = !this._enable;
             if (this._enable)
             {
-                this._element.addEventListener(this._type, this._listener);
+                this._element.addEvent(this._type, this._listener);
             } else
             {
-                this._element.removeEventListener(this._type, this._listener);
+                this._element.removeEvent(this._type, this._listener);
             }
             return this._enable;
         };
@@ -95,7 +95,7 @@
                     alert("Listener #:" + count);
                 };
                 this._listeners.push(listener);
-                this._element.addEventListener(this._type, listener);
+                this._element.addEvent(this._type, listener);
 
             }
 
@@ -109,7 +109,7 @@
                 if (this._listeners.length > 0)
                 {
                     var listener = this._listeners.pop();
-                    this._element.removeEventListener(this._type, listener);
+                    this._element.removeEvent(this._type, listener);
                 }
             }
 

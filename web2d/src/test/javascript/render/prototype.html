@@ -112,17 +112,17 @@
                 workspace.appendChild(nodeGroup);
 
                 // Add behaviour ...
-                inerRect.addEventListener("mouseover", function() {
+                inerRect.addEvent("mouseover", function() {
                     outerRect.setVisibility(true);
                 });
-                inerRect.addEventListener("mouseout", function() {
+                inerRect.addEvent("mouseout", function() {
                     if (!nodeGroup._drag)
                     {
                         outerRect.setVisibility(false);
                     }
                 });
 
-                nodeGroup.addEventListener("mousedown", function(e)
+                nodeGroup.addEvent("mousedown", function(e)
                 {
                     var shadowGroup = new web2d.Group();
                     shadowGroup.setSize(200, 60);
@@ -165,7 +165,7 @@
                             shadowGroup.setPosition(posx - 50, posy - 150);
                         };
                     }
-                    workspace.addEventListener("mousemove", workspace._moveFunction);
+                    workspace.addEvent("mousemove", workspace._moveFunction);
                     var mouseUp = function(e)
                     {
 
@@ -175,11 +175,11 @@
                         nodeGroup.setPosition(pos.x, pos.y);
                         nodeGroup._drag = false;
                         outerRect.setVisibility(true);
-                        workspace.removeEventListener("mousemove", workspace._moveFunction);
-                        workspace.removeEventListener("mouseup", mouseUp);
+                        workspace.removeEvent("mousemove", workspace._moveFunction);
+                        workspace.removeEvent("mouseup", mouseUp);
 
                     };
-                    workspace.addEventListener("mouseup", mouseUp);
+                    workspace.addEvent("mouseup", mouseUp);
 
                 });
 

@@ -64,7 +64,7 @@ mindplot.MindmapDesigner = new Class({
             mindplot.DesignerKeyboard.register(this);
 
             // To prevent the user from leaving the page with changes ...
-            window.addEvent('beforeunload', function () {
+            $(window).addEvent('beforeunload', function () {
                 if (this.needsSave()) {
                     this.save(null, false)
                 }
@@ -123,7 +123,7 @@ mindplot.MindmapDesigner = new Class({
             return topics[0];
         },
 
-        addEventListener : function(eventType, listener) {
+        addEvent : function(eventType, listener) {
             this._events[eventType] = listener;
         },
 
@@ -154,7 +154,7 @@ mindplot.MindmapDesigner = new Class({
                 this._layoutManager.registerListenersOnNode(topic);
 
                 // If a node had gained focus, clean the rest of the nodes ...
-                topic.addEventListener('mousedown', function(event) {
+                topic.addEvent('mousedown', function(event) {
                     this.onObjectFocusEvent(topic, event);
                 }.bind(this));
             }
@@ -164,7 +164,6 @@ mindplot.MindmapDesigner = new Class({
             if (isConnected) {
                 // Improve this ...
                 var targetTopicModel = model.getParent();
-                var targetTopicId = targetTopicModel.getId();
                 var targetTopic = null;
 
                 for (var i = 0; i < topics.length; i++) {
@@ -295,7 +294,7 @@ mindplot.MindmapDesigner = new Class({
         }
         ,
 
-        addRelationShip2SelectedNode : function(event) {
+        addRelationShip : function(event) {
             var screen = this._workspace.getScreenManager();
             var pos = screen.getWorkspaceMousePosition(event);
             var selectedTopics = this.getSelectedNodes();
@@ -456,10 +455,9 @@ mindplot.MindmapDesigner = new Class({
                 }
                 var relationships = mindmapModel.getRelationships();
                 for (var j = 0; j < relationships.length; j++) {
-                    var relationship = this._relationshipModelToRelationship(relationships[j]);
+                    this._relationshipModelToRelationship(relationships[j]);
                 }
             }
-            core.Executor.instance.setLoading(false);
             this._getTopics().forEach(function(topic) {
                 delete topic.getModel()._finalPosition;
             });
@@ -578,7 +576,7 @@ mindplot.MindmapDesigner = new Class({
             relationLine.setModel(model);
 
             //Add Listeners
-            relationLine.addEventListener('onfocus', function(event) {
+            relationLine.addEvent('onfocus', function(event) {
                 elem.onObjectFocusEvent.attempt([relationLine, event], elem);
             });
 
@@ -624,7 +622,7 @@ mindplot.MindmapDesigner = new Class({
 
         },
 
-        setFont2SelectedNode : function(font) {
+        changeFontFamily : function(font) {
             var validSelectedObjects = this._getValidSelectedObjectsIds();
             var topicsIds = validSelectedObjects.nodes;
             if (topicsIds.length > 0) {
@@ -641,7 +639,8 @@ mindplot.MindmapDesigner = new Class({
             }
         },
 
-        setFontColor2SelectedNode : function(color) {
+        changeFontColor : function(color) {
+            $assert(color,"color can not be null");
             var validSelectedObjects = this._getValidSelectedObjectsIds();
             var topicsIds = validSelectedObjects.nodes;
             if (topicsIds.length > 0) {
@@ -649,7 +648,7 @@ mindplot.MindmapDesigner = new Class({
             }
         },
 
-        setBackColor2SelectedNode : function(color) {
+        changeBackgroundColor : function(color) {
 
             var validateFunc = function(topic) {
                 return topic.getShapeType() != mindplot.model.NodeModel.SHAPE_TYPE_LINE
@@ -700,7 +699,7 @@ mindplot.MindmapDesigner = new Class({
             return result;
         },
 
-        setBorderColor2SelectedNode : function(color) {
+        changeBorderColor : function(color) {
             var validateFunc = function(topic) {
                 return topic.getShapeType() != mindplot.model.NodeModel.SHAPE_TYPE_LINE
             };
@@ -713,7 +712,7 @@ mindplot.MindmapDesigner = new Class({
             }
         },
 
-        setFontSize2SelectedNode : function(size) {
+        changeFontSize : function(size) {
             var validSelectedObjects = this._getValidSelectedObjectsIds();
             var topicsIds = validSelectedObjects.nodes;
             if (topicsIds.length > 0) {
@@ -722,7 +721,7 @@ mindplot.MindmapDesigner = new Class({
         }
         ,
 
-        setShape2SelectedNode : function(shape) {
+        changeTopicShape : function(shape) {
             var validateFunc = function(topic) {
                 return !(topic.getType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE && shape == mindplot.model.NodeModel.SHAPE_TYPE_LINE)
             };
@@ -743,7 +742,7 @@ mindplot.MindmapDesigner = new Class({
             }
         },
 
-        addIconType2SelectedNode : function(iconType) {
+        addIconType : function(iconType) {
             var validSelectedObjects = this._getValidSelectedObjectsIds();
             var topicsIds = validSelectedObjects.nodes;
             if (topicsIds.length > 0) {
@@ -759,7 +758,7 @@ mindplot.MindmapDesigner = new Class({
             }
         },
 
-        addLink2SelectedNode : function() {
+        addLink : function() {
             var selectedTopics = this.getSelectedNodes();
             var topic = null;
             if (selectedTopics.length > 0) {
@@ -811,7 +810,7 @@ mindplot.MindmapDesigner = new Class({
             }
         },
 
-        addNote2SelectedNode : function() {
+        addNote : function() {
             var selectedTopics = this.getSelectedNodes();
             var topic = null;
             if (selectedTopics.length > 0) {

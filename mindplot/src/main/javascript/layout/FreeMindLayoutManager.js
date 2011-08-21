@@ -52,7 +52,7 @@ mindplot.layout.FreeMindLayoutManager = mindplot.layout.BaseLayoutManager.extend
         var id = topic.getId();
         // Register node listeners ...
         var designer = this.getDesigner();
-        topic.addEventListener('click', function(event)
+        topic.addEvent('click', function(event)
         {
             designer.onObjectFocusEvent.attempt([topic, event], designer);
         });
@@ -60,7 +60,7 @@ mindplot.layout.FreeMindLayoutManager = mindplot.layout.BaseLayoutManager.extend
         // Add drag behaviour ...
         if (topic.getType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE)
         {
-            topic.addEventListener("mousedown",this._reconnectMouseDownListener.bindWithEvent(this,[topic]));
+            topic.addEvent("mousedown",this._reconnectMouseDownListener.bindWithEvent(this,[topic]));
         }
 
     },
@@ -97,11 +97,11 @@ mindplot.layout.FreeMindLayoutManager = mindplot.layout.BaseLayoutManager.extend
 
             // Register mouse move listener ...
             this._mouseMoveListenerInstance = this._mouseMoveListener.bindWithEvent(this,[topic]);
-            screen.addEventListener('mousemove', this._mouseMoveListenerInstance);
+            screen.addEvent('mousemove', this._mouseMoveListenerInstance);
 
             // Register mouse up listeners ...
             this._mouseUpListenerInstance = this._mouseUpListener.bindWithEvent(this,[topic]);
-            screen.addEventListener('mouseup', this._mouseUpListenerInstance);
+            screen.addEvent('mouseup', this._mouseUpListenerInstance);
 
             // Change cursor.
             window.document.body.style.cursor = 'move';
@@ -192,8 +192,8 @@ mindplot.layout.FreeMindLayoutManager = mindplot.layout.BaseLayoutManager.extend
 
         var screen = this._designer.getWorkSpace().getScreenManager();
         // Remove all the events.
-        screen.removeEventListener('mousemove', this._mouseMoveListenerInstance);
-        screen.removeEventListener('mouseup', this._mouseUpListenerInstance);
+        screen.removeEvent('mousemove', this._mouseMoveListenerInstance);
+        screen.removeEvent('mouseup', this._mouseUpListenerInstance);
         delete this._mouseMoveListenerInstance;
         delete this._mouseUpListenerInstance;
 
@@ -289,7 +289,7 @@ mindplot.layout.FreeMindLayoutManager = mindplot.layout.BaseLayoutManager.extend
         mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeMouseOverEvent,show);
         mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeMouseOutEvent,hide);
         node.addHelper(moveShape);
-        moveShape.addEventListener("mousedown",this._mousedownListener.bindWithEvent(this,[node]));
+        moveShape.addEvent("mousedown",this._mousedownListener.bindWithEvent(this,[node]));
 
     },
     needsPrepositioning:function(){
@@ -320,10 +320,10 @@ mindplot.layout.FreeMindLayoutManager = mindplot.layout.BaseLayoutManager.extend
                 topics[i].setMouseEventsEnabled(false);
                 if(topics[i].getId()!=topic.getId()){
                     var overListener = this._reconnectMouseOverListener.bindWithEvent(topics[i],[this]);
-                    topics[i].addEventListener('mouseover',overListener);
+                    topics[i].addEvent('mouseover',overListener);
                     this._mouseOverListeners.set(topics[i].getId(),overListener);
                     var outListener = this._reconnectMouseOutListener.bindWithEvent(topics[i],[this]);
-                    topics[i].addEventListener('mouseout',outListener);
+                    topics[i].addEvent('mouseout',outListener);
                     this._mouseOutListeners.set(topics[i].getId(),outListener);
                 }
             }
@@ -342,11 +342,11 @@ mindplot.layout.FreeMindLayoutManager = mindplot.layout.BaseLayoutManager.extend
 
             // Register mouse move listener ...
             this._mouseMoveListenerInstance = this._reconnectMouseMoveListener.bindWithEvent(this,[topic]);
-            screen.addEventListener('mousemove', this._mouseMoveListenerInstance);
+            screen.addEvent('mousemove', this._mouseMoveListenerInstance);
 
             // Register mouse up listeners ...
             this._mouseUpListenerInstance = this._reconnectMouseUpListener.bindWithEvent(this,[topic]);
-            screen.addEventListener('mouseup', this._mouseUpListenerInstance);
+            screen.addEvent('mouseup', this._mouseUpListenerInstance);
 
             // Change cursor.
             window.document.body.style.cursor = 'move';
@@ -390,8 +390,8 @@ mindplot.layout.FreeMindLayoutManager = mindplot.layout.BaseLayoutManager.extend
     _reconnectMouseUpListener:function(event, node){
          var screen = this._designer.getWorkSpace().getScreenManager();
         // Remove all the events.
-        screen.removeEventListener('mousemove', this._mouseMoveListenerInstance);
-        screen.removeEventListener('mouseup', this._mouseUpListenerInstance);
+        screen.removeEvent('mousemove', this._mouseMoveListenerInstance);
+        screen.removeEvent('mouseup', this._mouseUpListenerInstance);
         delete this._mouseMoveListenerInstance;
         delete this._mouseUpListenerInstance;
 
@@ -402,9 +402,9 @@ mindplot.layout.FreeMindLayoutManager = mindplot.layout.BaseLayoutManager.extend
             topics[i].setMouseEventsEnabled(true);
             if(topics[i].getId()!=node.getId()){
                 var overListener = this._mouseOverListeners.get(topics[i].getId());
-                topics[i].removeEventListener('mouseover',overListener);
+                topics[i].removeEvent('mouseover',overListener);
                 var outListener = this._mouseOutListeners.get(topics[i].getId());
-                topics[i].removeEventListener('mouseout',outListener);
+                topics[i].removeEvent('mouseout',outListener);
             }
         }
 

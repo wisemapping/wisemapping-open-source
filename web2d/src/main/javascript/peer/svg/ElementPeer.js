@@ -1,25 +1,23 @@
 /*
-*    Copyright [2011] [wisemapping]
-*
-*   Licensed under WiseMapping Public License, Version 1.0 (the "License").
-*   It is basically the Apache License, Version 2.0 (the "License") plus the
-*   "powered by wisemapping" text requirement on every single page;
-*   you may not use this file except in compliance with the License.
-*   You may obtain a copy of the license at
-*
-*       http://www.wisemapping.org/license
-*
-*   Unless required by applicable law or agreed to in writing, software
-*   distributed under the License is distributed on an "AS IS" BASIS,
-*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*   See the License for the specific language governing permissions and
-*   limitations under the License.
-*/
+ *    Copyright [2011] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 
-web2d.peer.svg.ElementPeer = function(svgElement)
-{
+web2d.peer.svg.ElementPeer = function(svgElement) {
     this._native = svgElement;
-    this._dblClickListeners = new Hash();
     this._size = {width:1,height:1};
     this._changeListeners = {};
     // http://support.adobe.com/devsup/devsup.nsf/docs/50493.htm
@@ -28,34 +26,28 @@ web2d.peer.svg.ElementPeer = function(svgElement)
 web2d.peer.svg.ElementPeer.prototype.svgNamespace = 'http://www.w3.org/2000/svg';
 web2d.peer.svg.ElementPeer.prototype.linkNamespace = 'http://www.w3.org/1999/xlink';
 
-web2d.peer.svg.ElementPeer.prototype.setChildren = function(children)
-{
+web2d.peer.svg.ElementPeer.prototype.setChildren = function(children) {
     this._children = children;
 };
 
-web2d.peer.svg.ElementPeer.prototype.getChildren = function()
-{
+web2d.peer.svg.ElementPeer.prototype.getChildren = function() {
     var result = this._children;
-    if (!$defined(result))
-    {
+    if (!$defined(result)) {
         result = [];
         this._children = result;
     }
     return result;
 };
 
-web2d.peer.svg.ElementPeer.prototype.getParent = function()
-{
+web2d.peer.svg.ElementPeer.prototype.getParent = function() {
     return this._parent;
 };
 
-web2d.peer.svg.ElementPeer.prototype.setParent = function(parent)
-{
+web2d.peer.svg.ElementPeer.prototype.setParent = function(parent) {
     this._parent = parent;
 };
 
-web2d.peer.svg.ElementPeer.prototype.appendChild = function(elementPeer)
-{
+web2d.peer.svg.ElementPeer.prototype.appendChild = function(elementPeer) {
     // Store parent and child relationship.
     elementPeer.setParent(this);
     var children = this.getChildren();
@@ -69,8 +61,7 @@ web2d.peer.svg.ElementPeer.prototype.appendChild = function(elementPeer)
 };
 
 
-web2d.peer.svg.ElementPeer.prototype.removeChild = function(elementPeer)
-{
+web2d.peer.svg.ElementPeer.prototype.removeChild = function(elementPeer) {
     // Store parent and child relationship.
     elementPeer.setParent(null);
     var children = this.getChildren();
@@ -81,85 +72,34 @@ web2d.peer.svg.ElementPeer.prototype.removeChild = function(elementPeer)
     children.erase(elementPeer);
 
     var newLength = children.length;
-    if (newLength >= length)
-    {
+    if (newLength >= length) {
         throw "Could not remove the element.";
     }
-    /*var found = false;
-    children = children.reject(function(iter)
-    {
-        var equals = (iter._native == elementPeer._native);
-        if (equals)
-        {
-            found = true;
-        }
-        return equals;
-    });
-
-    // Could found the element ?
-    if (!found)
-    {
-        throw "Could not remove the element.";
-    }*/
-
     // Append element as a child.
     this._native.removeChild(elementPeer._native);
 };
 
 /**
  * http://www.w3.org/TR/DOM-Level-3-Events/events.html
- * http://developer.mozilla.org/en/docs/addEventListener
+ * http://developer.mozilla.org/en/docs/addEvent
  */
-web2d.peer.svg.ElementPeer.prototype.addEventListener = function(type, listener)
-{
-    if (type == 'dblclick')
-    {
-        // This is workaround to support double click...
-        var dblListener = function(e)
-        {
-            if (e.detail >= 2)
-            {
-                listener.call(this, e);
-            }
-        };
+web2d.peer.svg.ElementPeer.prototype.addEvent = function(type, listener) {
 
-        this._dblClickListeners[listener] = dblListener;
-        this._native.addEventListener(type, dblListener, false);
-    } else
-    {
-        this._native.addEventListener(type, listener, false);
-    }
+    this._native.addEventListener(type, listener, false);
+
 };
 
-web2d.peer.svg.ElementPeer.prototype.removeEventListener = function(type, listener)
-{
-    if (type == 'dblclick')
-    {
-        // This is workaround to support double click...
-        var dblClickListener = this._dblClickListeners[listener];
-        if (dblClickListener == null)
-        {
-            throw "Could not find listener to remove";
-        }
-        type = 'click';
-        this._native.removeEventListener(type, dblClickListener, false);
-        delete this._dblClickListeners[listener];
-    } else
-    {
-        this._native.removeEventListener(type, listener, false);
-    }
+web2d.peer.svg.ElementPeer.prototype.removeEvent = function(type, listener) {
+    this._native.removeEventListener(type, listener, false);
 };
 
-web2d.peer.svg.ElementPeer.prototype.setSize = function(width, height)
-{
-    if ($defined(width) && this._size.width != parseInt(width))
-    {
+web2d.peer.svg.ElementPeer.prototype.setSize = function(width, height) {
+    if ($defined(width) && this._size.width != parseInt(width)) {
         this._size.width = parseInt(width);
         this._native.setAttribute('width', parseInt(width));
     }
 
-    if ($defined(height) && this._size.height != parseInt(height))
-    {
+    if ($defined(height) && this._size.height != parseInt(height)) {
         this._size.height = parseInt(height);
         this._native.setAttribute('height', parseInt(height));
     }
@@ -167,32 +107,26 @@ web2d.peer.svg.ElementPeer.prototype.setSize = function(width, height)
     web2d.peer.utils.EventUtils.broadcastChangeEvent(this, "strokeStyle");
 };
 
-web2d.peer.svg.ElementPeer.prototype.getSize = function()
-{
+web2d.peer.svg.ElementPeer.prototype.getSize = function() {
     return {width:this._size.width,height:this._size.height};
 };
 
-web2d.peer.svg.ElementPeer.prototype.setFill = function(color, opacity)
-{
-    if ($defined(color))
-    {
+web2d.peer.svg.ElementPeer.prototype.setFill = function(color, opacity) {
+    if ($defined(color)) {
         this._native.setAttribute('fill', color);
     }
-    if ($defined(opacity))
-    {
+    if ($defined(opacity)) {
         this._native.setAttribute('fill-opacity', opacity);
     }
 };
 
-web2d.peer.svg.ElementPeer.prototype.getFill = function()
-{
+web2d.peer.svg.ElementPeer.prototype.getFill = function() {
     var color = this._native.getAttribute('fill');
     var opacity = this._native.getAttribute('fill-opacity');
     return {color:color, opacity:Number(opacity)};
 };
 
-web2d.peer.svg.ElementPeer.prototype.getStroke = function()
-{
+web2d.peer.svg.ElementPeer.prototype.getStroke = function() {
     var vmlStroke = this._native;
     var color = vmlStroke.getAttribute('stroke');
     var dashstyle = this._stokeStyle;
@@ -202,18 +136,14 @@ web2d.peer.svg.ElementPeer.prototype.getStroke = function()
 };
 
 web2d.peer.svg.ElementPeer.prototype.__stokeStyleToStrokDasharray = {solid:[],dot:[1,3],dash:[4,3],longdash:[10,2],dashdot:[5,3,1,3]};
-web2d.peer.svg.ElementPeer.prototype.setStroke = function(width, style, color, opacity)
-{
-    if ($defined(width))
-    {
+web2d.peer.svg.ElementPeer.prototype.setStroke = function(width, style, color, opacity) {
+    if ($defined(width)) {
         this._native.setAttribute('stroke-width', width + "px");
     }
-    if ($defined(color))
-    {
+    if ($defined(color)) {
         this._native.setAttribute('stroke', color);
     }
-    if ($defined(style))
-    {
+    if ($defined(style)) {
         // Scale the dash array in order to be equal to VML. In VML, stroke style doesn't scale.
         var dashArrayPoints = this.__stokeStyleToStrokDasharray[style];
         var scale = 1 / web2d.peer.utils.TransformUtil.workoutScale(this).width;
@@ -222,8 +152,7 @@ web2d.peer.svg.ElementPeer.prototype.setStroke = function(width, style, color, o
         strokeWidth = parseFloat(strokeWidth);
 
         var scaledPoints = [];
-        for (var i = 0; i < dashArrayPoints.length; i++)
-        {
+        for (var i = 0; i < dashArrayPoints.length; i++) {
             // VML scale the stroke based on the stroke width.
             scaledPoints[i] = dashArrayPoints[i] * strokeWidth;
 
@@ -235,53 +164,43 @@ web2d.peer.svg.ElementPeer.prototype.setStroke = function(width, style, color, o
         this._stokeStyle = style;
     }
 
-    if ($defined(opacity))
-    {
+    if ($defined(opacity)) {
         this._native.setAttribute('stroke-opacity', opacity);
     }
 };
 
 /*
-* style='visibility: visible'
-*/
-web2d.peer.svg.ElementPeer.prototype.setVisibility = function(isVisible)
-{
+ * style='visibility: visible'
+ */
+web2d.peer.svg.ElementPeer.prototype.setVisibility = function(isVisible) {
     this._native.setAttribute('visibility', (isVisible) ? 'visible' : 'hidden');
 };
 
-web2d.peer.svg.ElementPeer.prototype.isVisible = function()
-{
+web2d.peer.svg.ElementPeer.prototype.isVisible = function() {
     var visibility = this._native.getAttribute('visibility');
     return !(visibility == 'hidden');
 };
 
-web2d.peer.svg.ElementPeer.prototype.updateStrokeStyle = function()
-{
+web2d.peer.svg.ElementPeer.prototype.updateStrokeStyle = function() {
     var strokeStyle = this._stokeStyle;
-    if (this.getParent())
-    {
-        if (strokeStyle && strokeStyle != 'solid')
-        {
+    if (this.getParent()) {
+        if (strokeStyle && strokeStyle != 'solid') {
             this.setStroke(null, strokeStyle);
         }
     }
 };
 
-web2d.peer.svg.ElementPeer.prototype.attachChangeEventListener = function(type, listener)
-{
+web2d.peer.svg.ElementPeer.prototype.attachChangeEventListener = function(type, listener) {
     var listeners = this.getChangeEventListeners(type);
-    if (!$defined(listener))
-    {
+    if (!$defined(listener)) {
         throw "Listener can not be null";
     }
     listeners.push(listener);
 };
 
-web2d.peer.svg.ElementPeer.prototype.getChangeEventListeners = function(type)
-{
+web2d.peer.svg.ElementPeer.prototype.getChangeEventListeners = function(type) {
     var listeners = this._changeListeners[type];
-    if (!$defined(listeners))
-    {
+    if (!$defined(listeners)) {
         listeners = [];
         this._changeListeners[type] = listeners;
     }
@@ -291,20 +210,17 @@ web2d.peer.svg.ElementPeer.prototype.getChangeEventListeners = function(type)
 /**
  * Move element to the front
  */
-web2d.peer.svg.ElementPeer.prototype.moveToFront = function()
-{
+web2d.peer.svg.ElementPeer.prototype.moveToFront = function() {
     this._native.parentNode.appendChild(this._native);
 };
 
 /**
  * Move element to the back
  */
-web2d.peer.svg.ElementPeer.prototype.moveToBack = function()
-{
+web2d.peer.svg.ElementPeer.prototype.moveToBack = function() {
     this._native.parentNode.insertBefore(this._native, this._native.parentNode.firstChild);
 };
 
-web2d.peer.svg.ElementPeer.prototype.setCursor = function(type)
-{
+web2d.peer.svg.ElementPeer.prototype.setCursor = function(type) {
     this._native.style.cursor = type;
 };

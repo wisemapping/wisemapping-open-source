@@ -1338,7 +1338,7 @@ if (document.execCommand) try {
 } catch (e){}
 
 /*<ltIE9>*/
-if (this.attachEvent && !this.addEventListener){
+if (this.attachEvent && !this.addEvent){
 	var unloadEvent = function(){
 		this.detachEvent('onunload', unloadEvent);
 		document.head = document.html = document.window = null;
@@ -3758,13 +3758,13 @@ Element.implement('hasChild', function(element){
 		} else {
 			collected[$uid(this)] = this;
 		}
-		if (this.addEventListener) this.addEventListener(type, fn, !!arguments[2]);
+		if (this.addEvent) this.addEvent(type, fn, !!arguments[2]);
 		else this.attachEvent('on' + type, fn);
 		return this;
 	},
 
 	removeListener: function(type, fn){
-		if (this.removeEventListener) this.removeEventListener(type, fn, !!arguments[2]);
+		if (this.removeEvent) this.removeEvent(type, fn, !!arguments[2]);
 		else this.detachEvent('on' + type, fn);
 		return this;
 	},
@@ -3790,7 +3790,7 @@ Element.implement('hasChild', function(element){
 });
 
 /*<ltIE9>*/
-if (window.attachEvent && !window.addEventListener) window.addListener('unload', function(){
+if (window.attachEvent && !window.addEvent) window.addListener('unload', function(){
 	Object.each(collected, clean);
 	if (window.CollectGarbage) CollectGarbage();
 });

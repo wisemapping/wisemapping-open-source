@@ -93,7 +93,7 @@ web2d.Element.prototype._supportedEvents = ["click","dblclick","mousemove","mous
  * The following events types are supported:
  *
  */
-web2d.Element.prototype.addEventListener = function(type, listener)
+web2d.Element.prototype.addEvent = function(type, listener)
 {
     if (!this._supportedEvents.include(type))
     {
@@ -106,7 +106,7 @@ web2d.Element.prototype.addEventListener = function(type, listener)
         this._dispatcherByEventType[type] = new web2d.EventDispatcher(this);
 
         var eventListener = this._dispatcherByEventType[type].eventListener;
-        this._peer.addEventListener(type, eventListener);
+        this._peer.addEvent(type, eventListener);
     }
 
     this._dispatcherByEventType[type].addListener(type, listener);
@@ -122,7 +122,7 @@ web2d.Element.prototype.addEventListener = function(type, listener)
  *     The listener parameter takes an interface implemented by the user which contains the methods to be called when the event occurs.
  *     This interace will be invoked passing an event as argument and the 'this' referece in the function will be the element.
  */
-web2d.Element.prototype.removeEventListener = function(type, listener)
+web2d.Element.prototype.removeEvent = function(type, listener)
 {
     var dispatcher = this._dispatcherByEventType[type];
     if (dispatcher == null)
@@ -134,7 +134,7 @@ web2d.Element.prototype.removeEventListener = function(type, listener)
     // If there is not listeners, EventDispatcher must be removed.
     if (dispatcher.getListenersCount() <= 0)
     {
-        this._peer.removeEventListener(type, dispatcher.eventListener);
+        this._peer.removeEvent(type, dispatcher.eventListener);
         this._dispatcherByEventType[type] = null;
     }
 };

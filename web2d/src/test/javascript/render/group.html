@@ -135,9 +135,9 @@
             var listener = function(e) {
                 alert("Click event on:" + this.getType())
             };
-            group.addEventListener("click", listener);
-            elipseLeft.addEventListener("click", listener);
-            elipseRight.addEventListener("click", listener);
+            group.addEvent("click", listener);
+            elipseLeft.addEvent("click", listener);
+            elipseRight.addEvent("click", listener);
 
             workspace.addItAsChildTo($("groupEventsContainer"));
         }
@@ -301,7 +301,7 @@
             group.setSize(100, 100);
             group.setPosition(0, 0);
             group.setCoordSize(100, 100);
-            group.addEventListener("mouseover", function() {
+            group.addEvent("mouseover", function() {
                 alert("Mouse Over Group");
             });
             workspace.appendChild(group);
@@ -309,7 +309,7 @@
             elipseOuter = new web2d.Elipse();
             elipseOuter.setPosition(50, 50);
             elipseOuter.setSize(50, 50);
-            group.addEventListener("mouseover", function() {
+            group.addEvent("mouseover", function() {
                 alert("Mouse Over elipseOuter");
             });
             group.appendChild(elipseOuter);

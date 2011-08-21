@@ -246,7 +246,7 @@
             var rect = new web2d.Rect(0, rectAttributes);
             rect.setPosition(120, 20);
             workspace.appendChild(rect);
-            rect.addEventListener("mouseover", function() {
+            rect.addEvent("mouseover", function() {
                 alert("Mouse Over");
             });
 

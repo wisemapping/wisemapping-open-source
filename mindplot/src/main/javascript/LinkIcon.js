@@ -138,13 +138,13 @@ mindplot.LinkIcon = new Class({
         }
 
         var linkIcon = this;
-        image.addEventListener('mouseover', function(event) {
+        image.addEvent('mouseover', function(event) {
             bubbleTip.open(event, container, linkIcon);
         });
-        image.addEventListener('mousemove', function(event) {
+        image.addEvent('mousemove', function(event) {
             bubbleTip.updatePosition(event);
         });
-        image.addEventListener('mouseout', function(event) {
+        image.addEvent('mouseout', function(event) {
             bubbleTip.close(event);
         });
     },

@@ -96,7 +96,7 @@ mindplot.Note = new Class({
         }
 
         var note = this;
-        image.addEventListener('mouseover', function(event) {
+        image.addEvent('mouseover', function(event) {
             var text = textModel.getText();
             text = unescape(text);
             text = text.replace(/\n/ig, "<br/>");
@@ -106,10 +106,10 @@ mindplot.Note = new Class({
 
             bubbleTip.open(event, container, note);
         }.bind(this));
-        image.addEventListener('mousemove', function(event) {
+        image.addEvent('mousemove', function(event) {
             bubbleTip.updatePosition(event);
         });
-        image.addEventListener('mouseout', function(event) {
+        image.addEvent('mouseout', function(event) {
             bubbleTip.close(event);
         });
     },

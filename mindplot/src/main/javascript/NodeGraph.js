@@ -52,9 +52,9 @@ mindplot.NodeGraph = new Class({
         this._model.setPosition(point.x, point.y);
     },
 
-    addEventListener : function(type, listener) {
+    addEvent : function(type, listener) {
         var elem = this.get2DElement();
-        elem.addEventListener(type, listener);
+        elem.addEvent(type, listener);
     },
 
     setMouseEventsEnabled : function(isEnabled) {

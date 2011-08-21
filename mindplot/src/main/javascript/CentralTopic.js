@@ -27,7 +27,7 @@ mindplot.CentralTopic = new Class({
         this.parent();
 
         // This disable the drag of the central topic. But solves the problem of deselecting the nodes when the screen is clicked.
-        this.addEventListener('mousedown', function(event) {
+        this.addEvent('mousedown', function(event) {
             event.stopPropagation();
         });
     },

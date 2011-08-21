@@ -186,7 +186,7 @@ mindplot.DesignerKeyboard = new Class({
 
         var regex = /^(?:shift|control|ctrl|alt|meta)$/;
         var modifiers = ['shift', 'control', 'alt', 'meta'];
-        var excludes = ['esc','capslock','tab'];
+        var excludes = ['esc','capslock','tab','f3','f4','f5','f6','f7','f8','f9','10','11','12'];
 
         $(document).addEvent('keydown', function(event) {
 

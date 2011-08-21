@@ -83,19 +83,19 @@ mindplot.layout.OriginalLayoutManager = new Class({
 
         var dragTopicPositioner = this.getDragTopicPositioner();
 
-        dragger.addEventListener('startdragging', function(event, node) {
+        dragger.addEvent('startdragging', function(event, node) {
             // Enable all mouse events.
             for (var i = 0; i < topics.length; i++) {
                 topics[i].setMouseEventsEnabled(false);
             }
         });
 
-        dragger.addEventListener('dragging', function(event, dragTopic) {
+        dragger.addEvent('dragging', function(event, dragTopic) {
             // Update the state and connections of the topic ...
             dragTopicPositioner.positionateDragTopic(dragTopic);
         });
 
-        dragger.addEventListener('enddragging', function(event, dragTopic) {
+        dragger.addEvent('enddragging', function(event, dragTopic) {
             // Enable all mouse events.
             for (var i = 0; i < topics.length; i++) {
                 topics[i].setMouseEventsEnabled(true);

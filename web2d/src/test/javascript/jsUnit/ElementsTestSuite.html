@@ -239,8 +239,8 @@ function testElementEventHandling()
 
         var listener = function() { /* Dummy event listener */
         };
-        elem.addEventListener(eventType, listener);
-        elem.removeEventListener(eventType, listener);
+        elem.addEvent(eventType, listener);
+        elem.removeEvent(eventType, listener);
     };
 
     testEventHandling(workspace, null, 'mouseover');

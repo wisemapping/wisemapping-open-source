@@ -318,7 +318,7 @@
                                         <include>collaboration/frameworks/brix/BrixFramework-min.js</include>
 
                                         <include>widget/IconPanel-min.js</include>
-                                        <include>widget/ToolbarPanel-min.js</include>
+                                        <include>widget/ListToolbarPanel-min.js</include>
                                         <include>widget/FontFamilyPanel-min.js</include>
                                         <include>widget/FontSizePanel-min.js</include>
                                         <include>widget/TopicShapePanel-min.js</include>

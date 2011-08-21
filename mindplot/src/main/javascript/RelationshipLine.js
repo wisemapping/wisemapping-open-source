@@ -119,7 +119,7 @@ mindplot.RelationshipLine = new Class({
         workspace.appendChild(this._focusShape);
         workspace.appendChild(this._controlPointsController);
         this._controlPointControllerListener = this._initializeControlPointController.bindWithEvent(this, workspace);
-        this._line2d.addEventListener('click', this._controlPointControllerListener);
+        this._line2d.addEvent('click', this._controlPointControllerListener);
         this._isInWorkspace = true;
 
         workspace.appendChild(this._startArrow);
@@ -135,7 +135,7 @@ mindplot.RelationshipLine = new Class({
     removeFromWorkspace : function(workspace) {
         workspace.removeChild(this._focusShape);
         workspace.removeChild(this._controlPointsController);
-        this._line2d.removeEventListener('click', this._controlPointControllerListener);
+        this._line2d.removeEvent('click', this._controlPointControllerListener);
         this._isInWorkspace = false;
         workspace.removeChild(this._startArrow);
         workspace.removeChild(this._endArrow);
@@ -175,14 +175,14 @@ mindplot.RelationshipLine = new Class({
         //this._focusShape.setDestControlPoint(ctrlPoints[1]);
     },
 
-    addEventListener : function(type, listener) {
+    addEvent : function(type, listener) {
         // Translate to web 2d events ...
         if (type == 'onfocus') {
             type = 'mousedown';
         }
 
         var line = this._line2d;
-        line.addEventListener(type, listener);
+        line.addEvent(type, listener);
     },
 
     isOnFocus : function() {

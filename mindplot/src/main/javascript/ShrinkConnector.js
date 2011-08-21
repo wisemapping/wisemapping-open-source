@@ -24,7 +24,7 @@ mindplot.ShirinkConnector = new Class({
         elipse.setFill('#f7f7f7');
 
         elipse.setSize(mindplot.Topic.CONNECTOR_WIDTH, mindplot.Topic.CONNECTOR_WIDTH);
-        elipse.addEventListener('click', function(event) {
+        elipse.addEvent('click', function(event) {
             var model = topic.getModel();
             var collapse = !model.areChildrenShrinked();
 
@@ -37,24 +37,25 @@ mindplot.ShirinkConnector = new Class({
 
         });
 
-        elipse.addEventListener('mousedown', function(event) {
+        elipse.addEvent('mousedown', function(event) {
             // Avoid node creation ...
             var e = new Event(event).stop();
             e.preventDefault();
         });
 
-        elipse.addEventListener('dblclick', function(event) {
+        elipse.addEvent('dblclick', function(event) {
             // Avoid node creation ...
             event = new Event(event).stop();
             event.preventDefault();
 
         });
 
-        elipse.addEventListener('mouseover', function(event) {
-            this.setFill('#009900');
+        elipse.addEvent('mouseover', function(event) {
+
+            this.setFill('rgb(153, 0, 255)');
         });
 
-        elipse.addEventListener('mouseout', function(event) {
+        elipse.addEvent('mouseout', function(event) {
             var color = topic.getBackgroundColor();
             this.setFill(color);
         });

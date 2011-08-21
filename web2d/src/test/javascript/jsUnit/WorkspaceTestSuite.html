@@ -59,13 +59,13 @@ function testEventTest()
         alert("My Listener 2");
     };
 
-    workspace.addEventListener("click", firstListener);
+    workspace.addEvent("click", firstListener);
 
     // Handle gracefully invalid event types...
     var catchException = false
     try
     {
-        workspace.addEventListener("click2", firstListener);
+        workspace.addEvent("click2", firstListener);
     } catch(e)
     {
         catchException = true;
@@ -77,7 +77,7 @@ function testEventTest()
     catchException = false
     try
     {
-        workspace.removeEventListener("click", secondListener);
+        workspace.removeEvent("click", secondListener);
     } catch(e)
     {
         catchException = true;
@@ -85,13 +85,13 @@ function testEventTest()
     assert("Invalid remove operation seems to be broken", catchException);
 
     //// Remove a valid listener.
-    workspace.removeEventListener("click", firstListener);
+    workspace.removeEvent("click", firstListener);
 
     //// It has been removed?
     catchException = false;
     try
     {
-        workspace.removeEventListener("click", firstListener);
+        workspace.removeEvent("click", firstListener);
     } catch(e)
     {
         catchException = true;
@@ -101,16 +101,16 @@ function testEventTest()
 
     // Check multiple registation of a type ...
     //// Add two listeners ...
-    workspace.addEventListener("dblclick", firstListener);
-    workspace.addEventListener("dblclick", secondListener);
+    workspace.addEvent("dblclick", firstListener);
+    workspace.addEvent("dblclick", secondListener);
 
     //// Remove it ...
-    workspace.removeEventListener("dblclick", firstListener);
-    workspace.removeEventListener("dblclick", secondListener);
+    workspace.removeEvent("dblclick", firstListener);
+    workspace.removeEvent("dblclick", secondListener);
 
     /// Check multiple registration on different types ...
-    workspace.addEventListener("click", firstListener);
-    workspace.addEventListener("mouseover", secondListener);
+    workspace.addEvent("click", firstListener);
+    workspace.addEvent("mouseover", secondListener);
 
 }
 

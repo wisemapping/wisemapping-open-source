@@ -144,11 +144,11 @@ var bkLib = {
 	isMSIE : (navigator.appVersion.indexOf("MSIE") != -1),
 	
 	addEvent : function(obj, type, fn) {
-		(obj.addEventListener) ? obj.addEventListener( type, fn, false ) : obj.attachEvent("on"+type, fn);	
+		(obj.addEvent) ? obj.addEvent( type, fn, false ) : obj.attachEvent("on"+type, fn);
 	},
 	
 	removeEvent : function(obj, type, fn) {
-		(obj.removeEventListener) ? obj.removeEventListener( type, fn, false ) : obj.detachEvent("on"+type, fn);
+		(obj.removeEvent) ? obj.removeEvent( type, fn, false ) : obj.detachEvent("on"+type, fn);
 	},
 
 	toArray : function(iterable) {
@@ -194,8 +194,8 @@ var bkLib = {
 	},
 	onDomLoaded : function(fireThis) {
 		this.domLoad.push(fireThis);
-		if (document.addEventListener) {
-			document.addEventListener("DOMContentLoaded", bkLib.domLoaded, null);
+		if (document.addEvent) {
+			document.addEvent("DOMContentLoaded", bkLib.domLoaded, null);
 		} else if(bkLib.isMSIE) {
 			document.write("<style>.nicEdit-main p { margin: 0; }</style><scr"+"ipt id=__ie_onload defer " + ((location.protocol == "https:") ? "src='javascript:void(0)'" : "src=//0") + "><\/scr"+"ipt>");
 			$BK("__ie_onload").onreadystatechange = function() {

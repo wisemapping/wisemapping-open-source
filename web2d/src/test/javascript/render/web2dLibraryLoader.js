@@ -84,9 +84,9 @@ web2d.Loader =
             web2d.Loader.checkLoaded(filename);
         }
 
-        if(typeof(js.addEventListener) != 'undefined') {
+        if(typeof(js.addEvent) != 'undefined') {
             /* The FF, Chrome, Safari, Opera way */
-            js.addEventListener('load',calltheCBcmn,false);
+            js.addEvent('load',calltheCBcmn,false);
         }
         else {
             /* The MS IE 8+ way (may work with others - I dunno)*/

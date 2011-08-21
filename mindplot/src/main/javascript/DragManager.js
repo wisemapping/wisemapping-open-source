@@ -58,7 +58,7 @@ mindplot.DragManager.prototype.add = function(node)
             window.document.body.style.cursor = 'move';
         }
     };
-    node.addEventListener('mousedown', mouseDownListener);
+    node.addEvent('mousedown', mouseDownListener);
 };
 
 mindplot.DragManager.prototype.remove = function(node)
@@ -154,7 +154,7 @@ mindplot.DragManager.prototype._buildMouseUpListener = function(workspace, node,
  *  - dragging
  *  - enddragging
  */
-mindplot.DragManager.prototype. addEventListener = function(type, listener)
+mindplot.DragManager.prototype. addEvent = function(type, listener)
 {
     this._listeners[type] = listener;
 };

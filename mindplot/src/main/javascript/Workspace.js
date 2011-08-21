@@ -87,12 +87,12 @@ mindplot.Workspace = new Class({
         }
     },
 
-    addEventListener: function(type, listener) {
-        this._workspace.addEventListener(type, listener);
+    addEvent: function(type, listener) {
+        this._workspace.addEvent(type, listener);
     },
 
-    removeEventListener: function(type, listener) {
-        this._workspace.removeEventListener(type, listener);
+    removeEvent: function(type, listener) {
+        this._workspace.removeEvent(type, listener);
     },
 
     getSize: function() {
