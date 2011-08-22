@@ -94,6 +94,17 @@ mindplot.DesignerKeyboard = new Class({
                 designer.changeFontWeight();
             },
 
+            'ctrl+s' : function(event) {
+                event.preventDefault();
+                designer.save(null, true);
+
+            },
+
+            'meta+s' : function(event) {
+                event.preventDefault();
+                designer.save(null, true);
+            },
+
             'ctrl+i' : function() {
                 designer.changeFontStyle();
             },

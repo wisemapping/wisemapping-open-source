@@ -127,7 +127,7 @@ mindplot.Workspace = new Class({
         this._screenManager.setScale(zoom);
 
         // Some changes in the screen. Let's fire an update event...
-        this._screenManager.fireEvent('update', new Event());
+        this._screenManager.fireEvent('update');
     },
 
     getScreenManager: function() {
@@ -180,7 +180,7 @@ mindplot.Workspace = new Class({
                         event.preventDefault();
 
                         // Fire drag event ...
-                        screenManager.fireEvent('update', new Event());
+                        screenManager.fireEvent('update');
                         wasDragged = true;
 
 
@@ -202,7 +202,7 @@ mindplot.Workspace = new Class({
                         mWorkspace.enableWorkspaceEvents(true);
 
                         if (!wasDragged) {
-                            screenManager.fireEvent('click', new Event());
+                            screenManager.fireEvent('click');
                         }
                     };
                     screenManager.addEvent('mouseup', workspace._mouseUpListener);
