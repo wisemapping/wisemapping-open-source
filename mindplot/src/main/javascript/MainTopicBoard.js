@@ -89,7 +89,7 @@ mindplot.MainTopicBoard = new Class({
 
     addBranch : function(topic) {
         var order = topic.getOrder();
-        $assert(order, "Order must be defined");
+        $assert($defined(order), "Order must be defined");
 
         // If the entry is not available, I must swap the the entries...
         var board = this._getBoard();

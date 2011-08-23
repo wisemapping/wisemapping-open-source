@@ -20,6 +20,7 @@ $assert = function(assert, message) {
             stack = e;
         }
         console.log(message + "," + stack);
+        throw message;
 //        wLogger.error(message + "," + stack);
 //        core.Logger.logError(message + "," + stack);
 

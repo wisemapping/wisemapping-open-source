@@ -41,7 +41,11 @@ mindplot.TextEditor = new Class({
         });
         inputContainer.inject(result);
 
-        var inputText = new Element('input', {type:"text",tabindex:'-1', value:""});
+        var inputText = new Element('input',
+            {type:"text",
+                tabindex:'-1',
+                value:""}
+        );
         inputText.setStyles({
             border:"none",
             background:"transparent"
@@ -146,7 +150,7 @@ mindplot.TextEditor = new Class({
         // Set editor's initial size
         var displayFunc = function() {
             // Position the editor and set the size...
-            var textShape =  this._topic.getTextShape();
+            var textShape = this._topic.getTextShape();
             textShape.positionRelativeTo(this._divElem, {
                 position: {x: 'left',y:'top'},
                 edge: {x: 'left', y: 'top'}
@@ -219,10 +223,6 @@ mindplot.TextEditor = new Class({
         this._size = {width:width * scale.width, height:height * scale.height};
         this._divElem.style.width = this._size.width * 2 + "px";
         this._divElem.style.height = this._size.height + "px";
-    },
-
-    _setPosition : function (x, y) {
-        $(this._divElem).setStyles({top : y + "px", left: x + "px"});
     },
 
     _changeCursor : function(inputElem, selectText) {
