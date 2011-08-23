@@ -267,7 +267,7 @@ mindplot.Topic = new Class({
         for (var i = 0; i < icons.length; i++) {
             // Update model identifier ...
             var iconModel = icons[i];
-            var icon = new mindplot.ImageIcon(iconModel, this, designer);
+            var icon = new mindplot.ImageIcon(this, iconModel);
             result.addIcon(icon);
         }
 
@@ -311,7 +311,7 @@ mindplot.Topic = new Class({
         this._hasNote = true;
     },
 
-    addIcon : function(iconType, designer) {
+    addIcon : function(iconType) {
         var iconGroup = this.getOrBuildIconGroup();
         var model = this.getModel();
 
@@ -319,7 +319,7 @@ mindplot.Topic = new Class({
         var iconModel = model.createIcon(iconType);
         model.addIcon(iconModel);
 
-        var imageIcon = new mindplot.ImageIcon(iconModel, this, designer);
+        var imageIcon = new mindplot.ImageIcon(this, iconModel);
         iconGroup.addIcon(imageIcon);
 
         return imageIcon;

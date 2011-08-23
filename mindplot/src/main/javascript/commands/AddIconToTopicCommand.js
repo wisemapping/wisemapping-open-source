@@ -24,6 +24,7 @@ mindplot.commands.AddIconToTopicCommand = new Class({
         this._selectedObjectsIds = topicId;
         this._iconType = iconType;
     },
+
     execute: function(commandContext) {
         var topic = commandContext.findTopics(this._selectedObjectsIds)[0];
         var updated = function() {
@@ -33,6 +34,7 @@ mindplot.commands.AddIconToTopicCommand = new Class({
         }.bind(this);
         updated.delay(0);
     },
+
     undoExecute: function(commandContext) {
         var topic = commandContext.findTopics(this._selectedObjectsIds)[0];
         var updated = function() {

@@ -19,7 +19,8 @@ $assert = function(assert, message) {
         } catch(e) {
             stack = e;
         }
-        wLogger.error(message + "," + stack);
+        console.log(message + "," + stack);
+//        wLogger.error(message + "," + stack);
 //        core.Logger.logError(message + "," + stack);
 
     }

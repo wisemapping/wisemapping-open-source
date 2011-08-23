@@ -1,87 +1,80 @@
 /*
-*    Copyright [2011] [wisemapping]
-*
-*   Licensed under WiseMapping Public License, Version 1.0 (the "License").
-*   It is basically the Apache License, Version 2.0 (the "License") plus the
-*   "powered by wisemapping" text requirement on every single page;
-*   you may not use this file except in compliance with the License.
-*   You may obtain a copy of the license at
-*
-*       http://www.wisemapping.org/license
-*
-*   Unless required by applicable law or agreed to in writing, software
-*   distributed under the License is distributed on an "AS IS" BASIS,
-*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*   See the License for the specific language governing permissions and
-*   limitations under the License.
-*/
+ *    Copyright [2011] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 
-web2d.Element = function(peer, attributes)
-{
+web2d.Element = function(peer, attributes) {
     this._peer = peer;
-    if (peer == null)
-    {
+    if (peer == null) {
         throw "Element peer can not be null";
     }
 
     this._dispatcherByEventType = new Hash({});
-    if ($defined(attributes))
-    {
+    if ($defined(attributes)) {
         this._initialize(attributes);
     }
 };
 
 web2d.Element.prototype._SIGNATURE_MULTIPLE_ARGUMENTS = -1;
 
-web2d.Element.prototype._initialize = function(attributes)
-{
+web2d.Element.prototype._initialize = function(attributes) {
     var batchExecute = {};
 
     // Collect arguments ...
-    for (var key in attributes)
-    {
+    for (var key in attributes) {
         var funcName = this._attributeNameToFuncName(key, 'set');
         var funcArgs = batchExecute[funcName];
-        if (!$defined(funcArgs))
-        {
+        if (!$defined(funcArgs)) {
             funcArgs = [];
         }
 
         var signature = this._propertyNameToSignature[key];
         var argPositions = signature[1];
-        if (argPositions != this._SIGNATURE_MULTIPLE_ARGUMENTS)
-        {
+        if (argPositions != this._SIGNATURE_MULTIPLE_ARGUMENTS) {
             funcArgs[argPositions] = attributes[key];
-        } else
-        {
+        } else {
             funcArgs = attributes[key].split(' ');
         }
         batchExecute[funcName] = funcArgs;
     }
 
     // Call functions ...
-    for (var key in batchExecute)
-    {
+    for (var key in batchExecute) {
         var func = this[key];
-        if (!$defined(func))
-        {
+        if (!$defined(func)) {
             throw "Could not find function: " + key;
         }
         func.apply(this, batchExecute[key]);
     }
 };
 
-web2d.Element.prototype.setSize = function(width, height)
-{
+web2d.Element.prototype.setSize = function(width, height) {
     this._peer.setSize(width, height);
 };
 
-web2d.Element.prototype.setPosition = function(cx, cy)
-{
+web2d.Element.prototype.setPosition = function(cx, cy) {
     this._peer.setPosition(cx, cy);
 };
 
 web2d.Element.prototype._supportedEvents = ["click","dblclick","mousemove","mouseout","mouseover","mousedown","mouseup"];
+
+web2d.Element.prototype.positionRelativeTo = function(elem, options) {
+    this._peer.positionRelativeTo(elem, options);
+
+};
 
 /**
  * Allows the registration of event listeners on the event target.
@@ -93,16 +86,13 @@ web2d.Element.prototype._supportedEvents = ["click","dblclick","mousemove","mous
  * The following events types are supported:
  *
  */
-web2d.Element.prototype.addEvent = function(type, listener)
-{
-    if (!this._supportedEvents.include(type))
-    {
+web2d.Element.prototype.addEvent = function(type, listener) {
+    if (!this._supportedEvents.include(type)) {
         throw "Unsupported event type: " + type;
     }
 
     // Concat previous event listeners for a given type.
-    if (!this._dispatcherByEventType[type])
-    {
+    if (!this._dispatcherByEventType[type]) {
         this._dispatcherByEventType[type] = new web2d.EventDispatcher(this);
 
         var eventListener = this._dispatcherByEventType[type].eventListener;
@@ -122,18 +112,15 @@ web2d.Element.prototype.addEvent = function(type, listener)
  *     The listener parameter takes an interface implemented by the user which contains the methods to be called when the event occurs.
  *     This interace will be invoked passing an event as argument and the 'this' referece in the function will be the element.
  */
-web2d.Element.prototype.removeEvent = function(type, listener)
-{
+web2d.Element.prototype.removeEvent = function(type, listener) {
     var dispatcher = this._dispatcherByEventType[type];
-    if (dispatcher == null)
-    {
+    if (dispatcher == null) {
         throw "There is no listener previously registered";
     }
     var result = dispatcher.removeListener(type, listener);
 
     // If there is not listeners, EventDispatcher must be removed.
-    if (dispatcher.getListenersCount() <= 0)
-    {
+    if (dispatcher.getListenersCount() <= 0) {
         this._peer.removeEvent(type, dispatcher.eventListener);
         this._dispatcherByEventType[type] = null;
     }
@@ -143,16 +130,14 @@ web2d.Element.prototype.removeEvent = function(type, listener)
  * /*
  * Returns element type name.
  */
-web2d.Element.prototype.getType = function()
-{
+web2d.Element.prototype.getType = function() {
     throw "Not implemeneted yet. This method must be implemented by all the inherited objects.";
 };
 
 /**
  * Todo: Doc
  */
-web2d.Element.prototype.getFill = function()
-{
+web2d.Element.prototype.getFill = function() {
     return this._peer.getFill();
 };
 
@@ -161,27 +146,23 @@ web2d.Element.prototype.getFill = function()
  * color: Fill color
  * opacity: Opacity of the fill. It must be less than 1.
  */
-web2d.Element.prototype.setFill = function(color, opacity)
-{
+web2d.Element.prototype.setFill = function(color, opacity) {
     this._peer.setFill(color, opacity);
 };
 
-web2d.Element.prototype.getPosition = function()
-{
+web2d.Element.prototype.getPosition = function() {
     return this._peer.getPosition();
 };
 
 /*
-*  Defines the element stroke properties.
-*  width: stroke width
-*  style: "solid|dot|dash|dashdot|longdash".
-*  color: stroke color
-*  opacity: stroke visibility
-*/
-web2d.Element.prototype.setStroke = function(width, style, color, opacity)
-{
-    if (style != null && style != undefined && style != 'dash' && style != 'dot' && style != 'solid' && style != 'longdash' && style != "dashdot")
-    {
+ *  Defines the element stroke properties.
+ *  width: stroke width
+ *  style: "solid|dot|dash|dashdot|longdash".
+ *  color: stroke color
+ *  opacity: stroke visibility
+ */
+web2d.Element.prototype.setStroke = function(width, style, color, opacity) {
+    if (style != null && style != undefined && style != 'dash' && style != 'dot' && style != 'solid' && style != 'longdash' && style != "dashdot") {
         throw "Unsupported stroke style: '" + style + "'";
     }
     this._peer.setStroke(width, style, color, opacity);
@@ -220,11 +201,9 @@ web2d.Element.prototype._propertyNameToSignature =
     opacity:['opacity',0]
 };
 
-web2d.Element.prototype._attributeNameToFuncName = function(attributeKey, prefix)
-{
+web2d.Element.prototype._attributeNameToFuncName = function(attributeKey, prefix) {
     var signature = this._propertyNameToSignature[attributeKey];
-    if (!$defined(signature))
-    {
+    if (!$defined(signature)) {
         throw "Unsupported attribute: " + attributeKey;
     }
 
@@ -238,68 +217,57 @@ web2d.Element.prototype._attributeNameToFuncName = function(attributeKey, prefix
  *  key: size, width, height, position, x, y, stroke, strokeWidth, strokeStyle, strokeColor, strokeOpacity,
  *       fill, fillColor, fillOpacity, coordSize, coordSizeWidth, coordSizeHeight, coordOrigin, coordOriginX, coordOrigiY
  */
-web2d.Element.prototype.setAttribute = function(key, value)
-{
+web2d.Element.prototype.setAttribute = function(key, value) {
     var funcName = this._attributeNameToFuncName(key, 'set');
 
     var signature = this._propertyNameToSignature[key];
-    if (signature == null)
-    {
+    if (signature == null) {
         throw "Could not find the signature for:" + key;
     }
 
     // Parse arguments ..
     var argPositions = signature[1];
     var args = [];
-    if (argPositions !== this._SIGNATURE_MULTIPLE_ARGUMENTS)
-    {
+    if (argPositions !== this._SIGNATURE_MULTIPLE_ARGUMENTS) {
         args[argPositions] = value;
     }
-    else if (typeof value == "array")
-    {
+    else if (typeof value == "array") {
         args = value;
-    } else
-    {
+    } else {
         var strValue = String(value);
         args = strValue.split(' ');
     }
 
     // Look up method ...
     var setter = this[funcName];
-    if (setter == null)
-    {
+    if (setter == null) {
         throw "Could not find the function name:" + funcName;
     }
     setter.apply(this, args);
 
 };
 
-web2d.Element.prototype.getAttribute = function(key)
-{
+web2d.Element.prototype.getAttribute = function(key) {
     var funcName = this._attributeNameToFuncName(key, 'get');
 
     var signature = this._propertyNameToSignature[key];
-    if (signature == null)
-    {
+    if (signature == null) {
         throw "Could not find the signature for:" + key;
     }
 
     var getter = this[funcName];
-    if (getter == null)
-    {
+    if (getter == null) {
         throw "Could not find the function name:" + funcName;
     }
 
     var getterResult = getter.apply(this, []);
     var attibuteName = signature[2];
-    if (!$defined(attibuteName))
-    {
+    if (!$defined(attibuteName)) {
         throw "Could not find attribute mapping for:" + key;
     }
 
     var result = getterResult[attibuteName];
-    if (!$defined(result))
-    {
+    if (!$defined(result)) {
         throw "Could not find attribute with name:" + attibuteName;
     }
 
@@ -312,50 +280,43 @@ web2d.Element.prototype.getAttribute = function(key)
  * Parameters:
  *   opacity: A value between 0 and 1.
  */
-web2d.Element.prototype.setOpacity = function(opacity)
-{
+web2d.Element.prototype.setOpacity = function(opacity) {
     this._peer.setStroke(null, null, null, opacity);
     this._peer.setFill(null, opacity);
 };
 
-web2d.Element.prototype.setVisibility = function(isVisible)
-{
+web2d.Element.prototype.setVisibility = function(isVisible) {
     this._peer.setVisibility(isVisible);
 };
 
 
-web2d.Element.prototype.isVisible = function()
-{
+web2d.Element.prototype.isVisible = function() {
     return this._peer.isVisible();
 };
 
 /**
  * Move the element to the front
  */
-web2d.Element.prototype.moveToFront = function()
-{
+web2d.Element.prototype.moveToFront = function() {
     this._peer.moveToFront();
 };
 
 /**
  * Move the element to the back
  */
-web2d.Element.prototype.moveToBack = function()
-{
+web2d.Element.prototype.moveToBack = function() {
     this._peer.moveToBack();
 };
 
-web2d.Element.prototype.getStroke = function()
-{
+web2d.Element.prototype.getStroke = function() {
     return this._peer.getStroke();
 };
 
 
-web2d.Element.prototype.setCursor = function(type)
-{
+web2d.Element.prototype.setCursor = function(type) {
     this._peer.setCursor(type);
 };
 
-web2d.Element.prototype.getParent = function(){
+web2d.Element.prototype.getParent = function() {
     return this._peer.getParent();
 }

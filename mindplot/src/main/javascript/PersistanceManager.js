@@ -37,7 +37,7 @@ mindplot.PersistanceManager.save = function(mindmap, editorProperties, onSavedHa
             if (response.msgCode != "OK")
             {
                 monitor.logError("Save could not be completed. Please,try again in a couple of minutes.");
-                wLogger.error(response.msgDetails);
+//                wLogger.error(response.msgDetails);
             } else
             {
                 // Execute on success handler ...
@@ -50,7 +50,7 @@ mindplot.PersistanceManager.save = function(mindmap, editorProperties, onSavedHa
         errorHandler:function(message) {
             var monitor = core.Monitor.getInstance();
             monitor.logError("Save could not be completed. Please,try again in a couple of minutes.");
-            wLogger.error(message);
+//            wLogger.error(message);
         },
         verb:"POST",
         async: false
@@ -82,7 +82,7 @@ mindplot.PersistanceManager.load = function(mapId)
                 var msg = response.msgDetails;
                 var monitor = core.Monitor.getInstance();
                 monitor.logFatal("We're sorry, an error has occurred and we can't load your map. Please try again in a few minutes.");
-                wLogger.error(msg);
+//                wLogger.error(msg);
             }
         },
         verb:"GET",
@@ -90,7 +90,7 @@ mindplot.PersistanceManager.load = function(mapId)
         errorHandler:function(msg) {
             var monitor = core.Monitor.getInstance();
             monitor.logFatal("We're sorry, an error has occurred and we can't load your map. Please try again in a few minutes.");
-            wLogger.error(msg);
+//            wLogger.error(msg);
         }
     });
 

@@ -38,6 +38,10 @@ mindplot.Icon = new Class({
 
     getSize : function() {
         return this._image.getSize();
+    },
+
+    getPosition : function() {
+        return this._image.getPosition();
     }
 });
 

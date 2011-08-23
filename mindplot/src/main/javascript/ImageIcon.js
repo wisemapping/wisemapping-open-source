@@ -17,122 +17,149 @@
  */
 
 mindplot.ImageIcon = new Class({
-        Extends:mindplot.Icon,
-        initialize:function(iconModel, topic, designer) {
-            $assert(iconModel, 'iconModel can not be null');
-            $assert(topic, 'topic can not be null');
-            $assert(designer, 'designer can not be null');
+    Extends:mindplot.Icon,
+    initialize:function(topic, iconModel) {
+        $assert(iconModel, 'iconModel can not be null');
+        $assert(topic, 'topic can not be null');
 
-            this._topic = topic;
-            this._iconModel = iconModel;
-            this._designer = designer;
+        this._topic = topic;
+        this._iconModel = iconModel;
 
-            // Build graph image representation ...
-            var iconType = iconModel.getIconType();
-            var imgUrl = this._getImageUrl(iconType);
+        // @Todo: Read only must be a property ...
+        this._readOnly = designer._readOnly;
 
-            this.parent(imgUrl);
+        // Build graph image representation ...
+        var iconType = iconModel.getIconType();
+        var imgUrl = this._getImageUrl(iconType);
+        this.parent(imgUrl);
 
-            //Remove
-            var divContainer = designer.getWorkSpace().getScreenManager().getContainer();
-            var tip = mindplot.Tip.getInstance(divContainer);
+        //Remove
+        if (!this._readOnly) {
 
-            var container = new Element('div');
-            var removeImage = new Element('img');
-            removeImage.src = "../images/bin.png";
-            removeImage.inject(container);
+            var deleteTip = new mindplot.ImageIcon.DeleteTip(this._topic.getId(), this);
 
-            if (!$defined(designer._readOnly) || ($defined(designer._readOnly) && !designer._readOnly)) {
+            //Icon
+            var image = this.getImage();
+            image.addEvent('click', function() {
 
-                removeImage.addEvent('click', function() {
-                    var actionDispatcher = mindplot.ActionDispatcher.getInstance();
-                    actionDispatcher.removeIconFromTopic(this._topic.getId(), iconModel);
-                    tip.forceClose();
-                });
+                var iconType = iconModel.getIconType();
+                var newIconType = this._getNextFamilyIconId(iconType);
+                iconModel.setIconType(newIconType);
 
-                //Icon
-                var image = this.getImage();
-                image.addEvent('click', function() {
+                var imgUrl = this._getImageUrl(newIconType);
+                this._image.setHref(imgUrl);
 
-                    var iconType = iconModel.getIconType();
-                    var newIconType = this._getNextFamilyIconId(iconType);
-                    iconModel.setIconType(newIconType);
+            }.bind(this));
 
-                    var imgUrl = this._getImageUrl(newIconType);
-                    this._image.setHref(imgUrl);
-
-                }.bind(this));
-
-                image.addEvent('mouseover', function(event) {
-                    tip.open(event, container, this);
-                }.bind(this));
-
-                image.addEvent('mouseout', function(event) {
-                    tip.close(event);
-                });
-
-                image.addEvent('mousemove', function(event) {
-                    tip.updatePosition(event);
-                });
-
-            }
-        },
-
-        _getImageUrl : function(iconId) {
-            return "../icons/" + iconId + ".png";
-        },
-
-        getModel : function() {
-            return this._iconModel;
-        },
-
-        _getNextFamilyIconId : function(iconId) {
-
-            var familyIcons = this._getFamilyIcons(iconId);
-            $assert(familyIcons != null, "Family Icon not found!");
-
-            var result = null;
-            for (var i = 0; i < familyIcons.length && result == null; i++) {
-                if (familyIcons[i] == iconId) {
-                    //Is last one?
-                    if (i == (familyIcons.length - 1)) {
-                        result = familyIcons[0];
-                    } else {
-                        result = familyIcons[i + 1];
-                    }
-                    break;
-                }
-            }
-
-            return result;
-        },
-
-        _getFamilyIcons : function(iconId) {
-            $assert(iconId != null, "id must not be null");
-            $assert(iconId.indexOf("_") != -1, "Invalid icon id (it must contain '_')");
-
-            var result = null;
-            for (var i = 0; i < mindplot.ImageIcon.prototype.ICON_FAMILIES.length; i++) {
-                var family = mindplot.ImageIcon.prototype.ICON_FAMILIES[i];
-                var iconFamilyId = iconId.substr(0, iconId.indexOf("_"));
-
-                if (family.id == iconFamilyId) {
-                    result = family.icons;
-                    break;
-                }
-            }
-            return result;
-        },
-
-        getId : function() {
-            return this._iconType;
-        },
-
-        getUiId : function() {
-            return this._uiId;
+            image.addEvent('mouseover', function(event) {
+                deleteTip.show();
+            });
         }
+    },
+
+    _getImageUrl : function(iconId) {
+        return "../icons/" + iconId + ".png";
+    },
+
+    getModel : function() {
+        return this._iconModel;
+    },
+
+    _getNextFamilyIconId : function(iconId) {
+
+        var familyIcons = this._getFamilyIcons(iconId);
+        $assert(familyIcons != null, "Family Icon not found!");
+
+        var result = null;
+        for (var i = 0; i < familyIcons.length && result == null; i++) {
+            if (familyIcons[i] == iconId) {
+                //Is last one?
+                if (i == (familyIcons.length - 1)) {
+                    result = familyIcons[0];
+                } else {
+                    result = familyIcons[i + 1];
+                }
+                break;
+            }
+        }
+
+        return result;
+    },
+
+    _getFamilyIcons : function(iconId) {
+        $assert(iconId != null, "id must not be null");
+        $assert(iconId.indexOf("_") != -1, "Invalid icon id (it must contain '_')");
+
+        var result = null;
+        for (var i = 0; i < mindplot.ImageIcon.prototype.ICON_FAMILIES.length; i++) {
+            var family = mindplot.ImageIcon.prototype.ICON_FAMILIES[i];
+            var iconFamilyId = iconId.substr(0, iconId.indexOf("_"));
+
+            if (family.id == iconFamilyId) {
+                result = family.icons;
+                break;
+            }
+        }
+        return result;
+    },
+
+    getId : function() {
+        return this._iconType;
+    },
+
+    getUiId : function() {
+        return this._uiId;
     }
-);
+
+});
+
+mindplot.ImageIcon.DeleteTip = new Class({
+    initialize : function(topicId, icon) {
+        $assert(topicId, "topicId can not be null");
+        $assert(icon, "iconModel can not be null");
+        this._icon = icon;
+        this._topicId = topicId;
+
+        this._registerEvents();
+    },
+
+    _registerEvents : function() {
+
+        this._containerElem = this._buildHtml();
+        this._containerElem.inject($(document.body));
+
+        this._containerElem.addEvent('click', function() {
+            var actionDispatcher = mindplot.ActionDispatcher.getInstance();
+            actionDispatcher.removeIconFromTopic(this._topicId, this._icon._iconModel);
+            this.close();
+        }.bind(this));
+
+
+    },
+
+    show : function() {
+        this._icon._image.positionRelativeTo(this._containerElem, {
+            position: 'upperRight',
+            offset: {x:10,y:-10}
+        });
+        this._icon._image.setStroke(1,'dash','red');
+    },
+
+    close : function() {
+        this._containerElem.dispose();
+    },
+
+    _buildHtml : function() {
+        var result = new Element('div');
+        result.setStyles({
+                zIndex: "8",
+                width:"10px",
+                height:"10px",
+                'background-color':'red'}
+        );
+        return result;
+    }
+});
 
 
 mindplot.ImageIcon.prototype.ICON_FAMILIES = [

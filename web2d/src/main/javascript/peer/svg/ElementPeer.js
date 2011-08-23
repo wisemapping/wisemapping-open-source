@@ -207,6 +207,13 @@ web2d.peer.svg.ElementPeer.prototype.getChangeEventListeners = function(type) {
     return listeners;
 };
 
+web2d.peer.svg.ElementPeer.prototype.positionRelativeTo = function(elem, options) {
+    options = !$defined(options) ? {} : options;
+    options['relativeTo'] = $(this._native);
+    elem.position(options);
+};
+
+
 /**
  * Move element to the front
  */

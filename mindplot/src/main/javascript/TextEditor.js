@@ -29,11 +29,10 @@ mindplot.TextEditor = new Class({
                 position:"absolute",
                 display: "none",
                 zIndex: "8",
-                top: 0,
-                left:0,
                 width:"500px",
                 height:"100px"}
         );
+
 
         var inputContainer = new Element('div');
         inputContainer.setStyles({
@@ -45,7 +44,7 @@ mindplot.TextEditor = new Class({
         var inputText = new Element('input', {type:"text",tabindex:'-1', value:""});
         inputText.setStyles({
             border:"none",
-            background:"red"
+            background:"transparent"
         });
         inputText.inject(inputContainer);
 
@@ -57,6 +56,7 @@ mindplot.TextEditor = new Class({
         spanElem.setStyle('white-space', "nowrap");
         spanElem.setStyle('nowrap', 'nowrap');
         spanElem.inject(spanContainer);
+
 
         return result;
     },
@@ -117,8 +117,7 @@ mindplot.TextEditor = new Class({
         if (!this.isVisible()) {
             //Create editor ui
             var editorElem = this._buildEditor();
-            // @Todo: What element associate ?
-            editorElem.inject($('mindplot'));
+            editorElem.inject($(document.body));
 
             this._divElem = editorElem;
             this._registerEvents(editorElem);
@@ -146,35 +145,17 @@ mindplot.TextEditor = new Class({
 
         // Set editor's initial size
         var displayFunc = function() {
-            var textShape = topic.getTextShape();
-            var scale = web2d.peer.utils.TransformUtil.workoutScale(textShape._peer);
-
-            var screenPosition = mindplot.util.Converter.topicToScreenPosition(topic);
-            var textWidth = textShape.getWidth();
-            var textHeight = textShape.getHeight();
-            var iconGroup = topic.getIconGroup();
-            var iconGroupSize;
-
-            if ($defined(iconGroup)) {
-                iconGroupSize = topic.getIconGroup().getSize();
-            }
-            else {
-                iconGroupSize = {width:0, height:0};
-            }
-
-            var position = {x:0,y:0};
-            position.x = screenPosition.x - ((textWidth * scale.width) / 2) + (((iconGroupSize.width) * scale.width) / 2);
-            var fixError = 1;
-            position.y = screenPosition.y - ((textHeight * scale.height) / 2) - fixError;
-
-            var elemSize = topic.getSize();
-
             // Position the editor and set the size...
-            this._setEditorSize(elemSize.width, elemSize.height, scale);
-            this._setPosition(position.x, position.y, scale);
-
-            // Make the editor visible ....
+            var textShape =  this._topic.getTextShape();
+            textShape.positionRelativeTo(this._divElem, {
+                position: {x: 'left',y:'top'},
+                edge: {x: 'left', y: 'top'}
+            });
             this._divElem.setStyle('display', 'block');
+
+            // Set size ...
+            var elemSize = topic.getSize();
+            this._setEditorSize(elemSize.width, elemSize.height);
 
             var inputElem = this._getInputElem();
             inputElem.focus();
@@ -232,7 +213,9 @@ mindplot.TextEditor = new Class({
         return this._divElem.getElement('span');
     },
 
-    _setEditorSize : function (width, height, scale) {
+    _setEditorSize : function (width, height) {
+        var textShape = this._topic.getTextShape();
+        var scale = web2d.peer.utils.TransformUtil.workoutScale(textShape._peer);
         this._size = {width:width * scale.width, height:height * scale.height};
         this._divElem.style.width = this._size.width * 2 + "px";
         this._divElem.style.height = this._size.height + "px";
@@ -275,8 +258,6 @@ mindplot.TextEditor = new Class({
             // Remove it form the screen ...
             this._divElem.dispose();
             this._divElem = null;
-
-            console.log("closing ....");
         }
     }
 });

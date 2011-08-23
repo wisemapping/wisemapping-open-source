@@ -16,68 +16,68 @@
 *   limitations under the License.
  */
 
-// Init default logger level ...
-var wLogger = new Log4js.getLogger("WiseMapping");
-wLogger.setLevel(Log4js.Level.ALL);
-//wLogger.addAppender(new Log4js.BrowserConsoleAppender());
-
-// Is logger service available ?
-if ($defined(window.LoggerService))
-{
-    Log4js.WiseServerAppender = function()
-    {
-      this.layout = new Log4js.SimpleLayout();
-    };
-    
-    Log4js.WiseServerAppender.prototype = Log4js.extend(new Log4js.Appender(), {
-        /**
-         * @see Log4js.Appender#doAppend
-         */
-        doAppend: function(loggingEvent) {
-            try {
-                var message = this.layout.format(loggingEvent);
-                var level = this.levelCode(loggingEvent);
-
-                window.LoggerService.logError(level, message);
-
-            } catch (e) {
-               alert(e);
-            }
-        },
-
-        /**
-         * toString
-         */
-        toString: function() {
-            return "Log4js.WiseServerAppender";
-        },
-
-        levelCode: function(loggingEvent)
-        {
-            var retval;
-            switch (loggingEvent.level) {
-                case Log4js.Level.FATAL:
-                    retval = 3;
-                    break;
-                case Log4js.Level.ERROR:
-                    retval = 3;
-                    break;
-                case Log4js.Level.WARN:
-                    retval = 2;
-                    break;
-                default:
-                    retval = 1;
-                    break;
-            }
-
-            return retval;
-        }
-    });
-
-    wLogger.addAppender(new Log4js.WiseServerAppender());
-
-}
-
+//// Init default logger level ...
+//var wLogger = new Log4js.getLogger("WiseMapping");
+//wLogger.setLevel(Log4js.Level.ALL);
+////wLogger.addAppender(new Log4js.BrowserConsoleAppender());
+//
+//// Is logger service available ?
+//if ($defined(window.LoggerService))
+//{
+//    Log4js.WiseServerAppender = function()
+//    {
+//      this.layout = new Log4js.SimpleLayout();
+//    };
+//
+//    Log4js.WiseServerAppender.prototype = Log4js.extend(new Log4js.Appender(), {
+//        /**
+//         * @see Log4js.Appender#doAppend
+//         */
+//        doAppend: function(loggingEvent) {
+//            try {
+//                var message = this.layout.format(loggingEvent);
+//                var level = this.levelCode(loggingEvent);
+//
+//                window.LoggerService.logError(level, message);
+//
+//            } catch (e) {
+//               alert(e);
+//            }
+//        },
+//
+//        /**
+//         * toString
+//         */
+//        toString: function() {
+//            return "Log4js.WiseServerAppender";
+//        },
+//
+//        levelCode: function(loggingEvent)
+//        {
+//            var retval;
+//            switch (loggingEvent.level) {
+//                case Log4js.Level.FATAL:
+//                    retval = 3;
+//                    break;
+//                case Log4js.Level.ERROR:
+//                    retval = 3;
+//                    break;
+//                case Log4js.Level.WARN:
+//                    retval = 2;
+//                    break;
+//                default:
+//                    retval = 1;
+//                    break;
+//            }
+//
+//            return retval;
+//        }
+//    });
+//
+//    wLogger.addAppender(new Log4js.WiseServerAppender());
+//
+//}
+//
 
 //// Handle error events ...
 //window.onerror = function(sMsg, sUrl, sLine)

@@ -32,8 +32,10 @@ mindplot.collaboration.frameworks.brix.model.NodeModel = new Class({
         }else{
             var text = this._brixModel.get("text");
             this.setText(text, false);
+
             var position = this._brixModel.get("position");
             this.setPosition(position.get("x"),position.get("y"), false);
+
             var children = this._brixModel.get("children");
             for(var i=0; i<children.size(); i++){
                 var bChild = children.get(i);

@@ -39,7 +39,7 @@ mindplot.MindmapDesigner = new Class({
             // Init Screen manager..
             var screenManager = new mindplot.ScreenManager(profile.width, profile.height, divElement);
             this._workspace = new mindplot.Workspace(profile, screenManager, this._zoom);
-            this._readOnly = profile.readOnly;
+            this._readOnly = profile.readOnly ? true : false;
 
             // Init layout managers ...
             this._topics = [];
@@ -112,6 +112,17 @@ mindplot.MindmapDesigner = new Class({
                     this._actionDispatcher.addTopic(model, centralTopicId, true);
                 }
             }.bind(this));
+
+
+            $(document).addEvent('mousewheel', function(event) {
+                if (event.wheel > 0) {
+                    this.zoomIn(1.05);
+                }
+                else {
+                    this.zoomOut(1.05);
+                }
+            }.bind(this));
+
         },
 
         _getTopics : function() {
@@ -201,8 +212,11 @@ mindplot.MindmapDesigner = new Class({
 
         },
 
-        zoomOut : function() {
-            var scale = this._zoom * 1.2;
+        zoomOut : function(factor) {
+            if (!factor)
+                factor = 1.2;
+
+            var scale = this._zoom * factor;
             if (scale <= 4) {
                 this._zoom = scale;
                 this._workspace.setZoom(this._zoom);
@@ -227,8 +241,11 @@ mindplot.MindmapDesigner = new Class({
             });
         },
 
-        zoomIn : function() {
-            var scale = this._zoom / 1.2;
+        zoomIn : function(factor) {
+            if (!factor)
+                factor = 1.2;
+
+            var scale = this._zoom / factor;
             if (scale >= 0.3) {
                 this._zoom = scale;
                 this._workspace.setZoom(this._zoom);
@@ -640,7 +657,7 @@ mindplot.MindmapDesigner = new Class({
         },
 
         changeFontColor : function(color) {
-            $assert(color,"color can not be null");
+            $assert(color, "color can not be null");
             var validSelectedObjects = this._getValidSelectedObjectsIds();
             var topicsIds = validSelectedObjects.nodes;
             if (topicsIds.length > 0) {
