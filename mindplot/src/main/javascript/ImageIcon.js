@@ -36,8 +36,6 @@ mindplot.ImageIcon = new Class({
         //Remove
         if (!this._readOnly) {
 
-            var deleteTip = new mindplot.ImageIcon.DeleteTip(this._topic.getId(), this);
-
             //Icon
             var image = this.getImage();
             image.addEvent('click', function() {
@@ -50,10 +48,7 @@ mindplot.ImageIcon = new Class({
                 this._image.setHref(imgUrl);
 
             }.bind(this));
-
-            image.addEvent('mouseover', function(event) {
-                deleteTip.show();
-            });
+            this._image.setCursor('pointer');
         }
     },
 
@@ -111,54 +106,6 @@ mindplot.ImageIcon = new Class({
         return this._uiId;
     }
 
-});
-
-mindplot.ImageIcon.DeleteTip = new Class({
-    initialize : function(topicId, icon) {
-        $assert(topicId, "topicId can not be null");
-        $assert(icon, "iconModel can not be null");
-        this._icon = icon;
-        this._topicId = topicId;
-
-        this._registerEvents();
-    },
-
-    _registerEvents : function() {
-
-        this._containerElem = this._buildHtml();
-        this._containerElem.inject($(document.body));
-
-        this._containerElem.addEvent('click', function() {
-            var actionDispatcher = mindplot.ActionDispatcher.getInstance();
-            actionDispatcher.removeIconFromTopic(this._topicId, this._icon._iconModel);
-            this.close();
-        }.bind(this));
-
-
-    },
-
-    show : function() {
-        this._icon._image.positionRelativeTo(this._containerElem, {
-            position: 'upperRight',
-            offset: {x:10,y:-10}
-        });
-        this._icon._image.setStroke(1,'dash','red');
-    },
-
-    close : function() {
-        this._containerElem.dispose();
-    },
-
-    _buildHtml : function() {
-        var result = new Element('div');
-        result.setStyles({
-                zIndex: "8",
-                width:"10px",
-                height:"10px",
-                'background-color':'red'}
-        );
-        return result;
-    }
 });
 
 

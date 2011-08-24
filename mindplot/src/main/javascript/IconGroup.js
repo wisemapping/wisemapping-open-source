@@ -31,6 +31,9 @@ mindplot.IconGroup = new Class({
         };
         this.updateIconGroupPosition();
         this.registerListeners();
+
+        this._removeTip = new mindplot.IconGroup.RemoveTip(this.options.nativeElem, this);
+
     },
 
     setPosition : function(x, y) {
@@ -57,7 +60,6 @@ mindplot.IconGroup = new Class({
     addIcon : function(icon) {
         $defined(icon, "icon is not defined");
         icon.setGroup(this);
-
         var newIcon = icon.getImage();
         var nativeElem = this.options.nativeElem;
 
@@ -77,6 +79,17 @@ mindplot.IconGroup = new Class({
         nativeElem.setSize(size.width, size.height);
         this.options.width = size.width;
         this.options.height = size.height;
+
+        // Register event for the group ..
+        var topicId = this.options.topic.getId();
+        newIcon.addEvent('mouseover', function(event) {
+            this._removeTip.show(topicId, icon);
+            event.stopPropagation();
+        }.bind(this));
+
+        newIcon.addEvent('mouseout', function(event) {
+            this._removeTip.hide(newIcon);
+        }.bind(this));
     },
 
     getIcons : function() {
@@ -161,6 +174,7 @@ mindplot.IconGroup = new Class({
             event.stopPropagation();
 
         });
+
         this.options.nativeElem.addEvent('dblclick', function(event) {
             event.stopPropagation();
 
@@ -187,4 +201,97 @@ mindplot.IconGroup = new Class({
         yOffset = text.getPosition().y + (sizeHeight - 18) / 2 + 1;
         return {x:offset, y:yOffset};
     }
+});
+
+
+mindplot.IconGroup.RemoveTip = new Class({
+    initialize : function(container) {
+        $assert(container, "group can not be null");
+        this._container = container;
+    },
+
+
+    show : function(topicId, icon) {
+        $assert(icon, 'icon can not be null');
+
+        // Nothing to do ...
+        if (this._activeIcon != icon) {
+            // If there is an active icon, close it first ...
+            if (this._activeIcon) {
+                this.close(icon);
+            }
+
+            // Now, let move the position the icon...
+            var pos = icon.getPosition();
+            icon.setSize(15, 15);
+
+            // Create a new remove widget ...
+            var widget = this._buildWeb2d();
+            widget.addEvent('click', function() {
+                var actionDispatcher = mindplot.ActionDispatcher.getInstance();
+                actionDispatcher.removeIconFromTopic(topicId, icon._iconModel);
+            });
+
+            widget.setPosition(pos.x + 11, pos.y - 11);
+            this._container.appendChild(widget);
+
+            // Setup current element ...
+            this._activeIcon = icon;
+            this._widget = widget;
+
+        }
+    },
+
+    hide : function(icon) {
+        this.close(icon, 1000);
+    },
+
+    close : function(icon, delay) {
+        $assert(icon, 'icon can not be null');
+
+
+        if (this._activeIcon) {
+            var close = function() {
+                icon.setSize(12, 12);
+                this._container.removeChild(this._widget);
+                // Clear state ...
+                this._activeIcon = null;
+                this._widget = null
+            }.bind(this);
+
+            !$defined(delay) ? close() : close.delay(delay);
+        }
+    },
+
+    _buildWeb2d : function(icon) {
+        var result = new web2d.Group({width: 10, height:10,x: 0, y:0, coordSizeWidth:10,coordSizeHeight:10});
+        var rect = new web2d.Rect(0, {x: 0, y: 0, width:10, height:10, stroke:'0',fillColor:'black', visibility:true});
+        result.appendChild(rect);
+
+        var rect2 = new web2d.Rect(0, {x: 1, y: 1, width:8, height:8, stroke:'1 solid white',fillColor:'#CC0033', visibility:true});
+        result.appendChild(rect2);
+
+        var line = new web2d.Line({stroke:'1 solid white'});
+        line.setFrom(1, 1);
+        line.setTo(9, 9);
+        result.appendChild(line);
+
+        var line2 = new web2d.Line({stroke:'1 solid white'});
+        line2.setFrom(1, 9);
+        line2.setTo(9, 1);
+        result.appendChild(line2);
+
+        rect2.setCursor('pointer');
+
+
+        // Some sily events ...
+        result.addEvent('mouseover', function() {
+            rect2.setFill('black');
+        });
+        result.addEvent('mouseout', function() {
+            rect2.setFill('#CC0033');
+        });
+        return result;
+    }
+
 });
