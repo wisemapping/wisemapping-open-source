@@ -295,7 +295,7 @@ mindplot.IconGroup.RemoveTip = new Class({
             width:10,
             height:10,
             stroke:'0',
-            fillColor:'gray'
+            fillColor:'black'
         });
         result.appendChild(outerRect);
         outerRect.setCursor('pointer');
@@ -306,7 +306,7 @@ mindplot.IconGroup.RemoveTip = new Class({
             width:8,
             height:8,
             stroke:'1 solid white',
-            fillColor:'#CC0033'
+            fillColor:'gray'
         });
         result.appendChild(innerRect);
 
