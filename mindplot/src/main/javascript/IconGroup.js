@@ -82,14 +82,7 @@ mindplot.IconGroup = new Class({
 
         // Register event for the group ..
         var topicId = this.options.topic.getId();
-        newIcon.addEvent('mouseover', function(event) {
-            this._removeTip.show(topicId, icon);
-            event.stopPropagation();
-        }.bind(this));
-
-        newIcon.addEvent('mouseout', function(event) {
-            this._removeTip.hide(newIcon);
-        }.bind(this));
+        this._removeTip.decorate(topicId, icon);
     },
 
     getIcons : function() {
@@ -108,7 +101,7 @@ mindplot.IconGroup = new Class({
 
     getIcon : function(url) {
         var result = null;
-        this.options.icons.each(function(el, index) {
+        this.options.icons.each(function(el) {
             var nativeImage = el.getImage();
             if (nativeImage.getHref() == url) {
                 result = el;
@@ -119,7 +112,7 @@ mindplot.IconGroup = new Class({
 
     getImageIcon : function(icon) {
         var result = null;
-        this.options.icons.each(function(el, index) {
+        this.options.icons.each(function(el) {
             if (result == null && $defined(el.getModel().isIconModel) && el.getId() == icon.getId() && el.getUiId() == icon.getUiId()) {
                 result = el;
             }
@@ -129,7 +122,7 @@ mindplot.IconGroup = new Class({
 
     findIconFromModel : function(iconModel) {
         var result = null;
-        this.options.icons.each(function(el, index) {
+        this.options.icons.each(function(el) {
             var elModel = el.getModel();
             if (result == null && $defined(elModel.isIconModel) && elModel.getId() == iconModel.getId()) {
                 result = el;
@@ -149,7 +142,7 @@ mindplot.IconGroup = new Class({
         var iconSize = nativeImage.getSize();
         var size = this.options.nativeElem.getSize();
         var position = nativeImage.getPosition();
-        this.options.icons.each(function(icon, index) {
+        this.options.icons.each(function(icon) {
             var img = icon.getImage();
             var pos = img.getPosition();
             if (pos.x > position.x) {
@@ -197,7 +190,6 @@ mindplot.IconGroup = new Class({
         var sizeHeight = text.getHtmlFontSize();
         var yOffset = offset;
 
-        var shape = this.options.topic.getShapeType();
         yOffset = text.getPosition().y + (sizeHeight - 18) / 2 + 1;
         return {x:offset, y:yOffset};
     }
@@ -218,19 +210,27 @@ mindplot.IconGroup.RemoveTip = new Class({
         if (this._activeIcon != icon) {
             // If there is an active icon, close it first ...
             if (this._activeIcon) {
-                this.close(icon);
+                this.close(0);
             }
 
             // Now, let move the position the icon...
             var pos = icon.getPosition();
             icon.setSize(15, 15);
 
-            // Create a new remove widget ...
+            // Register events ...
             var widget = this._buildWeb2d();
             widget.addEvent('click', function() {
                 var actionDispatcher = mindplot.ActionDispatcher.getInstance();
                 actionDispatcher.removeIconFromTopic(topicId, icon._iconModel);
             });
+
+            widget.addEvent('mouseover', function() {
+                this.show(topicId, icon);
+            }.bind(this));
+
+            widget.addEvent('mouseout', function() {
+                this.hide();
+            }.bind(this));
 
             widget.setPosition(pos.x + 11, pos.y - 11);
             this._container.appendChild(widget);
@@ -239,37 +239,76 @@ mindplot.IconGroup.RemoveTip = new Class({
             this._activeIcon = icon;
             this._widget = widget;
 
+        } else {
+            clearTimeout(this._closeTimeoutId);
         }
     },
 
-    hide : function(icon) {
-        this.close(icon, 1000);
+    hide : function() {
+        this.close(500);
     },
 
-    close : function(icon, delay) {
-        $assert(icon, 'icon can not be null');
+    close : function(delay) {
 
+        // This is not ok, trying to close the same dialog twice ?
+        if (this._closeTimeoutId) {
+            clearTimeout(this._closeTimeoutId)
+        }
 
         if (this._activeIcon) {
+            var icon = this._activeIcon;
+            var widget = this._widget;
             var close = function() {
+
                 icon.setSize(12, 12);
-                this._container.removeChild(this._widget);
-                // Clear state ...
                 this._activeIcon = null;
-                this._widget = null
+
+                this._container.removeChild(widget);
+                this._widget = null;
+
+                this._closeTimeoutId = null;
+
             }.bind(this);
 
-            !$defined(delay) ? close() : close.delay(delay);
+            if (!$defined(delay) || delay == 0) {
+                close();
+            }
+            else {
+                this._closeTimeoutId = close.delay(delay);
+            }
         }
     },
 
-    _buildWeb2d : function(icon) {
-        var result = new web2d.Group({width: 10, height:10,x: 0, y:0, coordSizeWidth:10,coordSizeHeight:10});
-        var rect = new web2d.Rect(0, {x: 0, y: 0, width:10, height:10, stroke:'0',fillColor:'black', visibility:true});
-        result.appendChild(rect);
+    _buildWeb2d : function() {
+        var result = new web2d.Group({
+            width: 10,
+            height:10,
+            x: 0,
+            y:0,
+            coordSizeWidth:10,
+            coordSizeHeight:10
+        });
 
-        var rect2 = new web2d.Rect(0, {x: 1, y: 1, width:8, height:8, stroke:'1 solid white',fillColor:'#CC0033', visibility:true});
-        result.appendChild(rect2);
+        var outerRect = new web2d.Rect(0, {
+            x: 0,
+            y: 0,
+            width:10,
+            height:10,
+            stroke:'0',
+            fillColor:'gray'
+        });
+        result.appendChild(outerRect);
+        outerRect.setCursor('pointer');
+
+        var innerRect = new web2d.Rect(0, {
+            x: 1,
+            y: 1,
+            width:8,
+            height:8,
+            stroke:'1 solid white',
+            fillColor:'#CC0033'
+        });
+        result.appendChild(innerRect);
 
         var line = new web2d.Line({stroke:'1 solid white'});
         line.setFrom(1, 1);
@@ -281,17 +320,24 @@ mindplot.IconGroup.RemoveTip = new Class({
         line2.setTo(9, 1);
         result.appendChild(line2);
 
-        rect2.setCursor('pointer');
-
-
         // Some sily events ...
         result.addEvent('mouseover', function() {
-            rect2.setFill('black');
+            innerRect.setFill('#CC0033');
         });
         result.addEvent('mouseout', function() {
-            rect2.setFill('#CC0033');
+            innerRect.setFill('gray');
         });
         return result;
+    },
+
+    decorate : function(topicId, icon) {
+        icon.addEvent('mouseover', function() {
+            this.show(topicId, icon);
+        }.bind(this));
+
+        icon.addEvent('mouseout', function() {
+            this.hide();
+        }.bind(this))
     }
 
 });

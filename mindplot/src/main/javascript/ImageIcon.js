@@ -105,7 +105,6 @@ mindplot.ImageIcon = new Class({
     getUiId : function() {
         return this._uiId;
     }
-
 });
 
 

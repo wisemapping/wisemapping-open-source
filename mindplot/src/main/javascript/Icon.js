@@ -44,9 +44,13 @@ mindplot.Icon = new Class({
         return this._image.getPosition();
     },
 
-    setSize : function(x,y) {
-        return this._image.setSize(x,y);
+    setSize : function(x, y) {
+        return this._image.setSize(x, y);
     },
+
+    addEvent : function(type, fnc) {
+        this._image.addEvent(type, fnc);
+    }
 });
 
 

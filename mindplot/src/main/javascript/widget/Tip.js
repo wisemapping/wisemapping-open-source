@@ -16,7 +16,7 @@
  *   limitations under the License.
  */
 
-mindplot.Tip = new Class({
+mindplot.widget.Tip = new Class({
     initialize:function(divContainer) {
         this.options = {
             panel:null,
@@ -135,7 +135,7 @@ mindplot.Tip = new Class({
 
 });
 
-mindplot.Tip.getInstance = function(divContainer) {
+mindplot.widget.Tip.getInstance = function(divContainer) {
     var result = mindplot.Tip.instance;
     if (!$defined(result)) {
         mindplot.Tip.instance = new mindplot.Tip(divContainer);
