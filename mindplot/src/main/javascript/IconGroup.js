@@ -245,7 +245,7 @@ mindplot.IconGroup.RemoveTip = new Class({
     },
 
     hide : function() {
-        this.close(500);
+        this.close(200);
     },
 
     close : function(delay) {

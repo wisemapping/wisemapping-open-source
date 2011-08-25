@@ -298,8 +298,7 @@ mindplot.MindmapDesigner = new Class({
 
                 this._actionDispatcher.addTopic(siblingModel, parentTopicId, true);
             }
-        }
-        ,
+        },
 
         addRelationShip : function(event) {
             var screen = this._workspace.getScreenManager();
@@ -612,15 +611,15 @@ mindplot.MindmapDesigner = new Class({
 
         deleteCurrentNode : function() {
 
-            var validateFunc = function(selectedObject) {
-                return selectedObject.getType() == mindplot.RelationshipLine.type || selectedObject.getTopicType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE
+            var validateFunc = function(object) {
+                return object.getType() == mindplot.RelationshipLine.type || object.getTopicType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE
             };
             var validateError = 'Central topic can not be deleted.';
             var model = this.getModel();
             var topics = model.filterTopicsIds(validateFunc, validateError);
             var rel = model.filterRelationIds(validateFunc, validateError);
 
-            if (objects.length > 0) {
+            if (topics.length > 0 || rel.length > 0) {
                 this._actionDispatcher.deleteTopics({'nodes':topics,'relationship':rel});
             }
 

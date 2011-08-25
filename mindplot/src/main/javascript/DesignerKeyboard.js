@@ -47,8 +47,7 @@ mindplot.DesignerKeyboard = new Class({
             'f2' : function() {
                 var node = this._getSelectedNode(designer);
                 if (node) {
-                    var topic = nodes[0];
-                    topic.showTextEditor();
+                    node.showTextEditor();
                 }
             }.bind(this),
 
@@ -197,7 +196,7 @@ mindplot.DesignerKeyboard = new Class({
 
         var regex = /^(?:shift|control|ctrl|alt|meta)$/;
         var modifiers = ['shift', 'control', 'alt', 'meta'];
-        var excludes = ['esc','capslock','tab','f3','f4','f5','f6','f7','f8','f9','10','11','12'];
+        var excludes = ['esc','capslock','tab','f1','f3','f4','f5','f6','f7','f8','f9','f10','f11','f12'];
 
         $(document).addEvent('keydown', function(event) {
 
@@ -324,7 +323,7 @@ mindplot.DesignerKeyboard = new Class({
     },
 
     _getSelectedNode : function(designer) {
-        var nodes = designer.filterSelectedTopics();
+        var nodes = designer.getModel().filterSelectedTopics();
         return (nodes.length > 0) ? nodes[0] : null;
     }
 });
