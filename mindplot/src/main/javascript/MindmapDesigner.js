@@ -30,15 +30,11 @@ mindplot.MindmapDesigner = new Class({
                 this._fireEvent("modelUpdate", event);
             }.bind(this));
             mindplot.ActionDispatcher.setInstance(this._actionDispatcher);
-
-            // Initial Zoom
-            this._zoom = profile.zoom;
-
             this._model = new mindplot.DesignerModel(profile);
 
             // Init Screen manager..
             var screenManager = new mindplot.ScreenManager(profile.width, profile.height, divElement);
-            this._workspace = new mindplot.Workspace(profile, screenManager, this._zoom);
+            this._workspace = new mindplot.Workspace(profile, screenManager, this._model.getZoom());
             this._readOnly = profile.readOnly ? true : false;
 
             // Init layout managers ...
@@ -198,22 +194,6 @@ mindplot.MindmapDesigner = new Class({
 
         },
 
-        zoomOut : function(factor) {
-            if (!factor)
-                factor = 1.2;
-
-            var model = this.getModel();
-            var scale = model.getZoom() * factor;
-            if (scale <= 4) {
-                model.setZoom(scale);
-                this._workspace.setZoom(this._zoom);
-            }
-            else {
-                core.Monitor.getInstance().logMessage('Sorry, no more zoom can be applied. \n Why do you need more?');
-            }
-
-        },
-
         selectAll : function() {
             var model = this.getModel();
             var objects = model.getObjects();
@@ -229,15 +209,33 @@ mindplot.MindmapDesigner = new Class({
             });
         },
 
+
+        zoomOut : function(factor) {
+            if (!factor)
+                factor = 1.2;
+
+            var model = this.getModel();
+            var scale = model.getZoom() * factor;
+            if (scale <= 1.9) {
+                model.setZoom(scale);
+                this._workspace.setZoom(scale);
+            }
+            else {
+                core.Monitor.getInstance().logMessage('Sorry, no more zoom can be applied. \n Why do you need more?');
+            }
+
+        },
+
         zoomIn : function(factor) {
             if (!factor)
                 factor = 1.2;
 
             var model = this.getModel();
             var scale = model.getZoom() / factor;
+
             if (scale >= 0.3) {
                 model.setZoom(scale);
-                this._workspace.setZoom(this._zoom);
+                this._workspace.setZoom(scale);
             }
             else {
                 core.Monitor.getInstance().logMessage('Sorry, no more zoom can be applied. \n Why do you need more?');
@@ -383,7 +381,7 @@ mindplot.MindmapDesigner = new Class({
             var persistantManager = mindplot.PersistanceManager;
             var mindmap = this._mindmap;
 
-            var properties = {zoom:this._zoom, layoutManager:this._layoutManager.getClassName()};
+            var properties = {zoom:this.getModel().getZoom(), layoutManager:this._layoutManager.getClassName()};
             persistantManager.save(mindmap, properties, onSavedHandler, saveHistory);
             this._fireEvent("save", {type:saveHistory});
 
