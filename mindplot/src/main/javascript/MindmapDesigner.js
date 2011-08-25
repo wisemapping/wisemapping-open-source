@@ -158,6 +158,7 @@ mindplot.MindmapDesigner = new Class({
                 var targetTopicModel = model.getParent();
                 var targetTopic = null;
 
+                var topics = this.getModel.getTopics();
                 for (var i = 0; i < topics.length; i++) {
                     var t = topics[i];
                     if (t.getModel() == targetTopicModel) {
@@ -208,7 +209,6 @@ mindplot.MindmapDesigner = new Class({
                 object.setOnFocus(false);
             });
         },
-
 
         zoomOut : function(factor) {
             if (!factor)
