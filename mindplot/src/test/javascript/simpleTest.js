@@ -89,9 +89,9 @@ TestCase("Mindplot test",{
         var centralTopic = designer.getCentralTopic();
         assertNotNull(centralTopic);
         var target = designer.getWorkSpace().getScreenManager().getContainer();
-        var size = designer._getTopics().length;
+        var size = designer.getModel().getTopics().length;
         fireNativeEvent('dblclick',target,new core.Point(50,50));
-        assertEquals(size+1, designer._getTopics().length);
+        assertEquals(size+1, designer.getModel().getTopics().length);
     }
 
 });

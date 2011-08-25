@@ -221,7 +221,7 @@ mindplot.DesignerKeyboard = new Class({
 
             // If it's not registered, let's
             if (!isRegistered && !excludes.contains(key) && !modifiers.contains(key) && !key.contains('meta') && !key.contains('ctrl') && !key.contains('control')) {
-                var nodes = designer.getSelectedNodes();
+                var nodes = designer.getModel().filterSelectedTopics();
                 if (nodes.length > 0) {
                     nodes[0].showTextEditor(event.key);
                     event.stopPropagation();
@@ -324,7 +324,7 @@ mindplot.DesignerKeyboard = new Class({
     },
 
     _getSelectedNode : function(designer) {
-        var nodes = designer.getSelectedNodes();
+        var nodes = designer.filterSelectedTopics();
         return (nodes.length > 0) ? nodes[0] : null;
     }
 });

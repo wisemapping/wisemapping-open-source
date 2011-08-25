@@ -20,12 +20,12 @@ mindplot.commands.AddNoteToTopicCommand = new Class({
     Extends:mindplot.Command,
     initialize: function(topicId, text) {
         $assert(topicId, 'topicId can not be null');
-        this._selectedObjectsIds = topicId;
+        this._objectsIds = topicId;
         this._text = text;
         this._id = mindplot.Command._nextUUID();
     },
     execute: function(commandContext) {
-        var topic = commandContext.findTopics(this._selectedObjectsIds)[0];
+        var topic = commandContext.findTopics(this._objectsIds)[0];
         var updated = function() {
             topic.addNote(this._text, commandContext._designer);
             topic.updateNode();
@@ -33,7 +33,7 @@ mindplot.commands.AddNoteToTopicCommand = new Class({
         updated.delay(0);
     },
     undoExecute: function(commandContext) {
-        var topic = commandContext.findTopics(this._selectedObjectsIds)[0];
+        var topic = commandContext.findTopics(this._objectsIds)[0];
         var updated = function() {
             topic.removeNote();
         }.bind(this);

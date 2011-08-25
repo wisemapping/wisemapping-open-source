@@ -297,7 +297,7 @@ core.Utils.animatePosition = function (elems, doneFn, designer) {
             for (var j = 0; j < keys.length; j++) {
                 var id = keys[j];
                 var mod = elems.get(id);
-                var allTopics = designer._getTopics();
+                var allTopics = designer.getModel().getTopics();
                 var currentTopic = allTopics.filter(function(node) {
                     return node.getId() == id;
                 })[0];
@@ -314,7 +314,7 @@ core.Utils.animatePosition = function (elems, doneFn, designer) {
             for (var j = 0; j < keys.length; j++) {
                 var id = keys[j];
                 var mod = elems.get(id);
-                var allTopics = designer._getTopics();
+                var allTopics = designer.getModel().getTopics();
                 var currentTopic = allTopics.filter(function(node) {
                     return node.getId() == id;
                 })[0];

@@ -79,7 +79,7 @@ mindplot.layout.OriginalLayoutManager = new Class({
     _buildDragManager: function(workspace) {
         // Init dragger manager.
         var dragger = new mindplot.DragManager(workspace);
-        var topics = this.getDesigner()._getTopics();
+        var topics = this.getDesigner().getModel().getTopics();
 
         var dragTopicPositioner = this.getDragTopicPositioner();
 

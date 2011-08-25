@@ -54,7 +54,7 @@ mindplot.LocalActionDispatcher = new Class({
     },
 
     deleteTopics: function(topicsIds) {
-        var command = new mindplot.commands.DeleteTopicCommand(topicsIds);
+        var command = new mindplot.commands.DeleteCommand(topicsIds);
         this.execute(command);
     },
 
@@ -240,8 +240,9 @@ mindplot.CommandContext = new Class({
         $assert(designer, "designer can not be null");
         this._designer = designer;
     },
+
     findTopics:function(topicsIds) {
-        var designerTopics = this._designer._topics;
+        var designerTopics = this._designer.getModel().getTopics();
         if (!(topicsIds instanceof Array)) {
             topicsIds = [topicsIds];
         }
@@ -290,18 +291,14 @@ mindplot.CommandContext = new Class({
 
     findRelationships:function(lineIds) {
         var result = [];
-        lineIds.forEach(function(lineId, index) {
-            var line = this._designer._relationships[lineId];
+        lineIds.forEach(function(lineId) {
+            var line = this._designer.getModel().getRelationshipsById()[lineId];
             if ($defined(line)) {
                 result.push(line);
             }
         }.bind(this));
         return result;
     },
-
-    getSelectedRelationshipLines:function() {
-        return this._designer.getSelectedRelationshipLines();
-    }
 });
 
 

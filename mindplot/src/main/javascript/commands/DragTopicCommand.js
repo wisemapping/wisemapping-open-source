@@ -21,7 +21,7 @@ mindplot.commands.DragTopicCommand = new Class({
     initialize: function(topicIds, position, order, parentTopic) {
         $assert(topicIds, "topicIds must be defined");
 
-        this._selectedObjectsIds = topicIds;
+        this._objectsIds = topicIds;
         if ($defined(parentTopic))
             this._parentId = parentTopic.getId();
 
@@ -31,7 +31,7 @@ mindplot.commands.DragTopicCommand = new Class({
     },
     execute: function(commandContext) {
 
-        var topic = commandContext.findTopics([this._selectedObjectsIds])[0];
+        var topic = commandContext.findTopics([this._objectsIds])[0];
 
         // Save old position ...
         var origParentTopic = topic.getOutgoingConnectedTopic();
@@ -80,7 +80,7 @@ mindplot.commands.DragTopicCommand = new Class({
     },
     undoExecute: function(commandContext) {
         this.execute(commandContext);
-        var selectedRelationships = commandContext.getSelectedRelationshipLines();
+        var selectedRelationships = commandContext.filterSelectedRelations();
         selectedRelationships.forEach(function(relationshipLine) {
             relationshipLine.redraw();
         });

@@ -28,8 +28,8 @@ mindplot.layout.boards.freemind.Board = mindplot.layout.boards.Board.extend({
         var result = this.findNewNodeEntryIndex(entry);
 
         // if creating a sibling or child
-        if(!this._layoutManager._isMovingNode && this._layoutManager.getDesigner().getSelectedNodes().length>0){
-            var selectedNode = this._layoutManager.getDesigner().getSelectedNodes()[0];
+        if(!this._layoutManager._isMovingNode && this._layoutManager.getDesigner().filterSelectedTopics().length>0){
+            var selectedNode = this._layoutManager.getDesigner().filterSelectedTopics()[0];
             if(!$defined(pos)){
                 if(selectedNode.getParent()!= null && node.getParent().getId() == selectedNode.getParent().getId()){
                     //creating a sibling - Lets put the new node below the selected node.

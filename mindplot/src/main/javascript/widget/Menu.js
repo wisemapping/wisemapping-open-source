@@ -40,11 +40,12 @@ mindplot.widget.Menu = new Class({
         });
 
         // Create panels ...
+        var designerModel = designer.getModel();
         var fontFamilyModel = {
             getValue: function() {
-                var nodes = designer.getSelectedNodes();
+                var nodes = designerModel.filterSelectedTopics();
                 var result = null;
-                for (var i=0; i < nodes.length; i++) {
+                for (var i = 0; i < nodes.length; i++) {
                     var fontFamily = nodes[i].getFontFamily();
                     if (result != null && result != fontFamily) {
                         result = null;
@@ -64,9 +65,9 @@ mindplot.widget.Menu = new Class({
 
         var fontSizeModel = {
             getValue: function() {
-                var nodes = designer.getSelectedNodes();
+                var nodes = designerModel.filterSelectedTopics();
                 var result = null;
-                for (var i=0; i < nodes.length; i++) {
+                for (var i = 0; i < nodes.length; i++) {
                     var fontSize = nodes[i].getFontSize();
                     if (result != null && result != fontSize) {
                         result = null;
@@ -84,9 +85,9 @@ mindplot.widget.Menu = new Class({
 
         var topicShapeModel = {
             getValue: function() {
-                var nodes = designer.getSelectedNodes();
+                var nodes = designerModel.filterSelectedTopics();
                 var result = null;
-                for (var i=0; i < nodes.length; i++) {
+                for (var i = 0; i < nodes.length; i++) {
                     var shapeType = nodes[i].getShapeType();
                     if (result != null && result != shapeType) {
                         result = null;
@@ -117,9 +118,9 @@ mindplot.widget.Menu = new Class({
         var topicColorModel =
         {
             getValue : function() {
-                var nodes = designer.getSelectedNodes();
+                var nodes = designerModel.filterSelectedTopics();
                 var result = null;
-                for (var i=0; i < nodes.length; i++) {
+                for (var i = 0; i < nodes.length; i++) {
                     var color = nodes[i].getBackgroundColor();
                     if (result != null && result != color) {
                         result = null;
@@ -139,9 +140,9 @@ mindplot.widget.Menu = new Class({
         var borderColorModel =
         {
             getValue : function() {
-                var nodes = designer.getSelectedNodes();
+                var nodes = designerModel.filterSelectedTopics();
                 var result = null;
-                for (var i=0; i < nodes.length; i++) {
+                for (var i = 0; i < nodes.length; i++) {
                     var color = nodes[i].getBorderColor();
                     if (result != null && result != color) {
                         result = null;
@@ -162,8 +163,8 @@ mindplot.widget.Menu = new Class({
         {
             getValue : function() {
                 var result = null;
-                var nodes = designer.getSelectedNodes();
-                for (var i=0; i < nodes.length; i++) {
+                var nodes = designerModel.filterSelectedTopics();
+                for (var i = 0; i < nodes.length; i++) {
                     var color = nodes[i].getFontColor();
                     if (result != null && result != color) {
                         result = null;

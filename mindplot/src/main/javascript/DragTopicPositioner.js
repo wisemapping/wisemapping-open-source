@@ -20,7 +20,7 @@ mindplot.DragTopicPositioner = new Class({
     initialize:function(layoutManager) {
         $assert(layoutManager, 'layoutManager can not be null');
         this._layoutManager = layoutManager;
-        this._topics = layoutManager.getDesigner()._getTopics();
+        this._topics = layoutManager.getDesigner().getModel().getTopics();
         this._workspace = layoutManager.getDesigner().getWorkSpace();
     },
 

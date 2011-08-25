@@ -309,7 +309,7 @@ function buildMindmapDesigner() {
     var screenWidth = window.getWidth();
     var screenHeight = window.getHeight();
 
-    // Positionate node ...
+    // Position node ...
     // header - footer
     screenHeight = screenHeight - 90 - 61;
 
