@@ -17,41 +17,32 @@
  */
 
 mindplot.Workspace = new Class({
-    initialize: function(profile, screenManager, zoom) {
+    initialize: function(screenManager, zoom) {
         // Create a suitable container ...
         $assert(screenManager, 'Div container can not be null');
+        $assert(zoom, 'zoom container can not be null');
+
         this._zoom = zoom;
         this._screenManager = screenManager;
-        this._screenWidth = profile.width;
-        this._screenHeight = profile.height;
 
-        // Initalize web2d workspace.
-        var workspace = this._createWorkspace(profile);
+        var divContainer = screenManager.getContainer();
+        this._screenWidth = parseInt(divContainer.getStyle('width'));
+        this._screenHeight = parseInt(divContainer.getStyle('height'));
+
+        // Initialize web2d workspace.
+        var workspace = this._createWorkspace();
         this._workspace = workspace;
 
-        var screenContainer = screenManager.getContainer();
-        // Fix the height of the container ....
-        screenContainer.style.height = this._screenHeight + "px";
-
         // Append to the workspace...
-        workspace.addItAsChildTo(screenContainer);
+        workspace.addItAsChildTo(divContainer);
         this.setZoom(zoom, true);
 
         // Register drag events ...
         this._registerDragEvents();
-       this._eventsEnabled = true;
+        this._eventsEnabled = true;
     },
 
-    _updateScreenManager: function() {
-        var zoom = this._zoom;
-        this._screenManager.setScale(zoom);
-
-        var coordOriginX = -((this._screenWidth * this._zoom) / 2);
-        var coordOriginY = -((this._screenHeight * this._zoom) / 2);
-        this._screenManager.setOffset(coordOriginX, coordOriginY);
-    },
-
-    _createWorkspace: function(profile) {
+    _createWorkspace: function() {
         // Initialize workspace ...
         var coordOriginX = -(this._screenWidth / 2);
         var coordOriginY = -(this._screenHeight / 2);
@@ -111,7 +102,11 @@ mindplot.Workspace = new Class({
         // Center topic....
         var coordOriginX;
         var coordOriginY;
-        if (center) {
+
+        if (center && this._viewPort) {
+            coordOriginX = -(this._viewPort.width / 2);
+            coordOriginY = -(this._viewPort.height / 2);
+        } else if (center) {
             coordOriginX = -(coordWidth / 2);
             coordOriginY = -(coordHeight / 2);
         } else {
@@ -212,6 +207,11 @@ mindplot.Workspace = new Class({
             }
         };
         screenManager.addEvent('mousedown', mouseDownListener);
+    },
+
+    setViewPort : function(size) {
+        this._viewPort = size;
+        this.setZoom(this._zoom, true);
     }
 });
 

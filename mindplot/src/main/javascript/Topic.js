@@ -780,7 +780,7 @@ mindplot.Topic = new Class({
             }
         };
 
-        var editor = new mindplot.widget.EditNoteDialog(editorModel);
+        var editor = new mindplot.widget.NoteEditor(editorModel);
         editor.show();
     },
 

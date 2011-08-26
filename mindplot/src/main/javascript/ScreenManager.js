@@ -17,14 +17,16 @@
  */
 
 mindplot.ScreenManager = new Class({
-    initialize:function(width, height, divElement) {
+    initialize:function(divElement) {
         $assert(divElement, "can not be null");
         this._divContainer = divElement;
         this._offset = {x:0,y:0};
 
         // Ignore default click event propagation. Prevent 'click' event on drad.
         this._clickEvents = [];
-        this._divContainer.addEvent('click',function(event){event.stopPropagation()});
+        this._divContainer.addEvent('click', function(event) {
+            event.stopPropagation()
+        });
 
         // @Todo: This must be resolved in other way ...
         mindplot.util.Converter.setScreenManager(this);
@@ -51,9 +53,8 @@ mindplot.ScreenManager = new Class({
 
     fireEvent : function(type, event) {
         if (type == 'click') {
-            this._clickEvents.forEach(function(listener)
-            {
-               listener(type,event);
+            this._clickEvents.forEach(function(listener) {
+                listener(type, event);
             });
         }
         else {
@@ -150,4 +151,5 @@ mindplot.ScreenManager = new Class({
     setOffset : function(x, y) {
         this._offset.x = x;
         this._offset.y = y;
-    }});
+    }
+});

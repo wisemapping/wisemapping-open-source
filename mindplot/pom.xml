@@ -170,7 +170,7 @@
 
                                     <filelist dir="${basedir}/src/main/javascript/widget/" files="ToolbarItem.js"/>
 
-                                    <filelist dir="${basedir}/src/main/javascript/widget/" files="EditNoteDialog.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/widget/" files="NoteEditor.js"/>
 
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="widget/ColorPickerPanel.js"/>

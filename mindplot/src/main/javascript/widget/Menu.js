@@ -189,50 +189,56 @@ mindplot.widget.Menu = new Class({
 
 
         // Register Events ...
-        $('zoomIn').addEvent('click', function(event) {
+        $('zoomIn').addEvent('click', function() {
+            this.clear();
             designer.zoomIn();
-        });
+        }.bind(this));
 
-        $('zoomOut').addEvent('click', function(event) {
+        $('zoomOut').addEvent('click', function() {
+            this.clear();
             designer.zoomOut();
-        });
+        }.bind(this));
 
-        $('undoEdition').addEvent('click', function(event) {
+        $('undoEdition').addEvent('click', function() {
+            this.clear();
             designer.undo();
-        });
+        }.bind(this));
 
-        $('redoEdition').addEvent('click', function(event) {
+        $('redoEdition').addEvent('click', function() {
+            this.clear();
             designer.redo();
-        });
+        }.bind(this));
 
-        $('addTopic').addEvent('click', function(event) {
+        $('addTopic').addEvent('click', function() {
+            this.clear();
             designer.createSiblingForSelectedNode();
-        });
+        }.bind(this));
 
-        $('deleteTopic').addEvent('click', function(event) {
+        $('deleteTopic').addEvent('click', function() {
+            this.clear();
             designer.deleteCurrentNode();
-        });
+        }.bind(this));
 
 
-        $('topicLink').addEvent('click', function(event) {
+        $('topicLink').addEvent('click', function() {
+            this.clear();
             designer.addLink();
-
-        });
+        }.bind(this));
 
         $('topicRelation').addEvent('click', function(event) {
             designer.addRelationShip(event);
         });
 
-        $('topicNote').addEvent('click', function(event) {
+        $('topicNote').addEvent('click', function() {
+            this.clear();
             designer.addNote();
+        }.bind(this));
 
-        });
-
-        $('fontBold').addEvent('click', function(event) {
+        $('fontBold').addEvent('click', function() {
             designer.changeFontWeight();
         });
 
-        $('fontItalic').addEvent('click', function(event) {
+        $('fontItalic').addEvent('click', function() {
             designer.changeFontStyle();
         });
 

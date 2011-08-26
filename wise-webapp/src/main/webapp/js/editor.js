@@ -302,20 +302,17 @@ function buildMindmapDesigner() {
     var monitor = new core.Monitor($('msgLoggerContainer'), $('msgLogger'));
     core.Monitor.setInstance(monitor);
 
-    var container = $('mindplot');
-
     // Initialize Editor ...
+    var container = $('mindplot');
+//    container.setStyles({
+//        height: screen.height - 151,
+//        width:  screen.width
+//    });
 
-    var screenWidth = window.getWidth();
-    var screenHeight = window.getHeight();
-
-    // Position node ...
-    // header - footer
-    screenHeight = screenHeight - 90 - 61;
-
-    // body margin ...
-    editorProperties.width = screenWidth;
-    editorProperties.height = screenHeight;
+    container.setStyles({
+        height: window.getHeight() - 151,
+        width:  window.getWidth()
+    });
 
     designer = new mindplot.MindmapDesigner(editorProperties, container);
     designer.loadFromXML(mapId, mapXml);

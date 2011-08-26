@@ -16,7 +16,7 @@
  *   limitations under the License.
  */
 
-mindplot.widget.EditNoteDialog = new Class({
+mindplot.widget.NoteEditor = new Class({
     Extends:MooDialog,
     initialize : function(model) {
         $assert(model, "model can not be null");

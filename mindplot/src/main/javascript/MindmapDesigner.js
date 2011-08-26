@@ -33,8 +33,8 @@ mindplot.MindmapDesigner = new Class({
             this._model = new mindplot.DesignerModel(profile);
 
             // Init Screen manager..
-            var screenManager = new mindplot.ScreenManager(profile.width, profile.height, divElement);
-            this._workspace = new mindplot.Workspace(profile, screenManager, this._model.getZoom());
+            var screenManager = new mindplot.ScreenManager(divElement);
+            this._workspace = new mindplot.Workspace(screenManager, this._model.getZoom());
             this._readOnly = profile.readOnly ? true : false;
 
             // Init layout managers ...
@@ -77,7 +77,8 @@ mindplot.MindmapDesigner = new Class({
                 });
 
                 // Clean some selected nodes on event ..
-                this._cleanScreen();
+                if (this._cleanScreen)
+                    this._cleanScreen();
 
             }.bind(this));
 
@@ -129,6 +130,9 @@ mindplot.MindmapDesigner = new Class({
             }
         },
 
+        setViewPort : function(size) {
+            this._workspace.setViewPort(size);
+        },
 
         _buildNodeGraph : function(model) {
             var workspace = this._workspace;
@@ -761,8 +765,8 @@ mindplot.MindmapDesigner = new Class({
         addNote : function() {
             var model = this.getModel();
             var topic = model.selectedTopic();
-            if (topic!=null) {
-               topic.showNoteEditor();
+            if (topic != null) {
+                topic.showNoteEditor();
             } else {
                 core.Monitor.getInstance().logMessage('At least one topic must be selected to execute this operation.');
             }

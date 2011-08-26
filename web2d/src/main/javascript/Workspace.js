@@ -29,40 +29,10 @@ web2d.Workspace = function(attributes)
     }
     web2d.Element.call(this, peer, defaultAttributes);
     this._htmlContainer.appendChild(this._peer._native);
-
-    this._disableTextSelection();
 };
 
 objects.extend(web2d.Workspace, web2d.Element);
 
-/**
- * Avoid element selection. This remove some odd effect in IE when a element is draged.
- */
-web2d.Workspace.prototype._disableTextSelection = function()
-{
-    var contaier = this._htmlContainer;
-
-    function disabletext(e) {
-        return false;
-    }
-    ;
-
-    function reEnable() {
-        return true;
-    }
-    ;
-
-    //if the browser is IE4+
-    contaier.onselectstart = new Function("return false");
-
-    //if the browser is NS6
-    if ($defined(window.sidebar))
-    {
-        contaier.onmousedown = disabletext;
-        contaier.onclick = reEnable;
-    }
-    ;
-};
 
 web2d.Workspace.prototype.getType = function()
 {
@@ -104,7 +74,7 @@ web2d.Workspace.prototype.addItAsChildTo = function(element)
 };
 
 /**
- * Create a new div element that will be resposible for containing the workspace elements.
+ * Create a new div element that will be responsible for containing the workspace elements.
  */
 web2d.Workspace.prototype._createDivContainer = function(domElement)
 {

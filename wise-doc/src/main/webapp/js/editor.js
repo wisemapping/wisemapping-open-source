@@ -196,18 +196,18 @@ function buildMindmapDesigner() {
 //    core.Monitor.setInstance(monitor);
 
     var container = $('mindplot');
+//    container.setStyles();
 
-    // Initialize Editor ...
-    var screenWidth = window.getWidth();
-    var screenHeight = window.getHeight();
+    container.setStyles({
+        height: parseInt(screen.height),
+        width:  parseInt(screen.width)
+    });
 
-    // header - footer
-    screenHeight = screenHeight - 115;
-
-    // body margin ...
-    editorProperties.width = screenWidth;
-    editorProperties.height = screenHeight;
     designer = new mindplot.MindmapDesigner(editorProperties, container);
+    designer.setViewPort({
+        height: parseInt(window.innerHeight - 150),
+        width:  parseInt(window.innerWidth - 200)
+    });
 
     if (mindplot.collaboration.CollaborationManager.getInstance().isCollaborationFrameworkAvailable()) {
         buildCollaborativeMindmapDesigner();
