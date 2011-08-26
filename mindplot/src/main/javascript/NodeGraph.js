@@ -24,7 +24,6 @@ mindplot.NodeGraph = new Class({
         this._mouseEvents = true;
         this.setModel(nodeModel);
         this._onFocus = false;
-        this._textEditor = new mindplot.TextEditor(this);
     },
 
     getType : function() {
@@ -126,14 +125,6 @@ mindplot.NodeGraph = new Class({
     getPosition : function() {
         var model = this.getModel();
         return model.getPosition();
-    },
-
-    showTextEditor : function(text) {
-        this._textEditor.show(text);
-    },
-
-    closeEditors : function() {
-        this._textEditor.close(true);
     }
 });
 

@@ -27,7 +27,7 @@ mindplot.commands.AddNoteToTopicCommand = new Class({
     execute: function(commandContext) {
         var topic = commandContext.findTopics(this._objectsIds)[0];
         var updated = function() {
-            topic.addNote(this._text, commandContext._designer);
+            topic.addNote(this._text);
             topic.updateNode();
         }.bind(this);
         updated.delay(0);

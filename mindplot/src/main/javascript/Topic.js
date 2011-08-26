@@ -21,6 +21,8 @@ mindplot.Topic = new Class({
     Extends:mindplot.NodeGraph,
     initialize : function(model) {
         this.parent(model);
+        this._textEditor = new mindplot.TextEditor(this);
+
         this._children = [];
         this._parent = null;
         this._relationships = [];
@@ -283,7 +285,7 @@ mindplot.Topic = new Class({
         var notes = model.getNotes();
         for (var i = 0; i < notes.length; i++) {
             this._hasNote = true;
-            this._note = new mindplot.Note(notes[i], this, designer);
+            this._note = new mindplot.Note(this, notes[i]);
             result.addIcon(this._note);
         }
 
@@ -300,13 +302,14 @@ mindplot.Topic = new Class({
         this._hasLink = true;
     },
 
-    addNote : function(text, designer) {
+    addNote : function(text) {
         var iconGroup = this.getOrBuildIconGroup();
         var model = this.getModel();
-        text = escape(text);
-        var noteModel = model.createNote(text)
+
+        var noteModel = model.createNote(text);
         model.addNote(noteModel);
-        this._note = new mindplot.Note(noteModel, this, designer);
+
+        this._note = new mindplot.Note(this, noteModel);
         iconGroup.addIcon(this._note);
         this._hasNote = true;
     },
@@ -377,6 +380,10 @@ mindplot.Topic = new Class({
         this.updateNode.delay(0, this);
         this._note = null;
         this._hasNote = false;
+    },
+
+    hasNote : function() {
+        return this._hasNote;
     },
 
     addRelationship : function(relationship) {
@@ -729,7 +736,7 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    handleMouseOver : function(event) {
+    handleMouseOver : function() {
         var outerShape = this.getOuterShape();
         outerShape.setOpacity(1);
         mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMouseOverEvent, [this]);
@@ -741,6 +748,44 @@ mindplot.Topic = new Class({
             outerShape.setOpacity(0);
         }
         mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMouseOutEvent, [this]);
+    },
+
+    showTextEditor : function(text) {
+        this._textEditor.show(text);
+    },
+
+    showNoteEditor : function() {
+
+        var topicId = this.getId();
+        var model = this.getModel();
+        var editorModel = {
+            getValue : function() {
+                var notes = model.getNotes();
+                var result;
+                if (notes.length > 0)
+                    result = notes[0].getText();
+
+                return result;
+            },
+
+            setValue : function(value) {
+                if ("" != value.trim()) {
+                    var dispatcher = mindplot.ActionDispatcher.getInstance();
+                    // Only one note is supported ...
+                    if (model.getNotes().length > 0)
+                        dispatcher.removeNoteFromTopic(topicId);
+
+                    dispatcher.addNoteToTopic(topicId, value);
+                }
+            }
+        };
+
+        var editor = new mindplot.widget.EditNoteDialog(editorModel);
+        editor.show();
+    },
+
+    closeEditors : function() {
+        this._textEditor.close(true);
     },
 
     /**
@@ -867,7 +912,7 @@ mindplot.Topic = new Class({
     },
 
     _setRelationshipLinesVisibility : function(value) {
-        this._relationships.forEach(function(relationship, index) {
+        this._relationships.forEach(function(relationship) {
             relationship.setVisibility(value);
         });
     },
@@ -1138,7 +1183,6 @@ mindplot.Topic = new Class({
             var textShape = this.getTextShape();
             var sizeWidth = textShape.getWidth();
             var sizeHeight = textShape.getHeight();
-            var font = textShape.getFont();
             var iconOffset = this.getIconOffset();
             var height = sizeHeight + this._offset;
             var width = sizeWidth + this._offset * 2 + iconOffset + 2;

@@ -73,7 +73,7 @@ core.WaitDialog = new Class({
     displayLightbox: function(display) {
         if (display != 'none')
             this.processInfo();
-        $('overlay').style.display = display;
+        $('overlay-lightbox').style.display = display;
         $('lightbox').style.display = display;
 
     },
@@ -119,7 +119,7 @@ core.WaitDialog = new Class({
     {
         // Add overlay element inside body ...
         var bodyElem = document.getElementsByTagName('body')[0];
-        var overlayElem = new Element('div').setProperty('id', 'overlay');
+        var overlayElem = new Element('div').setProperty('id', 'overlay-lightbox');
         overlayElem.inject(bodyElem);
 
         // Add lightbox element inside body ...

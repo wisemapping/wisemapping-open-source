@@ -29,6 +29,7 @@ mindplot.DesignerKeyboard = new Class({
 
 
         // Try with the keyboard ..
+        var model = designer.getModel();
         var keyboardEvents = {
             'backspace':function(event) {
                 event.preventDefault();
@@ -36,7 +37,7 @@ mindplot.DesignerKeyboard = new Class({
             }.bind(this),
 
             'space' : function() {
-                var node = this._getSelectedNode(designer);
+                var node = model.selectedTopic();
                 if (node) {
                     var model = topic.getModel();
                     var isShrink = !model.areChildrenShrinked();
@@ -45,7 +46,7 @@ mindplot.DesignerKeyboard = new Class({
             }.bind(this),
 
             'f2' : function() {
-                var node = this._getSelectedNode(designer);
+                var node = model.selectedTopic();
                 if (node) {
                     node.showTextEditor();
                 }
@@ -129,7 +130,7 @@ mindplot.DesignerKeyboard = new Class({
             },
 
             'right' : function() {
-                var node = this._getSelectedNode(designer);
+                var node = model.selectedTopic();
                 if (node) {
                     if (node.getTopicType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
                         this._goToSideChild(designer, node, 'RIGHT');
@@ -149,7 +150,7 @@ mindplot.DesignerKeyboard = new Class({
             }.bind(this),
 
             'left' : function() {
-                var node = this._getSelectedNode(designer);
+                var node = model.selectedTopic();
                 if (node) {
                     if (node.getTopicType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
                         this._goToSideChild(designer, node, 'LEFT');
@@ -169,7 +170,7 @@ mindplot.DesignerKeyboard = new Class({
             }.bind(this),
 
             'up' : function() {
-                var node = this._getSelectedNode(designer);
+                var node = model.selectedTopic();
                 if (node) {
                     if (node.getTopicType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
                         this._goToBrother(designer, node, 'UP');
@@ -181,7 +182,7 @@ mindplot.DesignerKeyboard = new Class({
             }.bind(this),
 
             'down' : function() {
-                var node = this._getSelectedNode(designer);
+                var node = model.selectedTopic();
                 if (node) {
                     if (node.getTopicType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
                         this._goToBrother(designer, node, 'DOWN');
@@ -320,11 +321,6 @@ mindplot.DesignerKeyboard = new Class({
 
         // Give focus to the selected node....
         node.setOnFocus(true);
-    },
-
-    _getSelectedNode : function(designer) {
-        var nodes = designer.getModel().filterSelectedTopics();
-        return (nodes.length > 0) ? nodes[0] : null;
     }
 });
 

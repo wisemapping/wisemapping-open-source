@@ -48,7 +48,6 @@
                         <configuration>
                             <tasks>
                                 <mkdir dir="${basedir}/target/classes"/>
-                                <!-- Generated for debug -->
                                 <concat destfile="${basedir}/target/tmp/mindplot.js" append="false">
                                     <filelist dir="${basedir}/src/main/javascript/" files="header.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="EventBus.js"/>
@@ -97,7 +96,8 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="EditorProperties.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="IconGroup.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="BubbleTip.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/widget/" files="Tip.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/widget/" files="EditNoteDialog.js"/>
+
                                     <filelist dir="${basedir}/src/main/javascript/" files="Icon.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="LinkIcon.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="Note.js"/>
@@ -197,12 +197,9 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="footer.js"/>
                                 </concat>
 
-                                <concat destfile="${basedir}/target/classes/mindplot.svg.js" append="false">
-
-                                    <filelist dir="${basedir}/../web2d/target/classes/"
-                                              files="web2d.svg-min.js"/>
-                                    <filelist dir="${basedir}/target/tmp/"
-                                              files="mindplot.js"/>
+                                <concat destfile="${basedir}/target/classes/mindplot.js" append="false">
+                                    <filelist dir="${basedir}/../web2d/target/classes/" files="web2d.svg-min.js"/>
+                                    <filelist dir="${basedir}/target/tmp/" files="mindplot.js"/>
                                 </concat>
                             </tasks>
                         </configuration>
@@ -219,126 +216,15 @@
                             <goal>compress</goal>
                         </goals>
                         <configuration>
-                            <sourceDirectory>src/main/javascript/</sourceDirectory>
-                            <outputDirectory>target/tmp/</outputDirectory>
+                            <sourceDirectory>${basedir}/target/tmp/</sourceDirectory>
+                            <outputDirectory>${basedir}/target/classes/</outputDirectory>
 
                             <aggregations>
                                 <aggregation>
-                                    <output>${basedir}/target/tmp/mindplot-min.js</output>
-                                    <includes>
-                                        <include>header-min.js</include>
-                                        <include>EventBus-min.js</include>
-                                        <include>model/Mindmap-min.js</include>
-                                        <include>model/NodeModel-min.js</include>
-                                        <include>model/RelationshipModel-min.js</include>
-                                        <include>ActionDispatcher-min.js</include>
-                                        <include>BrixActionDispatcher-min.js</include>
-                                        <include>LocalActionDispatcher-min.js</include>
-                                        <include>MindmapDesigner-min.js</include>
-                                        <include>ScreenManager-min.js</include>
-                                        <include>Workspace-min.js</include>
-                                        <include>ShrinkConnector-min.js</include>
-                                        <include>NodeGraph-min.js</include>
-                                        <include>Topic-min.js</include>
-                                        <include>CentralTopic-min.js</include>
-                                        <include>MainTopic-min.js</include>
-                                        <include>DragTopic-min.js</include>
-                                        <include>DragManager-min.js</include>
-                                        <include>DragPivot-min.js</include>
-                                        <include>CentralTopicBoard-min.js</include>
-                                        <include>MainTopicBoard-min.js</include>
-                                        <include>ConnectionLine-min.js</include>
-                                        <include>RelationshipLine-min.js</include>
-                                        <include>DragTopicPositioner-min.js</include>
-                                        <include>Board-min.js</include>
-                                        <include>TextEditor-min.js</include>
-                                        <include>RichTextEditor-min.js</include>
-                                        <include>TextEditorFactory-min.js</include>
-                                        <include>VariableDistanceBoard-min.js</include>
-                                        <include>util/Shape-min.js</include>
-                                        <include>FixedDistanceBoard-min.js</include>
-                                        <include>BoardEntry-min.js</include>
-                                        <include>ModelCodeName-min.js</include>
-                                        <include>XMLMindmapSerializer_Beta-min.js</include>
-                                        <include>XMLMindmapSerializer_Pela-min.js</include>
-                                        <include>Beta2PelaMigrator-min.js</include>
-                                        <include>XMLMindmapSerializerFactory-min.js</include>
-                                        <include>PersistanceManager-min.js</include>
-                                        <include>EditorProperties-min.js</include>
-                                        <include>IconGroup-min.js</include>
-                                        <include>BubbleTip-min.js</include>
-                                        <include>Tip-min.js</include>
-                                        <include>Icon-min.js</include>
-                                        <include>LinkIcon-min.js</include>
-                                        <include>Note-min.js</include>
-                                        <include>ActionIcon-min.js</include>
-                                        <include>ImageIcon-min.js</include>
-                                        <include>model/IconModel-min.js</include>
-                                        <include>model/LinkModel-min.js</include>
-                                        <include>model/NoteModel-min.js</include>
-                                        <include>EditorOptions-min.js</include>
-
-                                        <include>Command-min.js</include>
-                                        <include>DesignerActionRunner-min.js</include>
-                                        <include>DesignerUndoManager-min.js</include>
-
-                                        <include>commands/GenericFunctionCommand-min.js</include>
-                                        <include>commands/DeleteTopicCommand-min.js</include>
-                                        <include>commands/DragTopicCommand-min.js</include>
-                                        <include>commands/AddTopicCommand-min.js</include>
-                                        <include>commands/AddLinkToTopicCommand-min.js</include>
-                                        <include>commands/RemoveLinkFromTopicCommand-min.js</include>
-                                        <include>commands/AddIconToTopicCommand-min.js</include>
-                                        <include>commands/RemoveIconFromTopicCommand-min.js</include>
-                                        <include>commands/AddNoteToTopicCommand-min.js</include>
-                                        <include>commands/RemoveNoteFromTopicCommand-min.js</include>
-                                        <include>commands/AddRelationshipCommand-min.js</include>
-                                        <include>commands/MoveControlPointCommand-min.js</include>
-                                        <include>commands/freeMind/DragTopicCommand-min.js</include>
-                                        <include>commands/freeMind/ReconnectTopicCommand-min.js</include>
-
-                                        <include>layout/boards/Board-min.js</include>
-                                        <include>layout/boards/freemind/Board-min.js</include>
-                                        <include>layout/boards/freemind/Entry-min.js</include>
-                                        <include>layout/boards/freemind/CentralTopicBoard-min.js</include>
-                                        <include>layout/boards/freemind/MainTopicBoard-min.js</include>
-                                        <include>layout/BaseLayoutManager-min.js</include>
-                                        <include>layout/OriginalLayoutManager-min.js</include>
-                                        <include>layout/FreeMindLayoutManager-min.js</include>
-                                        <include>layout/LayoutManagerFactory-min.js</include>
-
-                                        <include>collaboration/CollaborationManager-min.js</include>
-                                        <include>collaboration/frameworks/AbstractCollaborativeFramework-min.js
-                                        </include>
-                                        <include>collaboration/frameworks/AbstractCollaborativeModelFactory-min.js
-                                        </include>
-                                        <include>collaboration/frameworks/brix/model/NodeModel-min.js</include>
-                                        <include>collaboration/frameworks/brix/model/Mindmap-min.js</include>
-                                        <include>collaboration/frameworks/brix/BrixCollaborativeModelFactory-min.js
-                                        </include>
-                                        <include>collaboration/frameworks/brix/BrixFramework-min.js</include>
-
-                                        <include>widget/IconPanel-min.js</include>
-                                        <include>widget/ListToolbarPanel-min.js</include>
-                                        <include>widget/FontFamilyPanel-min.js</include>
-                                        <include>widget/FontSizePanel-min.js</include>
-                                        <include>widget/TopicShapePanel-min.js</include>
-                                        <include>widget/Menu-min.js</include>
-
-                                        <include>footer-min.js</include>
-
-                                    </includes>
-                                </aggregation>
-                                <aggregation>
-                                    <output>${basedir}/target/classes/mindplot.svg-min.js</output>
-                                    <includes>
-                                        <include>${basedir}/../web2d/target/classes/web2d.svg-min.js</include>
-                                        <include>${basedir}/target/tmp/mindplot-min.js</include>
-                                    </includes>
+                                    <output>${basedir}/target/classes/mindplot-min.js</output>
                                 </aggregation>
                             </aggregations>
-                            <nomunge>true</nomunge>
-                            <jswarn>false</jswarn>
+                            <jswarn>true</jswarn>
                             <force>true</force>
                         </configuration>
                     </execution>

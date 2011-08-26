@@ -54,6 +54,7 @@
                                         <include>${basedir}/target/tmp/Point-min.js</include>
                                         <include>${basedir}/target/tmp/Utils-min.js</include>
                                         <include>${basedir}/target/tmp/WaitDialog-min.js</include>
+                                        <!--<include>${basedir}/target/tmp/LoadingDialog-min.js</include>-->
                                         <include>${basedir}/target/tmp/footer-min.js</include>
                                     </includes>
                                 </aggregation>

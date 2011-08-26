@@ -220,8 +220,7 @@ mindplot.IconGroup.RemoveTip = new Class({
             // Register events ...
             var widget = this._buildWeb2d();
             widget.addEvent('click', function() {
-                var actionDispatcher = mindplot.ActionDispatcher.getInstance();
-                actionDispatcher.removeIconFromTopic(topicId, icon._iconModel);
+                icon.remove();
             });
 
             widget.addEvent('mouseover', function() {

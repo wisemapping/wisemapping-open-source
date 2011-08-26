@@ -50,6 +50,11 @@ mindplot.Icon = new Class({
 
     addEvent : function(type, fnc) {
         this._image.addEvent(type, fnc);
+    },
+
+    remove : function()
+    {
+        throw "Unsupported operation";
     }
 });
 

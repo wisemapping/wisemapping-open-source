@@ -16,7 +16,7 @@
  *   limitations under the License.
  */
 
-Asset.javascript('../js/mindplot.svg.js', {
+Asset.javascript('../js/mindplot-min.js', {
     id: 'MindplotSVGLib',
     onLoad: function() {
         afterMindpotLibraryLoading();

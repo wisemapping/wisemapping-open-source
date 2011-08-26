@@ -84,7 +84,7 @@ mindplot.DesignerModel = new Class({
         var result = [];
         var topics = this.filterSelectedTopics();
 
-        if (topics.length==0) {
+        if (topics.length == 0) {
             core.Monitor.getInstance().logMessage('At least one element must be selected to execute this operation.');
         } else {
             var isValid = true;
@@ -131,6 +131,11 @@ mindplot.DesignerModel = new Class({
 
     getRelationshipsById : function() {
         return this._relationships;
+    },
+
+    selectedTopic : function() {
+        var topics = this.filterSelectedTopics();
+        return (topics.length > 0) ? topics[0] : null;
     }
 
 });

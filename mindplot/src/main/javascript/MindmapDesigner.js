@@ -744,6 +744,7 @@ mindplot.MindmapDesigner = new Class({
                         }
                         return result;
                     }.bind(this);
+
                     var dialog = mindplot.LinkIcon.buildDialog(this, okFunction, okButtonId);
                     dialog.adopt(msg).show();
 
@@ -757,51 +758,11 @@ mindplot.MindmapDesigner = new Class({
             }
         },
 
-        addNote2Node : function(text) {
-            var topicsIds = this.getModel().filterTopicsIds();
-            if (topicsIds.length > 0) {
-                this._actionDispatcher.addNoteToTopic(topicsIds[0], text);
-            }
-        },
-
         addNote : function() {
-            var selectedTopics = this.getModel().filterSelectedTopics();
-            var topic = null;
-            if (selectedTopics.length > 0) {
-                topic = selectedTopics[0];
-                if (!$defined(topic._hasNote)) {
-                    var msg = new Element('div');
-                    var text = new Element('div').inject(msg);
-                    var formElem = new Element('form', {'action': 'none', 'id':'noteFormId'});
-                    var textInput = new Element('textarea').setStyles({'width':280, 'height':50});
-                    textInput.inject(formElem);
-                    formElem.inject(msg);
-
-                    var okButtonId = "noteOkButtonId";
-                    formElem.addEvent('submit', function(e) {
-                        $(okButtonId).fireEvent('click', e);
-                        e = new Event(e);
-                        e.stop();
-                    });
-
-
-                    var okFunction = function() {
-                        var text = textInput.value;
-                        var result = false;
-                        if ("" != text.trim()) {
-                            this.addNote2Node(text);
-                            result = true;
-                        }
-                        return result;
-                    }.bind(this);
-                    var dialog = mindplot.Note.buildDialog(this, okFunction, okButtonId);
-                    dialog.adopt(msg).show();
-
-                    // IE doesn't like too much this focus action...
-                    if (!core.UserAgent.isIE()) {
-                        textInput.focus();
-                    }
-                }
+            var model = this.getModel();
+            var topic = model.selectedTopic();
+            if (topic!=null) {
+               topic.showNoteEditor();
             } else {
                 core.Monitor.getInstance().logMessage('At least one topic must be selected to execute this operation.');
             }

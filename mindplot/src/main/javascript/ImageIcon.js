@@ -104,6 +104,11 @@ mindplot.ImageIcon = new Class({
 
     getUiId : function() {
         return this._uiId;
+    },
+
+    remove : function() {
+        var actionDispatcher = mindplot.ActionDispatcher.getInstance();
+        actionDispatcher.removeIconFromTopic(this._topic.getModel(), this._iconModel);
     }
 });
 
