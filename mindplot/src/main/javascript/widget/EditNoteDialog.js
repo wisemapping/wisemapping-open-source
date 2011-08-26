@@ -27,15 +27,14 @@ mindplot.widget.EditNoteDialog = new Class({
 
     _buildPanel : function (model) {
         var result = new Element('div');
-        var text = new Element('div').inject(result);
         var form = new Element('form', {'action': 'none', 'id':'noteFormId'});
 
         // Add textarea ...
-        var textArea = new Element('textarea', {placeholder: 'Add your note here ...'});
+        var textArea = new Element('textarea', {placeholder: 'Write your note here ...'});
         if (model.getValue() != null)
             textArea.value = model.getValue();
 
-        textArea.setStyles({'width':280, 'height':70});
+        textArea.setStyles({'width':280, 'height':65});
         textArea.inject(form);
 
         // Add buttons ...

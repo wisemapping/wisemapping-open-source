@@ -47,6 +47,7 @@
                         </goals>
                         <configuration>
                             <tasks>
+
                                 <mkdir dir="${basedir}/target/classes"/>
                                 <concat destfile="${basedir}/target/tmp/mindplot.js" append="false">
                                     <filelist dir="${basedir}/src/main/javascript/" files="header.js"/>
@@ -85,19 +86,14 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="FixedDistanceBoard.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="BoardEntry.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ModelCodeName.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="XMLMindmapSerializer_Pela.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="XMLMindmapSerializer_Beta.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="XMLMindmapSerializer_Pela.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="XMLMindmapSerializer_Beta.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="Beta2PelaMigrator.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="XMLMindmapSerializerFactory.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="XMLMindmapSerializerFactory.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="PersistanceManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="EditorProperties.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="IconGroup.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="BubbleTip.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/widget/" files="EditNoteDialog.js"/>
-
                                     <filelist dir="${basedir}/src/main/javascript/" files="Icon.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="LinkIcon.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="Note.js"/>
@@ -111,14 +107,11 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="DesignerUndoManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ControlPoint.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="EditorOptions.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="commands/GenericFunctionCommand.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="commands/DeleteCommand.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="commands/DragTopicCommand.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="commands/AddTopicCommand.js"/>
+
+                                    <filelist dir="${basedir}/src/main/javascript/commands/" files="GenericFunctionCommand.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/commands/" files="DeleteCommand.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/commands/" files="DragTopicCommand.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/commands/" files="AddTopicCommand.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="commands/AddLinkToTopicCommand.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
@@ -175,8 +168,10 @@
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="collaboration/frameworks/brix/BrixFramework.js"/>
 
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="widget/ToolbarItem.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/widget/" files="ToolbarItem.js"/>
+
+                                    <filelist dir="${basedir}/src/main/javascript/widget/" files="EditNoteDialog.js"/>
+
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="widget/ColorPickerPanel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
