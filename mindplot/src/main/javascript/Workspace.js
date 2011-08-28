@@ -219,7 +219,6 @@ mindplot.Workspace = new Class({
 
     setViewPort : function(size) {
         this._viewPort = size;
-        this.setZoom(this._zoom, true);
     }
 });
 

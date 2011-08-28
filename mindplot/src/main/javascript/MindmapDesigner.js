@@ -132,6 +132,8 @@ mindplot.MindmapDesigner = new Class({
 
         setViewPort : function(size) {
             this._workspace.setViewPort(size);
+            var model = this.getModel();
+            this._workspace.setZoom(model.getZoom(), true);
         },
 
         _buildNodeGraph : function(model) {

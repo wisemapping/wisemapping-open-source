@@ -34,7 +34,7 @@ mindplot.ScreenManager = new Class({
 
     setScale : function(scale) {
         $assert(scale, 'Screen scale can not be null');
-        this._workspaceScale = scale;
+        this._scale = scale;
     },
 
     addEvent : function(event, listener) {
@@ -73,8 +73,8 @@ mindplot.ScreenManager = new Class({
         y = y - this._offset.y;
 
         // Scale coordinate in order to be relative to the workspace. That's coord/size;
-        x = x / this._workspaceScale;
-        y = y / this._workspaceScale;
+        x = x / this._scale;
+        y = y / this._scale;
 
         // Remove decimal part..
         return {x:x,y:y};
@@ -113,21 +113,21 @@ mindplot.ScreenManager = new Class({
         return {x:x + topicPosition.x,y:y + topicPosition.y};
     },
 
-    getWorkspaceMousePosition : function(e) {
+    getWorkspaceMousePosition : function(event) {
         // Retrieve current mouse position.
-        var mousePosition = this._getMousePosition(e);
+        var mousePosition = this._getMousePosition(event);
         var x = mousePosition.x;
         var y = mousePosition.y;
 
         // Subtract div position.
         var containerElem = this.getContainer();
-        var containerPosition = core.Utils.workOutDivElementPosition(containerElem);
+        var containerPosition = this._getDivPosition(containerElem);
         x = x - containerPosition.x;
         y = y - containerPosition.y;
 
         // Scale coordinate in order to be relative to the workspace. That's coordSize/size;
-        x = x * this._workspaceScale;
-        y = y * this._workspaceScale;
+        x = x * this._scale;
+        y = y * this._scale;
 
         // Add workspace offset.
         x = x + this._offset.x;
@@ -138,10 +138,25 @@ mindplot.ScreenManager = new Class({
     },
 
     /**
-     * http://www.howtocreate.co.uk/tutorials/javascript/eventinfo
+     * Calculate the position of the passed element.
      */
+    _getDivPosition : function(divElement) {
+        var curleft = 0;
+        var curtop = 0;
+        if ($defined(divElement.offsetParent)) {
+            curleft = divElement.offsetLeft;
+            curtop = divElement.offsetTop;
+            while (divElement = divElement.offsetParent) {
+                curleft += divElement.offsetLeft;
+                curtop += divElement.offsetTop;
+            }
+        }
+        return {x:curleft,y:curtop};
+    },
+
     _getMousePosition : function(event) {
-        return core.Utils.getMousePosition(event);
+        $assert(event, 'event can not be null');
+        return {x:event.client.x,y:event.client.y};
     },
 
     getContainer : function() {
