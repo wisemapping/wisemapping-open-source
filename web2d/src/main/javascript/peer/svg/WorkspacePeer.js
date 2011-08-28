@@ -23,6 +23,8 @@ web2d.peer.svg.WorkspacePeer = function(element)
     web2d.peer.svg.ElementPeer.call(this, svgElement);
     this._native.setAttribute("focusable", "true");
     this._native.setAttribute("id", "workspace");
+    this._native.setAttribute("preserveAspectRatio", "true");
+
 };
 
 objects.extend(web2d.peer.svg.WorkspacePeer, web2d.peer.svg.ElementPeer);

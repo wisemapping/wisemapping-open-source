@@ -99,16 +99,24 @@ mindplot.Workspace = new Class({
         var coordHeight = zoom * this._screenHeight;
         workspace.setCoordSize(coordWidth, coordHeight);
 
+        // View port coords ...
+        if (this._viewPort) {
+            this._viewPort.width = this._viewPort.width * zoom;
+            this._viewPort.height = this._viewPort.height * zoom;
+        }
+
         // Center topic....
         var coordOriginX;
         var coordOriginY;
 
-        if (center && this._viewPort) {
-            coordOriginX = -(this._viewPort.width / 2);
-            coordOriginY = -(this._viewPort.height / 2);
-        } else if (center) {
-            coordOriginX = -(coordWidth / 2);
-            coordOriginY = -(coordHeight / 2);
+        if (center) {
+            if (this._viewPort) {
+                coordOriginX = -(this._viewPort.width / 2);
+                coordOriginY = -(this._viewPort.height / 2);
+            } else {
+                coordOriginX = -(coordWidth / 2);
+                coordOriginY = -(coordHeight / 2);
+            }
         } else {
             var coordOrigin = workspace.getCoordOrigin();
             coordOriginX = coordOrigin.x;

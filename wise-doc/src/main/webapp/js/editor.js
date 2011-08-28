@@ -196,7 +196,6 @@ function buildMindmapDesigner() {
 //    core.Monitor.setInstance(monitor);
 
     var container = $('mindplot');
-//    container.setStyles();
 
     container.setStyles({
         height: parseInt(screen.height),
@@ -205,8 +204,8 @@ function buildMindmapDesigner() {
 
     designer = new mindplot.MindmapDesigner(editorProperties, container);
     designer.setViewPort({
-        height: parseInt(window.innerHeight - 150),
-        width:  parseInt(window.innerWidth - 200)
+        height: parseInt(window.innerHeight-112), // Footer and Header
+        width:  parseInt(window.innerWidth)
     });
 
     if (mindplot.collaboration.CollaborationManager.getInstance().isCollaborationFrameworkAvailable()) {
