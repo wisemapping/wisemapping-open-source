@@ -115,13 +115,11 @@ mindplot.ScreenManager = new Class({
 
     getWorkspaceMousePosition : function(event) {
         // Retrieve current mouse position.
-        var mousePosition = this._getMousePosition(event);
-        var x = mousePosition.x;
-        var y = mousePosition.y;
+        var x = event.client.x;
+        var y = event.client.y;
 
         // Subtract div position.
-        var containerElem = this.getContainer();
-        var containerPosition = this._getDivPosition(containerElem);
+        var containerPosition = this.getContainer().getPosition();
         x = x - containerPosition.x;
         y = y - containerPosition.y;
 
@@ -135,28 +133,6 @@ mindplot.ScreenManager = new Class({
 
         // Remove decimal part..
         return new core.Point(x, y);
-    },
-
-    /**
-     * Calculate the position of the passed element.
-     */
-    _getDivPosition : function(divElement) {
-        var curleft = 0;
-        var curtop = 0;
-        if ($defined(divElement.offsetParent)) {
-            curleft = divElement.offsetLeft;
-            curtop = divElement.offsetTop;
-            while (divElement = divElement.offsetParent) {
-                curleft += divElement.offsetLeft;
-                curtop += divElement.offsetTop;
-            }
-        }
-        return {x:curleft,y:curtop};
-    },
-
-    _getMousePosition : function(event) {
-        $assert(event, 'event can not be null');
-        return {x:event.client.x,y:event.client.y};
     },
 
     getContainer : function() {

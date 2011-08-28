@@ -20,7 +20,7 @@ web2d.peer.svg.TextPeer = function()
 {
     var svgElement = window.document.createElementNS(this.svgNamespace, 'text');
     web2d.peer.svg.ElementPeer.call(this, svgElement);
-    this._native.setAttribute("focusable", "true");
+    this._native.setAttribute("focusable", "false");
     this._position = {x:0,y:0};
     this._font = new web2d.Font("Arial", this);
 };

@@ -105,9 +105,7 @@ mindplot.ControlPoint = new Class({
         this._controlLines[point].setFrom(cords.x, cords.y);
         this._controlLines[point].setTo(pos.x - 2, pos.y);
         this._line.getLine().updateLine(point);
-        /*event.preventDefault();
-         event.stop();
-         return false;*/
+
     },
 
     _mouseUp  : function(event, point) {
