@@ -242,21 +242,15 @@ mindplot.CommandContext = new Class({
     },
 
     findTopics:function(topicsIds) {
-        var designerTopics = this._designer.getModel().getTopics();
+        $assert(topicsIds, "topicsIds can not be null");
         if (!(topicsIds instanceof Array)) {
             topicsIds = [topicsIds];
         }
 
-        var result = designerTopics.filter(function(topic) {
-            var found = false;
-            if (topic != null) {
-                var topicId = topic.getId();
-                found = topicsIds.contains(topicId);
-            }
-            return found;
-
+        var designerTopics = this._designer.getModel().getTopics();
+        return  designerTopics.filter(function(topic) {
+            return topicsIds.contains(topic.getId());
         });
-        return result;
     },
 
     deleteTopic:function(topic) {
