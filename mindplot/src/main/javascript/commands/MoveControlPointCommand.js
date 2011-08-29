@@ -57,7 +57,7 @@ mindplot.commands.MoveControlPointCommand = new Class({
                 break;
         }
         if (this._line.isOnFocus()) {
-            this._line._refreshSelectedShape();
+            this._line._refreshShape();
             this._ctrlPointControler.setLine(this._line);
         }
         this._line.getLine().updateLine(this._point);
@@ -86,7 +86,7 @@ mindplot.commands.MoveControlPointCommand = new Class({
         this._line.getLine().updateLine(this._point);
         if (this._line.isOnFocus()) {
             this._ctrlPointControler.setLine(line);
-            line._refreshSelectedShape();
+            line._refreshShape();
         }
     }
 });

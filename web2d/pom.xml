@@ -66,10 +66,8 @@
                                         <include>${basedir}/target/tmp/peer/svg/LinePeer-min.js</include>
                                         <include>${basedir}/target/tmp/peer/svg/TahomaFont-min.js</include>
                                         <include>${basedir}/target/tmp/peer/svg/VerdanaFont-min.js</include>
-
                                         <include>${basedir}/target/tmp/Element-min.js</include>
                                         <include>${basedir}/target/tmp/Elipse-min.js</include>
-                                        <include>${basedir}/target/tmp/EventDispatcher-min.js</include>
                                         <include>${basedir}/target/tmp/Font-min.js</include>
                                         <include>${basedir}/target/tmp/Group-min.js</include>
                                         <include>${basedir}/target/tmp/Image-min.js</include>

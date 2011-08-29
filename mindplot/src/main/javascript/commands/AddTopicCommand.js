@@ -47,8 +47,9 @@ mindplot.commands.AddTopicCommand = new Class(
 
             if (this._animated) {
                 core.Utils.setVisibilityAnimated([topic,topic.getOutgoingLine()], true, doneFn);
-            } else
+            } else  {
                 doneFn.attempt();
+            }
         },
 
         undoExecute: function(commandContext) {

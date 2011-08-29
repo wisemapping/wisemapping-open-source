@@ -82,7 +82,6 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="TextEditorFactory.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="VariableDistanceBoard.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="util/Shape.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="util/Converter.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="FixedDistanceBoard.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="BoardEntry.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ModelCodeName.js"/>

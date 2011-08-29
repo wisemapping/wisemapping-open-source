@@ -88,7 +88,7 @@ mindplot.RelationshipLine = new Class({
         this._positionateConnector(targetTopic);
 
         if (this.isOnFocus()) {
-            this._refreshSelectedShape();
+            this._refreshShape();
         }
         this._focusShape.moveToBack();
         this._controlPointsController.redraw();
@@ -149,17 +149,19 @@ mindplot.RelationshipLine = new Class({
 
     setOnFocus : function(focus) {
         // Change focus shape
-        if (focus) {
-            this._refreshSelectedShape();
-            this._controlPointsController.setLine(this);
-        }
-        this._focusShape.setVisibility(focus);
+        if (this.isOnFocus() != focus) {
+            if (focus) {
+                this._refreshShape();
+                this._controlPointsController.setLine(this);
+            }
+            this._focusShape.setVisibility(focus);
 
-        this._controlPointsController.setVisibility(focus);
-        this._onFocus = focus;
+            this._controlPointsController.setVisibility(focus);
+            this._onFocus = focus;
+        }
     },
 
-    _refreshSelectedShape : function () {
+    _refreshShape : function () {
         var sPos = this._line2d.getFrom();
         var tPos = this._line2d.getTo();
         var ctrlPoints = this._line2d.getControlPoints();
@@ -171,8 +173,6 @@ mindplot.RelationshipLine = new Class({
         shapeCtrlPoints[1].x = ctrlPoints[1].x;
         shapeCtrlPoints[1].y = ctrlPoints[1].y;
         this._focusShape.updateLine();
-        //this._focusShape.setSrcControlPoint(ctrlPoints[0]);
-        //this._focusShape.setDestControlPoint(ctrlPoints[1]);
     },
 
     addEvent : function(type, listener) {

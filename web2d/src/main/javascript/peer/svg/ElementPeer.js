@@ -85,12 +85,12 @@ web2d.peer.svg.ElementPeer.prototype.removeChild = function(elementPeer) {
  */
 web2d.peer.svg.ElementPeer.prototype.addEvent = function(type, listener) {
 
-    this._native.addEventListener(type, listener, false);
+    this._native.addEvent(type, listener);
 
 };
 
 web2d.peer.svg.ElementPeer.prototype.removeEvent = function(type, listener) {
-    this._native.removeEventListener(type, listener, false);
+    this._native.removeEvent(type, listener);
 };
 
 web2d.peer.svg.ElementPeer.prototype.setSize = function(width, height) {

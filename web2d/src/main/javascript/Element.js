@@ -87,19 +87,7 @@ web2d.Element.prototype.positionRelativeTo = function(elem, options) {
  *
  */
 web2d.Element.prototype.addEvent = function(type, listener) {
-    if (!this._supportedEvents.include(type)) {
-        throw "Unsupported event type: " + type;
-    }
-
-    // Concat previous event listeners for a given type.
-    if (!this._dispatcherByEventType[type]) {
-        this._dispatcherByEventType[type] = new web2d.EventDispatcher(this);
-
-        var eventListener = this._dispatcherByEventType[type].eventListener;
-        this._peer.addEvent(type, eventListener);
-    }
-
-    this._dispatcherByEventType[type].addListener(type, listener);
+    this._peer.addEvent(type, listener);
 };
 /**
  *
@@ -113,17 +101,7 @@ web2d.Element.prototype.addEvent = function(type, listener) {
  *     This interace will be invoked passing an event as argument and the 'this' referece in the function will be the element.
  */
 web2d.Element.prototype.removeEvent = function(type, listener) {
-    var dispatcher = this._dispatcherByEventType[type];
-    if (dispatcher == null) {
-        throw "There is no listener previously registered";
-    }
-    var result = dispatcher.removeListener(type, listener);
-
-    // If there is not listeners, EventDispatcher must be removed.
-    if (dispatcher.getListenersCount() <= 0) {
-        this._peer.removeEvent(type, dispatcher.eventListener);
-        this._dispatcherByEventType[type] = null;
-    }
+    this._peer.removeEvent(type, listener);
 };
 
 /**

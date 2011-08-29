@@ -28,8 +28,10 @@ mindplot.ScreenManager = new Class({
             event.stopPropagation()
         });
 
-        // @Todo: This must be resolved in other way ...
-        mindplot.util.Converter.setScreenManager(this);
+        this._divContainer.addEvent('dblclick', function(event) {
+            event.stopPropagation() ;
+            event.preventDefault();
+        });
     },
 
     setScale : function(scale) {
@@ -62,9 +64,9 @@ mindplot.ScreenManager = new Class({
         }
     },
 
-    getWorkspaceElementPosition : function(e) {
+    _getElementPosition : function(elem) {
         // Retrieve current element position.
-        var elementPosition = e.getPosition();
+        var elementPosition = elem.getPosition();
         var x = elementPosition.x;
         var y = elementPosition.y;
 
@@ -105,9 +107,8 @@ mindplot.ScreenManager = new Class({
 
         //Retrieve topic Position
         var topic = iconGroup.getTopic();
-        var topicPosition = this.getWorkspaceElementPosition(topic);
+        var topicPosition = this._getElementPosition(topic);
         topicPosition.x = topicPosition.x - (parseInt(topic.getSize().width) / 2);
-
 
         // Remove decimal part..
         return {x:x + topicPosition.x,y:y + topicPosition.y};
