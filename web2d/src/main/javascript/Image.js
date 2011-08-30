@@ -16,23 +16,26 @@
  *   limitations under the License.
  */
 
-web2d.Image = function(attributes) {
-    var peer = web2d.peer.Toolkit.createImage();
-    web2d.Element.call(this, peer, attributes);
-};
-objects.extend(web2d.Image, web2d.Element);
+web2d.Image = new Class({
+    Extends: web2d.Element,
+    initialize : function(attributes) {
+        var peer = web2d.peer.Toolkit.createImage();
+        this.parent(peer, attributes);
+    },
 
-web2d.Image.prototype.getType = function() {
-    return "Image";
-};
+    getType : function() {
+        return "Image";
+    },
 
-web2d.Image.prototype.setHref = function(href) {
-    this._peer.setHref(href);
-};
+    setHref : function(href) {
+        this._peer.setHref(href);
+    },
 
-web2d.Image.prototype.getHref = function() {
-    return this._peer.getHref();
-};
-web2d.Image.prototype.getSize = function() {
-    return this._peer.getSize();
-};
+    getHref : function() {
+        return this._peer.getHref();
+    },
+
+    getSize : function() {
+        return this._peer.getSize();
+    }
+});

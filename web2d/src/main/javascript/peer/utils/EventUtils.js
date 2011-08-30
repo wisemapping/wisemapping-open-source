@@ -31,9 +31,9 @@ web2d.peer.utils.EventUtils =
         }
 
         var children = elementPeer.getChildren();
-        for (var i = 0; i < children.length; i++)
+        for (var j = 0; j < children.length; j++)
         {
-            var child = children[i];
+            var child = children[j];
             web2d.peer.utils.EventUtils.broadcastChangeEvent(child, type);
         }
     }

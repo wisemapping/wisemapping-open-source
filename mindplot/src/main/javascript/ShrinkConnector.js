@@ -29,30 +29,26 @@ mindplot.ShirinkConnector = new Class({
             var collapse = !model.areChildrenShrinked();
 
             var topicId = topic.getId();
-           var actionDispatcher = mindplot.ActionDispatcher.getInstance();
-            actionDispatcher.shrinkBranch([topicId],collapse);
+            var actionDispatcher = mindplot.ActionDispatcher.getInstance();
+            actionDispatcher.shrinkBranch([topicId], collapse);
 
-            var e = new Event(event).stop();
-            e.preventDefault();
+            event.stopPropagation();
 
         });
 
         elipse.addEvent('mousedown', function(event) {
             // Avoid node creation ...
-            var e = new Event(event).stop();
-            e.preventDefault();
+            event.stopPropagation();
         });
 
         elipse.addEvent('dblclick', function(event) {
             // Avoid node creation ...
-            event = new Event(event).stop();
-            event.preventDefault();
-
+            event.stopPropagation();
         });
 
         elipse.addEvent('mouseover', function(event) {
 
-            this.setFill('rgb(153, 0, 255)');
+            elipse.setFill('rgb(153, 0, 255)');
         });
 
         elipse.addEvent('mouseout', function(event) {
