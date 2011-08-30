@@ -15,9 +15,9 @@
         web2d.peer.utils = {};
     </script>
 
-    <script type="text/javascript" src="mootools.js"></script>
+    <script type="text/javascript"
+            src="https://ajax.googleapis.com/ajax/libs/mootools/1.3.2/mootools-yui-compressed.js"></script>
     <script type="text/javascript" src="../../../../../core-js/target/classes/core.js"></script>
-    <script type="text/javascript" src="../../../../src/main/javascript/EventDispatcher.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/ElementPeer.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/Element.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/Workspace.js"></script>
@@ -45,7 +45,7 @@
     <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/VerdanaFont.js"></script>
     <script type="text/javascript" src="utils.js"></script>
     <script type="text/javascript">
-        function initialize(){
+        function initialize() {
             web2d.peer.Toolkit.init();
             var workspaceAttributes = { width:'700px',height:'100px',coordSize:'350 50',fillColor:'#ffffcc'};
             var strokeWidthWorkspace = new web2d.Workspace(workspaceAttributes);
@@ -56,8 +56,7 @@
             rect.setPosition(250, 5);
             strokeWidthWorkspace.appendChild(rect);
 
-            for (var i = 0; i <= 10; i++)
-            {
+            for (var i = 0; i <= 10; i++) {
                 var line = new web2d.Line();
                 line.setFrom(5 + (i * 25), 5);
                 line.setTo(5 + (i * 25), 45);
@@ -69,8 +68,7 @@
             strokeWidthWorkspace.addItAsChildTo($("strokeWidthSample"));
 
             var strokeOpacityWorkspace = new web2d.Workspace(workspaceAttributes);
-            for (var i = 0; i < 10; i++)
-            {
+            for (var i = 0; i < 10; i++) {
                 var line = new web2d.Line();
                 line.setFrom(15 + (i * 25), 5);
                 line.setTo(3 + (i * 25), 45);
@@ -83,8 +81,7 @@
 
             var strokeStyleWorkspace = new web2d.Workspace(workspaceAttributes);
             var styles = ['solid','dot','dash','dashdot','longdash'];
-            for (var i = 0; i < styles.length; i++)
-            {
+            for (var i = 0; i < styles.length; i++) {
                 var line = new web2d.Line();
                 line.setFrom(25 + (i * 30), 5);
                 line.setTo(13 + (i * 30), 45);
@@ -97,8 +94,7 @@
 
             var strokeArrowWorkspace = new web2d.Workspace(workspaceAttributes);
             var styles = ['none ','block ','classic','diamond ','oval','open','chevron','doublechevron'];
-            for (var i = 0; i < styles.length; i++)
-            {
+            for (var i = 0; i < styles.length; i++) {
                 var line = new web2d.Line();
                 line.setFrom(25 + (i * 30), 5);
                 line.setTo(13 + (i * 30), 45);
@@ -117,49 +113,49 @@
 <h1>Lines Render Tests </h1>
 
 <table border="1">
-<colgroup style="width:80%;">
-    <col style="width:30%"/>
-    <col style="width:60%"/>
-</colgroup>
-<tr>
-    <td>
-        Lines.
-    </td>
-    <td>
-        <div id="strokeWidthSample"/>
-    </td>
+    <colgroup style="width:80%;">
+        <col style="width:30%"/>
+        <col style="width:60%"/>
+    </colgroup>
+    <tr>
+        <td>
+            Lines.
+        </td>
+        <td>
+            <div id="strokeWidthSample"/>
+        </td>
 
-</tr>
+    </tr>
 
-<tr>
-    <td>
-        Lines Opacity.
-    </td>
-    <td>
-        <div id="strokeOpacitySample"/>
-    </td>
+    <tr>
+        <td>
+            Lines Opacity.
+        </td>
+        <td>
+            <div id="strokeOpacitySample"/>
+        </td>
 
-</tr>
+    </tr>
 
-<tr>
-    <td>
-        Line Styles.
-    </td>
-    <td>
-        <div id="strokeStyleSample"/>
-    </td>
+    <tr>
+        <td>
+            Line Styles.
+        </td>
+        <td>
+            <div id="strokeStyleSample"/>
+        </td>
 
-</tr>
+    </tr>
 
-<tr>
-    <td>
-        Line Arrows.
-    </td>
-    <td>
-        <div id="strokeArrowSample"/>
-    </td>
+    <tr>
+        <td>
+            Line Arrows.
+        </td>
+        <td>
+            <div id="strokeArrowSample"/>
+        </td>
 
-</tr>
+    </tr>
 
 </table>
 </body>
