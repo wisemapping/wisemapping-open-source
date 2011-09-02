@@ -141,14 +141,18 @@ mindplot.IconGroup = new Class({
 
     _resize : function(iconsLength) {
         this._group.setSize(iconsLength * this._iconSize.width, this._iconSize.height);
-        this._group.setCoordSize(iconsLength * mindplot.Icon.HEIGHT, mindplot.Icon.HEIGHT);
+
+        var iconSize = mindplot.Icon.SIZE + (mindplot.IconGroup.ICON_PADDING * 2);
+        this._group.setCoordSize(iconsLength * iconSize, iconSize);
     },
 
     _positionIcon : function(icon, order) {
-        icon.getImage().setPosition(mindplot.Icon.HEIGHT * order, 0);
+
+        var iconSize = mindplot.Icon.SIZE + (mindplot.IconGroup.ICON_PADDING * 2);
+        icon.getImage().setPosition(iconSize * order + mindplot.IconGroup.ICON_PADDING, mindplot.IconGroup.ICON_PADDING);
     }
 });
-
+mindplot.IconGroup.ICON_PADDING = 5;
 
 mindplot.IconGroup.RemoveTip = new Class({
     initialize : function(container) {

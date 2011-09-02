@@ -21,7 +21,7 @@ mindplot.Icon = new Class({
         $assert(url, 'topic can not be null');
         this._image = new web2d.Image();
         this._image.setHref(url);
-        this._image.setSize(100,100);
+        this._image.setSize(mindplot.Icon.SIZE, mindplot.Icon.SIZE);
     },
 
     getImage : function() {
@@ -44,21 +44,16 @@ mindplot.Icon = new Class({
         return this._image.getPosition();
     },
 
-    setSize : function(x, y) {
-        return this._image.setSize(x, y);
-    },
-
     addEvent : function(type, fnc) {
         this._image.addEvent(type, fnc);
     },
 
-    remove : function()
-    {
+    remove : function() {
         throw "Unsupported operation";
     }
 });
 
-mindplot.Icon.HEIGHT = 100;
+mindplot.Icon.SIZE = 90;
 
 
 

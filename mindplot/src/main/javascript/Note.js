@@ -19,7 +19,8 @@
 mindplot.Note = new Class({
     Extends: mindplot.Icon,
     initialize : function(topic, noteModel) {
-        $assert(topicId, 'topic can not be null');
+        $assert(topic, 'topic can not be null');
+
         this.parent(mindplot.Note.IMAGE_URL);
         this._noteModel = noteModel;
         this._topic = topic;
