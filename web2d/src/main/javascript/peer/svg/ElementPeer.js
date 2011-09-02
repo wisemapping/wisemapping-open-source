@@ -82,9 +82,11 @@ web2d.peer.svg.ElementPeer = new Class({
      * http://developer.mozilla.org/en/docs/addEvent
      */
     addEvent : function(type, listener) {
-
         this._native.addEvent(type, listener);
+    },
 
+    cloneEvents : function(from) {
+        this._native.cloneEvents(from);
     },
 
     removeEvent : function(type, listener) {

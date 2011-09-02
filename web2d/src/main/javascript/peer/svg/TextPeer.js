@@ -29,15 +29,41 @@ web2d.peer.svg.TextPeer = new Class({
         this._native.appendChild(element._native);
     },
 
+    setTextAlignment  : function(align) {
+        this._textAlign = align;
+    },
+
+
+    getTextAlignment  : function() {
+        return $defined(this._textAlign) ? this._textAlign : 'left';
+    },
+
     setText  : function(text) {
         text = core.Utils.escapeInvalidTags(text);
-        var child = this._native.firstChild;
-        if ($defined(child)) {
-            this._native.removeChild(child);
-        }
+        var childs = this._native.getChildren();
+        childs.forEach(function(child) {
+            child.dispose();
+        });
+
         this._text = text;
-        var textNode = window.document.createTextNode(text);
-        this._native.appendChild(textNode);
+        this.setVisibility(false);
+        var lines = text.split('\n');
+
+        var tspans = [];
+        lines.forEach(function(line) {
+
+            var tspan = window.document.createElementNS(this.svgNamespace, 'tspan');
+            tspan.setAttribute('dy', '1em');
+            tspan.setAttribute('x', this.getPosition().x);
+            var tspanContent = window.document.createTextNode(line);
+            tspan.appendChild(tspanContent);
+            tspans.push(tspan);
+
+            this._native.appendChild(tspan);
+        }.bind(this));
+
+        this.setVisibility(true);
+
     },
 
     getText  : function() {
@@ -46,13 +72,14 @@ web2d.peer.svg.TextPeer = new Class({
 
     setPosition  : function(x, y) {
         this._position = {x:x, y:y};
-        var height = this._font.getSize();
-        if ($defined(this._parent) && $defined(this._native.getBBox))
-            height = this.getHeight();
-        var size = parseInt(height);
-        this._native.setAttribute('y', y + size * 3 / 4);
-        //y+size/2
+        this._native.setAttribute('y', y);
         this._native.setAttribute('x', x);
+
+        // tspan must be positioned manually.
+        this._native.getElements('tspan').forEach(function(span) {
+            span.setAttribute('x', x);
+        });
+
     },
 
     getPosition  : function() {

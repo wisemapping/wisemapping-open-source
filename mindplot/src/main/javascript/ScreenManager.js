@@ -20,7 +20,7 @@ mindplot.ScreenManager = new Class({
     initialize:function(divElement) {
         $assert(divElement, "can not be null");
         this._divContainer = divElement;
-        this._offset = {x:0,y:0};
+        this._padding = {x:0,y:0};
 
         // Ignore default click event propagation. Prevent 'click' event on drad.
         this._clickEvents = [];
@@ -71,8 +71,8 @@ mindplot.ScreenManager = new Class({
         var y = elementPosition.y;
 
         // Add workspace offset.
-        x = x - this._offset.x;
-        y = y - this._offset.y;
+        x = x - this._padding.x;
+        y = y - this._padding.y;
 
         // Scale coordinate in order to be relative to the workspace. That's coord/size;
         x = x / this._scale;
@@ -129,8 +129,8 @@ mindplot.ScreenManager = new Class({
         y = y * this._scale;
 
         // Add workspace offset.
-        x = x + this._offset.x;
-        y = y + this._offset.y;
+        x = x + this._padding.x;
+        y = y + this._padding.y;
 
         // Remove decimal part..
         return new core.Point(x, y);
@@ -141,7 +141,7 @@ mindplot.ScreenManager = new Class({
     },
 
     setOffset : function(x, y) {
-        this._offset.x = x;
-        this._offset.y = y;
+        this._padding.x = x;
+        this._padding.y = y;
     }
 });

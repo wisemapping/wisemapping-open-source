@@ -54,7 +54,7 @@ mindplot.ShirinkConnector = new Class({
         elipse.addEvent('mouseout', function(event) {
             var color = topic.getBackgroundColor();
             this.setFill(color);
-        });
+        }.bind(this));
 
         elipse.setCursor('default');
         this._fillColor = '#f7f7f7';

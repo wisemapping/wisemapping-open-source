@@ -19,8 +19,8 @@
 mindplot.CentralTopic = new Class({
 
     Extends:mindplot.Topic,
-    initialize: function(model,options) {
-        this.parent(model,options);
+    initialize: function(model, options) {
+        this.parent(model, options);
     },
 
     _registerEvents : function() {
@@ -34,6 +34,10 @@ mindplot.CentralTopic = new Class({
 
     workoutIncomingConnectionPoint : function(sourcePosition) {
         return this.getPosition();
+    },
+
+    _getInnerPadding : function() {
+        return 9;
     },
 
     getTopicType : function() {

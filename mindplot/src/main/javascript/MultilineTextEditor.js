@@ -16,7 +16,7 @@
  *   limitations under the License.
  */
 
-mindplot.TextEditor = new Class({
+mindplot.MultilineTextEditor = new Class({
     initialize:function(topic) {
         this._topic = topic;
     },
@@ -41,8 +41,8 @@ mindplot.TextEditor = new Class({
         });
         inputContainer.inject(result);
 
-        var inputText = new Element('input',
-            {type:"text",
+        var inputText = new Element('textarea',
+            {   rows:2,
                 tabindex:'-1',
                 value:""}
         );
@@ -75,7 +75,14 @@ mindplot.TextEditor = new Class({
                     this.close(false);
                     break;
                 case 'enter':
-                    this.close(true);
+                    if (event.meta || event.control) {
+
+                        // @todo: Enters must be in any place ...
+                        inputElem.value = inputElem.value + "\n";
+                    }
+                    else {
+                        this.close(true);
+                    }
                     break;
                 default:
                     spanElem.innerHTML = inputElem.value;
@@ -210,7 +217,7 @@ mindplot.TextEditor = new Class({
     },
 
     _getTextareaElem : function() {
-        return this._divElem.getElement('input');
+        return this._divElem.getElement('textarea');
     },
 
     _getSpanElem : function() {

@@ -235,6 +235,17 @@ mindplot.MainTopic = new Class({
         return result;
     },
 
+    _getInnerPadding : function() {
+        var result;
+        var parent = this.getModel().getParent();
+        if (parent && mindplot.model.NodeModel.MAIN_TOPIC_TYPE == parent.getType()) {
+            result = 3;
+        }
+        else {
+            result = 4;
+        }
+        return result;
+    },
 
     isConnectedToCentralTopic : function() {
         var model = this.getModel();

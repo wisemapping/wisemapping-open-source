@@ -87,6 +87,10 @@ web2d.Element = new Class({
     addEvent : function(type, listener) {
         this._peer.addEvent(type, listener);
     },
+
+    cloneEvents : function(from) {
+        this._peer.cloneEvents(from);
+    },
     /**
      *
      * Allows the removal of event listeners from the event target.

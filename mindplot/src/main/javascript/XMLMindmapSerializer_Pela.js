@@ -66,15 +66,12 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
             parentTopic.setAttribute("central", true);
         } else {
             var parent = topic.getParent();
-//        if (parent == null || parent.getType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE)
-//        {
+
             var pos = topic.getPosition();
             parentTopic.setAttribute("position", pos.x + ',' + pos.y);
-//        } else
-//        {
+
             var order = topic.getOrder();
             parentTopic.setAttribute("order", order);
-//        }
         }
 
         var text = topic.getText();

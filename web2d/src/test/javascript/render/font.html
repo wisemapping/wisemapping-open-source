@@ -45,87 +45,115 @@
     <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/VerdanaFont.js"></script>
     <script type="text/javascript" src="utils.js"></script>
     <script type="text/javascript">
-        function zoomIn() {
-            for (i = 0; i < workspaces.length; i++) {
-                var coordSize = workspaces[i].getCoordSize();
-                workspaces[i].setCoordSize(coordSize.width * 2, coordSize.height * 2);
-            }
-        };
-
-        workspaces = [];
-
-        var TextTest = function (size, coordSize, textval, font, fontSizeval, style, modifier, fontColor, owner, iesimo) {
+        function multiline(text, family, elemId) {
             var overflowWorkspace = new web2d.Workspace();
-            overflowWorkspace.setSize(size, size);
-            overflowWorkspace.setCoordSize(coordSize, coordSize);
+            overflowWorkspace.setSize('200px', '240px');
+            overflowWorkspace.setCoordSize('200', '240');
             overflowWorkspace.setCoordOrigin(0, 0);
 
-            var text = new web2d.Text();
-            overflowWorkspace.appendChild(text);
-            var scale = web2d.peer.utils.TransformUtil.workoutScale(text._peer);
-            text.setText(textval + " " + scale.height);
-            text.setFont(font, fontSizeval, style, modifier);
-            text.setPosition(0, 0);
-            text.setColor(fontColor);
-            textot = text;
+            [6,8,10,15].forEach(function(size, i) {
+                var wText = new web2d.Text();
+                overflowWorkspace.appendChild(wText);
 
+                wText.setText(text);
+                wText.setFont(family, size, 'bold');
+                wText.setPosition(30, 50 * i);
+                wText.setColor('red');
+            });
 
-            overflowWorkspace.addItAsChildTo($(owner));
+            overflowWorkspace.addItAsChildTo($(elemId));
+        }
 
-            var parent = $(owner);
-            var span = document.createElement("span");
-            span.setAttribute("id", "textoHTML" + iesimo);
-            var textsize = text.offsetWidth;
-            var textHtml = document.createTextNode(textsize);
-            var fontSize = text.getHtmlFontSize();
-            span.appendChild(textHtml);
-            //var fontSize=20*scale.height*2;
-            span.setAttribute("style", "font-weight:" + modifier + ";font-style: " + style + "; font-size:" + fontSize + "pt; font-family: " + font + ";width:30;height:30;");
+        function alignments(text, family, elemId) {
+            var overflowWorkspace = new web2d.Workspace();
+            overflowWorkspace.setSize('260px', '240px');
+            overflowWorkspace.setCoordSize('260', '240');
+            overflowWorkspace.setCoordOrigin(0, 0);
 
-            parent.appendChild(span);
-            workspaces[iesimo] = overflowWorkspace;
-        };
+            ['center','left','right'].forEach(function(align, i) {
+                var wText = new web2d.Text();
+                overflowWorkspace.appendChild(wText);
+
+                wText.setText(text);
+                wText.setFont(family, 8, 'bold');
+                wText.setPosition(30, 80 * i);
+                wText.setColor('red');
+                wText.setTextAlignment(align);
+            });
+
+            overflowWorkspace.addItAsChildTo($(elemId));
+        }
 
         function initialize() {
             web2d.peer.Toolkit.init();
-            TextTest("100px", 200, "Test Text", "Arial", 10, "normal", "normal", "red", "text0", 0);
-            TextTest("100px", 100, "Test Text", "Arial", 10, "normal", "normal", "blue", "text1", 1);
-            TextTest("100px", 50, "Test Text", "Arial", 10, "normal", "normal", "blue", "text2", 2);
-            TextTest("100px", 100, "Test Text", "Arial", 10, "italic", "normal", "blue", "text3", 3);
-            TextTest("100px", 100, "Test Text", "Arial", 10, "italic", "bold", "green", "text4", 4);
-        }
+            // Multine tests ...
+            ['Arial','Tahoma','Verdana','Times'].forEach(function(family, i) {
+                multiline('This multine text.\nLine 1 :)\nLine2', family, 'multi' + i);
+            });
 
+            // Multine tests and alingments .. ...
+            ['Arial','Tahoma','Verdana','Times'].forEach(function(family, i) {
+                alignments('This multine text.\nThis is the long line just because :)\nShort line', family, 'amulti' + i);
+            })
+        }
     </script>
 </head>
 
 <body onload="initialize();">
 
-<h1>Text Render Tests </h1>
+<h1>Web2d Fonts Tests</h1>
 
 <table border="1">
-    <colgroup style="width:80%;">
+    <colgroup>
         <col style="width:30%"/>
         <col style="width:60%"/>
     </colgroup>
+    <thead>
+    <tr>
+        <td></td>
+        <td>Arial</td>
+        <td>Tahoma</td>
+        <td>Verdana</td>
+        <td>Times</td>
+    </tr>
+    </thead>
     <tr>
         <td>
-            Simple text
+            Multiline Text
         </td>
         <td>
-            <div id="text0"></div>
-            <div id="text1"></div>
-            <div id="text2"></div>
-            <div id="text3"></div>
-            <div id="text4"></div>
+            <div id="multi0"></div>
         </td>
-
+        <td>
+            <div id="multi1"></div>
+        </td>
+        <td>
+            <div id="multi2"></div>
+        </td>
+        <td>
+            <div id="multi3"></div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Multiline Aligment
+        </td>
+        <td>
+            <div id="amulti0"></div>
+        </td>
+        <td>
+            <div id="amulti1"></div>
+        </td>
+        <td>
+            <div id="amulti2"></div>
+        </td>
+        <td>
+            <div id="amulti3"></div>
+        </td>
     </tr>
     <!--**************************************************************************-->
 
 </table>
-<span>Text to Inspect: </span><input type="text" id="iesimo">
-<input type="button" value="Inspect"
-       onclick="alert(document.getElementById('textoHTML'+$('iesimo').value).offsetWidth);">
 <input type="button" value="Zoom In" onclick="zoomIn()">
 </body>
 </html>

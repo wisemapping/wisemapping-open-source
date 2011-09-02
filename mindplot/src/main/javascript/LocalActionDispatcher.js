@@ -118,7 +118,7 @@ mindplot.LocalActionDispatcher = new Class({
             var result = topic.getFontFamily();
             topic.setFontFamily(fontFamily, true);
 
-            topic.updateNode.delay(0, topic);
+            topic._adjustShapes.delay(0, topic);
             return result;
         };
 
@@ -179,7 +179,7 @@ mindplot.LocalActionDispatcher = new Class({
             var result = topic.getFontSize();
             topic.setFontSize(size, true);
 
-            topic.updateNode.delay(0, topic);
+            topic._adjustShapes.delay(0, topic);
             return result;
         };
 
@@ -209,7 +209,7 @@ mindplot.LocalActionDispatcher = new Class({
             var weight = (result == "bold") ? "normal" : "bold";
             topic.setFontWeight(weight, true);
 
-            topic.updateNode.delay(0, topic);
+            topic._adjustShapes.delay(0, topic);
             return result;
         };
 
@@ -292,7 +292,7 @@ mindplot.CommandContext = new Class({
             }
         }.bind(this));
         return result;
-    },
+    }
 });
 
 

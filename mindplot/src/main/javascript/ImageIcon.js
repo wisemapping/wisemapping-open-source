@@ -22,7 +22,7 @@ mindplot.ImageIcon = new Class({
         $assert(iconModel, 'iconModel can not be null');
         $assert(topic, 'topic can not be null');
 
-        this._topic = topic;
+        this._topicId = topic.getId();
         this._iconModel = iconModel;
 
         // @Todo: Read only must be a property ...
@@ -108,7 +108,7 @@ mindplot.ImageIcon = new Class({
 
     remove : function() {
         var actionDispatcher = mindplot.ActionDispatcher.getInstance();
-        actionDispatcher.removeIconFromTopic(this._topic.getId(), this._iconModel);
+        actionDispatcher.removeIconFromTopic(this._topicId, this._iconModel);
     }
 });
 

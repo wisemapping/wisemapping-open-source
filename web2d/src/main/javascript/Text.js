@@ -31,6 +31,12 @@ web2d.Text = new Class({
         this._peer.setText(text);
     },
 
+    setTextAlignment : function(align)
+    {
+        $assert(align,"align can not be null");
+        this._peer.setTextAlignment(align);
+    },
+
     setTextSize  : function(width, height) {
         this._peer.setContentSize(width, height);
     },

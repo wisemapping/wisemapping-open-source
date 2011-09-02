@@ -21,11 +21,11 @@ mindplot.commands.RemoveNoteFromTopicCommand = new Class({
     initialize: function(topicId)
     {
         $assert(topicId, 'topicId can not be null');
-        this._objectsIds = topicId;
+        this._topicsIds = topicId;
     },
     execute: function(commandContext)
     {
-        var topic = commandContext.findTopics(this._objectsIds)[0];
+        var topic = commandContext.findTopics(this._topicsIds)[0];
         this._text = topic._note.getText();
         var updated = function() {
             topic.removeNote();
@@ -34,10 +34,10 @@ mindplot.commands.RemoveNoteFromTopicCommand = new Class({
     },
     undoExecute: function(commandContext)
     {
-        var topic = commandContext.findTopics(this._objectsIds)[0];
+        var topic = commandContext.findTopics(this._topicsIds)[0];
         var updated = function() {
             topic.addNote(this._text,commandContext._designer);
-            topic.updateNode();
+            topic._adjustShapes();
         }.bind(this);
         updated.delay(0);
     }

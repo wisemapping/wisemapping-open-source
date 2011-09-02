@@ -17,76 +17,65 @@
  */
 
 mindplot.IconGroup = new Class({
-    initialize : function(topic) {
-        var offset = topic.getOffset();
+    initialize : function(topicId, iconSize) {
+        $assert(topicId, "topicId can not be null");
+        $assert(iconSize, "iconSize can not be null");
 
-        this.options = {
-            width:0,
-            height:0,
-            x:offset.x / 2,
-            y:offset.y,
-            icons:[],
-            topic:topic,
-            nativeElem:new web2d.Group({width: 2, height:2,x: offset, y:offset, coordSizeWidth:1,coordSizeHeight:1})
-        };
-        this.updateIconGroupPosition();
+        this._icons = [];
+        this._group = new web2d.Group({width: 0, height:iconSize,x: 0, y:0, coordSizeWidth:0,coordSizeHeight:100});
+        this._removeTip = new mindplot.IconGroup.RemoveTip(this._group, topicId);
+        this.seIconSize(iconSize, iconSize);
+
         this.registerListeners();
-
-        this._removeTip = new mindplot.IconGroup.RemoveTip(this.options.nativeElem, this);
 
     },
 
     setPosition : function(x, y) {
-        this.options.x = x;
-        this.options.y = y;
-        this.options.nativeElem.setPosition(x, y);
+        this._group.setPosition(x, y);
     },
 
     getPosition : function() {
-        return {x:this.options.x, y:this.options.y};
+        return this._group.getPosition();
+    },
+
+    getNativeElement : function() {
+        return this._group;
     },
 
     setSize : function(width, height) {
-        this.options.width = width;
-        this.options.height = height;
-        this.options.nativeElem.setSize(width, height);
-        this.options.nativeElem.setCoordSize(width, height);
+        this._group.setSize(width, height);
     },
 
     getSize : function() {
-        return {width:this.options.width, height:this.options.height};
+        return this._group.getSize();
+    },
+
+    seIconSize : function(width, height) {
+        this._iconSize = {width:width,height:height};
+        this._group.setCoordSize(width / mindplot.Icon.HEIGHT, height / mindplot.Icon.HEIGHT);
     },
 
     addIcon : function(icon) {
         $defined(icon, "icon is not defined");
         icon.setGroup(this);
-        var newIcon = icon.getImage();
-        var nativeElem = this.options.nativeElem;
 
-        var iconSize = newIcon.getSize();
-        var size = nativeElem.getSize();
-        newIcon.setPosition(size.width, 0);
-        this.options.icons.extend([icon]);
+        var imageShape = icon.getImage();
+        var groupShape = this._group;
 
-        nativeElem.appendChild(newIcon);
+        var iconsLength = this._icons.length;
+        imageShape.setPosition(mindplot.Icon.HEIGHT * iconsLength, 0);
+        groupShape.setSize((iconsLength + 1) * this._iconSize.width, this._iconSize.height);
+        groupShape.setCoordSize((iconsLength + 1 ) * mindplot.Icon.HEIGHT, mindplot.Icon.HEIGHT);
 
-        size.width = size.width + iconSize.width;
-        if (iconSize.height > size.height) {
-            size.height = iconSize.height;
-        }
-
-        nativeElem.setCoordSize(size.width, size.height);
-        nativeElem.setSize(size.width, size.height);
-        this.options.width = size.width;
-        this.options.height = size.height;
+        groupShape.appendChild(imageShape);
+        this._icons.push(icon);
 
         // Register event for the group ..
-        var topicId = this.options.topic.getId();
-        this._removeTip.decorate(topicId, icon);
+        this._removeTip.decorate(this._topicId, icon);
     },
 
     getIcons : function() {
-        return this.options.icons;
+        return this._icons;
     },
 
     removeIcon : function(url) {
@@ -101,7 +90,7 @@ mindplot.IconGroup = new Class({
 
     getIcon : function(url) {
         var result = null;
-        this.options.icons.each(function(el) {
+        this._icons.each(function(el) {
             var nativeImage = el.getImage();
             if (nativeImage.getHref() == url) {
                 result = el;
@@ -112,7 +101,7 @@ mindplot.IconGroup = new Class({
 
     getImageIcon : function(icon) {
         var result = null;
-        this.options.icons.each(function(el) {
+        this._icons.each(function(el) {
             if (result == null && $defined(el.getModel().isIconModel) && el.getId() == icon.getId() && el.getUiId() == icon.getUiId()) {
                 result = el;
             }
@@ -122,7 +111,7 @@ mindplot.IconGroup = new Class({
 
     findIconFromModel : function(iconModel) {
         var result = null;
-        this.options.icons.each(function(el) {
+        this._icons.each(function(el) {
             var elModel = el.getModel();
             if (result == null && $defined(elModel.isIconModel) && elModel.getId() == iconModel.getId()) {
                 result = el;
@@ -137,61 +126,34 @@ mindplot.IconGroup = new Class({
     },
 
     _removeIcon : function(icon) {
-        var nativeImage = icon.getImage();
-        this.options.icons.erase(icon);
-        var iconSize = nativeImage.getSize();
-        var size = this.options.nativeElem.getSize();
-        var position = nativeImage.getPosition();
-        this.options.icons.each(function(icon) {
-            var img = icon.getImage();
-            var pos = img.getPosition();
-            if (pos.x > position.x) {
-                img.setPosition(pos.x - iconSize.width, 0);
-            }
-        }.bind(this));
-        size.width = size.width - iconSize.width;
-        this.setSize(size.width, size.height);
-    },
 
-    getNativeElement : function() {
-        return this.options.nativeElem;
+        // remove from model...
+        this._icons.forEach(function(icon) {
+            this._group.removeChild(icon.getImage());
+        }.bind(this));
+        this._icons.erase(icon);
+
+        // Add all again ...
+        this._icons.forEach(function(icon) {
+            this.addIcon(icon);
+        }.bind(this));
     },
 
     moveToFront : function() {
-        this.options.nativeElem.moveToFront();
+        this._group.moveToFront();
     },
 
     registerListeners : function() {
-        this.options.nativeElem.addEvent('click', function(event) {
+        this._group.addEvent('click', function(event) {
             // Avoid node creation ...
             event.stopPropagation();
 
         });
 
-        this.options.nativeElem.addEvent('dblclick', function(event) {
+        this._group.addEvent('dblclick', function(event) {
             event.stopPropagation();
 
         });
-    },
-
-    getTopic : function() {
-        return this.options.topic;
-    },
-
-    updateIconGroupPosition : function() {
-        var offsets = this._calculateOffsets();
-        this.setPosition(offsets.x, offsets.y);
-    },
-
-    _calculateOffsets : function() {
-        var offset = this.options.topic.getOffset();
-        var text = this.options.topic.getTextShape();
-
-        var sizeHeight = text.getHtmlFontSize();
-        var yOffset = offset;
-
-        yOffset = text.getPosition().y + (sizeHeight - 18) / 2 + 1;
-        return {x:offset, y:yOffset};
     }
 });
 
@@ -215,7 +177,7 @@ mindplot.IconGroup.RemoveTip = new Class({
 
             // Now, let move the position the icon...
             var pos = icon.getPosition();
-            icon.setSize(15, 15);
+//            icon.setSize(15, 15);
 
             // Register events ...
             var widget = this._buildWeb2d();
@@ -231,7 +193,7 @@ mindplot.IconGroup.RemoveTip = new Class({
                 this.hide();
             }.bind(this));
 
-            widget.setPosition(pos.x + 11, pos.y - 11);
+            widget.setPosition(pos.x + 80, pos.y - 50);
             this._container.appendChild(widget);
 
             // Setup current element ...
@@ -259,7 +221,7 @@ mindplot.IconGroup.RemoveTip = new Class({
             var widget = this._widget;
             var close = function() {
 
-                icon.setSize(12, 12);
+//                icon.setSize(12, 12);
                 this._activeIcon = null;
 
                 this._container.removeChild(widget);
@@ -319,24 +281,30 @@ mindplot.IconGroup.RemoveTip = new Class({
         line2.setTo(9, 1);
         result.appendChild(line2);
 
-        // Some sily events ...
+        // Some events ...
         result.addEvent('mouseover', function() {
             innerRect.setFill('#CC0033');
         });
         result.addEvent('mouseout', function() {
             innerRect.setFill('gray');
         });
+
+        result.setSize(50, 50);
         return result;
     },
 
     decorate : function(topicId, icon) {
-        icon.addEvent('mouseover', function() {
-            this.show(topicId, icon);
-        }.bind(this));
 
-        icon.addEvent('mouseout', function() {
-            this.hide();
-        }.bind(this))
+        if (!icon.__remove) {
+            icon.addEvent('mouseover', function() {
+                this.show(topicId, icon);
+            }.bind(this));
+
+            icon.addEvent('mouseout', function() {
+                this.hide();
+            }.bind(this))
+            icon.__remove = true;
+        }
     }
 
 });

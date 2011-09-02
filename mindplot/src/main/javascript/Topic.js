@@ -21,7 +21,7 @@ mindplot.Topic = new Class({
     Extends:mindplot.NodeGraph,
     initialize : function(model) {
         this.parent(model);
-        this._textEditor = new mindplot.TextEditor(this);
+        this._textEditor = new mindplot.MultilineTextEditor(this);
 
         this._children = [];
         this._parent = null;
@@ -71,23 +71,15 @@ mindplot.Topic = new Class({
             model.setShapeType(type);
         }
 
-        var innerShape = this.getInnerShape();
-        if (innerShape != null) {
-            var dispatcherByEventType = innerShape._dispatcherByEventType;
-            // Remove old shape ...
+        var oldInnerShape = this.getInnerShape();
+        if (oldInnerShape != null) {
+
             this._removeInnerShape();
 
             // Create a new one ...
-            innerShape = this.getInnerShape();
-
-            //Let's register all the events. The first one is the default one. The others will be copied.
-            var dispatcher = dispatcherByEventType['mousedown'];
-
-            if ($defined(dispatcher)) {
-                for (var i = 1; i < dispatcher._listeners.length; i++) {
-                    innerShape.addEvent('mousedown', dispatcher._listeners[i]);
-                }
-            }
+            var innerShape = this.getInnerShape();
+            // @Todo: Fix...
+            //innerShape.cloneEvents(oldInnerShape);
 
             // Update figure size ...
             var size = model.getSize();
@@ -134,12 +126,13 @@ mindplot.Topic = new Class({
         var innerShape = this.getInnerShape();
         group.removeChild(innerShape);
         this._innerShape = null;
+        return innerShape;
     },
 
     getInnerShape : function() {
         if (!$defined(this._innerShape)) {
             // Create inner box.
-            this._innerShape = this.buildShape(this.INNER_RECT_ATTRIBUTES);
+            this._innerShape = this.buildShape(mindplot.Topic.INNER_RECT_ATTRIBUTES);
 
             // Update bgcolor ...
             var bgColor = this.getBackgroundColor();
@@ -247,21 +240,25 @@ mindplot.Topic = new Class({
     },
 
     getOrBuildIconGroup : function() {
-        if (!$defined(this._icon)) {
-            this._icon = this._buildIconGroup();
+        if (!$defined(this._iconsGroup)) {
+            this._iconsGroup = this._buildIconGroup();
             var group = this.get2DElement();
-            group.appendChild(this._icon.getNativeElement());
-            this._icon.moveToFront();
+            group.appendChild(this._iconsGroup.getNativeElement());
+            this._iconsGroup.moveToFront();
         }
-        return this._icon;
+        return this._iconsGroup;
     },
 
     getIconGroup : function() {
-        return this._icon;
+        return this._iconsGroup;
     },
 
     _buildIconGroup : function() {
-        var result = new mindplot.IconGroup(this);
+        var textHeight = this.getTextShape().getHeight();
+        var result = new mindplot.IconGroup(this.getId(), textHeight);
+        var padding = this._getInnerPadding();
+        result.setPosition(padding, padding);
+
         var model = this.getModel();
 
         //Icons
@@ -341,9 +338,9 @@ mindplot.Topic = new Class({
             iconGroup.removeImageIcon(imgIcon);
             if (iconGroup.getIcons().length == 0) {
                 this.get2DElement().removeChild(iconGroup.getNativeElement());
-                this._icon = null;
+                this._iconsGroup = null;
             }
-            this.updateNode();
+            this._adjustShapes();
         }
     },
 
@@ -356,9 +353,9 @@ mindplot.Topic = new Class({
             iconGroup.removeIcon(mindplot.LinkIcon.IMAGE_URL);
             if (iconGroup.getIcons().length == 0) {
                 this.get2DElement().removeChild(iconGroup.getNativeElement());
-                this._icon = null;
+                this._iconsGroup = null;
             }
-            this.updateNode.delay(0, this);
+            this._adjustShapes(this);
         }
         this._link = null;
         this._hasLink = false;
@@ -373,11 +370,11 @@ mindplot.Topic = new Class({
             iconGroup.removeIcon(mindplot.Note.IMAGE_URL);
             if (iconGroup.getIcons().length == 0) {
                 this.get2DElement().removeChild(iconGroup.getNativeElement());
-                this._icon = null;
+                this._iconsGroup = null;
             }
         }
 
-        this.updateNode.delay(0, this);
+        this._adjustShapes();
         this._note = null;
         this._hasNote = false;
     },
@@ -411,14 +408,6 @@ mindplot.Topic = new Class({
 
         if (!disableEventsListeners) {
             // Propagate mouse events ...
-            var topic = this;
-            result.addEvent('mousedown', function(event) {
-                var eventDispatcher = topic.getInnerShape()._dispatcherByEventType['mousedown'];
-                if ($defined(eventDispatcher)) {
-                    eventDispatcher.eventListener(event);
-                }
-            });
-
             if (this.getType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
                 result.setCursor('move');
             } else {
@@ -426,35 +415,11 @@ mindplot.Topic = new Class({
             }
         }
 
-        // Position node ...
-        this._offset = this.getOffset();
-        var iconOffset = this.getIconOffset();
-        result.setPosition(iconOffset + this._offset, this._offset / 2);
         return result;
     },
 
-    getIconOffset : function() {
-        var iconGroup = this.getIconGroup();
-        var size = 0;
-        if ($defined(iconGroup)) {
-            size = iconGroup.getSize().width;
-        }
-        return size;
-    },
-
-    getOffset : function(value, updateModel) {
-        var offset = 18;
-
-        if (mindplot.model.NodeModel.MAIN_TOPIC_TYPE == this.getType()) {
-            var parent = this.getModel().getParent();
-            if (parent && mindplot.model.NodeModel.MAIN_TOPIC_TYPE == parent.getType()) {
-                offset = 6;
-            }
-            else {
-                offset = 8;
-            }
-        }
-        return offset;
+    _getInnerPadding : function() {
+        throw "this must be implemented";
     },
 
     setFontFamily : function(value, updateModel) {
@@ -464,7 +429,7 @@ mindplot.Topic = new Class({
             var model = this.getModel();
             model.setFontFamily(value);
         }
-        this.updateNode.delay(0, this, [updateModel]);
+        this._adjustShapes(updateModel);
     },
 
     setFontSize : function(value, updateModel) {
@@ -474,7 +439,7 @@ mindplot.Topic = new Class({
             var model = this.getModel();
             model.setFontSize(value);
         }
-        this.updateNode.delay(0, this, [updateModel]);
+        this._adjustShapes(updateModel);
 
     },
 
@@ -485,7 +450,7 @@ mindplot.Topic = new Class({
             var model = this.getModel();
             model.setFontStyle(value);
         }
-        this.updateNode.delay(0, this, [updateModel]);
+        this._adjustShapes(updateModel);
     },
 
     setFontWeight : function(value, updateModel) {
@@ -559,7 +524,7 @@ mindplot.Topic = new Class({
     _setText : function(text, updateModel) {
         var textShape = this.getTextShape();
         textShape.setText(text);
-        this.updateNode.delay(0, this, [updateModel]);
+        this._adjustShapes(updateModel);
 
         if ($defined(updateModel) && updateModel) {
             var model = this.getModel();
@@ -635,7 +600,6 @@ mindplot.Topic = new Class({
     _buildShape : function() {
         var groupAttributes = {width: 100, height:100,coordSizeWidth:100,coordSizeHeight:100};
         var group = new web2d.Group(groupAttributes);
-        group._peer._native.virtualRef = this;
         this._set2DElement(group);
 
         // Shape must be build based on the model width ...
@@ -644,18 +608,15 @@ mindplot.Topic = new Class({
         var textShape = this.getTextShape();
         var shrinkConnector = this.getShrinkConnector();
 
-        // Update figure size ...
-        var model = this.getModel();
-        var size = model.getSize();
-        this._setSize(size);
-
         // Add to the group ...
         group.appendChild(outerShape);
         group.appendChild(innerShape);
         group.appendChild(textShape);
 
+        // Update figure size ...
+        var model = this.getModel();
         if (model.getLinks().length != 0 || model.getNotes().length != 0 || model.getIcons().length != 0) {
-            iconGroup = this.getOrBuildIconGroup();
+            this.getOrBuildIconGroup();
         }
 
         if (this.getType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
@@ -664,6 +625,9 @@ mindplot.Topic = new Class({
 
         // Register listeners ...
         this._registerDefaultListenersToElement(group, this);
+
+        // Put all the topic elements in place ...
+        this._adjustShapes(false);
     },
 
     _registerDefaultListenersToElement : function(elem, topic) {
@@ -1178,42 +1142,40 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    updateNode : function(updatePosition) {
-        if (this.isInWorkspace()) {
+    _adjustShapes : function(updatePosition) {
+        (function() {
             var textShape = this.getTextShape();
-            var sizeWidth = textShape.getWidth();
-            var sizeHeight = textShape.getHeight();
-            var iconOffset = this.getIconOffset();
-            var height = sizeHeight + this._offset;
-            var width = sizeWidth + this._offset * 2 + iconOffset + 2;
-            var pos = this._offset / 2 - 1;
-            if (this.getShapeType() == mindplot.model.NodeModel.SHAPE_TYPE_ELIPSE) {
-                var factor = 0.25;
-                height = (width * factor < height ? height : width * factor);
-                pos = (height - sizeHeight + 3) / 2;
+            var textWidth = textShape.getWidth();
+            var textHeight = textShape.getHeight();
+            var topicPadding = this._getInnerPadding();
+
+            var iconGroup = this.getOrBuildIconGroup();
+            var iconsWidth = iconGroup.getSize().width;
+            if (iconsWidth != 0) {
+                // Add a extra padding between the text and the icons
+                iconsWidth = iconsWidth + (textHeight / 4);
             }
 
-            var newSize = {width:width,height:height};
-            this.setSize(newSize, false, updatePosition);
+            var height = textHeight + (topicPadding * 2);
+            var width = textWidth + iconsWidth + (topicPadding * 2);
 
-            // Positionate node ...
-            textShape.setPosition(iconOffset + this._offset + 2, pos);
-            textShape.setTextSize(sizeWidth, sizeHeight);
-            var iconGroup = this.getIconGroup();
-            if ($defined(iconGroup))
-                iconGroup.updateIconGroupPosition();
-        }
+            var size = {width:width,height:height};
+            this.setSize(size, false, updatePosition);
+
+            // Position node ...
+            textShape.setPosition(topicPadding + iconsWidth, topicPadding);
+
+        }).delay(0, this);
     },
-
-    INNER_RECT_ATTRIBUTES : {stroke:'0.5 solid'},
 
     addHelper : function(helper) {
         helper.addToGroup(this.get2DElement());
         this._helpers.push(helper);
     }
+
 });
 
 
 mindplot.Topic.CONNECTOR_WIDTH = 6;
 mindplot.Topic.OUTER_SHAPE_ATTRIBUTES = {fillColor:'#dbe2e6',stroke:'1 solid #77555a',x:0,y:0};
-
+mindplot.Topic.INNER_RECT_ATTRIBUTES = {stroke:'0.5 solid'};

@@ -20,7 +20,7 @@ mindplot.commands.DeleteCommand = new Class({
     Extends:mindplot.Command,
     initialize: function(objectIds) {
         $assert(objectIds, "objectIds must be defined");
-        this._objectsIds = objectIds;
+        this._topicsIds = objectIds;
         this._deletedTopicModels = [];
         this._parentTopicIds = [];
         this._deletedRelationships = [];
@@ -28,7 +28,7 @@ mindplot.commands.DeleteCommand = new Class({
     },
 
     execute: function(commandContext) {
-        var topics = commandContext.findTopics(this._objectsIds.nodes);
+        var topics = commandContext.findTopics(this._topicsIds.nodes);
         if (topics.length > 0) {
             topics.forEach(
                 function(topic, index) {
@@ -58,7 +58,7 @@ mindplot.commands.DeleteCommand = new Class({
                 }.bind(this)
             );
         }
-        var lines = commandContext.findRelationships(this._objectsIds.relationship);
+        var lines = commandContext.findRelationships(this._topicsIds.relationship);
         if (lines.length > 0) {
             lines.forEach(function(line, index) {
                 if (line.isInWorkspace()) {
@@ -70,7 +70,7 @@ mindplot.commands.DeleteCommand = new Class({
     },
     undoExecute: function(commandContext) {
 
-        var topics = commandContext.findTopics(this._objectsIds);
+        var topics = commandContext.findTopics(this._topicsIds);
         var parent = commandContext.findTopics(this._parentTopicIds);
 
         this._deletedTopicModels.forEach(

@@ -78,7 +78,8 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="RelationshipLine.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="DragTopicPositioner.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="TextEditor.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="RichTextEditor.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="MultilineTextEditor.js"/>
+                                    <!--<filelist dir="${basedir}/src/main/javascript/" files="RichTextEditor.js"/>-->
                                     <filelist dir="${basedir}/src/main/javascript/" files="TextEditorFactory.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="VariableDistanceBoard.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="util/Shape.js"/>
