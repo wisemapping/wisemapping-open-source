@@ -254,7 +254,7 @@ mindplot.Topic = new Class({
     },
 
     _buildIconGroup : function() {
-        var textHeight = this.getTextShape().getHeight();
+        var textHeight = this.getTextShape().getFontHeight();
         var result = new mindplot.IconGroup(this.getId(), textHeight);
         var padding = this._getInnerPadding();
         result.setPosition(padding, padding);
@@ -426,8 +426,10 @@ mindplot.Topic = new Class({
     },
 
     setFontSize : function(value, updateModel) {
+
         var textShape = this.getTextShape();
         textShape.setSize(value);
+
         if ($defined(updateModel) && updateModel) {
             var model = this.getModel();
             model.setFontSize(value);
@@ -1142,10 +1144,17 @@ mindplot.Topic = new Class({
             var textHeight = textShape.getHeight();
             var topicPadding = this._getInnerPadding();
 
+            // Adjust the icon size to the size of the text ...
             var iconGroup = this.getOrBuildIconGroup();
+            var fontHeight = this.getTextShape().getFontHeight();
+            iconGroup.setPosition(topicPadding, topicPadding);
+            iconGroup.seIconSize(fontHeight, fontHeight);
+
+
+            // Add a extra padding between the text and the icons
             var iconsWidth = iconGroup.getSize().width;
             if (iconsWidth != 0) {
-                // Add a extra padding between the text and the icons
+
                 iconsWidth = iconsWidth + (textHeight / 4);
             }
 

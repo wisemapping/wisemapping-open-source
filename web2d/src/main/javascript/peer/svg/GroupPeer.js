@@ -32,6 +32,10 @@ web2d.peer.svg.GroupPeer = new Class({
         var change = this._coordSize.width != width || this._coordSize.height != height;
         this._coordSize.width = width;
         this._coordSize.height = height;
+
+        console.log("coordSize.width:" + width);
+        console.log("coordSize.height:" + height);
+
         if (change)
             this.updateTransform();
         web2d.peer.utils.EventUtils.broadcastChangeEvent(this, "strokeStyle");
@@ -68,6 +72,21 @@ web2d.peer.svg.GroupPeer = new Class({
 
         var cx = this._position.x - this._coordOrigin.x * sx;
         var cy = this._position.y - this._coordOrigin.y * sy;
+
+        console.log("------------------");
+        console.log("this._coordSize.width:" + this._coordSize.width);
+        console.log("this._coordSize.height:" + this._coordSize.height);
+
+        console.log("cx:" + cx);
+        console.log("cy:" + cy);
+
+        console.log("this._size.width:" + this._size.width);
+        console.log("this._size.height:" + this._size.height);
+
+        console.log("sx:" + sx);
+        console.log("sy:" + sy);
+        console.log("------------------");
+
 
         this._native.setAttribute("transform", "translate(" + cx + "," + cy + ") scale(" + sx + "," + sy + ")");
     },

@@ -31,9 +31,8 @@ web2d.Text = new Class({
         this._peer.setText(text);
     },
 
-    setTextAlignment : function(align)
-    {
-        $assert(align,"align can not be null");
+    setTextAlignment : function(align) {
+        $assert(align, "align can not be null");
         this._peer.setTextAlignment(align);
     },
 
@@ -87,5 +86,10 @@ web2d.Text = new Class({
 
     getHeight  : function() {
         return parseInt(this._peer.getHeight());
+    },
+
+    getFontHeight : function() {
+        var lines = this._peer.getText().split('\n').length;
+        return Math.round(this.getHeight() / lines);
     }
 });
