@@ -329,18 +329,12 @@ mindplot.Topic = new Class({
 
         //Removing the icon from MODEL
         var model = this.getModel();
-        model._removeIcon(iconModel);
+        model.removeIcon(iconModel);
 
         //Removing the icon from UI
         var iconGroup = this.getIconGroup();
         if ($defined(iconGroup)) {
-            var imgIcon = iconGroup.findIconFromModel(iconModel);
-            iconGroup.removeImageIcon(imgIcon);
-            if (iconGroup.getIcons().length == 0) {
-                this.get2DElement().removeChild(iconGroup.getNativeElement());
-                this._iconsGroup = null;
-            }
-            this._adjustShapes();
+            iconGroup.removeIcon(iconModel);
         }
     },
 
@@ -362,16 +356,15 @@ mindplot.Topic = new Class({
     },
 
     removeNote : function() {
+        // Update model ...
         var model = this.getModel();
         var notes = model.getNotes();
-        model._removeNote(notes[0]);
+        model.removeNote(notes[0]);
+
+        // Remove UI ...
         var iconGroup = this.getIconGroup();
         if ($defined(iconGroup)) {
-            iconGroup.removeIcon(mindplot.Note.IMAGE_URL);
-            if (iconGroup.getIcons().length == 0) {
-                this.get2DElement().removeChild(iconGroup.getNativeElement());
-                this._iconsGroup = null;
-            }
+            iconGroup.removeIconByUrl(mindplot.Note.IMAGE_URL);
         }
 
         this._adjustShapes();

@@ -179,7 +179,7 @@ mindplot.collaboration.frameworks.brix.model.NodeModel = new Class({
         this._notes.push(note);
     },
 
-    _removeNote  : function(note) {
+    removeNote  : function(note) {
         $assert(note && note.isNoteModel(), 'Only NoteModel can be appended to Mindmap object as links');
         this._notes.erase(note);
     },
@@ -194,7 +194,7 @@ mindplot.collaboration.frameworks.brix.model.NodeModel = new Class({
         this._icons.push(icon);
     },
 
-    _removeIcon  : function(icon) {
+    removeIcon  : function(icon) {
         $assert(icon && icon.isIconModel(), 'Only IconModel can be appended to Mindmap object as icons');
         this._icons.erase(icon);
     },

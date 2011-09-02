@@ -26,7 +26,7 @@ mindplot.IconGroup = new Class({
         this._removeTip = new mindplot.IconGroup.RemoveTip(this._group, topicId);
         this.seIconSize(iconSize, iconSize);
 
-        this.registerListeners();
+        this._registerListeners();
 
     },
 
@@ -42,10 +42,6 @@ mindplot.IconGroup = new Class({
         return this._group;
     },
 
-    setSize : function(width, height) {
-        this._group.setSize(width, height);
-    },
-
     getSize : function() {
         return this._group.getSize();
     },
@@ -57,38 +53,22 @@ mindplot.IconGroup = new Class({
 
     addIcon : function(icon) {
         $defined(icon, "icon is not defined");
+
         icon.setGroup(this);
+        this._icons.push(icon);
+
+        // Adjust group and position ...
+        this._resize(this._icons.length);
+        this._positionIcon(icon, this._icons.length - 1);
 
         var imageShape = icon.getImage();
-        var groupShape = this._group;
-
-        var iconsLength = this._icons.length;
-        imageShape.setPosition(mindplot.Icon.HEIGHT * iconsLength, 0);
-        groupShape.setSize((iconsLength + 1) * this._iconSize.width, this._iconSize.height);
-        groupShape.setCoordSize((iconsLength + 1 ) * mindplot.Icon.HEIGHT, mindplot.Icon.HEIGHT);
-
-        groupShape.appendChild(imageShape);
-        this._icons.push(icon);
+        this._group.appendChild(imageShape);
 
         // Register event for the group ..
         this._removeTip.decorate(this._topicId, icon);
     },
 
-    getIcons : function() {
-        return this._icons;
-    },
-
-    removeIcon : function(url) {
-        this._removeIcon(this.getIcon(url));
-    },
-
-    removeImageIcon : function(icon) {
-
-        var imgIcon = this.getImageIcon(icon);
-        this._removeIcon(imgIcon);
-    },
-
-    getIcon : function(url) {
+    _findIconFromUrl : function(url) {
         var result = null;
         this._icons.each(function(el) {
             var nativeImage = el.getImage();
@@ -99,17 +79,7 @@ mindplot.IconGroup = new Class({
         return result;
     },
 
-    getImageIcon : function(icon) {
-        var result = null;
-        this._icons.each(function(el) {
-            if (result == null && $defined(el.getModel().isIconModel) && el.getId() == icon.getId() && el.getUiId() == icon.getUiId()) {
-                result = el;
-            }
-        }, this);
-        return result;
-    },
-
-    findIconFromModel : function(iconModel) {
+    _findIconFromModel : function(iconModel) {
         var result = null;
         this._icons.each(function(el) {
             var elModel = el.getModel();
@@ -125,17 +95,30 @@ mindplot.IconGroup = new Class({
         return result;
     },
 
-    _removeIcon : function(icon) {
+    removeIconByUrl : function(url) {
+        var icon = this._findIconFromUrl(url);
+        this._removeIcon(icon);
+    },
 
-        // remove from model...
-        this._icons.forEach(function(icon) {
-            this._group.removeChild(icon.getImage());
-        }.bind(this));
+    removeIcon : function(iconModel) {
+        $assert(iconModel, "iconModel can not be null");
+
+        var icon = this._findIconFromModel(iconModel);
+        this._removeIcon(icon);
+    },
+
+    _removeIcon : function(icon) {
+        $assert(icon, "icon can not be null");
+
+        this._removeTip.close(0);
+        this._group.removeChild(icon.getImage());
+
         this._icons.erase(icon);
+        this._resize(this._icons.length);
 
         // Add all again ...
-        this._icons.forEach(function(icon) {
-            this.addIcon(icon);
+        this._icons.forEach(function(elem, i) {
+            this._positionIcon(elem, i);
         }.bind(this));
     },
 
@@ -143,7 +126,7 @@ mindplot.IconGroup = new Class({
         this._group.moveToFront();
     },
 
-    registerListeners : function() {
+    _registerListeners : function() {
         this._group.addEvent('click', function(event) {
             // Avoid node creation ...
             event.stopPropagation();
@@ -154,6 +137,15 @@ mindplot.IconGroup = new Class({
             event.stopPropagation();
 
         });
+    },
+
+    _resize : function(iconsLength) {
+        this._group.setSize(iconsLength * this._iconSize.width, this._iconSize.height);
+        this._group.setCoordSize(iconsLength * mindplot.Icon.HEIGHT, mindplot.Icon.HEIGHT);
+    },
+
+    _positionIcon : function(icon, order) {
+        icon.getImage().setPosition(mindplot.Icon.HEIGHT * order, 0);
     }
 });
 
@@ -177,7 +169,6 @@ mindplot.IconGroup.RemoveTip = new Class({
 
             // Now, let move the position the icon...
             var pos = icon.getPosition();
-//            icon.setSize(15, 15);
 
             // Register events ...
             var widget = this._buildWeb2d();
@@ -221,9 +212,7 @@ mindplot.IconGroup.RemoveTip = new Class({
             var widget = this._widget;
             var close = function() {
 
-//                icon.setSize(12, 12);
                 this._activeIcon = null;
-
                 this._container.removeChild(widget);
                 this._widget = null;
 
@@ -302,7 +291,7 @@ mindplot.IconGroup.RemoveTip = new Class({
 
             icon.addEvent('mouseout', function() {
                 this.hide();
-            }.bind(this))
+            }.bind(this));
             icon.__remove = true;
         }
     }
