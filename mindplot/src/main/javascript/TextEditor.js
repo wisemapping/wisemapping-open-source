@@ -102,7 +102,7 @@ mindplot.TextEditor = new Class({
     },
 
     isVisible : function () {
-        return $defined(this._divElem) && this._divElem.getStyle('display') == 'block';
+        return $defined(this._containerElem) && this._containerElem.getStyle('display') == 'block';
     },
 
     _updateModel : function () {
@@ -123,7 +123,7 @@ mindplot.TextEditor = new Class({
             var editorElem = this._buildEditor();
             editorElem.inject($(document.body));
 
-            this._divElem = editorElem;
+            this._containerElem = editorElem;
             this._registerEvents(editorElem);
             this._showEditor(text);
         }
@@ -151,11 +151,11 @@ mindplot.TextEditor = new Class({
         var displayFunc = function() {
             // Position the editor and set the size...
             var textShape = this._topic.getTextShape();
-            textShape.positionRelativeTo(this._divElem, {
+            textShape.positionRelativeTo(this._containerElem, {
                 position: {x: 'left',y:'top'},
                 edge: {x: 'left', y: 'top'}
             });
-            this._divElem.setStyle('display', 'block');
+            this._containerElem.setStyle('display', 'block');
 
             // Set size ...
             var elemSize = topic.getSize();
@@ -199,7 +199,7 @@ mindplot.TextEditor = new Class({
     _setText : function(text) {
         var inputField = this._getTextareaElem();
         inputField.size = text.length + 1;
-        this._divElem.style.width = (inputField.size * parseInt(inputField.style.fontSize) + 100) + "px";
+        this._containerElem.style.width = (inputField.size * parseInt(inputField.style.fontSize) + 100) + "px";
         var spanField = this._getSpanElem();
         spanField.innerHTML = text;
         inputField.value = text;
@@ -210,19 +210,19 @@ mindplot.TextEditor = new Class({
     },
 
     _getTextareaElem : function() {
-        return this._divElem.getElement('input');
+        return this._containerElem.getElement('input');
     },
 
     _getSpanElem : function() {
-        return this._divElem.getElement('span');
+        return this._containerElem.getElement('span');
     },
 
     _setEditorSize : function (width, height) {
         var textShape = this._topic.getTextShape();
         var scale = web2d.peer.utils.TransformUtil.workoutScale(textShape._peer);
         this._size = {width:width * scale.width, height:height * scale.height};
-        this._divElem.style.width = this._size.width * 2 + "px";
-        this._divElem.style.height = this._size.height + "px";
+        this._containerElem.style.width = this._size.width * 2 + "px";
+        this._containerElem.style.height = this._size.height + "px";
     },
 
     _changeCursor : function(inputElem, selectText) {
@@ -256,8 +256,8 @@ mindplot.TextEditor = new Class({
             this._topic.getTextShape().setVisibility(true);
 
             // Remove it form the screen ...
-            this._divElem.dispose();
-            this._divElem = null;
+            this._containerElem.dispose();
+            this._containerElem = null;
         }
     }
 });

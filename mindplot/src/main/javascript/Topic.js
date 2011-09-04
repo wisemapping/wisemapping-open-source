@@ -153,8 +153,7 @@ mindplot.Topic = new Class({
         return this._innerShape;
     },
 
-
-    buildShape : function(attributes, type) {
+   buildShape : function(attributes, type) {
         var result;
         if (!$defined(type)) {
             type = this.getShapeType();
@@ -164,7 +163,7 @@ mindplot.Topic = new Class({
             result = new web2d.Rect(0, attributes);
         }
         else if (type == mindplot.model.NodeModel.SHAPE_TYPE_ELIPSE) {
-            result = new web2d.Elipse(attributes);
+            result = new web2d.Rect(0.9, attributes);
         }
         else if (type == mindplot.model.NodeModel.SHAPE_TYPE_ROUNDED_RECT) {
             result = new web2d.Rect(0.3, attributes);

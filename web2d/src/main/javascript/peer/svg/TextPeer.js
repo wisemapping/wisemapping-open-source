@@ -55,7 +55,7 @@ web2d.peer.svg.TextPeer = new Class({
             var tspan = window.document.createElementNS(this.svgNamespace, 'tspan');
             tspan.setAttribute('dy', '1em');
             tspan.setAttribute('x', this.getPosition().x);
-            var tspanContent = window.document.createTextNode(line);
+            var tspanContent = window.document.createTextNode(line.length == 0 ? " " : line);
             tspan.appendChild(tspanContent);
             tspans.push(tspan);
 
@@ -107,11 +107,8 @@ web2d.peer.svg.TextPeer = new Class({
         this._native.setAttribute('font-size', this._font.getGraphSize());
         this._native.setAttribute('font-style', this._font.getStyle());
         this._native.setAttribute('font-weight', this._font.getWeight());
-
-        var scale = this._font.getFontScale();
-        this._native.xFontScale = scale.toFixed(1);
-
     },
+
     setColor  : function(color) {
         this._native.setAttribute('fill', color);
     },

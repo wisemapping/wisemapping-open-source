@@ -53,7 +53,6 @@ mindplot.IconGroup = new Class({
 
     addIcon : function(icon) {
         $defined(icon, "icon is not defined");
-        icon.getImage().setVisibility(false);
 
         icon.setGroup(this);
         this._icons.push(icon);
@@ -67,8 +66,6 @@ mindplot.IconGroup = new Class({
 
         // Register event for the group ..
         this._removeTip.decorate(this._topicId, icon);
-
-        icon.getImage().setVisibility(true);
     },
 
     _findIconFromUrl : function(url) {

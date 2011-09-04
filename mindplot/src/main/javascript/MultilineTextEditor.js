@@ -23,53 +23,38 @@ mindplot.MultilineTextEditor = new Class({
 
     _buildEditor : function() {
 
-        this._size = {width:500, height:100};
         var result = new Element('div');
         result.setStyles({
                 position:"absolute",
                 display: "none",
                 zIndex: "8",
-                width:"500px",
-                height:"100px"}
+                overflow:"hidden",
+                border: "0 none"
+            }
         );
 
-
-        var inputContainer = new Element('div');
-        inputContainer.setStyles({
-            border:"none",
-            overflow:"auto"
-        });
-        inputContainer.inject(result);
-
-        var inputText = new Element('textarea',
-            {   rows:2,
-                tabindex:'-1',
-                value:""}
+        var textareaElem = new Element('textarea',
+            {   tabindex:'-1',
+                value:"",
+                wrap:'off'
+            }
         );
-        inputText.setStyles({
-            border:"none",
-            background:"transparent"
+
+        textareaElem.setStyles({
+            border: "0 none",
+            background:"transparent",
+            outline: '0 none',
+            resize: 'none',
+            overflow:"hidden"
         });
-        inputText.inject(inputContainer);
-
-        var spanContainer = new Element('div');
-        spanContainer.setStyle('visibility', "hidden");
-        spanContainer.inject(result);
-
-        var spanElem = new Element('span', {tabindex:"-1"});
-        spanElem.setStyle('white-space', "nowrap");
-        spanElem.setStyle('nowrap', 'nowrap');
-        spanElem.inject(spanContainer);
-
-
+        textareaElem.inject(result);
         return result;
     },
 
-    _registerEvents : function(divElem) {
-        var inputElem = this._getTextareaElem();
-        var spanElem = this._getSpanElem();
+    _registerEvents : function(containerElem) {
+        var textareaElem = this._getTextareaElem();
 
-        divElem.addEvent('keydown', function (event) {
+        textareaElem.addEvent('keydown', function (event) {
             switch (event.key) {
                 case 'esc':
                     this.close(false);
@@ -78,38 +63,57 @@ mindplot.MultilineTextEditor = new Class({
                     if (event.meta || event.control) {
 
                         // @todo: Enters must be in any place ...
-                        inputElem.value = inputElem.value + "\n";
+                        textareaElem.value = textareaElem.value + "\n";
                     }
                     else {
                         this.close(true);
                     }
                     break;
-                default:
-                    spanElem.innerHTML = inputElem.value;
-                    var size = inputElem.value.length + 1;
-                    inputElem.size = size;
-                    if (spanElem.offsetWidth > (parseInt(divElem.style.width) - 100)) {
-                        divElem.style.width = (spanElem.offsetWidth + 100) + "px";
-                    }
-                    break;
             }
+            this._adjustEditorSize();
             event.stopPropagation();
         }.bind(this));
 
+
+        textareaElem.addEvent('blur', function() {
+            this.close(true);
+        }.bind(this));
+
         // If the user clicks on the input, all event must be ignored ...
-        divElem.addEvent('click', function(event) {
+        containerElem.addEvent('click', function(event) {
             event.stopPropagation();
         });
-        divElem.addEvent('dblclick', function(event) {
+        containerElem.addEvent('dblclick', function(event) {
             event.stopPropagation();
         });
-        divElem.addEvent('mousedown', function(event) {
+        containerElem.addEvent('mousedown', function(event) {
             event.stopPropagation();
         });
     },
 
+    _adjustEditorSize : function() {
+
+        var textElem = this._getTextareaElem();
+        console.log(textElem.value);
+
+        var lines = textElem.value.split('\n');
+        var maxLineLength = 5;
+        lines.forEach(function(line) {
+            if (maxLineLength < line.length)
+                maxLineLength = line.length;
+        });
+
+        textElem.setAttribute('cols', maxLineLength + 3);
+        textElem.setAttribute('rows', lines.length);
+
+        this._containerElem.setStyles({
+            width: maxLineLength + 'em',
+            height: textElem.getSize().height
+        });
+    },
+
     isVisible : function () {
-        return $defined(this._divElem) && this._divElem.getStyle('display') == 'block';
+        return $defined(this._containerElem) && this._containerElem.getStyle('display') == 'block';
     },
 
     _updateModel : function () {
@@ -127,11 +131,11 @@ mindplot.MultilineTextEditor = new Class({
 
         if (!this.isVisible()) {
             //Create editor ui
-            var editorElem = this._buildEditor();
-            editorElem.inject($(document.body));
+            var containerElem = this._buildEditor();
+            containerElem.inject($(document.body));
 
-            this._divElem = editorElem;
-            this._registerEvents(editorElem);
+            this._containerElem = containerElem;
+            this._registerEvents(containerElem);
             this._showEditor(text);
         }
     },
@@ -158,15 +162,11 @@ mindplot.MultilineTextEditor = new Class({
         var displayFunc = function() {
             // Position the editor and set the size...
             var textShape = this._topic.getTextShape();
-            textShape.positionRelativeTo(this._divElem, {
+            textShape.positionRelativeTo(this._containerElem, {
                 position: {x: 'left',y:'top'},
                 edge: {x: 'left', y: 'top'}
             });
-            this._divElem.setStyle('display', 'block');
-
-            // Set size ...
-            var elemSize = topic.getSize();
-            this._setEditorSize(elemSize.width, elemSize.height);
+            this._containerElem.setStyle('display', 'block');
 
             var inputElem = this._getTextareaElem();
             inputElem.focus();
@@ -179,7 +179,6 @@ mindplot.MultilineTextEditor = new Class({
 
     _setStyle : function (fontStyle) {
         var inputField = this._getTextareaElem();
-        var spanField = this._getSpanElem();
         if (!$defined(fontStyle.font)) {
             fontStyle.font = "Arial";
         }
@@ -192,24 +191,21 @@ mindplot.MultilineTextEditor = new Class({
         if (!$defined(fontStyle.size)) {
             fontStyle.size = 12;
         }
-        inputField.style.fontSize = fontStyle.size + "px";
-        inputField.style.fontFamily = fontStyle.font;
-        inputField.style.fontStyle = fontStyle.style;
-        inputField.style.fontWeight = fontStyle.weight;
-        inputField.style.color = fontStyle.color;
-        spanField.style.fontFamily = fontStyle.font;
-        spanField.style.fontStyle = fontStyle.style;
-        spanField.style.fontWeight = fontStyle.weight;
-        spanField.style.fontSize = fontStyle.size + "px";
+        var style = {
+            fontSize : fontStyle.size + "px",
+            fontFamily : fontStyle.font,
+            fontStyle : fontStyle.style,
+            fontWeight : fontStyle.weight,
+            color : fontStyle.color
+        };
+        inputField.setStyles(style);
+        this._containerElem.setStyles(style);
     },
 
     _setText : function(text) {
-        var inputField = this._getTextareaElem();
-        inputField.size = text.length + 1;
-        this._divElem.style.width = (inputField.size * parseInt(inputField.style.fontSize) + 100) + "px";
-        var spanField = this._getSpanElem();
-        spanField.innerHTML = text;
-        inputField.value = text;
+        var textareaElem = this._getTextareaElem();
+        textareaElem.value = text;
+        this._adjustEditorSize();
     },
 
     _getText : function() {
@@ -217,19 +213,7 @@ mindplot.MultilineTextEditor = new Class({
     },
 
     _getTextareaElem : function() {
-        return this._divElem.getElement('textarea');
-    },
-
-    _getSpanElem : function() {
-        return this._divElem.getElement('span');
-    },
-
-    _setEditorSize : function (width, height) {
-        var textShape = this._topic.getTextShape();
-        var scale = web2d.peer.utils.TransformUtil.workoutScale(textShape._peer);
-        this._size = {width:width * scale.width, height:height * scale.height};
-        this._divElem.style.width = this._size.width * 2 + "px";
-        this._divElem.style.height = this._size.height + "px";
+        return this._containerElem.getElement('textarea');
     },
 
     _changeCursor : function(inputElem, selectText) {
@@ -263,8 +247,8 @@ mindplot.MultilineTextEditor = new Class({
             this._topic.getTextShape().setVisibility(true);
 
             // Remove it form the screen ...
-            this._divElem.dispose();
-            this._divElem = null;
+            this._containerElem.dispose();
+            this._containerElem = null;
         }
     }
 });
