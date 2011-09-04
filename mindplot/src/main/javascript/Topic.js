@@ -153,7 +153,7 @@ mindplot.Topic = new Class({
         return this._innerShape;
     },
 
-   buildShape : function(attributes, type) {
+    buildShape : function(attributes, type) {
         var result;
         if (!$defined(type)) {
             type = this.getShapeType();
@@ -1140,7 +1140,10 @@ mindplot.Topic = new Class({
         (function() {
             var textShape = this.getTextShape();
             var textWidth = textShape.getWidth();
+
             var textHeight = textShape.getHeight();
+            textHeight = textHeight != 0 ? textHeight : 20;
+
             var topicPadding = this._getInnerPadding();
 
             // Adjust the icon size to the size of the text ...

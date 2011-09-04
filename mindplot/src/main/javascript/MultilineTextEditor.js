@@ -94,8 +94,6 @@ mindplot.MultilineTextEditor = new Class({
     _adjustEditorSize : function() {
 
         var textElem = this._getTextareaElem();
-        console.log(textElem.value);
-
         var lines = textElem.value.split('\n');
         var maxLineLength = 5;
         lines.forEach(function(line) {

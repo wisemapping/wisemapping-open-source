@@ -37,7 +37,7 @@ mindplot.CentralTopic = new Class({
     },
 
     _getInnerPadding : function() {
-        return 9;
+        return 11;
     },
 
     getTopicType : function() {
