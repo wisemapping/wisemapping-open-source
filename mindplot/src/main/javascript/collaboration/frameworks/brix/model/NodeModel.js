@@ -98,7 +98,7 @@ mindplot.collaboration.frameworks.brix.model.NodeModel = new Class({
         result._position = this._position;
         result._id = this._id;
         result._mindmap = this._mindmap;
-        result._text = this._text;
+        result._textShape = this._textShape;
         result._shapeType = this._shapeType;
         result._fontFamily = this._fontFamily;
         result._fontSize = this._fontSize;
@@ -143,7 +143,7 @@ mindplot.collaboration.frameworks.brix.model.NodeModel = new Class({
     },
 
     getText  : function() {
-        return this._text;
+        return this._textShape;
     },
 
     isNodeModel  : function() {

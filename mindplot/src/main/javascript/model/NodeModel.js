@@ -38,7 +38,7 @@ mindplot.model.NodeModel = new Class({
             this._id = mindplot.model.NodeModel._nextUUID();
         }
         this._mindmap = mindmap;
-        this._text = null;
+        this._textShape = null;
         this._shapeType = null;
         this._fontFamily = null;
         this._fontSize = null;
@@ -68,7 +68,7 @@ mindplot.model.NodeModel = new Class({
         result._position = this._position;
         result._id = this._id;
         result._mindmap = this._mindmap;
-        result._text = this._text;
+        result._textShape = this._textShape;
         result._shapeType = this._shapeType;
         result._fontFamily = this._fontFamily;
         result._fontSize = this._fontSize;
@@ -106,11 +106,11 @@ mindplot.model.NodeModel = new Class({
     },
 
     setText  : function(text) {
-        this._text = text;
+        this._textShape = text;
     },
 
     getText  : function() {
-        return this._text;
+        return this._textShape;
     },
 
     isNodeModel  : function() {

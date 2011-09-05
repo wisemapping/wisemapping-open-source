@@ -139,7 +139,7 @@ mindplot.MainTopic = new Class({
 
     _updatePositionOnChangeSize : function(oldSize, newSize, updatePosition) {
 
-        if (updatePosition == false && this.getModel().getFinalPosition()) {
+        if (!updatePosition && this.getModel().getFinalPosition()) {
             this.setPosition(this.getModel().getFinalPosition(), false);
         }
         else {

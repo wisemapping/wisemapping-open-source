@@ -17,6 +17,7 @@
  */
 
 mindplot.MultilineTextEditor = new Class({
+    Extends: Events,
     initialize:function(topic) {
         this._topic = topic;
     },
@@ -41,7 +42,7 @@ mindplot.MultilineTextEditor = new Class({
         );
 
         textareaElem.setStyles({
-            border: "0 none",
+            border: "1px gray dashed",
             background:"transparent",
             outline: '0 none',
             resize: 'none',
@@ -70,13 +71,22 @@ mindplot.MultilineTextEditor = new Class({
                     }
                     break;
             }
-            this._adjustEditorSize();
             event.stopPropagation();
         }.bind(this));
 
+        textareaElem.addEvent('keypress', function(event) {
+            event.stopPropagation();
+        });
+
+        textareaElem.addEvent('keyup', function(event) {
+            var text = this._getTextareaElem().value;
+            this.fireEvent('input', [event, text]);
+            this._adjustEditorSize();
+        }.bind(this));
 
         textareaElem.addEvent('blur', function() {
-            this.close(true);
+            // @Todo: Issues if this is enables and esc is pressed.
+//            this.close.bind(this).attempt(true);
         }.bind(this));
 
         // If the user clicks on the input, all event must be ignored ...
@@ -93,21 +103,24 @@ mindplot.MultilineTextEditor = new Class({
 
     _adjustEditorSize : function() {
 
-        var textElem = this._getTextareaElem();
-        var lines = textElem.value.split('\n');
-        var maxLineLength = 5;
-        lines.forEach(function(line) {
-            if (maxLineLength < line.length)
-                maxLineLength = line.length;
-        });
+        if (this.isVisible()) {
+            var textElem = this._getTextareaElem();
 
-        textElem.setAttribute('cols', maxLineLength + 3);
-        textElem.setAttribute('rows', lines.length);
+            var lines = textElem.value.split('\n');
+            var maxLineLength = 1;
+            lines.forEach(function(line) {
+                if (maxLineLength < line.length)
+                    maxLineLength = line.length;
+            });
 
-        this._containerElem.setStyles({
-            width: maxLineLength + 'em',
-            height: textElem.getSize().height
-        });
+            textElem.setAttribute('cols', maxLineLength);
+            textElem.setAttribute('rows', lines.length);
+
+            this._containerElem.setStyles({
+                width: (maxLineLength + 3) + 'em',
+                height: textElem.getSize().height
+            });
+        }
     },
 
     isVisible : function () {
@@ -152,10 +165,6 @@ mindplot.MultilineTextEditor = new Class({
         font.color = nodeText.getColor();
         this._setStyle(font);
 
-        // Set editor's initial text
-        var text = $defined(defaultText) ? defaultText : topic.getText();
-        this._setText(text);
-
         // Set editor's initial size
         var displayFunc = function() {
             // Position the editor and set the size...
@@ -166,6 +175,11 @@ mindplot.MultilineTextEditor = new Class({
             });
             this._containerElem.setStyle('display', 'block');
 
+            // Set editor's initial text ...
+            var text = $defined(defaultText) ? defaultText : topic.getText();
+            this._setText(text);
+
+            // Set the element focus and select the current text ...
             var inputElem = this._getTextareaElem();
             inputElem.focus();
             this._changeCursor(inputElem, $defined(defaultText));
@@ -214,12 +228,12 @@ mindplot.MultilineTextEditor = new Class({
         return this._containerElem.getElement('textarea');
     },
 
-    _changeCursor : function(inputElem, selectText) {
+    _changeCursor : function(textareaElem, selectText) {
         // Select text if it's required ...
-        if (inputElem.createTextRange) //ie
+        if (textareaElem.createTextRange) //ie
         {
-            var range = inputElem.createTextRange();
-            var pos = inputElem.value.length;
+            var range = textareaElem.createTextRange();
+            var pos = textareaElem.value.length;
             if (!selectText) {
                 range.select();
                 range.move("character", pos);
@@ -230,7 +244,7 @@ mindplot.MultilineTextEditor = new Class({
             }
         }
         else if (!selectText) {
-            inputElem.setSelectionRange(0, inputElem.value.length);
+            textareaElem.setSelectionRange(0, textareaElem.value.length);
         }
     },
 

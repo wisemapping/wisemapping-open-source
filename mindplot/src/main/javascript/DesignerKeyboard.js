@@ -27,7 +27,6 @@ mindplot.DesignerKeyboard = new Class({
 
     _registerEvents : function(designer) {
 
-
         // Try with the keyboard ..
         var model = designer.getModel();
         var keyboardEvents = {
@@ -220,10 +219,17 @@ mindplot.DesignerKeyboard = new Class({
             }
 
             // If it's not registered, let's
-            if (!isRegistered && !excludes.contains(key) && !modifiers.contains(key) && !key.contains('meta') && !key.contains('ctrl') && !key.contains('control')) {
+            if (!isRegistered && !excludes.contains(key) && 'meta+[' != key) {
                 var nodes = designer.getModel().filterSelectedTopics();
                 if (nodes.length > 0) {
-                    nodes[0].showTextEditor(event.key);
+
+                    // If a modifier is press, the key selected must be ignored.
+                    var pressKey = event.key;
+                    if (modifiers.contains(key)) {
+                        pressKey = "";
+                    }
+
+                    nodes[0].showTextEditor(pressKey);
                     event.stopPropagation();
                 }
             }
@@ -322,6 +328,7 @@ mindplot.DesignerKeyboard = new Class({
         // Give focus to the selected node....
         node.setOnFocus(true);
     }
+
 });
 
 mindplot.DesignerKeyboard.register = function(designer) {

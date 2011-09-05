@@ -39,14 +39,12 @@ web2d.peer.svg.TextPeer = new Class({
     },
 
     setText  : function(text) {
-        text = core.Utils.escapeInvalidTags(text);
         var childs = this._native.getChildren();
         childs.forEach(function(child) {
             child.dispose();
         });
 
         this._text = text;
-        this.setVisibility(false);
         var lines = text.split('\n');
 
         var tspans = [];
@@ -61,9 +59,6 @@ web2d.peer.svg.TextPeer = new Class({
 
             this._native.appendChild(tspan);
         }.bind(this));
-
-        this.setVisibility(true);
-
     },
 
     getText  : function() {

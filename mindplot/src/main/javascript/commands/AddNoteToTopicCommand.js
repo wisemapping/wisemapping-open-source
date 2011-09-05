@@ -21,13 +21,13 @@ mindplot.commands.AddNoteToTopicCommand = new Class({
     initialize: function(topicId, text) {
         $assert(topicId, 'topicId can not be null');
         this._topicsIds = topicId;
-        this._text = text;
+        this._textShape = text;
         this._id = mindplot.Command._nextUUID();
     },
     execute: function(commandContext) {
         var topic = commandContext.findTopics(this._topicsIds)[0];
         var updated = function() {
-            topic.addNote(this._text);
+            topic.addNote(this._textShape);
             topic._adjustShapes();
         }.bind(this);
         updated.delay(0);

@@ -26,7 +26,7 @@ mindplot.commands.RemoveNoteFromTopicCommand = new Class({
     execute: function(commandContext)
     {
         var topic = commandContext.findTopics(this._topicsIds)[0];
-        this._text = topic._note.getText();
+        this._textShape = topic._note.getText();
         var updated = function() {
             topic.removeNote();
         }.bind(this);
@@ -36,7 +36,7 @@ mindplot.commands.RemoveNoteFromTopicCommand = new Class({
     {
         var topic = commandContext.findTopics(this._topicsIds)[0];
         var updated = function() {
-            topic.addNote(this._text,commandContext._designer);
+            topic.addNote(this._textShape,commandContext._designer);
             topic._adjustShapes();
         }.bind(this);
         updated.delay(0);

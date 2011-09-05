@@ -20,16 +20,16 @@ mindplot.model.NoteModel = new Class({
     initialize : function(text, topic) {
         $assert(text != null, 'note text can not be null');
         $assert(topic, 'mindmap can not be null');
-        this._text = text;
+        this._textShape = text;
         this._topic = topic;
     },
 
     getText:function() {
-            return this._text;
+            return this._textShape;
     },
 
     setText : function(text) {
-        this._text = text;
+        this._textShape = text;
     },
 
     getTopic : function() {

@@ -39,7 +39,7 @@ mindplot.Note = new Class({
     },
 
     getText: function() {
-        return this._text;
+        return this._textShape;
     },
 
     getModel : function() {

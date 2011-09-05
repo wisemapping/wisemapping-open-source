@@ -53,6 +53,16 @@ mindplot.Topic = new Class({
             this._textEditor.show();
             event.stopPropagation(true);
         }.bind(this));
+
+        this._textEditor.addEvent('input', function(event, text) {
+            var textShape = this.getTextShape();
+//            var oldText = textShape.getText();
+
+//            this._setText(text, false);
+           // @Todo: I must resize, no change the position ...
+//            textShape.setText(oldText);
+        }.bind(this));
+
     },
 
     setShapeType : function(type) {
@@ -78,8 +88,6 @@ mindplot.Topic = new Class({
 
             // Create a new one ...
             var innerShape = this.getInnerShape();
-            // @Todo: Fix...
-            //innerShape.cloneEvents(oldInnerShape);
 
             // Update figure size ...
             var size = model.getSize();
@@ -228,14 +236,14 @@ mindplot.Topic = new Class({
     },
 
     getTextShape : function() {
-        if (!$defined(this._text)) {
-            this._text = this._buildTextShape(false);
+        if (!$defined(this._textShape)) {
+            this._textShape = this._buildTextShape(false);
 
             // Set Text ...
             var text = this.getText();
             this._setText(text, false);
         }
-        return this._text;
+        return this._textShape;
     },
 
     getOrBuildIconGroup : function() {
@@ -518,12 +526,12 @@ mindplot.Topic = new Class({
     _setText : function(text, updateModel) {
         var textShape = this.getTextShape();
         textShape.setText(text);
-        this._adjustShapes(updateModel);
 
         if ($defined(updateModel) && updateModel) {
             var model = this.getModel();
             model.setText(text);
         }
+        this._adjustShapes(updateModel);
     },
 
     setText : function(text) {
@@ -1152,7 +1160,6 @@ mindplot.Topic = new Class({
             iconGroup.setPosition(topicPadding, topicPadding);
             iconGroup.seIconSize(fontHeight, fontHeight);
 
-
             // Add a extra padding between the text and the icons
             var iconsWidth = iconGroup.getSize().width;
             if (iconsWidth != 0) {
@@ -1169,6 +1176,7 @@ mindplot.Topic = new Class({
             // Position node ...
             textShape.setPosition(topicPadding + iconsWidth, topicPadding);
 
+            console.log(textShape.getText() + ":works ?");
         }).delay(0, this);
     },
 

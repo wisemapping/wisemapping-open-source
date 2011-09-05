@@ -101,9 +101,9 @@ mindplot.RichTextEditor = mindplot.TextEditor.extend({
         //becarefull this._editor is not mootools!!
         this._editor.addEvent('blur',function(event){
             this._myOverlay.setStyle('display','none');
-                var text = this._text;
-                this._text = this._editor.instanceById("inputText2").getContent();
-                if(text!=this._text){
+                var text = this._textShape;
+                this._textShape = this._editor.instanceById("inputText2").getContent();
+                if(text!=this._textShape){
                     this._applyChanges = true;
                 }
                 console.log('bye');
@@ -118,7 +118,7 @@ mindplot.RichTextEditor = mindplot.TextEditor.extend({
         $(this.inputText).focus();
     },
     getText:function(){
-        return this._text;
+        return this._textShape;
     },
     lostFocusListener:function(){
         this._hideNode();

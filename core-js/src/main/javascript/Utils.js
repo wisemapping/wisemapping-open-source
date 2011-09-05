@@ -16,12 +16,8 @@
  *   limitations under the License.
  */
 
-core.Utils =
-{
-    escapeInvalidTags: function (text) {
-        //todo:Pablo. scape invalid tags in a text
-        return text;
-    }
+core.Utils = {
+
 };
 
 /**
