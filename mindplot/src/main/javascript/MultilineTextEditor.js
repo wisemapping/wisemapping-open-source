@@ -84,11 +84,6 @@ mindplot.MultilineTextEditor = new Class({
             this._adjustEditorSize();
         }.bind(this));
 
-        textareaElem.addEvent('blur', function() {
-            // @Todo: Issues if this is enables and esc is pressed.
-//            this.close.bind(this).attempt(true);
-        }.bind(this));
-
         // If the user clicks on the input, all event must be ignored ...
         containerElem.addEvent('click', function(event) {
             event.stopPropagation();
