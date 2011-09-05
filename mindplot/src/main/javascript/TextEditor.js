@@ -161,9 +161,9 @@ mindplot.TextEditor = new Class({
             var elemSize = topic.getSize();
             this._setEditorSize(elemSize.width, elemSize.height);
 
-            var inputElem = this._getTextareaElem();
-            inputElem.focus();
-            this._changeCursor(inputElem, $defined(defaultText));
+            var textareaElem = this._getTextareaElem();
+            textareaElem.focus();
+            this._positionCursor(textareaElem, !$defined(defaultText));
 
         }.bind(this);
 
@@ -225,7 +225,7 @@ mindplot.TextEditor = new Class({
         this._containerElem.style.height = this._size.height + "px";
     },
 
-    _changeCursor : function(inputElem, selectText) {
+    _positionCursor : function(inputElem, selectText) {
         // Select text if it's required ...
         if (inputElem.createTextRange) //ie
         {

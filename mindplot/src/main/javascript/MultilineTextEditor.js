@@ -43,7 +43,7 @@ mindplot.MultilineTextEditor = new Class({
 
         textareaElem.setStyles({
             border: "1px gray dashed",
-            background:"transparent",
+            background:"rgba(98, 135, 167, .3)",
             outline: '0 none',
             resize: 'none',
             overflow:"hidden"
@@ -181,8 +181,7 @@ mindplot.MultilineTextEditor = new Class({
 
             // Set the element focus and select the current text ...
             var inputElem = this._getTextareaElem();
-            inputElem.focus();
-            this._changeCursor(inputElem, $defined(defaultText));
+            this._positionCursor(inputElem, !$defined(defaultText));
 
         }.bind(this);
 
@@ -228,24 +227,29 @@ mindplot.MultilineTextEditor = new Class({
         return this._containerElem.getElement('textarea');
     },
 
-    _changeCursor : function(textareaElem, selectText) {
-        // Select text if it's required ...
-        if (textareaElem.createTextRange) //ie
-        {
-            var range = textareaElem.createTextRange();
-            var pos = textareaElem.value.length;
-            if (!selectText) {
-                range.select();
-                range.move("character", pos);
+    _positionCursor : function(textareaElem, selectText) {
+        textareaElem.focus();
+        if (selectText) {
+            // Mark text as selected ...
+            if (textareaElem.createTextRange) {
+                var rang = textareaElem.createTextRange();
+                rang.select();
+                rang.move("character", textareaElem.value.length);
             }
             else {
-                range.move("character", pos);
-                range.select();
+                textareaElem.setSelectionRange(0, textareaElem.value.length);
+            }
+
+        } else {
+            // Move the cursor to the last character ..
+            if (textareaElem.createTextRange) {
+                var range = textareaElem.createTextRange();
+                range.move("character", textareaElem.value.length);
+            } else {
+                textareaElem.selectionStart = textareaElem.value.length;
             }
         }
-        else if (!selectText) {
-            textareaElem.setSelectionRange(0, textareaElem.value.length);
-        }
+
     },
 
     close : function(update) {
