@@ -59,7 +59,7 @@ mindplot.Topic = new Class({
 //            var oldText = textShape.getText();
 
 //            this._setText(text, false);
-           // @Todo: I must resize, no change the position ...
+            // @Todo: I must resize, no change the position ...
 //            textShape.setText(oldText);
         }.bind(this));
 
@@ -236,14 +236,14 @@ mindplot.Topic = new Class({
     },
 
     getTextShape : function() {
-        if (!$defined(this._textShape)) {
-            this._textShape = this._buildTextShape(false);
+        if (!$defined(this._text)) {
+            this._text = this._buildTextShape(false);
 
             // Set Text ...
             var text = this.getText();
             this._setText(text, false);
         }
-        return this._textShape;
+        return this._text;
     },
 
     getOrBuildIconGroup : function() {
@@ -1175,8 +1175,6 @@ mindplot.Topic = new Class({
 
             // Position node ...
             textShape.setPosition(topicPadding + iconsWidth, topicPadding);
-
-            console.log(textShape.getText() + ":works ?");
         }).delay(0, this);
     },
 

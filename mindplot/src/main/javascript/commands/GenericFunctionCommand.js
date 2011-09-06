@@ -23,14 +23,14 @@ mindplot.commands.GenericFunctionCommand = new Class({
         $assert(topicsIds, "topicsIds must be defined");
 
         this._value = value;
-        this._topicsIds = topicsIds;
+        this._objectsIds = topicsIds;
         this._commandFunc = commandFunc;
         this._oldValues = [];
         this._id = mindplot.Command._nextUUID();
     },
     execute: function(commandContext) {
         if (!this.applied) {
-            var topics = commandContext.findTopics(this._topicsIds);
+            var topics = commandContext.findTopics(this._objectsIds);
             topics.forEach(function(topic) {
                 var oldValue = this._commandFunc(topic, this._value);
                 this._oldValues.push(oldValue);
@@ -43,7 +43,7 @@ mindplot.commands.GenericFunctionCommand = new Class({
     },
     undoExecute: function(commandContext) {
         if (this.applied) {
-            var topics = commandContext.findTopics(this._topicsIds);
+            var topics = commandContext.findTopics(this._objectsIds);
             topics.forEach(function(topic, index) {
                 this._commandFunc(topic, this._oldValues[index]);
 

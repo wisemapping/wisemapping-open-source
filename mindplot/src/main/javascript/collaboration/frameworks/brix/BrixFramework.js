@@ -22,6 +22,7 @@ mindplot.collaboration.frameworks.brix.BrixFramework = new Class({
         return this.parent();
     }
 });
+
 instanciated = false;
 mindplot.collaboration.frameworks.brix.BrixFramework.instanciate = function() {
     if ((typeof isGoogleBrix != "undefined") && !instanciated) {

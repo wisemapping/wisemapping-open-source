@@ -21,26 +21,112 @@ mindplot.BrixActionDispatcher = new Class({
     initialize: function(commandContext, fireOnChange) {
         this.parent(commandContext, fireOnChange);
         this._commandContext = commandContext;
-        this._actionDispatcher = new mindplot.LocalActionDispatcher(commandContext);
     },
 
-    changeTextOnTopic : function(topicsIds, text) {
-        var framework = mindplot.collaboration.CollaborationManager.getInstance().getCollaborativeFramework();
+    changeTextToTopic : function(topicsIds, text) {
+        var framework = this._getFramework();
+        var topicId;
         if (!(topicsIds instanceof Array)) {
-            topicsIds = [topicsIds];
+            topicId = topicsIds;
+        } else {
+            topicId = topicsIds[0];
         }
-        var topic = framework.getTopic(topicsIds[0]);
+        var topic = framework.getTopic(topicId);
         topic.setText(text, true);
     },
 
-    addTopic:function(model, parentTopicId, animated) {
-        var framework = mindplot.collaboration.CollaborationManager.getInstance().getCollaborativeFramework();
+    _getFramework:function () {
+        return mindplot.collaboration.CollaborationManager.getInstance().getCollaborativeFramework();
+    },
+
+    addTopic : function(model, parentTopicId, animated) {
+        var framework = this._getFramework();
         var mindmap = framework.getModel();
         var centralTopic = mindmap.getCentralTopic();
+
         var newNode = mindmap.createNode(model.getType(), model.getId());
         var position = model.getPosition();
         newNode.setPosition(position.x, position.y);
         newNode.connectTo(centralTopic);
+    },
+
+    changeFontSizeToTopic : function(topicsIds, size) {
+        topicsIds.forEach(function(topicId) {
+            var framework = this._getFramework();
+            var topic = framework.getTopic(topicId);
+            topic.setFontSize(size, true);
+        }.bind(this));
+    },
+
+    changeFontColorToTopic : function(topicsIds, color) {
+        topicsIds.forEach(function(topicId) {
+            var framework = this._getFramework();
+            var topic = framework.getTopic(topicId);
+            topic.setFontColor(color, true);
+        }.bind(this));
+    },
+
+    changeFontFamilyToTopic : function(topicsIds, family) {
+        topicsIds.forEach(function(topicId) {
+            var framework = this._getFramework();
+            var topic = framework.getTopic(topicId);
+            topic.setFontFamily(family, true);
+        }.bind(this));
+    },
+
+    changeFontStyleToTopic : function(topicsIds) {
+        topicsIds.forEach(function(topicId) {
+            var framework = this._getFramework();
+            var topic = framework.getTopic(topicId);
+            var style = ( topic.getFontStyle() == "italic") ? "normal" : "italic";
+            topic.setFontStyle(style, true);
+        }.bind(this));
+    },
+
+    changeShapeToTopic : function(topicsIds, shapeType) {
+        topicsIds.forEach(function(topicId) {
+            var framework = this._getFramework();
+            var topic = framework.getTopic(topicId);
+            topic.setShapeType(shapeType);
+        }.bind(this))
+    },
+
+    changeFontWeightToTopic : function(topicsIds) {
+        topicsIds.forEach(function(topicId) {
+            var framework = this._getFramework();
+            var topic = framework.getTopic(topicId);
+            var weight = (topic.getFontWeight() == "bold") ? "normal" : "bold";
+            topic.setFontWeight(weight, true);
+        }.bind(this));
+    },
+
+    changeBackgroundColorToTopic : function(topicsIds, color) {
+        topicsIds.forEach(function(topicId) {
+            var framework = this._getFramework();
+            var topic = framework.getTopic(topicId);
+            topic.setBackgroundColor(color, true);
+        }.bind(this));
+
+    },
+
+    changeBorderColorToTopic : function(topicsIds, color) {
+        topicsIds.forEach(function(topicId) {
+            var framework = this._getFramework();
+            var topic = framework.getTopic(topicId);
+            topic.setBorderColor(color);
+        }.bind(this));
+    },
+
+    deleteTopics : function(topicsIds, relIds) {
+        $assert(topicsIds, "topicsIds can not be null");
+        var framework = this._getFramework();
+        var mindmap = framework.getModel();
+
+        var topicId = topicsIds[0];
+        var topic = framework.getTopic(topicId);
+        $assert(topic, "Could not find topic with id:" + topicId);
+        mindmap.disconnect(topic);
+
     }
 });
 

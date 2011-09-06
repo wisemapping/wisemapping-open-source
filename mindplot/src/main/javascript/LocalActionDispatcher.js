@@ -53,8 +53,8 @@ mindplot.LocalActionDispatcher = new Class({
         this.execute(command);
     },
 
-    deleteTopics: function(topicsIds) {
-        var command = new mindplot.commands.DeleteCommand(topicsIds);
+    deleteTopics: function(topicsIds,relIds) {
+        var command = new mindplot.commands.DeleteCommand(topicsIds,relIds);
         this.execute(command);
     },
 
@@ -95,7 +95,7 @@ mindplot.LocalActionDispatcher = new Class({
 
     },
 
-    changeTextOnTopic : function(topicsIds, text) {
+    changeTextToTopic : function(topicsIds, text) {
         $assert(topicsIds, "topicsIds can not be null");
 
         var commandFunc = function(topic, value) {
@@ -118,7 +118,7 @@ mindplot.LocalActionDispatcher = new Class({
             var result = topic.getFontFamily();
             topic.setFontFamily(fontFamily, true);
 
-            topic._adjustShapes.delay(0, topic);
+            topic._adjustShapes();
             return result;
         };
 
@@ -179,7 +179,7 @@ mindplot.LocalActionDispatcher = new Class({
             var result = topic.getFontSize();
             topic.setFontSize(size, true);
 
-            topic._adjustShapes.delay(0, topic);
+            topic._adjustShapes();
             return result;
         };
 
@@ -209,7 +209,7 @@ mindplot.LocalActionDispatcher = new Class({
             var weight = (result == "bold") ? "normal" : "bold";
             topic.setFontWeight(weight, true);
 
-            topic._adjustShapes.delay(0, topic);
+            topic._adjustShapes();
             return result;
         };
 

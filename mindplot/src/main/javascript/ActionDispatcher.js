@@ -43,7 +43,7 @@ mindplot.ActionDispatcher = new Class({
         throw "method must be implemented.";
     },
 
-    deleteTopics: function(topicsIds) {
+    deleteTopics: function(topicsIds, relIds) {
         throw "method must be implemented.";
     },
 
@@ -79,6 +79,10 @@ mindplot.ActionDispatcher = new Class({
         throw "method must be implemented.";
     },
 
+    changeFontSizeToTopic : function(topicsIds, size) {
+        throw "method must be implemented.";
+    },
+
     changeBackgroundColorToTopic: function(topicsIds, color) {
         throw "method must be implemented.";
     },
@@ -95,14 +99,14 @@ mindplot.ActionDispatcher = new Class({
         throw "method must be implemented.";
     },
 
-    changeTextOnTopic : function(topicsIds, text) {
+    changeTextToTopic : function(topicsIds, text) {
         throw "method must be implemented.";
     },
 
-    shrinkBranch : function(topicsIds, collapse)
-    {
+    shrinkBranch : function(topicsIds, collapse) {
         throw "method must be implemented.";
     }
+
 
 });
 

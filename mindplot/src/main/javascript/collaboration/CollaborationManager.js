@@ -6,11 +6,11 @@ mindplot.collaboration.CollaborationManager = new Class({
         this.wiseReady = false;
     },
 
-    isCollaborationFrameworkAvailable:function() {
+    isCollaborationFrameworkAvailable : function() {
         return (typeof goog != "undefined") && (typeof goog.collab != "undefined");
     },
 
-    setCollaborativeFramework:function(framework) {
+    setCollaborativeFramework : function(framework) {
         this._collaborativeFramework = framework;
         this.collaborativeModelReady = true;
         if (this.wiseReady) {

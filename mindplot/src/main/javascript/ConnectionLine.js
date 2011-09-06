@@ -29,7 +29,6 @@ mindplot.ConnectionLine = new Class({
         var line;
         if (targetNode.getType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
             line = this._createLine(lineType, mindplot.ConnectionLine.CURVED);
-            //        line = new web2d.Line();
             if (line.getType() == "CurvedLine") {
                 var ctrlPoints = this._getCtrlPoints(sourceNode, targetNode);
                 line.setSrcControlPoint(ctrlPoints[0]);
@@ -114,7 +113,6 @@ mindplot.ConnectionLine = new Class({
             line2d.setSrcControlPoint(ctrlPoints[0]);
             line2d.setDestControlPoint(ctrlPoints[1]);
         }
-//    line2d.moveToBack();
 
         // Add connector ...
         this._positionateConnector(targetTopic);

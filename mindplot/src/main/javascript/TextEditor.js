@@ -112,7 +112,7 @@ mindplot.TextEditor = new Class({
             var topicId = this._topic.getId();
 
             var actionDispatcher = mindplot.ActionDispatcher.getInstance();
-            actionDispatcher.changeTextOnTopic([topicId], text);
+            actionDispatcher.changeTextToTopic([topicId], text);
         }
     },
 

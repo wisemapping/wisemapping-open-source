@@ -24,8 +24,8 @@ mindplot.MindmapDesigner = new Class({
 
             // Dispatcher manager ...
             var commandContext = new mindplot.CommandContext(this);
-//            this._actionDispatcher = new mindplot.BrixActionDispatcher(commandContext);
-            this._actionDispatcher = new mindplot.LocalActionDispatcher(commandContext);
+            this._actionDispatcher = new mindplot.BrixActionDispatcher(commandContext);
+//            this._actionDispatcher = new mindplot.LocalActionDispatcher(commandContext);
             this._actionDispatcher.addEvent("modelUpdate", function(event) {
                 this._fireEvent("modelUpdate", event);
             }.bind(this));
@@ -164,7 +164,7 @@ mindplot.MindmapDesigner = new Class({
                 var targetTopicModel = model.getParent();
                 var targetTopic = null;
 
-                var topics = this.getModel.getTopics();
+                var topics = this.getModel().getTopics();
                 for (var i = 0; i < topics.length; i++) {
                     var t = topics[i];
                     if (t.getModel() == targetTopicModel) {
@@ -593,7 +593,8 @@ mindplot.MindmapDesigner = new Class({
         },
 
         _removeNode : function(node) {
-            if (node.getTopicType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
+            if (node.getTopicType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE)
+            {
                 var parent = node._parent;
                 node.disconnect(this._workspace);
 
@@ -621,12 +622,13 @@ mindplot.MindmapDesigner = new Class({
                 return object.getType() == mindplot.RelationshipLine.type || object.getTopicType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE
             };
             var validateError = 'Central topic can not be deleted.';
-            var model = this.getModel();
-            var topics = model.filterTopicsIds(validateFunc, validateError);
-            var rel = model.filterRelationIds(validateFunc, validateError);
 
-            if (topics.length > 0 || rel.length > 0) {
-                this._actionDispatcher.deleteTopics({'nodes':topics,'relationship':rel});
+            var model = this.getModel();
+            var topicsIds = model.filterTopicsIds(validateFunc, validateError);
+            var relIds = model.filterRelationIds(validateFunc, validateError);
+
+            if (topicsIds.length > 0 || relIds.length > 0) {
+                this._actionDispatcher.deleteTopics(topicsIds,relIds);
             }
 
         },
@@ -684,8 +686,7 @@ mindplot.MindmapDesigner = new Class({
             if (topicsIds.length > 0) {
                 this._actionDispatcher.changeFontSizeToTopic(topicsIds, size);
             }
-        }
-        ,
+        },
 
         changeTopicShape : function(shape) {
             var validateFunc = function(topic) {
