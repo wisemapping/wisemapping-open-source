@@ -1,5 +1,3 @@
-mindplot.collaboration.frameworks = {};
-
 mindplot.collaboration.frameworks.AbstractCollaborativeFramework = new Class({
     initialize: function(model, collaborativeModelFactory) {
         this._collaborativeModelFactory = collaborativeModelFactory;

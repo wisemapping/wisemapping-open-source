@@ -15,8 +15,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.collaboration.frameworks.brix = {};
-mindplot.collaboration.frameworks.brix.model = {};
+
 mindplot.collaboration.frameworks.brix.model.NodeModel = new Class({
     Extends: mindplot.model.NodeModel,
     Attributes: ['text','fontSize','fontFamily','fontStyle','fontColor','fontWeight','borderColor','backgroundColor','shapeType'],
@@ -161,23 +160,19 @@ mindplot.collaboration.frameworks.brix.model.NodeModel = new Class({
         result._backgroundColor = this._backgroundColor;
         result._areChildrenShrinked = this._areChildrenShrinked;
         return result;
-    }
-    ,
+    },
 
     areChildrenShrinked  : function() {
         return this._areChildrenShrinked;
-    }
-    ,
+    },
 
     setChildrenShrinked  : function(value) {
         this._areChildrenShrinked = value;
-    }
-    ,
+    },
 
     getId  : function() {
         return this._id;
     },
-
 
     setId  : function(id) {
         this._id = id;
@@ -294,8 +289,7 @@ mindplot.collaboration.frameworks.brix.model.NodeModel = new Class({
     setSize  : function(width, height) {
         this._size.width = width;
         this._size.height = height;
-    }
-    ,
+    },
 
     getSize  : function() {
         return {width:this._size.width,height:this._size.height};
@@ -303,33 +297,27 @@ mindplot.collaboration.frameworks.brix.model.NodeModel = new Class({
 
     getChildren  : function() {
         return this._children;
-    }
-    ,
+    },
 
     getIcons  : function() {
         return this._icons;
-    }
-    ,
+    },
 
     getLinks  : function() {
         return this._links;
-    }
-    ,
+    },
 
     getNotes  : function() {
         return this._notes;
-    }
-    ,
+    },
 
     getParent  : function() {
         return this._parent;
-    }
-    ,
+    },
 
     getMindmap  : function() {
         return this._mindmap;
-    }
-    ,
+    },
 
     setParent  : function(parent) {
         $assert(parent != this, 'The same node can not be parent and child if itself.');
@@ -411,14 +399,6 @@ mindplot.collaboration.frameworks.brix.model.NodeModel = new Class({
 
     getOrder  : function() {
         return this._order;
-    },
-
-    getShapeType  : function() {
-        return this._shapeType;
-    },
-
-    setShapeType  : function(type) {
-        this._shapeType = type;
     },
 
     setOrder  : function(value) {

@@ -1,26 +1,20 @@
 /*
-*    Copyright [2011] [wisemapping]
-*
-*   Licensed under WiseMapping Public License, Version 1.0 (the "License").
-*   It is basically the Apache License, Version 2.0 (the "License") plus the
-*   "powered by wisemapping" text requirement on every single page;
-*   you may not use this file except in compliance with the License.
-*   You may obtain a copy of the license at
-*
-*       http://www.wisemapping.org/license
-*
-*   Unless required by applicable law or agreed to in writing, software
-*   distributed under the License is distributed on an "AS IS" BASIS,
-*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*   See the License for the specific language governing permissions and
-*   limitations under the License.
-*/
-
-// (C) Copyright 2007 WiseMapping.com. All Rights Reserved
-// THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF WiseMapping.com
-// The copyright notice above does not evidence any actual or intended
-// publication of such source code.
-// ....................................................................
+ *    Copyright [2011] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 
 var mindplot = {};
 mindplot.util = {};
@@ -28,3 +22,7 @@ mindplot.commands = {};
 mindplot.layout = {};
 mindplot.widget = {};
 mindplot.model = {};
+mindplot.collaboration = {};
+mindplot.collaboration.frameworks = {};
+mindplot.collaboration.frameworks.brix = {};
+mindplot.collaboration.frameworks.brix.model = {};
