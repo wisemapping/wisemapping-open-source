@@ -156,17 +156,17 @@
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="collaboration/CollaborationManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="collaboration/frameworks/AbstractCollaborativeFramework.js"/>
+                                              files="collaboration/framework/AbstractCollaborativeFramework.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="collaboration/frameworks/AbstractCollaborativeModelFactory.js"/>
+                                              files="collaboration/framework/AbstractCollaborativeModelFactory.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="collaboration/frameworks/brix/model/NodeModel.js"/>
+                                              files="collaboration/framework/brix/model/NodeModel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="collaboration/frameworks/brix/model/Mindmap.js"/>
+                                              files="collaboration/framework/brix/model/Mindmap.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="collaboration/frameworks/brix/BrixCollaborativeModelFactory.js"/>
+                                              files="collaboration/framework/brix/BrixCollaborativeModelFactory.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="collaboration/frameworks/brix/BrixFramework.js"/>
+                                              files="collaboration/framework/brix/BrixFramework.js"/>
 
                                     <filelist dir="${basedir}/src/main/javascript/widget/" files="ToolbarItem.js"/>
 

@@ -16,13 +16,15 @@
  *   limitations under the License.
  */
 
-mindplot.collaboration.frameworks.AbstractCollaborativeModelFactory = new Class({
-    initialize:function() {
+mindplot.collaboration.framework.brix.BrixCollaborativeModelFactory = new Class({
+    Extends:mindplot.collaboration.framework.AbstractCollaborativeModelFactory,
+    initialize:function(brixFramework) {
+        this._brixFramework = brixFramework;
     },
     buildMindMap:function() {
-
+        return new mindplot.collaboration.framework.brix.model.Mindmap(null, this._brixFramework);
     },
     buildCollaborativeModelFor:function(model) {
-
+        return new mindplot.collaboration.framework.brix.model.Mindmap(model, this._brixFramework);
     }
 });

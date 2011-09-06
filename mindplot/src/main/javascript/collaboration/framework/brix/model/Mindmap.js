@@ -15,7 +15,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.collaboration.frameworks.brix.model.Mindmap = new Class({
+mindplot.collaboration.framework.brix.model.Mindmap = new Class({
         Extends:mindplot.model.Mindmap,
         initialize:function(brixModel, brixFramework){
             this.parent();
@@ -27,7 +27,7 @@ mindplot.collaboration.frameworks.brix.model.Mindmap = new Class({
                 var branches = this._brixModel.get("branches");
                 for(var i=0; i<branches.size(); i++){
                     var node = branches.get(i);
-                    var nodeModel = new mindplot.collaboration.frameworks.brix.model.NodeModel(node, this._brixFramework, null, this);
+                    var nodeModel = new mindplot.collaboration.framework.brix.model.NodeModel(node, this._brixFramework, null, this);
                     this.addBranch(nodeModel, false);
                 }
             }
@@ -85,7 +85,7 @@ mindplot.collaboration.frameworks.brix.model.Mindmap = new Class({
         },
         _createNode : function(type, id) {
             $assert(type, 'Node type must be specified.');
-            var result = new mindplot.collaboration.frameworks.brix.model.NodeModel(null, this._brixFramework, type, this, id);
+            var result = new mindplot.collaboration.framework.brix.model.NodeModel(null, this._brixFramework, type, this, id);
             return result;
         },
 

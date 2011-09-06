@@ -16,11 +16,11 @@
  *   limitations under the License.
  */
 
-mindplot.collaboration.frameworks.brix.BrixFramework = new Class({
-    Extends: mindplot.collaboration.frameworks.AbstractCollaborativeFramework,
+mindplot.collaboration.framework.brix.BrixFramework = new Class({
+    Extends: mindplot.collaboration.framework.AbstractCollaborativeFramework,
     initialize: function(model, app) {
         this._app = app;
-        var collaborativeModelFactory = new mindplot.collaboration.frameworks.brix.BrixCollaborativeModelFactory(this);
+        var collaborativeModelFactory = new mindplot.collaboration.framework.brix.BrixCollaborativeModelFactory(this);
         var cModel = null;
         var root = this.getBrixModel().getRoot();
         if (!root.isEmpty()) {
@@ -41,20 +41,20 @@ mindplot.collaboration.frameworks.brix.BrixFramework = new Class({
 });
 
 instanciated = false;
-mindplot.collaboration.frameworks.brix.BrixFramework.instanciate = function() {
+mindplot.collaboration.framework.brix.BrixFramework.instanciate = function() {
     if ((typeof isGoogleBrix != "undefined") && !instanciated) {
         instanciated = true;
         var app = new goog.collab.CollaborativeApp();
-        mindplot.collaboration.frameworks.brix.BrixFramework.buildMenu(app);
+        mindplot.collaboration.framework.brix.BrixFramework.buildMenu(app);
         app.start();
         app.addListener('modelLoad', function(model) {
-            var framework = new mindplot.collaboration.frameworks.brix.BrixFramework(model, app);
+            var framework = new mindplot.collaboration.framework.brix.BrixFramework(model, app);
             mindplot.collaboration.CollaborationManager.getInstance().setCollaborativeFramework(framework);
         }.bind(this));
     }
 };
 
-mindplot.collaboration.frameworks.brix.BrixFramework.buildMenu = function(app) {
+mindplot.collaboration.framework.brix.BrixFramework.buildMenu = function(app) {
     var menuBar = new goog.collab.ui.MenuBar();
 
     // Configure toolbar menu ...
@@ -80,6 +80,6 @@ mindplot.collaboration.frameworks.brix.BrixFramework.buildMenu = function(app) {
 
     app.setMenuBar(menuBar);
 };
-mindplot.collaboration.frameworks.brix.BrixFramework.instanciate();
+mindplot.collaboration.framework.brix.BrixFramework.instanciate();
 
 

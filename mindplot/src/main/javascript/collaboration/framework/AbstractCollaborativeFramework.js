@@ -1,4 +1,4 @@
-mindplot.collaboration.frameworks.AbstractCollaborativeFramework = new Class({
+mindplot.collaboration.framework.AbstractCollaborativeFramework = new Class({
     initialize: function(model, collaborativeModelFactory) {
         this._collaborativeModelFactory = collaborativeModelFactory;
         if (!$defined(model)) {

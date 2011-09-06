@@ -16,7 +16,7 @@
  *   limitations under the License.
  */
 
-mindplot.collaboration.frameworks.brix.model.NodeModel = new Class({
+mindplot.collaboration.framework.brix.model.NodeModel = new Class({
     Extends: mindplot.model.NodeModel,
     Attributes: ['text','fontSize','fontFamily','fontStyle','fontColor','fontWeight','borderColor','backgroundColor','shapeType'],
     initialize : function(brixModel, brixFramework, type, mindmap, id) {
@@ -36,7 +36,7 @@ mindplot.collaboration.frameworks.brix.model.NodeModel = new Class({
         } else {
 
             // Call all the required setters for simple properties ...
-            var keys = mindplot.collaboration.frameworks.brix.model.NodeModel.prototype.Attributes;
+            var keys = mindplot.collaboration.framework.brix.model.NodeModel.prototype.Attributes;
             keys.forEach(function(key) {
 
                 // Call setters ...
@@ -53,7 +53,7 @@ mindplot.collaboration.frameworks.brix.model.NodeModel = new Class({
             var children = this._brixModel.get("children");
             for (var i = 0; i < children.size(); i++) {
                 var bChild = children.get(i);
-                var child = new mindplot.collaboration.frameworks.brix.model.NodeModel(bChild, this._brixFramework, null, mindmap);
+                var child = new mindplot.collaboration.framework.brix.model.NodeModel(bChild, this._brixFramework, null, mindmap);
                 this._appendChild(child, false);
             }
         }
@@ -61,7 +61,7 @@ mindplot.collaboration.frameworks.brix.model.NodeModel = new Class({
     },
 
     _injectSetAndGet : function() {
-        var keys = mindplot.collaboration.frameworks.brix.model.NodeModel.prototype.Attributes;
+        var keys = mindplot.collaboration.framework.brix.model.NodeModel.prototype.Attributes;
 
         keys.forEach(function(key) {
             // Create setters ...
@@ -101,7 +101,7 @@ mindplot.collaboration.frameworks.brix.model.NodeModel = new Class({
 
     _childAddedListener:function(event) {
         var newValue = event.getValues().get(0);
-        var cmodel = new mindplot.collaboration.frameworks.brix.model.NodeModel(newValue, this._brixFramework, null, this.getMindmap());
+        var cmodel = new mindplot.collaboration.framework.brix.model.NodeModel(newValue, this._brixFramework, null, this.getMindmap());
         this._appendChild(cmodel, false);
 
         var model = new mindplot.model.NodeModel(newValue.get("type"), designer.getMindmap(), newValue.get("id"));

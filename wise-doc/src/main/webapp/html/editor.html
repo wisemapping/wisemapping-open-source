@@ -33,8 +33,8 @@
         //Google-Brix framework load callback function
         collabOnLoad = function() {
             isGoogleBrix = true;
-            if (typeof mindplot != "undefined") {
-                mindplot.collaboration.frameworks.brix.BrixFramework.instanciate();
+            if ($defined(mindplot) && $defined(mindplot.collaboration) && $defined(mindplot.collaboration.framework)) {
+                mindplot.collaboration.framework.brix.BrixFramework.instanciate();
             }
         };
     </script>
