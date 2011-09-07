@@ -150,29 +150,23 @@ Tabs.Init();
 // Hide the content while waiting for the onload event to trigger.
 var contentId = window.location.hash || "#Introduction";
 
-function afterMindpotLibraryLoading() {
-    buildMindmapDesigner();
+function buildDesigner() {
 
-    if ($('helpButton') != null) {
-        var helpPanel = new Panel({panelButton:$('helpButton'), backgroundColor:'black'});
-        helpPanel.setContent(Help.buildHelp(helpPanel));
-    }
+    var container = $('mindplot');
+    container.setStyles({
+        height: parseInt(screen.height),
+        width:  parseInt(screen.width)
+    });
 
-    if ($('helpButtonFirstSteps') != null) {
-        var firstStepsPanel = $('helpButtonFirstSteps')
-        firstStepsPanel.addEvent('click', function(event) {
-            var firstStepWindow = window.open("firststeps.htm", "WiseMapping", "width=100px, height=100px");
-            firstStepWindow.focus();
-            firstStepWindow.moveTo(0, 0);
-            firstStepWindow.resizeTo(screen.availWidth, screen.availHeight);
-        });
-    }
+    var editorProperties = {zoom:0.85,saveOnLoad:true};
+    designer = new mindplot.MindmapDesigner(editorProperties, container);
+    designer.setViewPort({
+        height: parseInt(window.innerHeight - 112), // Footer and Header
+        width:  parseInt(window.innerWidth)
+    });
 
-    if ($('helpButtonKeyboard') != null) {
-        var keyboardPanel = $('helpButtonKeyboard')
-        keyboardPanel.addEvent('click', function(event) {
-            MOOdalBox.open('keyboard.htm', 'KeyBoard Shortcuts', '500px 400px', false)
-        });
+    if (!mindplot.collaboration.CollaborationManager.getInstance().isCollaborationFrameworkAvailable()) {
+        loadSingleModel(designer);
     }
 
     var menu = new mindplot.widget.Menu(designer, 'toolbar');
@@ -182,50 +176,7 @@ function afterMindpotLibraryLoading() {
         menu.clear()
     };
 
-    // If not problem has arisen, close the dialog ...
-    (function() {
-        if (!window.hasUnexpectedErrors) {
-            waitDialog.deactivate();
-        }
-    }).delay(500);
-}
-
-function buildMindmapDesigner() {
-    // Initialize message logger ...
-//    var monitor = new core.Monitor($('msgLoggerContainer'), $('msgLogger'));
-//    core.Monitor.setInstance(monitor);
-
-    var container = $('mindplot');
-
-    container.setStyles({
-        height: parseInt(screen.height),
-        width:  parseInt(screen.width)
-    });
-
-    designer = new mindplot.MindmapDesigner(editorProperties, container);
-    designer.setViewPort({
-        height: parseInt(window.innerHeight-112), // Footer and Header
-        width:  parseInt(window.innerWidth)
-    });
-
-    if (mindplot.collaboration.CollaborationManager.getInstance().isCollaborationFrameworkAvailable()) {
-        buildCollaborativeMindmapDesigner();
-    } else {
-        buildStandaloneMindmapDesigner();
-    }
-}
-
-function buildStandaloneMindmapDesigner() {
-    designer.loadFromXML(mapId, mapXml);
-}
-
-function buildCollaborativeMindmapDesigner() {
-    var collaborationManager = mindplot.collaboration.CollaborationManager.getInstance();
-    if (collaborationManager.isCollaborativeFrameworkReady()) {
-        designer.loadFromCollaborativeModel(collaborationManager);
-    } else {
-        collaborationManager.setWiseReady(true);
-    }
+    return designer;
 }
 
 //######################### Libraries Loading ##################################
@@ -262,7 +213,6 @@ function JSPomLoader(pomUrl, callback) {
                         callback();
                 } else {
                     var url = urls.pop();
-//                    console.log("load url:" + url);
                     Asset.javascript(url, {
                         onLoad: function() {
                             jsRecLoad(urls)
@@ -285,13 +235,15 @@ var localEnv = true;
 if (localEnv) {
     Asset.javascript("../../../../../web2d/target/classes/web2d.svg-min.js", {
         onLoad: function() {
-            JSPomLoader('../../../../../mindplot/pom.xml', afterMindpotLibraryLoading)
+            JSPomLoader('../../../../../mindplot/pom.xml', function() {
+                $(document).fireEvent('loadcomplete', 'mind')
+            });
         }
     });
 } else {
     Asset.javascript("../js/mindplot.svg.js", {
-        onLoad: function() {
-            afterMindpotLibraryLoading();
+        onLoad:function() {
+            $(document).fireEvent('loadcomplete', 'mind')
         }
     });
 }

@@ -17,6 +17,7 @@
  */
 
 mindplot.MindmapDesigner = new Class({
+        Extends: Events,
         initialize: function(profile, divElement) {
             $assert(profile, "profile must be defined");
             $assert(profile.zoom, "zoom must be defined");
@@ -27,8 +28,9 @@ mindplot.MindmapDesigner = new Class({
             this._actionDispatcher = new mindplot.BrixActionDispatcher(commandContext);
 //            this._actionDispatcher = new mindplot.LocalActionDispatcher(commandContext);
             this._actionDispatcher.addEvent("modelUpdate", function(event) {
-                this._fireEvent("modelUpdate", event);
+                this.fireEvent("modelUpdate", event);
             }.bind(this));
+
             mindplot.ActionDispatcher.setInstance(this._actionDispatcher);
             this._model = new mindplot.DesignerModel(profile);
 
@@ -44,9 +46,6 @@ mindplot.MindmapDesigner = new Class({
             if (!profile.readOnly) {
                 this._registerEvents();
             }
-
-            this._events = {};
-
         },
 
         _registerEvents : function() {
@@ -117,17 +116,6 @@ mindplot.MindmapDesigner = new Class({
                 }
             }.bind(this));
 
-        },
-
-        addEvent : function(eventType, listener) {
-            this._events[eventType] = listener;
-        },
-
-        _fireEvent : function(eventType, event) {
-            var listener = this._events[eventType];
-            if (listener != null) {
-                listener(event);
-            }
         },
 
         setViewPort : function(size) {
@@ -388,7 +376,7 @@ mindplot.MindmapDesigner = new Class({
 
             var properties = {zoom:this.getModel().getZoom(), layoutManager:this._layoutManager.getClassName()};
             persistantManager.save(mindmap, properties, onSavedHandler, saveHistory);
-            this._fireEvent("save", {type:saveHistory});
+            this.fireEvent("save", {type:saveHistory});
 
             // Refresh undo state...
             this._actionRunner.markAsChangeBase();
@@ -401,8 +389,6 @@ mindplot.MindmapDesigner = new Class({
             // Place the focus on the Central Topic
             var centralTopic = this.getModel().getCentralTopic();
             this.goToNode.attempt(centralTopic, this);
-
-            this._fireEvent("loadsuccess");
         },
 
         loadFromXML : function(mapId, xmlContent) {
@@ -421,8 +407,6 @@ mindplot.MindmapDesigner = new Class({
             var centralTopic = this.getModel().getCentralTopic();
             this.goToNode(centralTopic);
 
-            this._fireEvent("loadsuccess");
-
         },
 
         load : function(mapId) {
@@ -440,10 +424,7 @@ mindplot.MindmapDesigner = new Class({
             // Place the focus on the Central Topic
             var centralTopic = this.getModel().getCentralTopic();
             this.goToNode.attempt(centralTopic, this);
-
-            this._fireEvent("loadsuccess");
-        }
-        ,
+        },
 
         _loadMap : function(mapId, mindmapModel) {
             var designer = this;
@@ -470,8 +451,6 @@ mindplot.MindmapDesigner = new Class({
             this.getModel().getTopics().forEach(function(topic) {
                 delete topic.getModel()._finalPosition;
             });
-
-            this._fireEvent("loadsuccess");
 
         },
 

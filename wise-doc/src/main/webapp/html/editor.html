@@ -30,13 +30,48 @@
     <script type='text/javascript' src='/core-js/target/classes/core.js'></script>
 
     <script type="text/javascript">
+
         //Google-Brix framework load callback function
         collabOnLoad = function() {
             isGoogleBrix = true;
-            if ($defined(mindplot) && $defined(mindplot.collaboration) && $defined(mindplot.collaboration.framework)) {
-                mindplot.collaboration.framework.brix.BrixFramework.instanciate();
-            }
+            $(document).fireEvent('loadcomplete', 'brix');
         };
+
+        var brixReady = false;
+        var mindReady = false;
+        var local = false;
+        $(document).addEvent('loadcomplete', function(resource) {
+            brixReady = resource == 'brix' ? true : brixReady;
+            mindReady = resource == 'mind' ? true : mindReady;
+
+            // If both resources has been loaded, start loading the framework...
+            if (brixReady && mindReady) {
+                var designer = buildDesigner();
+                mindplot.collaboration.framework.brix.BrixFramework.init(function() {
+                    var collaborationManager = mindplot.collaboration.CollaborationManager.getInstance();
+                    if (collaborationManager.isCollaborativeFrameworkReady()) {
+                        designer.loadFromCollaborativeModel(collaborationManager);
+
+                    }
+                    // If not problem has arisen, close the dialog ...
+                    if (!window.hasUnexpectedErrors) {
+                        waitDialog.deactivate();
+                    }
+                });
+
+            } else if (local) {
+                // Only for debug and local development...
+                var desig = buildDesigner();
+
+                var mapId = '1';
+                var mapXml = '<map name="38298" version="pela"><topic central="true" text="test\nThis is working ?" id="1"/></map>';
+                desig.loadFromXML(mapId, mapXml);
+
+                if (!window.hasUnexpectedErrors) {
+                    waitDialog.deactivate();
+                }
+            }
+        });
     </script>
 
     <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
@@ -78,13 +113,6 @@
         waitDialog.changeContent($("errorDialog"), false);
         return false;
     });
-
-    // @Todo: This must be persited in the map properties ...
-    var mapId = '1';
-    var mapXml = '<map name="38298" version="pela"><topic central="true" text="test\nThis is working ?" id="1"/></map>';
-    var editorProperties = {zoom:0.85,saveOnLoad:true};
-
-
 </script>
 
 <div id="colorPalette">

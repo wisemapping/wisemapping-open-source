@@ -41,7 +41,8 @@ mindplot.collaboration.framework.brix.BrixFramework = new Class({
 });
 
 instanciated = false;
-mindplot.collaboration.framework.brix.BrixFramework.instanciate = function() {
+mindplot.collaboration.framework.brix.BrixFramework.init = function(onload) {
+    $assert(onload, "load function can not be null");
     if ((typeof isGoogleBrix != "undefined") && !instanciated) {
         instanciated = true;
         var app = new goog.collab.CollaborativeApp();
@@ -50,6 +51,7 @@ mindplot.collaboration.framework.brix.BrixFramework.instanciate = function() {
         app.addListener('modelLoad', function(model) {
             var framework = new mindplot.collaboration.framework.brix.BrixFramework(model, app);
             mindplot.collaboration.CollaborationManager.getInstance().setCollaborativeFramework(framework);
+            onload();
         }.bind(this));
     }
 };
@@ -80,6 +82,5 @@ mindplot.collaboration.framework.brix.BrixFramework.buildMenu = function(app) {
 
     app.setMenuBar(menuBar);
 };
-mindplot.collaboration.framework.brix.BrixFramework.instanciate();
 
 
