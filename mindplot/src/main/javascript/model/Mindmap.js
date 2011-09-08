@@ -52,10 +52,10 @@ mindplot.model.Mindmap = new Class({
         addBranch : function(nodeModel) {
             $assert(nodeModel && nodeModel.isNodeModel(), 'Add node must be invoked with model objects');
             if (this._branches.length == 0) {
-                $assert(nodeModel.getType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE, "First element must be the central topic");
+                $assert(nodeModel.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE, "First element must be the central topic");
                 nodeModel.setPosition(0, 0);
             } else {
-                $assert(nodeModel.getType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE, "Mindmaps only have one cental topic");
+                $assert(nodeModel.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE, "Mindmaps only have one cental topic");
             }
 
             this._branches.push(nodeModel);

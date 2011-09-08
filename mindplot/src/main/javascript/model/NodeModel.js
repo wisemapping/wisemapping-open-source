@@ -17,108 +17,48 @@
  */
 
 mindplot.model.NodeModel = new Class({
+    Extends: mindplot.model.INodeModel,
     initialize:function(type, mindmap, id) {
         $assert(type, 'Node type can not be null');
         $assert(mindmap, 'mindmap can not be null');
+        this._properties = {};
 
-        this._order = null;
-        this._type = type;
+        this.parent(mindmap);
+        this.setId(id);
+        this.setType(type);
+        this.areChildrenShrinked(false);
+        this.setSize(50, 20);
+
         this._children = [];
         this._icons = [];
         this._links = [];
         this._notes = [];
-        this._size = {width:50,height:20};
-        this._position = null;
-        if ($defined(id)) {
-            if (!$defined(mindplot.model.NodeModel._uuid) || id > mindplot.model.NodeModel._uuid) {
-                mindplot.model.NodeModel._uuid = id;
-            }
-            this._id = id;
-        } else {
-            this._id = mindplot.model.NodeModel._nextUUID();
-        }
-        this._mindmap = mindmap;
-        this._text = null;
-        this._shapeType = null;
-        this._fontFamily = null;
-        this._fontSize = null;
-        this._fontStyle = null;
-        this._fontWeight = null;
-        this._fontColor = null;
-        this._borderColor = null;
-        this._backgroundColor = null;
-        this._areChildrenShrinked = false;
+    },
+
+    putProperty : function(key, value) {
+        $defined(key, 'key can not be null');
+        this._properties[key] = value;
+    },
+
+    getProperty : function(key) {
+        $defined(key, 'key can not be null');
+        var result = this._properties[key];
+        return !$defined(result) ? null : result;
     },
 
     clone  : function() {
-        var result = new mindplot.model.NodeModel(this._type, this._mindmap);
-        result._order = this._order;
-        result._type = this._type;
-        result._children = this._children.map(function(item, index) {
-            var model = item.clone();
-            model._parent = result;
-            return model;
+        var result = new mindplot.model.NodeModel(this.getType(), this._mindmap);
+        result._children = this._children.each(function(node) {
+            var cnode = node.clone();
+            cnode._parent = result;
+            return cnode;
         });
 
-
-        result._icons = this._icons;
-        result._links = this._links;
-        result._notes = this._notes;
-        result._size = this._size;
-        result._position = this._position;
-        result._id = this._id;
-        result._mindmap = this._mindmap;
-        result._text = this._text;
-        result._shapeType = this._shapeType;
-        result._fontFamily = this._fontFamily;
-        result._fontSize = this._fontSize;
-        result._fontStyle = this._fontStyle;
-        result._fontWeight = this._fontWeight;
-        result._fontColor = this._fontColor;
-        result._borderColor = this._borderColor;
-        result._backgroundColor = this._backgroundColor;
-        result._areChildrenShrinked = this._areChildrenShrinked;
+        result._properties = this._properties.clone();
+        result._icons = this._icons.clone();
+        result._links = this._links.clone();
+        result._notes = this._notes.clone();
         return result;
-    },
-
-    areChildrenShrinked  : function() {
-        return this._areChildrenShrinked;
-    },
-
-    setChildrenShrinked  : function(value) {
-        this._areChildrenShrinked = value;
-    },
-
-    getId  : function() {
-        return this._id;
-    },
-
-
-    setId  : function(id) {
-        this._id = id;
-        if (mindplot.model.NodeModel._uuid < id) {
-            mindplot.model.NodeModel._uuid = id;
-        }
-    },
-
-    getType  : function() {
-        return this._type;
-    },
-
-    setText  : function(text) {
-        this._text = text;
-    },
-
-    getText  : function() {
-        return this._text;
-    },
-
-    isNodeModel  : function() {
-        return true;
-    },
-
-    isConnected  : function() {
-        return this._parent != null;
     },
 
     createLink  : function(url) {
@@ -182,42 +122,6 @@ mindplot.model.NodeModel = new Class({
         child._parent = null;
     },
 
-    setPosition  : function(x, y) {
-        if (!$defined(this._position)) {
-            this._position = new core.Point();
-        }
-        this._position.x = parseInt(x);
-        this._position.y = parseInt(y);
-    },
-
-    getPosition  : function() {
-        return this._position;
-    },
-
-    setFinalPosition  : function(x, y) {
-        $assert(x, "x coordinate must be defined");
-        $assert(y, "y coordinate must be defined");
-
-        if (!$defined(this._finalPosition)) {
-            this._finalPosition = new core.Point();
-        }
-        this._finalPosition.x = parseInt(x);
-        this._finalPosition.y = parseInt(y);
-    },
-
-    getFinalPosition  : function() {
-        return this._finalPosition;
-    },
-
-    setSize  : function(width, height) {
-        this._size.width = width;
-        this._size.height = height;
-    },
-
-    getSize  : function() {
-        return {width:this._size.width,height:this._size.height};
-    },
-
     getChildren  : function() {
         return this._children;
     },
@@ -238,10 +142,6 @@ mindplot.model.NodeModel = new Class({
         return this._parent;
     },
 
-    getMindmap  : function() {
-        return this._mindmap;
-    },
-
     setParent  : function(parent) {
         $assert(parent != this, 'The same node can not be parent and child if itself.');
         this._parent = parent;
@@ -258,7 +158,7 @@ mindplot.model.NodeModel = new Class({
         var targetPosition = targetModel.getPosition();
         var result = false;
 
-        if (sourceModel.getType() == mindplot.model.NodeModel.MAIN_TOPIC_TYPE) {
+        if (sourceModel.getType() == mindplot.model.INodeModel.MAIN_TOPIC_TYPE) {
             // Finally, check current node ubication.
             var targetTopicSize = targetModel.getSize();
             var yDistance = Math.abs(sourcePosition.y - targetPosition.y);
@@ -276,12 +176,12 @@ mindplot.model.NodeModel = new Class({
                     var isTargetAtRightFromCentral = targetPosition.x >= 0;
 
                     if (isTargetAtRightFromCentral) {
-                        if (xDistance >= -targetTopicSize.width / 2 && xDistance <= mindplot.model.NodeModel.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE / 2 + (targetTopicSize.width / 2)) {
+                        if (xDistance >= -targetTopicSize.width / 2 && xDistance <= mindplot.model.INodeModel.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE / 2 + (targetTopicSize.width / 2)) {
                             result = true;
                         }
 
                     } else {
-                        if (xDistance <= targetTopicSize.width / 2 && Math.abs(xDistance) <= mindplot.model.NodeModel.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE / 2 + (targetTopicSize.width / 2)) {
+                        if (xDistance <= targetTopicSize.width / 2 && Math.abs(xDistance) <= mindplot.model.INodeModel.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE / 2 + (targetTopicSize.width / 2)) {
                             result = true;
                         }
                     }
@@ -317,83 +217,6 @@ mindplot.model.NodeModel = new Class({
         this._parent = parent;
     },
 
-    disconnect  : function() {
-        var mindmap = this.getMindmap();
-        mindmap.disconnect(this);
-    },
-
-    getShapeType  : function() {
-        return this._shapeType;
-    },
-
-    setShapeType  : function(type) {
-        this._shapeType = type;
-    },
-
-    setOrder  : function(value) {
-        this._order = value;
-    },
-
-    setFontFamily  : function(value) {
-        this._fontFamily = value;
-    },
-
-    getOrder  : function() {
-        return this._order;
-    },
-
-    getFontFamily  : function() {
-        return this._fontFamily;
-    },
-
-    setFontStyle  : function(value) {
-        this._fontStyle = value;
-    },
-
-    getFontStyle  : function() {
-        return this._fontStyle;
-    },
-
-    setFontWeight  : function(value) {
-        this._fontWeight = value;
-    },
-
-    getFontWeight  : function() {
-        return this._fontWeight;
-    },
-
-    setFontColor  : function(value) {
-        this._fontColor = value;
-    },
-
-    getFontColor  : function() {
-        return this._fontColor;
-    },
-
-    setFontSize  : function(value) {
-        this._fontSize = value;
-    },
-
-    getFontSize  : function() {
-        return this._fontSize;
-    },
-
-    getBorderColor  : function() {
-        return this._borderColor;
-    },
-
-    setBorderColor  : function(color) {
-        this._borderColor = color;
-    },
-
-    getBackgroundColor  : function() {
-        return this._backgroundColor;
-    },
-
-    setBackgroundColor  : function(color) {
-        this._backgroundColor = color;
-    },
-
     deleteNode  : function() {
         var mindmap = this._mindmap;
 
@@ -416,31 +239,7 @@ mindplot.model.NodeModel = new Class({
 
     },
 
-   inspect  : function() {
+    inspect  : function() {
         return '(type:' + this.getType() + ' , id: ' + this.getId() + ')';
     }
 });
-
-mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE = 'CentralTopic';
-mindplot.model.NodeModel.MAIN_TOPIC_TYPE = 'MainTopic';
-mindplot.model.NodeModel.DRAGGED_TOPIC_TYPE = 'DraggedTopic';
-
-mindplot.model.NodeModel.SHAPE_TYPE_RECT = 'rectagle';
-mindplot.model.NodeModel.SHAPE_TYPE_ROUNDED_RECT = 'rounded rectagle';
-mindplot.model.NodeModel.SHAPE_TYPE_ELIPSE = 'elipse';
-mindplot.model.NodeModel.SHAPE_TYPE_LINE = 'line';
-
-mindplot.model.NodeModel.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE = 220;
-
-/**
- * @todo: This method must be implemented.
- */
-mindplot.model.NodeModel._nextUUID = function() {
-    if (!$defined(this._uuid)) {
-        this._uuid = 0;
-    }
-
-    this._uuid = this._uuid + 1;
-    return this._uuid;
-}
-
