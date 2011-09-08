@@ -5,7 +5,7 @@
     <!--[if lt IE 9]>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <![endif]-->
-    <script type="text/javascript" src="http://docs.google.com/brix/static/api/js/jsapi.nocache.js"></script>
+    <!--<script type="text/javascript" src="http://docs.google.com/brix/static/api/js/jsapi.nocache.js"></script>-->
     <!-- Internet Explorer 8 Hack -->
     <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
     <title>WiseMapping - Editor </title>
@@ -39,7 +39,7 @@
 
         var brixReady = false;
         var mindReady = false;
-        var local = false;
+        var local = true;
         $(document).addEvent('loadcomplete', function(resource) {
             brixReady = resource == 'brix' ? true : brixReady;
             mindReady = resource == 'mind' ? true : mindReady;

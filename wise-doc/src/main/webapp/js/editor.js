@@ -165,10 +165,6 @@ function buildDesigner() {
         width:  parseInt(window.innerWidth)
     });
 
-    if (!mindplot.collaboration.CollaborationManager.getInstance().isCollaborationFrameworkAvailable()) {
-        loadSingleModel(designer);
-    }
-
     var menu = new mindplot.widget.Menu(designer, 'toolbar');
 
     //  If a node has focus, focus can be move to another node using the keys.
