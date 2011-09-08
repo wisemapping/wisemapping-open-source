@@ -51,7 +51,7 @@ mindplot.model.INodeModel = new Class({
     },
 
     getText  : function() {
-        this.getProperty('text');
+        return this.getProperty('text');
     },
 
     setPosition  : function(x, y) {
@@ -162,7 +162,7 @@ mindplot.model.INodeModel = new Class({
     },
 
     areChildrenShrinked  : function() {
-        this.getProperty('childrenShrinked');
+        return this.getProperty('childrenShrinked');
     },
 
     setChildrenShrinked  : function(value) {

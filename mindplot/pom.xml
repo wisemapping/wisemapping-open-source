@@ -52,7 +52,9 @@
                                 <concat destfile="${basedir}/target/tmp/mindplot.js" append="false">
                                     <filelist dir="${basedir}/src/main/javascript/" files="header.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="EventBus.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="model/IMindmap.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="model/Mindmap.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="model/INodeModel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="model/NodeModel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="model/RelationshipModel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ActionDispatcher.js"/>
@@ -86,10 +88,13 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="FixedDistanceBoard.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="BoardEntry.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ModelCodeName.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="XMLMindmapSerializer_Pela.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="XMLMindmapSerializer_Beta.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="XMLMindmapSerializer_Pela.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="XMLMindmapSerializer_Beta.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="Beta2PelaMigrator.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="XMLMindmapSerializerFactory.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="XMLMindmapSerializerFactory.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="PersistanceManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="EditorProperties.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="IconGroup.js"/>
@@ -108,10 +113,13 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="ControlPoint.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="EditorOptions.js"/>
 
-                                    <filelist dir="${basedir}/src/main/javascript/commands/" files="GenericFunctionCommand.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/commands/"
+                                              files="GenericFunctionCommand.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/commands/" files="DeleteCommand.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/commands/" files="DragTopicCommand.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/commands/" files="AddTopicCommand.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/commands/"
+                                              files="DragTopicCommand.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/commands/"
+                                              files="AddTopicCommand.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="commands/AddLinkToTopicCommand.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"

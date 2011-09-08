@@ -62,7 +62,7 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
         var parentTopic = document.createElement("topic");
 
         // Set topic attributes...
-        if (topic.getType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
+        if (topic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
             parentTopic.setAttribute("central", true);
         } else {
             var parent = topic.getParent();
@@ -234,7 +234,7 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
     },
 
     _deserializeNode : function(domElem, mindmap) {
-        var type = (domElem.getAttribute('central') != null) ? mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE : mindplot.model.NodeModel.MAIN_TOPIC_TYPE;
+        var type = (domElem.getAttribute('central') != null) ? mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE : mindplot.model.INodeModel.MAIN_TOPIC_TYPE;
         // Load attributes...
         var id = domElem.getAttribute('id');
         if ($defined(id)) {

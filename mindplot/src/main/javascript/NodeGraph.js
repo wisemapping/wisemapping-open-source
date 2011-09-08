@@ -135,10 +135,10 @@ mindplot.NodeGraph.create = function(nodeModel, options) {
     $assert(type, 'Node model type can not be null');
 
     var result;
-    if (type == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
+    if (type == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
         result = new mindplot.CentralTopic(nodeModel, options);
     } else
-    if (type == mindplot.model.NodeModel.MAIN_TOPIC_TYPE) {
+    if (type == mindplot.model.INodeModel.MAIN_TOPIC_TYPE) {
         result = new mindplot.MainTopic(nodeModel, options);
     } else {
         assert(false, "unsupported node type:" + type);

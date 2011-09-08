@@ -32,7 +32,7 @@ mindplot.Topic = new Class({
 
         // Position a topic ....
         var pos = model.getPosition();
-        if (pos != null && model.getType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
+        if (pos != null && model.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
             this.setPosition(pos);
         }
 
@@ -151,7 +151,7 @@ mindplot.Topic = new Class({
             this._setBorderColor(brColor, false);
 
             // Define the pointer ...
-            if (this.getType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
+            if (this.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
                 this._innerShape.setCursor('move');
             } else {
                 this._innerShape.setCursor('default');
@@ -167,16 +167,16 @@ mindplot.Topic = new Class({
             type = this.getShapeType();
         }
 
-        if (type == mindplot.model.NodeModel.SHAPE_TYPE_RECT) {
+        if (type == mindplot.model.INodeModel.SHAPE_TYPE_RECT) {
             result = new web2d.Rect(0, attributes);
         }
-        else if (type == mindplot.model.NodeModel.SHAPE_TYPE_ELIPSE) {
+        else if (type == mindplot.model.INodeModel.SHAPE_TYPE_ELIPSE) {
             result = new web2d.Rect(0.9, attributes);
         }
-        else if (type == mindplot.model.NodeModel.SHAPE_TYPE_ROUNDED_RECT) {
+        else if (type == mindplot.model.INodeModel.SHAPE_TYPE_ROUNDED_RECT) {
             result = new web2d.Rect(0.3, attributes);
         }
-        else if (type == mindplot.model.NodeModel.SHAPE_TYPE_LINE) {
+        else if (type == mindplot.model.INodeModel.SHAPE_TYPE_LINE) {
             result = new web2d.Line({strokeColor:"#495879",strokeWidth:1, strokeOpacity:1});
             result.setSize = function(width, height) {
                 this.size = {width:width, height:height};
@@ -226,7 +226,7 @@ mindplot.Topic = new Class({
 
     getOuterShape : function() {
         if (!$defined(this._outerShape)) {
-            var rect = this.buildShape(mindplot.Topic.OUTER_SHAPE_ATTRIBUTES, mindplot.model.NodeModel.SHAPE_TYPE_ROUNDED_RECT);
+            var rect = this.buildShape(mindplot.Topic.OUTER_SHAPE_ATTRIBUTES, mindplot.model.INodeModel.SHAPE_TYPE_ROUNDED_RECT);
             rect.setPosition(-2, -3);
             rect.setOpacity(0);
             this._outerShape = rect;
@@ -408,7 +408,7 @@ mindplot.Topic = new Class({
 
         if (!disableEventsListeners) {
             // Propagate mouse events ...
-            if (this.getType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
+            if (this.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
                 result.setCursor('move');
             } else {
                 result.setCursor('default');
@@ -621,7 +621,7 @@ mindplot.Topic = new Class({
             this.getOrBuildIconGroup();
         }
 
-        if (this.getType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
+        if (this.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
             shrinkConnector.addToWorkspace(group);
         }
 
@@ -828,7 +828,7 @@ mindplot.Topic = new Class({
     setBranchVisibility : function(value) {
         var current = this;
         var parent = this;
-        while (parent != null && parent.getType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
+        while (parent != null && parent.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
             current = parent;
             parent = current.getParent();
         }

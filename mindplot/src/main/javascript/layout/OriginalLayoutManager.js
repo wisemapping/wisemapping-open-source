@@ -61,7 +61,7 @@ mindplot.layout.OriginalLayoutManager = new Class({
             }
         }
         nodesByOrder = null;
-        return node.getTopicType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE ? result : children;
+        return node.getTopicType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE ? result : children;
     },
 
     _nodeResizeEvent:function(node) {
@@ -123,7 +123,7 @@ mindplot.layout.OriginalLayoutManager = new Class({
 
     registerListenersOnNode : function(topic) {
         // Register node listeners ...
-        if (topic.getType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
+        if (topic.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
 
             // Central Topic doesn't support to be dragged
             var dragger = this._dragger;

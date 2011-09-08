@@ -38,7 +38,7 @@ mindplot.collaboration.framework.AbstractCollaborativeFramework = new Class({
 
     _buildInitialCollaborativeModel: function() {
         var mindmap = this._collaborativeModelFactory.buildMindMap();
-        var centralTopic = mindmap.createNode(mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE);
+        var centralTopic = mindmap.createNode(mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE);
         mindmap.addBranch(centralTopic, true);
         this.addMindmap(mindmap);
         return mindmap;

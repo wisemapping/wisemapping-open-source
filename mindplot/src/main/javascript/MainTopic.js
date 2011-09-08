@@ -31,10 +31,10 @@ mindplot.MainTopic = new Class({
             // Create a new node ...
             var model = this.getModel();
             var mindmap = model.getMindmap();
-            siblingModel = mindmap.createNode(mindplot.model.NodeModel.MAIN_TOPIC_TYPE);
+            siblingModel = mindmap.createNode(mindplot.model.INodeModel.MAIN_TOPIC_TYPE);
 
             // Positionate following taking into account the sibling positon.
-            if (positionate && parentTopic.getType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
+            if (positionate && parentTopic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
                 var pos = this.getPosition();
                 siblingModel.setPosition(pos.x, pos.y);
             }
@@ -50,7 +50,7 @@ mindplot.MainTopic = new Class({
         // Create a new node ...
         var model = this.getModel();
         var mindmap = model.getMindmap();
-        var childModel = mindmap.createNode(mindplot.model.NodeModel.MAIN_TOPIC_TYPE);
+        var childModel = mindmap.createNode(mindplot.model.INodeModel.MAIN_TOPIC_TYPE);
 
         // Get the hights model order position ...
         var children = this._getChildren();
@@ -99,14 +99,14 @@ mindplot.MainTopic = new Class({
 
 
     _defaultShapeType : function() {
-        return mindplot.model.NodeModel.SHAPE_TYPE_LINE;
+        return mindplot.model.INodeModel.SHAPE_TYPE_LINE;
     },
 
     updateTopicShape : function(targetTopic, workspace) {
         // Change figure based on the connected topic ...
         var model = this.getModel();
         var shapeType = model.getShapeType();
-        if (targetTopic.getType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
+        if (targetTopic.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
             if (!$defined(shapeType)) {
                 // Get the real shape type ...
                 shapeType = this.getShapeType();
@@ -127,7 +127,7 @@ mindplot.MainTopic = new Class({
         if (!$defined(shapeType)) {
             // Change figure ...
             shapeType = this.getShapeType();
-            this._setShapeType(mindplot.model.NodeModel.SHAPE_TYPE_ROUNDED_RECT, false);
+            this._setShapeType(mindplot.model.INodeModel.SHAPE_TYPE_ROUNDED_RECT, false);
         }
         var innerShape = this.getInnerShape();
         innerShape.setVisibility(true);
@@ -171,7 +171,7 @@ mindplot.MainTopic = new Class({
 
         var isAtRight = mindplot.util.Shape.isAtRight(sourcePosition, pos);
         var result = mindplot.util.Shape.calculateRectConnectionPoint(pos, size, isAtRight);
-        if (this.getShapeType() == mindplot.model.NodeModel.SHAPE_TYPE_LINE) {
+        if (this.getShapeType() == mindplot.model.INodeModel.SHAPE_TYPE_LINE) {
             result.y = result.y + (this.getSize().height / 2);
         }
 
@@ -196,7 +196,7 @@ mindplot.MainTopic = new Class({
 
         var isAtRight = mindplot.util.Shape.isAtRight(targetPosition, pos);
         var result;
-        if (this.getShapeType() == mindplot.model.NodeModel.SHAPE_TYPE_LINE) {
+        if (this.getShapeType() == mindplot.model.INodeModel.SHAPE_TYPE_LINE) {
 //        if (!this.isConnectedToCentralTopic())
 //        {
             result = new core.Point();
@@ -238,7 +238,7 @@ mindplot.MainTopic = new Class({
     _getInnerPadding : function() {
         var result;
         var parent = this.getModel().getParent();
-        if (parent && mindplot.model.NodeModel.MAIN_TOPIC_TYPE == parent.getType()) {
+        if (parent && mindplot.model.INodeModel.MAIN_TOPIC_TYPE == parent.getType()) {
             result = 3;
         }
         else {
@@ -251,14 +251,14 @@ mindplot.MainTopic = new Class({
         var model = this.getModel();
         var parent = model.getParent();
 
-        return parent && parent.getType() === mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE;
+        return parent && parent.getType() === mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE;
     },
 
     _defaultText : function() {
         var targetTopic = this.getOutgoingConnectedTopic();
         var result = "";
         if ($defined(targetTopic)) {
-            if (targetTopic.getType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
+            if (targetTopic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
                 result = "Main Topic";
             } else {
                 result = "Sub Topic";
@@ -273,7 +273,7 @@ mindplot.MainTopic = new Class({
         var targetTopic = this.getOutgoingConnectedTopic();
         var result;
         if ($defined(targetTopic)) {
-            if (targetTopic.getType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
+            if (targetTopic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
                 result = {
                     font:"Arial",
                     size: 8,

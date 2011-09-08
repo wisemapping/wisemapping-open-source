@@ -27,7 +27,7 @@ mindplot.ConnectionLine = new Class({
 
         var strokeColor = mindplot.ConnectionLine.getStrokeColor();
         var line;
-        if (targetNode.getType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
+        if (targetNode.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
             line = this._createLine(lineType, mindplot.ConnectionLine.CURVED);
             if (line.getType() == "CurvedLine") {
                 var ctrlPoints = this._getCtrlPoints(sourceNode, targetNode);
@@ -124,7 +124,7 @@ mindplot.ConnectionLine = new Class({
         var offset = mindplot.Topic.CONNECTOR_WIDTH / 2;
         var targetTopicSize = targetTopic.getSize();
         var y;
-        if (targetTopic.getShapeType() == mindplot.model.NodeModel.SHAPE_TYPE_LINE) {
+        if (targetTopic.getShapeType() == mindplot.model.INodeModel.SHAPE_TYPE_LINE) {
             y = targetTopicSize.height;
         } else {
             y = targetTopicSize.height / 2;

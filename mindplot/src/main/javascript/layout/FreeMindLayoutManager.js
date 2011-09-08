@@ -58,7 +58,7 @@ mindplot.layout.FreeMindLayoutManager = mindplot.layout.BaseLayoutManager.extend
         });
 
         // Add drag behaviour ...
-        if (topic.getType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE)
+        if (topic.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE)
         {
             topic.addEvent("mousedown",this._reconnectMouseDownListener.bindWithEvent(this,[topic]));
         }
@@ -261,7 +261,7 @@ mindplot.layout.FreeMindLayoutManager = mindplot.layout.BaseLayoutManager.extend
         }
     },
     addHelpers:function(node){
-        if (node.getType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE)
+        if (node.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE)
             this._addMoveHelper(node);
     },
     _addMoveHelper:function(node){

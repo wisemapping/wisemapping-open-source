@@ -16,15 +16,12 @@
  *   limitations under the License.
  */
 mindplot.model.Mindmap = new Class({
+        Extends: mindplot.model.IMindmap,
         initialize : function() {
             this._branches = [];
             this._description = null;
             this._version = null;
             this._relationships = [];
-        },
-
-        getCentralTopic : function() {
-            return this._branches[0];
         },
 
         getDescription : function() {
@@ -44,14 +41,14 @@ mindplot.model.Mindmap = new Class({
             return this._version;
         },
 
-
         setVersion : function(version) {
             this._version = version;
         },
 
         addBranch : function(nodeModel) {
             $assert(nodeModel && nodeModel.isNodeModel(), 'Add node must be invoked with model objects');
-            if (this._branches.length == 0) {
+            var branches = this.getBranches();
+            if (branches.length == 0) {
                 $assert(nodeModel.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE, "First element must be the central topic");
                 nodeModel.setPosition(0, 0);
             } else {
@@ -61,36 +58,17 @@ mindplot.model.Mindmap = new Class({
             this._branches.push(nodeModel);
         },
 
+        removeBranch : function(nodeModel){
+            $assert(nodeModel && nodeModel.isNodeModel(), 'Remove node must be invoked with model objects');
+            return this._branches.erase(nodeModel);
+        },
+
         getBranches : function() {
             return this._branches;
         },
 
         getRelationships : function() {
             return this._relationships;
-        },
-
-        connect : function(parent, child) {
-            // Child already has a parent ?
-            var branches = this.getBranches();
-            $assert(!child.getParent(), 'Child model seems to be already connected');
-
-            //  Connect node...
-            parent._appendChild(child);
-
-            // Remove from the branch ...
-            branches.erase(child);
-        },
-
-        disconnect : function(child) {
-            var parent = child.getParent();
-            $assert(child, 'Child can not be null.');
-            $assert(parent, 'Child model seems to be already connected');
-
-            parent._removeChild(child);
-
-            var branches = this.getBranches();
-            branches.push(child);
-
         },
 
         hasAlreadyAdded : function(node) {
@@ -108,13 +86,7 @@ mindplot.model.Mindmap = new Class({
 
         createNode : function(type, id) {
             $assert(type, "node type can not be null");
-            return this._createNode(type, id);
-        },
-
-        _createNode : function(type, id) {
-            $assert(type, 'Node type must be specified.');
-            var result = new mindplot.model.NodeModel(type, this, id);
-            return result;
+            return new mindplot.model.NodeModel(type, this, id);
         },
 
         createRelationship : function(fromNode, toNode) {
@@ -130,48 +102,6 @@ mindplot.model.Mindmap = new Class({
 
         removeRelationship : function(relationship) {
             this._relationships.erase(relationship);
-        },
-
-        inspect : function() {
-            var result = '';
-            result = '{ ';
-
-            var branches = this.getBranches();
-            for (var i = 0; i < branches.length; i++) {
-                var node = branches[i];
-                if (i != 0) {
-                    result = result + ', ';
-                }
-
-                result = result + this._toString(node);
-            }
-
-            result = result + ' } ';
-
-            return result;
-        },
-
-        _toString : function(node) {
-            var result = node.inspect();
-            var children = node.getChildren();
-
-            for (var i = 0; i < children.length; i++) {
-                var child = children[i];
-
-                if (i == 0) {
-                    result = result + '-> {';
-                } else {
-                    result = result + ', ';
-                }
-
-                result = result + this._toString(child);
-
-                if (i == children.length - 1) {
-                    result = result + '}';
-                }
-            }
-
-            return result;
         }
     }
 );

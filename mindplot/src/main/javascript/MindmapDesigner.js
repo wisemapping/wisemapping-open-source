@@ -94,7 +94,7 @@ mindplot.MindmapDesigner = new Class({
 
                     // Create a new topic model ...
                     var mindmap = this.getMindmap();
-                    var model = mindmap.createNode(mindplot.model.NodeModel.MAIN_TOPIC_TYPE);
+                    var model = mindmap.createNode(mindplot.model.INodeModel.MAIN_TOPIC_TYPE);
                     model.setPosition(pos.x, pos.y);
 
                     // Get central topic ...
@@ -281,7 +281,7 @@ mindplot.MindmapDesigner = new Class({
             }
 
             var topic = nodes[0];
-            if (topic.getType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
+            if (topic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
                 // Central topic doesn't have siblings ...
                 this.createChildForSelectedNode();
 
@@ -514,7 +514,7 @@ mindplot.MindmapDesigner = new Class({
         },
 
         _removeNode : function(node) {
-            if (node.getTopicType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
+            if (node.getTopicType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
                 var parent = node._parent;
                 node.disconnect(this._workspace);
 
@@ -539,7 +539,7 @@ mindplot.MindmapDesigner = new Class({
         deleteCurrentNode : function() {
 
             var validateFunc = function(object) {
-                return object.getType() == mindplot.RelationshipLine.type || object.getTopicType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE
+                return object.getType() == mindplot.RelationshipLine.type || object.getTopicType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE
             };
             var validateError = 'Central topic can not be deleted.';
 
@@ -580,7 +580,7 @@ mindplot.MindmapDesigner = new Class({
         changeBackgroundColor : function(color) {
 
             var validateFunc = function(topic) {
-                return topic.getShapeType() != mindplot.model.NodeModel.SHAPE_TYPE_LINE
+                return topic.getShapeType() != mindplot.model.INodeModel.SHAPE_TYPE_LINE
             };
             var validateError = 'Color can not be set to line topics.';
 
@@ -592,7 +592,7 @@ mindplot.MindmapDesigner = new Class({
 
         changeBorderColor : function(color) {
             var validateFunc = function(topic) {
-                return topic.getShapeType() != mindplot.model.NodeModel.SHAPE_TYPE_LINE
+                return topic.getShapeType() != mindplot.model.INodeModel.SHAPE_TYPE_LINE
             };
             var validateError = 'Color can not be set to line topics.';
             var topicsIds = this.getModel().filterTopicsIds(validateFunc, validateError);
@@ -610,7 +610,7 @@ mindplot.MindmapDesigner = new Class({
 
         changeTopicShape : function(shape) {
             var validateFunc = function(topic) {
-                return !(topic.getType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE && shape == mindplot.model.NodeModel.SHAPE_TYPE_LINE)
+                return !(topic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE && shape == mindplot.model.INodeModel.SHAPE_TYPE_LINE)
             };
             var validateError = 'Central Topic shape can not be changed to line figure.';
             var topicsIds = this.getModel().filterTopicsIds(validateFunc, validateError);

@@ -48,12 +48,12 @@ mindplot.DragTopicPositioner = new Class({
         var currentConnection = dragTopic.getConnectedToTopic();
         if ($defined(currentConnection)) {
             // MainTopic->MainTopicConnection.
-            if (currentConnection.getType() == mindplot.model.NodeModel.MAIN_TOPIC_TYPE) {
+            if (currentConnection.getType() == mindplot.model.INodeModel.MAIN_TOPIC_TYPE) {
                 if (mainTopicToMainTopicConnection != currentConnection) {
                     dragTopic.disconnect(this._workspace);
                 }
             }
-            else if (currentConnection.getType() == mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
+            else if (currentConnection.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
                 // Distance if greater that the allowed.
                 var dragXPosition = dragTopic.getPosition().x;
                 var currentXPosition = currentConnection.getPosition().x;
@@ -90,7 +90,7 @@ mindplot.DragTopicPositioner = new Class({
         for (var i = 0; i < topics.length; i++) {
             var targetTopic = topics[i];
             var position = dragTopic.getPosition();
-            if (targetTopic.getType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE && targetTopic != draggedNode) {
+            if (targetTopic.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE && targetTopic != draggedNode) {
                 var canBeConnected = dragTopic.canBeConnectedTo(targetTopic);
                 if (canBeConnected) {
                     var targetPosition = targetTopic.getPosition();

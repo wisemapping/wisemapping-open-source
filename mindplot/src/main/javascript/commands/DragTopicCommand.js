@@ -29,6 +29,7 @@ mindplot.commands.DragTopicCommand = new Class({
         this._order = order;
         this._id = mindplot.Command._nextUUID();
     },
+
     execute: function(commandContext) {
 
         var topic = commandContext.findTopics([this._objectsIds])[0];
@@ -37,14 +38,10 @@ mindplot.commands.DragTopicCommand = new Class({
         var origParentTopic = topic.getOutgoingConnectedTopic();
         var origOrder = null;
         var origPosition = null;
-//        if (topic.getType() == mindplot.model.NodeModel.MAIN_TOPIC_TYPE && origParentTopic != null && origParentTopic.getType() == mindplot.model.NodeModel.MAIN_TOPIC_TYPE)
-//        {
+
         // In this case, topics are positioned using order ...
         origOrder = topic.getOrder();
-//        } else
-//        {
-        origPosition = topic.getPosition().clone();
-//        }
+        origPosition = topic.getPosition();
 
         // Disconnect topic ..
         if ($defined(origParentTopic)) {
