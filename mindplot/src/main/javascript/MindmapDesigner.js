@@ -26,7 +26,7 @@ mindplot.MindmapDesigner = new Class({
             // Dispatcher manager ...
             var commandContext = new mindplot.CommandContext(this);
 //            this._actionDispatcher = new mindplot.BrixActionDispatcher(commandContext);
-                this._actionDispatcher = new mindplot.LocalActionDispatcher(commandContext);
+            this._actionDispatcher = new mindplot.LocalActionDispatcher(commandContext);
             this._actionDispatcher.addEvent("modelUpdate", function(event) {
                 this.fireEvent("modelUpdate", event);
             }.bind(this));
@@ -359,17 +359,6 @@ mindplot.MindmapDesigner = new Class({
             return this._actionRunner.hasBeenChanged();
         },
 
-        autoSaveEnabled : function(value) {
-            if ($defined(value) && value) {
-                var autosave = function() {
-                    if (this.needsSave()) {
-                        this.save(null, false);
-                    }
-                };
-                autosave.bind(this).periodical(30000);
-            }
-        },
-
         save : function(onSavedHandler, saveHistory) {
             var persistantManager = mindplot.PersistanceManager;
             var mindmap = this._mindmap;
@@ -382,76 +371,29 @@ mindplot.MindmapDesigner = new Class({
             this._actionRunner.markAsChangeBase();
         },
 
-        loadFromCollaborativeModel: function(collaborationManager) {
-            var mindmap = collaborationManager.buildWiseModel();
-            this._loadMap(1, mindmap);
 
-            // Place the focus on the Central Topic
-            var centralTopic = this.getModel().getCentralTopic();
-            this.goToNode.attempt(centralTopic, this);
-        },
+        loadMap : function(mindmapModel) {
+            $assert(mindmapModel, "mindmapModel can not be null");
+            this._mindmap = mindmapModel;
 
-        loadFromXML : function(mapId, xmlContent) {
-            $assert(xmlContent, 'mindmapId can not be null');
-            $assert(xmlContent, 'xmlContent can not be null');
+            // Building node graph ...
+            var branches = mindmapModel.getBranches();
+            for (var i = 0; i < branches.length; i++) {
+                // NodeModel -> NodeGraph ...
+                var nodeModel = branches[i];
+                var nodeGraph = this._nodeModelToNodeGraph(nodeModel, false);
 
-            // Explorer Hack with local files ...
-            var domDocument = core.Utils.createDocumentFromText(xmlContent);
-
-            var serializer = mindplot.XMLMindmapSerializerFactory.getSerializerFromDocument(domDocument);
-            var mindmap = serializer.loadFromDom(domDocument);
-
-            this._loadMap(mapId, mindmap);
-
-            // Place the focus on the Central Topic
-            var centralTopic = this.getModel().getCentralTopic();
-            this.goToNode(centralTopic);
-
-        },
-
-        load : function(mapId) {
-            $assert(mapId, 'mapName can not be null');
-
-            // Build load function ...
-            var persistantManager = mindplot.PersistanceManager;
-
-            // Loading mindmap ...
-            var mindmap = persistantManager.load(mapId);
-
-            // Finally, load the map in the editor ...
-            this._loadMap(mapId, mindmap);
-
-            // Place the focus on the Central Topic
-            var centralTopic = this.getModel().getCentralTopic();
-            this.goToNode.attempt(centralTopic, this);
-        },
-
-        _loadMap : function(mapId, mindmapModel) {
-            var designer = this;
-            if (mindmapModel != null) {
-                mindmapModel.setId(mapId);
-                designer._mindmap = mindmapModel;
-
-                // Building node graph ...
-                var branches = mindmapModel.getBranches();
-                for (var i = 0; i < branches.length; i++) {
-                    // NodeModel -> NodeGraph ...
-                    var nodeModel = branches[i];
-                    var nodeGraph = this._nodeModelToNodeGraph(nodeModel, false);
-
-                    // Update shrink render state...
-                    nodeGraph.setBranchVisibility(true);
-                }
-                var relationships = mindmapModel.getRelationships();
-                for (var j = 0; j < relationships.length; j++) {
-                    this._relationshipModelToRelationship(relationships[j]);
-                }
+                // Update shrink render state...
+                nodeGraph.setBranchVisibility(true);
+            }
+            var relationships = mindmapModel.getRelationships();
+            for (var j = 0; j < relationships.length; j++) {
+                this._relationshipModelToRelationship(relationships[j]);
             }
 
-            this.getModel().getTopics().forEach(function(topic) {
-                delete topic.getModel()._finalPosition;
-            });
-
+            // Place the focus on the Central Topic
+            var centralTopic = this.getModel().getCentralTopic();
+            this.goToNode.attempt(centralTopic, this);
         },
 
         getMindmap : function() {
@@ -572,8 +514,7 @@ mindplot.MindmapDesigner = new Class({
         },
 
         _removeNode : function(node) {
-            if (node.getTopicType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE)
-            {
+            if (node.getTopicType() != mindplot.model.NodeModel.CENTRAL_TOPIC_TYPE) {
                 var parent = node._parent;
                 node.disconnect(this._workspace);
 
@@ -607,7 +548,7 @@ mindplot.MindmapDesigner = new Class({
             var relIds = model.filterRelationIds(validateFunc, validateError);
 
             if (topicsIds.length > 0 || relIds.length > 0) {
-                this._actionDispatcher.deleteTopics(topicsIds,relIds);
+                this._actionDispatcher.deleteTopics(topicsIds, relIds);
             }
 
         },

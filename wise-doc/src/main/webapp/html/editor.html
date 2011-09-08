@@ -44,14 +44,18 @@
             brixReady = resource == 'brix' ? true : brixReady;
             mindReady = resource == 'mind' ? true : mindReady;
 
+            if (mindReady) {
+                designer = buildDesigner();
+            }
+
             // If both resources has been loaded, start loading the framework...
             if (brixReady && mindReady) {
-                var designer = buildDesigner();
-                mindplot.collaboration.framework.brix.BrixFramework.init(function() {
-                    var collaborationManager = mindplot.collaboration.CollaborationManager.getInstance();
-                    if (collaborationManager.isCollaborativeFrameworkReady()) {
-                        designer.loadFromCollaborativeModel(collaborationManager);
 
+                mindplot.collaboration.framework.brix.BrixFramework.init(function() {
+                    var manager = mindplot.collaboration.CollaborationManager.getInstance();
+                    if (manager.isCollaborativeFrameworkReady()) {
+                        var mindmap = manager.buildWiseModel();
+                        designer.loadMap(mindmap);
                     }
                     // If not problem has arisen, close the dialog ...
                     if (!window.hasUnexpectedErrors) {
@@ -59,14 +63,18 @@
                     }
                 });
 
-            } else if (local) {
-                // Only for debug and local development...
-                var desig = buildDesigner();
-
-                var mapId = '1';
+            } else if (local && mindReady) {
+                // Load map from XML ...
                 var mapXml = '<map name="38298" version="pela"><topic central="true" text="test\nThis is working ?" id="1"/></map>';
-                desig.loadFromXML(mapId, mapXml);
+                var domDocument = core.Utils.createDocumentFromText(mapXml);
+                var serializer = mindplot.XMLMindmapSerializerFactory.getSerializerFromDocument(domDocument);
+                var mindmap = serializer.loadFromDom(domDocument);
+                mindmap.setId('1');
 
+                // Now, load the map ...
+                designer.loadMap(mindmap);
+
+                // If not problem has arisen, close the dialog ...
                 if (!window.hasUnexpectedErrors) {
                     waitDialog.deactivate();
                 }
