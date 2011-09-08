@@ -16,92 +16,75 @@
  *   limitations under the License.
  */
 mindplot.collaboration.framework.brix.model.Mindmap = new Class({
-        Extends:mindplot.model.Mindmap,
-        initialize:function(brixModel, brixFramework){
-            this.parent();
+        Extends:mindplot.model.IMindmap,
+        initialize:function(brixModel, brixFramework) {
             this._brixModel = brixModel;
             this._brixFramework = brixFramework;
-            if(!$defined(this._brixModel)){
+            if (!$defined(this._brixModel)) {
                 this._brixModel = this._createBrixModel();
-            }else{
+            } else {
                 var branches = this._brixModel.get("branches");
-                for(var i=0; i<branches.size(); i++){
+                for (var i = 0; i < branches.size(); i++) {
                     var node = branches.get(i);
                     var nodeModel = new mindplot.collaboration.framework.brix.model.NodeModel(node, this._brixFramework, null, this);
                     this.addBranch(nodeModel, false);
                 }
             }
         },
-        _createBrixModel:function(){
+
+        _createBrixModel:function() {
             var model = this._brixFramework.getBrixModel().create("Map");
             var branches = this._brixFramework.getBrixModel().create("List");
-            model.put("branches",branches);
+            model.put("branches", branches);
             this._brixFramework.addMindmap(model);
             return model;
         },
-        getBrixModel:function(){
+
+        getBrixModel:function() {
             return this._brixModel;
         },
-        setId : function(id) {
-            this._iconType = id;
-        },
-        setVersion : function(version) {
-            this._version = version;
-        },
-        addBranch : function(nodeModel, addToModel) {
-            this.parent(nodeModel);
-            if($defined(addToModel) && addToModel){
-                var branches = this._brixModel.get("branches");
-                branches.add(nodeModel.getBrixModel());
+
+        getBranches : function() {
+            var result = [];
+            var branches = this._brixModel.get("branches");
+
+            for (var i = 0; i < branches.size(); i++) {
+                result.push();
             }
+
         },
+
+        addBranch : function(nodeModel) {
+            $assert(nodeModel, "nodeModel can not be null");
+            var branches = this._brixModel.get("branches");
+            branches.add(nodeModel.getBrixModel());
+        },
+
+        removeBranch : function(nodeModel) {
+            $assert(nodeModel, "nodeModel can not be null");
+            var branches = this._brixModel.get("branches");
+            branches.remove(nodeModel.getBrixModel());
+        },
+
         connect : function(parent, child) {
             this.parent(parent, child);
 
             // Remove from the branch ...
             var branches = this._brixModel.get("branches");
             var childIndex = null;
-            for(var i = 0; i<branches.size(); i++){
-                if(branches.get(i)==child.getBrixModel()){
+            for (var i = 0; i < branches.size(); i++) {
+                if (branches.get(i) == child.getBrixModel()) {
                     childIndex = i;
                     break;
                 }
             }
-            if(childIndex!=null){
+            if (childIndex != null) {
                 branches.remove(childIndex);
             }
         },
 
-        disconnect : function(child) {
-            var parent = child.getParent();
-            $assert(child, 'Child can not be null.');
-            $assert(parent, 'Child model seems to be already connected');
-
-            parent._removeChild(child);
-
-            var branches = this.getBranches();
-            branches.push(child);
-
-        },
-        _createNode : function(type, id) {
-            $assert(type, 'Node type must be specified.');
-            var result = new mindplot.collaboration.framework.brix.model.NodeModel(null, this._brixFramework, type, this, id);
-            return result;
-        },
-
-        createRelationship : function(fromNode, toNode) {
-            $assert(fromNode, 'from node cannot be null');
-            $assert(toNode, 'to node cannot be null');
-
-            return new mindplot.model.RelationshipModel(fromNode, toNode);
-        },
-
-        addRelationship : function(relationship) {
-            this._relationships.push(relationship);
-        },
-
-        removeRelationship : function(relationship) {
-            this._relationships.erase(relationship);
+        createNode : function(type, id) {
+            return  mindplot.collaboration.framework.brix.model.NodeModel.create(this._brixFramework, type, id, this);
         }
     }
 );
