@@ -28,6 +28,10 @@ mindplot.model.Mindmap = new Class({
             return this._description;
         },
 
+        setDescription : function(value) {
+            this._description = value;
+        },
+
         getId : function() {
             return this._iconType;
         },
@@ -58,7 +62,7 @@ mindplot.model.Mindmap = new Class({
             this._branches.push(nodeModel);
         },
 
-        removeBranch : function(nodeModel){
+        removeBranch : function(nodeModel) {
             $assert(nodeModel && nodeModel.isNodeModel(), 'Remove node must be invoked with model objects');
             return this._branches.erase(nodeModel);
         },

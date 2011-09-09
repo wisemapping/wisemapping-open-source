@@ -110,17 +110,15 @@ mindplot.model.IMindmap = new Class({
         result = '{ ';
 
         var branches = this.getBranches();
+        result = result + "version:" + this.getVersion();
         for (var i = 0; i < branches.length; i++) {
             var node = branches[i];
             if (i != 0) {
                 result = result + ', ';
             }
-
             result = result + this._toString(node);
         }
-
         result = result + ' } ';
-
         return result;
     },
 
@@ -147,18 +145,20 @@ mindplot.model.IMindmap = new Class({
         return result;
     },
 
-    copyTo : function(mindmap) {
-        var version = this.getVersion();
-        mindmap.setVersion(version);
+    copyTo : function(target) {
+        var source = this;
+        var version = source.getVersion();
+        target.setVersion(version);
 
         var desc = this.getDescription();
-        mindmap.setDescription(desc);
+        target.setDescription(desc);
 
-        var sbranchs = this.getBranches();
+        // Then the rest of the branches ...
+        var sbranchs = source.getBranches();
         sbranchs.forEach(function(snode) {
-            var tnode = mindmap.createNode(snode.getType(), snode.getId());
+            var tnode = target.createNode(snode.getType(), snode.getId());
             snode.copyTo(tnode);
-            mindmap.addBranch(snode);
+            target.addBranch(tnode);
         });
     }
 });

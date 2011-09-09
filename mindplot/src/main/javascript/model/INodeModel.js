@@ -191,11 +191,11 @@ mindplot.model.INodeModel = new Class({
     },
 
 
-    putProperty: function(key, value) {
+    getPropertiesKeys : function() {
         throw "Unsupported operation";
     },
 
-    setProperty: function(key, value) {
+    putProperty: function(key, value) {
         throw "Unsupported operation";
     },
 
@@ -269,6 +269,16 @@ mindplot.model.INodeModel = new Class({
 
     inspect  : function() {
         return '(type:' + this.getType() + ' , id: ' + this.getId() + ')';
+    },
+
+    copyTo : function(target) {
+        var source = this;
+        var keys = source.getPropertiesKeys();
+        keys.forEach(function(key) {
+            var value = source.getProperty(key);
+            target.putProperty(value);
+        });
+        return target;
     }
 });
 

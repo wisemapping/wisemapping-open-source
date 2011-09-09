@@ -24,35 +24,38 @@ mindplot.collaboration.framework.brix.BrixFramework = new Class({
         var cModel = null;
         var root = this.getBrixModel().getRoot();
         if (!root.isEmpty()) {
-            cModel = collaborativeModelFactory.buildCollaborativeModelFor(root.get("mindmap"));
+            var brixMap = root.get("mindmap");
+            cModel = collaborativeModelFactory.buildCollaborativeModelFor(brixMap);
         }
         this.parent(cModel, collaborativeModelFactory);
     },
+
     addMindmap:function(model) {
         var root = this.getBrixModel().getRoot();
         root.put("mindmap", model);
     },
+
     getBrixModel:function() {
         return this._app.getModel();
-    },
-    buildWiseModel: function() {
-        return this.parent();
     }
+
 });
 
 instanciated = false;
 mindplot.collaboration.framework.brix.BrixFramework.init = function(onload) {
     $assert(onload, "load function can not be null");
-    if ((typeof isGoogleBrix != "undefined") && !instanciated) {
-        instanciated = true;
+
+    if (!instanciated) {
         var app = new goog.collab.CollaborativeApp();
         mindplot.collaboration.framework.brix.BrixFramework.buildMenu(app);
         app.start();
+
         app.addListener('modelLoad', function(model) {
             var framework = new mindplot.collaboration.framework.brix.BrixFramework(model, app);
             mindplot.collaboration.CollaborationManager.getInstance().setCollaborativeFramework(framework);
             onload();
         }.bind(this));
+        instanciated = true;
     }
 };
 

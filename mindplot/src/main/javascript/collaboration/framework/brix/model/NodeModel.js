@@ -18,14 +18,13 @@
 
 mindplot.collaboration.framework.brix.model.NodeModel = new Class({
     Extends: mindplot.model.INodeModel,
-    initialize : function(brixModel, brixFramework, mindmap) {
-        $assert(brixModel, "brixModel can not null");
+    initialize : function(brixFramework, brixModel, mindmap) {
         $assert(brixFramework, "brixFramework can not null");
+        $assert(brixModel, "brixModel can not null");
 
         this.parent(mindmap);
         this._brixModel = brixModel;
         this._brixFramework = brixFramework;
-        this._injectSetAndGet();
         this._addBrixListeners();
     },
 
@@ -44,12 +43,24 @@ mindplot.collaboration.framework.brix.model.NodeModel = new Class({
             actionDispatcher[funName](this.getId(), value);
         }.bind(this));
 
-        this._brixModel.get("children").addListener("valuesAdded", this._childAddedListener.bind(this));
+        var children = this._brixModel.get("children");
+        children.addListener("valuesAdded", this._childAddedListener.bind(this));
+    },
+
+    getChildren : function() {
+        var result = [];
+        var children = this._brixModel.get("children");
+        for (var i = 0; i < children.size(); i++) {
+            var node = children.get(i);
+            var nodeModel = new mindplot.collaboration.framework.brix.model.NodeModel(this._brixFramework, node, this);
+            result.push(nodeModel);
+        }
+        return result;
     },
 
     _childAddedListener:function(event) {
         var newValue = event.getValues().get(0);
-        var cmodel = new mindplot.collaboration.framework.brix.model.NodeModel(newValue, this._brixFramework, null, this.getMindmap());
+        var cmodel = new mindplot.collaboration.framework.brix.model.NodeModel(this._brixFramework, newValue, this.getMindmap());
         this._appendChild(cmodel, false);
 
         var model = new mindplot.model.NodeModel(newValue.get("type"), designer.getMindmap(), newValue.get("id"));
@@ -62,13 +73,41 @@ mindplot.collaboration.framework.brix.model.NodeModel = new Class({
 
     getBrixModel:function() {
         return this._brixModel;
+    },
+
+    putProperty : function(key, value) {
+        $defined(key, 'key can not be null');
+        this._brixModel.put(key, value);
+    },
+
+    getProperty : function(key) {
+        $defined(key, 'key can not be null');
+        return this._brixModel.get(key);
+    },
+
+    getPropertiesKeys : function() {
+        return  this._brixModel.getKeys();
+    },
+
+    connectTo  : function(parent) {
+        var mindmap = this.getMindmap();
+        mindmap.connect(parent, this);
+
+        // @Todo: This must be persited ?Ummm...
+        this._parent = parent;
     }
 });
 
-mindplot.collaboration.framework.brix.model.NodeModel.create = function(brixFramework, type, id, mindmap) {
+mindplot.collaboration.framework.brix.model.NodeModel.create = function(brixFramework, mindmap, type, id) {
+    $assert(brixFramework, 'brixFramework can not be null');
+    $assert(mindmap, 'mindmap can not be null');
+    $assert(type, 'type can not be null');
+    $assert($defined(id), 'id can not be null');
+
+
     var brixModel = brixFramework.getBrixModel().create("Map");
     brixModel.put("type", type);
-    brixModel.put("id", this._id); // @todo...
+    brixModel.put("id", this._id);
 
     var children = brixFramework.getBrixModel().create("List");
     brixModel.put("children", children);

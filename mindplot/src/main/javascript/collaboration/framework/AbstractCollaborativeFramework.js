@@ -1,5 +1,6 @@
 mindplot.collaboration.framework.AbstractCollaborativeFramework = new Class({
-    initialize: function(model, collaborativeModelFactory) {
+    initialize: function(model, collaborativeModelFactory)
+    {
         this._collaborativeModelFactory = collaborativeModelFactory;
         if (!$defined(model)) {
             model = this._buildInitialCollaborativeModel();
@@ -12,38 +13,26 @@ mindplot.collaboration.framework.AbstractCollaborativeFramework = new Class({
         return this._model;
     },
 
-    buildWiseModel : function() {
-        var cmindMap = this.getModel();
-        var mindmap = new mindplot.model.Mindmap();
-        var branches = cmindMap.getBranches();
-        branches.forEach(function(branch) {
-            var type = branch.getType();
-            var id = branch.getId();
-            var node = mindmap.createNode(type, id);
-            node.setText(branch.getText());
-            var position = branch.getPosition();
-            node.setPosition(position.x, position.y);
-            var children = branch.getChildren();
-            children.forEach(function(child) {
-                var node2 = new mindplot.model.NodeModel(child.getType(), mindmap, child.getId());
-                node2.setText(child.getText());
-                var pos = child.getPosition();
-                node2.setPosition(pos.x, pos.y);
-                node._appendChild(node2);
-            });
-            mindmap.addBranch(node);
-        }.bind(this));
-        return mindmap;
+    buildMindmap : function() {
+
+        var cmind = this.getModel();
+        var mmind = new mindplot.model.Mindmap();
+        cmind.copyTo(mmind);
+
+        return mmind;
     },
 
     _buildInitialCollaborativeModel: function() {
+
         var mindmap = this._collaborativeModelFactory.buildMindMap();
         var centralTopic = mindmap.createNode(mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE);
         mindmap.addBranch(centralTopic, true);
         this.addMindmap(mindmap);
         return mindmap;
     },
+
     addMindmap:function(model) {
+        throw "method to implement";
     },
 
     _findTopic : function(topics, id) {

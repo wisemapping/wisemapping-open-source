@@ -40,6 +40,12 @@ mindplot.model.NodeModel = new Class({
         this._properties[key] = value;
     },
 
+
+    getProperties: function()
+    {
+       return this._properties;
+    },
+
     getProperty : function(key) {
         $defined(key, 'key can not be null');
         var result = this._properties[key];

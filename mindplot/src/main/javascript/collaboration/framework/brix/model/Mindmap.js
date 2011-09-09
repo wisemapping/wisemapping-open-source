@@ -17,19 +17,31 @@
  */
 mindplot.collaboration.framework.brix.model.Mindmap = new Class({
         Extends:mindplot.model.IMindmap,
-        initialize:function(brixModel, brixFramework) {
-            this._brixModel = brixModel;
+        initialize:function(brixFramework, brixModel) {
+            $assert(brixFramework, 'brixFramework can not be null');
+
             this._brixFramework = brixFramework;
-            if (!$defined(this._brixModel)) {
+            if (!$defined(brixModel)) {
                 this._brixModel = this._createBrixModel();
             } else {
-                var branches = this._brixModel.get("branches");
-                for (var i = 0; i < branches.size(); i++) {
-                    var node = branches.get(i);
-                    var nodeModel = new mindplot.collaboration.framework.brix.model.NodeModel(node, this._brixFramework, null, this);
-                    this.addBranch(nodeModel, false);
-                }
+                this._brixModel = brixModel;
             }
+        },
+
+        getVersion: function() {
+            return this._brixModel.get('version');
+        },
+
+        setVersion: function(value) {
+            this._brixModel.put('version', value);
+        },
+
+        getDescription: function() {
+            return this._brixModel.get('description');
+        },
+
+        setDescription: function(value) {
+            this._brixModel.put('description', value);
         },
 
         _createBrixModel:function() {
@@ -47,11 +59,12 @@ mindplot.collaboration.framework.brix.model.Mindmap = new Class({
         getBranches : function() {
             var result = [];
             var branches = this._brixModel.get("branches");
-
             for (var i = 0; i < branches.size(); i++) {
-                result.push();
+                var node = branches.get(i);
+                var nodeModel = new mindplot.collaboration.framework.brix.model.NodeModel(this._brixFramework, node, this);
+                result.push(nodeModel);
             }
-
+            return result;
         },
 
         addBranch : function(nodeModel) {
@@ -63,12 +76,11 @@ mindplot.collaboration.framework.brix.model.Mindmap = new Class({
         removeBranch : function(nodeModel) {
             $assert(nodeModel, "nodeModel can not be null");
             var branches = this._brixModel.get("branches");
-            branches.remove(nodeModel.getBrixModel());
+            var brixModel = nodeModel.getBrixModel();
+            branches.remove(brixModel);
         },
 
         connect : function(parent, child) {
-            this.parent(parent, child);
-
             // Remove from the branch ...
             var branches = this._brixModel.get("branches");
             var childIndex = null;
@@ -84,7 +96,8 @@ mindplot.collaboration.framework.brix.model.Mindmap = new Class({
         },
 
         createNode : function(type, id) {
-            return  mindplot.collaboration.framework.brix.model.NodeModel.create(this._brixFramework, type, id, this);
+            return  mindplot.collaboration.framework.brix.model.NodeModel.create(this._brixFramework, this, type, id);
         }
     }
 );
+

@@ -38,8 +38,8 @@ mindplot.LocalActionDispatcher = new Class({
         this.execute(command);
     },
 
-    addTopic:function(model, parentTopicId, animated) {
-        var command = new mindplot.commands.AddTopicCommand(model, parentTopicId, animated);
+    addTopic:function(nodeModel, parentTopicId, animated) {
+        var command = new mindplot.commands.AddTopicCommand(nodeModel, parentTopicId, animated);
         this.execute(command);
     },
 

@@ -22,21 +22,12 @@ mindplot.collaboration.CollaborationManager = new Class({
         this.collaborativeModelReady = null;
     },
 
-    isCollaborationFrameworkAvailable : function() {
-        return (typeof goog != "undefined") && (typeof goog.collab != "undefined");
-    },
-
     setCollaborativeFramework : function(framework) {
         this._collaborativeFramework = framework;
-        this.collaborativeModelReady = true;
     },
 
-    isCollaborativeFrameworkReady:function() {
-        return this.collaborativeModelReady;
-    },
-
-    buildWiseModel: function() {
-        return this._collaborativeFramework.buildWiseModel();
+    buildMindmap: function() {
+        return this._collaborativeFramework.buildMindmap();
     },
 
     getCollaborativeFramework:function() {

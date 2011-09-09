@@ -21,10 +21,15 @@ mindplot.collaboration.framework.brix.BrixCollaborativeModelFactory = new Class(
     initialize:function(brixFramework) {
         this._brixFramework = brixFramework;
     },
+
     buildMindMap:function() {
-        return new mindplot.collaboration.framework.brix.model.Mindmap(null, this._brixFramework);
+        var mindmap = new mindplot.collaboration.framework.brix.model.Mindmap(this._brixFramework);
+        var node = mindmap.createNode(mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE, 0);
+        mindmap.addBranch(node);
+        return mindmap;
     },
+
     buildCollaborativeModelFor:function(model) {
-        return new mindplot.collaboration.framework.brix.model.Mindmap(model, this._brixFramework);
+        return new mindplot.collaboration.framework.brix.model.Mindmap(this._brixFramework, model);
     }
 });

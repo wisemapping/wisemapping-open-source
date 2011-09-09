@@ -39,7 +39,7 @@ mindplot.ActionDispatcher = new Class({
         throw "method must be implemented.";
     },
 
-    addTopic: function(model, parentTopicId, animated) {
+    addTopic: function(nodeModel, parentTopicId, animated) {
         throw "method must be implemented.";
     },
 
