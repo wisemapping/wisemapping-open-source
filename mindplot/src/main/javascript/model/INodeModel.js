@@ -194,7 +194,6 @@ mindplot.model.INodeModel = new Class({
         throw "Unsupported operation";
     },
 
-
     connectTo  : function(parent) {
         $assert(parent, "parent can not be null");
         var mindmap = this.getMindmap();
@@ -278,19 +277,41 @@ mindplot.model.INodeModel = new Class({
     },
 
     inspect  : function() {
-        return '{ type: ' + this.getType() +
+        var result = '{ type: ' + this.getType() +
             ' , id: ' + this.getId() +
-            ' , text: ' + this.getText() +
-            ' }';
+            ' , text: ' + this.getText();
+
+        var children = this.getChildren();
+        if (children.length > 0) {
+            result = result + "{(size:" + children.length;
+            children.forEach(function(node) {
+                result = result + "=> (" + node.getPropertiesKeys() + ")";
+            }.bind(this));
+        }
+
+        result = result + ' }';
+        return result;
     },
 
     copyTo : function(target) {
         var source = this;
+        // Copy properties ...
         var keys = source.getPropertiesKeys();
         keys.forEach(function(key) {
             var value = source.getProperty(key);
             target.putProperty(key, value);
         });
+
+        // Copy childrens ...
+        var children = this.getChildren();
+        var tmindmap = target.getMindmap();
+
+        children.forEach(function(snode) {
+            var tnode = tmindmap.createNode(snode.getType(), snode.getId());
+            snode.copyTo(tnode);
+            target.appendChild(tnode);
+        });
+
         return target;
     }
 });
