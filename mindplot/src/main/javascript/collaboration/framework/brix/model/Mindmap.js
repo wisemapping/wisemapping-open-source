@@ -77,8 +77,13 @@ mindplot.collaboration.framework.brix.model.Mindmap = new Class({
             $assert(nodeModel.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE, "central topic can not be removed");
 
             var branches = this._brixModel.get("branches");
-            var brixModel = nodeModel.getBrixModel();
-            branches.remove(brixModel);
+            for (var i = 0; i < branches.size(); i++) {
+                if (branches.get(i) == nodeModel.getBrixModel()) {
+                    branches.remove(i);
+                    break;
+
+                }
+            }
         },
 
         createNode : function(type, id) {
