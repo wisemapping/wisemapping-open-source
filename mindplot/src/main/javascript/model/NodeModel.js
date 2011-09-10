@@ -41,9 +41,8 @@ mindplot.model.NodeModel = new Class({
     },
 
 
-    getProperties: function()
-    {
-       return this._properties;
+    getProperties: function() {
+        return this._properties;
     },
 
     getProperty : function(key) {
@@ -67,10 +66,10 @@ mindplot.model.NodeModel = new Class({
         return result;
     },
 
-    addChildren : function(){
+    addChildren : function() {
         $assert(child && child.isNodeModel(), 'Only NodeModel can be appended to Mindmap object');
-           this._children.push(child);
-           child._parent = this;
+        this._children.push(child);
+        child._parent = this;
     },
 
     createLink  : function(url) {
@@ -220,28 +219,6 @@ mindplot.model.NodeModel = new Class({
             }
         }
         return result;
-
-    },
-
-    deleteNode  : function() {
-        var mindmap = this._mindmap;
-
-        // if it has children nodes, Their must be disconnected.
-        var lenght = this._children;
-        for (var i = 0; i < lenght; i++) {
-            var child = this._children[i];
-            mindmap.disconnect(child);
-        }
-
-        var parent = this._parent;
-        if ($defined(parent)) {
-            // if it is connected, I must remove it from the parent..
-            mindmap.disconnect(this);
-        }
-
-        // It's an isolated node. It must be a hole branch ...
-        var branches = mindmap.getBranches();
-        branches.erase(this);
 
     },
 

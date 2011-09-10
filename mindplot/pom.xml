@@ -51,6 +51,14 @@
                                 <mkdir dir="${basedir}/target/classes"/>
                                 <concat destfile="${basedir}/target/tmp/mindplot.js" append="false">
                                     <filelist dir="${basedir}/src/main/javascript/" files="header.js"/>
+
+                                    <filelist dir="${basedir}/src/main/javascript/libraries/"
+                                              files="Overlay.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/libraries/"
+                                                                              files="MooDialog.js"/>
+                                        <filelist dir="${basedir}/src/main/javascript/libraries/"
+                                                                              files="MooDialog.Fx.js"/>
+
                                     <filelist dir="${basedir}/src/main/javascript/" files="EventBus.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="model/IMindmap.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="model/Mindmap.js"/>

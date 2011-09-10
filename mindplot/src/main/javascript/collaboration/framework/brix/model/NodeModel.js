@@ -21,6 +21,8 @@ mindplot.collaboration.framework.brix.model.NodeModel = new Class({
     initialize : function(brixFramework, brixModel, mindmap) {
         $assert(brixFramework, "brixFramework can not null");
         $assert(brixModel, "brixModel can not null");
+        $assert(mindmap && mindmap.getBranches, "mindmap can not null");
+
 
         this.parent(mindmap);
         this._brixModel = brixModel;
@@ -33,10 +35,9 @@ mindplot.collaboration.framework.brix.model.NodeModel = new Class({
         // Nodes creation should be cached ...
         if (!this._brixModel.__registered) {
             // Register listener for properties changes ....
+            var actionDispatcher = this._brixFramework.getActionDispatcher();
             this._brixModel.addListener("valueChanged", function(event) {
                 var key = event.getProperty();
-
-                var actionDispatcher = this._brixFramework.getActionDispatcher();
                 var value = event.getNewValue();
 
                 var funName = 'change' + key.capitalize() + 'ToTopic';
@@ -44,6 +45,7 @@ mindplot.collaboration.framework.brix.model.NodeModel = new Class({
                     throw "No implementation for:" + funName;
                 }
                 console.log("This action dispatcher:" + funName);
+
                 actionDispatcher[funName]([this.getId()], value);
             }.bind(this));
 
@@ -57,7 +59,19 @@ mindplot.collaboration.framework.brix.model.NodeModel = new Class({
                 var model = new mindplot.model.NodeModel(cmodel.getType(), designer.getMindmap(), this.getId());
                 cmodel.copyTo(model);
 
-                this._brixFramework.getActionDispatcher().addTopic(model, this.getId(), true);
+                actionDispatcher.addTopic(model, this.getId(), true);
+            }.bind(this));
+
+            children.addListener("valuesRemoved", function(event) {
+                console.log("remove node:" + funName);
+
+                var brixChildren = event.getValues();
+                for (var i = 0; i < brixChildren.size(); i++) {
+                    var brixNodeModel = brixChildren.get(i);
+                    var cmodel = new mindplot.collaboration.framework.brix.model.NodeModel(this._brixFramework, brixNodeModel, this.getMindmap());
+                    actionDispatcher.deleteTopics(cmodel.getId());
+                }
+
             }.bind(this));
 
             this._brixModel.__registered = true;
@@ -69,7 +83,8 @@ mindplot.collaboration.framework.brix.model.NodeModel = new Class({
         var children = this._brixModel.get("children");
         for (var i = 0; i < children.size(); i++) {
             var node = children.get(i);
-            var nodeModel = new mindplot.collaboration.framework.brix.model.NodeModel(this._brixFramework, node, this);
+            var nodeModel = new mindplot.collaboration.framework.brix.model.NodeModel(this._brixFramework, node, this.getMindmap());
+            nodeModel.setParent(this);
             result.push(nodeModel);
         }
         return result;
@@ -98,11 +113,27 @@ mindplot.collaboration.framework.brix.model.NodeModel = new Class({
         return this._brixModel._parent;
     },
 
+    setParent : function(parent) {
+        this._brixModel._parent = parent;
+    },
+
     appendChild : function(node) {
         $assert(node && node.isNodeModel(), 'Only NodeModel can be appended to Mindmap object');
         var children = this._brixModel.get("children");
         children.add(node.getBrixModel());
-        node.getBrixModel()._parent = this;
+        this.setParent(this);
+    },
+
+    removeChild : function(child) {
+        $assert(child && child.isNodeModel(), 'Only NodeModel can be appended to Mindmap object.');
+        var children = this._brixModel.get("children");
+        for (var i = 0; i < children.size(); i++) {
+            if (children.get(i) == child.getBrixModel()) {
+                children.remove(i);
+                break;
+            }
+        }
+        this.setParent(null);
     }
 });
 

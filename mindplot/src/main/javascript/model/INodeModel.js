@@ -18,7 +18,7 @@
 
 mindplot.model.INodeModel = new Class({
     initialize: function(mindmap) {
-        $assert(mindmap, 'mindmap can not be null');
+        $assert(mindmap && mindmap.getBranches, 'mindmap can not be null');
         this._mindmap = mindmap;
     },
 
@@ -200,6 +200,50 @@ mindplot.model.INodeModel = new Class({
         mindmap.connect(parent, this);
     },
 
+    copyTo : function(target) {
+        var source = this;
+        // Copy properties ...
+        var keys = source.getPropertiesKeys();
+        keys.forEach(function(key) {
+            var value = source.getProperty(key);
+            target.putProperty(key, value);
+        });
+
+        // Copy childrens ...
+        var children = this.getChildren();
+        var tmindmap = target.getMindmap();
+
+        children.forEach(function(snode) {
+            var tnode = tmindmap.createNode(snode.getType(), snode.getId());
+            snode.copyTo(tnode);
+            target.appendChild(tnode);
+        });
+
+        return target;
+    },
+
+    deleteNode  : function() {
+        var mindmap = this.getMindmap();
+
+        // if it has children nodes, Their must be disconnected.
+        var children = this.getChildren();
+        var length = children.length;
+
+        for (var i = 0; i < length; i++) {
+            var child = children[i];
+            mindmap.disconnect(child);
+        }
+
+        // if it is connected, I must remove it from the parent..
+        var parent = this.getParent();
+        if ($defined(parent)) {
+            mindmap.disconnect(this);
+        }
+
+        // It's an isolated node. It must be a hole branch ...
+        mindmap.removeBranch(this);
+    },
+
     getPropertiesKeys : function() {
         throw "Unsupported operation";
     },
@@ -209,10 +253,6 @@ mindplot.model.INodeModel = new Class({
     },
 
     setParent  : function(parent) {
-        throw "Unsupported operation";
-    },
-
-    deleteNode  : function() {
         throw "Unsupported operation";
     },
 
@@ -283,7 +323,7 @@ mindplot.model.INodeModel = new Class({
 
         var children = this.getChildren();
         if (children.length > 0) {
-            result = result + "{(size:" + children.length;
+            result = result + ", children: {(size:" + children.length;
             children.forEach(function(node) {
                 result = result + "=> (" + node.getPropertiesKeys() + ")";
             }.bind(this));
@@ -293,26 +333,9 @@ mindplot.model.INodeModel = new Class({
         return result;
     },
 
-    copyTo : function(target) {
-        var source = this;
-        // Copy properties ...
-        var keys = source.getPropertiesKeys();
-        keys.forEach(function(key) {
-            var value = source.getProperty(key);
-            target.putProperty(key, value);
-        });
+    removeChild : function(child) {
+        throw "Unsupported operation";
 
-        // Copy childrens ...
-        var children = this.getChildren();
-        var tmindmap = target.getMindmap();
-
-        children.forEach(function(snode) {
-            var tnode = tmindmap.createNode(snode.getType(), snode.getId());
-            snode.copyTo(tnode);
-            target.appendChild(tnode);
-        });
-
-        return target;
     }
 });
 

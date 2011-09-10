@@ -23,6 +23,27 @@ mindplot.BrixActionDispatcher = new Class({
         this._commandContext = commandContext;
     },
 
+    dragTopic: function(topicId, position, order, parentTopic) {
+        var framework = this._getFramework();
+        var node = framework.getTopic(topicId);
+
+        // Set node order ...
+        if (order != null) {
+            node.setOrder(order);
+        } else if (position != null) {
+            // Set position ...
+            node.setPosition(position);
+        } else {
+            $assert("Illegal commnad state exception.");
+        }
+        // Finally, connect node ...
+        if ($defined(this._parentId)) {
+            var parentNode = topic.findTopics([this._parentId])[0];
+            node.disconnect();
+            node.connect(parentNode);
+        }
+    },
+
     changeTextToTopic : function(topicsIds, text) {
         var framework = this._getFramework();
         var topicId;
@@ -127,7 +148,7 @@ mindplot.BrixActionDispatcher = new Class({
         var topicId = topicsIds[0];
         var topic = framework.getTopic(topicId);
         $assert(topic, "Could not find topic with id:" + topicId);
-        mindmap.disconnect(topic);
+        topic.deleteNode();
 
     }
 });

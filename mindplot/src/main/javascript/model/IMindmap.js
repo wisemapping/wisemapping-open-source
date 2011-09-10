@@ -81,7 +81,6 @@ mindplot.model.IMindmap = new Class({
         $assert(parent, 'Child model seems to be already connected');
 
         parent.removeChild(child);
-
         this.addBranch(child);
     },
 

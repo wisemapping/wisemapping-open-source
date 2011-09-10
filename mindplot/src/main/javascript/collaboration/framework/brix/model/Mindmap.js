@@ -60,8 +60,10 @@ mindplot.collaboration.framework.brix.model.Mindmap = new Class({
             var branches = this._brixModel.get("branches");
             for (var i = 0; i < branches.size(); i++) {
                 var node = branches.get(i);
-                var nodeModel = new mindplot.collaboration.framework.brix.model.NodeModel(this._brixFramework, node, this);
-                result.push(nodeModel);
+                if (node != null) {
+                    var nodeModel = new mindplot.collaboration.framework.brix.model.NodeModel(this._brixFramework, node, this);
+                    result.push(nodeModel);
+                }
             }
             return result;
         },
@@ -78,10 +80,14 @@ mindplot.collaboration.framework.brix.model.Mindmap = new Class({
 
             var branches = this._brixModel.get("branches");
             for (var i = 0; i < branches.size(); i++) {
-                if (branches.get(i) == nodeModel.getBrixModel()) {
-                    branches.remove(i);
-                    break;
 
+                // @Todo: remove should remove null elements ...
+                var branch = branches.get(i);
+                if (branch != null) {
+                    if (branch == nodeModel.getBrixModel()) {
+                        branches.remove(i);
+                        break;
+                    }
                 }
             }
         },

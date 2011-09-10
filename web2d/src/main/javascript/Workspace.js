@@ -175,7 +175,7 @@ web2d.Workspace = new Class({
         }
 
         if (element == this) {
-            throw "It's not posible to add the group as a child of itself";
+            throw "It's not possible to add the group as a child of itself";
         }
 
         var elementType = element.getType();

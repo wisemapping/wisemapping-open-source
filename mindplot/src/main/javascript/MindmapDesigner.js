@@ -57,9 +57,9 @@ mindplot.MindmapDesigner = new Class({
 
             // To prevent the user from leaving the page with changes ...
             $(window).addEvent('beforeunload', function () {
-                if (this.needsSave()) {
+//                if (this.needsSave()) {
 //                    this.save(null, false)
-                }
+//                }
             }.bind(this));
         },
 
