@@ -20,19 +20,18 @@ mindplot.collaboration.framework.brix.BrixFramework = new Class({
     Extends: mindplot.collaboration.framework.AbstractCollaborativeFramework,
     initialize: function(model, app) {
         this._app = app;
-        var collaborativeModelFactory = new mindplot.collaboration.framework.brix.BrixCollaborativeModelFactory(this);
-        var cModel = null;
+        var factory = new mindplot.collaboration.framework.brix.BrixCollaborativeModelFactory(this);
         var root = this.getBrixModel().getRoot();
-        if (!root.isEmpty()) {
-            var brixMap = root.get("mindmap");
-            cModel = collaborativeModelFactory.buildCollaborativeModelFor(brixMap);
+        var cmodel = null;
+        var brixMap = root.get("mindmap");
+        if (brixMap != null) {
+            cmodel = factory.buildMindmap(brixMap);
+        } else {
+            cmodel = factory.createNewMindmap();
+            root.put("mindmap", cmodel.getBrixModel());
         }
-        this.parent(cModel, collaborativeModelFactory);
-    },
-
-    addMindmap:function(model) {
-        var root = this.getBrixModel().getRoot();
-        root.put("mindmap", model);
+        this.parent(cmodel);
+        console.log("cmodel:" + cmodel.inspect());
     },
 
     getBrixModel:function() {

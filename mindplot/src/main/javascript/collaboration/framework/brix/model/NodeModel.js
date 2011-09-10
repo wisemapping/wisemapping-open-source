@@ -28,23 +28,40 @@ mindplot.collaboration.framework.brix.model.NodeModel = new Class({
         this._addBrixListeners();
     },
 
-    _addBrixListeners:function() {
-        // Register listener for properties changes ....
-        this._brixModel.addListener("valueChanged", function(event) {
-            var key = event.getProperty();
+    _addBrixListeners : function() {
 
-            var actionDispatcher = this._brixFramework.getActionDispatcher();
-            var value = event.getNewValue();
+        // Nodes creation should be cached ...
+        if (!this._brixModel.__registered) {
+            // Register listener for properties changes ....
+            this._brixModel.addListener("valueChanged", function(event) {
+                var key = event.getProperty();
 
-            var funName = 'change' + key.capitalize() + 'ToTopic';
-            if (!$defined(actionDispatcher[funName])) {
-                throw "No implementation for:" + funName;
-            }
-            actionDispatcher[funName](this.getId(), value);
-        }.bind(this));
+                var actionDispatcher = this._brixFramework.getActionDispatcher();
+                var value = event.getNewValue();
 
-        var children = this._brixModel.get("children");
-        children.addListener("valuesAdded", this._childAddedListener.bind(this));
+                var funName = 'change' + key.capitalize() + 'ToTopic';
+                if (!$defined(actionDispatcher[funName])) {
+                    throw "No implementation for:" + funName;
+                }
+                console.log("This action dispatcher:" + funName);
+                actionDispatcher[funName]([this.getId()], value);
+            }.bind(this));
+
+            var children = this._brixModel.get("children");
+            children.addListener("valuesAdded", function(event) {
+                var brixNodeModel = event.getValues().get(0);
+
+                var cmodel = new mindplot.collaboration.framework.brix.model.NodeModel(this._brixFramework, brixNodeModel, this.getMindmap());
+
+                // @Todo: This is not ok...
+                var model = new mindplot.model.NodeModel(cmodel.getType(), designer.getMindmap(), this.getId());
+                cmodel.copyTo(model);
+
+                this._brixFramework.getActionDispatcher().addTopic(model, this.getId(), true);
+            }.bind(this));
+
+            this._brixModel.__registered = true;
+        }
     },
 
     getChildren : function() {
@@ -58,18 +75,6 @@ mindplot.collaboration.framework.brix.model.NodeModel = new Class({
         return result;
     },
 
-    _childAddedListener:function(event) {
-        var newValue = event.getValues().get(0);
-        var cmodel = new mindplot.collaboration.framework.brix.model.NodeModel(this._brixFramework, newValue, this.getMindmap());
-        this._appendChild(cmodel, false);
-
-        var model = new mindplot.model.NodeModel(newValue.get("type"), designer.getMindmap(), newValue.get("id"));
-        var position = newValue.get("position");
-        var x = position.get("x");
-        var y = position.get("y");
-        model.setPosition(x, y);
-        this._brixFramework.getActionDispatcher().addTopic(model, this.getId(), true);
-    },
 
     getBrixModel:function() {
         return this._brixModel;
@@ -89,12 +94,15 @@ mindplot.collaboration.framework.brix.model.NodeModel = new Class({
         return  this._brixModel.getKeys();
     },
 
-    connectTo  : function(parent) {
-        var mindmap = this.getMindmap();
-        mindmap.connect(parent, this);
+    getParent : function() {
+        return this._brixModel._parent;
+    },
 
-        // @Todo: This must be persited ?Ummm...
-        this._parent = parent;
+    appendChild : function(node) {
+        $assert(node && node.isNodeModel(), 'Only NodeModel can be appended to Mindmap object');
+        var children = this._brixModel.get("children");
+        children.add(node.getBrixModel());
+        node.getBrixModel()._parent = this;
     }
 });
 
@@ -104,10 +112,9 @@ mindplot.collaboration.framework.brix.model.NodeModel.create = function(brixFram
     $assert(type, 'type can not be null');
     $assert($defined(id), 'id can not be null');
 
-
     var brixModel = brixFramework.getBrixModel().create("Map");
     brixModel.put("type", type);
-    brixModel.put("id", this._id);
+    brixModel.put("id", id);
 
     var children = brixFramework.getBrixModel().create("List");
     brixModel.put("children", children);

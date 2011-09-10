@@ -67,6 +67,12 @@ mindplot.model.NodeModel = new Class({
         return result;
     },
 
+    addChildren : function(){
+        $assert(child && child.isNodeModel(), 'Only NodeModel can be appended to Mindmap object');
+           this._children.push(child);
+           child._parent = this;
+    },
+
     createLink  : function(url) {
         $assert(url, 'Link URL must be specified.');
         return new mindplot.model.LinkModel(url, this);
@@ -116,13 +122,13 @@ mindplot.model.NodeModel = new Class({
         this._icons.pop();
     },
 
-    _appendChild  : function(child) {
+    appendChild  : function(child) {
         $assert(child && child.isNodeModel(), 'Only NodeModel can be appended to Mindmap object');
         this._children.push(child);
         child._parent = this;
     },
 
-    _removeChild  : function(child) {
+    removeChild  : function(child) {
         $assert(child && child.isNodeModel(), 'Only NodeModel can be appended to Mindmap object.');
         this._children.erase(child);
         child._parent = null;
@@ -215,12 +221,6 @@ mindplot.model.NodeModel = new Class({
         }
         return result;
 
-    },
-
-    connectTo  : function(parent) {
-        var mindmap = this.getMindmap();
-        mindmap.connect(parent, this);
-        this._parent = parent;
     },
 
     deleteNode  : function() {

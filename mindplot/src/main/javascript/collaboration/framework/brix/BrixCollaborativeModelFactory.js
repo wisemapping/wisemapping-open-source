@@ -19,17 +19,19 @@
 mindplot.collaboration.framework.brix.BrixCollaborativeModelFactory = new Class({
     Extends:mindplot.collaboration.framework.AbstractCollaborativeModelFactory,
     initialize:function(brixFramework) {
+        $assert(brixFramework, 'brixFramework can not be null');
         this._brixFramework = brixFramework;
     },
 
-    buildMindMap:function() {
+    createNewMindmap : function() {
         var mindmap = new mindplot.collaboration.framework.brix.model.Mindmap(this._brixFramework);
         var node = mindmap.createNode(mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE, 0);
+        mindmap.setVersion('pela-brix');
         mindmap.addBranch(node);
         return mindmap;
     },
 
-    buildCollaborativeModelFor:function(model) {
+    buildMindmap : function(model) {
         return new mindplot.collaboration.framework.brix.model.Mindmap(this._brixFramework, model);
     }
 });

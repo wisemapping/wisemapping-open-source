@@ -96,10 +96,9 @@ mindplot.LocalActionDispatcher = new Class({
     },
 
     changeTextToTopic : function(topicsIds, text) {
-        $assert(topicsIds, "topicsIds can not be null");
+        $assert($defined(topicsIds), "topicsIds can not be null");
 
         var commandFunc = function(topic, value) {
-
             var result = topic.getText();
             topic.setText(value);
             return result;
@@ -187,7 +186,7 @@ mindplot.LocalActionDispatcher = new Class({
         this.execute(command);
     },
 
-    changeShapeToTopic : function(topicsIds, shapeType) {
+    changeShapeTypeToTopic : function(topicsIds, shapeType) {
         $assert(topicsIds, "topicsIds can not be null");
         $assert(shapeType, "shapeType can not be null");
 
@@ -242,7 +241,7 @@ mindplot.CommandContext = new Class({
     },
 
     findTopics:function(topicsIds) {
-        $assert(topicsIds, "topicsIds can not be null");
+        $assert($defined(topicsIds), "topicsIds can not be null");
         if (!(topicsIds instanceof Array)) {
             topicsIds = [topicsIds];
         }

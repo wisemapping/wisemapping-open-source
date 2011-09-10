@@ -69,7 +69,7 @@ mindplot.model.IMindmap = new Class({
         $assert(!child.getParent(), 'Child model seems to be already connected');
 
         //  Connect node...
-        parent._appendChild(child);
+        parent.appendChild(child);
 
         // Remove from the branch ...
         this.removeBranch(child);
@@ -80,7 +80,7 @@ mindplot.model.IMindmap = new Class({
         $assert(child, 'Child can not be null.');
         $assert(parent, 'Child model seems to be already connected');
 
-        parent._removeChild(child);
+        parent.removeChild(child);
 
         this.addBranch(child);
     },
@@ -111,37 +111,18 @@ mindplot.model.IMindmap = new Class({
 
         var branches = this.getBranches();
         result = result + "version:" + this.getVersion();
+        result = result + " , [";
+
         for (var i = 0; i < branches.length; i++) {
             var node = branches[i];
             if (i != 0) {
-                result = result + ', ';
+                result = result + ',\n ';
             }
-            result = result + this._toString(node);
+            result = result + "(" + i + ") =>" + node.inspect();
         }
+        result = result + "]";
+
         result = result + ' } ';
-        return result;
-    },
-
-    _toString : function(node) {
-        var result = node.inspect();
-        var children = node.getChildren();
-
-        for (var i = 0; i < children.length; i++) {
-            var child = children[i];
-
-            if (i == 0) {
-                result = result + '-> {';
-            } else {
-                result = result + ', ';
-            }
-
-            result = result + this._toString(child);
-
-            if (i == children.length - 1) {
-                result = result + '}';
-            }
-        }
-
         return result;
     },
 

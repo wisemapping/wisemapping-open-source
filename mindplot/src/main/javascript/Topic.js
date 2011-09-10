@@ -998,7 +998,7 @@ mindplot.Topic = new Class({
 
             // Disconnect nodes ...
             var targetTopic = outgoingLine.getTargetTopic();
-            targetTopic._removeChild(this);
+            targetTopic.removeChild(this);
 
             // Update model ...
             var childModel = this.getModel();
@@ -1049,7 +1049,7 @@ mindplot.Topic = new Class({
         $assert(workspace, 'Workspace can not be null');
 
         // Connect Graphical Nodes ...
-        targetTopic._appendChild(this);
+        targetTopic.appendChild(this);
         this._parent = targetTopic;
 
         // Update model ...
@@ -1090,12 +1090,12 @@ mindplot.Topic = new Class({
         outgoingLine.redraw();
     },
 
-    _appendChild : function(child) {
+    appendChild : function(child) {
         var children = this._getChildren();
         children.push(child);
     },
 
-    _removeChild : function(child) {
+    removeChild : function(child) {
         var children = this._getChildren();
         children.erase(child);
     },

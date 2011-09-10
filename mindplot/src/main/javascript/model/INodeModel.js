@@ -190,6 +190,16 @@ mindplot.model.INodeModel = new Class({
         return this.getParent() != null;
     },
 
+    appendChild : function(node) {
+        throw "Unsupported operation";
+    },
+
+
+    connectTo  : function(parent) {
+        $assert(parent, "parent can not be null");
+        var mindmap = this.getMindmap();
+        mindmap.connect(parent, this);
+    },
 
     getPropertiesKeys : function() {
         throw "Unsupported operation";
@@ -268,7 +278,10 @@ mindplot.model.INodeModel = new Class({
     },
 
     inspect  : function() {
-        return '(type:' + this.getType() + ' , id: ' + this.getId() + ')';
+        return '{ type: ' + this.getType() +
+            ' , id: ' + this.getId() +
+            ' , text: ' + this.getText() +
+            ' }';
     },
 
     copyTo : function(target) {
@@ -276,7 +289,7 @@ mindplot.model.INodeModel = new Class({
         var keys = source.getPropertiesKeys();
         keys.forEach(function(key) {
             var value = source.getProperty(key);
-            target.putProperty(value);
+            target.putProperty(key, value);
         });
         return target;
     }

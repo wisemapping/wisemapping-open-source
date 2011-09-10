@@ -31,8 +31,9 @@ mindplot.BrixActionDispatcher = new Class({
         } else {
             topicId = topicsIds[0];
         }
-        var topic = framework.getTopic(topicId);
-        topic.setText(text, true);
+        var node = framework.getTopic(topicId);
+        node.setText(text);
+
     },
 
     _getFramework:function () {
@@ -41,10 +42,10 @@ mindplot.BrixActionDispatcher = new Class({
 
     addTopic : function(nodeModel, parentTopicId, animated) {
         var framework = this._getFramework();
-        var cmapindmap = framework.getModel();
-        var centralTopic = cmapindmap.getCentralTopic();
+        var cmindmap = framework.getModel();
+        var centralTopic = cmindmap.getCentralTopic();
 
-        var cnode = cmapindmap.createNode(nodeModel.getType(), nodeModel.getId());
+        var cnode = cmindmap.createNode(nodeModel.getType(), nodeModel.getId());
         var position = nodeModel.getPosition();
         cnode.setPosition(position.x, position.y);
 
@@ -84,7 +85,7 @@ mindplot.BrixActionDispatcher = new Class({
         }.bind(this));
     },
 
-    changeShapeToTopic : function(topicsIds, shapeType) {
+    changeShapeTypeToTopic : function(topicsIds, shapeType) {
         topicsIds.forEach(function(topicId) {
             var framework = this._getFramework();
             var topic = framework.getTopic(topicId);

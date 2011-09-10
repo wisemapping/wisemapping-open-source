@@ -91,7 +91,7 @@ mindplot.ActionDispatcher = new Class({
         throw "method must be implemented.";
     },
 
-    changeShapeToTopic : function(topicsIds, shapeType) {
+    changeShapeTypeToTopic : function(topicsIds, shapeType) {
         throw "method must be implemented.";
     },
 

@@ -48,7 +48,6 @@ mindplot.collaboration.framework.brix.model.Mindmap = new Class({
             var model = this._brixFramework.getBrixModel().create("Map");
             var branches = this._brixFramework.getBrixModel().create("List");
             model.put("branches", branches);
-            this._brixFramework.addMindmap(model);
             return model;
         },
 
@@ -75,29 +74,17 @@ mindplot.collaboration.framework.brix.model.Mindmap = new Class({
 
         removeBranch : function(nodeModel) {
             $assert(nodeModel, "nodeModel can not be null");
+            $assert(nodeModel.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE, "central topic can not be removed");
+
             var branches = this._brixModel.get("branches");
             var brixModel = nodeModel.getBrixModel();
             branches.remove(brixModel);
         },
 
-        connect : function(parent, child) {
-            // Remove from the branch ...
-            var branches = this._brixModel.get("branches");
-            var childIndex = null;
-            for (var i = 0; i < branches.size(); i++) {
-                if (branches.get(i) == child.getBrixModel()) {
-                    childIndex = i;
-                    break;
-                }
-            }
-            if (childIndex != null) {
-                branches.remove(childIndex);
-            }
-        },
-
         createNode : function(type, id) {
             return  mindplot.collaboration.framework.brix.model.NodeModel.create(this._brixFramework, this, type, id);
         }
+
     }
 );
 

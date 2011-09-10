@@ -17,12 +17,10 @@
  */
 
 mindplot.collaboration.framework.AbstractCollaborativeModelFactory = new Class({
-    initialize:function() {
+    createNewMindmap:function() {
+        throw "Unsupported operation";
     },
-    buildMindMap:function() {
-
-    },
-    buildCollaborativeModelFor:function(model) {
-
+    buildMindmap:function(model) {
+        throw "Unsupported operation";
     }
 });

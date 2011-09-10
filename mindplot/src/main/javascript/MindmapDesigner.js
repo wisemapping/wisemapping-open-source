@@ -58,7 +58,7 @@ mindplot.MindmapDesigner = new Class({
             // To prevent the user from leaving the page with changes ...
             $(window).addEvent('beforeunload', function () {
                 if (this.needsSave()) {
-                    this.save(null, false)
+//                    this.save(null, false)
                 }
             }.bind(this));
         },
@@ -249,7 +249,7 @@ mindplot.MindmapDesigner = new Class({
                 return;
 
             }
-            if (nodes.length > 1) {
+            if (nodes.length != 1) {
 
                 // If there are more than one node selected,
                 core.Monitor.getInstance().logMessage('Could not create a topic. One topic must be selected.');
@@ -257,9 +257,9 @@ mindplot.MindmapDesigner = new Class({
             }
 
             // Add new node ...
-            var centalTopic = nodes[0];
-            var parentTopicId = centalTopic.getId();
-            var childModel = centalTopic.createChildModel(this._layoutManager.needsPrepositioning());
+            var parentTopic = nodes[0];
+            var parentTopicId = parentTopic.getId();
+            var childModel = parentTopic.createChildModel(this._layoutManager.needsPrepositioning());
 
             // Execute event ...
             this._actionDispatcher.addTopic(childModel, parentTopicId, true);
@@ -615,7 +615,7 @@ mindplot.MindmapDesigner = new Class({
             var validateError = 'Central Topic shape can not be changed to line figure.';
             var topicsIds = this.getModel().filterTopicsIds(validateFunc, validateError);
             if (topicsIds.length > 0) {
-                this._actionDispatcher.changeShapeToTopic(topicsIds, shape);
+                this._actionDispatcher.changeShapeTypeToTopic(topicsIds, shape);
             }
         },
 

@@ -18,7 +18,7 @@
 
 mindplot.IconGroup = new Class({
     initialize : function(topicId, iconSize) {
-        $assert(topicId, "topicId can not be null");
+        $assert($defined(topicId), "topicId can not be null");
         $assert(iconSize, "iconSize can not be null");
 
         this._icons = [];
