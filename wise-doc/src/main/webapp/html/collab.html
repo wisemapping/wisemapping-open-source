@@ -8,40 +8,41 @@
 
         app.addListener('modelLoad', function(model) {
             var root = app.getModel().getRoot();
-            if (!root.get("mindmap7")) {
-
-                console.log("Creating empty map ...");
-
-//                var topics = app.getModel().create("List");
-                root.put("mindmap7", "start_");
+            var myList = root.get("myList");
+            if (!myList) {
+                myList = app.getModel().create("List");
+                root.put("myList", myList);
             }
 
-            root.addListener('valueChanged', function(e) {
-                console.log("New item added ...:");
-                console.log(app.getModel().getRoot().get("mindmap7"));
+            myList.addListener('valuesAdded', function(event) {
+                console.log("value added:" + myList.size());
             });
+
+            myList.addListener('valuesRemoved', function(event) {
+                console.log("value removed:" + myList.size());
+            });
+
         });
+
+        removedAction = function() {
+            var root = app.getModel().getRoot();
+            var myList = root.get("myList");
+            myList.remove(myList.size() - 1);
+        };
+
+        addAction = function() {
+            var root = app.getModel().getRoot();
+            var myList = root.get("myList");
+            myList.add("Some elem " + myList.size());
+            console.log("Click on adding...");
+        };
     };
-
-    function addTopic() {
-
-        console.log("Adding new item ver:2 ...");
-
-        var root = app.getModel().getRoot();
-        var topics = root.get("mindmap7");
-
-//        var topic = app.getModel().create("Map");
-//        topic.put("id", "topic_x");
-//        topic.put("text", "topic X text");
-//        topics.add(topic);
-
-//        root.put("mindmap7", topics);
-          root.put("mindmap7", app.getModel().getRoot().get("mindmap7") + "_algo");
-    }
-
 </script>
 
-Este es este no ?
-<input style="font-size:20px;width:50px;height:50px;" type="button" value=" " id="a2" onclick="addTopic(this)"/>
+Funca?
+
+<input style="font-size:20px;width:50px;height:50px;" type="button" value="Add" id="a2" onclick="addAction(this)"/>
+<input style="font-size:20px;width:50px;height:50px;" type="button" value="Remove" id="a2"
+       onclick="removedAction(this)"/>
 </body>
 </html>

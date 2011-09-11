@@ -63,17 +63,19 @@ mindplot.collaboration.framework.brix.model.NodeModel = new Class({
             }.bind(this));
 
             children.addListener("valuesRemoved", function(event) {
-                console.log("remove node:" + funName);
-
-                var brixChildren = event.getValues();
-                for (var i = 0; i < brixChildren.size(); i++) {
-                    var brixNodeModel = brixChildren.get(i);
-                    var cmodel = new mindplot.collaboration.framework.brix.model.NodeModel(this._brixFramework, brixNodeModel, this.getMindmap());
-                    actionDispatcher.deleteTopics(cmodel.getId());
+                try {
+                    var brixChildren = event.getValues();
+                    for (var i = 0; i < brixChildren.size(); i++) {
+                        var brixNodeModel = brixChildren.get(i);
+                        var cmodel = new mindplot.collaboration.framework.brix.model.NodeModel(this._brixFramework, brixNodeModel, this.getMindmap());
+                        actionDispatcher.deleteTopics([cmodel.getId()]);
+                    }
+                } catch(e) {
+                    console.trace();
+                    console.log(e);
                 }
 
             }.bind(this));
-
             this._brixModel.__registered = true;
         }
     },
@@ -106,7 +108,7 @@ mindplot.collaboration.framework.brix.model.NodeModel = new Class({
     },
 
     getPropertiesKeys : function() {
-        return  this._brixModel.getKeys();
+        return  this._brixModel.getKeys().erase('children');
     },
 
     getParent : function() {

@@ -71,7 +71,12 @@ mindplot.collaboration.framework.brix.model.Mindmap = new Class({
         addBranch : function(nodeModel) {
             $assert(nodeModel, "nodeModel can not be null");
             var branches = this._brixModel.get("branches");
-            branches.add(nodeModel.getBrixModel());
+
+            // @Todo: Hack ?
+            var newModel = mindplot.collaboration.framework.brix.model.NodeModel.create(this._brixFramework, this, nodeModel.getType(), nodeModel.getId());
+            nodeModel.copyTo(newModel);
+
+            branches.add(newModel);
         },
 
         removeBranch : function(nodeModel) {

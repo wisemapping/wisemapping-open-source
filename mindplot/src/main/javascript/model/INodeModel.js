@@ -225,23 +225,16 @@ mindplot.model.INodeModel = new Class({
     deleteNode  : function() {
         var mindmap = this.getMindmap();
 
-        // if it has children nodes, Their must be disconnected.
-        var children = this.getChildren();
-        var length = children.length;
-
-        for (var i = 0; i < length; i++) {
-            var child = children[i];
-            mindmap.disconnect(child);
-        }
-
-        // if it is connected, I must remove it from the parent..
+        console.log(mindmap.inspect());
         var parent = this.getParent();
         if ($defined(parent)) {
-            mindmap.disconnect(this);
+            parent.removeChild(this);
+        } else {
+            // If it has not parent, it must be an isolate topic ...
+            mindmap.removeBranch(this);
         }
-
         // It's an isolated node. It must be a hole branch ...
-        mindmap.removeBranch(this);
+        console.log(mindmap.inspect());
     },
 
     getPropertiesKeys : function() {
@@ -325,7 +318,13 @@ mindplot.model.INodeModel = new Class({
         if (children.length > 0) {
             result = result + ", children: {(size:" + children.length;
             children.forEach(function(node) {
-                result = result + "=> (" + node.getPropertiesKeys() + ")";
+                result = result + "=> (";
+                var keys = node.getPropertiesKeys();
+                keys.forEach(function(key) {
+                    var value = node.getProperty(key);
+                    result = result + key + ":" + value + ",";
+                });
+                result = result + "}"
             }.bind(this));
         }
 

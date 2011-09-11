@@ -237,7 +237,7 @@ if (localEnv) {
         }
     });
 } else {
-    Asset.javascript("../js/mindplot.svg.js", {
+    Asset.javascript("../js/mindplot-min.js", {
         onLoad:function() {
             $(document).fireEvent('loadcomplete', 'mind')
         }

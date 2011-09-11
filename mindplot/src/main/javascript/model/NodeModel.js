@@ -59,7 +59,7 @@ mindplot.model.NodeModel = new Class({
             return cnode;
         });
 
-        result._properties = this._properties.clone();
+        result._properties = Object.clone(this._properties);
         result._icons = this._icons.clone();
         result._links = this._links.clone();
         result._notes = this._notes.clone();

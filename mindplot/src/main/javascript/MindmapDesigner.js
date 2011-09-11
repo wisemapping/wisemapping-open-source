@@ -27,6 +27,7 @@ mindplot.MindmapDesigner = new Class({
             var commandContext = new mindplot.CommandContext(this);
             this._actionDispatcher = new mindplot.BrixActionDispatcher(commandContext);
 //            this._actionDispatcher = new mindplot.LocalActionDispatcher(commandContext);
+//            this._actionDispatcher = new mindplot.LocalActionDispatcher(commandContext);
             this._actionDispatcher.addEvent("modelUpdate", function(event) {
                 this.fireEvent("modelUpdate", event);
             }.bind(this));
