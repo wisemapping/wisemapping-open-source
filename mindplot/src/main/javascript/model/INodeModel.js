@@ -225,7 +225,7 @@ mindplot.model.INodeModel = new Class({
     deleteNode  : function() {
         var mindmap = this.getMindmap();
 
-        console.log(mindmap.inspect());
+        console.log("Before:" + mindmap.inspect());
         var parent = this.getParent();
         if ($defined(parent)) {
             parent.removeChild(this);
@@ -234,7 +234,7 @@ mindplot.model.INodeModel = new Class({
             mindmap.removeBranch(this);
         }
         // It's an isolated node. It must be a hole branch ...
-        console.log(mindmap.inspect());
+        console.log("After:" + mindmap.inspect());
     },
 
     getPropertiesKeys : function() {

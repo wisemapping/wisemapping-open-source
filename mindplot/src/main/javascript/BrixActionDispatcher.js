@@ -64,13 +64,12 @@ mindplot.BrixActionDispatcher = new Class({
     addTopic : function(nodeModel, parentTopicId, animated) {
         var framework = this._getFramework();
         var cmindmap = framework.getModel();
-        var centralTopic = cmindmap.getCentralTopic();
 
+        var cparent = $defined(parentTopicId) ? framework.getTopic(parentTopicId) : cmindmap.getCentralTopic();
         var cnode = cmindmap.createNode(nodeModel.getType(), nodeModel.getId());
-        var position = nodeModel.getPosition();
-        cnode.setPosition(position.x, position.y);
+        nodeModel.copyTo(cnode);
 
-        cnode.connectTo(centralTopic);
+        cnode.connectTo(cparent);
     },
 
     changeFontSizeToTopic : function(topicsIds, size) {
@@ -145,11 +144,10 @@ mindplot.BrixActionDispatcher = new Class({
         var framework = this._getFramework();
         var mindmap = framework.getModel();
 
-        var topicId = topicsIds[0];
-        var topic = framework.getTopic(topicId);
-        $assert(topic, "Could not find topic with id:" + topicId);
-        topic.deleteNode();
-
+        topicsIds.forEach(function(topicId) {
+            var topic = framework.getTopic(topicId);
+            topic.deleteNode();
+        });
     }
 });
 

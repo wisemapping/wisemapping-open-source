@@ -25,25 +25,25 @@ mindplot.MainTopic = new Class({
     INNER_RECT_ATTRIBUTES : {stroke:'0.5 solid #009900'},
 
     createSiblingModel : function(positionate) {
-        var siblingModel = null;
+        var result = null;
         var parentTopic = this.getOutgoingConnectedTopic();
         if (parentTopic != null) {
             // Create a new node ...
             var model = this.getModel();
             var mindmap = model.getMindmap();
-            siblingModel = mindmap.createNode(mindplot.model.INodeModel.MAIN_TOPIC_TYPE);
+            result = mindmap.createNode(mindplot.model.INodeModel.MAIN_TOPIC_TYPE);
 
-            // Positionate following taking into account the sibling positon.
+            // Positionate following taking into account the sibling position.
             if (positionate && parentTopic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
                 var pos = this.getPosition();
-                siblingModel.setPosition(pos.x, pos.y);
+                result.setPosition(pos.x, pos.y);
             }
 
             // Create a new node ...
             var order = this.getOrder() + 1;
-            siblingModel.setOrder(order);
+            result.setOrder(order);
         }
-        return siblingModel;
+        return result;
     },
 
     createChildModel : function(prepositionate) {

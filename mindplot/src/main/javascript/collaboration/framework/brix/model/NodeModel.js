@@ -23,7 +23,6 @@ mindplot.collaboration.framework.brix.model.NodeModel = new Class({
         $assert(brixModel, "brixModel can not null");
         $assert(mindmap && mindmap.getBranches, "mindmap can not null");
 
-
         this.parent(mindmap);
         this._brixModel = brixModel;
         this._brixFramework = brixFramework;
@@ -51,15 +50,24 @@ mindplot.collaboration.framework.brix.model.NodeModel = new Class({
 
             var children = this._brixModel.get("children");
             children.addListener("valuesAdded", function(event) {
-                var brixNodeModel = event.getValues().get(0);
+                try {
 
-                var cmodel = new mindplot.collaboration.framework.brix.model.NodeModel(this._brixFramework, brixNodeModel, this.getMindmap());
+                    var brixChildren = event.getValues();
+                    for (var i = 0; i < brixChildren.size(); i++) {
+                        var brixNodeModel = brixChildren.get(0);
 
-                // @Todo: This is not ok...
-                var model = new mindplot.model.NodeModel(cmodel.getType(), designer.getMindmap(), this.getId());
-                cmodel.copyTo(model);
+                        var cmodel = new mindplot.collaboration.framework.brix.model.NodeModel(this._brixFramework, brixNodeModel, this.getMindmap());
 
-                actionDispatcher.addTopic(model, this.getId(), true);
+                        // @Todo: This is not ok. Is using designer global variable.
+                        var model = new mindplot.model.NodeModel(cmodel.getType(), designer.getMindmap(), this.getId());
+                        cmodel.copyTo(model);
+
+                        actionDispatcher.addTopic(model, this.getId(), true);
+                    }
+                } catch(e) {
+                    console.trace();
+                }
+
             }.bind(this));
 
             children.addListener("valuesRemoved", function(event) {
@@ -72,7 +80,6 @@ mindplot.collaboration.framework.brix.model.NodeModel = new Class({
                     }
                 } catch(e) {
                     console.trace();
-                    console.log(e);
                 }
 
             }.bind(this));
@@ -108,7 +115,12 @@ mindplot.collaboration.framework.brix.model.NodeModel = new Class({
     },
 
     getPropertiesKeys : function() {
-        return  this._brixModel.getKeys().erase('children');
+        var keys = this._brixModel.getKeys();
+        keys.erase('children');
+        keys.erase('icons');
+        keys.erase('links');
+        keys.erase('notes');
+        return  keys;
     },
 
     getParent : function() {

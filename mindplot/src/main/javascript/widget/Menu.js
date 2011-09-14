@@ -211,7 +211,7 @@ mindplot.widget.Menu = new Class({
 
         $('addTopic').addEvent('click', function() {
             this.clear();
-            designer.createSiblingForSelectedNode();
+            designer.createChildForSelectedNode();
         }.bind(this));
 
         $('deleteTopic').addEvent('click', function() {
