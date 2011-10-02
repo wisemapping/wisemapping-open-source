@@ -399,7 +399,7 @@
                                     </output>
                                     <includes>
                                         <include>help.js</include>
-                                        <include>helpPanel.js</include>
+                                        <include>Panel.js</include>
                                     </includes>
                                 </aggregation>
                             </aggregations>

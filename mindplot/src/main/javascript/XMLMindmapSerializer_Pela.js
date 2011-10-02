@@ -198,8 +198,10 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
         return relationDom;
     },
 
-    loadFromDom : function(dom) {
-        $assert(dom, "Dom can not be null");
+    loadFromDom : function(dom, mapId) {
+        $assert(dom, "dom can not be null");
+        $assert(mapId, "mapId can not be null");
+
         var rootElem = dom.documentElement;
 
         // Is a wisemap?.
@@ -230,6 +232,7 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
             }
         }
         this._idsMap = null;
+        mindmap.setId(mapId);
         return mindmap;
     },
 

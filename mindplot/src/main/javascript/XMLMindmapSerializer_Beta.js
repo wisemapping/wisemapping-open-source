@@ -157,8 +157,10 @@ mindplot.XMLMindmapSerializer_Beta = new Class({
         return noteDom;
     },
 
-    loadFromDom : function(dom) {
+    loadFromDom : function(dom, mapId) {
         $assert(dom, "Dom can not be null");
+        $assert(mapId, "mapId can not be null");
+
         var rootElem = dom.documentElement;
 
         // Is a wisemap?.
@@ -175,6 +177,7 @@ mindplot.XMLMindmapSerializer_Beta = new Class({
                 mindmap.addBranch(topic);
             }
         }
+        mindmap.setId(mapId);
         return mindmap;
     },
 

@@ -50,6 +50,7 @@ mindplot.DesignerActionRunner = new Class({
     markAsChangeBase: function() {
         return this._undoManager.markAsChangeBase();
     },
+
     hasBeenChanged: function() {
         return this._undoManager.hasBeenChanged();
     }

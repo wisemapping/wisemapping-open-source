@@ -61,9 +61,9 @@ mindplot.MindmapDesigner = new Class({
 
             // To prevent the user from leaving the page with changes ...
             $(window).addEvent('beforeunload', function () {
-//                if (this.needsSave()) {
-//                    this.save(null, false)
-//                }
+                if (this.needsSave()) {
+                    this.save(null, false);
+                }
             }.bind(this));
         },
 
@@ -360,19 +360,24 @@ mindplot.MindmapDesigner = new Class({
         },
 
         needsSave : function() {
-            return this._actionRunner.hasBeenChanged();
+
+            //@Todo: Review all this ...
+//            return this._actionDispatcher.hasBeenChanged();
+            return true;
         },
 
         save : function(onSavedHandler, saveHistory) {
-            var persistantManager = mindplot.PersistanceManager;
-            var mindmap = this._mindmap;
-
+            var mindmap = this.getMindmap();
             var properties = {zoom:this.getModel().getZoom(), layoutManager:this._layoutManager.getClassName()};
+
+            var persistantManager = mindplot.PersistanceManager;
             persistantManager.save(mindmap, properties, onSavedHandler, saveHistory);
             this.fireEvent("save", {type:saveHistory});
 
             // Refresh undo state...
-            this._actionRunner.markAsChangeBase();
+            //@Todo: Review all this. It should not be here ...
+
+//            this._actionDispatcher.markAsChangeBase();
         },
 
 

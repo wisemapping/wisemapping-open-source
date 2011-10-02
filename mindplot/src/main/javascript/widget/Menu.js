@@ -17,7 +17,7 @@
  */
 
 mindplot.widget.Menu = new Class({
-    initialize : function(designer, containerId) {
+    initialize : function(designer, containerId, readOnly) {
         $assert(designer, "designer can not be null");
         $assert(containerId, "containerId can not be null");
         // @Todo: Remove hardcode ...
@@ -256,6 +256,89 @@ mindplot.widget.Menu = new Class({
             }
 
         });
+
+        var saveElem = $('saveButton');
+        if (saveElem) {
+            saveElem.addEvent('click', function() {
+
+                if (!readOnly) {
+                    $('saveButton').setStyle('cursor', 'wait');
+                    (function() {
+                        designer.save(function() {
+//                            var monitor = core.Monitor.getInstance();
+//                            monitor.logMessage('Save completed successfully');
+
+                            saveElem.setStyle('cursor', 'pointer');
+                        }, true);
+                    }).delay(1);
+                } else {
+                    new Windoo.Confirm('This option is not enabled in try mode. You must by signed in order to execute this action.<br/> to create an account click <a href="userRegistration.htm">here</a>',
+                        {
+                            'window': {theme:Windoo.Themes.wise,
+                                title:''
+                            }
+                        });
+                }
+            });
+        }
+
+        var discartElem = $('discartElem');
+        if (discartElem) {
+            discartElem.addEvent('click', function() {
+
+                if (!readOnly) {
+                    displayLoading();
+                    window.document.location = "mymaps.htm";
+                } else {
+                    displayLoading();
+                    window.document.location = "home.htm";
+                }
+            });
+        }
+
+        if (readOnly) {
+            $('tagIt').addEvent('click', function(event) {
+                new Windoo.Confirm('This option is not enabled in try mode. You must by signed in order to execute this action.',
+                    {
+                        'window': {theme:Windoo.Themes.wise,
+                            title:''
+                        }
+                    });
+
+            });
+
+            $('shareIt').addEvent('click', function(event) {
+                new Windoo.Confirm('This option is not enabled in try mode. You must by signed in order to execute this action.',
+                    {
+                        'window': {theme:Windoo.Themes.wise,
+                            title:''
+                        }
+                    });
+
+            });
+
+            $('publishIt').addEvent('click', function(event) {
+                new Windoo.Confirm('This option is not enabled in try mode. You must by signed in order to execute this action.',
+                    {
+                        'window': {theme:Windoo.Themes.wise,
+                            title:''
+                        }
+                    });
+
+            });
+
+            $('history').addEvent('click', function(event) {
+                new Windoo.Confirm('This option is not enabled in try mode. You must by signed in order to execute this action.',
+                    {
+                        'window': {theme:Windoo.Themes.wise,
+                            title:''
+                        }
+                    });
+
+            });
+
+        }
+
     },
 
     clear : function() {
