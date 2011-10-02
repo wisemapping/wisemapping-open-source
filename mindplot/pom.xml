@@ -67,7 +67,8 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="model/RelationshipModel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ActionDispatcher.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="BrixActionDispatcher.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="StandaloneActionDispatcher.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="StandaloneActionDispatcher.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="DesignerModel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="MindmapDesigner.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ScreenManager.js"/>
@@ -212,8 +213,16 @@
                                     <filelist dir="${basedir}/../web2d/target/classes/" files="web2d.svg-min.js"/>
                                     <filelist dir="${basedir}/target/tmp/" files="mindplot.js"/>
                                 </concat>
+
+                                <copy toDir="${basedir}/target/classes/">
+                                    <fileset dir="${basedir}/src/main/javascript/">
+                                        <include name="libraries/**/*"/>
+                                        <include name="widget/colorPalette.*"/>
+                                    </fileset>
+                                </copy>
                             </tasks>
                         </configuration>
+
                     </execution>
                 </executions>
             </plugin>

@@ -21,7 +21,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/thirdparty.css"/>
     <script type='text/javascript'
             src='https://ajax.googleapis.com/ajax/libs/mootools/1.3.2/mootools-yui-compressed.js'></script>
-    <script type='text/javascript' src='../js/mootools-more-1.3.2.1-yui.js'></script>
+    <script type='text/javascript' src='../js/libraries/mootools/mootools-more-1.3.2.1-yui.js'></script>
 
     <script type="text/javascript" src="../dwr/engine.js"></script>
     <script type="text/javascript" src="../dwr/interface/LoggerService.js"></script>

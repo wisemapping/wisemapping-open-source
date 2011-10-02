@@ -20,8 +20,7 @@ mindplot.widget.Menu = new Class({
     initialize : function(designer, containerId, readOnly) {
         $assert(designer, "designer can not be null");
         $assert(containerId, "containerId can not be null");
-        // @Todo: Remove hardcode ...
-        var baseUrl = "/mindplot/src/main/javascript/widget";
+        var baseUrl = "../css/widget";
 
         // Init variables ...
         this._designer = designer;
