@@ -14,20 +14,16 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <![endif]-->
 
-    <!-- Internet Explorer 8 Hack -->
     <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
     <title><spring:message code="SITE.TITLE"/> - ${mindmap.title} </title>
     <link rel="stylesheet" type="text/css" href="../css/editor.css"/>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/thirdparty.css"/>
-    <script type='text/javascript'
-            src='https://ajax.googleapis.com/ajax/libs/mootools/1.3.2/mootools-yui-compressed.js'></script>
-    <script type='text/javascript' src='../js/libraries/mootools/mootools-more-1.3.2.1-yui.js'></script>
 
+    <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/mootools/1.3.2/mootools-yui-compressed.js'></script>
+    <script type='text/javascript' src='../js/libraries/mootools/mootools-more-1.3.2.1-yui.js'></script>
     <script type="text/javascript" src="../dwr/engine.js"></script>
     <script type="text/javascript" src="../dwr/interface/LoggerService.js"></script>
-
-    <script type='text/javascript' src='../js/editorLib.js'></script>
     <script type='text/javascript' src='../js/core.js'></script>
+    <script type='text/javascript' src='../js/editorLib.js'></script>
 
     <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
