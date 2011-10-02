@@ -8,7 +8,7 @@
     <parent>
         <groupId>org.wisemapping</groupId>
         <artifactId>wisemapping</artifactId>
-        <relativePath>../pom.xml</relativePath>                                                
+        <relativePath>../pom.xml</relativePath>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
@@ -345,7 +345,7 @@
 
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
-                <configuration>                  
+                <configuration>
                     <warName>wisemapping</warName>
                     <overlays>
                         <overlay>
@@ -386,55 +386,6 @@
                 <artifactId>yuicompressor-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>wiseLibrary</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>compress</goal>
-                        </goals>
-                        <configuration>
-                            <aggregations>
-                                <aggregation>
-                                    <output>
-                                        ${project.build.directory}/${project.build.finalName}/js/wiseLibrary.js
-                                    </output>
-                                    <includes>
-                                        <include>mootools.js</include>
-                                        <include>common.js</include>
-                                        <include>windoo.js</include>
-                                    </includes>
-                                </aggregation>
-                            </aggregations>
-                            <nosuffix>true</nosuffix>
-                            <nomunge>true</nomunge>
-                            <jswarn>false</jswarn>
-                            <statistics>false</statistics>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>wiseListLibrary</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>compress</goal>
-                        </goals>
-                        <configuration>
-                            <aggregations>
-                                <aggregation>
-                                    <output>
-                                        ${project.build.directory}/${project.build.finalName}/js/wiseListLibrary.js
-                                    </output>
-                                    <includes>
-                                        <include>menu.js</include>
-                                        <include>slideShow.js</include>
-                                    </includes>
-                                </aggregation>
-                            </aggregations>
-                            <nosuffix>true</nosuffix>
-                            <nomunge>true</nomunge>
-                            <jswarn>false</jswarn>
-                            <statistics>false</statistics>
-                        </configuration>
-                    </execution>
-                    <execution>
                         <id>wiseEditorLibrary</id>
                         <phase>generate-resources</phase>
                         <goals>
@@ -444,14 +395,11 @@
                             <aggregations>
                                 <aggregation>
                                     <output>
-                                        ${project.build.directory}/${project.build.finalName}/js/wiseEditorLibrary.js
+                                        ${project.build.directory}/${project.build.finalName}/js/editorLib.js
                                     </output>
                                     <includes>
-                                        <include>mooRainbow.js</include>
                                         <include>help.js</include>
                                         <include>helpPanel.js</include>
-                                        <include>IconPanel.js</include>
-                                        <!--<include>nicEdit.js</include>-->
                                     </includes>
                                 </aggregation>
                             </aggregations>

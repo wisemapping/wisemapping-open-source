@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="../css/embedded.css">
     <link rel="stylesheet" type="text/css" href="../css/bubble.css">
 
-    <script type='text/javascript' src='../js/mootools.js'></script>
+    <script type='text/javascript' src='../js/mootools-core-1.3.2-full-compat.js'></script>
     <script type='text/javascript' src='../js/core.js'></script>
 
 </head>

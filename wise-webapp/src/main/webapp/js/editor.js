@@ -18,7 +18,7 @@
 Asset.javascript('../js/mindplot-min.js', {
     id: 'MindplotSVGLib',
     onLoad: function() {
-        afterMindpotLibraryLoading();
+        $(document).fireEvent('loadcomplete', 'mind')
     }
 });
 
@@ -157,8 +157,9 @@ Tabs.Init();
 // Hide the content while waiting for the onload event to trigger.
 var contentId = window.location.hash || "#Introduction";
 
-function afterMindpotLibraryLoading() {
-    buildMindmapDesigner();
+function setUpToolbar(designer, isTryMode) {
+
+    var menu = new mindplot.widget.Menu(designer, 'toolbar');
 
     if ($('helpButton') != null) {
         var helpPanel = new Panel({panelButton:$('helpButton'), backgroundColor:'black'});
@@ -187,15 +188,16 @@ function afterMindpotLibraryLoading() {
     saveButton.addEvent('click', function(event) {
 
         if (!isTryMode) {
-            saveButton.setStyle('cursor', 'wait');
-            var saveFunc = function() {
-                designer.save(function() {
-                    var monitor = core.Monitor.getInstance();
-                    monitor.logMessage('Save completed successfully');
-                    saveButton.setStyle('cursor', 'pointer');
-                }, true);
-            }
-            saveFunc.delay(1);
+            // @todo: This must be fixed ...
+//            saveButton.setStyle('cursor', 'wait');
+//            var saveFunc = function() {
+//                designer.save(function() {
+//                    var monitor = core.Monitor.getInstance();
+//                    monitor.logMessage('Save completed successfully');
+//                    saveButton.setStyle('cursor', 'pointer');
+//                }, true);
+//            };
+//            saveFunc.delay(1);
         } else {
             new Windoo.Confirm('This option is not enabled in try mode. You must by signed in order to execute this action.<br/> to create an account click <a href="userRegistration.htm">here</a>',
                 {
@@ -280,51 +282,36 @@ function afterMindpotLibraryLoading() {
         }
     }
 
-    var menu = new mindplot.widget.Menu(designer);
-
     //  If a node has focus, focus can be move to another node using the keys.
     designer._cleanScreen = function() {
         menu.clear()
     };
 
-    // If not problem has occured, I close the dialod ...
-    var closeDialog = function() {
 
-        if (!window.hasUnexpectedErrors) {
-            waitDialog.deactivate();
-        }
-    }.delay(500);
 }
 
-function buildMindmapDesigner() {
+
+function buildDesigner(editorProperties, isTryMode) {
+    $assert(editorProperties, "editorProperties can not be null");
 
     // Initialize message logger ...
-    var monitor = new core.Monitor($('msgLoggerContainer'), $('msgLogger'));
-    core.Monitor.setInstance(monitor);
+    //@Todo: Fix.
+//    var monitor = new core.Monitor($('msgLoggerContainer'), $('msgLogger'));
+//    core.Monitor.setInstance(monitor);
 
-    // Initialize Editor ...
     var container = $('mindplot');
-//    container.setStyles({
-//        height: screen.height - 151,
-//        width:  screen.width
-//    });
-
     container.setStyles({
-        height: window.getHeight() - 151,
-        width:  window.getWidth()
+        height: parseInt(screen.height),
+        width:  parseInt(screen.width)
     });
 
     designer = new mindplot.MindmapDesigner(editorProperties, container);
-    designer.loadFromXML(mapId, mapXml);
+    designer.setViewPort({
+        height: parseInt(window.innerHeight - 151), // Footer and Header
+        width:  parseInt(window.innerWidth)
+    });
 
-    // Save map on load ....
-    if (editorProperties.saveOnLoad) {
-        var saveOnLoad = function() {
-            designer.save(function() {
-            }, false);
-        }.delay(1000)
-    }
+    setUpToolbar(designer, isTryMode);
 
+    return designer;
 }
-;
-

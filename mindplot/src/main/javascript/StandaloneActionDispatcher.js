@@ -16,7 +16,7 @@
  *   limitations under the License.
  */
 
-mindplot.LocalActionDispatcher = new Class({
+mindplot.StandaloneActionDispatcher = new Class({
     Extends: mindplot.ActionDispatcher,
     initialize: function(commandContext) {
         this.parent(commandContext);

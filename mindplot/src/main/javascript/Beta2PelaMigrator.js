@@ -25,7 +25,8 @@ mindplot.Beta2PelaMigrator = new Class({
         return this._pelaSerializer.toXML(mindmap);
     },
 
-    loadFromDom : function(dom) {
+    loadFromDom : function(dom,mapId) {
+        $assert($defined(mapId),"mapId can not be null");
         var mindmap = this._betaSerializer.loadFromDom(dom);
         mindmap.setVersion(mindplot.ModelCodeName.PELA);
         return mindmap;

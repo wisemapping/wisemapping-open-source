@@ -46,7 +46,7 @@ mindplot.collaboration.framework.AbstractCollaborativeFramework = new Class({
     getActionDispatcher:function() {
         if (this._actionDispatcher == null) {
             var context = mindplot.ActionDispatcher.getInstance()._commandContext;
-            this._actionDispatcher = new mindplot.LocalActionDispatcher(context);
+            this._actionDispatcher = new mindplot.StandaloneActionDispatcher(context);
         }
         return this._actionDispatcher;
     }

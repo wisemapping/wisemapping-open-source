@@ -25,9 +25,12 @@ mindplot.MindmapDesigner = new Class({
 
             // Dispatcher manager ...
             var commandContext = new mindplot.CommandContext(this);
-            this._actionDispatcher = new mindplot.BrixActionDispatcher(commandContext);
-//            this._actionDispatcher = new mindplot.LocalActionDispatcher(commandContext);
-//            this._actionDispatcher = new mindplot.LocalActionDispatcher(commandContext);
+            if (profile.collab == 'standalone') {
+                this._actionDispatcher = new mindplot.StandaloneActionDispatcher(commandContext);
+            } else {
+                this._actionDispatcher = new mindplot.BrixActionDispatcher(commandContext);
+            }
+
             this._actionDispatcher.addEvent("modelUpdate", function(event) {
                 this.fireEvent("modelUpdate", event);
             }.bind(this));

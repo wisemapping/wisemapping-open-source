@@ -13,33 +13,64 @@
     <!--[if lt IE 9]>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <![endif]-->
-    
+
     <!-- Internet Explorer 8 Hack -->
     <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
     <title><spring:message code="SITE.TITLE"/> - ${mindmap.title} </title>
     <link rel="stylesheet" type="text/css" href="../css/editor.css"/>
-    <link rel="stylesheet" type="text/css" href="../css/bubble.css"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/thirdparty.css"/>
+    <script type='text/javascript'
+            src='https://ajax.googleapis.com/ajax/libs/mootools/1.3.2/mootools-yui-compressed.js'></script>
+    <script type='text/javascript' src='../js/mootools-more-1.3.2.1-yui.js'></script>
 
     <script type="text/javascript" src="../dwr/engine.js"></script>
     <script type="text/javascript" src="../dwr/interface/LoggerService.js"></script>
 
-    <script type='text/javascript' src='../js/wiseLibrary.js'></script>
-    <script type='text/javascript' src='../js/wiseEditorLibrary.js'></script>
-    <script type='text/javascript' src='../js/nicEdit.js'></script>
+    <script type='text/javascript' src='../js/editorLib.js'></script>
     <script type='text/javascript' src='../js/core.js'></script>
 
     <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+    <script type="text/javascript">
+
+        var mindReady = false;
+        $(document).addEvent('loadcomplete', function(resource) {
+            mindReady = resource == 'mind' ? true : mindReady;
+            if (mindReady) {
+
+                var mapId = '${mindmap.id}';
+                var mapXml = '${mapXml}';
+                var editorProperties = ${mindmap.properties};
+                editorProperties.collab = 'standalone';
+
+                var isTryMode = ${editorTryMode};
+                designer = buildDesigner(editorProperties, isTryMode);
+
+                var domDocument = core.Utils.createDocumentFromText(mapXml);
+                var serializer = mindplot.XMLMindmapSerializerFactory.getSerializerFromDocument(domDocument);
+                var mindmap = serializer.loadFromDom(domDocument, mapId);
+
+                // Now, load the map ...
+                designer.loadMap(mindmap);
+
+                // If not problem has arisen, close the dialog ...
+                if (!window.hasUnexpectedErrors) {
+                    waitDialog.deactivate();
+                }
+            }
+        });
+    </script>
+
 </head>
 <body>
 <jsp:include page="editorHeader.jsp">
     <jsp:param name="onlyActionHeader" value="true"/>
 </jsp:include>
 
-<form method="post" id="printForm" name="printForm" action='<c:url value="export.htm"/>' style="height:100%;" target="${mindmap.title}">
-    <input type="hidden" name="action" value="print" >
-    <input type="hidden" name="mapId" value="${mindmap.id}" >
+<form method="post" id="printForm" name="printForm" action='<c:url value="export.htm"/>' style="height:100%;"
+      target="${mindmap.title}">
+    <input type="hidden" name="action" value="print">
+    <input type="hidden" name="mapId" value="${mindmap.id}">
     <input type="hidden" name="mapSvg" value="">
 </form>
 
@@ -72,17 +103,12 @@
         return false;
     });
 
-
-    var mapId = '${mindmap.id}';
-    var mapXml = '${mapXml}';
-    var editorProperties = ${mindmap.properties};
-    var isTryMode = ${editorTryMode};
-
     function printMap() {
         document.printForm.mapSvg.value = $("workspaceContainer").innerHTML;
         document.printForm.submit();
     }
 </script>
+
 
 <div id="colorPalette">
     <div id="paletteHeader"></div>
@@ -104,10 +130,13 @@
 
 <div id="topicShapePanel" class="toolbarPanel">
     <!--<div id="automatic" class="toolbarPanelLink">Automatic</div>-->
-    <div id="rectagle" class="toolbarPanelLink"><img src="../images/shape-rectangle.png" alt="Rectangle" width="40" height="25"></div>
-    <div id="rounded_rectagle" class="toolbarPanelLink"><img src="../images/shape-rectangle-rounded.png" alt="Rounded Rectangle" width="40" height="25"></div>
+    <div id="rectagle" class="toolbarPanelLink"><img src="../images/shape-rectangle.png" alt="Rectangle" width="40"
+                                                     height="25"></div>
+    <div id="rounded_rectagle" class="toolbarPanelLink"><img src="../images/shape-rectangle-rounded.png"
+                                                             alt="Rounded Rectangle" width="40" height="25"></div>
     <div id="line" class="toolbarPanelLink"><img src="../images/shape-line.png" alt="Line" width="40" height="7"></div>
-    <div id="elipse" class="toolbarPanelLink"><img src="../images/shape-elipse.png" alt="Elipse" width="40" height="25"></div>
+    <div id="elipse" class="toolbarPanelLink"><img src="../images/shape-elipse.png" alt="Elipse" width="40" height="25">
+    </div>
 </div>
 
 <div id="actionsContainer">
@@ -146,8 +175,8 @@
                 <div id="export" class="button" title="<spring:message code="EXPORT"/>">
                     <div class="toolbarLabel"><p><spring:message code="EXPORT"/></p></div>
                     <a id="exportAnchor" href="export.htm?mapId=${mindmap.id}" rel="moodalbox 600px 400px"
-                   title="<spring:message code="EXPORT_DETAILS"/>">
-                </a>
+                       title="<spring:message code="EXPORT_DETAILS"/>">
+                    </a>
                 </div>
             </fieldset>
         </div>
@@ -193,7 +222,8 @@
                 <div id="topicLink" class="button" title="<spring:message code="TOPIC_LINK"/>">
                     <div class="toolbarLabel"><p><spring:message code="LINK"/></p></div>
                 </div>
-                <div id="topicRelation" class="topicRelation button" title="<spring:message code="TOPIC_RELATIONSHIP"/>">
+                <div id="topicRelation" class="topicRelation button"
+                     title="<spring:message code="TOPIC_RELATIONSHIP"/>">
                     <div class="relationshiplabel toolbarLabel"><p><spring:message code="TOPIC_RELATIONSHIP"/></p></div>
                 </div>
             </fieldset>

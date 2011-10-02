@@ -8,7 +8,7 @@
 <head>
     <meta http-equiv="Content-type" value="text/html; charset=utf-8">
     <link rel="stylesheet" type="text/css" href="../css/embedded.css">
-    <script type='text/javascript' src='../js/mootools.js'></script>
+    <script type='text/javascript' src='../js/mootools-core-1.3.2-full-compat.js'></script>
 
 </head>
 <body>
