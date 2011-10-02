@@ -6,6 +6,14 @@ html {
     overflow: hidden;
 }
 
+body {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
 #waitDialog {
     position: absolute;
     top: 10px;
@@ -24,7 +32,7 @@ html {
     top: 30px;
 }
 
-#waitingContainer,#errorContainer {
+#waitingContainer, #errorContainer {
     position: relative;
     top: 80px;
     height: 120px; /*background: whitesmoke;*/
@@ -33,7 +41,7 @@ html {
     padding: 15px;
     width: 100%;
     border: 1px solid;
-    border-color:#a9a9a9;
+    border-color: #a9a9a9;
 
 }
 
@@ -62,7 +70,7 @@ html {
     vertical-align: text-bottom;
     height: 30px;
     float: right;
-    padding-left:120px;
+    padding-left: 120px;
 }
 
 #waitingContainer .loadingIcon {
@@ -242,15 +250,15 @@ div#redoEdition {
 
 #export {
     background: url(../images/file_export.png) no-repeat center top;
-    position:relative;
+    position: relative;
 }
 
 #exportAnchor {
-    position:absolute;
-    width:100%;
-    height:100%;
-    top:0;
-    left:0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
 }
 
 div#zoomIn {
@@ -714,21 +722,17 @@ div#small_error_icon {
 }
 
 div#toolbar .topicRelation {
-    width:56px;
+    width: 56px;
     background: url(../images/topic_relationship.png) no-repeat center top;
     z-index: 4;
 }
 
 div#toolbar .topicRelation:hover {
-    width:56px;
+    width: 56px;
     background: url(../images/topic_relationship.png) no-repeat center top;
     z-index: 4;
 }
 
-div#toolbar .relationshiplabel{
-    width:56px;
-}
-
-.nicEdit-main {
-    outline:none;
+div#toolbar .relationshiplabel {
+    width: 56px;
 }
