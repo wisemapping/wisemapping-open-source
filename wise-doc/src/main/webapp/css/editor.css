@@ -1,6 +1,7 @@
 @import "common.css";
-@import "commonLibs.css";
-@import "thirdparty.css";
+/* @Todo: Fix this ...*/
+@import "widget/lightbox.css";
+@import "libraries/moodialog/css/MooDialog.css";
 
 html {
     overflow: hidden;
@@ -684,8 +685,4 @@ div#toolbar .topicRelation:hover {
 
 div#toolbar .relationshiplabel {
     width: 56px;
-}
-
-.nicEdit-main {
-    outline: none;
 }

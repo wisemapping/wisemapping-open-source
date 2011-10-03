@@ -218,6 +218,7 @@
                                     <fileset dir="${basedir}/src/main/javascript/">
                                         <include name="libraries/**/*"/>
                                         <include name="widget/colorPalette.*"/>
+                                        <include name="widget/*.css"/>
                                     </fileset>
                                 </copy>
                             </tasks>

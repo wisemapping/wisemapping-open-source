@@ -29,7 +29,7 @@ html {
     padding: 15px;
     width: 100%;
     border: 1px solid;
-    border-color:#a9a9a9;
+    border-color: #a9a9a9;
 
 }
 
@@ -46,7 +46,7 @@ html {
 
 #loadingContainer .loadingIcon {
     position: relative;
-    background: url( ../images/ajax-loader2.gif ) no-repeat;
+    background: url(../images/ajax-loader2.gif) no-repeat;
     top: 25px;
     height: 100px;
     width: 70px;
@@ -69,7 +69,7 @@ div#logo {
     height: 65px;
     width: 80px;
     position: absolute;
-    background: url( ../images/logo-vvsmall.png ) no-repeat right top;
+    background: url(../images/logo-vvsmall.png) no-repeat right top;
     right: 10px;
     top: -10px;
 }
@@ -91,13 +91,13 @@ div#logo {
 }
 
 #zoomIn {
-    background: url( ../images/zoom_in.png ) no-repeat left top;;
+    background: url(../images/zoom_in.png) no-repeat left top;;
     margin-top: 10px;
     margin-left: 10px;
 }
 
 #zoomOut {
-    background: url( ../images/zoom_out.png ) no-repeat left top;;
+    background: url(../images/zoom_out.png) no-repeat left top;;
     margin-top: 10px
 }
 

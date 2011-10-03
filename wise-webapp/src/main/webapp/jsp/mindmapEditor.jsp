@@ -18,7 +18,8 @@
     <title><spring:message code="SITE.TITLE"/> - ${mindmap.title} </title>
     <link rel="stylesheet" type="text/css" href="../css/editor.css"/>
 
-    <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/mootools/1.3.2/mootools-yui-compressed.js'></script>
+    <script type='text/javascript'
+            src='https://ajax.googleapis.com/ajax/libs/mootools/1.3.2/mootools-yui-compressed.js'></script>
     <script type='text/javascript' src='../js/libraries/mootools/mootools-more-1.3.2.1-yui.js'></script>
     <script type="text/javascript" src="../dwr/engine.js"></script>
     <script type="text/javascript" src="../dwr/interface/LoggerService.js"></script>
@@ -106,42 +107,16 @@
 </script>
 
 
-<div id="colorPalette">
-    <div id="paletteHeader"></div>
-</div>
-
-<div id="fontFamilyPanel" class="toolbarPanel">
-    <div id="times" class="toolbarPanelLink" style="font-family:times;">Times</div>
-    <div id="arial" class="toolbarPanelLink" style="font-family:arial;">Arial</div>
-    <div id="tahoma" class="toolbarPanelLink" style="font-family:tahoma;">Tahoma</div>
-    <div id="verdana" class="toolbarPanelLink" style="font-family:verdana;">Verdana</div>
-</div>
-
-<div id="fontSizePanel" class="toolbarPanel">
-    <div id="small" class="toolbarPanelLink" style="font-size:8px">Small</div>
-    <div id="normal" class="toolbarPanelLink" style="font-size:12px">Normal</div>
-    <div id="large" class="toolbarPanelLink" style="font-size:15px">Large</div>
-    <div id="huge" class="toolbarPanelLink" style="font-size:24px">Huge</div>
-</div>
-
-<div id="topicShapePanel" class="toolbarPanel">
-    <!--<div id="automatic" class="toolbarPanelLink">Automatic</div>-->
-    <div id="rectagle" class="toolbarPanelLink"><img src="../images/shape-rectangle.png" alt="Rectangle" width="40"
-                                                     height="25"></div>
-    <div id="rounded_rectagle" class="toolbarPanelLink"><img src="../images/shape-rectangle-rounded.png"
-                                                             alt="Rounded Rectangle" width="40" height="25"></div>
-    <div id="line" class="toolbarPanelLink"><img src="../images/shape-line.png" alt="Line" width="40" height="7"></div>
-    <div id="elipse" class="toolbarPanelLink"><img src="../images/shape-elipse.png" alt="Elipse" width="40" height="25">
-    </div>
-</div>
-
-<div id="actionsContainer">
-</div>
+<div id="actionsContainer"></div>
 <div>
     <c:url value="mymaps.htm" var="shareMap">
         <c:param name="action" value="collaborator"/>
         <c:param name="userEmail" value="${pageContext.request.userPrincipal.name}"/>
     </c:url>
+</div>
+
+<div id="colorPalette">
+    <div id="paletteHeader"></div>
 </div>
 
 <div id="toolbar">

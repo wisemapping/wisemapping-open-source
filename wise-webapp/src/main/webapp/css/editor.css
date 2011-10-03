@@ -375,12 +375,15 @@ div#fontColor {
 
 .toolbarPanel {
     color: black;
-    border: 1px solid #bbb4d6;
+    border-color: #CCC #666 #666 #CCC;
+    border-style: solid;
+    border-width: 1px;
     background: #E5E5E5;
     display: none;
     position: absolute;
     z-index: 4;
     top: 71px;
+    text-align: left;
 }
 
 div.toolbarPanelLink {
