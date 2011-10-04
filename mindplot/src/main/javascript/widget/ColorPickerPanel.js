@@ -17,7 +17,7 @@
  */
 
 mindplot.widget.ColorPickerPanel = new Class({
-    Extends: mindplot.widget.ToolbarItem,
+    Extends: mindplot.widget.ToolbarPaneItem,
     initialize : function(buttonId, model) {
         this.parent(buttonId, model);
         this._mooRainbow = new MooRainbow(buttonId, {

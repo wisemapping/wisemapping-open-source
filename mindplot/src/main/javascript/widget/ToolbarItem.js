@@ -18,39 +18,13 @@
 
 mindplot.widget.ToolbarItem = new Class({
     Implements:[Events],
-    initialize : function(buttonId, model) {
+    initialize : function(buttonId, fn, options) {
         $assert(buttonId, "buttonId can not be null");
-        $assert(model, "model can not be null");
-        this._model = model;
+        $assert(fn, "fn can not be null");
         this._buttonId = buttonId;
-        this._panelId = this._init().id;
-    },
+        this._fn = fn;
+        this._options = options;
 
-    _init:function () {
-        // Load the context of the panel ...
-        var panelElem = this.buildPanel();
-        var buttonElem = this.getButtonElem();
-
-        // Add panel content ..
-        panelElem.setStyle('display', 'none');
-        panelElem.inject(buttonElem);
-
-        // Add events for button click ...
-        this.getButtonElem().addEvent('click', function() {
-            // Is the panel being displayed ?
-            if (this.isVisible()) {
-                this.hide();
-            } else {
-                this.show();
-            }
-
-        }.bind(this));
-
-        return panelElem;
-   },
-
-    getModel : function() {
-        return this._model;
     },
 
     getButtonElem : function() {
@@ -59,32 +33,39 @@ mindplot.widget.ToolbarItem = new Class({
         return elem;
     }.protect(),
 
-    getPanelElem : function() {
-        return $(this._panelId);
-    }.protect(),
-
     show : function() {
-        if (!this.isVisible()) {
-            this.fireEvent('show');
-            this.getButtonElem().className = 'buttonActive';
-            this.getPanelElem().setStyle('display', 'block');
-        }
+        this.fireEvent('show');
     },
 
     hide : function() {
-        if (this.isVisible()) {
-            this.getButtonElem().className = 'button';
-            this.getPanelElem().setStyle('display', 'none');
-            this.fireEvent('hide');
+        this.fireEvent('hide');
+    },
+
+    isTopicAction : function() {
+        return this._options.topicAction;
+    },
+
+    isRelAction : function() {
+        return this._options.relAction;
+    },
+
+    disable : function() {
+        var elem = this.getButtonElem();
+        if (this._enable) {
+            elem.removeEvent('click', this._fn);
+            elem.removeClass('buttonOn');
+            elem.addClass('buttonOff');
+            this._enable = false;
         }
     },
 
-    isVisible : function() {
-        return this.getPanelElem().getStyle('display') == 'block';
-    },
-
-    buildPanel : function() {
-        throw "Method must be implemented";
-    }.protect()
-
+    enable : function() {
+        var elem = this.getButtonElem();
+        if (!this._enable) {
+            elem.addEvent('click', this._fn);
+            elem.removeClass('buttonOff');
+            elem.addClass('buttonOn');
+            this._enable = true;
+        }
+    }
 });

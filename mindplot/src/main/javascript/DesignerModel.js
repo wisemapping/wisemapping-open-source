@@ -17,6 +17,7 @@
  */
 
 mindplot.DesignerModel = new Class({
+    Implements: [Events],
     initialize : function(options) {
         this._zoom = options.zoom;
         this._topics = [];
@@ -79,27 +80,23 @@ mindplot.DesignerModel = new Class({
         this._topics.push(topic);
     },
 
-
     filterTopicsIds : function(validate, errorMsg) {
         var result = [];
         var topics = this.filterSelectedTopics();
 
-        if (topics.length == 0) {
-            core.Monitor.getInstance().logMessage('At least one element must be selected to execute this operation.');
-        } else {
-            var isValid = true;
-            for (var i = 0; i < topics.length; i++) {
-                var selectedNode = topics[i];
-                if ($defined(validate)) {
-                    isValid = validate(selectedNode);
-                }
 
-                // Add node only if it's valid.
-                if (isValid) {
-                    result.push(selectedNode.getId());
-                } else {
-                    core.Monitor.getInstance().logMessage(errorMsg);
-                }
+        var isValid = true;
+        for (var i = 0; i < topics.length; i++) {
+            var selectedNode = topics[i];
+            if ($defined(validate)) {
+                isValid = validate(selectedNode);
+            }
+
+            // Add node only if it's valid.
+            if (isValid) {
+                result.push(selectedNode.getId());
+            } else {
+                core.Monitor.getInstance().logMessage(errorMsg);
             }
         }
         return result;
@@ -108,22 +105,19 @@ mindplot.DesignerModel = new Class({
     filterRelationIds : function(validate, errorMsg) {
         var result = [];
         var relationships = this.filterSelectedRelations();
-        if (relationships.length == 0) {
-            core.Monitor.getInstance().logMessage('At least one element must be selected to execute this operation.');
-        } else {
-            var isValid = true;
-            for (var j = 0; j < relationships.length; j++) {
-                var selectedLine = relationships[j];
-                isValid = true;
-                if ($defined(validate)) {
-                    isValid = validate(selectedLine);
-                }
 
-                if (isValid) {
-                    result.push(selectedLine.getId());
-                } else {
-                    core.Monitor.getInstance().logMessage(errorMsg);
-                }
+        var isValid = true;
+        for (var j = 0; j < relationships.length; j++) {
+            var selectedLine = relationships[j];
+            isValid = true;
+            if ($defined(validate)) {
+                isValid = validate(selectedLine);
+            }
+
+            if (isValid) {
+                result.push(selectedLine.getId());
+            } else {
+                core.Monitor.getInstance().logMessage(errorMsg);
             }
         }
         return result;

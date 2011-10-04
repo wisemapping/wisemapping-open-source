@@ -70,7 +70,7 @@
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="StandaloneActionDispatcher.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="DesignerModel.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="MindmapDesigner.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="Designer.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ScreenManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="Workspace.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ShrinkConnector.js"/>
@@ -184,11 +184,9 @@
                                               files="collaboration/framework/brix/BrixCollaborativeModelFactory.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="collaboration/framework/brix/BrixFramework.js"/>
-
                                     <filelist dir="${basedir}/src/main/javascript/widget/" files="ToolbarItem.js"/>
-
+                                    <filelist dir="${basedir}/src/main/javascript/widget/" files="ToolbarPaneItem.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/widget/" files="NoteEditor.js"/>
-
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="widget/ColorPickerPanel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"

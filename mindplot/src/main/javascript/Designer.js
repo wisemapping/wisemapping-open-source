@@ -16,7 +16,7 @@
  *   limitations under the License.
  */
 
-mindplot.MindmapDesigner = new Class({
+mindplot.Designer = new Class({
         Extends: Events,
         initialize: function(profile, divElement) {
             $assert(profile, "profile must be defined");
@@ -169,6 +169,24 @@ mindplot.MindmapDesigner = new Class({
                 $assert(targetTopic, "Could not find a topic to connect");
                 topic.connectTo(targetTopic, workspace);
             }
+
+            topic.addEvent('ontblur', function() {
+                var topics = this.getModel().filterSelectedTopics();
+                var rels = this.getModel().filterSelectedRelations();
+
+                if (topics.length == 0 || rels.length == 0) {
+                    this.fireEvent('onblur');
+                }
+            }.bind(this));
+
+            topic.addEvent('ontfocus', function() {
+                var topics = this.getModel().filterSelectedTopics();
+                var rels = this.getModel().filterSelectedRelations();
+
+                if (topics.length == 1 || rels.length == 1) {
+                    this.fireEvent('onfocus');
+                }
+            }.bind(this));
 
             return  topic;
         },

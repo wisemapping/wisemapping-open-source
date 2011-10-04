@@ -26,6 +26,7 @@ mindplot.widget.Menu = new Class({
         this._designer = designer;
         this._toolbarElems = [];
         this._containerId = containerId;
+        this._toolbarDisabled = false;
 
         // Stop event propagation ...
         $(this._containerId).addEvent('click', function(event) {
@@ -179,81 +180,48 @@ mindplot.widget.Menu = new Class({
         };
         this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('fontColor', fontColorModel, baseUrl));
 
-        // Register on close events ...
-        this._toolbarElems.forEach(function(elem) {
-            elem.addEvent('show', function() {
-                this.clear()
-            }.bind(this));
-        }.bind(this));
-
-
-        // Register Events ...
-        $('zoomIn').addEvent('click', function() {
-            this.clear();
-            designer.zoomIn();
-        }.bind(this));
-
-        $('zoomOut').addEvent('click', function() {
-            this.clear();
-            designer.zoomOut();
-        }.bind(this));
-
-        $('undoEdition').addEvent('click', function() {
-            this.clear();
-            designer.undo();
-        }.bind(this));
-
-        $('redoEdition').addEvent('click', function() {
-            this.clear();
-            designer.redo();
-        }.bind(this));
-
-        $('addTopic').addEvent('click', function() {
-            this.clear();
-            designer.createChildForSelectedNode();
-        }.bind(this));
-
-        $('deleteTopic').addEvent('click', function() {
-            this.clear();
-            designer.deleteCurrentNode();
-        }.bind(this));
-
-
-        $('topicLink').addEvent('click', function() {
-            this.clear();
-            designer.addLink();
-        }.bind(this));
-
-        $('topicRelation').addEvent('click', function(event) {
-            designer.addRelationShip(event);
+        this.addButton('zoomIn', false, false, function() {
+            designer.zoomIn()
         });
 
-        $('topicNote').addEvent('click', function() {
-            this.clear();
-            designer.addNote();
-        }.bind(this));
+        this.addButton('zoomOut', false, false, function() {
+            designer.zoomOut()
+        });
 
-        $('fontBold').addEvent('click', function() {
+        this.addButton('undoEdition', false, false, function() {
+            designer.undo()
+        });
+
+        this.addButton('redoEdition', false, false, function() {
+            designer.redo();
+        });
+
+        this.addButton('addTopic', true, false, function() {
+            designer.createChildForSelectedNode();
+        });
+
+        this.addButton('deleteTopic', true, true, function() {
+            designer.deleteCurrentNode();
+        });
+
+        this.addButton('topicLink', true, false, function() {
+            designer.addLink();
+        });
+
+        this.addButton('topicRelation', true, false, function() {
+            designer.addLink();
+        });
+
+        this.addButton('topicNote', true, false, function() {
+            designer.addNote();
+        });
+
+        this.addButton('fontBold', true, false, function() {
             designer.changeFontWeight();
         });
 
-        $('fontItalic').addEvent('click', function() {
+        this.addButton('fontItalic', true, false, function() {
             designer.changeFontStyle();
-        });
-
-        designer.addEvent("modelUpdate", function(event) {
-            if (event.undoSteps > 0) {
-                $("undoEdition").setStyle("background-image", "url(../images/file_undo.png)");
-            } else {
-                $("undoEdition").setStyle("background-image", "url(../images/file_undo_dis.png)");
-            }
-
-            if (event.redoSteps > 0) {
-                $("redoEdition").setStyle("background-image", "url(../images/file_redo.png)");
-            } else {
-                $("redoEdition").setStyle("background-image", "url(../images/file_redo_dis.png)");
-            }
-
         });
 
         var saveElem = $('saveButton');
@@ -338,6 +306,71 @@ mindplot.widget.Menu = new Class({
 
         }
 
+        this._registerEvents(designer);
+    },
+
+    _registerEvents : function(designer) {
+
+        // Register on close events ...
+        this._toolbarElems.forEach(function(elem) {
+            elem.addEvent('show', function() {
+                this.clear()
+            }.bind(this));
+        }.bind(this));
+
+        designer.addEvent('onblur', function() {
+            var topics = designer.getModel().filterSelectedTopics();
+            var rels = designer.getModel().filterSelectedRelations();
+
+            this._toolbarElems.forEach(function(button) {
+                if (button.isTopicAction() && topics.length == 0) {
+                    button.disable();
+                }
+
+                if (button.isRelAction() && rels.length == 0) {
+                    button.disable();
+                }
+            })
+        }.bind(this));
+
+        designer.addEvent('onfocus', function() {
+            var topics = designer.getModel().filterSelectedTopics();
+            var rels = designer.getModel().filterSelectedRelations();
+
+            this._toolbarElems.forEach(function(button) {
+                if (button.isTopicAction() && topics.length > 0) {
+                    button.enable();
+                }
+
+                if (button.isRelAction() && rels.length > 0) {
+                    button.enable();
+                }
+            })
+        }.bind(this));
+
+        designer.addEvent("modelUpdate", function(event) {
+            if (event.undoSteps > 0) {
+                $("undoEdition").setStyle("background-image", "url(../images/file_undo.png)");
+            } else {
+                $("undoEdition").setStyle("background-image", "url(../images/file_undo_dis.png)");
+            }
+
+            if (event.redoSteps > 0) {
+                $("redoEdition").setStyle("background-image", "url(../images/file_redo.png)");
+            } else {
+                $("redoEdition").setStyle("background-image", "url(../images/file_redo_dis.png)");
+            }
+
+        });
+    },
+
+    addButton:function (buttonId, topic, rel, fn) {
+        // Register Events ...
+        var button = new mindplot.widget.ToolbarItem(buttonId, function(event) {
+            this.clear();
+            fn(event);
+        }.bind(this), {topicAction:topic,relAction:rel});
+        this._toolbarElems.push(button);
     },
 
     clear : function() {

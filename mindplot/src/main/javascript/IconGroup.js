@@ -157,7 +157,7 @@ mindplot.IconGroup.ICON_PADDING = 5;
 mindplot.IconGroup.RemoveTip = new Class({
     initialize : function(container) {
         $assert(container, "group can not be null");
-        this._container = container;
+        this._fadeElem = container;
     },
 
 
@@ -189,7 +189,7 @@ mindplot.IconGroup.RemoveTip = new Class({
             }.bind(this));
 
             widget.setPosition(pos.x + 80, pos.y - 50);
-            this._container.appendChild(widget);
+            this._fadeElem.appendChild(widget);
 
             // Setup current element ...
             this._activeIcon = icon;
@@ -217,7 +217,7 @@ mindplot.IconGroup.RemoveTip = new Class({
             var close = function() {
 
                 this._activeIcon = null;
-                this._container.removeChild(widget);
+                this._fadeElem.removeChild(widget);
                 this._widget = null;
 
                 this._closeTimeoutId = null;

@@ -47,10 +47,6 @@ core.Monitor = new Class({
         console.log(userMsg);
     },
 
-    logFatal : function(userMsg) {
-        this.logMessage(userMsg, core.Monitor.MsgKind.FATAL);
-    },
-
     logMessage : function(msg, msgKind) {
         if (!msgKind) {
             msgKind = core.Monitor.MsgKind.INFO;

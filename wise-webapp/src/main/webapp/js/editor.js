@@ -225,7 +225,7 @@ function buildDesigner(editorProperties, isTryMode) {
         width:  parseInt(screen.width)
     });
 
-    designer = new mindplot.MindmapDesigner(editorProperties, container);
+    designer = new mindplot.Designer(editorProperties, container);
     designer.setViewPort({
         height: parseInt(window.innerHeight - 151), // Footer and Header
         width:  parseInt(window.innerWidth)

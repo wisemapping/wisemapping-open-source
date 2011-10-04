@@ -17,7 +17,7 @@
  */
 
 mindplot.widget.ListToolbarPanel = new Class({
-    Extends: mindplot.widget.ToolbarItem,
+    Extends: mindplot.widget.ToolbarPaneItem,
     initialize : function(buttonId, model) {
         this.parent(buttonId, model);
         this._initPanel();

@@ -24,6 +24,7 @@ mindplot.NodeGraph = new Class({
         this._mouseEvents = true;
         this.setModel(nodeModel);
         this._onFocus = false;
+        this._event = new Events();
     },
 
     getType : function() {
@@ -52,8 +53,18 @@ mindplot.NodeGraph = new Class({
     },
 
     addEvent : function(type, listener) {
-        var elem = this.get2DElement();
+        var elem = type.substr(0, 3) == "ont" ? this._event : this.get2DElement();
         elem.addEvent(type, listener);
+    },
+
+    removeEvent : function(type, listener) {
+        var elem = type.substr(0, 3) == "ont" ? this._event : this.get2DElement();
+        elem.removeEvent(type, listener);
+    },
+
+    fireEvent: function(type) {
+        var elem = type.substr(0, 3) == "ont" ? this._event : this.get2DElement();
+        elem.fireEvent(type);
     },
 
     setMouseEventsEnabled : function(isEnabled) {
@@ -87,21 +98,28 @@ mindplot.NodeGraph = new Class({
     },
 
     setOnFocus : function(focus) {
-        this._onFocus = focus;
-        var outerShape = this.getOuterShape();
-        if (focus) {
-            outerShape.setFill('#c7d8ff');
-            outerShape.setOpacity(1);
+        if (this._onFocus != focus) {
 
-        } else {
-            // @todo: node must not know about the topic.
-            outerShape.setFill(mindplot.Topic.OUTER_SHAPE_ATTRIBUTES.fillColor);
-            outerShape.setOpacity(0);
+            this._onFocus = focus;
+            var outerShape = this.getOuterShape();
+            if (focus) {
+                outerShape.setFill('#c7d8ff');
+                outerShape.setOpacity(1);
+
+            } else {
+                // @todo: node must not know about the topic.
+                outerShape.setFill(mindplot.Topic.OUTER_SHAPE_ATTRIBUTES.fillColor);
+                outerShape.setOpacity(0);
+            }
+            this.setCursor('move');
+
+            // In any case, always try to hide the editor ...
+            this.closeEditors();
+
+            // Fire event ...
+            this.fireEvent(focus ? 'ontfocus' : 'ontblur');
+
         }
-        this.setCursor('move');
-
-        // In any case, always try to hide the editor ...
-        this.closeEditors();
     },
 
     isOnFocus : function() {

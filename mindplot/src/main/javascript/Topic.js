@@ -929,33 +929,10 @@ mindplot.Topic = new Class({
         var model = this.getModel();
         var isConnected = model.isConnected();
 
-        // Check consitency...
+        // Check consistency...
         if ((isConnected && !line) || (!isConnected && line)) {
             // $assert(false,'Illegal state exception.');
         }
-    },
-
-    /**
-     * type:
-     *    onfocus
-     */
-    addEvent : function(type, listener) {
-        // Translate to web 2d events ...
-        if (type == 'onfocus') {
-            type = 'mousedown';
-        }
-
-        var shape = this.get2DElement();
-        shape.addEvent(type, listener);
-    },
-
-    removeEvent : function(type, listener) {
-        // Translate to web 2d events ...
-        if (type == 'onfocus') {
-            type = 'mousedown';
-        }
-        var shape = this.get2DElement();
-        shape.removeEvent(type, listener);
     },
 
 

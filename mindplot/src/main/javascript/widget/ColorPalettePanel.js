@@ -17,7 +17,7 @@
  */
 
 mindplot.widget.ColorPalettePanel = new Class({
-    Extends: mindplot.widget.ToolbarItem,
+    Extends: mindplot.widget.ToolbarPaneItem,
 
     initialize : function(buttonId, model, baseUrl) {
         this._baseUrl = baseUrl;

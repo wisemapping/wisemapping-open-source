@@ -59,7 +59,7 @@ TestCase("Mindplot test",{
             editorProperties.width = screenWidth;
             editorProperties.height = screenHeight;
 
-            designer = new mindplot.MindmapDesigner(editorProperties, container);
+            designer = new mindplot.Designer(editorProperties, container);
             designer.loadFromXML(mapId, mapXml);
 
 

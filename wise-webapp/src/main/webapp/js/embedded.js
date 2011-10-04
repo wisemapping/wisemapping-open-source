@@ -64,7 +64,7 @@ function buildMindmapDesigner() {
     editorProperties.height = screenHeight;
     editorProperties.readOnly = true;
 
-    designer = new mindplot.MindmapDesigner(editorProperties, container);
+    designer = new mindplot.Designer(editorProperties, container);
     designer.loadFromXML(mapId, mapXml);
 
     // If a node has focus, focus can be move to another node using the keys.

@@ -158,8 +158,8 @@ function buildDesigner() {
         width:  parseInt(screen.width)
     });
 
-    var editorProperties = {zoom:0.85,saveOnLoad:true};
-    designer = new mindplot.MindmapDesigner(editorProperties, container);
+    var editorProperties = {zoom:0.85,saveOnLoad:true,collab:collab};
+    designer = new mindplot.Designer(editorProperties, container);
     designer.setViewPort({
         height: parseInt(window.innerHeight - 112), // Footer and Header
         width:  parseInt(window.innerWidth)
@@ -171,7 +171,6 @@ function buildDesigner() {
     designer._cleanScreen = function() {
         menu.clear()
     };
-
     return designer;
 }
 
