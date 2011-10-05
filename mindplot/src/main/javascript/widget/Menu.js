@@ -323,13 +323,21 @@ mindplot.widget.Menu = new Class({
             var rels = designer.getModel().filterSelectedRelations();
 
             this._toolbarElems.forEach(function(button) {
-                if (button.isTopicAction() && topics.length == 0) {
+                var disable = false;
+                if (button.isTopicAction() && button.isRelAction()) {
+                    disable = rels.length == 0 && topics.length == 0;
+
+                } else if (button.isTopicAction() && topics.length == 0) {
+                    disable = true;
+                } else if (button.isRelAction() && rels.length == 0) {
+                    disable = true;
+                }
+
+                if (disable) {
                     button.disable();
                 }
 
-                if (button.isRelAction() && rels.length == 0) {
-                    button.disable();
-                }
+
             })
         }.bind(this));
 

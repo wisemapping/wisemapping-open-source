@@ -24,7 +24,6 @@ mindplot.widget.ToolbarItem = new Class({
         this._buttonId = buttonId;
         this._fn = fn;
         this._options = options;
-
     },
 
     getButtonElem : function() {

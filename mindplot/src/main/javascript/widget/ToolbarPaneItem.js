@@ -30,7 +30,7 @@ mindplot.widget.ToolbarPaneItem = new Class({
             }
 
         }.bind(this);
-        this.parent(buttonId, fn, {topicAction:true,relAction:true});
+        this.parent(buttonId, fn, {topicAction:true,relAction:false});
         this._model = model;
         this._panelId = this._init().id;
     },
