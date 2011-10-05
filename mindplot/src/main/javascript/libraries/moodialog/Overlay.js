@@ -24,7 +24,7 @@ var Overlay = new Class({
 		id: 'overlay',
 		color: '#000',
 		duration: 500,
-		opacity: 0.5,
+		opacity: 0.8,
 		zIndex: 5000/*,
 		onClick: $empty,
 		onClose: $empty,

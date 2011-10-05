@@ -22,7 +22,7 @@ mindplot.widget.NoteEditor = new Class({
         $assert(model, "model can not be null");
         var panel = this._buildPanel(model);
         this.parent({
-            closeButton:false,
+            closeButton:true,
             destroyOnClose:true,
             title:'Note',
             onInitialize: function(wrapper) {
@@ -69,7 +69,8 @@ mindplot.widget.NoteEditor = new Class({
         if (model.getValue() != null)
             textArea.value = model.getValue();
 
-        textArea.setStyles({'width':280, 'height':65});
+        textArea.setStyles({'width':'100%', 'height':80,resize: 'none'
+        });
         textArea.inject(form);
 
         // Add buttons ...

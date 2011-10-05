@@ -126,24 +126,24 @@
                 <legend>
                     <spring:message code="FILE"/>
                 </legend>
-                <div id="saveButton" class="button" title="<spring:message code="SAVE"/>">
+                <div id="saveButton" class="buttonOn" title="<spring:message code="SAVE"/>">
                     <div class="toolbarLabel"><p><spring:message code="SAVE"/></p></div>
                 </div>
-                <div id="discardButton" class="button" title="<spring:message code="CLOSE"/>">
+                <div id="discardButton" class="buttonOn" title="<spring:message code="CLOSE"/>">
                     <div class="toolbarLabel"><p><spring:message code="CLOSE"/></p></div>
                 </div>
-                <div id="undoEdition" class="button" title="<spring:message code="UNDO_EDITION"/>">
+                <div id="undoEdition" class="buttonOn" title="<spring:message code="UNDO_EDITION"/>">
                     <div class="toolbarLabel"><p><spring:message code="UNDO"/></p></div>
                 </div>
-                <div id="redoEdition" class="button" title="<spring:message code="REDO_EDITION"/>">
+                <div id="redoEdition" class="buttonOn" title="<spring:message code="REDO_EDITION"/>">
                     <div class="toolbarLabel"><p><spring:message code="REDO"/></p></div>
                 </div>
 
-                <div id="print" class="button" title="<spring:message code="PRINT"/>" onclick="printMap();">
+                <div id="print" class="buttonOn" title="<spring:message code="PRINT"/>" onclick="printMap();">
                     <div class="toolbarLabel"><p><spring:message code="PRINT"/></p></div>
                 </div>
 
-                <div id="export" class="button" title="<spring:message code="EXPORT"/>">
+                <div id="export" class="buttonOn" title="<spring:message code="EXPORT"/>">
                     <div class="toolbarLabel"><p><spring:message code="EXPORT"/></p></div>
                     <a id="exportAnchor" href="export.htm?mapId=${mindmap.id}" rel="moodalbox 600px 400px"
                        title="<spring:message code="EXPORT_DETAILS"/>">
@@ -156,10 +156,10 @@
                 <legend>
                     <spring:message code="ZOOM"/>
                 </legend>
-                <div id="zoomIn" class="button" title="<spring:message code="ZOOM_IN"/>">
+                <div id="zoomIn" class="buttonOn" title="<spring:message code="ZOOM_IN"/>">
                     <div class="toolbarLabel"><p><spring:message code="IN"/></p></div>
                 </div>
-                <div id="zoomOut" class="button" title="<spring:message code="ZOOM_OUT"/>">
+                <div id="zoomOut" class="buttonOn" title="<spring:message code="ZOOM_OUT"/>">
                     <div class="toolbarLabel"><p><spring:message code="OUT"/></p></div>
                 </div>
             </fieldset>
@@ -169,31 +169,31 @@
                 <legend>
                     <spring:message code="TOPIC"/>
                 </legend>
-                <div id="topicShape" class="button" title="<spring:message code="TOPIC_SHAPE"/>">
+                <div id="topicShape" class="buttonOn" title="<spring:message code="TOPIC_SHAPE"/>">
                     <div class="toolbarLabel"><p><spring:message code="SHAPE"/></p></div>
                 </div>
-                <div id="addTopic" class="button" title="<spring:message code="TOPIC_ADD"/>">
+                <div id="addTopic" class="buttonOn" title="<spring:message code="TOPIC_ADD"/>">
                     <div class="toolbarLabel"><p><spring:message code="ADD"/></p></div>
                 </div>
-                <div id="deleteTopic" class="button" title="<spring:message code="TOPIC_DELETE"/>">
+                <div id="deleteTopic" class="buttonOn" title="<spring:message code="TOPIC_DELETE"/>">
                     <div class="toolbarLabel"><p><spring:message code="DELETE"/></p></div>
                 </div>
-                <div id="topicBorder" class="button" title="<spring:message code="TOPIC_BORDER_COLOR"/>">
+                <div id="topicBorder" class="buttonOn" title="<spring:message code="TOPIC_BORDER_COLOR"/>">
                     <div class="toolbarLabel"><p><spring:message code="BORDER"/></p></div>
                 </div>
-                <div id="topicColor" class="button" title="<spring:message code="TOPIC_BACKGROUND_COLOR"/>">
+                <div id="topicColor" class="buttonOn" title="<spring:message code="TOPIC_BACKGROUND_COLOR"/>">
                     <div class="toolbarLabel"><p><spring:message code="COLOR"/></p></div>
                 </div>
-                <div id="topicIcon" class="button" title="<spring:message code="TOPIC_ICON"/>">
+                <div id="topicIcon" class="buttonOn" title="<spring:message code="TOPIC_ICON"/>">
                     <div class="toolbarLabel"><p><spring:message code="ICON"/></p></div>
                 </div>
-                <div id="topicNote" class="button" title="<spring:message code="TOPIC_NOTE"/>">
+                <div id="topicNote" class="buttonOn" title="<spring:message code="TOPIC_NOTE"/>">
                     <div class="toolbarLabel"><p><spring:message code="NOTE"/></p></div>
                 </div>
-                <div id="topicLink" class="button" title="<spring:message code="TOPIC_LINK"/>">
+                <div id="topicLink" class="buttonOn" title="<spring:message code="TOPIC_LINK"/>">
                     <div class="toolbarLabel"><p><spring:message code="LINK"/></p></div>
                 </div>
-                <div id="topicRelation" class="topicRelation button"
+                <div id="topicRelation" class="topicRelation buttonOn"
                      title="<spring:message code="TOPIC_RELATIONSHIP"/>">
                     <div class="relationshiplabel toolbarLabel"><p><spring:message code="TOPIC_RELATIONSHIP"/></p></div>
                 </div>
@@ -204,19 +204,19 @@
                 <legend>
                     <spring:message code="FONT"/>
                 </legend>
-                <div id="fontFamily" class="button" title="<spring:message code="FONT_TYPE"/>">
+                <div id="fontFamily" class="buttonOn" title="<spring:message code="FONT_TYPE"/>">
                     <div class="toolbarLabel"><p><spring:message code="TYPE"/></p></div>
                 </div>
-                <div id="fontSize" class="button" title="<spring:message code="FONT_SIZE"/>">
+                <div id="fontSize" class="buttonOn" title="<spring:message code="FONT_SIZE"/>">
                     <div class="toolbarLabel"><p><spring:message code="SIZE"/></p></div>
                 </div>
-                <div id="fontBold" class="button" title="<spring:message code="FONT_BOLD"/>">
+                <div id="fontBold" class="buttonOn" title="<spring:message code="FONT_BOLD"/>">
                     <div class="toolbarLabel"><p><spring:message code="BOLD"/></p></div>
                 </div>
-                <div id="fontItalic" class="button" title="<spring:message code="FONT_ITALIC"/>">
+                <div id="fontItalic" class="buttonOn" title="<spring:message code="FONT_ITALIC"/>">
                     <div class="toolbarLabel"><p><spring:message code="ITALIC"/></p></div>
                 </div>
-                <div id="fontColor" class="button" title="<spring:message code="FONT_COLOR"/>">
+                <div id="fontColor" class="buttonOn" title="<spring:message code="FONT_COLOR"/>">
                     <div class="toolbarLabel"><p><spring:message code="COLOR"/></p></div>
                 </div>
             </fieldset>
@@ -230,7 +230,7 @@
                         </legend>
                         <a id="tagAnchor" href="tags.htm?mapId=${mindmap.id}" rel="moodalbox 400px 200px wizard"
                            title="<spring:message code="TAGS_DETAILS"/>">
-                            <div id="tagIt" class="button" title="<spring:message code="TAG"/>">
+                            <div id="tagIt" class="buttonOn" title="<spring:message code="TAG"/>">
                                 <div class="toolbarLabel"><p><spring:message code="TAG"/></p></div>
                             </div>
                         </a>
@@ -238,14 +238,14 @@
                             <c:when test="${mindmap.owner==user}">
                                 <a id="shareAnchor" href="<c:out value="${shareMap}"/>&amp;mapId=${mindmap.id}"
                                    rel="moodalbox 780px 530px wizard" title="<spring:message code="SHARE_DETAILS"/>">
-                                    <div id="shareIt" class="button" title="<spring:message code="COLLABORATION"/>">
+                                    <div id="shareIt" class="buttonOn" title="<spring:message code="COLLABORATION"/>">
                                         <div class="toolbarLabel"><p><spring:message code="SHARE"/></p></div>
                                     </div>
                                 </a>
                                 <a id="publishAnchor" href="publish.htm?mapId=${mindmap.id}"
                                    rel="moodalbox 600px 400px wizard"
                                    title="<spring:message code="PUBLISH_MSG"/>">
-                                    <div id="publishIt" class="button" title="<spring:message code="PUBLISH"/>">
+                                    <div id="publishIt" class="buttonOn" title="<spring:message code="PUBLISH"/>">
                                         <div class="toolbarLabel"><p><spring:message code="PUBLISH"/></p></div>
                                     </div>
                                 </a>
@@ -253,7 +253,7 @@
                         </c:choose>
                         <a id="historyAnchor" href="history.htm?action=list&amp;mapId=${mindmap.id}"
                            rel="moodalbox 600px 400px wizard" title="<spring:message code="HISTORY_MSG"/>">
-                            <div id="history" class="button" title="<spring:message code="HISTORY_MSG"/>">
+                            <div id="history" class="buttonOn" title="<spring:message code="HISTORY_MSG"/>">
                                 <div class="toolbarLabel"><p><spring:message code="HISTORY"/></p></div>
                             </div>
                         </a>
@@ -264,16 +264,16 @@
                         <legend>
                             <spring:message code="COLLABORATION"/>
                         </legend>
-                        <div id="tagIt" class="button" title="<spring:message code="TAG"/>">
+                        <div id="tagIt" class="buttonOn" title="<spring:message code="TAG"/>">
                             <div class="toolbarLabel"><p><spring:message code="TAG"/></p></div>
                         </div>
-                        <div id="shareIt" class="button" title="<spring:message code="COLLABORATE"/>">
+                        <div id="shareIt" class="buttonOn" title="<spring:message code="COLLABORATE"/>">
                             <div class="toolbarLabel"><p><spring:message code="SHARE"/></p></div>
                         </div>
-                        <div id="publishIt" class="button" title="<spring:message code="PUBLISH"/>">
+                        <div id="publishIt" class="buttonOn" title="<spring:message code="PUBLISH"/>">
                             <div class="toolbarLabel"><p><spring:message code="PUBLISH"/></p></div>
                         </div>
-                        <div id="history" class="button" title="<spring:message code="HISTORY_MSG"/>">
+                        <div id="history" class="buttonOn" title="<spring:message code="HISTORY_MSG"/>">
                             <div class="toolbarLabel"><p><spring:message code="HISTORY"/></p></div>
                         </div>
                     </fieldset>

@@ -159,26 +159,27 @@ div#toolbar .buttonContainer {
     -moz-margin-end: 7px;
 }
 
-div#toolbar .button {
+div#toolbar .buttonOn, div#toolbar .buttonOff, div#toolbar .buttonActive, div#toolbar .buttonOn:hover {
     width: 32px;
     height: 36px;
     float: left;
     margin: 0 2px 2px 2px;
-    cursor: pointer;
     text-align: center;
 }
 
-div#toolbar .button:hover {
-    width: 32px;
-    height: 36px;
-    float: left;
+div#toolbar .buttonOn:hover, div#toolbar .buttonActive {
     margin: 0 1px;
     cursor: pointer;
     border: 1px solid black;
     border-top-color: white;
     border-left-color: white;
+    cursor: pointer;
 }
 
+div#toolbar .buttonOff {
+    opacity: 0.4;
+}
+`
 div#toolbar .button img {
     width: 30px;
     height: 30px;
@@ -738,20 +739,4 @@ div#toolbar .topicRelation:hover {
 
 div#toolbar .relationshiplabel {
     width: 56px;
-}
-
-div#toolbar .buttonActive {
-    width: 32px;
-    height: 36px;
-    float: left;
-    margin: 0 1px;
-    cursor: pointer;
-    border: 1px solid black;
-    border-top-color: white;
-    border-left-color: white;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -o-user-select: none;
-    user-select: none;
 }

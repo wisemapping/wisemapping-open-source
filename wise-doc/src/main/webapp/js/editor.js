@@ -18,6 +18,99 @@
 
 var designer = null;
 
+function buildDesigner() {
+
+    var container = $('mindplot');
+    container.setStyles({
+        height: parseInt(screen.height),
+        width:  parseInt(screen.width)
+    });
+
+    var editorProperties = {zoom:0.85,saveOnLoad:true,collab:collab};
+    designer = new mindplot.Designer(editorProperties, container);
+    designer.setViewPort({
+        height: parseInt(window.innerHeight - 112), // Footer and Header
+        width:  parseInt(window.innerWidth)
+    });
+
+    var menu = new mindplot.widget.Menu(designer, 'toolbar');
+
+    //  If a node has focus, focus can be move to another node using the keys.
+    designer._cleanScreen = function() {
+        menu.clear()
+    };
+    return designer;
+}
+
+//######################### Libraries Loading ##################################
+function JSPomLoader(pomUrl, callback) {
+    console.log("POM Load URL:" + pomUrl);
+    var jsUrls;
+    var request = new Request({
+        url: pomUrl,
+        method: 'get',
+        onRequest: function() {
+            console.log("loading ...");
+        },
+        onSuccess: function(responseText, responseXML) {
+
+            // Collect JS Urls ...
+            var concatRoot = responseXML.getElementsByTagName('concat');
+            var fileSetArray = Array.filter(concatRoot[0].childNodes, function(elem) {
+                return elem.nodeType == Node.ELEMENT_NODE
+            });
+
+            jsUrls = new Array();
+            Array.each(fileSetArray, function(elem) {
+                    var jsUrl = elem.getAttribute("dir") + elem.getAttribute("files");
+                    jsUrls.push(jsUrl.replace("${basedir}", pomUrl.substring(0, pomUrl.lastIndexOf('/'))));
+                }
+            );
+
+            // Load all JS dynamically ....
+            jsUrls = jsUrls.reverse();
+
+            function jsRecLoad(urls) {
+                if (urls.length == 0) {
+                    if ($defined(callback))
+                        callback();
+                } else {
+                    var url = urls.pop();
+                    Asset.javascript(url, {
+                        onLoad: function() {
+                            jsRecLoad(urls)
+                        }
+                    });
+                }
+            }
+
+            jsRecLoad(jsUrls);
+        },
+        onFailure: function() {
+            console.log('Sorry, your request failed :(');
+        }
+    });
+    request.send();
+
+}
+
+var localEnv = true;
+if (localEnv) {
+    Asset.javascript("../../../../../web2d/target/classes/web2d.svg-min.js", {
+        onLoad: function() {
+            JSPomLoader('../../../../../mindplot/pom.xml', function() {
+                $(document).fireEvent('loadcomplete', 'mind')
+            });
+        }
+    });
+} else {
+    Asset.javascript("../js/mindplot-min.js", {
+        onLoad:function() {
+            $(document).fireEvent('loadcomplete', 'mind')
+        }
+    });
+}
+
 // CSS helper functions
 CSS = {
     // Adds a class to an element.
@@ -129,116 +222,8 @@ Tabs = {
     }
 };
 
-if (document.createStyleSheet) {
-    var style = document.createStyleSheet();
-    style.addRule("div.tabContent", "display: none;");
-    style.addRule("div" + contentId, "display: block;");
-} else {
-    var head = document.getElementsByTagName("head")[0];
-    if (head) {
-        var style = document.createElement("style");
-        style.setAttribute("type", "text/css");
-        style.appendChild(document.createTextNode("div.tabContent { display: none; }"));
-        style.appendChild(document.createTextNode("div" + contentId + " { display: block; }"));
-        head.appendChild(style);
-    }
-}
-
 // Hook up the OnLoad event to the tab initialization function.
 Tabs.Init();
 
 // Hide the content while waiting for the onload event to trigger.
 var contentId = window.location.hash || "#Introduction";
-
-function buildDesigner() {
-
-    var container = $('mindplot');
-    container.setStyles({
-        height: parseInt(screen.height),
-        width:  parseInt(screen.width)
-    });
-
-    var editorProperties = {zoom:0.85,saveOnLoad:true,collab:collab};
-    designer = new mindplot.Designer(editorProperties, container);
-    designer.setViewPort({
-        height: parseInt(window.innerHeight - 112), // Footer and Header
-        width:  parseInt(window.innerWidth)
-    });
-
-    var menu = new mindplot.widget.Menu(designer, 'toolbar');
-
-    //  If a node has focus, focus can be move to another node using the keys.
-    designer._cleanScreen = function() {
-        menu.clear()
-    };
-    return designer;
-}
-
-//######################### Libraries Loading ##################################
-function JSPomLoader(pomUrl, callback) {
-    console.log("POM Load URL:" + pomUrl);
-    var jsUrls;
-    var request = new Request({
-        url: pomUrl,
-        method: 'get',
-        onRequest: function() {
-            console.log("loading ...");
-        },
-        onSuccess: function(responseText, responseXML) {
-
-            // Collect JS Urls ...
-            var concatRoot = responseXML.getElementsByTagName('concat');
-            var fileSetArray = Array.filter(concatRoot[0].childNodes, function(elem) {
-                return elem.nodeType == Node.ELEMENT_NODE
-            });
-
-            jsUrls = new Array();
-            Array.each(fileSetArray, function(elem) {
-                    var jsUrl = elem.getAttribute("dir") + elem.getAttribute("files");
-                    jsUrls.push(jsUrl.replace("${basedir}", pomUrl.substring(0, pomUrl.lastIndexOf('/'))));
-                }
-            );
-
-            // Load all JS dynamically ....
-            jsUrls = jsUrls.reverse();
-
-            function jsRecLoad(urls) {
-                if (urls.length == 0) {
-                    if ($defined(callback))
-                        callback();
-                } else {
-                    var url = urls.pop();
-                    Asset.javascript(url, {
-                        onLoad: function() {
-                            jsRecLoad(urls)
-                        }
-                    });
-                }
-            }
-
-            jsRecLoad(jsUrls);
-        },
-        onFailure: function() {
-            console.log('Sorry, your request failed :(');
-        }
-    });
-    request.send();
-
-}
-
-var localEnv = true;
-if (localEnv) {
-    Asset.javascript("../../../../../web2d/target/classes/web2d.svg-min.js", {
-        onLoad: function() {
-            JSPomLoader('../../../../../mindplot/pom.xml', function() {
-                $(document).fireEvent('loadcomplete', 'mind')
-            });
-        }
-    });
-} else {
-    Asset.javascript("../js/mindplot-min.js", {
-        onLoad:function() {
-            $(document).fireEvent('loadcomplete', 'mind')
-        }
-    });
-}
