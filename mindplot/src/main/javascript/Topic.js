@@ -329,7 +329,7 @@ mindplot.Topic = new Class({
         model.addIcon(iconModel);
 
         var imageIcon = new mindplot.ImageIcon(this, iconModel);
-        iconGroup.addIcon(imageIcon,true);
+        iconGroup.addIcon(imageIcon, true);
         this._adjustShapes();
         return imageIcon;
     },
@@ -752,6 +752,37 @@ mindplot.Topic = new Class({
         var editor = new mindplot.widget.NoteEditor(editorModel);
         editor.show();
     },
+
+    showLinkEditor : function() {
+
+        var topicId = this.getId();
+        var model = this.getModel();
+        var editorModel = {
+            getValue : function() {
+//                var notes = model.getNotes();
+//                var result;
+//                if (notes.length > 0)
+//                    result = notes[0].getText();
+//
+//                return result;
+            },
+
+            setValue : function(value) {
+//                var dispatcher = mindplot.ActionDispatcher.getInstance();
+//                if (!$defined(value)) {
+//                    dispatcher.removeNoteFromTopic(topicId);
+//                }
+//                else {
+//                    dispatcher.changeNoteToTopic(topicId, value);
+//                }
+            }
+        };
+
+        this.closeEditors();
+        var editor = new mindplot.widget.LinkEditor(editorModel);
+        editor.show();
+    },
+
 
     closeEditors : function() {
         this._textEditor.close(true);

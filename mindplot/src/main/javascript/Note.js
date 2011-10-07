@@ -41,6 +41,7 @@ mindplot.Note = new Class({
             // Content can also be a function of the target element!
             content: function() {
                 var result = new Element('div');
+                result.setStyles({padding:'5px'});
 
                 var title = new Element('div', {text:'Note'});
                 title.setStyles({
@@ -63,9 +64,10 @@ mindplot.Note = new Class({
                 return result;
             }.bind(this),
             html: true,
-            position: 'bottom', // Bottom positioned
-            center: true,      // Place the tip aligned with target
-            arrowSize: 6,     // A bigger arrow! ); // Title attribute will be used as tip.
+            position: 'bottom',
+            arrowOffset : 10,
+            center: true,
+            arrowSize: 15,
             offset : {x:10,y:20}
         });
     },

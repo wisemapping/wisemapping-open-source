@@ -660,66 +660,16 @@ mindplot.Designer = new Class({
             }
         },
 
-        addLink2Node : function(url) {
-            var topicsIds = this.getModel().filterTopicsIds();
-            if (topicsIds.length > 0) {
-                this._actionDispatcher.addLinkToTopic(topicsIds[0], url);
-            }
-        },
-
         addLink : function() {
-            var selectedTopics = this.getModel().filterSelectedTopics();
-            var topic = null;
-            if (selectedTopics.length > 0) {
-                topic = selectedTopics[0];
-                if (!$defined(topic._hasLink)) {
-                    var msg = new Element('div');
-                    var urlText = new Element('div').inject(msg);
-                    urlText.innerHTML = "URL:";
-                    var formElem = new Element('form', {'action': 'none', 'id':'linkFormId'});
-                    var urlInput = new Element('input', {'type': 'text', 'size':30});
-                    urlInput.inject(formElem);
-                    formElem.inject(msg);
-
-                    var okButtonId = "linkOkButtonId";
-                    formElem.addEvent('submit', function(e) {
-                        $(okButtonId).fireEvent('click', e);
-                        e = new Event(e);
-                        e.stop();
-                    });
-
-
-                    var okFunction = function() {
-                        var url = urlInput.value;
-                        var result = false;
-                        if ("" != url.trim()) {
-                            this.addLink2Node(url);
-                            result = true;
-                        }
-                        return result;
-                    }.bind(this);
-
-                    var dialog = mindplot.LinkIcon.buildDialog(this, okFunction, okButtonId);
-                    dialog.adopt(msg).show();
-
-                    // IE doesn't like too much this focus action...
-                    if (!Browser.ie) {
-                        urlInput.focus();
-                    }
-                }
-            } else {
-                core.Monitor.getInstance().logMessage('At least one topic must be selected to execute this operation.');
-            }
+            var model = this.getModel();
+            var topic = model.selectedTopic();
+            topic.showLinkEditor();
         },
 
         addNote : function() {
             var model = this.getModel();
             var topic = model.selectedTopic();
-            if (topic != null) {
-                topic.showNoteEditor();
-            } else {
-                core.Monitor.getInstance().logMessage('At least one topic must be selected to execute this operation.');
-            }
+            topic.showNoteEditor();
         },
 
         goToNode : function(node) {

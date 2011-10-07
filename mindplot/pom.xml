@@ -187,6 +187,7 @@
                                     <filelist dir="${basedir}/src/main/javascript/widget/" files="ToolbarItem.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/widget/" files="ToolbarPaneItem.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/widget/" files="NoteEditor.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/widget/" files="LinkEditor.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/widget/" files="FloatingTip.js"/>
 
                                     <filelist dir="${basedir}/src/main/javascript/"
