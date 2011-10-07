@@ -36,10 +36,24 @@ mindplot.Note = new Class({
             this._topic.showNoteEditor();
             event.stopPropagation();
         }.bind(this));
-    },
 
-    getText: function() {
-        return this._text;
+        this.tip = new mindplot.widget.FloatingTip(this.getImage()._peer._native, {
+            // Content can also be a function of the target element!
+            content: function() {
+                var result = new Element('div', {text:this._noteModel.getText()});
+                result.setStyles({
+                        'white-space': 'pre-wrap',
+                        'word-wrap': 'break-word'
+                    }
+                );
+                return result;
+            }.bind(this),
+            html: true,
+            position: 'bottom', // Bottom positioned
+            center: false,      // Place the tip aligned with target
+            arrowSize: 6,     // A bigger arrow! ); // Title attribute will be used as tip.
+            offset : {x:0,y:20}
+        });
     },
 
     getModel : function() {

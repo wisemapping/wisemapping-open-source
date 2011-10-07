@@ -26,17 +26,10 @@ mindplot.commands.AddLinkToTopicCommand = new Class({
     },
     execute: function(commandContext) {
         var topic = commandContext.findTopics(this._objectsIds)[0];
-        var updated = function() {
-            topic.addLink(this._url, commandContext._designer);
-            topic._adjustShapes();
-        }.bind(this);
-        updated.delay(0);
+        topic.addLink(this._url, commandContext._designer);
     },
     undoExecute: function(commandContext) {
         var topic = commandContext.findTopics(this._objectsIds)[0];
-        var updated = function() {
-            topic.removeLink();
-        }.bind(this);
-        updated.delay(0);
+        topic.removeLink();
     }
 });

@@ -43,8 +43,8 @@ mindplot.StandaloneActionDispatcher = new Class({
         this.execute(command);
     },
 
-    addNoteToTopic: function(topicId, text) {
-        var command = new mindplot.commands.AddNoteToTopicCommand(topicId, text);
+    changeNoteToTopic: function(topicId, text) {
+        var command = new mindplot.commands.ChangeNoteToTopicCommand(topicId, text);
         this.execute(command);
     },
 

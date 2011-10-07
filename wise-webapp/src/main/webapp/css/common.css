@@ -593,3 +593,13 @@ div.installCFG h2 {
     top: 0;
     margin: 0;
 }
+.floating-tip {
+    background-color: #dfcf3c;
+    padding: 5px 15px;
+    color: #666666;
+    font-weight: bold;
+    font-size: 11px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}

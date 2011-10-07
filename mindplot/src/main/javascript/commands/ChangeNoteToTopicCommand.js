@@ -16,27 +16,32 @@
  *   limitations under the License.
  */
 
-mindplot.commands.AddNoteToTopicCommand = new Class({
+mindplot.commands.ChangeNoteToTopicCommand = new Class({
     Extends:mindplot.Command,
     initialize: function(topicId, text) {
         $assert(topicId, 'topicId can not be null');
         this._objectsIds = topicId;
         this._text = text;
+        this._oldtext = null;
         this._id = mindplot.Command._nextUUID();
     },
     execute: function(commandContext) {
         var topic = commandContext.findTopics(this._objectsIds)[0];
-        var updated = function() {
-            topic.addNote(this._text);
-            topic._adjustShapes();
-        }.bind(this);
-        updated.delay(0);
+        if (topic.hasNote()) {
+            var model = topic.getModel();
+            var notes = model.getNotes()[0];
+            this._oldtext = notes.getText();
+            topic.removeNote();
+        }
+        topic.addNote(this._text);
     },
     undoExecute: function(commandContext) {
         var topic = commandContext.findTopics(this._objectsIds)[0];
-        var updated = function() {
+        if (this._oldtext) {
             topic.removeNote();
-        }.bind(this);
-        updated.delay(0);
+            topic.addNote(this._oldtext);
+        } else {
+            topic.removeNote();
+        }
     }
 });

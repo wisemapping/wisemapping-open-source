@@ -27,20 +27,12 @@ mindplot.commands.AddIconToTopicCommand = new Class({
 
     execute: function(commandContext) {
         var topic = commandContext.findTopics(this._objectsIds)[0];
-        var updated = function() {
-            var iconImg = topic.addIcon(this._iconType, commandContext._designer);
-            this._iconModel = iconImg.getModel();
-            topic._adjustShapes();
-        }.bind(this);
-        updated.delay(0);
+        var iconImg = topic.addIcon(this._iconType, commandContext._designer);
+        this._iconModel = iconImg.getModel();
     },
 
     undoExecute: function(commandContext) {
         var topic = commandContext.findTopics(this._objectsIds)[0];
-        var updated = function() {
-            topic.removeIcon(this._iconModel);
-            topic._adjustShapes();
-        }.bind(this);
-        updated.delay(0);
+        topic.removeIcon(this._iconModel);
     }
 });

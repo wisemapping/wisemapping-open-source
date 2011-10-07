@@ -85,15 +85,28 @@ mindplot.widget.NoteEditor = new Class({
         }.bind(this));
         okButton.inject(buttonContainer);
 
-        // Create move button ...
-        var rmButton = new Element('input', {type:'button', value:'Cancel','class':'btn-primary'});
-        rmButton.setStyle('margin', '5px');
-        rmButton.addClass('button');
-        rmButton.inject(buttonContainer);
-        rmButton.addEvent('click', function() {
+        // Create remove button ...
+        if ($defined(model.getValue())) {
+            var rmButton = new Element('input', {type:'button', value:'Remove','class':'btn-primary'});
+            rmButton.setStyle('margin', '5px');
+            rmButton.addClass('button');
+            rmButton.inject(buttonContainer);
+            rmButton.addEvent('click', function() {
+                model.setValue(null);
+                this.close();
+            }.bind(this));
+            buttonContainer.inject(form);
+        }
+
+
+        // Create cancel button ...
+        var cButton = new Element('input', {type:'button', value:'Cancel','class':'btn-primary'});
+        cButton.setStyle('margin', '5px');
+        cButton.addClass('button');
+        cButton.inject(buttonContainer);
+        cButton.addEvent('click', function() {
             this.close();
         }.bind(this));
-
         buttonContainer.inject(form);
 
         result.addEvent('keydown', function(event) {

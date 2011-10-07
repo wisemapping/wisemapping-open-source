@@ -157,7 +157,7 @@ mindplot.MainTopic = new Class({
     },
 
     setPosition : function(point, fireEvent) {
-        mindplot.Topic.prototype.setPosition.call(this, point);
+        this.parent(point);
 
         // Update board zero entry position...
         if (fireEvent != false)

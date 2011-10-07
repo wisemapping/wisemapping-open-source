@@ -274,7 +274,7 @@ mindplot.Topic = new Class({
             // Update model identifier ...
             var iconModel = icons[i];
             var icon = new mindplot.ImageIcon(this, iconModel);
-            result.addIcon(icon);
+            result.addIcon(icon, true);
         }
 
         //Links
@@ -287,9 +287,9 @@ mindplot.Topic = new Class({
 
         //Notes
         var notes = model.getNotes();
-        for (var i = 0; i < notes.length; i++) {
+        for (var j = 0; j < notes.length; j++) {
             this._hasNote = true;
-            this._note = new mindplot.Note(this, notes[i]);
+            this._note = new mindplot.Note(this, notes[j]);
             result.addIcon(this._note);
         }
 
@@ -304,6 +304,7 @@ mindplot.Topic = new Class({
         this._link = new mindplot.LinkIcon(linkModel, this, designer);
         iconGroup.addIcon(this._link);
         this._hasLink = true;
+        this._adjustShapes();
     },
 
     addNote : function(text) {
@@ -316,6 +317,7 @@ mindplot.Topic = new Class({
         this._note = new mindplot.Note(this, noteModel);
         iconGroup.addIcon(this._note);
         this._hasNote = true;
+        this._adjustShapes();
     },
 
     addIcon : function(iconType) {
@@ -327,8 +329,8 @@ mindplot.Topic = new Class({
         model.addIcon(iconModel);
 
         var imageIcon = new mindplot.ImageIcon(this, iconModel);
-        iconGroup.addIcon(imageIcon);
-
+        iconGroup.addIcon(imageIcon,true);
+        this._adjustShapes();
         return imageIcon;
     },
 
@@ -343,6 +345,7 @@ mindplot.Topic = new Class({
         if ($defined(iconGroup)) {
             iconGroup.removeIcon(iconModel);
         }
+        this._adjustShapes();
     },
 
     removeLink : function() {
@@ -356,10 +359,10 @@ mindplot.Topic = new Class({
                 this.get2DElement().removeChild(iconGroup.getNativeElement());
                 this._iconsGroup = null;
             }
-            this._adjustShapes(this);
         }
         this._link = null;
         this._hasLink = false;
+        this._adjustShapes();
     },
 
     removeNote : function() {
@@ -374,9 +377,9 @@ mindplot.Topic = new Class({
             iconGroup.removeIconByUrl(mindplot.Note.IMAGE_URL);
         }
 
-        this._adjustShapes();
         this._note = null;
         this._hasNote = false;
+        this._adjustShapes();
     },
 
     hasNote : function() {
@@ -735,17 +738,17 @@ mindplot.Topic = new Class({
             },
 
             setValue : function(value) {
-                if ("" != value.trim()) {
-                    var dispatcher = mindplot.ActionDispatcher.getInstance();
-                    // Only one note is supported ...
-                    if (model.getNotes().length > 0)
-                        dispatcher.removeNoteFromTopic(topicId);
-
-                    dispatcher.addNoteToTopic(topicId, value);
+                var dispatcher = mindplot.ActionDispatcher.getInstance();
+                if (!$defined(value)) {
+                    dispatcher.removeNoteFromTopic(topicId);
+                }
+                else {
+                    dispatcher.changeNoteToTopic(topicId, value);
                 }
             }
         };
 
+        this.closeEditors();
         var editor = new mindplot.widget.NoteEditor(editorModel);
         editor.show();
     },

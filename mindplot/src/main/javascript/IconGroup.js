@@ -51,7 +51,7 @@ mindplot.IconGroup = new Class({
         this._resize(this._icons.length);
     },
 
-    addIcon : function(icon) {
+    addIcon : function(icon, remove) {
         $defined(icon, "icon is not defined");
 
         icon.setGroup(this);
@@ -65,7 +65,9 @@ mindplot.IconGroup = new Class({
         this._group.appendChild(imageShape);
 
         // Register event for the group ..
-        this._removeTip.decorate(this._topicId, icon);
+        if (remove) {
+            this._removeTip.decorate(this._topicId, icon);
+        }
     },
 
     _findIconFromUrl : function(url) {
