@@ -40,19 +40,33 @@ mindplot.Note = new Class({
         this.tip = new mindplot.widget.FloatingTip(this.getImage()._peer._native, {
             // Content can also be a function of the target element!
             content: function() {
-                var result = new Element('div', {text:this._noteModel.getText()});
-                result.setStyles({
+                var result = new Element('div');
+
+                var title = new Element('div', {text:'Note'});
+                title.setStyles({
+                    'font-weight':'bold',
+                    color:'black',
+                    'padding-bottom':'5px',
+                    width: '100px'
+                });
+                title.inject(result);
+
+                var text = new Element('div', {text:this._noteModel.getText()});
+                text.setStyles({
                         'white-space': 'pre-wrap',
                         'word-wrap': 'break-word'
                     }
                 );
+                text.inject(result);
+
+
                 return result;
             }.bind(this),
             html: true,
             position: 'bottom', // Bottom positioned
-            center: false,      // Place the tip aligned with target
+            center: true,      // Place the tip aligned with target
             arrowSize: 6,     // A bigger arrow! ); // Title attribute will be used as tip.
-            offset : {x:0,y:20}
+            offset : {x:10,y:20}
         });
     },
 
