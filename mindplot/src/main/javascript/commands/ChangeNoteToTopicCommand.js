@@ -25,7 +25,8 @@ mindplot.commands.ChangeNoteToTopicCommand = new Class({
         this._oldtext = null;
         this._id = mindplot.Command._nextUUID();
     },
-    execute: function(commandContext) {
+
+     execute: function(commandContext) {
         var topic = commandContext.findTopics(this._objectsIds)[0];
         if (topic.hasNote()) {
             var model = topic.getModel();
@@ -35,6 +36,7 @@ mindplot.commands.ChangeNoteToTopicCommand = new Class({
         }
         topic.addNote(this._text);
     },
+
     undoExecute: function(commandContext) {
         var topic = commandContext.findTopics(this._objectsIds)[0];
         if (this._oldtext) {

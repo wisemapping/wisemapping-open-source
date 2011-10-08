@@ -27,7 +27,7 @@ mindplot.ActionDispatcher = new Class({
         throw "method must be implemented.";
     },
 
-    addLinkToTopic: function(topicId, url) {
+    changeLinkToTopic: function(topicId, url) {
         throw "method must be implemented.";
     },
 

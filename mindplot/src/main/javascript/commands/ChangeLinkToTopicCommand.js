@@ -16,7 +16,7 @@
  *   limitations under the License.
  */
 
-mindplot.commands.AddLinkToTopicCommand = new Class({
+mindplot.commands.ChangeLinkToTopicCommand = new Class({
     Extends:mindplot.Command,
     initialize: function(topicId, url) {
         $assert(topicId, 'topicId can not be null');
@@ -24,12 +24,25 @@ mindplot.commands.AddLinkToTopicCommand = new Class({
         this._url = url;
         this._id = mindplot.Command._nextUUID();
     },
+
     execute: function(commandContext) {
         var topic = commandContext.findTopics(this._objectsIds)[0];
-        topic.addLink(this._url, commandContext._designer);
+        if (topic.hasLink()) {
+            var model = topic.getModel();
+            var link = model.getLinks()[0];
+            this._oldUrl = link.getUrl();
+            topic.removeLink();
+        }
+        topic.addLink(this._url);
     },
+
     undoExecute: function(commandContext) {
         var topic = commandContext.findTopics(this._objectsIds)[0];
-        topic.removeLink();
+        if (this._oldtext) {
+            topic.removeLink();
+            topic.addLink(this._oldUrl);
+        } else {
+            topic.removeLink();
+        }
     }
 });

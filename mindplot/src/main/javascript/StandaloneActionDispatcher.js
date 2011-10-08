@@ -33,8 +33,8 @@ mindplot.StandaloneActionDispatcher = new Class({
         this.execute(command);
     },
 
-    addLinkToTopic: function(topicId, url) {
-        var command = new mindplot.commands.AddLinkToTopicCommand(topicId, url);
+    changeLinkToTopic: function(topicId, url) {
+        var command = new mindplot.commands.ChangeLinkToTopicCommand(topicId, url);
         this.execute(command);
     },
 

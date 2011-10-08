@@ -280,7 +280,6 @@ mindplot.Topic = new Class({
         //Links
         var links = model.getLinks();
         for (var i = 0; i < links.length; i++) {
-            this._hasLink = true;
             this._link = new mindplot.LinkIcon(links[i], this, designer);
             result.addIcon(this._link);
         }
@@ -288,22 +287,21 @@ mindplot.Topic = new Class({
         //Notes
         var notes = model.getNotes();
         for (var j = 0; j < notes.length; j++) {
-            this._hasNote = true;
-            this._note = new mindplot.Note(this, notes[j]);
+            this._note = new mindplot.NoteIcon(this, notes[j]);
             result.addIcon(this._note);
         }
 
         return result;
     },
 
-    addLink : function(url, designer) {
+    addLink : function(url) {
         var iconGroup = this.getOrBuildIconGroup();
         var model = this.getModel();
         var linkModel = model.createLink(url);
         model.addLink(linkModel);
-        this._link = new mindplot.LinkIcon(linkModel, this, designer);
+
+        this._link = new mindplot.LinkIcon(this, linkModel);
         iconGroup.addIcon(this._link);
-        this._hasLink = true;
         this._adjustShapes();
     },
 
@@ -314,9 +312,8 @@ mindplot.Topic = new Class({
         var noteModel = model.createNote(text);
         model.addNote(noteModel);
 
-        this._note = new mindplot.Note(this, noteModel);
+        this._note = new mindplot.NoteIcon(this, noteModel);
         iconGroup.addIcon(this._note);
-        this._hasNote = true;
         this._adjustShapes();
     },
 
@@ -349,19 +346,18 @@ mindplot.Topic = new Class({
     },
 
     removeLink : function() {
+        // Update model ...
         var model = this.getModel();
         var links = model.getLinks();
         model._removeLink(links[0]);
+
+        // Remove UI ...
         var iconGroup = this.getIconGroup();
         if ($defined(iconGroup)) {
-            iconGroup.removeIcon(mindplot.LinkIcon.IMAGE_URL);
-            if (iconGroup.getIcons().length == 0) {
-                this.get2DElement().removeChild(iconGroup.getNativeElement());
-                this._iconsGroup = null;
-            }
+            iconGroup.removeIconByUrl(mindplot.LinkIcon.IMAGE_URL);
         }
+
         this._link = null;
-        this._hasLink = false;
         this._adjustShapes();
     },
 
@@ -374,16 +370,19 @@ mindplot.Topic = new Class({
         // Remove UI ...
         var iconGroup = this.getIconGroup();
         if ($defined(iconGroup)) {
-            iconGroup.removeIconByUrl(mindplot.Note.IMAGE_URL);
+            iconGroup.removeIconByUrl(mindplot.NoteIcon.IMAGE_URL);
         }
 
         this._note = null;
-        this._hasNote = false;
         this._adjustShapes();
     },
 
     hasNote : function() {
-        return this._hasNote;
+        return this.getModel().getNotes().length != 0;
+    },
+
+    hasLink : function() {
+        return this.getModel().getLinks().length != 0;
     },
 
     addRelationship : function(relationship) {
@@ -747,9 +746,8 @@ mindplot.Topic = new Class({
                 }
             }
         };
-
-        this.closeEditors();
         var editor = new mindplot.widget.NoteEditor(editorModel);
+        this.closeEditors();
         editor.show();
     },
 
@@ -759,22 +757,22 @@ mindplot.Topic = new Class({
         var model = this.getModel();
         var editorModel = {
             getValue : function() {
-//                var notes = model.getNotes();
-//                var result;
-//                if (notes.length > 0)
-//                    result = notes[0].getText();
-//
-//                return result;
+                var links = model.getLinks();
+                var result;
+                if (links.length > 0)
+                    result = links[0].getUrl();
+
+                return result;
             },
 
             setValue : function(value) {
-//                var dispatcher = mindplot.ActionDispatcher.getInstance();
-//                if (!$defined(value)) {
-//                    dispatcher.removeNoteFromTopic(topicId);
-//                }
-//                else {
-//                    dispatcher.changeNoteToTopic(topicId, value);
-//                }
+                var dispatcher = mindplot.ActionDispatcher.getInstance();
+                if (!$defined(value)) {
+                    dispatcher.removeLinkFromTopic(topicId);
+                }
+                else {
+                    dispatcher.changeLinkToTopic(topicId, value);
+                }
             }
         };
 

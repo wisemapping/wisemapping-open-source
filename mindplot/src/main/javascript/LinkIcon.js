@@ -18,179 +18,40 @@
 
 mindplot.LinkIcon = new Class({
 
-    Extends:mindplot.Icon,
-    initialize:function(urlModel, topic, designer) {
-        $assert(urlModel, "urlModel can not be null");
-        $assert(designer, "designer can not be null");
-        $assert(topic, "topic can not be null");
+    Extends: mindplot.Icon,
+    initialize : function(topic, linkModel) {
+        $assert(topic, 'topic can not be null');
+        $assert(linkModel, 'linkModel can not be null');
+
 
         this.parent(mindplot.LinkIcon.IMAGE_URL);
-
-        var divContainer = designer.getWorkSpace().getScreenManager().getContainer();
-        var bubbleTip = mindplot.BubbleTip.getInstance(divContainer);
-
-        this._linkModel = urlModel;
+        this._noteModel = linkModel;
         this._topic = topic;
-        this._designer = designer;
-        var image = this.getImage();
-        var imgContainer = new Element('div').setStyles({textAlign:'center', cursor:'pointer'});
-        this._img = new Element('img');
-        var url = urlModel.getUrl();
-        this._img.src = 'http://open.thumbshots.org/image.pxf?url=' + url;
 
-        if (url.indexOf('http:') == -1) {
-            url = 'http://' + url;
-        }
-        this._img.alt = url;
-        this._url = url;
-        var openWindow = function() {
-            var wOpen;
-            var sOptions;
-
-            sOptions = 'status=yes,menubar=yes,scrollbars=yes,resizable=yes,toolbar=yes';
-            sOptions = sOptions + ',width=' + (screen.availWidth - 10).toString();
-            sOptions = sOptions + ',height=' + (screen.availHeight - 122).toString();
-            sOptions = sOptions + ',screenX=0,screenY=0,left=0,top=0';
-            var url = this._img.alt;
-            wOpen = window.open(url, "link", "width=100px, height=100px");
-            wOpen.focus();
-            wOpen.moveTo(0, 0);
-            wOpen.resizeTo(screen.availWidth, screen.availHeight);
-        };
-
-        this._img.addEvent('click', openWindow.bindWithEvent(this));
-        this._img.inject(imgContainer);
-
-        var attribution = new Element('div').setStyles({fontSize:10, textAlign:"center"});
-        attribution.innerHTML = "<a href='http://www.thumbshots.org' target='_blank' title='About Thumbshots thumbnails' style='color:#08468F'>About Thumbshots thumbnails</a>";
-
-        var container = new Element('div');
-        var element = new Element('div').setStyles({borderBottom:'1px solid #e5e5e5'});
-
-        var title = new Element('div').setStyles({fontSize:12, textAlign:'center'});
-        this._link = new Element('span');
-        this._link.href = url;
-        this._link.innerHTML = url;
-        this._link.setStyle("text-decoration", "underline");
-        this._link.setStyle("cursor", "pointer");
-        this._link.inject(title);
-        this._link.addEvent('click', openWindow.bindWithEvent(this));
-        title.inject(element);
-
-        imgContainer.inject(element);
-        attribution.inject(element);
-        element.inject(container);
-
-        if (!$defined(designer._readOnly) || ($defined(designer._readOnly) && !designer._readOnly)) {
-            var buttonContainer = new Element('div').setStyles({paddingTop:5, textAlign:'center'});
-            var editBtn = new Element('input', {type:'button', 'class':'btn-primary', value:'Edit'}).addClass('button').inject(buttonContainer);
-            var removeBtn = new Element('input', {type:'button', value:'Remove','class':'btn-primary'}).addClass('button').inject(buttonContainer);
-
-            editBtn.setStyle("margin-right", "3px");
-            removeBtn.setStyle("margin-left", "3px");
-
-            removeBtn.addEvent('click', function(event) {
-
-                var actionDispatcher = mindplot.ActionDispatcher.getInstance();
-                actionDispatcher.removeLinkFromTopic(this._topic.getId());
-                bubbleTip.forceClose();
-            }.bindWithEvent(this));
-
-            var okButtonId = 'okLinkButtonId';
-            editBtn.addEvent('click', function(event) {
-                var topic = this._topic;
-                var designer = this._designer;
-                var link = this;
-                var okFunction = function(e) {
-                    var result = false;
-                    var url = urlInput.value;
-                    if ("" != url.trim()) {
-                        link._img.src = 'http://open.thumbshots.org/image.pxf?url=' + url;
-                        link._img.alt = url;
-                        link._link.href = url;
-                        link._link.innerHTML = url;
-                        this._linkModel.setUrl(url);
-                        result = true;
-                    }
-                    return result;
-                };
-                var msg = new Element('div');
-                var urlText = new Element('div').inject(msg);
-                urlText.innerHTML = "URL:";
-
-                var formElem = new Element('form', {'action': 'none', 'id':'linkFormId'});
-                var urlInput = new Element('input', {'type': 'text', 'size':30,'value':url});
-                urlInput.inject(formElem);
-                formElem.inject(msg);
-
-                formElem.addEvent('submit', function(e) {
-                    $(okButtonId).fireEvent('click', e);
-                    e = new Event(e);
-                    e.stop();
-                });
-
-
-                var dialog = mindplot.LinkIcon.buildDialog(designer, okFunction, okButtonId);
-                dialog.adopt(msg).show();
-
-            }.bindWithEvent(this));
-            buttonContainer.inject(container);
-        }
-
-        var linkIcon = this;
-        image.addEvent('mouseover', function(event) {
-            bubbleTip.open(event, container, linkIcon);
-        });
-        image.addEvent('mousemove', function(event) {
-            bubbleTip.updatePosition(event);
-        });
-        image.addEvent('mouseout', function(event) {
-            bubbleTip.close(event);
-        });
+        this._registerEvents();
     },
 
-    getUrl : function() {
-        return this._url;
+    _registerEvents : function() {
+        this._image.setCursor('pointer');
+
+        // Add on click event to open the editor ...
+        this.addEvent('click', function(event) {
+            this._topic.showLinkEditor();
+            event.stopPropagation();
+        }.bind(this));
+
+        this._tip = new mindplot.widget.LinkIconTooltip(this);
     },
 
     getModel : function() {
-        return this._linkModel;
+        return this._noteModel;
+    },
+
+    remove : function() {
+        var actionDispatcher = mindplot.ActionDispatcher.getInstance();
+        actionDispatcher.removeLinkFromTopic(this._topic.getId());
     }
 });
-
-mindplot.LinkIcon.buildDialog = function(designer, okFunction, okButtonId) {
-    var windoo = new Windoo({
-        title: 'Write link URL',
-        theme: Windoo.Themes.wise,
-        modal:true,
-        buttons:{'menu':false, 'close':false, 'minimize':false, 'roll':false, 'maximize':false},
-        destroyOnClose:true,
-        height:130
-    });
-
-    var cancel = new Element('input', {'type': 'button', 'class':'btn-primary', 'value': 'Cancel'}).setStyle('margin-right', "5px");
-    cancel.setStyle('margin-left', "5px");
-    cancel.addEvent('click', function(event) {
-        $(document).addEvent('keydown', designer.keyEventHandler.bindWithEvent(designer));
-        windoo.close();
-    }.bindWithEvent(this));
-
-    var ok = new Element('input', {'type': 'button', 'class':'btn-primary','value': 'Ok','id':okButtonId}).setStyle('marginRight', 10);
-    ok.addEvent('click', function(event) {
-        var couldBeUpdated = okFunction.attempt();
-        if (couldBeUpdated) {
-            $(document).addEvent('keydown', designer.keyEventHandler.bindWithEvent(designer));
-            windoo.close();
-        }
-    }.bindWithEvent(this));
-
-    var panel = new Element('div', {'styles': {'padding-top': 10, 'text-align': 'right'}}).adopt(ok, cancel);
-
-    windoo.addPanel(panel);
-    $(document).removeEvents('keydown');
-    return windoo;
-};
-
 mindplot.LinkIcon.IMAGE_URL = "../images/world_link.png";
 
  

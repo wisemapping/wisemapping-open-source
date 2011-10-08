@@ -20,9 +20,8 @@ mindplot.model.LinkModel = new Class({
     initialize : function(url, topic) {
         $assert(url, 'url can not be null');
         $assert(topic, 'mindmap can not be null');
-
-        this._url = url;
         this._topic = topic;
+        this.setUrl(url);
     },
 
     getUrl : function() {
@@ -31,7 +30,8 @@ mindplot.model.LinkModel = new Class({
 
     setUrl : function(url) {
         $assert(url, 'url can not be null');
-        this._url = url;
+        this._url = this._fixUrl(url);
+        this._type = this._url.contains('mailto:') ? 'mail' : 'url';
     },
 
     getTopic : function() {
@@ -40,5 +40,13 @@ mindplot.model.LinkModel = new Class({
 
     isLinkModel : function() {
         return true;
+    }
+    ,
+    _fixUrl : function(url) {
+        var result = url;
+        if (!result.contains('http://') && !result.contains('https://') && !result.contains('mailto://')) {
+            result = "http://" + result;
+        }
+        return result;
     }
 });

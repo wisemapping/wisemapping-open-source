@@ -22,11 +22,15 @@ mindplot.commands.RemoveLinkFromTopicCommand = new Class({
         $assert(topicId, 'topicId can not be null');
         this._objectsIds = topicId;
     },
+
     execute: function(commandContext) {
         var topic = commandContext.findTopics(this._objectsIds)[0];
-        this._url = topic._link.getUrl();
+        var model = topic.getModel();
+        var links = model.getLinks()[0];
+        this._text = links.getUrl();
         topic.removeLink();
     },
+
     undoExecute: function(commandContext) {
         var topic = commandContext.findTopics(this._objectsIds)[0];
         topic.addLink(this._url, commandContext._designer);

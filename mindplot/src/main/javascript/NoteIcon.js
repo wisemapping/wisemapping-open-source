@@ -16,12 +16,12 @@
  *   limitations under the License.
  */
 
-mindplot.Note = new Class({
+mindplot.NoteIcon = new Class({
     Extends: mindplot.Icon,
     initialize : function(topic, noteModel) {
         $assert(topic, 'topic can not be null');
 
-        this.parent(mindplot.Note.IMAGE_URL);
+        this.parent(mindplot.NoteIcon.IMAGE_URL);
         this._noteModel = noteModel;
         this._topic = topic;
 
@@ -37,7 +37,7 @@ mindplot.Note = new Class({
             event.stopPropagation();
         }.bind(this));
 
-        this.tip = new mindplot.widget.FloatingTip(this.getImage()._peer._native, {
+        this._tip = new mindplot.widget.FloatingTip(this.getImage()._peer._native, {
             // Content can also be a function of the target element!
             content: function() {
                 var result = new Element('div');
@@ -82,5 +82,5 @@ mindplot.Note = new Class({
     }
 });
 
-mindplot.Note.IMAGE_URL = "../images/note.png";
+mindplot.NoteIcon.IMAGE_URL = "../images/note.png";
 

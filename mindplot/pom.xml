@@ -110,7 +110,8 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="BubbleTip.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="Icon.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="LinkIcon.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="Note.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="NoteIcon.js"/>
+
                                     <filelist dir="${basedir}/src/main/javascript/" files="ActionIcon.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ImageIcon.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="model/IconModel.js"/>
@@ -130,7 +131,7 @@
                                     <filelist dir="${basedir}/src/main/javascript/commands/"
                                               files="AddTopicCommand.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="commands/AddLinkToTopicCommand.js"/>
+                                              files="commands/ChangeLinkToTopicCommand.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="commands/RemoveLinkFromTopicCommand.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
@@ -189,6 +190,8 @@
                                     <filelist dir="${basedir}/src/main/javascript/widget/" files="NoteEditor.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/widget/" files="LinkEditor.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/widget/" files="FloatingTip.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/widget/" files="LinkIconTooltip.js"/>
+
 
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="widget/ColorPickerPanel.js"/>

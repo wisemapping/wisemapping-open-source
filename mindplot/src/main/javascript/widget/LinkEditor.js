@@ -64,25 +64,36 @@ mindplot.widget.LinkEditor = new Class({
         var result = new Element('div');
         var form = new Element('form', {'action': 'none', 'id':'linkFormId'});
 
-        // Add textarea ...
-        var textArea = new Element('textarea', {placeholder: 'Write your note here ...'});
-        if (model.getValue() != null)
-            textArea.value = model.getValue();
+        // Add combo ...
+        var select = new Element('select');
+        select.setStyles({margin: '5px'});
+        new Element('option', {text:'URL'}).inject(select);
+        new Element('option', {text:'Mail'}).inject(select);
+        select.inject(form);
 
-        textArea.setStyles({'width':'100%', 'height':80,resize: 'none'
-        });
-        textArea.inject(form);
+        // Add Input ...
+        var input = new Element('input', {placeholder: 'http://www.example.com/',type:'url',required:true});
+        if (model.getValue() != null)
+            input.value = model.getValue();
+
+        input.setStyles({'width':'70%'});
+        input.inject(form);
+
+        // Register submit event ...
+        form.addEvent('submit', function(event) {
+            event.stopPropagation();
+            event.preventDefault();
+
+            model.setValue(input.value);
+            this.close();
+        }.bind(this));
 
         // Add buttons ...
         var buttonContainer = new Element('div').setStyles({paddingTop:5, textAlign:'center'});
 
         // Create accept button ...
-        var okButton = new Element('input', {type:'button', value:'Accept','class':'btn-primary'});
+        var okButton = new Element('input', {type:'submit', value:'Accept','class':'btn-primary'});
         okButton.addClass('button');
-        okButton.addEvent('click', function() {
-            model.setValue(textArea.value);
-            this.close();
-        }.bind(this));
         okButton.inject(buttonContainer);
 
         // Create remove button ...
@@ -91,16 +102,16 @@ mindplot.widget.LinkEditor = new Class({
             rmButton.setStyle('margin', '5px');
             rmButton.addClass('button');
             rmButton.inject(buttonContainer);
-            rmButton.addEvent('click', function() {
+            rmButton.addEvent('click', function(event) {
                 model.setValue(null);
+                event.stopPropagation();
                 this.close();
             }.bind(this));
             buttonContainer.inject(form);
         }
 
-
         // Create cancel button ...
-        var cButton = new Element('input', {type:'button', value:'Cancel','class':'btn-primary'});
+        var cButton = new Element('input', {type:'button', value:'Cancel','class':'btn-secondary'});
         cButton.setStyle('margin', '5px');
         cButton.addClass('button');
         cButton.inject(buttonContainer);

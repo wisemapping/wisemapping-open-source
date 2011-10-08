@@ -34,7 +34,7 @@ mindplot.widget.FloatingTip = new Class({
         showOn: 'mouseenter',
         hideOn: 'mouseleave',
         showDelay: 500,
-        hideDelay: 0,
+        hideDelay: 250,
         className: 'floating-tip',
         offset: {x: 0, y: 0},
         fx: { 'duration': 'short' }
@@ -71,9 +71,13 @@ mindplot.widget.FloatingTip = new Class({
             return this;
         }
         var tip = this._create(element);
-        if (tip == null) return this;
+        if (tip == null)
+            return this;
         element.store('floatingtip', tip);
         this._animate(tip, 'in');
+        tip.addEvent(this.options.showOn, this.boundShow);
+        tip.addEvent(this.options.hideOn, this.boundHide);
+
         this.fireEvent('show', [tip, element]);
         return this;
     },

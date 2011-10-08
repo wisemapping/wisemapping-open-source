@@ -65,24 +65,33 @@ mindplot.widget.NoteEditor = new Class({
         var form = new Element('form', {'action': 'none', 'id':'noteFormId'});
 
         // Add textarea ...
-        var textArea = new Element('textarea', {placeholder: 'Write your note here ...'});
+        var textArea = new Element('textarea', {placeholder: 'Write your note here ...',required:true});
         if (model.getValue() != null)
             textArea.value = model.getValue();
 
-        textArea.setStyles({'width':'100%', 'height':80,resize: 'none'
+        textArea.setStyles({
+            'width':'100%',
+            'height':80
+            ,resize: 'none'
         });
         textArea.inject(form);
+
+        // Register submit event ...
+        form.addEvent('submit', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            model.setValue(textArea.value);
+            this.close();
+
+        }.bind(this));
 
         // Add buttons ...
         var buttonContainer = new Element('div').setStyles({paddingTop:5, textAlign:'center'});
 
         // Create accept button ...
-        var okButton = new Element('input', {type:'button', value:'Accept','class':'btn-primary'});
+        var okButton = new Element('input', {type:'submit', value:'Accept','class':'btn-primary'});
         okButton.addClass('button');
-        okButton.addEvent('click', function() {
-            model.setValue(textArea.value);
-            this.close();
-        }.bind(this));
         okButton.inject(buttonContainer);
 
         // Create remove button ...
@@ -100,7 +109,7 @@ mindplot.widget.NoteEditor = new Class({
 
 
         // Create cancel button ...
-        var cButton = new Element('input', {type:'button', value:'Cancel','class':'btn-primary'});
+        var cButton = new Element('input', {type:'button', value:'Cancel','class':'btn-secondary'});
         cButton.setStyle('margin', '5px');
         cButton.addClass('button');
         cButton.inject(buttonContainer);

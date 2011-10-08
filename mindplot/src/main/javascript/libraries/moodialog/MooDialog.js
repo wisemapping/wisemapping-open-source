@@ -33,11 +33,7 @@ var MooDialog = new Class({
 		onBeforeClose: function(){
 			this.wrapper.setStyle('display', 'none');
 			this.fireEvent('hide');
-		}/*,
-		onOpen: function(){},
-		onClose: function(){},
-		onShow: function(){},
-		onHide: function(){}*/
+		}
 	},
 
 	initialize: function(options){
