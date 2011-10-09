@@ -319,6 +319,8 @@ mindplot.Topic = new Class({
 
     addIcon : function(iconType) {
         var iconGroup = this.getOrBuildIconGroup();
+        this.closeEditors();
+
         var model = this.getModel();
 
         // Update model ...

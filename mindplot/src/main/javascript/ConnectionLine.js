@@ -27,10 +27,10 @@ mindplot.ConnectionLine = new Class({
 
         var strokeColor = mindplot.ConnectionLine.getStrokeColor();
         var line;
+        var ctrlPoints = this._getCtrlPoints(sourceNode, targetNode);
         if (targetNode.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
             line = this._createLine(lineType, mindplot.ConnectionLine.CURVED);
             if (line.getType() == "CurvedLine") {
-                var ctrlPoints = this._getCtrlPoints(sourceNode, targetNode);
                 line.setSrcControlPoint(ctrlPoints[0]);
                 line.setDestControlPoint(ctrlPoints[1]);
             }
@@ -38,11 +38,9 @@ mindplot.ConnectionLine = new Class({
         } else {
             line = this._createLine(lineType, mindplot.ConnectionLine.SIMPLE_CURVED);
             if (line.getType() == "CurvedLine") {
-                var ctrlPoints = this._getCtrlPoints(sourceNode, targetNode);
                 line.setSrcControlPoint(ctrlPoints[0]);
                 line.setDestControlPoint(ctrlPoints[1]);
             }
-            //        line = new web2d.PolyLine();
             line.setStroke(1, 'solid', strokeColor);
         }
 

@@ -333,8 +333,10 @@ mindplot.Designer = new Class({
             $assert(targetTopic, "targetTopic can not be null");
 
             // Create a new topic model ...
+            // @Todo: Model should not be modified from here ...
             var mindmap = this.getMindmap();
             var model = mindmap.createRelationship(sourceTopic.getModel().getId(), targetTopic.getModel().getId());
+
             this._actionDispatcher.connectByRelation(model);
         },
 
