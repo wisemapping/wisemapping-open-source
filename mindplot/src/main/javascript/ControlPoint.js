@@ -18,8 +18,13 @@
 
 mindplot.ControlPoint = new Class({
     initialize:function() {
-        this._controlPointsController = [new web2d.Elipse({width:6, height:6, stroke:'1 solid #6589de',fillColor:'gray', visibility:false}),
-            new web2d.Elipse({width:6, height:6, stroke:'1 solid #6589de',fillColor:'gray', visibility:false})];
+        var control1 = new web2d.Elipse({width:6, height:6, stroke:'1 solid #6589de',fillColor:'gray', visibility:false});
+        control1.setCursor('pointer');
+
+        var control2 = new web2d.Elipse({width:6, height:6, stroke:'1 solid #6589de',fillColor:'gray', visibility:false});
+        control2.setCursor('pointer');
+
+        this._controlPointsController = [control1,control2];
         this._controlLines = [new web2d.Line({strokeColor:"#6589de", strokeWidth:1, opacity:0.3}),
             new web2d.Line({strokeColor:"#6589de", strokeWidth:1, opacity:0.3})];
 

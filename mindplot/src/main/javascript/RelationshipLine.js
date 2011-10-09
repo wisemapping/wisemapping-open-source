@@ -22,7 +22,6 @@ mindplot.RelationshipLine = new Class({
 
         this._line2d.setIsSrcControlPointCustom(false);
         this._line2d.setIsDestControlPointCustom(false);
-        this._isOnfocus = false;
         this._focusShape = this._createLine(this.getLineType(), mindplot.ConnectionLine.SIMPLE_CURVED);
         this._focusShape.setStroke(2, "solid", "#3f96ff");
         var ctrlPoints = this._line2d.getControlPoints();
@@ -70,6 +69,7 @@ mindplot.RelationshipLine = new Class({
         var spoint = new core.Point();
         spoint.x = parseInt(ctrlPoints[0].x) + parseInt(sourcePosition.x);
         spoint.y = parseInt(ctrlPoints[0].y) + parseInt(sourcePosition.y);
+
         var tpoint = new core.Point();
         tpoint.x = parseInt(ctrlPoints[1].x) + parseInt(targetPosition.x);
         tpoint.y = parseInt(ctrlPoints[1].y) + parseInt(targetPosition.y);
@@ -160,6 +160,8 @@ mindplot.RelationshipLine = new Class({
 
             this._controlPointsController.setVisibility(focus);
             this._onFocus = focus;
+            this._line2d.setCursor(this.isOnFocus() ? 'default' : 'pointer');
+
         }
     },
 
