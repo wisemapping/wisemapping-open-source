@@ -17,14 +17,14 @@
  */
 mindplot.commands.AddRelationshipCommand = new Class({
     Extends:mindplot.Command,
-    initialize: function(model, mindmap) {
+    initialize: function(model) {
         $assert(model, 'Relationship model can not be null');
         this._model = model;
-        this._mindmap = mindmap;
         this._id = mindplot.Command._nextUUID();
     },
     execute: function(commandContext) {
         var relationship = commandContext.createRelationship(this._model);
+
         // Finally, focus ...
         var designer = commandContext._designer;
         designer.onObjectFocusEvent.attempt(relationship, designer);
@@ -32,6 +32,8 @@ mindplot.commands.AddRelationshipCommand = new Class({
     },
     undoExecute: function(commandContext) {
         var relationship = commandContext.removeRelationship(this._model);
-        this._mindmap.removeRelationship(this._model);
+
+        // @Todo: Esto esta mal. Designer toca el mindmap ...
+//        this._mindmap.removeRelationship(this._model);
     }
 });

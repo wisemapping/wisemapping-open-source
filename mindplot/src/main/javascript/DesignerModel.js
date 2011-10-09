@@ -80,6 +80,13 @@ mindplot.DesignerModel = new Class({
         this._topics.push(topic);
     },
 
+    addRelationship : function(id, rel) {
+        $assert(rel, "rel can not be null");
+        $assert(id, "id can not be null");
+
+        this._relationships[id] = rel;
+    },
+
     filterTopicsIds : function(validate, errorMsg) {
         var result = [];
         var topics = this.filterSelectedTopics();

@@ -385,7 +385,7 @@ mindplot.Topic = new Class({
         return this.getModel().getLinks().length != 0;
     },
 
-    addRelationship : function(relationship) {
+    connectByRelation : function(relationship) {
         this._relationships.push(relationship);
     },
 

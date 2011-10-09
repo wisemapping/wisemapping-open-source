@@ -50,6 +50,8 @@ mindplot.Designer = new Class({
             if (!profile.readOnly) {
                 this._registerEvents();
             }
+
+            this._relPivot = new mindplot.RelationshipPivot(this._workspace, this);
         },
 
         _registerEvents : function() {
@@ -74,8 +76,8 @@ mindplot.Designer = new Class({
             // Initialize workspace event listeners.
             screenManager.addEvent('update', function() {
                 // Topic must be set to his original state. All editors must be closed.
-                var objects = this.getModel().getObjects();
-                objects.forEach(function(object) {
+                var topics = this.getModel().getTopics();
+                topics.forEach(function(object) {
                     object.closeEditors();
                 });
 
@@ -316,65 +318,24 @@ mindplot.Designer = new Class({
             }
         },
 
-        addRelationShip : function(event) {
+        showRelPivot : function(event) {
+            // Current mouse position ....
             var screen = this._workspace.getScreenManager();
             var pos = screen.getWorkspaceMousePosition(event);
-            var selectedTopics = this.getModel().filterSelectedTopics();
-            if (selectedTopics.length > 0 &&
-                (!$defined(this._creatingRelationship) || ($defined(this._creatingRelationship) && !this._creatingRelationship))) {
-                this._workspace.enableWorkspaceEvents(false);
-                var fromNodePosition = selectedTopics[0].getPosition();
-                this._relationship = new web2d.CurvedLine();
-                this._relationship.setStyle(web2d.CurvedLine.SIMPLE_LINE);
-                this._relationship.setDashed(2, 2);
-                this._relationship.setFrom(fromNodePosition.x, fromNodePosition.y);
-                this._relationship.setTo(pos.x, pos.y);
-                this._workspace.appendChild(this._relationship);
-                this._creatingRelationship = true;
-                this._relationshipMouseMoveFunction = this._relationshipMouseMove.bindWithEvent(this);
-                this._relationshipMouseClickFunction = this._relationshipMouseClick.bindWithEvent(this, selectedTopics[0]);
+            var selectedTopic = this.getModel().selectedTopic();
 
-                screen.addEvent('mousemove', this._relationshipMouseMoveFunction);
-                screen.addEvent('click', this._relationshipMouseClickFunction);
-            }
+            // create a connection ...
+            this._relPivot.start(selectedTopic, pos);
         },
 
-        _relationshipMouseMove : function(event) {
-            var screen = this._workspace.getScreenManager();
-            var pos = screen.getWorkspaceMousePosition(event);
-            this._relationship.setTo(pos.x - 1, pos.y - 1); //to prevent click event target to be the line itself
-            event.preventDefault();
-            event.stop();
-            return false;
-        },
+        connectByRelation : function(sourceTopic, targetTopic) {
+            $assert(sourceTopic, "sourceTopic can not be null");
+            $assert(targetTopic, "targetTopic can not be null");
 
-        _relationshipMouseClick : function (event, fromNode) {
-            var target = event.target;
-            while (target.tagName != "g" && $defined(target.parentNode)) {
-                target = target.parentNode;
-            }
-            if ($defined(target.virtualRef)) {
-                var targetNode = target.virtualRef;
-                this.addRelationship(fromNode, targetNode);
-            }
-            this._workspace.removeChild(this._relationship);
-            this._relationship = null;
-            this._workspace.getScreenManager().removeEvent('mousemove', this._relationshipMouseMoveFunction);
-            this._workspace.getScreenManager().removeEvent('click', this._relationshipMouseClickFunction);
-            this._creatingRelationship = false;
-            this._workspace.enableWorkspaceEvents(true);
-            event.preventDefault();
-            event.stop();
-            return false;
-        },
-
-        addRelationship : function(fromNode, toNode) {
             // Create a new topic model ...
             var mindmap = this.getMindmap();
-            var model = mindmap.createRelationship(fromNode.getModel().getId(), toNode.getModel().getId());
-
-            this._actionDispatcher.addRelationship(model, mindmap);
-
+            var model = mindmap.createRelationship(sourceTopic.getModel().getId(), targetTopic.getModel().getId());
+            this._actionDispatcher.connectByRelation(model);
         },
 
         needsSave : function() {
@@ -459,18 +420,20 @@ mindplot.Designer = new Class({
 
         _relationshipModelToRelationship : function(model) {
             $assert(model, "Node model can not be null");
+
             var relationship = this._buildRelationship(model);
             var sourceTopic = relationship.getSourceTopic();
-            sourceTopic.addRelationship(relationship);
+            sourceTopic.connectByRelation(relationship);
+
             var targetTopic = relationship.getTargetTopic();
-            targetTopic.addRelationship(relationship);
+            targetTopic.connectByRelation(relationship);
             relationship.setVisibility(sourceTopic.isVisible() && targetTopic.isVisible());
+
             var workspace = this._workspace;
             workspace.appendChild(relationship);
             relationship.redraw();
             return relationship;
-        }
-        ,
+        },
 
         createRelationship : function(model) {
             this._mindmap.addRelationship(model);
@@ -488,54 +451,54 @@ mindplot.Designer = new Class({
             delete this._relationships[model.getId()];
         },
 
-        _buildRelationship : function (topicModel) {
+        _buildRelationship : function (model) {
             var elem = this;
 
-            var fromNodeId = topicModel.getFromNode();
-            var toNodeId = topicModel.getToNode();
+            var fromNodeId = model.getFromNode();
+            var toNodeId = model.getToNode();
 
-            var fromTopic = null;
-            var toTopic = null;
-            var model = this.getModel();
-            var topics = model.getTopics();
+            var sourceTopic = null;
+            var targetTopic = null;
+            var dmodel = this.getModel();
+            var topics = dmodel.getTopics();
 
             for (var i = 0; i < topics.length; i++) {
                 var t = topics[i];
                 if (t.getModel().getId() == fromNodeId) {
-                    fromTopic = t;
+                    sourceTopic = t;
                 }
                 if (t.getModel().getId() == toNodeId) {
-                    toTopic = t;
+                    targetTopic = t;
                 }
-                if (toTopic != null && fromTopic != null) {
+                if (targetTopic != null && sourceTopic != null) {
                     break;
                 }
             }
 
             // Create node graph ...
-            var relationLine = new mindplot.RelationshipLine(fromTopic, toTopic, topicModel.getLineType());
-            if ($defined(topicModel.getSrcCtrlPoint())) {
-                var srcPoint = topicModel.getSrcCtrlPoint().clone();
+            var relationLine = new mindplot.RelationshipLine(sourceTopic, targetTopic, model.getLineType());
+            if ($defined(model.getSrcCtrlPoint())) {
+                var srcPoint = model.getSrcCtrlPoint().clone();
                 relationLine.setSrcControlPoint(srcPoint);
             }
-            if ($defined(topicModel.getDestCtrlPoint())) {
-                var destPoint = topicModel.getDestCtrlPoint().clone();
+            if ($defined(model.getDestCtrlPoint())) {
+                var destPoint = model.getDestCtrlPoint().clone();
                 relationLine.setDestControlPoint(destPoint);
             }
 
 
             relationLine.getLine().setDashed(3, 2);
-            relationLine.setShowEndArrow(topicModel.getEndArrow());
-            relationLine.setShowStartArrow(topicModel.getStartArrow());
-            relationLine.setModel(topicModel);
+            relationLine.setShowEndArrow(model.getEndArrow());
+            relationLine.setShowStartArrow(model.getStartArrow());
+            relationLine.setModel(model);
 
             //Add Listeners
             relationLine.addEvent('onfocus', function(event) {
-                elem.onObjectFocusEvent.attempt([relationLine, event], elem);
+                elem.onObjectFocusEvent(relationLine, event);
             });
 
             // Append it to the workspace ...
-            this._relationships[topicModel.getId()] = relationLine;
+            dmodel.addRelationship(model.getId(), relationLine);
 
             return  relationLine;
         },

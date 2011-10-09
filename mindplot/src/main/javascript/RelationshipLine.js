@@ -95,13 +95,12 @@ mindplot.RelationshipLine = new Class({
     },
 
     _positionateArrows : function() {
-        this._endArrow.setVisibility(this.isVisible() && this._showEndArrow);
-        this._startArrow.setVisibility(this.isVisible() && this._showStartArrow);
-
         var tpos = this._line2d.getTo();
         this._endArrow.setFrom(tpos.x, tpos.y);
+
         var spos = this._line2d.getFrom();
         this._startArrow.setFrom(spos.x, spos.y);
+
         this._endArrow.moveToBack();
         this._startArrow.moveToBack();
 
@@ -113,6 +112,9 @@ mindplot.RelationshipLine = new Class({
             this._startArrow.setControlPoint(this._line2d.getTo());
             this._endArrow.setControlPoint(this._line2d.getFrom());
         }
+
+        this._endArrow.setVisibility(this.isVisible() && this._showEndArrow);
+        this._startArrow.setVisibility(this.isVisible() && this._showStartArrow);
     },
 
     addToWorkspace : function(workspace) {
@@ -228,11 +230,17 @@ mindplot.RelationshipLine = new Class({
     },
 
     setFrom : function(x, y) {
+        $assert(x, "x must be defined");
+        $assert(y, "y must be defined");
+
         this._line2d.setFrom(x, y);
         this._startArrow.setFrom(x, y);
     },
 
     setTo : function(x, y) {
+        $assert(y, "x must be defined");
+        $assert(y, "y must be defined");
+
         this._line2d.setTo(x, y);
         this._endArrow.setFrom(x, y);
     },
@@ -271,4 +279,4 @@ mindplot.RelationshipLine = new Class({
 mindplot.RelationshipLine.type = "RelationshipLine";
 mindplot.RelationshipLine.getStrokeColor = function() {
     return '#9b74e6';
-}
+};

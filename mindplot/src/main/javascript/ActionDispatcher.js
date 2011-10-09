@@ -35,7 +35,7 @@ mindplot.ActionDispatcher = new Class({
         throw "method must be implemented.";
     },
 
-    addRelationship: function(model, mindmap) {
+    connectByRelation: function(model, mindmap) {
         throw "method must be implemented.";
     },
 

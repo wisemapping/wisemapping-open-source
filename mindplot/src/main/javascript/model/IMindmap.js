@@ -96,7 +96,7 @@ mindplot.model.IMindmap = new Class({
         throw "Unsupported operation";
     },
 
-    addRelationship : function(relationship) {
+    addRelationship : function(rel) {
         throw "Unsupported operation";
     },
 

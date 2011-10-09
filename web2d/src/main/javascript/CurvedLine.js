@@ -32,10 +32,16 @@ web2d.CurvedLine = new Class({
     },
 
     setFrom : function(x, y) {
+        $assert(!isNaN(x), "x must be defined");
+        $assert(!isNaN(y), "y must be defined");
+
         this._peer.setFrom(x, y);
     },
 
     setTo : function(x, y) {
+        $assert(!isNaN(x), "x must be defined");
+        $assert(!isNaN(y), "y must be defined");
+
         this._peer.setTo(x, y);
     },
 

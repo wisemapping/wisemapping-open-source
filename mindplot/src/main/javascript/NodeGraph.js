@@ -64,7 +64,7 @@ mindplot.NodeGraph = new Class({
 
     fireEvent: function(type) {
         var elem = type.substr(0, 3) == "ont" ? this._event : this.get2DElement();
-        elem.fireEvent(type);
+        elem.fireEvent(type,this);
     },
 
     setMouseEventsEnabled : function(isEnabled) {

@@ -122,6 +122,7 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="DesignerUndoManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ControlPoint.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="EditorOptions.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="RelationshipPivot.js"/>
 
                                     <filelist dir="${basedir}/src/main/javascript/commands/"
                                               files="GenericFunctionCommand.js"/>

@@ -23,7 +23,7 @@ mindplot.commands.freeMind.ReconnectTopicCommand = mindplot.Command.extend(
         this._id = mindplot.Command._nextUUID();
         this._node = null;
         this._targetNode = null;
-        this._relationship = null;
+        this._pivot = null;
         this._oldParent = null;
     },
     execute: function(commandContext)
@@ -46,12 +46,12 @@ mindplot.commands.freeMind.ReconnectTopicCommand = mindplot.Command.extend(
             }
         }
         var oldParent = this._oldParent!=null?commandContext.findTopics(parseInt(this._oldParent))[0]:null;
-        node.relationship = this._relationship;
+        node.relationship = this._pivot;
         node._relationship_oldParent = oldParent;
         node._relationship_index = this._index;
         commandContext.disconnect(node);
         var parentNode = targetNode;
-        if(this._relationship != "Child"){
+        if(this._pivot != "Child"){
             parentNode = targetNode.getParent();
             node._relationship_sibling_node = targetNode;
         }
@@ -83,7 +83,7 @@ mindplot.commands.freeMind.ReconnectTopicCommand = mindplot.Command.extend(
             }
         }
         var oldParent = commandContext.findTopics(parseInt(this._targetNode))[0];
-        if(this._relationship != "Child"){
+        if(this._pivot != "Child"){
             oldParent = oldParent.getParent();
         }
         if(targetNode!=null){
@@ -113,6 +113,6 @@ mindplot.commands.freeMind.ReconnectTopicCommand = mindplot.Command.extend(
         this._targetNode = node.getId();
     },
     setAs:function(relationship){
-        this._relationship = relationship;
+        this._pivot = relationship;
     }
 });

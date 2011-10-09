@@ -48,8 +48,8 @@ mindplot.StandaloneActionDispatcher = new Class({
         this.execute(command);
     },
 
-    addRelationship: function(model, mindmap) {
-        var command = new mindplot.commands.AddRelationshipCommand(model, mindmap);
+    connectByRelation: function(model) {
+        var command = new mindplot.commands.AddRelationshipCommand(model);
         this.execute(command);
     },
 

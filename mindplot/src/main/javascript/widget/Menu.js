@@ -208,8 +208,8 @@ mindplot.widget.Menu = new Class({
             designer.addLink();
         });
 
-        this.addButton('topicRelation', true, false, function() {
-            designer.addLink();
+        this.addButton('topicRelation', true, false, function(event) {
+            designer.showRelPivot(event);
         });
 
         this.addButton('topicNote', true, false, function() {

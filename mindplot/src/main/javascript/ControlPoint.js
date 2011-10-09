@@ -76,7 +76,7 @@ mindplot.ControlPoint = new Class({
     _mouseDown  : function(event, point) {
         if (!this._isBinded) {
             this._isBinded = true;
-            this._mouseMoveFunction = this._mouseMove.bindWithEvent(this, point);
+            this._mouseMoveFunction = this._mouseMoveEvent.bindWithEvent(this, point);
             this._workspace.getScreenManager().addEvent('mousemove', this._mouseMoveFunction);
             this._mouseUpFunction = this._mouseUp.bindWithEvent(this, point);
             this._workspace.getScreenManager().addEvent('mouseup', this._mouseUpFunction);
@@ -86,7 +86,7 @@ mindplot.ControlPoint = new Class({
         return false;
     },
 
-    _mouseMove  : function(event, point) {
+    _mouseMoveEvent  : function(event, point) {
         var screen = this._workspace.getScreenManager();
         var pos = screen.getWorkspaceMousePosition(event);
         var topic = null;

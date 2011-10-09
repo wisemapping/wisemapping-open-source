@@ -22,14 +22,14 @@ mindplot.ScreenManager = new Class({
         this._divContainer = divElement;
         this._padding = {x:0,y:0};
 
-        // Ignore default click event propagation. Prevent 'click' event on drad.
+        // Ignore default click event propagation. Prevent 'click' event on drag.
         this._clickEvents = [];
         this._divContainer.addEvent('click', function(event) {
             event.stopPropagation()
-        });
+        }.bind(this));
 
         this._divContainer.addEvent('dblclick', function(event) {
-            event.stopPropagation() ;
+            event.stopPropagation();
             event.preventDefault();
         });
     },

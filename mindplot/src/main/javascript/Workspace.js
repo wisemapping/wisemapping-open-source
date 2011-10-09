@@ -83,6 +83,8 @@ mindplot.Workspace = new Class({
     },
 
     removeEvent: function(type, listener) {
+        $assert(type, 'type can not be null');
+        $assert(listener, 'listener can not be null');
         this._workspace.removeEvent(type, listener);
     },
 
