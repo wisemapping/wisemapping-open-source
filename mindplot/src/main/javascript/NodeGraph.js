@@ -80,7 +80,7 @@ mindplot.NodeGraph = new Class({
     },
 
     setSize : function(size) {
-        this._model.setSize(size.width, size.height);
+        this._model.setSize(parseInt(size.width), parseInt(size.height));
     },
 
     getModel:function() {
