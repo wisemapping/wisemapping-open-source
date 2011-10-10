@@ -1,0 +1,80 @@
+/* ----------------------------- General -------------------------------- */
+
+@html-background: #dedede repeat-x scroll;
+@body-background: transparent no-repeat center top;
+@body-width: 956px;
+
+@font-family: "Lucida Grande", "Arial", "Helvetica", "Verdana", "sans-serif";
+@base-font-size: 11px;
+
+@base-margin: 10px;
+@base-padding: @base-margin;
+@base-border-size: 1px;
+@base-color: #111;
+
+html {
+    overflow-y: scroll;
+    background: @html-background;
+}
+
+body {
+    margin: 0;
+    padding: 20px;
+    background: @body-background;
+    min-height: 100%;
+    font-family: @font-family;
+    font-size: @base-font-size;
+}
+
+#wrapper {
+    background: #FFFFFF;
+    margin: 0 auto;
+    width: @body-width;
+    position: relative;
+    padding: 10px;
+}
+
+.rounded-corners (@radius: 5px) {
+  border-radius: @radius;
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+}
+
+/* ------------------------------ Tags ---------------------------------- */
+
+@tags-width: 20%;
+@tags-border-size: @base-border-size;
+@tags-padding: @base-padding;
+
+#tags {
+    width: @tags-width;
+    padding: @tags-padding;
+    float: left;
+    border: @tags-border-size solid @base-color * 3;
+    border-right: none;
+    position: relative;
+    top: 42px;
+
+    h2 {
+        font-size: @base-font-size * 1.5;
+        margin-top: 0px;
+    }
+
+    button {
+        display: block;
+        margin-bottom: @base-margin;
+    }
+
+    #tags-actions {
+        margin-top: @base-margin * 2;
+    }
+}
+
+/* ------------------------------ Table --------------------------------- */
+
+@table-width: 100% - (@tags-width + @tags-padding);
+
+#map-table {
+    width: @table-width;
+    display: inline-block;
+}
