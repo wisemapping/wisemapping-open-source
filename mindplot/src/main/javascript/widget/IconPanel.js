@@ -25,6 +25,9 @@ mindplot.widget.IconPanel = new Class({
     buildPanel: function() {
         var content = new Element('div', {'class':'toolbarPanel','id':'IconsPanel'});
         content.setStyles({width:253,height:200,padding:5});
+        content.addEvent("click", function(event) {
+            event.stopPropagation()
+        });
 
         var count = 0;
         for (var i = 0; i < mindplot.ImageIcon.prototype.ICON_FAMILIES.length; i = i + 1) {
@@ -43,9 +46,11 @@ mindplot.widget.IconPanel = new Class({
                 });
                 img.setStyles({width:16,height:16,padding:"0px 2px"}).inject(familyContent);
 
+                var panel = this;
                 var model = this.getModel();
-                img.addEvent('click', function() {
+                img.addEvent('click', function(event) {
                     model.setValue(this.id);
+                    panel.hide();
                 }.bind(img));
 
                 count = count + 1;
