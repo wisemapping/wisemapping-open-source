@@ -9,11 +9,13 @@
     <![endif]-->
     <!--<script type="text/javascript" src="http://docs.google.com/brix/static/api/js/jsapi.nocache.js"></script>-->
 
-    <link rel="stylesheet" type="text/css" href="../css/editor.css"/>
+    <link rel="stylesheet/less" type="text/css" href="../css/editor2.css"/>
     <link rel="stylesheet" type="text/css" href='/mindplot/src/main/javascript/libraries/moodialog/css/MooDialog.css'/>
 
     <script type='text/javascript'
             src='https://ajax.googleapis.com/ajax/libs/mootools/1.3.2/mootools-yui-compressed.js'></script>
+    <script type='text/javascript' src='../js/less-1.1.3.min.js'></script>
+
     <script type='text/javascript'
             src='/mindplot/src/main/javascript/libraries/mootools/mootools-more-1.3.2.1-yui.js'></script>
     <script type='text/javascript' src='/core-js/target/classes/core.js'></script>
@@ -114,138 +116,44 @@
 <div id="colorPalette">
     <div id="paletteHeader"></div>
 </div>
-<div id="toolbar">
-    <div id="editTab" class="tabContent">
-        <div id="file" class="buttonContainer" title="SYMB_ FILE">
-            <fieldset>
-                <div id="undoEdition" class="buttonOn" title="Undo Edition">
-                    <div class="toolbarLabel">
-                        <p>Undo</p>
-                    </div>
-                </div>
-                <div id="redoEdition" class="buttonOn" title="Redo Edition">
-                    <div class="toolbarLabel">
-                        <p>Redo</p>
-                    </div>
-                </div>
-            </fieldset>
-        </div>
-        <div id="zoom" class="buttonContainer" title="Zoom">
-            <fieldset>
-                <div id="zoomIn" class="buttonOn" title="Zoom In">
-                    <div class="toolbarLabel">
-                        <p>In</p>
-                    </div>
-                </div>
-                <div id="zoomOut" class="buttonOn" title="Zoom Out">
-                    <div class="toolbarLabel">
-                        <p>Out</p>
-                    </div>
-                </div>
-            </fieldset>
-        </div>
-        <div id="node" class="buttonContainer" title="Node Properties">
-            <fieldset>
-                <div id="topicShape" class="buttonOn comboButton" title="SYMB_TOPIC_SHAPE">
-                    <div class="toolbarLabel">
-                        <p>Shape</p>
-                    </div>
-                </div>
-                <div id="addTopic" class="buttonOn" title="SYMB_ TOPIC_ADD">
-                    <div class="toolbarLabel">
-                        <p>Add</p>
-                    </div>
-                </div>
-                <div id="deleteTopic" class="buttonOn" title="SYMB_ TOPIC_DELETE">
-                    <div class="toolbarLabel">
-                        <p>Delete</p>
-                    </div>
-                </div>
-                <div id="topicBorder" class="buttonOn" title="SYMB_ TOPIC_BORDER_COLOR">
-                    <div class="toolbarLabel">
-                        <p>Border</p>
-                    </div>
-                </div>
-                <div id="topicColor" class="buttonOn" title="Background Color">
-                    <div class="toolbarLabel">
-                        <p>Color</p>
-                    </div>
-                </div>
-                <div id="topicIcon" class="buttonOn" title="Change Icon">
-                    <div class="toolbarLabel">
-                        <p>Icon</p>
-                    </div>
-                </div>
-                <div id="topicNote" class="buttonOn" title="Add Note">
-                    <div class="toolbarLabel">
-                        <p>Note</p>
-                    </div>
-                </div>
-                <div id="topicLink" class="buttonOn" title="Add Link">
-                    <div class="toolbarLabel">
-                        <p>Link</p>
-                    </div>
-                </div>
-                <div id="topicRelation" class="topicRelation buttonOn" title="Add Relationship">
-                    <div class="relationshiplabel toolbarLabel">
-                        <p>Relationship</p>
-                    </div>
-                </div>
-            </fieldset>
-        </div>
-        <div id="font" class="buttonContainer" title="Font Properties">
-            <fieldset>
-                <div id="fontFamily" class="buttonOn comboButton" title="Font Style">
-                    <div class="toolbarLabel">
-                        <p>Style</p>
-                    </div>
-                </div>
-                <div id="fontSize" class="buttonOn comboButton" title="Font Size">
-                    <div class="toolbarLabel">
-                        <p>Size</p>
-                    </div>
-                </div>
-                <div id="fontBold" class="buttonOn" title="Bold Style">
-                    <div class="toolbarLabel">
-                        <p>Bold</p>
-                    </div>
-                </div>
-                <div id="fontItalic" class="buttonOn" title="Italic Style">
-                    <div class="toolbarLabel">
-                        <p>Italic</p>
-                    </div>
-                </div>
-                <div id="fontColor" class="buttonOn comboButton" title="Fond Color">
-                    <div class="toolbarLabel">
-                        <p>Color</p>
-                    </div>
-                </div>
-            </fieldset>
+
+<div id="header">
+    <div id="headerInfo">
+          Algo a aca ....
+    </div>
+    <div id="toolbar">
+        <div id="editTab" class="tabContent">
+            <div id="file" class="buttonContainer">
+                <div id="undoEdition" class="buttonOn" title="Undo Edition"></div>
+                <div id="redoEdition" class="buttonOn" title="Redo Edition"></div>
+            </div>
+            <div id="zoom" class="buttonContainer">
+                <div id="zoomIn" class="buttonOn" title="Zoom In"></div>
+                <div id="zoomOut" class="buttonOn" title="Zoom Out"></div>
+            </div>
+            <div id="node" class="buttonContainer">
+                <div id="topicShape" class="buttonOn" title="SYMB_TOPIC_SHAPE"></div>
+                <div id="addTopic" class="buttonOn" title="SYMB_ TOPIC_ADD"></div>
+                <div id="deleteTopic" class="buttonOn" title="Delete"></div>
+                <div id="topicBorder" class="buttonOn" title="Boder Color"></div>
+                <div id="topicColor" class="buttonOn" title="Background Color"></div>
+                <div id="topicIcon" class="buttonOn" title="Add Icon"></div>
+                <div id="topicNote" class="buttonOn" title="Add Note"></div>
+                <div id="topicLink" class="buttonOn" title="Add Link"></div>
+                <div id="topicRelation" class="buttonOn" title="Add Relationship"></div>
+            </div>
+            <div id="font" class="buttonContainer">
+                <div id="fontFamily" class="buttonOn" title="Font Style"></div>
+                <div id="fontSize" class="buttonOn" title="Font Size"></div>
+                <div id="fontBold" class="buttonOn" title="Bold Style"></div>
+                <div id="fontItalic" class="buttonOn" title="Italic Style"></div>
+                <div id="fontColor" class="buttonOn" title="Fond Color"></div>
+            </div>
         </div>
     </div>
 </div>
 
 <div id="mindplot"></div>
-
-<div id="footerEditor">
-    <div style="position:absolute; top:0; width:100%">
-        <a href="http://www.wisemapping.com/">
-            <div id="logo"></div>
-        </a>
-
-        <div id='msgLoggerContainer' class="msgLoggerContainer">
-            <div id="msgStart"></div>
-            <div id='msgLogger'></div>
-            <div id="msgEnd"></div>
-        </div>
-    </div>
-    <div id="helpButtonKeyboard"
-         style="text-align:center; width:100px; height:20px; background-color:#f5f5f5; border: 1px solid #BBB6D6; cursor:pointer; padding-left:5px; margin-left:3px;float:left;">
-        <div style="float:left; position:relative; top:50%; margin-top:-8px; margin-left:5px;"><img
-                src="../images/help.png"/></div>
-        <div style="float:left; position:relative; top:50%; margin-top:-8px; margin-left:4px;">Shortcuts</div>
-    </div>
-</div>
 <script type="text/javascript" src="../js/editor.js"></script>
 </body>
 </html>

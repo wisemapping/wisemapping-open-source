@@ -26,7 +26,6 @@ mindplot.widget.Menu = new Class({
         this._designer = designer;
         this._toolbarElems = [];
         this._containerId = containerId;
-        this._toolbarDisabled = false;
 
         // Stop event propagation ...
         $(this._containerId).addEvent('click', function(event) {
@@ -181,15 +180,15 @@ mindplot.widget.Menu = new Class({
         this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('fontColor', fontColorModel, baseUrl));
 
         this.addButton('zoomIn', false, false, function() {
-            designer.zoomIn()
+            designer.zoomIn();
         });
 
         this.addButton('zoomOut', false, false, function() {
-            designer.zoomOut()
+            designer.zoomOut();
         });
 
         this.addButton('undoEdition', false, false, function() {
-            designer.undo()
+            designer.undo();
         });
 
         this.addButton('redoEdition', false, false, function() {
@@ -327,7 +326,10 @@ mindplot.widget.Menu = new Class({
                 if (button.isTopicAction() && button.isRelAction()) {
                     disable = rels.length == 0 && topics.length == 0;
 
-                } else if (button.isTopicAction() && topics.length == 0) {
+                } else if (!button.isTopicAction() && !button.isRelAction()) {
+                    disable = false;
+                }
+                else if (button.isTopicAction() && topics.length == 0) {
                     disable = true;
                 } else if (button.isRelAction() && rels.length == 0) {
                     disable = true;
@@ -335,8 +337,9 @@ mindplot.widget.Menu = new Class({
 
                 if (disable) {
                     button.disable();
+                } else {
+                    button.enable();
                 }
-
 
             })
         }.bind(this));
@@ -375,15 +378,15 @@ mindplot.widget.Menu = new Class({
     addButton:function (buttonId, topic, rel, fn) {
         // Register Events ...
         var button = new mindplot.widget.ToolbarItem(buttonId, function(event) {
-            this.clear();
             fn(event);
+            this.clear();
         }.bind(this), {topicAction:topic,relAction:rel});
         this._toolbarElems.push(button);
     },
 
     clear : function() {
-        this._toolbarElems.forEach(function(elem) {
-            elem.hide();
+        this._toolbarElems.forEach(function(item) {
+            item.hide();
         });
     }
 });

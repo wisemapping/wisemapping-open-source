@@ -622,19 +622,6 @@ ol#toc span {
     background: url(../images/grid.gif) bottom left repeat !important;
 }
 
-div#mapInfo {
-    float: right;
-    color: #008;
-    padding-right: 5px;
-    height: 25px;
-    white-space: nowrap;
-}
-
-span#mapName {
-    font-size: 15px;
-    font-weight: bold;
-}
-
 span#lastSaved {
     font-size: 10px;
 }

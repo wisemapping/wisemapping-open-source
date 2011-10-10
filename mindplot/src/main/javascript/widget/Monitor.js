@@ -38,7 +38,7 @@ mindplot.widget.Monitor = new Class({
     },
 
     logMessage : function(msg, msgKind) {
-        console.log(userMsg);
+        console.log(msg);
     }
 });
 

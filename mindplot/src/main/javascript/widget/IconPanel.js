@@ -44,7 +44,11 @@ mindplot.widget.IconPanel = new Class({
                     id:iconId,
                     src:mindplot.ImageIcon.prototype._getImageUrl(iconId)
                 });
-                img.setStyles({width:16,height:16,padding:"0px 2px"}).inject(familyContent);
+                img.setStyles({width:16,
+                    height:16,
+                    padding:"0px 2px",
+                    cursor: 'pointer'
+                }).inject(familyContent);
 
                 var panel = this;
                 var model = this.getModel();
