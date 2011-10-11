@@ -17,39 +17,50 @@
     <link href="css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet">
     <script type="text/javascript" language="javascript" src="js/jquery.dataTables.js"></script>
     <script type="text/javascript" charset="utf-8">
-        /* Data set - can contain whatever information you want */
-        var mapSet = [
-            ['Fonctionnel plateforme', 'moi', '14/06/2011 moi', '>'],
-            ['Comportement topic', 'moi, Olivier, Nicolas', '14/06/2011 Olivier', '>'],
-            ['TM Blog', 'moi', '14/06/2011 moi', '>'],
-            ['Bloom', 'moi', '13/06/2011 moi', '>'],
-            ['Morning Mr. Magpie', 'moi, Martin', '10/06/2011 Martin', '>'],
-            ['Little By Little', 'moi, Sophie', '1/06/2011 Sophie', '>'],
-            ['Feral', 'moi', '14/05/2011 moi', '>'],
-            ['Lotus Flower', 'moi, Sophie, Olivier', '13/05/2011 Olivier', '>'],
-            ['Codex', 'moi', '30/04/2011 moi', '>'],
-            ['Give Up The Ghost', 'moi, Olivier', '30/04/2011 moi', '>'],
-            ['Separator', 'moi, Olivier, Nicolas, Sophie', '02/04/2011 Olivier', '>'],
-            ['Supercollider', 'moi, Olivier', '02/04/2011 Olivier', '>'],
-            ['The Butcher', 'moi', '01/04/2011 moi', '>']
-        ];
-
         $(function() {
             $('#map-table').html( '<table cellpadding="0" cellspacing="0" border="0" class="display" id="maps"></table>' );
             $('#maps').dataTable( {
-                "aaData": mapSet,
+                "bProcessing" : true,
+                "sAjaxSource" : "json_source.txt",
                 "aoColumns": [
+                    {
+                        "sTitle" : '<input type="checkbox"/>',
+                        "sClass" : "center",
+                        "sWidth" : "15px",
+                        "bSortable" : false,
+                        "fnRender" : function(obj) {
+                            return obj.aData[0];
+                        }
+                    },
                     { "sTitle": "Titre" },
                     { "sTitle": "Utillisateurs" },
-                    { "sTitle": "Derniere modification" },
-                    { "sTitle": "Details", "sClass": "center" }
+                    {
+                        "sTitle": "Derniere modification",
+                        "fnRender" : function(obj) {
+                            return obj.aData[3] + " " + obj.aData[4];
+                        }
+                    },
+                    {
+                        "sTitle": "Details",
+                        "sClass": "center",
+                        "sWidth" : "15px",
+                        "bSortable" : false,
+                        "fnRender" : function(obj) {
+                            return ">";
+                        }
+                    }
+
                 ],
                 "bAutoWidth" : false,
                 "bLengthChange": false,
-                "bInfo": false
-
+                "bInfo": false,
+                "bPaginate": false
             });
+
+            $('#maps_filter').appendTo("#toolbar");
         });
+
+
     </script>
 
     <!--Tags-->
@@ -77,11 +88,28 @@
             });
         });
     </script>
+
+    <!--Toolbar-->
+    <script type="text/javascript" charset="utf-8">
+        $(function() {
+            $("#show-tags").click(function() {
+
+            })
+        });
+    </script>
 </head>
 
 <body>
 <div id="wrapper">
-    <!--<div id="toolbar" class="toolbar"></div>-->
+    <div id="toolbar" class="toolbar">
+
+    </div>
+
+    <div id="map-table-actions">
+        <button>Organiser</button>
+        <button>Partager</button>
+        <button>Supprimer</button>
+    </div>
 
     <div>
         <div id="tags">
