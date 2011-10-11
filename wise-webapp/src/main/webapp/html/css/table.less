@@ -4,6 +4,14 @@
 @odd-color: #E2E4FF;
 @sorting-odd-color: #D3D6FF;
 
+@red: #FF0000;
+
+.rounded-corners (@radius: 5px) {
+  border-radius: @radius;
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+}
+
 .dataTables_wrapper {
 	position: relative;
 	min-height: 302px;
@@ -257,4 +265,13 @@ tr.even {
     td.sorting_3 {
         background-color: #F9F9FF;
     }
+}
+
+/* ------------------------------ Tags ---------------------------------- */
+
+table.display span.tag {
+    color: white;
+    padding: 5px 10px;
+    background: desaturate(@red, 30%);
+    .rounded-corners(3px);
 }
