@@ -7,6 +7,7 @@
 @red: #FF0000;
 @base-border-size: 1px;
 @base-color: #111;
+@base-margin: 10px;
 
 @th-background-color: #FFFFFF;
 
@@ -40,25 +41,26 @@
 }
 
 .dataTables_length {
-	width: 40%;
-	float: left;
+	float: right;
     margin-bottom: 10px;
 }
 
 .dataTables_filter {
 	text-align: right;
-    margin-bottom: 10px;
+    margin-bottom: @base-margin;
 }
 
 .dataTables_info {
 	width: 60%;
 	float: left;
+    margin-top: @base-margin;
 }
 
 .dataTables_paginate {
 	width: 44px;
 	float: right;
 	text-align: right;
+   margin-top: @base-margin;
 }
 
 /* Pagination nested */
@@ -168,9 +170,6 @@ tr.even {
 
 .dataTables_scrollBody {
 	margin-top: -1px;
-}
-
-.top, .bottom {
 }
 
 .top .dataTables_info {

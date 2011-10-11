@@ -73,15 +73,17 @@
 
                 ],
                 "bAutoWidth" : false,
-                "bLengthChange": false,
-                "bInfo": false,
-                "bPaginate": false,
+//                "bLengthChange": false,
+//                "bInfo": false,
+//                "bPaginate": false,
                 "oLanguage" : {
-                    "sSearch" : "Rechercher"
+                    "sSearch" : "Rechercher",
+                    "sInfo" : "Affichage de _START_ &#224 _END_ de _TOTAL_ entr&#233;es"
                 }
             });
 
             $('#maps_filter').appendTo("#toolbar");
+            $("#maps_length").appendTo("#buttons");
 
             $('input:checkbox[id="selectAll"]').click(function() {
                 $("#maps").dataTableExt.selectAllMaps();
