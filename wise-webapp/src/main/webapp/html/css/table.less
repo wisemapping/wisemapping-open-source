@@ -8,6 +8,8 @@
 @base-border-size: 1px;
 @base-color: #111;
 
+@th-background-color: #FFFFFF;
+
 .rounded-corners (@radius: 5px) {
   border-radius: @radius;
   -webkit-border-radius: @radius;
@@ -97,7 +99,7 @@ table.display {
         border-bottom: 1px solid black;
         font-weight: bold;
         cursor: pointer;
-        background: white;
+
     }
 
     tfoot th {
@@ -123,23 +125,27 @@ table.display {
 /* ---------------------------- Sorting --------------------------------- */
 
 .sorting_asc {
-	background: url('../images/sort_asc.png') no-repeat center right;
+	background: @th-background-color url('../images/sort_asc.png') no-repeat center right;
 }
 
 .sorting_desc {
-	background: url('../images/sort_desc.png') no-repeat center right;
+	background: @th-background-color url('../images/sort_desc.png') no-repeat center right;
 }
 
 .sorting {
-	background: url('../images/sort_both.png') no-repeat center right;
+	background: @th-background-color url('../images/sort_both.png') no-repeat center right;
+}
+
+.sorting_disabled {
+	background: @th-background-color;
 }
 
 .sorting_asc_disabled {
-	background: url('../images/sort_asc_disabled.png') no-repeat center right;
+	background: @th-background-color url('../images/sort_asc_disabled.png') no-repeat center right;
 }
 
 .sorting_desc_disabled {
-	background: url('../images/sort_desc_disabled.png') no-repeat center right;
+	background: @th-background-color url('../images/sort_desc_disabled.png') no-repeat center right;
 }
 
 

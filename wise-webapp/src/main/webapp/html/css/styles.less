@@ -60,13 +60,19 @@ body {
         margin-top: 0px;
     }
 
-    button {
-        display: block;
+    div.tag {
         margin-bottom: @base-margin;
+
+        .ui-icon {
+            float:left;
+            margin-right: @base-margin / 2;
+            position: relative;
+            top: -2px;
+        }
     }
 
     #tags-actions {
-        margin-top: @base-margin * 2;
+        margin-top: @base-margin;
     }
 }
 
@@ -86,7 +92,7 @@ body {
 #toolbar {
     border: @tags-border-size solid @base-color * 11;
     padding: @base-padding;
-    margin-bottom: @base-margin * 2;
+    margin-bottom: @base-margin;
 }
 
 

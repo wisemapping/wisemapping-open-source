@@ -36,7 +36,12 @@
                     {
                         "sTitle" : "Titre",
                         "fnRender" : function(obj) {
-                            return obj.aData[1] + " <span class='tag'>"+obj.aData[2]+"</span>";
+                            var tagsList = obj.aData[2].toString().split(",");
+                            var tagsHtml = ""
+                            for (var i in tagsList) {
+                                tagsHtml += " <span class='tag'>"+tagsList[i]+"</span>";
+                            }
+                            return obj.aData[1] + tagsHtml;
                         }
                     },
                     { "sTitle" : "Tags", "bVisible" : false },
@@ -62,7 +67,7 @@
                         "sWidth" : "15px",
                         "bSortable" : false, "bSearchable" : false,
                         "fnRender" : function(obj) {
-                            return '<span class="ui-icon ui-icon-triangle-1-e" style="margin: 0 auto;"></span>';
+                            return '<span class="ui-icon ui-icon-circle-triangle-e" style="margin: 0 auto;"></span>';
                         }
                     }
 
@@ -93,16 +98,11 @@
 
         $(function() {
             for (i in tags) {
-                html += "<button>"+ tags[i] +"</button>";
+                html += '<div class="tag"><span class="ui-icon ui-icon-folder-collapsed" ></span>' + tags[i] + '</div>';
             }
-
             $("#tags-list").html(html);
-            $("#tags-list button" ).button({
-                icons: { primary: "ui-icon-folder-collapsed" }
-            });
-
             $("#tags-actions button" ).button({
-                icons: { primary: "ui-icon-plus" }
+                icons: { primary: "ui-icon-plusthick" }
             });
         });
     </script>
