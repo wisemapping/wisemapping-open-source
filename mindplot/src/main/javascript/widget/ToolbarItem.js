@@ -24,6 +24,28 @@ mindplot.widget.ToolbarItem = new Class({
         this._buttonId = buttonId;
         this._fn = fn;
         this._options = options;
+        this.enable();
+//        this._tip = this._registerTip();
+
+    },
+
+    _registerTip: function() {
+
+        return  new mindplot.widget.FloatingTip($(this._buttonId), {
+            html: false,
+            position: 'bottom',
+            arrowOffset : 5,
+            center: true,
+            arrowSize: 5,
+            showDelay: 500,
+            hideDelay: 0,
+            className: 'toolbarTip',
+            motionOnShow:false,
+            motionOnHide:false,
+            motion: 0,
+            distance: 0,
+            preventHideOnOver:false
+        });
     },
 
     getButtonElem : function() {
@@ -66,5 +88,9 @@ mindplot.widget.ToolbarItem = new Class({
             elem.addClass('buttonOn');
             this._enable = true;
         }
-    }
+    },
+
+    getTip : function() {
+        return this._tip;
+    }.protect()
 });

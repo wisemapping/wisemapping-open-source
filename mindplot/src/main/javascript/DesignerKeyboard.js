@@ -64,6 +64,10 @@ mindplot.DesignerKeyboard = new Class({
                 designer.createChildForSelectedNode();
             }.bind(this),
 
+            'meta+enter' : function() {
+                designer.createChildForSelectedNode();
+            }.bind(this),
+
             'ctrl+z' : function() {
                 designer.undo();
             }.bind(this),

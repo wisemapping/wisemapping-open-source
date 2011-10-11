@@ -38,6 +38,7 @@ mindplot.widget.ToolbarPaneItem = new Class({
     _init:function () {
         // Load the context of the panel ...
         var panelElem = this.buildPanel();
+        panelElem.setStyle('cursor','default');
         var buttonElem = this.getButtonElem();
 
         // Add panel content ..
@@ -50,12 +51,6 @@ mindplot.widget.ToolbarPaneItem = new Class({
     getModel : function() {
         return this._model;
     },
-
-    getButtonElem : function() {
-        var elem = $(this._buttonId);
-        $assert(elem, "Could not find element for " + this._buttonId);
-        return elem;
-    }.protect(),
 
     getPanelElem : function() {
         return $(this._panelId);

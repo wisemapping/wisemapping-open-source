@@ -1,0 +1,511 @@
+@import "/mindplot/src/main/javascript/widget/lightbox.css";
+@import "/mindplot/src/main/javascript/libraries/moodialog/css/MooDialog.css";
+
+@header-height : 70px;
+@header-toolbar-height : 30px;
+@header-info-height : @header-height - @header-toolbar-height;
+
+/* Common Default Style */
+html {
+    overflow: hidden;
+}
+
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td {
+    margin: 0;
+    padding: 0;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+fieldset, img {
+    border: 0;
+}
+
+address, caption, cite, code, dfn, em, strong, th, var {
+    font-style: normal;
+    font-weight: normal;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+caption, th {
+    text-align: left;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight: normal;
+}
+
+q:before, q:after {
+    content: '';
+}
+
+abbr, acronym {
+    border: 0;
+}
+
+/**
+ * Percents could work for IE, but for backCompat purposes, we are using keywords.
+ * x-small is for IE6/7 quirks mode.
+ *
+ */
+body {
+    font: 13px arial, helvetica, clean, sans-serif;
+    font-size: small;
+    font: x-small;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+table {
+    font-size: inherit;
+    font-size: 100%;
+}
+
+/**
+ * 99% for safari; 100% is too large
+ */
+select, input, textarea {
+    font: 99% arial, helvetica, clean, sans-serif;
+}
+
+/**
+ * Bump up !IE to get to 13px equivalent
+ */
+pre, code {
+    font: 115% monospace;
+    font-size: 100%;
+}
+
+/**
+ * Default line-height based on font-size rather than "computed-value"
+ * see: http://www.w3.org/TR/CSS21/visudet.html#line-height
+ */
+
+body * {
+    line-height: 1.22em;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font: normal 80% "trebuchet ms", verdana, arial, helvetica, sans-serif;
+    background-color: #fff;
+}
+
+img {
+    border: 0;
+}
+
+form {
+    padding: 0;
+    margin: 0;
+}
+
+p {
+    margin: 5px 0 5px 0;
+}
+
+ul {
+    list-style-position: inside;
+}
+
+a:link, a:visited {
+    font: bold 100%;
+    text-decoration: underline;
+    color: black;
+}
+
+a:hover, a:active {
+    font: bold 100%;
+    text-decoration: underline;
+    color: black;
+}
+
+h2 {
+    font-size: 160%;
+    color: #8e9181;
+}
+
+h1 {
+    font-style: normal;
+    font-size: 180%;
+    color: white;
+    padding-bottom: 2px;
+}
+
+h3 {
+    /* use as subhead on main body */
+    clear: left;
+    font-style: normal;
+    font-size: 130%;
+    color: #6b6f5b;
+}
+
+h4 {
+    /* use as headers in footer */
+    font-weight: bold;
+    font-size: 120%;
+    border-bottom: 1px solid #8e9181;
+    color: #e2e3dd;
+    padding-bottom: 10px;
+    width: 400px;
+}
+
+/**********************************************************/
+/* End: Common Default Style */
+/**********************************************************/
+
+/**********************************************************/
+/* Error Dialog ... */
+/**********************************************************/
+
+#waitDialog {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    height: 200px;
+}
+
+#waitingContainer, #errorContainer {
+    position: relative;
+    top: 80px;
+    height: 120px; /*background: whitesmoke;*/
+    background: #FEFEFE;
+    opacity: .99;
+    padding: 15px;
+    width: 100%;
+    border: 1px solid;
+    border-color: #a9a9a9;
+
+}
+
+#errorContainer {
+    width: 400px;
+    border: 1px solid red;
+}
+
+#waitingContainer .loadingText {
+    position: relative;
+    top: 50%;
+    margin-top: -35px;
+    font-size: 30px;
+    font-weight: bold;
+    vertical-align: text-bottom;
+    height: 30px;
+    float: left;
+}
+
+#errorContainer .loadingText {
+    position: relative;
+    top: 50%;
+    margin-top: -80px;
+    font-size: 15px;
+    font-weight: bold;
+    vertical-align: text-bottom;
+    height: 30px;
+    float: right;
+    padding-left: 120px;
+}
+
+#waitingContainer .loadingIcon {
+    position: relative;
+    background: url(../images/loadingIcon.gif) no-repeat;
+    top: 50%;
+    margin-top: -65px;
+    height: 100px;
+    width: 121px;
+    float: left;
+    clear: both;
+}
+
+#errorContainer .loadingIcon {
+    position: relative;
+    background: url(../images/errorIcon.png) no-repeat;
+    top: 50%;
+    margin-top: -65px;
+    height: 100px;
+    width: 121px;
+    float: left;
+    clear: both;
+}
+
+/********************************************************************************/
+/* Toolbar Styles */
+/********************************************************************************/
+
+div#header {
+    background-color: #000000;
+    width: 100%;
+    height: @header-height;
+}
+
+div#headerInfo {
+    width: 100%;
+    height: @header-info-height;
+    color: white;
+}
+
+div#toolbar {
+    width: 100%;
+    height: @header-toolbar-height;
+    background: whiteSmoke;
+    border-top: 1px solid #E5E5E5;
+}
+
+div#toolbar .buttonContainer {
+    height: @header-toolbar-height;
+    float: left;
+    color: black;
+    border: 1px solid #BBB4D6;
+    margin-left: 5px;
+}
+
+div#toolbar .buttonOn, div#toolbar .buttonOff, div#toolbar .buttonActive, div#toolbar .buttonOn:hover {
+    width: 30px;
+    height: @header-toolbar-height;
+    float: left;
+    text-align: center;
+}
+
+div#toolbar .buttonOn:hover, div#toolbar .buttonActive {
+    margin: 0;
+    cursor: pointer;
+    border: 1px solid #d3d3d3;
+    cursor: pointer;
+    opacity: 1;
+}
+
+div#toolbar .buttonOn {
+    margin: 1px;
+    opacity: 0.8;
+}
+
+div#toolbar .buttonOff {
+    margin: 1px;
+    opacity: 0.4;
+}
+
+div#toolbar .button img {
+    height: @header-toolbar-height;
+    border: 0;
+}
+
+div#saveButton {
+    background: url(../images/save.png) no-repeat center top;
+}
+
+div#undoEdition {
+    background: url(../images/file_undo_dis.png) no-repeat center top;
+}
+
+div#redoEdition {
+    background: url(../images/file_redo_dis.png) no-repeat center top;
+}
+
+div#export {
+    background: url(../images/file_export.png) no-repeat center top;
+    position: relative;
+}
+
+div#exportAnchor {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+div#zoomIn {
+    background: url(../images/zoom_in.png) no-repeat center top;
+}
+
+div#zoomOut {
+    background: url(../images/zoom_out.png) no-repeat center top;
+}
+
+div#addTopic {
+    background: url(../images/topic_add.png) no-repeat center top;
+}
+
+div#deleteTopic {
+    background: url(../images/topic_delete.png) no-repeat center top;
+}
+
+div#topicColor {
+    background: url(../images/topic_bgcolor.png) no-repeat center top;
+    z-index: 4;
+}
+
+div#topicIcon {
+    background: url(../images/topic_icon.png) no-repeat center top;
+    z-index: 4;
+}
+
+div#topicNote {
+    background: url(../images/note.png) no-repeat center top;
+    z-index: 4;
+}
+
+div#topicNote {
+    background: url(../images/topic_icon.png) no-repeat center top;
+    z-index: 4;
+}
+
+div#topicLink {
+    background: url(../images/topic_link.png) no-repeat center top;
+    z-index: 4;
+}
+
+div#topicNote {
+    background-image: url(../images/note.png);
+    z-index: 4;
+}
+
+div#topicBorder {
+    background: url(../images/topic_border.png) no-repeat center top;
+}
+
+div#fontFamily {
+    background: url(../images/font_type.png) no-repeat center top;
+}
+
+div#topicShape {
+    background: url(../images/topic_shape.png) no-repeat center top;
+}
+
+div#fontBold {
+    background: url(../images/font_bold.png) no-repeat center top;
+}
+
+div#fontItalic {
+    background: url(../images/font_italic.png) no-repeat center top;
+}
+
+div#fontColor {
+    background: url(../images/font_color.png) no-repeat center top;
+    z-index: 4;
+}
+
+div#fontSize {
+    float: left;
+    background: url(../images/font_size.png) no-repeat center top;
+}
+
+div#font-size {
+    font-size: 10px;
+}
+
+div#shareIt {
+    background: url(../images/collab_share.png) no-repeat center top;
+}
+
+div#publishIt {
+    background: url(../images/collab_publish.png) no-repeat center top;
+}
+
+div#tagIt {
+    background: url(../images/collab_tag.png) no-repeat center top;
+}
+
+div#topicRelation {
+    width: 56px;
+    background: url(../images/topic_relationship.png) no-repeat center top;
+    z-index: 4;
+}
+
+div#colorPalette {
+    border: 1px solid #bbb4d6;
+    display: none;
+    position: absolute;
+    z-index: 4;
+    width: 160px;
+    top: 89px;
+}
+
+.toolbarPanel {
+    z-index: 4;
+    top: @header-height+3;
+    -moz-transition: opacity 0.218s ease 0s;
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: default;
+    font-size: 13px;
+    margin: 0;
+    outline: medium none;
+    padding: 0 0 6px;
+    position: absolute;
+}
+
+div.toolbarPanelLink, div.toolbarPanelLinkSelectedLink {
+    cursor: pointer;
+    color: black;
+    margin: 1px;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 5px 15px;
+}
+
+div.toolbarPanelLink:hover, div.toolbarPanelLinkSelectedLink {
+    cursor: pointer;
+    background-color: #efefef;
+}
+
+div#mindplot {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border: 0;
+}
+
+div#workspaceContainer {
+    background: url(../images/grid.gif) bottom left repeat !important;
+}
+
+div#small_error_icon {
+    padding-left: 18px;
+    min-height: 16px;
+    background: url(../images/error_icon.png) bottom left no-repeat !important;
+}
+
+.notesTip {
+    background-color: #dfcf3c;
+    padding: 5px 15px;
+    color: #666666;
+    /*font-weight: bold;*/
+    /*width: 100px;*/
+    font-size: 13px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+.toolbarTip {
+    background-color: black;
+    padding: 5px 5px;
+    color: #f5f5f5;
+    /*font-weight: bold;*/
+    /*width: 100px;*/
+    font-size: 11px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+

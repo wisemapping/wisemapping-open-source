@@ -180,7 +180,7 @@ mindplot.Topic = new Class({
             result = new web2d.Line({strokeColor:"#495879",strokeWidth:1, strokeOpacity:1});
             result.setSize = function(width, height) {
                 this.size = {width:width, height:height};
-                result.setFrom(-1, height);
+                result.setFrom(0, height);
                 result.setTo(width + 1, height);
 
                 // Lines will have the same color of the default connection lines...
@@ -980,7 +980,7 @@ mindplot.Topic = new Class({
         var innerShape = this.getInnerShape();
 
         outerShape.setSize(size.width + 4, size.height + 6);
-        innerShape.setSize(size.width, size.height);
+        innerShape.setSize(parseInt(size.width), parseInt(size.height));
     },
 
     setSize : function(size, force, updatePosition) {
