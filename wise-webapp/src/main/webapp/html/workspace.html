@@ -121,7 +121,20 @@
         $(function() {
             $("#buttons .show-tags").button({
                 icons: { primary: "ui-icon-folder-open" }
-            });
+            }).click(function() {
+                        if ($("#tags").css("opacity") == 0) {
+                            $("#tags").css("opacity", 1);
+                            $("#maps").animate({
+                                width: "80%"
+                            }, 1000);
+                        } else {
+                            $("#maps").animate({
+                                width: "100%"
+                            }, 1000, function() {
+                                $("#tags").css("opacity", 0);
+                            });
+                        }
+                    });
             $("#buttons .share").button({
                 icons: { primary: "ui-icon-transferthick-e-w" }
             });

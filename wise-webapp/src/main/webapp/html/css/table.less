@@ -5,6 +5,8 @@
 @sorting-odd-color: #D3D6FF;
 
 @red: #FF0000;
+@base-border-size: 1px;
+@base-color: #111;
 
 .rounded-corners (@radius: 5px) {
   border-radius: @radius;
@@ -87,12 +89,15 @@
 table.display {
 	margin: 0 auto;
 	clear: both;
+    float:right;
 	width: 100%;
+    border: @base-border-size solid @base-color * 5;
     thead th {
         padding: 3px 18px 3px 10px;
         border-bottom: 1px solid black;
         font-weight: bold;
         cursor: pointer;
+        background: white;
     }
 
     tfoot th {

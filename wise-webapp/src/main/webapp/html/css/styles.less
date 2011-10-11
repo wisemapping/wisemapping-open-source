@@ -20,7 +20,7 @@ html {
 
 body {
     margin: 0;
-    padding: 20px;
+    padding: 0 20px 20px 20px;
     background: @body-background;
     min-height: 100%;
     font-family: @font-family;
@@ -49,10 +49,11 @@ body {
 
 #tags {
     width: @tags-width;
+    opacity: 0;
     padding: @tags-padding;
     float: left;
-    border: @tags-border-size solid @base-color * 5;
     border-right: none;
+    position: absolute;
 
     h2 {
         font-size: @base-font-size * 1.5;
@@ -75,9 +76,9 @@ body {
 @table-width: 100% - (@tags-width + (@tags-padding / @body-width * 100) + @table-gap);
 
 #map-table {
-    width: @table-width;
+    width:  100% !important;
     display: inline-block;
-    border: @base-border-size solid @base-color * 5;
+
 }
 
 /* ----------------------------- Toolbar -------------------------------- */
@@ -91,6 +92,6 @@ body {
 
 /* ----------------------------- Buttons -------------------------------- */
 #buttons {
-    margin-left: 100% - @table-width;
+    margin-left: @tags-width;
     margin-bottom: @base-margin;
 }
