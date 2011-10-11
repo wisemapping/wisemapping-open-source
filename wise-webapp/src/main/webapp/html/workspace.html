@@ -16,20 +16,21 @@
     <script type="text/javascript" language="javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
     <link href="css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet">
     <script type="text/javascript" language="javascript" src="js/jquery.dataTables.js"></script>
-    <script type="text/javascript" language="javascript" src="js/es_date.js"></script>
+    <script type="text/javascript" language="javascript" src="js/jquery.dataTables.plugins.js"></script>
     <script type="text/javascript" charset="utf-8">
         $(function() {
             $('#map-table').html( '<table cellpadding="0" cellspacing="0" border="0" class="display" id="maps"></table>' );
-            $('#maps').dataTable( {
+            var table = $('#maps').dataTable( {
                 "bProcessing" : true,
                 "sAjaxSource" : "json_source.txt",
                 "aoColumns": [
                     {
-                        "sTitle" : '<input type="checkbox"/>',
-                        "sClass" : "center", "sWidth" : "15px",
+                        "sTitle" : '<input type="checkbox" id="selectAll"/>',
+                        "sClass" : "center select", "sWidth" : "15px",
                         "bSortable" : false, "bSearchable" : false,
                         "fnRender" : function(obj) {
-                            return obj.aData[0];
+                            var id = obj.aData[0];
+                            return '<input type="checkbox" id="'+id+'"/>';
                         }
                     },
                     {
@@ -43,7 +44,7 @@
                     {
                         "sTitle" : "date",
                         "sType" : "es_date",
-                        "bVisible" : false,
+                        "bVisible" : false, "bSearchable" : false,
                         "fnRender" :function(obj) {
                             return obj.aData[4];
                         }
@@ -61,7 +62,7 @@
                         "sWidth" : "15px",
                         "bSortable" : false, "bSearchable" : false,
                         "fnRender" : function(obj) {
-                            return ">";
+                            return '<span class="ui-icon ui-icon-triangle-1-e" style="margin: 0 auto;"></span>';
                         }
                     }
 
@@ -73,6 +74,10 @@
             });
 
             $('#maps_filter').appendTo("#toolbar");
+
+            $('input:checkbox[id="selectAll"]').click(function() {
+                $("#maps").dataTableExt.selectAllMaps();
+            });
         });
 
 
@@ -93,15 +98,11 @@
 
             $("#tags-list").html(html);
             $("#tags-list button" ).button({
-                icons: {
-                    primary: "ui-icon-folder-collapsed"
-                }
+                icons: { primary: "ui-icon-folder-collapsed" }
             });
 
             $("#tags-actions button" ).button({
-                icons: {
-                    primary: "ui-icon-plus"
-                }
+                icons: { primary: "ui-icon-plus" }
             });
         });
     </script>
@@ -114,6 +115,40 @@
             })
         });
     </script>
+
+    <!--Buttons-->
+    <script type="text/javascript" charset="utf-8">
+        $(function() {
+            $("#buttons .show-tags").button({
+                icons: { primary: "ui-icon-folder-open" }
+            });
+            $("#buttons .share").button({
+                icons: { primary: "ui-icon-transferthick-e-w" }
+            });
+
+            $("#buttons .delete").button({
+                icons: { primary: "ui-icon-trash" }
+            }).click(function() {
+                        var selectedMaps = $('#maps').dataTableExt.getSelectedMaps();
+                        console.log("Delete maps: " +selectedMaps);
+                        var html2 = $('#delete-dialog-modal p span').html(selectedMaps.toString());
+                        console.log(html2);
+
+                        $( "#delete-dialog-modal" ).dialog({
+                            height: 140,
+                            modal: true,
+                            buttons: {
+                                "Delete": function() {
+                                    $( this ).dialog( "close" );
+                                },
+                                Cancel: function() {
+                                    $( this ).dialog( "close" );
+                                }
+                            }
+                        });
+                    });
+        })
+    </script>
 </head>
 
 <body>
@@ -122,10 +157,13 @@
 
     </div>
 
-    <div id="map-table-actions">
-        <button>Organiser</button>
-        <button>Partager</button>
-        <button>Supprimer</button>
+    <div id="buttons">
+        <div id="delete-dialog-modal" title="Delete maps" style="display: none">
+            <p>Are you sure you want to delete maps <span></span> ?</p>
+        </div>
+        <button class="show-tags">Organiser</button>
+        <button class="share">Partager</button>
+        <button class="delete">Supprimer</button>
     </div>
 
     <div>
