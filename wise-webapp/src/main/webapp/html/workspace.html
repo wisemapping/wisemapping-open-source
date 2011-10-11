@@ -75,7 +75,10 @@
                 "bAutoWidth" : false,
                 "bLengthChange": false,
                 "bInfo": false,
-                "bPaginate": false
+                "bPaginate": false,
+                "oLanguage" : {
+                    "sSearch" : "Rechercher"
+                }
             });
 
             $('#maps_filter').appendTo("#toolbar");
@@ -94,24 +97,23 @@
     <script type="text/javascript" charset="utf-8">
 
         var tags = ['ThinkMapping', 'Akostic', 'Clients', 'Favoris'];
-        var html = "";
 
         $(function() {
             for (i in tags) {
-                html += '<div class="tag"><span class="ui-icon ui-icon-folder-collapsed" ></span>' + tags[i] + '</div>';
+                var outerDiv = $('<div class="tag">'+tags[i]+'</div>');
+                var icon = $('<span class="ui-icon ui-icon-folder-collapsed"></span>');
+                outerDiv.append(icon);
+                $("#tags-list").append(outerDiv);
             }
-            $("#tags-list").html(html);
+
             $("#tags-actions button" ).button({
                 icons: { primary: "ui-icon-plusthick" }
             });
-        });
-    </script>
 
-    <!--Toolbar-->
-    <script type="text/javascript" charset="utf-8">
-        $(function() {
-            $("#show-tags").click(function() {
-
+            $("#tags-list .tag").each(function(index) {
+                $(this).click(function() {
+                    console.log("ddfsfds");
+                })
             })
         });
     </script>
@@ -125,7 +127,7 @@
                         if ($("#tags").css("opacity") == 0) {
                             $("#tags").css("opacity", 1);
                             $("#maps").animate({
-                                width: "80%"
+                                width: "77%"
                             }, 1000);
                         } else {
                             $("#maps").animate({
@@ -137,28 +139,46 @@
                     });
             $("#buttons .share").button({
                 icons: { primary: "ui-icon-transferthick-e-w" }
-            });
+            }).click(function() {
+                        var selectedMaps = $('#maps').dataTableExt.getSelectedMaps();
+                        var html2 = $('#share-dialog-modal p span').html(selectedMaps.toString());
+
+                        if (selectedMaps.length > 0) {
+                            $( "#share-dialog-modal" ).dialog({
+                                height: 140,
+                                modal: true,
+                                buttons: {
+                                    "Delete": function() {
+                                        $( this ).dialog( "close" );
+                                    },
+                                    Cancel: function() {
+                                        $( this ).dialog( "close" );
+                                    }
+                                }
+                            });
+                        }
+                    });;
 
             $("#buttons .delete").button({
                 icons: { primary: "ui-icon-trash" }
             }).click(function() {
                         var selectedMaps = $('#maps').dataTableExt.getSelectedMaps();
-                        console.log("Delete maps: " +selectedMaps);
                         var html2 = $('#delete-dialog-modal p span').html(selectedMaps.toString());
-                        console.log(html2);
 
-                        $( "#delete-dialog-modal" ).dialog({
-                            height: 140,
-                            modal: true,
-                            buttons: {
-                                "Delete": function() {
-                                    $( this ).dialog( "close" );
-                                },
-                                Cancel: function() {
-                                    $( this ).dialog( "close" );
+                        if (selectedMaps.length > 0) {
+                            $( "#delete-dialog-modal" ).dialog({
+                                height: 140,
+                                modal: true,
+                                buttons: {
+                                    "Delete": function() {
+                                        $( this ).dialog( "close" );
+                                    },
+                                    Cancel: function() {
+                                        $( this ).dialog( "close" );
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
                     });
         })
     </script>
@@ -175,6 +195,10 @@
             <p>Are you sure you want to delete maps <span></span> ?</p>
         </div>
         <button class="show-tags">Organiser</button>
+
+        <div id="share-dialog-modal" title="Share maps" style="display: none">
+            <p>Are you sure you want to share maps <span></span> ?</p>
+        </div>
         <button class="share">Partager</button>
         <button class="delete">Supprimer</button>
     </div>
