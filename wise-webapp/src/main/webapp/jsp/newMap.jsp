@@ -34,11 +34,11 @@
                     <input type="submit" value="<spring:message code="SUBMIT"/>" class="btn-primary">
                     <c:choose>
                     <c:when test="${!errorView}">
-                    <input type="button" value="<spring:message code="CANCEL"/>" class="btn-primary"
+                    <input type="button" value="<spring:message code="CANCEL"/>" class="btn-secondary"
                            onclick="MOOdalBox.close();">
                     </c:when>
                      <c:otherwise>
-                    <input type="button" value="<spring:message code="BACK"/>" class="btn-primary"
+                    <input type="button" value="<spring:message code="BACK"/>" class="btn-secondary"
                            onclick="window.location='mymaps.htm'">
                     </c:otherwise>
                     </c:choose>

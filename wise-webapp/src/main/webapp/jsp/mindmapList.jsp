@@ -18,8 +18,8 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/wiseListLibrary.js"></script>
     <!--[if lt IE 9]>
     <link rel="stylesheet" type="text/css" href="../css/mymapsOldIE.css"/>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/shadedborder.js"></script>    
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/transcorners.js"></script>    
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/shadedborder.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/transcorners.js"></script>
     <script type="text/javascript">
         window.onload = function() {
             var boxGenerator = RUZEE.ShadedBorder.create({ corner:16,  border:1 });
@@ -363,7 +363,7 @@
     function openWizard(href, title, rel)
     {
         href = href + $('selectedMapIds').value;
-        MOOdalBox.open(href, title, rel);
+//        MOOdalBox.open(href, title, rel);
     }
 
     function addToSelectedMapList(el)
@@ -449,8 +449,6 @@
 
 </script>
 <script type="text/javascript">
-
-    MOOdalBox.reloadRequered = true;
 
     function removeCollaborator(collaboratorEmail)
     {

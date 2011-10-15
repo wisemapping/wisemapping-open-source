@@ -25,7 +25,9 @@
     <script type='text/javascript' src='../js/libraries/mootools/mootools-more-1.3.2.1-yui.js'></script>
 
     <script type="text/javascript" src="../dwr/engine.js"></script>
+    <script type="text/javascript" src="../dwr/interface/MapEditorService.js"></script>
     <script type="text/javascript" src="../dwr/interface/LoggerService.js"></script>
+
     <script type='text/javascript' src='../js/core.js'></script>
     <script type='text/javascript' src='../js/editorLib.js'></script>
     <script type='text/javascript' src='../js/less-1.1.3.min.js'></script>
@@ -141,8 +143,14 @@
             <div id="save" class="buttonOn" title="Save">
                 <img src="../nicons/save.png"/>
             </div>
-            <div id="discart" class="buttonOn" title="Discart">
+            <div id="discart" class="buttonOn" title="Discard">
                 <img src="../nicons/discart.png"/>
+            </div>
+            <div id="print" class="buttonOn" title="Print">
+                <img src="../nicons/print.png"/>
+            </div>
+            <div id="export" class="buttonOn" title="Export">
+                <img src="../nicons/export.png"/>
             </div>
         </div>
         <div id="edit" class="buttonContainer">

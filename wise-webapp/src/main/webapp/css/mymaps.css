@@ -224,25 +224,29 @@
 
 #recentFiles.sb {
     background: #EEEEEE;
-    border:1px solid #E5E5E5;
+    border: 1px solid #E5E5E5;
     -moz-border-radius: 16px;
     -khtml-border-radius: 16px;
     -webkit-border-radius: 16px;
-    border-radius:16px;
+    border-radius: 16px;
 }
 
 #recentItems.sb {
     background: white;
-    border:1px solid #E5E5E5;
+    border: 1px solid #E5E5E5;
     -moz-border-radius: 16px;
     -khtml-border-radius: 16px;
     -webkit-border-radius: 16px;
-    border-radius:16px;
+    border-radius: 16px;
 }
 
 #mydocs {
     -moz-border-radius: 16px;
     -khtml-border-radius: 16px;
     -webkit-border-radius: 16px;
-    border-radius:16px;
+    border-radius: 16px;
+}
+
+.subMenu2 {
+   display: none;
 }

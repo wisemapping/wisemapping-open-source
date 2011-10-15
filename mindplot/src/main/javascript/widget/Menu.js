@@ -179,6 +179,24 @@ mindplot.widget.Menu = new Class({
         };
         this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('fontColor', fontColorModel, baseUrl));
 
+        this.addButton('export', false, false, function() {
+            var reqDialog = new MooDialog.Request('../c/export.htm?mapId=' + mapId, null,
+                {'class': 'historyModalDialog',
+                    closeButton:true,
+                    destroyOnClose:true,
+                    title:'Export'
+                });
+            reqDialog.setRequestOptions({
+                onRequest: function() {
+                    reqDialog.setContent('loading...');
+                }
+            });
+        });
+
+        this.addButton('print', false, false, function() {
+            printMap();
+        });
+
         this.addButton('zoomIn', false, false, function() {
             designer.zoomIn();
         });
@@ -225,29 +243,17 @@ mindplot.widget.Menu = new Class({
 
         var saveElem = $('save');
         if (saveElem) {
-            saveElem.addEvent('click', function() {
-
-                if (!readOnly) {
-                    saveElem.setStyle('cursor', 'wait');
-                    (function() {
-                        designer.save(function() {
-                            saveElem.setStyle('cursor', 'pointer');
-                        }, true);
-                    }).delay(1);
-                } else {
-                    new Windoo.Confirm('This option is not enabled in try mode. You must by signed in order to execute this action.<br/> to create an account click <a href="userRegistration.htm">here</a>',
-                        {
-                            'window': {theme:Windoo.Themes.wise,
-                                title:''
-                            }
-                        });
-                }
+            this.addButton('save', false, false, function() {
+                saveElem.setStyle('cursor', 'wait');
+                designer.save(function() {
+                    saveElem.setStyle('cursor', 'pointer');
+                }, true);
             });
         }
 
         var discartElem = $('discart');
         if (discartElem) {
-            discartElem.addEvent('click', function() {
+            this.addButton('tagIt', false, false, function() {
 
                 if (!readOnly) {
                     displayLoading();
@@ -261,49 +267,58 @@ mindplot.widget.Menu = new Class({
 
         var tagElem = $('tagIt');
         if (tagElem) {
-            tagElem.addEvent('click', function(event) {
-                var reqDialog = new MooDialog.Request('../c/tags.htm?mapId=' + mapId, null, {'class': 'MooDialogBig'});
-//                  var reqDialog = new MooDialog.Request("embeddde.html",null,{'class': 'MooDialogBig'});
+            this.addButton('tagIt', false, false, function() {
+                var reqDialog = new MooDialog.Request('../c/tags.htm?mapId=' + mapId, null,
+                    {'class': 'tagItModalDialog',
+                        closeButton:true,
+                        destroyOnClose:true,
+                        title:'Tags'
+                    });
+                reqDialog.setRequestOptions({
+                    onRequest: function() {
+                        reqDialog.setContent('loading...');
+                    }
+                });
+            });
+        }
+
+        var shareElem = $('shareIt');
+        if (shareElem) {
+            this.addButton('shareIt', false, false, function() {
+                var reqDialog = new MooDialog.Request('../c/mymaps.htm?action=collaborator&userEmail=paulo%40pveiga.com.ar&mapId=' + mapId, null,
+                    {'class': 'shareItModalDialog',
+                        closeButton:true,
+                        destroyOnClose:true,
+                        title:'Share It'
+                    });
                 reqDialog.setRequestOptions({
                     onRequest: function() {
                         reqDialog.setContent('loading...');
                     }
                 });
 
-
-            });
-        }
-
-        var shareElem = $('shareIt');
-        if (shareElem) {
-            shareElem.addEvent('click', function() {
-
-
             });
         }
 
         var publishElem = $('publishIt');
         if (publishElem) {
-            $('publishIt').addEvent('click', function(event) {
-                new Windoo.Confirm('This option is not enabled in try mode. You must by signed in order to execute this action.',
-                    {
-                        'window': {theme:Windoo.Themes.wise,
-                            title:''
-                        }
-                    });
 
-            });
         }
         var historyElem = $('history');
         if (historyElem) {
-            historyElem.addEvent('click', function(event) {
-                new Windoo.Confirm('This option is not enabled in try mode. You must by signed in order to execute this action.',
-                    {
-                        'window': {theme:Windoo.Themes.wise,
-                            title:''
-                        }
-                    });
 
+            this.addButton('history', false, false, function() {
+                var reqDialog = new MooDialog.Request('../c/history.htm?action=list&goToMindmapList&mapId=' + mapId, null,
+                    {'class': 'historyModalDialog',
+                        closeButton:true,
+                        destroyOnClose:true,
+                        title:'History'
+                    });
+                reqDialog.setRequestOptions({
+                    onRequest: function() {
+                        reqDialog.setContent('loading...');
+                    }
+                });
             });
         }
 

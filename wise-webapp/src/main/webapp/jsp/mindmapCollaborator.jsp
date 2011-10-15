@@ -53,7 +53,7 @@
             <br/>
             <input id="invitationButton" type="submit" value="Invite Collaborators" class="btn-primary">
             <input type="button" value="<spring:message code="CANCEL"/>" onclick="MOOdalBox.close();"
-                   class="btn-primary"/>
+                   class="btn-secondary"/>
         </div>
 
         <div id="currentUsers">

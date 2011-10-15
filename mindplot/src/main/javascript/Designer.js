@@ -341,10 +341,8 @@ mindplot.Designer = new Class({
         },
 
         needsSave : function() {
-
             //@Todo: Review all this ...
-//            return this._actionDispatcher.hasBeenChanged();
-            return true;
+            return this._actionDispatcher._actionRunner.hasBeenChanged();
         },
 
         save : function(onSavedHandler, saveHistory) {
@@ -391,11 +389,12 @@ mindplot.Designer = new Class({
         },
 
         undo : function() {
-            this._actionRunner.undo();
+            // @Todo: This is a hack...
+            this._actionDispatcher._actionRunner.undo();
         },
 
         redo : function() {
-            this._actionRunner.redo();
+            this._actionDispatcher._actionRunner.redo();
         },
 
         _nodeModelToNodeGraph : function(nodeModel, isVisible) {

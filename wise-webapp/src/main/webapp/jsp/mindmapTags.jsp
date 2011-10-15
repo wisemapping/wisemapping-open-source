@@ -11,10 +11,7 @@
         <table>
             <tbody>
             <tr>
-                <td class="formLabel">
-                    <spring:message code="TAGS"/>
-                    :
-                </td>
+                <td class="formLabel"> &nbsp;</td>
                 <td>
                     <form:input path="mindmapTags" id="mindmapTags" tabindex="0"/>
                     <form:errors path="mindmapTags" cssClass="errorMsg"/>

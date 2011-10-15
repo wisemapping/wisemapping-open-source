@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<%@page pageEncoding="UTF-8"%>
+<%@page pageEncoding="UTF-8" %>
 <%@ taglib prefix="tiles" uri="http://struts.apache.org/tags-tiles" %>
 <%@ include file="/jsp/init.jsp" %>
 
@@ -24,13 +24,10 @@
     <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/wiseLibrary.js"></script>
-    <!--[if lt IE 9]>
-    <link rel="stylesheet" type="text/css" href="../css/wisehomeOldIE.css"/>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/shadedborder.js"></script>
-    <script type="text/javascript">
-        var isOldIE = true;
-    </script>
-    <![endif]-->
+    <script type='text/javascript'
+            src='https://ajax.googleapis.com/ajax/libs/mootools/1.3.2/mootools-yui-compressed.js'></script>
+    <script type='text/javascript' src='../js/libraries/mootools/mootools-more-1.3.2.1-yui.js'></script>
+
 </head>
 <body>
 

@@ -64,7 +64,7 @@
                 <tr>
                     <td style="text-align:center;margin-top:10px;">
                         <input type="button" id="ok" value="<spring:message code="OK"/>" class="btn-primary">
-                        <input type="button" value="<spring:message code="CANCEL"/>" class="btn-primary"
+                        <input type="button" value="<spring:message code="CANCEL"/>" class="btn-secondary"
                                onclick="MOOdalBox.close();">
                     </td>
                 </tr>
