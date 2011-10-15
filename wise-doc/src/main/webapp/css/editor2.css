@@ -312,7 +312,6 @@ div#toolbar {
     background-image: -moz-linear-gradient(bottom, rgb(229, 227, 209) 47%, rgb(252, 250, 237) 87%);
     background-image: -webkit-linear-gradient(bottom, rgb(229, 227, 209) 47%, rgb(252, 250, 237) 87%);
     background-image: -ms-linear-gradient(bottom, rgb(229, 227, 209) 47%, rgb(252, 250, 237) 87%);
-
     background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.47, rgb(229, 227, 209)), color-stop(0.87, rgb(252, 250, 237)));
     border-bottom: 3px double rgb(190, 190, 190);
     border-top: 1px solid rgb(190, 190, 190);
@@ -541,7 +540,11 @@ div.toolbarPanelLink, div.toolbarPanelLinkSelectedLink {
     margin: 1px;
     cursor: pointer;
     font-size: 12px;
-    padding: 5px 15px;
+    padding: 5px 10px;
+    font-weight: bold;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
 }
 
 div.toolbarPanelLink:hover, div.toolbarPanelLinkSelectedLink {
@@ -693,4 +696,36 @@ div#small_error_icon {
 .btn-secondary:hover {
     background-position: 0 -15px;
     text-decoration: none;
+}
+
+/** */
+
+.MooDialogBig {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 11000;
+    width: 400px;
+    margin: -250px 0 0 -250px;
+    background-color: #ffffff;
+    border: 1px solid #999;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    *border: 1px solid #999;
+    /* IE6-7 */
+
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding-box;
+    background-clip: padding-box;
+    padding: 30px;
+}
+
+
+.MooDialogBig .content {
+    height: 300px;
 }

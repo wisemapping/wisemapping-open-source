@@ -33,7 +33,7 @@ function buildDesigner() {
         width:  parseInt(window.innerWidth)
     });
 
-    var menu = new mindplot.widget.Menu(designer, 'toolbar');
+    var menu = new mindplot.widget.Menu(designer, 'toolbar',mapId);
 
     //  If a node has focus, focus can be move to another node using the keys.
     designer._cleanScreen = function() {

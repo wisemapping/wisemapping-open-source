@@ -56,6 +56,8 @@
                                               files="Overlay.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/libraries/moodialog/"
                                               files="MooDialog.js"/>
+                                      <filelist dir="${basedir}/src/main/javascript/libraries/moodialog/"
+                                              files="MooDialog.Request.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/libraries/moodialog/"
                                               files="MooDialog.Fx.js"/>
 

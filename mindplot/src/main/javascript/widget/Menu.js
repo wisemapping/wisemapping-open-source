@@ -17,7 +17,7 @@
  */
 
 mindplot.widget.Menu = new Class({
-    initialize : function(designer, containerId, readOnly) {
+    initialize : function(designer, containerId, mapId, readOnly) {
         $assert(designer, "designer can not be null");
         $assert(containerId, "containerId can not be null");
         var baseUrl = "../css/widget";
@@ -223,17 +223,14 @@ mindplot.widget.Menu = new Class({
             designer.changeFontStyle();
         });
 
-        var saveElem = $('saveButton');
+        var saveElem = $('save');
         if (saveElem) {
             saveElem.addEvent('click', function() {
 
                 if (!readOnly) {
-                    $('saveButton').setStyle('cursor', 'wait');
+                    saveElem.setStyle('cursor', 'wait');
                     (function() {
                         designer.save(function() {
-//                            var monitor = core.Monitor.getInstance();
-//                            monitor.logMessage('Save completed successfully');
-
                             saveElem.setStyle('cursor', 'pointer');
                         }, true);
                     }).delay(1);
@@ -248,7 +245,7 @@ mindplot.widget.Menu = new Class({
             });
         }
 
-        var discartElem = $('discartElem');
+        var discartElem = $('discart');
         if (discartElem) {
             discartElem.addEvent('click', function() {
 
@@ -262,27 +259,31 @@ mindplot.widget.Menu = new Class({
             });
         }
 
-        if (readOnly) {
-            $('tagIt').addEvent('click', function(event) {
-                new Windoo.Confirm('This option is not enabled in try mode. You must by signed in order to execute this action.',
-                    {
-                        'window': {theme:Windoo.Themes.wise,
-                            title:''
-                        }
-                    });
+        var tagElem = $('tagIt');
+        if (tagElem) {
+            tagElem.addEvent('click', function(event) {
+                var reqDialog = new MooDialog.Request('../c/tags.htm?mapId=' + mapId, null, {'class': 'MooDialogBig'});
+//                  var reqDialog = new MooDialog.Request("embeddde.html",null,{'class': 'MooDialogBig'});
+                reqDialog.setRequestOptions({
+                    onRequest: function() {
+                        reqDialog.setContent('loading...');
+                    }
+                });
+
 
             });
+        }
 
-            $('shareIt').addEvent('click', function(event) {
-                new Windoo.Confirm('This option is not enabled in try mode. You must by signed in order to execute this action.',
-                    {
-                        'window': {theme:Windoo.Themes.wise,
-                            title:''
-                        }
-                    });
+        var shareElem = $('shareIt');
+        if (shareElem) {
+            shareElem.addEvent('click', function() {
+
 
             });
+        }
 
+        var publishElem = $('publishIt');
+        if (publishElem) {
             $('publishIt').addEvent('click', function(event) {
                 new Windoo.Confirm('This option is not enabled in try mode. You must by signed in order to execute this action.',
                     {
@@ -292,8 +293,10 @@ mindplot.widget.Menu = new Class({
                     });
 
             });
-
-            $('history').addEvent('click', function(event) {
+        }
+        var historyElem = $('history');
+        if (historyElem) {
+            historyElem.addEvent('click', function(event) {
                 new Windoo.Confirm('This option is not enabled in try mode. You must by signed in order to execute this action.',
                     {
                         'window': {theme:Windoo.Themes.wise,
@@ -302,7 +305,6 @@ mindplot.widget.Menu = new Class({
                     });
 
             });
-
         }
 
         this._registerEvents(designer);

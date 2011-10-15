@@ -16,8 +16,9 @@
     <title><spring:message code="SITE.TITLE"/> - ${mindmap.title} </title>
     <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
 
-    <script type='text/javascript' src='../js/less-1.1.3.min.js'></script>
-    <link rel="stylesheet" type="text/css" href="../css/editor2.css"/>
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet/less" type="text/css" href="../css/editor2.css"/>
 
     <script type='text/javascript'
             src='https://ajax.googleapis.com/ajax/libs/mootools/1.3.2/mootools-yui-compressed.js'></script>
@@ -27,18 +28,17 @@
     <script type="text/javascript" src="../dwr/interface/LoggerService.js"></script>
     <script type='text/javascript' src='../js/core.js'></script>
     <script type='text/javascript' src='../js/editorLib.js'></script>
+    <script type='text/javascript' src='../js/less-1.1.3.min.js'></script>
 
-    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+
     <script type="text/javascript">
-
+        var mapId = '${mindmap.id}';
+        var mapXml = '${mapXml}';
         var mindReady = false;
         $(document).addEvent('loadcomplete', function(resource) {
             mindReady = resource == 'mind' ? true : mindReady;
             if (mindReady) {
 
-                var mapId = '${mindmap.id}';
-                var mapXml = '${mapXml}';
                 var editorProperties = ${mindmap.properties};
                 editorProperties.collab = 'standalone';
 
@@ -130,8 +130,11 @@
             <spring:message code="LOGOUT"/>
         </a></span>
         </div>
-        <div id="headerLogo"></div>
-        <div id="headerMapTitle">Title: <span>Hola</span></div>
+        <a href="${pageContext.request.contextPath}/c/mymaps.htm">
+            <div id="headerLogo"></div>
+        </a>
+
+        <div id="headerMapTitle">Title: <span>${mindmap.title}</span></div>
     </div>
     <div id="toolbar">
         <div id="persist" class="buttonContainer">
@@ -204,14 +207,14 @@
                 <img src="../nicons/font-color.png"/>
             </div>
         </div>
-           <div id="collaboration" class="buttonContainer">
-            <div id="tag" class="buttonOn" title="Tag">
+        <div id="collaboration" class="buttonContainer">
+            <div id="tagIt" class="buttonOn" title="Tag">
                 <img src="../nicons/tag.png"/>
             </div>
-            <div id="share" class="buttonExtOn" title="Share">
+            <div id="shareIt" class="buttonOn" title="Share">
                 <img src="../nicons/share.png"/>
             </div>
-            <div id="publish" class="buttonOn" title="Publish">
+            <div id="publishIt" class="buttonOn" title="Publish">
                 <img src="../nicons/public.png"/>
             </div>
             <div id="history" class="buttonOn" title="History">

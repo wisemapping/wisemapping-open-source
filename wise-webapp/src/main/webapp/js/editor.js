@@ -27,7 +27,7 @@ var designer = null;
 
 function setUpToolbar(designer, isTryMode) {
 
-    var menu = new mindplot.widget.Menu(designer, 'toolbar');
+    var menu = new mindplot.widget.Menu(designer, 'toolbar', mapId);
 
     // Autosave ...
     if (!isTryMode) {
