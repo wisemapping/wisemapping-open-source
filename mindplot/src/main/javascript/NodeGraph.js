@@ -103,11 +103,10 @@ mindplot.NodeGraph = new Class({
             this._onFocus = focus;
             var outerShape = this.getOuterShape();
             if (focus) {
-                outerShape.setFill('#c7d8ff');
+                outerShape.setFill(mindplot.Topic.OUTER_SHAPE_ATTRIBUTES_FOCUS.fillColor);
                 outerShape.setOpacity(1);
 
             } else {
-                // @todo: node must not know about the topic.
                 outerShape.setFill(mindplot.Topic.OUTER_SHAPE_ATTRIBUTES.fillColor);
                 outerShape.setOpacity(0);
             }

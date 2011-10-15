@@ -67,36 +67,33 @@ mindplot.widget.ColorPalettePanel = new Class({
             elem.addEvent('click', function() {
                 var color = elem.getStyle("background-color");
                 model.setValue(color);
-            });
-        });
+                this.hide();
+            }.bind(this));
+        }.bind(this));
 
         return content;
     },
 
-    show : function() {
-        if (!this.isVisible()) {
+    _updateSelectedItem : function() {
+        var panelElem = this.getPanelElem();
 
-            var panelElem = this.getPanelElem();
+        // Clear selected cell based on the color  ...
+        var tdCells = panelElem.getElements("td[class='palette-cell palette-cell-selected']");
+        tdCells.forEach(function(elem) {
+            elem.className = 'palette-cell';
+        });
 
-            // Clear selected cell based on the color  ...
-            var tdCells = panelElem.getElements("td[class='palette-cell palette-cell-selected']");
-            tdCells.forEach(function(elem) {
-                elem.className = 'palette-cell';
-            });
-
-            // Mark the cell as selected ...
-            var colorCells = panelElem.getElements('div[class=palette-colorswatch]');
-            var model = this.getModel();
-            var modelValue = model.getValue();
-            colorCells.forEach(function(elem) {
-                var color = elem.getStyle("background-color");
-                if (modelValue == color) {
-                    elem.parentNode.className = 'palette-cell palette-cell-selected';
-                }
-            });
-        }
-        this.parent();
+        // Mark the cell as selected ...
+        var colorCells = panelElem.getElements('div[class=palette-colorswatch]');
+        var model = this.getModel();
+        var modelValue = model.getValue();
+        colorCells.forEach(function(elem) {
+            var color = elem.getStyle("background-color");
+            if (modelValue == color) {
+                elem.parentNode.className = 'palette-cell palette-cell-selected';
+            }
+        });
+        return panelElem;
     }
-
 
 });

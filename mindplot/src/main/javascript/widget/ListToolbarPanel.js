@@ -28,27 +28,27 @@ mindplot.widget.ListToolbarPanel = new Class({
         var menuElems = this.getPanelElem().getElements('div');
         menuElems.forEach(function(elem) {
             elem.addEvent('click', function(event) {
-                var value = $defined(elem.getAttribute('model')) ? elem.getAttribute('model') : elem.id;
-                this.getModel().setValue(value);
                 event.stopPropagation();
                 this.hide();
+
+                var value = $defined(elem.getAttribute('model')) ? elem.getAttribute('model') : elem.id;
+                this.getModel().setValue(value);
             }.bind(this));
         }.bind(this));
     },
 
-    show : function() {
-        if (!this.isVisible()) {
-            var menuElems = this.getPanelElem().getElements('div');
-            var value = this.getModel().getValue();
-            menuElems.forEach(function(elem) {
-                var elemValue = $defined(elem.getAttribute('model')) ? elem.getAttribute('model') : elem.id;
-                if (elemValue == value)
-                    elem.className = "toolbarPanelLinkSelectedLink";
-                else
-                    elem.className = "toolbarPanelLink";
-            });
-
-            this.parent();
-      }
+    _updateSelectedItem : function() {
+        var panelElem = this.getPanelElem();
+        var menuElems = panelElem.getElements('div');
+        var value = this.getModel().getValue();
+        menuElems.forEach(function(elem) {
+            var elemValue = $defined(elem.getAttribute('model')) ? elem.getAttribute('model') : elem.id;
+            $assert(elemValue,"elemValue can not be null");
+            if (elemValue == value)
+                elem.className = "toolbarPanelLinkSelectedLink";
+            else
+                elem.className = "toolbarPanelLink";
+        });
+        return panelElem;
     }
 });

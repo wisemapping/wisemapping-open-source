@@ -207,7 +207,6 @@ mindplot.Topic = new Class({
         else {
             $assert(false, "Unsupported figure type:" + type);
         }
-
         result.setPosition(0, 0);
         return result;
     },
@@ -1198,5 +1197,6 @@ mindplot.Topic = new Class({
 
 
 mindplot.Topic.CONNECTOR_WIDTH = 6;
-mindplot.Topic.OUTER_SHAPE_ATTRIBUTES = {fillColor:'#dbe2e6',stroke:'1 solid #77555a',x:0,y:0};
-mindplot.Topic.INNER_RECT_ATTRIBUTES = {stroke:'0.5 solid'};
+mindplot.Topic.OUTER_SHAPE_ATTRIBUTES = {fillColor:'rgb(252,235,192)',stroke:'1 dot rgb(241,163,39)',x:0,y:0};
+mindplot.Topic.OUTER_SHAPE_ATTRIBUTES_FOCUS = {fillColor:'rgb(244,184,45)',x:0,y:0};
+mindplot.Topic.INNER_RECT_ATTRIBUTES = {stroke:'2 solid'};

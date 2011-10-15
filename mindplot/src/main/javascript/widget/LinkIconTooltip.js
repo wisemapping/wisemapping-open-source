@@ -29,7 +29,8 @@ mindplot.widget.LinkIconTooltip = new Class({
             arrowOffset : 10,
             center: true,
             arrowSize: 15,
-            offset : {x:10,y:20}
+            offset : {x:10,y:20},
+            className: 'linkTip'
         });
     },
 

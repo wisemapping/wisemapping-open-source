@@ -24,8 +24,9 @@ mindplot.widget.ToolbarItem = new Class({
         this._buttonId = buttonId;
         this._fn = fn;
         this._options = options;
+        this._enable = false;
         this.enable();
-//        this._tip = this._registerTip();
+//        this._registerTip();
 
     },
 

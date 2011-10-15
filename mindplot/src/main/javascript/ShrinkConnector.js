@@ -21,7 +21,7 @@ mindplot.ShirinkConnector = new Class({
 
         var elipse = new web2d.Elipse(mindplot.Topic.prototype.INNER_RECT_ATTRIBUTES);
         this._elipse = elipse;
-        elipse.setFill('#f7f7f7');
+        elipse.setFill('rgb(62,118,179)');
 
         elipse.setSize(mindplot.Topic.CONNECTOR_WIDTH, mindplot.Topic.CONNECTOR_WIDTH);
         elipse.addEvent('click', function(event) {

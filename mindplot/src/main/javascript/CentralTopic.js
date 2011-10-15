@@ -100,11 +100,11 @@ mindplot.CentralTopic = new Class({
     },
 
     _defaultBackgroundColor : function() {
-        return "#f7f7f7";
+        return "rgb(80,157,192)";
     },
 
     _defaultBorderColor : function() {
-        return "#023BB9";
+        return "rgb(57,113,177)";
     },
 
     _defaultFontStyle : function() {
@@ -113,7 +113,7 @@ mindplot.CentralTopic = new Class({
             size: 10,
             style:"normal",
             weight:"bold",
-            color:"#023BB9"
+            color:"#ffffff"
         };
     }
 });

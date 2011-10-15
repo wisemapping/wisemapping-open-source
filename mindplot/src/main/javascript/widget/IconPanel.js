@@ -22,6 +22,11 @@ mindplot.widget.IconPanel = new Class({
         this.parent(buttonId, model);
     },
 
+    _updateSelectedItem : function() {
+        return this.getPanelElem();
+
+    },
+
     buildPanel: function() {
         var content = new Element('div', {'class':'toolbarPanel','id':'IconsPanel'});
         content.setStyles({width:253,height:200,padding:5});

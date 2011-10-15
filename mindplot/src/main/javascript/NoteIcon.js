@@ -22,7 +22,7 @@ mindplot.NoteIcon = new Class({
         $assert(topic, 'topic can not be null');
 
         this.parent(mindplot.NoteIcon.IMAGE_URL);
-        this._noteModel = noteModel;
+        this._linksModel = noteModel;
         this._topic = topic;
 
         this._registerEvents();
@@ -52,7 +52,7 @@ mindplot.NoteIcon = new Class({
                 });
                 title.inject(result);
 
-                var text = new Element('div', {text:this._noteModel.getText()});
+                var text = new Element('div', {text:this._linksModel.getText()});
                 text.setStyles({
                         'white-space': 'pre-wrap',
                         'word-wrap': 'break-word'
@@ -74,7 +74,7 @@ mindplot.NoteIcon = new Class({
     },
 
     getModel : function() {
-        return this._noteModel;
+        return this._linksModel;
     },
 
     remove : function() {
@@ -83,5 +83,5 @@ mindplot.NoteIcon = new Class({
     }
 });
 
-mindplot.NoteIcon.IMAGE_URL = "../images/note.png";
+mindplot.NoteIcon.IMAGE_URL = "../nicons/notes.png";
 

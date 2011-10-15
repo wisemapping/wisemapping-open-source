@@ -43,7 +43,7 @@ mindplot.ConnectionLine = new Class({
             }
             line.setStroke(1, 'solid', strokeColor);
         }
-
+        line.setFill(mindplot.ConnectionLine.getStrokeColor());
         this._line2d = line;
     },
 

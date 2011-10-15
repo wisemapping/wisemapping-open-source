@@ -43,12 +43,12 @@ mindplot.widget.FloatingTip = new Class({
 
     initialize: function(element, options) {
         this.setOptions(options);
-        this.boundShow = function(event) {
-            this.show(event, element);
+        this.boundShow = function() {
+            this.show(element);
         }.bind(this);
 
-        this.boundHide = function(event) {
-            this.hide(event, element);
+        this.boundHide = function() {
+            this.hide(element);
         }.bind(this);
 
         if (!['top', 'right', 'bottom', 'left', 'inside'].contains(this.options.position))
@@ -65,7 +65,7 @@ mindplot.widget.FloatingTip = new Class({
         element.store('hasEvents', true);
     },
 
-    show: function(event, element) {
+    show: function(element) {
         var old = element.retrieve('floatingtip');
         if (old) if (old.getStyle('opacity') == 1) {
             clearTimeout(old.retrieve('timeout'));
@@ -74,17 +74,20 @@ mindplot.widget.FloatingTip = new Class({
         var tip = this._create(element);
         if (tip == null)
             return this;
+
         element.store('floatingtip', tip);
         this._animate(tip, 'in');
+
         if (this.options.preventHideOnOver) {
             tip.addEvent(this.options.showOn, this.boundShow);
             tip.addEvent(this.options.hideOn, this.boundHide);
         }
+
         this.fireEvent('show', [tip, element]);
         return this;
     },
 
-    hide: function(event, element) {
+    hide: function(element) {
         var tip = element.retrieve('floatingtip');
         if (!tip) {
             if (this.options.position == 'inside') {

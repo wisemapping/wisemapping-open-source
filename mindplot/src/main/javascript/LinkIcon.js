@@ -25,7 +25,7 @@ mindplot.LinkIcon = new Class({
 
 
         this.parent(mindplot.LinkIcon.IMAGE_URL);
-        this._noteModel = linkModel;
+        this._linksModel = linkModel;
         this._topic = topic;
 
         this._registerEvents();
@@ -44,7 +44,7 @@ mindplot.LinkIcon = new Class({
     },
 
     getModel : function() {
-        return this._noteModel;
+        return this._linksModel;
     },
 
     remove : function() {
@@ -52,6 +52,6 @@ mindplot.LinkIcon = new Class({
         actionDispatcher.removeLinkFromTopic(this._topic.getId());
     }
 });
-mindplot.LinkIcon.IMAGE_URL = "../images/world_link.png";
+mindplot.LinkIcon.IMAGE_URL = "../nicons/links.png";
 
  

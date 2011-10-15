@@ -1,0 +1,699 @@
+@import "widget/lightbox.css";
+@import "libraries/moodialog/css/MooDialog.css";
+
+
+
+/* Common Default Style */
+html {
+    overflow: hidden;
+}
+
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td {
+    margin: 0;
+    padding: 0;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+fieldset, img {
+    border: 0;
+}
+
+address, caption, cite, code, dfn, em, strong, th, var {
+    font-style: normal;
+    font-weight: normal;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+caption, th {
+    text-align: left;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight: normal;
+}
+
+q:before, q:after {
+    content: '';
+}
+
+abbr, acronym {
+    border: 0;
+}
+
+/**
+ * Percents could work for IE, but for backCompat purposes, we are using keywords.
+ * x-small is for IE6/7 quirks mode.
+ *
+ */
+body {
+    font: 13px arial, helvetica, clean, sans-serif;
+    font-size: small;
+    font: x-small;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+table {
+    font-size: inherit;
+    font-size: 100%;
+}
+
+/**
+ * 99% for safari; 100% is too large
+ */
+select, input, textarea {
+    font: 99% arial, helvetica, clean, sans-serif;
+}
+
+/**
+ * Bump up !IE to get to 13px equivalent
+ */
+pre, code {
+    font: 115% monospace;
+    font-size: 100%;
+}
+
+/**
+ * Default line-height based on font-size rather than "computed-value"
+ * see: http://www.w3.org/TR/CSS21/visudet.html#line-height
+ */
+
+body * {
+    line-height: 1.22em;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font: normal 80% "trebuchet ms", verdana, arial, helvetica, sans-serif;
+    background-color: #fff;
+}
+
+img {
+    border: 0;
+}
+
+form {
+    padding: 0;
+    margin: 0;
+}
+
+p {
+    margin: 5px 0 5px 0;
+}
+
+ul {
+    list-style-position: inside;
+}
+
+a:link, a:visited {
+    font: bold 100%;
+    text-decoration: underline;
+    color: black;
+}
+
+a:hover, a:active {
+    font: bold 100%;
+    text-decoration: underline;
+    color: black;
+}
+
+h2 {
+    font-size: 160%;
+    color: #8e9181;
+}
+
+h1 {
+    font-style: normal;
+    font-size: 180%;
+    color: white;
+    padding-bottom: 2px;
+}
+
+h3 {
+    /* use as subhead on main body */
+    clear: left;
+    font-style: normal;
+    font-size: 130%;
+    color: #6b6f5b;
+}
+
+h4 {
+    /* use as headers in footer */
+    font-weight: bold;
+    font-size: 120%;
+    border-bottom: 1px solid #8e9181;
+    color: #e2e3dd;
+    padding-bottom: 10px;
+    width: 400px;
+}
+
+/**********************************************************/
+/* End: Common Default Style */
+/**********************************************************/
+
+/**********************************************************/
+/* Error Dialog ... */
+/**********************************************************/
+
+#waitDialog {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    height: 200px;
+}
+
+#waitingContainer, #errorContainer {
+    position: relative;
+    top: 80px;
+    height: 120px; /*background: whitesmoke;*/
+    background: #FEFEFE;
+    opacity: .99;
+    padding: 15px;
+    width: 100%;
+    border: 1px solid;
+    border-color: #a9a9a9;
+
+}
+
+#errorContainer {
+    width: 400px;
+    border: 1px solid red;
+}
+
+#waitingContainer .loadingText {
+    position: relative;
+    top: 50%;
+    margin-top: -35px;
+    font-size: 30px;
+    font-weight: bold;
+    vertical-align: text-bottom;
+    height: 30px;
+    float: left;
+}
+
+#errorContainer .loadingText {
+    position: relative;
+    top: 50%;
+    margin-top: -80px;
+    font-size: 15px;
+    font-weight: bold;
+    vertical-align: text-bottom;
+    height: 30px;
+    float: right;
+    padding-left: 120px;
+}
+
+#waitingContainer .loadingIcon {
+    position: relative;
+    background: url(../images/loadingIcon.gif) no-repeat;
+    top: 50%;
+    margin-top: -65px;
+    height: 100px;
+    width: 121px;
+    float: left;
+    clear: both;
+}
+
+#errorContainer .loadingIcon {
+    position: relative;
+    background: url(../images/errorIcon.png) no-repeat;
+    top: 50%;
+    margin-top: -65px;
+    height: 100px;
+    width: 121px;
+    float: left;
+    clear: both;
+}
+
+/********************************************************************************/
+/* Toolbar Styles */
+/********************************************************************************/
+
+div#header {
+    width: 100%;
+    height: 75px;
+    background: #393939; /* Old browsers */
+    background: -moz-linear-gradient(top, #393939 0%, #000000 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #393939), color-stop(100%, #000000)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #393939 0%, #000000 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #393939 0%, #000000 100%); /* Opera11.10+ */
+    background: -ms-linear-gradient(top, #393939 0%, #000000 100%); /* IE10+ */
+    background: linear-gradient(top, #393939 0%, #000000 100%); /* W3C */
+}
+
+div#headerLogo {
+    background: url(../nicons/logo-small.png) no-repeat center top;
+    height: 40px;
+    width: 80px;
+    float: left;
+}
+
+div#headerInfo {
+    width: 100%;
+    height: 45px;
+    color: white;
+}
+
+div#headerActions {
+    text-align: right;
+    margin-top: 13px;
+    padding-right: 10px;
+    color: white;
+    float: right;
+}
+
+div#headerActions span {
+    border-bottom: 3px solid rgb(247, 201, 49);
+}
+
+div#headerActions a {
+    color: white;
+    text-decoration: none;
+}
+
+div#headerMapTitle {
+    width: 200px;
+    height:(45 ) - 13;
+    text-align: left;
+    padding-top: 13px;
+    padding-left: 50px;
+    color: white;
+    float: left;
+    font-style: italic;
+}
+
+div#headerMapTitle span {
+    padding: 4px 50px;
+    border: 1px solid rgb(90, 90, 90);
+    background-color: rgb(45, 45, 45);
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+div#toolbar {
+    width: 100%;
+    height: 35px;
+    background-image: linear-gradient(bottom, rgb(229, 227, 209) 47%, rgb(252, 250, 237) 87%);
+    background-image: -o-linear-gradient(bottom, rgb(229, 227, 209) 47%, rgb(252, 250, 237) 87%);
+    background-image: -moz-linear-gradient(bottom, rgb(229, 227, 209) 47%, rgb(252, 250, 237) 87%);
+    background-image: -webkit-linear-gradient(bottom, rgb(229, 227, 209) 47%, rgb(252, 250, 237) 87%);
+    background-image: -ms-linear-gradient(bottom, rgb(229, 227, 209) 47%, rgb(252, 250, 237) 87%);
+
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.47, rgb(229, 227, 209)), color-stop(0.87, rgb(252, 250, 237)));
+    border-bottom: 3px double rgb(190, 190, 190);
+    border-top: 1px solid rgb(190, 190, 190);
+}
+
+div#toolbar .buttonContainer {
+    height: 35px;
+    float: left;
+    /*color: black;*/
+    /*border: 1px solid #BBB4D6;*/
+    margin-left: 5px;
+}
+
+/******************************************************************************************/
+/* Buttons*/
+/******************************************************************************************/
+
+div#toolbar .buttonOn, div#toolbar .buttonOff, div#toolbar .buttonActive, div#toolbar .buttonOn:hover {
+    width: 28px;
+    height: 28px;
+    float: left;
+    text-align: center;
+    z-index: 4;
+    margin-top: 3px;
+    padding-top: 2px;
+    padding-left: 2px;
+}
+
+div#toolbar .buttonOn:hover {
+    cursor: pointer;
+    opacity: 1;
+    background: url(../nicons/btn-bg-hover.png) no-repeat center top;
+}
+
+div#toolbar .buttonOn {
+    opacity: 0.8;
+    background: url(../nicons/btn-bg-normal.png) no-repeat center top;
+}
+
+div#toolbar .buttonOff {
+    opacity: 0.4;
+    background: url(../nicons/btn-bg-normal.png) no-repeat center top;
+}
+
+div#exportAnchor {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+div#toolbar .buttonExtOn, div#toolbar .buttonExtOff, div#toolbar .buttonExtActive, div#toolbar .buttonExtOn:hover {
+    width: 40px;
+    height: 28px;
+    float: left;
+    text-align: left;
+    z-index: 4;
+    margin-top: 3px;
+    padding-top: 2px;
+    padding-left: 5px;
+}
+
+div#toolbar .buttonExtOn:hover {
+    opacity: 1;
+    background: url(../nicons/btne-bg-hover.png) no-repeat center top;
+
+}
+
+div#toolbar .buttonExtActive {
+    opacity: 1;
+    background: url(../nicons/btne-bg-selected.png) no-repeat center top;
+
+}
+
+div#toolbar .buttonExtOn {
+    opacity: 0.8;
+    background: url(../nicons/btne-bg-normal.png) no-repeat center top;
+}
+
+div#toolbar .buttonExtOff {
+    opacity: 0.4;
+    background: url(../nicons/btne-bg-normal.png) no-repeat center top;
+}
+
+div#exportAnchor {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+/*div#saveButton {*/
+/*background: url(../nicons/save.png) no-repeat center top;*/
+/*}*/
+
+/*div#undoEdition {*/
+/*background: url(../nicons/undo.png) no-repeat center top;*/
+/*}*/
+
+/*div#redoEdition {*/
+/*background: url(../nicons/redo.png) no-repeat center top;*/
+/*}*/
+
+/*div#export {*/
+/*background: url(../nicons/export.png) no-repeat center top;*/
+/*}*/
+
+/*div#zoomIn {*/
+/*background: url(../nicons/zoom-in.png) no-repeat center top;*/
+/*}*/
+
+/*div#zoomOut {*/
+/*background: url(../nicons/zoom-out.png) no-repeat center top;*/
+/*}*/
+
+/*div#addTopic {*/
+/*background: url(../nicons/topic-add.png) no-repeat center top;*/
+/*}*/
+
+/*div#deleteTopic {*/
+/*background: url(../nicons/topic-delete.png) no-repeat center top;*/
+/*}*/
+
+/*div#topicColor {*/
+/*background: url(../nicons/topic-color.png) no-repeat center top;*/
+/*}*/
+
+/*div#topicIcon {*/
+/*background: url(../nicons/topic-icon.png) no-repeat center top;*/
+/*}*/
+
+/*div#topicNote {*/
+/*background: url(../nicons/note.png) no-repeat center top;*/
+/*}*/
+
+/*div#topicNote {*/
+/*background: url(../nicons/topic-icon.png) no-repeat center top;*/
+/*z-index: 4;*/
+/*}*/
+
+/*div#topicLink {*/
+/*background: url(../nicons/topic-link.png) no-repeat center top;*/
+/*z-index: 4;*/
+/*}*/
+
+/*div#topicNote {*/
+/*background-image: url(../nicons/note.png);*/
+/*z-index: 4;*/
+/*}*/
+
+/*div#topicBorder {*/
+/*background: url(../nicons/topic-border.png) no-repeat center top;*/
+/*}*/
+
+/*div#fontFamily {*/
+/*background: url(../nicons/font-type.png) no-repeat center top;*/
+/*}*/
+
+/*div#topicShape {*/
+/*background: url(../nicons/topic-shape.png) no-repeat center top;*/
+/*}*/
+
+/*div#fontBold {*/
+/*background: url(../nicons/font-bold.png) no-repeat center top;*/
+/*}*/
+
+/*div#fontItalic {*/
+/*background: url(../nicons/font-italic.png) no-repeat center top;*/
+/*}*/
+
+/*div#fontColor {*/
+/*background: url(../nicons/font-color.png) no-repeat center top;*/
+/*}*/
+
+/*div#fontSize {*/
+/*background: url(../nicons/font-size.png) no-repeat center top;*/
+/*}*/
+
+/*div#shareIt {*/
+/*background: url(../nicons/share.png) no-repeat center top;*/
+/*}*/
+
+/*div#publishIt {*/
+/*background: url(../nicons/publish.png) no-repeat center top;*/
+/*}*/
+
+/*div#tagIt {*/
+/*background: url(../nicons/tag.png) no-repeat center top;*/
+/*}*/
+
+div#topicRelation {
+    width: 56px;
+    background: url(../nicons/topic-relation.png) no-repeat center top;
+    z-index: 4;
+}
+
+div#colorPalette {
+    border: 1px solid #bbb4d6;
+    display: none;
+    position: absolute;
+    z-index: 4;
+    width: 160px;
+    top: 89px;
+}
+
+/*.toolbarPanel {*/
+/*z-index: 4;*/
+/*top: 75px;*/
+/*-moz-transition: opacity 0.218s ease 0s;*/
+/*background: none repeat scroll 0 0 #FFFFFF;*/
+/*border: 1px solid rgba(0, 0, 0, 0.2);*/
+/*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);*/
+/*cursor: default;*/
+/*font-size: 13px;*/
+/*margin: 0;*/
+/*outline: medium none;*/
+/*padding: 0 0 6px;*/
+/*position: absolute;*/
+/*}*/
+
+div.toolbarPanelLink, div.toolbarPanelLinkSelectedLink {
+    cursor: pointer;
+    color: black;
+    margin: 1px;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 5px 15px;
+}
+
+div.toolbarPanelLink:hover, div.toolbarPanelLinkSelectedLink {
+    cursor: pointer;
+    background-color: #efefef;
+}
+
+div#mindplot {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border: 0;
+}
+
+div#workspaceContainer {
+    /*background: url(../images/grid.gif) bottom left repeat !important;*/
+}
+
+div#small_error_icon {
+    padding-left: 18px;
+    min-height: 16px;
+    background: url(../images/error_icon.png) bottom left no-repeat !important;
+}
+
+.notesTip {
+    background-color: #dfcf3c;
+    padding: 5px 15px;
+    color: #666666;
+    /*font-weight: bold;*/
+    /*width: 100px;*/
+    font-size: 13px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+.linkTip {
+    background-color: #dfcf3c;
+    padding: 5px 15px;
+    color: #666666;
+    /*font-weight: bold;*/
+    /*width: 100px;*/
+    font-size: 13px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+.toolbarPaneTip {
+    background-color: rgb(228, 226, 210);
+    padding: 5px 5px;
+    color: #f5f5f5;
+    /*font-weight: bold;*/
+    /*width: 100px;*/
+    font-size: 11px;
+    -moz-border-radius: 60px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2);
+    border: 3px double rgb(190, 190, 190);
+}
+
+.toolbarTip {
+    background-color: #000000;
+    padding: 5px 5px;
+    color: #f5f5f5;
+    /*font-weight: bold;*/
+    /*width: 100px;*/
+    font-size: 11px;
+}
+
+/* */
+.btn-primary {
+    cursor: pointer;
+    display: inline-block;
+    padding: 5px 14px 6px;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    color: #333;
+    font-size: 13px;
+    line-height: normal;
+    border: 1px solid #ccc;
+    border-bottom-color: #bbb;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -webkit-transition: 0.1s linear all;
+    -moz-transition: 0.1s linear all;
+    -ms-transition: 0.1s linear all;
+    -o-transition: 0.1s linear all;
+    transition: 0.1s linear all;
+    color: #ffffff;
+    background-color: #0064cd;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#049cdb), to(#0064cd));
+    background-image: -moz-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -ms-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #049cdb), color-stop(100%, #0064cd));
+    background-image: -webkit-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -o-linear-gradient(top, #049cdb, #0064cd);
+    background-image: linear-gradient(top, #049cdb, #0064cd);
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    border-color: #0064cd #0064cd #003f81;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+
+.btn-primary:hover {
+    background-position: 0 -15px;
+    text-decoration: none;
+}
+
+.btn-secondary {
+    cursor: pointer;
+    display: inline-block;
+    background-color: #e6e6e6;
+    background-repeat: no-repeat;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), color-stop(25%, #ffffff), to(#e6e6e6));
+    background-image: -webkit-linear-gradient(#ffffff, #ffffff 25%, #e6e6e6);
+    background-image: -moz-linear-gradient(top, #ffffff, #ffffff 25%, #e6e6e6);
+    background-image: -ms-linear-gradient(#ffffff, #ffffff 25%, #e6e6e6);
+    background-image: -o-linear-gradient(#ffffff, #ffffff 25%, #e6e6e6);
+    background-image: linear-gradient(#ffffff, #ffffff 25%, #e6e6e6);
+    padding: 5px 14px 6px;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    color: #333;
+    font-size: 13px;
+    line-height: normal;
+    border: 1px solid #ccc;
+    border-bottom-color: #bbb;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -webkit-transition: 0.1s linear all;
+    -moz-transition: 0.1s linear all;
+    -ms-transition: 0.1s linear all;
+    -o-transition: 0.1s linear all;
+    transition: 0.1s linear all;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+.btn-secondary:hover {
+    background-position: 0 -15px;
+    text-decoration: none;
+}

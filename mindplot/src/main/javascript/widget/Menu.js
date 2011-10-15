@@ -359,20 +359,20 @@ mindplot.widget.Menu = new Class({
             })
         }.bind(this));
 
-        designer.addEvent("modelUpdate", function(event) {
-            if (event.undoSteps > 0) {
-                $("undoEdition").setStyle("background-image", "url(../images/file_undo.png)");
-            } else {
-                $("undoEdition").setStyle("background-image", "url(../images/file_undo_dis.png)");
-            }
-
-            if (event.redoSteps > 0) {
-                $("redoEdition").setStyle("background-image", "url(../images/file_redo.png)");
-            } else {
-                $("redoEdition").setStyle("background-image", "url(../images/file_redo_dis.png)");
-            }
-
-        });
+//        designer.addEvent("modelUpdate", function(event) {
+//            if (event.undoSteps > 0) {
+//                $("undoEdition").setStyle("background-image", "url(../nicons/undo.png)");
+//            } else {
+//                $("undoEdition").setStyle("background-image", "url(../nicons/undo.png)");
+//            }
+//
+//            if (event.redoSteps > 0) {
+//                $("redoEdition").setStyle("background-image", "url(../nicons/redo.png)");
+//            } else {
+//                $("redoEdition").setStyle("background-image", "url(../nicons/redo.png)");
+//            }
+//
+//        });
     },
 
     addButton:function (buttonId, topic, rel, fn) {
