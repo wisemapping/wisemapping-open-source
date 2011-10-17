@@ -99,7 +99,7 @@ mindplot.IconGroup = new Class({
 
     removeIconByUrl : function(url) {
         var icon = this._findIconFromUrl(url);
-        $assert(icon,'icon could not be found');
+        $assert(icon, 'icon could not be found');
         this._removeIcon(icon);
     },
 

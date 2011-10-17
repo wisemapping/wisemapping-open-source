@@ -89,7 +89,7 @@ div#logo {
     border: 1px solid black;
     border-top-color: white;
     border-left-color: white;
-    margin: 0px;
+    margin: 0;
 
 }
 
@@ -123,8 +123,7 @@ div#mapDetails {
     float: right;
     padding-top: 10px;
     margin-right: 100px;
-    font-family: arial,serif;
-    font-size: 11px;
+
 }
 
 div#mapDetails .title {

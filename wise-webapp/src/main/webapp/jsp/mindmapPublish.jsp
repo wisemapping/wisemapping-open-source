@@ -14,8 +14,8 @@
         <input type="hidden" name="mapId" value="${mindmap.id}"/>
         <table>
             <colgroup>
-                <col width="10%"/>
-                <col width="90%"/>
+                <col width="20%"/>
+                <col width="80%"/>
             </colgroup>
             <tbody>
                 <tr>
@@ -40,25 +40,23 @@
                     </td>
                     <td>
                         <div id="disabledPanel"
-                             style="position:absolute;background-color:white;opacity:0.8;width:600px;height:180px;left:10px;visibility:hidden;">
+                             style="position:absolute;background-color:white;opacity:0.8;width:600px;height:160px;left:10px;visibility:hidden;">
 
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td class="formLabel">
-                        <spring:message code="URL"/>
-                        :
+                        <spring:message code="URL"/>:
                     </td>
-                    <td>
+                    <td style="padding-bottom: 5px;">
                         <input name="url" value="http://www.wisemapping.com/c/publicView.htm?mapId=${mindmap.id}"
                                style="width:400px" readonly="readonly"/>
                     </td>
                 </tr>
                 <tr>
                     <td class="formLabel">
-                        <spring:message code="DIRECT_LINK"/>
-                        :
+                        <spring:message code="DIRECT_LINK"/>:
                     </td>
                     <td>
                         <textarea style="width:400px;height:30px;overflow:hidden;" cols="55" rows="3" readonly="readonly">
@@ -75,8 +73,7 @@
                 </tr>
                 <tr>
                     <td class="formLabel" style="white-space:normal;">
-                        <spring:message code="BLOG_INCLUSION"/>
-                        :
+                        <spring:message code="BLOG_INCLUSION"/>:
                     </td>
                     <td>
                         <textarea style="width:400px;height:70px;overflow:hidden;" cols="55" rows="5" readonly="readonly">
@@ -92,8 +89,7 @@ src="http://www.wisemapping.com/c/embeddedView.htm?mapId=${mindmap.id}&zoom=1"&g
                 <tr>
                     <td style="text-align:center;margin-top:30px;" colspan="2">
                         <input type="submit" id="ok" value="<spring:message code="OK"/>" class="btn-primary">
-                        <input type="button" value="<spring:message code="CANCEL"/>" class="btn-primary"
-                               onclick="MOOdalBox.close();">
+                        <input type="button" value="<spring:message code="CANCEL"/>" class="btn-secondary" id="cancelBtn">
                     </td>
                 </tr>
             </tbody>
@@ -114,12 +110,15 @@ src="http://www.wisemapping.com/c/embeddedView.htm?mapId=${mindmap.id}&zoom=1"&g
             $('disabledPanel').setStyle("visibility", "visible");
         }
         isPublicPanelEnabled = !isPublicPanelEnabled;
-    }
+    };
 
     if (${mindmap.public==false})
     {
-        panelEnabler()
+        panelEnabler();
     }
     $('publicViewId').addEvent('click', panelEnabler);
 
+     $('cancelBtn').addEvent('click', function(event) {
+        MooDialog.Request.active.close();
+    });
 </script>

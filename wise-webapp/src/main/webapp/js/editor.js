@@ -76,7 +76,8 @@ function buildDesigner(editorProperties, isTryMode) {
         width:  parseInt(window.innerWidth)
     });
 
-    setUpToolbar(designer, isTryMode);
-
+    if ($('toolbar')) {
+        setUpToolbar(designer, isTryMode);
+    }
     return designer;
 }

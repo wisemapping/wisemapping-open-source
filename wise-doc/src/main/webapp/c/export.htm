@@ -1,0 +1,100 @@
+<div class="modalDialog">
+    <!--  Header can be customized -->
+
+
+    <h1>
+        Export
+        'sss'</h1>
+
+    <div>
+        <form method="post" id="exportForm" name="exportForm" action="export.bin" style="height:100%;">
+            <input type="hidden" name="action" value="export">
+            <input type="hidden" name="mapId" value="3">
+            <input type="hidden" name="mapSvg" value="">
+            <table>
+                <tbody>
+                <tr>
+                    <td>
+                        <input type="radio" id="svg" name="exportFormat" value="SVG">
+                        <b>
+                            Scalable Vector Graphics (SVG)
+                        </b>
+
+                        <p>
+                            Scalable Vector Graphics (SVG) is an XML markup language for describing two-dimensional
+                            vector graphics. This format will enable you to print your maps without quality lost at any
+                            resolution.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="radio" name="exportFormat" value="PDF" id="pdf">
+                        <b>
+                            Portable Document Format (PDF)
+                        </b>
+
+                        <p>
+                            Get your map as Portable Document Format(PDF) to share use in your presentations.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="radio" id="freemind" name="exportFormat" value="FREEMIND" checked="checked">
+                        <b>
+                            Freemind (version 0.9.0)
+                        </b>
+
+                        <p>
+                            FreeMind is a nice desktop mind mapping application that has the great benefit of being
+                            free.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="radio" name="exportFormat" id="img" value="IMG_EXPORT_FORMAT">
+                        <b>
+                            Image File
+                        </b><select name="imgFormat" id="imgFormat" style="visibility:hidden;margin-left:5px;">
+                        <option>PNG</option>
+                        <option>JPEG</option>
+                    </select>
+
+                        <p>
+                            Get a graphic representation of your map including all colors and shapes to reuse in
+                            documents or for archiving
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:center;margin-top:10px;">
+                        <input type="button" id="ok" value="Ok" class="btn-primary">
+                        <input type="button" value="Cancel" class="btn-secondary" onclick="MOOdalBox.close();">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+
+</div>
+<script type="text/javascript">
+    $('img').addEvent('click', function(event) {
+        $('imgFormat').setStyle('visibility', 'visible');
+    });
+    $('pdf').addEvent('click', function(event) {
+        $('imgFormat').setStyle('visibility', 'hidden');
+    });
+    $('svg').addEvent('click', function(event) {
+        $('imgFormat').setStyle('visibility', 'hidden');
+    });
+
+    $('ok').addEvent('click', function(event) {
+        $('exportForm').submit();
+        MooDialog.Request.active.close();
+    });
+   document.exportForm.mapSvg.value = $("workspaceContainer").innerHTML;
+
+</script>

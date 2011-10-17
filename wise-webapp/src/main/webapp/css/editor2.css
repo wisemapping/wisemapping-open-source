@@ -704,7 +704,7 @@ div#small_error_icon {
 /** */
 /* Modal dialogs definitions */
 
-.tagItModalDialog, .historyModalDialog, .shareItModalDialog, .exportModalDialog {
+.tagItModalDialog, .historyModalDialog, .shareItModalDialog, .exportModalDialog, .publishModalDialog {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -733,7 +733,11 @@ div#small_error_icon {
     width: 500px;
 }
 
-.tagItModalDialog .title, .historyModalDialog .title, .shareItModalDialog .title, .exportModalDialog .title {
+.publishModalDialog {
+    width: 600px;
+}
+
+.tagItModalDialog .title, .historyModalDialog .title, .shareItModalDialog .title, .exportModalDialog .title, .publishModalDialog .title {
     position: absolute;
     top: 0;
     left: 0;
@@ -762,6 +766,10 @@ div#small_error_icon {
     height: 280px;
 }
 
+.publishModalDialog  .content {
+    height: 330px;
+}
+
 .modalDialog h1 {
     font-size: 14px;
 }
@@ -771,4 +779,9 @@ div#small_error_icon {
     margin: 5px;
 }
 
-
+td.formLabel {
+    text-align: right;
+    padding: 2px 10px;
+    font-weight: bolder;
+    vertical-align: top;
+}

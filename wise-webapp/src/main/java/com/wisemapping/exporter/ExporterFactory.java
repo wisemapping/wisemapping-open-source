@@ -134,7 +134,9 @@ public class ExporterFactory {
 
         final DocumentBuilder documentBuilder = getDocumentBuilder();
         svgXml = svgXml.replaceFirst("<svg ", "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
-
+        // @Todo: This must not happen...
+        svgXml = svgXml.replaceAll("NaN,", "0");
+        svgXml = svgXml.replaceAll(",NaN", "0");
 
         Document document;
         try {

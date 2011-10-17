@@ -21,10 +21,16 @@
                 <td>&nbsp;</td>
                 <td style="padding: 5px">
                     <input type="submit" value="<spring:message code="SUBMIT"/>" class="btn-primary">
-                    <input type="button" value="<spring:message code="CANCEL"/>" class="btn-secondary">
+                    <input type="button" value="<spring:message code="CANCEL"/>" class="btn-secondary" id="cancelBtn">
                 </td>
             </tr>
             </tbody>
         </table>
     </form:form>
 </div>
+
+<script type="text/javascript">
+    $('cancelBtn').addEvent('click', function(event) {
+        MooDialog.Request.active.close();
+    });
+</script>

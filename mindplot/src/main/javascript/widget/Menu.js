@@ -181,7 +181,7 @@ mindplot.widget.Menu = new Class({
 
         this.addButton('export', false, false, function() {
             var reqDialog = new MooDialog.Request('../c/export.htm?mapId=' + mapId, null,
-                {'class': 'historyModalDialog',
+                {'class': 'exportItModalDialog',
                     closeButton:true,
                     destroyOnClose:true,
                     title:'Export'
@@ -191,6 +191,7 @@ mindplot.widget.Menu = new Class({
                     reqDialog.setContent('loading...');
                 }
             });
+            MooDialog.Request.active = reqDialog;
         });
 
         this.addButton('print', false, false, function() {
@@ -251,9 +252,9 @@ mindplot.widget.Menu = new Class({
             });
         }
 
-        var discartElem = $('discart');
+        var discartElem = $('discard');
         if (discartElem) {
-            this.addButton('tagIt', false, false, function() {
+            this.addButton('discard', false, false, function() {
 
                 if (!readOnly) {
                     displayLoading();
@@ -302,8 +303,22 @@ mindplot.widget.Menu = new Class({
 
         var publishElem = $('publishIt');
         if (publishElem) {
+            this.addButton('publishIt', false, false, function() {
+                var reqDialog = new MooDialog.Request('../c/publish.htm?mapId=' + mapId, null,
+                    {'class': 'publishModalDialog',
+                        closeButton:true,
+                        destroyOnClose:true,
+                        title:'Publish'
+                    });
+                reqDialog.setRequestOptions({
+                    onRequest: function() {
+                        reqDialog.setContent('loading...');
+                    }
+                });
 
+            });
         }
+
         var historyElem = $('history');
         if (historyElem) {
 

@@ -29,7 +29,6 @@
     <script type="text/javascript" src="../dwr/interface/LoggerService.js"></script>
 
     <script type='text/javascript' src='../js/core.js'></script>
-    <script type='text/javascript' src='../js/editorLib.js'></script>
     <script type='text/javascript' src='../js/less-1.1.3.min.js'></script>
 
 
@@ -116,10 +115,6 @@
     </c:url>
 </div>
 
-<div id="colorPalette">
-    <div id="paletteHeader"></div>
-</div>
-
 <div id="header">
     <div id="headerInfo">
         <div id="headerActions">
@@ -143,8 +138,8 @@
             <div id="save" class="buttonOn" title="Save">
                 <img src="../nicons/save.png"/>
             </div>
-            <div id="discart" class="buttonOn" title="Discard">
-                <img src="../nicons/discart.png"/>
+            <div id="discard" class="buttonOn" title="Discard">
+                <img src="../nicons/discard.png"/>
             </div>
             <div id="print" class="buttonOn" title="Print">
                 <img src="../nicons/print.png"/>

@@ -1,0 +1,98 @@
+<div class="modalDialog">
+    <!--  Header can be customized -->
+
+
+    <h1>
+        Publish
+        'ddd'
+    </h1>
+
+    <h2>
+        By publishing the map you make it visible to everyone on the Internet. Copy the code snippets below to integrate
+        it into your website or blog.
+    </h2>
+
+    <div>
+        <form method="post" id="publishForm" name="publishForm" action="publish.htm" style="height:100%;">
+            <input type="hidden" name="actionId" value="save">
+            <input type="hidden" name="mapId" value="1">
+            <table style="margin: 10px;">
+                <colgroup>
+                    <col width="20%">
+                    <col width="80%">
+                </colgroup>
+                <tbody>
+                <tr>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        <input type="checkbox" id="publicViewId" name="publicView" value="true">
+                        Publish map to the Internet
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        <div id="disabledPanel"
+                             style="position: absolute; background-color: white; opacity: 0.8; width: 600px; height: 155px; left: 10px; visibility: hidden; ">
+
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="formLabel">
+                        URL:
+                    </td>
+                    <td style="padding: 5px;">
+                        <input name="url" value="http://www.wisemapping.com/c/publicView.htm?mapId=1" style="width:400px" readonly="readonly">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="formLabel">
+                        Direct Link:
+                    </td>
+                    <td>
+                        <textarea style="width:400px;height:30px;overflow:hidden;" cols="55" rows="3"
+                                  readonly="readonly">                        &lt;a
+                            href="http://www.wisemapping.com/c/publicView.htm?mapId=1"&gt;ddd&lt;/a&gt;</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="formLabel">
+                        &nbsp;
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td class="formLabel" style="width:200px">
+                        For inclusion in blogs and web pages
+                        :
+                    </td>
+                    <td>
+                        <textarea style="width:400px;height:70px;overflow:hidden;" cols="55" rows="5"
+                                  readonly="readonly">                        &lt;iframe
+                            style="border:0;width:600px;height:400px;border: 1px solid black"
+                            src="http://www.wisemapping.com/c/embeddedView.htm?mapId=1&amp;zoom=1"&gt;
+                            &lt;/iframe&gt;
+                        </textarea>
+
+                        <p>* Note: You can change embedded map size modifying 'height' and 'width' style properties. You
+                            can also adjust the zoom factor modifying 'zoom' parameter from the URL.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:center;margin-top:30px;" colspan="2">
+                        <input type="submit" id="ok" value="Ok" class="btn-secondary">
+                        <input type="button" value="Cancel" class="btn-primary" id="cancelBtn">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>

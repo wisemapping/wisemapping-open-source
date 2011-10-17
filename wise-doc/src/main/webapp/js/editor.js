@@ -29,16 +29,18 @@ function buildDesigner() {
     var editorProperties = {zoom:0.85,saveOnLoad:true,collab:collab};
     designer = new mindplot.Designer(editorProperties, container);
     designer.setViewPort({
-        height: parseInt(window.innerHeight-70), // Footer and Header
+        height: parseInt(window.innerHeight - 70), // Footer and Header
         width:  parseInt(window.innerWidth)
     });
 
-    var menu = new mindplot.widget.Menu(designer, 'toolbar',mapId);
+    if ($('toolbar')) {
+        var menu = new mindplot.widget.Menu(designer, 'toolbar', mapId);
 
-    //  If a node has focus, focus can be move to another node using the keys.
-    designer._cleanScreen = function() {
-        menu.clear()
-    };
+        //  If a node has focus, focus can be move to another node using the keys.
+        designer._cleanScreen = function() {
+            menu.clear()
+        };
+    }
     return designer;
 }
 

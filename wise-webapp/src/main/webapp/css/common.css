@@ -239,7 +239,7 @@ div#headerTitle {
 
 div#printHeader {
     background-color: black;
-    height: 35px;
+    height: 55px;
     color: white;
 }
 
@@ -338,11 +338,11 @@ div#printFooter {
 }
 
 div#printLogo {
-    height: 50px;
-    width: 80px;
+    height: 80px;
+    width: 170px;
     float: right;
     margin: 1px;
-    background: url(../images/logo-vsmall.png) no-repeat right top;
+    background: url(../nicons/logo-medium.png) no-repeat right top;
 }
 
 div#paypal {

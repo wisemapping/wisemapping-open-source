@@ -4,32 +4,36 @@
 
 <html>
 <head>
-     <!--[if lt IE 9]>
+    <title>WiseMapping - Editor </title>
+    <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
+    <!--[if lt IE 9]>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <![endif]-->
-    <title><spring:message code="SITE.TITLE"/> - ${mindmap.title} </title>
-    <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
-
+    <!--<script type="text/javascript" src="http://docs.google.com/brix/static/api/js/jsapi.nocache.js"></script>-->
+    <script type='text/javascript' src='../js/less-1.1.3.min.js'></script>
     <link rel="stylesheet" type="text/css" href="../css/embedded.css"/>
 
     <script type='text/javascript'
             src='https://ajax.googleapis.com/ajax/libs/mootools/1.3.2/mootools-yui-compressed.js'></script>
-    <script type='text/javascript' src='../js/libraries/mootools/mootools-more-1.3.2.1-yui.js'></script>
-    <script type='text/javascript' src='../js/core.js'></script>
+
+    <script type='text/javascript'
+            src='/mindplot/src/main/javascript/libraries/mootools/mootools-more-1.3.2.1-yui.js'></script>
+    <script type='text/javascript' src='/core-js/target/classes/core.js'></script>
 
 
     <script type="text/javascript">
         var mapId = '${mindmap.id}';
-        var mapXml = '${mapXml}';
+        var mapXml = '<map name="38298" version="pela"><topic central="true" text="test\nThis is working ?" id="1"/></map>';
         var mindReady = false;
         $(document).addEvent('loadcomplete', function(resource) {
             mindReady = resource == 'mind' ? true : mindReady;
             if (mindReady) {
 
-                var editorProperties = {zoom:${zoom},saveOnLoad:true,collab:'standalone'};
+                collab = 'standalone';
+                //var editorProperties = {zoom:0.85,saveOnLoad:true,collab:'standalone'};
 
                 var isTryMode = false;
-                designer = buildDesigner(editorProperties, true);
+                designer = buildDesigner();
 
                 var domDocument = core.Utils.createDocumentFromText(mapXml);
                 var serializer = mindplot.XMLMindmapSerializerFactory.getSerializerFromDocument(domDocument);
@@ -43,11 +47,11 @@
                     waitDialog.deactivate();
                 }
 
-                $('zoomIn').addEvent('click', function() {
+                $('zoomIn').addEvent('click',function(){
                     designer.zoomIn();
                 });
 
-                $('zoomOut').addEvent('click', function() {
+                 $('zoomOut').addEvent('click',function(){
                     designer.zoomOut();
                 });
             }
@@ -97,8 +101,8 @@
         <div id="zoomIn" class="button"></div>
         <div id="zoomOut" class="button"></div>
         <div id="mapDetails">
-            <%--<span class="title"><spring:message code="CREATOR"/>:</span><span>${mindmap.creator}</span>--%>
-            <span class="title"><spring:message code="DESCRIPTION"/>:</span><span>${mindmap.title}</span>
+            <span class="title"><spring:message code="CREATOR"/>:</span><span>${mindmap.creator}</span>
+            <span class="title"><spring:message code="DESCRIPTION"/>:</span><span>${mindmap.description}</span>
         </div>
     </div>
 </div>

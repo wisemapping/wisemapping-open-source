@@ -17,11 +17,11 @@ MooDialog.Request = new Class({
         this.parent(options);
         this.requestOptions = requestOptions || {method:'get'};
         this.requestOptions.url = url;
+        this.requestOptions.update = this.content;
+        this.requestOptions.evalScripts = true;
         this.addEvent('open', function() {
-
-            var request = new Request.HTML(this.requestOptions).addEvent('success', function(text) {
-                this.setContent(text);
-            }.bind(this)).send();
+            var request = new Request.HTML(this.requestOptions).send();
+            MooDialog.Request.active = this;
         }.bind(this));
 
         if (this.options.autoOpen) this.open();
