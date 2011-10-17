@@ -14,23 +14,8 @@
     <link rel="stylesheet" type="text/css" href="../css/mymaps.css"/>
     <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/mootools-core-1.3.2-full-compat.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/wiseListLibrary.js"></script>
-    <!--[if lt IE 9]>
-    <link rel="stylesheet" type="text/css" href="../css/mymapsOldIE.css"/>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/shadedborder.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/transcorners.js"></script>
-    <script type="text/javascript">
-        window.onload = function() {
-            var boxGenerator = RUZEE.ShadedBorder.create({ corner:16,  border:1 });
-            boxGenerator.render('recentFiles');
-            boxGenerator.render('recentItems');
-            $('mydocs').makeRounded({radius: 16,borderColor: '#a7c6df',backgroundColor: '#c3def5'});
-        };
-
-    </script>
-    <![endif]-->
-
+    <script type='text/javascript'
+            src='https://ajax.googleapis.com/ajax/libs/mootools/1.3.2/mootools-yui-compressed.js'></script>
 </head>
 <body>
 <div class="content">
@@ -99,17 +84,18 @@
                     <spring:message code="NEW_MINDMAP"/>
                 </a>
             </div>
-            <div class="button menuLink" onclick="updateLinks($(this).getParent()); new Windoo.Confirm('<spring:message code="DELETE_SELECTED_CONFIRMATION"/>',
-                                                  {
-                                                    'window': {theme:Windoo.Themes.wise,
-                                                            title:'<spring:message code="DELETE_MAP"/>'
-                                                    },
-                                                    'onConfirm':function(){
-                                                        $(document.toolbarForm.mindmapIds).value=$('selectedMapIds').value;
-                                                        $(document.toolbarForm).action='<c:out value="${deleteSelectedMapUrl}" escapeXml="true"/>';
-                                                        $(document.toolbarForm).submit();
-                                                    }
-                                                });">
+            <div class="button menuLink"
+                 onclick="updateLinks($(this).getParent()); new Windoo.Confirm('<spring:message code="DELETE_SELECTED_CONFIRMATION"/>',
+                         {
+                         'window': {theme:Windoo.Themes.wise,
+                         title:'<spring:message code="DELETE_MAP"/>'
+                         },
+                         'onConfirm':function(){
+                         $(document.toolbarForm.mindmapIds).value=$('selectedMapIds').value;
+                         $(document.toolbarForm).action='<c:out value="${deleteSelectedMapUrl}" escapeXml="true"/>';
+                         $(document.toolbarForm).submit();
+                         }
+                         });">
                 <spring:message code="DELETE_SELECTED"/>
             </div>
         </div>
@@ -175,54 +161,63 @@
             <c:forEach items="${wisemapsList}" var="mindmap">
                 <tr>
                     <td>
-                        <div style="text-align:center;"><input type="checkbox" name="chk" id="chk${mindmap.id}" onclick="addToSelectedMapList(this);"></div>
+                        <div style="text-align:center;"><input type="checkbox" name="chk" id="chk${mindmap.id}"
+                                                               onclick="addToSelectedMapList(this);"></div>
                     </td>
                     <td>
                         <div class="leftMenu">
                             <img src="../images/icon_list.png" class="button" style="display:block;border:0;">
+
                             <div class="subMenu2">
                                 <a href="javascript:openMap('${mindmap.id}')" title="<spring:message code="OPEN_MSG"/>">
                                     <spring:message code="OPEN"/>
                                 </a>
                                 <c:if test="${mindmap.owner==requestScope.user}">
-                                    <a href="renameMap.htm?mapId=${mindmap.id}" rel="moodalbox 400px 180px wizard" title="<spring:message code="RENAME_DETAILS"/>">
+                                    <a href="renameMap.htm?mapId=${mindmap.id}" rel="moodalbox 400px 180px wizard"
+                                       title="<spring:message code="RENAME_DETAILS"/>">
                                         <spring:message code="RENAME"/>
                                     </a>
                                 </c:if>
-                                <a href="history.htm?action=list&amp;goToMindmapList&amp;mapId=${mindmap.id}" rel="moodalbox 600px 400px wizard" title="<spring:message code="HISTORY_INFO"/>">
+                                <a href="history.htm?action=list&amp;goToMindmapList&amp;mapId=${mindmap.id}"
+                                   rel="moodalbox 600px 400px wizard" title="<spring:message code="HISTORY_INFO"/>">
                                     <spring:message code="HISTORY"/>
                                 </a>
 
-                                <div class="menuButton menuLink subMenu2Sep" onclick="new Windoo.Confirm('<spring:message code="DELETE_CONFIRMATION"/>',
-                                                    {
-                                                         window: {'theme':Windoo.Themes.wise,
-                                                                     title:'<spring:message code="DELETE_MAP"/>'
-                                                   },
-                                                    'onConfirm':function(){
-                                                        var form = new Element('form').setProperties({action: '<c:out value="${deleteMapUrl}" escapeXml="true"/>&amp;mapId=${mindmap.id}', method:'post'}).injectInside(document.body);
-                                                        form.submit();
-                                                    }
-                                                });">
+                                <div class="menuButton menuLink subMenu2Sep"
+                                     onclick="new Windoo.Confirm('<spring:message code="DELETE_CONFIRMATION"/>',
+                                             {
+                                             window: {'theme':Windoo.Themes.wise,
+                                             title:'<spring:message code="DELETE_MAP"/>'
+                                             },
+                                             'onConfirm':function(){
+                                             var form = new Element('form').setProperties({action: '<c:out value="${deleteMapUrl}" escapeXml="true"/>&amp;mapId=${mindmap.id}', method:'post'}).injectInside(document.body);
+                                             form.submit();
+                                             }
+                                             });">
                                     <spring:message code="DELETE"/>
                                 </div>
-                                <a href="tags.htm?mapId=${mindmap.id}" rel="moodalbox 400px 200px wizard" title="<spring:message code="TAGS_DETAILS"/>">
+                                <a href="tags.htm?mapId=${mindmap.id}" rel="moodalbox 400px 200px wizard"
+                                   title="<spring:message code="TAGS_DETAILS"/>">
                                     <spring:message code="TAGS"/>
                                 </a>
                                 <c:if test="${mindmap.owner==requestScope.user}">
-                                    <a href="<c:out value="${shareMap}" escapeXml="true"/>&amp;mapId=${mindmap.id}" rel="moodalbox 780px 530px wizard" title="<spring:message code="SHARE_DETAILS"/>">
+                                    <a href="<c:out value="${shareMap}" escapeXml="true"/>&amp;mapId=${mindmap.id}"
+                                       rel="moodalbox 780px 530px wizard"
+                                       title="<spring:message code="SHARE_DETAILS"/>">
                                         <spring:message code="COLLABORATION"/>
                                     </a>
-                                    <a class="subMenu2Sep" href="publish.htm?mapId=${mindmap.id}" rel="moodalbox 600px 400px wizard" title="<spring:message code="PUBLISH_MSG"/>">
+                                    <a class="subMenu2Sep" href="publish.htm?mapId=${mindmap.id}"
+                                       rel="moodalbox 600px 400px wizard" title="<spring:message code="PUBLISH_MSG"/>">
                                         <spring:message code="PUBLISH"/>
                                     </a>
                                 </c:if>
-                                <%--<a href="export.htm?mapId=${mindmap.id}"
-                                   rel="moodalbox 600px 400px" title="<spring:message code="EXPORT_DETAILS"/>">
-                                    <spring:message code="EXPORT"/>
-                                </a>--%>
-                                <%--<a href="javascript:printMap(${mindmap.id});">
-                                    <spring:message code="PRINT"/>
-                                </a>--%>
+                                    <%--<a href="export.htm?mapId=${mindmap.id}"
+                                       rel="moodalbox 600px 400px" title="<spring:message code="EXPORT_DETAILS"/>">
+                                        <spring:message code="EXPORT"/>
+                                    </a>--%>
+                                    <%--<a href="javascript:printMap(${mindmap.id});">
+                                        <spring:message code="PRINT"/>
+                                    </a>--%>
                             </div>
                         </div>
                     </td>
@@ -249,7 +244,9 @@
                                      alt="<spring:message code="PRIVATE"/>"/>
                             </c:when>
                             <c:otherwise>
-                                <img src="../images/world2.png" title="<spring:message code="PUBLIC"/>: <spring:message code="ALL_VIEW_PUBLIC"/>" alt="World"
+                                <img src="../images/world2.png"
+                                     title="<spring:message code="PUBLIC"/>: <spring:message code="ALL_VIEW_PUBLIC"/>"
+                                     alt="World"
                                 <spring:message code="PUBLIC"/>
                             </c:otherwise>
                         </c:choose>
@@ -275,11 +272,13 @@
 </div>
 
 <div id="ds2" class="submenu" style="position:absolute; display:none;">
-    <a href="<c:out value="${shareMap}" escapeXml="true"/>&amp;mapId=" rel="moodalbox 780px 530px" title="Share WiseMap">Share</a>
+    <a href="<c:out value="${shareMap}" escapeXml="true"/>&amp;mapId=" rel="moodalbox 780px 530px"
+       title="Share WiseMap">Share</a>
     <a href="publish.htm?mapId=" rel="moodalbox 600px 400px wizard" title="<spring:message code="PUBLISH_DETAILS"/>">
         <spring:message code="PUBLISH"/>
     </a>
-    <a href="<c:out value="${deleteMapUrl}" escapeXml="true"/>&amp;mapId=" rel="moodalbox 300px 120px" title="Delete Confirmation">
+    <a href="<c:out value="${deleteMapUrl}" escapeXml="true"/>&amp;mapId=" rel="moodalbox 300px 120px"
+       title="Delete Confirmation">
         Delete
     </a>
     <a href="export.htm?mapId=" rel="moodalbox 750px 400px" title="<spring:message code="EXPORT_DETAILS"/>">
@@ -308,8 +307,7 @@
         document.openForm.mapId.value = mapId;
         document.openForm.submit();
     }
-    function deleteOkButton(url)
-    {
+    function deleteOkButton(url) {
         var form = document.createElement('form');
         form.method = 'post';
         form.action = url;
@@ -318,23 +316,19 @@
     }
 
     Window.onDomReady(initDropDowns);
-    function initDropDowns()
-    {
+    function initDropDowns() {
         $ES('li[rel="submenu"]', $(document.body)).each(function(el) {
             var items = $E('ul', el);
             el.addEvent('click', showMenu.bind(items));
         }, this);
     }
 
-    function showMenu(evt)
-    {
-        if ($(document).onclick)
-        {
+    function showMenu(evt) {
+        if ($(document).onclick) {
             $(document).fireEvent('click', 0);
             showMenu.delay(110, this, evt);
         }
-        else
-        {
+        else {
             this.myEffect = $(this).effects({duration:100, transition: Fx.Transitions.linear});
             this.myEffect.start({'opacity':[0,1]});
             $(document).onclick = hide.bind(this);
@@ -343,56 +337,46 @@
         }
     }
 
-    function hide()
-    {
+    function hide() {
         this.myEffect.start({'opacity':[1,0]});
         $(document).onclick = '';
     }
 
-    function updateLinks(el)
-    {
+    function updateLinks(el) {
         $ES('a', el).each(function(link) {
-            if (!link.ohref)
-            {
+            if (!link.ohref) {
                 link.ohref = link.getProperty('ohref');
             }
             link.href = link.ohref + $('selectedMapIds').value;
         });
     }
 
-    function openWizard(href, title, rel)
-    {
+    function openWizard(href, title, rel) {
         href = href + $('selectedMapIds').value;
 //        MOOdalBox.open(href, title, rel);
     }
 
-    function addToSelectedMapList(el)
-    {
+    function addToSelectedMapList(el) {
         var ids = $('selectedMapIds');
         var id = el.id.replace(/[^\d]/g, '');
 
         var value = ids.getProperty("value");
 
-        if (value != "")
-        {
+        if (value != "") {
             var allIds = $A(ids.value.split(','));
             var changed = false;
-            if (allIds.contains(id) && !el.checked)
-            {
+            if (allIds.contains(id) && !el.checked) {
                 allIds.remove(id);
                 changed = true;
             }
-            else if (!allIds.contains(id) && el.checked)
-            {
+            else if (!allIds.contains(id) && el.checked) {
                 allIds.extend([id]);
                 changed = true;
             }
-            if (changed)
-            {
+            if (changed) {
                 var finalIds = "";
                 $each(allIds, function(el) {
-                    if (!finalIds == "")
-                    {
+                    if (!finalIds == "") {
                         el = "," + el;
                     }
                     finalIds = finalIds + el;
@@ -400,10 +384,8 @@
                 value = finalIds;
             }
         }
-        else
-        {
-            if (el.checked)
-            {
+        else {
+            if (el.checked) {
                 value = id;
             }
         }
@@ -411,28 +393,23 @@
     }
 
 
-    function selectAllMaps(elem)
-    {
+    function selectAllMaps(elem) {
         var value = elem.checked;
         var ids = "";
         $ES('input[type="checkbox"]', $('docTable')).each(function(el) {
-            if (el.name.contains('chk'))
-            {
+            if (el.name.contains('chk')) {
                 el.checked = value;
                 var id = el.id.replace(/[^\d]/g, '');
-                if (!ids == "")
-                {
+                if (!ids == "") {
                     id = "," + id;
                 }
                 ids = ids + id;
             }
         });
-        if (!value)
-        {
+        if (!value) {
             $('selectedMapIds').setProperty('value', '');
         }
-        else
-        {
+        else {
             $('selectedMapIds').setProperty('value', ids);
         }
         /*var allElems = document.getElementsByName("chk");
@@ -450,18 +427,15 @@
 </script>
 <script type="text/javascript">
 
-    function removeCollaborator(collaboratorEmail)
-    {
+    function removeCollaborator(collaboratorEmail) {
         document.removeCollaboratorForm.colaboratorId.value = collaboratorEmail;
         document.removeCollaboratorForm.submit();
         //submitDialog('removeCollaboratorForm');
     }
-    function addFriendsEmails()
-    {
+    function addFriendsEmails() {
         var newUsers = "";
         var ob = $('friendList');
-        while (ob.selectedIndex != -1)
-        {
+        while (ob.selectedIndex != -1) {
             newUsers = newUsers + ", " + ob.options[ob.selectedIndex].value;
             ob.options[ob.selectedIndex].selected = false;
         }
@@ -470,8 +444,7 @@
             newUsers = newUsers.substr(2, newUsers.length);
         dest.value = dest.value + newUsers;
     }
-    function changeStatus(collaboratorEmail)
-    {
+    function changeStatus(collaboratorEmail) {
         document.removeCollaboratorForm.userEmail.value = collaboratorEmail;
         submitDialog('removeCollaboratorForm');
     }

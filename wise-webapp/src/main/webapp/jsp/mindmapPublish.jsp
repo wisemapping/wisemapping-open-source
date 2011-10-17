@@ -78,7 +78,7 @@
                     <td>
                         <textarea style="width:400px;height:70px;overflow:hidden;" cols="55" rows="5" readonly="readonly">
 &lt;iframe
-style="border:0;width:600px;height:400px;border: 1px solid black"
+style="width:600px;height:400px;border: 1px solid black"
 src="http://www.wisemapping.com/c/embeddedView.htm?mapId=${mindmap.id}&zoom=1"&gt;
 &lt;/iframe&gt;
                          </textarea>

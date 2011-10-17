@@ -206,7 +206,7 @@
             <div id="fontItalic" class="buttonOn" title="Italic Style">
                 <img src="../nicons/font-italic.png"/>
             </div>
-            <div id="fontColor" class="buttonExtOn" title="Fond Color">
+            <div id="fontColor" class="buttonExtOn" title="Fond Color" style="padding-top:4px">
                 <img src="../nicons/font-color.png"/>
             </div>
         </div>
