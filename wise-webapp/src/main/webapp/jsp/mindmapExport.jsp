@@ -64,7 +64,7 @@
             <tr>
                 <td style="text-align:center;margin-top:10px;">
                     <input type="button" id="ok" value="<spring:message code="OK"/>" class="btn-primary">
-                    <input type="button" value="<spring:message code="CANCEL"/>" class="btn-secondary"
+                    <input type="button" id="cancel" value="<spring:message code="CANCEL"/>" class="btn-secondary"
                            onclick="">
                 </td>
             </tr>
@@ -86,6 +86,10 @@
 
     $('ok').addEvent('click', function(event) {
         $('exportForm').submit();
+        MooDialog.Request.active.close();
+    });
+
+    $('cancel').addEvent('click', function(event) {
         MooDialog.Request.active.close();
     });
 

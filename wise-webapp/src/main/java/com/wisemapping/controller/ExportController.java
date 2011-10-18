@@ -52,6 +52,7 @@ public class ExportController extends BaseMultiActionController {
     private static final String MAP_SVG_PARAMETER = "mapSvg";
     private static final String EXPORT_FORMAT_PARAMETER = "exportFormat";
     private static final String IMG_SIZE_PARAMETER = "imgSize";
+    private static final String MAP_XML_PARAM = "mapXml";
 
 
     public ModelAndView handleNoSuchRequestHandlingMethod(NoSuchRequestHandlingMethodException noSuchRequestHandlingMethodException, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
@@ -70,9 +71,8 @@ public class ExportController extends BaseMultiActionController {
 
                 int mindmapId = Integer.parseInt(mapIdStr);
 
-                logger.debug("SVG Map to export:"+mapSvg);
-                if(mapSvg==null || mapSvg.isEmpty())
-                {
+                logger.debug("SVG Map to export:" + mapSvg);
+                if (mapSvg == null || mapSvg.isEmpty()) {
                     throw new IllegalArgumentException("SVG map could not be null");
                 }
 
@@ -122,7 +122,7 @@ public class ExportController extends BaseMultiActionController {
             } catch (Throwable e) {
                 logger.error("Unexpexted error during export process", e);
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                logger.error("map: "+mapSvg);
+                logger.error("map: " + mapSvg);
             }
         } else {
             logger.warn("mapIdStr is null.Image could not be imported. UserAgent:" + request.getHeaders(UserAgent.USER_AGENT_HEADER));
@@ -138,7 +138,7 @@ public class ExportController extends BaseMultiActionController {
             baseUrl = "http://www.wisemapping.com/images";
         } else {
             final ServletContext servletContext = this.getServletContext();
-            baseUrl = "file://" + servletContext.getRealPath("/icons/")+"/";
+            baseUrl = "file://" + servletContext.getRealPath("/icons/") + "/";
         }
         properties.setBaseImagePath(baseUrl);
     }
@@ -149,7 +149,7 @@ public class ExportController extends BaseMultiActionController {
         final String mapIdStr = request.getParameter(MAP_ID_PARAMETER);
         int mindmapId = Integer.parseInt(mapIdStr);
         final MindmapService service = getMindmapService();
-        final MindMap mindMap = service.getMindmapById(mindmapId);
+        final MindMap mindmap = service.getMindmapById(mindmapId);
         final String mapSvg = request.getParameter(MAP_SVG_PARAMETER);
 
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -157,16 +157,19 @@ public class ExportController extends BaseMultiActionController {
             exportImage(response, mapSvg, bos, false);
         } catch (Throwable e) {
             logger.error("Unexpexted error generating the image", e);
-            logger.error("map: "+mapSvg);
+            logger.error("map: " + mapSvg);
         }
 
         BASE64Encoder encoder = new BASE64Encoder();
         String content = encoder.encode(bos.toByteArray());
-        final String exportContent = "data:image/png;base64,"+content;
+        final String exportContent = "data:image/png;base64," + content;
         bos.close();
 
-        ModelAndView view = new ModelAndView("mindmapPrint", "mindmap", mindMap);
+        ModelAndView view = new ModelAndView("mindmapPrint", "mindmap", new MindMapBean(mindmap));
+        final String xmlMap = mindmap.getNativeXmlAsJsLiteral();
+        view.addObject(MAP_XML_PARAM, xmlMap);
         view.addObject(MAP_SVG_PARAMETER, exportContent);
+
         return view;
 
     }
@@ -184,7 +187,7 @@ public class ExportController extends BaseMultiActionController {
 
         } catch (Throwable e) {
             logger.error("Unexpexted error generating the image", e);
-            logger.error("map: "+mapSvg);
+            logger.error("map: " + mapSvg);
         }
         return null;
     }
@@ -202,7 +205,7 @@ public class ExportController extends BaseMultiActionController {
         setBaseBaseImgUrl(imageFormat, imageProperties);
 
         // Set format content type...
-        if(setOutput)
+        if (setOutput)
             response.setContentType(imageFormat.getContentType());
 
         // Write content ...

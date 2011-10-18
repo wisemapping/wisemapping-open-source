@@ -36,8 +36,12 @@ mindplot.Topic = new Class({
             this.setPosition(pos);
         }
 
+        // @Todo: Hack to remove ...
         // Register events for the topic ...
-        this._registerEvents();
+        if (!designer._readOnly) {
+
+            this._registerEvents();
+        }
     },
 
     _registerEvents : function() {

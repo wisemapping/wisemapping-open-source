@@ -12,8 +12,7 @@
     <link rel="stylesheet/less" type="text/css" href="../css/editor2.css"/>
 
     <script type='text/javascript'
-            src='https://ajax.googleapis.com/ajax/libs/mootools/1.3.2/mootools-yui-compressed.js'></script>
-
+            src='/mindplot/src/main/javascript/libraries/mootools/mootools-core-1.3.2-full-compress.js'></script>
     <script type='text/javascript'
             src='/mindplot/src/main/javascript/libraries/mootools/mootools-more-1.3.2.1-yui.js'></script>
     <script type='text/javascript' src='/core-js/target/classes/core.js'></script>
@@ -56,7 +55,7 @@
 
             } else if (collab == 'standalone' && mindReady) {
                 // Load map from XML ...
-                var mapXml = '<map name="38298" version="pela"><topic central="true" text="test\nThis is working ?" id="1"/></map>';
+                var mapXml = '<map name="1" version="pela"><topic central="true" text="WiseMapping" id="1"><topic position="191,-50" order="1" text="Open Source" id="2"/><topic position="-167,0" order="0" text="Technologies" id="3"><topic position="-281,5" order="1" text="Java " id="4"/><topic position="-287,-19" order="0" text="SVG" id="5"><note text="Previous versions also support VML "/></topic><topic position="-292,29" order="2" text="Hibernate" id="6"/></topic><topic position="140,50" order="2" text="Business Model" id="7"><topic position="271,51" order="0" id="8"/></topic><topic position="-140,-150" order="5" text="Compatibility" id="9"><topic position="-263,-145" order="0" text="Browsers" id="10"><topic position="-354,-168" order="0" text="IE" id="11"/><topic position="-366,-144" order="1" text="Chrome" id="12"/><topic position="-363,-120" order="2" text="Safari" id="13"/></topic></topic></topic></map>';
                 var domDocument = core.Utils.createDocumentFromText(mapXml);
                 var serializer = mindplot.XMLMindmapSerializerFactory.getSerializerFromDocument(domDocument);
                 var mindmap = serializer.loadFromDom(domDocument, mapId);
@@ -191,7 +190,7 @@
                     <img src="../nicons/font-size.png"/>
                 </div>
                 <div id="fontBold" class="buttonOn" title="Bold Style">
-                    <img src="../nicons/topic-border.png"/>
+                    <img src="../nicons/font-bold.png"/>
                 </div>
                 <div id="fontItalic" class="buttonOn" title="Italic Style">
                     <img src="../nicons/font-italic.png"/>

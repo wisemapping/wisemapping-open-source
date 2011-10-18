@@ -25,12 +25,12 @@ Asset.javascript('../js/mindplot-min.js', {
 var designer = null;
 /* JavaScript tabs changer */
 
-function setUpToolbar(designer, isTryMode) {
+function setUpToolbar(designer, readOnly) {
 
     var menu = new mindplot.widget.Menu(designer, 'toolbar', mapId);
 
     // Autosave ...
-    if (!isTryMode) {
+    if (!readOnly) {
         (function() {
 
             if (designer.needsSave()) {
@@ -56,13 +56,8 @@ function setUpToolbar(designer, isTryMode) {
 
 }
 
-function buildDesigner(editorProperties, isTryMode) {
-    $assert(editorProperties, "editorProperties can not be null");
-
-    // Initialize message logger ...
-    //@Todo: Fix.
-//    var monitor = new core.Monitor($('msgLoggerContainer'), $('msgLogger'));
-//    core.Monitor.setInstance(monitor);
+function buildDesigner(properties) {
+    $assert(properties, "properties can not be null");
 
     var container = $('mindplot');
     container.setStyles({
@@ -70,14 +65,15 @@ function buildDesigner(editorProperties, isTryMode) {
         width:  parseInt(screen.width)
     });
 
-    designer = new mindplot.Designer(editorProperties, container);
+    designer = new mindplot.Designer(properties, container);
     designer.setViewPort({
         height: parseInt(window.innerHeight - 151), // Footer and Header
         width:  parseInt(window.innerWidth)
     });
 
+    // Toolbar is only loaded if it was defined ...
     if ($('toolbar')) {
-        setUpToolbar(designer, isTryMode);
+        setUpToolbar(designer, properties.readOnly);
     }
     return designer;
 }

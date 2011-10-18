@@ -1,0 +1,24 @@
+@import "../css/widget/lightbox.css";
+@import "../css/common.css";
+
+div#printHeader {
+    background-color: black;
+    height: 55px;
+    color: white;
+}
+
+div#printFooter {
+    height: 60px;
+    width: 100%;
+    background: #E5E5E5;
+    border-top: 1px solid #bbb4d6;
+}
+
+div#printLogo {
+    height: 80px;
+    width: 170px;
+    float: right;
+    margin: 1px;
+    background: url(../nicons/logo-medium.png) no-repeat right top;
+}
+

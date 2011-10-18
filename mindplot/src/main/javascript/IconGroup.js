@@ -19,7 +19,7 @@
 mindplot.IconGroup = new Class({
     initialize : function(topicId, iconSize) {
         $assert($defined(topicId), "topicId can not be null");
-        $assert(iconSize, "iconSize can not be null");
+        $assert($defined(iconSize), "iconSize can not be null");
 
         this._icons = [];
         this._group = new web2d.Group({width: 0, height:iconSize,x: 0, y:0, coordSizeWidth:0,coordSizeHeight:100});

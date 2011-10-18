@@ -237,11 +237,6 @@ div#headerTitle {
     margin-left: 5px;
 }
 
-div#printHeader {
-    background-color: black;
-    height: 55px;
-    color: white;
-}
 
 span#headerSubTitle {
     font-weight: lighter;
@@ -330,20 +325,6 @@ div#editorHeader div#headerActions a:hover, div#headerActions a:active, div#head
     float: left;
 }
 
-div#printFooter {
-    height: 60px;
-    width: 100%;
-    background: #E5E5E5;
-    border-top: 1px solid #bbb4d6;
-}
-
-div#printLogo {
-    height: 80px;
-    width: 170px;
-    float: right;
-    margin: 1px;
-    background: url(../nicons/logo-medium.png) no-repeat right top;
-}
 
 div#paypal {
     float: left;

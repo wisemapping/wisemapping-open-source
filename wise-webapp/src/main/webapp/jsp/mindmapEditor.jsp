@@ -15,13 +15,11 @@
     <![endif]-->
     <title><spring:message code="SITE.TITLE"/> - ${mindmap.title} </title>
     <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
-
     <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet/less" type="text/css" href="../css/editor2.css"/>
 
-    <script type='text/javascript'
-            src='https://ajax.googleapis.com/ajax/libs/mootools/1.3.2/mootools-yui-compressed.js'></script>
+    <script type='text/javascript' src='../js/libraries/mootools/mootools-core-1.3.2-full-compress.js'></script>
     <script type='text/javascript' src='../js/libraries/mootools/mootools-more-1.3.2.1-yui.js'></script>
 
     <script type="text/javascript" src="../dwr/engine.js"></script>
@@ -42,9 +40,8 @@
 
                 var editorProperties = ${mindmap.properties};
                 editorProperties.collab = 'standalone';
-
-                var isTryMode = ${editorTryMode};
-                designer = buildDesigner(editorProperties, isTryMode);
+                editorProperties.readOnly = false;
+                designer = buildDesigner(editorProperties);
 
                 var domDocument = core.Utils.createDocumentFromText(mapXml);
                 var serializer = mindplot.XMLMindmapSerializerFactory.getSerializerFromDocument(domDocument);
@@ -121,7 +118,7 @@
 
             <spring:message code="WELCOME"/>, ${principal.firstname}|<span><a
                 href="${pageContext.request.contextPath}/c/mymaps.htm"><spring:message code="MY_WISEMAPS"/></a></span> |
-            <span><a href="${pageContext.request.contextPath}/c/settings.htm" rel="moodalbox 400px 250px wizard"
+            <span><a id="settings" href="${pageContext.request.contextPath}/c/settings.htm"
                      title="<spring:message code="SETTINGS_DETAIL"/>"><spring:message code="SETTINGS"/></a></span>
             | <span><a href="${pageContext.request.contextPath}/c/logout.htm" title="<spring:message code="LOGOUT"/>">
             <spring:message code="LOGOUT"/>
@@ -201,7 +198,7 @@
                 <img src="../nicons/font-size.png"/>
             </div>
             <div id="fontBold" class="buttonOn" title="Bold Style">
-                <img src="../nicons/topic-border.png"/>
+                <img src="../nicons/font-bold.png"/>
             </div>
             <div id="fontItalic" class="buttonOn" title="Italic Style">
                 <img src="../nicons/font-italic.png"/>

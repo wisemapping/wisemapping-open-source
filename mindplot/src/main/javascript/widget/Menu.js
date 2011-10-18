@@ -181,7 +181,7 @@ mindplot.widget.Menu = new Class({
 
         this.addButton('export', false, false, function() {
             var reqDialog = new MooDialog.Request('../c/export.htm?mapId=' + mapId, null,
-                {'class': 'exportItModalDialog',
+                {'class': 'exportModalDialog',
                     closeButton:true,
                     destroyOnClose:true,
                     title:'Export'
