@@ -78,10 +78,5 @@ mindplot.commands.DragTopicCommand = new Class({
 
     undoExecute: function(commandContext) {
         this.execute(commandContext);
-        var selectedRelationships = commandContext.filterSelectedRelations();
-        selectedRelationships.forEach(function(relationshipLine) {
-            relationshipLine.redraw();
-        });
-
     }
 });

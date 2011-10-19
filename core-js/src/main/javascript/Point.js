@@ -33,11 +33,12 @@ core.Point = new Class({
 
     clone : function() {
         return new core.Point(this.x, this.y);
-    },
+    }
 
-    fromString :
-        function(point) {
-            var values = point.split(',');
-            return new core.Point(values[0], values[1]);
-        }
 });
+
+core.Point.fromString = function(point) {
+    var values = point.split(',');
+    return new core.Point(values[0], values[1]);
+
+};

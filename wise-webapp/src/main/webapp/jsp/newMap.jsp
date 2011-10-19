@@ -31,7 +31,7 @@
             <tr>
                 <td>&nbsp;</td>
                 <td>
-                    <input type="submit" value="<spring:message code="SUBMIT"/>" class="btn-primary">
+                    <input type="submit" value="Accept" class="btn-primary">
                     <c:choose>
                     <c:when test="${!errorView}">
                     <input type="button" value="<spring:message code="CANCEL"/>" class="btn-secondary"
