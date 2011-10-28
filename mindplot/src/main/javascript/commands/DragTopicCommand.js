@@ -59,8 +59,6 @@ mindplot.commands.DragTopicCommand = new Class({
         } else {
             $assert("Illegal commnad state exception.");
         }
-        this._order = origOrder;
-        this._position = origPosition;
 
         // Finally, connect topic ...
         if ($defined(this._parentId)) {
@@ -73,6 +71,11 @@ mindplot.commands.DragTopicCommand = new Class({
         if ($defined(origParentTopic)) {
             this._parentId = origParentTopic.getId();
         }
+
+       // Store for undo ...
+        this._order = origOrder;
+        this._position = origPosition;
+
 
     },
 
