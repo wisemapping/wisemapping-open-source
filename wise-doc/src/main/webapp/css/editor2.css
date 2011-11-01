@@ -259,7 +259,7 @@ div#header {
 }
 
 div#headerLogo {
-    background: url(../nicons/logo-small.png) no-repeat center top;
+    background: url(../images/logo-small.png) no-repeat center top;
     height: 40px;
     width: 80px;
     float: left;
@@ -347,17 +347,17 @@ div#toolbar .buttonOn, div#toolbar .buttonOff, div#toolbar .buttonActive, div#to
 div#toolbar .buttonOn:hover {
     cursor: pointer;
     opacity: 1;
-    background: url(../nicons/btn-bg-hover.png) no-repeat center top;
+    background: url(../images/btn-bg-hover.png) no-repeat center top;
 }
 
 div#toolbar .buttonOn {
     opacity: 0.8;
-    background: url(../nicons/btn-bg-normal.png) no-repeat center top;
+    background: url(../images/btn-bg-normal.png) no-repeat center top;
 }
 
 div#toolbar .buttonOff {
     opacity: 0.4;
-    background: url(../nicons/btn-bg-normal.png) no-repeat center top;
+    background: url(../images/btn-bg-normal.png) no-repeat center top;
 }
 
 div#exportAnchor {
@@ -381,24 +381,24 @@ div#toolbar .buttonExtOn, div#toolbar .buttonExtOff, div#toolbar .buttonExtActiv
 
 div#toolbar .buttonExtOn:hover {
     opacity: 1;
-    background: url(../nicons/btne-bg-hover.png) no-repeat center top;
+    background: url(../images/btne-bg-hover.png) no-repeat center top;
 
 }
 
 div#toolbar .buttonExtActive {
     opacity: 1;
-    background: url(../nicons/btne-bg-selected.png) no-repeat center top;
+    background: url(../images/btne-bg-selected.png) no-repeat center top;
 
 }
 
 div#toolbar .buttonExtOn {
     opacity: 0.8;
-    background: url(../nicons/btne-bg-normal.png) no-repeat center top;
+    background: url(../images/btne-bg-normal.png) no-repeat center top;
 }
 
 div#toolbar .buttonExtOff {
     opacity: 0.4;
-    background: url(../nicons/btne-bg-normal.png) no-repeat center top;
+    background: url(../images/btne-bg-normal.png) no-repeat center top;
 }
 
 div#exportAnchor {
@@ -410,107 +410,107 @@ div#exportAnchor {
 }
 
 /*div#saveButton {*/
-/*background: url(../nicons/save.png) no-repeat center top;*/
+/*background: url(../images/save.png) no-repeat center top;*/
 /*}*/
 
 /*div#undoEdition {*/
-/*background: url(../nicons/undo.png) no-repeat center top;*/
+/*background: url(../images/undo.png) no-repeat center top;*/
 /*}*/
 
 /*div#redoEdition {*/
-/*background: url(../nicons/redo.png) no-repeat center top;*/
+/*background: url(../images/redo.png) no-repeat center top;*/
 /*}*/
 
 /*div#export {*/
-/*background: url(../nicons/export.png) no-repeat center top;*/
+/*background: url(../images/export.png) no-repeat center top;*/
 /*}*/
 
 /*div#zoomIn {*/
-/*background: url(../nicons/zoom-in.png) no-repeat center top;*/
+/*background: url(../images/zoom-in.png) no-repeat center top;*/
 /*}*/
 
 /*div#zoomOut {*/
-/*background: url(../nicons/zoom-out.png) no-repeat center top;*/
+/*background: url(../images/zoom-out.png) no-repeat center top;*/
 /*}*/
 
 /*div#addTopic {*/
-/*background: url(../nicons/topic-add.png) no-repeat center top;*/
+/*background: url(../images/topic-add.png) no-repeat center top;*/
 /*}*/
 
 /*div#deleteTopic {*/
-/*background: url(../nicons/topic-delete.png) no-repeat center top;*/
+/*background: url(../images/topic-delete.png) no-repeat center top;*/
 /*}*/
 
 /*div#topicColor {*/
-/*background: url(../nicons/topic-color.png) no-repeat center top;*/
+/*background: url(../images/topic-color.png) no-repeat center top;*/
 /*}*/
 
 /*div#topicIcon {*/
-/*background: url(../nicons/topic-icon.png) no-repeat center top;*/
+/*background: url(../images/topic-icon.png) no-repeat center top;*/
 /*}*/
 
 /*div#topicNote {*/
-/*background: url(../nicons/note.png) no-repeat center top;*/
+/*background: url(../images/note.png) no-repeat center top;*/
 /*}*/
 
 /*div#topicNote {*/
-/*background: url(../nicons/topic-icon.png) no-repeat center top;*/
+/*background: url(../images/topic-icon.png) no-repeat center top;*/
 /*z-index: 4;*/
 /*}*/
 
 /*div#topicLink {*/
-/*background: url(../nicons/topic-link.png) no-repeat center top;*/
+/*background: url(../images/topic-link.png) no-repeat center top;*/
 /*z-index: 4;*/
 /*}*/
 
 /*div#topicNote {*/
-/*background-image: url(../nicons/note.png);*/
+/*background-image: url(../images/note.png);*/
 /*z-index: 4;*/
 /*}*/
 
 /*div#topicBorder {*/
-/*background: url(../nicons/topic-border.png) no-repeat center top;*/
+/*background: url(../images/topic-border.png) no-repeat center top;*/
 /*}*/
 
 /*div#fontFamily {*/
-/*background: url(../nicons/font-type.png) no-repeat center top;*/
+/*background: url(../images/font-type.png) no-repeat center top;*/
 /*}*/
 
 /*div#topicShape {*/
-/*background: url(../nicons/topic-shape.png) no-repeat center top;*/
+/*background: url(../images/topic-shape.png) no-repeat center top;*/
 /*}*/
 
 /*div#fontBold {*/
-/*background: url(../nicons/font-bold.png) no-repeat center top;*/
+/*background: url(../images/font-bold.png) no-repeat center top;*/
 /*}*/
 
 /*div#fontItalic {*/
-/*background: url(../nicons/font-italic.png) no-repeat center top;*/
+/*background: url(../images/font-italic.png) no-repeat center top;*/
 /*}*/
 
 /*div#fontColor {*/
-/*background: url(../nicons/font-color.png) no-repeat center top;*/
+/*background: url(../images/font-color.png) no-repeat center top;*/
 /*}*/
 
 /*div#fontSize {*/
-/*background: url(../nicons/font-size.png) no-repeat center top;*/
+/*background: url(../images/font-size.png) no-repeat center top;*/
 /*}*/
 
 /*div#shareIt {*/
-/*background: url(../nicons/share.png) no-repeat center top;*/
+/*background: url(../images/share.png) no-repeat center top;*/
 /*}*/
 
 /*div#publishIt {*/
-/*background: url(../nicons/publish.png) no-repeat center top;*/
+/*background: url(../images/publish.png) no-repeat center top;*/
 /*}*/
 
 /*div#tagIt {*/
-/*background: url(../nicons/tag.png) no-repeat center top;*/
+/*background: url(../images/tag.png) no-repeat center top;*/
 /*}*/
 
 div#topicRelation {
     width: 56px;
-    background: url(../nicons/topic-relation.png) no-repeat center top;
+    background: url(../images/topic-relation.png) no-repeat center top;
     z-index: 4;
 }
 
