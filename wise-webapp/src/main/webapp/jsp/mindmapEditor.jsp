@@ -133,92 +133,92 @@
     <div id="toolbar">
         <div id="persist" class="buttonContainer">
             <div id="save" class="buttonOn" title="Save">
-                <img src="../nicons/save.png"/>
+                <img src="../images/save.png"/>
             </div>
             <div id="discard" class="buttonOn" title="Discard">
-                <img src="../nicons/discard.png"/>
+                <img src="../images/discard.png"/>
             </div>
             <div id="print" class="buttonOn" title="Print">
-                <img src="../nicons/print.png"/>
+                <img src="../images/print.png"/>
             </div>
             <div id="export" class="buttonOn" title="Export">
-                <img src="../nicons/export.png"/>
+                <img src="../images/export.png"/>
             </div>
         </div>
         <div id="edit" class="buttonContainer">
             <div id="undoEdition" class="buttonOn" title="Undo Edition">
-                <img src="../nicons/undo.png"/>
+                <img src="../images/undo.png"/>
             </div>
             <div id="redoEdition" class="buttonOn" title="Redo Edition">
-                <img src="../nicons/redo.png"/>
+                <img src="../images/redo.png"/>
             </div>
         </div>
         <div id="zoom" class="buttonContainer">
             <div id="zoomIn" class="buttonOn" title="Zoom In">
-                <img src="../nicons/zoom-in.png"/>
+                <img src="../images/zoom-in.png"/>
             </div>
             <div id="zoomOut" class="buttonOn" title="Zoom Out">
-                <img src="../nicons/zoom-out.png"/>
+                <img src="../images/zoom-out.png"/>
             </div>
         </div>
         <div id="node" class="buttonContainer">
             <div id="topicShape" class="buttonExtOn" title="Topic Shape">
-                <img src="../nicons/topic-shape.png"/>
+                <img src="../images/topic-shape.png"/>
             </div>
             <div id="addTopic" class="buttonOn" title="Add Topic">
-                <img src="../nicons/topic-add.png"/>
+                <img src="../images/topic-add.png"/>
             </div>
             <div id="deleteTopic" class="buttonOn" title="Delete">
-                <img src="../nicons/topic-delete.png"/>
+                <img src="../images/topic-delete.png"/>
             </div>
             <div id="topicBorder" class="buttonOn" title="Border Color">
-                <img src="../nicons/topic-border.png"/>
+                <img src="../images/topic-border.png"/>
             </div>
             <div id="topicColor" class="buttonExtOn" title="Background Color">
-                <img src="../nicons/topic-color.png"/>
+                <img src="../images/topic-color.png"/>
             </div>
             <div id="topicIcon" class="buttonExtOn" title="Add Icon">
-                <img src="../nicons/topic-icon.png"/>
+                <img src="../images/topic-icon.png"/>
             </div>
             <div id="topicNote" class="buttonOn" title="Add Note">
-                <img src="../nicons/topic-note.png"/>
+                <img src="../images/topic-note.png"/>
             </div>
             <div id="topicLink" class="buttonOn" title="Add Link">
-                <img src="../nicons/topic-link.png"/>
+                <img src="../images/topic-link.png"/>
             </div>
             <div id="topicRelation" class="buttonOn" title="Add Relationship">
-                <img src="../nicons/topic-relation.png"/>
+                <img src="../images/topic-relation.png"/>
             </div>
         </div>
         <div id="font" class="buttonContainer">
             <div id="fontFamily" class="buttonOn" title="Font Style">
-                <img src="../nicons/font-type.png"/>
+                <img src="../images/font-type.png"/>
             </div>
             <div id="fontSize" class="buttonExtOn" title="Font Size">
-                <img src="../nicons/font-size.png"/>
+                <img src="../images/font-size.png"/>
             </div>
             <div id="fontBold" class="buttonOn" title="Bold Style">
-                <img src="../nicons/font-bold.png"/>
+                <img src="../images/font-bold.png"/>
             </div>
             <div id="fontItalic" class="buttonOn" title="Italic Style">
-                <img src="../nicons/font-italic.png"/>
+                <img src="../images/font-italic.png"/>
             </div>
             <div id="fontColor" class="buttonExtOn" title="Fond Color" style="padding-top:4px">
-                <img src="../nicons/font-color.png"/>
+                <img src="../images/font-color.png"/>
             </div>
         </div>
         <div id="collaboration" class="buttonContainer">
             <div id="tagIt" class="buttonOn" title="Tag">
-                <img src="../nicons/tag.png"/>
+                <img src="../images/tag.png"/>
             </div>
             <div id="shareIt" class="buttonOn" title="Share">
-                <img src="../nicons/share.png"/>
+                <img src="../images/share.png"/>
             </div>
             <div id="publishIt" class="buttonOn" title="Publish">
-                <img src="../nicons/public.png"/>
+                <img src="../images/public.png"/>
             </div>
             <div id="history" class="buttonOn" title="History">
-                <img src="../nicons/history.png"/>
+                <img src="../images/history.png"/>
             </div>
         </div>
     </div>

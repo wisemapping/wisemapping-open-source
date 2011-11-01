@@ -69,7 +69,7 @@ div#logo {
     height: 65px;
     width: 80px;
     position: absolute;
-    background: url(../nicons/logo-small.png) no-repeat right top;
+    background: url(../images/logo-small.png) no-repeat right top;
     right: 10px;
     top: -10px;
 }
@@ -94,13 +94,13 @@ div#logo {
 }
 
 div#zoomIn {
-    background: url(../nicons/zoom-in.png) no-repeat left top;
+    background: url(../images/zoom-in.png) no-repeat left top;
     margin-top: 10px;
     margin-left: 10px;
 }
 
 #zoomOut {
-    background: url(../nicons/zoom-out.png) no-repeat left top;;
+    background: url(../images/zoom-out.png) no-repeat left top;;
     margin-top: 10px;
     margin-left: 5px;
 }

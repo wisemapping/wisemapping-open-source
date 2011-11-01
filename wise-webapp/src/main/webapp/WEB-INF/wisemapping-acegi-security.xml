@@ -109,7 +109,6 @@
                 /js/**=IS_AUTHENTICATED_ANONYMOUSLY
                 /ws/**=IS_AUTHENTICATED_ANONYMOUSLY
                 /images/*=IS_AUTHENTICATED_ANONYMOUSLY
-                /nicons/*=IS_AUTHENTICATED_ANONYMOUSLY
                 /c/embeddedview.htm=IS_AUTHENTICATED_ANONYMOUSLY
                 /c/export.htm=IS_AUTHENTICATED_ANONYMOUSLY
                 /c/publicview.htm=IS_AUTHENTICATED_ANONYMOUSLY
