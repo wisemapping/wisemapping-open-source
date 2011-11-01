@@ -25,8 +25,7 @@
                 <tbody>
                     <tr>
                         <td>
-                            <spring:message code="EMAIL"/>
-                            :
+                            <spring:message code="EMAIL"/>:
                         </td>
                         <td>
                             <form:input path="email" id="email" tabindex="1"/>
@@ -38,7 +37,7 @@
                         <td>
                             <input type="submit" value="<spring:message code="SUBMIT"/>" class="btn-primary"
                                    id="submitButton">
-                            <input type="button" value="<spring:message code="CANCEL"/>" class="btn-primary"
+                            <input type="button" value="<spring:message code="CANCEL"/>" class="btn-secondary"
                                    onclick="window.location='<c:url value="mymaps.htm"/>'">
                         </td>
                     </tr>

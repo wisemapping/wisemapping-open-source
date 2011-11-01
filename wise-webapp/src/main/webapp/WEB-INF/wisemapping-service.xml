@@ -66,19 +66,21 @@
     <bean id="mailSession" class="javax.mail.Session" factory-method="getInstance">
         <constructor-arg>
             <props>
-                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
                 <prop key="mail.smtp.socketFactory.port">${mail.smtp.socketFactory.port}</prop>
-                <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+                <prop key="mail.smtp.socketFactory.class">${mail.smtp.socketFactory.class}</prop>
                 <prop key="mail.smtp.socketFactory.fallback">false</prop>
                 <prop key="mail.smtp.quitwait">false</prop>
+                <prop key="mail.smtp.debug">true</prop>
+
             </props>
         </constructor-arg>
         <constructor-arg ref="smtpAuthenticator"/>
     </bean>
 
     <bean id="mailer" class="com.wisemapping.mail.Mailer" singleton="true">
-        <constructor-arg index="0" value="${mail.registrationEmail}" />
-        <constructor-arg index="1" value="${mail.siteEmail}" />
+        <constructor-arg index="0" value="${mail.registrationEmail}"/>
+        <constructor-arg index="1" value="${mail.siteEmail}"/>
 
         <property name="mailSender" ref="mailSender"/>
         <property name="velocityEngine" ref="velocityEngine"/>
@@ -86,7 +88,7 @@
 
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="host" value="${mail.host}"/>
-        <!--  <property name="session" ref="mailSession"/> -->
+        <property name="session" ref="mailSession"/>
     </bean>
 
     <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">

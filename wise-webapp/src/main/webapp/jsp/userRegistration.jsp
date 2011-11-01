@@ -129,7 +129,7 @@
     <td>&nbsp;</td>
     <td><input type="submit" value="<spring:message code="REGISTER"/>" id="submitButton" class="btn-primary">
         <input type="button" value="<spring:message code="CANCEL"/>"
-               onclick="window.location='<c:url value="mymaps.htm"/>'" class="btn-primary">
+               onclick="window.location='<c:url value="mymaps.htm"/>'" class="btn-secondary">
     </td>
 </tr>
 </tbody>

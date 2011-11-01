@@ -21,6 +21,7 @@
                 <value>/c/keyboard.htm</value>
                 <value>/c/renameMap.htm</value>
                 <value>/c/embeddedView.htm</value>
+                <value>/c/forgotPassword.htm</value>
             </list>
         </property>
     </bean>
@@ -342,45 +343,5 @@
         <property name="paramName" value="language"/>
     </bean>
 
-
-    <!--<bean id="publicViewTarget" class="com.wisemapping.controller.PublicViewController">-->
-    <!--<property name="methodNameResolver" ref="paramResolverByAction"/>-->
-    <!--<property name="mindmapService">-->
-    <!--<ref bean="mindmapService"/>-->
-    <!--</property>-->
-    <!--</bean>-->
-
-    <!--<bean id="publicView"-->
-    <!--class="org.springframework.aop.framework.ProxyFactoryBean">-->
-    <!--<property name="proxyInterfaces">-->
-    <!--<value>com.wisemapping.controller.BaseMultiActionController</value>-->
-    <!--</property>-->
-    <!--<property name="interceptorNames">-->
-    <!--<list>-->
-    <!--<value>viewsAdvisor</value>-->
-    <!--</list>-->
-    <!--</property>-->
-    <!--<property name="target">-->
-    <!--<ref bean="publicViewTarget"/>-->
-    <!--</property>-->
-    <!--</bean>-->
-
-    <!--<bean id="viewAdvice" class="com.wisemapping.aop.ViewsAdvise">-->
-    <!--<property name="mindmapService">-->
-    <!--<ref bean="mindmapService"/>-->
-    <!--</property>-->
-    <!--</bean>-->
-
-    <!--<bean id="viewsAdvisor"-->
-    <!--class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">-->
-    <!--<property name="advice">-->
-    <!--<ref bean="viewAdvice"/>-->
-    <!--</property>-->
-    <!--<property name="mappedNames">-->
-    <!--<list>-->
-    <!--<value>handleNoSuchRequestHandlingMethod</value>-->
-    <!--</list>-->
-    <!--</property>-->
-    <!--</bean>-->
 
 </beans>
