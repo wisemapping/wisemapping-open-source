@@ -17,7 +17,7 @@
     <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
     <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet/less" type="text/css" href="../css/editor2.css"/>
+    <link rel="stylesheet/less" type="text/css" href="../css/editor.less"/>
 
     <script type='text/javascript' src='../js/libraries/mootools/mootools-core-1.3.2-full-compress.js'></script>
     <script type='text/javascript' src='../js/libraries/mootools/mootools-more-1.3.2.1-yui.js'></script>
