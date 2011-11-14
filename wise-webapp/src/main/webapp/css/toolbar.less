@@ -1,0 +1,200 @@
+@import "skin.less";
+
+div#toolbar {
+    width: 100%;
+    height: @header-toolbar-height;
+    background-image: linear-gradient(bottom, rgb(229, 227, 209) 47%, rgb(252, 250, 237) 87%);
+    background-image: -o-linear-gradient(bottom, rgb(229, 227, 209) 47%, rgb(252, 250, 237) 87%);
+    background-image: -moz-linear-gradient(bottom, rgb(229, 227, 209) 47%, rgb(252, 250, 237) 87%);
+    background-image: -webkit-linear-gradient(bottom, rgb(229, 227, 209) 47%, rgb(252, 250, 237) 87%);
+    background-image: -ms-linear-gradient(bottom, rgb(229, 227, 209) 47%, rgb(252, 250, 237) 87%);
+
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.47, rgb(229, 227, 209)), color-stop(0.87, rgb(252, 250, 237)));
+    border-bottom: 3px double rgb(190, 190, 190);
+    border-top: 1px solid rgb(190, 190, 190);
+}
+
+div#toolbar .buttonContainer {
+    height: @header-toolbar-height;
+    float: left;
+    margin-left: 5px;
+}
+
+/******************************************************************************************/
+/* Buttons*/
+/******************************************************************************************/
+
+div#toolbar .buttonOn, div#toolbar .buttonOff, div#toolbar .buttonActive, div#toolbar .buttonOn:hover {
+    width: 28px;
+    height: 28px;
+    float: left;
+    text-align: center;
+    z-index: 4;
+    margin-top: 3px;
+    padding-top: 2px;
+    padding-left: 2px;
+}
+
+div#toolbar .buttonOn:hover {
+    cursor: pointer;
+    opacity: 1;
+    background: url(../images/btn-bg-hover.png) no-repeat center top;
+}
+
+div#toolbar .buttonOn {
+    opacity: 0.8;
+    background: url(../images/btn-bg-normal.png) no-repeat center top;
+}
+
+div#toolbar .buttonOff {
+    opacity: 0.4;
+    background: url(../images/btn-bg-normal.png) no-repeat center top;
+}
+
+div#exportAnchor {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+div#toolbar .buttonExtOn, div#toolbar .buttonExtOff, div#toolbar .buttonExtActive, div#toolbar .buttonExtOn:hover {
+    width: 40px;
+    height: 28px;
+    float: left;
+    text-align: left;
+    z-index: 4;
+    margin-top: 3px;
+    padding-top: 2px;
+    padding-left: 5px;
+}
+
+div#toolbar .buttonExtOn:hover {
+    opacity: 1;
+    background: url(../images/btne-bg-hover.png) no-repeat center top;
+
+}
+
+div#toolbar .buttonExtActive {
+    opacity: 1;
+    background: url(../images/btne-bg-selected.png) no-repeat center top;
+
+}
+
+div#toolbar .buttonExtOn {
+    opacity: 0.8;
+    background: url(../images/btne-bg-normal.png) no-repeat center top;
+}
+
+div#toolbar .buttonExtOff {
+    opacity: 0.4;
+    background: url(../images/btne-bg-normal.png) no-repeat center top;
+}
+
+div#exportAnchor {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+/*div#saveButton {*/
+/*background: url(../images/save.png) no-repeat center top;*/
+/*}*/
+
+/*div#undoEdition {*/
+/*background: url(../images/undo.png) no-repeat center top;*/
+/*}*/
+
+/*div#redoEdition {*/
+/*background: url(../images/redo.png) no-repeat center top;*/
+/*}*/
+
+/*div#export {*/
+/*background: url(../images/export.png) no-repeat center top;*/
+/*}*/
+
+/*div#zoomIn {*/
+/*background: url(../images/zoom-in.png) no-repeat center top;*/
+/*}*/
+
+/*div#zoomOut {*/
+/*background: url(../images/zoom-out.png) no-repeat center top;*/
+/*}*/
+
+/*div#addTopic {*/
+/*background: url(../images/topic-add.png) no-repeat center top;*/
+/*}*/
+
+/*div#deleteTopic {*/
+/*background: url(../images/topic-delete.png) no-repeat center top;*/
+/*}*/
+
+/*div#topicColor {*/
+/*background: url(../images/topic-color.png) no-repeat center top;*/
+/*}*/
+
+/*div#topicIcon {*/
+/*background: url(../images/topic-icon.png) no-repeat center top;*/
+/*}*/
+
+/*div#topicNote {*/
+/*background: url(../images/note.png) no-repeat center top;*/
+/*}*/
+
+/*div#topicNote {*/
+/*background: url(../images/topic-icon.png) no-repeat center top;*/
+/*z-index: 4;*/
+/*}*/
+
+/*div#topicLink {*/
+/*background: url(../images/topic-link.png) no-repeat center top;*/
+/*z-index: 4;*/
+/*}*/
+
+/*div#topicNote {*/
+/*background-image: url(../images/note.png);*/
+/*z-index: 4;*/
+/*}*/
+
+/*div#topicBorder {*/
+/*background: url(../images/topic-border.png) no-repeat center top;*/
+/*}*/
+
+/*div#fontFamily {*/
+/*background: url(../images/font-type.png) no-repeat center top;*/
+/*}*/
+
+/*div#topicShape {*/
+/*background: url(../images/topic-shape.png) no-repeat center top;*/
+/*}*/
+
+/*div#fontBold {*/
+/*background: url(../images/font-bold.png) no-repeat center top;*/
+/*}*/
+
+/*div#fontItalic {*/
+/*background: url(../images/font-italic.png) no-repeat center top;*/
+/*}*/
+
+/*div#fontColor {*/
+/*background: url(../images/font-color.png) no-repeat center top;*/
+/*}*/
+
+/*div#fontSize {*/
+/*background: url(../images/font-size.png) no-repeat center top;*/
+/*}*/
+
+/*div#shareIt {*/
+/*background: url(../images/share.png) no-repeat center top;*/
+/*}*/
+
+/*div#publishIt {*/
+/*background: url(../images/publish.png) no-repeat center top;*/
+/*}*/
+
+/*div#tagIt {*/
+/*background: url(../images/tag.png) no-repeat center top;*/
+/*}*/
