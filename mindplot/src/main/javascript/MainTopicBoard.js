@@ -75,8 +75,7 @@ mindplot.MainTopicBoard = new Class({
 
         var order = entry.getOrder();
         dragTopic.setOrder(order);
-    }
-    ,
+    },
 
     /**
      * This x distance doesn't take into account the size of the shape.

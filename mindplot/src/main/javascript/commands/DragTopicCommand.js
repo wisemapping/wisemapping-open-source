@@ -39,15 +39,20 @@ mindplot.commands.DragTopicCommand = new Class({
         var origOrder = null;
         var origPosition = null;
 
+        // Cache nodes position ...
+        var topics = designer.getModel().getTopics();
+        topics.forEach(function(topic) {
+            topic.enableUICache(true);
+        });
+
         // In this case, topics are positioned using order ...
         origOrder = topic.getOrder();
         origPosition = topic.getPosition();
 
         // Disconnect topic ..
-        if ($defined(origParentTopic)) {
+        if ($defined(origParentTopic) && origParentTopic != this._parentId) {
             commandContext.disconnect(topic);
         }
-
 
         // Set topic order ...
         if (this._order != null) {
@@ -55,27 +60,32 @@ mindplot.commands.DragTopicCommand = new Class({
         } else if (this._position != null) {
             // Set position ...
             topic.setPosition(this._position);
-
         } else {
             $assert("Illegal commnad state exception.");
         }
 
         // Finally, connect topic ...
-        if ($defined(this._parentId)) {
-            var parentTopic = commandContext.findTopics([this._parentId])[0];
-            commandContext.connect(topic, parentTopic);
+        if (origParentTopic != this._parentId) {
+
+            if ($defined(this._parentId)) {
+                var parentTopic = commandContext.findTopics([this._parentId])[0];
+                commandContext.connect(topic, parentTopic);
+            }
+
+            // Backup old parent id ...
+            this._parentId = null;
+            if ($defined(origParentTopic)) {
+                this._parentId = origParentTopic.getId();
+            }
         }
 
-        // Backup old parent id ...
-        this._parentId = null;
-        if ($defined(origParentTopic)) {
-            this._parentId = origParentTopic.getId();
-        }
-
-       // Store for undo ...
+        // Store for undo ...
         this._order = origOrder;
         this._position = origPosition;
 
+        topics.forEach(function(topic) {
+            topic.enableUICache(false);
+        });
 
     },
 

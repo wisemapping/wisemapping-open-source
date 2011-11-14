@@ -371,9 +371,14 @@ mindplot.Designer = new Class({
                 var nodeModel = branches[i];
                 var nodeGraph = this._nodeModelToNodeGraph(nodeModel, false);
 
+                // Now, refresh UI changes ...
+                nodeGraph.enableUICache(false);
+
                 // Update shrink render state...
                 nodeGraph.setBranchVisibility(true);
             }
+
+
             var relationships = mindmapModel.getRelationships();
             for (var j = 0; j < relationships.length; j++) {
                 this._relationshipModelToRelationship(relationships[j]);
@@ -381,7 +386,7 @@ mindplot.Designer = new Class({
 
             // Place the focus on the Central Topic
             var centralTopic = this.getModel().getCentralTopic();
-            this.goToNode.attempt(centralTopic, this);
+            this.goToNode(centralTopic);
         },
 
         getMindmap : function() {
@@ -416,8 +421,7 @@ mindplot.Designer = new Class({
             var workspace = this._workspace;
             workspace.appendChild(nodeGraph);
             return nodeGraph;
-        }
-        ,
+        },
 
         _relationshipModelToRelationship : function(model) {
             $assert(model, "Node model can not be null");

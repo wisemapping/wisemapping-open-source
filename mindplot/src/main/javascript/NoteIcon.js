@@ -83,5 +83,5 @@ mindplot.NoteIcon = new Class({
     }
 });
 
-mindplot.NoteIcon.IMAGE_URL = "../nicons/notes.png";
+mindplot.NoteIcon.IMAGE_URL = "../images/notes.png";
 

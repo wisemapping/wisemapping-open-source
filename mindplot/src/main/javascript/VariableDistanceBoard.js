@@ -163,6 +163,7 @@ mindplot.VariableDistanceBoard = new Class({
         this._entries.set(index, entry);
 
     },
+
     freeEntry:function(entry) {
         var order = entry.getOrder();
         var entries = this._entries;

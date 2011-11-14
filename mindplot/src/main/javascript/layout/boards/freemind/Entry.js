@@ -14,7 +14,7 @@ mindplot.layout.boards.freemind.Entry = new Class({
                 var pwidth = parent.getSize().width;
                 var width = node.getSize().width;
                 pos.x = pos.x + Math.sign(pos.x) * (this._DEFAULT_X_GAP + pwidth/2 + width/2);
-                node.setPosition(pos, false);
+                node.setPosition(pos);
 
             }
         }
@@ -42,7 +42,7 @@ mindplot.layout.boards.freemind.Entry = new Class({
             position.x = x;
         }
 
-        this._node.setPosition(position, false);
+        this._node.setPosition(position);
     },
     getMarginTop:function(){
         return this._marginTop;

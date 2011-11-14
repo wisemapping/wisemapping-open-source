@@ -71,7 +71,8 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
             parentTopic.setAttribute("position", pos.x + ',' + pos.y);
 
             var order = topic.getOrder();
-            parentTopic.setAttribute("order", order);
+            if (!isNaN(order))
+                parentTopic.setAttribute("order", order);
         }
 
         var text = topic.getText();
@@ -186,11 +187,11 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
         if (lineType == mindplot.ConnectionLine.CURVED || lineType == mindplot.ConnectionLine.SIMPLE_CURVED) {
             if ($defined(relationship.getSrcCtrlPoint())) {
                 var srcPoint = relationship.getSrcCtrlPoint();
-                relationDom.setAttribute("srcCtrlPoint", srcPoint.x + "," + srcPoint.y);
+                relationDom.setAttribute("srcCtrlPoint", Math.round(srcPoint.x) + "," + Math.round(srcPoint.y));
             }
             if ($defined(relationship.getDestCtrlPoint())) {
                 var destPoint = relationship.getDestCtrlPoint();
-                relationDom.setAttribute("destCtrlPoint", destPoint.x + "," + destPoint.y);
+                relationDom.setAttribute("destCtrlPoint", Math.round(destPoint.x) + "," + Math.round(destPoint.y));
             }
         }
         relationDom.setAttribute("endArrow", relationship.getEndArrow());
@@ -238,6 +239,7 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
 
     _deserializeNode : function(domElem, mindmap) {
         var type = (domElem.getAttribute('central') != null) ? mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE : mindplot.model.INodeModel.MAIN_TOPIC_TYPE;
+
         // Load attributes...
         var id = domElem.getAttribute('id');
         if ($defined(id)) {
@@ -311,7 +313,7 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
         if ($defined(position)) {
             var pos = position.split(',');
             topic.setPosition(pos[0], pos[1]);
-            topic.setFinalPosition(pos[0], pos[1]);
+//            topic.setFinalPosition(pos[0], pos[1]);
         }
 
         //Creating icons and children nodes
@@ -335,7 +337,6 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
                 }
             }
         }
-        ;
         return topic;
     },
 

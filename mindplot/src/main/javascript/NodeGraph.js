@@ -45,11 +45,8 @@ mindplot.NodeGraph = new Class({
         return this._elem2d;
     },
 
-    setPosition : function(point) {
-        // Elements are positioned in the center.
-        var size = this._model.getSize();
-        this._elem2d.setPosition(point.x - (size.width / 2), point.y - (size.height / 2));
-        this._model.setPosition(point.x, point.y);
+    setPosition : function(point, fireEvent) {
+        throw "Unsupported operation";
     },
 
     addEvent : function(type, listener) {
@@ -64,7 +61,7 @@ mindplot.NodeGraph = new Class({
 
     fireEvent: function(type) {
         var elem = type.substr(0, 3) == "ont" ? this._event : this.get2DElement();
-        elem.fireEvent(type,this);
+        elem.fireEvent(type, this);
     },
 
     setMouseEventsEnabled : function(isEnabled) {
@@ -158,8 +155,8 @@ mindplot.NodeGraph.create = function(nodeModel, options) {
     if (type == mindplot.model.INodeModel.MAIN_TOPIC_TYPE) {
         result = new mindplot.MainTopic(nodeModel, options);
     } else {
-        assert(false, "unsupported node type:" + type);
+        $assert(false, "unsupported node type:" + type);
     }
 
     return result;
-}
+};

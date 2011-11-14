@@ -42,6 +42,36 @@ mindplot.Topic = new Class({
 
             this._registerEvents();
         }
+
+        this._cacheUIEnabled = true;
+        this._iuCache = {};
+    },
+
+
+    isUICacheEnabled : function() {
+        return this._cacheUIEnabled;
+    },
+
+    enableUICache : function(value) {
+        this._cacheUIEnabled = value;
+        if (!value) {
+            this._flushUIUpdate();
+        }
+
+        // Propagate the change to the children nodes ...
+        var children = this._getChildren();
+        for (var i = 0; i < children.length; i++) {
+            var node = children[i];
+            node.enableUICache(value);
+        }
+    },
+
+    _flushUIUpdate: function() {
+        var position = this._iuCache['position'];
+        if (position) {
+            this.setPosition(position);
+        }
+        this._iuCache = {};
     },
 
     _registerEvents : function() {
@@ -305,6 +335,7 @@ mindplot.Topic = new Class({
 
         this._link = new mindplot.LinkIcon(this, linkModel);
         iconGroup.addIcon(this._link);
+
         this._adjustShapes();
     },
 
@@ -317,6 +348,7 @@ mindplot.Topic = new Class({
 
         this._note = new mindplot.NoteIcon(this, noteModel);
         iconGroup.addIcon(this._note);
+
         this._adjustShapes();
     },
 
@@ -402,7 +434,7 @@ mindplot.Topic = new Class({
         return this._relationships;
     },
 
-    _buildTextShape : function(disableEventsListeners) {
+    _buildTextShape : function(readOnly) {
         var result = new web2d.Text();
         var family = this.getFontFamily();
         var size = this.getFontSize();
@@ -413,7 +445,7 @@ mindplot.Topic = new Class({
         var color = this.getFontColor();
         result.setColor(color);
 
-        if (!disableEventsListeners) {
+        if (!readOnly) {
             // Propagate mouse events ...
             if (this.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
                 result.setCursor('move');
@@ -469,6 +501,7 @@ mindplot.Topic = new Class({
             var model = this.getModel();
             model.setFontWeight(value);
         }
+        this._adjustShapes();
     },
 
     getFontWeight : function() {
@@ -538,11 +571,11 @@ mindplot.Topic = new Class({
             var model = this.getModel();
             model.setText(text);
         }
-        this._adjustShapes(updateModel);
     },
 
     setText : function(text) {
         this._setText(text, true);
+        this._adjustShapes();
     },
 
     getText : function() {
@@ -558,16 +591,15 @@ mindplot.Topic = new Class({
         this._setBackgroundColor(color, true);
     },
 
-    _setBackgroundColor : function(color, updateModel) {
+    _setBackgroundColor : function(color) {
         var innerShape = this.getInnerShape();
         innerShape.setFill(color);
 
         var connector = this.getShrinkConnector();
         connector.setFill(color);
-        if ($defined(updateModel) && updateModel) {
-            var model = this.getModel();
-            model.setBackgroundColor(color);
-        }
+
+        var model = this.getModel();
+        model.setBackgroundColor(color);
     },
 
     getBackgroundColor : function() {
@@ -634,9 +666,6 @@ mindplot.Topic = new Class({
 
         // Register listeners ...
         this._registerDefaultListenersToElement(group, this);
-
-        // Put all the topic elements in place ...
-        this._adjustShapes(false);
     },
 
     _registerDefaultListenersToElement : function(elem, topic) {
@@ -795,25 +824,39 @@ mindplot.Topic = new Class({
      * Point: references the center of the rect shape.!!!
      */
     setPosition : function(point) {
-        // Elements are positioned in the center.
-        // All topic element must be positioned based on the innerShape.
-        var size = this.getSize();
-
-        var cx = Math.round(point.x - (size.width / 2));
-        var cy = Math.round(point.y - (size.height / 2));
-
-        // Update visual position.
-        this._elem2d.setPosition(cx, cy);
+        $assert(point,"position can not be null");
 
         // Update model's position ...
         var model = this.getModel();
+        var currentPos = model.getPosition();
+
         model.setPosition(point.x, point.y);
+        if (!this.isUICacheEnabled()) {
+            // Elements are positioned in the center.
+            // All topic element must be positioned based on the innerShape.
+            var size = this.getSize();
 
-        // Update connection lines ...
-        this._updateConnectionLines();
+            var cx = Math.round(point.x - (size.width / 2));
+            var cy = Math.round(point.y - (size.height / 2));
 
-        // Check object state.
-        this.invariant();
+            // Update visual position.
+            this._elem2d.setPosition(cx, cy);
+
+            // Update connection lines ...
+            this._updateConnectionLines();
+
+            // Check object state.
+            this.invariant();
+
+        } else {
+            this._iuCache['position'] = point;
+        }
+
+        if (!$defined(currentPos) || currentPos.x != point.x || currentPos.y != point.y) {
+
+            // Fire Listener events ...
+            mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMoveEvent, [this]);
+        }
     },
 
     getOutgoingLine : function() {
@@ -986,21 +1029,21 @@ mindplot.Topic = new Class({
         innerShape.setSize(parseInt(size.width), parseInt(size.height));
     },
 
-    setSize : function(size, force, updatePosition) {
+    setSize : function(size) {
         var oldSize = this.getSize();
-        if (oldSize.width != size.width || oldSize.height != size.height || force) {
+        if (parseInt(oldSize.width) != parseInt(size.width) || parseInt(oldSize.height) != parseInt(size.height)) {
             this._setSize(size);
 
             // Update the figure position(ej: central topic must be centered) and children position.
-            this._updatePositionOnChangeSize(oldSize, size, updatePosition);
+            this._updatePositionOnChangeSize(oldSize, size);
 
             mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeResizeEvent, [this]);
 
         }
     },
 
-    _updatePositionOnChangeSize : function(oldSize, newSize, updatePosition) {
-        $assert(false, "this method must be overided");
+    _updatePositionOnChangeSize : function(oldSize, newSize) {
+        $assert(false, "this method must be overrited");
     },
 
     disconnect : function(workspace) {
@@ -1042,7 +1085,6 @@ mindplot.Topic = new Class({
                 var connector = targetTopic.getShrinkConnector();
                 connector.setVisibility(false);
             }
-
         }
     },
 
@@ -1137,6 +1179,7 @@ mindplot.Topic = new Class({
         var elem = this.get2DElement();
         workspace.appendChild(elem);
         this._isInWorkspace = true;
+        this._adjustShapes();
     },
 
     isInWorkspace : function() {
@@ -1158,8 +1201,8 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    _adjustShapes : function(updatePosition) {
-        (function() {
+    _adjustShapes : function() {
+        if (this._isInWorkspace) {
             var textShape = this.getTextShape();
             var textWidth = textShape.getWidth();
 
@@ -1184,12 +1227,12 @@ mindplot.Topic = new Class({
             var height = textHeight + (topicPadding * 2);
             var width = textWidth + iconsWidth + (topicPadding * 2);
 
-            var size = {width:width,height:height};
-            this.setSize(size, false, updatePosition);
+            var size = {width:parseInt(width),height:parseInt(height)};
+            this.setSize(size);
 
             // Position node ...
             textShape.setPosition(topicPadding + iconsWidth, topicPadding);
-        }).delay(0, this);
+        }
     },
 
     addHelper : function(helper) {

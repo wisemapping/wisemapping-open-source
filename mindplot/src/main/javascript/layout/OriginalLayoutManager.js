@@ -32,6 +32,7 @@ mindplot.layout.OriginalLayoutManager = new Class({
         // Add shapes to speed up the loading process ...
         mindplot.DragTopic.init(workSpace);
     },
+
     prepareNode:function(node, children) {
         // Sort children by order to solve adding order in for OriginalLayoutManager...
         var nodesByOrder = new Hash();

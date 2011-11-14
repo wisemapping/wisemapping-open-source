@@ -137,31 +137,18 @@ mindplot.MainTopic = new Class({
         return "MainTopic";
     },
 
-    _updatePositionOnChangeSize : function(oldSize, newSize, updatePosition) {
+    _updatePositionOnChangeSize : function(oldSize, newSize) {
 
-        if (!updatePosition && this.getModel().getFinalPosition()) {
-            this.setPosition(this.getModel().getFinalPosition(), false);
-        }
-        else {
-            var xOffset = Math.round((newSize.width - oldSize.width) / 2);
-            var pos = this.getPosition();
-            if ($defined(pos)) {
-                if (pos.x > 0) {
-                    pos.x = pos.x + xOffset;
-                } else {
-                    pos.x = pos.x - xOffset;
-                }
-                this.setPosition(pos);
+        var xOffset = Math.round((newSize.width - oldSize.width) / 2);
+        var pos = this.getPosition();
+        if ($defined(pos)) {
+            if (pos.x > 0) {
+                pos.x = pos.x + xOffset;
+            } else {
+                pos.x = pos.x - xOffset;
             }
+            this.setPosition(pos);
         }
-    },
-
-    setPosition : function(point, fireEvent) {
-        this.parent(point);
-
-        // Update board zero entry position...
-        if (fireEvent != false)
-            mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMoveEvent, [this]);
     },
 
     workoutIncomingConnectionPoint : function(sourcePosition) {
@@ -197,8 +184,6 @@ mindplot.MainTopic = new Class({
         var isAtRight = mindplot.util.Shape.isAtRight(targetPosition, pos);
         var result;
         if (this.getShapeType() == mindplot.model.INodeModel.SHAPE_TYPE_LINE) {
-//        if (!this.isConnectedToCentralTopic())
-//        {
             result = new core.Point();
             if (!isAtRight) {
                 result.x = pos.x + (size.width / 2);
@@ -206,27 +191,7 @@ mindplot.MainTopic = new Class({
                 result.x = pos.x - (size.width / 2);
             }
             result.y = pos.y + (size.height / 2);
-            /*} else
-             {
-             // In this case, connetion line is not used as shape figure.
-             result = mindplot.util.Shape.calculateRectConnectionPoint(pos, size, isAtRight, true);
-             result.y = pos.y + (size.height / 2);
-             */
-            /*if(result.y>0){
-             result.y+=1;
-             }*/
-            /*
 
-             // Correction factor ...
-             if (!isAtRight)
-             {
-             result.x = result.x + 2;
-             } else
-             {
-             result.x = result.x - 2;
-             }
-
-             }*/
         } else {
             result = mindplot.util.Shape.calculateRectConnectionPoint(pos, size, isAtRight, true);
         }

@@ -53,8 +53,8 @@ mindplot.StandaloneActionDispatcher = new Class({
         this.execute(command);
     },
 
-    deleteTopics: function(topicsIds,relIds) {
-        var command = new mindplot.commands.DeleteCommand(topicsIds,relIds);
+    deleteTopics: function(topicsIds, relIds) {
+        var command = new mindplot.commands.DeleteCommand(topicsIds, relIds);
         this.execute(command);
     },
 
@@ -258,7 +258,9 @@ mindplot.CommandContext = new Class({
 
     createTopic:function(model, isVisible) {
         $assert(model, "model can not be null");
-        return this._designer._nodeModelToNodeGraph(model, isVisible);
+        var result = this._designer._nodeModelToNodeGraph(model, isVisible);
+        result.enableUICache(false);
+        return  result;
     },
 
     createModel:function() {
