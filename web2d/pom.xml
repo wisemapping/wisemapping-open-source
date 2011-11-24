@@ -34,6 +34,7 @@
             <plugin>
                 <groupId>net.sf.alchim</groupId>
                 <artifactId>yuicompressor-maven-plugin</artifactId>
+                <version>0.7.1</version>
                 <executions>
                     <execution>
                         <phase>generate-resources</phase>
