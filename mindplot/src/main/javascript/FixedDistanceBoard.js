@@ -163,9 +163,6 @@ mindplot.FixedDistanceBoard = new Class({
         }
 
 
-        // @todo: Esto hace backtraking. Hay que cambiar la implementacion del set position de
-        // forma tal que no se mande a hacer el update de todos los hijos.
-
         // Workout center the new topic center...
         var refence = this.getReferencePoint();
         var lowerLimit;

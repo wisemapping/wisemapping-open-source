@@ -174,7 +174,8 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
 
     _noteToXML : function(document, note) {
         var noteDom = document.createElement("note");
-        noteDom.setAttribute('text', note.getText());
+        var cdata = document.createCDATASection(note.getText());
+        noteDom.appendChild(cdata);
         return noteDom;
     },
 
@@ -313,14 +314,13 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
         if ($defined(position)) {
             var pos = position.split(',');
             topic.setPosition(pos[0], pos[1]);
-//            topic.setFinalPosition(pos[0], pos[1]);
         }
 
         //Creating icons and children nodes
         var children = domElem.childNodes;
         for (var i = 0; i < children.length; i++) {
             var child = children[i];
-            if (child.nodeType == 1) {
+            if (child.nodeType == Node.ELEMENT_NODE) {
                 $assert(child.tagName == "topic" || child.tagName == "icon" || child.tagName == "link" || child.tagName == "note", 'Illegal node type:' + child.tagName);
                 if (child.tagName == "topic") {
                     var childTopic = this._deserializeNode(child, mindmap);
@@ -349,7 +349,17 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
     },
 
     _deserializeNote : function(domElem, topic) {
-        return topic.createNote(domElem.getAttribute("text"));
+        var value = domElem.getAttribute("text");
+        if(!$defined(value)){
+            var children = domElem.childNodes;
+            for (var i = 0; i < children.length; i++) {
+              var child = children[i];
+              if(child.nodeType == Node.CDATA_SECTION_NODE){
+                  value =  child.nodeValue;
+              }
+            }
+        }
+        return topic.createNote(value);
     },
 
     _deserializeRelationship : function(domElement, mindmap) {

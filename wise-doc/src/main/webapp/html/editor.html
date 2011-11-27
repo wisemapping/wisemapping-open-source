@@ -78,6 +78,15 @@
                 }
             }
         });
+        // @Todo: Hack for testing save ...
+        window.MapEditorService = {};
+        window.MapEditorService.saveMap = function(mapId, xmlMapStr, pref, saveHistory){
+          console.log(xmlMapStr);
+        };
+
+
+
+
     </script>
 
     <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
