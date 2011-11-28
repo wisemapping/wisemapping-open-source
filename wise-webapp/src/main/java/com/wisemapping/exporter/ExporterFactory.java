@@ -213,11 +213,11 @@ public class ExporterFactory {
                 int index = imgUrl.lastIndexOf("/");
                 elem.removeAttribute("href");
                 if (index != -1) {
-                    final String iconName = imgUrl.substring(index);
+                    final String iconName = imgUrl.substring(index+1);
                     // Hack for backward compatibility . This can be removed in 2012. :)
                     String imgPath;
                     if (imgUrl.contains("images")) {
-                        imgPath = imgBaseUrl + "/../images/" + iconName;
+                        imgPath = imgBaseUrl + "/../icons/legacy/" + iconName;
                     } else {
                         imgPath = imgBaseUrl + "/" + imgUrl;
                     }
