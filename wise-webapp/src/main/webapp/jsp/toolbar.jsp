@@ -89,4 +89,5 @@
             <img src="../images/history.png"/>
         </div>
     </div>
+    <div id="headerNotifier"></div>
 </div>
