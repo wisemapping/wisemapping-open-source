@@ -152,10 +152,21 @@ public class MindmapIcons {
     public static final MindmapIcon OBJECT_WIZARD = new MindmapIcon(IconFamily.OBJECT, "wizard");
     public static final MindmapIcon OBJECT_HOUSE = new MindmapIcon(IconFamily.OBJECT, "house");
     public static final MindmapIcon OBJECT_CAKE = new MindmapIcon(IconFamily.OBJECT, "cake");
-    public static final MindmapIcon OBJECT_CAMERA= new MindmapIcon(IconFamily.OBJECT, "camera");
+    public static final MindmapIcon OBJECT_CAMERA = new MindmapIcon(IconFamily.OBJECT, "camera");
     public static final MindmapIcon OBJECT_PALETTE = new MindmapIcon(IconFamily.OBJECT, "palette");
     public static final MindmapIcon OBJECT_RAINBOW = new MindmapIcon(IconFamily.OBJECT, "rainbow");
 
+
+    public static final MindmapIcon WEATHER_CLEAR_NIGHT = new MindmapIcon(IconFamily.WEATHER, "clear-night");
+    public static final MindmapIcon WEATHER_CLEAR = new MindmapIcon(IconFamily.WEATHER, "clear");
+    public static final MindmapIcon WEATHER_FEW_CLOUDS_NIGHT = new MindmapIcon(IconFamily.WEATHER, "few-clouds-night");
+    public static final MindmapIcon WEATHER_FEW_CLOUDS = new MindmapIcon(IconFamily.WEATHER, "few-clouds");
+    public static final MindmapIcon WEATHER_OVERCAST = new MindmapIcon(IconFamily.WEATHER, "overcast");
+    public static final MindmapIcon WEATHER_SEVERE_ALERT = new MindmapIcon(IconFamily.WEATHER, "severe-alert");
+    public static final MindmapIcon WEATHER_SHOWERS_SCATTERED = new MindmapIcon(IconFamily.WEATHER, "showers-scattered");
+    public static final MindmapIcon WEATHER_SHOWERS = new MindmapIcon(IconFamily.WEATHER, "showers");
+    public static final MindmapIcon WEATHER_SNOW = new MindmapIcon(IconFamily.WEATHER, "snow");
+    public static final MindmapIcon WEATHER_STORM = new MindmapIcon(IconFamily.WEATHER, "storm");
 
     public static final MindmapIcon MAIL_ENVELOP = new MindmapIcon(IconFamily.MAIL, "envelop");
     public static final MindmapIcon MAIL_MAILBOX = new MindmapIcon(IconFamily.MAIL, "mailbox");

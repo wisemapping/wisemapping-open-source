@@ -43,5 +43,6 @@ public enum IconFamily {
     FLAG,
     BULLET,
     TAG,
-    OBJECT;
+    OBJECT,
+    WEATHER;
 }
