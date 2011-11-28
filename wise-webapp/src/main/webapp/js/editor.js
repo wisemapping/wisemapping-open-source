@@ -35,7 +35,7 @@ function setUpToolbar(designer, readOnly) {
 
             if (designer.needsSave()) {
                 designer.save(function() {
-                    var monitor = core.Monitor.getInstance();
+                    var monitor = core.ToolbarNotifier.getInstance();
                 }, false);
             }
         }).periodical(30000);

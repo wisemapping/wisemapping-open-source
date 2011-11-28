@@ -17,32 +17,49 @@
  */
 
 mindplot.widget.ToolbarNotifier = new Class({
-    initialize : function() {
-    },
 
-    _showMsg : function(msg, msgKind) {
-        if (msgKind == core.ToolbarNotifier.MsgKind.ERROR) {
-            msg = "<div id='small_error_icon'>" + msg + "</div>";
-        }
-        this._msgElem.innerHTML = msg;
+    initialize : function() {
+        this._container = $('headerNotifier');
+        this._effect = new Fx.Elements(this._container, {
+            onComplete: function() {
+                this._container.setStyle('display', 'none');
+            }.bind(this),
+            link:'cancel',
+            duration:8000,
+            transition: Fx.Transitions.Expo.easeInOut
+        });
     },
 
     logError : function(userMsg) {
-        this.logMessage(userMsg, core.ToolbarNotifier.MsgKind.ERROR);
+        this.logMessage(userMsg, mindplot.widget.ToolbarNotifier.MsgKind.ERROR);
     },
 
-    logMessage : function(msg, msgKind) {
-        console.log(msg);
-    },
+    logMessage : function(msg) {
+        $assert(msg, 'msg can not be null');
+        this._container.set('text', msg);
+        this._container.setStyle('display', 'block');
 
+        this._effect.start({
+            0: {
+                opacity: [1,0]
+            }
+        });
+        this._container.position({
+            relativeTo: $('header'),
+            position: 'upperCenter',
+            edge: 'centerTop'
+        });
+
+    }
 
 });
 
-core.ToolbarNotifier.MsgKind = {
+mindplot.widget.ToolbarNotifier.MsgKind = {
     INFO:1,
     WARNING:2,
     ERROR:3,
     FATAL:4
 };
 
-$notifier = new mindplot.widget.ToolbarNotifier();
+var toolbarNotifier = new mindplot.widget.ToolbarNotifier();
+$notify = toolbarNotifier.logMessage.bind(toolbarNotifier);

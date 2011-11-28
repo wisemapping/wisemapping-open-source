@@ -22,7 +22,7 @@ TestCase("Mindplot test",{
                     {
                         designer.save(function()
                         {
-                            //                            var monitor = core.Monitor.getInstance();
+                            //                            var monitor = core.ToolbarNotifier.getInstance();
                         }, false);
                     }
                 };

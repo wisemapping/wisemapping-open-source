@@ -103,7 +103,7 @@ mindplot.DesignerModel = new Class({
             if (isValid) {
                 result.push(selectedNode.getId());
             } else {
-                core.Monitor.getInstance().logMessage(errorMsg);
+                $notify(errorMsg);
             }
         }
         return result;
@@ -124,7 +124,7 @@ mindplot.DesignerModel = new Class({
             if (isValid) {
                 result.push(selectedLine.getId());
             } else {
-                core.Monitor.getInstance().logMessage(errorMsg);
+                $notify(errorMsg);
             }
         }
         return result;

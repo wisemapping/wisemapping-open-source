@@ -239,7 +239,7 @@ mindplot.Designer = new Class({
                 this._workspace.setZoom(scale);
             }
             else {
-                core.Monitor.getInstance().logMessage('Sorry, no more zoom can be applied. \n Why do you need more?');
+                $notify('No more zoom can be applied');
             }
 
         },
@@ -256,7 +256,7 @@ mindplot.Designer = new Class({
                 this._workspace.setZoom(scale);
             }
             else {
-                core.Monitor.getInstance().logMessage('Sorry, no more zoom can be applied. \n Why do you need more?');
+                $notify('No more zoom can be applied');
             }
         },
 
@@ -269,14 +269,14 @@ mindplot.Designer = new Class({
             var nodes = this.getModel().filterSelectedTopics();
             if (nodes.length <= 0) {
                 // If there are more than one node selected,
-                core.Monitor.getInstance().logMessage('Could not create a topic. Only one node must be selected.');
+                $notify('Could not create a topic. Only one node must be selected.');
                 return;
 
             }
             if (nodes.length != 1) {
 
                 // If there are more than one node selected,
-                core.Monitor.getInstance().logMessage('Could not create a topic. One topic must be selected.');
+                $notify('Could not create a topic. One topic must be selected.');
                 return;
             }
 
@@ -294,13 +294,13 @@ mindplot.Designer = new Class({
             var nodes = this.getModel().filterSelectedTopics();
             if (nodes.length <= 0) {
                 // If there are more than one node selected,
-                core.Monitor.getInstance().logMessage('Could not create a topic. Only one node must be selected.');
+                $notify('Could not create a topic. Only one node must be selected.');
                 return;
 
             }
             if (nodes.length > 1) {
                 // If there are more than one node selected,
-                core.Monitor.getInstance().logMessage('Could not create a topic. One topic must be selected.');
+                $notify('Could not create a topic. One topic must be selected.');
                 return;
             }
 
