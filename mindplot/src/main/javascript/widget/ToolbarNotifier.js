@@ -16,35 +16,33 @@
  *   limitations under the License.
  */
 
-mindplot.widget.Monitor = new Class({
-    initialize : function(fadeElem, msgElem) {
-        $assert(fadeElem, "fadeElem can not be null");
-        $assert(msgElem, "msgElem can not be null");
-        this.msgQueue = [];
-
-        this._fadeElem = fadeElem;
-        this._msgElem = msgElem;
+mindplot.widget.ToolbarNotifier = new Class({
+    initialize : function() {
     },
 
     _showMsg : function(msg, msgKind) {
-        if (msgKind == core.Monitor.MsgKind.ERROR) {
+        if (msgKind == core.ToolbarNotifier.MsgKind.ERROR) {
             msg = "<div id='small_error_icon'>" + msg + "</div>";
         }
         this._msgElem.innerHTML = msg;
     },
 
     logError : function(userMsg) {
-        this.logMessage(userMsg, core.Monitor.MsgKind.ERROR);
+        this.logMessage(userMsg, core.ToolbarNotifier.MsgKind.ERROR);
     },
 
     logMessage : function(msg, msgKind) {
         console.log(msg);
-    }
+    },
+
+
 });
 
-core.Monitor.MsgKind = {
+core.ToolbarNotifier.MsgKind = {
     INFO:1,
     WARNING:2,
     ERROR:3,
     FATAL:4
 };
+
+$notifier = new mindplot.widget.ToolbarNotifier();
