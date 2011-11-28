@@ -824,7 +824,7 @@ mindplot.Topic = new Class({
      * Point: references the center of the rect shape.!!!
      */
     setPosition : function(point) {
-        $assert(point,"position can not be null");
+        $assert(point, "position can not be null");
 
         // Update model's position ...
         var model = this.getModel();
@@ -852,7 +852,7 @@ mindplot.Topic = new Class({
             this._iuCache['position'] = point;
         }
 
-        if (!$defined(currentPos) || currentPos.x != point.x || currentPos.y != point.y) {
+        if (!$defined(currentPos) || parseInt(currentPos.x) != parseInt(point.x) || parseInt(currentPos.y) != parseInt(point.y)) {
 
             // Fire Listener events ...
             mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMoveEvent, [this]);
