@@ -341,7 +341,9 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
     },
 
     _deserializeIcon : function(domElem, topic) {
-        return topic.createIcon(domElem.getAttribute("id"));
+        var icon = domElem.getAttribute("id");
+        icon = icon.replace("images/","icons/legacy/");
+        return topic.createIcon(icon);
     },
 
     _deserializeLink : function(domElem, topic) {
