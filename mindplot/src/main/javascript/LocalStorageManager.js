@@ -16,31 +16,38 @@
  *   limitations under the License.
  */
 
-mindplot.FilePersitenceManager = new Class({
+mindplot.LocalStorageManager = new Class({
         Extends:mindplot.PersitenceManager,
         initialize: function() {
             this.parent();
         },
 
         saveMapXml : function(mapId, mapXml, pref, saveHistory, events) {
-            console.log(mapXml);
+            localStorage.setItem(mapId + "-xml", mapXml);
             events.onSuccess();
         },
 
-        load : function(mapId) {
-            $assert(mapId, "mapId can not be null");
+        loadMapDom : function(mapId) {
+            var xml = localStorage.getItem(mapId + "-xml");
+            if (xml == null) {
+                // Let's try to open one from the local directory ...
+                var xmlRequest = new Request({
+                    url: '../maps/' + mapId + '.xml',
+                    method: 'get',
+                    async: false,
+                    onSuccess: function(responseText) {
+                        xml = responseText;
+                    }
+                });
+                xmlRequest.send();
 
-            var domDocument;
-            var xmlRequest = new Request({
-                url: '../maps/' + mapId + '.xml',
-                method: 'get',
-                async: false,
-                onSuccess: function(responseText, responseXML) {
-                    domDocument = responseXML;
+                // If I could not load it from a file, hard code one.
+                if (xml == null) {
+                    xml = '<map name="6" version="pela"><topic central="true" text="General Status" id="1"/></map>';
                 }
-            });
-            xmlRequest.send();
-            return  this.loadFromDom(mapId, domDocument);
+
+            }
+            return core.Utils.createDocumentFromText(xml);
         }
     }
 );

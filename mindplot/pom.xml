@@ -108,7 +108,7 @@
                                               files="XMLMindmapSerializerFactory.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="PersistenceManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="DwrPersistenceManager.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="FilePersistenceManager.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="LocalStorageManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="EditorProperties.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="IconGroup.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="BubbleTip.js"/>
@@ -151,22 +151,22 @@
                                               files="commands/AddRelationshipCommand.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="commands/MoveControlPointCommand.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="commands/freeMind/DragTopicCommand.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="commands/freeMind/ReconnectTopicCommand.js"/>
+                                    <!--<filelist dir="${basedir}/src/main/javascript/"-->
+                                              <!--files="commands/freeMind/DragTopicCommand.js"/>-->
+                                    <!--<filelist dir="${basedir}/src/main/javascript/"-->
+                                              <!--files="commands/freeMind/ReconnectTopicCommand.js"/>-->
 
 
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="layout/boards/Board.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layout/boards/freemind/Board.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layout/boards/freemind/Entry.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layout/boards/freemind/CentralTopicBoard.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layout/boards/freemind/MainTopicBoard.js"/>
+                                    <!--<filelist dir="${basedir}/src/main/javascript/"-->
+                                              <!--files="layout/boards/freemind/Board.js"/>-->
+                                    <!--<filelist dir="${basedir}/src/main/javascript/"-->
+                                              <!--files="layout/boards/freemind/Entry.js"/>-->
+                                    <!--<filelist dir="${basedir}/src/main/javascript/"-->
+                                              <!--files="layout/boards/freemind/CentralTopicBoard.js"/>-->
+                                    <!--<filelist dir="${basedir}/src/main/javascript/"-->
+                                              <!--files="layout/boards/freemind/MainTopicBoard.js"/>-->
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="layout/BaseLayoutManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"

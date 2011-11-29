@@ -42,6 +42,12 @@ mindplot.PersitenceManager = new Class({
     },
 
     load: function(mapId) {
+        $assert(mapId, "mapId can not be null");
+        var domDocument = this.loadMapDom(mapId);
+        return  this.loadFromDom(mapId, domDocument);
+    },
+
+    loadMapDom: function(mapId) {
         throw "Method must be implemented";
     },
 

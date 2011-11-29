@@ -41,7 +41,7 @@ mindplot.DwrPersitenceManager = new Class({
             )
         },
 
-        load : function(mapId) {
+        loadMapDom : function(mapId) {
             $assert(mapId, "mapId can not be null");
             throw "This must be implemented";
 
