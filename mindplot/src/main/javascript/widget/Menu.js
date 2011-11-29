@@ -246,7 +246,7 @@ mindplot.widget.Menu = new Class({
         if (saveElem) {
             this.addButton('save', false, false, function() {
                 this._save(saveElem, designer, true);
-            });
+            }.bind(this));
 
             if (!readOnly) {
                 // To prevent the user from leaving the page with changes ...

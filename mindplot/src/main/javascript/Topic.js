@@ -693,7 +693,7 @@ mindplot.Topic = new Class({
         // Focus events ...
         var mouseDown = function(event) {
             var value = true;
-            if ((event.metaKey && Browser.Platform.mac) || (event.ctrlKey && !Browser.Platform.mac)) {
+            if ((event.meta && Browser.Platform.mac) || (event.control && !Browser.Platform.mac)) {
                 value = !this.isOnFocus();
                 event.stopPropagation();
                 event.preventDefault();
