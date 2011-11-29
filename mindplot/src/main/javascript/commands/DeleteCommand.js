@@ -18,7 +18,7 @@
 
 mindplot.commands.DeleteCommand = new Class({
     Extends:mindplot.Command,
-    initialize: function(topicIds,relIds) {
+    initialize: function(topicIds, relIds) {
         this._relIds = relIds;
         this._topicIds = topicIds;
         this._deletedTopicModels = [];
@@ -32,9 +32,9 @@ mindplot.commands.DeleteCommand = new Class({
         if (topics.length > 0) {
             topics.forEach(
                 function(topic, index) {
-                    var model = topic.getModel().clone();
+                    var model = topic.getModel();
 
-                    //delete relationships
+                    // Delete relationships
                     var relationships = topic.getRelationships();
                     while (relationships.length > 0) {
                         var relationship = relationships[0];
@@ -68,6 +68,7 @@ mindplot.commands.DeleteCommand = new Class({
             }.bind(this));
         }
     },
+
     undoExecute: function(commandContext) {
 
         var topics = commandContext.findTopics(this._topicIds);

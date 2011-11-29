@@ -61,6 +61,10 @@ mindplot.PersitenceManager = new Class({
 
         var serializer = mindplot.XMLMindmapSerializerFactory.getSerializerFromDocument(mapDom);
         return serializer.loadFromDom(mapDom, mapId);
+    },
+
+    logEntry: function(severity, message) {
+        throw "Method must be implemented";
     }
 });
 

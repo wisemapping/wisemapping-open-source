@@ -60,13 +60,6 @@ mindplot.Designer = new Class({
 
             // Register keyboard events ...
             mindplot.DesignerKeyboard.register(this);
-
-            // To prevent the user from leaving the page with changes ...
-            $(window).addEvent('beforeunload', function () {
-                if (this.needsSave()) {
-                    this.save(null, false);
-                }
-            }.bind(this));
         },
 
         _registerMouseEvents : function() {

@@ -245,27 +245,24 @@ mindplot.widget.Menu = new Class({
         var saveElem = $('save');
         if (saveElem) {
             this.addButton('save', false, false, function() {
-
-                $notify("Saving ...");
-                saveElem.setStyle('cursor', 'wait');
-
-                // Load map content ...
-                var mindmap = designer.getMindmap();
-                var mindmapProp = designer.getMindmapProperties();
-
-                var persistenceManager = mindplot.PersitenceManager.getInstance();
-                persistenceManager.save(mindmap, mindmapProp, true, {
-                    onSuccess: function() {
-                        saveElem.setStyle('cursor', 'pointer');
-                        $notify("Save complete");
-
-                    },
-                    onError: function() {
-                        saveElem.setStyle('cursor', 'pointer');
-                        $notify("Save could not be completed. Try latter");
-                    }
-                });
+                this._save(saveElem, designer, true);
             });
+
+            if (!readOnly) {
+                // To prevent the user from leaving the page with changes ...
+                $(window).addEvent('beforeunload', function () {
+                    if (designer.needsSave()) {
+                        this._save(saveElem, designer, false);
+                    }
+                }.bind(this));
+
+                // Autosave on a fixed period of time ...
+                (function() {
+                    if (designer.needsSave()) {
+                        this._save(saveElem, designer, false);
+                    }
+                }.bind(this)).periodical(30000);
+            }
         }
 
         var discardElem = $('discard');
@@ -436,5 +433,38 @@ mindplot.widget.Menu = new Class({
         this._toolbarElems.forEach(function(item) {
             item.hide();
         });
+    },
+
+    _save:function (saveElem, designer, saveHistory) {
+
+        // Load map content ...
+        var mindmap = designer.getMindmap();
+        var mindmapProp = designer.getMindmapProperties();
+
+        // Display save message ..
+        if (saveHistory) {
+            $notify("Saving ...");
+            saveElem.setStyle('cursor', 'wait');
+        } else {
+            console.log("Saving without history ...");
+        }
+
+        // Call persistence manager for saving ...
+        var persistenceManager = mindplot.PersitenceManager.getInstance();
+        persistenceManager.save(mindmap, mindmapProp, saveHistory, {
+            onSuccess: function() {
+                if (saveHistory) {
+                    saveElem.setStyle('cursor', 'pointer');
+                    $notify("Save complete");
+                }
+            },
+            onError: function() {
+                if (saveHistory) {
+                    saveElem.setStyle('cursor', 'pointer');
+                    $notify("Save could not be completed. Try latter");
+                }
+            }
+        });
     }
+
 });

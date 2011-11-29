@@ -29,25 +29,6 @@ function setUpToolbar(designer, readOnly) {
 
     var menu = new mindplot.widget.Menu(designer, 'toolbar', mapId);
 
-    // Autosave ...
-    if (!readOnly) {
-        (function() {
-
-            if (designer.needsSave()) {
-                designer.save(function() {
-                    var monitor = core.ToolbarNotifier.getInstance();
-                }, false);
-            }
-        }).periodical(30000);
-
-        // To prevent the user from leaving the page with changes ...
-        window.onbeforeunload = function() {
-            if (designer.needsSave()) {
-                designer.save(null, false)
-            }
-        }
-    }
-
     //  If a node has focus, focus can be move to another node using the keys.
     designer._cleanScreen = function() {
         menu.clear()
