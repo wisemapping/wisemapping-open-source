@@ -34,22 +34,31 @@ mindplot.widget.ToolbarNotifier = new Class({
         this.logMessage(userMsg, mindplot.widget.ToolbarNotifier.MsgKind.ERROR);
     },
 
-    logMessage : function(msg) {
+    hide:function() {
+
+    },
+
+    logMessage : function(msg, fade) {
         $assert(msg, 'msg can not be null');
         this._container.set('text', msg);
         this._container.setStyle('display', 'block');
-
-        this._effect.start({
-            0: {
-                opacity: [1,0]
-            }
-        });
         this._container.position({
             relativeTo: $('header'),
             position: 'upperCenter',
             edge: 'centerTop'
         });
 
+        if (!$defined(fade) || fade) {
+            this._effect.start({
+                0: {
+                    opacity: [1,0]
+                }
+            });
+
+        } else {
+            this._container.setStyle('opacity', '1');
+            this._effect.pause();
+        }
     }
 
 });

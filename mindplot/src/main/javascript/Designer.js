@@ -345,20 +345,10 @@ mindplot.Designer = new Class({
             return this._actionDispatcher._actionRunner.hasBeenChanged();
         },
 
-        save : function(onSavedHandler, saveHistory) {
-            var mindmap = this.getMindmap();
-            var properties = {zoom:this.getModel().getZoom(), layoutManager:this._layoutManager.getClassName()};
 
-            var persistantManager = mindplot.PersistanceManager;
-            persistantManager.save(mindmap, properties, onSavedHandler, saveHistory);
-            this.fireEvent("save", {type:saveHistory});
-
-            // Refresh undo state...
-            //@Todo: Review all this. It should not be here ...
-
-//            this._actionDispatcher.markAsChangeBase();
+        getMindmapProperties : function() {
+            return   {zoom:this.getModel().getZoom(), layoutManager:this._layoutManager.getClassName()};
         },
-
 
         loadMap : function(mindmapModel) {
             $assert(mindmapModel, "mindmapModel can not be null");

@@ -53,22 +53,12 @@
                 });
 
             } else if (collab == 'standalone' && mindReady) {
+                // Configure default persistence manager ...
+                mindplot.PersitenceManager.init(new mindplot.FilePersitenceManager());
+
                 // Load map from XML ...
-                var domDocument;
-                var xmlRequest = new Request({
-                    url: '../maps/map1.xml',
-                    method: 'get',
-                    async: false,
-                    onSuccess: function(responseText, responseXML) {
-                        domDocument = responseXML;
-                    }
-                });
-                xmlRequest.send();
-
-                var serializer = mindplot.XMLMindmapSerializerFactory.getSerializerFromDocument(domDocument);
-                var mindmap = serializer.loadFromDom(domDocument, mapId);
-
-                // Now, load the map ...
+                var persitence = mindplot.PersitenceManager.getInstance();
+                var mindmap = persitence.load("map1");
                 designer.loadMap(mindmap);
 
                 // If not problem has arisen, close the dialog ...
@@ -77,12 +67,6 @@
                 }
             }
         });
-        // @Todo: Hack for testing save ...
-        window.MapEditorService = {};
-        window.MapEditorService.saveMap = function(mapId, xmlMapStr, pref, saveHistory) {
-            console.log(xmlMapStr);
-        };
-
 
     </script>
 
@@ -232,9 +216,7 @@
             </div>
         </div>
     </div>
-    <div id="headerNotifier">
-        Algo de texto
-    </div>
+    <div id="headerNotifier"></div>
 </div>
 
 <div id="mindplot"></div>

@@ -56,7 +56,7 @@
                                               files="Overlay.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/libraries/moodialog/"
                                               files="MooDialog.js"/>
-                                      <filelist dir="${basedir}/src/main/javascript/libraries/moodialog/"
+                                    <filelist dir="${basedir}/src/main/javascript/libraries/moodialog/"
                                               files="MooDialog.Request.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/libraries/moodialog/"
                                               files="MooDialog.Fx.js"/>
@@ -106,7 +106,9 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="Beta2PelaMigrator.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="XMLMindmapSerializerFactory.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="PersistanceManager.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="PersistenceManager.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="DwrPersistenceManager.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="FilePersistenceManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="EditorProperties.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="IconGroup.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="BubbleTip.js"/>

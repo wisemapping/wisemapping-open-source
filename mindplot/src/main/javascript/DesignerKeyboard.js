@@ -99,13 +99,12 @@ mindplot.DesignerKeyboard = new Class({
 
             'ctrl+s' : function(event) {
                 event.preventDefault();
-                designer.save(null, true);
-
+                $('save').fireEvent('click');
             },
 
             'meta+s' : function(event) {
                 event.preventDefault();
-                designer.save(null, true);
+                $('save').fireEvent('click');
             },
 
             'ctrl+i' : function() {

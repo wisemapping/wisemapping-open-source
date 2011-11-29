@@ -245,15 +245,31 @@ mindplot.widget.Menu = new Class({
         var saveElem = $('save');
         if (saveElem) {
             this.addButton('save', false, false, function() {
+
+                $notify("Saving ...");
                 saveElem.setStyle('cursor', 'wait');
-                designer.save(function() {
-                    saveElem.setStyle('cursor', 'pointer');
-                }, true);
+
+                // Load map content ...
+                var mindmap = designer.getMindmap();
+                var mindmapProp = designer.getMindmapProperties();
+
+                var persistenceManager = mindplot.PersitenceManager.getInstance();
+                persistenceManager.save(mindmap, mindmapProp, true, {
+                    onSuccess: function() {
+                        saveElem.setStyle('cursor', 'pointer');
+                        $notify("Save complete");
+
+                    },
+                    onError: function() {
+                        saveElem.setStyle('cursor', 'pointer');
+                        $notify("Save could not be completed. Try latter");
+                    }
+                });
             });
         }
 
-        var discartElem = $('discard');
-        if (discartElem) {
+        var discardElem = $('discard');
+        if (discardElem) {
             this.addButton('discard', false, false, function() {
 
                 if (!readOnly) {

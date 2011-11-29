@@ -37,15 +37,18 @@
         $(document).addEvent('loadcomplete', function(resource) {
             mindReady = resource == 'mind' ? true : mindReady;
             if (mindReady) {
+                // Configure default persistence ...
+                mindplot.PersitenceManager.init(new mindplot.DwrPersitenceManager());
+                var persitence = mindplot.PersitenceManager.getInstance();
 
+                // Initialize editor ...
                 var editorProperties = ${mindmap.properties};
                 editorProperties.collab = 'standalone';
                 editorProperties.readOnly = false;
                 designer = buildDesigner(editorProperties);
 
                 var domDocument = core.Utils.createDocumentFromText(mapXml);
-                var serializer = mindplot.XMLMindmapSerializerFactory.getSerializerFromDocument(domDocument);
-                var mindmap = serializer.loadFromDom(domDocument, mapId);
+                var mindmap = persitence.loadFromDom(mapId, domDocument);
 
                 // Now, load the map ...
                 designer.loadMap(mindmap);
