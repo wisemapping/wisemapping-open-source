@@ -54,11 +54,11 @@
 
             } else if (collab == 'standalone' && mindReady) {
                 // Configure default persistence manager ...
-                mindplot.PersitenceManager.init(new mindplot.FilePersitenceManager());
+                mindplot.PersitenceManager.init(new mindplot.LocalStorageManager());
 
                 // Load map from XML ...
                 var persitence = mindplot.PersitenceManager.getInstance();
-                var mindmap = persitence.load("map1");
+                var mindmap = persitence.load("map2");
                 designer.loadMap(mindmap);
 
                 // If not problem has arisen, close the dialog ...

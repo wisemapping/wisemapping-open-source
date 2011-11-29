@@ -565,7 +565,7 @@ mindplot.Topic = new Class({
 
     _setText : function(text, updateModel) {
         var textShape = this.getTextShape();
-        textShape.setText(text);
+        textShape.setText(text == null ? this._defaultText() : text);
 
         if ($defined(updateModel) && updateModel) {
             var model = this.getModel();
@@ -574,6 +574,11 @@ mindplot.Topic = new Class({
     },
 
     setText : function(text) {
+        // Avoid empty nodes ...
+        if (text.trim().length == 0) {
+            text = null;
+        }
+
         this._setText(text, true);
         this._adjustShapes();
     },
@@ -591,15 +596,17 @@ mindplot.Topic = new Class({
         this._setBackgroundColor(color, true);
     },
 
-    _setBackgroundColor : function(color) {
+    _setBackgroundColor : function(color, updateModel) {
         var innerShape = this.getInnerShape();
         innerShape.setFill(color);
 
         var connector = this.getShrinkConnector();
         connector.setFill(color);
 
-        var model = this.getModel();
-        model.setBackgroundColor(color);
+        if ($defined(updateModel) && updateModel) {
+            var model = this.getModel();
+            model.setBackgroundColor(color);
+        }
     },
 
     getBackgroundColor : function() {
