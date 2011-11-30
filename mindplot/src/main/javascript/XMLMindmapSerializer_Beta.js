@@ -167,7 +167,8 @@ mindplot.XMLMindmapSerializer_Beta = new Class({
         $assert(rootElem.tagName == mindplot.XMLMindmapSerializer_Beta.MAP_ROOT_NODE, "This seem not to be a map document.");
 
         // Start the loading process ...
-        var mindmap = new mindplot.model.Mindmap();
+        var version = rootElem.getAttribute("version");
+        var mindmap = new mindplot.model.Mindmap(mapId, version);
 
         var children = rootElem.childNodes;
         for (var i = 0; i < children.length; i++) {
