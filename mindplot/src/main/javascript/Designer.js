@@ -590,6 +590,7 @@ mindplot.Designer = new Class({
             var validateFunc = function(topic) {
                 return !(topic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE && shape == mindplot.model.INodeModel.SHAPE_TYPE_LINE)
             };
+
             var validateError = 'Central Topic shape can not be changed to line figure.';
             var topicsIds = this.getModel().filterTopicsIds(validateFunc, validateError);
             if (topicsIds.length > 0) {

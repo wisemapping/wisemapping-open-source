@@ -95,11 +95,11 @@ mindplot.model.Mindmap = new Class({
             return new mindplot.model.NodeModel(type, this, id);
         },
 
-        createRelationship : function(fromNode, toNode) {
-            $assert(fromNode, 'from node cannot be null');
-            $assert(toNode, 'to node cannot be null');
+        createRelationship : function(sourceNodeId, targetNodeId) {
+            $assert($defined(sourceNodeId), 'from node cannot be null');
+            $assert($defined(targetNodeId), 'to node cannot be null');
 
-            return new mindplot.model.RelationshipModel(fromNode, toNode);
+            return new mindplot.model.RelationshipModel(sourceNodeId, targetNodeId);
         },
 
         addRelationship : function(relationship) {

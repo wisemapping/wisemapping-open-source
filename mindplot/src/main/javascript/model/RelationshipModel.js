@@ -16,13 +16,13 @@
  *   limitations under the License.
  */
 mindplot.model.RelationshipModel = new Class({
-    initialize:function(fromNode, toNode) {
-        $assert(fromNode, 'from node type can not be null');
-        $assert(toNode, 'to node type can not be null');
+    initialize:function(sourceTopicId, targetTopicId) {
+        $assert($defined(sourceTopicId), 'from node type can not be null');
+        $assert($defined(targetTopicId), 'to node type can not be null');
 
         this._id = mindplot.model.RelationshipModel._nextUUID();
-        this._fromNode = fromNode;
-        this._toNode = toNode;
+        this._sourceTargetId = sourceTopicId;
+        this._targetTopicId = targetTopicId;
         this._lineType = mindplot.ConnectionLine.SIMPLE_CURVED;
         this._srcCtrlPoint = null;
         this._destCtrlPoint = null;
@@ -31,11 +31,11 @@ mindplot.model.RelationshipModel = new Class({
     },
 
     getFromNode : function() {
-        return this._fromNode;
+        return this._sourceTargetId;
     },
 
     getToNode : function() {
-        return this._toNode;
+        return this._targetTopicId;
     },
 
     getId : function() {
@@ -83,7 +83,7 @@ mindplot.model.RelationshipModel = new Class({
     },
 
     clone : function(model) {
-        var result = new mindplot.model.RelationshipModel(this._fromNode, this._toNode);
+        var result = new mindplot.model.RelationshipModel(this._sourceTargetId, this._targetTopicId);
         result._id = this._id;
         result._lineType = this._lineType;
         result._srcCtrlPoint = this._srcCtrlPoint;
