@@ -242,21 +242,21 @@ mindplot.widget.Menu = new Class({
         var saveElem = $('save');
         if (saveElem) {
             this._addButton('save', false, false, function() {
-                this._save(saveElem, designer, true);
+                this.save(saveElem, designer, true);
             }.bind(this));
 
             if (!readOnly) {
                 // To prevent the user from leaving the page with changes ...
                 $(window).addEvent('beforeunload', function () {
                     if (designer.needsSave()) {
-                        this._save(saveElem, designer, false);
+                        this.save(saveElem, designer, false);
                     }
                 }.bind(this));
 
                 // Autosave on a fixed period of time ...
                 (function() {
                     if (designer.needsSave()) {
-                        this._save(saveElem, designer, false);
+                        this.save(saveElem, designer, false);
                     }
                 }.bind(this)).periodical(30000);
             }
@@ -348,6 +348,58 @@ mindplot.widget.Menu = new Class({
         }
 
         this._registerEvents(designer);
+    },
+
+    _registerEvents : function(designer) {
+
+        // Register on close events ...
+        this._toolbarElems.forEach(function(elem) {
+            elem.addEvent('show', function() {
+                this.clear()
+            }.bind(this));
+        }.bind(this));
+
+        designer.addEvent('onblur', function() {
+            var topics = designer.getModel().filterSelectedTopics();
+            var rels = designer.getModel().filterSelectedRelations();
+
+            this._toolbarElems.forEach(function(button) {
+                var disable = false;
+                if (button.isTopicAction() && button.isRelAction()) {
+                    disable = rels.length == 0 && topics.length == 0;
+                    console.log(disable);
+                } else if (!button.isTopicAction() && !button.isRelAction()) {
+                    disable = false;
+                }
+                else if (button.isTopicAction() && topics.length == 0) {
+                    disable = true;
+                } else if (button.isRelAction() && rels.length == 0) {
+                    disable = true;
+                }
+
+                if (disable) {
+                    button.disable();
+                } else {
+                    button.enable();
+                }
+
+            })
+        }.bind(this));
+
+        designer.addEvent('onfocus', function() {
+            var topics = designer.getModel().filterSelectedTopics();
+            var rels = designer.getModel().filterSelectedRelations();
+
+            this._toolbarElems.forEach(function(button) {
+                if (button.isTopicAction() && topics.length > 0) {
+                    button.enable();
+                }
+
+                if (button.isRelAction() && rels.length > 0) {
+                    button.enable();
+                }
+            })
+        }.bind(this));
     },
 
     _addButton:function (buttonId, topic, rel, fn) {

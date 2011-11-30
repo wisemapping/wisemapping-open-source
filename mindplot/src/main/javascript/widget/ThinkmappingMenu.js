@@ -114,6 +114,15 @@ mindplot.widget.ThinkmappingMenu = new Class({
         this._registerEvents(designer);
     },
 
+    _registerEvents : function(designer) {
+        // Register on close events ...
+        this._toolbarElems.forEach(function(elem) {
+            elem.addEvent('show', function() {
+                this.clear()
+            }.bind(this));
+        }.bind(this));
+    },
+
     _addButton:function (buttonId, fn) {
         // Register Events ...
         var button = new mindplot.widget.ToolbarItem(buttonId, function(event) {

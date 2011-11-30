@@ -17,6 +17,7 @@
  */
 
 mindplot.widget.IMenu = new Class({
+
     initialize : function(designer, containerId, mapId) {
         $assert(designer, "designer can not be null");
         $assert(containerId, "containerId can not be null");
@@ -27,67 +28,13 @@ mindplot.widget.IMenu = new Class({
         this._mapId = mapId;
     },
 
-    _registerEvents : function(designer) {
-
-        // Register on close events ...
-        this._toolbarElems.forEach(function(elem) {
-            elem.addEvent('show', function() {
-                this.clear()
-            }.bind(this));
-        }.bind(this));
-
-        designer.addEvent('onblur', function() {
-            var topics = designer.getModel().filterSelectedTopics();
-            var rels = designer.getModel().filterSelectedRelations();
-
-            this._toolbarElems.forEach(function(button) {
-                var disable = false;
-                if (button.isTopicAction() && button.isRelAction()) {
-                    disable = rels.length == 0 && topics.length == 0;
-
-                } else if (!button.isTopicAction() && !button.isRelAction()) {
-                    disable = false;
-                }
-                else if (button.isTopicAction() && topics.length == 0) {
-                    disable = true;
-                } else if (button.isRelAction() && rels.length == 0) {
-                    disable = true;
-                }
-
-                if (disable) {
-                    button.disable();
-                } else {
-                    button.enable();
-                }
-
-            })
-        }.bind(this));
-
-        designer.addEvent('onfocus', function() {
-            var topics = designer.getModel().filterSelectedTopics();
-            var rels = designer.getModel().filterSelectedRelations();
-
-            this._toolbarElems.forEach(function(button) {
-                if (button.isTopicAction() && topics.length > 0) {
-                    button.enable();
-                }
-
-                if (button.isRelAction() && rels.length > 0) {
-                    button.enable();
-                }
-            })
-        }.bind(this));
-    },
-
     clear : function() {
         this._toolbarElems.forEach(function(item) {
             item.hide();
         });
     },
 
-    _save:function (saveElem, designer, saveHistory) {
-
-        console.log("save!!!!");        //TODO(gb): Remove trace!!!
+    save:function (saveElem, designer, saveHistory) {
         // Load map content ...
         var mindmap = designer.getMindmap();
         var mindmapProp = designer.getMindmapProperties();
