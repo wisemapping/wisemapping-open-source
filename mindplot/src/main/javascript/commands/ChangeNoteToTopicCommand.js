@@ -19,14 +19,14 @@
 mindplot.commands.ChangeNoteToTopicCommand = new Class({
     Extends:mindplot.Command,
     initialize: function(topicId, text) {
-        $assert(topicId, 'topicId can not be null');
+        $assert($defined(topicId), 'topicId can not be null');
         this._topicsIds = topicId;
         this._text = text;
         this._oldtext = null;
         this._id = mindplot.Command._nextUUID();
     },
 
-     execute: function(commandContext) {
+    execute: function(commandContext) {
         var topic = commandContext.findTopics(this._topicsIds)[0];
         if (topic.hasNote()) {
             var model = topic.getModel();

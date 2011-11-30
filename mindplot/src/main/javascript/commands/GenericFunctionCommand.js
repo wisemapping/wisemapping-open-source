@@ -20,7 +20,7 @@ mindplot.commands.GenericFunctionCommand = new Class({
     Extends:mindplot.Command,
     initialize: function(commandFunc, topicsIds,value) {
         $assert(commandFunc, "commandFunc must be defined");
-        $assert(topicsIds, "topicsIds must be defined");
+        $assert($defined(topicsIds), "topicsIds must be defined");
 
         this._value = value;
         this._topicsIds = topicsIds;

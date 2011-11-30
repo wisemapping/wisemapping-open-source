@@ -19,7 +19,7 @@
 mindplot.commands.ChangeLinkToTopicCommand = new Class({
     Extends:mindplot.Command,
     initialize: function(topicId, url) {
-        $assert(topicId, 'topicId can not be null');
+        $assert($defined(topicId), 'topicId can not be null');
         this._topicsIds = topicId;
         this._url = url;
         this._id = mindplot.Command._nextUUID();
