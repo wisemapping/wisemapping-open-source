@@ -19,18 +19,18 @@
 mindplot.commands.RemoveNoteFromTopicCommand = new Class({
     Extends:mindplot.Command,
     initialize: function(topicId) {
-        $assert(topicId, 'topicId can not be null');
-        this._objectsIds = topicId;
+        $assert($defined(topicId), 'topicId can not be null');
+        this._topicsIds = topicId;
     },
     execute: function(commandContext) {
-        var topic = commandContext.findTopics(this._objectsIds)[0];
+        var topic = commandContext.findTopics(this._topicsIds)[0];
         var model = topic.getModel();
         var notes = model.getNotes()[0];
         this._text = notes.getText();
         topic.removeNote();
     },
     undoExecute: function(commandContext) {
-        var topic = commandContext.findTopics(this._objectsIds)[0];
+        var topic = commandContext.findTopics(this._topicsIds)[0];
         topic.addNote(this._text, commandContext._designer);
     }
 });

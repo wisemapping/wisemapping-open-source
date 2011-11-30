@@ -19,19 +19,19 @@
 mindplot.commands.RemoveIconFromTopicCommand = new Class({
     Extends:mindplot.Command,
     initialize: function(topicIds, iconModel) {
-        $assert(topicIds, 'topicIds can not be null');
+        $assert($defined(topicIds), 'topicIds can not be null');
         $assert(iconModel, 'iconModel can not be null');
-        this._objectsIds = topicIds;
+        this._topicsIds = topicIds;
         this._iconModel = iconModel;
     },
 
     execute: function(commandContext) {
-        var topic = commandContext.findTopics(this._objectsIds)[0];
+        var topic = commandContext.findTopics(this._topicsIds)[0];
         topic.removeIcon(this._iconModel);
     },
 
     undoExecute: function(commandContext) {
-        var topic = commandContext.findTopics(this._objectsIds)[0];
+        var topic = commandContext.findTopics(this._topicsIds)[0];
         var iconType = this._iconModel.getIconType();
         var iconImg = topic.addIcon(iconType, commandContext._designer);
         this._iconModel = iconImg.getModel();
