@@ -43,7 +43,7 @@ mindplot.LocalStorageManager = new Class({
 
                 // If I could not load it from a file, hard code one.
                 if (xml == null) {
-                    xml = '<map name="6" version="pela"><topic central="true" text="General Status" id="1"/></map>';
+                    throw "Map could not be loaded";
                 }
 
             }

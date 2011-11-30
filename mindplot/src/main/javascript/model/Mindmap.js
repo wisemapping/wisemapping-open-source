@@ -17,11 +17,13 @@
  */
 mindplot.model.Mindmap = new Class({
         Extends: mindplot.model.IMindmap,
-        initialize : function() {
+        initialize : function(id, version) {
+            $assert(id, "Id can not be null");
             this._branches = [];
             this._description = null;
-            this._version = null;
             this._relationships = [];
+            this._version = $defined(version) ? version : 'pela';
+            this._id = id;
         },
 
         getDescription : function() {
@@ -33,12 +35,12 @@ mindplot.model.Mindmap = new Class({
         },
 
         getId : function() {
-            return this._iconType;
+            return this._id;
         },
 
 
         setId : function(id) {
-            this._iconType = id;
+            this._id = id;
         },
 
         getVersion : function() {
@@ -109,3 +111,10 @@ mindplot.model.Mindmap = new Class({
         }
     }
 );
+
+mindplot.model.Mindmap.buildEmpty = function(mapId) {
+    var result = new mindplot.model.Mindmap(mapId);
+    var node = result.createNode(mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE, 0);
+    result.addBranch(node);
+    return result;
+};

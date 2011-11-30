@@ -313,7 +313,7 @@ mindplot.Topic = new Class({
         //Links
         var links = model.getLinks();
         for (var i = 0; i < links.length; i++) {
-            this._link = new mindplot.LinkIcon(links[i], this, designer);
+            this._link = new mindplot.LinkIcon(this,links[i]);
             result.addIcon(this._link);
         }
 

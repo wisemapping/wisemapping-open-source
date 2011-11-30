@@ -25,7 +25,7 @@
             $(document).fireEvent('loadcomplete', 'brix');
         };
 
-        var mapId = '10'; // @todo: Must be changed ...
+        var mapId = 'mapId'; // @todo: Must be changed ...
         var brixReady = false;
         var mindReady = false;
         var collab = 'standalone';
@@ -58,7 +58,14 @@
 
                 // Load map from XML ...
                 var persitence = mindplot.PersitenceManager.getInstance();
-                var mindmap = persitence.load("map2");
+                var mindmap;
+                try {
+                    mindmap = persitence.load(mapId);
+                } catch(e) {
+                    // If the map could not be loaded, create a new empty map...
+                    mindmap = mindplot.model.Mindmap.buildEmpty(mapId);
+                }
+
                 designer.loadMap(mindmap);
 
                 // If not problem has arisen, close the dialog ...

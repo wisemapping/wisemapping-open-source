@@ -211,11 +211,9 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
 
         this._idsMap = new Hash();
         // Start the loading process ...
-        var mindmap = new mindplot.model.Mindmap();
-
         var version = rootElem.getAttribute("version");
-        mindmap.setVersion(version);
 
+        var mindmap = new mindplot.model.Mindmap(mapId, version);
         var children = rootElem.childNodes;
         for (var i = 0; i < children.length; i++) {
             var child = children[i];
@@ -342,7 +340,7 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
 
     _deserializeIcon : function(domElem, topic) {
         var icon = domElem.getAttribute("id");
-        icon = icon.replace("images/","icons/legacy/");
+        icon = icon.replace("images/", "icons/legacy/");
         return topic.createIcon(icon);
     },
 
@@ -352,13 +350,13 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
 
     _deserializeNote : function(domElem, topic) {
         var value = domElem.getAttribute("text");
-        if(!$defined(value)){
+        if (!$defined(value)) {
             var children = domElem.childNodes;
             for (var i = 0; i < children.length; i++) {
-              var child = children[i];
-              if(child.nodeType == Node.CDATA_SECTION_NODE){
-                  value =  child.nodeValue;
-              }
+                var child = children[i];
+                if (child.nodeType == Node.CDATA_SECTION_NODE) {
+                    value = child.nodeValue;
+                }
             }
         }
         return topic.createNote(value);
