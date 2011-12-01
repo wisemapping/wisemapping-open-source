@@ -17,15 +17,12 @@
  */
 
 mindplot.widget.Menu = new Class({
-    initialize : function(designer, containerId, mapId, readOnly) {
-        $assert(designer, "designer can not be null");
-        $assert(containerId, "containerId can not be null");
-        var baseUrl = "../css/widget";
+    Extends: mindplot.widget.IMenu,
 
-        // Init variables ...
-        this._designer = designer;
-        this._toolbarElems = [];
-        this._containerId = containerId;
+    initialize : function(designer, containerId, mapId, readOnly) {
+        this.parent(designer, containerId, mapId);
+
+        var baseUrl = "../css/widget";
 
         // Stop event propagation ...
         $(this._containerId).addEvent('click', function(event) {
@@ -179,7 +176,7 @@ mindplot.widget.Menu = new Class({
         };
         this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('fontColor', fontColorModel, baseUrl));
 
-        this.addButton('export', false, false, function() {
+        this._addButton('export', false, false, function() {
             var reqDialog = new MooDialog.Request('../c/export.htm?mapId=' + mapId, null,
                 {'class': 'exportModalDialog',
                     closeButton:true,
@@ -194,72 +191,72 @@ mindplot.widget.Menu = new Class({
             MooDialog.Request.active = reqDialog;
         });
 
-        this.addButton('print', false, false, function() {
+        this._addButton('print', false, false, function() {
             printMap();
         });
 
-        this.addButton('zoomIn', false, false, function() {
+        this._addButton('zoomIn', false, false, function() {
             designer.zoomIn();
         });
 
-        this.addButton('zoomOut', false, false, function() {
+        this._addButton('zoomOut', false, false, function() {
             designer.zoomOut();
         });
 
-        this.addButton('undoEdition', false, false, function() {
+        this._addButton('undoEdition', false, false, function() {
             designer.undo();
         });
 
-        this.addButton('redoEdition', false, false, function() {
+        this._addButton('redoEdition', false, false, function() {
             designer.redo();
         });
 
-        this.addButton('addTopic', true, false, function() {
+        this._addButton('addTopic', true, false, function() {
             designer.createChildForSelectedNode();
         });
 
-        this.addButton('deleteTopic', true, true, function() {
+        this._addButton('deleteTopic', true, true, function() {
             designer.deleteCurrentNode();
         });
 
-        this.addButton('topicLink', true, false, function() {
+        this._addButton('topicLink', true, false, function() {
             designer.addLink();
         });
 
-        this.addButton('topicRelation', true, false, function(event) {
+        this._addButton('topicRelation', true, false, function(event) {
             designer.showRelPivot(event);
         });
 
-        this.addButton('topicNote', true, false, function() {
+        this._addButton('topicNote', true, false, function() {
             designer.addNote();
         });
 
-        this.addButton('fontBold', true, false, function() {
+        this._addButton('fontBold', true, false, function() {
             designer.changeFontWeight();
         });
 
-        this.addButton('fontItalic', true, false, function() {
+        this._addButton('fontItalic', true, false, function() {
             designer.changeFontStyle();
         });
 
         var saveElem = $('save');
         if (saveElem) {
-            this.addButton('save', false, false, function() {
-                this._save(saveElem, designer, true);
+            this._addButton('save', false, false, function() {
+                this.save(saveElem, designer, true);
             }.bind(this));
 
             if (!readOnly) {
                 // To prevent the user from leaving the page with changes ...
                 $(window).addEvent('beforeunload', function () {
                     if (designer.needsSave()) {
-                        this._save(saveElem, designer, false);
+                        this.save(saveElem, designer, false);
                     }
                 }.bind(this));
 
                 // Autosave on a fixed period of time ...
                 (function() {
                     if (designer.needsSave()) {
-                        this._save(saveElem, designer, false);
+                        this.save(saveElem, designer, false);
                     }
                 }.bind(this)).periodical(30000);
             }
@@ -267,7 +264,7 @@ mindplot.widget.Menu = new Class({
 
         var discardElem = $('discard');
         if (discardElem) {
-            this.addButton('discard', false, false, function() {
+            this._addButton('discard', false, false, function() {
 
                 if (!readOnly) {
                     displayLoading();
@@ -281,7 +278,7 @@ mindplot.widget.Menu = new Class({
 
         var tagElem = $('tagIt');
         if (tagElem) {
-            this.addButton('tagIt', false, false, function() {
+            this._addButton('tagIt', false, false, function() {
                 var reqDialog = new MooDialog.Request('../c/tags.htm?mapId=' + mapId, null,
                     {'class': 'tagItModalDialog',
                         closeButton:true,
@@ -298,7 +295,7 @@ mindplot.widget.Menu = new Class({
 
         var shareElem = $('shareIt');
         if (shareElem) {
-            this.addButton('shareIt', false, false, function() {
+            this._addButton('shareIt', false, false, function() {
                 var reqDialog = new MooDialog.Request('../c/mymaps.htm?action=collaborator&userEmail=paulo%40pveiga.com.ar&mapId=' + mapId, null,
                     {'class': 'shareItModalDialog',
                         closeButton:true,
@@ -316,7 +313,7 @@ mindplot.widget.Menu = new Class({
 
         var publishElem = $('publishIt');
         if (publishElem) {
-            this.addButton('publishIt', false, false, function() {
+            this._addButton('publishIt', false, false, function() {
                 var reqDialog = new MooDialog.Request('../c/publish.htm?mapId=' + mapId, null,
                     {'class': 'publishModalDialog',
                         closeButton:true,
@@ -335,7 +332,7 @@ mindplot.widget.Menu = new Class({
         var historyElem = $('history');
         if (historyElem) {
 
-            this.addButton('history', false, false, function() {
+            this._addButton('history', false, false, function() {
                 var reqDialog = new MooDialog.Request('../c/history.htm?action=list&goToMindmapList&mapId=' + mapId, null,
                     {'class': 'historyModalDialog',
                         closeButton:true,
@@ -370,7 +367,7 @@ mindplot.widget.Menu = new Class({
                 var disable = false;
                 if (button.isTopicAction() && button.isRelAction()) {
                     disable = rels.length == 0 && topics.length == 0;
-
+                    console.log(disable);
                 } else if (!button.isTopicAction() && !button.isRelAction()) {
                     disable = false;
                 }
@@ -403,68 +400,14 @@ mindplot.widget.Menu = new Class({
                 }
             })
         }.bind(this));
-
-//        designer.addEvent("modelUpdate", function(event) {
-//            if (event.undoSteps > 0) {
-//                $("undoEdition").setStyle("background-image", "url(../images/undo.png)");
-//            } else {
-//                $("undoEdition").setStyle("background-image", "url(../images/undo.png)");
-//            }
-//
-//            if (event.redoSteps > 0) {
-//                $("redoEdition").setStyle("background-image", "url(../images/redo.png)");
-//            } else {
-//                $("redoEdition").setStyle("background-image", "url(../images/redo.png)");
-//            }
-//
-//        });
     },
 
-    addButton:function (buttonId, topic, rel, fn) {
+    _addButton:function (buttonId, topic, rel, fn) {
         // Register Events ...
         var button = new mindplot.widget.ToolbarItem(buttonId, function(event) {
             fn(event);
             this.clear();
         }.bind(this), {topicAction:topic,relAction:rel});
         this._toolbarElems.push(button);
-    },
-
-    clear : function() {
-        this._toolbarElems.forEach(function(item) {
-            item.hide();
-        });
-    },
-
-    _save:function (saveElem, designer, saveHistory) {
-
-        // Load map content ...
-        var mindmap = designer.getMindmap();
-        var mindmapProp = designer.getMindmapProperties();
-
-        // Display save message ..
-        if (saveHistory) {
-            $notify("Saving ...");
-            saveElem.setStyle('cursor', 'wait');
-        } else {
-            console.log("Saving without history ...");
-        }
-
-        // Call persistence manager for saving ...
-        var persistenceManager = mindplot.PersitenceManager.getInstance();
-        persistenceManager.save(mindmap, mindmapProp, saveHistory, {
-            onSuccess: function() {
-                if (saveHistory) {
-                    saveElem.setStyle('cursor', 'pointer');
-                    $notify("Save complete");
-                }
-            },
-            onError: function() {
-                if (saveHistory) {
-                    saveElem.setStyle('cursor', 'pointer');
-                    $notify("Save could not be completed. Try latter");
-                }
-            }
-        });
     }
-
 });
