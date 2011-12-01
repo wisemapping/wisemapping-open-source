@@ -1254,3 +1254,6 @@ mindplot.Topic.CONNECTOR_WIDTH = 6;
 mindplot.Topic.OUTER_SHAPE_ATTRIBUTES = {fillColor:'rgb(252,235,192)',stroke:'1 dot rgb(241,163,39)',x:0,y:0};
 mindplot.Topic.OUTER_SHAPE_ATTRIBUTES_FOCUS = {fillColor:'rgb(244,184,45)',x:0,y:0};
 mindplot.Topic.INNER_RECT_ATTRIBUTES = {stroke:'2 solid'};
+
+
+

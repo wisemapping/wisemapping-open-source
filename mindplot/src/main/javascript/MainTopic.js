@@ -278,3 +278,5 @@ mindplot.MainTopic = new Class({
         var order = this.getOrder();
     }
 });
+
+mindplot.MainTopic.DEFAULT_MAIN_TOPIC_HEIGHT = 18;

@@ -16,13 +16,13 @@
  *   limitations under the License.
  */
 
-mindplot.CentralTopicBoard = new Class({
-    Extends: mindplot.Board,
+mindplot.layout.boards.original.CentralTopicBoard = new Class({
+    Extends:mindplot.layout.boards.original.Board,
     initialize:function(centralTopic, layoutManager) {
         var point = new core.Point(0, 0);
         this._layoutManager = layoutManager;
-        this._rightBoard = new mindplot.VariableDistanceBoard(50, point);
-        this._leftBoard = new mindplot.VariableDistanceBoard(50, point);
+        this._rightBoard = new mindplot.layout.boards.original.VariableDistanceBoard(50, point);
+        this._leftBoard = new mindplot.layout.boards.original.VariableDistanceBoard(50, point);
         this._centralTopic = centralTopic;
     },
 

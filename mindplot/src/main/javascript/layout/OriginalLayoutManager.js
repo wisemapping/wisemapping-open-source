@@ -133,11 +133,11 @@ mindplot.layout.OriginalLayoutManager = new Class({
     },
 
     _createMainTopicBoard:function(node) {
-        return new mindplot.MainTopicBoard(node, this);
+        return new mindplot.layout.boards.original.MainTopicBoard(node, this);
     },
 
     _createCentralTopicBoard:function(node) {
-        return new mindplot.CentralTopicBoard(node, this);
+        return new mindplot.layout.boards.original.CentralTopicBoard(node, this);
     },
 
     getClassName:function() {
