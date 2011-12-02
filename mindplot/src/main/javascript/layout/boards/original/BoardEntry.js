@@ -16,7 +16,7 @@
  *   limitations under the License.
  */
 
-mindplot.BoardEntry = new Class({
+mindplot.layout.boards.original.BoardEntry = new Class({
     initialize:function(lowerLimit, upperLimit, order) {
         if ($defined(lowerLimit) && $defined(upperLimit)) {
             $assert(lowerLimit < upperLimit, 'lowerLimit can not be greater that upperLimit');

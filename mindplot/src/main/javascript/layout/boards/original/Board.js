@@ -16,11 +16,11 @@
  *   limitations under the License.
  */
 
-mindplot.Board = new Class({
+mindplot.layout.boards.original.Board = new Class({
     initialize : function(defaultHeight, referencePoint) {
         $assert(referencePoint, "referencePoint can not be null");
         this._defaultWidth = defaultHeight;
-        this._entries = new mindplot.BidirectionalArray();
+        this._entries = new mindplot.layout.boards.original.BidirectionalArray();
         this._referencePoint = referencePoint;
     },
 
@@ -58,7 +58,7 @@ mindplot.Board = new Class({
 /**
  * ---------------------------------------
  */
-mindplot.BidirectionalArray = new Class({
+mindplot.layout.boards.original.BidirectionalArray = new Class({
 
     initialize: function() {
         this._leftElem = [];

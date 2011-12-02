@@ -19,14 +19,14 @@
 mindplot.commands.ChangeLinkToTopicCommand = new Class({
     Extends:mindplot.Command,
     initialize: function(topicId, url) {
-        $assert(topicId, 'topicId can not be null');
-        this._objectsIds = topicId;
+        $assert($defined(topicId), 'topicId can not be null');
+        this._topicsIds = topicId;
         this._url = url;
         this._id = mindplot.Command._nextUUID();
     },
 
     execute: function(commandContext) {
-        var topic = commandContext.findTopics(this._objectsIds)[0];
+        var topic = commandContext.findTopics(this._topicsIds)[0];
         if (topic.hasLink()) {
             var model = topic.getModel();
             var link = model.getLinks()[0];
@@ -37,7 +37,7 @@ mindplot.commands.ChangeLinkToTopicCommand = new Class({
     },
 
     undoExecute: function(commandContext) {
-        var topic = commandContext.findTopics(this._objectsIds)[0];
+        var topic = commandContext.findTopics(this._topicsIds)[0];
         if (this._oldtext) {
             topic.removeLink();
             topic.addLink(this._oldUrl);

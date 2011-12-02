@@ -84,9 +84,18 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="DragTopic.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="DragManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="DragPivot.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="Board.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="CentralTopicBoard.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="MainTopicBoard.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/layout/boards/original/"
+                                              files="Board.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/layout/boards/original/"
+                                              files="CentralTopicBoard.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/layout/boards/original/"
+                                              files="MainTopicBoard.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/layout/boards/original/"
+                                              files="FixedDistanceBoard.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript//layout/boards/original/"
+                                              files="VariableDistanceBoard.js"/>
+
+
                                     <filelist dir="${basedir}/src/main/javascript/" files="ConnectionLine.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="RelationshipLine.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="DragTopicPositioner.js"/>
@@ -94,10 +103,9 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="MultilineTextEditor.js"/>
                                     <!--<filelist dir="${basedir}/src/main/javascript/" files="RichTextEditor.js"/>-->
                                     <filelist dir="${basedir}/src/main/javascript/" files="TextEditorFactory.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="VariableDistanceBoard.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="util/Shape.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="FixedDistanceBoard.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="BoardEntry.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/layout/boards/original/"
+                                              files="BoardEntry.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ModelCodeName.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="XMLMindmapSerializer_Pela.js"/>
@@ -152,21 +160,21 @@
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="commands/MoveControlPointCommand.js"/>
                                     <!--<filelist dir="${basedir}/src/main/javascript/"-->
-                                              <!--files="commands/freeMind/DragTopicCommand.js"/>-->
+                                    <!--files="commands/freeMind/DragTopicCommand.js"/>-->
                                     <!--<filelist dir="${basedir}/src/main/javascript/"-->
-                                              <!--files="commands/freeMind/ReconnectTopicCommand.js"/>-->
+                                    <!--files="commands/freeMind/ReconnectTopicCommand.js"/>-->
 
 
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="layout/boards/Board.js"/>
                                     <!--<filelist dir="${basedir}/src/main/javascript/"-->
-                                              <!--files="layout/boards/freemind/Board.js"/>-->
+                                    <!--files="layout/boards/freemind/Board.js"/>-->
                                     <!--<filelist dir="${basedir}/src/main/javascript/"-->
-                                              <!--files="layout/boards/freemind/Entry.js"/>-->
+                                    <!--files="layout/boards/freemind/Entry.js"/>-->
                                     <!--<filelist dir="${basedir}/src/main/javascript/"-->
-                                              <!--files="layout/boards/freemind/CentralTopicBoard.js"/>-->
+                                    <!--files="layout/boards/freemind/CentralTopicBoard.js"/>-->
                                     <!--<filelist dir="${basedir}/src/main/javascript/"-->
-                                              <!--files="layout/boards/freemind/MainTopicBoard.js"/>-->
+                                    <!--files="layout/boards/freemind/MainTopicBoard.js"/>-->
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="layout/BaseLayoutManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"

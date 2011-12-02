@@ -16,8 +16,8 @@
  *   limitations under the License.
  */
 
-mindplot.FixedDistanceBoard = new Class({
-    Extends:mindplot.Board,
+mindplot.layout.boards.original.FixedDistanceBoard = new Class({
+    Extends:mindplot.layout.boards.original.Board,
     initialize:function(defaultHeight, topic, layoutManager) {
         this._topic = topic;
         this._layoutManager = layoutManager;
@@ -56,7 +56,7 @@ mindplot.FixedDistanceBoard = new Class({
     },
 
     createBoardEntry : function(lowerLimit, upperLimit, order) {
-        var result = new mindplot.BoardEntry(lowerLimit, upperLimit, order);
+        var result = new mindplot.layout.boards.original.BoardEntry(lowerLimit, upperLimit, order);
         var xPos = this.workoutXBorderDistance();
         result.setXPosition(xPos);
         return result;
@@ -100,9 +100,9 @@ mindplot.FixedDistanceBoard = new Class({
         var result;
         if (topicPosition.x >= 0) {
             // It's at right.
-            result = topicPosition.x + halfTargetWidth + mindplot.FixedDistanceBoard.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE;
+            result = topicPosition.x + halfTargetWidth + mindplot.layout.boards.original.FixedDistanceBoard.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE;
         } else {
-            result = topicPosition.x - (halfTargetWidth + mindplot.FixedDistanceBoard.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE);
+            result = topicPosition.x - (halfTargetWidth + mindplot.layout.boards.original.FixedDistanceBoard.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE);
         }
         return result;
     },
@@ -140,13 +140,13 @@ mindplot.FixedDistanceBoard = new Class({
                     var topicBoardHeight = topicBoard.getHeight();
 
 
-                    height += topicBoardHeight + mindplot.FixedDistanceBoard.INTER_TOPIC_DISTANCE;
+                    height += topicBoardHeight + mindplot.layout.boards.original.FixedDistanceBoard.INTER_TOPIC_DISTANCE;
                 }
             }
         }
         else {
             var topic = this._topic;
-            height = topic.getSize().height + mindplot.FixedDistanceBoard.INTER_TOPIC_DISTANCE;
+            height = topic.getSize().height + mindplot.layout.boards.original.FixedDistanceBoard.INTER_TOPIC_DISTANCE;
         }
 
         var oldHeight = this._height;
@@ -193,7 +193,7 @@ mindplot.FixedDistanceBoard = new Class({
                 var topicBoard = this._layoutManager.getTopicBoardForTopic(currentTopic);
                 var topicBoardHeight = topicBoard.getHeight();
 
-                upperLimit = lowerLimit + topicBoardHeight + mindplot.FixedDistanceBoard.INTER_TOPIC_DISTANCE;
+                upperLimit = lowerLimit + topicBoardHeight + mindplot.layout.boards.original.FixedDistanceBoard.INTER_TOPIC_DISTANCE;
                 e.setUpperLimit(upperLimit);
                 lowerLimit = upperLimit;
 
@@ -277,8 +277,10 @@ mindplot.FixedDistanceBoard = new Class({
 
         return result;
     }
-})
-    ;
-mindplot.FixedDistanceBoard.INTER_TOPIC_DISTANCE = 6;
-mindplot.FixedDistanceBoard.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE = 60;
+});
+
+mindplot.layout.boards.original.FixedDistanceBoard.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE = 60;
+mindplot.layout.boards.original.FixedDistanceBoard.INTER_TOPIC_DISTANCE = 6;
+
+
 

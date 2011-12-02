@@ -16,8 +16,8 @@
  *   limitations under the License.
  */
 
-mindplot.MainTopicBoard = new Class({
-    Extends:mindplot.Board,
+mindplot.layout.boards.original.MainTopicBoard = new Class({
+    Extends:mindplot.layout.boards.original.Board,
     initialize:function(topic, layoutManager) {
         this._layoutManager = layoutManager;
         this._topic = topic;
@@ -29,7 +29,7 @@ mindplot.MainTopicBoard = new Class({
     _getBoard: function() {
         if (!$defined(this._board)) {
             var topic = this._topic;
-            this._board = new mindplot.FixedDistanceBoard(mindplot.MainTopicBoard.DEFAULT_MAIN_TOPIC_HEIGHT, topic, this._layoutManager);
+            this._board = new mindplot.layout.boards.original.FixedDistanceBoard(mindplot.MainTopic.DEFAULT_MAIN_TOPIC_HEIGHT, topic, this._layoutManager);
         }
         return this._board;
     },
@@ -125,5 +125,3 @@ mindplot.MainTopicBoard = new Class({
         }
     }
 });
-
-mindplot.MainTopicBoard.DEFAULT_MAIN_TOPIC_HEIGHT = 18;

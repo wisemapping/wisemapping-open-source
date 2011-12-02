@@ -19,6 +19,8 @@
 mindplot.commands.DeleteCommand = new Class({
     Extends:mindplot.Command,
     initialize: function(topicIds, relIds) {
+        $assert($defined(topicIds), 'topicIds can not be null');
+
         this._relIds = relIds;
         this._topicIds = topicIds;
         this._deletedTopicModels = [];

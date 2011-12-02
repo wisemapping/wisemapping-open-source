@@ -1,5 +1,3 @@
-mindplot.layout.boards = {};
-
 mindplot.layout.boards.Board = new Class({
     Implements: [Events,Options],
     options: {

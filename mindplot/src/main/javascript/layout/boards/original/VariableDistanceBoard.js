@@ -16,8 +16,8 @@
  *   limitations under the License.
  */
 
-mindplot.VariableDistanceBoard = new Class({
-    Extends: mindplot.Board,
+mindplot.layout.boards.original.VariableDistanceBoard = new Class({
+    Extends: mindplot.layout.boards.original.Board,
     initialize: function(defaultHeight, referencePoint) {
         this.parent(defaultHeight, referencePoint);
         var zeroEntryCoordinate = referencePoint.y;
@@ -66,7 +66,7 @@ mindplot.VariableDistanceBoard = new Class({
     },
 
     createBoardEntry:function(lowerLimit, upperLimit, order) {
-        return  new mindplot.BoardEntry(lowerLimit, upperLimit, order);
+        return  new mindplot.layout.boards.original.BoardEntry(lowerLimit, upperLimit, order);
     },
 
     updateReferencePoint:function(position) {
