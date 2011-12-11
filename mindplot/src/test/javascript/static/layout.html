@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+    <script type='text/javascript'
+            src='../../../../../wise-doc/src/main/webapp/js/mootools-core-1.3.2-full-compat.js'></script>
+    <script type='text/javascript'
+            src='../../../../../wise-doc/src/main/webapp/js/mootools-more-1.3.2.1-yui.js'></script>
+
+
+    <script type='text/javascript' src='../../../main/javascript/header.js'></script>
+    <script type='text/javascript' src='../../../../../core-js/target/classes/core.js'></script>
+
+    <script type='text/javascript' src='../../../main/javascript/widget/ToolbarItem.js'></script>
+    <script type='text/javascript' src='../../../main/javascript/widget/ColorPalettePanel.js'></script>
+
+    <script type='text/javascript'>
+        window.addEvent("load", function(e) {
+            var model = {
+                getValue: function() {
+
+                },
+                setValue : function(value) {
+                    console.log("value:" + value);
+                }
+            };
+            var palette = new mindplot.widget.ColorPalettePanel('myButton', model,"/mindplot/src/main/javascript/widget");
+        });
+
+    </script>
+
+</head>
+<body>
+
+<div id="myButton" style="border: 1px red solid">
+    The button
+</div>
+
+
+</body>
+</html>
