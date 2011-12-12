@@ -220,8 +220,6 @@
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="widget/IMenu.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="widget/ThinkmappingMenu.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
                                               files="widget/Menu.js"/>
 
                                     <filelist dir="${basedir}/src/main/javascript/" files="footer.js"/>
