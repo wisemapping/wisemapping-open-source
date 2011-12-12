@@ -15,10 +15,11 @@ mindplot.nlayout.LayoutManager = new Class({
     updateNodeSize: function(id, size) {
         var node = this._treeSet.find(id);
         node.setSize(size);
+        // @Todo: finish...
     },
 
     updateShirkState: function(id, isShrink) {
-
+        // @Todo: finish...
     },
 
     connectNode: function(parentId, childId, order) {
@@ -29,18 +30,29 @@ mindplot.nlayout.LayoutManager = new Class({
         this._layout.connectNode(parentId, childId, order);
     },
 
-    disconnectNode: function(sourceId) {
-
-    },
-
-    deleteNode : function(id) {
-
+    disconnectNode: function(id) {
+        $assert($defined(id), "id can not be null");
+        this._layout.disconnectNode(id);
     },
 
     addNode:function(id, size, position) {
         $assert($defined(id), "id can not be null");
         var result = this._layout.createNode(id, size, position, 'topic');
         this._treeSet.add(result);
+    },
+
+    removeNode: function(id) {
+        $assert($defined(id), "id can not be null");
+        var node = this._treeSet.find(id);
+
+        // Is It connected ?
+        if (this._treeSet.getParent(node)) {
+            this.disconnectNode(id);
+        }
+
+        // Remove the all the branch ...
+        this._treeSet.remove(id);
+
     },
 
     predict: function(parentId, childId, position) {
@@ -50,7 +62,7 @@ mindplot.nlayout.LayoutManager = new Class({
 
         var parent = this._treeSet.find(parentId);
         var sorter = parent.getSorter();
-        var result = sorter.predict(parent, this._treeSet, position);
+        return  sorter.predict(parent, this._treeSet, position);
     },
 
     dump: function() {
@@ -64,13 +76,12 @@ mindplot.nlayout.LayoutManager = new Class({
         // Collect changes ...
         this._collectChanges();
 
-        if (fireEvents) {
-            this.flushEvents();
+        if (!$(fireEvents) || fireEvents) {
+            this._flushEvents();
         }
-
     },
 
-    flushEvents: function() {
+    _flushEvents: function() {
         this._events.forEach(function(event) {
             this.fireEvent('change', event);
         }, this);

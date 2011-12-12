@@ -1,8 +1,6 @@
 mindplot.nlayout.OriginalLayout = new Class({
     initialize: function(treeSet) {
         this._treeSet = treeSet;
-
-        this._heightByNode = {};
     },
 
     createNode:function(id, size, position, type) {
@@ -11,7 +9,7 @@ mindplot.nlayout.OriginalLayout = new Class({
         $assert(position, "position can not be null");
         $assert(type, "type can not be null");
 
-    var strategy = type === 'root' ? mindplot.nlayout.OriginalLayout.GRID_SORTER : mindplot.nlayout.OriginalLayout.SYMETRIC_SORTER;
+        var strategy = type === 'root' ? mindplot.nlayout.OriginalLayout.GRID_SORTER : mindplot.nlayout.OriginalLayout.SYMETRIC_SORTER;
         return new mindplot.nlayout.Node(id, size, position, strategy);
     },
 
@@ -20,15 +18,31 @@ mindplot.nlayout.OriginalLayout = new Class({
         var parent = this._treeSet.find(parentId);
         var child = this._treeSet.find(childId);
 
-        // Connect the new node ...
-        this._treeSet.connect(parentId, childId);
-
         // Insert the new node ...
         var sorter = parent.getSorter();
         sorter.insert(this._treeSet, parent, child, order);
 
+        // Connect the new node ...
+        this._treeSet.connect(parentId, childId);
+
         // Fire a basic validation ...
         sorter.verify(this._treeSet, parent);
+    },
+
+    disconnectNode: function(nodeId) {
+        var node = this._treeSet.find(nodeId);
+        $assert(this._treeSet.getParent(node),"Node already disconnected");
+
+        // Remove from children list.
+        var sorter = node.getSorter();
+        sorter.detach(this._treeSet, node);
+
+        // Disconnect the new node ...
+        this._treeSet.disconnect(nodeId);
+
+        // Fire a basic validation ...
+        sorter.verify(this._treeSet, node);
+
     },
 
     layout: function() {
@@ -42,12 +56,7 @@ mindplot.nlayout.OriginalLayout = new Class({
             var heightById = sorter.computeChildrenIdByHeights(this._treeSet, node);
 
             this._layoutChildren(node, heightById);
-        }.bind(this));
-
-        // Finally, return the list of nodes and properties that has been changed during the layout ...
-
-
-
+        }, this);
     },
 
     _layoutChildren: function(node, heightById) {
@@ -57,11 +66,11 @@ mindplot.nlayout.OriginalLayout = new Class({
         var childrenOrderMoved = children.some(function(child) {
             return child.hasOrderChanged();
         });
-        var heightChanged = this._heightByNode[nodeId] != heightById[nodeId];
-        throw "Esto no esta bien:"+ this._heightByNode;
 
         // If ether any of the nodes has been changed of position or the height of the children is not
         // the same, children nodes must be repositioned ....
+        var newBranchHeight = heightById[nodeId];
+        var heightChanged = node._branchHeight != newBranchHeight;
         if (childrenOrderMoved || heightChanged) {
 
             var sorter = node.getSorter();
@@ -73,12 +82,14 @@ mindplot.nlayout.OriginalLayout = new Class({
                 var newPos = {x:parentPosition.x + offset.x,y:parentPosition.y + offset.y};
                 this._treeSet.updateBranchPosition(child, newPos);
             }.bind(this));
+
+            node._branchHeight = newBranchHeight;
         }
 
         // Continue reordering the children nodes ...
         children.forEach(function(child) {
             this._layoutChildren(child, heightById);
-        }.bind(this));
+        }, this);
     }
 
 });

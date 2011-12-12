@@ -1,6 +1,6 @@
 mindplot.nlayout.Node = new Class({
     initialize:function(id, size, position, sorter) {
-        $assert(!isNaN(id), "id can not be null");
+        $assert(typeof id === 'number' && isFinite(id), "id can not be null");
         $assert(size, "size can not be null");
         $assert(position, "position can not be null");
         $assert(sorter, "sorter can not be null");
@@ -18,7 +18,7 @@ mindplot.nlayout.Node = new Class({
     },
 
     setOrder: function(order) {
-        $assert(!isNaN(order), "Order can not be null");
+        $assert(typeof order === 'number' && isFinite(order), "Order can not be null. Value:" + order);
         this._setProperty('order', order, false);
     },
 
@@ -64,8 +64,8 @@ mindplot.nlayout.Node = new Class({
 
     setPosition : function(position) {
         $assert($defined(position), "Position can not be null");
-        $assert(!isNaN(position.x), "x can not be null");
-        $assert(!isNaN(position.y), "y can not be null");
+        $assert($defined(position.x), "x can not be null");
+        $assert($defined(position.y), "y can not be null");
 
         this._setProperty('position', Object.clone(position));
     },
@@ -110,7 +110,7 @@ mindplot.nlayout.Node = new Class({
 
 
     toString: function() {
-        return "[order:" + this.getOrder() + ", position: {" + this.getPosition().x + "," + this.getPosition().y + "}]";
+        return "[id:" + this.getId() + ", order:" + this.getOrder() + ", position: {" + this.getPosition().x + "," + this.getPosition().y + "}]";
     }
 
 });

@@ -28,3 +28,5 @@ mindplot.collaboration = {};
 mindplot.collaboration.framework = {};
 mindplot.collaboration.framework.brix = {};
 mindplot.collaboration.framework.brix.model = {};
+
+mindplot.nlayout = {};

@@ -65,28 +65,42 @@ mindplot.nlayout.SymetricSorder = new Class({
     },
 
     insert: function(treeSet, parent, child, order) {
-        var children = treeSet.getChildren(parent);
+        var children = this._getSortedChildren(treeSet, parent);
         $assert(order <= children.length, "Order must be continues and can not have holes. Order:" + order);
-
-        // Sort array list ..
-        children.sort(function(a, b) {
-            return a.getOrder() - b.getOrder()
-        });
 
         // Shift all the elements in one .
         for (var i = order; i < children.length; i++) {
             var node = children[i];
-            node.setOrder(node.getOrder() + 1);
+            node.setOrder(i + 1);
         }
         child.setOrder(order);
     },
 
-    verify:function(treeSet, node) {
-        // Check that all is consistent ...
-        var children = treeSet.getChildren(node);
-        children.sort(function(a, b) {
+    detach:function(treeSet, node) {
+        var parent = treeSet.getParent(node);
+        var children = this._getSortedChildren(treeSet, parent);
+        var order = node.getOrder();
+        $assert(children[order] === node, "Node seems not to be in the right position");
+
+        // Shift all the nodes ...
+        for (var i = node.getOrder() + 1; i < children.length; i++) {
+            var child = children[i];
+            child.setOrder(child.getOrder() - 1);
+        }
+        node.setOrder(0);
+    },
+
+    _getSortedChildren:function(treeSet, node) {
+        var result = treeSet.getChildren(node);
+        result.sort(function(a, b) {
             return a.getOrder() - b.getOrder()
         });
+        return result;
+    },
+
+    verify:function(treeSet, node) {
+        // Check that all is consistent ...
+        var children = this._getSortedChildren(treeSet, node);
 
         for (var i = 0; i < children.length; i++) {
             $assert(children[i].getOrder() == i, "missing order elements");
@@ -98,10 +112,7 @@ mindplot.nlayout.SymetricSorder = new Class({
         $assert(node, "node can no be null.");
         $assert("order can no be null.");
 
-        var children = treeSet.getChildren(node);
-        children.sort(function(a, b) {
-            return a.getOrder() - b.getOrder()
-        });
+        var children = this._getSortedChildren(treeSet, node);
 
         // Compute heights ...
         var heights = children.map(function(child) {

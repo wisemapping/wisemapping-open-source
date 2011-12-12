@@ -23,18 +23,19 @@ mindplot.nlayout.RootedTreeSet = new Class({
         this._rootNodes.push(this._decodate(node));
     },
 
-    remove: function(node) {
-        throw "Must be implemted";
+    remove: function(nodeId) {
+        $assert($defined(nodeId), 'nodeId can not be null');
+        var node = this.find(nodeId);
+        this._rootNodes.erase(node);
     },
 
     connect: function(parentId, childId) {
         $assert($defined(parentId), 'parent can not be null');
         $assert($defined(childId), 'child can not be null');
 
-        var parent = this.find(parentId, true);
+        var parent = this.find(parentId);
         var child = this.find(childId, true);
         $assert(!child._parent, 'node already connected. Id:' + child.getId() + ",previous:" + child._parent);
-
 
         parent._children.push(child);
         child._parent = parent;
@@ -42,12 +43,12 @@ mindplot.nlayout.RootedTreeSet = new Class({
     },
 
     disconnect: function(nodeId) {
-        $assert(node, 'node can not be null');
-        $assert(node._parent, 'child node not connected connected');
+        $assert($defined(nodeId), 'nodeId can not be null');
+        var node = this.find(nodeId);
+        $assert(node._parent, "Node is not connected");
 
         node._parent._children.erase(node);
-        this._isolated.push(node);
-
+        this._rootNodes.push(node);
         node._parent = null;
     },
 
@@ -63,7 +64,7 @@ mindplot.nlayout.RootedTreeSet = new Class({
                 break;
             }
         }
-        $assert(validate ? result : true, 'node could not be found id:' + id);
+        $assert($defined(validate) ? result : true, 'node could not be found id:' + id);
         return result;
 
     },
@@ -89,6 +90,11 @@ mindplot.nlayout.RootedTreeSet = new Class({
     getChildren:function(node) {
         $assert(node, 'node can not be null');
         return node._children;
+    },
+
+    getParent:function(node) {
+        $assert(node, 'node can not be null');
+        return node._parent;
     },
 
     dump: function() {
