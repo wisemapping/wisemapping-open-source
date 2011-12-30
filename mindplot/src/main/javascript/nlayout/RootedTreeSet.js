@@ -118,6 +118,28 @@ mindplot.nlayout.RootedTreeSet = new Class({
         return result;
     },
 
+    plot: function(canvas) {
+        var branches = this._rootNodes;
+        for (var i=0; i<branches.length; i++) {
+            var branch = branches[i];
+            this._plot(canvas, branch);
+        }
+    },
+
+    _plot: function(canvas, node, root) {
+        var children = this.getChildren(node);
+        var cx = canvas.width / 2;
+        var cy = canvas.height / 2;
+        var rect = canvas.rect(cx + node.getPosition().x, cy + node.getPosition().y, node.getSize().width, node.getSize().height);
+        var fillColor = this._rootNodes.contains(node) ? "#000" : "#c00";
+        rect.attr('fill', fillColor);
+
+        for (var i=0; i<children.length; i++) {
+            var child = children[i];
+            this._plot(canvas, child);
+        }
+    },
+
     updateBranchPosition : function(node, position) {
 
         var oldPos = node.getPosition();

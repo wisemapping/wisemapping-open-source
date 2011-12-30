@@ -1,7 +1,7 @@
 mindplot.nlayout.TestSuite = new Class({
     Extends: mindplot.nlayout.ChildrenSorterStrategy,
     initialize:function() {
-
+//        Asset.javascript("raphael-min.js", {id: "raphael"});
         this.testAligned();
         this.testEvents();
         this.testEventsComplex();
@@ -20,6 +20,8 @@ mindplot.nlayout.TestSuite = new Class({
 
         manager.layout();
         manager.dump();
+
+        manager.plot({x:0,y:0});
     },
 
     testEvents: function() {
@@ -47,11 +49,13 @@ mindplot.nlayout.TestSuite = new Class({
         });
         manager.layout(true);
         manager.dump();
+        manager.plot({x:0,y:220});
 
         // Ok, if a new node is added, this an event should be fired  ...
         console.log("---- Layout without changes should not affect the tree  ---");
         events.empty();
         manager.layout(true);
+        manager.plot({x:220,y:220});
 
         $assert(events.length == 0, "Unnecessary tree updated.");
     },
@@ -81,6 +85,7 @@ mindplot.nlayout.TestSuite = new Class({
         // Reposition ...
         manager.layout(true);
         manager.dump();
+        manager.plot({x:0,y:440});
 
         // Add a new node and connect. Only children nodes should be affected.
         console.log("---- Connect a new node  ---");
@@ -89,6 +94,7 @@ mindplot.nlayout.TestSuite = new Class({
         manager.connectNode(1, 4, 2);
         manager.layout(true);
         manager.dump();
+        manager.plot({x:220,y:440});
 
         // @todo: This seems no to be ok...
         $assert(events.length == 4, "Only 3 nodes should be repositioned.");
@@ -120,6 +126,7 @@ mindplot.nlayout.TestSuite = new Class({
 
         manager.layout(true);
         manager.dump();
+        manager.plot({x:0,y:660});
 
         // Now, disconnect one node ...
         console.log("--- Disconnect a single node ---");
@@ -127,6 +134,7 @@ mindplot.nlayout.TestSuite = new Class({
         manager.disconnectNode(2);
         manager.layout(true);
         manager.dump();
+        manager.plot({x:220,y:660});
 
         $assert(events.some(
             function(event) {
@@ -138,6 +146,7 @@ mindplot.nlayout.TestSuite = new Class({
         manager.disconnectNode(3);
         manager.layout(true);
         manager.dump();
+        manager.plot({x:440,y:660});
 
         $assert(events.some(
             function(event) {
@@ -170,12 +179,14 @@ mindplot.nlayout.TestSuite = new Class({
         });
         manager.layout(true);
         manager.dump();
+        manager.plot({x:0,y:880});
 
         // Test removal of a connected node ...
         console.log("--- Remove node 3  ---");
         manager.removeNode(3);
         manager.layout(true);
         manager.dump();
+        manager.plot({x:220,y:880});
     }
 
 

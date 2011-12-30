@@ -2,8 +2,7 @@
 
 <html>
 <head>
-    <script type='text/javascript'
-            src='../../../main/javascript/libraries/mootools/mootools-core-1.3.2-full-compress.js'></script>
+    <script type='text/javascript' src='../../../main/javascript/libraries/mootools/mootools-core-1.3.2-full-compress.js'></script>
     <script type='text/javascript' src='../../../../../core-js/target/classes/core.js'></script>
 
 
@@ -18,13 +17,16 @@
     <script type='text/javascript' src='../../../main/javascript/nlayout/OriginalLayout.js'></script>
     <script type='text/javascript' src='../../../main/javascript/nlayout/ChangeEvent.js'></script>
 
+    <script type="text/javascript" src="../../../main/javascript/nlayout/raphael-min.js"></script>
+    <script type="text/javascript" src="../../../main/javascript/nlayout/raphael-plugins.js"></script>
 
     <script type='text/javascript' src='../../../main/javascript/nlayout/TestSuite.js'></script>
 
 
     <script type='text/javascript'>
-        var test = new mindplot.nlayout.TestSuite();
-
+        window.addEvent('domready', function() {
+            var test = new mindplot.nlayout.TestSuite();
+        })
     </script>
 
 </head>
