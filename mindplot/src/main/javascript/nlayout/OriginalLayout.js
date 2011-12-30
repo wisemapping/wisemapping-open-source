@@ -48,12 +48,15 @@ mindplot.nlayout.OriginalLayout = new Class({
     layout: function() {
         var roots = this._treeSet.getTreeRoots();
         roots.forEach(function(node) {
+            console.log('node = ' + node.getId());     //TODO(gb): Remove trace!!!
 
             // Calculate all node heights ...
             var sorter = node.getSorter();
+            console.log('sorter = ' + sorter);     //TODO(gb): Remove trace!!!
 
             // @Todo: This must not be implemented in this way.Each sorter could have different notion of heights ...
             var heightById = sorter.computeChildrenIdByHeights(this._treeSet, node);
+            console.log('heightById = ' + heightById[0]);     //TODO(gb): Remove trace!!!
 
             this._layoutChildren(node, heightById);
         }, this);

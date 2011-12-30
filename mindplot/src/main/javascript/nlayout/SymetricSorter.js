@@ -119,6 +119,7 @@ mindplot.nlayout.SymetricSorder = new Class({
             return {id:child.getId(),height:this._computeChildrenHeight(treeSet, child)};
         }.bind(this));
 
+
         // Compute the center of the branch ...
         var totalHeight = 0;
         heights.forEach(function(elem) {
@@ -131,8 +132,8 @@ mindplot.nlayout.SymetricSorder = new Class({
         for (var i = 0; i < heights.length; i++) {
             ysum = ysum - heights[i].height;
 
-            var yOffset = ysum + mindplot.nlayout.SymetricSorder.INTERNODE_VERTICAL_PADDING;
-            var xOffset = mindplot.nlayout.SymetricSorder.INTERNODE_HORIZONTAL_PADDING;
+            var yOffset = ysum +  heights[i].height/2;
+            var xOffset = node.getSize().width + mindplot.nlayout.SymetricSorder.INTERNODE_HORIZONTAL_PADDING;
 
             $assert(!isNaN(xOffset), "xOffset can not be null");
             $assert(!isNaN(yOffset), "yOffset can not be null");
@@ -141,6 +142,10 @@ mindplot.nlayout.SymetricSorder = new Class({
 
         }
         return result;
+    },
+
+    toString:function() {
+        return "Symmetric Sorter";
     }
 });
 

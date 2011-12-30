@@ -128,9 +128,12 @@ mindplot.nlayout.RootedTreeSet = new Class({
 
     _plot: function(canvas, node, root) {
         var children = this.getChildren(node);
-        var cx = canvas.width / 2;
-        var cy = canvas.height / 2;
-        var rect = canvas.rect(cx + node.getPosition().x, cy + node.getPosition().y, node.getSize().width, node.getSize().height);
+        var cx = node.getPosition().x + canvas.width/2 - node.getSize().width/2;
+        var cy = node.getPosition().y + canvas.height/2 - node.getSize().height/2;
+        var rect = canvas.rect(cx, cy, node.getSize().width, node.getSize().height);
+        var order = node.getOrder() == null ? "r" : node.getOrder();
+        var text = canvas.text(node.getPosition().x + canvas.width/2, node.getPosition().y + canvas.height/2, node.getId() + "[" + order + "]");
+        text.attr('fill', '#FFF');
         var fillColor = this._rootNodes.contains(node) ? "#000" : "#c00";
         rect.attr('fill', fillColor);
 

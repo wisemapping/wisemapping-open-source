@@ -69,11 +69,11 @@ mindplot.nlayout.LayoutManager = new Class({
         console.log(this._treeSet.dump());
     },
 
-    plot: function(position) {
-        var size = {w:200,h:200};
-        var padding = 20,
-            squaresize = 20;
-        var canvas = Raphael(position.x + padding, position.y + padding, size.w, size.h);
+    plot: function(containerId, size) {
+        $assert(containerId, "containerId cannot be null");
+        size = size || {w:200,h:200};
+        var squaresize = 10;
+        var canvas = Raphael(containerId, size.w, size.h);
         canvas.drawGrid(0, 0, size.w, size.h, size.w/squaresize, size.h/squaresize);
         this._treeSet.plot(canvas);
     },

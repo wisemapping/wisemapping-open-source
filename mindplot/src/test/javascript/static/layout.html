@@ -29,8 +29,41 @@
         })
     </script>
 
+    <style type="text/css">
+        div.col {
+            float: left;
+            margin-right: 20px;
+        }
+        div.col.last {
+            float: none;
+        }
+    </style>
+
 </head>
 <body>
+
+<h2>testAligned:</h2>
+<div id="testAligned"></div>
+
+<h2>testSymmetry:</h2>
+<div id="testSymmetry"></div>
+
+<h2>testEvents:</h2>
+<div id="testEvents1" class="col"></div>
+<div id="testEvents2" class="col last"></div>
+
+<h2>testEventsComplex:</h2>
+<div id="testEventsComplex1" class="col"></div>
+<div id="testEventsComplex2" class="col last"></div>
+
+<h2>testDisconnect:</h2>
+<div id="testDisconnect1" class="col"></div>
+<div id="testDisconnect2" class="col"></div>
+<div id="testDisconnect3" class="col last"></div>
+
+<h2>testRemoveNode:</h2>
+<div id="testRemoveNode1" class="col"></div>
+<div id="testRemoveNode2" class="col last"></div>
 
 
 </body>
