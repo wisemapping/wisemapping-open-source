@@ -10,7 +10,6 @@ mindplot.nlayout.SymetricSorder = new Class({
         return result;
     },
 
-
     _computeChildrenHeight : function(treeSet, node, heightCache) {
         var height = node.getSize().height + (mindplot.nlayout.SymetricSorder.INTERNODE_VERTICAL_PADDING * 2); // 2* Top and down padding;
 
@@ -39,13 +38,13 @@ mindplot.nlayout.SymetricSorder = new Class({
         // No children...
         var children = graph.getChildren(parent);
         if (children.length == 0) {
-            return [0,parent.getPosition()];
+            return [0,parent.getPosition()];  // @Todo:Change x ...
         }
 
         // Try to fit within ...
         //
         // - Order is change if the position top position is changed ...
-        // - Suggested position is the middle bitween the two topics...
+        // - Suggested position is the middle between the two topics...
         //
         var result = null;
         children.forEach(function(child) {
@@ -66,6 +65,7 @@ mindplot.nlayout.SymetricSorder = new Class({
 
     insert: function(treeSet, parent, child, order) {
         var children = this._getSortedChildren(treeSet, parent);
+        $assert(order <= children.length, "Order must be continues and can not have holes. Order:" + order);
         $assert(order <= children.length, "Order must be continues and can not have holes. Order:" + order);
 
         // Shift all the elements in one .
@@ -117,7 +117,7 @@ mindplot.nlayout.SymetricSorder = new Class({
         // Compute heights ...
         var heights = children.map(function(child) {
             return {id:child.getId(),height:this._computeChildrenHeight(treeSet, child)};
-        }.bind(this));
+        }, this);
 
         // Compute the center of the branch ...
         var totalHeight = 0;

@@ -16,9 +16,12 @@ mindplot.nlayout.TestSuite = new Class({
         var manager = new mindplot.nlayout.LayoutManager(0, size);
 
         manager.addNode(1, size, position);
-        manager.connectNode(0, 1, 0);
+        manager.addNode(2, size, position);
 
-        manager.layout();
+        manager.connectNode(0, 1, 0);
+        manager.connectNode(0, 2, 0);
+
+       manager.layout();
         manager.dump();
     },
 

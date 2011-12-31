@@ -17,7 +17,7 @@ mvn clean
 
 # Prepare copy 
 mkdir -p ${TMP_DIR}
-rsync -aCv --exclude ".git"  --exclude "wisemapping.i*" --exclude "*/*.iml" --exclude "*/wisemapping.log*" --exclude "**/.DS_Store" --exclude "*.textile" --exclude "**/.gitignore" --exclude "installer" --exclude "*/target" . ${TMP_DIR}
+rsync -aCv --exclude ".git"  --exclude "wisemapping.i*" --exclude "**/*/Brix*" --exclude "**/brix" --exclude "*/*.iml" --exclude "*/wisemapping.log*" --exclude "**/.DS_Store" --exclude "*.textile" --exclude "**/.gitignore" --exclude "installer" --exclude "*/target" . ${TMP_DIR}
 
 # Zip file
 [ ! -e ${OUTPUT_DIR} ] && mkdir ${OUTPUT_DIR}
