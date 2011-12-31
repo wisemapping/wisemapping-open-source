@@ -69,6 +69,15 @@ mindplot.nlayout.LayoutManager = new Class({
         console.log(this._treeSet.dump());
     },
 
+    plot: function(containerId, size) {
+        $assert(containerId, "containerId cannot be null");
+        size = size || {w:200,h:200};
+        var squaresize = 10;
+        var canvas = Raphael(containerId, size.w, size.h);
+        canvas.drawGrid(0, 0, size.w, size.h, size.w/squaresize, size.h/squaresize);
+        this._treeSet.plot(canvas);
+    },
+
     layout: function(fireEvents) {
         // File repositioning ...
         this._layout.layout();

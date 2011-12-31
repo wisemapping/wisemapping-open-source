@@ -1,5 +1,9 @@
 mindplot.nlayout.GridSorter = new Class({
-    Extends: mindplot.nlayout.SymetricSorder
+    Extends: mindplot.nlayout.SymetricSorder,
+
+    toString:function() {
+        return "Grid Sorter";
+    }
 
 });
 
