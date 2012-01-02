@@ -103,6 +103,7 @@ mindplot.layout.BaseLayoutManager = new Class({
         var type = node.getModel().getType();
         return type == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE;
     },
+
     getClassName:function() {
         return mindplot.layout.BaseLayoutManager.NAME;
     }

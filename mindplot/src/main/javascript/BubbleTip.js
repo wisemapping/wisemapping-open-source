@@ -90,7 +90,7 @@ mindplot.BubbleTip = new Class({
             }.bind(this)}).start(0, 100);
         }
     },
-    updatePosition : function(event) {
+    updateBranchPosition : function(event) {
         this._evt = new Event(event);
     },
     close : function(event) {

@@ -31,7 +31,7 @@ mindplot.nlayout.OriginalLayout = new Class({
 
     disconnectNode: function(nodeId) {
         var node = this._treeSet.find(nodeId);
-        $assert(this._treeSet.getParent(node),"Node already disconnected");
+        $assert(this._treeSet.getParent(node), "Node already disconnected");
 
         // Remove from children list.
         var sorter = node.getSorter();
@@ -42,7 +42,6 @@ mindplot.nlayout.OriginalLayout = new Class({
 
         // Fire a basic validation ...
         sorter.verify(this._treeSet, node);
-
     },
 
     layout: function() {
@@ -79,7 +78,12 @@ mindplot.nlayout.OriginalLayout = new Class({
 
             children.forEach(function(child) {
                 var offset = offsetById[child.getId()];
-                var newPos = {x:parentPosition.x + offset.x,y:parentPosition.y + offset.y};
+                var parentX = parentPosition.x;
+                var parentY = parentPosition.y;
+
+                var verticalOffset = (node.getSize().height / 2);
+
+                var newPos = {x:parentX + offset.x,y:parentY + offset.y + verticalOffset};
                 this._treeSet.updateBranchPosition(child, newPos);
             }.bind(this));
 
