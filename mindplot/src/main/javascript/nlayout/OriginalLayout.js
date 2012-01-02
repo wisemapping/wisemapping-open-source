@@ -83,7 +83,10 @@ mindplot.nlayout.OriginalLayout = new Class({
 
                 var verticalOffset = (node.getSize().height / 2);
 
-                var newPos = {x:parentX + offset.x,y:parentY + offset.y + verticalOffset};
+                //TODO(gb): Not sure why verticalOffset is added again, since it is considered in the layout
+                var newPos = {x:parentX + offset.x,y:parentY + offset.y};
+//                var newPos = {x:parentX + offset.x,y:parentY + offset.y + verticalOffset};
+
                 this._treeSet.updateBranchPosition(child, newPos);
             }.bind(this));
 
@@ -98,9 +101,8 @@ mindplot.nlayout.OriginalLayout = new Class({
 
 });
 
-mindplot.nlayout.OriginalLayout.SYMETRIC_SORTER = new mindplot.nlayout.SymetricSorder();
+mindplot.nlayout.OriginalLayout.SYMETRIC_SORTER = new mindplot.nlayout.SymetricSorter();
 mindplot.nlayout.OriginalLayout.GRID_SORTER = new mindplot.nlayout.GridSorter();
-//mindplot.nlayout.OriginalLayout.GRID_SORTER = new mindplot.nlayout.SymetricSorder();
 
 
 

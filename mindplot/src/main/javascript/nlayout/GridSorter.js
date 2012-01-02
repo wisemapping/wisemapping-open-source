@@ -1,5 +1,5 @@
 mindplot.nlayout.GridSorter = new Class({
-    Extends: mindplot.nlayout.SymetricSorder,
+    Extends: mindplot.nlayout.SymetricSorter,
 
     computeOffsets: function(treeSet, node) {
         $assert(treeSet, "treeSet can no be null.");

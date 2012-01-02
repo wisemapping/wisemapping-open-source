@@ -1,4 +1,4 @@
-mindplot.nlayout.SymetricSorder = new Class({
+mindplot.nlayout.SymetricSorter = new Class({
     Extends: mindplot.nlayout.ChildrenSorterStrategy,
     initialize:function() {
 
@@ -11,7 +11,7 @@ mindplot.nlayout.SymetricSorder = new Class({
     },
 
     _computeChildrenHeight : function(treeSet, node, heightCache) {
-        var height = node.getSize().height + (mindplot.nlayout.SymetricSorder.INTERNODE_VERTICAL_PADDING * 2); // 2* Top and down padding;
+        var height = node.getSize().height + (mindplot.nlayout.SymetricSorter.INTERNODE_VERTICAL_PADDING * 2); // 2* Top and down padding;
 
         var result;
         var children = treeSet.getChildren(node);
@@ -57,7 +57,7 @@ mindplot.nlayout.SymetricSorder = new Class({
         // Ok, no overlap. Suggest a new order.
         if (result) {
             var last = children.getLast();
-            result = [last.getOrder() + 1,{x:cpos.x,y:cpos.y - (mindplot.nlayout.SymetricSorder.INTERNODE_VERTICAL_PADDING * 4)}];
+            result = [last.getOrder() + 1,{x:cpos.x,y:cpos.y - (mindplot.nlayout.SymetricSorter.INTERNODE_VERTICAL_PADDING * 4)}];
         }
 
         return result;
@@ -133,7 +133,7 @@ mindplot.nlayout.SymetricSorder = new Class({
             ysum = ysum - heights[i].height;
 
             var yOffset = ysum + heights[i].height/2;
-            var xOffset = node.getSize().width + mindplot.nlayout.SymetricSorder.INTERNODE_HORIZONTAL_PADDING;
+            var xOffset = node.getSize().width + mindplot.nlayout.SymetricSorter.INTERNODE_HORIZONTAL_PADDING;
 
             $assert(!isNaN(xOffset), "xOffset can not be null");
             $assert(!isNaN(yOffset), "yOffset can not be null");
@@ -149,7 +149,7 @@ mindplot.nlayout.SymetricSorder = new Class({
     }
 });
 
-mindplot.nlayout.SymetricSorder.INTERNODE_VERTICAL_PADDING = 5;
-mindplot.nlayout.SymetricSorder.INTERNODE_HORIZONTAL_PADDING = 5;
+mindplot.nlayout.SymetricSorter.INTERNODE_VERTICAL_PADDING = 5;
+mindplot.nlayout.SymetricSorter.INTERNODE_HORIZONTAL_PADDING = 5;
 
 
