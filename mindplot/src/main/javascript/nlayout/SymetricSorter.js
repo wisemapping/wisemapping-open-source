@@ -132,7 +132,7 @@ mindplot.nlayout.SymetricSorder = new Class({
         for (var i = 0; i < heights.length; i++) {
             ysum = ysum - heights[i].height;
 
-            var yOffset = ysum +  heights[i].height/2;
+            var yOffset = ysum + heights[i].height/2;
             var xOffset = node.getSize().width + mindplot.nlayout.SymetricSorder.INTERNODE_HORIZONTAL_PADDING;
 
             $assert(!isNaN(xOffset), "xOffset can not be null");

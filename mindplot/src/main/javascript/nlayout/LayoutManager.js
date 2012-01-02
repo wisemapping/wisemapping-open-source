@@ -22,6 +22,10 @@ mindplot.nlayout.LayoutManager = new Class({
         // @Todo: finish...
     },
 
+    find:  function(id) {
+        return this._treeSet.find(id);
+    },
+
     connectNode: function(parentId, childId, order) {
         $assert($defined(parentId), "parentId can not be null");
         $assert($defined(childId), "childId can not be null");

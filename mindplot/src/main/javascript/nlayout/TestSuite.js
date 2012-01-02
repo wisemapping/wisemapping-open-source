@@ -3,6 +3,7 @@ mindplot.nlayout.TestSuite = new Class({
     initialize:function() {
         this.testAligned();
         this.testSymmetry();
+        this.testGrid();
         this.testEvents();
         this.testEventsComplex();
         this.testDisconnect();
@@ -16,12 +17,22 @@ mindplot.nlayout.TestSuite = new Class({
         var manager = new mindplot.nlayout.LayoutManager(0, size);
 
         manager.addNode(1, size, position);
+        manager.addNode(2, size, position);
+        manager.addNode(3, size, position);
+        manager.addNode(4, size, position);
         manager.connectNode(0, 1, 0);
+        manager.connectNode(1, 2, 0);
+        manager.connectNode(2, 3, 0);
+        manager.connectNode(3, 4, 0);
 
         manager.layout();
         manager.dump();
+        manager.plot("testAligned", {w:300,h:200});
 
-        manager.plot("testAligned");
+        $assert(manager.find(0).getPosition().y == manager.find(1).getPosition().y, "Nodes are not aligned");
+        $assert(manager.find(0).getPosition().y == manager.find(2).getPosition().y, "Nodes are not aligned");
+        $assert(manager.find(0).getPosition().y == manager.find(3).getPosition().y, "Nodes are not aligned");
+        $assert(manager.find(0).getPosition().y == manager.find(4).getPosition().y, "Nodes are not aligned");
     },
 
     testSymmetry: function() {
@@ -39,21 +50,65 @@ mindplot.nlayout.TestSuite = new Class({
         manager.addNode(8, size, position);
         manager.addNode(9, size, position);
         manager.addNode(10, size, position);
+        manager.addNode(11, size, position);
+        manager.addNode(12, size, position);
         manager.connectNode(0, 1, 0);
         manager.connectNode(0, 2, 1);
         manager.connectNode(0, 3, 2);
         manager.connectNode(0, 4, 3);
         manager.connectNode(0, 5, 4);
-        manager.connectNode(5, 6, 0);
-        manager.connectNode(5, 7, 1);
+        manager.connectNode(1, 6, 0);
+        manager.connectNode(1, 7, 1);
         manager.connectNode(7, 8, 0);
         manager.connectNode(8, 9, 0);
-        manager.connectNode(1, 10, 0);
+        manager.connectNode(5, 10, 0);
+        manager.connectNode(6, 11, 0);
+        manager.connectNode(6, 12, 1);
 
         manager.layout();
+//        manager.dump();
+        manager.plot("testSymmetry",{w:400, h:300});
+
+        //TODO(gb): make asserts
+    },
+
+    testGrid: function() {
+        var size = {width:25,height:25};
+        var position = {x:0,y:0};
+        var manager = new mindplot.nlayout.LayoutManager(0, size);
+
+        manager.addNode(1, size, position);
+        manager.connectNode(0, 1, 0);
+        manager.layout();
+        manager.plot("testGrid1");
+
+        manager.addNode(2, size, position);
+        manager.connectNode(0, 2, 1);
+        manager.layout();
+        manager.plot("testGrid2");
+
+        manager.addNode(3, size, position);
+        manager.connectNode(0, 3, 2);
+        manager.layout();
+        manager.plot("testGrid3");
+
+        manager.addNode(4, size, position);
+        manager.connectNode(0, 4, 3);
+        manager.layout();
+        manager.plot("testGrid4");
+
+        manager.addNode(5, size, position);
+        manager.addNode(6, size, position);
+        manager.addNode(7, size, position);
+        manager.connectNode(2, 5, 0);
+        manager.connectNode(2, 6, 1);
+        manager.connectNode(6, 7, 0);
+        manager.layout();
+        manager.plot("testGrid5", {w:300, h:300});
+
         manager.dump();
 
-        manager.plot("testSymmetry",{w:400, h:300});
+        //TODO(gb): make asserts
     },
 
     testEvents: function() {
