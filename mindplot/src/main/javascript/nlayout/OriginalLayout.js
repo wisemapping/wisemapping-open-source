@@ -83,7 +83,7 @@ mindplot.nlayout.OriginalLayout = new Class({
 
                 var verticalOffset = (node.getSize().height / 2);
 
-                //TODO(gb): Not sure why verticalOffset is added again, since it is considered in the layout
+                //TODO(gb): Not sure why verticalOffset is added again, since it is considered in the sorter.
                 var newPos = {x:parentX + offset.x,y:parentY + offset.y};
 //                var newPos = {x:parentX + offset.x,y:parentY + offset.y + verticalOffset};
 
