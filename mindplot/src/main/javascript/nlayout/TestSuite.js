@@ -7,6 +7,7 @@ mindplot.nlayout.TestSuite = new Class({
         this.testEvents();
         this.testEventsComplex();
         this.testDisconnect();
+        this.testReconnect();
         this.testRemoveNode();
     },
 
@@ -29,6 +30,7 @@ mindplot.nlayout.TestSuite = new Class({
         manager.dump();
         manager.plot("testAligned", {w:300,h:200});
 
+        // All nodes should be vertically aligned
         $assert(manager.find(0).getPosition().y == manager.find(1).getPosition().y, "Nodes are not aligned");
         $assert(manager.find(0).getPosition().y == manager.find(2).getPosition().y, "Nodes are not aligned");
         $assert(manager.find(0).getPosition().y == manager.find(3).getPosition().y, "Nodes are not aligned");
@@ -52,11 +54,15 @@ mindplot.nlayout.TestSuite = new Class({
         manager.addNode(10, size, position);
         manager.addNode(11, size, position);
         manager.addNode(12, size, position);
-        manager.connectNode(0, 1, 0);
-        manager.connectNode(0, 2, 1);
-        manager.connectNode(0, 3, 2);
-        manager.connectNode(0, 4, 3);
-        manager.connectNode(0, 5, 4);
+        manager.addNode(13, size, position);
+        manager.addNode(14, size, position);
+        manager.connectNode(0, 14, 0);
+        manager.connectNode(14, 13, 0);
+        manager.connectNode(13, 1, 0);
+        manager.connectNode(13, 2, 1);
+        manager.connectNode(13, 3, 2);
+        manager.connectNode(13, 4, 3);
+        manager.connectNode(13, 5, 4);
         manager.connectNode(1, 6, 0);
         manager.connectNode(1, 7, 1);
         manager.connectNode(7, 8, 0);
@@ -66,8 +72,8 @@ mindplot.nlayout.TestSuite = new Class({
         manager.connectNode(6, 12, 1);
 
         manager.layout();
-//        manager.dump();
-        manager.plot("testSymmetry",{w:400, h:300});
+        manager.dump();
+        manager.plot("testSymmetry",{w:500, h:300});
 
         //TODO(gb): make asserts
     },
@@ -205,14 +211,15 @@ mindplot.nlayout.TestSuite = new Class({
 
         var events = [];
         manager.addEvent('change', function(event) {
+
             var pos = event.getPosition();
-            var posStr = pos ? ",position: {" + pos.x + "," + event.getPosition().y : "";
+            var posStr = pos ? ",position: {" + pos.x + "," + pos.y : "";
+            var node = manager.find(event.getId());
             console.log("Updated nodes: {id:" + event.getId() + ", order: " + event.getOrder() + posStr + "}");
             events.push(event);
         });
-
         manager.layout(true);
-        manager.dump();
+//        manager.dump();
         manager.plot("testDisconnect1", {w:300, h:200});
 
         // Now, disconnect one node ...
@@ -220,7 +227,7 @@ mindplot.nlayout.TestSuite = new Class({
         events.empty();
         manager.disconnectNode(2);
         manager.layout(true);
-        manager.dump();
+//        manager.dump();
         manager.plot("testDisconnect2", {w:300, h:200});
 
         $assert(events.some(
@@ -232,13 +239,57 @@ mindplot.nlayout.TestSuite = new Class({
         console.log("--- Disconnect a node with children ---");
         manager.disconnectNode(3);
         manager.layout(true);
-        manager.dump();
+//        manager.dump();
         manager.plot("testDisconnect3", {w:300, h:200});
 
         $assert(events.some(
             function(event) {
                 return event.getId() == 2;
             }), "Event for disconnected node seems not to be propagated");
+    },
+
+    testReconnect: function() {
+        var size = {width:25,height:25};
+        var position = {x:0,y:0};
+        var manager = new mindplot.nlayout.LayoutManager(0, size);
+
+        manager.addNode(1, size, position);
+        manager.addNode(2, size, position);
+        manager.addNode(3, size, position);
+        manager.addNode(4, size, position);
+        manager.addNode(5, size, position);
+        manager.addNode(6, size, position);
+        manager.addNode(7, size, position);
+        manager.addNode(8, size, position);
+        manager.addNode(9, size, position);
+        manager.addNode(10, size, position);
+        manager.addNode(11, size, position);
+        manager.addNode(12, size, position);
+        manager.connectNode(0, 1, 0);
+        manager.connectNode(0, 2, 1);
+        manager.connectNode(0, 3, 2);
+        manager.connectNode(0, 4, 3);
+        manager.connectNode(0, 5, 4);
+        manager.connectNode(1, 6, 0);
+        manager.connectNode(1, 7, 1);
+        manager.connectNode(7, 8, 0);
+        manager.connectNode(8, 9, 0);
+        manager.connectNode(5, 10, 0);
+        manager.connectNode(6, 11, 0);
+        manager.connectNode(6, 12, 1);
+
+        manager.layout();
+        manager.dump();
+        manager.plot("testReconnect1",{w:400, h:300});
+
+        // Reconnect node 6 to node 4
+        manager.disconnectNode(6);
+        manager.connectNode(4,6,0);
+        manager.layout();
+        manager.dump();
+        manager.plot("testReconnect2",{w:400, h:300});
+
+        //TODO(gb): make asserts
     },
 
     testRemoveNode: function() {

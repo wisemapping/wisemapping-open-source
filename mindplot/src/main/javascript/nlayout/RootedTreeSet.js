@@ -137,6 +137,9 @@ mindplot.nlayout.RootedTreeSet = new Class({
         var fillColor = this._rootNodes.contains(node) ? "#000" : "#c00";
         rect.attr('fill', fillColor);
 
+        rect.click(function() {console.log("[id:" + node.getId() + ", order:" + node.getOrder() + ", position: {" + node.getPosition().x + "," + node.getPosition().y + "}, size: {" + node.getSize().width + "," + node.getSize().height + "}");});
+        text.click(function() {console.log("[id:" + node.getId() + ", order:" + node.getOrder() + ", position: {" + node.getPosition().x + "," + node.getPosition().y + "}, size: {" + node.getSize().width + "," + node.getSize().height + "}");});
+
         for (var i=0; i<children.length; i++) {
             var child = children[i];
             this._plot(canvas, child);

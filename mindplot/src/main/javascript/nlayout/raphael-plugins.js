@@ -25,6 +25,5 @@ Raphael.fn.drawGrid = function (x, y, w, h, wv, hv, color) {
             path.attr({stroke: "#999"})
         }
     }
-//    return this.path(path.join(",")).attr({stroke: color});
     return this.path;
 };
