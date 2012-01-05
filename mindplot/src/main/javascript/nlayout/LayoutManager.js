@@ -39,8 +39,12 @@ mindplot.nlayout.LayoutManager = new Class({
         // @Todo: finish...
     },
 
-    find:  function(id) {
+    find: function(id) {
         return this._treeSet.find(id);
+    },
+
+    move: function() {
+      //TODO(gb): implement
     },
 
     connectNode: function(parentId, childId, order) {
@@ -92,10 +96,10 @@ mindplot.nlayout.LayoutManager = new Class({
 
     plot: function(containerId, size) {
         $assert(containerId, "containerId cannot be null");
-        size = size || {w:200,h:200};
+        size = size || {width:200,height:200};
         var squaresize = 10;
-        var canvas = Raphael(containerId, size.w, size.h);
-        canvas.drawGrid(0, 0, size.w, size.h, size.w/squaresize, size.h/squaresize);
+        var canvas = Raphael(containerId, size.width, size.height);
+        canvas.drawGrid(0, 0, size.width, size.height, size.width/squaresize, size.height/squaresize);
         this._treeSet.plot(canvas);
     },
 

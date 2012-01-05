@@ -1,23 +1,7 @@
-/*
- *    Copyright [2011] [wisemapping]
- *
- *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
- *   It is basically the Apache License, Version 2.0 (the "License") plus the
- *   "powered by wisemapping" text requirement on every single page;
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the license at
- *
- *       http://www.wisemapping.org/license
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
- */
-mindplot.nlayout.SymetricSorter = new Class({
+mindplot.nlayout.BalancedSorter = new Class({
     Extends: mindplot.nlayout.ChildrenSorterStrategy,
-    initialize:function() {
+
+    initialize: function() {
 
     },
 
@@ -28,7 +12,7 @@ mindplot.nlayout.SymetricSorter = new Class({
     },
 
     _computeChildrenHeight : function(treeSet, node, heightCache) {
-        var height = node.getSize().height + (mindplot.nlayout.SymetricSorter.INTERNODE_VERTICAL_PADDING * 2); // 2* Top and down padding;
+        var height = node.getSize().height + (mindplot.nlayout.BalancedSorter.INTERNODE_VERTICAL_PADDING * 2); // 2* Top and down padding;
 
         var result;
         var children = treeSet.getChildren(node);
@@ -74,7 +58,7 @@ mindplot.nlayout.SymetricSorter = new Class({
         // Ok, no overlap. Suggest a new order.
         if (result) {
             var last = children.getLast();
-            result = [last.getOrder() + 1,{x:cpos.x,y:cpos.y - (mindplot.nlayout.SymetricSorter.INTERNODE_VERTICAL_PADDING * 4)}];
+            result = [last.getOrder() + 1,{x:cpos.x,y:cpos.y - (mindplot.nlayout.BalancedSorter.INTERNODE_VERTICAL_PADDING * 4)}];
         }
 
         return result;
@@ -132,40 +116,60 @@ mindplot.nlayout.SymetricSorter = new Class({
 
         // Compute heights ...
         var heights = children.map(function(child) {
-            return {id:child.getId(),height:this._computeChildrenHeight(treeSet, child)};
+            return {id:child.getId(), order:child.getOrder(), height:this._computeChildrenHeight(treeSet, child)};
         }, this);
 
 
         // Compute the center of the branch ...
-        var totalHeight = 0;
+        var totalPHeight = 0;
+        var totalNHeight = 0;
+        //TODO(gb): optimize using filter
         heights.forEach(function(elem) {
-            totalHeight += elem.height;
+            if (elem.order % 2 == 0) {
+                totalPHeight += elem.height;
+            } else {
+                totalNHeight += elem.height;
+            }
         });
-        var ysum = totalHeight / 2;
+        var psum = totalPHeight/2;
+        var nsum = totalNHeight/2;
+        var totalDifference = totalPHeight - totalNHeight;
+        var ysum = 0;
 
         // Calculate the offsets ...
         var result = {};
         for (var i = 0; i < heights.length; i++) {
-            ysum = ysum - heights[i].height;
+            var direction = heights[i].order % 2 ? -1 : 1;
+
+            if (direction > 0) {
+                psum = psum - heights[i].height;
+                ysum = psum;
+            } else {
+                nsum = nsum - heights[i].height;
+                ysum = nsum;
+            }
+
+//            console.log("node {id: " + heights[i].id + ", order: " + heights[i].order + ", psum: " + psum + ", nsum: " + nsum + "}");        //TODO(gb): Remove trace!!!
+//            console.log("totalPHeight: " + totalPHeight + ", totalNHeight: " + totalNHeight);        //TODO(gb): Remove trace!!!
+            console.log("node {id: " + heights[i].id + ", totalDifference: " + totalDifference + ", direction: " + direction + "}");        //TODO(gb): Remove trace!!!
 
             var yOffset = ysum + heights[i].height/2;
-            var xOffset = node.getSize().width + mindplot.nlayout.SymetricSorter.INTERNODE_HORIZONTAL_PADDING;
+            var xOffset = direction * (node.getSize().width + mindplot.nlayout.SymetricSorter.INTERNODE_HORIZONTAL_PADDING);
 
             $assert(!isNaN(xOffset), "xOffset can not be null");
             $assert(!isNaN(yOffset), "yOffset can not be null");
 
             result[heights[i].id] = {x:xOffset,y:yOffset};
-
         }
+        console.log("----------------------\n");        //TODO(gb): Remove trace!!!
         return result;
     },
 
     toString:function() {
-        return "Symmetric Sorter";
+        return "Balanced Sorter";
     }
 });
 
-mindplot.nlayout.SymetricSorter.INTERNODE_VERTICAL_PADDING = 5;
-mindplot.nlayout.SymetricSorter.INTERNODE_HORIZONTAL_PADDING = 5;
-
-
+mindplot.nlayout.BalancedSorter.INTERNODE_VERTICAL_PADDING = 5;
+mindplot.nlayout.BalancedSorter.INTERNODE_HORIZONTAL_PADDING = 5;
+mindplot.nlayout.BalancedSorter.INITIAL_HEIGHT = 100;
