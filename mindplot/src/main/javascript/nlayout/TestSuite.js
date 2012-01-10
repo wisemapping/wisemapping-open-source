@@ -18,16 +18,16 @@
 mindplot.nlayout.TestSuite = new Class({
     Extends: mindplot.nlayout.ChildrenSorterStrategy,
     initialize:function() {
-//        this.testAligned();
-//        this.testSymmetry();
+        this.testAligned();
+        this.testSymmetry();
         this.testBalanced();
-//        this.testGrid();
-//        this.testEvents();
-//        this.testEventsComplex();
-//        this.testDisconnect();
-//        this.testReconnect();
-//        this.testRemoveNode();
-//        this.testFreePosition();
+        this.testGrid();
+        this.testEvents();
+        this.testEventsComplex();
+        this.testDisconnect();
+        this.testReconnect();
+        this.testRemoveNode();
+        this.testFreePosition();
     },
 
     testAligned: function() {
@@ -98,12 +98,10 @@ mindplot.nlayout.TestSuite = new Class({
     },
 
     testBalanced: function() {
-//        var size = {width:80, height:30};
-        var size = {width:25, height:25};
-        var plotsize = {width: 400, height:280};
+        var size = {width:80, height:30};
+        var plotsize = {width: 800, height:400};
         var position = {x:0, y:0};
-//        var manager = new mindplot.nlayout.LayoutManager(0, {width:120, height:40});
-        var manager = new mindplot.nlayout.LayoutManager(0, size);
+        var manager = new mindplot.nlayout.LayoutManager(0, {width:120, height:40});
 
         manager.addNode(1, size, position);
         manager.connectNode(0, 1, 0);
@@ -134,6 +132,24 @@ mindplot.nlayout.TestSuite = new Class({
         manager.connectNode(0, 6, 5);
         manager.layout();
         manager.plot("testBalanced6", plotsize);
+
+        manager.addNode(7, size, position);
+        manager.addNode(8, size, position);
+        manager.addNode(9, size, position);
+        manager.connectNode(3, 7, 0)
+        manager.connectNode(7, 8, 0)
+        manager.connectNode(7, 9, 1);
+        manager.layout();
+        manager.plot("testBalanced7", plotsize);
+
+        manager.addNode(10, size, position);
+        manager.addNode(11, size, position);
+        manager.addNode(12, size, position);
+        manager.connectNode(6, 10, 0)
+        manager.connectNode(10, 11, 0)
+        manager.connectNode(10, 12, 1);
+        manager.layout();
+        manager.plot("testBalanced8", plotsize);
     },
 
     testGrid: function() {

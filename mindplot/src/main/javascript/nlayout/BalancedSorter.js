@@ -123,7 +123,7 @@ mindplot.nlayout.BalancedSorter = new Class({
         // Compute the center of the branch ...
         var totalPHeight = 0;
         var totalNHeight = 0;
-        //TODO(gb): optimize using filter
+
         heights.forEach(function(elem) {
             if (elem.order % 2 == 0) {
                 totalPHeight += elem.height;
@@ -133,7 +133,6 @@ mindplot.nlayout.BalancedSorter = new Class({
         });
         var psum = totalPHeight/2;
         var nsum = totalNHeight/2;
-        var totalDifference = totalPHeight - totalNHeight;
         var ysum = 0;
 
         // Calculate the offsets ...
@@ -149,10 +148,6 @@ mindplot.nlayout.BalancedSorter = new Class({
                 ysum = nsum;
             }
 
-//            console.log("node {id: " + heights[i].id + ", order: " + heights[i].order + ", psum: " + psum + ", nsum: " + nsum + "}");        //TODO(gb): Remove trace!!!
-//            console.log("totalPHeight: " + totalPHeight + ", totalNHeight: " + totalNHeight);        //TODO(gb): Remove trace!!!
-            console.log("node {id: " + heights[i].id + ", totalDifference: " + totalDifference + ", direction: " + direction + "}");        //TODO(gb): Remove trace!!!
-
             var yOffset = ysum + heights[i].height/2;
             var xOffset = direction * (node.getSize().width + mindplot.nlayout.SymetricSorter.INTERNODE_HORIZONTAL_PADDING);
 
@@ -161,7 +156,6 @@ mindplot.nlayout.BalancedSorter = new Class({
 
             result[heights[i].id] = {x:xOffset,y:yOffset};
         }
-        console.log("----------------------\n");        //TODO(gb): Remove trace!!!
         return result;
     },
 
@@ -170,6 +164,5 @@ mindplot.nlayout.BalancedSorter = new Class({
     }
 });
 
-mindplot.nlayout.BalancedSorter.INTERNODE_VERTICAL_PADDING = 5;
+mindplot.nlayout.BalancedSorter.INTERNODE_VERTICAL_PADDING = 10;
 mindplot.nlayout.BalancedSorter.INTERNODE_HORIZONTAL_PADDING = 5;
-mindplot.nlayout.BalancedSorter.INITIAL_HEIGHT = 100;

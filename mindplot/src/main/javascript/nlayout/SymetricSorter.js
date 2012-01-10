@@ -132,7 +132,7 @@ mindplot.nlayout.SymetricSorter = new Class({
 
         // Compute heights ...
         var heights = children.map(function(child) {
-            return {id:child.getId(),height:this._computeChildrenHeight(treeSet, child)};
+            return {id:child.getId(), position: child.getPosition(), height: this._computeChildrenHeight(treeSet, child)};
         }, this);
 
 
@@ -148,16 +148,22 @@ mindplot.nlayout.SymetricSorter = new Class({
         for (var i = 0; i < heights.length; i++) {
             ysum = ysum - heights[i].height;
 
+            var parent = treeSet.getParent(treeSet.find(heights[i].id));
+            var direction = parent.getPosition().x > 0 ? 1 : -1;
+
             var yOffset = ysum + heights[i].height/2;
-            var xOffset = node.getSize().width + mindplot.nlayout.SymetricSorter.INTERNODE_HORIZONTAL_PADDING;
+            var xOffset = direction * (node.getSize().width + mindplot.nlayout.SymetricSorter.INTERNODE_HORIZONTAL_PADDING);
 
             $assert(!isNaN(xOffset), "xOffset can not be null");
             $assert(!isNaN(yOffset), "yOffset can not be null");
 
             result[heights[i].id] = {x:xOffset,y:yOffset};
-
         }
         return result;
+    },
+
+    _getRootNode: function(treeSet) {
+        var roots = treeSet.getTreeRoots();
     },
 
     toString:function() {
