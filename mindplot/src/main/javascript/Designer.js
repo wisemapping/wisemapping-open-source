@@ -43,8 +43,6 @@ mindplot.Designer = new Class({
             this._workspace = new mindplot.Workspace(screenManager, this._model.getZoom());
             this._readOnly = profile.readOnly ? true : false;
 
-            // Init layout managers ...
-            this._layoutManager = new mindplot.layout.OriginalLayoutManager(this);
 
             // Register events
             if (!profile.readOnly) {
@@ -52,6 +50,14 @@ mindplot.Designer = new Class({
             }
 
             this._relPivot = new mindplot.RelationshipPivot(this._workspace, this);
+
+            // Init layout manager ...
+            this._eventBussDispatcher = new mindplot.nlayout.EventBusDispatcher(this.getModel());
+
+            // @todo: To be removed ...
+            this._layoutManager = new mindplot.layout.OriginalLayoutManager(this);
+
+
         },
 
         _registerEvents : function() {
@@ -370,6 +376,9 @@ mindplot.Designer = new Class({
             // Place the focus on the Central Topic
             var centralTopic = this.getModel().getCentralTopic();
             this.goToNode(centralTopic);
+
+            // Finally, sort the map ...
+            mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.DoLayout);
         },
 
         getMindmap : function() {
@@ -395,14 +404,16 @@ mindplot.Designer = new Class({
             var children = nodeModel.getChildren().slice();
             children = this._layoutManager.prepareNode(nodeGraph, children);
 
+            var workspace = this._workspace;
+            workspace.appendChild(nodeGraph);
+
             for (var i = 0; i < children.length; i++) {
                 var child = children[i];
                 if ($defined(child))
                     this._nodeModelToNodeGraph(child, false);
             }
 
-            var workspace = this._workspace;
-            workspace.appendChild(nodeGraph);
+
             return nodeGraph;
         },
 

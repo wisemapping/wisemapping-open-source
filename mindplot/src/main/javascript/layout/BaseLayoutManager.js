@@ -28,8 +28,8 @@ mindplot.layout.BaseLayoutManager = new Class({
         this._designer = designer;
         mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeResizeEvent, this._nodeResizeEvent.bind(this));
         mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeMoveEvent, this._nodeMoveEvent.bind(this));
-        mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeDisconnectEvent, this._nodeDisconnectEvent.bind(this));
-        mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeConnectEvent, this._nodeConnectEvent.bind(this));
+        mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.ONodeDisconnectEvent, this._nodeDisconnectEvent.bind(this));
+        mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.ONodeConnectEvent, this._nodeConnectEvent.bind(this));
         mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeRepositionateEvent, this._nodeRepositionateEvent.bind(this));
         mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeShrinkEvent, this._nodeShrinkEvent.bind(this));
     },

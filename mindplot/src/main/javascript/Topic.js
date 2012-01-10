@@ -313,7 +313,7 @@ mindplot.Topic = new Class({
         //Links
         var links = model.getLinks();
         for (var i = 0; i < links.length; i++) {
-            this._link = new mindplot.LinkIcon(this,links[i]);
+            this._link = new mindplot.LinkIcon(this, links[i]);
             result.addIcon(this._link);
         }
 
@@ -1074,7 +1074,8 @@ mindplot.Topic = new Class({
             outgoingLine.removeFromWorkspace(workspace);
 
             // Remove from workspace.
-            mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeDisconnectEvent, [targetTopic, this]);
+            mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.ONodeDisconnectEvent, [targetTopic, this]);
+            mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeDisconnectEvent, this.getModel());
 
             // Change text based on the current connection ...
             var model = this.getModel();
@@ -1121,7 +1122,7 @@ mindplot.Topic = new Class({
         childModel.connectTo(targetModel);
 
         // Update topic position based on the state ...
-        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeConnectEvent, [targetTopic, this]);
+        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.ONodeConnectEvent, [targetTopic, this]);
 
         // Create a connection line ...
         var outgoingLine = new mindplot.ConnectionLine(this, targetTopic);
@@ -1151,6 +1152,12 @@ mindplot.Topic = new Class({
 
         // Redraw line ...
         outgoingLine.redraw();
+
+        // Fire connection event ...
+        if (this.isInWorkspace()) {
+            mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeConnectEvent, {parentNode:targetTopic.getModel(), childNode: this.getModel()});
+        }
+
     },
 
     appendChild : function(child) {
@@ -1185,6 +1192,13 @@ mindplot.Topic = new Class({
     addToWorkspace : function(workspace) {
         var elem = this.get2DElement();
         workspace.appendChild(elem);
+        if (!this.isInWorkspace()) {
+            mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeAdded, this.getModel());
+
+            if (this.getModel().isConnected())
+                mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeConnectEvent, {parentNode:this.getOutgoingConnectedTopic().getModel(), childNode: this.getModel()});
+
+        }
         this._isInWorkspace = true;
         this._adjustShapes();
     },

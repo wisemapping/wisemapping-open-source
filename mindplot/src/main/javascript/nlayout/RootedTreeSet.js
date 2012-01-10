@@ -1,3 +1,20 @@
+/*
+ *    Copyright [2011] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 mindplot.nlayout.RootedTreeSet = new Class({
     initialize:function() {
         this._rootNodes = [];
@@ -19,9 +36,11 @@ mindplot.nlayout.RootedTreeSet = new Class({
 
     add: function(node) {
         $assert(node, 'node can not be null');
+        $assert(!this.find(node.getId(), false), 'node already exits with this id. Id:' + node.getId());
         $assert(!node._children, 'node already added');
         this._rootNodes.push(this._decodate(node));
     },
+
 
     remove: function(nodeId) {
         $assert($defined(nodeId), 'nodeId can not be null');
@@ -64,7 +83,8 @@ mindplot.nlayout.RootedTreeSet = new Class({
                 break;
             }
         }
-        $assert($defined(validate) ? result : true, 'node could not be found id:' + id);
+        validate = !$defined(validate) ? true : validate;
+        $assert(validate ? result : true, 'node could not be found id:' + id);
         return result;
 
     },
@@ -120,7 +140,7 @@ mindplot.nlayout.RootedTreeSet = new Class({
 
     plot: function(canvas) {
         var branches = this._rootNodes;
-        for (var i=0; i<branches.length; i++) {
+        for (var i = 0; i < branches.length; i++) {
             var branch = branches[i];
             this._plot(canvas, branch);
         }
@@ -128,19 +148,23 @@ mindplot.nlayout.RootedTreeSet = new Class({
 
     _plot: function(canvas, node, root) {
         var children = this.getChildren(node);
-        var cx = node.getPosition().x + canvas.width/2 - node.getSize().width/2;
-        var cy = node.getPosition().y + canvas.height/2 - node.getSize().height/2;
+        var cx = node.getPosition().x + canvas.width / 2 - node.getSize().width / 2;
+        var cy = node.getPosition().y + canvas.height / 2 - node.getSize().height / 2;
         var rect = canvas.rect(cx, cy, node.getSize().width, node.getSize().height);
         var order = node.getOrder() == null ? "r" : node.getOrder();
-        var text = canvas.text(node.getPosition().x + canvas.width/2, node.getPosition().y + canvas.height/2, node.getId() + "[" + order + "]");
+        var text = canvas.text(node.getPosition().x + canvas.width / 2, node.getPosition().y + canvas.height / 2, node.getId() + "[" + order + "]");
         text.attr('fill', '#FFF');
         var fillColor = this._rootNodes.contains(node) ? "#000" : "#c00";
         rect.attr('fill', fillColor);
 
-        rect.click(function() {console.log("[id:" + node.getId() + ", order:" + node.getOrder() + ", position: {" + node.getPosition().x + "," + node.getPosition().y + "}, size: {" + node.getSize().width + "," + node.getSize().height + "}");});
-        text.click(function() {console.log("[id:" + node.getId() + ", order:" + node.getOrder() + ", position: {" + node.getPosition().x + "," + node.getPosition().y + "}, size: {" + node.getSize().width + "," + node.getSize().height + "}");});
+        rect.click(function() {
+            console.log("[id:" + node.getId() + ", order:" + node.getOrder() + ", position: {" + node.getPosition().x + "," + node.getPosition().y + "}, size: {" + node.getSize().width + "," + node.getSize().height + "}");
+        });
+        text.click(function() {
+            console.log("[id:" + node.getId() + ", order:" + node.getOrder() + ", position: {" + node.getPosition().x + "," + node.getPosition().y + "}, size: {" + node.getSize().width + "," + node.getSize().height + "}");
+        });
 
-        for (var i=0; i<children.length; i++) {
+        for (var i = 0; i < children.length; i++) {
             var child = children[i];
             this._plot(canvas, child);
         }

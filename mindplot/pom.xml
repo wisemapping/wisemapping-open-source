@@ -61,7 +61,6 @@
                                     <filelist dir="${basedir}/src/main/javascript/libraries/moodialog/"
                                               files="MooDialog.Fx.js"/>
 
-                                    <filelist dir="${basedir}/src/main/javascript/" files="EventBus.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="model/IMindmap.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="model/Mindmap.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="model/INodeModel.js"/>
@@ -158,28 +157,13 @@
                                               files="commands/AddRelationshipCommand.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="commands/MoveControlPointCommand.js"/>
-                                    <!--<filelist dir="${basedir}/src/main/javascript/"-->
-                                    <!--files="commands/freeMind/DragTopicCommand.js"/>-->
-                                    <!--<filelist dir="${basedir}/src/main/javascript/"-->
-                                    <!--files="commands/freeMind/ReconnectTopicCommand.js"/>-->
-
 
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="layout/boards/Board.js"/>
-                                    <!--<filelist dir="${basedir}/src/main/javascript/"-->
-                                    <!--files="layout/boards/freemind/Board.js"/>-->
-                                    <!--<filelist dir="${basedir}/src/main/javascript/"-->
-                                    <!--files="layout/boards/freemind/Entry.js"/>-->
-                                    <!--<filelist dir="${basedir}/src/main/javascript/"-->
-                                    <!--files="layout/boards/freemind/CentralTopicBoard.js"/>-->
-                                    <!--<filelist dir="${basedir}/src/main/javascript/"-->
-                                    <!--files="layout/boards/freemind/MainTopicBoard.js"/>-->
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="layout/BaseLayoutManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="layout/OriginalLayoutManager.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layout/FreeMindLayoutManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="layout/LayoutManagerFactory.js"/>
 
@@ -212,6 +196,25 @@
                                               files="widget/IMenu.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="widget/Menu.js"/>
+
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="nlayout/EventBusDispatcher.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="nlayout/ChangeEvent.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="nlayout/LayoutManager.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="nlayout/Node.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="nlayout/RootedTreeSet.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="nlayout/ChildrenSorterStrategy.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="nlayout/SymetricSorter.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="nlayout/GridSorter.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="nlayout/OriginalLayout.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="nlayout/EventBus.js"/>
 
                                     <filelist dir="${basedir}/src/main/javascript/" files="footer.js"/>
                                 </concat>
