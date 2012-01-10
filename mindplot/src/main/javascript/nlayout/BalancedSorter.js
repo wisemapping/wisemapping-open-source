@@ -1,5 +1,5 @@
 mindplot.nlayout.BalancedSorter = new Class({
-    Extends: mindplot.nlayout.ChildrenSorterStrategy,
+    Extends: mindplot.nlayout.AbstractBasicSorter,
 
     initialize: function() {
 
@@ -89,23 +89,6 @@ mindplot.nlayout.BalancedSorter = new Class({
             child.setOrder(child.getOrder() - 1);
         }
         node.setOrder(0);
-    },
-
-    _getSortedChildren:function(treeSet, node) {
-        var result = treeSet.getChildren(node);
-        result.sort(function(a, b) {
-            return a.getOrder() - b.getOrder();
-        });
-        return result;
-    },
-
-    verify:function(treeSet, node) {
-        // Check that all is consistent ...
-        var children = this._getSortedChildren(treeSet, node);
-
-        for (var i = 0; i < children.length; i++) {
-            $assert(children[i].getOrder() == i, "missing order elements");
-        }
     },
 
     computeOffsets:function(treeSet, node) {

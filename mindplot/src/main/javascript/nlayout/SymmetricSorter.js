@@ -16,38 +16,9 @@
  *   limitations under the License.
  */
 mindplot.nlayout.SymmetricSorter = new Class({
-    Extends: mindplot.nlayout.ChildrenSorterStrategy,
+    Extends: mindplot.nlayout.AbstractBasicSorter,
     initialize:function() {
 
-    },
-
-    computeChildrenIdByHeights: function(treeSet, node) {
-        var result = {};
-        this._computeChildrenHeight(treeSet, node, result);
-        return result;
-    },
-
-    _computeChildrenHeight : function(treeSet, node, heightCache) {
-        var height = node.getSize().height + (mindplot.nlayout.SymmetricSorter.INTERNODE_VERTICAL_PADDING * 2); // 2* Top and down padding;
-
-        var result;
-        var children = treeSet.getChildren(node);
-        if (children.length == 0) {
-            result = height;
-        } else {
-            var childrenHeight = 0;
-            children.forEach(function(child) {
-                childrenHeight += this._computeChildrenHeight(treeSet, child, heightCache);
-            }, this);
-
-            result = Math.max(height, childrenHeight);
-        }
-
-        if (heightCache) {
-            heightCache[node.getId()] = result;
-        }
-
-        return result;
     },
 
     predict : function(parent, graph, position) {
@@ -107,23 +78,6 @@ mindplot.nlayout.SymmetricSorter = new Class({
         node.setOrder(0);
     },
 
-    _getSortedChildren:function(treeSet, node) {
-        var result = treeSet.getChildren(node);
-        result.sort(function(a, b) {
-            return a.getOrder() - b.getOrder()
-        });
-        return result;
-    },
-
-    verify:function(treeSet, node) {
-        // Check that all is consistent ...
-        var children = this._getSortedChildren(treeSet, node);
-
-        for (var i = 0; i < children.length; i++) {
-            $assert(children[i].getOrder() == i, "missing order elements");
-        }
-    },
-
     computeOffsets:function(treeSet, node) {
         $assert(treeSet, "treeSet can no be null.");
         $assert(node, "node can no be null.");
@@ -159,10 +113,6 @@ mindplot.nlayout.SymmetricSorter = new Class({
             result[heights[i].id] = {x:xOffset,y:yOffset};
         }
         return result;
-    },
-
-    _getRootNode: function(treeSet) {
-        var roots = treeSet.getTreeRoots();
     },
 
     toString:function() {
