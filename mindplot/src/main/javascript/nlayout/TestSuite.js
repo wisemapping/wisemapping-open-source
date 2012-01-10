@@ -45,7 +45,6 @@ mindplot.nlayout.TestSuite = new Class({
         manager.connectNode(3, 4, 0);
 
         manager.layout();
-        manager.dump();
         manager.plot("testAligned", {width:1200,height:200});
 
         // All nodes should be vertically aligned
@@ -89,7 +88,6 @@ mindplot.nlayout.TestSuite = new Class({
         manager.connectNode(6, 12, 1);
 
         manager.layout();
-        manager.dump();
         manager.plot("testSymmetry",{width:1200, height:400});
 
         //TODO(gb): make asserts
@@ -152,6 +150,7 @@ mindplot.nlayout.TestSuite = new Class({
     },
 
     testEvents: function() {
+        console.log("testEvents:");        //TODO(gb): Remove trace!!!
         var position = {x:0,y:0};
         var manager = new mindplot.nlayout.LayoutManager(0, mindplot.nlayout.TestSuite.ROOT_NODE_SIZE);
 
@@ -167,18 +166,17 @@ mindplot.nlayout.TestSuite = new Class({
         manager.connectNode(1, 3, 0);
 
         // Basic layout repositioning ...
-        console.log("-- Updated tree ---");
+        console.log("\t--- Updated tree ---");
         var events = [];
         manager.addEvent('change', function(event) {
-            console.log("Updated nodes: {id:" + event.getId() + ", order: " + event.getOrder() + ",position: {" + event.getPosition().x + "," + event.getPosition().y + "}");
+            console.log("\tUpdated nodes: {id:" + event.getId() + ", order: " + event.getOrder() + ",position: {" + event.getPosition().x + "," + event.getPosition().y + "}");
             events.push(event);
         });
         manager.layout(true);
-        manager.dump();
         manager.plot("testEvents1", {width:800, height:400});
 
         // Ok, if a new node is added, this an event should be fired  ...
-        console.log("---- Layout without changes should not affect the tree  ---");
+        console.log("\t---- Layout without changes should not affect the tree  ---");
         events.empty();
         manager.layout(true);
         manager.plot("testEvents2", {width:800, height:400});
@@ -186,9 +184,11 @@ mindplot.nlayout.TestSuite = new Class({
         $assert(events.length == 0, "Unnecessary tree updated.");
 
         //TODO(gb): make asserts
+        console.log("\n");        //TODO(gb): Remove trace!!!
     },
 
     testEventsComplex: function() {
+        console.log("testEventsComplex:");        //TODO(gb): Remove trace!!!
         var position = {x:0,y:0};
         var manager = new mindplot.nlayout.LayoutManager(0, mindplot.nlayout.TestSuite.ROOT_NODE_SIZE);
 
@@ -205,31 +205,31 @@ mindplot.nlayout.TestSuite = new Class({
 
         var events = [];
         manager.addEvent('change', function(event) {
-            console.log("Updated nodes: {id:" + event.getId() + ", order: " + event.getOrder() + ",position: {" + event.getPosition().x + "," + event.getPosition().y + "}");
+            console.log("\tUpdated nodes: {id:" + event.getId() + ", order: " + event.getOrder() + ",position: {" + event.getPosition().x + "," + event.getPosition().y + "}");
             events.push(event);
         });
 
         // Reposition ...
         manager.layout(true);
-        manager.dump();
         manager.plot("testEventsComplex1", {width:800, height:400});
 
         // Add a new node and connect. Only children nodes should be affected.
-        console.log("---- Connect a new node  ---");
+        console.log("\t---- Connect a new node  ---");
 
         events.empty();
         manager.connectNode(1, 4, 2);
         manager.layout(true);
-        manager.dump();
         manager.plot("testEventsComplex2", {width:800, height:400});
 
         // @todo: This seems no to be ok...
         $assert(events.length == 4, "Only 3 nodes should be repositioned.");
 
         //TODO(gb): make asserts
+        console.log("\n");        //TODO(gb): Remove trace!!!
     },
 
     testDisconnect: function() {
+        console.log("testDisconnect:");        //TODO(gb): Remove trace!!!
         var position = {x:0,y:0};
         var manager = new mindplot.nlayout.LayoutManager(0, mindplot.nlayout.TestSuite.ROOT_NODE_SIZE);
 
@@ -250,19 +250,17 @@ mindplot.nlayout.TestSuite = new Class({
             var pos = event.getPosition();
             var posStr = pos ? ",position: {" + pos.x + "," + pos.y : "";
             var node = manager.find(event.getId());
-            console.log("Updated nodes: {id:" + event.getId() + ", order: " + event.getOrder() + posStr + "}");
+            console.log("\tUpdated nodes: {id:" + event.getId() + ", order: " + event.getOrder() + posStr + "}");
             events.push(event);
         });
         manager.layout(true);
-        manager.dump();
         manager.plot("testDisconnect1", {width:800, height:400});
 
         // Now, disconnect one node ...
-        console.log("--- Disconnect a single node ---");
+        console.log("\t--- Disconnect a single node ---");
         events.empty();
         manager.disconnectNode(2);
         manager.layout(true);
-        manager.dump();
         manager.plot("testDisconnect2", {width:800, height:400});
 
         $assert(events.some(
@@ -271,10 +269,9 @@ mindplot.nlayout.TestSuite = new Class({
             }), "Event for disconnected node seems not to be propagated");
 
         // Great, let's disconnect a not with children.
-        console.log("--- Disconnect a node with children ---");
+        console.log("\t--- Disconnect a node with children ---");
         manager.disconnectNode(3);
         manager.layout(true);
-        manager.dump();
         manager.plot("testDisconnect3", {width:800, height:400});
 
         $assert(events.some(
@@ -283,6 +280,7 @@ mindplot.nlayout.TestSuite = new Class({
             }), "Event for disconnected node seems not to be propagated");
 
         //TODO(gb): make asserts
+        console.log("\n");        //TODO(gb): Remove trace!!!
     },
 
     testReconnect: function() {
@@ -315,20 +313,19 @@ mindplot.nlayout.TestSuite = new Class({
         manager.connectNode(6, 12, 1);
 
         manager.layout();
-        manager.dump();
         manager.plot("testReconnect1",{width:1000, height:400});
 
         // Reconnect node 6 to node 4
         manager.disconnectNode(6);
         manager.connectNode(4,6,0);
         manager.layout();
-        manager.dump();
         manager.plot("testReconnect2",{width:1000, height:400});
 
         //TODO(gb): make asserts
     },
 
     testRemoveNode: function() {
+        console.log("testRemoveNode:");        //TODO(gb): Remove trace!!!
         var position = {x:0,y:0};
         var manager = new mindplot.nlayout.LayoutManager(0, mindplot.nlayout.TestSuite.ROOT_NODE_SIZE);
 
@@ -347,21 +344,20 @@ mindplot.nlayout.TestSuite = new Class({
         manager.addEvent('change', function(event) {
             var pos = event.getPosition();
             var posStr = pos ? ",position: {" + pos.x + "," + event.getPosition().y : "";
-            console.log("Updated nodes: {id:" + event.getId() + ", order: " + event.getOrder() + posStr + "}");
+            console.log("\tUpdated nodes: {id:" + event.getId() + ", order: " + event.getOrder() + posStr + "}");
             events.push(event);
         });
         manager.layout(true);
-        manager.dump();
         manager.plot("testRemoveNode1", {width:800, height:200});
 
         // Test removal of a connected node ...
-        console.log("--- Remove node 3  ---");
+        console.log("\t--- Remove node 3  ---");
         manager.removeNode(3);
         manager.layout(true);
-        manager.dump();
         manager.plot("testRemoveNode2", {width:800, height:200});
 
         //TODO(gb): make asserts
+        console.log("\n");        //TODO(gb): Remove trace!!!
     },
 
     testFreePosition: function() {

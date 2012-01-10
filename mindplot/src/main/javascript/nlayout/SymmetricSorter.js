@@ -132,9 +132,8 @@ mindplot.nlayout.SymmetricSorter = new Class({
 
         // Compute heights ...
         var heights = children.map(function(child) {
-            return {id:child.getId(), position: child.getPosition(), height: this._computeChildrenHeight(treeSet, child)};
-        }, this);
-
+            return {id:child.getId(), order:child.getOrder(), position: child.getPosition(), height: this._computeChildrenHeight(treeSet, child)};
+        }, this).reverse();
 
         // Compute the center of the branch ...
         var totalHeight = 0;

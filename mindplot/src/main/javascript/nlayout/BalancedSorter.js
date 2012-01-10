@@ -94,7 +94,7 @@ mindplot.nlayout.BalancedSorter = new Class({
     _getSortedChildren:function(treeSet, node) {
         var result = treeSet.getChildren(node);
         result.sort(function(a, b) {
-            return a.getOrder() - b.getOrder()
+            return a.getOrder() - b.getOrder();
         });
         return result;
     },
@@ -117,7 +117,7 @@ mindplot.nlayout.BalancedSorter = new Class({
         // Compute heights ...
         var heights = children.map(function(child) {
             return {id:child.getId(), order:child.getOrder(), height:this._computeChildrenHeight(treeSet, child)};
-        }, this);
+        }, this).reverse();
 
 
         // Compute the center of the branch ...
@@ -164,5 +164,5 @@ mindplot.nlayout.BalancedSorter = new Class({
     }
 });
 
-mindplot.nlayout.BalancedSorter.INTERNODE_VERTICAL_PADDING = 10;
+mindplot.nlayout.BalancedSorter.INTERNODE_VERTICAL_PADDING = 5;
 mindplot.nlayout.BalancedSorter.INTERNODE_HORIZONTAL_PADDING = 5;
