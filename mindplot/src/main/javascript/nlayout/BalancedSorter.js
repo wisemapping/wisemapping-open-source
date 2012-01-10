@@ -149,7 +149,7 @@ mindplot.nlayout.BalancedSorter = new Class({
             }
 
             var yOffset = ysum + heights[i].height/2;
-            var xOffset = direction * (node.getSize().width + mindplot.nlayout.SymetricSorter.INTERNODE_HORIZONTAL_PADDING);
+            var xOffset = direction * (node.getSize().width + mindplot.nlayout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING);
 
             $assert(!isNaN(xOffset), "xOffset can not be null");
             $assert(!isNaN(yOffset), "yOffset can not be null");

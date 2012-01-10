@@ -15,7 +15,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.nlayout.SymetricSorter = new Class({
+mindplot.nlayout.SymmetricSorter = new Class({
     Extends: mindplot.nlayout.ChildrenSorterStrategy,
     initialize:function() {
 
@@ -28,7 +28,7 @@ mindplot.nlayout.SymetricSorter = new Class({
     },
 
     _computeChildrenHeight : function(treeSet, node, heightCache) {
-        var height = node.getSize().height + (mindplot.nlayout.SymetricSorter.INTERNODE_VERTICAL_PADDING * 2); // 2* Top and down padding;
+        var height = node.getSize().height + (mindplot.nlayout.SymmetricSorter.INTERNODE_VERTICAL_PADDING * 2); // 2* Top and down padding;
 
         var result;
         var children = treeSet.getChildren(node);
@@ -74,7 +74,7 @@ mindplot.nlayout.SymetricSorter = new Class({
         // Ok, no overlap. Suggest a new order.
         if (result) {
             var last = children.getLast();
-            result = [last.getOrder() + 1,{x:cpos.x,y:cpos.y - (mindplot.nlayout.SymetricSorter.INTERNODE_VERTICAL_PADDING * 4)}];
+            result = [last.getOrder() + 1,{x:cpos.x,y:cpos.y - (mindplot.nlayout.SymmetricSorter.INTERNODE_VERTICAL_PADDING * 4)}];
         }
 
         return result;
@@ -152,7 +152,7 @@ mindplot.nlayout.SymetricSorter = new Class({
             var direction = parent.getPosition().x > 0 ? 1 : -1;
 
             var yOffset = ysum + heights[i].height/2;
-            var xOffset = direction * (node.getSize().width + mindplot.nlayout.SymetricSorter.INTERNODE_HORIZONTAL_PADDING);
+            var xOffset = direction * (node.getSize().width + mindplot.nlayout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING);
 
             $assert(!isNaN(xOffset), "xOffset can not be null");
             $assert(!isNaN(yOffset), "yOffset can not be null");
@@ -171,7 +171,7 @@ mindplot.nlayout.SymetricSorter = new Class({
     }
 });
 
-mindplot.nlayout.SymetricSorter.INTERNODE_VERTICAL_PADDING = 5;
-mindplot.nlayout.SymetricSorter.INTERNODE_HORIZONTAL_PADDING = 5;
+mindplot.nlayout.SymmetricSorter.INTERNODE_VERTICAL_PADDING = 5;
+mindplot.nlayout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING = 5;
 
 

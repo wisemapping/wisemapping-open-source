@@ -28,7 +28,7 @@ mindplot.nlayout.OriginalLayout = new Class({
 
         var strategy = type === 'root' ?
             mindplot.nlayout.OriginalLayout.BALANCED_SORTER :
-            mindplot.nlayout.OriginalLayout.SYMETRIC_SORTER;
+            mindplot.nlayout.OriginalLayout.SYMMETRIC_SORTER;
         return new mindplot.nlayout.Node(id, size, position, strategy);
     },
 
@@ -120,7 +120,7 @@ mindplot.nlayout.OriginalLayout = new Class({
 
 });
 
-mindplot.nlayout.OriginalLayout.SYMETRIC_SORTER = new mindplot.nlayout.SymetricSorter();
+mindplot.nlayout.OriginalLayout.SYMMETRIC_SORTER = new mindplot.nlayout.SymmetricSorter();
 mindplot.nlayout.OriginalLayout.GRID_SORTER = new mindplot.nlayout.GridSorter();
 mindplot.nlayout.OriginalLayout.BALANCED_SORTER = new mindplot.nlayout.BalancedSorter();
 

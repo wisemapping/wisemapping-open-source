@@ -16,7 +16,7 @@
  *   limitations under the License.
  */
 mindplot.nlayout.GridSorter = new Class({
-    Extends: mindplot.nlayout.SymetricSorter,
+    Extends: mindplot.nlayout.SymmetricSorter,
 
     computeOffsets: function(treeSet, node) {
         $assert(treeSet, "treeSet can no be null.");
