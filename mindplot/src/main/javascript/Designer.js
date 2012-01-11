@@ -413,7 +413,6 @@ mindplot.Designer = new Class({
                     this._nodeModelToNodeGraph(child, false);
             }
 
-
             return nodeGraph;
         },
 

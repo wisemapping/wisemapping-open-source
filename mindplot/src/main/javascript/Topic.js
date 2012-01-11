@@ -1187,6 +1187,7 @@ mindplot.Topic = new Class({
             workspace.removeChild(line);
         }
         this._isInWorkspace = false;
+        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeRemoved, this.getModel());
     },
 
     addToWorkspace : function(workspace) {

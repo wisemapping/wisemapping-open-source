@@ -137,6 +137,18 @@ mindplot.DesignerModel = new Class({
     selectedTopic : function() {
         var topics = this.filterSelectedTopics();
         return (topics.length > 0) ? topics[0] : null;
-    }
+    },
 
+    findTopicById: function(id) {
+        var result = null;
+        for (var i = 0; i < this._topics.length; i++) {
+            var topic = this._topics[i];
+            if(topic.getId()==id){
+                result = topic;
+                break;
+            }
+        }
+        return result;
+
+    }
 });

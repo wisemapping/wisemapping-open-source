@@ -23,6 +23,12 @@ mindplot.nlayout.EventBusDispatcher = new Class({
 
         var size = {width:25,height:25};
         this._layoutManager = new mindplot.nlayout.LayoutManager(0, size);
+
+        this._layoutManager.addEvent('change', function(event) {
+            var id = event.getId();
+            var topic = designerModel.findTopicById(id);
+            console.log("Modifing position to:" + id);
+        });
     },
 
     registerBusEvents:function () {
@@ -72,7 +78,7 @@ mindplot.nlayout.EventBusDispatcher = new Class({
     },
 
     _nodeRemoved: function(node) {
-        console.log("mindplot.nlayout.EventBusDispatcher._nodeRemoved: Not Implemented yet");
+        this._layoutManager.removeNode(node.getId());
     },
 
     _doLayout: function() {
