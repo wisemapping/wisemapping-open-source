@@ -32,7 +32,9 @@ mindplot.nlayout.LayoutManager = new Class({
     updateNodeSize: function(id, size) {
         var node = this._treeSet.find(id);
         node.setSize(size);
-        // @Todo: finish...
+        console.log("Size:"+size.width);
+
+        // Todo: This must be completed ...
     },
 
     updateShirkState: function(id, isShrink) {

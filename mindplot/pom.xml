@@ -209,7 +209,11 @@
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="nlayout/ChildrenSorterStrategy.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="nlayout/SymetricSorter.js"/>
+                                              files="nlayout/AbstractBasicSorter.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="nlayout/BalancedSorter.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="nlayout/SymmetricSorter.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="nlayout/GridSorter.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"

@@ -1,3 +1,20 @@
+/*
+ *    Copyright [2011] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 mindplot.nlayout.BalancedSorter = new Class({
     Extends: mindplot.nlayout.AbstractBasicSorter,
 
@@ -66,13 +83,17 @@ mindplot.nlayout.BalancedSorter = new Class({
 
     insert: function(treeSet, parent, child, order) {
         var children = this._getSortedChildren(treeSet, parent);
-        $assert(order <= children.length, "Order must be continues and can not have holes. Order:" + order);
-        $assert(order <= children.length, "Order must be continues and can not have holes. Order:" + order);
 
-        // Shift all the elements in one .
+        // Shift all the elements in one. In case of balanced sorter, order don't need to be continues ...
+        var collision = order;
         for (var i = order; i < children.length; i++) {
             var node = children[i];
-            node.setOrder(i + 1);
+
+            // @Todo: This must be review. Order balance need to be defined ...
+            if (node.getOrder() == collision) {
+                collision = collision + 1;
+                node.setOrder(collision);
+            }
         }
         child.setOrder(order);
     },
@@ -98,9 +119,10 @@ mindplot.nlayout.BalancedSorter = new Class({
         var children = this._getSortedChildren(treeSet, node);
 
         // Compute heights ...
-        var heights = children.map(function(child) {
-            return {id:child.getId(), order:child.getOrder(), height:this._computeChildrenHeight(treeSet, child)};
-        }, this).reverse();
+        var heights = children.map(
+            function(child) {
+                return {id:child.getId(), order:child.getOrder(), height:this._computeChildrenHeight(treeSet, child)};
+            }, this).reverse();
 
 
         // Compute the center of the branch ...
@@ -114,8 +136,8 @@ mindplot.nlayout.BalancedSorter = new Class({
                 totalNHeight += elem.height;
             }
         });
-        var psum = totalPHeight/2;
-        var nsum = totalNHeight/2;
+        var psum = totalPHeight / 2;
+        var nsum = totalNHeight / 2;
         var ysum = 0;
 
         // Calculate the offsets ...
@@ -131,7 +153,7 @@ mindplot.nlayout.BalancedSorter = new Class({
                 ysum = nsum;
             }
 
-            var yOffset = ysum + heights[i].height/2;
+            var yOffset = ysum + heights[i].height / 2;
             var xOffset = direction * (node.getSize().width + mindplot.nlayout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING);
 
             $assert(!isNaN(xOffset), "xOffset can not be null");
@@ -144,6 +166,10 @@ mindplot.nlayout.BalancedSorter = new Class({
 
     toString:function() {
         return "Balanced Sorter";
+    },
+
+    verify:function(treeSet, node) {
+        // @todo...
     }
 });
 

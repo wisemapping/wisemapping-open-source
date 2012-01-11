@@ -1044,7 +1044,7 @@ mindplot.Topic = new Class({
             // Update the figure position(ej: central topic must be centered) and children position.
             this._updatePositionOnChangeSize(oldSize, size);
 
-            mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeResizeEvent, [this]);
+            mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeResizeEvent, {node:this.getModel(),size:size});
 
         }
     },

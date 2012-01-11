@@ -54,7 +54,6 @@ mindplot.nlayout.SymmetricSorter = new Class({
     insert: function(treeSet, parent, child, order) {
         var children = this._getSortedChildren(treeSet, parent);
         $assert(order <= children.length, "Order must be continues and can not have holes. Order:" + order);
-        $assert(order <= children.length, "Order must be continues and can not have holes. Order:" + order);
 
         // Shift all the elements in one .
         for (var i = order; i < children.length; i++) {
@@ -85,9 +84,10 @@ mindplot.nlayout.SymmetricSorter = new Class({
         var children = this._getSortedChildren(treeSet, node);
 
         // Compute heights ...
-        var heights = children.map(function(child) {
-            return {id:child.getId(), order:child.getOrder(), position: child.getPosition(), height: this._computeChildrenHeight(treeSet, child)};
-        }, this).reverse();
+        var heights = children.map(
+            function(child) {
+                return {id:child.getId(), order:child.getOrder(), position: child.getPosition(), height: this._computeChildrenHeight(treeSet, child)};
+            }, this).reverse();
 
         // Compute the center of the branch ...
         var totalHeight = 0;
@@ -104,7 +104,7 @@ mindplot.nlayout.SymmetricSorter = new Class({
             var parent = treeSet.getParent(treeSet.find(heights[i].id));
             var direction = parent.getPosition().x > 0 ? 1 : -1;
 
-            var yOffset = ysum + heights[i].height/2;
+            var yOffset = ysum + heights[i].height / 2;
             var xOffset = direction * (node.getSize().width + mindplot.nlayout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING);
 
             $assert(!isNaN(xOffset), "xOffset can not be null");
@@ -113,6 +113,15 @@ mindplot.nlayout.SymmetricSorter = new Class({
             result[heights[i].id] = {x:xOffset,y:yOffset};
         }
         return result;
+    },
+
+    verify:function(treeSet, node) {
+        // Check that all is consistent ...
+        var children = this._getSortedChildren(treeSet, node);
+
+        for (var i = 0; i < children.length; i++) {
+            $assert(children[i].getOrder() == i, "missing order elements");
+        }
     },
 
     toString:function() {

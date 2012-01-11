@@ -27,7 +27,10 @@ mindplot.nlayout.EventBusDispatcher = new Class({
         this._layoutManager.addEvent('change', function(event) {
             var id = event.getId();
             var topic = designerModel.findTopicById(id);
-            console.log("Modifing position to:" + id);
+            console.log("Modify position to:" + id);
+
+            topic.setPosition(event.getPosition());
+            topic.setOrder(event.getOrder());
         });
     },
 
@@ -43,8 +46,8 @@ mindplot.nlayout.EventBusDispatcher = new Class({
         mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.DoLayout, this._doLayout.bind(this));
     },
 
-    _nodeResizeEvent: function(node) {
-        console.log("mindplot.nlayout.EventBusDispatcher._nodeResizeEvent: Not Implemented yet");
+    _nodeResizeEvent: function(args) {
+        this._layoutManager.updateNodeSize(args.node.getId(), args.size);
     },
 
     _nodeMoveEvent: function(node) {
@@ -82,11 +85,12 @@ mindplot.nlayout.EventBusDispatcher = new Class({
     },
 
     _doLayout: function() {
-        this._layoutManager.layout(true);
-        console.log("---------");
-        this._layoutManager.dump();
-        console.log("---------");
-
+        (function() {
+            this._layoutManager.layout(true);
+            console.log("---------");
+            this._layoutManager.dump();
+            console.log("---------");
+        }).delay(0, this);
     }
 
 });

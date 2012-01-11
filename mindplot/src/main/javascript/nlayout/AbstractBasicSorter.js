@@ -53,14 +53,5 @@ mindplot.nlayout.AbstractBasicSorter = new Class({
             return a.getOrder() - b.getOrder()
         });
         return result;
-    },
-
-    verify:function(treeSet, node) {
-        // Check that all is consistent ...
-        var children = this._getSortedChildren(treeSet, node);
-
-        for (var i = 0; i < children.length; i++) {
-            $assert(children[i].getOrder() == i, "missing order elements");
-        }
     }
 });
