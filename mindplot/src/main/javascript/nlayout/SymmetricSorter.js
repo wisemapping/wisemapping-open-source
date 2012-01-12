@@ -48,6 +48,8 @@ mindplot.nlayout.SymmetricSorter = new Class({
             result = [last.getOrder() + 1,{x:cpos.x,y:cpos.y - (mindplot.nlayout.SymmetricSorter.INTERNODE_VERTICAL_PADDING * 4)}];
         }
 
+        //TODO(gb): also return order!
+
         return result;
     },
 
@@ -100,8 +102,9 @@ mindplot.nlayout.SymmetricSorter = new Class({
         var result = {};
         for (var i = 0; i < heights.length; i++) {
             ysum = ysum - heights[i].height;
-
             var parent = treeSet.getParent(treeSet.find(heights[i].id));
+
+            //TODO(gb): actually compare to branch's root node position
             var direction = parent.getPosition().x > 0 ? 1 : -1;
 
             var yOffset = ysum + heights[i].height / 2;

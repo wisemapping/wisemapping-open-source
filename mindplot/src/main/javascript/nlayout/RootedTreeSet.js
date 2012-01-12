@@ -158,10 +158,10 @@ mindplot.nlayout.RootedTreeSet = new Class({
         rect.attr('fill', fillColor);
 
         rect.click(function() {
-            console.log("[id:" + node.getId() + ", order:" + node.getOrder() + ", position: {" + node.getPosition().x + "," + node.getPosition().y + "}, size: {" + node.getSize().width + "," + node.getSize().height + "}");
+            console.log("[id:" + node.getId() + ", order:" + node.getOrder() + ", position:(" + node.getPosition().x + "," + node.getPosition().y + "), size:" + node.getSize().width + "x" + node.getSize().height + ", sorter:" + node.getSorter() +"]");
         });
         text.click(function() {
-            console.log("[id:" + node.getId() + ", order:" + node.getOrder() + ", position: {" + node.getPosition().x + "," + node.getPosition().y + "}, size: {" + node.getSize().width + "," + node.getSize().height + "}");
+            console.log("[id:" + node.getId() + ", order:" + node.getOrder() + ", position:(" + node.getPosition().x + "," + node.getPosition().y + "), size:" + node.getSize().width + "x" + node.getSize().height + ", sorter:" + node.getSorter() +"]");
         });
 
         for (var i = 0; i < children.length; i++) {

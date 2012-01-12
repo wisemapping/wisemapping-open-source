@@ -81,6 +81,7 @@ mindplot.nlayout.OriginalLayout = new Class({
 
         var nodeId = node.getId();
         var children = this._treeSet.getChildren(node);
+        var parent = this._treeSet.getParent(node);
         var childrenOrderMoved = children.some(function(child) {
             return child.hasOrderChanged();
         });
@@ -88,9 +89,12 @@ mindplot.nlayout.OriginalLayout = new Class({
         // If ether any of the nodes has been changed of position or the height of the children is not
         // the same, children nodes must be repositioned ....
         var newBranchHeight = heightById[nodeId];
-        var heightChanged = node._branchHeight != newBranchHeight;
-        if (childrenOrderMoved || heightChanged) {
 
+        var parentHeightChanged = $defined(parent) ? parent._heightChanged : false;
+        var heightChanged = node._branchHeight != newBranchHeight;
+        node._heightChanged = heightChanged || parentHeightChanged;
+
+        if (childrenOrderMoved || heightChanged || parentHeightChanged) {
             var sorter = node.getSorter();
             var offsetById = sorter.computeOffsets(this._treeSet, node);
             var parentPosition = node.getPosition();
