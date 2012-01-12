@@ -17,11 +17,13 @@
  */
 
 mindplot.DragTopicPositioner = new Class({
-    initialize:function(layoutManager) {
-        $assert(layoutManager, 'layoutManager can not be null');
-        this._layoutManager = layoutManager;
-        this._topics = layoutManager.getDesigner().getModel().getTopics();
-        this._workspace = layoutManager.getDesigner().getWorkSpace();
+    initialize:function(designerModel, workspace) {
+        $assert(designerModel, 'designerModel can not be null');
+        $assert(workspace, 'workspace can not be null');
+
+        // this._layoutManager = layoutManager;
+        this._designerModel = designerModel;
+        this._workspace = workspace;
     },
 
     positionateDragTopic : function(dragTopic) {
@@ -71,8 +73,7 @@ mindplot.DragTopicPositioner = new Class({
         // Finally, connect nodes ...
         if (!dragTopic.isConnected()) {
             var centalTopic = topics[0];
-            if ($defined(mainTopicToMainTopicConnection))
-            {
+            if ($defined(mainTopicToMainTopicConnection)) {
                 dragTopic.connectTo(mainTopicToMainTopicConnection);
             } else if (Math.abs(dragTopic.getPosition().x - centalTopic.getPosition().x) <= mindplot.DragTopicPositioner.CENTRAL_TO_MAINTOPIC_MAX_HORIZONTAL_DISTANCE) {
                 dragTopic.connectTo(centalTopic);

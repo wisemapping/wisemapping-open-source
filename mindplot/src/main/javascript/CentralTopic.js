@@ -53,31 +53,6 @@ mindplot.CentralTopic = new Class({
         return false;
     },
 
-    createChildModel : function(prepositionate) {
-        // Create a new node ...
-        var model = this.getModel();
-        var mindmap = model.getMindmap();
-        var childModel = mindmap.createNode(mindplot.model.INodeModel.MAIN_TOPIC_TYPE);
-
-        if (prepositionate) {
-            if (!$defined(this.___siblingDirection)) {
-                this.___siblingDirection = 1;
-            }
-
-            // Position following taking into account this internal flag ...
-            if (this.___siblingDirection == 1) {
-
-                childModel.setPosition(150, 0);
-            } else {
-                childModel.setPosition(-150, 0);
-            }
-            this.___siblingDirection = -this.___siblingDirection;
-        }
-        // Create a new node ...
-        childModel.setOrder(0);
-
-        return childModel;
-    },
 
     _defaultShapeType : function() {
         return  mindplot.model.INodeModel.SHAPE_TYPE_ROUNDED_RECT;

@@ -23,14 +23,7 @@ mindplot.layout.OriginalLayoutManager = new Class({
     },
     initialize:function(designer, options) {
         this.parent(designer, options);
-        this._dragTopicPositioner = new mindplot.DragTopicPositioner(this);
 
-        // Init drag manager.
-        var workSpace = this.getDesigner().getWorkSpace();
-        this._dragger = this._buildDragManager(workSpace);
-
-        // Add shapes to speed up the loading process ...
-        mindplot.DragTopic.init(workSpace);
     },
 
     prepareNode:function(node, children) {
@@ -77,60 +70,7 @@ mindplot.layout.OriginalLayoutManager = new Class({
         return this._dragTopicPositioner;
     },
 
-    _buildDragManager: function(workspace) {
-        // Init dragger manager.
-        var dragger = new mindplot.DragManager(workspace);
-        var topics = this.getDesigner().getModel().getTopics();
 
-        var dragTopicPositioner = this.getDragTopicPositioner();
-
-        dragger.addEvent('startdragging', function(event, node) {
-            // Enable all mouse events.
-            for (var i = 0; i < topics.length; i++) {
-                topics[i].setMouseEventsEnabled(false);
-            }
-        });
-
-        dragger.addEvent('dragging', function(event, dragTopic) {
-            // Update the state and connections of the topic ...
-            dragTopicPositioner.positionateDragTopic(dragTopic);
-        });
-
-        dragger.addEvent('enddragging', function(event, dragTopic) {
-            // Enable all mouse events.
-            for (var i = 0; i < topics.length; i++) {
-                topics[i].setMouseEventsEnabled(true);
-            }
-            // Topic must be positioned in the real board postion.
-            if (dragTopic._isInTheWorkspace) {
-                var draggedTopic = dragTopic.getDraggedTopic();
-
-                // Hide topic during draw ...
-                draggedTopic.setBranchVisibility(false);
-                var parentNode = draggedTopic.getParent();
-                dragTopic.updateDraggedTopic(workspace);
-
-
-                // Make all node visible ...
-                draggedTopic.setVisibility(true);
-                if (parentNode != null) {
-                    parentNode.setBranchVisibility(true);
-                }
-            }
-        });
-
-        return dragger;
-    },
-
-    registerListenersOnNode : function(topic) {
-        // Register node listeners ...
-        if (topic.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
-
-            // Central Topic doesn't support to be dragged
-            var dragger = this._dragger;
-            dragger.add(topic);
-        }
-    },
 
     _createMainTopicBoard:function(node) {
         return new mindplot.layout.boards.original.MainTopicBoard(node, this);

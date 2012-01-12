@@ -367,7 +367,6 @@ mindplot.widget.Menu = new Class({
                 var disable = false;
                 if (button.isTopicAction() && button.isRelAction()) {
                     disable = rels.length == 0 && topics.length == 0;
-                    console.log(disable);
                 } else if (!button.isTopicAction() && !button.isRelAction()) {
                     disable = false;
                 }

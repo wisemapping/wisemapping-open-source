@@ -43,21 +43,20 @@ mindplot.Designer = new Class({
             this._workspace = new mindplot.Workspace(screenManager, this._model.getZoom());
             this._readOnly = profile.readOnly ? true : false;
 
-
             // Register events
             if (!profile.readOnly) {
                 this._registerEvents();
+
+                // Init drag related classes ...
+                this._dragTopicPositioner = new mindplot.DragTopicPositioner(this.getModel(), this._workspace);
+                this._dragger = this._buildDragManager(this._workspace);
+                mindplot.DragTopic.init(this._workspace);
             }
 
             this._relPivot = new mindplot.RelationshipPivot(this._workspace, this);
 
             // Init layout manager ...
             this._eventBussDispatcher = new mindplot.nlayout.EventBusDispatcher(this.getModel());
-
-            // @todo: To be removed ...
-            this._layoutManager = new mindplot.layout.OriginalLayoutManager(this);
-
-
         },
 
         _registerEvents : function() {
@@ -123,6 +122,51 @@ mindplot.Designer = new Class({
 
         },
 
+        _buildDragManager: function(workspace) {
+            // Init dragger manager.
+            var dragger = new mindplot.DragManager(workspace);
+            var topics = this.getModel().getTopics();
+
+            var dragTopicPositioner = this._dragTopicPositioner;
+
+            dragger.addEvent('startdragging', function(event, node) {
+                // Enable all mouse events.
+                for (var i = 0; i < topics.length; i++) {
+                    topics[i].setMouseEventsEnabled(false);
+                }
+            });
+
+            dragger.addEvent('dragging', function(event, dragTopic) {
+                // Update the state and connections of the topic ...
+                dragTopicPositioner.positionateDragTopic(dragTopic);
+            });
+
+            dragger.addEvent('enddragging', function(event, dragTopic) {
+                // Enable all mouse events.
+                for (var i = 0; i < topics.length; i++) {
+                    topics[i].setMouseEventsEnabled(true);
+                }
+                // Topic must be positioned in the real board postion.
+                if (dragTopic._isInTheWorkspace) {
+                    var draggedTopic = dragTopic.getDraggedTopic();
+
+                    // Hide topic during draw ...
+                    draggedTopic.setBranchVisibility(false);
+                    var parentNode = draggedTopic.getParent();
+                    dragTopic.updateDraggedTopic(workspace);
+
+
+                    // Make all node visible ...
+                    draggedTopic.setVisibility(true);
+                    if (parentNode != null) {
+                        parentNode.setBranchVisibility(true);
+                    }
+                }
+            });
+
+            return dragger;
+        },
+
         setViewPort : function(size) {
             this._workspace.setViewPort(size);
             var model = this.getModel();
@@ -134,20 +178,24 @@ mindplot.Designer = new Class({
 
             // Create node graph ...
             var topic = mindplot.NodeGraph.create(model);
-            this._layoutManager.addHelpers(topic);
 
             // Append it to the workspace ...
             this.getModel().addTopic(topic);
 
             // Add Topic events ...
             if (!this._readOnly) {
-                // Add drag behaviour ...
-                this._layoutManager.registerListenersOnNode(topic);
-
                 // If a node had gained focus, clean the rest of the nodes ...
                 topic.addEvent('mousedown', function(event) {
                     this.onObjectFocusEvent(topic, event);
                 }.bind(this));
+
+                // Register node listeners ...
+                if (topic.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
+
+                    // Central Topic doesn't support to be dragged
+                    var dragger = this._dragger;
+                    dragger.add(topic);
+                }
             }
 
             // Connect Topic ...
@@ -282,7 +330,7 @@ mindplot.Designer = new Class({
             // Add new node ...
             var parentTopic = nodes[0];
             var parentTopicId = parentTopic.getId();
-            var childModel = parentTopic.createChildModel(this._layoutManager.needsPrepositioning());
+            var childModel = parentTopic.createChildModel();
 
             // Execute event ...
             this._actionDispatcher.addTopic(childModel, parentTopicId, true);
@@ -310,7 +358,7 @@ mindplot.Designer = new Class({
 
             } else {
                 var parentTopic = topic.getOutgoingConnectedTopic();
-                var siblingModel = topic.createSiblingModel(this._layoutManager.needsPrepositioning());
+                var siblingModel = topic.createSiblingModel();
                 var parentTopicId = parentTopic.getId();
 
                 this._actionDispatcher.addTopic(siblingModel, parentTopicId, true);
@@ -401,8 +449,7 @@ mindplot.Designer = new Class({
             if (isVisible)
                 nodeGraph.setVisibility(isVisible);
 
-            var children = nodeModel.getChildren().slice();
-            children = this._layoutManager.prepareNode(nodeGraph, children);
+            var children = nodeModel.getChildren();
 
             var workspace = this._workspace;
             workspace.appendChild(nodeGraph);

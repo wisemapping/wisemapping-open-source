@@ -24,49 +24,6 @@ mindplot.MainTopic = new Class({
 
     INNER_RECT_ATTRIBUTES : {stroke:'0.5 solid #009900'},
 
-    createSiblingModel : function(positionate) {
-        var result = null;
-        var parentTopic = this.getOutgoingConnectedTopic();
-        if (parentTopic != null) {
-            // Create a new node ...
-            var model = this.getModel();
-            var mindmap = model.getMindmap();
-            result = mindmap.createNode(mindplot.model.INodeModel.MAIN_TOPIC_TYPE);
-
-            // Positionate following taking into account the sibling position.
-            if (positionate && parentTopic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
-                var pos = this.getPosition();
-                result.setPosition(pos.x, pos.y);
-            }
-
-            // Create a new node ...
-            var order = this.getOrder() + 1;
-            result.setOrder(order);
-        }
-        return result;
-    },
-
-    createChildModel : function(prepositionate) {
-        // Create a new node ...
-        var model = this.getModel();
-        var mindmap = model.getMindmap();
-        var childModel = mindmap.createNode(mindplot.model.INodeModel.MAIN_TOPIC_TYPE);
-
-        // Get the hights model order position ...
-        var children = this._getChildren();
-        var order = -1;
-        for (var i = 0; i < children.length; i++) {
-            var child = children[i];
-            if (child.getOrder() > order) {
-                order = child.getOrder();
-            }
-        }
-        // Create a new node ...
-        childModel.setOrder(order + 1);
-        return childModel;
-    },
-
-
     _buildDragShape : function() {
         var innerShape = this.buildShape(this.INNER_RECT_ATTRIBUTES);
         var size = this.getSize();
@@ -113,9 +70,6 @@ mindplot.MainTopic = new Class({
                 this._setShapeType(shapeType, false);
             }
         }
-        this._helpers.forEach(function(helper) {
-            helper.moveToFront();
-        });
     },
 
     disconnect : function(workspace) {
@@ -274,9 +228,25 @@ mindplot.MainTopic = new Class({
     _defaultBorderColor : function() {
         return '#023BB9';
     },
-    addSibling : function() {
-        var order = this.getOrder();
+
+    // @todo: Removed !!!
+    createSiblingModel : function() {
+        var result = null;
+        var parentTopic = this.getOutgoingConnectedTopic();
+        if (parentTopic != null) {
+            // Create a new node ...
+            var model = this.getModel();
+            var mindmap = model.getMindmap();
+            result = mindmap.createNode(mindplot.model.INodeModel.MAIN_TOPIC_TYPE);
+
+            // Create a new node ...
+            var order = this.getOrder() + 1;
+            result.setOrder(order);
+            result.setPosition(10,10);
+        }
+        return result;
     }
+
 });
 
 mindplot.MainTopic.DEFAULT_MAIN_TOPIC_HEIGHT = 18;
