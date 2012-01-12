@@ -30,15 +30,19 @@ mindplot.nlayout.LayoutManager = new Class({
     },
 
     updateNodeSize: function(id, size) {
+        $assert($defined(id), "id can not be null");
+
         var node = this._treeSet.find(id);
         node.setSize(size);
-        console.log("Size:"+size.width);
 
         // Todo: This must be completed ...
     },
 
-    updateShirkState: function(id, isShrink) {
-        // @Todo: finish...
+    updateShrinkState: function(id, value) {
+        $assert($defined(id), "id can not be null");
+
+        var node = this._treeSet.find(id);
+        node.setShrunken(value);
     },
 
     find: function(id) {
@@ -46,7 +50,7 @@ mindplot.nlayout.LayoutManager = new Class({
     },
 
     move: function() {
-      //TODO(gb): implement
+        //TODO(gb): implement
     },
 
     connectNode: function(parentId, childId, order) {
@@ -101,7 +105,7 @@ mindplot.nlayout.LayoutManager = new Class({
         size = size || {width:200,height:200};
         var squaresize = 10;
         var canvas = Raphael(containerId, size.width, size.height);
-        canvas.drawGrid(0, 0, size.width, size.height, size.width/squaresize, size.height/squaresize);
+        canvas.drawGrid(0, 0, size.width, size.height, size.width / squaresize, size.height / squaresize);
         this._treeSet.plot(canvas);
     },
 

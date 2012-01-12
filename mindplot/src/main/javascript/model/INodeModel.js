@@ -163,25 +163,12 @@ mindplot.model.INodeModel = new Class({
         this.putProperty('backgroundColor', color);
     },
 
-    areChildrenShrinked  : function() {
-        return this.getProperty('childrenShrinked');
+    areChildrenShrunken  : function() {
+        return this.getProperty('shrunken');
     },
 
-    setChildrenShrinked  : function(value) {
-        this.putProperty('childrenShrinked', value);
-    },
-
-    setFinalPosition  : function(x, y) {
-        $assert(x, "x coordinate must be defined");
-        $assert(y, "y coordinate must be defined");
-
-        this.putProperty('finalPosition', '{x:' + parseInt(x) + ',y:' + parseInt(y) + '}');
-    },
-
-    getFinalPosition  : function() {
-        var value = this.getProperty('finalPosition');
-        return eval("(" + value + ")");
-
+    setChildrenShrunken  : function(value) {
+        this.putProperty('shrunken', value);
     },
 
     isNodeModel  : function() {

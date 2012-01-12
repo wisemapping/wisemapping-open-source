@@ -394,7 +394,7 @@ mindplot.Designer = new Class({
 
 
         getMindmapProperties : function() {
-            return   {zoom:this.getModel().getZoom(), layoutManager:this._layoutManager.getClassName()};
+            return   {zoom:this.getModel().getZoom()};
         },
 
         loadMap : function(mindmapModel) {

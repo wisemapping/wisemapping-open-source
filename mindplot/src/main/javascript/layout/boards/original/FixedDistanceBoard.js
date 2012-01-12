@@ -131,7 +131,7 @@ mindplot.layout.boards.original.FixedDistanceBoard = new Class({
         var entries = this._entries;
         var height = 0;
         var model = this._topic.getModel();
-        if (entries.length >= 1 && !model.areChildrenShrinked()) {
+        if (entries.length >= 1 && !model.areChildrenShrunken()) {
             for (var i = 0; i < entries.length; i++) {
                 var e = entries[i];
                 if (e && e.getTopic()) {

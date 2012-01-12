@@ -220,7 +220,7 @@ mindplot.StandaloneActionDispatcher = new Class({
         $assert(topicsIds, "topicsIds can not be null");
 
         var commandFunc = function(topic, isShrink) {
-            topic.setChildrenShrinked(isShrink);
+            topic.setChildrenShrunken(isShrink);
             return !isShrink;
         };
 

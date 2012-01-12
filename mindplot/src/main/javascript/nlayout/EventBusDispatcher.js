@@ -70,7 +70,7 @@ mindplot.nlayout.EventBusDispatcher = new Class({
     },
 
     _nodeShrinkEvent: function(node) {
-        console.log("mindplot.nlayout.EventBusDispatcher._nodeShrinkEvent: Not Implemented yet");
+        this._layoutManager.updateShrinkState(node.getId(), node.areChildrenShrunken());
     },
 
     _nodeAdded: function(node) {

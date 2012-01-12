@@ -60,7 +60,7 @@ mindplot.DragTopic = new Class({
         $assert(targetTopic, 'parent can not be null');
 
         var result = true;
-        if (!targetTopic.areChildrenShrinked() && !targetTopic.isCollapsed()) {
+        if (!targetTopic.areChildrenShrunken() && !targetTopic.isCollapsed()) {
             // Dragged node can not be connected to himself.
             if (targetTopic == this._draggedNode) {
                 result = false;

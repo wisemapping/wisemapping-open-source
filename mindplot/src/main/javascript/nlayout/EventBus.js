@@ -24,13 +24,8 @@ mindplot.EventBus = new Class({
 mindplot.EventBus.events = {
     NodeResizeEvent:'NodeResizeEvent',
     NodeMoveEvent:'NodeMoveEvent',
-    ONodeDisconnectEvent:'ONodeDisconnectEvent',
-    ONodeConnectEvent:'ONodeConnectEvent',
     NodeRepositionateEvent:'NodeRepositionateEvent',
     NodeShrinkEvent:'NodeShrinkEvent',
-    NodeMouseOverEvent:'NodeMouseOverEvent',
-    NodeMouseOutEvent:'NodeMouseOutEvent',
-
     NodeConnectEvent:'NodeConnectEvent',
     NodeDisconnectEvent:'NodeDisconnectEvent',
     NodeAdded:'NodeAdded',

@@ -26,7 +26,7 @@ mindplot.model.NodeModel = new Class({
         this.parent(mindmap);
         this.setId(id);
         this.setType(type);
-        this.areChildrenShrinked(false);
+        this.areChildrenShrunken(false);
         this.setSize(50, 20);
 
         this._children = [];

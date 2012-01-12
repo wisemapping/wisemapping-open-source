@@ -28,15 +28,24 @@ mindplot.nlayout.Node = new Class({
 
         this.setSize(size);
         this.setPosition(position);
+        this.setShrunken(false);
     },
 
     getId:function() {
         return this._id;
     },
 
+    setShrunken: function(value) {
+        this._setProperty('shrink', value);
+    },
+
+    areChildrenShrunken: function() {
+        return this._getProperty('shrink');
+    },
+
     setOrder: function(order) {
         $assert(typeof order === 'number' && isFinite(order), "Order can not be null. Value:" + order);
-        this._setProperty('order', order, false);
+        this._setProperty('order', order);
     },
 
     resetPositionState : function() {

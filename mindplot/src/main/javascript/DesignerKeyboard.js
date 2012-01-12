@@ -39,8 +39,8 @@ mindplot.DesignerKeyboard = new Class({
                 var node = model.selectedTopic();
                 if (node) {
                     var model = topic.getModel();
-                    var isShrink = !model.areChildrenShrinked();
-                    topic.setChildrenShrinked(isShrink);
+                    var isShrink = !model.areChildrenShrunken();
+                    topic.setChildrenShrunken(isShrink);
                 }
             }.bind(this),
 
@@ -141,7 +141,7 @@ mindplot.DesignerKeyboard = new Class({
                         if (node.getPosition().x < 0) {
                             this._goToParent(designer, node);
                         }
-                        else if (!node.areChildrenShrinked()) {
+                        else if (!node.areChildrenShrunken()) {
                             this._goToChild(designer, node);
                         }
                     }
@@ -161,7 +161,7 @@ mindplot.DesignerKeyboard = new Class({
                         if (node.getPosition().x > 0) {
                             this._goToParent(designer, node);
                         }
-                        else if (!node.areChildrenShrinked()) {
+                        else if (!node.areChildrenShrunken()) {
                             this._goToChild(designer, node);
                         }
                     }

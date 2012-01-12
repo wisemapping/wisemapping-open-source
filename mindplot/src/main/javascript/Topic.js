@@ -696,9 +696,9 @@ mindplot.Topic = new Class({
         elem.addEvent('mousedown', mouseDown);
     },
 
-    areChildrenShrinked : function() {
+    areChildrenShrunken : function() {
         var model = this.getModel();
-        return model.areChildrenShrinked();
+        return model.areChildrenShrunken();
     },
 
     isCollapsed : function() {
@@ -707,16 +707,16 @@ mindplot.Topic = new Class({
 
         var current = this.getParent();
         while (current && !result) {
-            result = current.areChildrenShrinked();
+            result = current.areChildrenShrunken();
             current = current.getParent();
         }
         return result;
     },
 
-    setChildrenShrinked : function(value) {
+    setChildrenShrunken : function(value) {
         // Update Model ...
         var model = this.getModel();
-        model.setChildrenShrinked(value);
+        model.setChildrenShrunken(value);
 
         // Change render base on the state.
         var shrinkConnector = this.getShrinkConnector();
@@ -724,7 +724,7 @@ mindplot.Topic = new Class({
 
         // Hide children ...
         core.Utils.setChildrenVisibilityAnimated(this, !value);
-        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeShrinkEvent, [this]);
+        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeShrinkEvent, this.getModel());
     },
 
     getShrinkConnector : function() {
@@ -741,7 +741,6 @@ mindplot.Topic = new Class({
     handleMouseOver : function() {
         var outerShape = this.getOuterShape();
         outerShape.setOpacity(1);
-        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMouseOverEvent, [this]);
     },
 
     handleMouseOut : function(event) {
@@ -749,7 +748,6 @@ mindplot.Topic = new Class({
         if (!this.isOnFocus()) {
             outerShape.setOpacity(0);
         }
-        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMouseOutEvent, [this]);
     },
 
     showTextEditor : function(text) {
@@ -993,7 +991,7 @@ mindplot.Topic = new Class({
         var children = this._getChildren();
         var model = this.getModel();
 
-        isVisible = isVisible ? !model.areChildrenShrinked() : isVisible;
+        isVisible = isVisible ? !model.areChildrenShrunken() : isVisible;
         for (var i = 0; i < children.length; i++) {
             var child = children[i];
             child.setVisibility(isVisible);
@@ -1067,7 +1065,6 @@ mindplot.Topic = new Class({
             outgoingLine.removeFromWorkspace(workspace);
 
             // Remove from workspace.
-            mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.ONodeDisconnectEvent, [targetTopic, this]);
             mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeDisconnectEvent, this.getModel());
 
             // Change text based on the current connection ...
@@ -1113,9 +1110,6 @@ mindplot.Topic = new Class({
         var targetModel = targetTopic.getModel();
         var childModel = this.getModel();
         childModel.connectTo(targetModel);
-
-        // Update topic position based on the state ...
-        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.ONodeConnectEvent, [targetTopic, this]);
 
         // Create a connection line ...
         var outgoingLine = new mindplot.ConnectionLine(this, targetTopic);

@@ -19,14 +19,14 @@
 mindplot.ShirinkConnector = new Class({
     initialize: function(topic) {
 
-        var elipse = new web2d.Elipse(mindplot.Topic.prototype.INNER_RECT_ATTRIBUTES);
-        this._elipse = elipse;
-        elipse.setFill('rgb(62,118,179)');
+        var ellipse = new web2d.Elipse(mindplot.Topic.prototype.INNER_RECT_ATTRIBUTES);
+        this._ellipse = ellipse;
+        ellipse.setFill('rgb(62,118,179)');
 
-        elipse.setSize(mindplot.Topic.CONNECTOR_WIDTH, mindplot.Topic.CONNECTOR_WIDTH);
-        elipse.addEvent('click', function(event) {
+        ellipse.setSize(mindplot.Topic.CONNECTOR_WIDTH, mindplot.Topic.CONNECTOR_WIDTH);
+        ellipse.addEvent('click', function(event) {
             var model = topic.getModel();
-            var collapse = !model.areChildrenShrinked();
+            var collapse = !model.areChildrenShrunken();
 
             var topicId = topic.getId();
             var actionDispatcher = mindplot.ActionDispatcher.getInstance();
@@ -36,34 +36,35 @@ mindplot.ShirinkConnector = new Class({
 
         });
 
-        elipse.addEvent('mousedown', function(event) {
+        ellipse.addEvent('mousedown', function(event) {
             // Avoid node creation ...
             event.stopPropagation();
         });
 
-        elipse.addEvent('dblclick', function(event) {
+        ellipse.addEvent('dblclick', function(event) {
             // Avoid node creation ...
             event.stopPropagation();
         });
 
-        elipse.addEvent('mouseover', function(event) {
+        ellipse.addEvent('mouseover', function(event) {
 
-            elipse.setFill('rgb(153, 0, 255)');
+            ellipse.setFill('rgb(153, 0, 255)');
         });
 
-        elipse.addEvent('mouseout', function(event) {
+        ellipse.addEvent('mouseout', function(event) {
             var color = topic.getBackgroundColor();
             this.setFill(color);
         }.bind(this));
 
-        elipse.setCursor('default');
+        ellipse.setCursor('default');
         this._fillColor = '#f7f7f7';
         var model = topic.getModel();
-        this.changeRender(model.areChildrenShrinked());
+        this.changeRender(model.areChildrenShrunken());
 
     },
+
     changeRender: function(isShrink) {
-        var elipse = this._elipse;
+        var elipse = this._ellipse;
         if (isShrink) {
             elipse.setStroke('2', 'solid');
         } else {
@@ -72,36 +73,35 @@ mindplot.ShirinkConnector = new Class({
     },
 
     setVisibility: function(value) {
-        this._elipse.setVisibility(value);
+        this._ellipse.setVisibility(value);
     },
 
     setOpacity: function(opacity) {
-        this._elipse.setOpacity(opacity);
+        this._ellipse.setOpacity(opacity);
     },
 
     setFill: function(color) {
         this._fillColor = color;
-        this._elipse.setFill(color);
+        this._ellipse.setFill(color);
     },
 
     setAttribute: function(name, value) {
-        this._elipse.setAttribute(name, value);
+        this._ellipse.setAttribute(name, value);
     },
 
     addToWorkspace: function(group) {
-        group.appendChild(this._elipse);
+        group.appendChild(this._ellipse);
     },
 
-
     setPosition: function(x, y) {
-        this._elipse.setPosition(x, y);
+        this._ellipse.setPosition(x, y);
     },
 
     moveToBack: function() {
-        this._elipse.moveToBack();
+        this._ellipse.moveToBack();
     },
 
     moveToFront: function() {
-        this._elipse.moveToFront();
+        this._ellipse.moveToFront();
     }
 });

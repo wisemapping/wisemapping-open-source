@@ -130,6 +130,6 @@ mindplot.nlayout.SymmetricSorter = new Class({
 });
 
 mindplot.nlayout.SymmetricSorter.INTERNODE_VERTICAL_PADDING = 5;
-mindplot.nlayout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING = 5;
+mindplot.nlayout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING = 30;
 
 

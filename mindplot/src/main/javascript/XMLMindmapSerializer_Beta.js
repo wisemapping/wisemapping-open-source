@@ -67,7 +67,7 @@ mindplot.XMLMindmapSerializer_Beta = new Class({
             parentTopic.setAttribute('shape', shape);
         }
 
-        if (topic.areChildrenShrinked()) {
+        if (topic.areChildrenShrunken()) {
             parentTopic.setAttribute('shrink', true);
         }
 
@@ -204,7 +204,7 @@ mindplot.XMLMindmapSerializer_Beta = new Class({
 
         var isShrink = domElem.getAttribute('shrink');
         if ($defined(isShrink)) {
-            topic.setChildrenShrinked(isShrink);
+            topic.setChildrenShrunken(isShrink);
         }
 
         var fontStyle = domElem.getAttribute('fontStyle');

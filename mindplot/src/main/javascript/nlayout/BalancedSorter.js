@@ -33,7 +33,7 @@ mindplot.nlayout.BalancedSorter = new Class({
 
         var result;
         var children = treeSet.getChildren(node);
-        if (children.length == 0) {
+        if (children.length == 0 || node.areChildrenShrunken()) {
             result = height;
         } else {
             var childrenHeight = 0;

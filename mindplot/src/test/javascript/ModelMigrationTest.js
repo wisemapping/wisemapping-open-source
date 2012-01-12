@@ -61,7 +61,7 @@ TestCase("Model Migration Tests",{
             assertEquals(position1.x, position2.x);
             assertEquals(position1.y, position2.y);
         }
-        assertEquals(node1.areChildrenShrinked(), node2.areChildrenShrinked());
+        assertEquals(node1.areChildrenShrunken(), node2.areChildrenShrunken());
         assertEquals(node1.getType(), node2.getType());
         assertEquals(node1.getText(), node2.getText());
         assertEquals(node1.isConnected(), node2.isConnected());
