@@ -100,11 +100,7 @@ mindplot.nlayout.OriginalLayout = new Class({
                 var parentX = parentPosition.x;
                 var parentY = parentPosition.y;
 
-                var verticalOffset = (node.getSize().height / 2);
-
-                //TODO(gb): Not sure why verticalOffset is added again, since it is considered in the sorter.
                 var newPos = {x:parentX + offset.x,y:parentY + offset.y};
-//                var newPos = {x:parentX + offset.x,y:parentY + offset.y + verticalOffset};
 
                 this._treeSet.updateBranchPosition(child, newPos);
             }.bind(this));

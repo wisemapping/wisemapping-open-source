@@ -37,13 +37,14 @@ mindplot.DragTopicPositioner = new Class({
         // Position topic in the board
         if (dragTopic.isConnected()) {
             var targetTopic = dragTopic.getConnectedToTopic();
-            var topicBoard = this._layoutManager.getTopicBoardForTopic(targetTopic);
-            topicBoard.positionateDragTopic(dragTopic);
+            // @todo: Hack ...
+            var position = designer._eventBussDispatcher._layoutManager.predict(targetTopic.getId(),dragTopicPosition);
+            console.log(position);
         }
     },
 
     _checkDragTopicConnection : function(dragTopic) {
-        var topics = this._topics;
+        var topics = this._designerModel.getTopics();
 
         // Must be disconnected from their current connection ?.
         var mainTopicToMainTopicConnection = this._lookUpForMainTopicToMainTopicConnection(dragTopic);
@@ -82,7 +83,7 @@ mindplot.DragTopicPositioner = new Class({
     },
 
     _lookUpForMainTopicToMainTopicConnection : function(dragTopic) {
-        var topics = this._topics;
+        var topics = this._designerModel.getTopics();
         var result = null;
         var draggedNode = dragTopic.getDraggedTopic();
         var distance = null;

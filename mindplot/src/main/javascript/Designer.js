@@ -153,7 +153,7 @@ mindplot.Designer = new Class({
                     // Hide topic during draw ...
                     draggedTopic.setBranchVisibility(false);
                     var parentNode = draggedTopic.getParent();
-                    dragTopic.updateDraggedTopic(workspace);
+                    dragTopic.applyChanges(workspace);
 
 
                     // Make all node visible ...

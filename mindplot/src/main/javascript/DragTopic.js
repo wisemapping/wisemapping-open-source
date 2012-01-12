@@ -121,7 +121,7 @@ mindplot.DragTopic = new Class({
         return true;
     },
 
-    updateDraggedTopic : function(workspace) {
+    applyChanges : function(workspace) {
         $assert(workspace, 'workspace can not be null');
 
         var dragPivot = this._getDragPivot();
@@ -190,7 +190,7 @@ mindplot.DragTopic.init = function(workspace) {
     $assert(workspace, "workspace can not be null");
     var pivot = mindplot.DragTopic.__getDragPivot();
     workspace.appendChild(pivot);
-}
+};
 
 mindplot.DragTopic.__getDragPivot = function() {
     var result = mindplot.DragTopic._dragPivot;

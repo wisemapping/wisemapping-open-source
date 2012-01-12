@@ -70,13 +70,14 @@ mindplot.nlayout.BalancedSorter = new Class({
             if (position.y > cpos.y) {
                 result = [child.getOrder(),{x:cpos.x,y:cpos.y + child.getSize().height}];
             }
+
+            // Ok, no overlap. Suggest a new order.
+            if (result) {
+                var last = children.getLast();
+                result = [last.getOrder() + 1,{x:cpos.x,y:cpos.y - (mindplot.nlayout.BalancedSorter.INTERNODE_VERTICAL_PADDING * 4)}];
+            }
         });
 
-        // Ok, no overlap. Suggest a new order.
-        if (result) {
-            var last = children.getLast();
-            result = [last.getOrder() + 1,{x:cpos.x,y:cpos.y - (mindplot.nlayout.BalancedSorter.INTERNODE_VERTICAL_PADDING * 4)}];
-        }
 
         return result;
     },

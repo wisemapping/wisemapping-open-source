@@ -34,8 +34,6 @@ mindplot.nlayout.LayoutManager = new Class({
 
         var node = this._treeSet.find(id);
         node.setSize(size);
-
-        // Todo: This must be completed ...
     },
 
     updateShrinkState: function(id, value) {
@@ -86,9 +84,8 @@ mindplot.nlayout.LayoutManager = new Class({
 
     },
 
-    predict: function(parentId, childId, position) {
+    predict: function(parentId, position) {
         $assert($defined(parentId), "parentId can not be null");
-        $assert($defined(childId), "childId can not be null");
         $assert(position, "childId can not be null");
 
         var parent = this._treeSet.find(parentId);
