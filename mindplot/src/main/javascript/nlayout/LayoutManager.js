@@ -90,7 +90,7 @@ mindplot.nlayout.LayoutManager = new Class({
 
         var parent = this._treeSet.find(parentId);
         var sorter = parent.getSorter();
-        return  sorter.predict(parent, this._treeSet, position);
+        return sorter.predict(parent, this._treeSet, position);
     },
 
     dump: function() {
@@ -104,6 +104,8 @@ mindplot.nlayout.LayoutManager = new Class({
         var canvas = Raphael(containerId, size.width, size.height);
         canvas.drawGrid(0, 0, size.width, size.height, size.width / squaresize, size.height / squaresize);
         this._treeSet.plot(canvas);
+
+        return canvas;
     },
 
     layout: function(fireEvents) {

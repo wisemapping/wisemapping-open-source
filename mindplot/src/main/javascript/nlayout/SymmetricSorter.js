@@ -25,30 +25,36 @@ mindplot.nlayout.SymmetricSorter = new Class({
 
         // No children...
         var children = graph.getChildren(parent);
+        var direction = parent.getPosition().x > 0 ? 1 : -1;
         if (children.length == 0) {
-            return [0,parent.getPosition()];  // @Todo:Change x ...
+            var position = {
+                x: parent.getPosition().x + direction * (parent.getSize().width + mindplot.nlayout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING),
+                y:parent.getPosition().y
+            }
+            return [0, position];
         }
 
         // Try to fit within ...
-        //
-        // - Order is change if the position top position is changed ...
-        // - Suggested position is the middle between the two topics...
-        //
         var result = null;
-        children.forEach(function(child) {
+        var last = children.getLast();
+        children.each(function(child, index) {
             var cpos = child.getPosition();
             if (position.y > cpos.y) {
-                result = [child.getOrder(),{x:cpos.x,y:cpos.y + child.getSize().height}];
+                yOffset = child == last ?
+                    child.getSize().height + mindplot.nlayout.SymmetricSorter.INTERNODE_VERTICAL_PADDING * 2 :
+                    (children[index + 1].getPosition().y - child.getPosition().y)/2;
+                result = [child.getOrder() + 1,{x:cpos.x, y:cpos.y + yOffset}];
             }
         });
 
-        // Ok, no overlap. Suggest a new order.
-        if (result) {
-            var last = children.getLast();
-            result = [last.getOrder() + 1,{x:cpos.x,y:cpos.y - (mindplot.nlayout.SymmetricSorter.INTERNODE_VERTICAL_PADDING * 4)}];
+        // Position wasn't below any node, so it must be inserted above
+        if (!result) {
+            var first = children[0];
+            result = [0, {
+                x:first.getPosition().x,
+                y:first.getPosition().y - first.getSize().height - mindplot.nlayout.SymmetricSorter.INTERNODE_VERTICAL_PADDING * 2
+            }];
         }
-
-        //TODO(gb): also return order!
 
         return result;
     },

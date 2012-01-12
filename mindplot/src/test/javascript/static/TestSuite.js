@@ -27,7 +27,7 @@ mindplot.nlayout.TestSuite = new Class({
         this.testDisconnect();
         this.testReconnect();
         this.testRemoveNode();
-        this.testFreePosition();
+        this.testSymmetricPredict();
     },
 
     testAligned: function() {
@@ -391,7 +391,8 @@ mindplot.nlayout.TestSuite = new Class({
         console.log("\n");
     },
 
-    testFreePosition: function() {
+    testSymmetricPredict: function() {
+        console.log("testSymmetricPredict:");
         var position = {x:0,y:0};
         var manager = new mindplot.nlayout.LayoutManager(0, mindplot.nlayout.TestSuite.ROOT_NODE_SIZE);
 
@@ -400,16 +401,63 @@ mindplot.nlayout.TestSuite = new Class({
         manager.addNode(2, mindplot.nlayout.TestSuite.NODE_SIZE, position);
         manager.addNode(3, mindplot.nlayout.TestSuite.NODE_SIZE, position);
         manager.addNode(4, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(5, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(6, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(7, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(8, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(9, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(10, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(11, mindplot.nlayout.TestSuite.NODE_SIZE, position);
 
-        manager.connectNode(0, 4, 0);
-        manager.connectNode(4, 1, 0);
-        manager.connectNode(4, 2, 1);
-        manager.connectNode(4, 3, 2);
+        manager.connectNode(0, 1, 0);
+        manager.connectNode(0, 2, 1);
+        manager.connectNode(0, 3, 2);
+        manager.connectNode(3, 4, 0);
+        manager.connectNode(3, 5, 1);
+        manager.connectNode(3, 6, 2);
+        manager.connectNode(5, 7, 0);
+        manager.connectNode(5, 8, 1);
+        manager.connectNode(5, 11, 2);
+        manager.connectNode(2, 9, 0);
+        manager.connectNode(2, 10, 1);
 
         manager.layout();
-        manager.plot("testFreePosition", {width:800, height:400});
 
-        //TODO(gb): make asserts
+        console.log("\tPredict where would a node be if tried to add as children of node 9 and dropped at (-280, 45):");
+        var predict1 = manager.plot("testPredict1", {width:1000, height:400});
+        this._plotPrediction(predict1, manager.predict(9, {x:-280, y:45}));
+        console.log("\tPredict where would a node be if tried to add as children of node 1 and dropped at (155, -90):");
+        var predict2 = manager.plot("testPredict2", {width:1000, height:400});
+        this._plotPrediction(predict2, manager.predict(1, {x:-155, y:-90}));
+
+        console.log("\tPredict where would a node be if tried to add as children of node 5 and dropped at (375, 15):");
+        var predict3 = manager.plot("testPredict3", {width:1000, height:400});
+        this._plotPrediction(predict3, manager.predict(5, {x:375, y:15}));
+        console.log("\tPredict where would a node be if tried to add as children of node 5 and dropped at (375, 45):");
+        var predict4 = manager.plot("testPredict4", {width:1000, height:400});
+        this._plotPrediction(predict4, manager.predict(5, {x:375, y:45}));
+        console.log("\tPredict where would a node be if tried to add as children of node 5 and dropped at (375, 45):");
+        var predict5 = manager.plot("testPredict5", {width:1000, height:400});
+        this._plotPrediction(predict5, manager.predict(5, {x:375, y:65}));
+        console.log("\tPredict where would a node be if tried to add as children of node 3 and dropped at (280, 45):");
+        var predict6 = manager.plot("testPredict6", {width:1000, height:400});
+        this._plotPrediction(predict6, manager.predict(3, {x:280, y:45}));
+        console.log("\tPredict where would a node be if tried to add as children of node 3 and dropped at (255, 110):");
+        var predict7 = manager.plot("testPredict7", {width:1000, height:400});
+        this._plotPrediction(predict7, manager.predict(3, {x:255, y:110}));
+        console.log("\tPredict where would a node be if tried to add as children of node 2 and dropped at (-260, 0):");
+        var predict8 = manager.plot("testPredict8", {width:1000, height:400});
+        this._plotPrediction(predict8, manager.predict(2, {x:-260, y:0}));
+        console.log("\tPredict where would a node be if tried to add as children of node 5 and dropped at (380, -30):");
+        var predict9 = manager.plot("testPredict9", {width:1000, height:400});
+        this._plotPrediction(predict9, manager.predict(5, {x:380, y:-30}));
+    },
+
+    _plotPrediction: function(canvas, prediction) {
+        console.log("\t\tprediction {order:" + prediction[0] + ", position: (" + prediction.getLast().x + "," + prediction.getLast().y + ")}");
+        var cx = prediction.getLast().x + canvas.width / 2 - mindplot.nlayout.TestSuite.NODE_SIZE.width / 2;
+        var cy = prediction.getLast().y + canvas.height / 2 - mindplot.nlayout.TestSuite.NODE_SIZE.height / 2;
+        canvas.rect(cx, cy, mindplot.nlayout.TestSuite.NODE_SIZE.width, mindplot.nlayout.TestSuite.NODE_SIZE.height);
     }
 });
 
