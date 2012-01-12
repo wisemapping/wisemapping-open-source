@@ -145,16 +145,11 @@ mindplot.nlayout.LayoutManager = new Class({
                 }
 
                 // Update nodes ...
-                if (node.hasOrderChanged()) {
-                    event.setOrder(node.getOrder());
-                    node.resetOrderState();
+                event.setOrder(node.getOrder());
+                event.setPosition(node.getPosition());
 
-                }
-
-                if (node.hasPositionChanged()) {
-                    event.setPosition(node.getPosition());
-                    node.resetPositionState();
-                }
+                node.resetPositionState();
+                node.resetOrderState();
                 this._events.push(event);
             }
             this._collectChanges(this._treeSet.getChildren(node));

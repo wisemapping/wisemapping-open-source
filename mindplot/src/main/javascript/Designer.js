@@ -444,16 +444,15 @@ mindplot.Designer = new Class({
 
         _nodeModelToNodeGraph : function(nodeModel, isVisible) {
             $assert(nodeModel, "Node model can not be null");
+            var children = nodeModel.getChildren().slice();
+
             var nodeGraph = this._buildNodeGraph(nodeModel);
 
-            if (isVisible)
+            if (isVisible) {
                 nodeGraph.setVisibility(isVisible);
+            }
 
-            var children = nodeModel.getChildren();
-
-            var workspace = this._workspace;
-            workspace.appendChild(nodeGraph);
-
+            this._workspace.appendChild(nodeGraph);
             for (var i = 0; i < children.length; i++) {
                 var child = children[i];
                 if ($defined(child))

@@ -1,0 +1,12 @@
+<map name="mapId" version="pela">
+    <topic central="true" id="0">
+        <topic position="156,-49" order="0" id="1"/>
+        <topic position="-156,-49" order="1" id="2"/>
+        <topic position="156,-16" order="2" id="3"/>
+        <topic position="-156,-16" order="3" id="4"/>
+        <topic position="156,16" order="4" id="5"/>
+        <topic position="-156,16" order="5" id="6"/>
+        <topic position="156,49" order="6" id="7"/>
+        <topic position="-156,49" order="7" id="8"/>
+    </topic>
+</map>

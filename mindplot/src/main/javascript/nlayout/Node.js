@@ -51,14 +51,14 @@ mindplot.nlayout.Node = new Class({
     resetPositionState : function() {
         var prop = this._properties['position'];
         if (prop) {
-            prop.hasChanded = false;
+            prop.hasChanged = false;
         }
     },
 
     resetOrderState : function() {
         var prop = this._properties['order'];
         if (prop) {
-            prop.hasChanded = false;
+            prop.hasChanged = false;
         }
     },
 
@@ -71,8 +71,8 @@ mindplot.nlayout.Node = new Class({
     },
 
     hasPositionChanged: function() {
-        return this._isPropertyChanged('position');
 
+        return this._isPropertyChanged('position');
     },
 
     getPosition: function() {
@@ -100,17 +100,19 @@ mindplot.nlayout.Node = new Class({
         var prop = this._properties[key];
         if (!prop) {
             prop = {
-                hasChanded:false,
+                hasChanged:false,
                 value: null,
                 oldValue : null
             };
         }
 
-        prop.oldValue = prop.value;
-        prop.value = value;
-        prop.hasChanded = true;
-
-        this._properties[key] = prop;
+        // Only update if the property has changed ...
+        if (JSON.encode(prop.oldValue) != JSON.encode(value)) {
+            prop.oldValue = prop.value;
+            prop.value = value;
+            prop.hasChanged = true;
+            this._properties[key] = prop;
+        }
     },
 
     _getProperty: function(key) {
@@ -120,14 +122,7 @@ mindplot.nlayout.Node = new Class({
 
     _isPropertyChanged: function(key) {
         var prop = this._properties[key];
-        return prop ? prop.hasChanded : false;
-    },
-
-    _setPropertyUpdated : function(key) {
-        var prop = this._properties[key];
-        if (prop) {
-            this._properties[key] = true;
-        }
+        return prop ? prop.hasChanged : false;
     },
 
     getSorter: function() {
