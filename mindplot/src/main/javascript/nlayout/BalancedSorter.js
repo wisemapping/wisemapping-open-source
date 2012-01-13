@@ -52,12 +52,25 @@ mindplot.nlayout.BalancedSorter = new Class({
     },
 
     predict : function(parent, graph, position) {
+
+        if (!position) {
+            var right = this._getChildrenForOrder(parent, graph, 0);
+            var left = this._getChildrenForOrder(parent, graph, 1);
+        }
         // Filter nodes on one side..
-        var children = this._getChildrenForSide(parent, graph, position);
+        var order = position ? (position.x > 0 ? 0 : 1) : ((right.length - left.length) > 0 ? 1 : 0);
+        var children = this._getChildrenForOrder(parent, graph, order);
+
+        // No children?
+        if (children.length == 0) {
+            return [0, {x:parent.getPosition().x + parent.getSize().width + mindplot.nlayout.BalancedSorter.INTERNODE_HORIZONTAL_PADDING * 2, y:parent.getPosition().y}];
+        }
+
 
         // Try to fit within ...
         var result = null;
         var last = children.getLast();
+        position = position || {x: last.getPosition().x, y:last.getPosition().y + 1};
         children.each(function(child, index) {
             var cpos = child.getPosition();
             if (position.y > cpos.y) {
@@ -165,6 +178,7 @@ mindplot.nlayout.BalancedSorter = new Class({
     },
 
     _getChildrenForSide: function(parent, graph, position) {
+        position = position || {x: parent.getPosition().x + 1, y:parent.getPosition().y + 1};
         return graph.getChildren(parent).filter(function(child) {
             return position.x > 0 ? child.getPosition().x > 0 : child.getPosition().x < 0;
         });
@@ -184,7 +198,8 @@ mindplot.nlayout.BalancedSorter = new Class({
         // All even numbered nodes should be "continuous" by themselves
         var factor = node.getOrder() % 2 == 0 ? 2 : 1;
         for (var i = 0; i < children.length; i++) {
-            $assert(children[i].getOrder() == (i*factor), "missing order elements");
+            var order = i == 0 && factor == 1 ? 1 : (factor * i);
+            $assert(children[i].getOrder() == order, "Missing order elements. Missing order: " + (i*factor));
         }
     },
 

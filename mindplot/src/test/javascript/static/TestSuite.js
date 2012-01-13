@@ -476,33 +476,37 @@ mindplot.nlayout.TestSuite = new Class({
         manager.layout();
 
         console.log("\tAdded as child of node 9 and dropped at (-280, 45):");
-        var predict1 = manager.plot("testSymmetricPredict1", {width:1000, height:400});
-        this._plotPrediction(predict1, manager.predict(9, {x:-280, y:45}));
+        var graph1 = manager.plot("testSymmetricPredict1", {width:1000, height:400});
+        this._plotPrediction(graph1, manager.predict(9, {x:-280, y:45}));
         console.log("\tAdded as child of node 1 and dropped at (155, -90):");
-        var predict2 = manager.plot("testSymmetricPredict2", {width:1000, height:400});
-        this._plotPrediction(predict2, manager.predict(1, {x:-155, y:-90}));
+        this._plotPrediction(graph1, manager.predict(1, {x:-155, y:-90}));
 
         console.log("\tAdded as child of node 5 and dropped at (375, 15):");
-        var predict3 = manager.plot("testSymmetricPredict3", {width:1000, height:400});
-        this._plotPrediction(predict3, manager.predict(5, {x:375, y:15}));
+        var graph2 = manager.plot("testSymmetricPredict2", {width:1000, height:400});
+        this._plotPrediction(graph2, manager.predict(5, {x:375, y:15}));
         console.log("\tAdded as child of node 5 and dropped at (375, 45):");
-        var predict4 = manager.plot("testSymmetricPredict4", {width:1000, height:400});
-        this._plotPrediction(predict4, manager.predict(5, {x:375, y:45}));
+        this._plotPrediction(graph2, manager.predict(5, {x:375, y:45}));
         console.log("\tAdded as child of node 5 and dropped at (375, 45):");
-        var predict5 = manager.plot("testSymmetricPredict5", {width:1000, height:400});
-        this._plotPrediction(predict5, manager.predict(5, {x:375, y:65}));
-        console.log("\tAdded as child of node 3 and dropped at (280, 45):");
-        var predict6 = manager.plot("testSymmetricPredict6", {width:1000, height:400});
-        this._plotPrediction(predict6, manager.predict(3, {x:280, y:45}));
-        console.log("\tAdded as child of node 3 and dropped at (255, 110):");
-        var predict7 = manager.plot("testSymmetricPredict7", {width:1000, height:400});
-        this._plotPrediction(predict7, manager.predict(3, {x:255, y:110}));
-        console.log("\tAdded as child of node 2 and dropped at (-260, 0):");
-        var predict8 = manager.plot("testSymmetricPredict8", {width:1000, height:400});
-        this._plotPrediction(predict8, manager.predict(2, {x:-260, y:0}));
+        this._plotPrediction(graph2, manager.predict(5, {x:375, y:65}));
         console.log("\tAdded as child of node 5 and dropped at (380, -30):");
-        var predict9 = manager.plot("testSymmetricPredict9", {width:1000, height:400});
-        this._plotPrediction(predict9, manager.predict(5, {x:380, y:-30}));
+        this._plotPrediction(graph2, manager.predict(5, {x:380, y:-30}));
+
+        console.log("\tAdded as child of node 3 and dropped at (280, 45):");
+        var graph3 = manager.plot("testSymmetricPredict3", {width:1000, height:400});
+        this._plotPrediction(graph3, manager.predict(3, {x:280, y:45}));
+        console.log("\tAdded as child of node 3 and dropped at (255, 110):");
+        this._plotPrediction(graph3, manager.predict(3, {x:255, y:110}));
+        console.log("\tAdded as child of node 2 and dropped at (-260, 0):");
+
+        var graph4 = manager.plot("testSymmetricPredict4", {width:1000, height:400});
+        this._plotPrediction(graph4, manager.predict(2, {x:-260, y:0}));
+
+        console.log("\tPredict nodes added with no position:");
+        var graph5 = manager.plot("testSymmetricPredict5", {width:1000, height:400});
+        this._plotPrediction(graph5, manager.predict(1, null));
+        this._plotPrediction(graph5, manager.predict(2, null));
+        this._plotPrediction(graph5, manager.predict(3, null));
+        this._plotPrediction(graph5, manager.predict(10, null));
     },
 
     testBalancedPredict: function() {
@@ -535,34 +539,43 @@ mindplot.nlayout.TestSuite = new Class({
         manager.layout();
 
         console.log("\tAdded as child of node 0 and dropped at (165, -70):");
-        var predict1 = manager.plot("testBalancedPredict1", {width:1000, height:400});
-        this._plotPrediction(predict1, manager.predict(0, {x:165, y:-70}));
+        var graph1 = manager.plot("testBalancedPredict1", {width:1000, height:400});
+        this._plotPrediction(graph1, manager.predict(0, {x:165, y:-70}));
         console.log("\tAdded as child of node 0 and dropped at (165, -10):");
-        var predict2 = manager.plot("testBalancedPredict2", {width:1000, height:400});
-        this._plotPrediction(predict2, manager.predict(0, {x:165, y:-10}));
+        this._plotPrediction(graph1, manager.predict(0, {x:165, y:-10}));
         console.log("\tAdded as child of node 0 and dropped at (145, 15):");
-        var predict3 = manager.plot("testBalancedPredict3", {width:1000, height:400});
-        this._plotPrediction(predict3, manager.predict(0, {x:145, y:15}));
+        this._plotPrediction(graph1, manager.predict(0, {x:145, y:15}));
         console.log("\tAdded as child of node 0 and dropped at (145, 70):");
-        var predict4 = manager.plot("testBalancedPredict4", {width:1000, height:400});
-        this._plotPrediction(predict4, manager.predict(0, {x:145, y:70}));
+        this._plotPrediction(graph1, manager.predict(0, {x:145, y:70}));
 
         console.log("\tAdded as child of node 0 and dropped at (-145, -50):");
-        var predict5 = manager.plot("testBalancedPredict5", {width:1000, height:400});
-        this._plotPrediction(predict5, manager.predict(0, {x:-145, y:-50}));
+        var graph2 = manager.plot("testBalancedPredict2", {width:1000, height:400});
+        this._plotPrediction(graph2, manager.predict(0, {x:-145, y:-50}));
         console.log("\tAdded as child of node 0 and dropped at (-145, -10):");
-        var predict6 = manager.plot("testBalancedPredict6", {width:1000, height:400});
-        this._plotPrediction(predict6, manager.predict(0, {x:-145, y:-10}));
+        this._plotPrediction(graph2, manager.predict(0, {x:-145, y:-10}));
         console.log("\tAdded as child of node 0 and dropped at (-145, 40):");
-        var predict7 = manager.plot("testBalancedPredict7", {width:1000, height:400});
-        this._plotPrediction(predict7, manager.predict(0, {x:-145, y:400}));
+        this._plotPrediction(graph2, manager.predict(0, {x:-145, y:400}));
 
         console.log("\tAdded as child of node 0 and dropped at (0, 40):");
-        var predict8 = manager.plot("testBalancedPredict8", {width:1000, height:400});
-        this._plotPrediction(predict8, manager.predict(0, {x:0, y:40}));
+        var graph3 = manager.plot("testBalancedPredict3", {width:1000, height:400});
+        this._plotPrediction(graph3, manager.predict(0, {x:0, y:40}));
         console.log("\tAdded as child of node 0 and dropped at (0, 0):");
-        var predict9 = manager.plot("testBalancedPredict9", {width:1000, height:400});
-        this._plotPrediction(predict9, manager.predict(0, {x:0, y:0}));
+        this._plotPrediction(graph3, manager.predict(0, {x:0, y:0}));
+
+        console.log("\tPredict nodes added with no position:");
+        var graph4 = manager.plot("testBalancedPredict4", {width:1000, height:400});
+        this._plotPrediction(graph4, manager.predict(0, null));
+
+        console.log("\tPredict nodes added with no position:");
+        var graph5 = manager.plot("testBalancedPredict5", {width:1000, height:400});
+        this._plotPrediction(graph5, manager.predict(0, null));
+
+        console.log("\tPredict nodes added only a root node:");
+        manager.removeNode(1).removeNode(2).removeNode(3).removeNode(4).removeNode(5);
+        manager.layout();
+        var graph6 = manager.plot("testBalancedPredict6", {width:1000, height:400});
+        this._plotPrediction(graph6, manager.predict(0, null));
+        this._plotPrediction(graph6, manager.predict(0, {x: 40, y: 100}));
     },
 
     _plotPrediction: function(canvas, prediction) {

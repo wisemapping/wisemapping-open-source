@@ -57,11 +57,15 @@ mindplot.nlayout.LayoutManager = new Class({
         $assert($defined(order), "order can not be null");
 
         this._layout.connectNode(parentId, childId, order);
+
+        return this;
     },
 
     disconnectNode: function(id) {
         $assert($defined(id), "id can not be null");
         this._layout.disconnectNode(id);
+
+        return this;
     },
 
     addNode:function(id, size, position) {
@@ -82,11 +86,11 @@ mindplot.nlayout.LayoutManager = new Class({
         // Remove the all the branch ...
         this._treeSet.remove(id);
 
+        return this;
     },
 
     predict: function(parentId, position) {
         $assert($defined(parentId), "parentId can not be null");
-        $assert(position, "childId can not be null");
 
         var parent = this._treeSet.find(parentId);
         var sorter = parent.getSorter();

@@ -22,11 +22,12 @@ mindplot.nlayout.SymmetricSorter = new Class({
     },
 
     predict : function(parent, graph, position) {
+        var direction = parent.getPosition().x > 0 ? 1 : -1;
 
         // No children...
         var children = graph.getChildren(parent);
-        var direction = parent.getPosition().x > 0 ? 1 : -1;
         if (children.length == 0) {
+            position = position || {x:parent.getPosition().x + direction, y:parent.getPosition().y};
             var position = {
                 x: parent.getPosition().x + direction * (parent.getSize().width + mindplot.nlayout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING),
                 y:parent.getPosition().y
@@ -37,6 +38,7 @@ mindplot.nlayout.SymmetricSorter = new Class({
         // Try to fit within ...
         var result = null;
         var last = children.getLast();
+        position = position || {x:last.getPosition().x + direction, y:last.getPosition().y + 1};
         children.each(function(child, index) {
             var cpos = child.getPosition();
             if (position.y > cpos.y) {
