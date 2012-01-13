@@ -52,65 +52,64 @@ mindplot.nlayout.BalancedSorter = new Class({
     },
 
     predict : function(parent, graph, position) {
-
-        // No children...
-        var children = graph.getChildren(parent);
-        if (children.length == 0) {
-            return [0,parent.getPosition()];  // @Todo:Change x ...
-        }
+        // Filter nodes on one side..
+        var children = this._getChildrenForSide(parent, graph, position);
 
         // Try to fit within ...
-        //
-        // - Order is change if the position top position is changed ...
-        // - Suggested position is the middle between the two topics...
-        //
         var result = null;
-        children.forEach(function(child) {
+        var last = children.getLast();
+        children.each(function(child, index) {
             var cpos = child.getPosition();
             if (position.y > cpos.y) {
-                result = [child.getOrder(),{x:cpos.x,y:cpos.y + child.getSize().height}];
-            }
-
-            // Ok, no overlap. Suggest a new order.
-            if (result) {
-                var last = children.getLast();
-                result = [last.getOrder() + 1,{x:cpos.x,y:cpos.y - (mindplot.nlayout.BalancedSorter.INTERNODE_VERTICAL_PADDING * 4)}];
+                yOffset = child == last ?
+                    child.getSize().height + mindplot.nlayout.BalancedSorter.INTERNODE_VERTICAL_PADDING * 2 :
+                    (children[index + 1].getPosition().y - child.getPosition().y)/2;
+                result = [child.getOrder() + 2,{x:cpos.x, y:cpos.y + yOffset}];
             }
         });
 
+        // Position wasn't below any node, so it must be inserted above
+        if (!result) {
+            var first = children[0];
+            result = [position.x > 0 ? 0 : 1, {
+                x:first.getPosition().x,
+                y:first.getPosition().y - first.getSize().height - mindplot.nlayout.BalancedSorter.INTERNODE_VERTICAL_PADDING * 2
+            }];
+        }
 
         return result;
     },
 
     insert: function(treeSet, parent, child, order) {
-        var children = this._getSortedChildren(treeSet, parent);
+        var children = this._getChildrenForOrder(parent, treeSet, order);
 
-        // Shift all the elements in one. In case of balanced sorter, order don't need to be continues ...
-        var collision = order;
-        for (var i = order; i < children.length; i++) {
+        // Shift all the elements by two, so side is the same.
+        // In case of balanced sorter, order don't need to be continuous...
+        var max = 0;
+        for (var i = 0; i < children.length; i++) {
             var node = children[i];
-
-            // @Todo: This must be review. Order balance need to be defined ...
-            if (node.getOrder() == collision) {
-                collision = collision + 1;
-                node.setOrder(collision);
+            max = Math.max(max, node.getOrder());
+            if (node.getOrder() >= order) {
+                max = Math.max(max, node.getOrder() + 2);
+                node.setOrder(node.getOrder() + 2);
             }
         }
-        child.setOrder(order);
+
+        var newOrder = order > (max+1) ? (max + 2) : order;
+        child.setOrder(newOrder);
     },
 
     detach:function(treeSet, node) {
         var parent = treeSet.getParent(node);
-        var children = this._getSortedChildren(treeSet, parent);
-        var order = node.getOrder();
-        $assert(children[order] === node, "Node seems not to be in the right position");
+        // Filter nodes on one side..
+        var children = this._getChildrenForOrder(parent, treeSet, node.getOrder());
 
-        // Shift all the nodes ...
-        for (var i = node.getOrder() + 1; i < children.length; i++) {
-            var child = children[i];
-            child.setOrder(child.getOrder() - 1);
-        }
-        node.setOrder(0);
+        children.each(function(child, index) {
+            if (child.getOrder() > node.getOrder()) {
+                child.setOrder(child.getOrder() - 2);
+            }
+        });
+        node.setOrder(node.getOrder() % 2 == 0 ? 0 : 1);
     },
 
     computeOffsets:function(treeSet, node) {
@@ -155,7 +154,7 @@ mindplot.nlayout.BalancedSorter = new Class({
             }
 
             var yOffset = ysum + heights[i].height / 2;
-            var xOffset = direction * (node.getSize().width + mindplot.nlayout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING);
+            var xOffset = direction * (node.getSize().width + mindplot.nlayout.BalancedSorter.INTERNODE_HORIZONTAL_PADDING);
 
             $assert(!isNaN(xOffset), "xOffset can not be null");
             $assert(!isNaN(yOffset), "yOffset can not be null");
@@ -165,14 +164,34 @@ mindplot.nlayout.BalancedSorter = new Class({
         return result;
     },
 
-    toString:function() {
-        return "Balanced Sorter";
+    _getChildrenForSide: function(parent, graph, position) {
+        return graph.getChildren(parent).filter(function(child) {
+            return position.x > 0 ? child.getPosition().x > 0 : child.getPosition().x < 0;
+        });
+    },
+
+    _getChildrenForOrder: function(parent, graph, order) {
+        return this._getSortedChildren(graph, parent).filter(function(node) {
+            return node.getOrder() % 2 == order % 2;
+        });
     },
 
     verify:function(treeSet, node) {
-        // @todo...
+        // Check that all is consistent ...
+        var children = this._getChildrenForOrder(node, treeSet, node.getOrder());
+
+        // All odd ordered nodes should be "continuous" by themselves
+        // All even numbered nodes should be "continuous" by themselves
+        var factor = node.getOrder() % 2 == 0 ? 2 : 1;
+        for (var i = 0; i < children.length; i++) {
+            $assert(children[i].getOrder() == (i*factor), "missing order elements");
+        }
+    },
+
+    toString:function() {
+        return "Balanced Sorter";
     }
 });
 
 mindplot.nlayout.BalancedSorter.INTERNODE_VERTICAL_PADDING = 5;
-mindplot.nlayout.BalancedSorter.INTERNODE_HORIZONTAL_PADDING = 5;
+mindplot.nlayout.BalancedSorter.INTERNODE_HORIZONTAL_PADDING = 30;

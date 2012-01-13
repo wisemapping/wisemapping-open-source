@@ -25,7 +25,7 @@ mindplot.nlayout.AbstractBasicSorter = new Class({
     },
 
     _computeChildrenHeight : function(treeSet, node, heightCache) {
-        var height = node.getSize().height + (mindplot.nlayout.SymmetricSorter.INTERNODE_VERTICAL_PADDING * 2); // 2* Top and down padding;
+        var height = node.getSize().height + (mindplot.nlayout.AbstractBasicSorter.INTERNODE_VERTICAL_PADDING * 2); // 2* Top and down padding;
 
         var result;
         var children = treeSet.getChildren(node);
@@ -55,3 +55,6 @@ mindplot.nlayout.AbstractBasicSorter = new Class({
         return result;
     }
 });
+
+mindplot.nlayout.AbstractBasicSorter.INTERNODE_VERTICAL_PADDING = 5;
+mindplot.nlayout.AbstractBasicSorter.INTERNODE_HORIZONTAL_PADDING = 30;

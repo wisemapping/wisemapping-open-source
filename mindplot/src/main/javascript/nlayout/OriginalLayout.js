@@ -50,10 +50,11 @@ mindplot.nlayout.OriginalLayout = new Class({
 
     disconnectNode: function(nodeId) {
         var node = this._treeSet.find(nodeId);
-        $assert(this._treeSet.getParent(node), "Node already disconnected");
+        var parent = this._treeSet.getParent(node);
+        $assert(parent, "Node already disconnected");
 
         // Remove from children list.
-        var sorter = node.getSorter();
+        var sorter = parent.getSorter();
         sorter.detach(this._treeSet, node);
 
         // Disconnect the new node ...
