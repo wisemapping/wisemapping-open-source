@@ -134,7 +134,7 @@ mindplot.nlayout.BalancedSorter = new Class({
         // Compute heights ...
         var heights = children.map(
             function(child) {
-                return {id:child.getId(), order:child.getOrder(), height:this._computeChildrenHeight(treeSet, child)};
+                return {id:child.getId(), order:child.getOrder(), width: child.getSize().width, height:this._computeChildrenHeight(treeSet, child)};
             }, this).reverse();
 
 
@@ -167,7 +167,7 @@ mindplot.nlayout.BalancedSorter = new Class({
             }
 
             var yOffset = ysum + heights[i].height / 2;
-            var xOffset = direction * (node.getSize().width + mindplot.nlayout.BalancedSorter.INTERNODE_HORIZONTAL_PADDING);
+            var xOffset = direction * (node.getSize().width/2 + heights[i].width/2 +  + mindplot.nlayout.BalancedSorter.INTERNODE_HORIZONTAL_PADDING);
 
             $assert(!isNaN(xOffset), "xOffset can not be null");
             $assert(!isNaN(yOffset), "yOffset can not be null");

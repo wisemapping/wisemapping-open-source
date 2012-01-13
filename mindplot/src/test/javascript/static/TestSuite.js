@@ -29,6 +29,7 @@ mindplot.nlayout.TestSuite = new Class({
         this.testRemoveNode();
         this.testSymmetricPredict();
         this.testBalancedPredict();
+        this.testSize();
     },
 
     testAligned: function() {
@@ -583,6 +584,60 @@ mindplot.nlayout.TestSuite = new Class({
         var cx = prediction.getLast().x + canvas.width / 2 - mindplot.nlayout.TestSuite.NODE_SIZE.width / 2;
         var cy = prediction.getLast().y + canvas.height / 2 - mindplot.nlayout.TestSuite.NODE_SIZE.height / 2;
         canvas.rect(cx, cy, mindplot.nlayout.TestSuite.NODE_SIZE.width, mindplot.nlayout.TestSuite.NODE_SIZE.height);
+    },
+
+    testSize: function() {
+        var position = {x:0, y:0};
+        var manager = new mindplot.nlayout.LayoutManager(0, mindplot.nlayout.TestSuite.ROOT_NODE_SIZE);
+
+        manager.addNode(1, {width: 60, height: 60}, position);
+        manager.addNode(2, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(3, {width: 260, height: 30}, position);
+        manager.addNode(4, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(5, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(7, {width: 80, height: 80}, position);
+        manager.addNode(8, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(9, {width: 30, height: 30}, position);
+        manager.addNode(10, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(11, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(12, {width: 100, height: 70}, position);
+        manager.addNode(13, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(14, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(15, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(16, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(17, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+
+        manager.connectNode(0,1,0);
+        manager.connectNode(1,16,0);
+        manager.connectNode(0,2,1);
+        manager.connectNode(0,3,2);
+        manager.connectNode(0,4,3);
+        manager.connectNode(0,5,4);
+        manager.connectNode(4,7,0);
+        manager.connectNode(7,15,0);
+        manager.connectNode(7,17,1);
+        manager.connectNode(4,8,1);
+        manager.connectNode(8,9,0);
+        manager.connectNode(3,10,0);
+        manager.connectNode(3,11,1);
+        manager.connectNode(9,12,0);
+        manager.connectNode(9,13,1);
+        manager.connectNode(13,14,0);
+
+        manager.layout();
+        manager.plot("testSize1", {width: 1400, height: 400});
+
+        var graph2 = manager.plot("testSize2", {width: 1400, height: 400});
+        this._plotPrediction(graph2, manager.predict(0, {x:-145, y:400}));
+        this._plotPrediction(graph2, manager.predict(9, {x:-330, y:70}));
+        this._plotPrediction(graph2, manager.predict(9, {x:-330, y:120}));
+        this._plotPrediction(graph2, manager.predict(0, {x:15, y:20}));
+
+        var graph3 = manager.plot("testSize3", {width: 1400, height: 400});
+        this._plotPrediction(graph3, manager.predict(0, null));
+        this._plotPrediction(graph3, manager.predict(9, null));
+        this._plotPrediction(graph3, manager.predict(3, null));
+        this._plotPrediction(graph3, manager.predict(1, null));
     }
 });
 
