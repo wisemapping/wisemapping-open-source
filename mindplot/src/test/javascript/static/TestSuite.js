@@ -580,9 +580,12 @@ mindplot.layout.TestSuite = new Class({
     },
 
     _plotPrediction: function(canvas, prediction) {
-        console.log("\t\tprediction {order:" + prediction[0] + ", position: (" + prediction.getLast().x + "," + prediction.getLast().y + ")}");
-        var cx = prediction.getLast().x + canvas.width / 2 - mindplot.layout.TestSuite.NODE_SIZE.width / 2;
-        var cy = prediction.getLast().y + canvas.height / 2 - mindplot.layout.TestSuite.NODE_SIZE.height / 2;
+        console.log(prediction);        //TODO(gb): Remove trace!!!
+        var position = prediction.position;
+        var order = prediction.order;
+        console.log("\t\tprediction {order:" + order + ", position: (" + position.x + "," + position.y + ")}");
+        var cx = position.x + canvas.width / 2 - mindplot.layout.TestSuite.NODE_SIZE.width / 2;
+        var cy = position.y + canvas.height / 2 - mindplot.layout.TestSuite.NODE_SIZE.height / 2;
         canvas.rect(cx, cy, mindplot.layout.TestSuite.NODE_SIZE.width, mindplot.layout.TestSuite.NODE_SIZE.height);
     },
 
