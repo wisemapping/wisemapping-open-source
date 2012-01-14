@@ -330,11 +330,28 @@ mindplot.Designer = new Class({
             // Add new node ...
             var parentTopic = nodes[0];
             var parentTopicId = parentTopic.getId();
-            var childModel = parentTopic.createChildModel();
+            var childModel = this._createChildModel(parentTopic);
 
             // Execute event ...
             this._actionDispatcher.addTopic(childModel, parentTopicId, true);
 
+        },
+
+        _createChildModel : function(topic) {
+            // Create a new node ...
+            var model = topic.getModel();
+            var mindmap = model.getMindmap();
+            var childModel = mindmap.createNode(mindplot.model.INodeModel.MAIN_TOPIC_TYPE);
+
+            // Create a new node ...
+            var layoutManager = this._eventBussDispatcher.getLayoutManager();
+            var result = layoutManager.predict(topic.getId());
+            childModel.setOrder(result.order);
+
+            var position = result.position;
+            childModel.setPosition(position.x, position.y);
+
+            return childModel;
         },
 
         createSiblingForSelectedNode : function() {
@@ -358,11 +375,29 @@ mindplot.Designer = new Class({
 
             } else {
                 var parentTopic = topic.getOutgoingConnectedTopic();
-                var siblingModel = topic.createSiblingModel();
+                var siblingModel = this._createSiblingModel(topic);
                 var parentTopicId = parentTopic.getId();
 
                 this._actionDispatcher.addTopic(siblingModel, parentTopicId, true);
             }
+        },
+
+        _createSiblingModel : function(topic) {
+            var result = null;
+            var parentTopic = topic.getOutgoingConnectedTopic();
+            if (parentTopic != null) {
+
+                // Create a new node ...
+                var model = topic.getModel();
+                var mindmap = model.getMindmap();
+                result = mindmap.createNode(mindplot.model.INodeModel.MAIN_TOPIC_TYPE);
+
+                // Create a new node ...
+                var order = topic.getOrder() + 1;
+                result.setOrder(order);
+                result.setPosition(10, 10);  // Set a dummy pisition ...
+            }
+            return result;
         },
 
         showRelPivot : function(event) {

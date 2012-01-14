@@ -87,11 +87,15 @@ mindplot.nlayout.EventBusDispatcher = new Class({
 
     _doLayout: function() {
 //        (function() {
-            this._layoutManager.layout(true);
-            console.log("---------");
-            this._layoutManager.dump();
-            console.log("---------");
+        this._layoutManager.layout(true);
+        console.log("---------");
+        this._layoutManager.dump();
+        console.log("---------");
 //        }).delay(0, this);
+    },
+
+    getLayoutManager: function() {
+        return this._layoutManager;
     }
 
 });

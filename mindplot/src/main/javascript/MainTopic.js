@@ -227,24 +227,6 @@ mindplot.MainTopic = new Class({
 
     _defaultBorderColor : function() {
         return '#023BB9';
-    },
-
-    // @todo: Removed !!!
-    createSiblingModel : function() {
-        var result = null;
-        var parentTopic = this.getOutgoingConnectedTopic();
-        if (parentTopic != null) {
-            // Create a new node ...
-            var model = this.getModel();
-            var mindmap = model.getMindmap();
-            result = mindmap.createNode(mindplot.model.INodeModel.MAIN_TOPIC_TYPE);
-
-            // Create a new node ...
-            var order = this.getOrder() + 1;
-            result.setOrder(order);
-            result.setPosition(10,10);
-        }
-        return result;
     }
 
 });

@@ -1242,30 +1242,8 @@ mindplot.Topic = new Class({
             // Position node ...
             textShape.setPosition(topicPadding + iconsWidth, topicPadding);
         }
-    },
-
-    // @Todo: this don't seems to be a nice way... Order should be infered automatically ...
-    createChildModel : function() {
-        // Create a new node ...
-        var model = this.getModel();
-        var mindmap = model.getMindmap();
-        var childModel = mindmap.createNode(mindplot.model.INodeModel.MAIN_TOPIC_TYPE);
-
-        // Get the hights model order position ...
-        var children = this._getChildren();
-        var order = -1;
-        for (var i = 0; i < children.length; i++) {
-            var child = children[i];
-            if (child.getOrder() > order) {
-                order = child.getOrder();
-            }
-        }
-        // Create a new node ...
-        childModel.setOrder(order + 1);
-        childModel.setPosition(10, 10);
-
-        return childModel;
     }
+
 });
 
 

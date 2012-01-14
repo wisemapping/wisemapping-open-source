@@ -94,7 +94,8 @@ mindplot.nlayout.LayoutManager = new Class({
 
         var parent = this._treeSet.find(parentId);
         var sorter = parent.getSorter();
-        return sorter.predict(parent, this._treeSet, position);
+        var result = sorter.predict(parent, this._treeSet, position);
+        return {order:result[0],position:result[1]};
     },
 
     dump: function() {
