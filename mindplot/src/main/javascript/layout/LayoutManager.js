@@ -15,14 +15,14 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.nlayout.LayoutManager = new Class({
+mindplot.layout.LayoutManager = new Class({
     Extends: Events,
     initialize: function(rootNodeId, rootSize) {
         $assert($defined(rootNodeId), "rootNodeId can not be null");
         $assert(rootSize, "rootSize can not be null");
 
-        this._treeSet = new mindplot.nlayout.RootedTreeSet();
-        this._layout = new mindplot.nlayout.OriginalLayout(this._treeSet);
+        this._treeSet = new mindplot.layout.RootedTreeSet();
+        this._layout = new mindplot.layout.OriginalLayout(this._treeSet);
 
         var rootNode = this._layout.createNode(rootNodeId, rootSize, {x:0,y:0}, 'root');
         this._treeSet.setRoot(rootNode);
@@ -145,7 +145,7 @@ mindplot.nlayout.LayoutManager = new Class({
                     return event.id == id;
                 });
                 if (!event) {
-                    event = new mindplot.nlayout.ChangeEvent(id);
+                    event = new mindplot.layout.ChangeEvent(id);
                 }
 
                 // Update nodes ...

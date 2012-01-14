@@ -15,7 +15,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.nlayout.RootedTreeSet = new Class({
+mindplot.layout.RootedTreeSet = new Class({
     initialize:function() {
         this._rootNodes = [];
     },

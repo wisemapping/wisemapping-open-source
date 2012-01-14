@@ -15,7 +15,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.nlayout.Node = new Class({
+mindplot.layout.Node = new Class({
     initialize:function(id, size, position, sorter) {
         $assert(typeof id === 'number' && isFinite(id), "id can not be null");
         $assert(size, "size can not be null");

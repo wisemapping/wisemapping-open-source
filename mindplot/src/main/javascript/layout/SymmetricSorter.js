@@ -15,8 +15,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.nlayout.SymmetricSorter = new Class({
-    Extends: mindplot.nlayout.AbstractBasicSorter,
+mindplot.layout.SymmetricSorter = new Class({
+    Extends: mindplot.layout.AbstractBasicSorter,
     initialize:function() {
 
     },
@@ -29,7 +29,7 @@ mindplot.nlayout.SymmetricSorter = new Class({
         if (children.length == 0) {
             position = position || {x:parent.getPosition().x + direction, y:parent.getPosition().y};
             var position = {
-                x: parent.getPosition().x + direction * (parent.getSize().width + mindplot.nlayout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING),
+                x: parent.getPosition().x + direction * (parent.getSize().width + mindplot.layout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING),
                 y:parent.getPosition().y
             }
             return [0, position];
@@ -43,7 +43,7 @@ mindplot.nlayout.SymmetricSorter = new Class({
             var cpos = child.getPosition();
             if (position.y > cpos.y) {
                 yOffset = child == last ?
-                    child.getSize().height + mindplot.nlayout.SymmetricSorter.INTERNODE_VERTICAL_PADDING * 2 :
+                    child.getSize().height + mindplot.layout.SymmetricSorter.INTERNODE_VERTICAL_PADDING * 2 :
                     (children[index + 1].getPosition().y + children[index + 1].getSize().height/2 - child.getPosition().y)/2;
                 result = [child.getOrder() + 1,{x:cpos.x, y:cpos.y + yOffset}];
             }
@@ -54,7 +54,7 @@ mindplot.nlayout.SymmetricSorter = new Class({
             var first = children[0];
             result = [0, {
                 x:first.getPosition().x,
-                y:first.getPosition().y - first.getSize().height - mindplot.nlayout.SymmetricSorter.INTERNODE_VERTICAL_PADDING * 2
+                y:first.getPosition().y - first.getSize().height - mindplot.layout.SymmetricSorter.INTERNODE_VERTICAL_PADDING * 2
             }];
         }
 
@@ -116,7 +116,7 @@ mindplot.nlayout.SymmetricSorter = new Class({
             var direction = parent.getPosition().x > 0 ? 1 : -1;
 
             var yOffset = ysum + heights[i].height / 2;
-            var xOffset = direction * (heights[i].width/2 + node.getSize().width/2 + mindplot.nlayout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING);
+            var xOffset = direction * (heights[i].width/2 + node.getSize().width/2 + mindplot.layout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING);
 
             $assert(!isNaN(xOffset), "xOffset can not be null");
             $assert(!isNaN(yOffset), "yOffset can not be null");
@@ -140,7 +140,7 @@ mindplot.nlayout.SymmetricSorter = new Class({
     }
 });
 
-mindplot.nlayout.SymmetricSorter.INTERNODE_VERTICAL_PADDING = 5;
-mindplot.nlayout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING = 30;
+mindplot.layout.SymmetricSorter.INTERNODE_VERTICAL_PADDING = 5;
+mindplot.layout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING = 30;
 
 

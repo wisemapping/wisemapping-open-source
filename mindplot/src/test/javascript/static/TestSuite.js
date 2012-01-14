@@ -15,8 +15,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.nlayout.TestSuite = new Class({
-    Extends: mindplot.nlayout.ChildrenSorterStrategy,
+mindplot.layout.TestSuite = new Class({
+    Extends: mindplot.layout.ChildrenSorterStrategy,
 
     initialize:function() {
         this.testAligned();
@@ -35,12 +35,12 @@ mindplot.nlayout.TestSuite = new Class({
     testAligned: function() {
 
         var position = {x:0,y:0};
-        var manager = new mindplot.nlayout.LayoutManager(0, mindplot.nlayout.TestSuite.ROOT_NODE_SIZE);
+        var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
 
-        manager.addNode(1, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(2, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(3, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(4, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(2, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(3, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(4, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.connectNode(0, 1, 0);
         manager.connectNode(1, 2, 0);
         manager.connectNode(2, 3, 0);
@@ -58,22 +58,22 @@ mindplot.nlayout.TestSuite = new Class({
 
     testSymmetry: function() {
         var position = {x:0,y:0};
-        var manager = new mindplot.nlayout.LayoutManager(0, mindplot.nlayout.TestSuite.ROOT_NODE_SIZE);
+        var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
 
-        manager.addNode(1, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(2, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(3, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(4, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(5, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(6, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(7, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(8, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(9, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(10, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(11, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(12, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(13, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(14, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(2, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(3, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(4, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(5, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(6, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(7, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(8, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(9, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(10, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(11, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(12, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(13, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(14, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.connectNode(0, 14, 0);
         manager.connectNode(14, 13, 0);
         manager.connectNode(13, 1, 0);
@@ -103,79 +103,79 @@ mindplot.nlayout.TestSuite = new Class({
     testBalanced: function() {
         var position = {x:0, y:0};
         var plotsize = {width:1000, height:200};
-        var manager = new mindplot.nlayout.LayoutManager(0, mindplot.nlayout.TestSuite.ROOT_NODE_SIZE);
+        var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
 
-        manager.addNode(1, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.connectNode(0, 1, 0);
         manager.layout();
         manager.plot("testBalanced1", plotsize);
 
-        manager.addNode(2, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(2, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.connectNode(0, 2, 1);
         manager.layout();
         manager.plot("testBalanced2", plotsize);
 
-        manager.addNode(3, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(3, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.connectNode(0, 3, 2);
         manager.layout();
         manager.plot("testBalanced3", plotsize);
 
-        manager.addNode(4, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(4, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.connectNode(0, 4, 3);
         manager.layout();
         manager.plot("testBalanced4", plotsize);
 
-        manager.addNode(5, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(5, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.connectNode(0, 5, 4);
         manager.layout();
         manager.plot("testBalanced5", plotsize);
 
-        manager.addNode(6, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(6, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.connectNode(0, 6, 5);
         manager.layout();
         manager.plot("testBalanced6", plotsize);
 
-        manager.addNode(7, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(8, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(9, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(7, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(8, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(9, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.connectNode(3, 7, 0)
         manager.connectNode(7, 8, 0)
         manager.connectNode(7, 9, 1);
         manager.layout();
         manager.plot("testBalanced7", plotsize);
 
-        manager.addNode(10, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(11, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(12, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(10, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(11, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(12, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.connectNode(6, 10, 0)
         manager.connectNode(10, 11, 0)
         manager.connectNode(10, 12, 1);
         manager.layout();
         manager.plot("testBalanced8", plotsize);
 
-        manager.addNode(13, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(13, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.connectNode(0, 13, 4);
         manager.layout();
         manager.plot("testBalanced9", {width:1000, height:400});
 
-        manager.addNode(14, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(14, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.connectNode(0, 14, 5);
         manager.layout();
         manager.plot("testBalanced10", {width:1000, height:400});
 
-        manager.addNode(15, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(15, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.connectNode(0, 15, 4);
         manager.layout();
         manager.plot("testBalanced11", {width:1000, height:400});
 
-        manager.addNode(16, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(16, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.connectNode(0, 16, 25);
         manager.layout();
         manager.plot("testBalanced12", {width:1000, height:400});
 
-        manager.addNode(17, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(18, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(19, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(17, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(18, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(19, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.connectNode(0, 17, 11);
         manager.connectNode(0, 18, 13);
         manager.connectNode(0, 19, 10);
@@ -202,13 +202,13 @@ mindplot.nlayout.TestSuite = new Class({
     testEvents: function() {
         console.log("testEvents:");
         var position = {x:0,y:0};
-        var manager = new mindplot.nlayout.LayoutManager(0, mindplot.nlayout.TestSuite.ROOT_NODE_SIZE);
+        var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
 
         // Add 3 nodes...
-        manager.addNode(1, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(2, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(3, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(4, mindplot.nlayout.TestSuite.NODE_SIZE, {x:0, y: 60});
+        manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(2, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(3, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(4, mindplot.layout.TestSuite.NODE_SIZE, {x:0, y: 60});
 
         // Now connect one with two....
         manager.connectNode(0, 1, 0);
@@ -239,15 +239,15 @@ mindplot.nlayout.TestSuite = new Class({
     testEventsComplex: function() {
         console.log("testEventsComplex:");
         var position = {x:0,y:0};
-        var manager = new mindplot.nlayout.LayoutManager(0, mindplot.nlayout.TestSuite.ROOT_NODE_SIZE);
+        var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
 
         // Add 3 nodes...
-        manager.addNode(1, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(2, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(3, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(4, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(5, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(6, mindplot.nlayout.TestSuite.NODE_SIZE, {x:0, y:60});
+        manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(2, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(3, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(4, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(5, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(6, mindplot.layout.TestSuite.NODE_SIZE, {x:0, y:60});
 
         // Now connect one with two....
         manager.connectNode(0, 1, 0);
@@ -283,16 +283,16 @@ mindplot.nlayout.TestSuite = new Class({
     testDisconnect: function() {
         console.log("testDisconnect:");
         var position = {x:0,y:0};
-        var manager = new mindplot.nlayout.LayoutManager(0, mindplot.nlayout.TestSuite.ROOT_NODE_SIZE);
+        var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
 
         // Prepare a sample graph ...
-        manager.addNode(1, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(2, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(3, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(4, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(5, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(6, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(7, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(2, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(3, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(4, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(5, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(6, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(7, mindplot.layout.TestSuite.NODE_SIZE, position);
 
         manager.connectNode(0, 1, 0);
         manager.connectNode(1, 2, 0);
@@ -341,20 +341,20 @@ mindplot.nlayout.TestSuite = new Class({
 
     testReconnect: function() {
         var position = {x:0,y:0};
-        var manager = new mindplot.nlayout.LayoutManager(0, mindplot.nlayout.TestSuite.ROOT_NODE_SIZE);
+        var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
 
-        manager.addNode(1, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(2, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(3, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(4, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(5, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(6, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(7, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(8, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(9, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(10, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(11, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(12, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(2, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(3, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(4, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(5, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(6, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(7, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(8, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(9, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(10, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(11, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(12, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.connectNode(0, 1, 0);
         manager.connectNode(0, 2, 1);
         manager.connectNode(0, 3, 2);
@@ -389,18 +389,18 @@ mindplot.nlayout.TestSuite = new Class({
     testRemoveNode: function() {
         console.log("testRemoveNode:");
         var position = {x:0,y:0};
-        var manager = new mindplot.nlayout.LayoutManager(0, mindplot.nlayout.TestSuite.ROOT_NODE_SIZE);
+        var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
 
         // Prepare a sample graph ...
-        manager.addNode(1, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(2, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(3, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(4, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(5, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(6, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(7, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(8, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(9, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(2, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(3, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(4, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(5, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(6, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(7, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(8, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(9, mindplot.layout.TestSuite.NODE_SIZE, position);
 
         manager.connectNode(0, 1, 0);
         manager.connectNode(0, 5, 1);
@@ -447,20 +447,20 @@ mindplot.nlayout.TestSuite = new Class({
     testSymmetricPredict: function() {
         console.log("testSymmetricPredict:");
         var position = {x:0,y:0};
-        var manager = new mindplot.nlayout.LayoutManager(0, mindplot.nlayout.TestSuite.ROOT_NODE_SIZE);
+        var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
 
         // Prepare a sample graph ...
-        manager.addNode(1, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(2, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(3, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(4, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(5, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(6, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(7, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(8, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(9, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(10, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(11, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(2, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(3, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(4, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(5, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(6, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(7, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(8, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(9, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(10, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(11, mindplot.layout.TestSuite.NODE_SIZE, position);
 
         manager.connectNode(0, 1, 0);
         manager.connectNode(0, 2, 1);
@@ -513,18 +513,18 @@ mindplot.nlayout.TestSuite = new Class({
     testBalancedPredict: function() {
         console.log("testBalancedPredict");
         var position = {x:0, y:0};
-        var manager = new mindplot.nlayout.LayoutManager(0, mindplot.nlayout.TestSuite.ROOT_NODE_SIZE);
+        var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
 
-        manager.addNode(1, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(2, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(3, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(4, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(5, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(7, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(8, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(9, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(10, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(11, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(2, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(3, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(4, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(5, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(7, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(8, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(9, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(10, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(11, mindplot.layout.TestSuite.NODE_SIZE, position);
 
         manager.connectNode(0,1,0);
         manager.connectNode(0,2,1);
@@ -581,31 +581,31 @@ mindplot.nlayout.TestSuite = new Class({
 
     _plotPrediction: function(canvas, prediction) {
         console.log("\t\tprediction {order:" + prediction[0] + ", position: (" + prediction.getLast().x + "," + prediction.getLast().y + ")}");
-        var cx = prediction.getLast().x + canvas.width / 2 - mindplot.nlayout.TestSuite.NODE_SIZE.width / 2;
-        var cy = prediction.getLast().y + canvas.height / 2 - mindplot.nlayout.TestSuite.NODE_SIZE.height / 2;
-        canvas.rect(cx, cy, mindplot.nlayout.TestSuite.NODE_SIZE.width, mindplot.nlayout.TestSuite.NODE_SIZE.height);
+        var cx = prediction.getLast().x + canvas.width / 2 - mindplot.layout.TestSuite.NODE_SIZE.width / 2;
+        var cy = prediction.getLast().y + canvas.height / 2 - mindplot.layout.TestSuite.NODE_SIZE.height / 2;
+        canvas.rect(cx, cy, mindplot.layout.TestSuite.NODE_SIZE.width, mindplot.layout.TestSuite.NODE_SIZE.height);
     },
 
     testSize: function() {
         var position = {x:0, y:0};
-        var manager = new mindplot.nlayout.LayoutManager(0, mindplot.nlayout.TestSuite.ROOT_NODE_SIZE);
+        var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
 
         manager.addNode(1, {width: 60, height: 60}, position);
-        manager.addNode(2, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(2, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.addNode(3, {width: 260, height: 30}, position);
-        manager.addNode(4, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(5, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(4, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(5, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.addNode(7, {width: 80, height: 80}, position);
-        manager.addNode(8, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(8, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.addNode(9, {width: 30, height: 30}, position);
-        manager.addNode(10, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(11, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(10, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(11, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.addNode(12, {width: 100, height: 70}, position);
-        manager.addNode(13, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(14, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(15, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(16, mindplot.nlayout.TestSuite.NODE_SIZE, position);
-        manager.addNode(17, mindplot.nlayout.TestSuite.NODE_SIZE, position);
+        manager.addNode(13, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(14, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(15, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(16, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(17, mindplot.layout.TestSuite.NODE_SIZE, position);
 
         manager.connectNode(0,1,0);
         manager.connectNode(1,16,0);
@@ -641,6 +641,6 @@ mindplot.nlayout.TestSuite = new Class({
     }
 });
 
-mindplot.nlayout.TestSuite.NODE_SIZE = {width:80, height:30},
-mindplot.nlayout.TestSuite.ROOT_NODE_SIZE = {width:120, height:40}
+mindplot.layout.TestSuite.NODE_SIZE = {width:80, height:30},
+mindplot.layout.TestSuite.ROOT_NODE_SIZE = {width:120, height:40}
 

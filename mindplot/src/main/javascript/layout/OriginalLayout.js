@@ -15,7 +15,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.nlayout.OriginalLayout = new Class({
+mindplot.layout.OriginalLayout = new Class({
     initialize: function(treeSet) {
         this._treeSet = treeSet;
     },
@@ -27,9 +27,9 @@ mindplot.nlayout.OriginalLayout = new Class({
         $assert(type, "type can not be null");
 
         var strategy = type === 'root' ?
-            mindplot.nlayout.OriginalLayout.BALANCED_SORTER :
-            mindplot.nlayout.OriginalLayout.SYMMETRIC_SORTER;
-        return new mindplot.nlayout.Node(id, size, position, strategy);
+            mindplot.layout.OriginalLayout.BALANCED_SORTER :
+            mindplot.layout.OriginalLayout.SYMMETRIC_SORTER;
+        return new mindplot.layout.Node(id, size, position, strategy);
     },
 
     connectNode: function(parentId, childId, order) {
@@ -121,8 +121,8 @@ mindplot.nlayout.OriginalLayout = new Class({
 
 });
 
-mindplot.nlayout.OriginalLayout.SYMMETRIC_SORTER = new mindplot.nlayout.SymmetricSorter();
-mindplot.nlayout.OriginalLayout.BALANCED_SORTER = new mindplot.nlayout.BalancedSorter();
+mindplot.layout.OriginalLayout.SYMMETRIC_SORTER = new mindplot.layout.SymmetricSorter();
+mindplot.layout.OriginalLayout.BALANCED_SORTER = new mindplot.layout.BalancedSorter();
 
 
 

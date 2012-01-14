@@ -56,7 +56,7 @@ mindplot.Designer = new Class({
             this._relPivot = new mindplot.RelationshipPivot(this._workspace, this);
 
             // Init layout manager ...
-            this._eventBussDispatcher = new mindplot.nlayout.EventBusDispatcher(this.getModel());
+            this._eventBussDispatcher = new mindplot.layout.EventBusDispatcher(this.getModel());
         },
 
         _registerEvents : function() {

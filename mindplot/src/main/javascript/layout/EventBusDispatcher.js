@@ -15,14 +15,14 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.nlayout.EventBusDispatcher = new Class({
+mindplot.layout.EventBusDispatcher = new Class({
 
     initialize:function(designerModel) {
         $assert(designerModel, "designerModel cannot be null");
         this.registerBusEvents();
 
         var size = {width:25,height:25};
-        this._layoutManager = new mindplot.nlayout.LayoutManager(0, size);
+        this._layoutManager = new mindplot.layout.LayoutManager(0, size);
 
         this._layoutManager.addEvent('change', function(event) {
             var id = event.getId();
@@ -51,7 +51,7 @@ mindplot.nlayout.EventBusDispatcher = new Class({
     },
 
     _nodeMoveEvent: function(node) {
-        console.log("mindplot.nlayout.EventBusDispatcher._nodeMoveEvent: Not Implemented yet");
+        console.log("mindplot.layout.EventBusDispatcher._nodeMoveEvent: Not Implemented yet");
 
     },
 
@@ -65,7 +65,7 @@ mindplot.nlayout.EventBusDispatcher = new Class({
     },
 
     _nodeRepositionateEvent: function(node) {
-        console.log("mindplot.nlayout.EventBusDispatcher._nodeRepositionateEvent: Not Implemented yet");
+        console.log("mindplot.layout.EventBusDispatcher._nodeRepositionateEvent: Not Implemented yet");
 
     },
 

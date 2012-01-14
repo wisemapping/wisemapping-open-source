@@ -15,8 +15,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.nlayout.AbstractBasicSorter = new Class({
-    Extends: mindplot.nlayout.ChildrenSorterStrategy,
+mindplot.layout.AbstractBasicSorter = new Class({
+    Extends: mindplot.layout.ChildrenSorterStrategy,
 
     computeChildrenIdByHeights: function(treeSet, node) {
         var result = {};
@@ -25,7 +25,7 @@ mindplot.nlayout.AbstractBasicSorter = new Class({
     },
 
     _computeChildrenHeight : function(treeSet, node, heightCache) {
-        var height = node.getSize().height + (mindplot.nlayout.AbstractBasicSorter.INTERNODE_VERTICAL_PADDING * 2); // 2* Top and down padding;
+        var height = node.getSize().height + (mindplot.layout.AbstractBasicSorter.INTERNODE_VERTICAL_PADDING * 2); // 2* Top and down padding;
 
         var result;
         var children = treeSet.getChildren(node);
@@ -56,5 +56,5 @@ mindplot.nlayout.AbstractBasicSorter = new Class({
     }
 });
 
-mindplot.nlayout.AbstractBasicSorter.INTERNODE_VERTICAL_PADDING = 5;
-mindplot.nlayout.AbstractBasicSorter.INTERNODE_HORIZONTAL_PADDING = 30;
+mindplot.layout.AbstractBasicSorter.INTERNODE_VERTICAL_PADDING = 5;
+mindplot.layout.AbstractBasicSorter.INTERNODE_HORIZONTAL_PADDING = 30;

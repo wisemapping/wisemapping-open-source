@@ -15,8 +15,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.nlayout.GridSorter = new Class({
-    Extends: mindplot.nlayout.AbstractBasicSorter,
+mindplot.layout.GridSorter = new Class({
+    Extends: mindplot.layout.AbstractBasicSorter,
 
     computeOffsets: function(treeSet, node) {
         $assert(treeSet, "treeSet can no be null.");
@@ -43,7 +43,7 @@ mindplot.nlayout.GridSorter = new Class({
             var finalHeight = i == 0 ? 0 : heights[i].height/2 * even;
 
             var yOffset = zeroHeight + middleHeight +finalHeight;
-            var xOffset = node.getSize().width + mindplot.nlayout.GridSorter.GRID_HORIZONTAR_SIZE;
+            var xOffset = node.getSize().width + mindplot.layout.GridSorter.GRID_HORIZONTAR_SIZE;
 
             $assert(!isNaN(xOffset), "xOffset can not be null");
             $assert(!isNaN(yOffset), "yOffset can not be null");
@@ -60,6 +60,6 @@ mindplot.nlayout.GridSorter = new Class({
 
 });
 
-mindplot.nlayout.GridSorter.GRID_HORIZONTAR_SIZE = 20;
-mindplot.nlayout.GridSorter.INTER_NODE_VERTICAL_DISTANCE = 50;
+mindplot.layout.GridSorter.GRID_HORIZONTAR_SIZE = 20;
+mindplot.layout.GridSorter.INTER_NODE_VERTICAL_DISTANCE = 50;
 

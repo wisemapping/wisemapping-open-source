@@ -15,7 +15,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.nlayout.ChangeEvent = new Class({
+mindplot.layout.ChangeEvent = new Class({
     initialize:function(id) {
         $assert(!isNaN(id), "id can not be null");
         this._id = id;

@@ -176,27 +176,27 @@
                                               files="widget/Menu.js"/>
 
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="nlayout/EventBusDispatcher.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="nlayout/ChangeEvent.js"/>
+                                              files="layout/EventBusDispatcher.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="layout/ChangeEvent.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="nlayout/LayoutManager.js"/>
+                                              files="layout/LayoutManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="nlayout/Node.js"/>
+                                              files="layout/Node.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="nlayout/RootedTreeSet.js"/>
+                                              files="layout/RootedTreeSet.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="nlayout/ChildrenSorterStrategy.js"/>
+                                              files="layout/ChildrenSorterStrategy.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="nlayout/AbstractBasicSorter.js"/>
+                                              files="layout/AbstractBasicSorter.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="nlayout/BalancedSorter.js"/>
+                                              files="layout/BalancedSorter.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="nlayout/SymmetricSorter.js"/>
+                                              files="layout/SymmetricSorter.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="nlayout/GridSorter.js"/>
+                                              files="layout/GridSorter.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="nlayout/OriginalLayout.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="nlayout/EventBus.js"/>
+                                              files="layout/OriginalLayout.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="layout/EventBus.js"/>
 
                                     <filelist dir="${basedir}/src/main/javascript/" files="footer.js"/>
                                 </concat>
