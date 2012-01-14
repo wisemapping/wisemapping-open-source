@@ -48,7 +48,7 @@ mindplot.Designer = new Class({
                 this._registerEvents();
 
                 // Init drag related classes ...
-                this._dragTopicPositioner = new mindplot.DragTopicPositioner(this.getModel(), this._workspace);
+                this._dragConnector = new mindplot.DragConnector(this.getModel(), this._workspace);
                 this._dragger = this._buildDragManager(this._workspace);
                 mindplot.DragTopic.init(this._workspace);
             }
@@ -91,22 +91,11 @@ mindplot.Designer = new Class({
             }.bind(this));
 
             // Create nodes on double click...
-            screenManager.addEvent('dblclick', function(event) {
+            screenManager.addEvent('dblclick', function() {
                 if (workspace.isWorkspaceEventsEnabled()) {
-                    // Get mouse position
-                    var pos = screenManager.getWorkspaceMousePosition(event);
-
-                    // Create a new topic model ...
-                    var mindmap = this.getMindmap();
-                    var model = mindmap.createNode(mindplot.model.INodeModel.MAIN_TOPIC_TYPE);
-                    model.setPosition(pos.x, pos.y);
-
-                    // Get central topic ...
                     var centralTopic = this.getModel().getCentralTopic();
-                    var centralTopicId = centralTopic.getId();
-
-                    // Execute action ...
-                    this._actionDispatcher.addTopic(model, centralTopicId, true);
+                    var model = this._createChildModel(centralTopic);
+                    this._actionDispatcher.addTopic(model, centralTopic.getId());
                 }
             }.bind(this));
 
@@ -127,7 +116,7 @@ mindplot.Designer = new Class({
             var dragger = new mindplot.DragManager(workspace);
             var topics = this.getModel().getTopics();
 
-            var dragTopicPositioner = this._dragTopicPositioner;
+            var dragConnector = this._dragConnector;
 
             dragger.addEvent('startdragging', function(event, node) {
                 // Enable all mouse events.
@@ -138,7 +127,7 @@ mindplot.Designer = new Class({
 
             dragger.addEvent('dragging', function(event, dragTopic) {
                 // Update the state and connections of the topic ...
-                dragTopicPositioner.positionateDragTopic(dragTopic);
+                dragConnector.update(dragTopic);
             });
 
             dragger.addEvent('enddragging', function(event, dragTopic) {

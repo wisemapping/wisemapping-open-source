@@ -16,7 +16,7 @@
  *   limitations under the License.
  */
 
-mindplot.DragTopicPositioner = new Class({
+mindplot.DragConnector = new Class({
     initialize:function(designerModel, workspace) {
         $assert(designerModel, 'designerModel can not be null');
         $assert(workspace, 'workspace can not be null');
@@ -26,24 +26,12 @@ mindplot.DragTopicPositioner = new Class({
         this._workspace = workspace;
     },
 
-    positionateDragTopic : function(dragTopic) {
-        // Workout the real position of the element on the board.
-        var dragTopicPosition = dragTopic.getPosition();
-        var draggedTopic = dragTopic.getDraggedTopic();
-
+    update : function(dragTopic) {
         // Topic can be connected ?
-        this._checkDragTopicConnection(dragTopic);
-
-        // Position topic in the board
-        if (dragTopic.isConnected()) {
-            var targetTopic = dragTopic.getConnectedToTopic();
-            // @todo: Hack ...
-            var position = designer._eventBussDispatcher._layoutManager.predict(targetTopic.getId(),dragTopicPosition);
-            console.log(position);
-        }
+        this._checkConnection(dragTopic);
     },
 
-    _checkDragTopicConnection : function(dragTopic) {
+    _checkConnection : function(dragTopic) {
         var topics = this._designerModel.getTopics();
 
         // Must be disconnected from their current connection ?.
@@ -65,7 +53,7 @@ mindplot.DragTopicPositioner = new Class({
                     // I have to change the current connection to a main topic.
                     dragTopic.disconnect(this._workspace);
                 } else
-                if (Math.abs(dragXPosition - currentXPosition) > mindplot.DragTopicPositioner.CENTRAL_TO_MAINTOPIC_MAX_HORIZONTAL_DISTANCE) {
+                if (Math.abs(dragXPosition - currentXPosition) > mindplot.DragConnector.CENTRAL_TO_MAINTOPIC_MAX_HORIZONTAL_DISTANCE) {
                     dragTopic.disconnect(this._workspace);
                 }
             }
@@ -73,11 +61,11 @@ mindplot.DragTopicPositioner = new Class({
 
         // Finally, connect nodes ...
         if (!dragTopic.isConnected()) {
-            var centalTopic = topics[0];
+            var centralTopic = topics[0];
             if ($defined(mainTopicToMainTopicConnection)) {
                 dragTopic.connectTo(mainTopicToMainTopicConnection);
-            } else if (Math.abs(dragTopic.getPosition().x - centalTopic.getPosition().x) <= mindplot.DragTopicPositioner.CENTRAL_TO_MAINTOPIC_MAX_HORIZONTAL_DISTANCE) {
-                dragTopic.connectTo(centalTopic);
+            } else if (Math.abs(dragTopic.getPosition().x - centralTopic.getPosition().x) <= mindplot.DragConnector.CENTRAL_TO_MAINTOPIC_MAX_HORIZONTAL_DISTANCE) {
+                dragTopic.connectTo(centralTopic);
             }
         }
     },
@@ -114,4 +102,4 @@ mindplot.DragTopicPositioner = new Class({
     }
 });
 
-mindplot.DragTopicPositioner.CENTRAL_TO_MAINTOPIC_MAX_HORIZONTAL_DISTANCE = 400;
+mindplot.DragConnector.CENTRAL_TO_MAINTOPIC_MAX_HORIZONTAL_DISTANCE = 400;

@@ -82,28 +82,14 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="DragTopic.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="DragManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="DragPivot.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/layout/boards/original/"
-                                              files="Board.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/layout/boards/original/"
-                                              files="CentralTopicBoard.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/layout/boards/original/"
-                                              files="MainTopicBoard.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/layout/boards/original/"
-                                              files="FixedDistanceBoard.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript//layout/boards/original/"
-                                              files="VariableDistanceBoard.js"/>
-
-
                                     <filelist dir="${basedir}/src/main/javascript/" files="ConnectionLine.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="RelationshipLine.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="DragTopicPositioner.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="DragConnector.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="TextEditor.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="MultilineTextEditor.js"/>
                                     <!--<filelist dir="${basedir}/src/main/javascript/" files="RichTextEditor.js"/>-->
                                     <filelist dir="${basedir}/src/main/javascript/" files="TextEditorFactory.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="util/Shape.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/layout/boards/original/"
-                                              files="BoardEntry.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ModelCodeName.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="XMLMindmapSerializer_Pela.js"/>
@@ -159,17 +145,7 @@
                                               files="commands/AddRelationshipCommand.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="commands/MoveControlPointCommand.js"/>
-
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layout/boards/Board.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layout/BaseLayoutManager.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layout/OriginalLayoutManager.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layout/LayoutManagerFactory.js"/>
-
-                                    <filelist dir="${basedir}/src/main/javascript/"
+                                   <filelist dir="${basedir}/src/main/javascript/"
                                               files="collaboration/CollaborationManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="collaboration/framework/AbstractCollaborativeFramework.js"/>

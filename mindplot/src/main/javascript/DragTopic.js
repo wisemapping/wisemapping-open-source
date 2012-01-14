@@ -44,6 +44,17 @@ mindplot.DragTopic = new Class({
 
         // Update visual position.
         this._elem2d.setPosition(cx, cy);
+
+        if (this.isConnected()) {
+            var parent = this.getConnectedToTopic();
+            var predict = designer._eventBussDispatcher._layoutManager.predict(parent.getId(), this.getPosition());
+            if (this._order != predict.order) {
+                var dragPivot = this._getDragPivot();
+                var position = predict.position;
+                dragPivot.connectTo(parent, position);
+                this.setOrder(predict.order);
+            }
+        }
     },
 
     getInnerShape : function() {
@@ -82,14 +93,20 @@ mindplot.DragTopic = new Class({
     connectTo : function(parent) {
         $assert(parent, 'Parent connection node can not be null.');
 
+        // Where it should be connected ?
+        var predict = designer._eventBussDispatcher._layoutManager.predict(parent.getId(), this.getPosition());
+
+        // Connect pivot ...
         var dragPivot = this._getDragPivot();
-        dragPivot.connectTo(parent);
+        var position = predict.position;
+        dragPivot.connectTo(parent, position);
+
+        this.setOrder(predict.order);
     },
 
     getDraggedTopic : function() {
         return  this._draggedNode;
     },
-
 
     removeFromWorkspace : function(workspace) {
         // Remove drag shadow.
@@ -114,8 +131,7 @@ mindplot.DragTopic = new Class({
 
     getPosition:function() {
         return this._position;
-    }
-    ,
+    },
 
     isDragTopic : function() {
         return true;
@@ -124,52 +140,24 @@ mindplot.DragTopic = new Class({
     applyChanges : function(workspace) {
         $assert(workspace, 'workspace can not be null');
 
-        var dragPivot = this._getDragPivot();
         var draggedTopic = this.getDraggedTopic();
 
         var isDragConnected = this.isConnected();
-        // @Todo: Remove this static ...
         var actionDispatcher = mindplot.ActionDispatcher.getInstance();
         var topicId = draggedTopic.getId();
 
+        var dragPosition = this.getPosition();
+        var order = null;
+        var parent = null;
         if (isDragConnected) {
-
             var targetTopic = this.getConnectedToTopic();
-            if (targetTopic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
-                // Update topic position ...
-                var dragPivotPosition = dragPivot.getPosition();
-
-                // Must position the dragged topic taking into account the current node size.
-                var pivotSize = dragPivot.getSize();
-                var draggedTopicSize = draggedTopic.getSize();
-                var xOffset = draggedTopicSize.width - pivotSize.width;
-                xOffset = Math.round(xOffset / 2);
-
-                if (dragPivotPosition.x > 0) {
-                    dragPivotPosition.x = parseInt(dragPivotPosition.x) + xOffset;
-                }
-                else {
-                    dragPivotPosition.x = parseInt(dragPivotPosition.x) - xOffset;
-                }
-                // Set new position ...
-                actionDispatcher.dragTopic(topicId, dragPivotPosition, null, targetTopic);
-
-            } else {
-                // Main topic connections can be positioned only with the order ...
-                actionDispatcher.dragTopic(topicId, null, this._order, targetTopic);
-            }
-        } else {
-
-            // If the node is not connected, positionate based on the original drag topic position.
-            var dragPosition = this.getPosition();
-            actionDispatcher.dragTopic(topicId, dragPosition);
+            order = this._order;
+            parent = targetTopic;
         }
-    },
 
-    setBoardPosition : function(point) {
-        $assert(point, 'point can not be null');
-        var dragPivot = this._getDragPivot();
-        dragPivot.setPosition(point);
+        // If the node is not connected, position based on the original drag topic position.
+        actionDispatcher.dragTopic(topicId, dragPosition, order, parent);
+
     },
 
     getConnectedToTopic : function() {
@@ -181,9 +169,10 @@ mindplot.DragTopic = new Class({
         return this.getConnectedToTopic() != null;
     }
 
-});
+})
+    ;
 
-mindplot.DragTopic.PIVOT_SIZE = {width:50,height:10};
+mindplot.DragTopic.PIVOT_SIZE = {width:50,height:6};
 
 mindplot.DragTopic.init = function(workspace) {
 

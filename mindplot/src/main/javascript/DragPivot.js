@@ -51,58 +51,45 @@ mindplot.DragPivot = new Class({
         return line;
     },
 
-    _redraw : function(pivotPosition) {
+
+    _redrawLine : function() {
         // Update line position.
         $assert(this.getTargetTopic(), 'Illegal invocation. Target node can not be null');
 
         var pivotRect = this._getPivotRect();
-        var currentPivotPosition = pivotRect.getPosition();
 
         // Pivot position has not changed. In this case, position change is not required.
         var targetTopic = this.getTargetTopic();
-        if (currentPivotPosition.x != pivotPosition.x || currentPivotPosition.y != pivotPosition.y) {
-            var position = this._position;
-            var fromPoint = targetTopic.workoutIncomingConnectionPoint(position);
+        var position = this._position;
 
-            // Calculate pivot connection point ...
-            var size = this._size;
-            var targetPosition = targetTopic.getPosition();
-            var line = this._line;
+        // Calculate pivot connection point ...
+        var size = this._size;
+        var targetPosition = targetTopic.getPosition();
+        var line = this._line;
 
-            // Update Line position.
-            var isAtRight = mindplot.util.Shape.isAtRight(targetPosition, position);
-            var pivotPoint = mindplot.util.Shape.calculateRectConnectionPoint(position, size, isAtRight);
-            line.setFrom(pivotPoint.x, pivotPoint.y);
+        // Update Line position.
+        var isAtRight = mindplot.util.Shape.isAtRight(targetPosition, position);
+        var pivotPoint = mindplot.util.Shape.calculateRectConnectionPoint(position, size, isAtRight);
+        line.setFrom(pivotPoint.x, pivotPoint.y);
 
-            // Update rect position
-            pivotRect.setPosition(pivotPosition.x, pivotPosition.y);
+        // Update rect position
+        var cx = position.x - (parseInt(size.width) / 2);
+        var cy = position.y - (parseInt(size.height) / 2);
+        pivotRect.setPosition(cx, cy);
 
-            // Display elements if it's required...
-            if (!pivotRect.isVisible()) {
-                // Make line visible only when the position has been already changed.
-                // This solve several strange effects ;)
-                var targetPoint = targetTopic.workoutIncomingConnectionPoint(pivotPoint);
-                line.setTo(targetPoint.x, targetPoint.y);
-
-                this.setVisibility(true);
-            }
+        // Display elements if it's required...
+        if (!pivotRect.isVisible()) {
+            // Make line visible only when the position has been already changed.
+            // This solve several strange effects ;)
+            var targetPoint = targetTopic.workoutIncomingConnectionPoint(pivotPoint);
+            line.setTo(targetPoint.x, targetPoint.y);
+            this.setVisibility(true);
         }
     },
 
     setPosition : function(point) {
         this._position = point;
-
-        // Update visual position.
-        var size = this.getSize();
-
-        var cx = point.x - (parseInt(size.width) / 2);
-        var cy = point.y - (parseInt(size.height) / 2);
-
-        // Update line  ...
-        if (this.getTargetTopic()) {
-            var pivotPosition = {x:cx,y:cy};
-            this._redraw(pivotPosition);
-        }
+        this._redrawLine();
     },
 
     getPosition : function() {
@@ -115,13 +102,6 @@ mindplot.DragPivot = new Class({
         var rect = new web2d.Rect(0, rectAttributes);
         rect.setVisibility(false);
         return rect;
-    },
-
-    _buildConnectRect : function() {
-        var size = this._size;
-        var rectAttributes = {fillColor:'#CC0033',opacity:0.4,width:size.width,height:size.height,strokeColor:'#FF9933'};
-        var result = new web2d.Rect(0, rectAttributes);
-        return result;
     },
 
     _getPivotRect : function() {
@@ -139,9 +119,7 @@ mindplot.DragPivot = new Class({
 
         var connectRect = this._connectRect;
         connectRect.setVisibility(value);
-        if ($defined(this._line)) {
-            this._line.setVisibility(value);
-        }
+        this._line.setVisibility(value);
     },
 
     addToWorkspace : function(workspace) {
@@ -186,10 +164,13 @@ mindplot.DragPivot = new Class({
         }
     },
 
-    connectTo : function(targetTopic) {
+    connectTo : function(targetTopic, position) {
         $assert(!this._outgoingLine, 'Could not connect an already connected node');
-        $assert(targetTopic != this, 'Cilcular connection are not allowed');
+        $assert(targetTopic != this, 'Circular connection are not allowed');
+        $assert(position, 'position can not be null');
         $assert(targetTopic, 'parent can not be null');
+
+        this._position = position;
 
         this._targetTopic = targetTopic;
         if (targetTopic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
@@ -216,7 +197,9 @@ mindplot.DragPivot = new Class({
         // Change elements position ...
         var pivotRect = this._getPivotRect();
         pivotRect.moveToFront();
+        pivotRect.setPosition(position.x, position.y);
 
+        this._redrawLine();
     },
 
     disconnect : function(workspace) {

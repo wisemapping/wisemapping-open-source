@@ -72,10 +72,6 @@ mindplot.DragManager.prototype.remove = function(node)
             index = i;
         }
     }
-    if (contained)
-    {
-        elem = new Array();
-    }
 };
 
 mindplot.DragManager.prototype._buildMouseMoveListener = function(workspace, dragNode, dragManager)
