@@ -1,0 +1,26 @@
+<map name="mapId" version="pela">
+    <topic central="true" id="0">
+        <topic position="127,-163" order="0" id="1"/>
+        <topic position="-127,-33" order="1" id="2"/>
+        <topic position="127,-130" order="2" id="3"/>
+        <topic position="-127,0" order="3" id="4"/>
+        <topic position="127,94" order="6" id="5">
+            <topic position="251,94" order="0" text="ddddddddddddddddddddd" id="8">
+                <topic position="364,55" order="0" id="9"/>
+                <topic position="364,81" order="1" id="10"/>
+                <topic position="364,107" order="2" id="11"/>
+                <topic position="364,133" order="3" id="12"/>
+            </topic>
+        </topic>
+        <topic position="-127,33" order="5" id="6"/>
+        <topic position="127,163" order="8" id="7"/>
+        <topic position="127,-35" order="4" id="13">
+            <topic position="216,-100" order="0" id="14"/>
+            <topic position="216,-74" order="1" id="15"/>
+            <topic position="216,3" order="4" id="16"/>
+            <topic position="216,-48" order="2" id="17"/>
+            <topic position="216,29" order="5" id="18"/>
+            <topic position="216,-22" order="3" id="19"/>
+        </topic>
+    </topic>
+</map>

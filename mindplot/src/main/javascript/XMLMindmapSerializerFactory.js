@@ -53,12 +53,17 @@ mindplot.XMLMindmapSerializerFactory._codeNames =
         {
             codeName:mindplot.ModelCodeName.BETA,
             serializer: mindplot.XMLMindmapSerializer_Beta,
-            migrator:function() {//todo:error
+            migrator:function() {
             }
         },
         {
             codeName:mindplot.ModelCodeName.PELA,
             serializer:mindplot.XMLMindmapSerializer_Pela,
             migrator:mindplot.Beta2PelaMigrator
+        },
+        {
+            codeName:mindplot.ModelCodeName.TANGO,
+            serializer:mindplot.XMLMindmapSerializer_Tango,
+            migrator:mindplot.Pela2TangoMigrator
         }
     ];

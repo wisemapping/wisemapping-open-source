@@ -15,8 +15,23 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.ModelCodeName = {
-    BETA : "beta",
-    PELA : "pela",
-    TANGO : "tango"
-};
+mindplot.Pela2TangoMigrator = new Class({
+    initialize : function(pelaSerializer) {
+        this._pelaSerializer = pelaSerializer;
+        this._tangoSerializer = new mindplot.XMLMindmapSerializer_Tango();
+    },
+
+    toXML : function(mindmap) {
+        return this._tangoSerializer.toXML(mindmap);
+    },
+
+    loadFromDom : function(dom, mapId) {
+        $assert($defined(mapId), "mapId can not be null");
+        var mindmap = this._pelaSerializer.loadFromDom(dom, mapId);
+        mindmap.setVersion(mindplot.ModelCodeName.TANGO);
+
+        // @todo: Cocinar los ordenes ....
+
+        return mindmap;
+    }
+});

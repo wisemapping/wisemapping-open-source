@@ -41,9 +41,6 @@ mindplot.commands.DragTopicCommand = new Class({
 
         // Cache nodes position ...
         var topics = designer.getModel().getTopics();
-        topics.forEach(function(topic) {
-            topic.enableUICache(true);
-        });
 
         // In this case, topics are positioned using order ...
         origOrder = topic.getOrder();
@@ -82,10 +79,6 @@ mindplot.commands.DragTopicCommand = new Class({
         // Store for undo ...
         this._order = origOrder;
         this._position = origPosition;
-
-        topics.forEach(function(topic) {
-            topic.enableUICache(false);
-        });
 
     },
 

@@ -168,6 +168,7 @@ mindplot.XMLMindmapSerializer_Beta = new Class({
 
         // Start the loading process ...
         var version = rootElem.getAttribute("version");
+        version = !$defined(version) ? mindplot.ModelCodeName.BETA : version;
         var mindmap = new mindplot.model.Mindmap(mapId, version);
 
         var children = rootElem.childNodes;

@@ -41,37 +41,8 @@ mindplot.Topic = new Class({
 
             this._registerEvents();
         }
-
-        this._cacheUIEnabled = true;
-        this._iuCache = {};
     },
 
-
-    isUICacheEnabled : function() {
-        return this._cacheUIEnabled;
-    },
-
-    enableUICache : function(value) {
-        this._cacheUIEnabled = value;
-        if (!value) {
-            this._flushUIUpdate();
-        }
-
-        // Propagate the change to the children nodes ...
-        var children = this._getChildren();
-        for (var i = 0; i < children.length; i++) {
-            var node = children[i];
-            node.enableUICache(value);
-        }
-    },
-
-    _flushUIUpdate: function() {
-        var position = this._iuCache['position'];
-        if (position) {
-            this.setPosition(position);
-        }
-        this._iuCache = {};
-    },
 
     _registerEvents : function() {
 
@@ -829,32 +800,21 @@ mindplot.Topic = new Class({
         var currentPos = model.getPosition();
 
         model.setPosition(point.x, point.y);
-        if (!this.isUICacheEnabled()) {
-            // Elements are positioned in the center.
-            // All topic element must be positioned based on the innerShape.
-            var size = this.getSize();
+        // Elements are positioned in the center.
+        // All topic element must be positioned based on the innerShape.
+        var size = this.getSize();
 
-            var cx = Math.round(point.x - (size.width / 2));
-            var cy = Math.round(point.y - (size.height / 2));
+        var cx = Math.round(point.x - (size.width / 2));
+        var cy = Math.round(point.y - (size.height / 2));
 
-            // Update visual position.
-            this._elem2d.setPosition(cx, cy);
+        // Update visual position.
+        this._elem2d.setPosition(cx, cy);
 
-            // Update connection lines ...
-            this._updateConnectionLines();
+        // Update connection lines ...
+        this._updateConnectionLines();
 
-            // Check object state.
-            this.invariant();
-
-        } else {
-            this._iuCache['position'] = point;
-        }
-
-        if (!$defined(currentPos) || parseInt(currentPos.x) != parseInt(point.x) || parseInt(currentPos.y) != parseInt(point.y)) {
-
-            // Fire Listener events ...
-            mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMoveEvent, [this]);
-        }
+        // Check object state.
+        this.invariant();
     },
 
     getOutgoingLine : function() {
