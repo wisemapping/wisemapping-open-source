@@ -179,8 +179,9 @@ mindplot.layout.BalancedSorter = new Class({
 
     _getChildrenForSide: function(parent, graph, position) {
         position = position || {x: parent.getPosition().x + 1, y:parent.getPosition().y + 1};
+        var rootPosition = graph.getRootNode(parent).getPosition();
         return graph.getChildren(parent).filter(function(child) {
-            return position.x > 0 ? child.getPosition().x > 0 : child.getPosition().x < 0;
+            return position.x > rootPosition.x ? child.getPosition().x > rootPosition.x : child.getPosition().x < rootPosition.x;
         });
     },
 

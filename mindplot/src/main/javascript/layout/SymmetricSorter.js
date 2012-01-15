@@ -22,7 +22,8 @@ mindplot.layout.SymmetricSorter = new Class({
     },
 
     predict : function(parent, graph, position) {
-        var direction = parent.getPosition().x > 0 ? 1 : -1;
+        var rootNode = graph.getRootNode(parent);
+        var direction = parent.getPosition().x > rootNode.getPosition().x ? 1 : -1;
 
         // No children...
         var children = graph.getChildren(parent);
@@ -112,8 +113,8 @@ mindplot.layout.SymmetricSorter = new Class({
             ysum = ysum - heights[i].height;
             var parent = treeSet.getParent(treeSet.find(heights[i].id));
 
-            //TODO(gb): actually compare to branch's root node position
-            var direction = parent.getPosition().x > 0 ? 1 : -1;
+            var rootNode = treeSet.getRootNode(treeSet.find(heights[i].id));
+            var direction = parent.getPosition().x > rootNode.getPosition().x ? 1 : -1;
 
             var yOffset = ysum + heights[i].height / 2;
             var xOffset = direction * (heights[i].width/2 + node.getSize().width/2 + mindplot.layout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING);

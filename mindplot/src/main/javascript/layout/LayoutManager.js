@@ -20,11 +20,12 @@ mindplot.layout.LayoutManager = new Class({
     initialize: function(rootNodeId, rootSize) {
         $assert($defined(rootNodeId), "rootNodeId can not be null");
         $assert(rootSize, "rootSize can not be null");
+        var position = position || {x:0, y:0};
 
         this._treeSet = new mindplot.layout.RootedTreeSet();
         this._layout = new mindplot.layout.OriginalLayout(this._treeSet);
 
-        var rootNode = this._layout.createNode(rootNodeId, rootSize, {x:0,y:0}, 'root');
+        var rootNode = this._layout.createNode(rootNodeId, rootSize, position, 'root');
         this._treeSet.setRoot(rootNode);
         this._events = [];
     },

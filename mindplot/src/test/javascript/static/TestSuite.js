@@ -182,13 +182,13 @@ mindplot.layout.TestSuite = new Class({
         manager.layout();
         manager.plot("testBalanced13", {width:1000, height:400});
 
-        $assert(manager.find(1).getPosition().x > 0, "even order nodes must be at right of central topic");
-        $assert(manager.find(3).getPosition().x > 0, "even order nodes must be at right of central topic");
-        $assert(manager.find(5).getPosition().x > 0, "even order nodes must be at right of central topic");
+        $assert(manager.find(1).getPosition().x > manager.find(0).getPosition().x, "even order nodes must be at right of central topic");
+        $assert(manager.find(3).getPosition().x > manager.find(0).getPosition().x, "even order nodes must be at right of central topic");
+        $assert(manager.find(5).getPosition().x > manager.find(0).getPosition().x, "even order nodes must be at right of central topic");
 
-        $assert(manager.find(2).getPosition().x < 0, "odd order nodes must be at right of central topic");
-        $assert(manager.find(4).getPosition().x < 0, "odd order nodes must be at right of central topic");
-        $assert(manager.find(6).getPosition().x < 0, "odd order nodes must be at right of central topic");
+        $assert(manager.find(2).getPosition().x < manager.find(0).getPosition().x, "odd order nodes must be at right of central topic");
+        $assert(manager.find(4).getPosition().x < manager.find(0).getPosition().x, "odd order nodes must be at right of central topic");
+        $assert(manager.find(6).getPosition().x < manager.find(0).getPosition().x, "odd order nodes must be at right of central topic");
 
         $assert(manager.find(7).getPosition().x > manager.find(3).getPosition().x, "children of 1st level even order nodes must be to the right");
         $assert(manager.find(8).getPosition().x > manager.find(7).getPosition().x, "children of 1st level even order nodes must be to the right");
@@ -580,7 +580,6 @@ mindplot.layout.TestSuite = new Class({
     },
 
     _plotPrediction: function(canvas, prediction) {
-        console.log(prediction);        //TODO(gb): Remove trace!!!
         var position = prediction.position;
         var order = prediction.order;
         console.log("\t\tprediction {order:" + order + ", position: (" + position.x + "," + position.y + ")}");

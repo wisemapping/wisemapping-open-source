@@ -112,6 +112,16 @@ mindplot.layout.RootedTreeSet = new Class({
         return node._children;
     },
 
+    getRootNode: function(node) {
+        $assert(node, "node cannot be null");
+        var parent = this.getParent(node);
+        if ($defined(parent)) {
+            return this.getRootNode(parent);
+        }
+
+        return node;
+    },
+
     getAncestors: function(node) {
         $assert(node, 'node cannot be null');
         return this._getAncestors(this.getParent(node), []);
