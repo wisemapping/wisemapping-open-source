@@ -30,6 +30,7 @@ mindplot.layout.TestSuite = new Class({
         this.testSymmetricPredict();
         this.testBalancedPredict();
         this.testSize();
+        this.testFreePosition();
     },
 
     testAligned: function() {
@@ -640,6 +641,53 @@ mindplot.layout.TestSuite = new Class({
         this._plotPrediction(graph3, manager.predict(9, null));
         this._plotPrediction(graph3, manager.predict(3, null));
         this._plotPrediction(graph3, manager.predict(1, null));
+    },
+
+    testFreePosition: function() {
+        console.log("testFreePosition:");
+        var position = {x:0,y:0};
+        var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
+
+        // Prepare a sample graph ...
+        manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(2, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(3, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(4, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(5, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(6, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(7, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(8, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(9, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(10, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(11, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.connectNode(0, 1, 0).connectNode(0, 2, 1).connectNode(0, 3, 2);
+        manager.connectNode(3, 4, 0).connectNode(3, 5, 1).connectNode(3, 6, 2);
+        manager.connectNode(5, 7, 0).connectNode(5, 8, 1).connectNode(5, 11, 2);
+        manager.connectNode(2, 9, 0).connectNode(2, 10, 1);
+
+        manager.layout();
+        manager.plot("testFreePosition1", {width:1000, height:400});
+
+        console.log("\tmove node 5 to (280,20)");
+        manager.move(5, {x:280, y:20});
+        manager.layout();
+        manager.plot("testFreePosition2", {width:1000, height:400});
+
+        console.log("\tmove node 5 to (300,60)");
+        manager.move(5, {x:300, y:60});
+        manager.layout();
+        manager.plot("testFreePosition3", {width:1000, height:400});
+
+        console.log("\tmove node 2 to (-200,100)");
+        manager.move(2, {x:-200, y:100});
+        manager.layout();
+        manager.plot("testFreePosition4", {width:1000, height:400});
+
+        console.log("\tadd nodes as children of 3 and 5:");
+        manager.addNode(12, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(3,12,3);
+        manager.addNode(13, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(5,13,3);
+        manager.layout();
+        manager.plot("testFreePosition5", {width:1000, height:400});
     }
 });
 

@@ -71,7 +71,6 @@ mindplot.layout.OriginalLayout = new Class({
             // Calculate all node heights ...
             var sorter = node.getSorter();
 
-            // @Todo: This must not be implemented in this way.Each sorter could have different notion of heights ...
             var heightById = sorter.computeChildrenIdByHeights(this._treeSet, node);
 
             this._layoutChildren(node, heightById);
@@ -83,9 +82,10 @@ mindplot.layout.OriginalLayout = new Class({
         var nodeId = node.getId();
         var children = this._treeSet.getChildren(node);
         var parent = this._treeSet.getParent(node);
-        var childrenOrderMoved = children.some(function(child) {
-            return child.hasOrderChanged();
-        });
+        var childrenOrderMoved = children.some(function(child) { return child.hasOrderChanged(); });
+
+        var childrenFreeChanged = children.some(function(child) { return child.hasFreeChanged(); });
+        var freeChanged = node.hasFreeChanged() || childrenFreeChanged;
 
         // If ether any of the nodes has been changed of position or the height of the children is not
         // the same, children nodes must be repositioned ....
@@ -95,17 +95,18 @@ mindplot.layout.OriginalLayout = new Class({
         var heightChanged = node._branchHeight != newBranchHeight;
         node._heightChanged = heightChanged || parentHeightChanged;
 
-        if (childrenOrderMoved || heightChanged || parentHeightChanged) {
+        if (childrenOrderMoved || heightChanged || parentHeightChanged || freeChanged) {
             var sorter = node.getSorter();
             var offsetById = sorter.computeOffsets(this._treeSet, node);
             var parentPosition = node.getPosition();
 
             children.forEach(function(child) {
+                var freeDisplacement = child.getFreeDisplacement();
                 var offset = offsetById[child.getId()];
                 var parentX = parentPosition.x;
                 var parentY = parentPosition.y;
 
-                var newPos = {x:parentX + offset.x,y:parentY + offset.y};
+                var newPos = {x:parentX + freeDisplacement.x + offset.x, y:parentY + freeDisplacement.y + offset.y};
 
                 this._treeSet.updateBranchPosition(child, newPos);
             }.bind(this));

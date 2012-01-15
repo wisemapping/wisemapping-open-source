@@ -111,9 +111,10 @@ mindplot.layout.SymmetricSorter = new Class({
         var result = {};
         for (var i = 0; i < heights.length; i++) {
             ysum = ysum - heights[i].height;
-            var parent = treeSet.getParent(treeSet.find(heights[i].id));
+            var childNode = treeSet.find(heights[i].id);
+            var parent = treeSet.getParent(childNode);
 
-            var rootNode = treeSet.getRootNode(treeSet.find(heights[i].id));
+            var rootNode = treeSet.getRootNode(childNode);
             var direction = parent.getPosition().x > rootNode.getPosition().x ? 1 : -1;
 
             var yOffset = ysum + heights[i].height / 2;

@@ -35,6 +35,19 @@ mindplot.layout.Node = new Class({
         return this._id;
     },
 
+    setFree: function(value) {
+        this._setProperty('free', value);
+    },
+
+    isFree: function() {
+        var result = this._getProperty('free');
+        return this._getProperty('free');
+    },
+
+    hasFreeChanged: function() {
+        return this._isPropertyChanged('free');
+    },
+
     setShrunken: function(value) {
         this._setProperty('shrink', value);
     },
@@ -86,6 +99,21 @@ mindplot.layout.Node = new Class({
 
     getSize: function() {
         return this._getProperty('size');
+    },
+
+    setFreeDisplacement: function(displacement) {
+        $assert($defined(displacement), "Position can not be null");
+        $assert($defined(displacement.x), "x can not be null");
+        $assert($defined(displacement.y), "y can not be null");
+        var oldDisplacement = this.getFreeDisplacement();
+        var newDisplacement = {x:oldDisplacement.x + displacement.x, y:oldDisplacement.y + displacement.y};
+
+        this._setProperty('freeDisplacement', Object.clone(newDisplacement));
+    },
+
+    getFreeDisplacement: function() {
+        var freeDisplacement = this._getProperty('freeDisplacement');
+        return (freeDisplacement || {x:0, y:0});
     },
 
     setPosition : function(position) {

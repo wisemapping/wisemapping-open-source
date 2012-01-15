@@ -48,14 +48,20 @@ mindplot.layout.LayoutManager = new Class({
         return this._treeSet.find(id);
     },
 
-    move: function() {
-        //TODO(gb): implement
+    move: function(id, position) {
+        $assert($defined(id), "id cannot be null");
+        $assert($defined(position), "position cannot be null");
+        $assert($defined(position.x), "x can not be null");
+        $assert($defined(position.y), "y can not be null");
+        var node = this._treeSet.find(id);
+        node.setFree(true);
+        node.setFreeDisplacement({x:position.x - node.getPosition().x, y:position.y-node.getPosition().y});
     },
 
     connectNode: function(parentId, childId, order) {
-        $assert($defined(parentId), "parentId can not be null");
-        $assert($defined(childId), "childId can not be null");
-        $assert($defined(order), "order can not be null");
+        $assert($defined(parentId), "parentId cannot be null");
+        $assert($defined(childId), "childId cannot be null");
+        $assert($defined(order), "order cannot be null");
 
         this._layout.connectNode(parentId, childId, order);
 
@@ -73,6 +79,8 @@ mindplot.layout.LayoutManager = new Class({
         $assert($defined(id), "id can not be null");
         var result = this._layout.createNode(id, size, position, 'topic');
         this._treeSet.add(result);
+
+        return this;
     },
 
     removeNode: function(id) {
@@ -124,6 +132,8 @@ mindplot.layout.LayoutManager = new Class({
         if (!$(fireEvents) || fireEvents) {
             this._flushEvents();
         }
+
+        return this;
     },
 
     _flushEvents: function() {
