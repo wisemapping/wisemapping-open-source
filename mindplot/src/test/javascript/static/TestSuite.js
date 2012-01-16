@@ -688,6 +688,16 @@ mindplot.layout.TestSuite = new Class({
         manager.addNode(13, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(5,13,3);
         manager.layout();
         manager.plot("testFreePosition5", {width:1000, height:400});
+
+        console.log("\tmove node 13 to overlap node 11:");
+        manager.move(13, {x:415, y:70});
+        manager.layout();
+        manager.plot("testFreePosition6", {width:1000, height:400});
+
+        console.log("\tmove node 1 to overlap node 4:");
+        manager.move(1, {x:250, y:-90});
+        manager.layout();
+        manager.plot("testFreePosition7", {width:1000, height:400});
     }
 });
 

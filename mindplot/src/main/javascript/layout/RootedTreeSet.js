@@ -127,8 +127,8 @@ mindplot.layout.RootedTreeSet = new Class({
         return this._getAncestors(this.getParent(node), []);
     },
 
-    _getAncestors: function(node, nodes) {
-        var result = nodes;
+    _getAncestors: function(node, ancestors) {
+        var result = ancestors;
         if (node) {
             result.push(node);
             this._getAncestors(this.getParent(node), result);
@@ -138,8 +138,13 @@ mindplot.layout.RootedTreeSet = new Class({
 
     getSiblings: function(node) {
         $assert(node, 'node cannot be null');
-        var siblings = node._parent._children;
-        return siblings.erase(node);
+        if (!$defined(node._parent)) {
+            return [];
+        }
+        var siblings = node._parent._children.filter(function(child) {
+            return child != node;
+        });
+        return siblings;
     },
 
     getParent:function(node) {
@@ -184,14 +189,15 @@ mindplot.layout.RootedTreeSet = new Class({
         var order = node.getOrder() == null ? "r" : node.getOrder();
         var text = canvas.text(node.getPosition().x + canvas.width / 2, node.getPosition().y + canvas.height / 2, node.getId() + "[" + order + "]");
         text.attr('fill', '#FFF');
-        var fillColor = this._rootNodes.contains(node) ? "#000" : "#c00";
+        var fillColor = this._rootNodes.contains(node) ? "#000" : (node.isFree() ? "#abc" : "#c00");
         rect.attr('fill', fillColor);
 
+        var rectPosition = {x: rect.attr("x") - canvas.width/2 + rect.attr("width")/2, y:rect.attr("y") - canvas.height/2 + rect.attr("height")/2};
         rect.click(function() {
-            console.log("[id:" + node.getId() + ", order:" + node.getOrder() + ", position:(" + node.getPosition().x + "," + node.getPosition().y + "), size:" + node.getSize().width + "x" + node.getSize().height + ", sorter:" + node.getSorter() +"]");
+            console.log("[id:" + node.getId() + ", order:" + node.getOrder() + ", position:(" + rectPosition.x + "," + rectPosition.y + "), size:" + node.getSize().width + "x" + node.getSize().height + ", sorter:" + node.getSorter() +"]");
         });
         text.click(function() {
-            console.log("[id:" + node.getId() + ", order:" + node.getOrder() + ", position:(" + node.getPosition().x + "," + node.getPosition().y + "), size:" + node.getSize().width + "x" + node.getSize().height + ", sorter:" + node.getSorter() +"]");
+            console.log("[id:" + node.getId() + ", order:" + node.getOrder() + ", position:(" + rectPosition.x + "," + rectPosition.y + "), size:" + node.getSize().width + "x" + node.getSize().height + ", sorter:" + node.getSorter() +"]");
         });
 
         for (var i = 0; i < children.length; i++) {

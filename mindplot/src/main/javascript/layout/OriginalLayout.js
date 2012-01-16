@@ -74,6 +74,8 @@ mindplot.layout.OriginalLayout = new Class({
             var heightById = sorter.computeChildrenIdByHeights(this._treeSet, node);
 
             this._layoutChildren(node, heightById);
+
+            this._fixOverlapping(node, heightById);
         }, this);
     },
 
@@ -118,6 +120,67 @@ mindplot.layout.OriginalLayout = new Class({
         children.forEach(function(child) {
             this._layoutChildren(child, heightById);
         }, this);
+    },
+
+    _fixOverlapping: function(node, heightById) {
+//        console.log("\t\tnode {id:" + node.getId() + "}");        //TODO(gb): Remove trace!!!
+        var children = this._treeSet.getChildren(node);
+        var freeChildren = children.filter(function(child) {return child.isFree()});
+
+        // Check for overlap only for free children
+        freeChildren.forEach(function(child) {
+            var childVertex = child.getVertex();
+//            console.log("\t\t\tchild {id:" + child.getId() + ", x0:(" + childVertex.a.x + "," + childVertex.a.y + "), x1:(" + childVertex.b.x + "," + childVertex.b.y + ")}");        //TODO(gb): Remove trace!!!
+
+            // Overlap should only occur with siblings (?)
+            var colliders = this._getColliders(child);
+
+
+            colliders.forEach(function(collider) {
+                console.log("\t\t\tcollider {id:" + collider.getId() + ", with:" + child.getId() +"}");        //TODO(gb): Remove trace!!!
+            }, this);
+
+            if (colliders.length == 0) {
+                console.log("\t\t\tNo colliders");        //TODO(gb): Remove trace!!!
+            }
+        }, this);
+
+        children.forEach(function(child) {
+            this._fixOverlapping(child, heightById);
+        }, this);
+    },
+
+    _getColliders: function(node) {
+        console.log("\t\tcheck with colliders for node " + node.getId() + ":`");        //TODO(gb): Remove trace!!!
+        var siblings = this._treeSet.getSiblings(node);
+        var colliders = [];
+        siblings.forEach(function(sibling) {
+            var collisions = this._checkCollision(node, sibling, colliders);
+            if (this._nodesCollide(node, sibling)) {
+                collisions.push(sibling);
+            }
+        }, this);
+
+        return colliders;
+    },
+
+    _checkCollision: function(checkNode, node, colliders) {
+        var children = this._treeSet.getChildren(node);
+        children.forEach(function(child) {
+            if (this._nodesCollide(checkNode, child)) {
+                colliders.push(child);
+            }
+            this._checkCollision(checkNode, child, colliders);
+        }, this);
+
+        return colliders;
+    },
+
+    _nodesCollide: function(nodeA, nodeB) {
+        var nodeAVertex = nodeA.getVertex();
+        var nodeBVertex = nodeB.getVertex();
+        return nodeAVertex.a.x < nodeBVertex.b.x && nodeAVertex.b.x > nodeBVertex.a.x &&
+            nodeAVertex.a.y < nodeBVertex.b.y && nodeAVertex.b.y > nodeBVertex.a.y;
     }
 
 });
