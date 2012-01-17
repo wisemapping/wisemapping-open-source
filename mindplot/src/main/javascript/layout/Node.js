@@ -40,12 +40,15 @@ mindplot.layout.Node = new Class({
     },
 
     isFree: function() {
-        var result = this._getProperty('free');
         return this._getProperty('free');
     },
 
     hasFreeChanged: function() {
         return this._isPropertyChanged('free');
+    },
+
+    hasFreeDisplacementChanged: function() {
+        return this._isPropertyChanged('freeDisplacement');
     },
 
     setShrunken: function(value) {
@@ -70,6 +73,13 @@ mindplot.layout.Node = new Class({
 
     resetOrderState : function() {
         var prop = this._properties['order'];
+        if (prop) {
+            prop.hasChanged = false;
+        }
+    },
+
+    resetFreeState : function() {
+        var prop = this._properties['freeDisplacement'];
         if (prop) {
             prop.hasChanged = false;
         }

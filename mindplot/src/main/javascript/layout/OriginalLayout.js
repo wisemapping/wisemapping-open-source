@@ -75,7 +75,7 @@ mindplot.layout.OriginalLayout = new Class({
 
             this._layoutChildren(node, heightById);
 
-            this._fixOverlapping(node, heightById);
+            this._fixOverlapping(node);
         }, this);
     },
 
@@ -97,13 +97,16 @@ mindplot.layout.OriginalLayout = new Class({
         var heightChanged = node._branchHeight != newBranchHeight;
         node._heightChanged = heightChanged || parentHeightChanged;
 
-        if (childrenOrderMoved || heightChanged || parentHeightChanged || freeChanged) {
+
+
+        if (childrenOrderMoved || heightChanged || parentHeightChanged) {
             var sorter = node.getSorter();
             var offsetById = sorter.computeOffsets(this._treeSet, node);
             var parentPosition = node.getPosition();
 
             children.forEach(function(child) {
                 var freeDisplacement = child.getFreeDisplacement();
+                var freeDisplacement = {x:0, y:0};
                 var offset = offsetById[child.getId()];
                 var parentX = parentPosition.x;
                 var parentY = parentPosition.y;
@@ -122,58 +125,22 @@ mindplot.layout.OriginalLayout = new Class({
         }, this);
     },
 
-    _fixOverlapping: function(node, heightById) {
-//        console.log("\t\tnode {id:" + node.getId() + "}");        //TODO(gb): Remove trace!!!
+    _fixOverlapping: function(node) {
         var children = this._treeSet.getChildren(node);
-        var freeChildren = children.filter(function(child) {return child.isFree()});
+        if (node.hasFreeDisplacementChanged()) {
+            var yOffset = node.getFreeDisplacement().y;
+            var branchesToShift = this._treeSet.getBranchesInVerticalDirection(node, yOffset);
+            this._treeSet.shiftBranchPosition(node, node.getFreeDisplacement().x, node.getFreeDisplacement().y);
 
-        // Check for overlap only for free children
-        freeChildren.forEach(function(child) {
-            var childVertex = child.getVertex();
-//            console.log("\t\t\tchild {id:" + child.getId() + ", x0:(" + childVertex.a.x + "," + childVertex.a.y + "), x1:(" + childVertex.b.x + "," + childVertex.b.y + ")}");        //TODO(gb): Remove trace!!!
+            branchesToShift.forEach(function(branch) {
+                this._treeSet.shiftBranchPosition(branch, 0, yOffset);
+            },this);
 
-            // Overlap should only occur with siblings (?)
-            var colliders = this._getColliders(child);
-
-
-            colliders.forEach(function(collider) {
-                console.log("\t\t\tcollider {id:" + collider.getId() + ", with:" + child.getId() +"}");        //TODO(gb): Remove trace!!!
-            }, this);
-
-            if (colliders.length == 0) {
-                console.log("\t\t\tNo colliders");        //TODO(gb): Remove trace!!!
-            }
-        }, this);
+        }
 
         children.forEach(function(child) {
-            this._fixOverlapping(child, heightById);
+            this._fixOverlapping(child);
         }, this);
-    },
-
-    _getColliders: function(node) {
-        console.log("\t\tcheck with colliders for node " + node.getId() + ":`");        //TODO(gb): Remove trace!!!
-        var siblings = this._treeSet.getSiblings(node);
-        var colliders = [];
-        siblings.forEach(function(sibling) {
-            var collisions = this._checkCollision(node, sibling, colliders);
-            if (this._nodesCollide(node, sibling)) {
-                collisions.push(sibling);
-            }
-        }, this);
-
-        return colliders;
-    },
-
-    _checkCollision: function(checkNode, node, colliders) {
-        var children = this._treeSet.getChildren(node);
-        children.forEach(function(child) {
-            if (this._nodesCollide(checkNode, child)) {
-                colliders.push(child);
-            }
-            this._checkCollision(checkNode, child, colliders);
-        }, this);
-
-        return colliders;
     },
 
     _nodesCollide: function(nodeA, nodeB) {

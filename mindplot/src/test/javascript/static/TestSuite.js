@@ -19,18 +19,18 @@ mindplot.layout.TestSuite = new Class({
     Extends: mindplot.layout.ChildrenSorterStrategy,
 
     initialize:function() {
-//        this.testAligned();
-//        this.testSymmetry();
-//        this.testBalanced();
-//        this.testEvents();
-//        this.testEventsComplex();
-//        this.testDisconnect();
-//        this.testReconnect();
-//        this.testRemoveNode();
-//        this.testSymmetricPredict();
-//        this.testBalancedPredict();
+        this.testAligned();
+        this.testSymmetry();
+        this.testBalanced();
+        this.testEvents();
+        this.testEventsComplex();
+        this.testDisconnect();
+        this.testReconnect();
+        this.testRemoveNode();
+        this.testSymmetricPredict();
+        this.testBalancedPredict();
         this.testSize();
-//        this.testFreePosition();
+        this.testFreePosition();
     },
 
     testAligned: function() {
@@ -668,47 +668,51 @@ mindplot.layout.TestSuite = new Class({
         manager.addNode(9, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.addNode(10, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.addNode(11, mindplot.layout.TestSuite.NODE_SIZE, position);
-        manager.connectNode(0, 1, 0).connectNode(0, 2, 1).connectNode(0, 3, 2);
-        manager.connectNode(3, 4, 0).connectNode(3, 5, 1).connectNode(3, 6, 2);
-        manager.connectNode(5, 7, 0).connectNode(5, 8, 1).connectNode(5, 11, 2);
-        manager.connectNode(2, 9, 0).connectNode(2, 10, 1);
+        manager.addNode(12, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(13, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(14, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(15, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(16, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(17, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(18, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(19, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(20, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(21, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(22, mindplot.layout.TestSuite.NODE_SIZE, position);
+
+        manager.connectNode(0,1,0).connectNode(0,2,1).connectNode(0,3,2).connectNode(0,4,3);
+        manager.connectNode(4,21,0).connectNode(4,22,0);
+        manager.connectNode(1,5,0);
+        manager.connectNode(5,6,0).connectNode(6,8,0).connectNode(8,9,0);
+        manager.connectNode(5,7,1).connectNode(7,10,0);
+        manager.connectNode(3,11,0).connectNode(11,14,0).connectNode(14,18,0).connectNode(14,19,1).connectNode(14,20,2);
+        manager.connectNode(3,12,1).connectNode(12,15,0).connectNode(12,16,1).connectNode(12,17,2);
+        manager.connectNode(3,13,2);
 
         manager.layout();
-        manager.plot("testFreePosition1", {width:1000, height:400});
+        manager.plot("testFreePosition1", {width:1400, height:600});
 
-        console.log("\tmove node 5 to (280,20)");
-        manager.move(5, {x:280, y:20});
+        console.log("move node 12 to (300,30)");
+        manager.move(12, {x:300, y:30});
         manager.layout();
-        manager.plot("testFreePosition2", {width:1000, height:400});
+        manager.plot("testFreePosition2", {width:1400, height:600});
 
-        console.log("\tmove node 5 to (300,60)");
-        manager.move(5, {x:300, y:60});
-        manager.layout();
-        manager.plot("testFreePosition3", {width:1000, height:400});
+        console.log("move node 13 to (340,180)");
+        manager.move(13, {x:340, y:180});
+        manager.layout(true);
+        manager.plot("testFreePosition3", {width:1400, height:600});
 
-        console.log("\tmove node 2 to (-200,100)");
-        manager.move(2, {x:-200, y:100});
-        manager.layout();
-        manager.plot("testFreePosition4", {width:1000, height:400});
+        console.log("move node 11 to (250,-50)");
+        manager.move(11, {x:250, y:-50});
+        manager.layout(true);
+        manager.plot("testFreePosition4", {width:1400, height:600});
 
-        console.log("\tadd nodes as children of 3 and 5:");
-        manager.addNode(12, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(3,12,3);
-        manager.addNode(13, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(5,13,3);
-        manager.layout();
-        manager.plot("testFreePosition5", {width:1000, height:400});
-
-        console.log("\tmove node 13 to overlap node 11:");
-        manager.move(13, {x:415, y:70});
-        manager.layout();
-        manager.plot("testFreePosition6", {width:1000, height:400});
-
-        console.log("\tmove node 1 to overlap node 4:");
-        manager.move(1, {x:250, y:-90});
-        manager.layout();
-        manager.plot("testFreePosition7", {width:1000, height:400});
+        console.log("move node 7 to (350,-190)");
+        manager.move(7, {x:350, y:-190});
+        manager.layout(true);
+        manager.plot("testFreePosition5", {width:1400, height:600});
     }
 });
 
 mindplot.layout.TestSuite.NODE_SIZE = {width:80, height:30},
 mindplot.layout.TestSuite.ROOT_NODE_SIZE = {width:120, height:40}
-

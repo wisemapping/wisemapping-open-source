@@ -216,19 +216,45 @@ mindplot.layout.RootedTreeSet = new Class({
 
         var children = this.getChildren(node);
         children.forEach(function(child) {
-            this._shiftBranchPosition(child, xOffset, yOffset);
+            this.shiftBranchPosition(child, xOffset, yOffset);
         }.bind(this));
 
     },
 
-    _shiftBranchPosition : function(node, xOffset, yOffset) {
+    shiftBranchPosition: function(node, xOffset, yOffset) {
         var position = node.getPosition();
         node.setPosition({x:position.x + xOffset, y:position.y + yOffset});
 
         var children = this.getChildren(node);
         children.forEach(function(child) {
-            this._shiftBranchPosition(child, xOffset, yOffset);
+            this.shiftBranchPosition(child, xOffset, yOffset);
         }.bind(this));
+    },
+
+    getBranchesInVerticalDirection: function(node, yOffset) {
+        // siblings with lower or higher order, depending on the direction of the offset
+        var siblings = this.getSiblings(node).filter(function(sibling) {
+            if (yOffset < 0)
+                return sibling.getOrder() < node.getOrder();
+            else
+                return sibling.getOrder() > node.getOrder();
+        });
+
+        // direct descendants of the root that do not contain the node and are on the same side
+        // and on the direction of the offset
+        var rootNode = this.getRootNode(node);
+        var branches = this.getChildren(rootNode).filter(function(child) {
+            return this._find(node.getId(), child);
+        }, this);
+
+        var branch = branches[0];
+        var rootDescendants = this.getSiblings(branch).filter(function(sibling) {
+            var sameSide = node.getPosition().x > rootNode.getPosition().x ? sibling.getPosition().x > rootNode.getPosition().x : sibling.getPosition().x < rootNode.getPosition().x;
+            var sameDirection = yOffset < 0 ? sibling.getOrder() < branch.getOrder() : sibling.getOrder() > branch.getOrder();
+            return sameSide && sameDirection;
+        }, this);
+
+        return siblings.combine(rootDescendants);
     }
 
 });

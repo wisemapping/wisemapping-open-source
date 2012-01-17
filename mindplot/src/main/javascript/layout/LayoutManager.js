@@ -169,6 +169,7 @@ mindplot.layout.LayoutManager = new Class({
 
                 node.resetPositionState();
                 node.resetOrderState();
+                node.resetFreeState();
                 this._events.push(event);
             }
             this._collectChanges(this._treeSet.getChildren(node));
