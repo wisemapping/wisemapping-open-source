@@ -91,10 +91,13 @@ mindplot.Designer = new Class({
             }.bind(this));
 
             // Create nodes on double click...
-            screenManager.addEvent('dblclick', function() {
+            screenManager.addEvent('dblclick', function(event) {
                 if (workspace.isWorkspaceEventsEnabled()) {
+
+                    var mousePos = screenManager.getWorkspaceMousePosition(event);
+
                     var centralTopic = this.getModel().getCentralTopic();
-                    var model = this._createChildModel(centralTopic);
+                    var model = this._createChildModel(centralTopic, mousePos);
                     this._actionDispatcher.addTopic(model, centralTopic.getId());
                 }
             }.bind(this));
@@ -326,7 +329,7 @@ mindplot.Designer = new Class({
 
         },
 
-        _createChildModel : function(topic) {
+        _createChildModel : function(topic, mousePos) {
             // Create a new node ...
             var model = topic.getModel();
             var mindmap = model.getMindmap();
@@ -334,8 +337,9 @@ mindplot.Designer = new Class({
 
             // Create a new node ...
             var layoutManager = this._eventBussDispatcher.getLayoutManager();
-            var result = layoutManager.predict(topic.getId());
+            var result = layoutManager.predict(topic.getId(), mousePos);
             childModel.setOrder(result.order);
+            console.log(result.order);
 
             var position = result.position;
             childModel.setPosition(position.x, position.y);

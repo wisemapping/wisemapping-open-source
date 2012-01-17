@@ -119,7 +119,9 @@ mindplot.DragPivot = new Class({
 
         var connectRect = this._connectRect;
         connectRect.setVisibility(value);
-        this._line.setVisibility(value);
+        if (this._line) {
+            this._line.setVisibility(value);
+        }
     },
 
     addToWorkspace : function(workspace) {
@@ -178,6 +180,7 @@ mindplot.DragPivot = new Class({
         } else {
             this._line = this._curvedLine;
         }
+        this._line.setVisibility(true);
 
         // Connected to Rect ...
         var connectRect = this._connectRect;

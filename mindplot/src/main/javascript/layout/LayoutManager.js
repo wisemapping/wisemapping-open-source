@@ -59,7 +59,7 @@ mindplot.layout.LayoutManager = new Class({
 
         var node = this._treeSet.find(id);
         node.setFree(true);
-        node.setFreeDisplacement({x:position.x - node.getPosition().x, y:position.y-node.getPosition().y});
+        node.setFreeDisplacement({x:position.x - node.getPosition().x, y:position.y - node.getPosition().y});
     },
 
     connectNode: function(parentId, childId, order) {
