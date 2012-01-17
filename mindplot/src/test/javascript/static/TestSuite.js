@@ -711,6 +711,16 @@ mindplot.layout.TestSuite = new Class({
         manager.move(7, {x:350, y:-190});
         manager.layout(true);
         manager.plot("testFreePosition5", {width:1400, height:600});
+
+        manager.addNode(23, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.connectNode(12,23,3);
+        manager.layout(true);
+        manager.plot("testFreePosition6", {width:1400, height:600});
+
+        console.log("move node 4 to (-300, 190)");
+        manager.move(4, {x:-300, y:190});
+        manager.layout(true);
+        manager.plot("testFreePosition7", {width:1400, height:600});
     }
 });
 
