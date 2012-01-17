@@ -19,18 +19,18 @@ mindplot.layout.TestSuite = new Class({
     Extends: mindplot.layout.ChildrenSorterStrategy,
 
     initialize:function() {
-        this.testAligned();
-        this.testSymmetry();
-        this.testBalanced();
-        this.testEvents();
-        this.testEventsComplex();
-        this.testDisconnect();
-        this.testReconnect();
-        this.testRemoveNode();
-        this.testSymmetricPredict();
-        this.testBalancedPredict();
+//        this.testAligned();
+//        this.testSymmetry();
+//        this.testBalanced();
+//        this.testEvents();
+//        this.testEventsComplex();
+//        this.testDisconnect();
+//        this.testReconnect();
+//        this.testRemoveNode();
+//        this.testSymmetricPredict();
+//        this.testBalancedPredict();
         this.testSize();
-        this.testFreePosition();
+//        this.testFreePosition();
     },
 
     testAligned: function() {
@@ -641,6 +641,14 @@ mindplot.layout.TestSuite = new Class({
         this._plotPrediction(graph3, manager.predict(9, null));
         this._plotPrediction(graph3, manager.predict(3, null));
         this._plotPrediction(graph3, manager.predict(1, null));
+
+        manager.updateNodeSize(7, {width:80, height:120});
+        manager.layout();
+        manager.plot("testSize4", {width: 1400, height: 400});
+
+        manager.updateNodeSize(7, {width:200, height:30});
+        manager.layout();
+        manager.plot("testSize5", {width: 1400, height: 400});
     },
 
     testFreePosition: function() {
