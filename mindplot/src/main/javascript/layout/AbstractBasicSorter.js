@@ -15,6 +15,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
 mindplot.layout.AbstractBasicSorter = new Class({
     Extends: mindplot.layout.ChildrenSorterStrategy,
 
@@ -24,8 +25,12 @@ mindplot.layout.AbstractBasicSorter = new Class({
         return result;
     },
 
+    _getVerticalPadding: function() {
+        return mindplot.layout.AbstractBasicSorter.INTERNODE_VERTICAL_PADDING;
+    },
+
     _computeChildrenHeight : function(treeSet, node, heightCache) {
-        var height = node.getSize().height + (mindplot.layout.AbstractBasicSorter.INTERNODE_VERTICAL_PADDING * 2); // 2* Top and down padding;
+        var height = node.getSize().height + (this._getVerticalPadding() * 2); // 2* Top and down padding;
 
         var result;
         var children = treeSet.getChildren(node);
@@ -54,6 +59,7 @@ mindplot.layout.AbstractBasicSorter = new Class({
         });
         return result;
     }
+
 });
 
 mindplot.layout.AbstractBasicSorter.INTERNODE_VERTICAL_PADDING = 5;

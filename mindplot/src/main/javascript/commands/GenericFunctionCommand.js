@@ -28,6 +28,7 @@ mindplot.commands.GenericFunctionCommand = new Class({
         this._oldValues = [];
         this._id = mindplot.Command._nextUUID();
     },
+
     execute: function(commandContext) {
         if (!this.applied) {
             var topics = commandContext.findTopics(this._topicsIds);
@@ -41,6 +42,7 @@ mindplot.commands.GenericFunctionCommand = new Class({
         }
 
     },
+
     undoExecute: function(commandContext) {
         if (this.applied) {
             var topics = commandContext.findTopics(this._topicsIds);

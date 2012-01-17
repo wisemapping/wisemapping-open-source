@@ -29,11 +29,11 @@ mindplot.layout.SymmetricSorter = new Class({
         var children = graph.getChildren(parent);
         if (children.length == 0) {
             position = position || {x:parent.getPosition().x + direction, y:parent.getPosition().y};
-            var position = {
+            var pos = {
                 x: parent.getPosition().x + direction * (parent.getSize().width + mindplot.layout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING),
                 y:parent.getPosition().y
-            }
-            return [0, position];
+            };
+            return [0, pos];
         }
 
         // Try to fit within ...
@@ -43,9 +43,9 @@ mindplot.layout.SymmetricSorter = new Class({
         children.each(function(child, index) {
             var cpos = child.getPosition();
             if (position.y > cpos.y) {
-                yOffset = child == last ?
+                var yOffset = child == last ?
                     child.getSize().height + mindplot.layout.SymmetricSorter.INTERNODE_VERTICAL_PADDING * 2 :
-                    (children[index + 1].getPosition().y + children[index + 1].getSize().height/2 - child.getPosition().y)/2;
+                    (children[index + 1].getPosition().y + children[index + 1].getSize().height / 2 - child.getPosition().y) / 2;
                 result = [child.getOrder() + 1,{x:cpos.x, y:cpos.y + yOffset}];
             }
         });
@@ -118,7 +118,7 @@ mindplot.layout.SymmetricSorter = new Class({
             var direction = parent.getPosition().x > rootNode.getPosition().x ? 1 : -1;
 
             var yOffset = ysum + heights[i].height / 2;
-            var xOffset = direction * (heights[i].width/2 + node.getSize().width/2 + mindplot.layout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING);
+            var xOffset = direction * (heights[i].width / 2 + node.getSize().width / 2 + mindplot.layout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING);
 
             $assert(!isNaN(xOffset), "xOffset can not be null");
             $assert(!isNaN(yOffset), "yOffset can not be null");

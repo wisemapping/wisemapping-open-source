@@ -225,7 +225,7 @@ mindplot.StandaloneActionDispatcher = new Class({
         };
 
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicsIds, collapse);
-        this.execute(command);
+        this.execute(command, false);
     },
 
     execute:function(command) {

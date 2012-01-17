@@ -22,35 +22,6 @@ mindplot.layout.BalancedSorter = new Class({
 
     },
 
-    computeChildrenIdByHeights: function(treeSet, node) {
-        var result = {};
-        this._computeChildrenHeight(treeSet, node, result);
-        return result;
-    },
-
-    _computeChildrenHeight : function(treeSet, node, heightCache) {
-        var height = node.getSize().height + (mindplot.layout.BalancedSorter.INTERNODE_VERTICAL_PADDING * 2); // 2* Top and down padding;
-
-        var result;
-        var children = treeSet.getChildren(node);
-        if (children.length == 0 || node.areChildrenShrunken()) {
-            result = height;
-        } else {
-            var childrenHeight = 0;
-            children.forEach(function(child) {
-                childrenHeight += this._computeChildrenHeight(treeSet, child, heightCache);
-            }, this);
-
-            result = Math.max(height, childrenHeight);
-        }
-
-        if (heightCache) {
-            heightCache[node.getId()] = result;
-        }
-
-        return result;
-    },
-
     predict : function(parent, graph, position) {
 
         if (!position) {
@@ -76,7 +47,7 @@ mindplot.layout.BalancedSorter = new Class({
             if (position.y > cpos.y) {
                 yOffset = child == last ?
                     child.getSize().height + mindplot.layout.BalancedSorter.INTERNODE_VERTICAL_PADDING * 2 :
-                    (children[index + 1].getPosition().y - child.getPosition().y)/2;
+                    (children[index + 1].getPosition().y - child.getPosition().y) / 2;
                 result = [child.getOrder() + 2,{x:cpos.x, y:cpos.y + yOffset}];
             }
         });
@@ -108,7 +79,7 @@ mindplot.layout.BalancedSorter = new Class({
             }
         }
 
-        var newOrder = order > (max+1) ? (max + 2) : order;
+        var newOrder = order > (max + 1) ? (max + 2) : order;
         child.setOrder(newOrder);
     },
 
@@ -167,7 +138,7 @@ mindplot.layout.BalancedSorter = new Class({
             }
 
             var yOffset = ysum + heights[i].height / 2;
-            var xOffset = direction * (node.getSize().width/2 + heights[i].width/2 +  + mindplot.layout.BalancedSorter.INTERNODE_HORIZONTAL_PADDING);
+            var xOffset = direction * (node.getSize().width / 2 + heights[i].width / 2 + + mindplot.layout.BalancedSorter.INTERNODE_HORIZONTAL_PADDING);
 
             $assert(!isNaN(xOffset), "xOffset can not be null");
             $assert(!isNaN(yOffset), "yOffset can not be null");
@@ -200,13 +171,18 @@ mindplot.layout.BalancedSorter = new Class({
         var factor = node.getOrder() % 2 == 0 ? 2 : 1;
         for (var i = 0; i < children.length; i++) {
             var order = i == 0 && factor == 1 ? 1 : (factor * i);
-            $assert(children[i].getOrder() == order, "Missing order elements. Missing order: " + (i*factor));
+            $assert(children[i].getOrder() == order, "Missing order elements. Missing order: " + (i * factor));
         }
     },
 
     toString:function() {
         return "Balanced Sorter";
+    },
+
+    _getVerticalPadding:function() {
+        return mindplot.layout.BalancedSorter.INTERNODE_VERTICAL_PADDING;
     }
+
 });
 
 mindplot.layout.BalancedSorter.INTERNODE_VERTICAL_PADDING = 5;

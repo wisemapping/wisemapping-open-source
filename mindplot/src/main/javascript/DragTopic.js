@@ -122,7 +122,6 @@ mindplot.DragTopic = new Class({
         var dragPivot = this._getDragPivot();
 
         dragPivot.addToWorkspace(workspace);
-        dragPivot.setVisibility(true);
     },
 
     _getDragPivot : function() {

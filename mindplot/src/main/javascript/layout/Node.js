@@ -135,12 +135,12 @@ mindplot.layout.Node = new Class({
         }
 
         // Only update if the property has changed ...
-        if (JSON.encode(prop.oldValue) != JSON.encode(value)) {
+        if (JSON.encode(prop.value) != JSON.encode(value)) {
             prop.oldValue = prop.value;
             prop.value = value;
             prop.hasChanged = true;
-            this._properties[key] = prop;
         }
+        this._properties[key] = prop;
     },
 
     _getProperty: function(key) {
@@ -159,7 +159,7 @@ mindplot.layout.Node = new Class({
 
 
     toString: function() {
-        return "[id:" + this.getId() + ", order:" + this.getOrder() + ", position: {" + this.getPosition().x + "," + this.getPosition().y + "}, size: {" + this.getSize().width + "," + this.getSize().height + "}";
+        return "[id:" + this.getId() + ", order:" + this.getOrder() + ", position: {" + this.getPosition().x + "," + this.getPosition().y + "}, size: {" + this.getSize().width + "}," + this.getSize().height + ", shrink:" + this.areChildrenShrunken() + "]";
     }
 
 });

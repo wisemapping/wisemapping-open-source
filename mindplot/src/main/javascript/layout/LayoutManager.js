@@ -39,9 +39,12 @@ mindplot.layout.LayoutManager = new Class({
 
     updateShrinkState: function(id, value) {
         $assert($defined(id), "id can not be null");
+        $assert($defined(value), "value can not be null");
 
         var node = this._treeSet.find(id);
         node.setShrunken(value);
+
+        return this;
     },
 
     find: function(id) {
@@ -53,6 +56,7 @@ mindplot.layout.LayoutManager = new Class({
         $assert($defined(position), "position cannot be null");
         $assert($defined(position.x), "x can not be null");
         $assert($defined(position.y), "y can not be null");
+
         var node = this._treeSet.find(id);
         node.setFree(true);
         node.setFreeDisplacement({x:position.x - node.getPosition().x, y:position.y-node.getPosition().y});
@@ -169,7 +173,6 @@ mindplot.layout.LayoutManager = new Class({
             }
             this._collectChanges(this._treeSet.getChildren(node));
         }, this);
-
     }
 
 });

@@ -164,7 +164,8 @@ mindplot.model.INodeModel = new Class({
     },
 
     areChildrenShrunken  : function() {
-        return this.getProperty('shrunken');
+        var result = this.getProperty('shrunken');
+        return $defined(result) ? result : false;
     },
 
     setChildrenShrunken  : function(value) {

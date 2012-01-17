@@ -27,8 +27,6 @@ mindplot.layout.EventBusDispatcher = new Class({
         this._layoutManager.addEvent('change', function(event) {
             var id = event.getId();
             var topic = designerModel.findTopicById(id);
-            console.log("Modify position to:" + id);
-
             topic.setPosition(event.getPosition());
             topic.setOrder(event.getOrder());
         });
@@ -88,9 +86,10 @@ mindplot.layout.EventBusDispatcher = new Class({
     _doLayout: function() {
 //        (function() {
         this._layoutManager.layout(true);
-        console.log("---------");
+//        console.log("---------");
         this._layoutManager.dump();
-        console.log("---------");
+//        console.log("---------");
+//        console.log("---------");
 //        }).delay(0, this);
     },
 
