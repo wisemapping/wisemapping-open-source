@@ -46,7 +46,7 @@ mindplot.DragTopic = new Class({
         // Update visual position.
         this._elem2d.setPosition(cx, cy);
 
-        if (this.isConnected()) {
+        if (this.isConnected() && !this.isFreeLayoutOn()) {
             var parent = this.getConnectedToTopic();
             var predict = designer._eventBussDispatcher._layoutManager.predict(parent.getId(), this.getPosition());
             if (this._order != predict.order) {
@@ -59,7 +59,12 @@ mindplot.DragTopic = new Class({
     },
 
     updateFreeLayout: function(event) {
-        this._isFreeLayoutEnabled = (event.meta && Browser.Platform.mac) || (event.control && !Browser.Platform.mac);
+        var isFreeEnabled = (event.meta && Browser.Platform.mac) || (event.control && !Browser.Platform.mac);
+        if (this.isFreeLayoutOn() != isFreeEnabled) {
+            var dragPivot = this._getDragPivot();
+            dragPivot.setVisibility(!isFreeEnabled);
+            this._isFreeLayoutEnabled = isFreeEnabled;
+        }
     },
 
     getInnerShape : function() {

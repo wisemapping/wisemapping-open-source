@@ -74,8 +74,9 @@ mindplot.StandaloneActionDispatcher = new Class({
         };
 
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicId, position);
-        this._actionRunner.execute(command);
+        this.execute(command);
     },
+
     moveControlPoint: function(ctrlPoint, point) {
         var command = new mindplot.commands.MoveControlPointCommand(ctrlPoint, point);
         this.execute(command);
@@ -104,7 +105,7 @@ mindplot.StandaloneActionDispatcher = new Class({
             return result;
         };
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicsIds);
-        this._actionRunner.execute(command);
+        this.execute(command);
 
     },
 
@@ -118,7 +119,7 @@ mindplot.StandaloneActionDispatcher = new Class({
         };
 
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicsIds, text);
-        this._actionRunner.execute(command);
+        this.execute(command);
     },
 
     changeFontFamilyToTopic: function(topicIds, fontFamily) {

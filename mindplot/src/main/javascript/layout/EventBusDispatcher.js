@@ -65,7 +65,7 @@ mindplot.layout.EventBusDispatcher = new Class({
     },
 
     _nodeAdded: function(node) {
-        // Centra topic must not be added twice ...
+        // Central topic must not be added twice ...
         if (node.getId() != 0) {
             this._layoutManager.addNode(node.getId(), {width:10,height:10}, node.getPosition());
             this._layoutManager.updateShrinkState(node.getId(), node.areChildrenShrunken());
