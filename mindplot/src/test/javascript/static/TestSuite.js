@@ -19,20 +19,20 @@ mindplot.layout.TestSuite = new Class({
     Extends: mindplot.layout.ChildrenSorterStrategy,
 
     initialize:function() {
-        this.testAligned();
-        this.testSymmetry();
-        this.testBalanced();
-        this.testEvents();
-        this.testEventsComplex();
-        this.testDisconnect();
-        this.testReconnect();
-        this.testRemoveNode();
-        this.testSymmetricPredict();
-        this.testBalancedPredict();
-        this.testSize();
-        this.testFreePosition();
-        this.testFreePredict();
-//        this.testReconnectFreeNode();
+//        this.testAligned();
+//        this.testSymmetry();
+//        this.testBalanced();
+//        this.testEvents();
+//        this.testEventsComplex();
+//        this.testDisconnect();
+//        this.testReconnect();
+//        this.testRemoveNode();
+//        this.testSymmetricPredict();
+//        this.testBalancedPredict();
+//        this.testSize();
+//        this.testFreePosition();
+//        this.testFreePredict();
+        this.testReconnectFreeNode();
     },
 
     testAligned: function() {
@@ -793,6 +793,73 @@ mindplot.layout.TestSuite = new Class({
         this._plotPrediction(graph, predict2);
         this._plotPrediction(graph, predict3);
         this._plotPrediction(graph, predict4);
+    },
+
+    testReconnectFreeNode: function() {
+        console.log("testReconnectFreeNode:");
+        var position = {x:0,y:0};
+        var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
+
+        // Prepare a sample graph ...
+        manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(2, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(3, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(4, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(5, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(6, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(7, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(8, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(9, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(10, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.addNode(11, mindplot.layout.TestSuite.NODE_SIZE, position);
+
+        manager.connectNode(0, 1, 0);
+        manager.connectNode(0, 2, 1);
+        manager.connectNode(0, 3, 2);
+        manager.connectNode(3, 4, 0);
+        manager.connectNode(3, 5, 1);
+        manager.connectNode(3, 6, 2);
+        manager.connectNode(5, 7, 0);
+        manager.connectNode(5, 8, 1);
+        manager.connectNode(5, 11, 2);
+        manager.connectNode(2, 9, 0);
+        manager.connectNode(2, 10, 1);
+
+        manager.layout();
+        manager.plot("testReconnectFreeNode1", {width:1000, height:400});
+
+        console.log("move node 5");
+        manager.moveNode(5, {x:250, y:30});
+        manager.layout();
+        manager.plot("testReconnectFreeNode2", {width:1000, height:400});
+
+        console.log("reconnect node 5 to node 2");
+        manager.disconnectNode(5);
+        manager.connectNode(2,5,2);
+        manager.layout();
+        manager.plot("testReconnectFreeNode3", {width:1000, height:400});
+
+        console.log("move node 8");
+        manager.moveNode(8, {x:-370, y:60});
+        manager.layout();
+        manager.plot("testReconnectFreeNode4", {width:1000, height:400});
+
+        //TODO(gb): fix this. node 11 is not positioned correctly
+        console.log("reconnect node 5 to node 10");
+        manager.disconnectNode(5);
+        manager.connectNode(10,5,0);
+        manager.layout();
+        manager.plot("testReconnectFreeNode5", {width:1000, height:400});
+
+//        console.log("reconnect node 5 to node 3");
+//        manager.disconnectNode(5);
+//        manager.connectNode(3,5,2);
+//        manager.layout();
+//        manager.plot("testReconnectFreeNode6", {width:1000, height:400});
+
+//        manager.moveNode(8, {x:370, y:30});
+//        manager.layout();
+//        manager.plot("testReconnectFreeNode2", {width:1000, height:400});
     }
 });
 
