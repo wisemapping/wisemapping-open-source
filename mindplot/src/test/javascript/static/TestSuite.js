@@ -693,22 +693,22 @@ mindplot.layout.TestSuite = new Class({
         manager.plot("testFreePosition1", {width:1400, height:600});
 
         console.log("move node 12 to (300,30)");
-        manager.move(12, {x:300, y:30});
+        manager.moveNode(12, {x:300, y:30});
         manager.layout();
         manager.plot("testFreePosition2", {width:1400, height:600});
 
         console.log("move node 13 to (340,180)");
-        manager.move(13, {x:340, y:180});
+        manager.moveNode(13, {x:340, y:180});
         manager.layout(true);
         manager.plot("testFreePosition3", {width:1400, height:600});
 
         console.log("move node 11 to (250,-50)");
-        manager.move(11, {x:250, y:-50});
+        manager.moveNode(11, {x:250, y:-50});
         manager.layout(true);
         manager.plot("testFreePosition4", {width:1400, height:600});
 
         console.log("move node 7 to (350,-190)");
-        manager.move(7, {x:350, y:-190});
+        manager.moveNode(7, {x:350, y:-190});
         manager.layout(true);
         manager.plot("testFreePosition5", {width:1400, height:600});
 
@@ -719,7 +719,7 @@ mindplot.layout.TestSuite = new Class({
         manager.plot("testFreePosition6", {width:1400, height:600});
 
         console.log("move node 4 to (-300, 190)");
-        manager.move(4, {x:-300, y:190});
+        manager.moveNode(4, {x:-300, y:190});
         manager.layout(true);
         manager.plot("testFreePosition7", {width:1400, height:600});
     }
