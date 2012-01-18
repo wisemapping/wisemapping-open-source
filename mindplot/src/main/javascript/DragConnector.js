@@ -26,12 +26,7 @@ mindplot.DragConnector = new Class({
         this._workspace = workspace;
     },
 
-    update : function(dragTopic) {
-        // Topic can be connected ?
-        this._checkConnection(dragTopic);
-    },
-
-    _checkConnection : function(dragTopic) {
+    checkConnection : function(dragTopic) {
         var topics = this._designerModel.getTopics();
 
         // Must be disconnected from their current connection ?.

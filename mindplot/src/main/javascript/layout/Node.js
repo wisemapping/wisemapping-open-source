@@ -168,8 +168,8 @@ mindplot.layout.Node = new Class({
     },
 
     getVertex: function() {
-        var a = {x: this.getPosition().x - this.getSize().width/2, y:this.getPosition().y - this.getSize().height/2};
-        var b = {x: this.getPosition().x + this.getSize().width/2, y:this.getPosition().y + this.getSize().height/2};
+        var a = {x: this.getPosition().x - this.getSize().width / 2, y:this.getPosition().y - this.getSize().height / 2};
+        var b = {x: this.getPosition().x + this.getSize().width / 2, y:this.getPosition().y + this.getSize().height / 2};
         return {a:a, b:b};
     },
 

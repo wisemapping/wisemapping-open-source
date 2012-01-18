@@ -63,6 +63,19 @@ mindplot.StandaloneActionDispatcher = new Class({
         this.execute(command);
     },
 
+    moveTopic: function(topicId, position) {
+        $assert($defined(topicId), "topicsId can not be null");
+        $assert($defined(position), "position can not be null");
+
+        var commandFunc = function(topic, value) {
+            var result = topic.getPosition();
+            mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMoveEvent, {node:topic.getModel(),position:value});
+            return result;
+        };
+
+        var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicId, position);
+        this._actionRunner.execute(command);
+    },
     moveControlPoint: function(ctrlPoint, point) {
         var command = new mindplot.commands.MoveControlPointCommand(ctrlPoint, point);
         this.execute(command);

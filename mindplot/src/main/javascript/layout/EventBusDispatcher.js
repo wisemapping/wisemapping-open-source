@@ -39,7 +39,6 @@ mindplot.layout.EventBusDispatcher = new Class({
         mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeMoveEvent, this._nodeMoveEvent.bind(this));
         mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeDisconnectEvent, this._nodeDisconnectEvent.bind(this));
         mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeConnectEvent, this._nodeConnectEvent.bind(this));
-        mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeRepositionateEvent, this._nodeRepositionateEvent.bind(this));
         mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeShrinkEvent, this._nodeShrinkEvent.bind(this));
         mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.DoLayout, this._doLayout.bind(this));
     },
@@ -48,9 +47,8 @@ mindplot.layout.EventBusDispatcher = new Class({
         this._layoutManager.updateNodeSize(args.node.getId(), args.size);
     },
 
-    _nodeMoveEvent: function(node) {
-        console.log("mindplot.layout.EventBusDispatcher._nodeMoveEvent: Not Implemented yet");
-
+    _nodeMoveEvent: function(args) {
+        this._layoutManager.moveNode(args.node.getId(), args.position);
     },
 
     _nodeDisconnectEvent: function(node) {
@@ -59,11 +57,6 @@ mindplot.layout.EventBusDispatcher = new Class({
 
     _nodeConnectEvent: function(args) {
         this._layoutManager.connectNode(args.parentNode.getId(), args.childNode.getId(), args.childNode.getOrder());
-
-    },
-
-    _nodeRepositionateEvent: function(node) {
-        console.log("mindplot.layout.EventBusDispatcher._nodeRepositionateEvent: Not Implemented yet");
 
     },
 

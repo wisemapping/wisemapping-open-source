@@ -985,23 +985,24 @@ mindplot.Topic = new Class({
 
         outerShape.setSize(size.width + 4, size.height + 6);
         innerShape.setSize(parseInt(size.width), parseInt(size.height));
+
+        // Update the figure position(ej: central topic must be centered) and children position.
+        var oldSize = this.getSize();
+        this._updatePositionOnChangeSize(oldSize, size);
+
+        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeResizeEvent, {node:this.getModel(),size:size});
+
     },
 
     setSize : function(size) {
         var oldSize = this.getSize();
         if (parseInt(oldSize.width) != parseInt(size.width) || parseInt(oldSize.height) != parseInt(size.height)) {
             this._setSize(size);
-
-            // Update the figure position(ej: central topic must be centered) and children position.
-            this._updatePositionOnChangeSize(oldSize, size);
-
-            mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeResizeEvent, {node:this.getModel(),size:size});
-
         }
     },
 
     _updatePositionOnChangeSize : function(oldSize, newSize) {
-        $assert(false, "this method must be overrited");
+        $assert(false, "this method must be overwrited.");
     },
 
     disconnect : function(workspace) {

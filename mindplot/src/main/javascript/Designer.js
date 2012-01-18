@@ -129,8 +129,11 @@ mindplot.Designer = new Class({
             });
 
             dragger.addEvent('dragging', function(event, dragTopic) {
-                // Update the state and connections of the topic ...
-                dragConnector.update(dragTopic);
+                dragTopic.updateFreeLayout(event);
+                if (!dragTopic.isFreeLayoutOn(event)) {
+                    // The node is being drag. Is the connection still valid ?
+                    dragConnector.checkConnection(dragTopic);
+                }
             });
 
             dragger.addEvent('enddragging', function(event, dragTopic) {
@@ -146,7 +149,6 @@ mindplot.Designer = new Class({
                     draggedTopic.setBranchVisibility(false);
                     var parentNode = draggedTopic.getParent();
                     dragTopic.applyChanges(workspace);
-
 
                     // Make all node visible ...
                     draggedTopic.setVisibility(true);

@@ -25,6 +25,7 @@ mindplot.DragTopic = new Class({
         this._order = null;
         this._draggedNode = draggedNode;
         this._position = new core.Point();
+        this._isFreeLayoutEnabled = false;
     },
 
     setOrder : function(order) {
@@ -55,6 +56,10 @@ mindplot.DragTopic = new Class({
                 this.setOrder(predict.order);
             }
         }
+    },
+
+    updateFreeLayout: function(event) {
+        this._isFreeLayoutEnabled = (event.meta && Browser.Platform.mac) || (event.control && !Browser.Platform.mac);
     },
 
     getInnerShape : function() {
@@ -139,24 +144,27 @@ mindplot.DragTopic = new Class({
     applyChanges : function(workspace) {
         $assert(workspace, 'workspace can not be null');
 
-        var draggedTopic = this.getDraggedTopic();
 
-        var isDragConnected = this.isConnected();
         var actionDispatcher = mindplot.ActionDispatcher.getInstance();
+        var draggedTopic = this.getDraggedTopic();
         var topicId = draggedTopic.getId();
+        var position = this.getPosition();
 
-        var dragPosition = this.getPosition();
-        var order = null;
-        var parent = null;
-        if (isDragConnected) {
-            var targetTopic = this.getConnectedToTopic();
-            order = this._order;
-            parent = targetTopic;
+        if (!this.isFreeLayoutOn()) {
+            var order = null;
+            var parent = null;
+            var isDragConnected = this.isConnected();
+            if (isDragConnected) {
+                var targetTopic = this.getConnectedToTopic();
+                order = this._order;
+                parent = targetTopic;
+            }
+
+            // If the node is not connected, position based on the original drag topic position.
+            actionDispatcher.dragTopic(topicId, position, order, parent);
+        } else {
+            actionDispatcher.moveTopic(topicId, position);
         }
-
-        // If the node is not connected, position based on the original drag topic position.
-        actionDispatcher.dragTopic(topicId, dragPosition, order, parent);
-
     },
 
     getConnectedToTopic : function() {
@@ -166,10 +174,13 @@ mindplot.DragTopic = new Class({
 
     isConnected : function() {
         return this.getConnectedToTopic() != null;
+    },
+
+    isFreeLayoutOn: function() {
+        return  this._isFreeLayoutEnabled;
     }
 
-})
-    ;
+});
 
 mindplot.DragTopic.PIVOT_SIZE = {width:50,height:6};
 

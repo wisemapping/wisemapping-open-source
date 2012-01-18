@@ -51,6 +51,10 @@ mindplot.ActionDispatcher = new Class({
         throw "method must be implemented.";
     },
 
+    moveTopic: function(topicId, position) {
+        throw "method must be implemented.";
+    },
+
     moveControlPoint: function(ctrlPoint, point) {
         throw "method must be implemented.";
     },

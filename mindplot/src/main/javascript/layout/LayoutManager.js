@@ -51,7 +51,7 @@ mindplot.layout.LayoutManager = new Class({
         return this._treeSet.find(id);
     },
 
-    move: function(id, position) {
+    moveNode: function(id, position) {
         $assert($defined(id), "id cannot be null");
         $assert($defined(position), "position cannot be null");
         $assert($defined(position.x), "x can not be null");
