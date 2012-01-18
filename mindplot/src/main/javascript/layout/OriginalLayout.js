@@ -75,7 +75,7 @@ mindplot.layout.OriginalLayout = new Class({
 
             this._layoutChildren(node, heightById);
 
-            this._fixOverlapping(node);
+            this._fixOverlapping(node, heightById);
         }, this);
     },
 
@@ -97,21 +97,30 @@ mindplot.layout.OriginalLayout = new Class({
         var heightChanged = node._branchHeight != newBranchHeight;
         node._heightChanged = heightChanged || parentHeightChanged;
 
-
-
         if (childrenOrderMoved || heightChanged || parentHeightChanged) {
             var sorter = node.getSorter();
             var offsetById = sorter.computeOffsets(this._treeSet, node);
             var parentPosition = node.getPosition();
 
             children.forEach(function(child) {
-                var freeDisplacement = child.getFreeDisplacement();
-                var freeDisplacement = {x:0, y:0};
+                var childHeightChanged = heightById[child.getId()] != child._branchHeight;
                 var offset = offsetById[child.getId()];
+
+                if (child.isFree()) {
+                    if (heightChanged && (parentHeightChanged || childHeightChanged)) {
+                        offset.x += child.getFreeDisplacement().x;
+                        this._shiftBranches(child);
+                    } else {
+                        offset.x += child.getFreeDisplacement().x;
+                        offset.y += child.getFreeDisplacement().y;
+                        this._shiftBranches(child);
+                    }
+                }
+
                 var parentX = parentPosition.x;
                 var parentY = parentPosition.y;
 
-                var newPos = {x:parentX + freeDisplacement.x + offset.x, y:parentY + freeDisplacement.y + offset.y};
+                var newPos = {x:parentX + offset.x, y:parentY + offset.y};
 
                 this._treeSet.updateBranchPosition(child, newPos);
             }.bind(this));
@@ -125,22 +134,24 @@ mindplot.layout.OriginalLayout = new Class({
         }, this);
     },
 
-    _fixOverlapping: function(node) {
+    _fixOverlapping: function(node, heightById) {
         var children = this._treeSet.getChildren(node);
-        if (node.hasFreeDisplacementChanged()) {
-            var yOffset = node.getFreeDisplacement().y;
-            var branchesToShift = this._treeSet.getBranchesInVerticalDirection(node, yOffset);
-            this._treeSet.shiftBranchPosition(node, node.getFreeDisplacement().x, node.getFreeDisplacement().y);
 
-            branchesToShift.forEach(function(branch) {
-                this._treeSet.shiftBranchPosition(branch, 0, yOffset);
-            },this);
-
+        if ((node.isFree() && node.hasFreeDisplacementChanged())) {
+            this._shiftBranches(node);
         }
 
         children.forEach(function(child) {
-            this._fixOverlapping(child);
+            this._fixOverlapping(child, heightById);
         }, this);
+    },
+
+    _shiftBranches: function(node) {
+        this._treeSet.shiftBranchPosition(node, node.getFreeDisplacement().x, node.getFreeDisplacement().y);
+        var branchesToShift = this._treeSet.getBranchesInVerticalDirection(node, node.getFreeDisplacement().y);
+        branchesToShift.forEach(function(branch) {
+            this._treeSet.shiftBranchPosition(branch, 0, node.getFreeDisplacement().y);
+        },this);
     },
 
     _nodesCollide: function(nodeA, nodeB) {

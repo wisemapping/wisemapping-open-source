@@ -712,7 +712,7 @@ mindplot.layout.TestSuite = new Class({
         manager.layout(true);
         manager.plot("testFreePosition5", {width:1400, height:600});
 
-        //TODO(gb): fix this. when new node is connected, free layout is lost
+        console.log("add node 23 to 12:");
         manager.addNode(23, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.connectNode(12,23,3);
         manager.layout(true);
@@ -722,6 +722,18 @@ mindplot.layout.TestSuite = new Class({
         manager.moveNode(4, {x:-300, y:190});
         manager.layout(true);
         manager.plot("testFreePosition7", {width:1400, height:600});
+
+        console.log("add node 24 to 3:");
+        manager.addNode(24, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.connectNode(3,24,3);
+        manager.layout(true);
+        manager.plot("testFreePosition8", {width:1400, height:600});
+
+        console.log("add node 25 to 17:");
+        manager.addNode(25, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.connectNode(17,25,0);
+        manager.layout(true);
+        manager.plot("testFreePosition9", {width:1400, height:600});
     }
 });
 
