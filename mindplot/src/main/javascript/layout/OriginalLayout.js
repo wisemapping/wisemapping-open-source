@@ -53,6 +53,10 @@ mindplot.layout.OriginalLayout = new Class({
         var parent = this._treeSet.getParent(node);
         $assert(parent, "Node already disconnected");
 
+        // Make it fixed
+        node.setFree(false);
+        node.setFreeDisplacement({x:0, y:0});
+
         // Remove from children list.
         var sorter = parent.getSorter();
         sorter.detach(this._treeSet, node);
@@ -85,9 +89,7 @@ mindplot.layout.OriginalLayout = new Class({
         var children = this._treeSet.getChildren(node);
         var parent = this._treeSet.getParent(node);
         var childrenOrderMoved = children.some(function(child) { return child.hasOrderChanged(); });
-
-        var childrenFreeChanged = children.some(function(child) { return child.hasFreeChanged(); });
-        var freeChanged = node.hasFreeChanged() || childrenFreeChanged;
+        var childrenSizeChanged = children.some(function(child) { return child.hasSizeChanged(); });
 
         // If ether any of the nodes has been changed of position or the height of the children is not
         // the same, children nodes must be repositioned ....
@@ -97,7 +99,7 @@ mindplot.layout.OriginalLayout = new Class({
         var heightChanged = node._branchHeight != newBranchHeight;
         node._heightChanged = heightChanged || parentHeightChanged;
 
-        if (childrenOrderMoved || heightChanged || parentHeightChanged) {
+        if (childrenOrderMoved || childrenSizeChanged || heightChanged || parentHeightChanged) {
             var sorter = node.getSorter();
             var offsetById = sorter.computeOffsets(this._treeSet, node);
             var parentPosition = node.getPosition();

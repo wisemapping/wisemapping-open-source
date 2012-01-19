@@ -94,8 +94,11 @@ mindplot.layout.Node = new Class({
     },
 
     hasPositionChanged: function() {
-
         return this._isPropertyChanged('position');
+    },
+
+    hasSizeChanged: function() {
+        return this._isPropertyChanged('size');
     },
 
     getPosition: function() {
