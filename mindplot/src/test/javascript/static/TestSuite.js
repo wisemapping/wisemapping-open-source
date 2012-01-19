@@ -19,20 +19,21 @@ mindplot.layout.TestSuite = new Class({
     Extends: mindplot.layout.ChildrenSorterStrategy,
 
     initialize:function() {
-//        this.testAligned();
-//        this.testSymmetry();
-//        this.testBalanced();
-//        this.testEvents();
-//        this.testEventsComplex();
-//        this.testDisconnect();
-//        this.testReconnect();
-//        this.testRemoveNode();
-//        this.testSymmetricPredict();
-//        this.testBalancedPredict();
-//        this.testSize();
-//        this.testFreePosition();
-//        this.testFreePredict();
+        this.testAligned();
+        this.testSymmetry();
+        this.testBalanced();
+        this.testEvents();
+        this.testEventsComplex();
+        this.testDisconnect();
+        this.testReconnect();
+        this.testRemoveNode();
+        this.testSymmetricPredict();
+        this.testBalancedPredict();
+        this.testSize();
+        this.testFreePosition();
+        this.testFreePredict();
         this.testReconnectFreeNode();
+        this.testReconnectSingleNode();
     },
 
     testAligned: function() {
@@ -860,6 +861,25 @@ mindplot.layout.TestSuite = new Class({
 //        manager.moveNode(8, {x:370, y:30});
 //        manager.layout();
 //        manager.plot("testReconnectFreeNode2", {width:1000, height:400});
+    },
+
+    testReconnectSingleNode: function() {
+        console.log("testReconnectSingleNode:");
+        var position = {x:0,y:0};
+        var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
+
+        // Prepare a sample graph ...
+        manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position);
+        manager.connectNode(0, 1, 0);
+        manager.layout();
+        var graph = manager.plot("testReconnectSingleNode1", {width:1000, height:400});
+        this._plotPrediction(graph, manager.predict(0, {x:-50, y:0}));
+
+
+        manager.disconnectNode(1);
+        manager.connectNode(0,1,1);
+        manager.layout();
+        manager.plot("testReconnectSingleNode2", {width:1000, height:400});
     }
 });
 

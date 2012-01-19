@@ -23,18 +23,20 @@ mindplot.layout.BalancedSorter = new Class({
     },
 
     predict : function(parent, graph, position) {
+        var rootNode = graph.getRootNode(parent);
 
         if (!position) {
             var right = this._getChildrenForOrder(parent, graph, 0);
             var left = this._getChildrenForOrder(parent, graph, 1);
         }
         // Filter nodes on one side..
-        var order = position ? (position.x > 0 ? 0 : 1) : ((right.length - left.length) > 0 ? 1 : 0);
+        var order = position ? (position.x > rootNode.getPosition().x ? 0 : 1) : ((right.length - left.length) > 0 ? 1 : 0);
+        var direction = order%2 == 0 ? 1 : -1;
         var children = this._getChildrenForOrder(parent, graph, order);
 
         // No children?
         if (children.length == 0) {
-            return [0, {x:parent.getPosition().x + parent.getSize().width + mindplot.layout.BalancedSorter.INTERNODE_HORIZONTAL_PADDING * 2, y:parent.getPosition().y}];
+            return [order, {x:parent.getPosition().x + direction * (parent.getSize().width + mindplot.layout.BalancedSorter.INTERNODE_HORIZONTAL_PADDING * 2), y:parent.getPosition().y}];
         }
 
 
