@@ -133,29 +133,19 @@ mindplot.Designer = new Class({
                 if (!dragTopic.isFreeLayoutOn(event)) {
                     // The node is being drag. Is the connection still valid ?
                     dragConnector.checkConnection(dragTopic);
+
+                    if (!dragTopic.isVisible() && dragTopic.isConnected()) {
+                        dragTopic.setVisibility(true);
+                    }
+
                 }
             });
 
             dragger.addEvent('enddragging', function(event, dragTopic) {
-                // Enable all mouse events.
                 for (var i = 0; i < topics.length; i++) {
                     topics[i].setMouseEventsEnabled(true);
                 }
-                // Topic must be positioned in the real board postion.
-                if (dragTopic._isInTheWorkspace) {
-                    var draggedTopic = dragTopic.getDraggedTopic();
-
-                    // Hide topic during draw ...
-                    draggedTopic.setBranchVisibility(false);
-                    var parentNode = draggedTopic.getParent();
-                    dragTopic.applyChanges(workspace);
-
-                    // Make all node visible ...
-                    draggedTopic.setVisibility(true);
-                    if (parentNode != null) {
-                        parentNode.setBranchVisibility(true);
-                    }
-                }
+                dragTopic.applyChanges(workspace);
             });
 
             return dragger;

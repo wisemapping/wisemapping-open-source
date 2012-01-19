@@ -1163,6 +1163,7 @@ mindplot.Topic = new Class({
         var targetTopic = this.getOutgoingConnectedTopic();
         if ($defined(targetTopic)) {
             result.connectTo(targetTopic);
+            result.setVisibility(false);
         }
 
         // If a drag node is create for it, let's hide the editor.
