@@ -114,6 +114,7 @@ mindplot.DragPivot = new Class({
     },
 
     setVisibility : function(value) {
+        value = false;
         var pivotRect = this._getPivotRect();
         pivotRect.setVisibility(value);
 
