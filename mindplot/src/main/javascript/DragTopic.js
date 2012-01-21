@@ -25,6 +25,7 @@ mindplot.DragTopic = new Class({
         this._order = null;
         this._draggedNode = draggedNode;
         this._position = new core.Point();
+        this._isInWorkspace = false;
         this._isFreeLayoutEnabled = false;
     },
 
@@ -132,17 +133,23 @@ mindplot.DragTopic = new Class({
     removeFromWorkspace : function(workspace) {
         // Remove drag shadow.
         workspace.removeChild(this._elem2d);
+        this._isInWorkspace = false;
 
         // Remove pivot shape. To improve performace it will not be removed. Only the visibility will be changed.
         var dragPivot = this._getDragPivot();
         dragPivot.setVisibility(false);
+
+    },
+
+    isInWorkspace: function(){
+        return this._isInWorkspace;
     },
 
     addToWorkspace : function(workspace) {
         workspace.appendChild(this._elem2d);
         var dragPivot = this._getDragPivot();
-
         dragPivot.addToWorkspace(workspace);
+        this._isInWorkspace = true;
     },
 
     _getDragPivot : function() {

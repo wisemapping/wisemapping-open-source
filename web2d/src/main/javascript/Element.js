@@ -23,7 +23,6 @@ web2d.Element = new Class({
             throw "Element peer can not be null";
         }
 
-        this._dispatcherByEventType = new Hash({});
         if ($defined(attributes)) {
             this._initialize(attributes);
         }
