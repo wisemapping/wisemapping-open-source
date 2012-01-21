@@ -33,6 +33,8 @@ mindplot.DesignerKeyboard = new Class({
             'backspace':function(event) {
                 event.preventDefault();
                 event.stopPropagation();
+                designer.deleteCurrentNode();
+
             }.bind(this),
 
             'space' : function() {
@@ -199,7 +201,7 @@ mindplot.DesignerKeyboard = new Class({
 
         var regex = /^(?:shift|control|ctrl|alt|meta)$/;
         var modifiers = ['shift', 'control', 'alt', 'meta'];
-        var excludes = ['esc','capslock','tab','f1','f3','f4','f5','f6','f7','f8','f9','f10','f11','f12'];
+        var excludes = ['esc','capslock','tab','f1','f3','f4','f5','f6','f7','f8','f9','f10','f11','f12','backspace','down','up','left','right'];
 
         $(document).addEvent('keydown', function(event) {
 
@@ -222,13 +224,13 @@ mindplot.DesignerKeyboard = new Class({
             }
 
             // If it's not registered, let's
-            if (!isRegistered && !excludes.contains(key) && 'meta+[' != key) {
+            if (!isRegistered && !excludes.contains(key) && !excludes.contains(event.key) && 'meta+[' != key) {
                 var nodes = designer.getModel().filterSelectedTopics();
                 if (nodes.length > 0) {
 
                     // If a modifier is press, the key selected must be ignored.
                     var pressKey = event.key;
-                    if (modifiers.contains(key)) {
+                    if (modifiers.contains(event.key)) {
                         pressKey = "";
                     }
 
