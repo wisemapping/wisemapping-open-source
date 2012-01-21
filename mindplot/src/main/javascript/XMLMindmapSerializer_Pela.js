@@ -65,7 +65,6 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
         if (topic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
             parentTopic.setAttribute("central", true);
         } else {
-            var parent = topic.getParent();
 
             var pos = topic.getPosition();
             parentTopic.setAttribute("position", pos.x + ',' + pos.y);
@@ -77,7 +76,7 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
 
         var text = topic.getText();
         if ($defined(text)) {
-            parentTopic.setAttribute('text', text);
+            this._noteTextToXML(document, parentTopic, text);
         }
 
         var shape = topic.getShapeType();
@@ -177,6 +176,17 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
         var cdata = document.createCDATASection(note.getText());
         noteDom.appendChild(cdata);
         return noteDom;
+    },
+
+    _noteTextToXML : function(document, elem, text) {
+        if (text.indexOf('\n') == -1) {
+            elem.setAttribute('text', text);
+        } else {
+            var textDom = document.createElement("text");
+            var cdata = document.createCDATASection(text);
+            textDom.appendChild(cdata);
+            elem.appendChild(textDom);
+        }
     },
 
     _relationshipToXML : function(document, relationship) {
@@ -319,7 +329,7 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
         for (var i = 0; i < children.length; i++) {
             var child = children[i];
             if (child.nodeType == Node.ELEMENT_NODE) {
-                $assert(child.tagName == "topic" || child.tagName == "icon" || child.tagName == "link" || child.tagName == "note", 'Illegal node type:' + child.tagName);
+                $assert(child.tagName == "topic" || child.tagName == "icon" || child.tagName == "link" || child.tagName == "note" || child.tagName == "text", 'Illegal node type:' + child.tagName);
                 if (child.tagName == "topic") {
                     var childTopic = this._deserializeNode(child, mindmap);
                     childTopic.connectTo(topic);
@@ -332,7 +342,11 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
                 } else if (child.tagName == "note") {
                     var note = this._deserializeNote(child, topic);
                     topic.addNote(note);
+                } else if (child.tagName == "text") {
+                    var nodeText = this._deserializeNodeText(child);
+                    topic.setText(nodeText);
                 }
+
             }
         }
         return topic;
@@ -360,6 +374,19 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
             }
         }
         return topic.createNote(value);
+    },
+
+    _deserializeNodeText: function(domElem) {
+
+        var children = domElem.childNodes;
+        var value = null;
+        for (var i = 0; i < children.length; i++) {
+            var child = children[i];
+            if (child.nodeType == Node.CDATA_SECTION_NODE) {
+                value = child.nodeValue;
+            }
+        }
+        return value;
     },
 
     _deserializeRelationship : function(domElement, mindmap) {
