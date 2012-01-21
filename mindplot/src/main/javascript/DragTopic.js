@@ -67,6 +67,16 @@ mindplot.DragTopic = new Class({
         }
     },
 
+    setVisibility:function(value) {
+        var dragPivot = this._getDragPivot();
+        dragPivot.setVisibility(value);
+    },
+
+    isVisible:function() {
+        var dragPivot = this._getDragPivot();
+        return dragPivot.isVisible();
+    },
+
     getInnerShape : function() {
         return this._elem2d;
     },
@@ -110,6 +120,7 @@ mindplot.DragTopic = new Class({
         var dragPivot = this._getDragPivot();
         var position = predict.position;
         dragPivot.connectTo(parent, position);
+        dragPivot.setVisibility(true);
 
         this.setOrder(predict.order);
     },

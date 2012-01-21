@@ -37,7 +37,7 @@ mindplot.DragManager = new Class({
                 // Set initial position.
                 var dragNode = node.createDragNode();
                 var mousePos = screen.getWorkspaceMousePosition(event);
-                dragNode.setPosition(mousePos.x, mousePos.y);
+//                dragNode.setPosition(mousePos.x, mousePos.y);
 
                 // Register mouse move listener ...
                 var mouseMoveListener = dragManager._buildMouseMoveListener(workspace, dragNode, dragManager);
