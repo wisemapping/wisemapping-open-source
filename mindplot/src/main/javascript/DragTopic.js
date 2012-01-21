@@ -34,26 +34,31 @@ mindplot.DragTopic = new Class({
     },
 
     setPosition : function(x, y) {
-        this._position.setValue(x, y);
+        // Update drag shadow position ....
+        var position = {x:x,y:y};
+        if (this.isFreeLayoutOn() && this.isConnected()) {
+            var _layoutManager = designer._eventBussDispatcher._layoutManager;
+            var par = this.getConnectedToTopic();
+            position = _layoutManager.predict(par.getId(), position, true).position;
+        }
+        this._position.setValue(position.x, position.y);
 
         // Elements are positioned in the center.
         // All topic element must be positioned based on the innerShape.
         var draggedNode = this._draggedNode;
         var size = draggedNode.getSize();
-
-        var cx = Math.ceil(x - (size.width / 2));
-        var cy = Math.ceil(y - (size.height / 2));
-
-        // Update visual position.
+        var cx = Math.ceil(position.x - (size.width / 2));
+        var cy = Math.ceil(position.y - (size.height / 2));
         this._elem2d.setPosition(cx, cy);
 
+        // In case is not free, pivot must be draw ...
         if (this.isConnected() && !this.isFreeLayoutOn()) {
             var parent = this.getConnectedToTopic();
             var predict = designer._eventBussDispatcher._layoutManager.predict(parent.getId(), this.getPosition());
             if (this._order != predict.order) {
                 var dragPivot = this._getDragPivot();
-                var position = predict.position;
-                dragPivot.connectTo(parent, position);
+                var pivotPosition = predict.position;
+                dragPivot.connectTo(parent, pivotPosition);
                 this.setOrder(predict.order);
             }
         }
@@ -141,7 +146,7 @@ mindplot.DragTopic = new Class({
 
     },
 
-    isInWorkspace: function(){
+    isInWorkspace: function() {
         return this._isInWorkspace;
     },
 

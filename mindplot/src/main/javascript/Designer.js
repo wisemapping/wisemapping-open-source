@@ -137,8 +137,7 @@ mindplot.Designer = new Class({
                     if (!dragTopic.isVisible() && dragTopic.isConnected()) {
                         dragTopic.setVisibility(true);
                     }
-
-                }
+              }
             });
 
             dragger.addEvent('enddragging', function(event, dragTopic) {
