@@ -194,11 +194,11 @@ mindplot.Topic = new Class({
             };
 
             var setStrokeFunction = result.setStroke;
-            result.setFill = function(color) {
+            result.setFill = function() {
 
             };
 
-            result.setStroke = function(color) {
+            result.setStroke = function() {
 
             };
         }
@@ -1091,7 +1091,7 @@ mindplot.Topic = new Class({
             var size = this.getFontSize();
             this.setFontSize(size, false);
         }
-        var textShape = this.getTextShape();
+        this.getTextShape();
 
         // Display connection node...
         var connector = targetTopic.getShrinkConnector();
@@ -1141,7 +1141,9 @@ mindplot.Topic = new Class({
         var elem = this.get2DElement();
         workspace.appendChild(elem);
         if (!this.isInWorkspace()) {
-            mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeAdded, this.getModel());
+            if (this.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
+                mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeAdded, this.getModel());
+            }
 
             if (this.getModel().isConnected())
                 mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeConnectEvent, {parentNode:this.getOutgoingConnectedTopic().getModel(), childNode: this.getModel()});

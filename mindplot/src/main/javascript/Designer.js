@@ -137,7 +137,7 @@ mindplot.Designer = new Class({
                     if (!dragTopic.isVisible() && dragTopic.isConnected()) {
                         dragTopic.setVisibility(true);
                     }
-              }
+                }
             });
 
             dragger.addEvent('enddragging', function(event, dragTopic) {
@@ -330,7 +330,6 @@ mindplot.Designer = new Class({
             var layoutManager = this._eventBussDispatcher.getLayoutManager();
             var result = layoutManager.predict(topic.getId(), mousePos);
             childModel.setOrder(result.order);
-            console.log(result.order);
 
             var position = result.position;
             childModel.setPosition(position.x, position.y);
@@ -419,6 +418,18 @@ mindplot.Designer = new Class({
         loadMap : function(mindmapModel) {
             $assert(mindmapModel, "mindmapModel can not be null");
             this._mindmap = mindmapModel;
+
+            // Init layout manager ...
+            var size = {width:25,height:25};
+            var layoutManager = new mindplot.layout.LayoutManager(mindmapModel.getCentralTopic().getId(), size);
+            layoutManager.addEvent('change', function(event) {
+                var id = event.getId();
+                var topic = this.getModel().findTopicById(id);
+                topic.setPosition(event.getPosition());
+                topic.setOrder(event.getOrder());
+            }.bind(this));
+            this._eventBussDispatcher.setLayoutManager(layoutManager);
+
 
             // Building node graph ...
             var branches = mindmapModel.getBranches();

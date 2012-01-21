@@ -96,6 +96,8 @@
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="XMLMindmapSerializer_Tango.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
+                                              files="Pela2TangoMigrator.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
                                               files="XMLMindmapSerializer_Beta.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="Beta2PelaMigrator.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
@@ -145,7 +147,7 @@
                                               files="commands/AddRelationshipCommand.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="commands/MoveControlPointCommand.js"/>
-                                   <filelist dir="${basedir}/src/main/javascript/"
+                                    <filelist dir="${basedir}/src/main/javascript/"
                                               files="collaboration/CollaborationManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="collaboration/framework/AbstractCollaborativeFramework.js"/>

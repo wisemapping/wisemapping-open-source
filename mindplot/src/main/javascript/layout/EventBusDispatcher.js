@@ -17,19 +17,12 @@
  */
 mindplot.layout.EventBusDispatcher = new Class({
 
-    initialize:function(designerModel) {
-        $assert(designerModel, "designerModel cannot be null");
+    initialize:function() {
         this.registerBusEvents();
+    },
 
-        var size = {width:25,height:25};
-        this._layoutManager = new mindplot.layout.LayoutManager(0, size);
-
-        this._layoutManager.addEvent('change', function(event) {
-            var id = event.getId();
-            var topic = designerModel.findTopicById(id);
-            topic.setPosition(event.getPosition());
-            topic.setOrder(event.getOrder());
-        });
+    setLayoutManager : function(layoutManager) {
+        this._layoutManager = layoutManager;
     },
 
     registerBusEvents:function () {

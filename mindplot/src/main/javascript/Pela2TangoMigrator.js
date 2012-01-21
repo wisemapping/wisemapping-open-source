@@ -29,9 +29,38 @@ mindplot.Pela2TangoMigrator = new Class({
         $assert($defined(mapId), "mapId can not be null");
         var mindmap = this._pelaSerializer.loadFromDom(dom, mapId);
         mindmap.setVersion(mindplot.ModelCodeName.TANGO);
-
-        // @todo: Cocinar los ordenes ....
-
+        this._fixOrder(mindmap);
         return mindmap;
+    },
+
+    _fixOrder : function(mindmap) {
+        // First level node policies has been changed.
+        var centralNode = mindmap.getBranches()[0];
+        var children = centralNode.getChildren();
+        var leftNodes = [];
+        var rightNodes = [];
+        for (var i = 0; i < children.length; i++) {
+            var child = children[i];
+            var position = child.getPosition();
+            if (position.x < 0) {
+                leftNodes.push(child);
+            } else {
+                rightNodes.push(child);
+            }
+        }
+        rightNodes.sort(function(a, b) {
+            return a.getOrder() > b.getOrder()
+        });
+        leftNodes.sort(function(a, b) {
+            return a.getOrder() > b.getOrder();
+        });
+
+        for (i = 0; i < rightNodes.length; i++) {
+            rightNodes[i].setOrder(i*2);
+        }
+
+        for (i = 0; i < leftNodes.length; i++) {
+            leftNodes[i].setOrder(i*2+1);
+        }
     }
 });

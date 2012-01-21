@@ -33,7 +33,7 @@
         <topic position="266,0" order="0" text="Try it Now!" id="11" fontStyle=";;#ffffff;;;" bgColor="#250be3"
                brColor="#080559">
             <topic position="358,-33" order="0" text="Double Click" id="12" fontStyle=";;#001be6;;italic;"/>
-            <topic position="362,-9" order="1" text="" INS" to insert" id="13" fontStyle=";;#001be6;;italic;"/>
+            <topic position="362,-9" order="1" text=" INS to insert" id="13" fontStyle=";;#001be6;;italic;"/>
             <topic position="371,15" order="2" text="Drag map to move" id="14" fontStyle=";;#001be6;;italic;"/>
         </topic>
         <topic position="299,-100" order="3" text="Mind Mapping" id="6" fontStyle=";;#602378;;;" bgColor="#edabff">
