@@ -133,24 +133,38 @@ mindplot.MainTopic = new Class({
     workoutOutgoingConnectionPoint : function(targetPosition) {
         $assert(targetPosition, 'targetPoint can not be null');
         var pos = this.getPosition();
-        var size = this.getSize();
 
-        var isAtRight = mindplot.util.Shape.isAtRight(targetPosition, pos);
         var result;
         if (this.getShapeType() == mindplot.model.INodeModel.SHAPE_TYPE_LINE) {
+
             result = new core.Point();
-            if (!isAtRight) {
-                result.x = pos.x + (size.width / 2);
+            var groupPosition = this._elem2d.getPosition();
+            var innerShareSize = this.getInnerShape().getSize();
+            var isAtRight = mindplot.util.Shape.isAtRight(targetPosition, pos);
+
+            if (innerShareSize) {
+                var magicCorrectionNumber = 0.3;
+                if (!isAtRight) {
+                    result.x = groupPosition.x + innerShareSize.width - magicCorrectionNumber;
+                } else {
+                    result.x = groupPosition.x + magicCorrectionNumber;
+                }
+                result.y = groupPosition.y + innerShareSize.height;
             } else {
-                result.x = pos.x - (size.width / 2);
+                // Hack: When the size has not being defined. This is because the node has not being added.
+                // Try to do our best ...
+                var size = this.getSize();
+                if (!isAtRight) {
+                    result.x = pos.x + (size.width / 2);
+                } else {
+                    result.x = pos.x - (size.width / 2);
+                }
+                result.y = pos.y + (size.height / 2);
             }
-            result.y = pos.y + (size.height / 2);
 
         } else {
             result = mindplot.util.Shape.calculateRectConnectionPoint(pos, size, isAtRight, true);
         }
-        result.x = Math.ceil(result.x);
-        result.y = Math.ceil(result.y);
         return result;
     },
 

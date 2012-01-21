@@ -100,8 +100,8 @@ mindplot.ConnectionLine = new Class({
         var targetPosition = targetTopic.getPosition();
 
         var sPos,tPos;
-        sPos = sourceTopic.workoutOutgoingConnectionPoint(targetPosition, false);
-        tPos = targetTopic.workoutIncomingConnectionPoint(sourcePosition, false);
+        sPos = sourceTopic.workoutOutgoingConnectionPoint(targetPosition);
+        tPos = targetTopic.workoutIncomingConnectionPoint(sourcePosition);
 
         line2d.setFrom(tPos.x, tPos.y);
         line2d.setTo(sPos.x, sPos.y);

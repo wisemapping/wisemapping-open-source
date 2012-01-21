@@ -32,7 +32,7 @@ mindplot.CentralTopic = new Class({
         });
     },
 
-    workoutIncomingConnectionPoint : function(sourcePosition) {
+    workoutIncomingConnectionPoint : function() {
         return this.getPosition();
     },
 

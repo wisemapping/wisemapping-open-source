@@ -175,11 +175,11 @@ mindplot.Topic = new Class({
             result = new web2d.Rect(0.3, attributes);
         }
         else if (type == mindplot.model.INodeModel.SHAPE_TYPE_LINE) {
-            result = new web2d.Line({strokeColor:"#495879",strokeWidth:1, strokeOpacity:1});
+            result = new web2d.Line({strokeColor:"#495879",strokeWidth:1});
             result.setSize = function(width, height) {
                 this.size = {width:width, height:height};
                 result.setFrom(0, height);
-                result.setTo(width + 1, height);
+                result.setTo(width, height);
 
                 // Lines will have the same color of the default connection lines...
                 var stokeColor = mindplot.ConnectionLine.getStrokeColor();
@@ -794,18 +794,19 @@ mindplot.Topic = new Class({
      */
     setPosition : function(point) {
         $assert(point, "position can not be null");
+        point.x = Math.ceil(point.x);
+        point.y = Math.ceil(point.y);
 
         // Update model's position ...
         var model = this.getModel();
-        var currentPos = model.getPosition();
-
         model.setPosition(point.x, point.y);
+
         // Elements are positioned in the center.
         // All topic element must be positioned based on the innerShape.
         var size = this.getSize();
 
-        var cx = Math.round(point.x - (size.width / 2));
-        var cy = Math.round(point.y - (size.height / 2));
+        var cx = point.x - (size.width / 2);
+        var cy = point.y - (size.height / 2);
 
         // Update visual position.
         this._elem2d.setPosition(cx, cy);
@@ -974,30 +975,25 @@ mindplot.Topic = new Class({
     },
 
 
-    _setSize : function(size) {
+    setSize : function(size, force) {
         $assert(size, "size can not be null");
         $assert($defined(size.width), "size seem not to be a valid element");
+        size = {width:Math.ceil(size.width),height: Math.ceil(size.height)};
 
-        mindplot.NodeGraph.prototype.setSize.call(this, size);
-
-        var outerShape = this.getOuterShape();
-        var innerShape = this.getInnerShape();
-
-        outerShape.setSize(size.width + 4, size.height + 6);
-        innerShape.setSize(parseInt(size.width), parseInt(size.height));
-
-        // Update the figure position(ej: central topic must be centered) and children position.
         var oldSize = this.getSize();
-        this._updatePositionOnChangeSize(oldSize, size);
+        if (oldSize.width != size.width || oldSize.height != size.height || force) {
+            mindplot.NodeGraph.prototype.setSize.call(this, size);
 
-        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeResizeEvent, {node:this.getModel(),size:size});
+            var outerShape = this.getOuterShape();
+            var innerShape = this.getInnerShape();
 
-    },
+            outerShape.setSize(size.width + 4, size.height + 6);
+            innerShape.setSize(size.width, size.height);
 
-    setSize : function(size) {
-        var oldSize = this.getSize();
-        if (parseInt(oldSize.width) != parseInt(size.width) || parseInt(oldSize.height) != parseInt(size.height)) {
-            this._setSize(size);
+            // Update the figure position(ej: central topic must be centered) and children position.
+            this._updatePositionOnChangeSize(oldSize, size);
+
+            mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeResizeEvent, {node:this.getModel(),size:size});
         }
     },
 
@@ -1097,6 +1093,13 @@ mindplot.Topic = new Class({
         // Display connection node...
         var connector = targetTopic.getShrinkConnector();
         connector.setVisibility(true);
+
+        // Create a connection line ...
+        var outgoingLine = new mindplot.ConnectionLine(this, targetTopic);
+        if ($defined(isVisible))
+            outgoingLine.setVisibility(isVisible);
+        this._outgoingLine = outgoingLine;
+        workspace.appendChild(outgoingLine);
 
         // Redraw line ...
         outgoingLine.redraw();
@@ -1198,8 +1201,7 @@ mindplot.Topic = new Class({
             var height = textHeight + (topicPadding * 2);
             var width = textWidth + iconsWidth + (topicPadding * 2);
 
-            var size = {width:parseInt(width),height:parseInt(height)};
-            this.setSize(size);
+            this.setSize({width:width,height:height});
 
             // Position node ...
             textShape.setPosition(topicPadding + iconsWidth, topicPadding);
