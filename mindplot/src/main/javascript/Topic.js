@@ -981,7 +981,8 @@ mindplot.Topic = new Class({
         size = {width:Math.ceil(size.width),height: Math.ceil(size.height)};
 
         var oldSize = this.getSize();
-        if (oldSize.width != size.width || oldSize.height != size.height || force) {
+        var hasSizeChanged = oldSize.width != size.width || oldSize.height != size.height;
+        if (hasSizeChanged || force) {
             mindplot.NodeGraph.prototype.setSize.call(this, size);
 
             var outerShape = this.getOuterShape();
@@ -993,7 +994,9 @@ mindplot.Topic = new Class({
             // Update the figure position(ej: central topic must be centered) and children position.
             this._updatePositionOnChangeSize(oldSize, size);
 
-            mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeResizeEvent, {node:this.getModel(),size:size});
+            if (hasSizeChanged) {
+                mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeResizeEvent, {node:this.getModel(),size:size});
+            }
         }
     },
 
@@ -1093,13 +1096,6 @@ mindplot.Topic = new Class({
         // Display connection node...
         var connector = targetTopic.getShrinkConnector();
         connector.setVisibility(true);
-
-        // Create a connection line ...
-        var outgoingLine = new mindplot.ConnectionLine(this, targetTopic);
-        if ($defined(isVisible))
-            outgoingLine.setVisibility(isVisible);
-        this._outgoingLine = outgoingLine;
-        workspace.appendChild(outgoingLine);
 
         // Redraw line ...
         outgoingLine.redraw();

@@ -25,7 +25,6 @@ mindplot.ConnectionLine = new Class({
         this._targetTopic = targetNode;
         this._sourceTopic = sourceNode;
 
-        var strokeColor = mindplot.ConnectionLine.getStrokeColor();
         var line;
         var ctrlPoints = this._getCtrlPoints(sourceNode, targetNode);
         if (targetNode.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
@@ -34,16 +33,18 @@ mindplot.ConnectionLine = new Class({
                 line.setSrcControlPoint(ctrlPoints[0]);
                 line.setDestControlPoint(ctrlPoints[1]);
             }
-            line.setStroke(1, 'solid', strokeColor);
         } else {
             line = this._createLine(lineType, mindplot.ConnectionLine.SIMPLE_CURVED);
             if (line.getType() == "CurvedLine") {
                 line.setSrcControlPoint(ctrlPoints[0]);
                 line.setDestControlPoint(ctrlPoints[1]);
             }
-            line.setStroke(1, 'solid', strokeColor);
         }
-        line.setFill(mindplot.ConnectionLine.getStrokeColor());
+        // Set line styles ...
+        var strokeColor = mindplot.ConnectionLine.getStrokeColor();
+        line.setStroke(1, 'solid', strokeColor, 1);
+        line.setFill(strokeColor, 1);
+
         this._line2d = line;
     },
 
@@ -141,7 +142,6 @@ mindplot.ConnectionLine = new Class({
     },
 
     setStroke : function(color, style, opacity) {
-        var line2d = this._line2d;
         this._line2d.setStroke(null, null, color, opacity);
     },
 
