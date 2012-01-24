@@ -32,27 +32,32 @@ mindplot.layout.TestSuite = new Class({
     },
 
     testAligned: function() {
-
+        console.log("testAligned:");
         var position = {x:0,y:0};
         var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
 
-        manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position);
-        manager.addNode(2, mindplot.layout.TestSuite.NODE_SIZE, position);
-        manager.addNode(3, mindplot.layout.TestSuite.NODE_SIZE, position);
-        manager.addNode(4, mindplot.layout.TestSuite.NODE_SIZE, position);
-        manager.connectNode(0, 1, 0);
-        manager.connectNode(1, 2, 0);
-        manager.connectNode(2, 3, 0);
-        manager.connectNode(3, 4, 0);
+        manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(0, 1, 0);
+        manager.addNode(2, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(1, 2, 0);
+        manager.addNode(3, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(2, 3, 0);
+        manager.addNode(4, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(3, 4, 0);
+        manager.addNode(5, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(0,5,2);
+        manager.addNode(6, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(0,6,4);
+        manager.addNode(7, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(0,7,6);
 
         manager.layout();
         manager.plot("testAligned", {width:1200,height:200});
 
-        // All nodes should be vertically aligned
-        $assert(manager.find(0).getPosition().y == manager.find(1).getPosition().y, "Nodes are not aligned");
-        $assert(manager.find(0).getPosition().y == manager.find(2).getPosition().y, "Nodes are not aligned");
-        $assert(manager.find(0).getPosition().y == manager.find(3).getPosition().y, "Nodes are not aligned");
-        $assert(manager.find(0).getPosition().y == manager.find(4).getPosition().y, "Nodes are not aligned");
+        // Child nodes should be vertically aligned
+        $assert(manager.find(1).getPosition().y == manager.find(2).getPosition().y, "Child nodes are not vertically aligned");
+        $assert(manager.find(1).getPosition().y == manager.find(3).getPosition().y, "Child nodes are not vertically aligned");
+        $assert(manager.find(1).getPosition().y == manager.find(4).getPosition().y, "Child nodes are not vertically aligned");
+
+        // Siblings should be horizontally aligned
+        $assert(manager.find(1).getPosition().x == manager.find(5).getPosition().x, "Sibling nodes are not horizontally aligned");
+        $assert(manager.find(1).getPosition().x == manager.find(6).getPosition().x, "Sibling nodes are not horizontally aligned");
+        $assert(manager.find(1).getPosition().x == manager.find(7).getPosition().x, "Sibling nodes are not horizontally aligned");
+
+        console.log("\n");
     },
 
     testEvents: function() {
@@ -60,19 +65,14 @@ mindplot.layout.TestSuite = new Class({
         var position = {x:0,y:0};
         var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
 
-        // Add 3 nodes...
         manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.addNode(2, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.addNode(3, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.addNode(4, mindplot.layout.TestSuite.NODE_SIZE, {x:0, y: 60});
-
-        // Now connect one with two....
         manager.connectNode(0, 1, 0);
         manager.connectNode(0, 2, 1);
         manager.connectNode(1, 3, 0);
 
-        // Basic layout repositioning ...
-        console.log("\t--- Updated tree ---");
         var events = [];
         manager.addEvent('change', function(event) {
             console.log("\tUpdated nodes: {id:" + event.getId() + ", order: " + event.getOrder() + ",position: {" + event.getPosition().x + "," + event.getPosition().y + "}");
@@ -81,12 +81,12 @@ mindplot.layout.TestSuite = new Class({
         manager.layout(true);
         manager.plot("testEvents1", {width:800, height:200});
 
-        // Ok, if a new node is added, this an event should be fired  ...
-        console.log("\t---- Layout without changes should not affect the tree  ---");
+        console.log("\t--- Layout without changes should not affect the tree  ---");
         events.empty();
         manager.layout(true);
         manager.plot("testEvents2", {width:800, height:200});
 
+        // Check no events where fired
         $assert(events.length == 0, "Unnecessary tree updated.");
 
         console.log("\n");
@@ -97,15 +97,12 @@ mindplot.layout.TestSuite = new Class({
         var position = {x:0,y:0};
         var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
 
-        // Add 3 nodes...
         manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.addNode(2, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.addNode(3, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.addNode(4, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.addNode(5, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.addNode(6, mindplot.layout.TestSuite.NODE_SIZE, {x:0, y:60});
-
-        // Now connect one with two....
         manager.connectNode(0, 1, 0);
         manager.connectNode(0, 2, 1);
         manager.connectNode(0, 3, 2);
@@ -118,20 +115,18 @@ mindplot.layout.TestSuite = new Class({
             events.push(event);
         });
 
-        // Reposition ...
         manager.layout(true);
         manager.plot("testEventsComplex1", {width:800, height:200});
 
-        // Add a new node and connect. Only children nodes should be affected.
-        console.log("\t---- Connect a new node  ---");
+        console.log("\t--- Connect a new node  ---");
 
         events.empty();
         manager.connectNode(3, 6, 2);
         manager.layout(true);
         manager.plot("testEventsComplex2", {width:800, height:200});
 
-        //TODO(gb): fix this. only 4 (reposition of nodes 1,4,5,6) events should be fired, actually 6 are
-//        $assert(events.length == 6, "Only 4 nodes should be repositioned.");
+        // Check only 4 nodes were repositioned
+        $assert(events.length == 4, "Only 4 nodes should be repositioned.");
 
         console.log("\n");
     },
@@ -141,7 +136,6 @@ mindplot.layout.TestSuite = new Class({
         var position = {x:0,y:0};
         var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
 
-        // Prepare a sample graph ...
         manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.addNode(2, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.addNode(3, mindplot.layout.TestSuite.NODE_SIZE, position);
@@ -149,7 +143,6 @@ mindplot.layout.TestSuite = new Class({
         manager.addNode(5, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.addNode(6, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.addNode(7, mindplot.layout.TestSuite.NODE_SIZE, position);
-
         manager.connectNode(0, 1, 0);
         manager.connectNode(1, 2, 0);
         manager.connectNode(1, 3, 1);
@@ -169,33 +162,30 @@ mindplot.layout.TestSuite = new Class({
         manager.layout(true);
         manager.plot("testDisconnect1", {width:1200, height:400});
 
-        // Now, disconnect one node ...
-        console.log("--- Disconnect a single node ---");
+        console.log("--- Disconnect node 2 ---");
         events.empty();
         manager.disconnectNode(2);
         manager.layout(true);
         manager.plot("testDisconnect2", {width:1200, height:400});
 
-//        $assert(events.some(function(event) {return event.getId() == 2;}), "Event for disconnected node seems not to be propagated");
-        $assert(manager._treeSet.getParent(manager.find(2)) == null, "Node 2 should have no parent, it was disconnected");
+        // Check that orders have been shifted accordingly
+        $assert(manager.find(2).getOrder() == 0, "Node 2 should have order 0");
+        $assert(manager.find(3).getOrder() == 0, "Node 3 should now have order 0");
+        $assert(manager.find(4).getOrder() == 1, "Node 4 should have order 1");
 
-//        Great, let's disconnect a node with children.
-        console.log("--- Disconnect a node with children ---");
+        console.log("--- Disconnect node 4 ---");
         manager.disconnectNode(4);
         manager.layout(true);
         manager.plot("testDisconnect3", {width:1200, height:400});
 
-        $assert(events.some(function(event) {return event.getId() == 4;}), "Event for disconnected node seems not to be propagated");
-        $assert(manager._treeSet.getParent(manager.find(4)) == null, "Node 4 should have no parent, it was disconnected");
-        var childrenOfNode4 = manager._treeSet.getChildren(manager.find(4));
-        var childrenOfNode5 = manager._treeSet.getChildren(manager.find(5));
-        $assert(childrenOfNode4.contains(manager.find(5)), "Node 5 still should be the child of node 4");
-        $assert(childrenOfNode5.contains(manager.find(6)) && childrenOfNode5.contains(manager.find(7)), "Nodes 6 and 7 still should be the children of node 5");
+        // Check that nodes 1 and 3 are now vertically aligned
+        $assert(manager.find(1).getPosition().y == manager.find(3).getPosition().y, "Nodes 1 and 3 should now be vertically aligned");
 
         console.log("\n");
     },
 
     testReconnect: function() {
+        console.log("testReconnect:");
         var position = {x:0,y:0};
         var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
 
@@ -227,19 +217,20 @@ mindplot.layout.TestSuite = new Class({
         manager.layout();
         manager.plot("testReconnect1",{width:1200, height:400});
 
-        var childrenOfNode6BeforeReconnect = manager._treeSet.getChildren(manager.find(6));
-
         // Reconnect node 6 to node 4
+        console.log("\tReconnect node 6 to node 4");
         manager.disconnectNode(6);
         manager.connectNode(4,6,0);
         manager.layout();
         manager.plot("testReconnect2",{width:1200, height:400});
 
-        var childrenOfNode4AfterReconnect = manager._treeSet.getChildren(manager.find(4));
-        var childrenOfNode6AfterReconnect = manager._treeSet.getChildren(manager.find(6));
-        $assert(childrenOfNode4AfterReconnect.contains(manager.find(6)), "Node 6 should be the child of node 4");
-        $assert(childrenOfNode6BeforeReconnect == childrenOfNode6AfterReconnect, "The children of node 6 should be the same");
+        // Check nodes are left aligned correctly
+        $assert(manager.find(1).getPosition().y == manager.find(7).getPosition().y, "Nodes 1 and 7 should be vertically aligned");
+        $assert(manager.find(4).getPosition().y == manager.find(6).getPosition().y, "Nodes 4 and 6 should be vertically aligned");
+        $assert(manager.find(4).getPosition().x > manager.find(6).getPosition().x, "Node 6 and their children should be to the left of node 4");
+        $assert(manager.find(6).getPosition().x > manager.find(11).getPosition().x && manager.find(11).getPosition().x == manager.find(12).getPosition().x, "Nodes 11 and 12 should be to the left of node 6 and horizontally aligned");
 
+        console.log("\n");
     },
 
     testRemoveNode: function() {
@@ -272,35 +263,42 @@ mindplot.layout.TestSuite = new Class({
         manager.addEvent('change', function(event) {
             var pos = event.getPosition();
             var posStr = pos ? ",position: {" + pos.x + "," + event.getPosition().y : "";
-            console.log("\tUpdated nodes: {id:" + event.getId() + ", order: " + event.getOrder() + posStr + "}");
             events.push(event);
         });
         manager.layout(true);
         manager.plot("testRemoveNode1", {width:1000, height:200});
 
-        // Test removal of a connected node ...
         console.log("\t--- Remove node 3  ---");
         manager.removeNode(3);
         manager.layout(true);
         manager.plot("testRemoveNode2", {width:1000, height:200});
 
-        // Remove a node from the root node
+        // Check nodes are correctly aligned and node 6 is aligned with the root node
+        $assert(manager.find(1).getPosition().y == manager.find(2).getPosition().y, "Nodes 1 and 2 should be vertically algined");
+        $assert(manager.find(6).getPosition().y == manager.find(0).getPosition().y, "Node 6 should be aligned to the root node");
+
         console.log("\t--- Remove node 6  ---");
         manager.removeNode(6);
         manager.layout(true);
         manager.plot("testRemoveNode3", {width:1000, height:200});
 
-        // Remove a node from the root node
+        // Check orders were shifted accordingly
+        $assert(manager.find(8).getOrder() == 2, "Node 8 should have order 2");
+
         console.log("\t--- Remove node 5  ---");
         manager.removeNode(5);
         manager.layout(true);
         manager.plot("testRemoveNode4", {width:1000, height:200});
 
-        $assert(manager.find(1).getPosition().y == manager.find(2).getPosition().y, "After removal of node 3, nodes 1 and 2 should be alingned");
+        // Check orders were shifted accordingly
+        $assert(manager.find(7).getOrder() == 1, "Node 7 should have order 1");
+        $assert(manager.find(9).getOrder() == 3, "Node 9 should have order 3");
+
         console.log("\n");
     },
 
     testSize: function() {
+        console.log("testSize:");
         var position = {x:0, y:0};
         var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
 
@@ -341,25 +339,43 @@ mindplot.layout.TestSuite = new Class({
         manager.layout();
         manager.plot("testSize1", {width: 1400, height: 400});
 
-        var graph2 = manager.plot("testSize2", {width: 1400, height: 400});
+        // Check that all enlarged nodes shift children accordingly
+        $assert(manager.find(10).getPosition().x > manager.find(3).getPosition().x && manager.find(10).getPosition().x == manager.find(11).getPosition().x, "Nodes 10 and 11 should be horizontally algined and to the right of enlarged node 3");
+        var xPosNode7 = manager.find(7).getPosition().x;
+        var xPosNode8 = manager.find(8).getPosition().x;
+
+        manager.updateNodeSize(4, {width:100, height:30});
+        manager.layout();
+        manager.plot("testSize2", {width: 1400, height: 400});
+
+        // Check that all enlarged nodes shift children accordingly
+        $assert(manager.find(2).getPosition().x - manager.find(4).getPosition().x  == 10, "Node 4 should have been shifted by 10");
+        $assert(xPosNode7 - manager.find(7).getPosition().x == 20, "Node 7 should have been shifted by 20");
+        $assert(xPosNode8 - manager.find(8).getPosition().x == 20, "Node 8 should have been shifted by 20");
+
+        var graph2 = manager.plot("testSize3", {width: 1400, height: 400});
         this._plotPrediction(graph2, manager.predict(0, {x:-145, y:400}));
         this._plotPrediction(graph2, manager.predict(9, {x:-330, y:70}));
         this._plotPrediction(graph2, manager.predict(9, {x:-330, y:120}));
         this._plotPrediction(graph2, manager.predict(0, {x:15, y:20}));
+        //TODO(gb): make asserts
 
-        var graph3 = manager.plot("testSize3", {width: 1400, height: 400});
+        var graph3 = manager.plot("testSize4", {width: 1400, height: 400});
         this._plotPrediction(graph3, manager.predict(0, null));
         this._plotPrediction(graph3, manager.predict(9, null));
         this._plotPrediction(graph3, manager.predict(3, null));
         this._plotPrediction(graph3, manager.predict(1, null));
+        //TODO(gb): make asserts
 
+        var yPosNode2 = manager.find(2).getPosition().y;
         manager.updateNodeSize(7, {width:80, height:120});
         manager.layout();
-        manager.plot("testSize4", {width: 1400, height: 400});
-
-        manager.updateNodeSize(7, {width:200, height:30});
-        manager.layout();
         manager.plot("testSize5", {width: 1400, height: 400});
+
+        // Check that all enlarged nodes shift children accordingly
+        $assert(yPosNode2 - manager.find(2).getPosition().y == 20, "Node 2 should have been shifted by 20");
+
+        console.log("\n");
     },
 
     testReconnectSingleNode: function() {
@@ -372,13 +388,21 @@ mindplot.layout.TestSuite = new Class({
         manager.connectNode(0, 1, 0);
         manager.layout();
         var graph = manager.plot("testReconnectSingleNode1", {width:1000, height:400});
-        this._plotPrediction(graph, manager.predict(0, {x:-50, y:0}));
+        var prediction = manager.predict(0, {x:-50, y:0});
+        this._plotPrediction(graph, prediction);
 
+        // Check prediction is to the left of the root node
+        $assert(prediction.position.x < manager.find(0).getPosition().x, "Prediction should be to the left of the root node");
+        $assert(prediction.order == 1, "Prediction should have order 1");
 
         manager.disconnectNode(1);
         manager.connectNode(0,1,1);
         manager.layout();
         manager.plot("testReconnectSingleNode2", {width:1000, height:400});
+
+        // Check reconnected node is to the left of the root node
+        $assert(manager.find(1).getPosition().x < manager.find(0).getPosition().x, "Node 1 should now be to the left of the root node");
+        $assert(manager.find(1).getOrder() == 1, "Node 1 should now have order 0");
     },
 
     _plotPrediction: function(canvas, prediction) {
