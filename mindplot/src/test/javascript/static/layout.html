@@ -5,7 +5,6 @@
     <script type='text/javascript' src='../../../main/javascript/libraries/mootools/mootools-core-1.3.2-full-compress.js'></script>
     <script type='text/javascript' src='../../../../../core-js/target/classes/core.js'></script>
 
-
     <script type='text/javascript' src='../../../main/javascript/header.js'></script>
     <script type='text/javascript' src='../../../main/javascript/layout/Node.js'></script>
     <script type='text/javascript' src='../../../main/javascript/layout/RootedTreeSet.js'></script>
@@ -19,15 +18,20 @@
     <script type='text/javascript' src='../../../main/javascript/layout/OriginalLayout.js'></script>
     <script type='text/javascript' src='../../../main/javascript/layout/ChangeEvent.js'></script>
 
-    <script type="text/javascript" src="raphael-min.js"></script>
-    <script type="text/javascript" src="raphael-plugins.js"></script>
+    <script type="text/javascript" src="test/raphael-min.js"></script>
+    <script type="text/javascript" src="test/raphael-plugins.js"></script>
 
-    <script type='text/javascript' src='TestSuite.js'></script>
-
+    <script type='text/javascript' src='test/TestSuite.js'></script>
+    <script type='text/javascript' src='test/BalancedTestSuite.js'></script>
+    <script type='text/javascript' src='test/SymmetricTestSuite.js'></script>
+    <script type='text/javascript' src='test/FreeTestSuite.js'></script>
 
     <script type='text/javascript'>
         window.addEvent('domready', function() {
-            var test = new mindplot.layout.TestSuite();
+//            var basicTest = new mindplot.layout.TestSuite();
+//            var balancedTest = new mindplot.layout.BalancedTestSuite();
+//            var symmetricTest = new mindplot.layout.SymmetricTestSuite();
+            var freeTest = new mindplot.layout.FreeTestSuite();
         })
     </script>
 
@@ -44,97 +48,113 @@
 </head>
 <body>
 
-<h2>testAligned:</h2>
-<div id="testAligned"></div>
 
-<h2>testSymmetry:</h2>
-<div id="testSymmetry"></div>
+<div id="basicTest" style="display: none;">
+    <h1>Basic Tests</h1>
 
-<h2>testBalanced:</h2>
-<div id="testBalanced1" class="col"></div>
-<div id="testBalanced2" class="col"></div>
-<div id="testBalanced3" class="col last"></div>
-<div id="testBalanced4" class="col"></div>
-<div id="testBalanced5" class="col"></div>
-<div id="testBalanced6" class="col last"></div>
-<div id="testBalanced7" class="col"></div>
-<div id="testBalanced8" class="col last"></div>
-<div id="testBalanced9" class="col last"></div>
-<div id="testBalanced10" class="col last"></div>
-<div id="testBalanced11" class="col last"></div>
-<div id="testBalanced12" class="col last"></div>
-<div id="testBalanced13" class="col last"></div>
+    <h3>testAligned:</h3>
+    <div id="testAligned"></div>
 
-<h2>testEvents:</h2>
-<div id="testEvents1" class="col"></div>
-<div id="testEvents2" class="col last"></div>
+    <h3>testEvents:</h3>
+    <div id="testEvents1" class="col"></div>
+    <div id="testEvents2" class="col last"></div>
 
-<h2>testEventsComplex:</h2>
-<div id="testEventsComplex1" class="col"></div>
-<div id="testEventsComplex2" class="col last"></div>
+    <h3>testEventsComplex:</h3>
+    <div id="testEventsComplex1" class="col"></div>
+    <div id="testEventsComplex2" class="col last"></div>
 
-<h2>testDisconnect:</h2>
-<div id="testDisconnect1" class="col"></div>
-<div id="testDisconnect2" class="col"></div>
-<div id="testDisconnect3" class="col last"></div>
+    <h3>testDisconnect:</h3>
+    <div id="testDisconnect1" class="col"></div>
+    <div id="testDisconnect2" class="col"></div>
+    <div id="testDisconnect3" class="col last"></div>
 
-<h2>testReconnect:</h2>
-<div id="testReconnect1" class="col"></div>
-<div id="testReconnect2" class="col last"></div>
+    <h3>testReconnect:</h3>
+    <div id="testReconnect1" class="col"></div>
+    <div id="testReconnect2" class="col last"></div>
 
-<h2>testRemoveNode:</h2>
-<div id="testRemoveNode1" class="col"></div>
-<div id="testRemoveNode2" class="col last"></div>
-<div id="testRemoveNode3" class="col last"></div>
-<div id="testRemoveNode4" class="col last"></div>
+    <h3>testRemoveNode:</h3>
+    <div id="testRemoveNode1" class="col"></div>
+    <div id="testRemoveNode2" class="col last"></div>
+    <div id="testRemoveNode3" class="col last"></div>
+    <div id="testRemoveNode4" class="col last"></div>
 
-<h2>testSymmetricPredict:</h2>
-<div id="testSymmetricPredict1"></div>
-<div id="testSymmetricPredict2"></div>
-<div id="testSymmetricPredict3"></div>
-<div id="testSymmetricPredict4"></div>
-<div id="testSymmetricPredict5"></div>
+    <h3>testSize:</h3>
+    <div id="testSize1" class="col"></div>
+    <div id="testSize2" class="col last"></div>
+    <div id="testSize3" class="col last"></div>
+    <div id="testSize4" class="col last"></div>
+    <div id="testSize5" class="col last"></div>
 
-<h2>testBalancedPredict:</h2>
-<div id="testBalancedPredict1"></div>
-<div id="testBalancedPredict2"></div>
-<div id="testBalancedPredict3"></div>
-<div id="testBalancedPredict4"></div>
-<div id="testBalancedPredict5"></div>
-<div id="testBalancedPredict6"></div>
+    <h3>testReconnectSingleNode:</h3>
+    <div id="testReconnectSingleNode1" class="col"></div>
+    <div id="testReconnectSingleNode2" class="col"></div>
+</div>
 
-<h2>testSize:</h2>
-<div id="testSize1" class="col"></div>
-<div id="testSize2" class="col last"></div>
-<div id="testSize3" class="col last"></div>
-<div id="testSize4" class="col last"></div>
-<div id="testSize5" class="col last"></div>
+<div id="balancedTest" style="display: none;">
+    <h1>Balanced Sorter Tests</h1>
 
-<h2>testFreePosition:</h2>
-<div id="testFreePosition1" class="col"></div>
-<div id="testFreePosition2" class="col last"></div>
-<div id="testFreePosition3" class="col last"></div>
-<div id="testFreePosition4" class="col last"></div>
-<div id="testFreePosition5" class="col last"></div>
-<div id="testFreePosition6" class="col last"></div>
-<div id="testFreePosition7" class="col last"></div>
-<div id="testFreePosition8" class="col last"></div>
-<div id="testFreePosition9" class="col last"></div>
+    <h3>testBalanced:</h3>
+    <div id="testBalanced1" class="col"></div>
+    <div id="testBalanced2" class="col"></div>
+    <div id="testBalanced3" class="col last"></div>
+    <div id="testBalanced4" class="col"></div>
+    <div id="testBalanced5" class="col"></div>
+    <div id="testBalanced6" class="col last"></div>
+    <div id="testBalanced7" class="col"></div>
+    <div id="testBalanced8" class="col last"></div>
+    <div id="testBalanced9" class="col last"></div>
+    <div id="testBalanced10" class="col last"></div>
+    <div id="testBalanced11" class="col last"></div>
+    <div id="testBalanced12" class="col last"></div>
+    <div id="testBalanced13" class="col last"></div>
 
-<h2>testFreePredict:</h2>
-<div id="testFreePredict1" class="col"></div>
+    <h3>testBalancedPredict:</h3>
+    <div id="testBalancedPredict1"></div>
+    <div id="testBalancedPredict2"></div>
+    <div id="testBalancedPredict3"></div>
+    <div id="testBalancedPredict4"></div>
+    <div id="testBalancedPredict5"></div>
+    <div id="testBalancedPredict6"></div>
+</div>
 
-<h2>testReconnectFreeNode:</h2>
-<div id="testReconnectFreeNode1" class="col"></div>
-<div id="testReconnectFreeNode2" class="col"></div>
-<div id="testReconnectFreeNode3" class="col"></div>
-<div id="testReconnectFreeNode4" class="col"></div>
-<div id="testReconnectFreeNode5" class="col"></div>
-<div id="testReconnectFreeNode6" class="col"></div>
+<div id="symmetricTest" style="display: none;">
+    <h1>Symmetric Sorter Tests</h1>
+    <h3>testSymmetry:</h3>
+    <div id="testSymmetry"></div>
 
-<h2>testReconnectSingleNode:</h2>
-<div id="testReconnectSingleNode1" class="col"></div>
-<div id="testReconnectSingleNode2" class="col"></div>
+    <h3>testSymmetricPredict:</h3>
+    <div id="testSymmetricPredict1"></div>
+    <div id="testSymmetricPredict2"></div>
+    <div id="testSymmetricPredict3"></div>
+    <div id="testSymmetricPredict4"></div>
+    <div id="testSymmetricPredict5"></div>
+</div>
+
+<div id="freeTest" style="display: none;">
+    <h1>Free Positioning Tests</h1>
+
+    <h3>testFreePosition:</h3>
+    <div id="testFreePosition1" class="col"></div>
+    <div id="testFreePosition2" class="col last"></div>
+    <div id="testFreePosition3" class="col last"></div>
+    <div id="testFreePosition4" class="col last"></div>
+    <div id="testFreePosition5" class="col last"></div>
+    <div id="testFreePosition6" class="col last"></div>
+    <div id="testFreePosition7" class="col last"></div>
+    <div id="testFreePosition8" class="col last"></div>
+    <div id="testFreePosition9" class="col last"></div>
+
+    <h3>testFreePredict:</h3>
+    <div id="testFreePredict1" class="col"></div>
+
+    <h3>testReconnectFreeNode:</h3>
+    <div id="testReconnectFreeNode1" class="col"></div>
+    <div id="testReconnectFreeNode2" class="col"></div>
+    <div id="testReconnectFreeNode3" class="col"></div>
+    <div id="testReconnectFreeNode4" class="col"></div>
+    <div id="testReconnectFreeNode5" class="col"></div>
+    <div id="testReconnectFreeNode6" class="col"></div>
+</div>
 
 </body>
 </html>
