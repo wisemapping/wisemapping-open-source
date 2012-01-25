@@ -122,20 +122,32 @@ mindplot.layout.BalancedTestSuite = new Class({
         manager.plot("testBalanced13", {width:1000, height:400});
 
         // Check that everything is ok
-        $assert(manager.find(1).getPosition().x > manager.find(0).getPosition().x, "even order nodes must be at right of central topic");
-        $assert(manager.find(3).getPosition().x > manager.find(0).getPosition().x, "even order nodes must be at right of central topic");
-        $assert(manager.find(5).getPosition().x > manager.find(0).getPosition().x, "even order nodes must be at right of central topic");
-        $assert(manager.find(2).getPosition().x < manager.find(0).getPosition().x, "odd order nodes must be at right of central topic");
-        $assert(manager.find(4).getPosition().x < manager.find(0).getPosition().x, "odd order nodes must be at right of central topic");
-        $assert(manager.find(6).getPosition().x < manager.find(0).getPosition().x, "odd order nodes must be at right of central topic");
-        $assert(manager.find(7).getPosition().x > manager.find(3).getPosition().x, "children of 1st level even order nodes must be to the right");
-        $assert(manager.find(8).getPosition().x > manager.find(7).getPosition().x, "children of 1st level even order nodes must be to the right");
-        $assert(manager.find(9).getPosition().x > manager.find(7).getPosition().x, "children of 1st level even order nodes must be to the right");
-        $assert(manager.find(10).getPosition().x < manager.find(6).getPosition().x, "children of 1st level odd order nodes must be to the left");
-        $assert(manager.find(11).getPosition().x < manager.find(10).getPosition().x, "children of 1st level odd order nodes must be to the left");
-        $assert(manager.find(12).getPosition().x < manager.find(10).getPosition().x, "children of 1st level odd order nodes must be to the left");
+        $assert(manager.find(1).getPosition().x > manager.find(0).getPosition().x,
+            "even order nodes must be at right of central topic");
+        $assert(manager.find(3).getPosition().x > manager.find(0).getPosition().x,
+            "even order nodes must be at right of central topic");
+        $assert(manager.find(5).getPosition().x > manager.find(0).getPosition().x,
+            "even order nodes must be at right of central topic");
+        $assert(manager.find(2).getPosition().x < manager.find(0).getPosition().x,
+            "odd order nodes must be at right of central topic");
+        $assert(manager.find(4).getPosition().x < manager.find(0).getPosition().x,
+            "odd order nodes must be at right of central topic");
+        $assert(manager.find(6).getPosition().x < manager.find(0).getPosition().x,
+            "odd order nodes must be at right of central topic");
+        $assert(manager.find(7).getPosition().x > manager.find(3).getPosition().x,
+            "children of 1st level even order nodes must be to the right");
+        $assert(manager.find(8).getPosition().x > manager.find(7).getPosition().x,
+            "children of 1st level even order nodes must be to the right");
+        $assert(manager.find(9).getPosition().x > manager.find(7).getPosition().x,
+            "children of 1st level even order nodes must be to the right");
+        $assert(manager.find(10).getPosition().x < manager.find(6).getPosition().x,
+            "children of 1st level odd order nodes must be to the left");
+        $assert(manager.find(11).getPosition().x < manager.find(10).getPosition().x,
+            "children of 1st level odd order nodes must be to the left");
+        $assert(manager.find(12).getPosition().x < manager.find(10).getPosition().x,
+            "children of 1st level odd order nodes must be to the left");
 
-        console.log("\n");
+        console.log("OK!\n\n");
     },
 
     testBalancedPredict: function() {
@@ -173,25 +185,31 @@ mindplot.layout.BalancedTestSuite = new Class({
         console.log("\tAdded as child of node 0 and dropped at (165, -70):");
         var prediction1a = manager.predict(0, {x:165, y:-70});
         this._plotPrediction(graph1, prediction1a);
-        $assert(prediction1a.position.x == 130 && prediction1a.position.y == -100, "Prediction is incorrectly positioned");
+        $assert(prediction1a.position.y < manager.find(1).getPosition().y &&
+            prediction1a.position.x == manager.find(1).getPosition().x, "Prediction is incorrectly positioned");
         $assert(prediction1a.order == 0, "Prediction order should be 0");
 
         console.log("\tAdded as child of node 0 and dropped at (165, -10):");
         var prediction1b = manager.predict(0, {x:165, y:-10});
         this._plotPrediction(graph1, prediction1b);
-        $assert(prediction1b.position.x == 130 && prediction1b.position.y == -30, "Prediction is incorrectly positioned");
+        $assert(prediction1b.position.y > manager.find(1).getPosition().y &&
+            prediction1b.position.y < manager.find(3).getPosition().y &&
+            prediction1b.position.x == manager.find(1).getPosition().x, "Prediction is incorrectly positioned");
         $assert(prediction1b.order == 2, "Prediction order should be 2");
 
         console.log("\tAdded as child of node 0 and dropped at (145, 15):");
         var prediction1c = manager.predict(0, {x:145, y:15});
         this._plotPrediction(graph1, prediction1c);
-        $assert(prediction1c.position.x == 130 && prediction1c.position.y == 30, "Prediction is incorrectly positioned");
+        $assert(prediction1c.position.y > manager.find(3).getPosition().y &&
+            prediction1c.position.y < manager.find(5).getPosition().y &&
+            prediction1c.position.x == manager.find(3).getPosition().x, "Prediction is incorrectly positioned");
         $assert(prediction1c.order == 4, "Prediction order should be 4");
 
         console.log("\tAdded as child of node 0 and dropped at (145, 70):");
         var prediction1d = manager.predict(0, {x:145, y:70});
         this._plotPrediction(graph1, prediction1d);
-        $assert(prediction1d.position.x == 130 && prediction1d.position.y == 100, "Prediction is incorrectly positioned");
+        $assert(prediction1d.position.y > manager.find(5).getPosition().y &&
+            prediction1d.position.x == manager.find(5).getPosition().x, "Prediction is incorrectly positioned");
         $assert(prediction1d.order == 6, "Prediction order should be 6");
 
         // Graph 2
@@ -200,27 +218,32 @@ mindplot.layout.BalancedTestSuite = new Class({
         console.log("\tAdded as child of node 0 and dropped at (-145, -50):");
         var prediction2a = manager.predict(0, {x:-145, y:-50});
         this._plotPrediction(graph2, prediction2a);
-        $assert(prediction2a.position.x == -130 && prediction2a.position.y == -80, "Prediction is incorrectly positioned");
+        $assert(prediction2a.position.y < manager.find(2).getPosition().y &&
+            prediction2a.position.x == manager.find(2).getPosition().x, "Prediction is incorrectly positioned");
         $assert(prediction2a.order == 1, "Prediction order should be 1");
 
         console.log("\tAdded as child of node 0 and dropped at (-145, -10):");
         var prediction2b = manager.predict(0, {x:-145, y:-10});
         this._plotPrediction(graph2, prediction2b);
-        $assert(prediction2b.position.x == -130 && prediction2b.position.y == -10, "Prediction is incorrectly positioned");
-        $assert(prediction2b.order == 3, "Prediction order should be 1");
+        $assert(prediction2b.position.y > manager.find(2).getPosition().y &&
+            prediction2b.position.y < manager.find(4).getPosition().y &&
+            prediction2b.position.x == manager.find(2).getPosition().x, "Prediction is incorrectly positioned");
+        $assert(prediction2b.order == 3, "Prediction order should be 3");
 
         console.log("\tAdded as child of node 0 and dropped at (-145, 40):");
         var prediction2c = manager.predict(0, {x:-145, y:400});
         this._plotPrediction(graph2, prediction2c);
-        $assert(prediction2c.position.x == -130 && prediction2c.position.y == 60, "Prediction is incorrectly positioned");
-        $assert(prediction2c.order == 5, "Prediction order should be 1");
+        $assert(prediction2c.position.y > manager.find(4).getPosition().y &&
+            prediction2c.position.x == manager.find(4).getPosition().x, "Prediction is incorrectly positioned");
+        $assert(prediction2c.order == 5, "Prediction order should be 5");
 
         // Graph 3
         console.log("\tPredict nodes added with no position:");
         var graph3 = manager.plot("testBalancedPredict3", {width:1000, height:400});
         var prediction3 = manager.predict(0, null);
         this._plotPrediction(graph3, prediction3);
-        $assert(prediction3.position.x < manager.find(0).getPosition().x, "Prediction is incorrectly positioned");
+        $assert(prediction3.position.y > manager.find(4).getPosition().y &&
+            prediction3.position.x == manager.find(4).getPosition().x, "Prediction is incorrectly positioned");
         $assert(prediction3.order == 5, "Prediction order should be 5");
 
         console.log("\tPredict nodes added with no position:");
@@ -230,8 +253,9 @@ mindplot.layout.BalancedTestSuite = new Class({
         var graph4 = manager.plot("testBalancedPredict4", {width:1000, height:400});
         var prediction4 = manager.predict(0, null);
         this._plotPrediction(graph4, prediction4);
-        $assert(prediction4.position.x > manager.find(0).getPosition().x, "Prediction is incorrectly positioned");
-        $assert(prediction4.order == 6);
+        $assert(prediction4.position.y > manager.find(5).getPosition().y &&
+            prediction4.position.x == manager.find(5).getPosition().x, "Prediction is incorrectly positioned");
+        $assert(prediction4.order == 6, "Prediction order should be 6");
 
         console.log("\tPredict nodes added only a root node:");
         manager.removeNode(1).removeNode(2).removeNode(3).removeNode(4).removeNode(5);
@@ -241,9 +265,13 @@ mindplot.layout.BalancedTestSuite = new Class({
         var prediction5b = manager.predict(0, {x: 40, y: 100});
         this._plotPrediction(graph5, prediction5a);
         this._plotPrediction(graph5, prediction5b);
-        $assert(prediction5a.position.x > manager.find(0).getPosition().x && prediction5a.position.y == manager.find(0).getPosition().y, "Prediction is incorrectly positioned");
+        $assert(prediction5a.position.x > manager.find(0).getPosition().x &&
+            prediction5a.position.y == manager.find(0).getPosition().y, "Prediction is incorrectly positioned");
         $assert(prediction5a.order == 0, "Prediction order should be 0");
-        $assert(prediction5a.position.x == prediction5b.position.x && prediction5a.position.y == prediction5b.position.y, "Both predictions should be the same");
+        $assert(prediction5a.position.x == prediction5b.position.x &&
+            prediction5a.position.y == prediction5b.position.y, "Both predictions should be the same");
         $assert(prediction5a.order == prediction5b.order, "Both predictions should be the same");
+
+        console.log("OK!\n\n");
     }
 });

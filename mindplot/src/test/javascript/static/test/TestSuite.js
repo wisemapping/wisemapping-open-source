@@ -57,7 +57,7 @@ mindplot.layout.TestSuite = new Class({
         $assert(manager.find(1).getPosition().x == manager.find(6).getPosition().x, "Sibling nodes are not horizontally aligned");
         $assert(manager.find(1).getPosition().x == manager.find(7).getPosition().x, "Sibling nodes are not horizontally aligned");
 
-        console.log("\n");
+        console.log("OK!\n\n");
     },
 
     testEvents: function() {
@@ -89,7 +89,7 @@ mindplot.layout.TestSuite = new Class({
         // Check no events where fired
         $assert(events.length == 0, "Unnecessary tree updated.");
 
-        console.log("\n");
+        console.log("OK!\n\n");
     },
 
     testEventsComplex: function() {
@@ -128,7 +128,7 @@ mindplot.layout.TestSuite = new Class({
         // Check only 4 nodes were repositioned
         $assert(events.length == 4, "Only 4 nodes should be repositioned.");
 
-        console.log("\n");
+        console.log("OK!\n\n");
     },
 
     testDisconnect: function() {
@@ -181,7 +181,7 @@ mindplot.layout.TestSuite = new Class({
         // Check that nodes 1 and 3 are now vertically aligned
         $assert(manager.find(1).getPosition().y == manager.find(3).getPosition().y, "Nodes 1 and 3 should now be vertically aligned");
 
-        console.log("\n");
+        console.log("OK!\n\n");
     },
 
     testReconnect: function() {
@@ -230,7 +230,7 @@ mindplot.layout.TestSuite = new Class({
         $assert(manager.find(4).getPosition().x > manager.find(6).getPosition().x, "Node 6 and their children should be to the left of node 4");
         $assert(manager.find(6).getPosition().x > manager.find(11).getPosition().x && manager.find(11).getPosition().x == manager.find(12).getPosition().x, "Nodes 11 and 12 should be to the left of node 6 and horizontally aligned");
 
-        console.log("\n");
+        console.log("OK!\n\n");
     },
 
     testRemoveNode: function() {
@@ -294,7 +294,7 @@ mindplot.layout.TestSuite = new Class({
         $assert(manager.find(7).getOrder() == 1, "Node 7 should have order 1");
         $assert(manager.find(9).getOrder() == 3, "Node 9 should have order 3");
 
-        console.log("\n");
+        console.log("OK!\n\n");
     },
 
     testSize: function() {
@@ -375,7 +375,7 @@ mindplot.layout.TestSuite = new Class({
         // Check that all enlarged nodes shift children accordingly
         $assert(yPosNode2 - manager.find(2).getPosition().y == 20, "Node 2 should have been shifted by 20");
 
-        console.log("\n");
+        console.log("OK!\n\n");
     },
 
     testReconnectSingleNode: function() {

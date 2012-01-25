@@ -67,48 +67,50 @@ mindplot.layout.FreeTestSuite = new Class({
         manager.layout();
         manager.plot("testFreePosition1", {width:1400, height:600});
 
-        console.log("move node 12 to (300,30)");
+        console.log("\tmove node 12 to (300,30)");
         manager.moveNode(12, {x:300, y:30});
         manager.layout();
         manager.plot("testFreePosition2", {width:1400, height:600});
 
-        console.log("move node 13 to (340,180)");
+        console.log("\tmove node 13 to (340,180)");
         manager.moveNode(13, {x:340, y:180});
         manager.layout(true);
         manager.plot("testFreePosition3", {width:1400, height:600});
 
-        console.log("move node 11 to (250,-50)");
+        console.log("\tmove node 11 to (250,-50)");
         manager.moveNode(11, {x:250, y:-50});
         manager.layout(true);
         manager.plot("testFreePosition4", {width:1400, height:600});
 
-        console.log("move node 7 to (350,-190)");
+        console.log("\tmove node 7 to (350,-190)");
         manager.moveNode(7, {x:350, y:-190});
         manager.layout(true);
         manager.plot("testFreePosition5", {width:1400, height:600});
 
-        console.log("add node 23 to 12:");
+        console.log("\tadd node 23 to 12:");
         manager.addNode(23, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.connectNode(12,23,3);
         manager.layout(true);
         manager.plot("testFreePosition6", {width:1400, height:600});
 
-        console.log("move node 4 to (-300, 190)");
+        console.log("\tmove node 4 to (-300, 190)");
         manager.moveNode(4, {x:-300, y:190});
         manager.layout(true);
         manager.plot("testFreePosition7", {width:1400, height:600});
 
-        console.log("add node 24 to 3:");
+        console.log("\tadd node 24 to 3:");
         manager.addNode(24, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.connectNode(3,24,3);
         manager.layout(true);
         manager.plot("testFreePosition8", {width:1400, height:600});
 
-        console.log("add node 25 to 17:");
+        console.log("\tadd node 25 to 17:");
         manager.addNode(25, mindplot.layout.TestSuite.NODE_SIZE, position);
         manager.connectNode(17,25,0);
         manager.layout(true);
         manager.plot("testFreePosition9", {width:1400, height:600});
+
+        console.log("OK!\n\n");
     },
 
     testFreePredict: function() {
@@ -166,6 +168,8 @@ mindplot.layout.FreeTestSuite = new Class({
         this._plotPrediction(graph, predict2);
         this._plotPrediction(graph, predict3);
         this._plotPrediction(graph, predict4);
+
+        console.log("OK!\n\n");
     },
 
     testReconnectFreeNode: function() {
@@ -201,24 +205,24 @@ mindplot.layout.FreeTestSuite = new Class({
         manager.layout();
         manager.plot("testReconnectFreeNode1", {width:1000, height:400});
 
-        console.log("move node 5");
+        console.log("\tmove node 5");
         manager.moveNode(5, {x:250, y:30});
         manager.layout();
         manager.plot("testReconnectFreeNode2", {width:1000, height:400});
 
-        console.log("reconnect node 5 to node 2");
+        console.log("\treconnect node 5 to node 2");
         manager.disconnectNode(5);
         manager.connectNode(2,5,2);
         manager.layout();
         manager.plot("testReconnectFreeNode3", {width:1000, height:400});
 
-        console.log("move node 8");
+        console.log("\tmove node 8");
         manager.moveNode(8, {x:-370, y:60});
         manager.layout();
         manager.plot("testReconnectFreeNode4", {width:1000, height:400});
 
         //TODO(gb): fix this. node 11 is not positioned correctly
-        console.log("reconnect node 5 to node 10");
+        console.log("\treconnect node 5 to node 10");
         manager.disconnectNode(5);
         manager.connectNode(10,5,0);
         manager.layout();
@@ -233,5 +237,7 @@ mindplot.layout.FreeTestSuite = new Class({
 //        manager.moveNode(8, {x:370, y:30});
 //        manager.layout();
 //        manager.plot("testReconnectFreeNode2", {width:1000, height:400});
+
+        console.log("OK!\n\n");
     }
 });
