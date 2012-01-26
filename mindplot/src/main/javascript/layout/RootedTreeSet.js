@@ -235,10 +235,7 @@ mindplot.layout.RootedTreeSet = new Class({
     getBranchesInVerticalDirection: function(node, yOffset) {
         // siblings with lower or higher order, depending on the direction of the offset
         var siblings = this.getSiblings(node).filter(function(sibling) {
-            if (yOffset < 0)
-                return sibling.getOrder() < node.getOrder();
-            else
-                return sibling.getOrder() > node.getOrder();
+            return yOffset < 0 ? sibling.getOrder() < node.getOrder() : sibling.getOrder() > node.getOrder();
         });
 
         // direct descendants of the root that do not contain the node and are on the same side

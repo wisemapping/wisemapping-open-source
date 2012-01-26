@@ -105,25 +105,15 @@ mindplot.layout.OriginalLayout = new Class({
             var parentPosition = node.getPosition();
 
             children.forEach(function(child) {
-                var childHeightChanged = heightById[child.getId()] != child._branchHeight;
                 var offset = offsetById[child.getId()];
 
-                if (child.isFree()) {
-                    if (heightChanged && (parentHeightChanged || childHeightChanged)) {
-                        offset.x += child.getFreeDisplacement().x;
-                        this._shiftBranches(child);
-                    } else {
-                        offset.x += child.getFreeDisplacement().x;
-                        offset.y += child.getFreeDisplacement().y;
-                        this._shiftBranches(child);
-                    }
-                }
+                offset.x += child.getFreeDisplacement().x;
+                offset.y += child.getFreeDisplacement().y;
 
                 var parentX = parentPosition.x;
                 var parentY = parentPosition.y;
 
                 var newPos = {x:parentX + offset.x, y:parentY + offset.y};
-
                 this._treeSet.updateBranchPosition(child, newPos);
             }.bind(this));
 
@@ -139,8 +129,8 @@ mindplot.layout.OriginalLayout = new Class({
     _fixOverlapping: function(node, heightById) {
         var children = this._treeSet.getChildren(node);
 
-        if ((node.isFree() && node.hasFreeDisplacementChanged())) {
-            this._shiftBranches(node);
+        if (node.isFree()) {
+            this._shiftBranches(node, heightById);
         }
 
         children.forEach(function(child) {
@@ -148,19 +138,25 @@ mindplot.layout.OriginalLayout = new Class({
         }, this);
     },
 
-    _shiftBranches: function(node) {
-        this._treeSet.shiftBranchPosition(node, node.getFreeDisplacement().x, node.getFreeDisplacement().y);
+    _shiftBranches: function(node, heightById) {
         var branchesToShift = this._treeSet.getBranchesInVerticalDirection(node, node.getFreeDisplacement().y);
+
+        var last = node;
         branchesToShift.forEach(function(branch) {
-            this._treeSet.shiftBranchPosition(branch, 0, node.getFreeDisplacement().y);
+            if (this._branchesOverlap(branch, last, heightById)) {
+                this._treeSet.shiftBranchPosition(branch, 0, node.getFreeDisplacement().y);
+            }
+            last = branch;
         },this);
     },
 
-    _nodesCollide: function(nodeA, nodeB) {
-        var nodeAVertex = nodeA.getVertex();
-        var nodeBVertex = nodeB.getVertex();
-        return nodeAVertex.a.x < nodeBVertex.b.x && nodeAVertex.b.x > nodeBVertex.a.x &&
-            nodeAVertex.a.y < nodeBVertex.b.y && nodeAVertex.b.y > nodeBVertex.a.y;
+    _branchesOverlap: function(branchA, branchB, heightById) {
+        var topA = branchA.getPosition().y - heightById[branchA.getId()]/2;
+        var bottomA = branchA.getPosition().y + heightById[branchA.getId()]/2;
+        var topB = branchB.getPosition().y - heightById[branchB.getId()]/2;
+        var bottomB = branchB.getPosition().y + heightById[branchB.getId()]/2;
+
+        return !(topA >= bottomB || bottomA <= topB);
     }
 
 });
