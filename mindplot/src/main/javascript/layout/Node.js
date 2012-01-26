@@ -124,6 +124,10 @@ mindplot.layout.Node = new Class({
         this._setProperty('freeDisplacement', Object.clone(newDisplacement));
     },
 
+    resetFreeDisplacement: function() {
+        this._setProperty('freeDisplacement', {x:0, y:0});
+    },
+
     getFreeDisplacement: function() {
         var freeDisplacement = this._getProperty('freeDisplacement');
         return (freeDisplacement || {x:0, y:0});

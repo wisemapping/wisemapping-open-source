@@ -177,6 +177,10 @@ mindplot.layout.BalancedSorter = new Class({
         }
     },
 
+    getDirection: function(treeSet, node) {
+        return node.getOrder() % 2 == 0 ? 1 : -1;
+    },
+
     toString:function() {
         return "Balanced Sorter";
     },

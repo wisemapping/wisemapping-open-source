@@ -195,10 +195,10 @@ mindplot.layout.RootedTreeSet = new Class({
         var rectPosition = {x: rect.attr("x") - canvas.width/2 + rect.attr("width")/2, y:rect.attr("y") - canvas.height/2 + rect.attr("height")/2};
         var rectSize = {width: rect.attr("width"), height:rect.attr("height")};
         rect.click(function() {
-            console.log("[id:" + node.getId() + ", order:" + node.getOrder() + ", position:(" + rectPosition.x + "," + rectPosition.y + "), size:" + rectSize.width + "x" + rectSize.height + ", sorter:" + node.getSorter() +"]");
+            console.log("[id:" + node.getId() + ", order:" + node.getOrder() + ", position:(" + rectPosition.x + "," + rectPosition.y + "), size:" + rectSize.width + "x" + rectSize.height + ", freeDisplacement:(" + node.getFreeDisplacement().x + "," + node.getFreeDisplacement().y +")]");
         });
         text.click(function() {
-            console.log("[id:" + node.getId() + ", order:" + node.getOrder() + ", position:(" + rectPosition.x + "," + rectPosition.y + "), size:" + rectSize.width + "x" + rectSize.height + ", sorter:" + node.getSorter() +"]");
+            console.log("[id:" + node.getId() + ", order:" + node.getOrder() + ", position:(" + rectPosition.x + "," + rectPosition.y + "), size:" + rectSize.width + "x" + rectSize.height + ", freeDisplacement:(" + node.getFreeDisplacement().x + "," + node.getFreeDisplacement().y +")]");
         });
 
         for (var i = 0; i < children.length; i++) {

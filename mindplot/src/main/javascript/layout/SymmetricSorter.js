@@ -137,6 +137,12 @@ mindplot.layout.SymmetricSorter = new Class({
         }
     },
 
+    getDirection: function(treeSet, node) {
+        var parent = treeSet.getParent(node);
+        var rootNode = treeSet.getRootNode(node);
+        return parent.getPosition().x >= rootNode.getPosition().x ? 1 : -1;
+    },
+
     toString:function() {
         return "Symmetric Sorter";
     }

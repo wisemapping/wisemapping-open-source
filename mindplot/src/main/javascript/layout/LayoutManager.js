@@ -109,6 +109,8 @@ mindplot.layout.LayoutManager = new Class({
 
         if (free) {
             $assert($defined(position), "position cannot be null for predict in free positioning");
+
+            //TODO(gb): check this. Should direction be obtained by the sorter?
             var rootNode = this._treeSet.getRootNode(parent);
             var direction = parent.getPosition().x > rootNode.getPosition().x ? 1 : -1;
 

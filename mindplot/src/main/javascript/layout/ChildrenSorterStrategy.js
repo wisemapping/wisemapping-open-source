@@ -44,6 +44,10 @@ mindplot.layout.ChildrenSorterStrategy = new Class({
         throw "Method must be implemented";
     },
 
+    getDirection: function(treeSet, node) {
+        throw "Method must be implemented";
+    },
+
     toString:function() {
         throw "Method must be implemented: print name";
     }

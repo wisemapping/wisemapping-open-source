@@ -55,7 +55,7 @@ mindplot.layout.OriginalLayout = new Class({
 
         // Make it fixed
         node.setFree(false);
-        node.setFreeDisplacement({x:0, y:0});
+        node.resetFreeDisplacement();
 
         // Remove from children list.
         var sorter = parent.getSorter();
@@ -106,6 +106,14 @@ mindplot.layout.OriginalLayout = new Class({
 
             children.forEach(function(child) {
                 var offset = offsetById[child.getId()];
+
+                var childFreeDisplacement = child.getFreeDisplacement();
+                var direction = node.getSorter().getDirection(this._treeSet, child);
+
+                if ((direction > 0 && childFreeDisplacement.x < 0) || (direction < 0 && childFreeDisplacement.x > 0)) {
+                    child.resetFreeDisplacement();
+                    child.setFreeDisplacement({x: -childFreeDisplacement.x, y:childFreeDisplacement.y});
+                }
 
                 offset.x += child.getFreeDisplacement().x;
                 offset.y += child.getFreeDisplacement().y;
