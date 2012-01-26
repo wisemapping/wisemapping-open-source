@@ -24,7 +24,8 @@ mindplot.layout.FreeTestSuite = new Class({
         this.testFreePosition();
         this.testFreePredict();
         this.testReconnectFreeNode();
-        this.siblingOverlappingBug();
+        this.testSiblingOverlapping();
+        this.testRootNodeChildrenPositioning();
     },
 
     testFreePosition: function() {
@@ -75,16 +76,19 @@ mindplot.layout.FreeTestSuite = new Class({
         this._assertFreePosition(manager, 12, {x:300, y:30})
 
         console.log("\tmove node 13 to (340,180):");
-        manager.moveNode(13, {x:340, y:180});
+        var node13Pos = {x:340, y:180};
+        manager.moveNode(13, node13Pos);
         manager.layout(true);
         manager.plot("testFreePosition3", {width:1400, height:600});
-        this._assertFreePosition(manager, 13, {x:340, y:180});
+        this._assertFreePosition(manager, 13, node13Pos);
 
         console.log("\tmove node 11 to (250,-50):");
         manager.moveNode(11, {x:250, y:-50});
         manager.layout(true);
         manager.plot("testFreePosition4", {width:1400, height:600});
         this._assertFreePosition(manager, 11, {x:250, y:-50});
+        $assert(manager.find(13).getPosition().x == node13Pos.x && manager.find(13).getPosition().y == node13Pos.y,
+            "Node 13 shouldn't have moved");
 
         console.log("\tmove node 7 to (350,-190):");
         manager.moveNode(7, {x:350, y:-190});
@@ -265,8 +269,8 @@ mindplot.layout.FreeTestSuite = new Class({
         console.log("OK!\n\n");
     },
 
-    siblingOverlappingBug: function() {
-        console.log("siblingOverlappingBug:");
+    testSiblingOverlapping: function() {
+        console.log("testSiblingOverlapping:");
         var position = {x:0,y:0};
         var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
 
@@ -281,19 +285,64 @@ mindplot.layout.FreeTestSuite = new Class({
         manager.addNode(8, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(1,8,6);
         manager.addNode(9, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(0,9,4);
         manager.layout();
-        manager.plot("siblingOverlappingBug1", {width:800, height:600});
+        manager.plot("testSiblingOverlapping1", {width:800, height:600});
 
         console.log("\tmove node 2");
         manager.moveNode(2, {x:250, y: -30});
         manager.layout();
-        manager.plot("siblingOverlappingBug2", {width:800, height:600});
+        manager.plot("testSiblingOverlapping2", {width:800, height:600});
         this._assertFreePosition(manager, 2, {x:250, y: -30});
 
         console.log("\tmove node 7");
         manager.moveNode(7, {x:250, y: 100});
         manager.layout();
-        manager.plot("siblingOverlappingBug3", {width:800, height:600});
+        manager.plot("testSiblingOverlapping3", {width:800, height:600});
         this._assertFreePosition(manager, 7, {x:250, y: 100});
+
+        console.log("OK!\n\n");
+    },
+
+    testRootNodeChildrenPositioning: function() {
+        console.log("testRootNodeChildrenPositioning:");
+        var position = {x:0,y:0};
+        var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
+
+        // Prepare a sample graph ...
+        manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(0,1,0);
+        manager.addNode(2, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(0,2,1);
+        manager.addNode(3, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(0,3,2);
+        manager.addNode(4, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(0,4,3);
+        manager.addNode(5, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(0,5,4);
+        manager.addNode(6, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(0,6,5);
+        manager.layout();
+        manager.plot("testRootNodeChildrenPositioning1", {width:800, height:600});
+
+        console.log("\tmove node 1");
+        manager.moveNode(1, {x:150, y:0});
+        manager.layout();
+        manager.plot("testRootNodeChildrenPositioning2", {width:800, height:600});
+        this._assertFreePosition(manager, 1, {x:150, y:0});
+
+        console.log("\tmove node 4");
+        manager.moveNode(4, {x:-140, y:30});
+        manager.layout();
+        manager.plot("testRootNodeChildrenPositioning3", {width:800, height:600});
+        this._assertFreePosition(manager, 4, {x:-140, y:30});
+
+        console.log("\tmove node 2");
+        manager.moveNode(2, {x:-150, y:-50});
+        manager.layout();
+        manager.plot("testRootNodeChildrenPositioning4", {width:800, height:600});
+        this._assertFreePosition(manager, 2, {x:-150, y:-50});
+
+        //TODO(gb): fix this. It's not working
+//        console.log("\tmove node 6");
+//        manager.moveNode(6, {x:-150, y:-50});
+//        manager.layout();
+//        manager.plot("testRootNodeChildrenPositioning5", {width:800, height:600});
+//        this._assertFreePosition(manager, 6, {x:-150, y:-50});
+
+        console.log("OK!\n\n");
     },
 
     _assertFreePosition: function(manager, id, position) {

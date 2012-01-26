@@ -162,7 +162,10 @@ mindplot.layout.OriginalLayout = new Class({
             }
         }, this);
 
-        var branchesToShift = this._treeSet.getBranchesInVerticalDirection(node, node.getFreeDisplacement().y);
+        var branchesToShift = this._treeSet.getBranchesInVerticalDirection(node, node.getFreeDisplacement().y).filter(function(branch) {
+            return !shiftedBranches.contains(branch);
+        });
+
         branchesToShift.forEach(function(branch) {
             var overlappingOccurs = shiftedBranches.some(function(shiftedBranch) {
                 return this._branchesOverlap(shiftedBranch, branch, heightById);
@@ -177,6 +180,11 @@ mindplot.layout.OriginalLayout = new Class({
     },
 
     _branchesOverlap: function(branchA, branchB, heightById) {
+        // a branch doesn't really overlap with itself
+        if (branchA == branchB) {
+            return false;
+        }
+
         var topA = branchA.getPosition().y - heightById[branchA.getId()]/2;
         var bottomA = branchA.getPosition().y + heightById[branchA.getId()]/2;
         var topB = branchB.getPosition().y - heightById[branchB.getId()]/2;

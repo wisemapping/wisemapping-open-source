@@ -233,9 +233,12 @@ mindplot.layout.RootedTreeSet = new Class({
     },
 
     getSiblingsInVerticalDirection: function(node, yOffset) {
-        // siblings with lower or higher order, depending on the direction of the offset
+        // siblings with lower or higher order, depending on the direction of the offset and on the same side as their parent
+        var parent = this.getParent(node);
         var siblings = this.getSiblings(node).filter(function(sibling) {
-            return yOffset < 0 ? sibling.getOrder() < node.getOrder() : sibling.getOrder() > node.getOrder();
+            var sameSide = node.getPosition().x > parent.getPosition().x ? sibling.getPosition().x > parent.getPosition().x : sibling.getPosition().x < parent.getPosition().x;
+            var orderOK = yOffset < 0 ? sibling.getOrder() < node.getOrder() : sibling.getOrder() > node.getOrder();
+            return orderOK && sameSide;
         });
 
         if (yOffset < 0 ) {
