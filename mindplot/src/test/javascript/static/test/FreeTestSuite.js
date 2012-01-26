@@ -24,6 +24,7 @@ mindplot.layout.FreeTestSuite = new Class({
         this.testFreePosition();
         this.testFreePredict();
         this.testReconnectFreeNode();
+        this.siblingOverlappingBug();
     },
 
     testFreePosition: function() {
@@ -262,6 +263,37 @@ mindplot.layout.FreeTestSuite = new Class({
         this._assertFreePosition(manager, 8, {x:370, y:30});
 
         console.log("OK!\n\n");
+    },
+
+    siblingOverlappingBug: function() {
+        console.log("siblingOverlappingBug:");
+        var position = {x:0,y:0};
+        var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
+
+        // Prepare a sample graph ...
+        manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(0,1,0);
+        manager.addNode(2, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(1,2,0);
+        manager.addNode(3, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(1,3,1);
+        manager.addNode(4, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(1,4,2);
+        manager.addNode(5, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(1,5,3);
+        manager.addNode(6, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(1,6,4);
+        manager.addNode(7, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(1,7,5);
+        manager.addNode(8, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(1,8,6);
+        manager.addNode(9, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(0,9,4);
+        manager.layout();
+        manager.plot("siblingOverlappingBug1", {width:800, height:600});
+
+        console.log("\tmove node 2");
+        manager.moveNode(2, {x:250, y: -30});
+        manager.layout();
+        manager.plot("siblingOverlappingBug2", {width:800, height:600});
+        this._assertFreePosition(manager, 2, {x:250, y: -30});
+
+        console.log("\tmove node 7");
+        manager.moveNode(7, {x:250, y: 100});
+        manager.layout();
+        manager.plot("siblingOverlappingBug3", {width:800, height:600});
+        this._assertFreePosition(manager, 7, {x:250, y: 100});
     },
 
     _assertFreePosition: function(manager, id, position) {

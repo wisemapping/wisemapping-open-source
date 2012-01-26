@@ -147,12 +147,30 @@ mindplot.layout.OriginalLayout = new Class({
     },
 
     _shiftBranches: function(node, heightById) {
-        var branchesToShift = this._treeSet.getBranchesInVerticalDirection(node, node.getFreeDisplacement().y);
+        var shiftedBranches = [node];
 
+        var siblingsToShift = this._treeSet.getSiblingsInVerticalDirection(node, node.getFreeDisplacement().y);
         var last = node;
+        siblingsToShift.forEach(function(sibling) {
+            var overlappingOccurs = shiftedBranches.some(function(shiftedBranch) {
+                return this._branchesOverlap(shiftedBranch, sibling, heightById);
+            }, this);
+
+            if (!sibling.isFree() || overlappingOccurs) {
+                this._treeSet.shiftBranchPosition(sibling, 0, node.getFreeDisplacement().y);
+                shiftedBranches.push(sibling);
+            }
+        }, this);
+
+        var branchesToShift = this._treeSet.getBranchesInVerticalDirection(node, node.getFreeDisplacement().y);
         branchesToShift.forEach(function(branch) {
-            if (this._branchesOverlap(branch, last, heightById)) {
+            var overlappingOccurs = shiftedBranches.some(function(shiftedBranch) {
+                return this._branchesOverlap(shiftedBranch, branch, heightById);
+            }, this);
+
+            if (overlappingOccurs) {
                 this._treeSet.shiftBranchPosition(branch, 0, node.getFreeDisplacement().y);
+                shiftedBranches.push(branch);
             }
             last = branch;
         },this);

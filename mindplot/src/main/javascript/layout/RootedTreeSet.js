@@ -232,12 +232,20 @@ mindplot.layout.RootedTreeSet = new Class({
         }.bind(this));
     },
 
-    getBranchesInVerticalDirection: function(node, yOffset) {
+    getSiblingsInVerticalDirection: function(node, yOffset) {
         // siblings with lower or higher order, depending on the direction of the offset
         var siblings = this.getSiblings(node).filter(function(sibling) {
             return yOffset < 0 ? sibling.getOrder() < node.getOrder() : sibling.getOrder() > node.getOrder();
         });
 
+        if (yOffset < 0 ) {
+            siblings.reverse();
+        }
+
+        return siblings;
+    },
+
+    getBranchesInVerticalDirection: function(node, yOffset) {
         // direct descendants of the root that do not contain the node and are on the same side
         // and on the direction of the offset
         var rootNode = this.getRootNode(node);
@@ -252,7 +260,7 @@ mindplot.layout.RootedTreeSet = new Class({
             return sameSide && sameDirection;
         }, this);
 
-        return siblings.combine(rootDescendants);
+        return rootDescendants;
     }
 
 });
