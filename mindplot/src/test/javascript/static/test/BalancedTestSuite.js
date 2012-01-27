@@ -23,6 +23,7 @@ mindplot.layout.BalancedTestSuite = new Class({
 
         this.testBalanced();
         this.testBalancedPredict();
+        this.testBalancedSingleNodePredict();
     },
 
     testBalanced: function() {
@@ -151,7 +152,7 @@ mindplot.layout.BalancedTestSuite = new Class({
     },
 
     testBalancedPredict: function() {
-        console.log("testBalancedPredict");
+        console.log("testBalancedPredict:");
         var position = {x:0, y:0};
         var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
 
@@ -273,5 +274,18 @@ mindplot.layout.BalancedTestSuite = new Class({
         $assert(prediction5a.order == prediction5b.order, "Both predictions should be the same");
 
         console.log("OK!\n\n");
+    },
+
+    testBalancedSingleNodePredict: function() {
+        console.log("testBalancedSingleNodePredict:");
+        var position = {x:0, y:0};
+        var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
+
+        manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(0,1,0);
+        manager.layout();
+        var graph = manager.plot("testBalancedSingleNodePredict1", {width:800, height:400});
+
+        var prediction1 = manager.predict(0, {x:50, y:50});
+        this._plotPrediction(graph, prediction1);
     }
 });
