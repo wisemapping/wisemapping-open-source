@@ -107,7 +107,6 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="LocalStorageManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="EditorProperties.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="IconGroup.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="BubbleTip.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="Icon.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="LinkIcon.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="NoteIcon.js"/>

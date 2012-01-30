@@ -127,9 +127,9 @@ mindplot.NodeGraph = new Class({
         workspace.removeChild(this);
     },
 
-    createDragNode : function() {
+    createDragNode : function(layoutManager) {
         var dragShape = this._buildDragShape();
-        return  new mindplot.DragTopic(dragShape, this);
+        return  new mindplot.DragTopic(dragShape, this, layoutManager);
     },
 
     _buildDragShape : function() {

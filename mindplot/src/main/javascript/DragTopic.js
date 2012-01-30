@@ -17,13 +17,15 @@
  */
 
 mindplot.DragTopic = new Class({
-    initialize:function(dragShape, draggedNode) {
+    initialize:function(dragShape, draggedNode, layoutManger) {
         $assert(dragShape, 'Rect can not be null.');
         $assert(draggedNode, 'draggedNode can not be null.');
+        $assert(layoutManger, 'layoutManger can not be null.');
 
         this._elem2d = dragShape;
         this._order = null;
         this._draggedNode = draggedNode;
+        this._layoutManager = layoutManger;
         this._position = new core.Point();
         this._isInWorkspace = false;
         this._isFreeLayoutEnabled = false;
@@ -37,7 +39,7 @@ mindplot.DragTopic = new Class({
         // Update drag shadow position ....
         var position = {x:x,y:y};
         if (this.isFreeLayoutOn() && this.isConnected()) {
-            var _layoutManager = designer._eventBussDispatcher._layoutManager;
+            var _layoutManager = this._layoutManager;
             var par = this.getConnectedToTopic();
             position = _layoutManager.predict(par.getId(), position, true).position;
         }
@@ -54,7 +56,7 @@ mindplot.DragTopic = new Class({
         // In case is not free, pivot must be draw ...
         if (this.isConnected() && !this.isFreeLayoutOn()) {
             var parent = this.getConnectedToTopic();
-            var predict = designer._eventBussDispatcher._layoutManager.predict(parent.getId(), this.getPosition());
+            var predict = this._layoutManager.predict(parent.getId(), this.getPosition());
             if (this._order != predict.order) {
                 var dragPivot = this._getDragPivot();
                 var pivotPosition = predict.position;

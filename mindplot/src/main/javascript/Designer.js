@@ -41,22 +41,17 @@ mindplot.Designer = new Class({
             // Init Screen manager..
             var screenManager = new mindplot.ScreenManager(divElement);
             this._workspace = new mindplot.Workspace(screenManager, this._model.getZoom());
-            this._readOnly = profile.readOnly ? true : false;
+
+            // Init layout manager ...
+            this._eventBussDispatcher = new mindplot.layout.EventBusDispatcher(this.getModel());
 
             // Register events
             if (!profile.readOnly) {
                 this._registerEvents();
-
-                // Init drag related classes ...
-                this._dragConnector = new mindplot.DragConnector(this.getModel(), this._workspace);
-                this._dragger = this._buildDragManager(this._workspace);
-                mindplot.DragTopic.init(this._workspace);
+                this._dragManager = this._buildDragManager(this._workspace);
             }
 
             this._relPivot = new mindplot.RelationshipPivot(this._workspace, this);
-
-            // Init layout manager ...
-            this._eventBussDispatcher = new mindplot.layout.EventBusDispatcher(this.getModel());
         },
 
         _registerEvents : function() {
@@ -115,20 +110,20 @@ mindplot.Designer = new Class({
         },
 
         _buildDragManager: function(workspace) {
-            // Init dragger manager.
-            var dragger = new mindplot.DragManager(workspace);
-            var topics = this.getModel().getTopics();
 
-            var dragConnector = this._dragConnector;
+            var designerModel = this.getModel();
+            var dragConnector = new mindplot.DragConnector(designerModel, this._workspace);
+            var dragManager = new mindplot.DragManager(workspace, this._eventBussDispatcher);
+            var topics = designerModel.getTopics();
 
-            dragger.addEvent('startdragging', function(event, node) {
+            dragManager.addEvent('startdragging', function() {
                 // Enable all mouse events.
                 for (var i = 0; i < topics.length; i++) {
                     topics[i].setMouseEventsEnabled(false);
                 }
             });
 
-            dragger.addEvent('dragging', function(event, dragTopic) {
+            dragManager.addEvent('dragging', function(event, dragTopic) {
                 dragTopic.updateFreeLayout(event);
                 if (!dragTopic.isFreeLayoutOn(event)) {
                     // The node is being drag. Is the connection still valid ?
@@ -140,14 +135,14 @@ mindplot.Designer = new Class({
                 }
             });
 
-            dragger.addEvent('enddragging', function(event, dragTopic) {
+            dragManager.addEvent('enddragging', function(event, dragTopic) {
                 for (var i = 0; i < topics.length; i++) {
                     topics[i].setMouseEventsEnabled(true);
                 }
                 dragTopic.applyChanges(workspace);
             });
 
-            return dragger;
+            return dragManager;
         },
 
         setViewPort : function(size) {
@@ -176,7 +171,7 @@ mindplot.Designer = new Class({
                 if (topic.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
 
                     // Central Topic doesn't support to be dragged
-                    var dragger = this._dragger;
+                    var dragger = this._dragManager;
                     dragger.add(topic);
                 }
             }

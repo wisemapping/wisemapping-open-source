@@ -17,10 +17,13 @@
  */
 
 mindplot.DragManager = new Class({
-    initialize:function(workspace) {
+    initialize:function(workspace, eventDispatcher) {
         this._workspace = workspace;
+        this._designerModel = workspace;
         this._listeners = {};
         this._isDragInProcess = false;
+        this._eventDispatcher = eventDispatcher;
+        mindplot.DragTopic.init(this._workspace);
     },
 
     add : function(node) {
@@ -35,7 +38,8 @@ mindplot.DragManager = new Class({
                 workspace.enableWorkspaceEvents(false);
 
                 // Set initial position.
-                var dragNode = node.createDragNode();
+                var layoutManager = this._eventDispatcher.getLayoutManager();
+                var dragNode = node.createDragNode(layoutManager);
 
                 // Register mouse move listener ...
                 var mouseMoveListener = dragManager._buildMouseMoveListener(workspace, dragNode, dragManager);

@@ -23,7 +23,7 @@
             </topic>
         </topic>
         <topic position="-336,-100" order="3" text="Web 2.0 Tool" id="22" fontStyle=";;#0c1d6b;;;" bgColor="#add1f7">
-            <topic position="-433,-145" order="0" text="Colaborated" id="23"/>
+            <topic position="-433,-145" order="0" text="Collaborate" id="23"/>
             <topic position="-453,-121" order="1" text="No plugin required" id="24">
                 <icon id="conn_disconnect"/>
             </topic>

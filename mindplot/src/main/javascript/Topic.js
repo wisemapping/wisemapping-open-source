@@ -1157,8 +1157,8 @@ mindplot.Topic = new Class({
         return this._isInWorkspace;
     },
 
-    createDragNode : function() {
-        var result = this.parent();
+    createDragNode : function(layoutManager) {
+        var result = this.parent(layoutManager);
 
         // Is the node already connected ?
         var targetTopic = this.getOutgoingConnectedTopic();
