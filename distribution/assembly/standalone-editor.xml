@@ -1,0 +1,37 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+    <id>editor</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <files>
+           <file>
+            <source>core-js/target/classes/core.js</source>
+            <outputDirectory>/js</outputDirectory>
+        </file>
+        <file>
+            <source>mindplot/target/classes/mindplot-min.js</source>
+            <outputDirectory>/js</outputDirectory>
+        </file>
+        <file>
+            <source>mindplot/target/classes/mindplot.js</source>
+            <outputDirectory>/js</outputDirectory>
+        </file>
+    </files>
+    <fileSets>
+        <fileSet>
+            <outputDirectory>/</outputDirectory>
+            <directory>wise-editor/src/main/webapp</directory>
+            <includes>
+                <include>css/**/*</include>
+                <include>images/**/*</include>
+                <include>icons/**/*</include>
+                <include>js/editor.js</include>
+                <include>js/less*.js</include>
+                <include>js/mootools*.js</include>
+                <include>html/*</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+</assembly>

@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>wise-editor</artifactId>
+    <packaging>jar</packaging>
+    <name>WiseMapping Standalone Editor Distribution</name>
+    <url>http://www.wisemapping.org</url>
+    <parent>
+        <groupId>org.wisemapping</groupId>
+        <artifactId>wisemapping</artifactId>
+        <relativePath>../pom.xml</relativePath>
+        <version>3.0-SNAPSHOT</version>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.wisemapping</groupId>
+            <artifactId>core-js</artifactId>
+            <version>3.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.wisemapping</groupId>
+            <artifactId>mindplot</artifactId>
+            <version>3.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+</project>

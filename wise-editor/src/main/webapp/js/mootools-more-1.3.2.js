@@ -1,0 +1,1 @@
+../../../../../mindplot/src/main/javascript/libraries/mootools/mootools-more-1.3.2.1-yui.js

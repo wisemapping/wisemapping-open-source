@@ -6,24 +6,23 @@
     <groupId>org.wisemapping</groupId>
     <artifactId>wisemapping</artifactId>
     <name>WiseMapping Project</name>
-    <version>1.0-SNAPSHOT</version>
+    <version>3.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <licenses>
         <license>
-            <name>Apache 2</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
+            <name>WiseMapping Public License Version 1.0</name>
+            <url>http://www.wisemapping.org/wisemapping-public-license-version-1-0-wpl</url>
             <comments>A business-friendly OSS license</comments>
         </license>
     </licenses>
 
     <pluginRepositories>
-       <pluginRepository>
+        <pluginRepository>
             <id>maven2-repository.dev.java.net</id>
             <name>Java.net Maven 2 Repository</name>
             <url>http://download.java.net/maven/2/</url>
-  	    <layout>default</layout>
+            <layout>default</layout>
         </pluginRepository>
     </pluginRepositories>
 
@@ -39,9 +38,9 @@
                 <inherited>true</inherited>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>2.5</version>
-                <!--<configuration>-->
-                    <!--<encoding>UTF-8</encoding>-->
-                <!--</configuration>-->
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -62,17 +61,27 @@
                     <configLocation>config/maven_checks.xml</configLocation>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.2.2</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>distribution/assembly/standalone-editor.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
-    <!-- Module Dependecies -->
+    <!-- Module Dependencies -->
     <modules>
         <module>web2d</module>
         <module>core-js</module>
         <module>mindplot</module>
-       <module>wise-webapp</module>
-
-        <module>wise-doc</module>
+        <module>wise-webapp</module>
+        <module>wise-editor</module>
     </modules>
 </project>
 
