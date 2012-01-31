@@ -32,7 +32,7 @@ public class ExportTest {
 
         reader = new BufferedReader(new FileReader(svgFile));
         String text;
-        while((text=reader.readLine()) != null){
+        while ((text = reader.readLine()) != null) {
             buffer.append(text).append(System.getProperty("line.separator"));
         }
 
@@ -42,11 +42,11 @@ public class ExportTest {
         final ExportProperties properties = ExportProperties.create(format);
         final ExportProperties.ImageProperties imageProperties = (ExportProperties.ImageProperties) properties;
         imageProperties.setSize(ExportProperties.ImageProperties.Size.LARGE);
-        String baseUrl = "file://"+svgFile.getParentFile().getAbsolutePath()+"/../../../main/webapp/icons";
+        String baseUrl = "file://" + svgFile.getParentFile().getAbsolutePath() + "/../../../../../wise-editor/src/main/webapp/icons";
         properties.setBaseImagePath(baseUrl);
 
         // Write content ...
-        if(pngFile.exists()){
+        if (pngFile.exists()) {
             // Export mile content ...
             final ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ExporterFactory.export(imageProperties, null, bos, svgXml);
@@ -78,8 +78,7 @@ public class ExportTest {
 
             Assert.assertEquals(expContent.toString().trim(), expContent.toString().trim());
 
-        }
-        else{
+        } else {
             OutputStream outputStream = new FileOutputStream(pngFile, false);
             ExporterFactory.export(imageProperties, null, outputStream, svgXml);
             outputStream.close();
