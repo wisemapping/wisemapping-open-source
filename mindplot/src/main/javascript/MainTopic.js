@@ -244,5 +244,3 @@ mindplot.MainTopic = new Class({
     }
 
 });
-
-mindplot.MainTopic.DEFAULT_MAIN_TOPIC_HEIGHT = 18;

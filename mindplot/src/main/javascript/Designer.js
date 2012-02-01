@@ -18,14 +18,16 @@
 
 mindplot.Designer = new Class({
         Extends: Events,
-        initialize: function(profile, divElement) {
-            $assert(profile, "profile must be defined");
-            $assert(profile.zoom, "zoom must be defined");
+        initialize: function(options, divElement) {
+            $assert(options, "options must be defined");
+            $assert(options.zoom, "zoom must be defined");
             $assert(divElement, "divElement must be defined");
+
+            this._options = options;
 
             // Dispatcher manager ...
             var commandContext = new mindplot.CommandContext(this);
-            if (profile.collab == 'standalone') {
+            if (options.collab == 'standalone') {
                 this._actionDispatcher = new mindplot.StandaloneActionDispatcher(commandContext);
             } else {
                 this._actionDispatcher = new mindplot.BrixActionDispatcher(commandContext);
@@ -36,7 +38,7 @@ mindplot.Designer = new Class({
             }.bind(this));
 
             mindplot.ActionDispatcher.setInstance(this._actionDispatcher);
-            this._model = new mindplot.DesignerModel(profile);
+            this._model = new mindplot.DesignerModel(options);
 
             // Init Screen manager..
             var screenManager = new mindplot.ScreenManager(divElement);
@@ -46,7 +48,7 @@ mindplot.Designer = new Class({
             this._eventBussDispatcher = new mindplot.layout.EventBusDispatcher(this.getModel());
 
             // Register events
-            if (!profile.readOnly) {
+            if (!this.isReadOnly()) {
                 this._registerEvents();
                 this._dragManager = this._buildDragManager(this._workspace);
             }
@@ -151,17 +153,17 @@ mindplot.Designer = new Class({
             this._workspace.setZoom(model.getZoom(), true);
         },
 
-        _buildNodeGraph : function(model) {
+        _buildNodeGraph : function(model, readOnly) {
             var workspace = this._workspace;
 
             // Create node graph ...
-            var topic = mindplot.NodeGraph.create(model);
+            var topic = mindplot.NodeGraph.create(model, {readOnly:readOnly});
 
             // Append it to the workspace ...
             this.getModel().addTopic(topic);
 
             // Add Topic events ...
-            if (!this._readOnly) {
+            if (!readOnly) {
                 // If a node had gained focus, clean the rest of the nodes ...
                 topic.addEvent('mousedown', function(event) {
                     this.onObjectFocusEvent(topic, event);
@@ -171,8 +173,7 @@ mindplot.Designer = new Class({
                 if (topic.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
 
                     // Central Topic doesn't support to be dragged
-                    var dragger = this._dragManager;
-                    dragger.add(topic);
+                    this._dragManager.add(topic);
                 }
             }
 
@@ -464,6 +465,10 @@ mindplot.Designer = new Class({
             this._actionDispatcher._actionRunner.redo();
         },
 
+        isReadOnly : function() {
+            return this._options.readOnly;
+        },
+
         _nodeModelToNodeGraph : function(nodeModel, isVisible) {
             $assert(nodeModel, "Node model can not be null");
             var children = nodeModel.getChildren().slice();
@@ -471,7 +476,7 @@ mindplot.Designer = new Class({
                 return a.getOrder() - b.getOrder()
             });
 
-            var nodeGraph = this._buildNodeGraph(nodeModel);
+            var nodeGraph = this._buildNodeGraph(nodeModel, this.isReadOnly());
 
             if (isVisible) {
                 nodeGraph.setVisibility(isVisible);

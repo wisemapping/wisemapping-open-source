@@ -403,10 +403,13 @@ mindplot.widget.Menu = new Class({
 
     _addButton:function (buttonId, topic, rel, fn) {
         // Register Events ...
-        var button = new mindplot.widget.ToolbarItem(buttonId, function(event) {
-            fn(event);
-            this.clear();
-        }.bind(this), {topicAction:topic,relAction:rel});
-        this._toolbarElems.push(button);
+        if ($(buttonId)) {
+
+            var button = new mindplot.widget.ToolbarItem(buttonId, function(event) {
+                fn(event);
+                this.clear();
+            }.bind(this), {topicAction:topic,relAction:rel});
+            this._toolbarElems.push(button);
+        }
     }
 });

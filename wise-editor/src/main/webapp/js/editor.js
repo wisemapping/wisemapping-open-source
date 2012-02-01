@@ -18,7 +18,7 @@
 
 var designer = null;
 
-function buildDesigner() {
+function buildDesigner(viewMode) {
 
     var container = $('mindplot');
     container.setStyles({
@@ -26,20 +26,22 @@ function buildDesigner() {
         width:  parseInt(screen.width)
     });
 
-    var editorProperties = {zoom:0.85,saveOnLoad:true,collab:collab};
+    var editorProperties = {zoom:0.85,saveOnLoad:true,collab:'standalone',readOnly:viewMode};
     designer = new mindplot.Designer(editorProperties, container);
     designer.setViewPort({
         height: parseInt(window.innerHeight - 70), // Footer and Header
         width:  parseInt(window.innerWidth)
     });
 
-    if ($('toolbar')) {
-        var menu = new mindplot.widget.Menu(designer, 'toolbar', mapId);
+    if (!viewMode) {
+        if ($('toolbar')) {
+            var menu = new mindplot.widget.Menu(designer, 'toolbar', mapId);
 
-        //  If a node has focus, focus can be move to another node using the keys.
-        designer._cleanScreen = function() {
-            menu.clear()
-        };
+            //  If a node has focus, focus can be move to another node using the keys.
+            designer._cleanScreen = function() {
+                menu.clear()
+            };
+        }
     }
     return designer;
 }

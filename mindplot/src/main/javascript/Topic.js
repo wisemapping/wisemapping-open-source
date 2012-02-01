@@ -19,8 +19,8 @@
 
 mindplot.Topic = new Class({
     Extends:mindplot.NodeGraph,
-    initialize : function(model) {
-        this.parent(model);
+    initialize : function(model, options) {
+        this.parent(model, options);
         this._textEditor = new mindplot.MultilineTextEditor(this);
 
         this._children = [];
@@ -35,14 +35,11 @@ mindplot.Topic = new Class({
             this.setPosition(pos);
         }
 
-        // @Todo: Hack to remove ...
         // Register events for the topic ...
-        if (!designer._readOnly) {
-
+        if (!options.readOnly) {
             this._registerEvents();
         }
     },
-
 
     _registerEvents : function() {
 

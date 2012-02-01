@@ -89,7 +89,7 @@ div#logo {
     border: 1px solid black;
     border-top-color: white;
     border-left-color: white;
-    margin: 0;
+    margin: 0px;
 
 }
 
@@ -112,42 +112,24 @@ div#mindplot {
     width: 100%;
 }
 
+div#mapContainer {
+    border-bottom: 1px solid black;
+    padding-bottom: 40px;
+    height: 400px;
+    width: 100%;
+}
+
 div#mapDetails {
     float: right;
     padding-top: 10px;
     margin-right: 100px;
-
+    font-family: arial,serif;
+    font-size: 11px;
 }
 
 div#mapDetails .title {
     font-weight: bold;
     margin-left: 10px;
     margin-right: 3px;
-}
 
-.notesTip {
-    background-color: #dfcf3c;
-    padding: 5px 15px;
-    color: #666666;
-    /*font-weight: bold;*/
-    /*width: 100px;*/
-    font-size: 13px;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
 }
-
-.linkTip {
-    background-color: #dfcf3c;
-    padding: 5px 15px;
-    color: #666666;
-    /*font-weight: bold;*/
-    /*width: 100px;*/
-    font-size: 13px;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
-}
-

@@ -80,7 +80,6 @@
                         </overlay>
                     </overlays>
                 </configuration>
-
             </plugin>
         </plugins>
     </build>
