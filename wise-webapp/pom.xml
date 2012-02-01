@@ -39,6 +39,7 @@
             <artifactId>wise-editor</artifactId>
             <version>3.0-SNAPSHOT</version>
             <scope>provided</scope>
+            <type>war</type>
         </dependency>
         <dependency>
             <groupId>org.wisemapping</groupId>
@@ -347,6 +348,19 @@
                 <configuration>
                     <warName>wisemapping</warName>
                     <overlays>
+                        <overlay>
+                            <groupId>org.wisemapping</groupId>
+                            <artifactId>wise-editor</artifactId>
+                            <type>war</type>
+                            <targetPath>css</targetPath>
+                            <includes>
+                                <include>**/*.css</include>
+                                <include>**/*.jpg</include>
+                                <include>**/*.ico</include>
+                                <include>**/*.jpg</include>
+                                <include>**/*.less</include>
+                            </includes>
+                        </overlay>
                         <overlay>
                             <groupId>org.wisemapping</groupId>
                             <artifactId>core-js</artifactId>
