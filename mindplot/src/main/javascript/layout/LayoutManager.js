@@ -102,27 +102,13 @@ mindplot.layout.LayoutManager = new Class({
         return this;
     },
 
-    predict: function(parentId, position, free) {
+    predict: function(parentId, nodeId, position, free) {
         $assert($defined(parentId), "parentId can not be null");
+
         var parent = this._treeSet.find(parentId);
+        var node = nodeId == null ? null : this._treeSet.find(nodeId);
         var sorter = parent.getSorter();
-
-        if (free) {
-            $assert($defined(position), "position cannot be null for predict in free positioning");
-
-            //TODO(gb): check this. Should direction be obtained by the sorter?
-            var rootNode = this._treeSet.getRootNode(parent);
-            var direction = parent.getPosition().x > rootNode.getPosition().x ? 1 : -1;
-
-            var xPos = direction > 0 ?
-                (position.x >= parent.getPosition().x ? position.x : parent.getPosition().x) :
-                (position.x <= parent.getPosition().x ? position.x : parent.getPosition().x);
-
-            return {order:0, position:{x: xPos, y:position.y}};
-        }
-
-
-        var result = sorter.predict(parent, this._treeSet, position);
+        var result = sorter.predict(this._treeSet, parent, node, position, free);
         return {order:result[0],position:result[1]};
     },
 

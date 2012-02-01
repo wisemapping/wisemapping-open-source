@@ -36,7 +36,7 @@ mindplot.layout.ChildrenSorterStrategy = new Class({
         throw "Method must be implemented";
     },
 
-    predict:function(treeSet, parent, position) {
+    predict:function(treeSet, parent, node, position, free) {
         throw "Method must be implemented";
     },
 

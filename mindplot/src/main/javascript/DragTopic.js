@@ -41,7 +41,7 @@ mindplot.DragTopic = new Class({
         if (this.isFreeLayoutOn() && this.isConnected()) {
             var _layoutManager = this._layoutManager;
             var par = this.getConnectedToTopic();
-            position = _layoutManager.predict(par.getId(), position, true).position;
+            position = _layoutManager.predict(par.getId(), null, position, true).position;
         }
         this._position.setValue(position.x, position.y);
 
@@ -56,7 +56,7 @@ mindplot.DragTopic = new Class({
         // In case is not free, pivot must be draw ...
         if (this.isConnected() && !this.isFreeLayoutOn()) {
             var parent = this.getConnectedToTopic();
-            var predict = this._layoutManager.predict(parent.getId(), this.getPosition());
+            var predict = this._layoutManager.predict(parent.getId(), this._draggedNode.getId(), this.getPosition());
             if (this._order != predict.order) {
                 var dragPivot = this._getDragPivot();
                 var pivotPosition = predict.position;
@@ -122,7 +122,7 @@ mindplot.DragTopic = new Class({
         $assert(parent, 'Parent connection node can not be null.');
 
         // Where it should be connected ?
-        var predict = designer._eventBussDispatcher._layoutManager.predict(parent.getId(), this.getPosition());
+        var predict = designer._eventBussDispatcher._layoutManager.predict(parent.getId(), this._draggedNode.getId(), this.getPosition());
 
         // Connect pivot ...
         var dragPivot = this._getDragPivot();

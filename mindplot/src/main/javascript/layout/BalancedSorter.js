@@ -22,7 +22,23 @@ mindplot.layout.BalancedSorter = new Class({
 
     },
 
-    predict : function(parent, graph, position) {
+    predict : function(graph, parent, node, position, free) {
+        // If its a free node...
+        if (free) {
+            $assert($defined(position), "position cannot be null for predict in free positioning");
+
+            //TODO(gb): check this. Should direction be obtained by the sorter?
+            var rootNode = graph.getRootNode(parent);
+            var direction = parent.getPosition().x > rootNode.getPosition().x ? 1 : -1;
+
+            var xPos = direction > 0 ?
+                (position.x >= parent.getPosition().x ? position.x : parent.getPosition().x) :
+                (position.x <= parent.getPosition().x ? position.x : parent.getPosition().x);
+
+            return {order:0, position:{x: xPos, y:position.y}};
+        }
+
+        // Regular node
         var rootNode = graph.getRootNode(parent);
 
         if (!position) {

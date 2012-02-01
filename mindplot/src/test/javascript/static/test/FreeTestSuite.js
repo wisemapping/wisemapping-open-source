@@ -160,21 +160,21 @@ mindplot.layout.FreeTestSuite = new Class({
         var graph = manager.plot("testFreePredict1", {width:1000, height:400});
 
         var pos1 = {x: 370, y:80};
-        var predict1 = manager.predict(11, pos1, true);
+        var predict1 = manager.predict(11, null, pos1, true);
         $assert(predict1.position.x == pos1.x && predict1.position.y == pos1.y, "free predict should return the same position");
 
         var pos2 = {x: -200, y:80};
-        var predict2 = manager.predict(2, pos2, true);
+        var predict2 = manager.predict(2, null, pos2, true);
         $assert(predict2.position.x == pos2.x && predict2.position.y == pos2.y, "free predict should return the same position");
 
         var pos3 = {x: 200, y:30};
         var node5 = manager.find(5);
-        var predict3 = manager.predict(5, pos3, true);
+        var predict3 = manager.predict(5, null, pos3, true);
         $assert(predict3.position.x == node5.getPosition().x && predict3.position.y == pos3.y, "free predict should return the x-coordinate of the node");
 
         var pos4 = {x: -100, y:45};
         var node10 = manager.find(10);
-        var predict4 = manager.predict(10, pos4, true);
+        var predict4 = manager.predict(10, null, pos4, true);
         $assert(predict4.position.x == node10.getPosition().x && predict4.position.y == pos4.y, "free predict should return the x-coordinate of the node");
 
         this._plotPrediction(graph, predict1);

@@ -184,14 +184,14 @@ mindplot.layout.BalancedTestSuite = new Class({
         var graph1 = manager.plot("testBalancedPredict1", {width:1000, height:400});
 
         console.log("\tAdded as child of node 0 and dropped at (165, -70):");
-        var prediction1a = manager.predict(0, {x:165, y:-70});
+        var prediction1a = manager.predict(0, null, {x:165, y:-70});
         this._plotPrediction(graph1, prediction1a);
         $assert(prediction1a.position.y < manager.find(1).getPosition().y &&
             prediction1a.position.x == manager.find(1).getPosition().x, "Prediction is incorrectly positioned");
         $assert(prediction1a.order == 0, "Prediction order should be 0");
 
         console.log("\tAdded as child of node 0 and dropped at (165, -10):");
-        var prediction1b = manager.predict(0, {x:165, y:-10});
+        var prediction1b = manager.predict(0, null, {x:165, y:-10});
         this._plotPrediction(graph1, prediction1b);
         $assert(prediction1b.position.y > manager.find(1).getPosition().y &&
             prediction1b.position.y < manager.find(3).getPosition().y &&
@@ -199,7 +199,7 @@ mindplot.layout.BalancedTestSuite = new Class({
         $assert(prediction1b.order == 2, "Prediction order should be 2");
 
         console.log("\tAdded as child of node 0 and dropped at (145, 15):");
-        var prediction1c = manager.predict(0, {x:145, y:15});
+        var prediction1c = manager.predict(0, null, {x:145, y:15});
         this._plotPrediction(graph1, prediction1c);
         $assert(prediction1c.position.y > manager.find(3).getPosition().y &&
             prediction1c.position.y < manager.find(5).getPosition().y &&
@@ -207,7 +207,7 @@ mindplot.layout.BalancedTestSuite = new Class({
         $assert(prediction1c.order == 4, "Prediction order should be 4");
 
         console.log("\tAdded as child of node 0 and dropped at (145, 70):");
-        var prediction1d = manager.predict(0, {x:145, y:70});
+        var prediction1d = manager.predict(0, null, {x:145, y:70});
         this._plotPrediction(graph1, prediction1d);
         $assert(prediction1d.position.y > manager.find(5).getPosition().y &&
             prediction1d.position.x == manager.find(5).getPosition().x, "Prediction is incorrectly positioned");
@@ -217,14 +217,14 @@ mindplot.layout.BalancedTestSuite = new Class({
         var graph2 = manager.plot("testBalancedPredict2", {width:1000, height:400});
 
         console.log("\tAdded as child of node 0 and dropped at (-145, -50):");
-        var prediction2a = manager.predict(0, {x:-145, y:-50});
+        var prediction2a = manager.predict(0, null, {x:-145, y:-50});
         this._plotPrediction(graph2, prediction2a);
         $assert(prediction2a.position.y < manager.find(2).getPosition().y &&
             prediction2a.position.x == manager.find(2).getPosition().x, "Prediction is incorrectly positioned");
         $assert(prediction2a.order == 1, "Prediction order should be 1");
 
         console.log("\tAdded as child of node 0 and dropped at (-145, -10):");
-        var prediction2b = manager.predict(0, {x:-145, y:-10});
+        var prediction2b = manager.predict(0, null, {x:-145, y:-10});
         this._plotPrediction(graph2, prediction2b);
         $assert(prediction2b.position.y > manager.find(2).getPosition().y &&
             prediction2b.position.y < manager.find(4).getPosition().y &&
@@ -232,7 +232,7 @@ mindplot.layout.BalancedTestSuite = new Class({
         $assert(prediction2b.order == 3, "Prediction order should be 3");
 
         console.log("\tAdded as child of node 0 and dropped at (-145, 40):");
-        var prediction2c = manager.predict(0, {x:-145, y:400});
+        var prediction2c = manager.predict(0, null, {x:-145, y:400});
         this._plotPrediction(graph2, prediction2c);
         $assert(prediction2c.position.y > manager.find(4).getPosition().y &&
             prediction2c.position.x == manager.find(4).getPosition().x, "Prediction is incorrectly positioned");
@@ -241,7 +241,7 @@ mindplot.layout.BalancedTestSuite = new Class({
         // Graph 3
         console.log("\tPredict nodes added with no position:");
         var graph3 = manager.plot("testBalancedPredict3", {width:1000, height:400});
-        var prediction3 = manager.predict(0, null);
+        var prediction3 = manager.predict(0, null, null);
         this._plotPrediction(graph3, prediction3);
         $assert(prediction3.position.y > manager.find(4).getPosition().y &&
             prediction3.position.x == manager.find(4).getPosition().x, "Prediction is incorrectly positioned");
@@ -252,7 +252,7 @@ mindplot.layout.BalancedTestSuite = new Class({
         manager.connectNode(0,6,prediction3.order);
         manager.layout();
         var graph4 = manager.plot("testBalancedPredict4", {width:1000, height:400});
-        var prediction4 = manager.predict(0, null);
+        var prediction4 = manager.predict(0, null, null);
         this._plotPrediction(graph4, prediction4);
         $assert(prediction4.position.y > manager.find(5).getPosition().y &&
             prediction4.position.x == manager.find(5).getPosition().x, "Prediction is incorrectly positioned");
@@ -262,8 +262,8 @@ mindplot.layout.BalancedTestSuite = new Class({
         manager.removeNode(1).removeNode(2).removeNode(3).removeNode(4).removeNode(5);
         manager.layout();
         var graph5 = manager.plot("testBalancedPredict5", {width:1000, height:400});
-        var prediction5a = manager.predict(0, null);
-        var prediction5b = manager.predict(0, {x: 40, y: 100});
+        var prediction5a = manager.predict(0, null, null);
+        var prediction5b = manager.predict(0, null, {x:40, y:100});
         this._plotPrediction(graph5, prediction5a);
         this._plotPrediction(graph5, prediction5b);
         $assert(prediction5a.position.x > manager.find(0).getPosition().x &&
@@ -285,7 +285,25 @@ mindplot.layout.BalancedTestSuite = new Class({
         manager.layout();
         var graph = manager.plot("testBalancedSingleNodePredict1", {width:800, height:400});
 
-        var prediction1 = manager.predict(0, {x:50, y:50});
+        var prediction1 = manager.predict(0, null, {x:50, y:50});
         this._plotPrediction(graph, prediction1);
+        var prediction2 = manager.predict(0, null, {x:50, y:-50});
+        this._plotPrediction(graph, prediction2);
+        var prediction3 = manager.predict(0, null, {x:-50, y:50});
+        this._plotPrediction(graph, prediction3);
+        var prediction4 = manager.predict(0, null, {x:-50, y:-50});
+        this._plotPrediction(graph, prediction4);
+
+        // Only one postion should be predicted for this scenario
+        //TODO(gb): Fix this. It's not working
+//        $assert(prediction1.position.x == prediction2.position.x &&
+//            prediction2.position.x == prediction3.position.x &&
+//            prediction3.position.x == prediction4.position.x,
+//            "Only one position should be predicted for this scenario");
+//        $assert(prediction1.position.y == prediction2.position.y &&
+//            prediction2.position.y == prediction3.position.y &&
+//            prediction3.position.y == prediction4.position.y,
+//            "Only one position should be predicted for this scenario");
+
     }
 });
