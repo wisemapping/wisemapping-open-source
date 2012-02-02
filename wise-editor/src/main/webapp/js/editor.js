@@ -18,30 +18,20 @@
 
 var designer = null;
 
-function buildDesigner(viewMode, containerSize) {
+function buildDesigner(options) {
 
     var container = $('mindplot');
+    container.setStyles(options.size);
 
-    // Set workspace size ...
-    if (!containerSize) {
-        containerSize = {
-            // Set workspace screen size as default. In this way, resize issues are solved.
-            height: parseInt(screen.height),
-            width:  parseInt(screen.width)
-        }
-    }
-    container.setStyles(containerSize);
-
-    var editorProperties = {zoom:0.85,saveOnLoad:true,collab:'standalone',readOnly:viewMode};
-    designer = new mindplot.Designer(editorProperties, container);
+    designer = new mindplot.Designer(options, container);
     designer.setViewPort({
         height: parseInt(window.innerHeight - 70), // Footer and Header
         width:  parseInt(window.innerWidth)
     });
 
-    if (!viewMode) {
+    if (!options.readOnly) {
         if ($('toolbar')) {
-            var menu = new mindplot.widget.Menu(designer, 'toolbar', mapId);
+            var menu = new mindplot.widget.Menu(designer, 'toolbar');
 
             //  If a node has focus, focus can be move to another node using the keys.
             designer._cleanScreen = function() {
@@ -51,5 +41,39 @@ function buildDesigner(viewMode, containerSize) {
     }
     return designer;
 }
+
+
+function loadDesignerOptions() {
+    // Load map options ...
+    var uri = new URI(window.location);
+    var query = String.parseQueryString(uri.get('query'));
+    var jsonConf = query.confUrl;
+    var result;
+    if (jsonConf) {
+
+        var request = new Request.JSON({
+                url: jsonConf,
+                async:false,
+                onSuccess:
+                    function(options) {
+                        this.options = options;
+
+                    }.bind(this)
+            }
+        );
+        request.get();
+        result = this.options;
+    }
+    else {
+        // Set workspace screen size as default. In this way, resize issues are solved.
+        var containerSize = {
+            height: parseInt(screen.height),
+            width:  parseInt(screen.width)
+        };
+        result = {readOnly:true,zoom:0.85,saveOnLoad:true,size:containerSize};
+    }
+    return result;
+}
+
 
 Asset.javascript("../js/mindplot-min.js");

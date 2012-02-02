@@ -20,10 +20,9 @@
     <script type="text/javascript">
 
         var mapId = 'welcome';
-        var viewMode = false;
         $(document).addEvent('loadcomplete', function(resource) {
-
-            var designer = buildDesigner(viewMode);
+            var options = loadDesignerOptions();
+            var designer = buildDesigner(options);
 
             // Configure default persistence manager ...
             mindplot.PersistenceManager.init(new mindplot.LocalStorageManager());
@@ -44,6 +43,7 @@
                 waitDialog.deactivate();
             }
         });
+
 
     </script>
 </head>

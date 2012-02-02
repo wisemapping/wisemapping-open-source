@@ -27,7 +27,7 @@ mindplot.Designer = new Class({
 
             // Dispatcher manager ...
             var commandContext = new mindplot.CommandContext(this);
-            if (options.collab == 'standalone') {
+            if (!$defined(options.collab) || options.collab == 'standalone') {
                 this._actionDispatcher = new mindplot.StandaloneActionDispatcher(commandContext);
             } else {
                 this._actionDispatcher = new mindplot.BrixActionDispatcher(commandContext);
