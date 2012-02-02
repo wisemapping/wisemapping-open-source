@@ -23,6 +23,7 @@ mindplot.layout.SymmetricTestSuite = new Class({
 
         this.testSymmetry();
         this.testSymmetricPredict();
+        this.testSymmetricDragPredict();
     },
 
     testSymmetry: function() {
@@ -213,5 +214,53 @@ mindplot.layout.SymmetricTestSuite = new Class({
         $assert(prediction5d.position.y == manager.find(10).getPosition().y &&
             prediction5d.position.x < manager.find(10).getPosition().x, "Prediction is incorrectly positioned");
         $assert(prediction5d.order == 0, "Prediction order should be 0");
+
+        console.log("OK!\n\n");
+    },
+
+    testSymmetricDragPredict: function() {
+        console.log("testSymmetricDragPredict:");
+        var position = {x:0,y:0};
+        var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
+        manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(0, 1, 1);
+        manager.addNode(2, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(1, 2, 0);
+        manager.layout();
+
+        // Graph 1
+        var graph1 = manager.plot("testSymmetricDragPredict1", {width:1000, height:400});
+
+        var prediction1a = manager.predict(1, 2, {x:-250, y:-20});
+        this._plotPrediction(graph1, prediction1a);
+        $assert(prediction1a.position.x == manager.find(2).getPosition().x &&
+            prediction1a.position.y == manager.find(2).getPosition().y, "Prediction position should be the same as node 2");
+        $assert(prediction1a.order == manager.find(2).getOrder(), "Predicition order should be the same as node 2");
+
+        var prediction1b = manager.predict(1, 2, {x:-250, y:20});
+        this._plotPrediction(graph1, prediction1b);
+        $assert(prediction1b.position.x == manager.find(2).getPosition().x &&
+            prediction1b.position.y == manager.find(2).getPosition().y, "Prediction position should be the same as node 2");
+        $assert(prediction1b.order == manager.find(2).getOrder(), "Predicition order should be the same as node 2");
+
+        var prediction1c = manager.predict(0, 2, {x:-100, y:-20});
+        this._plotPrediction(graph1, prediction1c);
+        $assert(prediction1c.position.x == manager.find(1).getPosition().x &&
+            prediction1c.position.y < manager.find(1).getPosition().y, "Prediction is incorrectly positioned");
+        $assert(prediction1c.order == 1, "Prediction order should be 1");
+
+        var prediction1d = manager.predict(0, 2, {x:-100, y:20});
+        this._plotPrediction(graph1, prediction1d);
+        $assert(prediction1d.position.x == manager.find(1).getPosition().x &&
+            prediction1d.position.y > manager.find(1).getPosition().y, "Prediction is incorrectly positioned");
+        $assert(prediction1d.order == 3, "Prediction order should be 3");
+
+        var prediction1e = manager.predict(1, 2, {x:-250, y:0});
+        this._plotPrediction(graph1, prediction1e);
+        $assert(prediction1e.position.x == manager.find(2).getPosition().x &&
+            prediction1e.position.y == manager.find(2).getPosition().y, "Prediction position should be the same as node 2");
+        $assert(prediction1e.order == manager.find(2).getOrder(), "Predicition order should be the same as node 2");
+
+        console.log("OK!\n\n");
     }
+
+
 });

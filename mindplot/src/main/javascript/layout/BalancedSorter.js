@@ -42,11 +42,13 @@ mindplot.layout.BalancedSorter = new Class({
 
         // If it is a dragged node...
         if (node) {
+            $assert($defined(position), "position cannot be null for predict in dragging");
             var nodeDirection = this._getRelativeDirection(rootNode.getPosition(), node.getPosition());
             var positionDirection = this._getRelativeDirection(rootNode.getPosition(), position);
             var siblings = graph.getSiblings(node);
 
-            if (siblings.length == 0 && nodeDirection == positionDirection) {
+            var sameParent = parent == graph.getParent(node);
+            if (siblings.length == 0 && nodeDirection == positionDirection && sameParent) {
                 return [node.getOrder(), node.getPosition()];
             }
         }
@@ -183,7 +185,6 @@ mindplot.layout.BalancedSorter = new Class({
         // Check that all is consistent ...
         var children = this._getChildrenForOrder(node, treeSet, node.getOrder());
 
-
         // All odd ordered nodes should be "continuous" by themselves
         // All even numbered nodes should be "continuous" by themselves
         var factor = node.getOrder() % 2 == 0 ? 2 : 1;
@@ -221,13 +222,7 @@ mindplot.layout.BalancedSorter = new Class({
 
     _getVerticalPadding: function() {
         return mindplot.layout.BalancedSorter.INTERNODE_VERTICAL_PADDING;
-    },
-
-    _getRelativeDirection: function(reference, position) {
-        var offset = position.x - reference.x;
-        return offset > 0 ? 1 : (offset < 0 ? -1 : 0);
     }
-
 });
 
 mindplot.layout.BalancedSorter.INTERNODE_VERTICAL_PADDING = 5;

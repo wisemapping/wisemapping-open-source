@@ -37,12 +37,26 @@ mindplot.layout.SymmetricSorter = new Class({
             return [0, {x: xPos, y:position.y}];
         }
 
-        // Regular node
         var rootNode = graph.getRootNode(parent);
+
+        // If it is a dragged node...
+        if (node) {
+            $assert($defined(position), "position cannot be null for predict in dragging");
+            var nodeDirection = this._getRelativeDirection(rootNode.getPosition(), node.getPosition());
+            var positionDirection = this._getRelativeDirection(rootNode.getPosition(), position);
+            var siblings = graph.getSiblings(node);
+
+            var sameParent = parent == graph.getParent(node);
+            if (siblings.length == 0 && nodeDirection == positionDirection && sameParent) {
+                return [node.getOrder(), node.getPosition()];
+            }
+        }
+
+        // Regular node
         var direction = parent.getPosition().x > rootNode.getPosition().x ? 1 : -1;
 
         // No children...
-        var children = graph.getChildren(parent);
+        var children = graph.getChildren(parent).filter(function(child) { return child != node; });
         if (children.length == 0) {
             position = position || {x:parent.getPosition().x + direction, y:parent.getPosition().y};
             var pos = {

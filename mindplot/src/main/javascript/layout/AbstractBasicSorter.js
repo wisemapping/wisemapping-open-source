@@ -58,6 +58,11 @@ mindplot.layout.AbstractBasicSorter = new Class({
             return a.getOrder() - b.getOrder()
         });
         return result;
+    },
+
+    _getRelativeDirection: function(reference, position) {
+        var offset = position.x - reference.x;
+        return offset > 0 ? 1 : (offset < 0 ? -1 : 0);
     }
 
 });
