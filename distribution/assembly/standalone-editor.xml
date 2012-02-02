@@ -32,6 +32,7 @@
                 <include>js/mootools*.js</include>
                 <include>html/editor.html</include>
                 <include>html/viewmode.html</include>
+                <include>samples/*</include>
             </includes>
         </fileSet>
     </fileSets>

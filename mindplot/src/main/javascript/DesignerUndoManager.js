@@ -28,10 +28,10 @@ mindplot.DesignerUndoManager = new Class({
     enqueue:function(command) {
         $assert(command, "Command can  not be null");
         var length = this._undoQueue.length;
-        if (command.discartDuplicated && length > 0) {
+        if (command.discardDuplicated && length > 0) {
             // Skip duplicated events ...
             var lastItem = this._undoQueue[length - 1];
-            if (lastItem.discartDuplicated != command.discartDuplicated) {
+            if (lastItem.discardDuplicated != command.discardDuplicated) {
                 this._undoQueue.push(command);
             }
         } else {

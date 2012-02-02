@@ -48,7 +48,7 @@ mindplot.widget.IMenu = new Class({
         }
 
         // Call persistence manager for saving ...
-        var persistenceManager = mindplot.PersitenceManager.getInstance();
+        var persistenceManager = mindplot.PersistenceManager.getInstance();
         persistenceManager.save(mindmap, mindmapProp, saveHistory, {
             onSuccess: function() {
                 if (saveHistory) {

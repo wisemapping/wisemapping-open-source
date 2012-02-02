@@ -20,44 +20,34 @@
     <script type="text/javascript">
 
         var mapId = 'welcome';
-        var mindReady = false;
         var viewMode = false;
         $(document).addEvent('loadcomplete', function(resource) {
-            mindReady = resource == 'mind' ? true : mindReady;
 
-            if (mindReady) {
-                designer = buildDesigner(viewMode);
+            var designer = buildDesigner(viewMode);
 
-                // Configure default persistence manager ...
-                mindplot.PersitenceManager.init(new mindplot.LocalStorageManager());
+            // Configure default persistence manager ...
+            mindplot.PersistenceManager.init(new mindplot.LocalStorageManager());
 
-                // Load map from XML ...
-                var persitence = mindplot.PersitenceManager.getInstance();
-                var mindmap;
-                try {
-                    mindmap = persitence.load(mapId);
-                } catch(e) {
-                    // If the map could not be loaded, create a new empty map...
-                    mindmap = mindplot.model.Mindmap.buildEmpty(mapId);
-                }
-                designer.loadMap(mindmap);
+            // Load map from XML ...
+            var persistence = mindplot.PersistenceManager.getInstance();
+            var mindmap;
+            try {
+                mindmap = persistence.load(mapId);
+            } catch(e) {
+                // If the map could not be loaded, create a new empty map...
+                mindmap = mindplot.model.Mindmap.buildEmpty(mapId);
+            }
+            designer.loadMap(mindmap);
 
-                // If not problem has arisen, close the dialog ...
-                if (!window.hasUnexpectedErrors) {
-                    waitDialog.deactivate();
-                }
+            // If not problem has arisen, close the dialog ...
+            if (!window.hasUnexpectedErrors) {
+                waitDialog.deactivate();
             }
         });
 
     </script>
 </head>
 <body>
-
-<form method="post" id="printForm" name="printForm" action='' style="height:100%;" target="${mindmap.title}">
-    <input type="hidden" name="action" value="print">
-    <input type="hidden" name="mapId" value="${mindmap.id}">
-    <input type="hidden" name="mapSvg" value="">
-</form>
 
 <div id="waitDialog" style="display:none">
     <div id="waitingContainer">
@@ -103,7 +93,7 @@
                 <div id="save" class="buttonOn" title="Save">
                     <img src="../images/save.png"/>
                 </div>
-                <div id="discart" class="buttonOn" title="Discard">
+                <div id="discard" class="buttonOn" title="Discard">
                     <img src="../images/discard.png"/>
                 </div>
             </div>

@@ -1,4 +1,6 @@
-@import "skin.less";
+@header-height : 75px;
+@header-toolbar-height : 35px;
+@header-info-height : @header-height - @header-toolbar-height;
 
 div#header {
     width: 100%;
@@ -78,3 +80,5 @@ div#headerNotifier {
     display:none;
     /*right: 5px;*/
 }
+
+@import "toolbar.less";

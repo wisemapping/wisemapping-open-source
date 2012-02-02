@@ -17,7 +17,7 @@
  */
 
 mindplot.LocalStorageManager = new Class({
-        Extends:mindplot.PersitenceManager,
+        Extends:mindplot.PersistenceManager,
         initialize: function() {
             this.parent();
         },
@@ -32,7 +32,7 @@ mindplot.LocalStorageManager = new Class({
             if (xml == null) {
                 // Let's try to open one from the local directory ...
                 var xmlRequest = new Request({
-                    url: '../maps/' + mapId + '.xml',
+                    url: '../samples/' + mapId + '.xml',
                     method: 'get',
                     async: false,
                     onSuccess: function(responseText) {

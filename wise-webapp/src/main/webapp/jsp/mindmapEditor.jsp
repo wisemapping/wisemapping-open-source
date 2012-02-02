@@ -38,8 +38,8 @@
             mindReady = resource == 'mind' ? true : mindReady;
             if (mindReady) {
                 // Configure default persistence ...
-                mindplot.PersitenceManager.init(new mindplot.DwrPersitenceManager());
-                var persitence = mindplot.PersitenceManager.getInstance();
+                mindplot.PersistenceManager.init(new mindplot.DwrPersitenceManager());
+                var persistence = mindplot.PersistenceManager.getInstance();
 
                 // Initialize editor ...
                 var editorProperties = ${mindmap.properties};
@@ -48,7 +48,7 @@
                 designer = buildDesigner(editorProperties);
 
                 var domDocument = core.Utils.createDocumentFromText(mapXml);
-                var mindmap = persitence.loadFromDom(mapId, domDocument);
+                var mindmap = persistence.loadFromDom(mapId, domDocument);
 
                 // Now, load the map ...
                 designer.loadMap(mindmap);

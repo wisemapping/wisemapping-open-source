@@ -150,7 +150,7 @@ mindplot.StandaloneActionDispatcher = new Class({
         };
 
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicsIds, color);
-        command.discartDuplicated = "fontColorCommandId";
+        command.discardDuplicated = "fontColorCommandId";
         this.execute(command);
     },
 
@@ -165,7 +165,7 @@ mindplot.StandaloneActionDispatcher = new Class({
         };
 
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicsIds, color);
-        command.discartDuplicated = "backColor";
+        command.discardDuplicated = "backColor";
         this.execute(command);
     },
 
@@ -180,7 +180,7 @@ mindplot.StandaloneActionDispatcher = new Class({
         };
 
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicsIds, color);
-        command.discartDuplicated = "borderColorCommandId";
+        command.discardDuplicated = "borderColorCommandId";
         this.execute(command);
     },
 

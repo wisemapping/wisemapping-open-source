@@ -16,7 +16,7 @@
  *   limitations under the License.
  */
 
-mindplot.PersitenceManager = new Class({
+mindplot.PersistenceManager = new Class({
     initialize: function() {
 
     },
@@ -68,11 +68,11 @@ mindplot.PersitenceManager = new Class({
     }
 });
 
-mindplot.PersitenceManager.init = function(instance) {
-    mindplot.PersitenceManager._instance = instance;
+mindplot.PersistenceManager.init = function(instance) {
+    mindplot.PersistenceManager._instance = instance;
 };
 
-mindplot.PersitenceManager.getInstance = function() {
-    return mindplot.PersitenceManager._instance;
+mindplot.PersistenceManager.getInstance = function() {
+    return mindplot.PersistenceManager._instance;
 };
 

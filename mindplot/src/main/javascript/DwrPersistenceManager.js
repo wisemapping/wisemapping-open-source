@@ -17,7 +17,7 @@
  */
 
 mindplot.DwrPersitenceManager = new Class({
-        Extends:mindplot.PersitenceManager,
+        Extends:mindplot.PersistenceManager,
         initialize: function() {
             this.parent();
         },

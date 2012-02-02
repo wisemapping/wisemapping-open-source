@@ -18,13 +18,19 @@
 
 var designer = null;
 
-function buildDesigner(viewMode) {
+function buildDesigner(viewMode, containerSize) {
 
     var container = $('mindplot');
-    container.setStyles({
-        height: parseInt(screen.height),
-        width:  parseInt(screen.width)
-    });
+
+    // Set workspace size ...
+    if (!containerSize) {
+        containerSize = {
+            // Set workspace screen size as default. In this way, resize issues are solved.
+            height: parseInt(screen.height),
+            width:  parseInt(screen.width)
+        }
+    }
+    container.setStyles(containerSize);
 
     var editorProperties = {zoom:0.85,saveOnLoad:true,collab:'standalone',readOnly:viewMode};
     designer = new mindplot.Designer(editorProperties, container);
