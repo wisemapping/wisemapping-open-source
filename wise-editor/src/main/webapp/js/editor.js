@@ -70,7 +70,7 @@ function loadDesignerOptions() {
             height: parseInt(screen.height),
             width:  parseInt(screen.width)
         };
-        result = {readOnly:true,zoom:0.85,saveOnLoad:true,size:containerSize};
+        result = {readOnly:false,zoom:0.85,saveOnLoad:true,size:containerSize};
     }
     return result;
 }
