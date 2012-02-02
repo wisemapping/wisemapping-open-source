@@ -35,7 +35,7 @@ mindplot.layout.BalancedSorter = new Class({
                 (position.x >= parent.getPosition().x ? position.x : parent.getPosition().x) :
                 (position.x <= parent.getPosition().x ? position.x : parent.getPosition().x);
 
-            return {order:0, position:{x: xPos, y:position.y}};
+            return [0, {x: xPos, y:position.y}];
         }
 
         var rootNode = graph.getRootNode(parent);
