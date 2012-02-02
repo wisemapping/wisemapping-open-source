@@ -106,9 +106,13 @@ mindplot.layout.LayoutManager = new Class({
         $assert($defined(parentId), "parentId can not be null");
 
         var parent = this._treeSet.find(parentId);
-        var node = nodeId == null ? null : this._treeSet.find(nodeId);
+        var node = nodeId ? this._treeSet.find(nodeId) : null;
         var sorter = parent.getSorter();
+
         var result = sorter.predict(this._treeSet, parent, node, position, free);
+        $assert(result[0] != null, "Prediction order cannot be null");
+        $assert(result[1] != null, "Prediction position cannot be null");
+        $assert(result[1].x != null && result[1].y != null, "Prediction position is not valid");
         return {order:result[0],position:result[1]};
     },
 

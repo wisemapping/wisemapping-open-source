@@ -41,7 +41,7 @@ mindplot.DragTopic = new Class({
         if (this.isFreeLayoutOn() && this.isConnected()) {
             var _layoutManager = this._layoutManager;
             var par = this.getConnectedToTopic();
-            position = _layoutManager.predict(par.getId(), null, position, true).position;
+            position = _layoutManager.predict(par.getId(), this._draggedNode.getId(), position, true).position;
         }
         this._position.setValue(position.x, position.y);
 

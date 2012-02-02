@@ -38,8 +38,18 @@ mindplot.layout.BalancedSorter = new Class({
             return {order:0, position:{x: xPos, y:position.y}};
         }
 
-        // Regular node
         var rootNode = graph.getRootNode(parent);
+
+        // If it is a dragged node...
+        if (node) {
+            var nodeDirection = this._getRelativeDirection(rootNode.getPosition(), node.getPosition());
+            var positionDirection = this._getRelativeDirection(rootNode.getPosition(), position);
+            var siblings = graph.getSiblings(node);
+
+            if (siblings.length == 0 && nodeDirection == positionDirection) {
+                return [node.getOrder(), node.getPosition()];
+            }
+        }
 
         if (!position) {
             var right = this._getChildrenForOrder(parent, graph, 0);
@@ -48,13 +58,16 @@ mindplot.layout.BalancedSorter = new Class({
         // Filter nodes on one side..
         var order = position ? (position.x > rootNode.getPosition().x ? 0 : 1) : ((right.length - left.length) > 0 ? 1 : 0);
         var direction = order%2 == 0 ? 1 : -1;
-        var children = this._getChildrenForOrder(parent, graph, order);
+
+        // Exclude the dragged node (if set)
+        var children = this._getChildrenForOrder(parent, graph, order).filter(function(child) {
+            return child != node;
+        });
 
         // No children?
         if (children.length == 0) {
             return [order, {x:parent.getPosition().x + direction * (parent.getSize().width + mindplot.layout.BalancedSorter.INTERNODE_HORIZONTAL_PADDING * 2), y:parent.getPosition().y}];
         }
-
 
         // Try to fit within ...
         var result = null;
@@ -166,23 +179,10 @@ mindplot.layout.BalancedSorter = new Class({
         return result;
     },
 
-    _getChildrenForSide: function(parent, graph, position) {
-        position = position || {x: parent.getPosition().x + 1, y:parent.getPosition().y + 1};
-        var rootPosition = graph.getRootNode(parent).getPosition();
-        return graph.getChildren(parent).filter(function(child) {
-            return position.x > rootPosition.x ? child.getPosition().x > rootPosition.x : child.getPosition().x < rootPosition.x;
-        });
-    },
-
-    _getChildrenForOrder: function(parent, graph, order) {
-        return this._getSortedChildren(graph, parent).filter(function(node) {
-            return node.getOrder() % 2 == order % 2;
-        });
-    },
-
     verify:function(treeSet, node) {
         // Check that all is consistent ...
         var children = this._getChildrenForOrder(node, treeSet, node.getOrder());
+
 
         // All odd ordered nodes should be "continuous" by themselves
         // All even numbered nodes should be "continuous" by themselves
@@ -201,8 +201,31 @@ mindplot.layout.BalancedSorter = new Class({
         return "Balanced Sorter";
     },
 
-    _getVerticalPadding:function() {
+    _getOrderForPosition: function(rootNode, position) {
+        return position.x > rootNode.getPosition().x ? 0 : 1;
+    },
+
+    _getChildrenForSide: function(parent, graph, position) {
+        position = position || {x: parent.getPosition().x + 1, y:parent.getPosition().y + 1};
+        var rootPosition = graph.getRootNode(parent).getPosition();
+        return graph.getChildren(parent).filter(function(child) {
+            return position.x > rootPosition.x ? child.getPosition().x > rootPosition.x : child.getPosition().x < rootPosition.x;
+        });
+    },
+
+    _getChildrenForOrder: function (parent, graph, order) {
+        return this._getSortedChildren(graph, parent).filter(function(child) {
+            return child.getOrder() % 2 == order % 2;
+        });
+    },
+
+    _getVerticalPadding: function() {
         return mindplot.layout.BalancedSorter.INTERNODE_VERTICAL_PADDING;
+    },
+
+    _getRelativeDirection: function(reference, position) {
+        var offset = position.x - reference.x;
+        return offset > 0 ? 1 : (offset < 0 ? -1 : 0);
     }
 
 });

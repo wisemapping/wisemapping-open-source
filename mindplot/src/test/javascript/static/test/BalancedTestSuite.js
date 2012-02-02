@@ -23,7 +23,7 @@ mindplot.layout.BalancedTestSuite = new Class({
 
         this.testBalanced();
         this.testBalancedPredict();
-        this.testBalancedSingleNodePredict();
+        this.testBalancedNodeDragPredict();
     },
 
     testBalanced: function() {
@@ -276,34 +276,113 @@ mindplot.layout.BalancedTestSuite = new Class({
         console.log("OK!\n\n");
     },
 
-    testBalancedSingleNodePredict: function() {
-        console.log("testBalancedSingleNodePredict:");
+    testBalancedNodeDragPredict: function() {
+        console.log("testBalancedNodeDragPredict:");
         var position = {x:0, y:0};
         var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
 
+        // Graph 1
         manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(0,1,0);
         manager.layout();
-        var graph = manager.plot("testBalancedSingleNodePredict1", {width:800, height:400});
+        var graph1 = manager.plot("testBalancedNodeDragPredict1", {width:800, height:400});
 
-        var prediction1 = manager.predict(0, null, {x:50, y:50});
-        this._plotPrediction(graph, prediction1);
-        var prediction2 = manager.predict(0, null, {x:50, y:-50});
-        this._plotPrediction(graph, prediction2);
-        var prediction3 = manager.predict(0, null, {x:-50, y:50});
-        this._plotPrediction(graph, prediction3);
-        var prediction4 = manager.predict(0, null, {x:-50, y:-50});
-        this._plotPrediction(graph, prediction4);
+        var prediction1a = manager.predict(0, 1, {x:50, y:50});
+        this._plotPrediction(graph1, prediction1a);
+        $assert(prediction1a.position.x == manager.find(1).getPosition().x &&
+            prediction1a.position.y == manager.find(1).getPosition().y,
+            "Prediction position should be the same as node 1");
+        $assert(prediction1a.order == manager.find(1).getOrder(), "Prediction order should be the same as node 1");
 
-        // Only one postion should be predicted for this scenario
-        //TODO(gb): Fix this. It's not working
-//        $assert(prediction1.position.x == prediction2.position.x &&
-//            prediction2.position.x == prediction3.position.x &&
-//            prediction3.position.x == prediction4.position.x,
-//            "Only one position should be predicted for this scenario");
-//        $assert(prediction1.position.y == prediction2.position.y &&
-//            prediction2.position.y == prediction3.position.y &&
-//            prediction3.position.y == prediction4.position.y,
-//            "Only one position should be predicted for this scenario");
 
+        var prediction1b = manager.predict(0, 1, {x:50, y:-50});
+        this._plotPrediction(graph1, prediction1b);
+        $assert(prediction1b.position.x == manager.find(1).getPosition().x &&
+            prediction1b.position.y == manager.find(1).getPosition().y,
+            "Prediction position should be the same as node 1");
+        $assert(prediction1b.order == manager.find(1).getOrder(), "Prediction order should be the same as node 1");
+
+        var prediction1c = manager.predict(0, 1, {x:-50, y:50});
+        this._plotPrediction(graph1, prediction1c);
+        $assert(prediction1c.position.x < manager.find(0).getPosition().x &&
+            prediction1c.position.y == manager.find(0).getPosition().y, "Prediction is incorrectly positioned");
+        $assert(prediction1c.order == 1, "Prediction order should be the same as node 1");
+
+        var prediction1d = manager.predict(0, 1, {x:-50, y:-50});
+        this._plotPrediction(graph1, prediction1d);
+        $assert(prediction1d.position.x < manager.find(0).getPosition().x &&
+            prediction1d.position.y == manager.find(0).getPosition().y, "Prediction is incorrectly positioned");
+        $assert(prediction1d.order == 1, "Prediction order should be the same as node 1");
+
+        // Graph 2
+        manager.disconnectNode(1);
+        manager.connectNode(0, 1, 1);
+        manager.layout();
+        var graph2 = manager.plot("testBalancedNodeDragPredict2", {width:800, height:400});
+
+        var prediction2a = manager.predict(0, 1, {x:50, y:50});
+        this._plotPrediction(graph2, prediction2a);
+        $assert(prediction2a.position.x > manager.find(0).getPosition().x &&
+            prediction2a.position.y == manager.find(0).getPosition().y, "Prediction is positioned incorrectly");
+        $assert(prediction2a.order == 0, "Prediction order should be 0");
+
+        var prediction2b = manager.predict(0, 1, {x:50, y:-50});
+        this._plotPrediction(graph2, prediction2b);
+        $assert(prediction2b.position.x > manager.find(0).getPosition().x &&
+            prediction2b.position.y == manager.find(0).getPosition().y, "Prediction is positioned incorrectly");
+        $assert(prediction2b.order == 0, "Prediction order should be 0");
+
+        var prediction2c = manager.predict(0, 1, {x:-50, y:50});
+        this._plotPrediction(graph2, prediction2c);
+        $assert(prediction2c.position.x == manager.find(1).getPosition().x &&
+            prediction2c.position.y == manager.find(1).getPosition().y,
+            "Prediction position should be the same as node 1");
+        $assert(prediction2c.order == manager.find(1).getOrder(), "Prediction order should be the same as node 1");
+
+        var prediction2d = manager.predict(0, 1, {x:-50, y:-50});
+        this._plotPrediction(graph2, prediction2d);
+        $assert(prediction2d.position.x == manager.find(1).getPosition().x &&
+            prediction2d.position.y == manager.find(1).getPosition().y,
+            "Prediction position should be the same as node 1");
+        $assert(prediction2d.order == manager.find(1).getOrder(), "Prediction order should be the same as node 1");
+
+        // Graph 3
+        manager.disconnectNode(1);
+        manager.connectNode(0, 1, 0);
+        manager.addNode(2, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(0,2,2);
+        manager.layout();
+        var graph3 = manager.plot("testBalancedNodeDragPredict3", {width:800, height:400});
+
+        var prediction3a = manager.predict(0, 1, {x:50, y:50});
+        this._plotPrediction(graph3, prediction3a);
+        $assert(prediction3a.position.x == manager.find(2).getPosition().x &&
+            prediction3a.position.y > manager.find(2).getPosition().y, "Prediction is incorrectly positioned");
+        $assert(prediction3a.order == 4, "Prediction order should be 4");
+
+        var prediction3b = manager.predict(0, 1, {x:50, y:-50});
+        this._plotPrediction(graph3, prediction3b);
+        $assert(prediction3b.position.x == manager.find(1).getPosition().x &&
+            prediction3b.position.y == manager.find(1).getPosition().y &&
+            prediction3b.order == manager.find(1).getOrder(), "Prediction should be the exact same as dragged node");
+
+        var prediction3c = manager.predict(0, 1, {x:-50, y:50});
+        this._plotPrediction(graph3, prediction3c);
+        $assert(prediction3c.position.x < manager.find(0).getPosition().x &&
+            prediction3c.position.y == manager.find(0).getPosition().y, "Prediction is incorrectly positioned");
+        $assert(prediction3c.order == 1, "Prediction order should be 1");
+
+        var prediction3d = manager.predict(0, 1, {x:-50, y:-50});
+        this._plotPrediction(graph3, prediction3d);
+        $assert(prediction3d.position.x < manager.find(0).getPosition().x &&
+            prediction3d.position.y == manager.find(0).getPosition().y, "Prediction is incorrectly positioned");
+        $assert(prediction3d.order == 1, "Prediction order should be 1");
+
+        var prediction3e = manager.predict(0, 1, {x:50, y:0});
+        this._plotPrediction(graph3, prediction3e);
+        $assert(prediction3e.position.x == manager.find(1).getPosition().x &&
+            prediction3e.position.y == manager.find(1).getPosition().y,
+            "Prediction position should be the same as node 1");
+        $assert(prediction3e.order == manager.find(1).getOrder(), "Prediction order should be the same as node 1");
+
+        console.log("OK!\n\n");
     }
 });

@@ -323,7 +323,7 @@ mindplot.Designer = new Class({
 
             // Create a new node ...
             var layoutManager = this._eventBussDispatcher.getLayoutManager();
-            var result = layoutManager.predict(topic.getId(),  null, mousePos);
+            var result = layoutManager.predict(topic.getId(), null, mousePos);
             childModel.setOrder(result.order);
 
             var position = result.position;
