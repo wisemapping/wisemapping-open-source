@@ -26,6 +26,7 @@ mindplot.layout.FreeTestSuite = new Class({
         this.testReconnectFreeNode();
         this.testSiblingOverlapping();
         this.testRootNodeChildrenPositioning();
+        this.testBalancedFreePredict();
     },
 
     testFreePosition: function() {
@@ -340,6 +341,23 @@ mindplot.layout.FreeTestSuite = new Class({
 //        manager.layout();
 //        manager.plot("testRootNodeChildrenPositioning5", {width:800, height:600});
 //        this._assertFreePosition(manager, 6, {x:-150, y:-50});
+
+        console.log("OK!\n\n");
+    },
+
+    testBalancedFreePredict: function() {
+        console.log("testBalancedFreePredict:");
+        var position = {x:0,y:0};
+        var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
+
+        // Prepare a sample graph ...
+        manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(0,1,0);
+        manager.layout();
+        var graph1 = manager.plot("testBalancedFreePredict1", {width:800, height:400});
+
+        var predict1 = manager.predict(0, 1, {x:70, y:0}, true);
+        this._plotPrediction(graph1, predict1);
+        $assert(predict1.position.x == manager.find(1).getPosition().x, "Prediction x pos should be the same as node 1");
 
         console.log("OK!\n\n");
     },
