@@ -1,0 +1,1 @@
+../../../../../mindplot/src/main/javascript/libraries/mootools/mootools-core-1.3.2-full-compress.js

@@ -1,0 +1,1 @@
+../../../../../mindplot/src/main/javascript/libraries/less/less-1.1.3.min.js
