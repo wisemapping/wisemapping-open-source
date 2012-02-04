@@ -14,53 +14,43 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <![endif]-->
     <title><spring:message code="SITE.TITLE"/> - ${mindmap.title} </title>
-    <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
-    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+
     <link rel="stylesheet/less" type="text/css" href="../css/editor.less"/>
-
-    <script type='text/javascript' src='../js/libraries/mootools/mootools-core-1.3.2-full-compress.js'></script>
-    <script type='text/javascript' src='../js/libraries/mootools/mootools-more-1.3.2.1-yui.js'></script>
-
-    <script type="text/javascript" src="../dwr/engine.js"></script>
-    <script type="text/javascript" src="../dwr/interface/MapEditorService.js"></script>
-    <script type="text/javascript" src="../dwr/interface/LoggerService.js"></script>
-
+    <script type='text/javascript' src='../js/mootools-core-1.3.2.js'></script>
+    <script type='text/javascript' src='../js/mootools-more-1.3.2.js'></script>
     <script type='text/javascript' src='../js/core.js'></script>
     <script type='text/javascript' src='../js/less-1.1.3.min.js'></script>
 
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
 
     <script type="text/javascript">
-        var mapId = '${mindmap.id}';
-        var mapXml = '${mapXml}';
-        var mindReady = false;
+
         $(document).addEvent('loadcomplete', function(resource) {
-            mindReady = resource == 'mind' ? true : mindReady;
-            if (mindReady) {
-                // Configure default persistence ...
-                mindplot.PersistenceManager.init(new mindplot.DwrPersitenceManager());
-                var persistence = mindplot.PersistenceManager.getInstance();
+            var mapId = '${mindmap.id}';
+            var mapXml = '${mapXml}';
 
-                // Initialize editor ...
-                var editorProperties = ${mindmap.properties};
-                editorProperties.collab = 'standalone';
-                editorProperties.readOnly = false;
-                designer = buildDesigner(editorProperties);
+            // Configure designer options ...
+            var options = loadDesignerOptions();
+            options.persistenceManager = "mindplot.DwrPersitenceManager";
+            var userOptions = ${mindmap.properties};
+            options.zoom = userOptions.zoom;
 
-                var domDocument = core.Utils.createDocumentFromText(mapXml);
-                var mindmap = persistence.loadFromDom(mapId, domDocument);
+            // Build designer ...
+            var designer = buildDesigner(options);
 
-                // Now, load the map ...
-                designer.loadMap(mindmap);
-
-                // If not problem has arisen, close the dialog ...
-                if (!window.hasUnexpectedErrors) {
-                    waitDialog.deactivate();
-                }
-            }
+            // Load map from XML ...
+            var domDocument = core.Utils.createDocumentFromText(mapXml);
+            var persistence = mindplot.PersistenceManager.getInstance();
+            var mindmap = persistence.loadFromDom(mapId, domDocument);
+            designer.loadMap(mindmap);
         });
-    </script>
 
+        function printMap() {
+            document.printForm.mapSvg.value = $("workspaceContainer").innerHTML;
+            document.printForm.submit();
+        }
+    </script>
 </head>
 <body>
 
@@ -70,42 +60,6 @@
     <input type="hidden" name="mapId" value="${mindmap.id}">
     <input type="hidden" name="mapSvg" value="">
 </form>
-
-<div id="waitDialog" style="display:none">
-    <div id="waitingContainer">
-        <div class="loadingIcon"></div>
-        <div class="loadingText">
-            Loading ...
-        </div>
-    </div>
-</div>
-
-<div id="errorDialog" style="display:none">
-    <div id="errorContainer">
-        <div class="loadingIcon"></div>
-        <div class="loadingText">
-            Unexpected error loading your map :(
-        </div>
-    </div>
-</div>
-
-<script type="text/javascript">
-
-    var waitDialog = new core.WaitDialog();
-    waitDialog.activate(true, $("waitDialog"));
-    $(window).addEvent("error", function(event) {
-
-        // Show error dialog ...
-        waitDialog.changeContent($("errorDialog"), false);
-        return false;
-    });
-
-    function printMap() {
-        document.printForm.mapSvg.value = $("workspaceContainer").innerHTML;
-        document.printForm.submit();
-    }
-</script>
-
 
 <div id="actionsContainer"></div>
 <div>

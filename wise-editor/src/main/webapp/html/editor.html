@@ -24,9 +24,6 @@
             var options = loadDesignerOptions();
             var designer = buildDesigner(options);
 
-            // Configure default persistence manager ...
-            mindplot.PersistenceManager.init(new mindplot.LocalStorageManager());
-
             // Load map from XML ...
             var persistence = mindplot.PersistenceManager.getInstance();
             var mindmap;
@@ -37,48 +34,12 @@
                 mindmap = mindplot.model.Mindmap.buildEmpty(mapId);
             }
             designer.loadMap(mindmap);
-
-            // If not problem has arisen, close the dialog ...
-            if (!window.hasUnexpectedErrors) {
-                waitDialog.deactivate();
-            }
         });
 
 
     </script>
 </head>
 <body>
-
-<div id="waitDialog" style="display:none">
-    <div id="waitingContainer">
-        <div class="loadingIcon"></div>
-        <div class="loadingText">
-            Loading ...
-        </div>
-    </div>
-</div>
-
-<div id="errorDialog" style="display:none">
-    <div id="errorContainer">
-        <div class="loadingIcon"></div>
-        <div class="loadingText">
-            Unexpected error loading your map :(
-        </div>
-    </div>
-</div>
-
-<script type="text/javascript">
-
-    var waitDialog = new core.WaitDialog();
-    waitDialog.activate(true, $("waitDialog"));
-    $(window).addEvent("error", function(event) {
-
-        // Show error dialog ...
-        waitDialog.changeContent($("errorDialog"), false);
-        return false;
-    });
-</script>
-
 
 <div id="header">
 
@@ -123,7 +84,7 @@
                 <div id="deleteTopic" class="buttonOn" title="Delete">
                     <img src="../images/topic-delete.png"/>
                 </div>
-                <div id="topicBorder" class="buttonOn" title="Border Color">
+                <div id="topicBorder" class="buttonExtOn" title="Border Color">
                     <img src="../images/topic-border.png"/>
                 </div>
                 <div id="topicColor" class="buttonExtOn" title="Background Color">
@@ -143,7 +104,7 @@
                 </div>
             </div>
             <div id="font" class="buttonContainer">
-                <div id="fontFamily" class="buttonOn" title="Font Style">
+                <div id="fontFamily" class="buttonExtOn" title="Font Style">
                     <img src="../images/font-type.png"/>
                 </div>
                 <div id="fontSize" class="buttonExtOn" title="Font Size">

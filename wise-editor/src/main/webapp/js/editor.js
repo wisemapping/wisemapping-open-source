@@ -20,8 +20,22 @@ var designer = null;
 
 function buildDesigner(options) {
 
-    var container = $('mindplot');
+    var container = $(options.container);
+    $assert(container, 'container could not be null');
+
+    // Register load events ...
     designer = new mindplot.Designer(options, container);
+    designer.addEvent('loadSuccess', function() {
+        window.waitDialog.close();
+        window.waitDialog.destroy();
+    });
+
+    designer.addEvent('loadError', function(e) {
+        window.waitDialog.close();
+        window.waitDialog.destroy();
+        console.log(e);
+    });
+
 
     // Configure default persistence manager ...
     var persistence;
@@ -33,29 +47,23 @@ function buildDesigner(options) {
     }
     mindplot.PersistenceManager.init(persistence);
 
+    // Register toolbar event ...
+    if ($('toolbar')) {
+        var menu = new mindplot.widget.Menu(designer, 'toolbar');
 
-    if (!options.readOnly) {
-        if ($('toolbar')) {
-            var menu = new mindplot.widget.Menu(designer, 'toolbar');
-
-            //  If a node has focus, focus can be move to another node using the keys.
-            designer._cleanScreen = function() {
-                menu.clear()
-            };
-        }
+        //  If a node has focus, focus can be move to another node using the keys.
+        designer._cleanScreen = function() {
+            menu.clear()
+        };
     }
+
     return designer;
 }
 
 
-function loadDesignerOptions() {
+function loadDesignerOptions(jsonConf) {
     // Load map options ...
-    var uri = new URI(window.location);
-    var query = String.parseQueryString(uri.get('query'));
-    var jsonConf = query.confUrl;
-    var result;
     if (jsonConf) {
-
         var request = new Request.JSON({
                 url: jsonConf,
                 async:false,
@@ -80,10 +88,143 @@ function loadDesignerOptions() {
             height: parseInt(window.innerHeight - 70), // Footer and Header
             width:  parseInt(window.innerWidth)
         };
-        result = {readOnly:false,zoom:0.85,saveOnLoad:true,size:containerSize,viewPort:viewPort};
+        result = {readOnly:false,zoom:0.85,saveOnLoad:true,size:containerSize,viewPort:viewPort,container:'mindplot'};
     }
     return result;
 }
 
+editor = {};
+editor.WaitDialog = new Class({
+    Extends:MooDialog,
+    initialize : function() {
+        var panel = this._buildPanel();
+        this.parent({
+                closeButton:false,
+                destroyOnClose:true,
+                autoOpen:true,
+                useEscKey:false,
+                title:'Loading ...',
+                onInitialize: function(wrapper) {
+                    wrapper.setStyle('opacity', 0);
+                    this.fx = new Fx.Morph(wrapper, {
+                        duration: 100,
+                        transition: Fx.Transitions.Bounce.easeOut
+                    });
+                    this.overlay = new Overlay(this.options.inject, {
+                        duration: this.options.duration
+                    });
+                    if (this.options.closeOnOverlayClick) this.overlay.addEvent('click', this.close.bind(this));
+                }
+                ,
 
+                onBeforeOpen: function() {
+                    this.overlay.open();
+                    this.fx.start({
+                        'margin-top': [-200, -100],
+                        opacity: [0, 1]
+                    }).chain(function() {
+                        this.fireEvent('show');
+                    }.bind(this));
+                }
+                ,
+
+                onBeforeClose: function() {
+                    this.fx.start({
+                        'margin-top': [-100, 0],
+                        opacity: 0,
+                        duration: 200
+                    }).chain(function() {
+                        this.fireEvent('hide');
+                    }.bind(this));
+                    this.overlay.close();
+                }}
+        )
+            ;
+        this.setContent(panel);
+    },
+
+    _buildPanel : function () {
+        var result = new Element('div');
+        result.setStyles({
+            'text-align':'center',
+            width: '400px'
+        });
+        var img = new Element('img', {'src': '../images/ajax-loader.gif'});
+        img.inject(result);
+        return result;
+    },
+
+    show : function() {
+        this.open();
+    }
+
+});
+
+editor.Help = {
+    buildHelp:function(panel){
+        var container = new Element('div');
+        container.setStyles({width:'100%', textAlign:'center'});
+        var content1 = Help.buildContentIcon('../images/black-keyboard.png', 'Keyboard Shortcuts', function(){MOOdalBox.open('keyboard.htm','KeyBoard Shortcuts', '500px 400px', false);panel.hidePanel();});
+        var content2 = Help.buildContentIcon('../images/firstSteps.png', 'Editor First Steps', function(){
+           var wOpen;
+           var sOptions;
+
+           sOptions = 'status=yes,menubar=yes,scrollbars=yes,resizable=yes,toolbar=yes';
+           sOptions = sOptions + ',width=' + (screen.availWidth - 10).toString();
+           sOptions = sOptions + ',height=' + (screen.availHeight - 122).toString();
+           sOptions = sOptions + ',screenX=0,screenY=0,left=0,top=0';
+
+           wOpen = window.open("firststeps.htm", "WiseMapping", "width=100px, height=100px");
+           wOpen.focus();
+           wOpen.moveTo( 0, 0 );
+           wOpen.resizeTo( screen.availWidth, screen.availHeight );
+           panel.hidePanel();
+        });
+
+        container.addEvent('show', function(){
+            content1.effect('opacity',{duration:800}).start(0,100);
+            var eff = function(){content2.effect('opacity',{duration:800}).start(0,100);};
+            eff.delay(150);
+        });
+        container.addEvent('hide', function(){
+            content1.effect('opacity').set(0);
+            content2.effect('opacity').set(0)
+        });
+        content1.inject(container);
+        content2.inject(container);
+        return container;
+    },
+    buildContentIcon:function(image, text, onClickFn){
+        var container = new Element('div').setStyles({margin:'15px 0px 0px 0px', opacity:0, padding:'5px 0px', border: '1px solid transparent', cursor:'pointer'});
+
+        var icon = new Element('div');
+        icon.addEvent('click',onClickFn);
+        var img = new Element('img');
+        img.setProperty('src',image);
+        img.inject(icon);
+        icon.inject(container);
+
+        var textContainer = new Element('div').setStyles({width:'100%', color:'white'});
+        textContainer.innerHTML=text;
+        textContainer.inject(container);
+
+        container.addEvent('mouseover', function(event){
+            $(this).setStyle('border-top', '1px solid #BBB4D6');
+            $(this).setStyle('border-bottom', '1px solid #BBB4D6');
+        }.bindWithEvent(container));
+        container.addEvent('mouseout', function(event){
+            $(this).setStyle('border-top', '1px solid transparent');
+            $(this).setStyle('border-bottom', '1px solid transparent');
+
+        }.bindWithEvent(container));
+        return container;
+    }
+};
+
+
+// Show loading dialog ...
+waitDialog = new editor.WaitDialog();
+waitDialog.show();
+
+// Loading libraries ...
 Asset.javascript("../js/mindplot-min.js");

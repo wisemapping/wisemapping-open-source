@@ -19,63 +19,32 @@
 
     <script type="text/javascript">
 
+        var mapId = 'welcome';
         $(document).addEvent('loadcomplete', function(resource) {
-            var options = loadDesignerOptions();
+
+            // Options has been defined in by a external ile ?
+            var uri = new URI(window.location);
+            var query = String.parseQueryString(uri.get('query'));
+            var confUrl = query.confUrl;
+
+            var options = loadDesignerOptions(confUrl);
             var designer = buildDesigner(options);
 
             // Load map from XML ...
-            var mapId = options.mapId ? options.mapId : 'welcome';
+            var persistence = mindplot.PersistenceManager.getInstance();
             var mindmap;
             try {
-                var persistence = mindplot.PersistenceManager.getInstance();
                 mindmap = persistence.load(mapId);
             } catch(e) {
                 // If the map could not be loaded, create a new empty map...
                 mindmap = mindplot.model.Mindmap.buildEmpty(mapId);
             }
             designer.loadMap(mindmap);
-
-            // If not problem has arisen, close the dialog ...
-            if (!window.hasUnexpectedErrors) {
-                waitDialog.deactivate();
-            }
         });
-
 
     </script>
 </head>
 <body>
-
-<div id="waitDialog" style="display:none">
-    <div id="waitingContainer">
-        <div class="loadingIcon"></div>
-        <div class="loadingText">
-            Loading ...
-        </div>
-    </div>
-</div>
-
-<div id="errorDialog" style="display:none">
-    <div id="errorContainer">
-        <div class="loadingIcon"></div>
-        <div class="loadingText">
-            Unexpected error loading your map :(
-        </div>
-    </div>
-</div>
-
-<script type="text/javascript">
-
-    var waitDialog = new core.WaitDialog();
-    waitDialog.activate(true, $("waitDialog"));
-    $(window).addEvent("error", function(event) {
-
-        // Show error dialog ...
-        waitDialog.changeContent($("errorDialog"), false);
-        return false;
-    });
-</script>
-
 
 <div id="header">
 

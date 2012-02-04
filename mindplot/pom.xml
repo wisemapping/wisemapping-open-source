@@ -52,15 +52,6 @@
                                 <concat destfile="${basedir}/target/tmp/mindplot.js" append="false">
                                     <filelist dir="${basedir}/src/main/javascript/" files="header.js"/>
 
-                                    <filelist dir="${basedir}/src/main/javascript/libraries/moodialog/"
-                                              files="Overlay.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/libraries/moodialog/"
-                                              files="MooDialog.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/libraries/moodialog/"
-                                              files="MooDialog.Request.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/libraries/moodialog/"
-                                              files="MooDialog.Fx.js"/>
-
                                     <filelist dir="${basedir}/src/main/javascript/" files="model/IMindmap.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="model/Mindmap.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="model/INodeModel.js"/>

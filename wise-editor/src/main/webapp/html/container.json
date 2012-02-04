@@ -11,5 +11,6 @@
         "height":400
     },
     "persistenceManager": "mindplot.LocalStorageManager",
-    "mapId": "welcome"
+    "mapId": "welcome",
+    "container":"mindplot"
 }

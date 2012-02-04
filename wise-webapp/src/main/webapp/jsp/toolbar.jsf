@@ -39,7 +39,7 @@
         <div id="deleteTopic" class="buttonOn" title="Delete">
             <img src="../images/topic-delete.png"/>
         </div>
-        <div id="topicBorder" class="buttonOn" title="Border Color">
+        <div id="topicBorder" class="buttonExtOn" title="Border Color">
             <img src="../images/topic-border.png"/>
         </div>
         <div id="topicColor" class="buttonExtOn" title="Background Color">
