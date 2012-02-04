@@ -1,9 +1,15 @@
 {
-    "readOnly":"false",
-    "zoom":0.85,
-    "saveOnLoad":false,
+    "readOnly":false,
+    "zoom":1.3,
     "size":{
         "width":800,
-        "height":600
-    }
+        "height":400
+    },
+    "viewPort":
+    {
+        "width":800,
+        "height":400
+    },
+    "persistenceManager": "mindplot.LocalStorageManager",
+    "mapId": "welcome"
 }

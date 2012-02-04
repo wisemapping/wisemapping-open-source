@@ -9,21 +9,10 @@ html {
     height: 100px;
 }
 
-#firstHeader {
-    width: 100%;
-}
-
-#subHeader {
-    position: absolute;
-    width: 100%;
-    height: 55px;
-    top: 30px;
-}
-
 #loadingContainer {
     position: relative;
     top: 80px;
-    height: 120px; /*background: whitesmoke;*/
+    height: 120px;
     background: #FEFEFE;
     opacity: .99;
     padding: 15px;
@@ -55,7 +44,8 @@ html {
 }
 
 /* ------------- Footer Styles -------------------------*/
-div#embFooter {
+div#    <div id="footer"></div>
+ {
     position: absolute;
     height: 35px;
     width: 100%;
@@ -63,6 +53,7 @@ div#embFooter {
     left: 0;
     border-top: 1px solid black;
     background: #E5E5E5;
+    font-family: Arial;
 }
 
 div#logo {
@@ -89,7 +80,7 @@ div#logo {
     border: 1px solid black;
     border-top-color: white;
     border-left-color: white;
-    margin: 0px;
+    margin: 0;
 
 }
 
@@ -112,24 +103,15 @@ div#mindplot {
     width: 100%;
 }
 
-div#mapContainer {
-    border-bottom: 1px solid black;
-    padding-bottom: 40px;
-    height: 400px;
-    width: 100%;
-}
-
 div#mapDetails {
     float: right;
     padding-top: 10px;
     margin-right: 100px;
-    font-family: arial,serif;
-    font-size: 11px;
+
 }
 
 div#mapDetails .title {
     font-weight: bold;
     margin-left: 10px;
     margin-right: 3px;
-
 }

@@ -21,13 +21,18 @@ var designer = null;
 function buildDesigner(options) {
 
     var container = $('mindplot');
-    container.setStyles(options.size);
-
     designer = new mindplot.Designer(options, container);
-    designer.setViewPort({
-        height: parseInt(window.innerHeight - 70), // Footer and Header
-        width:  parseInt(window.innerWidth)
-    });
+
+    // Configure default persistence manager ...
+    var persistence;
+    if (options.persistenceManager) {
+        persistence = eval("new " + options.persistenceManager + "()");
+
+    } else {
+        persistence = new mindplot.LocalStorageManager();
+    }
+    mindplot.PersistenceManager.init(persistence);
+
 
     if (!options.readOnly) {
         if ($('toolbar')) {
@@ -70,7 +75,12 @@ function loadDesignerOptions() {
             height: parseInt(screen.height),
             width:  parseInt(screen.width)
         };
-        result = {readOnly:false,zoom:0.85,saveOnLoad:true,size:containerSize};
+
+        var viewPort = {
+            height: parseInt(window.innerHeight - 70), // Footer and Header
+            width:  parseInt(window.innerWidth)
+        };
+        result = {readOnly:false,zoom:0.85,saveOnLoad:true,size:containerSize,viewPort:viewPort};
     }
     return result;
 }

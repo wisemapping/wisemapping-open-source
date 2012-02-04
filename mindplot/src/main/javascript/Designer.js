@@ -25,6 +25,9 @@ mindplot.Designer = new Class({
 
             this._options = options;
 
+            // Set full div elem render area ...
+            divElement.setStyles(options.size);
+
             // Dispatcher manager ...
             var commandContext = new mindplot.CommandContext(this);
             if (!$defined(options.collab) || options.collab == 'standalone') {
@@ -54,6 +57,10 @@ mindplot.Designer = new Class({
             }
 
             this._relPivot = new mindplot.RelationshipPivot(this._workspace, this);
+
+            // Set editor working area ...
+            this.setViewPort(options.viewPort);
+
         },
 
         _registerEvents : function() {
