@@ -31,8 +31,9 @@
                 <include>js/less*.js</include>
                 <include>js/mootools*.js</include>
                 <include>html/editor.html</include>
-                <include>html/viewmode.html</include>
+                <include>html/*</include>
                 <include>samples/*</include>
+                <include>index.html</include>
             </includes>
         </fileSet>
     </fileSets>
