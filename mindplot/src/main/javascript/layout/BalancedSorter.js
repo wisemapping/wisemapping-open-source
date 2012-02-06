@@ -102,6 +102,12 @@ mindplot.layout.BalancedSorter = new Class({
     insert: function(treeSet, parent, child, order) {
         var children = this._getChildrenForOrder(parent, treeSet, order);
 
+        // If no children, return 0 or 1 depending on the side
+        if (children.length == 0) {
+            child.setOrder(order % 2);
+            return;
+        }
+
         // Shift all the elements by two, so side is the same.
         // In case of balanced sorter, order don't need to be continuous...
         var max = 0;
