@@ -23,7 +23,7 @@ import com.wisemapping.model.MindmapUser;
 import com.wisemapping.model.User;
 import com.wisemapping.model.UserLogin;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.acegisecurity.providers.encoding.PasswordEncoder;
+//import org.acegisecurity.providers.encoding.PasswordEncoder;
 
 import java.util.List;
 import java.util.Set;
@@ -32,12 +32,12 @@ public class UserManagerImpl
         extends HibernateDaoSupport
         implements UserManager {
 
-    private PasswordEncoder passwordEncoder;
-
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder)
-    {
-        this.passwordEncoder = passwordEncoder;
-    }
+//    private PasswordEncoder passwordEncoder;
+//
+//    public void setEncoder(PasswordEncoder passwordEncoder)
+//    {
+//        this.passwordEncoder = passwordEncoder;
+//    }
 
     public List<User> getAllUsers() {
         return getHibernateTemplate().find("from com.wisemapping.model.User user");
@@ -93,13 +93,13 @@ public class UserManagerImpl
 
     public void createUser(User user) {
         assert user != null : "Trying to store a null user";
-        user.setPassword(passwordEncoder.encodePassword(user.getPassword(),null));
+//        user.setPassword(passwordEncoder.encodePassword(user.getPassword(),null));
         getHibernateTemplate().saveOrUpdate(user);
     }
 
     public User createUser(User user, Colaborator col)
     {
-        user.setPassword(passwordEncoder.encodePassword(user.getPassword(),null));
+//        user.setPassword(passwordEncoder.encodePassword(user.getPassword(),null));
         assert user != null : "Trying to store a null user";
 
         final Set<MindmapUser> set = col.getMindmapUsers();
@@ -124,7 +124,7 @@ public class UserManagerImpl
 
     public void updateUser(User user) {
         assert user != null : "user is null";
-        user.setPassword(passwordEncoder.encodePassword(user.getPassword(),null));
+//        user.setPassword(passwordEncoder.encodePassword(user.getPassword(),null));
         getHibernateTemplate().update(user);
     }
 

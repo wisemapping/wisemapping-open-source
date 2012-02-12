@@ -16,7 +16,7 @@
         <dependency>
             <groupId>org.wisemapping</groupId>
             <artifactId>web2d</artifactId>
-            <version>3.0-SNAPSHOT</version>
+            <version>${com.wisemapping.version}</version>
             <scope>runtime</scope>
         </dependency>
         <!-- <dependency>

@@ -123,7 +123,7 @@
     </bean>
 
     <bean id="userController" class="com.wisemapping.controller.UserController">
-        <property name="captchaService" ref="captchaService"/>
+        <!--<property name="captchaService" ref="captchaService"/>-->
         <property name="sessionForm" value="false"/>
         <property name="commandName" value="user"/>
         <property name="commandClass" value="com.wisemapping.view.UserBean"/>
@@ -279,9 +279,9 @@
         <property name="mindmapService" ref="mindmapService"/>
     </bean>
 
-    <bean id="captchaController" class="com.wisemapping.controller.CaptchaController">
-        <property name="captchaService" ref="captchaService"/>
-    </bean>
+    <!--<bean id="captchaController" class="com.wisemapping.controller.CaptchaController">-->
+        <!--<property name="captchaService" ref="captchaService"/>-->
+    <!--</bean>-->
 
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="interceptors">
@@ -297,7 +297,6 @@
                 <prop key="/c/sharing.htm">sharingController</prop>
                 <prop key="/c/home.htm">homeController</prop>
                 <prop key="/c/login.htm">loginController</prop>
-                <prop key="/c/captcha.htm">captchaController</prop>
                 <prop key="/c/forgotPassword.htm">forgotPasswordController</prop>
                 <prop key="/c/activation.htm">activationController</prop>
                 <prop key="/c/changePassword.htm">changePasswordController</prop>

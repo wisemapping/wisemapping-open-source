@@ -19,23 +19,21 @@
 package com.wisemapping.security;
 
 import com.wisemapping.dao.UserManager;
-import org.acegisecurity.userdetails.UserDetailsService;
-import org.acegisecurity.userdetails.UsernameNotFoundException;
-import org.acegisecurity.userdetails.UserDetails;
-import org.acegisecurity.providers.encoding.PasswordEncoder;
-import org.acegisecurity.providers.encoding.Md5PasswordEncoder;
-import org.acegisecurity.providers.dao.SaltSource;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public class DatabaseUserDetailService
         implements UserDetailsService {
     private UserManager userManager;
 
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException, DataAccessException {
+    @Override
+    public UserDetails loadUserByUsername(@NotNull String email) throws UsernameNotFoundException, DataAccessException {
         final com.wisemapping.model.User model = userManager.getUserBy(email);
 
         if (model != null) {
-            return new User(model);
+            return new UserDetails(model);
         } else {
             throw new UsernameNotFoundException(email);
         }

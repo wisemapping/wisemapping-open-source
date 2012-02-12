@@ -18,21 +18,20 @@
 
 package com.wisemapping.security;
 
-import org.acegisecurity.providers.encoding.PasswordEncoder;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 
 public class CustomPasswordEncoder
     implements PasswordEncoder
 {
-    private PasswordEncoder delegateEncoder;
+    private PasswordEncoder delegateEncoder = new ShaPasswordEncoder();
+
     private static final String ENC_PREFIX = "ENC:";
 
-    public void setDelegatedEncoder(PasswordEncoder delegateEncoder)
-    {
-        this.delegateEncoder = delegateEncoder;
-    }
-    
-    public String encodePassword(String rawPass, Object salt) throws DataAccessException {
+    public String encodePassword(@NotNull String rawPass, @Nullable Object salt) throws DataAccessException {
 
         String password = rawPass;
         if (!rawPass.startsWith(ENC_PREFIX))
@@ -43,7 +42,7 @@ public class CustomPasswordEncoder
         return password;
     }
 
-    public boolean isPasswordValid(String encPass, String rawPass, Object salt) throws DataAccessException {
+    public boolean isPasswordValid(@NotNull String encPass, @NotNull String rawPass, Object salt) throws DataAccessException {
 
         String pass1 = "" + encPass;
         String pass2 = rawPass;
@@ -53,7 +52,6 @@ public class CustomPasswordEncoder
 
             pass2 = encodePassword(rawPass, salt);
         }
-
-        return pass1.equals(pass2);
+      return pass1.equals(pass2);
     }
 }

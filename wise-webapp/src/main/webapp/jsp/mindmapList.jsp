@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../css/mymaps.css"/>
     <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
-    <script type='text/javascript' src='../js/libraries/mootools/mootools-core-1.3.2-full-compress.js'></script>
+    <script type='text/javascript' src='../js/mootools-core.js'></script>
 </head>
 <body>
 <div class="content">

@@ -1,3 +1,3 @@
 <%
-    response.sendRedirect(request.getContextPath() + "/c/login.htm");
+    response.sendRedirect(request.getContextPath() + "/c/mymaps.htm");
 %>

@@ -15,7 +15,7 @@
 
     <bean id="shaPasswordEncoder" class="org.acegisecurity.providers.encoding.ShaPasswordEncoder"/>
 
-    <bean id="passwordEncoder" class="com.wisemapping.security.CustomPasswordEncoder">
+    <bean id="encoder" class="com.wisemapping.security.CustomPasswordEncoder">
         <property name="delegatedEncoder" ref="shaPasswordEncoder"/>
     </bean>
 
@@ -154,7 +154,7 @@
         <!--</property>-->
         <!--</bean>-->
         <!--</property>-->
-        <property name="passwordEncoder" ref="passwordEncoder"/>
+        <property name="encoder" ref="encoder"/>
     </bean>
 
     <bean id="userDetailsService" class="com.wisemapping.security.DatabaseUserDetailService">

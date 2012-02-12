@@ -19,40 +19,38 @@
 package com.wisemapping.security;
 
 import com.wisemapping.model.User;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.acegisecurity.providers.AbstractAuthenticationToken;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.Authentication;
-
-
-public class Utils {
+final public class Utils {
     private Utils() {
     }
 
-    public static User getUser(final HttpServletRequest request) {
+    public static User getUser(@NotNull final HttpServletRequest request) {
 
         final AbstractAuthenticationToken token = (AbstractAuthenticationToken) request.getUserPrincipal();
         User result = null;
         if (token != null) {
-            final com.wisemapping.security.User user = (com.wisemapping.security.User) token.getPrincipal();
-            result = user.getModel();
+            final UserDetails userDetails = (UserDetails) token.getPrincipal();
+            result = userDetails.getUser();
         }
         return result;
     }
 
-    public static User getUser()
-    {
-        User user = null;
+    public static User getUser() {
+        User result = null;
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.getDetails() != null)
         {
             final Object principal = auth.getPrincipal();
-            if (principal != null && principal instanceof com.wisemapping.security.User) {
-                user = ((com.wisemapping.security.User)principal).getModel();
+            if (principal != null && principal instanceof UserDetails) {
+                result = ((UserDetails)principal).getUser();
             }
         }
-        return user;
+        return result;
     }
 }
