@@ -157,7 +157,7 @@
         <property name="encoder" ref="encoder"/>
     </bean>
 
-    <bean id="userDetailsService" class="com.wisemapping.security.DatabaseUserDetailService">
+    <bean id="userDetailsService" class="com.wisemapping.security.UserDetailService">
         <property name="userManager" ref="userManager"/>
     </bean>
 

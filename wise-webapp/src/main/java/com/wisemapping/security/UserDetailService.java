@@ -21,11 +21,11 @@ package com.wisemapping.security;
 import com.wisemapping.dao.UserManager;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.dao.DataAccessException;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-public class DatabaseUserDetailService
-        implements UserDetailsService {
+
+public class UserDetailService
+        implements org.springframework.security.core.userdetails.UserDetailsService {
     private UserManager userManager;
 
     @Override

@@ -21,6 +21,7 @@ public class AuthenticationProvider implements org.springframework.security.auth
     public Authentication authenticate(@NotNull final Authentication auth) throws AuthenticationException {
 
         // All your user authentication needs
+
         final String email = auth.getName();
         final User user = userManager.getUserBy(email);
         final String credentials = (String) auth.getCredentials();

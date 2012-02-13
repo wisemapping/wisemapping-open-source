@@ -12,25 +12,13 @@
 
     <!-- To enable @RequestMapping process on type level and method level -->
     <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
-    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
-
-    <bean id="jaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
-        <property name="classesToBeBound">
-            <list>
-                <value>com.wisemapping.model.User</value>
-            </list>
-        </property>
-    </bean>
-
-    <bean id="employees" class="org.springframework.web.servlet.view.xml.MarshallingView">
-        <constructor-arg ref="jaxbMarshaller"/>
-    </bean>
 
     <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
         <property name="mediaTypes">
             <map>
                 <entry key="xml" value="application/xml"/>
                 <entry key="html" value="text/html"/>
+                <entry key="json" value="application/json"/>
             </map>
         </property>
         <property name="viewResolvers">
@@ -39,16 +27,42 @@
 
                 <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
                     <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-                    <property name="prefix" value="/WEB-INF/jsp-rest"/>
+                    <property name="prefix" value="/WEB-INF/jsp-rest/"/>
                     <property name="suffix" value=".jsp"/>
                 </bean>
             </list>
         </property>
     </bean>
 
-    <!--bean id="viewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver" /-->
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="jsonConverter"/>
+                <ref bean="marshallingConverter"/>
+            </list>
+        </property>
+    </bean>
 
-    <bean id="employeeController" class="com.wisemapping.rest.UserController">
-        <property name="jaxb2Mashaller" ref="jaxbMarshaller"/>
+    <bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+        <property name="supportedMediaTypes" value="application/json"/>
+    </bean>
+
+
+    <bean id="marshallingConverter" class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+        <constructor-arg ref="jaxbMarshaller"/>
+        <property name="supportedMediaTypes" value="application/xml"/>
+    </bean>
+
+    <bean id="jaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <property name="classesToBeBound">
+            <list>
+                <value>java.util.HashMap</value>
+            </list>
+        </property>
+    </bean>
+
+
+    <bean id="mindmapRestController" class="com.wisemapping.rest.MindmapController">
+        <property name="mindmapService" ref="mindmapService"/>
     </bean>
 </beans>

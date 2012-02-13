@@ -25,8 +25,7 @@ import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 
 public class CustomPasswordEncoder
-    implements PasswordEncoder
-{
+        implements PasswordEncoder {
     private PasswordEncoder delegateEncoder = new ShaPasswordEncoder();
 
     private static final String ENC_PREFIX = "ENC:";
@@ -34,9 +33,8 @@ public class CustomPasswordEncoder
     public String encodePassword(@NotNull String rawPass, @Nullable Object salt) throws DataAccessException {
 
         String password = rawPass;
-        if (!rawPass.startsWith(ENC_PREFIX))
-        {
-            password = ENC_PREFIX + delegateEncoder.encodePassword(rawPass,salt);
+        if (!rawPass.startsWith(ENC_PREFIX)) {
+            password = ENC_PREFIX + delegateEncoder.encodePassword(rawPass, salt);
         }
 
         return password;
@@ -47,11 +45,10 @@ public class CustomPasswordEncoder
         String pass1 = "" + encPass;
         String pass2 = rawPass;
 
-        if (pass1.startsWith(ENC_PREFIX))
-        {
+        if (pass1.startsWith(ENC_PREFIX)) {
 
             pass2 = encodePassword(rawPass, salt);
         }
-      return pass1.equals(pass2);
+        return pass1.equals(pass2);
     }
 }
