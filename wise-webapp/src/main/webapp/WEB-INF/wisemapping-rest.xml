@@ -2,67 +2,61 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
        xsi:schemaLocation="
 		http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-		http://www.springframework.org/schema/context 
-		http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.1.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
 
-    <context:component-scan base-package="dw.spring3.rest.controller"/>
+    <context:component-scan base-package="com.wisemapping.rest"/>
+    <context:annotation-config/>
+    <mvc:annotation-driven/>
+
 
     <!-- To enable @RequestMapping process on type level and method level -->
-    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
+    <!--<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>-->
+    <!--<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>-->
 
-    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+    <bean id="jaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <property name="classesToBeBound">
+            <list>
+                <value>com.wisemapping.rest.model.RestMindMap</value>
+            </list>
+        </property>
+    </bean>
+
+  <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <property name="defaultContentType" value="application/json"/>
+        <property name="favorPathExtension" value="true"/>
         <property name="mediaTypes">
             <map>
                 <entry key="xml" value="application/xml"/>
                 <entry key="html" value="text/html"/>
                 <entry key="json" value="application/json"/>
+                <entry key="pdf" value="application/pdf"/>
+                <entry key="png" value="application/pdf"/>
             </map>
         </property>
         <property name="viewResolvers">
             <list>
-                <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
-
-                <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+                <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
                     <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
                     <property name="prefix" value="/WEB-INF/jsp-rest/"/>
                     <property name="suffix" value=".jsp"/>
                 </bean>
             </list>
         </property>
-    </bean>
-
-    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-        <property name="messageConverters">
+        <property name="defaultViews">
             <list>
-                <ref bean="jsonConverter"/>
-                <ref bean="marshallingConverter"/>
+                <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"/>
+                <bean class="org.springframework.web.servlet.view.xml.MarshallingView">
+                    <constructor-arg ref="jaxbMarshaller"/>
+                </bean>
             </list>
         </property>
     </bean>
 
-    <bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
-        <property name="supportedMediaTypes" value="application/json"/>
-    </bean>
-
-
-    <bean id="marshallingConverter" class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
-        <constructor-arg ref="jaxbMarshaller"/>
-        <property name="supportedMediaTypes" value="application/xml"/>
-    </bean>
-
-    <bean id="jaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
-        <property name="classesToBeBound">
-            <list>
-                <value>java.util.HashMap</value>
-            </list>
-        </property>
-    </bean>
-
-
-    <bean id="mindmapRestController" class="com.wisemapping.rest.MindmapController">
-        <property name="mindmapService" ref="mindmapService"/>
-    </bean>
 </beans>
