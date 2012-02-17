@@ -28,21 +28,22 @@
         </property>
     </bean>
 
-  <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
         <property name="defaultContentType" value="application/json"/>
         <property name="favorPathExtension" value="true"/>
         <property name="mediaTypes">
             <map>
-                <entry key="xml" value="application/xml"/>
+                <entry key="xml" value="text/xml"/>
                 <entry key="html" value="text/html"/>
                 <entry key="json" value="application/json"/>
                 <entry key="pdf" value="application/pdf"/>
-                <entry key="png" value="application/pdf"/>
+                <entry key="png" value="application/png"/>
             </map>
         </property>
         <property name="viewResolvers">
             <list>
-                <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+                <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
+                <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
                     <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
                     <property name="prefix" value="/WEB-INF/jsp-rest/"/>
                     <property name="suffix" value=".jsp"/>
@@ -58,5 +59,22 @@
             </list>
         </property>
     </bean>
+
+    <bean id="transformViewPdf" class="com.wisemapping.rest.view.TransformView">
+        <constructor-arg value="application/pdf"/>
+    </bean>
+
+    <bean id="transformViewPng" class="com.wisemapping.rest.view.TransformView">
+        <constructor-arg value="image/png"/>
+    </bean>
+
+    <bean id="transformViewJpeg" class="com.wisemapping.rest.view.TransformView">
+        <constructor-arg value="image/jpeg"/>
+    </bean>
+
+    <bean id="transformViewFreemind" class="com.wisemapping.rest.view.TransformView">
+        <constructor-arg value="application/freemind"/>
+    </bean>
+
 
 </beans>

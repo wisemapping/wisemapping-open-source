@@ -18,14 +18,15 @@
 
 package com.wisemapping.exporter;
 
+import org.jetbrains.annotations.NotNull;
+
 public enum ExportFormat {
     SVG("image/svg+xml", "svg"),
     JPEG("image/jpeg", "jpg"),
     PNG("image/png", "png"),
-    MINDJET("text/xml", "xml"),
     PDF("application/pdf", "pdf"),
-    FREEMIND("text/xml", "mm");
-    
+    FREEMIND("application/freemind", "mm");
+
     private String contentType;
     private String fileExtension;
 
@@ -40,5 +41,15 @@ public enum ExportFormat {
 
     public String getContentType() {
         return contentType;
+    }
+
+    public static ExportFormat fromContentType(@NotNull final String contentType) {
+        final ExportFormat[] values = ExportFormat.values();
+        for (ExportFormat value : values) {
+            if (value.getContentType().equals(contentType)) {
+                return value;
+            }
+        }
+        throw new IllegalStateException("ComponentType could not be mapped:" + contentType);
     }
 }

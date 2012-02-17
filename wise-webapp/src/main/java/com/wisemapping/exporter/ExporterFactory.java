@@ -55,7 +55,7 @@ public class ExporterFactory {
 
     }
 
-    public static void export(@NotNull ExportProperties properties, @Nullable MindMap map, @NotNull OutputStream output, @NotNull String mapSvg) throws TranscoderException, IOException, ParserConfigurationException, SAXException, XMLStreamException, TransformerException, JAXBException, ExportException {
+    public static void export(@NotNull ExportProperties properties, @NotNull String xml, @NotNull OutputStream output, @NotNull String mapSvg) throws TranscoderException, IOException, ParserConfigurationException, SAXException, XMLStreamException, TransformerException, JAXBException, ExportException {
         final ExportFormat format = properties.getFormat();
 
         final String imgPath = properties.getBaseImgPath();
@@ -122,7 +122,7 @@ public class ExporterFactory {
             }
             case FREEMIND: {
                 final FreemindExporter exporter = new FreemindExporter();
-                exporter.export(map.getUnzippedXml().getBytes(), output);
+                exporter.export(xml.getBytes(), output);
                 break;
             }
             default:

@@ -102,7 +102,7 @@ public class ExportController extends BaseMultiActionController {
 
                 // Change image link URL.
                 setBaseBaseImgUrl(format, properties);
-                ExporterFactory.export(properties, mindMap, bos, mapSvg);
+                ExporterFactory.export(properties, mindMap.getUnzippedXml(), bos, mapSvg);
 
                 // If the export goes ok, write the map to the stream ...
 
