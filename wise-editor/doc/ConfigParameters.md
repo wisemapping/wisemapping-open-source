@@ -25,7 +25,7 @@ An example config may look like this::
 The options are:
 
 * readOnly: Set to true if the viewer should not be able to edit the map.
-* zoom: how much the map should be zoomed.
+* zoom: how much the map should be zoomed. Range: 0.3 - 1.9. 0.3 = largest text.
 * size: size of the map area.
 * viewPort: set this to the same as the size
 * persistenceManager: Classname of a class that extends mindplot.PersistenceManager (see ImplementingPersistence for more info.)
