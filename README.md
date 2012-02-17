@@ -36,6 +36,13 @@ This will start the application on the URL: http://localhost:8080/wise-webapp/. 
 
 User: test@wisemapping.org
 
+
+## Running the JS only version
+
+Start by creating the .zip file: 
+
+`mvn assembly:assembly -Dmaven.test.skip=true`
+
 ## Author
 
    * Pablo Luna

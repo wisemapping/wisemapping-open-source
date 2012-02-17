@@ -27,8 +27,20 @@ The options are:
 * readOnly: Set to true if the viewer should not be able to edit the map.
 * zoom: how much the map should be zoomed.
 * size: size of the map area.
-* viewport
+* viewPort: set this to the same as the size
 * persistenceManager: Classname of a class that extends mindplot.PersistenceManager (see ImplementingPersistence for more info.)
 * mapId: The id of the map
 * container: The id of the containing div.
+
+Viewport and size should be set like this::
+
+        var containerSize = {
+            height: parseInt(screen.height),
+            width:  parseInt(screen.width)
+        };
+
+        var viewPort = {
+            height: parseInt(window.innerHeight - 70), // Footer and Header
+            width:  parseInt(window.innerWidth)
+        };
 
