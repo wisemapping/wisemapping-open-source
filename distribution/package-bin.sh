@@ -8,7 +8,7 @@ BASE_DIR=`pwd`
 TARGET_DIR=$BASE_DIR/target
 JETTY_DIR=$TARGET_DIR/wisemapping-$WISE_VERSION
 WISE_WEBAPP_DIR=$JETTY_DIR/webapps/wisemapping
-JETTY_DIST_DIR=jetty-distribution-7.4.3.v20110701
+JETTY_DIST_DIR=jetty-distribution-7.6.0.v20120127
 JETTY_ZIP=${JETTY_DIST_DIR}.zip
 
 # Clean ...
