@@ -1,91 +1,21 @@
 @import "compatibility.less";
 @import "../css/libraries/moodialog/css/MooDialog.css";
 
-
-/**********************************************************/
-/* Error Dialog ... */
-/**********************************************************/
-
-#waitDialog {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    height: 200px;
-}
-
-#waitingContainer, #errorContainer {
-    position: relative;
-    top: 80px;
-    height: 120px; /*background: whitesmoke;*/
-    background: #FEFEFE;
-    opacity: .99;
-    padding: 15px;
-    width: 100%;
-    border: 1px solid;
-    border-color: #a9a9a9;
-
-}
-
-#errorContainer {
-    width: 400px;
-    border: 1px solid red;
-}
-
-#waitingContainer .loadingText {
-    position: relative;
-    top: 50%;
-    margin-top: -35px;
-    font-size: 30px;
-    font-weight: bold;
-    vertical-align: text-bottom;
-    height: 30px;
-    float: left;
-}
-
-#errorContainer .loadingText {
-    position: relative;
-    top: 50%;
-    margin-top: -80px;
-    font-size: 15px;
-    font-weight: bold;
-    vertical-align: text-bottom;
-    height: 30px;
-    float: right;
-    padding-left: 120px;
-}
-
-#waitingContainer .loadingIcon {
-    position: relative;
-    background: url(../images/rebota.gif) no-repeat;
-    top: 50%;
-    margin-top: -65px;
-    height: 100px;
-    width: 121px;
-    float: left;
-    clear: both;
-}
-
-#errorContainer .loadingIcon {
-    position: relative;
-    background: url(../images/errorIcon.png) no-repeat;
-    top: 50%;
-    margin-top: -65px;
-    height: 100px;
-    width: 121px;
-    float: left;
-    clear: both;
-}
-
 /********************************************************************************/
 /* Header & Toolbar Styles */
 /********************************************************************************/
 @import "header.less";
+
+body {
+    overflow:hidden;
+}
 
 div#mindplot {
     position: relative;
     top: 0;
     left: 0;
     width: 100%;
+    height:100%;
     border: 0;
 }
 
