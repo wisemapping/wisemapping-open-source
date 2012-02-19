@@ -19,10 +19,11 @@
 mindplot.widget.Menu = new Class({
     Extends: mindplot.widget.IMenu,
 
-    initialize : function(designer, containerId, mapId, readOnly) {
+    initialize : function(designer, containerId, mapId, readOnly, baseUrl) {
         this.parent(designer, containerId, mapId);
 
-        var baseUrl = "../css/widget";
+        baseUrl = !$defined(baseUrl) ? "../" : baseUrl;
+        var widgetsBaseUrl = baseUrl + "css/widget";
 
         // Stop event propagation ...
         $(this._containerId).addEvent('click', function(event) {
@@ -130,7 +131,7 @@ mindplot.widget.Menu = new Class({
                 designer.changeBackgroundColor(hex);
             }
         };
-        this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('topicColor', topicColorModel, baseUrl));
+        this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('topicColor', topicColorModel, widgetsBaseUrl));
 
         // Border color item ...
         var borderColorModel =
@@ -152,7 +153,7 @@ mindplot.widget.Menu = new Class({
                 designer.changeBorderColor(hex);
             }
         };
-        this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('topicBorder', borderColorModel, baseUrl));
+        this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('topicBorder', borderColorModel, widgetsBaseUrl));
 
         // Font color item ...
         var fontColorModel =
