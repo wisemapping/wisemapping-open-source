@@ -17,17 +17,17 @@ import java.util.Date;
 
 @XmlRootElement(name = "map")
 @XmlAccessorType(XmlAccessType.PROPERTY)
-public class RestMindMap {
+public class RestMindmap {
 
     @JsonIgnore
     private MindMap mindmap;
 
-    public RestMindMap() {
+    public RestMindmap() {
         this(null);
 
     }
 
-    public RestMindMap(@NotNull MindMap mindmap) {
+    public RestMindmap(@NotNull MindMap mindmap) {
         this.mindmap = mindmap;
     }
 

@@ -28,6 +28,7 @@ public class TransformView extends AbstractView {
     protected void renderMergedOutputModel(@NotNull Map<String, Object> viewMap, @NotNull HttpServletRequest request, @NotNull final HttpServletResponse response) throws Exception {
 
         final String content = (String) viewMap.get("content");
+        final String filename = (String) viewMap.get("filename");
 
         // Build format properties ...
         final ExportProperties properties = ExportProperties.create(exportFormat);
@@ -57,7 +58,7 @@ public class TransformView extends AbstractView {
         response.setContentType(contentType);
 
         // Set file name...
-        final String fileName = "map" + "." + exportFormat.getFileExtension();
+        final String fileName = (filename != null ? filename : "map" + ".") + exportFormat.getFileExtension();
         response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
 
         // Write content ...

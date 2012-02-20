@@ -30,9 +30,11 @@
     <sec:http pattern="/dwr/interface/loggerservice.js" security="none"/>
     <sec:http pattern="/dwr/call/plaincall/loggerservice.logerror.dwr" security="none"/>
 
+    <sec:http pattern="/service/transform.*" security="none"/>
     <sec:http use-expressions="true" create-session="stateless" entry-point-ref="digestEntryPoint"
               pattern="/service/**">
         <sec:intercept-url pattern="/service/**" access="isAuthenticated()"/>
+
         <sec:http-basic/>
         <sec:custom-filter ref="digestFilter" after="BASIC_AUTH_FILTER"/>
     </sec:http>
