@@ -29,14 +29,11 @@
     <sec:http pattern="/dwr/engine.js" security="none"/>
     <sec:http pattern="/dwr/interface/loggerservice.js" security="none"/>
     <sec:http pattern="/dwr/call/plaincall/loggerservice.logerror.dwr" security="none"/>
-
     <sec:http pattern="/service/transform.*" security="none"/>
-    <sec:http use-expressions="true" create-session="stateless" entry-point-ref="digestEntryPoint"
-              pattern="/service/**">
-        <sec:intercept-url pattern="/service/**" access="isAuthenticated()"/>
 
+    <sec:http use-expressions="true" create-session="never"  pattern="/service/**">
+        <sec:intercept-url pattern="/service/**" access="isAuthenticated()"/>
         <sec:http-basic/>
-        <sec:custom-filter ref="digestFilter" after="BASIC_AUTH_FILTER"/>
     </sec:http>
 
     <sec:http use-expressions="true">
@@ -60,18 +57,5 @@
 
     <bean id="userDetailsService" class="com.wisemapping.security.UserDetailService">
         <property name="userManager" ref="userManager"/>
-    </bean>
-
-    <bean id="digestFilter" class="org.springframework.security.web.authentication.www.DigestAuthenticationFilter">
-        <property name="userDetailsService" ref="userDetailsService"/>
-        <property name="authenticationEntryPoint" ref="digestEntryPoint"/>
-    </bean>
-
-    <bean id="digestEntryPoint"
-          class="org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint">
-        <property name="realmName" value="Wise Contacts Realm via Digest Authentication"/>
-        <property name="key" value="wisemapping-digest"/>
-        <property name="nonceValiditySeconds" value="10"/>
-
     </bean>
 </beans>

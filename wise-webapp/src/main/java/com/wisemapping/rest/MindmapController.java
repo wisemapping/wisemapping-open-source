@@ -5,6 +5,7 @@ import com.wisemapping.model.MindMap;
 import com.wisemapping.model.MindmapUser;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestMindmap;
+import com.wisemapping.rest.model.RestMindmapList;
 import com.wisemapping.service.MindmapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -30,13 +32,17 @@ public class MindmapController {
         return new ModelAndView("mapView", "map", map);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/maps")
+    @RequestMapping(method = RequestMethod.GET, value = "/maps", produces = {"text/xml", "application/json", "text/html"})
     public ModelAndView getMindmaps() throws IOException {
         final User user = com.wisemapping.security.Utils.getUser();
 
-        final List<MindmapUser> list = mindmapService.getMindmapUserByUser(user);
-//        final RestMindMap map = new RestMindmap(mindMap);
-//        return new ModelAndView("mapView", "map", map);
-        return null;
+        final List<MindmapUser> mapsByUser = mindmapService.getMindmapUserByUser(user);
+        final List<MindMap> mindmaps = new ArrayList<MindMap>();
+        for (MindmapUser mindmapUser : mapsByUser) {
+            mindmaps.add(mindmapUser.getMindMap());
+        }
+
+        final RestMindmapList restMindmapList = new RestMindmapList(mindmaps);
+        return new ModelAndView("mapsView", "list", restMindmapList);
     }
 }
