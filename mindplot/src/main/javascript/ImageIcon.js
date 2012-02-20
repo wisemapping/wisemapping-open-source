@@ -53,7 +53,7 @@ mindplot.ImageIcon = new Class({
     },
 
     _getImageUrl : function(iconId) {
-        return "../icons/" + iconId + ".png";
+        return "icons/" + iconId + ".png";
     },
 
     getModel : function() {

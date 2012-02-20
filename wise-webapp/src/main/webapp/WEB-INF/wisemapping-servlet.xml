@@ -16,7 +16,7 @@
                 <value>/c/userRegistration.htm</value>
                 <value>/c/captcha.htm</value>
                 <value>/c/publicView.htm</value>
-                <value>/c/export.htm</value>
+                <value>/service/*</value>
                 <value>/c/search.htm</value>
                 <value>/c/keyboard.htm</value>
                 <value>/c/renameMap.htm</value>

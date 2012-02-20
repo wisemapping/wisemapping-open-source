@@ -49,7 +49,7 @@ function buildDesigner(options) {
 
     // Register toolbar event ...
     if ($('toolbar')) {
-        var menu = new mindplot.widget.Menu(designer, 'toolbar');
+        var menu = new mindplot.widget.Menu(designer, 'toolbar',"");
 
         //  If a node has focus, focus can be move to another node using the keys.
         designer._cleanScreen = function() {
@@ -150,7 +150,7 @@ editor.WaitDialog = new Class({
             'text-align':'center',
             width: '400px'
         });
-        var img = new Element('img', {'src': '../images/ajax-loader.gif'});
+        var img = new Element('img', {'src': 'images/ajax-loader.gif'});
         img.inject(result);
         return result;
     },
@@ -165,11 +165,11 @@ editor.Help = {
     buildHelp:function(panel) {
         var container = new Element('div');
         container.setStyles({width:'100%', textAlign:'center'});
-        var content1 = Help.buildContentIcon('../images/black-keyboard.png', 'Keyboard Shortcuts', function() {
+        var content1 = Help.buildContentIcon('images/black-keyboard.png', 'Keyboard Shortcuts', function() {
             MOOdalBox.open('keyboard.htm', 'KeyBoard Shortcuts', '500px 400px', false);
             panel.hidePanel();
         });
-        var content2 = Help.buildContentIcon('../images/firstSteps.png', 'Editor First Steps', function() {
+        var content2 = Help.buildContentIcon('images/firstSteps.png', 'Editor First Steps', function() {
             var wOpen;
             var sOptions;
 
@@ -233,4 +233,4 @@ waitDialog = new editor.WaitDialog();
 waitDialog.show();
 
 // Loading libraries ...
-Asset.javascript("../js/mindplot-min.js");
+Asset.javascript("js/mindplot-min.js");

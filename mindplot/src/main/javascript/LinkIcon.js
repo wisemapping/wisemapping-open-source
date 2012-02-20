@@ -52,6 +52,6 @@ mindplot.LinkIcon = new Class({
         actionDispatcher.removeLinkFromTopic(this._topic.getId());
     }
 });
-mindplot.LinkIcon.IMAGE_URL = "../images/links.png";
+mindplot.LinkIcon.IMAGE_URL = "images/links.png";
 
  
