@@ -59,7 +59,7 @@ mindplot.widget.IMenu = new Class({
             onError: function() {
                 if (saveHistory) {
                     saveElem.setStyle('cursor', 'pointer');
-                    $notify("Save could not be completed. Try latter");
+                    $notify("Save could not be completed. Try latter.");
                 }
             }
         });

@@ -94,7 +94,7 @@
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="XMLMindmapSerializerFactory.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="PersistenceManager.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="DwrPersistenceManager.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="RestPersistenceManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="LocalStorageManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="EditorProperties.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="IconGroup.js"/>

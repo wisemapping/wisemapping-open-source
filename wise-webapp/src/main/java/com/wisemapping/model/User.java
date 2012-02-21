@@ -18,11 +18,9 @@
 
 package com.wisemapping.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.*;
 
-@XmlRootElement(name = "user")
 public class User
         extends Collaborator
         implements Serializable {

@@ -16,66 +16,40 @@
  *   limitations under the License.
  */
 
-mindplot.DwrPersitenceManager = new Class({
+mindplot.RESTPersistenceManager = new Class({
         Extends:mindplot.PersistenceManager,
-        initialize: function() {
+        initialize: function(saveUrl) {
             this.parent();
+            $assert(saveUrl, "saveUrl can not be null");
+            this.saveUrl = saveUrl;
         },
 
         saveMapXml : function(mapId, mapXml, pref, saveHistory, events) {
-            window.MapEditorService.saveMap(mapId, mapXml, pref, saveHistory, {
-                    callback:function(response) {
-                        if (response.msgCode != "OK") {
-                            events.onError(response);
-                        } else {
-                            events.onSuccess(response);
-                        }
-                    },
 
-                    errorHandler:function(message) {
-                        events.onError(message);
-                    },
-                    verb:"POST",
-                    async: true
-                }
-            )
-        },
+            var data = {
+                id:mapId,
+                xml: mapXml,
+                properties: pref
+            };
 
-        loadMapDom : function(mapId) {
-            $assert(mapId, "mapId can not be null");
-            throw "This must be implemented";
+            var request = new Request({
+                url:this.saveUrl + mapId,
+                method: 'put',
+                onSuccess:function(responseText, responseXML) {
+                    events.onSuccess();
 
-//            var result = {r:null};
-//            window.MapEditorService.loadMap(mapId, {
-//                callback:function(response) {
-//
-//                    if (response.msgCode == "OK") {
-//                        // Explorer Hack with local files ...
-//                        var xmlContent = response.content;
-//                        var domDocument = core.Utils.createDocumentFromText(xmlContent);
-//                        var serializer = mindplot.XMLMindmapSerializerFactory.getSerializerFromDocument(domDocument);
-//                        var mindmap = serializer.loadFromDom(domDocument);
-//                        mindmap.setId(mapId);
-//
-//                        result.r = mindmap;
-//                    } else {
-//                        // Handle error message ...
-//                        var msg = response.msgDetails;
-//                        var monitor = core.ToolbarNotifier.getInstance();
-//                        monitor.logFatal("We're sorry, an error has occurred and we can't load your map. Please try again in a few minutes.");
-////                wLogger.error(msg);
-//                    }
-//                },
-//                verb:"GET",
-//                async: false,
-//                errorHandler:function(msg) {
-//                    var monitor = core.ToolbarNotifier.getInstance();
-//                    monitor.logFatal("We're sorry, an error has occurred and we can't load your map. Please try again in a few minutes.");
-////            wLogger.error(msg);
-//                }
-//            });
-//
-//            return result.r;
+                },
+                onException:function(headerName, value) {
+                    events.onError();
+                },
+                onFailure:function(xhr) {
+                    events.onError();
+                },
+                headers: {"Content-Type":"application/json","Accept":"application/json"},
+                emulation:false,
+                urlEncoded:false
+            });
+            request.put(JSON.encode(data));
         }
     }
 );

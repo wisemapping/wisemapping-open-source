@@ -14,7 +14,7 @@ activationCode BIGINT NOT NULL,
 activation_date DATE,
 allowSendEmail CHAR(1) NOT NULL,
 FOREIGN KEY(colaborator_id) REFERENCES colaborator(id)
-) ;
+);
 
 CREATE TABLE MINDMAP (
 id INTEGER NOT NULL IDENTITY,

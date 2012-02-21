@@ -40,7 +40,12 @@ function buildDesigner(options) {
     // Configure default persistence manager ...
     var persistence;
     if (options.persistenceManager) {
-        persistence = eval("new " + options.persistenceManager + "()");
+        if(options.persistenceManager instanceof String) {
+             persistence = eval("new " + options.persistenceManager + "()");
+        }
+        else {
+           persistence = options.persistenceManager;
+        }
 
     } else {
         persistence = new mindplot.LocalStorageManager();
