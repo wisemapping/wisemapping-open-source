@@ -25,7 +25,6 @@ public class User
         extends Collaborator
         implements Serializable {
 
-    private static final String ADMIN_EMAIL = "test@wisemapping.org";
     private String firstname;
     private String lastname;
     private String password;
@@ -131,9 +130,5 @@ public class User
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public boolean isAdmin() {
-        return ADMIN_EMAIL.equals(this.getEmail());
     }
 }

@@ -20,23 +20,29 @@ package com.wisemapping.security;
 
 import com.wisemapping.dao.UserManager;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 
-public class UserDetailService
+public class UserDetailsService
         implements org.springframework.security.core.userdetails.UserDetailsService {
     private UserManager userManager;
+    private String adminUser;
 
     @Override
     public UserDetails loadUserByUsername(@NotNull String email) throws UsernameNotFoundException, DataAccessException {
         final com.wisemapping.model.User model = userManager.getUserBy(email);
 
         if (model != null) {
-            return new UserDetails(model);
+            return new UserDetails(model, isAdmin(email));
         } else {
             throw new UsernameNotFoundException(email);
         }
+    }
+
+    private boolean isAdmin(@Nullable String email) {
+        return email != null && adminUser != null && email.trim().endsWith(adminUser);
     }
 
     public UserManager getUserManager() {
@@ -47,4 +53,11 @@ public class UserDetailService
         this.userManager = userManager;
     }
 
+    public String getAdminUser() {
+        return adminUser;
+    }
+
+    public void setAdminUser(String adminUser) {
+        this.adminUser = adminUser;
+    }
 }

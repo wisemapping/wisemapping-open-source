@@ -28,14 +28,16 @@ import java.util.Collection;
 
 public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
     private com.wisemapping.model.User user;
+    private boolean isAdmin;
 
-    public UserDetails(@NotNull final com.wisemapping.model.User user) {
+    public UserDetails(@NotNull final com.wisemapping.model.User user, boolean isAdmin) {
         this.user = user;
+        this.isAdmin = isAdmin;
     }
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         final Collection<GrantedAuthority> result = new ArrayList<GrantedAuthority>();
-        if(this.getUser().isAdmin()) {
+        if (this.isAdmin) {
             final SimpleGrantedAuthority role_admin = new SimpleGrantedAuthority("ROLE_ADMIN");
             result.add(role_admin);
         }

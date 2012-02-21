@@ -8,6 +8,11 @@
           http://www.springframework.org/schema/security
           http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="/WEB-INF/app.properties"/>
+    </bean>
+
+
     <bean id="encoder"
           class="com.wisemapping.security.CustomPasswordEncoder"/>
 
@@ -50,11 +55,13 @@
     </sec:authentication-manager>
 
     <bean id="dbAuthenticationProvider" class="com.wisemapping.security.AuthenticationProvider">
-        <property name="userManager" ref="userManager"/>
+        <property name="userDetailsService" ref="userDetailsService"/>
         <property name="encoder" ref="encoder"/>
     </bean>
 
-    <bean id="userDetailsService" class="com.wisemapping.security.UserDetailService">
+    <bean id="userDetailsService" class="com.wisemapping.security.UserDetailsService">
         <property name="userManager" ref="userManager"/>
+        <property name="adminUser" value="${admin.user}"/>
+
     </bean>
 </beans>
