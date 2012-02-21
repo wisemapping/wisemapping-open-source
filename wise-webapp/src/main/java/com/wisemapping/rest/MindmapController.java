@@ -9,7 +9,6 @@ import com.wisemapping.rest.model.RestMindmap;
 import com.wisemapping.rest.model.RestMindmapList;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapService;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -48,8 +47,8 @@ public class MindmapController {
         return new ModelAndView("mapsView", "list", restMindmapList);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}", consumes = {"application/xml", "application/json"},produces = {"application/json", "text/html", "application/xml"})
-    public ModelAndView updateMap(@RequestBody RestMindmap restMindmap, @PathVariable int id) throws IOException, WiseMappingException {
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
+    public ModelAndView updateMap(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor) throws IOException, WiseMappingException {
 
         final MindMap mindMap = mindmapService.getMindmapById(id);
         final User user = Utils.getUser();
@@ -67,8 +66,8 @@ public class MindmapController {
 
         final String xml = restMindmap.getXml();
         mindMap.setXmlStr(xml);
-        mindmapService.updateMindmap(mindMap, true);
+        mindmapService.updateMindmap(mindMap, minor);
 
-       return new ModelAndView("responseView", "message", "Map has been updated successfully");
+        return new ModelAndView("responseView", "message", "Map has been updated successfully");
     }
 }
