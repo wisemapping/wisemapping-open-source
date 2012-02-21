@@ -58,7 +58,7 @@ public class TransformView extends AbstractView {
         response.setContentType(contentType);
 
         // Set file name...
-        final String fileName = (filename != null ? filename : "map" + ".") + exportFormat.getFileExtension();
+        final String fileName = (filename != null ? filename : "map") + "." + exportFormat.getFileExtension();
         response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
 
         // Write content ...
@@ -79,7 +79,7 @@ public class TransformView extends AbstractView {
             baseUrl = "http://www.wisemapping.com/images";
         } else {
             final ServletContext servletContext = this.getServletContext();
-            baseUrl = "file://" + servletContext.getRealPath("/icons/") + "/";
+            baseUrl = "file://" + servletContext.getRealPath("/");
         }
         properties.setBaseImagePath(baseUrl);
     }
