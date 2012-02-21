@@ -26,7 +26,7 @@ public class MindmapController {
     @Autowired
     private MindmapService mindmapService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/xml", "application/json", "text/html"})
+    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/json", "text/html", "application/xml"})
     @ResponseBody
     public ModelAndView getMindmap(@PathVariable int id) throws IOException {
         final MindMap mindMap = mindmapService.getMindmapById(id);
@@ -34,7 +34,7 @@ public class MindmapController {
         return new ModelAndView("mapView", "map", map);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/maps", produces = {"application/xml", "application/json", "text/html"})
+    @RequestMapping(method = RequestMethod.GET, value = "/maps", produces = {"application/json", "text/html", "application/xml"})
     public ModelAndView getMindmaps() throws IOException {
         final User user = com.wisemapping.security.Utils.getUser();
 
@@ -48,7 +48,7 @@ public class MindmapController {
         return new ModelAndView("mapsView", "list", restMindmapList);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}", consumes = {"application/xml", "application/json"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}", consumes = {"application/xml", "application/json"},produces = {"application/json", "text/html", "application/xml"})
     public ModelAndView updateMap(@RequestBody RestMindmap restMindmap, @PathVariable int id) throws IOException, WiseMappingException {
 
         final MindMap mindMap = mindmapService.getMindmapById(id);
@@ -70,6 +70,5 @@ public class MindmapController {
         mindmapService.updateMindmap(mindMap, true);
 
        return new ModelAndView("responseView", "message", "Map has been updated successfully");
-
     }
 }

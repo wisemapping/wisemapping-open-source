@@ -44,6 +44,8 @@ public class UserManagerImpl
         return getHibernateTemplate().find("from com.wisemapping.model.User user");
     }
 
+
+    @Override
     public User getUserBy(final String email) {
         final User user;
         final List users = getHibernateTemplate().find("from com.wisemapping.model.User colaborator where email=?", email);
@@ -56,6 +58,7 @@ public class UserManagerImpl
         return user;
     }
 
+    @Override
     public Collaborator getCollaboratorBy(final String email) {
         final Collaborator cola;
         final List cols = getHibernateTemplate().find("from com.wisemapping.model.Collaborator colaborator where email=?", email);
@@ -68,11 +71,11 @@ public class UserManagerImpl
         return cola;
     }
 
-    public User getUserBy(long id)
-    {
-        return (User)getHibernateTemplate().get(User.class,id);
+    public User getUserBy(long id) {
+        return getHibernateTemplate().get(User.class, id);
     }
 
+    @Override
     public User getUserByUsername(String username) {
         final User user;
         final List users = getHibernateTemplate().find("from com.wisemapping.model.User colaborator where username=?", username);
@@ -85,6 +88,7 @@ public class UserManagerImpl
         return user;
     }
 
+    @Override
     public boolean authenticate(final String email, final String password) {
         final boolean result;
         final User user = getUserBy(email);
@@ -92,20 +96,21 @@ public class UserManagerImpl
         return result;
     }
 
+    @Override
     public void createUser(User user) {
         assert user != null : "Trying to store a null user";
 //        user.setPassword(passwordEncoder.encodePassword(user.getPassword(),null));
         getHibernateTemplate().saveOrUpdate(user);
     }
 
-    public User createUser(@NotNull User user, @NotNull Collaborator col)
-    {
+    @Override
+    public User createUser(@NotNull User user, @NotNull Collaborator col) {
 //        user.setPassword(passwordEncoder.encodePassword(user.getPassword(),null));
         assert user != null : "Trying to store a null user";
 
         final Set<MindmapUser> set = col.getMindmapUsers();
         for (MindmapUser mindmapUser : set) {
-            MindmapUser newMapUser = new MindmapUser();            
+            MindmapUser newMapUser = new MindmapUser();
             newMapUser.setRoleId(mindmapUser.getRole().ordinal());
             newMapUser.setMindMap(mindmapUser.getMindMap());
             newMapUser.setCollaborator(user);
@@ -116,6 +121,14 @@ public class UserManagerImpl
         getHibernateTemplate().flush();
         getHibernateTemplate().saveOrUpdate(user);
         return user;
+    }
+
+    @Override
+    public void deleteUser(@NotNull User user) {
+        final Collaborator collaborator = this.getCollaboratorBy(user.getEmail());
+        getHibernateTemplate().delete(collaborator);
+        getHibernateTemplate().delete(user);
+        getHibernateTemplate().flush();
     }
 
     public void auditLogin(UserLogin userLogin) {

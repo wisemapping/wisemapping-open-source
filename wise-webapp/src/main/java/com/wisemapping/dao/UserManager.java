@@ -47,4 +47,7 @@ public interface UserManager {
     public Collaborator getCollaboratorBy(String email);
 
     public User createUser(User user, Collaborator col);
+
+    public void deleteUser(User user);
+
 }

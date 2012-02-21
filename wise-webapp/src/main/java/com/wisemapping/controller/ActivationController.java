@@ -43,7 +43,7 @@ public class ActivationController
         try
         {
             final String code = request.getParameter("code");
-            userService.activateAcount(Long.parseLong(code));
+            userService.activateAccount(Long.parseLong(code));
             modelAndView = new ModelAndView("activationAccountConfirmation");
         }
         catch (Throwable exc)
