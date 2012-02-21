@@ -73,7 +73,6 @@ public class ExportTest {
 
         final MindMap result = new MindMap();
         result.setXml(content.toString().getBytes("UTF-8"));
-        result.setNativeXml(content.toString());
         return result;
     }
 

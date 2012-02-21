@@ -20,6 +20,7 @@
             <list>
                 <value>com.wisemapping.rest.model.RestMindmap</value>
                 <value>com.wisemapping.rest.model.RestMindmapList</value>
+                <value>com.wisemapping.rest.model.RestUser</value>
             </list>
         </property>
     </bean>

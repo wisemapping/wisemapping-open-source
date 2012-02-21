@@ -51,8 +51,8 @@ public class NewMindmapController
         mindmap.setTitle(title);
         mindmap.setOwner(user);
 
-        final String defaultNativeMap = getDefaultMindmapXml(title);
-        mindmap.setNativeXml(defaultNativeMap);
+        final String xml = getDefaultMindmapXml(title);
+        mindmap.setXmlStr(xml);
 
         final User dbUSer = getUserService().getUserBy(user.getId());
 

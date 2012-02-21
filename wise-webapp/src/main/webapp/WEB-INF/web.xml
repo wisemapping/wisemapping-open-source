@@ -110,15 +110,6 @@
 
     </servlet>
 
-    <servlet>
-        <servlet-name>dwr-invoker</servlet-name>
-        <servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
-        <init-param>
-            <param-name>debug</param-name>
-            <param-value>true</param-value>
-        </init-param>
-    </servlet>
-
     <servlet-mapping>
         <servlet-name>mvc-servlet</servlet-name>
         <url-pattern>*.htm</url-pattern>
@@ -127,11 +118,6 @@
     <servlet-mapping>
         <servlet-name>mvc-rest</servlet-name>
         <url-pattern>/service/*</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>dwr-invoker</servlet-name>
-        <url-pattern>/dwr/*</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>

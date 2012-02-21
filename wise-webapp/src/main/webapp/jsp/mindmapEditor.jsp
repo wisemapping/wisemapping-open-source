@@ -33,7 +33,7 @@
 
             // Configure designer options ...
             var options = loadDesignerOptions();
-            options.persistenceManager = "mindplot.DwrPersitenceManager";
+            options.persistenceManager = new mindplot.RESTPersistenceManager("service/maps/");
             var userOptions = ${mindmap.properties};
             options.zoom = userOptions.zoom;
 

@@ -3,9 +3,7 @@ package com.wisemapping.rest.model;
 
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.User;
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.*;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -17,14 +15,19 @@ import java.util.Date;
 
 @XmlRootElement(name = "map")
 @XmlAccessorType(XmlAccessType.PROPERTY)
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE,
-        getterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY, isGetterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY)
+@JsonAutoDetect(
+        fieldVisibility = JsonAutoDetect.Visibility.NONE,
+        setterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY,
+        isGetterVisibility = JsonAutoDetect.Visibility.NONE,
+        getterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY
+)
 public class RestMindmap {
 
+    @JsonIgnore
     private MindMap mindmap;
 
     public RestMindmap() {
-        this(null);
+        this(new MindMap());
 
     }
 
@@ -73,12 +76,12 @@ public class RestMindmap {
     }
 
     public String getXml() throws IOException {
-        return mindmap.getNativeXml();
+        return mindmap.getXmlStr();
     }
 
-    public void setXml(String xml) throws IOException {
+    public void setXml(@NotNull String xml) throws IOException {
 
-        mindmap.setNativeXml(xml);
+        mindmap.setXmlStr(xml);
     }
 
     public void setId(int id) {
@@ -105,6 +108,7 @@ public class RestMindmap {
         mindmap.setCreator(creatorUser);
     }
 
+
     public void setProperties(String properties) {
         mindmap.setProperties(properties);
     }
@@ -115,6 +119,10 @@ public class RestMindmap {
 
     public void setLastModifierUser(String lastModifierUser) {
         mindmap.setLastModifierUser(lastModifierUser);
+    }
+
+    public String getProperties() {
+        return mindmap.getProperties();
     }
 
     @JsonIgnore

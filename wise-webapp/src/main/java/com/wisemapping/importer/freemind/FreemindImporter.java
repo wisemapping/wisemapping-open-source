@@ -142,7 +142,7 @@ public class FreemindImporter
             wiseXml = new String(baos.toByteArray(), UTF_8_CHARSET);
 
 
-            result.setNativeXml(wiseXml);
+            result.setXmlStr(wiseXml);
             result.setTitle(mapName);
             result.setDescription(description);
 

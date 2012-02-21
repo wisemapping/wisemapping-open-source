@@ -33,16 +33,16 @@ public class MindmapManagerImpl
         extends HibernateDaoSupport
         implements MindmapManager {
 
-    public Colaborator getColaboratorBy(final String email) {
-        final Colaborator colaborator;
-        final List colaborators = getHibernateTemplate().find("from com.wisemapping.model.Colaborator colaborator where email=?", email);
+    public Collaborator getCollaboratorBy(final String email) {
+        final Collaborator collaborator;
+        final List colaborators = getHibernateTemplate().find("from com.wisemapping.model.Collaborator collaborator where email=?", email);
         if (colaborators != null && !colaborators.isEmpty()) {
             assert colaborators.size() == 1 : "More than one user with the same username!";
-            colaborator = (Colaborator) colaborators.get(0);
+            collaborator = (Collaborator) colaborators.get(0);
         } else {
-            colaborator = null;
+            collaborator = null;
         }
-        return colaborator;
+        return collaborator;
     }
 
     public List<MindMap> search(MindMapCriteria criteria) {
@@ -104,11 +104,11 @@ public class MindmapManagerImpl
         return hibernateCriteria.list();
     }
 
-    public Colaborator getColaboratorBy(long id) {
-        return (Colaborator) getHibernateTemplate().get(Colaborator.class, id);
+    public Collaborator getCollaboratorBy(long id) {
+        return (Collaborator) getHibernateTemplate().get(Collaborator.class, id);
     }
 
-    public List<MindmapUser> getMindmapUserByColaborator(final long colaboratorId) {
+    public List<MindmapUser> getMindmapUserByCollaborator(final long colaboratorId) {
         return getHibernateTemplate().find("from com.wisemapping.model.MindmapUser mindmapUser where colaborator_id=?", colaboratorId);
     }
 
@@ -129,17 +129,17 @@ public class MindmapManagerImpl
         return result;
     }
 
-    public void addColaborator(Colaborator colaborator) {
-        assert colaborator != null : "ADD MINDMAP COLABORATOR: Colaborator is required!";
-        getHibernateTemplate().save(colaborator);
+    public void addCollaborator(Collaborator collaborator) {
+        assert collaborator != null : "ADD MINDMAP COLABORATOR: Collaborator is required!";
+        getHibernateTemplate().save(collaborator);
     }
 
     public void removeMindmapUser(MindmapUser mindmapUser) {
         getHibernateTemplate().delete(mindmapUser);
     }
 
-    public void removeColaborator(Colaborator colaborator) {
-        getHibernateTemplate().delete(colaborator);
+    public void removeCollaborator(Collaborator collaborator) {
+        getHibernateTemplate().delete(collaborator);
     }
 
     public List<MindMap> getAllMindmaps() {
@@ -172,13 +172,11 @@ public class MindmapManagerImpl
 
     public void saveMindmap(MindMap mindMap) {
         assert mindMap != null : "Save Mindmap: Mindmap is required!";
-        getSession().saveOrUpdate(mindMap.getNativeBrowser());
         getSession().save(mindMap);
     }
 
     public void updateMindmap(MindMap mindMap, boolean saveHistory) {
         assert mindMap != null : "Save Mindmap: Mindmap is required!";
-        getHibernateTemplate().saveOrUpdate(mindMap.getNativeBrowser());
         getHibernateTemplate().saveOrUpdate(mindMap);
         if (saveHistory)
         {

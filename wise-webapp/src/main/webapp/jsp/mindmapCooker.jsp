@@ -13,7 +13,7 @@
                         Native XML:
                     </td>
                     <td>
-                        <textarea name="nativeXml" id="xml" rows="20" cols="70">${mindmap.nativeXml}</textarea>
+                        <textarea name="xml" id="xml" rows="20" cols="70">${mindmap.xml}</textarea>
                     </td>
                 </tr>
                 <tr>

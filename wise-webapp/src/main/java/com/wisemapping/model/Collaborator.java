@@ -23,15 +23,15 @@ import java.util.Set;
 import java.util.HashSet;
 
 
-public class Colaborator {
+public class Collaborator {
     private long id;
     private String email;
     private Calendar creationDate;
     private Set<MindmapUser> mindmapUsers = new HashSet<MindmapUser>();
 
-    public Colaborator() {}
+    public Collaborator() {}
 
-     public Colaborator(Set<MindmapUser> mindmapUsers) {
+     public Collaborator(Set<MindmapUser> mindmapUsers) {
         this.mindmapUsers = mindmapUsers;
     }
 

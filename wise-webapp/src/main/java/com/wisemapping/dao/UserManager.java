@@ -18,9 +18,9 @@
 
 package com.wisemapping.dao;
 
+import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.User;
 import com.wisemapping.model.UserLogin;
-import com.wisemapping.model.Colaborator;
 
 import java.util.List;
 
@@ -44,7 +44,7 @@ public interface UserManager {
 
     User getUserByActivationCode(long code);
 
-    public Colaborator getColaboratorBy(String email);
+    public Collaborator getCollaboratorBy(String email);
 
-    public User createUser(User user, Colaborator col);
+    public User createUser(User user, Collaborator col);
 }

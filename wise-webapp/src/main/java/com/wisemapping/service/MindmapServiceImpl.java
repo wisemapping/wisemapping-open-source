@@ -66,7 +66,7 @@ public class MindmapServiceImpl
                 final Set<MindmapUser> users = map.getMindmapUsers();
                 UserRole rol = null;
                 for (MindmapUser mindmapUser : users) {
-                    if (mindmapUser.getColaborator().getId() == user.getId()) {
+                    if (mindmapUser.getCollaborator().getId() == user.getId()) {
                         rol = mindmapUser.getRole();
                         break;
                     }
@@ -92,7 +92,7 @@ public class MindmapServiceImpl
     }
 
     public List<MindmapUser> getMindmapUserByUser(User user) {
-        return mindmapManager.getMindmapUserByColaborator(user.getId());
+        return mindmapManager.getMindmapUserByCollaborator(user.getId());
     }
 
     public void updateMindmap(MindMap mindMap, boolean saveHistory) throws WiseMappingException {
@@ -115,10 +115,10 @@ public class MindmapServiceImpl
         Set<MindmapUser> mindmapusers = mindmap.getMindmapUsers();
         MindmapUser mindmapuserToDelete = null;
         for (MindmapUser mindmapuser : mindmapusers) {
-            if (mindmapuser.getColaborator().getId() == colaboratorId) {
+            if (mindmapuser.getCollaborator().getId() == colaboratorId) {
                 mindmapuserToDelete = mindmapuser;
                 //@TODO evaluar si el colaborador no tiene mas asociaciones si hay que eliminarlo, por ahora NO
-//                final List<MindmapUser> otherAsociations = mindmapManager.getMindmapUserByColaborator(colaboratorId);
+//                final List<MindmapUser> otherAsociations = mindmapManager.getMindmapUserByCollaborator(colaboratorId);
 //                if (otherAsociations != null)
 //                {
 //
@@ -126,8 +126,8 @@ public class MindmapServiceImpl
 //                    // Is not a User
 //                    if (user == null)
 //                    {
-//                        final Colaborator col = mindmapManager.getColaboratorBy(colaboratorId);
-//                        mindmapManager.removeColaborator(col);
+//                        final Collaborator col = mindmapManager.getCollaboratorBy(colaboratorId);
+//                        mindmapManager.removeCollaborator(col);
 //                    }
 //                }
                 break;
@@ -178,7 +178,7 @@ public class MindmapServiceImpl
     public void addColaborators(MindMap mindmap, String[] colaboratorEmails, UserRole role, ColaborationEmail email)
             throws InvalidColaboratorException {
         if (colaboratorEmails != null && colaboratorEmails.length > 0) {
-            final Colaborator owner = mindmap.getOwner();
+            final Collaborator owner = mindmap.getOwner();
             final Set<MindmapUser> mindmapUsers = mindmap.getMindmapUsers();
 
             for (String colaboratorEmail : colaboratorEmails) {
@@ -244,7 +244,7 @@ public class MindmapServiceImpl
     public void revertMapToHistory(MindMap map, int historyId)
             throws IOException, WiseMappingException {
         final MindMapHistory history = mindmapManager.getHistory(historyId);
-        map.setNativeXml(history.getNativeXml());
+        map.setXml(history.getXml());
         updateMindmap(map, false);
     }
 
@@ -252,7 +252,7 @@ public class MindmapServiceImpl
         MindmapUser mindmapUser = null;
 
         for (MindmapUser user : mindmapUsers) {
-            if (user.getColaborator().getEmail().equals(email)) {
+            if (user.getCollaborator().getEmail().equals(email)) {
                 mindmapUser = user;
                 break;
             }
@@ -262,15 +262,15 @@ public class MindmapServiceImpl
 
     private void addColaborator(String colaboratorEmail, UserRole role, MindMap mindmap, ColaborationEmail email) {
 
-        Colaborator colaborator = mindmapManager.getColaboratorBy(colaboratorEmail);
-        if (colaborator == null) {
-            colaborator = new Colaborator();
-            colaborator.setEmail(colaboratorEmail);
-            colaborator.setCreationDate(Calendar.getInstance());
-            mindmapManager.addColaborator(colaborator);
+        Collaborator collaborator = mindmapManager.getCollaboratorBy(colaboratorEmail);
+        if (collaborator == null) {
+            collaborator = new Collaborator();
+            collaborator.setEmail(colaboratorEmail);
+            collaborator.setCreationDate(Calendar.getInstance());
+            mindmapManager.addCollaborator(collaborator);
         }
 
-        final MindmapUser newMindmapUser = new MindmapUser(role.ordinal(), colaborator, mindmap);
+        final MindmapUser newMindmapUser = new MindmapUser(role.ordinal(), collaborator, mindmap);
         mindmap.getMindmapUsers().add(newMindmapUser);
 
         mindmapManager.saveMindmap(mindmap);

@@ -18,10 +18,11 @@
 
 package com.wisemapping.dao;
 
-import com.wisemapping.model.Colaborator;
+import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.MindmapUser;
 import com.wisemapping.model.User;
 import com.wisemapping.model.UserLogin;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 //import org.acegisecurity.providers.encoding.PasswordEncoder;
 
@@ -55,12 +56,12 @@ public class UserManagerImpl
         return user;
     }
 
-    public Colaborator getColaboratorBy(final String email) {
-        final Colaborator cola;
-        final List cols = getHibernateTemplate().find("from com.wisemapping.model.Colaborator colaborator where email=?", email);
+    public Collaborator getCollaboratorBy(final String email) {
+        final Collaborator cola;
+        final List cols = getHibernateTemplate().find("from com.wisemapping.model.Collaborator colaborator where email=?", email);
         if (cols != null && !cols.isEmpty()) {
             assert cols.size() == 1 : "More than one colaborator with the same email!";
-            cola = (Colaborator) cols.get(0);
+            cola = (Collaborator) cols.get(0);
         } else {
             cola = null;
         }
@@ -97,7 +98,7 @@ public class UserManagerImpl
         getHibernateTemplate().saveOrUpdate(user);
     }
 
-    public User createUser(User user, Colaborator col)
+    public User createUser(@NotNull User user, @NotNull Collaborator col)
     {
 //        user.setPassword(passwordEncoder.encodePassword(user.getPassword(),null));
         assert user != null : "Trying to store a null user";
@@ -107,7 +108,7 @@ public class UserManagerImpl
             MindmapUser newMapUser = new MindmapUser();            
             newMapUser.setRoleId(mindmapUser.getRole().ordinal());
             newMapUser.setMindMap(mindmapUser.getMindMap());
-            newMapUser.setColaborator(user);
+            newMapUser.setCollaborator(user);
             user.addMindmapUser(newMapUser);
         }
 

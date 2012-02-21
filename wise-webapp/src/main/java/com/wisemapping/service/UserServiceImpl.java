@@ -21,8 +21,8 @@ package com.wisemapping.service;
 import com.wisemapping.dao.UserManager;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.mail.Mailer;
+import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.User;
-import com.wisemapping.model.Colaborator;
 import org.apache.log4j.Logger;
 
 import java.util.Calendar;
@@ -102,7 +102,7 @@ public class UserServiceImpl
             user.setActivationDate(Calendar.getInstance());
         }
 
-        Colaborator col = userManager.getColaboratorBy(user.getEmail());
+        Collaborator col = userManager.getCollaboratorBy(user.getEmail());
         if (col != null) {
             userManager.createUser(user, col);
         } else {

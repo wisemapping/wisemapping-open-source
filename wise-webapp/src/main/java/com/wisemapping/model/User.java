@@ -22,12 +22,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.*;
 
-@XmlRootElement(name="user")
+@XmlRootElement(name = "user")
 public class User
-    extends Colaborator
-    implements Serializable
-{
+        extends Collaborator
+        implements Serializable {
 
+    private static final String ADMIN_EMAIL = "test@wisemapping.org";
     private String firstname;
     private String lastname;
     private String password;
@@ -40,13 +40,11 @@ public class User
     public User() {
     }
 
-    public void setTags(Set<String> tags)
-    {
+    public void setTags(Set<String> tags) {
         this.tags = tags;
     }
 
-    public Set<String> getTags()
-    {
+    public Set<String> getTags() {
         return tags;
     }
 
@@ -94,20 +92,17 @@ public class User
         return activationDate;
     }
 
-    public boolean isAllowSendEmail()
-    {
+    public boolean isAllowSendEmail() {
         return allowSendEmail;
     }
 
-    public void setAllowSendEmail(boolean allowSendEmail)
-    {
+    public void setAllowSendEmail(boolean allowSendEmail) {
         this.allowSendEmail = allowSendEmail;
     }
 
-    public boolean getAllowSendEmail()
-    {
+    public boolean getAllowSendEmail() {
         return allowSendEmail;
-    }    
+    }
 
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -138,5 +133,9 @@ public class User
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public boolean isAdmin() {
+        return ADMIN_EMAIL.equals(this.getEmail());
     }
 }

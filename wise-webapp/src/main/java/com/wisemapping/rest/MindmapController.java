@@ -1,22 +1,24 @@
 package com.wisemapping.rest;
 
 
+import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.MindmapUser;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestMindmap;
 import com.wisemapping.rest.model.RestMindmapList;
+import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapService;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -24,7 +26,7 @@ public class MindmapController {
     @Autowired
     private MindmapService mindmapService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/map/{id}", produces = {"text/xml", "application/json", "text/html"})
+    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/xml", "application/json", "text/html"})
     @ResponseBody
     public ModelAndView getMindmap(@PathVariable int id) throws IOException {
         final MindMap mindMap = mindmapService.getMindmapById(id);
@@ -32,7 +34,7 @@ public class MindmapController {
         return new ModelAndView("mapView", "map", map);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/maps", produces = {"text/xml", "application/json", "text/html"})
+    @RequestMapping(method = RequestMethod.GET, value = "/maps", produces = {"application/xml", "application/json", "text/html"})
     public ModelAndView getMindmaps() throws IOException {
         final User user = com.wisemapping.security.Utils.getUser();
 
@@ -44,5 +46,30 @@ public class MindmapController {
 
         final RestMindmapList restMindmapList = new RestMindmapList(mindmaps);
         return new ModelAndView("mapsView", "list", restMindmapList);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}", consumes = {"application/xml", "application/json"})
+    public ModelAndView updateMap(@RequestBody RestMindmap restMindmap, @PathVariable int id) throws IOException, WiseMappingException {
+
+        final MindMap mindMap = mindmapService.getMindmapById(id);
+        final User user = Utils.getUser();
+
+        final String properties = restMindmap.getProperties();
+        mindMap.setProperties(properties);
+
+        final Calendar now = Calendar.getInstance();
+        mindMap.setLastModificationTime(now);
+        mindMap.setLastModifierUser(user.getUsername());
+
+        final Calendar lastModification = Calendar.getInstance();
+        lastModification.setTime(new Date());
+        mindMap.setLastModificationTime(lastModification);
+
+        final String xml = restMindmap.getXml();
+        mindMap.setXmlStr(xml);
+        mindmapService.updateMindmap(mindMap, true);
+
+       return new ModelAndView("responseView", "message", "Map has been updated successfully");
+
     }
 }

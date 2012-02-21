@@ -40,24 +40,6 @@
         <property name="target" ref="mindMapServiceTarget"/>
     </bean>
 
-    <bean id="mapEditorService" class="com.wisemapping.dwr.MapEditorService">
-        <property name="mindmapService">
-            <ref local="mindmapService"/>
-        </property>
-        <property name="userService">
-            <ref local="userService"/>
-        </property>
-    </bean>
-
-    <bean id="loggerService" class="com.wisemapping.dwr.JavaScriptErrorLoggerService">
-        <property name="mindmapService">
-            <ref local="mindmapService"/>
-        </property>
-        <property name="userService">
-            <ref local="userService"/>
-        </property>
-    </bean>
-
     <bean id="smtpAuthenticator" class="com.wisemapping.mail.SmtpAuthenticator">
         <constructor-arg value="${mail.user}"/>
         <constructor-arg value="${mail.password}"/>

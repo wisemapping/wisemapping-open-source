@@ -16,30 +16,15 @@
 *   limitations under the License.
 */
 
-// ...........................................................................................................
-// (C) Copyright  1996/2007 Fuego Inc.  All Rights Reserved
-// THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF Fuego Inc.
-// The copyright notice above does not evidence any actual or intended
-// publication of such source code.
-//
-// Last changed on 2007-08-01 19:08:20 (-0300), by: imanzano. $Revision$
-// ...........................................................................................................
-
 package com.wisemapping.dwr;
 
 import java.io.IOException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory;
-import com.wisemapping.model.User;
-
-import javax.servlet.http.HttpServletRequest;
 
 public class JavaScriptErrorLoggerService
-        extends BaseDwrService {
-
+{
     final Log logger = LogFactory.getLog(JavaScriptErrorLoggerService.class);
     private static final int ERROR_MESSAGE = 3;
     private static final int FATAL_MESSAGE = 4;
@@ -53,27 +38,24 @@ public class JavaScriptErrorLoggerService
     public void logError(final int severity, final String logMsg)
             throws IOException {
 
-        final User user = getUser();
-
-        final WebContext ctx = WebContextFactory.get();
-        final HttpServletRequest request = ctx.getHttpServletRequest();
+//        final User user = getUser();
 
 
-        final String userAgent = request.getHeader(USER_AGENT);
-        synchronized (logger) {
-            // Log user info ...
-            if (user != null) {
-                log(severity, "UserId:" + user.getId() + ", UserEmail:" + user.getEmail());
-            } else {
-                log(severity, "Anonymous user");
-            }
-
-            // Log browser details ...
-            log(severity, "Browser:" + userAgent);
-
-            // Log error message ...
-            log(severity, logMsg);
-        }
+//        final String userAgent = request.getHeader(USER_AGENT);
+//        synchronized (logger) {
+//            // Log user info ...
+//            if (user != null) {
+//                log(severity, "UserId:" + user.getId() + ", UserEmail:" + user.getEmail());
+//            } else {
+//                log(severity, "Anonymous user");
+//            }
+//
+//            // Log browser details ...
+//            log(severity, "Browser:" + userAgent);
+//
+//            // Log error message ...
+//            log(severity, logMsg);
+//        }
     }
 
     void log(final int severity, final String msg) {

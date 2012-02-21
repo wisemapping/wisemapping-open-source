@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
 
-    <class name="com.wisemapping.model.Colaborator" table="COLABORATOR">
+    <class name="com.wisemapping.model.Collaborator" table="COLABORATOR">
         <id name="id">
             <generator class="increment"/>
         </id>

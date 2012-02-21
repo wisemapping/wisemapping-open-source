@@ -42,11 +42,11 @@ public class ImportExportTest {
             final String recContent = readFile(wiseFile);
 
             // Export mile content ...
-            Assert.assertEquals(mindMap.getUnzippedXml(), recContent);
+            Assert.assertEquals(mindMap.getXmlStr(), recContent);
 
         } else {
             final FileOutputStream fos = new FileOutputStream(wiseFile);
-            fos.write(mindMap.getUnzippedXml().getBytes("UTF-8"));
+            fos.write(mindMap.getXmlStr().getBytes("UTF-8"));
             fos.close();
         }
 

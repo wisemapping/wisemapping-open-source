@@ -30,7 +30,6 @@ import com.wisemapping.xml.mindmap.Icon;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.JAXBException;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.ByteArrayInputStream;
 import java.math.BigInteger;
@@ -50,11 +49,7 @@ public class FreemindExporter
     private Map<String, Node> nodesMap = null;
 
     public void export(MindMap map, OutputStream outputStream) throws ExportException {
-        try {
-            export(map.getUnzippedXml().getBytes("UTF-8"), outputStream);
-        } catch (IOException e) {
-            throw new ExportException(e);
-        }
+        export(map.getXml(), outputStream);
     }
 
     public void export(byte[] xml, OutputStream outputStream) throws ExportException {

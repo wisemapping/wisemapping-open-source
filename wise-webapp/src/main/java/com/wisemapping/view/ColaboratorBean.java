@@ -18,26 +18,26 @@
 
 package com.wisemapping.view;
 
+import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.UserRole;
-import com.wisemapping.model.Colaborator;
 import com.wisemapping.model.User;
 
 public class ColaboratorBean
 {
     private UserRole userRole;
     private boolean isUser;
-    private Colaborator colaborator;
+    private Collaborator collaborator;
 
-    public ColaboratorBean(Colaborator colaborator, UserRole role)
+    public ColaboratorBean(Collaborator collaborator, UserRole role)
     {
-        this.colaborator = colaborator;
+        this.collaborator = collaborator;
         this.userRole = role;
         this.isUser = false;
     }
 
     public ColaboratorBean(User user, UserRole role)
     {
-        this.colaborator = user;
+        this.collaborator = user;
         this.userRole = role;
         this.isUser = true;
     }
@@ -54,16 +54,16 @@ public class ColaboratorBean
 
     public String getUsername()
     {
-        return isUser ? ((User)colaborator).getUsername() : colaborator.getEmail();
+        return isUser ? ((User) collaborator).getUsername() : collaborator.getEmail();
     }
 
     public String getEmail()
     {
-        return colaborator.getEmail();
+        return collaborator.getEmail();
     }
 
     public long getId()
     {
-        return colaborator.getId();
+        return collaborator.getId();
     }
 }

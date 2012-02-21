@@ -75,10 +75,4 @@ public class MindMapHistory {
     public void setXml(byte[] xml) {
         this.xml = xml;
     }
-
-    public String getNativeXml()
-            throws IOException
-    {
-        return ZipUtils.zipToString(xml);
-    }
 }

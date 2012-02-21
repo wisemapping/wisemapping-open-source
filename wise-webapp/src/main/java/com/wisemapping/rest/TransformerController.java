@@ -70,7 +70,7 @@ public class TransformerController {
         return new ModelAndView("transformViewJpeg", values);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/transform", produces = {"application/freemind"}, consumes = {"text/xml"})
+    @RequestMapping(method = RequestMethod.POST, value = "/transform", produces = {"application/freemind"}, consumes = {"application/xml"})
     @ResponseBody
     public ModelAndView transformFreemind(@RequestBody @Nullable final String content) throws IOException {
         final Map<String, Object> values = new HashMap<String, Object>();

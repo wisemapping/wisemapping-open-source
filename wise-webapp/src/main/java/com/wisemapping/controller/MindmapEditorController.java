@@ -58,7 +58,7 @@ public class MindmapEditorController extends BaseMultiActionController {
             view.addObject("editorTryMode", false);
             final boolean showHelp = isWelcomeMap(mindmap);
             view.addObject("showHelp", showHelp);
-            final String xmlMap = mindmap.getNativeXmlAsJsLiteral();
+            final String xmlMap = mindmap.getXmlAsJsLiteral();
             view.addObject(MAP_XML_PARAM, xmlMap);
             view.addObject("user", Utils.getUser());
         }

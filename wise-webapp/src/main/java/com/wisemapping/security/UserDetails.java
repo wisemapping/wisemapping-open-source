@@ -34,8 +34,12 @@ public class UserDetails implements org.springframework.security.core.userdetail
     }
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        final SimpleGrantedAuthority role_user = new SimpleGrantedAuthority("ROLE_USER");
         final Collection<GrantedAuthority> result = new ArrayList<GrantedAuthority>();
+        if(this.getUser().isAdmin()) {
+            final SimpleGrantedAuthority role_admin = new SimpleGrantedAuthority("ROLE_ADMIN");
+            result.add(role_admin);
+        }
+        final SimpleGrantedAuthority role_user = new SimpleGrantedAuthority("ROLE_USER");
         result.add(role_user);
         return result;
     }
