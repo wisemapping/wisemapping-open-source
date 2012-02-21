@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-public class TransformerController {
+public class TransformerController extends BaseController {
 
     private static final String PARAM_SVG_XML = "svgXml";
     private static final String PARAM_WISE_MAP_XML = "mapXml";

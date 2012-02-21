@@ -6,6 +6,7 @@ import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -13,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.IOException;
 
 @Controller
-public class AdminController {
+public class AdminController extends BaseController {
     private static final String RESPONSE_VIEW = "responseView";
     @Autowired
     private UserService userService;
@@ -46,7 +47,7 @@ public class AdminController {
 
         // User already exists ?
         final String email = user.getEmail();
-        if(userService.getUserBy(email)!=null){
+        if (userService.getUserBy(email) != null) {
             throw new IllegalArgumentException("User already exists with this email.");
         }
 
@@ -55,26 +56,28 @@ public class AdminController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "admin/users/{id}/password", consumes = {"text/plain"}, produces = {"application/json", "text/html", "application/xml"})
-    public ModelAndView changePassword(@RequestBody String password, @PathVariable long id) throws IOException, WiseMappingException {
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void changePassword(@RequestBody String password, @PathVariable long id) throws IOException, WiseMappingException {
         if (password == null) {
             throw new IllegalArgumentException("Password can not be null");
         }
 
         final User user = userService.getUserBy(id);
+        if (user == null) {
+            throw new IllegalArgumentException("User '" + id + "' could not be found");
+        }
         user.setPassword(password);
-
         userService.changePassword(user);
-        return new ModelAndView(RESPONSE_VIEW, "message", "User '" + user.getId() + "' password has been updated.");
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "admin/users/{id}", produces = {"application/json", "text/html", "application/xml"})
-    public ModelAndView getUserByEmail(@PathVariable long id) throws IOException, WiseMappingException {
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void getUserByEmail(@PathVariable long id) throws IOException, WiseMappingException {
         final User user = userService.getUserBy(id);
         if (user == null) {
             throw new IllegalArgumentException("User '" + id + "' could not be found");
         }
         userService.deleteUser(user);
-        return new ModelAndView(RESPONSE_VIEW, "message", "User deleted successfully");
     }
 
 }
