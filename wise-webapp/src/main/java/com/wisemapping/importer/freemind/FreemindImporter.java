@@ -94,7 +94,7 @@ public class FreemindImporter
 
     }
 
-    public MindMap importMap(@NotNull String mapName, @NotNull  String description, @NotNull InputStream input) throws ImporterException {
+    public MindMap importMap(@NotNull String mapName, @NotNull String description, @NotNull InputStream input) throws ImporterException {
 
         final MindMap result = new MindMap();
         nodesMap = new HashMap<String, TopicType>();
@@ -181,28 +181,37 @@ public class FreemindImporter
         TopicType destTopicType = nodesMap.get(rel.getDestTopicId());
 
         //Fix x coord
-        final Coord srcCtrlCoord = Coord.parse(rel.getSrcCtrlPoint());
-        final Coord destCtrlCoord = Coord.parse(rel.getDestCtrlPoint());
+        final String srcCtrlPoint = rel.getSrcCtrlPoint();
+        if (srcCtrlPoint != null) {
+            final Coord srcCtrlCoord = Coord.parse(srcCtrlPoint);
 
-        if (Coord.parse(srcTopic.getPosition()).isOnLeftSide()) {
-            int x = srcCtrlCoord.x * -1;
-            rel.setSrcCtrlPoint(x + "," + srcCtrlCoord.y);
-        }
-        if (Coord.parse(destTopicType.getPosition()).isOnLeftSide()) {
-            int x = destCtrlCoord.x * -1;
-            rel.setDestCtrlPoint(x + "," + destCtrlCoord.y);
-        }
+            if (Coord.parse(srcTopic.getPosition()).isOnLeftSide()) {
+                int x = srcCtrlCoord.x * -1;
+                rel.setSrcCtrlPoint(x + "," + srcCtrlCoord.y);
 
-        //Fix coord
-        if (srcTopic.getOrder() != null && srcTopic.getOrder() % 2 != 0) { //Odd order.
-            int y = srcCtrlCoord.y * -1;
-            rel.setSrcCtrlPoint(srcCtrlCoord.x + "," + y);
+                //Fix coord
+                if (srcTopic.getOrder() != null && srcTopic.getOrder() % 2 != 0) { //Odd order.
+                    int y = srcCtrlCoord.y * -1;
+                    rel.setSrcCtrlPoint(srcCtrlCoord.x + "," + y);
+                }
+            }
         }
-        if (destTopicType.getOrder() != null && destTopicType.getOrder() % 2 != 0) { //Odd order.
-            int y = destCtrlCoord.y * -1;
-            rel.setDestCtrlPoint(destCtrlCoord.x + "," + y);
-        }
+        final String destCtrlPoint = rel.getDestCtrlPoint();
+        if (destCtrlPoint != null) {
+            final Coord destCtrlCoord = Coord.parse(destCtrlPoint);
 
+
+            if (Coord.parse(destTopicType.getPosition()).isOnLeftSide()) {
+                int x = destCtrlCoord.x * -1;
+                rel.setDestCtrlPoint(x + "," + destCtrlCoord.y);
+            }
+
+
+            if (destTopicType.getOrder() != null && destTopicType.getOrder() % 2 != 0) { //Odd order.
+                int y = destCtrlCoord.y * -1;
+                rel.setDestCtrlPoint(destCtrlCoord.x + "," + y);
+            }
+        }
     }
 
     private void convertChildNodes(@NotNull Node freeParent, @NotNull TopicType wiseParent, final int depth) {
@@ -299,13 +308,26 @@ public class FreemindImporter
                 String destId = arrow.getDESTINATION();
                 relt.setSrcTopicId(freeParent.getID());
                 relt.setDestTopicId(destId);
-                String[] inclination = arrow.getENDINCLINATION().split(";");
-                relt.setDestCtrlPoint(inclination[0] + "," + inclination[1]);
-                inclination = arrow.getSTARTINCLINATION().split(";");
-                relt.setSrcCtrlPoint(inclination[0] + "," + inclination[1]);
-                //relationship.setCtrlPointRelative(true);
-                relt.setEndArrow(!arrow.getENDARROW().toLowerCase().equals("none"));
-                relt.setStartArrow(!arrow.getSTARTARROW().toLowerCase().equals("none"));
+                final String endinclination = arrow.getENDINCLINATION();
+                if (endinclination != null) {
+                    String[] inclination = endinclination.split(";");
+                    relt.setDestCtrlPoint(inclination[0] + "," + inclination[1]);
+                }
+                final String startinclination = arrow.getSTARTINCLINATION();
+                if (startinclination != null) {
+                    String[] inclination = startinclination.split(";");
+                    relt.setSrcCtrlPoint(inclination[0] + "," + inclination[1]);
+                }
+
+                final String endarrow = arrow.getENDARROW();
+                if (endarrow != null) {
+                    relt.setEndArrow(!endarrow.toLowerCase().equals("none"));
+                }
+
+                final String startarrow = arrow.getSTARTARROW();
+                if (startarrow != null) {
+                    relt.setStartArrow(!startarrow.toLowerCase().equals("none"));
+                }
                 relt.setLineType("3");
                 relationships.add(relt);
             }

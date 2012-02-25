@@ -72,7 +72,7 @@
               fill="#525c61" style="cursor: move;" y="9" x="20" visibility="visible">Aval de la Municipalidad
         </text>
         <g preserveAspectRatio="none" focusable="true" width="14" height="12" transform="translate(3, 3) scale(1)">
-            <image href="../images/thumb_up.png" width="12" height="12" y="0" x="2"/>
+            <image href="../icons/legacy/thumb_up.png" width="12" height="12" y="0" x="2"/>
         </g>
     </g>
     <g preserveAspectRatio="none" focusable="true" width="100" height="100" transform="translate(184, -95) scale(1)"
@@ -375,7 +375,7 @@
               fill="#525c61" style="cursor: move;" y="9" x="20" visibility="visible">Es tan fuerte ?
         </text>
         <g preserveAspectRatio="none" focusable="true" width="14" height="12" transform="translate(3, 3) scale(1)">
-            <image href="../images/world_link.png" width="12" height="12" y="0" x="2"/>
+            <image href="../icons/legacy/world_link.png" width="12" height="12" y="0" x="2"/>
         </g>
     </g>
     <g preserveAspectRatio="none" focusable="true" width="100" height="100" transform="translate(-491, 145) scale(1)"
@@ -390,8 +390,8 @@
               fill="#525c61" style="cursor: move;" y="9" x="32" visibility="visible">Web Lista (Gratuita)
         </text>
         <g preserveAspectRatio="none" focusable="true" width="26" height="12" transform="translate(3, 3) scale(1)">
-            <image href="../images/money.png" width="12" height="12" y="0" x="2"/>
-            <image href="../images/note.png" width="12" height="12" y="0" x="14"/>
+            <image href="../icons/legacy/money.png" width="12" height="12" y="0" x="2"/>
+            <image href="../icons/legacy/note.png" width="12" height="12" y="0" x="14"/>
         </g>
     </g>
     <g preserveAspectRatio="none" focusable="true" width="100" height="100" transform="translate(-347, 139) scale(1)"

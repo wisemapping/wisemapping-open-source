@@ -148,7 +148,7 @@
               fill="#525c61" style="cursor: move;" y="12" x="22" visibility="visible">web
         </text>
         <g preserveAspectRatio="none" focusable="true" width="14" height="12" transform="translate(4, 4) scale(1)">
-            <image href="../images/lightbulb.png" width="12" height="12" y="0" x="2"/>
+            <image href="../icons/legacy/lightbulb.png" width="12" height="12" y="0" x="2"/>
         </g>
         <ellipse width="6" height="6" rx="3" ry="3" cx="-3" cy="11" stroke-width="1px" fill="#a6ffc2"
                  style="cursor: default;" visibility="visible" stroke="#33a36f"/>
@@ -223,7 +223,7 @@
               fill="#ffffff" style="cursor: move;" y="12" x="22" visibility="visible">Plan de Negocio
         </text>
         <g preserveAspectRatio="none" focusable="true" width="14" height="12" transform="translate(4, 4) scale(1)">
-            <image href="../images/money.png" width="12" height="12" y="0" x="2"/>
+            <image href="../icons/legacy/money.png" width="12" height="12" y="0" x="2"/>
         </g>
         <ellipse width="6" height="6" rx="3" ry="3" cx="-3" cy="11" stroke-width="1px" fill="#7096ff"
                  style="cursor: default;" visibility="visible" stroke="#385b80"/>
@@ -240,8 +240,8 @@
               fill="#525c61" style="cursor: move;" y="9" x="32" visibility="visible">ascTimeTable
         </text>
         <g preserveAspectRatio="none" focusable="true" width="26" height="12" transform="translate(3, 3) scale(1)">
-            <image href="../images/add.png" width="12" height="12" y="0" x="2"/>
-            <image href="../images/world_link.png" width="12" height="12" y="0" x="14"/>
+            <image href="../icons/legacy/add.png" width="12" height="12" y="0" x="2"/>
+            <image href="../icons/legacy/world_link.png" width="12" height="12" y="0" x="14"/>
         </g>
     </g>
     <g preserveAspectRatio="none" focusable="true" width="100" height="100" transform="translate(342, 145) scale(1)"
@@ -256,7 +256,7 @@
               fill="#525c61" style="cursor: move;" y="9" x="20" visibility="visible">lantiv
         </text>
         <g preserveAspectRatio="none" focusable="true" width="14" height="12" transform="translate(3, 3) scale(1)">
-            <image href="../images/world_link.png" width="12" height="12" y="0" x="2"/>
+            <image href="../icons/legacy/world_link.png" width="12" height="12" y="0" x="2"/>
         </g>
     </g>
     <g preserveAspectRatio="none" focusable="true" width="100" height="100" transform="translate(218, 139) scale(1)"
@@ -269,7 +269,7 @@
               fill="#ffffff" style="cursor: move;" y="12" x="22" visibility="visible">Competencia
         </text>
         <g preserveAspectRatio="none" focusable="true" width="14" height="12" transform="translate(4, 4) scale(1)">
-            <image href="../images/chart_curve.png" width="12" height="12" y="0" x="2"/>
+            <image href="../icons/legacy/chart_curve.png" width="12" height="12" y="0" x="2"/>
         </g>
         <ellipse width="6" height="6" rx="3" ry="3" cx="108" cy="11" stroke-width="1px" fill="#d94e4e"
                  style="cursor: default;" visibility="visible" stroke="#806238"/>
@@ -452,7 +452,7 @@
               fill="#525c61" style="cursor: move;" y="12" x="22" visibility="visible">Features
         </text>
         <g preserveAspectRatio="none" focusable="true" width="14" height="12" transform="translate(4, 4) scale(1)">
-            <image href="../images/connect.png" width="12" height="12" y="0" x="2"/>
+            <image href="../icons/legacy/connect.png" width="12" height="12" y="0" x="2"/>
         </g>
         <ellipse width="6" height="6" rx="3" ry="3" cx="82" cy="11" stroke-width="1px" fill="#d9ff70"
                  style="cursor: default;" visibility="visible" stroke="#6c8038"/>
