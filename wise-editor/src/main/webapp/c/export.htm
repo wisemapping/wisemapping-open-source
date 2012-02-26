@@ -100,7 +100,7 @@
         // Store SVG o native map...
         if (suffix == "freemind") {
             var mindmap = designer.getMindmap();
-            var serializer = mindplot.XMLMindmapSerializerFactory.getSerializerFromMindmap(mindmap);
+            var serializer = mindplot.persistence.XMLSerializerFactory.getSerializerFromMindmap(mindmap);
             var domMap = serializer.toXML(mindmap);
             form.mapXml.value = core.Utils.innerXML(domMap);
         } else {

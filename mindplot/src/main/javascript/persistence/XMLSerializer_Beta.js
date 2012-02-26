@@ -14,7 +14,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.XMLMindmapSerializer_Beta = new Class({
+mindplot.persistence.XMLSerializer_Beta = new Class({
 
     toXML : function(mindmap) {
         $assert(mindmap, "Can not save a null mindmap");
@@ -164,11 +164,11 @@ mindplot.XMLMindmapSerializer_Beta = new Class({
         var rootElem = dom.documentElement;
 
         // Is a wisemap?.
-        $assert(rootElem.tagName == mindplot.XMLMindmapSerializer_Beta.MAP_ROOT_NODE, "This seem not to be a map document.");
+        $assert(rootElem.tagName == mindplot.persistence.XMLSerializer_Beta.MAP_ROOT_NODE, "This seem not to be a map document.");
 
         // Start the loading process ...
         var version = rootElem.getAttribute("version");
-        version = !$defined(version) ? mindplot.ModelCodeName.BETA : version;
+        version = !$defined(version) ? mindplot.persistence.ModelCodeName.BETA : version;
         var mindmap = new mindplot.model.Mindmap(mapId, version);
 
         var children = rootElem.childNodes;
@@ -288,4 +288,4 @@ mindplot.XMLMindmapSerializer_Beta = new Class({
         return topic.createNote(domElem.getAttribute("text"));
     }});
 
-mindplot.XMLMindmapSerializer_Beta.MAP_ROOT_NODE = 'map';
+mindplot.persistence.XMLSerializer_Beta.MAP_ROOT_NODE = 'map';

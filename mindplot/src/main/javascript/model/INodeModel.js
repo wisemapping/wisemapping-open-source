@@ -82,6 +82,15 @@ mindplot.model.INodeModel = new Class({
         return result;
     },
 
+    setImageUrl:function(url) {
+        this.putProperty('imageUrl', url);
+
+    },
+
+    getImageUrl:function() {
+        return this.getProperty('imageUrl');
+    },
+
     getMindmap  : function() {
         return this._mindmap;
     },

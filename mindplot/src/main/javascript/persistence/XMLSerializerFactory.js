@@ -15,23 +15,23 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.XMLMindmapSerializerFactory = {};
+mindplot.persistence.XMLSerializerFactory = {};
 
-mindplot.XMLMindmapSerializerFactory.getSerializerFromMindmap = function(mindmap) {
-    return mindplot.XMLMindmapSerializerFactory.getSerializer(mindmap.getVersion());
+mindplot.persistence.XMLSerializerFactory.getSerializerFromMindmap = function(mindmap) {
+    return mindplot.persistence.XMLSerializerFactory.getSerializer(mindmap.getVersion());
 };
 
-mindplot.XMLMindmapSerializerFactory.getSerializerFromDocument = function(domDocument) {
+mindplot.persistence.XMLSerializerFactory.getSerializerFromDocument = function(domDocument) {
     var rootElem = domDocument.documentElement;
-    return mindplot.XMLMindmapSerializerFactory.getSerializer(rootElem.getAttribute("version"))
+    return mindplot.persistence.XMLSerializerFactory.getSerializer(rootElem.getAttribute("version"))
 };
 
 
-mindplot.XMLMindmapSerializerFactory.getSerializer = function(version) {
+mindplot.persistence.XMLSerializerFactory.getSerializer = function(version) {
     if (!$defined(version)) {
-        version = mindplot.ModelCodeName.BETA;
+        version = mindplot.persistence.ModelCodeName.BETA;
     }
-    var codeNames = mindplot.XMLMindmapSerializerFactory._codeNames;
+    var codeNames = mindplot.persistence.XMLSerializerFactory._codeNames;
     var found = false;
     var serializer = null;
     for (var i = 0; i < codeNames.length; i++) {
@@ -48,22 +48,22 @@ mindplot.XMLMindmapSerializerFactory.getSerializer = function(version) {
     return serializer;
 };
 
-mindplot.XMLMindmapSerializerFactory._codeNames =
+mindplot.persistence.XMLSerializerFactory._codeNames =
     [
         {
-            codeName:mindplot.ModelCodeName.BETA,
-            serializer: mindplot.XMLMindmapSerializer_Beta,
+            codeName:mindplot.persistence.ModelCodeName.BETA,
+            serializer: mindplot.persistence.XMLSerializer_Beta,
             migrator:function() {
             }
         },
         {
-            codeName:mindplot.ModelCodeName.PELA,
-            serializer:mindplot.XMLMindmapSerializer_Pela,
-            migrator:mindplot.Beta2PelaMigrator
+            codeName:mindplot.persistence.ModelCodeName.PELA,
+            serializer:mindplot.persistence.XMLSerializer_Pela,
+            migrator:mindplot.persistence.Beta2PelaMigrator
         },
         {
-            codeName:mindplot.ModelCodeName.TANGO,
-            serializer:mindplot.XMLMindmapSerializer_Tango,
-            migrator:mindplot.Pela2TangoMigrator
+            codeName:mindplot.persistence.ModelCodeName.TANGO,
+            serializer:mindplot.persistence.XMLSerializer_Tango,
+            migrator:mindplot.persistence.Pela2TangoMigrator
         }
     ];

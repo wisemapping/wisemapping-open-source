@@ -15,7 +15,20 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+mindplot.persistence.Beta2PelaMigrator = new Class({
+    initialize : function(betaSerializer) {
+        this._betaSerializer = betaSerializer;
+        this._pelaSerializer = new mindplot.persistence.XMLSerializer_Pela();
+    },
 
-mindplot.XMLMindmapSerializer_Tango = new Class({
-    Extends: mindplot.XMLMindmapSerializer_Pela
+    toXML : function(mindmap) {
+        return this._pelaSerializer.toXML(mindmap);
+    },
+
+    loadFromDom : function(dom, mapId) {
+        $assert($defined(mapId), "mapId can not be null");
+        var mindmap = this._betaSerializer.loadFromDom(dom, mapId);
+        mindmap.setVersion(mindplot.persistence.ModelCodeName.PELA);
+        return mindmap;
+    }
 });

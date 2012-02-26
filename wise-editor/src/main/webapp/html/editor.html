@@ -29,12 +29,12 @@
             // Load map from XML file persisted on disk...
             var persistence = mindplot.PersistenceManager.getInstance();
             var mindmap;
-            try {
+//            try {
                 mindmap = persistence.load(mapId);
-            } catch(e) {
+//            } catch(e) {
                 // If the map could not be loaded, create a new empty map...
-                mindmap = mindplot.model.Mindmap.buildEmpty(mapId);
-            }
+//                mindmap = mindplot.model.Mindmap.buildEmpty(mapId);
+//            }
             designer.loadMap(mindmap);
         });
 

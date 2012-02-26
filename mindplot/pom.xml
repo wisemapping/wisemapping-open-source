@@ -68,6 +68,7 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="DesignerKeyboard.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="NodeGraph.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="Topic.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="TextTopic.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="CentralTopic.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="MainTopic.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="DragTopic.js"/>
@@ -81,18 +82,18 @@
                                     <!--<filelist dir="${basedir}/src/main/javascript/" files="RichTextEditor.js"/>-->
                                     <filelist dir="${basedir}/src/main/javascript/" files="TextEditorFactory.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="util/Shape.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="ModelCodeName.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="persistence/ModelCodeName.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="XMLMindmapSerializer_Pela.js"/>
+                                              files="persistence/XMLSerializer_Pela.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="XMLMindmapSerializer_Tango.js"/>
+                                              files="persistence/XMLSerializer_Tango.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="Pela2TangoMigrator.js"/>
+                                              files="persistence/Pela2TangoMigrator.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="XMLMindmapSerializer_Beta.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="Beta2PelaMigrator.js"/>
+                                              files="persistence/XMLSerializer_Beta.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="persistence/Beta2PelaMigrator.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="XMLMindmapSerializerFactory.js"/>
+                                              files="persistence/XMLSerializerFactory.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="PersistenceManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="RestPersistenceManager.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="LocalStorageManager.js"/>
@@ -245,23 +246,7 @@
                 </configuration>
             </plugin>
 
-            <!--           <plugin>
-               <groupId>com.google.jstestdriver</groupId>
-               <artifactId>maven-jstestdriver-plugin</artifactId>
-               <version>1.2.2-SNAPSHOT</version>
-               <executions>
-                   <execution>
-                       <id>run-tests</id>
-                       <phase>test</phase>
-                       <goals>
-                           <goal>test</goal>
-                       </goals>
-                       <configuration>
-                           <config>${basedir}/src/test/jsTestDriver.conf</config>
-                       </configuration>
-                   </execution>
-               </executions>
-           </plugin> -->
+
         </plugins>
     </build>
 </project>

@@ -15,10 +15,10 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.Pela2TangoMigrator = new Class({
+mindplot.persistence.Pela2TangoMigrator = new Class({
     initialize : function(pelaSerializer) {
         this._pelaSerializer = pelaSerializer;
-        this._tangoSerializer = new mindplot.XMLMindmapSerializer_Tango();
+        this._tangoSerializer = new mindplot.persistence.XMLSerializer_Tango();
     },
 
     toXML : function(mindmap) {
@@ -28,7 +28,7 @@ mindplot.Pela2TangoMigrator = new Class({
     loadFromDom : function(dom, mapId) {
         $assert($defined(mapId), "mapId can not be null");
         var mindmap = this._pelaSerializer.loadFromDom(dom, mapId);
-        mindmap.setVersion(mindplot.ModelCodeName.TANGO);
+        mindmap.setVersion(mindplot.persistence.ModelCodeName.TANGO);
         this._fixOrder(mindmap);
         return mindmap;
     },

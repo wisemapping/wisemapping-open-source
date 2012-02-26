@@ -34,7 +34,7 @@ mindplot.BrixActionDispatcher = new Class({
             // Set position ...
             node.setPosition(position);
         } else {
-            $assert("Illegal commnad state exception.");
+            $assert("Illegal commnand state exception.");
         }
         // Finally, connect node ...
         if ($defined(this._parentId)) {

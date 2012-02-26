@@ -16,7 +16,7 @@
  *   limitations under the License.
  */
 
-mindplot.XMLMindmapSerializer_Pela = new Class({
+mindplot.persistence.XMLSerializer_Pela = new Class({
 
     toXML : function(mindmap) {
         $assert(mindmap, "Can not save a null mindmap");
@@ -217,7 +217,7 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
         var rootElem = dom.documentElement;
 
         // Is a wisemap?.
-        $assert(rootElem.tagName == mindplot.XMLMindmapSerializer_Pela.MAP_ROOT_NODE, "This seem not to be a map document.");
+        $assert(rootElem.tagName == mindplot.persistence.XMLSerializer_Pela.MAP_ROOT_NODE, "This seem not to be a map document.");
 
         this._idsMap = new Hash();
         // Start the loading process ...
@@ -262,25 +262,13 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
         }
 
         var topic = mindmap.createNode(type, id);
-
         var text = domElem.getAttribute('text');
         if ($defined(text)) {
             topic.setText(text);
         }
-
-        var order = domElem.getAttribute('order');
-        if ($defined(order)) {
-            topic.setOrder(parseInt(order));
-        }
-
         var shape = domElem.getAttribute('shape');
         if ($defined(shape)) {
             topic.setShapeType(shape);
-        }
-
-        var isShrink = domElem.getAttribute('shrink');
-        if ($defined(isShrink)) {
-            topic.setChildrenShrunken(isShrink);
         }
 
         var fontStyle = domElem.getAttribute('fontStyle');
@@ -316,6 +304,27 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
         var borderColor = domElem.getAttribute('brColor');
         if ($defined(borderColor)) {
             topic.setBorderColor(borderColor);
+        }
+//
+//        } else  {
+//            var sizeStr = domElem.getAttribute('size');
+//            $assert(sizeStr, "size can not be null");
+//            var size = sizeStr.split(',');
+//            topic.setSize(size[0], size[1]);
+//
+//            var url = domElem.getAttribute('image');
+//            $assert(url, "url can not be null");
+//            topic.setImageUrl(url);
+//        }
+
+        var order = domElem.getAttribute('order');
+        if ($defined(order)) {
+            topic.setOrder(parseInt(order));
+        }
+
+        var isShrink = domElem.getAttribute('shrink');
+        if ($defined(isShrink)) {
+            topic.setChildrenShrunken(isShrink);
         }
 
         var position = domElem.getAttribute('position');
@@ -415,4 +424,4 @@ mindplot.XMLMindmapSerializer_Pela = new Class({
     }
 });
 
-mindplot.XMLMindmapSerializer_Pela.MAP_ROOT_NODE = 'map';
+mindplot.persistence.XMLSerializer_Pela.MAP_ROOT_NODE = 'map';

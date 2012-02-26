@@ -42,5 +42,6 @@
             <topic position="410,-97" order="2" text="Anyplace, Anytime" id="9"/>
             <topic position="386,-73" order="3" text="Free!!!" id="10"/>
         </topic>
+        <topic type="media" size="50,50" image="http://m3.licdn.com/mpr/mpr/shrink_100_100/p/3/000/070/205/1461ef2.jpg" prop=""  order="9" position="-336,-100"/>
     </topic>
 </map>
