@@ -28,23 +28,9 @@ mindplot.StandaloneActionDispatcher = new Class({
         this._actionRunner.hasBeenChanged();
     },
 
-    addIconToTopic: function(topicId, iconType) {
-        var command = new mindplot.commands.AddIconToTopicCommand(topicId, iconType);
-        this.execute(command);
-    },
-
-    changeLinkToTopic: function(topicId, url) {
-        var command = new mindplot.commands.ChangeLinkToTopicCommand(topicId, url);
-        this.execute(command);
-    },
 
     addTopic:function(nodeModel, parentTopicId, animated) {
         var command = new mindplot.commands.AddTopicCommand(nodeModel, parentTopicId, animated);
-        this.execute(command);
-    },
-
-    changeNoteToTopic: function(topicId, text) {
-        var command = new mindplot.commands.ChangeNoteToTopicCommand(topicId, text);
         this.execute(command);
     },
 
@@ -79,20 +65,6 @@ mindplot.StandaloneActionDispatcher = new Class({
 
     moveControlPoint: function(ctrlPoint, point) {
         var command = new mindplot.commands.MoveControlPointCommand(ctrlPoint, point);
-        this.execute(command);
-    },
-
-    removeIconFromTopic: function(topicId, iconModel) {
-        var command = new mindplot.commands.RemoveIconFromTopicCommand(topicId, iconModel);
-        this.execute(command);
-    },
-    removeLinkFromTopic: function(topicId) {
-        var command = new mindplot.commands.RemoveLinkFromTopicCommand(topicId);
-        this.execute(command);
-    },
-
-    removeNoteFromTopic: function(topicId) {
-        var command = new mindplot.commands.RemoveNoteFromTopicCommand(topicId);
         this.execute(command);
     },
 
@@ -240,6 +212,21 @@ mindplot.StandaloneActionDispatcher = new Class({
 
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicsIds, collapse);
         this.execute(command, false);
+    },
+
+    addFeatureToTopic : function(topicId, featureType, attributes) {
+        var command = new mindplot.commands.AddFeatureToTopicCommand(topicId, featureType, attributes);
+        this.execute(command);
+    },
+
+    changeFeatureToTopic : function(topicId, featureId, attributes) {
+        var command = new mindplot.commands.ChangeFeatureToTopicCommand(topicId, featureId, attributes);
+        this.execute(command);
+    },
+
+    removeFeatureFromTopic : function(topicId, featureId) {
+        var command = new mindplot.commands.RemoveFeatureFromTopicCommand(topicId, featureId);
+        this.execute(command);
     },
 
     execute:function(command) {

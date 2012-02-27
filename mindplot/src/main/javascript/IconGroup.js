@@ -83,10 +83,10 @@ mindplot.IconGroup = new Class({
 
     _findIconFromModel : function(iconModel) {
         var result = null;
-        this._icons.each(function(el) {
-            var elModel = el.getModel();
-            if (result == null && $defined(elModel.isIconModel) && elModel.getId() == iconModel.getId()) {
-                result = el;
+        this._icons.each(function(icon) {
+            var elModel = icon.getModel();
+            if (elModel.getId() == iconModel.getId()) {
+                result = icon;
             }
         }, this);
 
@@ -107,6 +107,13 @@ mindplot.IconGroup = new Class({
         $assert(iconModel, "iconModel can not be null");
 
         var icon = this._findIconFromModel(iconModel);
+        this._removeIcon(icon);
+    },
+
+    removeIconByModel : function(featureModel) {
+        $assert(featureModel, "featureModel can not be null");
+
+        var icon = this._findIconFromModel(featureModel);
         this._removeIcon(icon);
     },
 

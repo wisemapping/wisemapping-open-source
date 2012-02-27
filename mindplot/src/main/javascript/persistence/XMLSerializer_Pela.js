@@ -47,8 +47,6 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         // Create Relationships
         var relationships = mindmap.getRelationships();
         if (relationships.length > 0) {
-//        var relationshipDom=document.createElement("relationships");
-//        mapElem.appendChild(relationshipDom);
             for (var j = 0; j < relationships.length; j++) {
                 var relationDom = this._relationshipToXML(document, relationships[j]);
                 mapElem.appendChild(relationDom);
@@ -124,58 +122,36 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
             parentTopic.setAttribute('brColor', brColor);
         }
 
-        //ICONS
-        var icons = topic.getIcons();
-        for (var i = 0; i < icons.length; i++) {
-            var icon = icons[i];
-            var iconDom = this._iconToXML(document, icon);
-            parentTopic.appendChild(iconDom);
-        }
+        // Serialize features ...
+        var features = topic.getFeatures();
+        for (var i = 0; i < features.length; i++) {
+            var feature = features[i];
 
-        //LINKS
-        var links = topic.getLinks();
-        for (var i = 0; i < links.length; i++) {
-            var link = links[i];
-            var linkDom = this._linkToXML(document, link);
-            parentTopic.appendChild(linkDom);
-        }
+            var featureType = feature.getType();
+            var featureDom = document.createElement(featureType);
+            var attributes = feature.getAttributes();
 
-        var notes = topic.getNotes();
-        for (var i = 0; i < notes.length; i++) {
-            var note = notes[i];
-            var noteDom = this._noteToXML(document, note);
-            parentTopic.appendChild(noteDom);
+            for (var key in attributes) {
+                var value = attributes[key];
+                if (key == 'text') {
+                    var cdata = document.createCDATASection(value);
+                    featureDom.appendChild(cdata);
+                } else {
+                    featureDom.setAttribute(key, value);
+                }
+            }
+            parentTopic.appendChild(featureDom);
         }
 
         //CHILDREN TOPICS
         var childTopics = topic.getChildren();
-        for (var i = 0; i < childTopics.length; i++) {
-            var childTopic = childTopics[i];
+        for (var j = 0; j < childTopics.length; j++) {
+            var childTopic = childTopics[j];
             var childDom = this._topicToXML(document, childTopic);
             parentTopic.appendChild(childDom);
 
         }
-
         return parentTopic;
-    },
-
-    _iconToXML : function(document, icon) {
-        var iconDom = document.createElement("icon");
-        iconDom.setAttribute('id', icon.getIconType());
-        return iconDom;
-    },
-
-    _linkToXML : function(document, link) {
-        var linkDom = document.createElement("link");
-        linkDom.setAttribute('url', link.getUrl());
-        return linkDom;
-    },
-
-    _noteToXML : function(document, note) {
-        var noteDom = document.createElement("note");
-        var cdata = document.createCDATASection(note.getText());
-        noteDom.appendChild(cdata);
-        return noteDom;
     },
 
     _noteTextToXML : function(document, elem, text) {
@@ -305,17 +281,6 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         if ($defined(borderColor)) {
             topic.setBorderColor(borderColor);
         }
-//
-//        } else  {
-//            var sizeStr = domElem.getAttribute('size');
-//            $assert(sizeStr, "size can not be null");
-//            var size = sizeStr.split(',');
-//            topic.setSize(size[0], size[1]);
-//
-//            var url = domElem.getAttribute('image');
-//            $assert(url, "url can not be null");
-//            topic.setImageUrl(url);
-//        }
 
         var order = domElem.getAttribute('order');
         if ($defined(order)) {
@@ -338,40 +303,40 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         for (var i = 0; i < children.length; i++) {
             var child = children[i];
             if (child.nodeType == Node.ELEMENT_NODE) {
-                $assert(child.tagName == "topic" || child.tagName == "icon" || child.tagName == "link" || child.tagName == "note" || child.tagName == "text", 'Illegal node type:' + child.tagName);
                 if (child.tagName == "topic") {
                     var childTopic = this._deserializeNode(child, mindmap);
                     childTopic.connectTo(topic);
-                } else if (child.tagName == "icon") {
-                    var icon = this._deserializeIcon(child, topic);
-                    topic.addIcon(icon);
-                } else if (child.tagName == "link") {
-                    var link = this._deserializeLink(child, topic);
-                    topic.addLink(link);
-                } else if (child.tagName == "note") {
-                    var note = this._deserializeNote(child, topic);
-                    topic.addNote(note);
+                } else if (mindplot.TopicFeature.isSupported(child.tagName)) {
+
+                    // Load attributes ...
+                    var namedNodeMap = child.attributes;
+                    var attributes = {};
+                    for (var j = 0; j < namedNodeMap.length; j++) {
+                        var attribute = namedNodeMap.item(j);
+                        attributes[attribute.name] = attribute.value;
+                    }
+
+                    // Has text node ?.
+                    var textAttr = this._deserializeTextAttr(child);
+                    if (textAttr) {
+                        attributes['text'] = textAttr;
+                    }
+
+                    // Create a new element ....
+                    var featureType = child.tagName;
+                    var feature = mindplot.TopicFeature.createModel(featureType, topic, attributes);
+                    topic.addFeature(feature);
+
                 } else if (child.tagName == "text") {
                     var nodeText = this._deserializeNodeText(child);
                     topic.setText(nodeText);
                 }
-
             }
         }
         return topic;
     },
 
-    _deserializeIcon : function(domElem, topic) {
-        var icon = domElem.getAttribute("id");
-        icon = icon.replace("images/", "icons/legacy/");
-        return topic.createIcon(icon);
-    },
-
-    _deserializeLink : function(domElem, topic) {
-        return topic.createLink(domElem.getAttribute("url"));
-    },
-
-    _deserializeNote : function(domElem, topic) {
+    _deserializeTextAttr : function(domElem) {
         var value = domElem.getAttribute("text");
         if (!$defined(value)) {
             var children = domElem.childNodes;
@@ -382,11 +347,10 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
                 }
             }
         }
-        return topic.createNote(value);
+        return value;
     },
 
     _deserializeNodeText: function(domElem) {
-
         var children = domElem.childNodes;
         var value = null;
         for (var i = 0; i < children.length; i++) {

@@ -23,18 +23,6 @@ mindplot.ActionDispatcher = new Class({
         $assert(commandContext, "commandContext can not be null");
     },
 
-    addIconToTopic: function(topicId, iconType) {
-        throw "method must be implemented.";
-    },
-
-    changeLinkToTopic: function(topicId, url) {
-        throw "method must be implemented.";
-    },
-
-    changeNoteToTopic: function(topicId, text) {
-        throw "method must be implemented.";
-    },
-
     connectByRelation: function(model, mindmap) {
         throw "method must be implemented.";
     },
@@ -56,18 +44,6 @@ mindplot.ActionDispatcher = new Class({
     },
 
     moveControlPoint: function(ctrlPoint, point) {
-        throw "method must be implemented.";
-    },
-
-    removeIconFromTopic: function(topicId, iconModel) {
-        throw "method must be implemented.";
-    },
-
-    removeLinkFromTopic: function(topicId) {
-        throw "method must be implemented.";
-    },
-
-    removeNoteFromTopic: function(topicId) {
         throw "method must be implemented.";
     },
 
@@ -109,9 +85,19 @@ mindplot.ActionDispatcher = new Class({
 
     shrinkBranch : function(topicsIds, collapse) {
         throw "method must be implemented.";
+    },
+
+    addFeatureToTopic : function(topicId, type, attributes) {
+        throw "method must be implemented.";
+    },
+
+    changeFeatureToTopic : function(topicId, featureId, attributes) {
+        throw "method must be implemented.";
+    },
+
+    removeFeatureFromTopic : function(topicId, featureId) {
+        throw "method must be implemented.";
     }
-
-
 });
 
 mindplot.ActionDispatcher.setInstance = function(dispatcher) {

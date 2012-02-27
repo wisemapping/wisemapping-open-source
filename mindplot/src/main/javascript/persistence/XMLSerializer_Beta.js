@@ -260,13 +260,13 @@ mindplot.persistence.XMLSerializer_Beta = new Class({
                     childTopic.connectTo(topic);
                 } else if (child.tagName == "icon") {
                     var icon = this._deserializeIcon(child, topic);
-                    topic.addIcon(icon);
+                    topic.addFeature(icon);
                 } else if (child.tagName == "link") {
                     var link = this._deserializeLink(child, topic);
-                    topic.addLink(link);
+                    topic.addFeature(link);
                 } else if (child.tagName == "note") {
                     var note = this._deserializeNote(child, topic);
-                    topic.addNote(note);
+                    topic.addFeature(note);
                 }
             }
         }
@@ -277,15 +277,15 @@ mindplot.persistence.XMLSerializer_Beta = new Class({
     _deserializeIcon : function(domElem, topic) {
         var icon = domElem.getAttribute("id");
         icon = icon.replace("images/", "icons/legacy/");
-        return topic.createIcon(icon);
+        return  mindplot.TopicFeature.createModel(mindplot.TopicFeature.Icon.id, topic, {id:icon});
     },
 
     _deserializeLink : function(domElem, topic) {
-        return topic.createLink(domElem.getAttribute("url"));
+        return  mindplot.TopicFeature.createModel(mindplot.TopicFeature.Link.id, topic, {url:domElem.getAttribute("url")});
     },
 
     _deserializeNote : function(domElem, topic) {
-        return topic.createNote(domElem.getAttribute("text"));
+        return  mindplot.TopicFeature.createModel(mindplot.TopicFeature.Note.id, topic, {text:domElem.getAttribute("url")});
     }});
 
 mindplot.persistence.XMLSerializer_Beta.MAP_ROOT_NODE = 'map';

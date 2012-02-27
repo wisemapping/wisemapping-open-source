@@ -68,7 +68,6 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="DesignerKeyboard.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="NodeGraph.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="Topic.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="TextTopic.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="CentralTopic.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="MainTopic.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="DragTopic.js"/>
@@ -82,7 +81,8 @@
                                     <!--<filelist dir="${basedir}/src/main/javascript/" files="RichTextEditor.js"/>-->
                                     <filelist dir="${basedir}/src/main/javascript/" files="TextEditorFactory.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="util/Shape.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="persistence/ModelCodeName.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="persistence/ModelCodeName.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="persistence/XMLSerializer_Pela.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
@@ -91,7 +91,8 @@
                                               files="persistence/Pela2TangoMigrator.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="persistence/XMLSerializer_Beta.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="persistence/Beta2PelaMigrator.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/"
+                                              files="persistence/Beta2PelaMigrator.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="persistence/XMLSerializerFactory.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="PersistenceManager.js"/>
@@ -105,6 +106,7 @@
 
                                     <filelist dir="${basedir}/src/main/javascript/" files="ActionIcon.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="ImageIcon.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="model/FeatureModel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="model/IconModel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="model/LinkModel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="model/NoteModel.js"/>
@@ -114,7 +116,7 @@
                                     <filelist dir="${basedir}/src/main/javascript/" files="ControlPoint.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="EditorOptions.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="RelationshipPivot.js"/>
-
+                                    <filelist dir="${basedir}/src/main/javascript/" files="TopicFeature.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/commands/"
                                               files="GenericFunctionCommand.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/commands/" files="DeleteCommand.js"/>
@@ -123,17 +125,11 @@
                                     <filelist dir="${basedir}/src/main/javascript/commands/"
                                               files="AddTopicCommand.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="commands/ChangeLinkToTopicCommand.js"/>
+                                              files="commands/ChangeFeatureToTopicCommand.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="commands/RemoveLinkFromTopicCommand.js"/>
+                                              files="commands/RemoveFeatureFromTopicCommand.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
-                                              files="commands/AddIconToTopicCommand.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="commands/RemoveIconFromTopicCommand.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="commands/ChangeNoteToTopicCommand.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="commands/RemoveNoteFromTopicCommand.js"/>
+                                              files="commands/AddFeatureToTopicCommand.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="commands/AddRelationshipCommand.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
@@ -167,6 +163,7 @@
                                               files="widget/IMenu.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="widget/Menu.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="TopicFeature.js"/>
 
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="layout/EventBusDispatcher.js"/>

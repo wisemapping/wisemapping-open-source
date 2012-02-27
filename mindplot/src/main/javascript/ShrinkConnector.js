@@ -19,7 +19,7 @@
 mindplot.ShirinkConnector = new Class({
     initialize: function(topic) {
 
-        var ellipse = new web2d.Elipse(mindplot.TextTopic.prototype.INNER_RECT_ATTRIBUTES);
+        var ellipse = new web2d.Elipse(mindplot.Topic.prototype.INNER_RECT_ATTRIBUTES);
         this._ellipse = ellipse;
         ellipse.setFill('rgb(62,118,179)');
 

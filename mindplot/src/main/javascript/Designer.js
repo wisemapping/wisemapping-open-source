@@ -422,7 +422,7 @@ mindplot.Designer = new Class({
             $assert(mindmapModel, "mindmapModel can not be null");
             this._mindmap = mindmapModel;
 
-//            try {
+            try {
                 // Init layout manager ...
                 var size = {width:25,height:25};
                 var layoutManager = new mindplot.layout.LayoutManager(mindmapModel.getCentralTopic().getId(), size);
@@ -446,7 +446,6 @@ mindplot.Designer = new Class({
                     nodeGraph.setBranchVisibility(true);
                 }
 
-
                 var relationships = mindmapModel.getRelationships();
                 for (var j = 0; j < relationships.length; j++) {
                     this._relationshipModelToRelationship(relationships[j]);
@@ -460,9 +459,9 @@ mindplot.Designer = new Class({
                 mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.DoLayout);
 
                 this.fireEvent('loadSuccess');
-//            } catch(e) {
-//                this.fireEvent('loadError',e);
-//            }
+            } catch(e) {
+                this.fireEvent('loadError', e);
+            }
         },
 
         getMindmap : function() {
@@ -707,7 +706,7 @@ mindplot.Designer = new Class({
         addIconType : function(iconType) {
             var topicsIds = this.getModel().filterTopicsIds();
             if (topicsIds.length > 0) {
-                this._actionDispatcher.addIconToTopic(topicsIds[0], iconType);
+                this._actionDispatcher.addFeatureToTopic(topicsIds[0], mindplot.TopicFeature.Icon.id, {id:iconType});
             }
         },
 

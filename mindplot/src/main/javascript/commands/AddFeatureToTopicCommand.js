@@ -16,24 +16,27 @@
  *   limitations under the License.
  */
 
-mindplot.commands.RemoveIconFromTopicCommand = new Class({
+mindplot.commands.AddFeatureToTopicCommand = new Class({
     Extends:mindplot.Command,
-    initialize: function(topicIds, iconModel) {
-        $assert($defined(topicIds), 'topicIds can not be null');
-        $assert(iconModel, 'iconModel can not be null');
-        this._topicsIds = topicIds;
-        this._iconModel = iconModel;
+    initialize: function(topicId, featureType, attributes) {
+
+        $assert($defined(topicId), 'topicId can not be null');
+        $assert(featureType, 'featureType can not be null');
+        $assert(attributes, 'attributes can not be null');
+
+        this._topicId = topicId;
+        this._featureType = featureType;
+        this._attributes = attributes;
     },
 
     execute: function(commandContext) {
-        var topic = commandContext.findTopics(this._topicsIds)[0];
-        topic.removeIcon(this._iconModel);
+        var topic = commandContext.findTopics(this._topicId)[0];
+        var icon = topic.addFeature(this._featureType, this._attributes);
+        this._featureModel = icon.getModel();
     },
 
     undoExecute: function(commandContext) {
-        var topic = commandContext.findTopics(this._topicsIds)[0];
-        var iconType = this._iconModel.getIconType();
-        var iconImg = topic.addIcon(iconType, commandContext._designer);
-        this._iconModel = iconImg.getModel();
+        var topic = commandContext.findTopics(this._topicId)[0];
+        topic.removeFeature(this._featureModel);
     }
 });

@@ -22,14 +22,17 @@ mindplot.Command = new Class(
     {
         this._id = mindplot.Command._nextUUID();
     },
+
     execute: function(commandContext)
     {
         throw "execute must be implemented.";
     },
+
     undoExecute: function(commandContext)
     {
         throw "undo must be implemented.";
     },
+
     getId:function()
     {
         return this._id;

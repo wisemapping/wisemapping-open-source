@@ -16,21 +16,30 @@
  *   limitations under the License.
  */
 
-mindplot.commands.RemoveNoteFromTopicCommand = new Class({
+mindplot.commands.RemoveFeatureFromTopicCommand = new Class({
     Extends:mindplot.Command,
-    initialize: function(topicId) {
+    initialize: function(topicId, featureId) {
         $assert($defined(topicId), 'topicId can not be null');
-        this._topicsIds = topicId;
+        $assert(featureId, 'iconModel can not be null');
+
+        this._topicId = topicId;
+        this._featureId = featureId;
+        this._oldFeature = null;
     },
+
     execute: function(commandContext) {
-        var topic = commandContext.findTopics(this._topicsIds)[0];
-        var model = topic.getModel();
-        var notes = model.getNotes()[0];
-        this._text = notes.getText();
-        topic.removeNote();
+        var topic = commandContext.findTopics(this._topicId)[0];
+
+        var feature = topic.findFeatureById(this._featureId);
+        topic.removeFeature(feature);
+        this._oldFeature = feature;
     },
+
     undoExecute: function(commandContext) {
-        var topic = commandContext.findTopics(this._topicsIds)[0];
-        topic.addNote(this._text, commandContext._designer);
+        var topic = commandContext.findTopics(this._topicId)[0];
+
+        var feature = this._oldFeature;
+        topic.addFeature(feature.getType(), feature.getAttributes());
+        this._oldFeature = null;
     }
 });

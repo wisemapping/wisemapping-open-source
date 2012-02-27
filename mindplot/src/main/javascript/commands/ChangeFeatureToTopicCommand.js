@@ -16,34 +16,28 @@
  *   limitations under the License.
  */
 
-mindplot.commands.ChangeNoteToTopicCommand = new Class({
+mindplot.commands.ChangeFeatureToTopicCommand = new Class({
     Extends:mindplot.Command,
-    initialize: function(topicId, text) {
+    initialize: function(topicId, featureId, attributes) {
         $assert($defined(topicId), 'topicId can not be null');
-        this._topicsIds = topicId;
-        this._text = text;
-        this._oldtext = null;
-        this._id = mindplot.Command._nextUUID();
+        $assert($defined(featureId), 'featureId can not be null');
+        $assert($defined(attributes), 'attributes can not be null');
+
+        this._topicId = topicId;
+        this._featureId = featureId;
+        this._attributes = attributes;
     },
 
     execute: function(commandContext) {
-        var topic = commandContext.findTopics(this._topicsIds)[0];
-        if (topic.hasNote()) {
-            var model = topic.getModel();
-            var notes = model.getNotes()[0];
-            this._oldtext = notes.getText();
-            topic.removeNote();
-        }
-        topic.addNote(this._text);
+        var topic = commandContext.findTopics(this._topicId)[0];
+        var feature = topic.findFeatureById(this._featureId);
+
+        var oldAttributes = feature.getAttributes();
+        feature.setAttributes(this._attributes);
+        this._attributes = oldAttributes;
     },
 
     undoExecute: function(commandContext) {
-        var topic = commandContext.findTopics(this._topicsIds)[0];
-        if (this._oldtext) {
-            topic.removeNote();
-            topic.addNote(this._oldtext);
-        } else {
-            topic.removeNote();
-        }
+        this.execute(commandContext);
     }
 });

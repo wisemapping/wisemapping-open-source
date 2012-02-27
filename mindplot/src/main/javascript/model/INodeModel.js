@@ -248,55 +248,7 @@ mindplot.model.INodeModel = new Class({
         throw "Unsupported operation";
     },
 
-    createLink  : function(url) {
-        throw "Unsupported operation";
-    },
-
-    addLink  : function(link) {
-        throw "Unsupported operation";
-    },
-
-    createNote  : function(text) {
-        throw "Unsupported operation";
-    },
-
-    addNote  : function(note) {
-        throw "Unsupported operation";
-    },
-
-    removeNote  : function(note) {
-        throw "Unsupported operation";
-    },
-
-    createIcon  : function(iconType) {
-        throw "Unsupported operation";
-    },
-
-    addIcon  : function(icon) {
-        throw "Unsupported operation";
-    },
-
-    removeIcon  : function(icon) {
-        throw "Unsupported operation";
-    },
-
-    removeLastIcon  : function() {
-        throw "Unsupported operation";
-    },
-
     getChildren  : function() {
-        throw "Unsupported operation";
-    },
-
-    getIcons  : function() {
-        throw "Unsupported operation";
-    },
-
-    getLinks  : function() {
-        throw "Unsupported operation";
-    },
-
-    getNotes  : function() {
         throw "Unsupported operation";
     },
 
