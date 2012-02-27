@@ -22,6 +22,7 @@ mindplot.commands.RemoveFeatureFromTopicCommand = new Class({
         $assert($defined(topicId), 'topicId can not be null');
         $assert(featureId, 'iconModel can not be null');
 
+        this.parent();
         this._topicId = topicId;
         this._featureId = featureId;
         this._oldFeature = null;

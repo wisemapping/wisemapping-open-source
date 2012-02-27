@@ -21,6 +21,7 @@ mindplot.commands.MoveControlPointCommand = new Class({
         $assert(ctrlPointController, 'line can not be null');
         $assert($defined(point), 'point can not be null');
 
+        this.parent();
         this._ctrlPointControler = ctrlPointController;
         this._line = ctrlPointController._line;
         this._controlPoint = this._ctrlPointControler.getControlPoint(point).clone();
@@ -36,7 +37,6 @@ mindplot.commands.MoveControlPointCommand = new Class({
                 this._endPoint = this._line.getLine().getTo().clone();
                 break;
         }
-        this._id = mindplot.Command._nextUUID();
         this._point = point;
     },
 

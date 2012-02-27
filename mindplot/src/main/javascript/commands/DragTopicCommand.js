@@ -25,6 +25,7 @@ mindplot.commands.DragTopicCommand = new Class({
         if ($defined(parentTopic))
             this._parentId = parentTopic.getId();
 
+        this.parent();
         this._position = position;
         this._order = order;
         this._id = mindplot.Command._nextUUID();
@@ -58,7 +59,7 @@ mindplot.commands.DragTopicCommand = new Class({
             // Set position ...
             topic.setPosition(this._position);
         } else {
-            $assert("Illegal commnad state exception.");
+            $assert("Illegal command state exception.");
         }
 
         // Finally, connect topic ...

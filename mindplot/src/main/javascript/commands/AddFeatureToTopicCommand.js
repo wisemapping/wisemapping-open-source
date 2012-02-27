@@ -24,6 +24,7 @@ mindplot.commands.AddFeatureToTopicCommand = new Class({
         $assert(featureType, 'featureType can not be null');
         $assert(attributes, 'attributes can not be null');
 
+        this.parent();
         this._topicId = topicId;
         this._featureType = featureType;
         this._attributes = attributes;

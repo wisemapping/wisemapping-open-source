@@ -23,6 +23,7 @@ mindplot.commands.ChangeFeatureToTopicCommand = new Class({
         $assert($defined(featureId), 'featureId can not be null');
         $assert($defined(attributes), 'attributes can not be null');
 
+        this.parent();
         this._topicId = topicId;
         this._featureId = featureId;
         this._attributes = attributes;
