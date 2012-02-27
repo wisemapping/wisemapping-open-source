@@ -70,17 +70,6 @@ mindplot.IconGroup = new Class({
         }
     },
 
-    _findIconFromUrl : function(url) {
-        var result = null;
-        this._icons.each(function(el) {
-            var nativeImage = el.getImage();
-            if (nativeImage.getHref() == url) {
-                result = el;
-            }
-        }, this);
-        return result;
-    },
-
     _findIconFromModel : function(iconModel) {
         var result = null;
         this._icons.each(function(icon) {
@@ -95,19 +84,6 @@ mindplot.IconGroup = new Class({
         }
 
         return result;
-    },
-
-    removeIconByUrl : function(url) {
-        var icon = this._findIconFromUrl(url);
-        $assert(icon, 'icon could not be found');
-        this._removeIcon(icon);
-    },
-
-    removeIcon : function(iconModel) {
-        $assert(iconModel, "iconModel can not be null");
-
-        var icon = this._findIconFromModel(iconModel);
-        this._removeIcon(icon);
     },
 
     removeIconByModel : function(featureModel) {
@@ -222,7 +198,6 @@ mindplot.IconGroup.RemoveTip = new Class({
         }
 
         if (this._activeIcon) {
-            var icon = this._activeIcon;
             var widget = this._widget;
             var close = function() {
 
