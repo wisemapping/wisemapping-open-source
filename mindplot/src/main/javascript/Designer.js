@@ -656,7 +656,7 @@ mindplot.Designer = new Class({
         changeBackgroundColor : function(color) {
 
             var validateFunc = function(topic) {
-                return topic.getShapeType() != mindplot.model.INodeModel.SHAPE_TYPE_LINE
+                return topic.getShapeType() != mindplot.model.TopicShape.LINE;
             };
             var validateError = 'Color can not be set to line topics.';
 
@@ -668,7 +668,7 @@ mindplot.Designer = new Class({
 
         changeBorderColor : function(color) {
             var validateFunc = function(topic) {
-                return topic.getShapeType() != mindplot.model.INodeModel.SHAPE_TYPE_LINE
+                return topic.getShapeType() != mindplot.model.TopicShape.LINE ;
             };
             var validateError = 'Color can not be set to line topics.';
             var topicsIds = this.getModel().filterTopicsIds(validateFunc, validateError);
@@ -686,7 +686,7 @@ mindplot.Designer = new Class({
 
         changeTopicShape : function(shape) {
             var validateFunc = function(topic) {
-                return !(topic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE && shape == mindplot.model.INodeModel.SHAPE_TYPE_LINE)
+                return !(topic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE && shape == mindplot.model.TopicShape.LINE)
             };
 
             var validateError = 'Central Topic shape can not be changed to line figure.';

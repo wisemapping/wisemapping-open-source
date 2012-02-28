@@ -55,7 +55,7 @@ mindplot.Topic = new Class({
             event.stopPropagation(true);
         }.bind(this));
 
-        this._textEditor.addEvent('input', function(event, text) {
+        this._textEditor.addEvent('input', function() {
             var textShape = this.getTextShape();
 //            var oldText = textShape.getText();
 
@@ -162,16 +162,16 @@ mindplot.Topic = new Class({
             type = this.getShapeType();
         }
 
-        if (type == mindplot.model.INodeModel.SHAPE_TYPE_RECT) {
+        if (type == mindplot.model.TopicShape.RECTANGLE) {
             result = new web2d.Rect(0, attributes);
         }
-        else if (type == mindplot.model.INodeModel.SHAPE_TYPE_ELIPSE) {
+        else if (type == mindplot.model.TopicShape.ELIPSE) {
             result = new web2d.Rect(0.9, attributes);
         }
-        else if (type == mindplot.model.INodeModel.SHAPE_TYPE_ROUNDED_RECT) {
+        else if (type == mindplot.model.TopicShape.ROUNDED_RECT) {
             result = new web2d.Rect(0.3, attributes);
         }
-        else if (type == mindplot.model.INodeModel.SHAPE_TYPE_LINE) {
+        else if (type == mindplot.model.TopicShape.LINE) {
             result = new web2d.Line({strokeColor:"#495879",strokeWidth:1});
             result.setSize = function(width, height) {
                 this.size = {width:width, height:height};
@@ -220,7 +220,7 @@ mindplot.Topic = new Class({
 
     getOuterShape : function() {
         if (!$defined(this._outerShape)) {
-            var rect = this.buildShape(mindplot.Topic.OUTER_SHAPE_ATTRIBUTES, mindplot.model.INodeModel.SHAPE_TYPE_ROUNDED_RECT);
+            var rect = this.buildShape(mindplot.Topic.OUTER_SHAPE_ATTRIBUTES, mindplot.model.TopicShape.ROUNDED_RECT);
             rect.setPosition(-2, -3);
             rect.setOpacity(0);
             this._outerShape = rect;
@@ -596,7 +596,6 @@ mindplot.Topic = new Class({
     },
 
     isCollapsed : function() {
-        var model = this.getModel();
         var result = false;
 
         var current = this.getParent();
@@ -637,7 +636,7 @@ mindplot.Topic = new Class({
         outerShape.setOpacity(1);
     },
 
-    handleMouseOut : function(event) {
+    handleMouseOut : function() {
         var outerShape = this.getOuterShape();
         if (!this.isOnFocus()) {
             outerShape.setOpacity(0);
@@ -936,7 +935,7 @@ mindplot.Topic = new Class({
         }
     },
 
-    _updatePositionOnChangeSize : function(oldSize, newSize) {
+    _updatePositionOnChangeSize : function() {
         $assert(false, "this method must be overwrited.");
     },
 

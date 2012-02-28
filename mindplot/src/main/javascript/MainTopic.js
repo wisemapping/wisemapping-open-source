@@ -56,7 +56,7 @@ mindplot.MainTopic = new Class({
 
 
     _defaultShapeType : function() {
-        return mindplot.model.INodeModel.SHAPE_TYPE_LINE;
+        return mindplot.model.TopicShape.LINE;
     },
 
     updateTopicShape : function(targetTopic, workspace) {
@@ -81,7 +81,7 @@ mindplot.MainTopic = new Class({
         if (!$defined(shapeType)) {
             // Change figure ...
             shapeType = this.getShapeType();
-            this._setShapeType(mindplot.model.INodeModel.SHAPE_TYPE_ROUNDED_RECT, false);
+            this._setShapeType(mindplot.model.TopicShape.ROUNDED_RECT, false);
         }
         var innerShape = this.getInnerShape();
         innerShape.setVisibility(true);
@@ -112,7 +112,7 @@ mindplot.MainTopic = new Class({
 
         var isAtRight = mindplot.util.Shape.isAtRight(sourcePosition, pos);
         var result = mindplot.util.Shape.calculateRectConnectionPoint(pos, size, isAtRight);
-        if (this.getShapeType() == mindplot.model.INodeModel.SHAPE_TYPE_LINE) {
+        if (this.getShapeType() == mindplot.model.TopicShape.LINE) {
             result.y = result.y + (this.getSize().height / 2);
         }
 
@@ -133,14 +133,15 @@ mindplot.MainTopic = new Class({
     workoutOutgoingConnectionPoint : function(targetPosition) {
         $assert(targetPosition, 'targetPoint can not be null');
         var pos = this.getPosition();
+        var isAtRight = mindplot.util.Shape.isAtRight(targetPosition, pos);
+        var size = this.getSize();
 
         var result;
-        if (this.getShapeType() == mindplot.model.INodeModel.SHAPE_TYPE_LINE) {
+        if (this.getShapeType() == mindplot.model.TopicShape.LINE) {
 
             result = new core.Point();
             var groupPosition = this._elem2d.getPosition();
             var innerShareSize = this.getInnerShape().getSize();
-            var isAtRight = mindplot.util.Shape.isAtRight(targetPosition, pos);
 
             if (innerShareSize) {
                 var magicCorrectionNumber = 0.3;
@@ -153,7 +154,6 @@ mindplot.MainTopic = new Class({
             } else {
                 // Hack: When the size has not being defined. This is because the node has not being added.
                 // Try to do our best ...
-                var size = this.getSize();
                 if (!isAtRight) {
                     result.x = pos.x + (size.width / 2);
                 } else {

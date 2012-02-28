@@ -123,7 +123,7 @@ mindplot.ConnectionLine = new Class({
         var offset = mindplot.Topic.CONNECTOR_WIDTH / 2;
         var targetTopicSize = targetTopic.getSize();
         var y;
-        if (targetTopic.getShapeType() == mindplot.model.INodeModel.SHAPE_TYPE_LINE) {
+        if (targetTopic.getShapeType() == mindplot.model.TopicShape.LINE) {
             y = targetTopicSize.height;
         } else {
             y = targetTopicSize.height / 2;

@@ -289,13 +289,19 @@ mindplot.model.INodeModel = new Class({
     }
 });
 
+mindplot.model.TopicShape =
+{
+    RECTANGLE : 'rectagle',
+    ROUNDED_RECT :  'rounded rectagle',
+    ELIPSE : 'elipse',
+    LINE : 'line',
+    IMAGE : 'image'
+};
+
+
 mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE = 'CentralTopic';
 mindplot.model.INodeModel.MAIN_TOPIC_TYPE = 'MainTopic';
 
-mindplot.model.INodeModel.SHAPE_TYPE_RECT = 'rectagle';
-mindplot.model.INodeModel.SHAPE_TYPE_ROUNDED_RECT = 'rounded rectagle';
-mindplot.model.INodeModel.SHAPE_TYPE_ELIPSE = 'elipse';
-mindplot.model.INodeModel.SHAPE_TYPE_LINE = 'line';
 
 mindplot.model.INodeModel.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE = 220;
 
