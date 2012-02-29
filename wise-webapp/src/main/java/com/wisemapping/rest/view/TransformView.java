@@ -43,16 +43,6 @@ public class TransformView extends AbstractView {
             }
         }
 
-        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
-        // Change image link URL.
-        setBaseBaseImgUrl(exportFormat, properties);
-        if (exportFormat == ExportFormat.FREEMIND) {
-            ExporterFactory.export(properties, content, bos, null);
-        } else {
-            ExporterFactory.export(properties, null, bos, content);
-        }
-
         // Set format content type...
         final String contentType = exportFormat.getContentType();
         response.setContentType(contentType);
@@ -61,16 +51,22 @@ public class TransformView extends AbstractView {
         final String fileName = (filename != null ? filename : "map") + "." + exportFormat.getFileExtension();
         response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
 
-        // Write content ...
+        // Change image link URL.
+        setBaseBaseImgUrl(exportFormat, properties);
+
+        // Write the conversion content ...
         final ServletOutputStream outputStream = response.getOutputStream();
-        outputStream.write(bos.toByteArray());
+        if (exportFormat == ExportFormat.FREEMIND) {
+            ExporterFactory.export(properties, content, outputStream, null);
+        } else {
+            ExporterFactory.export(properties, null, outputStream, content);
+        }
     }
 
     @Override
     public String getContentType() {
         return contentType;
     }
-
 
     private void setBaseBaseImgUrl(@NotNull ExportFormat format, @NotNull ExportProperties properties) {
 

@@ -19,11 +19,11 @@
 package com.wisemapping.importer;
 
 import com.wisemapping.model.MindMap;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-public interface Importer
-{
-    public MindMap importMap(String mapName,String description,InputStream input) throws ImporterException;
+public interface Importer {
+    public MindMap importMap(@NotNull String mapName, @NotNull String description, @NotNull InputStream input) throws ImporterException;
 }

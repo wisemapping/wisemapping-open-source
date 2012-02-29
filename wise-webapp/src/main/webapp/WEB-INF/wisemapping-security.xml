@@ -32,7 +32,7 @@
     <sec:http pattern="/c/embeddedview.htm" security="none"/>
     <sec:http pattern="/c/export.htm" security="none"/>
     <sec:http pattern="/c/publicview.htm" security="none"/>
-    <sec:http pattern="/service/transform.*" security="none"/>
+    <sec:http pattern="/service/transform*" security="none"/>
 
     <sec:http use-expressions="true" create-session="never" pattern="/service/**">
         <sec:intercept-url pattern="/service/admin/users/**" access="isAuthenticated() and hasRole('ROLE_ADMIN')"/>

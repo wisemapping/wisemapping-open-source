@@ -38,6 +38,8 @@
                 <entry key="png" value="image/png"/>
                 <entry key="jpeg" value="image/jpg"/>
                 <entry key="svg" value="image/svg+xml"/>
+                <entry key="svg" value="application/svg+xml"/>
+                <entry key="wise" value="application/wisemapping+xml"/>
             </map>
         </property>
         <property name="viewResolvers">
@@ -78,5 +80,9 @@
 
     <bean id="transformViewSvg" class="com.wisemapping.rest.view.TransformView">
         <constructor-arg value="image/svg+xml"/>
+    </bean>
+
+    <bean id="transformViewWise" class="com.wisemapping.rest.view.ImportTransformationView">
+        <constructor-arg value="application/wisemapping+xml"/>
     </bean>
 </beans>
