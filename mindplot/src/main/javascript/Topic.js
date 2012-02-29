@@ -68,7 +68,6 @@ mindplot.Topic = new Class({
 
     setShapeType : function(type) {
         this._setShapeType(type, true);
-
     },
 
     getParent : function() {
@@ -164,8 +163,10 @@ mindplot.Topic = new Class({
 
         if (type == mindplot.model.TopicShape.RECTANGLE) {
             result = new web2d.Rect(0, attributes);
+        }else if(type == mindplot.model.TopicShape.IMAGE){
+            throw "Must be implemented ...";
         }
-        else if (type == mindplot.model.TopicShape.ELIPSE) {
+        else if (type == mindplot.model.TopicShape.ELLIPSE) {
             result = new web2d.Rect(0.9, attributes);
         }
         else if (type == mindplot.model.TopicShape.ROUNDED_RECT) {

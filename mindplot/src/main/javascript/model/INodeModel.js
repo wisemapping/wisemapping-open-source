@@ -293,7 +293,7 @@ mindplot.model.TopicShape =
 {
     RECTANGLE : 'rectagle',
     ROUNDED_RECT :  'rounded rectagle',
-    ELIPSE : 'elipse',
+    ELLIPSE : 'elipse',
     LINE : 'line',
     IMAGE : 'image'
 };
