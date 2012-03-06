@@ -28,6 +28,7 @@ mindplot.layout.FreeTestSuite = new Class({
         this.testRootNodeChildrenPositioning();
         this.testBalancedFreePredict();
         this.testFreeReorder();
+        this.testFreeOverlap();
     },
 
     testFreePosition: function() {
@@ -389,14 +390,46 @@ mindplot.layout.FreeTestSuite = new Class({
         manager.addNode(16, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(3,16,5);
 
         manager.layout();
-//        var graph1 = manager.plot("testFreeReorder1", {width:800, height:800});
-
         manager.moveNode(14, {x:270, y:-160});
         manager.layout();
-        var graph1 = manager.plot("testFreeReorder2", {width:800, height:1200});
-
+        manager.plot("testFreeReorder1", {width:800, height:1200});
         $assert(manager.find(14).getPosition().y > manager.find(10).getPosition().y, "Node 14 should be below branch 2");
 
+        console.log("OK!\n\n");
+    },
+
+    testFreeOverlap: function() {
+        console.log("testFreeOverlap:");
+        var position = {x:0,y:0};
+        var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
+
+        // Prepare a sample graph ...
+        manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(0,1,0);
+        manager.addNode(4, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(1,4,0);
+        manager.addNode(5, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(1,5,1);
+        manager.addNode(6, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(1,6,2);
+
+        manager.addNode(2, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(0,2,2);
+        manager.addNode(7, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(2,7,0);
+        manager.addNode(8, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(2,8,1);
+        manager.addNode(9, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(2,9,2);
+        manager.addNode(10, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(2,10,3);
+
+        manager.addNode(3, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(0,3,4);
+        manager.addNode(11, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(3,11,0);
+        manager.addNode(12, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(3,12,1);
+        manager.addNode(13, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(3,13,2);
+        manager.addNode(14, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(3,14,3);
+        manager.addNode(15, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(3,15,4);
+        manager.addNode(16, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(3,16,5);
+
+        manager.layout();
+        manager.plot("testFreeOverlap1", {width:800, height:1200});
+
+        manager.moveNode(14, {x:270, y:7});
+        manager.layout();
+        manager.plot("testFreeOverlap2", {width:800, height:1200});
+        $assert(manager.find(2).getPosition().y > manager.find(1).getPosition().y, "Branches 1 and 2 are overlapping");
 
         console.log("OK!\n\n");
     },
