@@ -31,6 +31,7 @@ mindplot.layout.AbstractBasicSorter = new Class({
 
     _computeChildrenHeight : function(treeSet, node, heightCache) {
         var height = node.getSize().height + (this._getVerticalPadding() * 2); // 2* Top and down padding;
+        height += Math.abs(node.getFreeDisplacement().y);
 
         var result;
         var children = treeSet.getChildren(node);
