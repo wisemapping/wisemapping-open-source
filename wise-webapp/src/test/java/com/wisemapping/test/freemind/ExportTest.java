@@ -34,7 +34,7 @@ public class ExportTest {
             final StringBuilder recContent = new StringBuilder();
             String line = br.readLine();
             while (line != null) {
-                recContent.append(line);
+                recContent.append(line).append("\n");
                 line = br.readLine();
 
             }
@@ -65,14 +65,14 @@ public class ExportTest {
         final StringBuilder content = new StringBuilder();
         String line = br.readLine();
         while (line != null) {
-            content.append(line);
+            content.append(line).append("\n");
             line = br.readLine();
 
         }
         fis.close();
 
         final MindMap result = new MindMap();
-        result.setXml(content.toString().getBytes("UTF-8"));
+        result.setXmlStr(content.toString());
         return result;
     }
 
@@ -84,7 +84,7 @@ public class ExportTest {
         final File[] freeMindFiles = dataDir.listFiles(new FilenameFilter() {
 
             public boolean accept(File dir, String name) {
-                return name.endsWith(".xml");
+                return name.endsWith(".wxml");
             }
         });
 

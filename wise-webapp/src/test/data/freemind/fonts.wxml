@@ -1,1 +1,55 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?><map version="pela" name="basic"><topic id="0" central="true" position="0,0" shape="rounded rectagle" text="Fonts"><topic id="1" position="200,0" order="0" shape="line" text="Styles"><topic id="2" position="290,-25" order="0" fontStyle="Arial;12;;bold;;" shape="line" text="Bold"/><topic id="3" position="290,0" order="1" fontStyle="Arial;12;;;italic;" shape="line" text="Italic"/></topic><topic id="4" position="-200,0" order="0" shape="line" text="Sizes"><topic id="5" position="-290,-100" order="0" fontStyle="Arial;8;;;;" shape="line" text="Normal----"/><topic id="6" position="-290,-75" order="1" fontStyle="Arial;9;;;;" shape="line" text="Normal---"/><topic id="7" position="-290,-50" order="2" fontStyle="Arial;10;;;;" shape="line" text="Normal--"/><topic id="8" position="-290,-25" order="3" fontStyle="Arial;11;;;;" shape="line" text="Normal-"/><topic id="9" position="-290,0" order="4" shape="line" text="Normal"/><topic id="10" position="-290,25" order="5" fontStyle="Arial;13;;;;" shape="line" text="Nomal+"/><topic id="11" position="-290,50" order="6" fontStyle="Arial;14;;;;" shape="line" text="Normal++"/><topic id="12" position="-290,75" order="7" fontStyle="Arial;15;;;;" shape="line" text="Normal+++"/><topic id="13" position="-290,100" order="8" fontStyle="Arial;16;;;;" shape="line" text="Normal++++"/></topic></topic></map>
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="tango" name="basic">
+    <topic id="0" central="true" position="0,0" shape="rounded rectagle">
+        <text><![CDATA[Fonts]]></text>
+        <topic id="1" position="200,0" order="0" shape="line">
+            <text><![CDATA[Styles]]></text>
+            <topic id="2" position="290,-25" order="0"
+                fontStyle="Arial;12;;bold;;" shape="line">
+                <text><![CDATA[Bold]]></text>
+            </topic>
+            <topic id="3" position="290,0" order="1"
+                fontStyle="Arial;12;;;italic;" shape="line">
+                <text><![CDATA[Italic]]></text>
+            </topic>
+        </topic>
+        <topic id="4" position="-200,0" order="0" shape="line">
+            <text><![CDATA[Sizes]]></text>
+            <topic id="5" position="-290,-100" order="0"
+                fontStyle="Arial;8;;;;" shape="line">
+                <text><![CDATA[Normal----]]></text>
+            </topic>
+            <topic id="6" position="-290,-75" order="1"
+                fontStyle="Arial;9;;;;" shape="line">
+                <text><![CDATA[Normal---]]></text>
+            </topic>
+            <topic id="7" position="-290,-50" order="2"
+                fontStyle="Arial;10;;;;" shape="line">
+                <text><![CDATA[Normal--]]></text>
+            </topic>
+            <topic id="8" position="-290,-25" order="3"
+                fontStyle="Arial;11;;;;" shape="line">
+                <text><![CDATA[Normal-]]></text>
+            </topic>
+            <topic id="9" position="-290,0" order="4" shape="line">
+                <text><![CDATA[Normal]]></text>
+            </topic>
+            <topic id="10" position="-290,25" order="5"
+                fontStyle="Arial;13;;;;" shape="line">
+                <text><![CDATA[Nomal+]]></text>
+            </topic>
+            <topic id="11" position="-290,50" order="6"
+                fontStyle="Arial;14;;;;" shape="line">
+                <text><![CDATA[Normal++]]></text>
+            </topic>
+            <topic id="12" position="-290,75" order="7"
+                fontStyle="Arial;15;;;;" shape="line">
+                <text><![CDATA[Normal+++]]></text>
+            </topic>
+            <topic id="13" position="-290,100" order="8"
+                fontStyle="Arial;16;;;;" shape="line">
+                <text><![CDATA[Normal++++]]></text>
+            </topic>
+        </topic>
+    </topic>
+</map>

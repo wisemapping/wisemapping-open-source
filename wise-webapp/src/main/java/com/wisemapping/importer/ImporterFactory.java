@@ -19,6 +19,7 @@
 package com.wisemapping.importer;
 
 import com.wisemapping.importer.freemind.FreemindImporter;
+import org.jetbrains.annotations.NotNull;
 
 public class ImporterFactory
 {
@@ -36,7 +37,7 @@ public class ImporterFactory
         return instance;
     }
 
-    public Importer getImporter(ImportFormat format)
+    public Importer getImporter(@NotNull ImportFormat format)
             throws ImporterException
     {
         Importer importer;

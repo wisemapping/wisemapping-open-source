@@ -7,7 +7,7 @@
             <package name="com.wisemapping.test.export"/>
         </packages>
     </test>
-       <test name="Model Tests">
+    <test name="Model Tests">
         <packages>
             <package name="com.wisemapping.test.model"/>
         </packages>

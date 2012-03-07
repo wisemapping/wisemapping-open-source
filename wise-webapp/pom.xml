@@ -260,6 +260,11 @@
             <artifactId>slf4j-api</artifactId>
             <version>1.6.4</version>
         </dependency>
+        <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+            <version>2.10.0</version>
+        </dependency>
     </dependencies>
 
 
@@ -432,6 +437,49 @@
                     <reload>automatic</reload>
                     <scanIntervalSeconds>10</scanIntervalSeconds>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>mindmap-generate</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <schemaDirectory>src/main/resources/</schemaDirectory>
+                            <schemaIncludes>
+                                <include>mindmap.xsd</include>
+                            </schemaIncludes>
+                            <bindingDirectory>src/main/resources/</bindingDirectory>
+                            <bindingIncludes>
+                                <include>mindmap.xjb</include>
+                            </bindingIncludes>
+                            <generatePackage>com.wisemapping.jaxb.mindmap</generatePackage>
+                            <generateDirectory>${project.build.directory}/generated-sources/xjc1</generateDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>freemind-generate</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <schemaDirectory>src/main/resources/</schemaDirectory>
+                            <schemaIncludes>
+                                <include>freemind_0.9.0.xsd</include>
+                            </schemaIncludes>
+                            <bindingDirectory>src/main/resources/</bindingDirectory>
+                            <bindingIncludes>
+                                <include>freemind_0.9.0.xjb</include>
+                            </bindingIncludes>
+                            <generatePackage>com.wisemapping.jaxb.freemind</generatePackage>
+                            <generateDirectory>${project.build.directory}/generated-sources/xjc2</generateDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
