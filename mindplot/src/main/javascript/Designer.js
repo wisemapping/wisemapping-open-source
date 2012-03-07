@@ -341,7 +341,7 @@ mindplot.Designer = new Class({
             return childModel;
         },
 
-        addDraddedNode: function(event, options) {
+        addDraggedNode: function(event, options) {
             $assert(event, "event can not be null");
             $assert(options, "option can not be null");
 
