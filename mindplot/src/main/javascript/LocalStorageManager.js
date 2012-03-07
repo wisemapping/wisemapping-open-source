@@ -27,6 +27,10 @@ mindplot.LocalStorageManager = new Class({
             events.onSuccess();
         },
 
+        discard : function(mapId) {
+            localStorage.removeItem(mapId + "-xml");
+        },
+
         loadMapDom : function(mapId) {
             var xml = localStorage.getItem(mapId + "-xml");
             if (xml == null) {

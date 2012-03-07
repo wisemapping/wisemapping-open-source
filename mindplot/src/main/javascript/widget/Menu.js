@@ -266,15 +266,9 @@ mindplot.widget.Menu = new Class({
         var discardElem = $('discard');
         if (discardElem) {
             this._addButton('discard', false, false, function() {
-
-                if (!readOnly) {
-                    displayLoading();
-                    window.document.location = "mymaps.htm";
-                } else {
-                    displayLoading();
-                    window.document.location = "home.htm";
-                }
-            });
+                this.discard();
+                window.location.reload();
+            }.bind(this));
         }
 
         var tagElem = $('tagIt');

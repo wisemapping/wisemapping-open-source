@@ -34,6 +34,12 @@ mindplot.widget.IMenu = new Class({
         });
     },
 
+    discard: function() {
+        var persistenceManager = mindplot.PersistenceManager.getInstance();
+        var mindmap = designer.getMindmap();
+        persistenceManager.discard(mindmap.getId());
+    },
+
     save:function (saveElem, designer, saveHistory) {
         // Load map content ...
         var mindmap = designer.getMindmap();
@@ -64,4 +70,4 @@ mindplot.widget.IMenu = new Class({
             }
         });
     }
-})
+});
