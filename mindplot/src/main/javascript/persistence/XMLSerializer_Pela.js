@@ -127,6 +127,11 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
             parentTopic.setAttribute('brColor', brColor);
         }
 
+        var metadata = topic.getMetadata();
+        if ($defined(metadata)) {
+            parentTopic.setAttribute('metadata', metadata);
+        }
+
         // Serialize features ...
         var features = topic.getFeatures();
         for (var i = 0; i < features.length; i++) {
@@ -312,6 +317,11 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         if ($defined(position)) {
             var pos = position.split(',');
             topic.setPosition(pos[0], pos[1]);
+        }
+
+        var metadata = domElem.getAttribute('metadata');
+        if ($defined(metadata)) {
+            topic.setMetadata(metadata);
         }
 
         //Creating icons and children nodes

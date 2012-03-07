@@ -30,9 +30,9 @@
             var persistence = mindplot.PersistenceManager.getInstance();
             var mindmap;
 //            try {
-                mindmap = persistence.load(mapId);
+            mindmap = persistence.load(mapId);
 //            } catch(e) {
-                // If the map could not be loaded, create a new empty map...
+            // If the map could not be loaded, create a new empty map...
 //                mindmap = mindplot.model.Mindmap.buildEmpty(mapId);
 //            }
             designer.loadMap(mindmap);
@@ -121,7 +121,7 @@
                 <div id="fontItalic" class="buttonOn" title="Italic Style">
                     <img src="images/font-italic.png"/>
                 </div>
-                <div id="fontColor" class="buttonExtOn" title="Fond Color" style="padding-top:4px">
+                <div id="fontColor" class="buttonExtOn" title="Font Color" style="padding-top:4px">
                     <img src="images/font-color.png"/>
                 </div>
             </div>
@@ -133,6 +133,26 @@
     </div>
 </div>
 
+<!--
+<div style="position: absolute;align:left;background: gray;width: 100px;height: 300px;z-index: 100" id="dragPanel">
+    <div id="dragIcon" style="">
+        <img src="images/logo-small.png"/>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("dragIcon").addEvent('mousedown', function(event) {
+        event.preventDefault();
+
+        var options = {imageUrl:"images/logo-small.png",
+            imageWidth:80,
+            imageHeight:43,
+            metadata: "{'media':'video,'url':'http://www.youtube.com/watch?v=P3FrXftyuzw&feature=g-vrec&context=G2b4ab69RVAAAAAAAAAA'}"
+        };
+        designer.addDraddedNode(event, options);
+    });
+</script>
+-->
 <div id="mindplot"></div>
 <script type="text/javascript" src="js/editor.js"></script>
 </body>
