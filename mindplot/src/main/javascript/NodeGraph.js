@@ -25,6 +25,7 @@ mindplot.NodeGraph = new Class({
         this.setModel(nodeModel);
         this._onFocus = false;
         this._event = new Events();
+        this._size = {width:50,height:20};
     },
 
     getType : function() {
@@ -73,11 +74,12 @@ mindplot.NodeGraph = new Class({
     },
 
     getSize : function() {
-        return this._model.getSize();
+        return this._size;
     },
 
     setSize : function(size) {
-        this._model.setSize(parseInt(size.width), parseInt(size.height));
+        this._size.width = parseInt(size.width);
+        this._size.height = parseInt(size.height);
     },
 
     getModel:function() {

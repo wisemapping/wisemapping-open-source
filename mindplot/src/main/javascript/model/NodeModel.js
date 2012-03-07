@@ -27,7 +27,6 @@ mindplot.model.NodeModel = new Class({
         this.setId(id);
         this.setType(type);
         this.areChildrenShrunken(false);
-        this.setSize(50, 20);
 
         this._children = [];
         this._feature = [];
@@ -123,10 +122,12 @@ mindplot.model.NodeModel = new Class({
         this._parent = parent;
     },
 
-    canBeConnected  : function(sourceModel, sourcePosition, targetTopicHeight) {
+    canBeConnected  : function(sourceModel, sourcePosition, targetTopicHeight,targetTopicSize) {
         $assert(sourceModel != this, 'The same node can not be parent and child if itself.');
         $assert(sourcePosition, 'childPosition can not be null.');
         $assert(targetTopicHeight, 'childrenWidth can not be null.');
+        $assert(targetTopicSize, 'targetTopicSize can not be null.');
+
 
         // Only can be connected if the node is in the left or rigth.
         var targetModel = this;
@@ -135,8 +136,7 @@ mindplot.model.NodeModel = new Class({
         var result = false;
 
         if (sourceModel.getType() == mindplot.model.INodeModel.MAIN_TOPIC_TYPE) {
-            // Finally, check current node ubication.
-            var targetTopicSize = targetModel.getSize();
+            // Finally, check current node position ...
             var yDistance = Math.abs(sourcePosition.y - targetPosition.y);
             var gap = 35 + targetTopicHeight / 2;
             if (targetModel.getChildren().length > 0) {

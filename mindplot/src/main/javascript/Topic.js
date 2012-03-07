@@ -27,7 +27,7 @@ mindplot.Topic = new Class({
         this._parent = null;
         this._relationships = [];
         this._isInWorkspace = false;
-        this._buildShape();
+        this._buildTopicShape();
 
         // Position a topic ....
         var pos = model.getPosition();
@@ -90,7 +90,7 @@ mindplot.Topic = new Class({
             var innerShape = this.getInnerShape();
 
             // Update figure size ...
-            var size = model.getSize();
+            var size = this.getSize();
             this.setSize(size, true);
 
             var group = this.get2DElement();
@@ -134,7 +134,7 @@ mindplot.Topic = new Class({
     getInnerShape : function() {
         if (!$defined(this._innerShape)) {
             // Create inner box.
-            this._innerShape = this.buildShape(mindplot.Topic.INNER_RECT_ATTRIBUTES);
+            this._innerShape = this._buildShape(mindplot.Topic.INNER_RECT_ATTRIBUTES, this.getShapeType());
 
             // Update bgcolor ...
             var bgColor = this.getBackgroundColor();
@@ -155,24 +155,36 @@ mindplot.Topic = new Class({
         return this._innerShape;
     },
 
-    buildShape : function(attributes, type) {
-        var result;
-        if (!$defined(type)) {
-            type = this.getShapeType();
-        }
+    _buildShape : function(attributes, shapeType) {
+        $assert(attributes, "attributes can not be null");
+        $assert(shapeType, "shapeType can not be null");
 
-        if (type == mindplot.model.TopicShape.RECTANGLE) {
+        var result;
+        if (shapeType == mindplot.model.TopicShape.RECTANGLE) {
             result = new web2d.Rect(0, attributes);
-        }else if(type == mindplot.model.TopicShape.IMAGE){
-            throw "Must be implemented ...";
+        } else if (shapeType == mindplot.model.TopicShape.IMAGE) {
+            var model = this.getModel();
+            var url = model.getImageUrl();
+            var size = model.getImageSize();
+
+            result = new web2d.Image();
+            result.setHref(url);
+            result.setSize(size.width, size.height);
+
+            result.getSize = function() {
+                return model.getImageSize();
+            };
+
+            result.setPosition = function() {
+            };
         }
-        else if (type == mindplot.model.TopicShape.ELLIPSE) {
+        else if (shapeType == mindplot.model.TopicShape.ELLIPSE) {
             result = new web2d.Rect(0.9, attributes);
         }
-        else if (type == mindplot.model.TopicShape.ROUNDED_RECT) {
+        else if (shapeType == mindplot.model.TopicShape.ROUNDED_RECT) {
             result = new web2d.Rect(0.3, attributes);
         }
-        else if (type == mindplot.model.TopicShape.LINE) {
+        else if (shapeType == mindplot.model.TopicShape.LINE) {
             result = new web2d.Line({strokeColor:"#495879",strokeWidth:1});
             result.setSize = function(width, height) {
                 this.size = {width:width, height:height};
@@ -191,7 +203,6 @@ mindplot.Topic = new Class({
             result.setPosition = function() {
             };
 
-            var setStrokeFunction = result.setStroke;
             result.setFill = function() {
 
             };
@@ -201,7 +212,7 @@ mindplot.Topic = new Class({
             };
         }
         else {
-            $assert(false, "Unsupported figure type:" + type);
+            $assert(false, "Unsupported figure shapeType:" + shapeType);
         }
         result.setPosition(0, 0);
         return result;
@@ -221,7 +232,7 @@ mindplot.Topic = new Class({
 
     getOuterShape : function() {
         if (!$defined(this._outerShape)) {
-            var rect = this.buildShape(mindplot.Topic.OUTER_SHAPE_ATTRIBUTES, mindplot.model.TopicShape.ROUNDED_RECT);
+            var rect = this._buildShape(mindplot.Topic.OUTER_SHAPE_ATTRIBUTES, mindplot.model.TopicShape.ROUNDED_RECT);
             rect.setPosition(-2, -3);
             rect.setOpacity(0);
             this._outerShape = rect;
@@ -238,6 +249,7 @@ mindplot.Topic = new Class({
             var text = this.getText();
             this._setText(text, false);
         }
+
         return this._text;
     },
 
@@ -533,7 +545,7 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    _buildShape : function() {
+    _buildTopicShape : function() {
         var groupAttributes = {width: 100, height:100,coordSizeWidth:100,coordSizeHeight:100};
         var group = new web2d.Group(groupAttributes);
         this._set2DElement(group);
@@ -761,7 +773,7 @@ mindplot.Topic = new Class({
 
     getIncomingLines : function() {
         var result = [];
-        var children = this._getChildren();
+        var children = this.getChildren();
         for (var i = 0; i < children.length; i++) {
             var node = children[i];
             var line = node.getOutgoingLine();
@@ -868,8 +880,7 @@ mindplot.Topic = new Class({
         }
 
         var textShape = this.getTextShape();
-        textShape.setVisibility(value);
-
+        textShape.setVisibility(this.getShapeType() != mindplot.model.TopicShape.IMAGE ? value : false);
     },
 
     setOpacity : function(opacity) {
@@ -885,7 +896,7 @@ mindplot.Topic = new Class({
     _setChildrenVisibility : function(isVisible) {
 
         // Hide all children.
-        var children = this._getChildren();
+        var children = this.getChildren();
         var model = this.getModel();
 
         isVisible = isVisible ? !model.areChildrenShrunken() : isVisible;
@@ -975,7 +986,7 @@ mindplot.Topic = new Class({
             }
 
             // Hide connection line?.
-            if (targetTopic._getChildren().length == 0) {
+            if (targetTopic.getChildren().length == 0) {
                 var connector = targetTopic.getShrinkConnector();
                 connector.setVisibility(false);
             }
@@ -1009,8 +1020,9 @@ mindplot.Topic = new Class({
 
         // Create a connection line ...
         var outgoingLine = new mindplot.ConnectionLine(this, targetTopic);
-        if ($defined(isVisible))
+        if ($defined(isVisible)) {
             outgoingLine.setVisibility(isVisible);
+        }
         this._outgoingLine = outgoingLine;
         workspace.appendChild(outgoingLine);
 
@@ -1044,16 +1056,16 @@ mindplot.Topic = new Class({
     },
 
     appendChild : function(child) {
-        var children = this._getChildren();
+        var children = this.getChildren();
         children.push(child);
     },
 
     removeChild : function(child) {
-        var children = this._getChildren();
+        var children = this.getChildren();
         children.erase(child);
     },
 
-    _getChildren : function() {
+    getChildren : function() {
         var result = this._children;
         if (!$defined(result)) {
             this._children = [];
@@ -1111,34 +1123,42 @@ mindplot.Topic = new Class({
 
     _adjustShapes : function() {
         if (this._isInWorkspace) {
+
             var textShape = this.getTextShape();
-            var textWidth = textShape.getWidth();
+            if (this.getShapeType() != mindplot.model.TopicShape.IMAGE) {
 
-            var textHeight = textShape.getHeight();
-            textHeight = textHeight != 0 ? textHeight : 20;
+                var textWidth = textShape.getWidth();
 
-            var topicPadding = this._getInnerPadding();
+                var textHeight = textShape.getHeight();
+                textHeight = textHeight != 0 ? textHeight : 20;
 
-            // Adjust the icon size to the size of the text ...
-            var iconGroup = this.getOrBuildIconGroup();
-            var fontHeight = this.getTextShape().getFontHeight();
-            iconGroup.setPosition(topicPadding, topicPadding);
-            iconGroup.seIconSize(fontHeight, fontHeight);
+                var topicPadding = this._getInnerPadding();
 
-            // Add a extra padding between the text and the icons
-            var iconsWidth = iconGroup.getSize().width;
-            if (iconsWidth != 0) {
+                // Adjust the icon size to the size of the text ...
+                var iconGroup = this.getOrBuildIconGroup();
+                var fontHeight = this.getTextShape().getFontHeight();
+                iconGroup.setPosition(topicPadding, topicPadding);
+                iconGroup.seIconSize(fontHeight, fontHeight);
 
-                iconsWidth = iconsWidth + (textHeight / 4);
+                // Add a extra padding between the text and the icons
+                var iconsWidth = iconGroup.getSize().width;
+                if (iconsWidth != 0) {
+
+                    iconsWidth = iconsWidth + (textHeight / 4);
+                }
+
+                var height = textHeight + (topicPadding * 2);
+                var width = textWidth + iconsWidth + (topicPadding * 2);
+
+                this.setSize({width:width,height:height});
+
+                // Position node ...
+                textShape.setPosition(topicPadding + iconsWidth, topicPadding);
+            } else {
+                // In case of images, the size if fixed ...
+                var size = this.getModel().getImageSize();
+                this.setSize(size);
             }
-
-            var height = textHeight + (topicPadding * 2);
-            var width = textWidth + iconsWidth + (topicPadding * 2);
-
-            this.setSize({width:width,height:height});
-
-            // Position node ...
-            textShape.setPosition(topicPadding + iconsWidth, topicPadding);
         }
     }
 

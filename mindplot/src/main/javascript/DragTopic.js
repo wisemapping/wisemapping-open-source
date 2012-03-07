@@ -110,7 +110,7 @@ mindplot.DragTopic = new Class({
                 var targetTopicModel = targetTopic.getModel();
                 var childTopicModel = draggedNode.getModel();
 
-                result = targetTopicModel.canBeConnected(childTopicModel, topicPosition, 18);
+                result = targetTopicModel.canBeConnected(childTopicModel, topicPosition, 18, targetTopic.getSize());
             }
         } else {
             result = false;

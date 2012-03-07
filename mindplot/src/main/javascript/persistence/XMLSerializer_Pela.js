@@ -80,6 +80,11 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         var shape = topic.getShapeType();
         if ($defined(shape)) {
             parentTopic.setAttribute('shape', shape);
+
+            if (shape == mindplot.model.TopicShape.IMAGE) {
+                parentTopic.setAttribute('image', topic.getImageSize().width + "," + topic.getImageSize().height + ":" + topic.getImageUrl());
+            }
+
         }
 
         if (topic.areChildrenShrunken()) {
@@ -242,9 +247,20 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         if ($defined(text)) {
             topic.setText(text);
         }
+
         var shape = domElem.getAttribute('shape');
         if ($defined(shape)) {
             topic.setShapeType(shape);
+
+            if (shape == mindplot.model.TopicShape.IMAGE) {
+                var image = domElem.getAttribute('image');
+                var size = image.substring(0, image.indexOf(':'));
+                var url = image.substring(image.indexOf(':') + 1, image.length);
+                topic.setImageUrl(url);
+
+                var split = size.split(',');
+                topic.setImageSize(split[0], split[1]);
+            }
         }
 
         var fontStyle = domElem.getAttribute('fontStyle');

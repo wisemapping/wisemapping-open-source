@@ -69,12 +69,12 @@ mindplot.model.INodeModel = new Class({
         return result;
     },
 
-    setSize  : function(width, height) {
-        this.putProperty('size', '{width:' + width + ',height:' + height + '}');
+    setImageSize  : function(width, height) {
+        this.putProperty('imageSize', '{width:' + width + ',height:' + height + '}');
     },
 
-    getSize  : function() {
-        var value = this.getProperty('size');
+    getImageSize  : function() {
+        var value = this.getProperty('imageSize');
         var result = null;
         if (value != null) {
             result = eval("(" + value + ")");

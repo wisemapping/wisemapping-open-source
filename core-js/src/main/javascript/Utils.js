@@ -145,7 +145,7 @@ core.Utils.setVisibilityAnimated = function(elems, isVisible, doneFn) {
 };
 
 core.Utils.setChildrenVisibilityAnimated = function(rootElem, isVisible) {
-    var children = core.Utils._addInnerChildrens(rootElem);
+    var children = core.Utils.flattenTopicChildElements(rootElem);
     core.Utils.animateVisibility(children, isVisible);
 };
 
@@ -153,21 +153,21 @@ core.Utils.animateVisibility = function (elems, isVisible, doneFn) {
     var _fadeEffect = null;
     var _opacity = (isVisible ? 0 : 1);
     if (isVisible) {
-        elems.forEach(function(child, index) {
+        elems.forEach(function(child) {
             if ($defined(child)) {
                 child.setOpacity(_opacity);
-                child.setVisibility(isVisible);
+                child.setVisibility(isVisible ? "visible" : "hidden");
             }
         });
     }
-    var fadeEffect = function(index) {
+    var fadeEffect = function() {
         var step = 10;
         if ((_opacity <= 0 && !isVisible) || (_opacity >= 1 && isVisible)) {
             $clear(_fadeEffect);
             _fadeEffect = null;
-            elems.forEach(function(child, index) {
+            elems.forEach(function(child) {
                 if ($defined(child)) {
-                    child.setVisibility(isVisible);
+                    child.setVisibility(isVisible ? "visible" : "hidden");
                 }
 
             });
@@ -180,7 +180,7 @@ core.Utils.animateVisibility = function (elems, isVisible, doneFn) {
                 fix = -1;
             }
             _opacity -= (1 / step) * fix;
-            elems.forEach(function(child, index) {
+            elems.forEach(function(child) {
                 if ($defined(child)) {
                     child.setOpacity(_opacity);
                 }
@@ -232,17 +232,21 @@ core.Utils.animatePosition = function (elems, doneFn, designer) {
     _moveEffect = moveEffect.periodical(10);
 };
 
-core.Utils._addInnerChildrens = function(elem) {
-    var children = [];
-    var childs = elem._getChildren();
-    for (var i = 0; i < childs.length; i++) {
-        var child = childs[i];
-        children.push(child);
-        children.push(child.getOutgoingLine());
+core.Utils.flattenTopicChildElements = function(topic) {
+    var result = [];
+
+    var children = topic.getChildren();
+    for (var i = 0; i < children.length; i++) {
+
+        var child = children[i];
+        result.push(child);
+        result.push(child.getOutgoingLine());
+
         var relationships = child.getRelationships();
-        children = children.concat(relationships);
-        var innerChilds = core.Utils._addInnerChildrens(child);
-        children = children.concat(innerChilds);
+        result = result.concat(relationships);
+
+        var innerChilds = core.Utils.flattenTopicChildElements(child);
+        result = result.concat(innerChilds);
     }
-    return children;
+    return result;
 };

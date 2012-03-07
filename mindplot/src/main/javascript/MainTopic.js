@@ -25,7 +25,7 @@ mindplot.MainTopic = new Class({
     INNER_RECT_ATTRIBUTES : {stroke:'0.5 solid #009900'},
 
     _buildDragShape : function() {
-        var innerShape = this.buildShape(this.INNER_RECT_ATTRIBUTES);
+        var innerShape = this._buildShape(this.INNER_RECT_ATTRIBUTES, this.getShapeType());
         var size = this.getSize();
         innerShape.setSize(size.width, size.height);
         innerShape.setPosition(0, 0);
@@ -45,12 +45,13 @@ mindplot.MainTopic = new Class({
         group.appendChild(innerShape);
 
         // Add Text ...
-        var textShape = this._buildTextShape(true);
-        var text = this.getText();
-        textShape.setText(text);
-        textShape.setOpacity(0.5);
-        group.appendChild(textShape);
-
+        if (this.getShapeType() != mindplot.model.TopicShape.IMAGE) {
+            var textShape = this._buildTextShape(true);
+            var text = this.getText();
+            textShape.setText(text);
+            textShape.setOpacity(0.5);
+            group.appendChild(textShape);
+        }
         return group;
     },
 

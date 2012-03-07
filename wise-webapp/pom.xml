@@ -442,6 +442,7 @@
             <plugin>
                 <groupId>org.jvnet.jaxb2.maven2</groupId>
                 <artifactId>maven-jaxb2-plugin</artifactId>
+                <version>0.8.1</version>
                 <executions>
                     <execution>
                         <id>mindmap-generate</id>

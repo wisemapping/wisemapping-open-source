@@ -422,7 +422,7 @@ mindplot.Designer = new Class({
             $assert(mindmapModel, "mindmapModel can not be null");
             this._mindmap = mindmapModel;
 
-            try {
+//            try {
                 // Init layout manager ...
                 var size = {width:25,height:25};
                 var layoutManager = new mindplot.layout.LayoutManager(mindmapModel.getCentralTopic().getId(), size);
@@ -459,9 +459,9 @@ mindplot.Designer = new Class({
                 mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.DoLayout);
 
                 this.fireEvent('loadSuccess');
-            } catch(e) {
-                this.fireEvent('loadError', e);
-            }
+//            } catch(e) {
+//                this.fireEvent('loadError', e);
+//            }
         },
 
         getMindmap : function() {
@@ -595,8 +595,8 @@ mindplot.Designer = new Class({
                 node.disconnect(this._workspace);
 
                 //remove children
-                while (node._getChildren().length > 0) {
-                    this._removeNode(node._getChildren()[0]);
+                while (node.getChildren().length > 0) {
+                    this._removeNode(node.getChildren()[0]);
                 }
 
                 this._workspace.removeChild(node);

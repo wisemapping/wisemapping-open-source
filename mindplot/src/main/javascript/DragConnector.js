@@ -81,8 +81,8 @@ mindplot.DragConnector = new Class({
                     var targetPosition = targetTopic.getPosition();
                     var fix = position.y > targetPosition.y;
                     var gap = 0;
-                    if (targetTopic._getChildren().length > 0) {
-                        gap = Math.abs(targetPosition.y - targetTopic._getChildren()[0].getPosition().y)
+                    if (targetTopic.getChildren().length > 0) {
+                        gap = Math.abs(targetPosition.y - targetTopic.getChildren()[0].getPosition().y)
                     }
                     var yDistance = Math.abs(position.y - fix * gap - targetPosition.y);
                     if (distance == null || yDistance < distance) {
