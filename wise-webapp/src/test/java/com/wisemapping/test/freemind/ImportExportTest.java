@@ -17,6 +17,7 @@ import java.io.*;
 @Test
 public class ImportExportTest {
     private static final String DATA_DIR_PATH = "src/test/data/freemind/";
+    private static final String UTF_8 = "UTF-8";
     final private Importer importer;
     final private FreemindExporter exporter;
 
@@ -30,8 +31,6 @@ public class ImportExportTest {
 
     @Test(dataProvider = "Data-Provider-Function")
     public void exportImportTest(@NotNull final File freeMindFile, @NotNull final File wiseFile, @NotNull final File freeRecFile) throws ImporterException, IOException, ExportException {
-
-
         final FileInputStream fileInputStream = new FileInputStream(freeMindFile.getAbsolutePath());
         final MindMap mindMap = importer.importMap("basic", "basic", fileInputStream);
 
@@ -46,7 +45,7 @@ public class ImportExportTest {
 
         } else {
             final FileOutputStream fos = new FileOutputStream(wiseFile);
-            fos.write(mindMap.getXmlStr().getBytes("UTF-8"));
+            fos.write(mindMap.getXmlStr().getBytes(UTF_8));
             fos.close();
         }
 
@@ -59,7 +58,7 @@ public class ImportExportTest {
             final ByteArrayOutputStream bos = new ByteArrayOutputStream();
             exporter.export(mindMap, bos);
 
-            Assert.assertEquals(bos.toByteArray(), recContent.getBytes("UTF-8"));
+            Assert.assertEquals(new String(bos.toByteArray(), UTF_8), recContent);
 
         } else {
             final FileOutputStream fos = new FileOutputStream(freeRecFile);
@@ -72,13 +71,13 @@ public class ImportExportTest {
     private String readFile(@NotNull File file) throws IOException {
         // Load rec file co
         final FileInputStream fis = new FileInputStream(file);
-        final InputStreamReader isr = new InputStreamReader(fis,"UTF-8");
+        final InputStreamReader isr = new InputStreamReader(fis, UTF_8);
         final BufferedReader br = new BufferedReader(isr);
 
         final StringBuilder result = new StringBuilder();
         String line = br.readLine();
         while (line != null) {
-            result.append(line);
+            result.append(line).append("\n");
             line = br.readLine();
 
         }
@@ -97,7 +96,7 @@ public class ImportExportTest {
         final File[] freeMindFiles = dataDir.listFiles(new FilenameFilter() {
 
             public boolean accept(File dir, String name) {
-                return name.endsWith(".mm") && (testNameToRun==null || name.startsWith(testNameToRun));
+                return name.endsWith(".mm") && (testNameToRun == null || name.startsWith(testNameToRun));
             }
         });
 

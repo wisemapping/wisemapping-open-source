@@ -18,12 +18,15 @@
 
 package com.wisemapping.util;
 
+import com.wisemapping.importer.JaxbCDATAMarshaller;
+import org.apache.xml.serialize.XMLSerializer;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -59,6 +62,14 @@ public class JAXBUtils {
         final JAXBContext context = getInstance(packag);
         final Marshaller marshaller = context.createMarshaller();
 
-        marshaller.marshal(obj, out);
+        // get an Apache XMLSerializer configured to generate CDATA
+        XMLSerializer serializer = JaxbCDATAMarshaller.createMindmapXMLSerializer(out);
+
+        try {
+            // marshal using the Apache XMLSerializer
+            marshaller.marshal(obj, serializer.asContentHandler());
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }

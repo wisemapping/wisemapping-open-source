@@ -1,1 +1,15 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?><map version="pela" name="basic"><topic id="0" central="true" position="0,0" shape="rounded rectagle" text="i18n"><topic id="1" position="200,0" order="0" shape="line" text="Este es un é con acento"/><topic id="2" position="-200,0" order="0" shape="line" text="Este es una ñ"/><topic id="3" position="200,100" order="4" shape="line" text="這是一個樣本 Japanise。"/></topic></map>
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="tango" name="basic">
+    <topic id="0" central="true" position="0,0" shape="rounded rectagle">
+        <text><![CDATA[i18n]]></text>
+        <topic id="1" position="200,0" order="0" shape="line">
+            <text><![CDATA[Este es un é con acento]]></text>
+        </topic>
+        <topic id="2" position="-200,0" order="0" shape="line">
+            <text><![CDATA[Este es una ñ]]></text>
+        </topic>
+        <topic id="3" position="200,100" order="4" shape="line">
+            <text><![CDATA[這是一個樣本 Japanise。]]></text>
+        </topic>
+    </topic>
+</map>
