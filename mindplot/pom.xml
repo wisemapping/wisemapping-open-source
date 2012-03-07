@@ -81,6 +81,7 @@
                                     <!--<filelist dir="${basedir}/src/main/javascript/" files="RichTextEditor.js"/>-->
                                     <filelist dir="${basedir}/src/main/javascript/" files="TextEditorFactory.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/" files="util/Shape.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/" files="util/FadeEffect.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="persistence/ModelCodeName.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"

@@ -260,8 +260,7 @@ mindplot.CommandContext = new Class({
 
     createTopic:function(model, isVisible) {
         $assert(model, "model can not be null");
-        var result = this._designer._nodeModelToNodeGraph(model, isVisible);
-        return  result;
+        return  this._designer._nodeModelToNodeGraph(model, isVisible);
     },
 
     createModel:function() {

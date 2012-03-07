@@ -140,57 +140,6 @@ core.Utils.calculateDefaultControlPoints = function(srcPos, tarPos) {
     return [new core.Point(-srcPos.x + x1, -srcPos.y + y1),new core.Point(-tarPos.x + x2, -tarPos.y + y2)];
 };
 
-core.Utils.setVisibilityAnimated = function(elems, isVisible, doneFn) {
-    core.Utils.animateVisibility(elems, isVisible, doneFn);
-};
-
-core.Utils.setChildrenVisibilityAnimated = function(rootElem, isVisible) {
-    var children = core.Utils.flattenTopicChildElements(rootElem);
-    core.Utils.animateVisibility(children, isVisible);
-};
-
-core.Utils.animateVisibility = function (elems, isVisible, doneFn) {
-    var _fadeEffect = null;
-    var _opacity = (isVisible ? 0 : 1);
-    if (isVisible) {
-        elems.forEach(function(child) {
-            if ($defined(child)) {
-                child.setOpacity(_opacity);
-                child.setVisibility(isVisible ? "visible" : "hidden");
-            }
-        });
-    }
-    var fadeEffect = function() {
-        var step = 10;
-        if ((_opacity <= 0 && !isVisible) || (_opacity >= 1 && isVisible)) {
-            $clear(_fadeEffect);
-            _fadeEffect = null;
-            elems.forEach(function(child) {
-                if ($defined(child)) {
-                    child.setVisibility(isVisible ? "visible" : "hidden");
-                }
-
-            });
-            if ($defined(doneFn))
-                doneFn.attempt();
-        }
-        else {
-            var fix = 1;
-            if (isVisible) {
-                fix = -1;
-            }
-            _opacity -= (1 / step) * fix;
-            elems.forEach(function(child) {
-                if ($defined(child)) {
-                    child.setOpacity(_opacity);
-                }
-            });
-        }
-
-    };
-    _fadeEffect = fadeEffect.periodical(10);
-};
-
 core.Utils.animatePosition = function (elems, doneFn, designer) {
     var _moveEffect = null;
     var i = 10;
@@ -230,23 +179,4 @@ core.Utils.animatePosition = function (elems, doneFn, designer) {
         i--;
     };
     _moveEffect = moveEffect.periodical(10);
-};
-
-core.Utils.flattenTopicChildElements = function(topic) {
-    var result = [];
-
-    var children = topic.getChildren();
-    for (var i = 0; i < children.length; i++) {
-
-        var child = children[i];
-        result.push(child);
-        result.push(child.getOutgoingLine());
-
-        var relationships = child.getRelationships();
-        result = result.concat(relationships);
-
-        var innerChilds = core.Utils.flattenTopicChildElements(child);
-        result = result.concat(innerChilds);
-    }
-    return result;
 };

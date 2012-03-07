@@ -625,12 +625,19 @@ mindplot.Topic = new Class({
         model.setChildrenShrunken(value);
 
         // Change render base on the state.
+
         var shrinkConnector = this.getShrinkConnector();
         shrinkConnector.changeRender(value);
 
-        // Hide children ...
-        core.Utils.setChildrenVisibilityAnimated(this, !value);
-        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeShrinkEvent, this.getModel());
+        // Do some fancy animation ....
+        var elements = this._flatten2DElements(this);
+        var fade = new mindplot.util.FadeEffect(elements, !value);
+        fade.addEvent('complete', function() {
+
+        });
+        fade.start();
+        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeShrinkEvent, model);
+
     },
 
     getShrinkConnector : function() {
@@ -1160,6 +1167,25 @@ mindplot.Topic = new Class({
                 this.setSize(size);
             }
         }
+    },
+
+    _flatten2DElements : function(topic) {
+        var result = [];
+
+        var children = topic.getChildren();
+        for (var i = 0; i < children.length; i++) {
+
+            var child = children[i];
+            result.push(child);
+            result.push(child.getOutgoingLine());
+
+            var relationships = child.getRelationships();
+            result = result.concat(relationships);
+
+            var innerChilds = core.Utils.flattenTopicChildElements(child);
+            result = result.concat(innerChilds);
+        }
+        return result;
     }
 
 });

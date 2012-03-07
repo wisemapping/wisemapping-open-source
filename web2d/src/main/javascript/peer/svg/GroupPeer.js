@@ -73,6 +73,10 @@ web2d.peer.svg.GroupPeer = new Class({
         this._native.setAttribute("transform", "translate(" + cx + "," + cy + ") scale(" + sx + "," + sy + ")");
     },
 
+    setOpacity : function(value) {
+        this._native.setAttribute("opacity", value);
+    },
+
     setCoordOrigin : function(x, y) {
         var change = x != this._coordOrigin.x || y != this._coordOrigin.y;
         if ($defined(x)) {

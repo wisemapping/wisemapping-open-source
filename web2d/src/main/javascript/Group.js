@@ -123,5 +123,10 @@ web2d.Group = new Class({
         }
 
         this._peer._native.appendChild(DomElement);
+    },
+
+    setOpacity:function(value){
+      this._peer.setOpacity(value);
     }
+
 });

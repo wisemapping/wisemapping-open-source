@@ -73,7 +73,7 @@ mindplot.layout.EventBusDispatcher = new Class({
 //        (function() {
         this._layoutManager.layout(true);
 //        console.log("---------");
-        this._layoutManager.dump();
+//        this._layoutManager.dump();
 //        console.log("---------");
 //        console.log("---------");
 //        }).delay(0, this);
