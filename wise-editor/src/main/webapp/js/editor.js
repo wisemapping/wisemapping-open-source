@@ -38,11 +38,11 @@ function buildDesigner(options) {
         console.log(e);
     });
 
-//    window.onerror = function()
-//    {
-//        errorDialog.show();
-//    };
-//
+    window.onerror = function()
+    {
+        errorDialog.show();
+    };
+
     // Configure default persistence manager ...
     var persistence;
     if (options.persistenceManager) {

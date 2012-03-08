@@ -1173,7 +1173,7 @@ mindplot.Topic = new Class({
             var relationships = child.getRelationships();
             result = result.concat(relationships);
 
-            var innerChilds = core.Utils.flattenTopicChildElements(child);
+            var innerChilds = this._flatten2DElements(child);
             result = result.concat(innerChilds);
         }
         return result;
