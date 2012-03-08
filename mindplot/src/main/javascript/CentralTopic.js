@@ -90,5 +90,9 @@ mindplot.CentralTopic = new Class({
             weight:"bold",
             color:"#ffffff"
         };
+    },
+
+    getShrinkConnector : function() {
+        return null;
     }
 });

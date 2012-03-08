@@ -131,13 +131,15 @@ mindplot.ConnectionLine = new Class({
         y = y - offset;
 
         var connector = targetTopic.getShrinkConnector();
-        if (Math.sign(targetPosition.x) > 0) {
-            var x = targetTopicSize.width;
-            connector.setPosition(x, y);
-        }
-        else {
-            var x = -mindplot.Topic.CONNECTOR_WIDTH;
-            connector.setPosition(x, y);
+        if ($defined(connector)) {
+            if (Math.sign(targetPosition.x) > 0) {
+                var x = targetTopicSize.width;
+                connector.setPosition(x, y);
+            }
+            else {
+                var x = -mindplot.Topic.CONNECTOR_WIDTH;
+                connector.setPosition(x, y);
+            }
         }
     },
 

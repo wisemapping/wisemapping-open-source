@@ -30,17 +30,12 @@ function buildDesigner(options) {
         window.waitDialog.destroy();
     });
 
-    // Register error handlers ...
-    designer.addEvent('loadError', function(e) {
+    window.onerror = function()
+    {
         window.waitDialog.close();
         window.waitDialog.destroy();
         errorDialog.show();
         console.log(e);
-    });
-
-    window.onerror = function()
-    {
-        errorDialog.show();
     };
 
     // Configure default persistence manager ...

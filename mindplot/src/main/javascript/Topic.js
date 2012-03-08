@@ -93,6 +93,7 @@ mindplot.Topic = new Class({
             if ($defined(iconGroup)) {
                 iconGroup.moveToFront();
             }
+
             //Move connector to front
             var connector = this.getShrinkConnector();
             if ($defined(connector)) {
@@ -489,7 +490,9 @@ mindplot.Topic = new Class({
         innerShape.setFill(color);
 
         var connector = this.getShrinkConnector();
-        connector.setFill(color);
+        if (connector) {
+            connector.setFill(color);
+        }
 
         if ($defined(updateModel) && updateModel) {
             var model = this.getModel();
@@ -515,8 +518,9 @@ mindplot.Topic = new Class({
         innerShape.setAttribute('strokeColor', color);
 
         var connector = this.getShrinkConnector();
-        connector.setAttribute('strokeColor', color);
-
+        if (connector) {
+            connector.setAttribute('strokeColor', color);
+        }
 
         if ($defined(updateModel) && updateModel) {
             var model = this.getModel();
@@ -542,7 +546,6 @@ mindplot.Topic = new Class({
         var outerShape = this.getOuterShape();
         var innerShape = this.getInnerShape();
         var textShape = this.getTextShape();
-        var shrinkConnector = this.getShrinkConnector();
 
         // Add to the group ...
         group.appendChild(outerShape);
@@ -555,7 +558,8 @@ mindplot.Topic = new Class({
             this.getOrBuildIconGroup();
         }
 
-        if (this.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
+        var shrinkConnector = this.getShrinkConnector();
+        if ($defined(shrinkConnector)) {
             shrinkConnector.addToWorkspace(group);
         }
 
@@ -615,7 +619,9 @@ mindplot.Topic = new Class({
         // Change render base on the state.
 
         var shrinkConnector = this.getShrinkConnector();
-        shrinkConnector.changeRender(value);
+        if ($defined(shrinkConnector)) {
+            shrinkConnector.changeRender(value);
+        }
 
         // Do some fancy animation ....
         var elements = this._flatten2DElements(this);
@@ -874,7 +880,9 @@ mindplot.Topic = new Class({
 
         if (this.getIncomingLines().length > 0) {
             var connector = this.getShrinkConnector();
-            connector.setVisibility(value);
+            if ($defined(connector)) {
+                connector.setVisibility(value);
+            }
         }
 
         var textShape = this.getTextShape();
@@ -885,8 +893,10 @@ mindplot.Topic = new Class({
         var elem = this.get2DElement();
         elem.setOpacity(opacity);
 
-        this.getShrinkConnector().setOpacity(opacity);
-
+        var connector = this.getShrinkConnector();
+        if ($defined(connector)) {
+            connector.setOpacity(opacity);
+        }
         var textShape = this.getTextShape();
         textShape.setOpacity(opacity);
     },
@@ -986,7 +996,9 @@ mindplot.Topic = new Class({
             // Hide connection line?.
             if (targetTopic.getChildren().length == 0) {
                 var connector = targetTopic.getShrinkConnector();
-                connector.setVisibility(false);
+                if ($defined(connector)) {
+                    connector.setVisibility(false);
+                }
             }
         }
     },
@@ -1041,7 +1053,9 @@ mindplot.Topic = new Class({
 
         // Display connection node...
         var connector = targetTopic.getShrinkConnector();
-        connector.setVisibility(true);
+        if ($defined(connector)) {
+            connector.setVisibility(true);
+        }
 
         // Redraw line ...
         outgoingLine.redraw();

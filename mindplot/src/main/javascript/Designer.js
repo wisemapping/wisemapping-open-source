@@ -448,7 +448,7 @@ mindplot.Designer = new Class({
             $assert(mindmapModel, "mindmapModel can not be null");
             this._mindmap = mindmapModel;
 
-            try {
+//            try {
                 // Init layout manager ...
                 var size = {width:25,height:25};
                 var layoutManager = new mindplot.layout.LayoutManager(mindmapModel.getCentralTopic().getId(), size);
@@ -485,9 +485,9 @@ mindplot.Designer = new Class({
                 mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.DoLayout);
 
                 this.fireEvent('loadSuccess');
-            } catch(e) {
-                this.fireEvent('loadError', e);
-            }
+//            } catch(e) {
+//                this.fireEvent('loadError', e);
+//            }
         },
 
         getMindmap : function() {
