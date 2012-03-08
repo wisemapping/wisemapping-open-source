@@ -33,6 +33,7 @@ function buildDesigner(options) {
     designer.addEvent('loadError', function(e) {
         window.waitDialog.close();
         window.waitDialog.destroy();
+        errorDialog.show();
         console.log(e);
     });
 
@@ -40,11 +41,11 @@ function buildDesigner(options) {
     // Configure default persistence manager ...
     var persistence;
     if (options.persistenceManager) {
-        if(options.persistenceManager instanceof String) {
-             persistence = eval("new " + options.persistenceManager + "()");
+        if (options.persistenceManager instanceof String) {
+            persistence = eval("new " + options.persistenceManager + "()");
         }
         else {
-           persistence = options.persistenceManager;
+            persistence = options.persistenceManager;
         }
 
     } else {
@@ -54,7 +55,7 @@ function buildDesigner(options) {
 
     // Register toolbar event ...
     if ($('toolbar')) {
-        var menu = new mindplot.widget.Menu(designer, 'toolbar',"");
+        var menu = new mindplot.widget.Menu(designer, 'toolbar', "");
 
         //  If a node has focus, focus can be move to another node using the keys.
         designer._cleanScreen = function() {
@@ -120,6 +121,70 @@ editor.WaitDialog = new Class({
                         duration: this.options.duration
                     });
                     if (this.options.closeOnOverlayClick) this.overlay.addEvent('click', this.close.bind(this));
+                },
+
+                onBeforeOpen: function() {
+                    this.overlay.open();
+                    this.fx.start({
+                        'margin-top': [-200, -100],
+                        opacity: [0, 1]
+                    }).chain(function() {
+                        this.fireEvent('show');
+                    }.bind(this));
+                },
+
+                onBeforeClose: function() {
+                    this.fx.start({
+                        'margin-top': [-100, 0],
+                        opacity: 0,
+                        duration: 200
+                    }).chain(function() {
+                        this.fireEvent('hide');
+                    }.bind(this));
+                    this.overlay.close();
+                }}
+        );
+        this.setContent(panel);
+    },
+
+    _buildPanel : function () {
+        var result = new Element('div');
+        result.setStyles({
+            'text-align':'center',
+            width: '400px'
+        });
+        var img = new Element('img', {'src': 'images/ajax-loader.gif'});
+        img.inject(result);
+        return result;
+    },
+
+    show : function() {
+        this.open();
+    }
+
+});
+
+
+editor.FatalErrorDialog = new Class({
+    Extends:MooDialog,
+    initialize : function() {
+        var panel = this._buildPanel();
+        this.parent({
+                closeButton:false,
+                destroyOnClose:true,
+                autoOpen:true,
+                useEscKey:false,
+                title:'Outch!!. An unexpected error has occurred',
+                onInitialize: function(wrapper) {
+                    wrapper.setStyle('opacity', 0);
+                    this.fx = new Fx.Morph(wrapper, {
+                        duration: 100,
+                        transition: Fx.Transitions.Bounce.easeOut
+                    });
+                    this.overlay = new Overlay(this.options.inject, {
+                        duration: this.options.duration
+                    });
+                    if (this.options.closeOnOverlayClick) this.overlay.addEvent('click', this.close.bind(this));
                 }
                 ,
 
@@ -155,8 +220,12 @@ editor.WaitDialog = new Class({
             'text-align':'center',
             width: '400px'
         });
-        var img = new Element('img', {'src': 'images/ajax-loader.gif'});
+        var p = new Element('p', {'text': 'We\'re sorry, an error has occurred and we can not process your request. Please try again, or go to the home page.'});
+        p.inject(result);
+
+        var img = new Element('img', {'src': 'images/alert-sign.png'});
         img.inject(result);
+
         return result;
     },
 
@@ -165,6 +234,7 @@ editor.WaitDialog = new Class({
     }
 
 });
+
 
 editor.Help = {
     buildHelp:function(panel) {
@@ -236,6 +306,7 @@ editor.Help = {
 // Show loading dialog ...
 waitDialog = new editor.WaitDialog();
 waitDialog.show();
+errorDialog = new editor.FatalErrorDialog();
 
 // Loading libraries ...
 Asset.javascript("js/mindplot-min.js");
