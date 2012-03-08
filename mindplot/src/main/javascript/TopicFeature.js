@@ -63,6 +63,6 @@ mindplot.TopicFeature = {
     }
 };
 
-mindplot.TopicFeature._featuresMetadataById = [mindplot.TopicFeature.Icon,mindplot.TopicFeature.Link,mindplot.TopicFeature.Note]
+mindplot.TopicFeature._featuresMetadataById = [mindplot.TopicFeature.Icon,mindplot.TopicFeature.Link,mindplot.TopicFeature.Note];
 
 

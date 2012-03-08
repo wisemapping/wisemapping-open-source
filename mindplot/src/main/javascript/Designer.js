@@ -61,6 +61,7 @@ mindplot.Designer = new Class({
             // Set editor working area ...
             this.setViewPort(options.viewPort);
 
+            mindplot.TopicEditor.configure();
         },
 
         _registerEvents : function() {
@@ -448,42 +449,42 @@ mindplot.Designer = new Class({
             this._mindmap = mindmapModel;
 
             try {
-            // Init layout manager ...
-            var size = {width:25,height:25};
-            var layoutManager = new mindplot.layout.LayoutManager(mindmapModel.getCentralTopic().getId(), size);
-            layoutManager.addEvent('change', function(event) {
-                var id = event.getId();
-                var topic = this.getModel().findTopicById(id);
-                topic.setPosition(event.getPosition());
-                topic.setOrder(event.getOrder());
-            }.bind(this));
-            this._eventBussDispatcher.setLayoutManager(layoutManager);
+                // Init layout manager ...
+                var size = {width:25,height:25};
+                var layoutManager = new mindplot.layout.LayoutManager(mindmapModel.getCentralTopic().getId(), size);
+                layoutManager.addEvent('change', function(event) {
+                    var id = event.getId();
+                    var topic = this.getModel().findTopicById(id);
+                    topic.setPosition(event.getPosition());
+                    topic.setOrder(event.getOrder());
+                }.bind(this));
+                this._eventBussDispatcher.setLayoutManager(layoutManager);
 
 
-            // Building node graph ...
-            var branches = mindmapModel.getBranches();
-            for (var i = 0; i < branches.length; i++) {
-                // NodeModel -> NodeGraph ...
-                var nodeModel = branches[i];
-                var nodeGraph = this._nodeModelToNodeGraph(nodeModel, false);
+                // Building node graph ...
+                var branches = mindmapModel.getBranches();
+                for (var i = 0; i < branches.length; i++) {
+                    // NodeModel -> NodeGraph ...
+                    var nodeModel = branches[i];
+                    var nodeGraph = this._nodeModelToNodeGraph(nodeModel, false);
 
-                // Update shrink render state...
-                nodeGraph.setBranchVisibility(true);
-            }
+                    // Update shrink render state...
+                    nodeGraph.setBranchVisibility(true);
+                }
 
-            var relationships = mindmapModel.getRelationships();
-            for (var j = 0; j < relationships.length; j++) {
-                this._relationshipModelToRelationship(relationships[j]);
-            }
+                var relationships = mindmapModel.getRelationships();
+                for (var j = 0; j < relationships.length; j++) {
+                    this._relationshipModelToRelationship(relationships[j]);
+                }
 
-            // Place the focus on the Central Topic
-            var centralTopic = this.getModel().getCentralTopic();
-            this.goToNode(centralTopic);
+                // Place the focus on the Central Topic
+                var centralTopic = this.getModel().getCentralTopic();
+                this.goToNode(centralTopic);
 
-            // Finally, sort the map ...
-            mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.DoLayout);
+                // Finally, sort the map ...
+                mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.DoLayout);
 
-            this.fireEvent('loadSuccess');
+                this.fireEvent('loadSuccess');
             } catch(e) {
                 this.fireEvent('loadError', e);
             }

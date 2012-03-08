@@ -18,8 +18,49 @@
 
 mindplot.TopicEditor = new Class({
     Extends: Events,
-    initialize:function(topic) {
-        this._topic = topic;
+    Static: {
+        _instance: null,
+
+        configure: function(options) {
+            this._instance = new mindplot.TopicEditor();
+        },
+
+        getInstance : function() {
+            return this._instance;
+        }
+    },
+
+    initialize:function() {
+        this._activeEditor = null;
+        this._multilineEditor = new mindplot.MultilineTextEditor();
+    },
+
+    close : function(update) {
+        if (this.isVisible()) {
+            this._activeEditor.close(update);
+            this._activeEditor = null;
+        }
+    },
+
+    show : function(topic, options) {
+
+        // Close all previous open editor ....
+        if (this.isVisible()) {
+            this.close();
+        }
+
+        // Open the new editor ...
+        var model = topic.getModel();
+        if (model.getShapeType() != mindplot.model.TopicShape.IMAGE) {
+            this._multilineEditor.show(topic, options ? options.text : null);
+            this._activeEditor = this._multilineEditor;
+        } else {
+            // To be implemented....
+        }
+    },
+
+    isVisible: function() {
+        return this._activeEditor != null && this._activeEditor.isVisible();
     }
 });
 

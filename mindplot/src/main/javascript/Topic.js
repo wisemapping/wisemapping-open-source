@@ -21,8 +21,6 @@ mindplot.Topic = new Class({
     Extends:mindplot.NodeGraph,
     initialize : function(model, options) {
         this.parent(model, options);
-        this._textEditor = new mindplot.MultilineTextEditor(this);
-
         this._children = [];
         this._parent = null;
         this._relationships = [];
@@ -51,19 +49,9 @@ mindplot.Topic = new Class({
         });
 
         this.addEvent('dblclick', function (event) {
-            this._textEditor.show();
+            this._getTopicEditor().show(this);
             event.stopPropagation(true);
         }.bind(this));
-
-        this._textEditor.addEvent('input', function() {
-            var textShape = this.getTextShape();
-//            var oldText = textShape.getText();
-
-//            this._setText(text, false);
-            // @Todo: I must resize, no change the position ...
-//            textShape.setText(oldText);
-        }.bind(this));
-
     },
 
     setShapeType : function(type) {
@@ -664,7 +652,7 @@ mindplot.Topic = new Class({
     },
 
     showTextEditor : function(text) {
-        this._textEditor.show(text);
+        this._getTopicEditor().show(this, {text:text});
     },
 
     showNoteEditor : function() {
@@ -740,9 +728,12 @@ mindplot.Topic = new Class({
         editor.show();
     },
 
-
     closeEditors : function() {
-        this._textEditor.close(true);
+        this._getTopicEditor().close(true);
+    },
+
+    _getTopicEditor : function() {
+        return mindplot.TopicEditor.getInstance();
     },
 
     /**
@@ -1123,7 +1114,7 @@ mindplot.Topic = new Class({
         }
 
         // If a drag node is create for it, let's hide the editor.
-        this._textEditor.close();
+        this._getTopicEditor().close();
 
         return result;
     },

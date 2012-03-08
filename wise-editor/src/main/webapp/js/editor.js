@@ -30,6 +30,7 @@ function buildDesigner(options) {
         window.waitDialog.destroy();
     });
 
+    // Register error handlers ...
     designer.addEvent('loadError', function(e) {
         window.waitDialog.close();
         window.waitDialog.destroy();
@@ -37,7 +38,11 @@ function buildDesigner(options) {
         console.log(e);
     });
 
-
+//    window.onerror = function()
+//    {
+//        errorDialog.show();
+//    };
+//
     // Configure default persistence manager ...
     var persistence;
     if (options.persistenceManager) {
@@ -209,8 +214,7 @@ editor.FatalErrorDialog = new Class({
                     }.bind(this));
                     this.overlay.close();
                 }}
-        )
-            ;
+        );
         this.setContent(panel);
     },
 
