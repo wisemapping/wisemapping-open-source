@@ -15,7 +15,7 @@ import java.io.*;
 
 @Test
 public class ExportTest {
-    private static final String DATA_DIR_PATH = "src/test/data/wisemaps/";
+    private static final String DATA_DIR_PATH = "src/test/resources/data/wisemaps/";
     private static final String UTF_8 = "UTF-8";
 
     @Test(dataProvider = "Data-Provider-Function")

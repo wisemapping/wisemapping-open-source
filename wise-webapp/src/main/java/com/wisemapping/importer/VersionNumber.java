@@ -85,12 +85,9 @@ public class VersionNumber
 
         final VersionNumber versionNumber = (VersionNumber) o;
 
-        if (version_d != null ? !version_d.equals(versionNumber.version_d)
-                : versionNumber.version_d != null) {
-            return false;
-        }
+        return !(version_d != null ? !version_d.equals(versionNumber.version_d)
+                : versionNumber.version_d != null);
 
-        return true;
     }
 
     public int hashCode() {

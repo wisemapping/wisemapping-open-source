@@ -73,10 +73,11 @@ public class JAXBUtils {
         }
     }
 
-     public static void saveMap(@NotNull com.wisemapping.jaxb.freemind.Map map, @NotNull OutputStream out) throws JAXBException {
+    public static void saveMap(@NotNull com.wisemapping.jaxb.freemind.Map map, @NotNull OutputStream out) throws JAXBException {
 
         final JAXBContext context = getInstance("com.wisemapping.jaxb.freemind");
         final Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         marshaller.marshal(map, out);
     }
 }

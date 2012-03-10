@@ -23,7 +23,7 @@ import java.io.*;
 
 @Test
 public class ExportTest {
-    private static final String DATA_DIR_PATH = "src/test/data/svg/";
+    private static final String DATA_DIR_PATH = "src/test/resources/data/svg/";
 
     @Test(dataProvider = "Data-Provider-Function")
     public void exportSvgTest(@NotNull final File svgFile, @NotNull final File pngFile) throws ImporterException, IOException, ExportException, TransformerException, XMLStreamException, JAXBException, SAXException, TranscoderException, ParserConfigurationException {
@@ -34,7 +34,7 @@ public class ExportTest {
         final ExportProperties properties = ExportProperties.create(format);
         final ExportProperties.ImageProperties imageProperties = (ExportProperties.ImageProperties) properties;
         imageProperties.setSize(ExportProperties.ImageProperties.Size.LARGE);
-        String baseUrl = "file://" + svgFile.getParentFile().getAbsolutePath() + "/../../../../../wise-editor/src/main/webapp/icons";
+        String baseUrl = "file://" + svgFile.getParentFile().getAbsolutePath() + "/../../../../../../wise-editor/src/main/webapp/icons";
         properties.setBaseImagePath(baseUrl);
 
         // Write content ...
