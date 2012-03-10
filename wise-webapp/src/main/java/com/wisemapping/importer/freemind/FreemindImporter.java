@@ -28,9 +28,9 @@ import com.wisemapping.util.JAXBUtils;
 import com.wisemapping.jaxb.freemind.*;
 import com.wisemapping.jaxb.freemind.Map;
 import com.wisemapping.jaxb.freemind.Node;
-import com.wisemapping.jaxb.mindmap.RelationshipType;
-import com.wisemapping.jaxb.mindmap.TopicType;
-import com.wisemapping.jaxb.mindmap.Link;
+import com.wisemapping.jaxb.wisemap.RelationshipType;
+import com.wisemapping.jaxb.wisemap.TopicType;
+import com.wisemapping.jaxb.wisemap.Link;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.*;
@@ -51,7 +51,7 @@ public class FreemindImporter
     public static final int ROOT_LEVEL_TOPIC_HEIGHT = SECOND_LEVEL_TOPIC_HEIGHT;
     public static final int CENTRAL_TO_TOPIC_DISTANCE = 200;
     public static final int TOPIC_TO_TOPIC_DISTANCE = 90;
-    private com.wisemapping.jaxb.mindmap.ObjectFactory mindmapObjectFactory;
+    private com.wisemapping.jaxb.wisemap.ObjectFactory mindmapObjectFactory;
     private static final String POSITION_LEFT = "left";
     private static final String BOLD = "bold";
     private static final String ITALIC = "italic";
@@ -99,7 +99,7 @@ public class FreemindImporter
         final MindMap result = new MindMap();
         nodesMap = new HashMap<String, TopicType>();
         relationships = new ArrayList<RelationshipType>();
-        mindmapObjectFactory = new com.wisemapping.jaxb.mindmap.ObjectFactory();
+        mindmapObjectFactory = new com.wisemapping.jaxb.wisemap.ObjectFactory();
 
         try {
             String wiseXml;
@@ -116,7 +116,7 @@ public class FreemindImporter
 
             final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-            final com.wisemapping.jaxb.mindmap.Map mindmapMap = mindmapObjectFactory.createMap();
+            final com.wisemapping.jaxb.wisemap.Map mindmapMap = mindmapObjectFactory.createMap();
             mindmapMap.setVersion(CODE_VERSION);
             currentId = 0;
 
@@ -137,7 +137,7 @@ public class FreemindImporter
             convertChildNodes(freeNode, wiseTopic, 1);
             addRelationships(mindmapMap);
 
-            JAXBUtils.saveMap(mindmapMap, baos, "com.wisemapping.jaxb.mindmap");
+            JAXBUtils.saveMap(mindmapMap, baos);
 
             wiseXml = new String(baos.toByteArray(), UTF_8_CHARSET);
 
@@ -155,7 +155,7 @@ public class FreemindImporter
         return result;
     }
 
-    private void addRelationships(@NotNull com.wisemapping.jaxb.mindmap.Map mindmapMap) {
+    private void addRelationships(@NotNull com.wisemapping.jaxb.wisemap.Map mindmapMap) {
         List<RelationshipType> mapRelationships = mindmapMap.getRelationship();
         for (RelationshipType relationship : relationships) {
             relationship.setId(String.valueOf(currentId++));
@@ -270,14 +270,14 @@ public class FreemindImporter
                 String iconId = freemindIcon.getBUILTIN();
                 final String wiseIconId = FreemindIconConverter.toWiseId(iconId);
                 if (wiseIconId != null) {
-                    final com.wisemapping.jaxb.mindmap.Icon mindmapIcon = new com.wisemapping.jaxb.mindmap.Icon();
+                    final com.wisemapping.jaxb.wisemap.Icon mindmapIcon = new com.wisemapping.jaxb.wisemap.Icon();
                     mindmapIcon.setId(wiseIconId);
                     currentWiseTopic.getIcon().add(mindmapIcon);
                 }
 
             } else if (element instanceof Hook) {
                 final Hook hook = (Hook) element;
-                final com.wisemapping.jaxb.mindmap.Note mindmapNote = new com.wisemapping.jaxb.mindmap.Note();
+                final com.wisemapping.jaxb.wisemap.Note mindmapNote = new com.wisemapping.jaxb.wisemap.Note();
                 String textNote = hook.getText();
                 if (textNote == null) // It is not a note is a BlinkingNodeHook or AutomaticLayout Hook
                 {
@@ -294,7 +294,7 @@ public class FreemindImporter
                     currentWiseTopic.setText(text);
                 } else {
                     String text = getRichContent(content);
-                    final com.wisemapping.jaxb.mindmap.Note mindmapNote = new com.wisemapping.jaxb.mindmap.Note();
+                    final com.wisemapping.jaxb.wisemap.Note mindmapNote = new com.wisemapping.jaxb.wisemap.Note();
                     text = text != null ? text : EMPTY_NOTE;
                     mindmapNote.setText(text);
                     currentWiseTopic.setNote(mindmapNote);
@@ -536,7 +536,7 @@ public class FreemindImporter
         return text.toString();
     }
 
-    private void convertNodeProperties(@NotNull com.wisemapping.jaxb.freemind.Node freeNode, @NotNull com.wisemapping.jaxb.mindmap.TopicType wiseTopic) {
+    private void convertNodeProperties(@NotNull com.wisemapping.jaxb.freemind.Node freeNode, @NotNull com.wisemapping.jaxb.wisemap.TopicType wiseTopic) {
         final String text = freeNode.getTEXT();
         wiseTopic.setText(text);
 

@@ -57,9 +57,9 @@ public class JAXBUtils {
 
     }
 
-    public static void saveMap(@NotNull Object obj, @NotNull OutputStream out, String packag) throws JAXBException {
+    public static void saveMap(@NotNull com.wisemapping.jaxb.wisemap.Map obj, @NotNull OutputStream out) throws JAXBException {
 
-        final JAXBContext context = getInstance(packag);
+        final JAXBContext context = getInstance("com.wisemapping.jaxb.wisemap");
         final Marshaller marshaller = context.createMarshaller();
 
         // get an Apache XMLSerializer configured to generate CDATA
@@ -71,5 +71,12 @@ public class JAXBUtils {
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
+    }
+
+     public static void saveMap(@NotNull com.wisemapping.jaxb.freemind.Map map, @NotNull OutputStream out) throws JAXBException {
+
+        final JAXBContext context = getInstance("com.wisemapping.jaxb.freemind");
+        final Marshaller marshaller = context.createMarshaller();
+        marshaller.marshal(map, out);
     }
 }

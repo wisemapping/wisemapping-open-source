@@ -25,6 +25,7 @@ public class JaxbCDATAMarshaller {
         // set any other options you'd like
 //        of.setPreserveSpace(true);
         of.setIndenting(true);
+        of.setEncoding("UTF-8");
 
         // create the serializer
         XMLSerializer result = new XMLSerializer(of);

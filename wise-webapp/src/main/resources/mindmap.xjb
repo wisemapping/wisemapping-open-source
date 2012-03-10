@@ -2,7 +2,7 @@
               xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <jxb:bindings schemaLocation="mindmap.xsd">
         <jxb:schemaBindings>
-            <jxb:package name="com.wisemapping.jaxb.mindmap"/>
+            <jxb:package name="com.wisemapping.jaxb.wisemap"/>
         </jxb:schemaBindings>
     </jxb:bindings>
     <jxb:bindings node="/xsd:schema/xsd:complexType[@name='topicType']/xsd:attribute[@name='text']" schemaLocation="mindmap.xsd">

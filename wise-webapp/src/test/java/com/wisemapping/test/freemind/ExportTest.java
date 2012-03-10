@@ -5,6 +5,7 @@ import com.wisemapping.exporter.FreemindExporter;
 import com.wisemapping.importer.ImporterException;
 
 import com.wisemapping.model.MindMap;
+import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -15,6 +16,7 @@ import java.io.*;
 @Test
 public class ExportTest {
     private static final String DATA_DIR_PATH = "src/test/data/wisemaps/";
+    private static final String UTF_8 = "UTF-8";
 
     @Test(dataProvider = "Data-Provider-Function")
     public void exportImportExportTest(@NotNull final File wisemap, @NotNull final File recFile) throws ImporterException, IOException, ExportException {
@@ -25,54 +27,26 @@ public class ExportTest {
         final FreemindExporter freemindExporter = new FreemindExporter();
         if (recFile.exists()) {
             // Compare rec and file ...
-
-            // Load rec file co
-            final FileInputStream fis = new FileInputStream(recFile);
-            final InputStreamReader isr = new InputStreamReader(fis);
-            final BufferedReader br = new BufferedReader(isr);
-
-            final StringBuilder recContent = new StringBuilder();
-            String line = br.readLine();
-            while (line != null) {
-                recContent.append(line).append("\n");
-                line = br.readLine();
-
-            }
-
-            fis.close();
+            final String recContent = FileUtils.readFileToString(recFile, "UTF-8");
 
             // Export mile content ...
             final ByteArrayOutputStream bos = new ByteArrayOutputStream();
             freemindExporter.export(mindmap, bos);
-            final String exportContent = new String(bos.toByteArray(),"UTF-8");
+            final String exportContent = new String(bos.toByteArray(), UTF_8);
 
-            Assert.assertEquals(recContent.toString(), exportContent);
+            Assert.assertEquals(recContent, exportContent);
 
         } else {
-            final FileOutputStream fos = new FileOutputStream(recFile);
+            final OutputStream fos = new FileOutputStream(recFile);
             freemindExporter.export(mindmap, fos);
             fos.close();
         }
-
-
     }
 
     private MindMap load(@NotNull File wisemap) throws IOException {
-        final FileInputStream fis = new FileInputStream(wisemap);
-        final InputStreamReader isr = new InputStreamReader(fis);
-        final BufferedReader br = new BufferedReader(isr);
-
-        final StringBuilder content = new StringBuilder();
-        String line = br.readLine();
-        while (line != null) {
-            content.append(line).append("\n");
-            line = br.readLine();
-
-        }
-        fis.close();
-
+        final byte[] recContent = FileUtils.readFileToByteArray(wisemap);
         final MindMap result = new MindMap();
-        result.setXmlStr(content.toString());
+        result.setXml(recContent);
         return result;
     }
 

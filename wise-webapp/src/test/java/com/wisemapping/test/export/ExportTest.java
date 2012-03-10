@@ -8,6 +8,7 @@ import com.wisemapping.importer.ImporterException;
 
 import com.wisemapping.model.MindMap;
 import org.apache.batik.transcoder.TranscoderException;
+import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -27,16 +28,7 @@ public class ExportTest {
     @Test(dataProvider = "Data-Provider-Function")
     public void exportSvgTest(@NotNull final File svgFile, @NotNull final File pngFile) throws ImporterException, IOException, ExportException, TransformerException, XMLStreamException, JAXBException, SAXException, TranscoderException, ParserConfigurationException {
 
-        BufferedReader reader = null;
-        StringBuffer buffer = new StringBuffer();
-
-        reader = new BufferedReader(new FileReader(svgFile));
-        String text;
-        while ((text = reader.readLine()) != null) {
-            buffer.append(text).append(System.getProperty("line.separator"));
-        }
-
-        String svgXml = buffer.toString();
+        String svgXml = FileUtils.readFileToString(svgFile, "UTF-8");
 
         final ExportFormat format = ExportFormat.PNG;
         final ExportProperties properties = ExportProperties.create(format);
@@ -51,32 +43,7 @@ public class ExportTest {
             final ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ExporterFactory.export(imageProperties, null, bos, svgXml);
 
-            // Load rec file co
-            final FileInputStream fis = new FileInputStream(pngFile);
-            final InputStreamReader isr = new InputStreamReader(fis);
-            final BufferedReader br = new BufferedReader(isr);
-
-            final StringBuilder recContent = new StringBuilder();
-            String line = br.readLine();
-            while (line != null) {
-                recContent.append(line);
-                line = br.readLine();
-            }
-
-            fis.close();
-
-            //Since line separator chenges between \r and \n, lets read line by line
-            final String exportContent = new String(bos.toByteArray());
-            BufferedReader expBuf = new BufferedReader(new StringReader(exportContent));
-            final StringBuilder expContent = new StringBuilder();
-            String expLine = expBuf.readLine();
-            while (expLine != null) {
-                expContent.append(expLine);
-                expLine = expBuf.readLine();
-
-            }
-
-            Assert.assertEquals(expContent.toString().trim(), expContent.toString().trim());
+//            Assert.assertEquals(expContent.toString().trim(), expContent.toString().trim());
 
         } else {
             OutputStream outputStream = new FileOutputStream(pngFile, false);

@@ -7,6 +7,7 @@ import com.wisemapping.importer.Importer;
 import com.wisemapping.importer.ImporterException;
 import com.wisemapping.importer.ImporterFactory;
 import com.wisemapping.model.MindMap;
+import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -38,7 +39,8 @@ public class ImportExportTest {
         // Compare mindmap output ...
         if (wiseFile.exists()) {
             // Compare rec and file ...
-            final String recContent = readFile(wiseFile);
+            // Load rec file co
+            final String recContent = FileUtils.readFileToString(wiseFile, UTF_8);
 
             // Export mile content ...
             Assert.assertEquals(mindMap.getXmlStr(), recContent);
@@ -52,7 +54,8 @@ public class ImportExportTest {
         // Compare freemind output ...
         if (freeRecFile.exists()) {
             // Compare rec and file ...
-            final String recContent = readFile(freeRecFile);
+            // Load rec file co
+            final String recContent = FileUtils.readFileToString(freeRecFile, UTF_8);
 
             // Export content ...
             final ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -65,25 +68,6 @@ public class ImportExportTest {
             exporter.export(mindMap, fos);
             fos.close();
         }
-
-    }
-
-    private String readFile(@NotNull File file) throws IOException {
-        // Load rec file co
-        final FileInputStream fis = new FileInputStream(file);
-        final InputStreamReader isr = new InputStreamReader(fis, UTF_8);
-        final BufferedReader br = new BufferedReader(isr);
-
-        final StringBuilder result = new StringBuilder();
-        String line = br.readLine();
-        while (line != null) {
-            result.append(line).append("\n");
-            line = br.readLine();
-
-        }
-
-        fis.close();
-        return result.toString();
     }
 
     //This function will provide the parameter data
