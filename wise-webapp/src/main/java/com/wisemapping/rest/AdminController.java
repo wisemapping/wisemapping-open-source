@@ -72,7 +72,7 @@ public class AdminController extends BaseController {
         response.setHeader("Location","/service/admin/users/" + user.getId());
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "admin/users/{id}/password", consumes = {"text/plain"}, produces = {"application/json", "text/html", "application/xml"})
+    @RequestMapping(method = RequestMethod.PUT, value = "admin/users/{id}/password", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void changePassword(@RequestBody String password, @PathVariable long id) throws IOException, WiseMappingException {
         if (password == null) {
