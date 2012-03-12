@@ -11,11 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Controller
 public class AdminController extends BaseController {
-    private static final String RESPONSE_VIEW = "responseView";
     @Autowired
     private UserService userService;
 
@@ -26,7 +26,7 @@ public class AdminController extends BaseController {
         if (userBy == null) {
             throw new IllegalArgumentException("User could not be found");
         }
-        return new ModelAndView("userView", "user", new RestUser(userBy));
+            return new ModelAndView("userView", "user", new RestUser(userBy));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "admin/users/email/{email}", produces = {"application/json", "text/html", "application/xml"})
@@ -40,7 +40,8 @@ public class AdminController extends BaseController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "admin/users", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
-    public ModelAndView getUserByEmail(@RequestBody RestUser user) throws IOException, WiseMappingException {
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public void getUserByEmail(@RequestBody RestUser user, HttpServletResponse response) throws IOException, WiseMappingException {
         if (user == null) {
             throw new IllegalArgumentException("User could not be found");
         }
@@ -51,8 +52,24 @@ public class AdminController extends BaseController {
             throw new IllegalArgumentException("User already exists with this email.");
         }
 
-        userService.createUser(user.getDelegated(), false);
-        return new ModelAndView(RESPONSE_VIEW, "message", "User '" + user.getId() + "' created successfully");
+        final User delegated = user.getDelegated();
+        final String lastname = delegated.getLastname();
+        if (lastname == null || lastname.isEmpty()) {
+            throw new IllegalArgumentException("lastname can not be null");
+        }
+
+        final String firstName = delegated.getFirstname();
+          if (firstName == null || firstName.isEmpty()) {
+              throw new IllegalArgumentException("firstname can not be null");
+          }
+
+        final String username = delegated.getUsername();
+          if (username == null || username.isEmpty()) {
+              throw new IllegalArgumentException("username can not be null");
+          }
+
+        userService.createUser(delegated, false);
+        response.setHeader("Location","/service/admin/users/" + user.getId());
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "admin/users/{id}/password", consumes = {"text/plain"}, produces = {"application/json", "text/html", "application/xml"})

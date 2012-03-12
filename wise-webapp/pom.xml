@@ -267,7 +267,6 @@
         </dependency>
     </dependencies>
 
-
     <build>
         <plugins>
             <plugin>
@@ -418,9 +417,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <parallel>true</parallel>
-                </configuration>
             </plugin>
 
             <plugin>
@@ -432,7 +428,7 @@
                     <stopPort>9999</stopPort>
                     <war>${project.build.directory}/wisemapping.war</war>
                     <reload>automatic</reload>
-                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                    <!--<scanIntervalSeconds>10</scanIntervalSeconds>-->
                 </configuration>
                 <executions>
                     <execution>

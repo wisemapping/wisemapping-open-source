@@ -1,7 +1,6 @@
 package com.wisemapping.rest.model;
 
 
-import com.wisemapping.model.MindMap;
 import com.wisemapping.model.User;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -10,9 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.IOException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Set;
 
 @XmlRootElement(name = "user")
@@ -22,6 +19,7 @@ import java.util.Set;
 public class RestUser {
 
     private User user;
+    private String password;
 
     public RestUser() {
         this(new User());
@@ -59,9 +57,9 @@ public class RestUser {
         user.setLastname(lastname);
     }
 
-    public boolean isActive() {
-        return user.isActive();
-    }
+//    public boolean isActive() {
+//        return user.isActive();
+//    }
 
     public String getUsername() {
         return user.getUsername();
@@ -91,12 +89,34 @@ public class RestUser {
 //        user.setCreationDate(creationDate);
     }
 
-    public void setPassword(@NotNull final String password){
+    public void setPassword(final String password) {
         this.user.setPassword(password);
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return this.password;
     }
 
     @JsonIgnore
-    public User getDelegated(){
+    public User getDelegated() {
         return this.user;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof RestUser)) {
+            return false;
+        }
+
+        RestUser restUser = (RestUser) o;
+        return this.getDelegated().equals(restUser.getDelegated());
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getDelegated().hashCode();
+    }
+
+
 }

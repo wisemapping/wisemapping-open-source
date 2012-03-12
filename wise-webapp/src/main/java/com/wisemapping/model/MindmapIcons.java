@@ -204,7 +204,7 @@ public class MindmapIcons {
     public static final MindmapIcon PEOPLE_FEMALE = new MindmapIcon(IconFamily.PEOPLE, "female1");
     public static final MindmapIcon PEOPLE_FEMALE2 = new MindmapIcon(IconFamily.PEOPLE, "female2");
 
-    @NotNull
+
     public static List<MindmapIcon> getIconByFamily(@NotNull IconFamily family) {
 
         load();
