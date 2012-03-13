@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-public class MindmapController extends BaseController{
+public class MindmapController extends BaseController {
     @Autowired
     private MindmapService mindmapService;
 
@@ -51,6 +51,29 @@ public class MindmapController extends BaseController{
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateMap(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor) throws IOException, WiseMappingException {
+
+        final MindMap mindMap = mindmapService.getMindmapById(id);
+        final User user = Utils.getUser();
+
+        final String properties = restMindmap.getProperties();
+        mindMap.setProperties(properties);
+
+        final Calendar now = Calendar.getInstance();
+        mindMap.setLastModificationTime(now);
+        mindMap.setLastModifierUser(user.getUsername());
+
+        final Calendar lastModification = Calendar.getInstance();
+        lastModification.setTime(new Date());
+        mindMap.setLastModificationTime(lastModification);
+
+        final String xml = restMindmap.getXml();
+        mindMap.setXmlStr(xml);
+        mindmapService.updateMindmap(mindMap, minor);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/maps", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void createMap(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor) throws IOException, WiseMappingException {
 
         final MindMap mindMap = mindmapService.getMindmapById(id);
         final User user = Utils.getUser();
