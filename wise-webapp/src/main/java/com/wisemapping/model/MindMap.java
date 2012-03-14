@@ -32,16 +32,17 @@ import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 public class MindMap {
+    private static final String UTF_8 = "UTF-8";
 
     //~ Instance fields ......................................................................................
 
-    final Logger logger = Logger.getLogger(MindMap.class.getName());
     private Calendar creationTime;
     private String creator;
     private String description;
@@ -52,23 +53,11 @@ public class MindMap {
     private String lastModifierUser;
 
     private Set<MindmapUser> mindmapUsers = new HashSet<MindmapUser>();
-    private MindMapNative nativeBrowser = new MindMapNative();
     private User owner;
     private String properties;
     private String tags;
     private String title;
     private byte[] xml;
-
-    public static void main(String argv[]) {
-
-        String xml = "pepe\n hole";
-        xml = xml.replace("'", "\\'");
-        xml = xml.replace("\n", "");
-        xml = xml.trim();
-
-        System.out.println("xml:" + xml);
-
-    }
 
     //~ Constructors .........................................................................................
 
@@ -85,13 +74,31 @@ public class MindMap {
         this.xml = xml;
     }
 
+    public void setXmlStr(@NotNull String xml)
+            throws IOException {
+        this.xml = xml.getBytes(UTF_8);
+    }
+
     public byte[] getXml() {
         return xml;
     }
 
-    public String getUnzippedXml()
+    public String getXmlStr() throws UnsupportedEncodingException {
+        String result = null;
+        if (this.xml != null) {
+            result = new String(this.xml, UTF_8);
+        }
+        return result;
+    }
+
+    public byte[] getZippedXml()
             throws IOException {
-        return ZipUtils.zipToString(xml);
+        return ZipUtils.stringToZip(new String(this.xml, UTF_8));
+    }
+
+    public void setZippedXml(byte[] xml)
+            throws IOException {
+        this.xml = ZipUtils.zipToString(xml).getBytes(UTF_8);
     }
 
     public void setProperties(String properties) {
@@ -117,8 +124,8 @@ public class MindMap {
         this.mindmapUsers = mindmapUsers;
     }
 
-    public void addMindmapUser(MindmapUser mindmaUser) {
-        mindmapUsers.add(mindmaUser);
+    public void addMindmapUser(MindmapUser mindmapUser) {
+        mindmapUsers.add(mindmapUser);
     }
 
     public boolean isPublic() {
@@ -173,15 +180,9 @@ public class MindMap {
         this.title = title;
     }
 
-    public String getNativeXml()
+    public String getXmlAsJsLiteral()
             throws IOException {
-        return getUnzippedXml();
-    }
-
-
-    public String getNativeXmlAsJsLiteral()
-            throws IOException {
-        String xml = getNativeXml();
+        String xml = this.getXmlStr();
         if (xml != null) {
             xml = xml.replace("'", "\\'");
             xml = xml.replaceAll("\\r|\\n", "");
@@ -190,10 +191,6 @@ public class MindMap {
         return xml;
     }
 
-    public void setNativeXml(@NotNull String nativeXml)
-            throws IOException {
-        this.xml = ZipUtils.stringToZip(nativeXml);
-    }
 
     public void setTags(String tags) {
         this.tags = tags;
@@ -227,11 +224,14 @@ public class MindMap {
         return owner;
     }
 
-    public MindMapNative getNativeBrowser() {
-        return nativeBrowser;
+    public static String getDefaultMindmapXml(@NotNull final String title) {
+
+        final StringBuilder result = new StringBuilder();
+        result.append("<result version='tango'>");
+        result.append("<topic central=\"true\" text=\"");
+        result.append(title);
+        result.append("\"/></result>");
+        return result.toString();
     }
 
-    public void setNativeBrowser(MindMapNative nativeBrowser) {
-        this.nativeBrowser = nativeBrowser;
-    }
 }

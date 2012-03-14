@@ -23,6 +23,7 @@ web2d.peer.svg.ImagePeer = new Class({
         this.parent(svgElement);
         this._position = {x:0,y:0};
         this._href = "";
+        this._native.setAttribute("preserveAspectRatio", "none");
     },
 
     setPosition : function(x, y) {

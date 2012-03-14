@@ -104,7 +104,7 @@ public class MindMapBean {
         if (source != null) {
             for (MindmapUser mu : source) {
                 if (mu.getRole() == role) {
-                    col.add(new ColaboratorBean(mu.getColaborator(), mu.getRole()));
+                    col.add(new ColaboratorBean(mu.getCollaborator(), mu.getRole()));
                 }
             }
         }

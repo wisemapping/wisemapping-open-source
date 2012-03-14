@@ -61,6 +61,7 @@ mindplot.Designer = new Class({
             // Set editor working area ...
             this.setViewPort(options.viewPort);
 
+            mindplot.TopicEditor.configure();
         },
 
         _registerEvents : function() {
@@ -159,6 +160,7 @@ mindplot.Designer = new Class({
             var model = this.getModel();
             this._workspace.setZoom(model.getZoom(), true);
         },
+
 
         _buildNodeGraph : function(model, readOnly) {
             var workspace = this._workspace;
@@ -340,6 +342,30 @@ mindplot.Designer = new Class({
             return childModel;
         },
 
+        addDraggedNode: function(event, options) {
+            $assert(event, "event can not be null");
+            $assert(options, "option can not be null");
+
+            // Create a new node ...
+            var mindmap = this.getMindmap();
+            var model = mindmap.createNode(mindplot.model.INodeModel.MAIN_TOPIC_TYPE);
+            model.setShapeType(mindplot.model.TopicShape.IMAGE);
+
+            // Set node specified options ...
+            model.setImageUrl(options.imageUrl);
+            model.setImageSize(options.imageWidth, options.imageHeight);
+            model.setMetadata(options.metadata);
+
+            // Position far from the visual area ...
+            model.setPosition(1000, 1000);
+
+            this._actionDispatcher.addTopic(model, null, false);
+            var topic = this.getModel().findTopicById(model.getId());
+
+            // Simulate a mouse down event to start the dragging ...
+            topic.fireEvent("mousedown", event);
+        },
+
         createSiblingForSelectedNode : function() {
             var nodes = this.getModel().filterSelectedTopics();
             if (nodes.length <= 0) {
@@ -422,7 +448,7 @@ mindplot.Designer = new Class({
             $assert(mindmapModel, "mindmapModel can not be null");
             this._mindmap = mindmapModel;
 
-            try {
+//            try {
                 // Init layout manager ...
                 var size = {width:25,height:25};
                 var layoutManager = new mindplot.layout.LayoutManager(mindmapModel.getCentralTopic().getId(), size);
@@ -446,7 +472,6 @@ mindplot.Designer = new Class({
                     nodeGraph.setBranchVisibility(true);
                 }
 
-
                 var relationships = mindmapModel.getRelationships();
                 for (var j = 0; j < relationships.length; j++) {
                     this._relationshipModelToRelationship(relationships[j]);
@@ -460,9 +485,9 @@ mindplot.Designer = new Class({
                 mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.DoLayout);
 
                 this.fireEvent('loadSuccess');
-            } catch(e) {
-                this.fireEvent('loadError',e);
-            }
+//            } catch(e) {
+//                this.fireEvent('loadError', e);
+//            }
         },
 
         getMindmap : function() {
@@ -596,8 +621,8 @@ mindplot.Designer = new Class({
                 node.disconnect(this._workspace);
 
                 //remove children
-                while (node._getChildren().length > 0) {
-                    this._removeNode(node._getChildren()[0]);
+                while (node.getChildren().length > 0) {
+                    this._removeNode(node.getChildren()[0]);
                 }
 
                 this._workspace.removeChild(node);
@@ -657,7 +682,7 @@ mindplot.Designer = new Class({
         changeBackgroundColor : function(color) {
 
             var validateFunc = function(topic) {
-                return topic.getShapeType() != mindplot.model.INodeModel.SHAPE_TYPE_LINE
+                return topic.getShapeType() != mindplot.model.TopicShape.LINE;
             };
             var validateError = 'Color can not be set to line topics.';
 
@@ -669,7 +694,7 @@ mindplot.Designer = new Class({
 
         changeBorderColor : function(color) {
             var validateFunc = function(topic) {
-                return topic.getShapeType() != mindplot.model.INodeModel.SHAPE_TYPE_LINE
+                return topic.getShapeType() != mindplot.model.TopicShape.LINE;
             };
             var validateError = 'Color can not be set to line topics.';
             var topicsIds = this.getModel().filterTopicsIds(validateFunc, validateError);
@@ -687,7 +712,7 @@ mindplot.Designer = new Class({
 
         changeTopicShape : function(shape) {
             var validateFunc = function(topic) {
-                return !(topic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE && shape == mindplot.model.INodeModel.SHAPE_TYPE_LINE)
+                return !(topic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE && shape == mindplot.model.TopicShape.LINE)
             };
 
             var validateError = 'Central Topic shape can not be changed to line figure.';
@@ -707,7 +732,7 @@ mindplot.Designer = new Class({
         addIconType : function(iconType) {
             var topicsIds = this.getModel().filterTopicsIds();
             if (topicsIds.length > 0) {
-                this._actionDispatcher.addIconToTopic(topicsIds[0], iconType);
+                this._actionDispatcher.addFeatureToTopic(topicsIds[0], mindplot.TopicFeature.Icon.id, {id:iconType});
             }
         },
 

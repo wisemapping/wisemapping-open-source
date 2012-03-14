@@ -24,11 +24,11 @@ import java.util.List;
 
 public interface MindmapManager {
 
-    Colaborator getColaboratorBy(String email);
+    Collaborator getCollaboratorBy(String email);
 
-    Colaborator getColaboratorBy(long id);
+    Collaborator getCollaboratorBy(long id);
     
-    List<MindmapUser> getMindmapUserByColaborator(final long colaboratorId);
+    List<MindmapUser> getMindmapUserByCollaborator(final long collaboratorId);
 
     List<MindmapUser> getMindmapUserByRole(final UserRole userRole);
 
@@ -40,7 +40,7 @@ public interface MindmapManager {
 
     MindMap getMindmapByTitle(final String name, final User user);
 
-    void addColaborator (Colaborator colaborator);
+    void addCollaborator(Collaborator collaborator);
 
     void addMindmap(User user, MindMap mindMap);
 
@@ -50,7 +50,7 @@ public interface MindmapManager {
 
     void updateMindmap(MindMap mindMap, boolean saveHistory);
 
-    void removeColaborator(Colaborator colaborator);
+    void removeCollaborator(Collaborator collaborator);
 
     void removeMindmap(MindMap mindap);
 

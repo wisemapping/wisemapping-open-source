@@ -19,10 +19,11 @@
 mindplot.widget.Menu = new Class({
     Extends: mindplot.widget.IMenu,
 
-    initialize : function(designer, containerId, mapId, readOnly) {
+    initialize : function(designer, containerId, mapId, readOnly, baseUrl) {
         this.parent(designer, containerId, mapId);
 
-        var baseUrl = "../css/widget";
+        baseUrl = !$defined(baseUrl) ? "" : baseUrl;
+        var widgetsBaseUrl = baseUrl + "css/widget";
 
         // Stop event propagation ...
         $(this._containerId).addEvent('click', function(event) {
@@ -130,7 +131,7 @@ mindplot.widget.Menu = new Class({
                 designer.changeBackgroundColor(hex);
             }
         };
-        this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('topicColor', topicColorModel, baseUrl));
+        this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('topicColor', topicColorModel, widgetsBaseUrl));
 
         // Border color item ...
         var borderColorModel =
@@ -152,7 +153,7 @@ mindplot.widget.Menu = new Class({
                 designer.changeBorderColor(hex);
             }
         };
-        this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('topicBorder', borderColorModel, baseUrl));
+        this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('topicBorder', borderColorModel, widgetsBaseUrl));
 
         // Font color item ...
         var fontColorModel =
@@ -177,7 +178,7 @@ mindplot.widget.Menu = new Class({
         this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('fontColor', fontColorModel, baseUrl));
 
         this._addButton('export', false, false, function() {
-            var reqDialog = new MooDialog.Request('../c/export.htm?mapId=' + mapId, null,
+            var reqDialog = new MooDialog.Request('c/export.htm?mapId=' + mapId, null,
                 {'class': 'exportModalDialog',
                     closeButton:true,
                     destroyOnClose:true,
@@ -265,21 +266,15 @@ mindplot.widget.Menu = new Class({
         var discardElem = $('discard');
         if (discardElem) {
             this._addButton('discard', false, false, function() {
-
-                if (!readOnly) {
-                    displayLoading();
-                    window.document.location = "mymaps.htm";
-                } else {
-                    displayLoading();
-                    window.document.location = "home.htm";
-                }
-            });
+                this.discard();
+                window.location.reload();
+            }.bind(this));
         }
 
         var tagElem = $('tagIt');
         if (tagElem) {
             this._addButton('tagIt', false, false, function() {
-                var reqDialog = new MooDialog.Request('../c/tags.htm?mapId=' + mapId, null,
+                var reqDialog = new MooDialog.Request('c/tags.htm?mapId=' + mapId, null,
                     {'class': 'tagItModalDialog',
                         closeButton:true,
                         destroyOnClose:true,
@@ -296,7 +291,7 @@ mindplot.widget.Menu = new Class({
         var shareElem = $('shareIt');
         if (shareElem) {
             this._addButton('shareIt', false, false, function() {
-                var reqDialog = new MooDialog.Request('../c/mymaps.htm?action=collaborator&userEmail=paulo%40pveiga.com.ar&mapId=' + mapId, null,
+                var reqDialog = new MooDialog.Request('c/mymaps.htm?action=collaborator&mapId=' + mapId, null,
                     {'class': 'shareItModalDialog',
                         closeButton:true,
                         destroyOnClose:true,
@@ -314,7 +309,7 @@ mindplot.widget.Menu = new Class({
         var publishElem = $('publishIt');
         if (publishElem) {
             this._addButton('publishIt', false, false, function() {
-                var reqDialog = new MooDialog.Request('../c/publish.htm?mapId=' + mapId, null,
+                var reqDialog = new MooDialog.Request('c/publish.htm?mapId=' + mapId, null,
                     {'class': 'publishModalDialog',
                         closeButton:true,
                         destroyOnClose:true,
@@ -333,7 +328,7 @@ mindplot.widget.Menu = new Class({
         if (historyElem) {
 
             this._addButton('history', false, false, function() {
-                var reqDialog = new MooDialog.Request('../c/history.htm?action=list&goToMindmapList&mapId=' + mapId, null,
+                var reqDialog = new MooDialog.Request('c/history.htm?action=list&goToMindmapList&mapId=' + mapId, null,
                     {'class': 'historyModalDialog',
                         closeButton:true,
                         destroyOnClose:true,

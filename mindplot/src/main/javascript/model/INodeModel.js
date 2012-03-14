@@ -69,17 +69,35 @@ mindplot.model.INodeModel = new Class({
         return result;
     },
 
-    setSize  : function(width, height) {
-        this.putProperty('size', '{width:' + width + ',height:' + height + '}');
+    setImageSize  : function(width, height) {
+        this.putProperty('imageSize', '{width:' + width + ',height:' + height + '}');
     },
 
-    getSize  : function() {
-        var value = this.getProperty('size');
+    getImageSize  : function() {
+        var value = this.getProperty('imageSize');
         var result = null;
         if (value != null) {
             result = eval("(" + value + ")");
         }
         return result;
+    },
+
+    setImageUrl:function(url) {
+        this.putProperty('imageUrl', url);
+
+    },
+
+    getMetadata:function() {
+        return this.getProperty('metadata');
+    },
+
+    setMetadata:function(json) {
+        this.putProperty('metadata', json);
+
+    },
+
+    getImageUrl:function() {
+        return this.getProperty('imageUrl');
     },
 
     getMindmap  : function() {
@@ -239,55 +257,7 @@ mindplot.model.INodeModel = new Class({
         throw "Unsupported operation";
     },
 
-    createLink  : function(url) {
-        throw "Unsupported operation";
-    },
-
-    addLink  : function(link) {
-        throw "Unsupported operation";
-    },
-
-    createNote  : function(text) {
-        throw "Unsupported operation";
-    },
-
-    addNote  : function(note) {
-        throw "Unsupported operation";
-    },
-
-    removeNote  : function(note) {
-        throw "Unsupported operation";
-    },
-
-    createIcon  : function(iconType) {
-        throw "Unsupported operation";
-    },
-
-    addIcon  : function(icon) {
-        throw "Unsupported operation";
-    },
-
-    removeIcon  : function(icon) {
-        throw "Unsupported operation";
-    },
-
-    removeLastIcon  : function() {
-        throw "Unsupported operation";
-    },
-
     getChildren  : function() {
-        throw "Unsupported operation";
-    },
-
-    getIcons  : function() {
-        throw "Unsupported operation";
-    },
-
-    getLinks  : function() {
-        throw "Unsupported operation";
-    },
-
-    getNotes  : function() {
         throw "Unsupported operation";
     },
 
@@ -328,13 +298,19 @@ mindplot.model.INodeModel = new Class({
     }
 });
 
+mindplot.model.TopicShape =
+{
+    RECTANGLE : 'rectagle',
+    ROUNDED_RECT :  'rounded rectagle',
+    ELLIPSE : 'elipse',
+    LINE : 'line',
+    IMAGE : 'image'
+};
+
+
 mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE = 'CentralTopic';
 mindplot.model.INodeModel.MAIN_TOPIC_TYPE = 'MainTopic';
 
-mindplot.model.INodeModel.SHAPE_TYPE_RECT = 'rectagle';
-mindplot.model.INodeModel.SHAPE_TYPE_ROUNDED_RECT = 'rounded rectagle';
-mindplot.model.INodeModel.SHAPE_TYPE_ELIPSE = 'elipse';
-mindplot.model.INodeModel.SHAPE_TYPE_LINE = 'line';
 
 mindplot.model.INodeModel.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE = 220;
 

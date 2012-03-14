@@ -79,6 +79,24 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${org.springframework.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${org.springframework.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${org.springframework.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
             <version>${org.springframework.version}</version>
             <scope>compile</scope>
@@ -95,9 +113,31 @@
             <version>2.0</version>
         </dependency>
         <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jsr173_api</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>fop</artifactId>
+            <version>0.94</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-oxm</artifactId>
             <version>${org.springframework.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${org.springframework.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>antlr</groupId>
@@ -133,19 +173,25 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
             <version>${org.springframework.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${org.springframework.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
             <version>${org.springframework.version}</version>
-            <scope>compile</scope>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>javax.transaction</groupId>
             <artifactId>jta</artifactId>
             <version>1.0.1B</version>
-            <scope>compile</scope>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>com.octo.captcha</groupId>
@@ -157,37 +203,25 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
             <version>${org.springframework.version}</version>
-            <scope>compile</scope>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
             <version>3.6.0.Final</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>batik-codec</artifactId>
-            <version>1.7</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>org.directwebremoting</groupId>
-            <artifactId>dwr</artifactId>
-            <version>2.0.3</version>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>3.6.0.Final</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>batik-svg-dom</artifactId>
-            <version>1.7</version>
+            <groupId>aopalliance</groupId>
+            <artifactId>aopalliance</artifactId>
+            <version>1.0</version>
             <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>xalan</groupId>
-                    <artifactId>xalan</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
@@ -211,7 +245,7 @@
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
-            <scope>runtime</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax.mail</groupId>
@@ -245,9 +279,9 @@
         </dependency>
         <!-- Only for test purposes -->
         <dependency>
-            <groupId>hsqldb</groupId>
+            <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
-            <version>1.8.0.10</version>
+            <version>2.2.8</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -260,24 +294,31 @@
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
             <version>1.9.4</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.thoughtworks.xstream</groupId>
-            <artifactId>xstream</artifactId>
-            <version>1.3.1</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.6.4</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+            <version>2.10.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
-
 
     <build>
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>sql-maven-plugin</artifactId>
-                <version>1.2</version>
+                <version>1.5</version>
 
                 <configuration>
-                    <driver>org.hsqldb.jdbcDriver</driver>
+                    <driver>org.hsqldb.jdbc.JDBCDriver</driver>
                     <url>jdbc:hsqldb:file:${basedir}/target/db/wisemapping</url>
                     <username>sa</username>
                     <!--all executions are ignored if -Dmaven.test.skipDB=true
@@ -293,9 +334,9 @@
                         <version>5.1.5</version>
                     </dependency>
                     <dependency>
-                        <groupId>hsqldb</groupId>
+                        <groupId>org.hsqldb</groupId>
                         <artifactId>hsqldb</artifactId>
-                        <version>1.8.0.1</version>
+                        <version>2.2.8</version>
                     </dependency>
                 </dependencies>
 
@@ -317,6 +358,7 @@
                             </fileset>
                         </configuration>
                     </execution>
+
                     <execution>
                         <id>create-schema</id>
                         <phase>test</phase>
@@ -419,25 +461,94 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.7.2</version>
-                <configuration>
-                    <parallel>true</parallel>
-                    <suiteXmlFiles>
-                        <suiteXmlFile>testng.xml</suiteXmlFile>
-                    </suiteXmlFiles>
-                </configuration>
             </plugin>
-
 
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>8.1.0.v20120127</version>
                 <configuration>
+                    <stopKey>foo</stopKey>
+                    <stopPort>9999</stopPort>
                     <war>${project.build.directory}/wisemapping.war</war>
                     <reload>automatic</reload>
-                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                    <!--<scanIntervalSeconds>10</scanIntervalSeconds>-->
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>start-jetty</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>run-war</goal>
+                        </goals>
+                        <configuration>
+                            <scanIntervalSeconds>0</scanIntervalSeconds>
+                            <daemon>true</daemon>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>stop-jetty</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>mindmap-generate</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <schemaDirectory>src/main/resources/</schemaDirectory>
+                            <schemaIncludes>
+                                <include>mindmap.xsd</include>
+                            </schemaIncludes>
+                            <bindingDirectory>src/main/resources/</bindingDirectory>
+                            <bindingIncludes>
+                                <include>mindmap.xjb</include>
+                            </bindingIncludes>
+                            <generatePackage>com.wisemapping.jaxb.wisemap</generatePackage>
+                            <generateDirectory>${project.build.directory}/generated-sources/xjc1</generateDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>freemind-generate</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <schemaDirectory>src/main/resources/</schemaDirectory>
+                            <schemaIncludes>
+                                <include>freemind_0.9.0.xsd</include>
+                            </schemaIncludes>
+                            <bindingDirectory>src/main/resources/</bindingDirectory>
+                            <bindingIncludes>
+                                <include>freemind_0.9.0.xjb</include>
+                            </bindingIncludes>
+                            <generatePackage>com.wisemapping.jaxb.freemind</generatePackage>
+                            <generateDirectory>${project.build.directory}/generated-sources/xjc2</generateDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

@@ -24,11 +24,10 @@
         <property name="dataSource" ref="wiseDataSource"/>
         <property name="mappingResources">
             <list>
-                <value>com/wisemapping/model/Colaborator.hbm.xml</value>
+                <value>com/wisemapping/model/Collaborator.hbm.xml</value>
                 <value>com/wisemapping/model/MindMap.hbm.xml</value>
                 <value>com/wisemapping/model/MindmapUser.hbm.xml</value>
                 <value>com/wisemapping/model/UserLogin.hbm.xml</value>
-                <value>com/wisemapping/model/MindmapNative.hbm.xml</value>
                 <value>com/wisemapping/model/MindMapHistory.hbm.xml</value>
             </list>
         </property>

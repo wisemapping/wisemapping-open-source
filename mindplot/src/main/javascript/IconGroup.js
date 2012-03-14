@@ -70,23 +70,12 @@ mindplot.IconGroup = new Class({
         }
     },
 
-    _findIconFromUrl : function(url) {
-        var result = null;
-        this._icons.each(function(el) {
-            var nativeImage = el.getImage();
-            if (nativeImage.getHref() == url) {
-                result = el;
-            }
-        }, this);
-        return result;
-    },
-
     _findIconFromModel : function(iconModel) {
         var result = null;
-        this._icons.each(function(el) {
-            var elModel = el.getModel();
-            if (result == null && $defined(elModel.isIconModel) && elModel.getId() == iconModel.getId()) {
-                result = el;
+        this._icons.each(function(icon) {
+            var elModel = icon.getModel();
+            if (elModel.getId() == iconModel.getId()) {
+                result = icon;
             }
         }, this);
 
@@ -97,16 +86,10 @@ mindplot.IconGroup = new Class({
         return result;
     },
 
-    removeIconByUrl : function(url) {
-        var icon = this._findIconFromUrl(url);
-        $assert(icon, 'icon could not be found');
-        this._removeIcon(icon);
-    },
+    removeIconByModel : function(featureModel) {
+        $assert(featureModel, "featureModel can not be null");
 
-    removeIcon : function(iconModel) {
-        $assert(iconModel, "iconModel can not be null");
-
-        var icon = this._findIconFromModel(iconModel);
+        var icon = this._findIconFromModel(featureModel);
         this._removeIcon(icon);
     },
 
@@ -215,7 +198,6 @@ mindplot.IconGroup.RemoveTip = new Class({
         }
 
         if (this._activeIcon) {
-            var icon = this._activeIcon;
             var widget = this._widget;
             var close = function() {
 

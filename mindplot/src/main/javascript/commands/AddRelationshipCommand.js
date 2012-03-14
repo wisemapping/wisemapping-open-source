@@ -19,8 +19,9 @@ mindplot.commands.AddRelationshipCommand = new Class({
     Extends:mindplot.Command,
     initialize: function(model) {
         $assert(model, 'Relationship model can not be null');
+
+        this.parent();
         this._model = model;
-        this._id = mindplot.Command._nextUUID();
     },
     execute: function(commandContext) {
         var relationship = commandContext.createRelationship(this._model);

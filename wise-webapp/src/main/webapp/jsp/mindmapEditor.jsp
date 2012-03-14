@@ -10,19 +10,20 @@
 </c:url>
 <html>
 <head>
+    <base href="../"/>
     <!--[if lt IE 9]>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <![endif]-->
     <title><spring:message code="SITE.TITLE"/> - ${mindmap.title} </title>
 
-    <link rel="stylesheet/less" type="text/css" href="../css/editor.less"/>
-    <script type='text/javascript' src='../js/mootools-core.js'></script>
-    <script type='text/javascript' src='../js/mootools-more.js'></script>
-    <script type='text/javascript' src='../js/core.js'></script>
-    <script type='text/javascript' src='../js/less.js'></script>
+    <link rel="stylesheet/less" type="text/css" href="css/editor.less"/>
+    <script type='text/javascript' src='js/mootools-core.js'></script>
+    <script type='text/javascript' src='js/mootools-more.js'></script>
+    <script type='text/javascript' src='js/core.js'></script>
+    <script type='text/javascript' src='js/less.js'></script>
 
-    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 
     <script type="text/javascript">
 
@@ -32,7 +33,7 @@
 
             // Configure designer options ...
             var options = loadDesignerOptions();
-            options.persistenceManager = "mindplot.DwrPersitenceManager";
+            options.persistenceManager = new mindplot.RESTPersistenceManager("service/maps/");
             var userOptions = ${mindmap.properties};
             options.zoom = userOptions.zoom;
 
@@ -45,21 +46,9 @@
             var mindmap = persistence.loadFromDom(mapId, domDocument);
             designer.loadMap(mindmap);
         });
-
-        function printMap() {
-            document.printForm.mapSvg.value = $("workspaceContainer").innerHTML;
-            document.printForm.submit();
-        }
     </script>
 </head>
 <body>
-
-<form method="post" id="printForm" name="printForm" action='<c:url value="export.htm"/>' style="height:100%;"
-      target="${mindmap.title}">
-    <input type="hidden" name="action" value="print">
-    <input type="hidden" name="mapId" value="${mindmap.id}">
-    <input type="hidden" name="mapSvg" value="">
-</form>
 
 <div id="actionsContainer"></div>
 <div>
@@ -91,6 +80,6 @@
 </div>
 
 <div id="mindplot"></div>
-<script type="text/javascript" src="../js/editor.js"></script>
+<script type="text/javascript" src="js/editor.js"></script>
 </body>
 </html>

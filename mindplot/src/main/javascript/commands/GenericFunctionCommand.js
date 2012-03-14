@@ -22,11 +22,11 @@ mindplot.commands.GenericFunctionCommand = new Class({
         $assert(commandFunc, "commandFunc must be defined");
         $assert($defined(topicsIds), "topicsIds must be defined");
 
+        this.parent();
         this._value = value;
         this._topicsIds = topicsIds;
         this._commandFunc = commandFunc;
         this._oldValues = [];
-        this._id = mindplot.Command._nextUUID();
     },
 
     execute: function(commandContext) {

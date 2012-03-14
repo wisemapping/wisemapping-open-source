@@ -55,7 +55,7 @@ mindplot.CentralTopic = new Class({
 
 
     _defaultShapeType : function() {
-        return  mindplot.model.INodeModel.SHAPE_TYPE_ROUNDED_RECT;
+        return  mindplot.model.TopicShape.ROUNDED_RECT;
     },
 
 
@@ -90,5 +90,9 @@ mindplot.CentralTopic = new Class({
             weight:"bold",
             color:"#ffffff"
         };
+    },
+
+    getShrinkConnector : function() {
+        return null;
     }
 });

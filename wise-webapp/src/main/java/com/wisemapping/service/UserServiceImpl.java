@@ -21,9 +21,10 @@ package com.wisemapping.service;
 import com.wisemapping.dao.UserManager;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.mail.Mailer;
+import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.User;
-import com.wisemapping.model.Colaborator;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -37,7 +38,7 @@ public class UserServiceImpl
     private Mailer mailer;
     final static Logger logger = Logger.getLogger("org.wisemapping.service");
 
-    public void activateAcount(long code)
+    public void activateAccount(long code)
             throws InvalidActivationCodeException {
         final User user = userManager.getUserByActivationCode(code);
         if (user == null || user.isActive()) {
@@ -90,7 +91,11 @@ public class UserServiceImpl
         return lo + i;
     }
 
-    public void createUser(User user, boolean emailConfirmEnabled) throws WiseMappingException {
+    public void deleteUser(@NotNull User user){
+       userManager.deleteUser(user);
+    }
+
+    public User createUser(@NotNull User user, boolean emailConfirmEnabled) throws WiseMappingException {
         final UUID uuid = UUID.randomUUID();
         user.setCreationDate(Calendar.getInstance());
         user.setActivationCode(uuid.getLeastSignificantBits());
@@ -102,7 +107,7 @@ public class UserServiceImpl
             user.setActivationDate(Calendar.getInstance());
         }
 
-        Colaborator col = userManager.getColaboratorBy(user.getEmail());
+        Collaborator col = userManager.getCollaboratorBy(user.getEmail());
         if (col != null) {
             userManager.createUser(user, col);
         } else {
@@ -116,6 +121,7 @@ public class UserServiceImpl
         if (emailConfirmEnabled) {
             sendRegistrationEmail(user);
         }
+        return user;
     }
 
     private void sendRegistrationEmail(User user) {

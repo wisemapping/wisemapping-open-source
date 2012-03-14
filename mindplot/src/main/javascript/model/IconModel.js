@@ -17,46 +17,19 @@
  */
 
 mindplot.model.IconModel = new Class({
-    initialize:function(iconType, topic) {
-        $assert(iconType, 'Icon id can not be null');
-        $assert(topic, 'topic can not be null');
-
-        this._iconType = iconType;
-        this._id = mindplot.model.IconModel._nextUUID();
-        this._topic = topic;
-    },
-
-    getId : function() {
-        return this._id;
+    Extends: mindplot.model.FeatureModel,
+    initialize:function(topic, attributes) {
+        this.parent(mindplot.model.IconModel.FEATURE_TYPE, topic);
+        this.setIconType(attributes.id);
     },
 
     getIconType : function() {
-        return this._iconType;
+        return this.getAttribute('id');
     },
-
 
     setIconType : function(iconType) {
-        this._iconType = iconType;
-    },
-
-    getTopic : function() {
-        return this._topic;
-    },
-
-    isIconModel : function() {
-        return true;
-    }});
-
-
-/**
- * @todo: This method must be implemented.
- */
-mindplot.model.IconModel._nextUUID = function() {
-    if (!$defined(this._uuid)) {
-        this._uuid = 0;
+        $assert(iconType, 'iconType id can not be null');
+        this.setAttribute('id', iconType);
     }
-
-    this._uuid = this._uuid + 1;
-    return this._uuid;
-};
-
+});
+mindplot.model.IconModel.FEATURE_TYPE = "icon";

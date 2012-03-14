@@ -26,7 +26,11 @@ mindplot.widget = {};
 mindplot.model = {};
 mindplot.collaboration = {};
 mindplot.collaboration.framework = {};
-mindplot.collaboration.framework.brix = {};
-mindplot.collaboration.framework.brix.model = {};
+mindplot.persistence = {};
 
 mindplot.layout = {};
+
+Class.Mutators.Static = function(items){
+    this.extend(items);
+};
+

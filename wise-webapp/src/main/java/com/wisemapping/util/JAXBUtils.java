@@ -18,12 +18,15 @@
 
 package com.wisemapping.util;
 
+import com.wisemapping.importer.JaxbCDATAMarshaller;
+import org.apache.xml.serialize.XMLSerializer;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -54,11 +57,27 @@ public class JAXBUtils {
 
     }
 
-    public static void saveMap(@NotNull Object obj, @NotNull OutputStream out, String packag) throws JAXBException {
+    public static void saveMap(@NotNull com.wisemapping.jaxb.wisemap.Map obj, @NotNull OutputStream out) throws JAXBException {
 
-        final JAXBContext context = getInstance(packag);
+        final JAXBContext context = getInstance("com.wisemapping.jaxb.wisemap");
         final Marshaller marshaller = context.createMarshaller();
 
-        marshaller.marshal(obj, out);
+        // get an Apache XMLSerializer configured to generate CDATA
+        XMLSerializer serializer = JaxbCDATAMarshaller.createMindmapXMLSerializer(out);
+
+        try {
+            // marshal using the Apache XMLSerializer
+            marshaller.marshal(obj, serializer.asContentHandler());
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    public static void saveMap(@NotNull com.wisemapping.jaxb.freemind.Map map, @NotNull OutputStream out) throws JAXBException {
+
+        final JAXBContext context = getInstance("com.wisemapping.jaxb.freemind");
+        final Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        marshaller.marshal(map, out);
     }
 }

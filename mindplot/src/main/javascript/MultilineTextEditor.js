@@ -18,8 +18,8 @@
 
 mindplot.MultilineTextEditor = new Class({
     Extends: Events,
-    initialize:function(topic) {
-        this._topic = topic;
+    initialize:function() {
+        this._topic = null;
     },
 
     _buildEditor : function() {
@@ -133,8 +133,9 @@ mindplot.MultilineTextEditor = new Class({
         }
     },
 
-    show : function (text) {
+    show : function (topic,text) {
 
+        this._topic = topic;
         if (!this.isVisible()) {
             //Create editor ui
             var containerElem = this._buildEditor();
@@ -260,6 +261,7 @@ mindplot.MultilineTextEditor = new Class({
             // Remove it form the screen ...
             this._containerElem.dispose();
             this._containerElem = null;
+            this._topic = null;
         }
     }
 });

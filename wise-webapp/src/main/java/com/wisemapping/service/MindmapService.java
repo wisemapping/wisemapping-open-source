@@ -40,7 +40,7 @@ public interface MindmapService {
 
     public void addMindmap(MindMap map, User user) throws WiseMappingException;
 
-    public void addColaborators(MindMap mindmap, String[] colaboratorEmails, UserRole role, ColaborationEmail email)
+    public void addCollaborators(MindMap mindmap, String[] colaboratorEmails, UserRole role, ColaborationEmail email)
             throws InvalidColaboratorException;
 
     public void addTags(MindMap mindmap, String tags);
@@ -61,7 +61,7 @@ public interface MindmapService {
 
     public boolean isAllowedToColaborate(User user, int mapId, UserRole grantedRole);
 
-    public boolean isAllowedToColaborate(User user, MindMap map, UserRole grantedRole);
+    public boolean isAllowedToCollaborate(User user, MindMap map, UserRole grantedRole);
 
     public void addWelcomeMindmap(User user) throws WiseMappingException;
 

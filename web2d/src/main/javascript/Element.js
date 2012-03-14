@@ -87,6 +87,10 @@ web2d.Element = new Class({
         this._peer.addEvent(type, listener);
     },
 
+    fireEvent : function(type, event) {
+        this._peer.fireEvent(type, event);
+    },
+
     cloneEvents : function(from) {
         this._peer.cloneEvents(from);
     },

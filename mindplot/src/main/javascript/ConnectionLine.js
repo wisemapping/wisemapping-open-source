@@ -123,7 +123,7 @@ mindplot.ConnectionLine = new Class({
         var offset = mindplot.Topic.CONNECTOR_WIDTH / 2;
         var targetTopicSize = targetTopic.getSize();
         var y;
-        if (targetTopic.getShapeType() == mindplot.model.INodeModel.SHAPE_TYPE_LINE) {
+        if (targetTopic.getShapeType() == mindplot.model.TopicShape.LINE) {
             y = targetTopicSize.height;
         } else {
             y = targetTopicSize.height / 2;
@@ -131,13 +131,15 @@ mindplot.ConnectionLine = new Class({
         y = y - offset;
 
         var connector = targetTopic.getShrinkConnector();
-        if (Math.sign(targetPosition.x) > 0) {
-            var x = targetTopicSize.width;
-            connector.setPosition(x, y);
-        }
-        else {
-            var x = -mindplot.Topic.CONNECTOR_WIDTH;
-            connector.setPosition(x, y);
+        if ($defined(connector)) {
+            if (Math.sign(targetPosition.x) > 0) {
+                var x = targetTopicSize.width;
+                connector.setPosition(x, y);
+            }
+            else {
+                var x = -mindplot.Topic.CONNECTOR_WIDTH;
+                connector.setPosition(x, y);
+            }
         }
     },
 

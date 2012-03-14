@@ -22,7 +22,7 @@ mindplot.model.Mindmap = new Class({
             this._branches = [];
             this._description = null;
             this._relationships = [];
-            this._version = $defined(version) ? version : mindplot.ModelCodeName.TANGO;
+            this._version = $defined(version) ? version : mindplot.persistence.ModelCodeName.TANGO;
             this._id = id;
         },
 

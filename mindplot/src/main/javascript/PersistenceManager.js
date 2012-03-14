@@ -28,7 +28,7 @@ mindplot.PersistenceManager = new Class({
         var mapId = mindmap.getId();
         $assert(mapId, "mapId can not be null");
 
-        var serializer = mindplot.XMLMindmapSerializerFactory.getSerializerFromMindmap(mindmap);
+        var serializer = mindplot.persistence.XMLSerializerFactory.getSerializerFromMindmap(mindmap);
         var domMap = serializer.toXML(mindmap);
         var mapXml = core.Utils.innerXML(domMap);
 
@@ -47,6 +47,10 @@ mindplot.PersistenceManager = new Class({
         return  this.loadFromDom(mapId, domDocument);
     },
 
+    discard: function(mapId) {
+        throw "Method must be implemented";
+    },
+
     loadMapDom: function(mapId) {
         throw "Method must be implemented";
     },
@@ -59,7 +63,7 @@ mindplot.PersistenceManager = new Class({
         $assert(mapId, "mapId can not be null");
         $assert(mapDom, "mapDom can not be null");
 
-        var serializer = mindplot.XMLMindmapSerializerFactory.getSerializerFromDocument(mapDom);
+        var serializer = mindplot.persistence.XMLSerializerFactory.getSerializerFromDocument(mapDom);
         return serializer.loadFromDom(mapDom, mapId);
     },
 

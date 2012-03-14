@@ -157,7 +157,8 @@ mindplot.layout.OriginalLayout = new Class({
             }, this);
 
             if (!sibling.isFree() || overlappingOccurs) {
-                this._treeSet.shiftBranchPosition(sibling, 0, node.getFreeDisplacement().y);
+                var sAmount = node.getFreeDisplacement().y;
+                this._treeSet.shiftBranchPosition(sibling, 0, sAmount);
                 shiftedBranches.push(sibling);
             }
         }, this);
@@ -167,14 +168,9 @@ mindplot.layout.OriginalLayout = new Class({
         });
 
         branchesToShift.forEach(function(branch) {
-            var overlappingOccurs = shiftedBranches.some(function(shiftedBranch) {
-                return this._branchesOverlap(shiftedBranch, branch, heightById);
-            }, this);
-
-            if (overlappingOccurs) {
-                this._treeSet.shiftBranchPosition(branch, 0, node.getFreeDisplacement().y);
-                shiftedBranches.push(branch);
-            }
+            var bAmount = node.getFreeDisplacement().y;
+            this._treeSet.shiftBranchPosition(branch, 0, bAmount);
+            shiftedBranches.push(branch);
             last = branch;
         },this);
     },

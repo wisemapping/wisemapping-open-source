@@ -26,10 +26,10 @@ mindplot.widget.TopicShapePanel = new Class({
 
         var content = new Element("div", {'class':'toolbarPanel','id':'topicShapePanel'});
         content.innerHTML = '' +
-            '<div id="rectagle" model="rectagle"><img src="../images/shape-rectangle.png" alt="Rectangle"></div>' +
-            '<div id="rounded_rectagle" model="rounded rectagle" ><img src="../images/shape-rectangle-round.png" alt="Rounded Rectangle"></div>' +
-            '<div id="line" model="line"><img src="../images/shape-line.png" alt="Line"></div>' +
-            '<div id="elipse" model="elipse"><img src="../images/shape-circle.png"></div>';
+            '<div id="rectagle" model="rectagle"><img src="images/shape-rectangle.png" alt="Rectangle"></div>' +
+            '<div id="rounded_rectagle" model="rounded rectagle" ><img src="images/shape-rectangle-round.png" alt="Rounded Rectangle"></div>' +
+            '<div id="line" model="line"><img src="images/shape-line.png" alt="Line"></div>' +
+            '<div id="elipse" model="elipse"><img src="images/shape-circle.png"></div>';
 
         return content;
 

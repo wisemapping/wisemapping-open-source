@@ -17,26 +17,20 @@
  */
 
 mindplot.model.NoteModel = new Class({
-    initialize : function(text, topic) {
-        $assert(text, 'text text can not be null');
-        $assert(topic, 'topic can not be null');
-        this._text = text;
-        this._topic = topic;
+    Extends: mindplot.model.FeatureModel,
+    initialize : function(topic, attributes) {
+        this.parent(mindplot.model.NoteModel.FEATURE_TYPE, topic);
+        this.setText(attributes.text);
     },
 
     getText:function() {
-            return this._text;
+        return this.getAttribute('text');
     },
 
     setText : function(text) {
-        this._text = text;
-    },
-
-    getTopic : function() {
-        return this._topic;
-    },
-
-    isNoteModel : function() {
-        return true;
+        $assert(text, 'text can not be null');
+        this.setAttribute('text', text);
     }
 });
+
+mindplot.model.NoteModel.FEATURE_TYPE = "note";

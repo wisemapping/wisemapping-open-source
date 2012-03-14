@@ -15,15 +15,12 @@
     <context:annotation-config/>
     <mvc:annotation-driven/>
 
-
-    <!-- To enable @RequestMapping process on type level and method level -->
-    <!--<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>-->
-    <!--<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>-->
-
     <bean id="jaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
         <property name="classesToBeBound">
             <list>
-                <value>com.wisemapping.rest.model.RestMindMap</value>
+                <value>com.wisemapping.rest.model.RestMindmap</value>
+                <value>com.wisemapping.rest.model.RestMindmapList</value>
+                <value>com.wisemapping.rest.model.RestUser</value>
             </list>
         </property>
     </bean>
@@ -33,11 +30,16 @@
         <property name="favorPathExtension" value="true"/>
         <property name="mediaTypes">
             <map>
-                <entry key="xml" value="text/xml"/>
                 <entry key="html" value="text/html"/>
+                <entry key="xml" value="application/xml"/>
                 <entry key="json" value="application/json"/>
+                <entry key="freemind" value="application/freemind"/>
                 <entry key="pdf" value="application/pdf"/>
-                <entry key="png" value="application/png"/>
+                <entry key="png" value="image/png"/>
+                <entry key="jpeg" value="image/jpg"/>
+                <entry key="svg" value="image/svg+xml"/>
+                <entry key="svg" value="application/svg+xml"/>
+                <entry key="wise" value="application/wisemapping+xml"/>
             </map>
         </property>
         <property name="viewResolvers">
@@ -52,7 +54,9 @@
         </property>
         <property name="defaultViews">
             <list>
-                <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"/>
+                <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
+                    <property name="extractValueFromSingleKeyModel" value="true"/>
+                </bean>
                 <bean class="org.springframework.web.servlet.view.xml.MarshallingView">
                     <constructor-arg ref="jaxbMarshaller"/>
                 </bean>
@@ -76,5 +80,11 @@
         <constructor-arg value="application/freemind"/>
     </bean>
 
+    <bean id="transformViewSvg" class="com.wisemapping.rest.view.TransformView">
+        <constructor-arg value="image/svg+xml"/>
+    </bean>
 
+    <bean id="transformViewWise" class="com.wisemapping.rest.view.ImportTransformationView">
+        <constructor-arg value="application/wisemapping+xml"/>
+    </bean>
 </beans>

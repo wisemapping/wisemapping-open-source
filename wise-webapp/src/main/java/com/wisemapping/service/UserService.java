@@ -20,12 +20,13 @@ package com.wisemapping.service;
 
 import com.wisemapping.model.User;
 import com.wisemapping.exceptions.WiseMappingException;
+import org.jetbrains.annotations.NotNull;
 
 public interface UserService {
 
-    public void activateAcount(long code) throws InvalidActivationCodeException;
+    public void activateAccount(long code) throws InvalidActivationCodeException;
 
-    public void createUser(User user, boolean emailConfirmEnabled) throws WiseMappingException;
+    public User createUser(@NotNull User user, boolean emailConfirmEnabled) throws WiseMappingException;
 
     public void changePassword(User user);
 
@@ -40,4 +41,6 @@ public interface UserService {
     public void sendEmailPassword(String email) throws InvalidUserEmailException;
 
     public User reloadUser(final User user);
+
+    public void deleteUser(@NotNull User user);
 }

@@ -6,14 +6,14 @@ TestCase("Model Migration Tests",{
         ids=[];
         var domDocument = core.Utils.createDocumentFromText(mapXml);
 
-        var betaSerializer = new mindplot.XMLMindmapSerializer_Beta();
+        var betaSerializer = new mindplot.persistence.XMLSerializer_Beta();
         var betaMap = betaSerializer.loadFromDom(domDocument);
 
-        var serializer = mindplot.XMLMindmapSerializerFactory.getSerializerFromDocument(domDocument);
+        var serializer = mindplot.persistence.XMLSerializerFactory.getSerializerFromDocument(domDocument);
         var mindmap = serializer.loadFromDom(domDocument);
 
         //Assert that the new model is Pela
-        assertEquals(mindplot.ModelCodeName.PELA, mindmap.getVersion());
+        assertEquals(mindplot.persistence.ModelCodeName.PELA, mindmap.getVersion());
 
         //Assert same number of branches
         var betaBranches = betaMap.getBranches();

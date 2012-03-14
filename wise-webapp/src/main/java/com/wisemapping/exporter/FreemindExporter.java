@@ -23,14 +23,13 @@ import com.wisemapping.importer.freemind.FreemindIconConverter;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.ShapeStyle;
 import com.wisemapping.util.JAXBUtils;
-import com.wisemapping.xml.freemind.*;
-import com.wisemapping.xml.mindmap.RelationshipType;
-import com.wisemapping.xml.mindmap.TopicType;
-import com.wisemapping.xml.mindmap.Icon;
+import com.wisemapping.jaxb.freemind.*;
+import com.wisemapping.jaxb.wisemap.RelationshipType;
+import com.wisemapping.jaxb.wisemap.TopicType;
+import com.wisemapping.jaxb.wisemap.Icon;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.JAXBException;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.ByteArrayInputStream;
 import java.math.BigInteger;
@@ -44,30 +43,26 @@ public class FreemindExporter
     private static final String FREE_MIND_VERSION = "0.9.0";
     private static final String POSITION_LEFT = "left";
     private static final String POSITION_RIGHT = "right";
-    private com.wisemapping.xml.freemind.ObjectFactory objectFactory;
+    private com.wisemapping.jaxb.freemind.ObjectFactory objectFactory;
     private static final String EMPTY_FONT_STYLE = ";;;;;";
 
     private Map<String, Node> nodesMap = null;
 
     public void export(MindMap map, OutputStream outputStream) throws ExportException {
-        try {
-            export(map.getUnzippedXml().getBytes("UTF-8"), outputStream);
-        } catch (IOException e) {
-            throw new ExportException(e);
-        }
+        export(map.getXml(), outputStream);
     }
 
-    public void export(byte[] xml, OutputStream outputStream) throws ExportException {
+    public void export(byte[] xml, @NotNull OutputStream outputStream) throws ExportException {
 
-        objectFactory = new com.wisemapping.xml.freemind.ObjectFactory();
+        objectFactory = new com.wisemapping.jaxb.freemind.ObjectFactory();
         nodesMap = new HashMap<String, Node>();
-        final com.wisemapping.xml.mindmap.Map mindmapMap;
+        final com.wisemapping.jaxb.wisemap.Map mindmapMap;
 
         try {
             final ByteArrayInputStream stream = new ByteArrayInputStream(xml);
-            mindmapMap = (com.wisemapping.xml.mindmap.Map) JAXBUtils.getMapObject(stream, "com.wisemapping.xml.mindmap");
+            mindmapMap = (com.wisemapping.jaxb.wisemap.Map) JAXBUtils.getMapObject(stream, "com.wisemapping.jaxb.wisemap");
 
-            final com.wisemapping.xml.freemind.Map freemindMap = objectFactory.createMap();
+            final com.wisemapping.jaxb.freemind.Map freemindMap = objectFactory.createMap();
             freemindMap.setVersion(FREE_MIND_VERSION);
 
 
@@ -99,15 +94,17 @@ public class FreemindExporter
                 Arrowlink arrowlink = objectFactory.createArrowlink();
                 Node dstNode = nodesMap.get(relationship.getDestTopicId());
                 arrowlink.setDESTINATION(dstNode.getID());
-                if (relationship.isEndArrow())
+                if (relationship.isEndArrow() != null && relationship.isEndArrow())
                     arrowlink.setENDARROW("Default");
-                if (relationship.isStartArrow())
+
+                if (relationship.isStartArrow() != null && relationship.isStartArrow())
                     arrowlink.setSTARTARROW("Default");
+
                 List<Object> cloudOrEdge = srcNode.getArrowlinkOrCloudOrEdge();
                 cloudOrEdge.add(arrowlink);
             }
 
-            JAXBUtils.saveMap(freemindMap, outputStream, "com.wisemapping.xml.freemind");
+            JAXBUtils.saveMap(freemindMap, outputStream);
         } catch (JAXBException e) {
             throw new ExportException(e);
         }
@@ -131,9 +128,14 @@ public class FreemindExporter
         }
     }
 
-    private void setTopicPropertiesToNode(@NotNull com.wisemapping.xml.freemind.Node freemindNode, @NotNull com.wisemapping.xml.mindmap.TopicType mindmapTopic, boolean isRoot) {
+    private void setTopicPropertiesToNode(@NotNull com.wisemapping.jaxb.freemind.Node freemindNode, @NotNull com.wisemapping.jaxb.wisemap.TopicType mindmapTopic, boolean isRoot) {
         freemindNode.setID("ID_" + mindmapTopic.getId());
-        freemindNode.setTEXT(mindmapTopic.getText());
+
+        String text = mindmapTopic.getTextAttr();
+        if (text == null || text.isEmpty()) {
+            text = mindmapTopic.getText();
+        }
+        freemindNode.setTEXT(text);
         freemindNode.setBACKGROUNDCOLOR(mindmapTopic.getBgColor());
 
         final String shape = mindmapTopic.getShape();
@@ -147,22 +149,10 @@ public class FreemindExporter
                 freemindNode.setSTYLE(style);
             }
             addIconNode(freemindNode, mindmapTopic);
-
             addLinkNode(freemindNode, mindmapTopic);
-
             addFontNode(freemindNode, mindmapTopic);
             addEdgeNode(freemindNode, mindmapTopic);
             addNote(freemindNode, mindmapTopic);
-
-            final String position = mindmapTopic.getPosition();
-            if (position != null && !position.isEmpty()) {
-                freemindNode.setWcoords(position);
-            }
-
-            final Integer order = mindmapTopic.getOrder();
-            if (order != null) {
-                freemindNode.setWorder(BigInteger.valueOf(order));
-            }
 
             Boolean shrink = mindmapTopic.isShrink();
             if (shrink != null && shrink)
@@ -170,10 +160,13 @@ public class FreemindExporter
         }
     }
 
-    private void addNote(com.wisemapping.xml.freemind.Node freemindNode, com.wisemapping.xml.mindmap.TopicType mindmapTopic) {
+    private void addNote(com.wisemapping.jaxb.freemind.Node freemindNode, com.wisemapping.jaxb.wisemap.TopicType mindmapTopic) {
         if (mindmapTopic.getNote() != null) {
             final Hook note = new Hook();
-            String textNote = mindmapTopic.getNote().getText();
+            String textNote = mindmapTopic.getNote().getTextAttr();
+            if (textNote == null || textNote.isEmpty()) {
+                textNote = mindmapTopic.getNote().getText();
+            }
             textNote = textNote.replaceAll("%0A", "\n");
             note.setNAME("accessories/plugins/NodeNote.properties");
             note.setText(textNote);
@@ -181,14 +174,14 @@ public class FreemindExporter
         }
     }
 
-    private void addLinkNode(com.wisemapping.xml.freemind.Node freemindNode, com.wisemapping.xml.mindmap.TopicType mindmapTopic) {
+    private void addLinkNode(com.wisemapping.jaxb.freemind.Node freemindNode, com.wisemapping.jaxb.wisemap.TopicType mindmapTopic) {
         if (mindmapTopic.getLink() != null) {
             final String url = mindmapTopic.getLink().getUrl();
             freemindNode.setLINK(url);
         }
     }
 
-    private void addIconNode(com.wisemapping.xml.freemind.Node freemindNode, com.wisemapping.xml.mindmap.TopicType mindmapTopic) {
+    private void addIconNode(com.wisemapping.jaxb.freemind.Node freemindNode, com.wisemapping.jaxb.wisemap.TopicType mindmapTopic) {
         if (mindmapTopic.getIcon() != null) {
             final List<Icon> iconsList = mindmapTopic.getIcon();
             for (Icon icon : iconsList) {
@@ -196,7 +189,7 @@ public class FreemindExporter
                 final String freemindIconId = FreemindIconConverter.toFreemindId(id);
                 if (freemindIconId != null) {
 
-                    com.wisemapping.xml.freemind.Icon freemindIcon = new com.wisemapping.xml.freemind.Icon();
+                    com.wisemapping.jaxb.freemind.Icon freemindIcon = new com.wisemapping.jaxb.freemind.Icon();
                     freemindIcon.setBUILTIN(freemindIconId);
                     freemindNode.getArrowlinkOrCloudOrEdge().add(freemindIcon);
                 }
@@ -204,7 +197,7 @@ public class FreemindExporter
         }
     }
 
-    private void addEdgeNode(com.wisemapping.xml.freemind.Node freemindNode, com.wisemapping.xml.mindmap.TopicType mindmapTopic) {
+    private void addEdgeNode(com.wisemapping.jaxb.freemind.Node freemindNode, com.wisemapping.jaxb.wisemap.TopicType mindmapTopic) {
         if (mindmapTopic.getBrColor() != null) {
             final Edge edgeNode = objectFactory.createEdge();
             edgeNode.setCOLOR(mindmapTopic.getBrColor());
@@ -217,7 +210,7 @@ public class FreemindExporter
      * eg: Verdana;10;#ffffff;bold;italic;
      *
      */
-    private void addFontNode(@NotNull com.wisemapping.xml.freemind.Node freemindNode, com.wisemapping.xml.mindmap.TopicType mindmapTopic) {
+    private void addFontNode(@NotNull com.wisemapping.jaxb.freemind.Node freemindNode, com.wisemapping.jaxb.wisemap.TopicType mindmapTopic) {
         final String fontStyle = mindmapTopic.getFontStyle();
         if (fontStyle != null && fontStyle.length() != 0) {
             final Font font = objectFactory.createFont();

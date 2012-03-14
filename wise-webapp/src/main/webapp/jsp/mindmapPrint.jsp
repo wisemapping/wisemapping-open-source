@@ -42,7 +42,7 @@
                 designer = buildDesigner(editorProperties);
 
                 var domDocument = core.Utils.createDocumentFromText(mapXml);
-                var serializer = mindplot.XMLMindmapSerializerFactory.getSerializerFromDocument(domDocument);
+                var serializer = mindplot.persistence.XMLSerializerFactory.getSerializerFromDocument(domDocument);
                 var mindmap = serializer.loadFromDom(domDocument, mapId);
 
                 // Now, load the map ...

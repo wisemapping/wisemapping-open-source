@@ -7,6 +7,7 @@ import com.wisemapping.importer.Importer;
 import com.wisemapping.importer.ImporterException;
 import com.wisemapping.importer.ImporterFactory;
 import com.wisemapping.model.MindMap;
+import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -16,7 +17,8 @@ import java.io.*;
 
 @Test
 public class ImportExportTest {
-    private static final String DATA_DIR_PATH = "src/test/data/freemind/";
+    private static final String DATA_DIR_PATH = "src/test/resources/data/freemind/";
+    private static final String UTF_8 = "UTF-8";
     final private Importer importer;
     final private FreemindExporter exporter;
 
@@ -30,8 +32,6 @@ public class ImportExportTest {
 
     @Test(dataProvider = "Data-Provider-Function")
     public void exportImportTest(@NotNull final File freeMindFile, @NotNull final File wiseFile, @NotNull final File freeRecFile) throws ImporterException, IOException, ExportException {
-
-
         final FileInputStream fileInputStream = new FileInputStream(freeMindFile.getAbsolutePath());
         final MindMap mindMap = importer.importMap("basic", "basic", fileInputStream);
 
@@ -39,52 +39,35 @@ public class ImportExportTest {
         // Compare mindmap output ...
         if (wiseFile.exists()) {
             // Compare rec and file ...
-            final String recContent = readFile(wiseFile);
+            // Load rec file co
+            final String recContent = FileUtils.readFileToString(wiseFile, UTF_8);
 
             // Export mile content ...
-            Assert.assertEquals(mindMap.getUnzippedXml(), recContent);
+            Assert.assertEquals(mindMap.getXmlStr(), recContent);
 
         } else {
             final FileOutputStream fos = new FileOutputStream(wiseFile);
-            fos.write(mindMap.getUnzippedXml().getBytes("UTF-8"));
+            fos.write(mindMap.getXmlStr().getBytes(UTF_8));
             fos.close();
         }
 
         // Compare freemind output ...
         if (freeRecFile.exists()) {
             // Compare rec and file ...
-            final String recContent = readFile(freeRecFile);
+            // Load rec file co
+            final String recContent = FileUtils.readFileToString(freeRecFile, UTF_8);
 
             // Export content ...
             final ByteArrayOutputStream bos = new ByteArrayOutputStream();
             exporter.export(mindMap, bos);
 
-            Assert.assertEquals(bos.toByteArray(), recContent.getBytes("UTF-8"));
+            Assert.assertEquals(new String(bos.toByteArray(), UTF_8), recContent);
 
         } else {
             final FileOutputStream fos = new FileOutputStream(freeRecFile);
             exporter.export(mindMap, fos);
             fos.close();
         }
-
-    }
-
-    private String readFile(@NotNull File file) throws IOException {
-        // Load rec file co
-        final FileInputStream fis = new FileInputStream(file);
-        final InputStreamReader isr = new InputStreamReader(fis,"UTF-8");
-        final BufferedReader br = new BufferedReader(isr);
-
-        final StringBuilder result = new StringBuilder();
-        String line = br.readLine();
-        while (line != null) {
-            result.append(line);
-            line = br.readLine();
-
-        }
-
-        fis.close();
-        return result.toString();
     }
 
     //This function will provide the parameter data
@@ -97,7 +80,7 @@ public class ImportExportTest {
         final File[] freeMindFiles = dataDir.listFiles(new FilenameFilter() {
 
             public boolean accept(File dir, String name) {
-                return name.endsWith(".mm") && (testNameToRun==null || name.startsWith(testNameToRun));
+                return name.endsWith(".mm") && (testNameToRun == null || name.startsWith(testNameToRun));
             }
         });
 

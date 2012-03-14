@@ -55,7 +55,7 @@ public class ExporterFactory {
 
     }
 
-    public static void export(@NotNull ExportProperties properties, @NotNull String xml, @NotNull OutputStream output, @NotNull String mapSvg) throws TranscoderException, IOException, ParserConfigurationException, SAXException, XMLStreamException, TransformerException, JAXBException, ExportException {
+    public static void export(@NotNull ExportProperties properties, @Nullable String xml, @NotNull OutputStream output, @Nullable String mapSvg) throws TranscoderException, IOException, ParserConfigurationException, SAXException, XMLStreamException, TransformerException, JAXBException, ExportException {
         final ExportFormat format = properties.getFormat();
 
         final String imgPath = properties.getBaseImgPath();
@@ -213,14 +213,10 @@ public class ExporterFactory {
                 int index = imgUrl.lastIndexOf("/");
                 elem.removeAttribute("href");
                 if (index != -1) {
-                    final String iconName = imgUrl.substring(index+1);
+                    final String iconName = imgUrl.substring(index + 1);
                     // Hack for backward compatibility . This can be removed in 2012. :)
                     String imgPath;
-                    if (imgUrl.contains("images")) {
-                        imgPath = imgBaseUrl + "/../icons/legacy/" + iconName;
-                    } else {
-                        imgPath = imgBaseUrl + "/" + imgUrl;
-                    }
+                    imgPath = imgBaseUrl + "/" + imgUrl;
                     elem.setAttribute("xlink:href", imgPath);
                     elem.appendChild(document.createTextNode(" "));
                 }

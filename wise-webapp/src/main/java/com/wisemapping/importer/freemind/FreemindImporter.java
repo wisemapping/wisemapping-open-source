@@ -25,12 +25,12 @@ import com.wisemapping.importer.VersionNumber;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.ShapeStyle;
 import com.wisemapping.util.JAXBUtils;
-import com.wisemapping.xml.freemind.*;
-import com.wisemapping.xml.freemind.Map;
-import com.wisemapping.xml.freemind.Node;
-import com.wisemapping.xml.mindmap.RelationshipType;
-import com.wisemapping.xml.mindmap.TopicType;
-import com.wisemapping.xml.mindmap.Link;
+import com.wisemapping.jaxb.freemind.*;
+import com.wisemapping.jaxb.freemind.Map;
+import com.wisemapping.jaxb.freemind.Node;
+import com.wisemapping.jaxb.wisemap.RelationshipType;
+import com.wisemapping.jaxb.wisemap.TopicType;
+import com.wisemapping.jaxb.wisemap.Link;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.*;
@@ -46,12 +46,12 @@ import java.math.BigInteger;
 public class FreemindImporter
         implements Importer {
 
-    public static final String CODE_VERSION = "pela";
+    public static final String CODE_VERSION = "tango";
     public static final int SECOND_LEVEL_TOPIC_HEIGHT = 25;
     public static final int ROOT_LEVEL_TOPIC_HEIGHT = SECOND_LEVEL_TOPIC_HEIGHT;
     public static final int CENTRAL_TO_TOPIC_DISTANCE = 200;
     public static final int TOPIC_TO_TOPIC_DISTANCE = 90;
-    private com.wisemapping.xml.mindmap.ObjectFactory mindmapObjectFactory;
+    private com.wisemapping.jaxb.wisemap.ObjectFactory mindmapObjectFactory;
     private static final String POSITION_LEFT = "left";
     private static final String BOLD = "bold";
     private static final String ITALIC = "italic";
@@ -94,16 +94,16 @@ public class FreemindImporter
 
     }
 
-    public MindMap importMap(@NotNull String mapName, @NotNull  String description, @NotNull InputStream input) throws ImporterException {
+    public MindMap importMap(@NotNull String mapName, @NotNull String description, @NotNull InputStream input) throws ImporterException {
 
         final MindMap result = new MindMap();
         nodesMap = new HashMap<String, TopicType>();
         relationships = new ArrayList<RelationshipType>();
-        mindmapObjectFactory = new com.wisemapping.xml.mindmap.ObjectFactory();
+        mindmapObjectFactory = new com.wisemapping.jaxb.wisemap.ObjectFactory();
 
         try {
             String wiseXml;
-            final Map freemindMap = (Map) JAXBUtils.getMapObject(input, "com.wisemapping.xml.freemind");
+            final Map freemindMap = (Map) JAXBUtils.getMapObject(input, "com.wisemapping.jaxb.freemind");
 
             final String version = freemindMap.getVersion();
             if (version != null) {
@@ -116,7 +116,7 @@ public class FreemindImporter
 
             final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-            final com.wisemapping.xml.mindmap.Map mindmapMap = mindmapObjectFactory.createMap();
+            final com.wisemapping.jaxb.wisemap.Map mindmapMap = mindmapObjectFactory.createMap();
             mindmapMap.setVersion(CODE_VERSION);
             currentId = 0;
 
@@ -137,12 +137,12 @@ public class FreemindImporter
             convertChildNodes(freeNode, wiseTopic, 1);
             addRelationships(mindmapMap);
 
-            JAXBUtils.saveMap(mindmapMap, baos, "com.wisemapping.xml.mindmap");
+            JAXBUtils.saveMap(mindmapMap, baos);
 
             wiseXml = new String(baos.toByteArray(), UTF_8_CHARSET);
 
 
-            result.setNativeXml(wiseXml);
+            result.setXmlStr(wiseXml);
             result.setTitle(mapName);
             result.setDescription(description);
 
@@ -155,7 +155,7 @@ public class FreemindImporter
         return result;
     }
 
-    private void addRelationships(@NotNull com.wisemapping.xml.mindmap.Map mindmapMap) {
+    private void addRelationships(@NotNull com.wisemapping.jaxb.wisemap.Map mindmapMap) {
         List<RelationshipType> mapRelationships = mindmapMap.getRelationship();
         for (RelationshipType relationship : relationships) {
             relationship.setId(String.valueOf(currentId++));
@@ -181,28 +181,37 @@ public class FreemindImporter
         TopicType destTopicType = nodesMap.get(rel.getDestTopicId());
 
         //Fix x coord
-        final Coord srcCtrlCoord = Coord.parse(rel.getSrcCtrlPoint());
-        final Coord destCtrlCoord = Coord.parse(rel.getDestCtrlPoint());
+        final String srcCtrlPoint = rel.getSrcCtrlPoint();
+        if (srcCtrlPoint != null) {
+            final Coord srcCtrlCoord = Coord.parse(srcCtrlPoint);
 
-        if (Coord.parse(srcTopic.getPosition()).isOnLeftSide()) {
-            int x = srcCtrlCoord.x * -1;
-            rel.setSrcCtrlPoint(x + "," + srcCtrlCoord.y);
-        }
-        if (Coord.parse(destTopicType.getPosition()).isOnLeftSide()) {
-            int x = destCtrlCoord.x * -1;
-            rel.setDestCtrlPoint(x + "," + destCtrlCoord.y);
-        }
+            if (Coord.parse(srcTopic.getPosition()).isOnLeftSide()) {
+                int x = srcCtrlCoord.x * -1;
+                rel.setSrcCtrlPoint(x + "," + srcCtrlCoord.y);
 
-        //Fix coord
-        if (srcTopic.getOrder() != null && srcTopic.getOrder() % 2 != 0) { //Odd order.
-            int y = srcCtrlCoord.y * -1;
-            rel.setSrcCtrlPoint(srcCtrlCoord.x + "," + y);
+                //Fix coord
+                if (srcTopic.getOrder() != null && srcTopic.getOrder() % 2 != 0) { //Odd order.
+                    int y = srcCtrlCoord.y * -1;
+                    rel.setSrcCtrlPoint(srcCtrlCoord.x + "," + y);
+                }
+            }
         }
-        if (destTopicType.getOrder() != null && destTopicType.getOrder() % 2 != 0) { //Odd order.
-            int y = destCtrlCoord.y * -1;
-            rel.setDestCtrlPoint(destCtrlCoord.x + "," + y);
-        }
+        final String destCtrlPoint = rel.getDestCtrlPoint();
+        if (destCtrlPoint != null) {
+            final Coord destCtrlCoord = Coord.parse(destCtrlPoint);
 
+
+            if (Coord.parse(destTopicType.getPosition()).isOnLeftSide()) {
+                int x = destCtrlCoord.x * -1;
+                rel.setDestCtrlPoint(x + "," + destCtrlCoord.y);
+            }
+
+
+            if (destTopicType.getOrder() != null && destTopicType.getOrder() % 2 != 0) { //Odd order.
+                int y = destCtrlCoord.y * -1;
+                rel.setDestCtrlPoint(destCtrlCoord.x + "," + y);
+            }
+        }
     }
 
     private void convertChildNodes(@NotNull Node freeParent, @NotNull TopicType wiseParent, final int depth) {
@@ -261,14 +270,14 @@ public class FreemindImporter
                 String iconId = freemindIcon.getBUILTIN();
                 final String wiseIconId = FreemindIconConverter.toWiseId(iconId);
                 if (wiseIconId != null) {
-                    final com.wisemapping.xml.mindmap.Icon mindmapIcon = new com.wisemapping.xml.mindmap.Icon();
+                    final com.wisemapping.jaxb.wisemap.Icon mindmapIcon = new com.wisemapping.jaxb.wisemap.Icon();
                     mindmapIcon.setId(wiseIconId);
                     currentWiseTopic.getIcon().add(mindmapIcon);
                 }
 
             } else if (element instanceof Hook) {
                 final Hook hook = (Hook) element;
-                final com.wisemapping.xml.mindmap.Note mindmapNote = new com.wisemapping.xml.mindmap.Note();
+                final com.wisemapping.jaxb.wisemap.Note mindmapNote = new com.wisemapping.jaxb.wisemap.Note();
                 String textNote = hook.getText();
                 if (textNote == null) // It is not a note is a BlinkingNodeHook or AutomaticLayout Hook
                 {
@@ -282,13 +291,11 @@ public class FreemindImporter
 
                 if (type.equals("NODE")) {
                     String text = getText(content);
-                    text = text.replaceAll("\n", "");
-                    text = text.trim();
                     currentWiseTopic.setText(text);
                 } else {
                     String text = getRichContent(content);
-                    final com.wisemapping.xml.mindmap.Note mindmapNote = new com.wisemapping.xml.mindmap.Note();
-                    text = text != null ? text.replaceAll("\n", "%0A") : EMPTY_NOTE;
+                    final com.wisemapping.jaxb.wisemap.Note mindmapNote = new com.wisemapping.jaxb.wisemap.Note();
+                    text = text != null ? text : EMPTY_NOTE;
                     mindmapNote.setText(text);
                     currentWiseTopic.setNote(mindmapNote);
 
@@ -299,13 +306,26 @@ public class FreemindImporter
                 String destId = arrow.getDESTINATION();
                 relt.setSrcTopicId(freeParent.getID());
                 relt.setDestTopicId(destId);
-                String[] inclination = arrow.getENDINCLINATION().split(";");
-                relt.setDestCtrlPoint(inclination[0] + "," + inclination[1]);
-                inclination = arrow.getSTARTINCLINATION().split(";");
-                relt.setSrcCtrlPoint(inclination[0] + "," + inclination[1]);
-                //relationship.setCtrlPointRelative(true);
-                relt.setEndArrow(!arrow.getENDARROW().toLowerCase().equals("none"));
-                relt.setStartArrow(!arrow.getSTARTARROW().toLowerCase().equals("none"));
+                final String endinclination = arrow.getENDINCLINATION();
+                if (endinclination != null) {
+                    String[] inclination = endinclination.split(";");
+                    relt.setDestCtrlPoint(inclination[0] + "," + inclination[1]);
+                }
+                final String startinclination = arrow.getSTARTINCLINATION();
+                if (startinclination != null) {
+                    String[] inclination = startinclination.split(";");
+                    relt.setSrcCtrlPoint(inclination[0] + "," + inclination[1]);
+                }
+
+                final String endarrow = arrow.getENDARROW();
+                if (endarrow != null) {
+                    relt.setEndArrow(!endarrow.toLowerCase().equals("none"));
+                }
+
+                final String startarrow = arrow.getSTARTARROW();
+                if (startarrow != null) {
+                    relt.setStartArrow(!startarrow.toLowerCase().equals("none"));
+                }
                 relt.setLineType("3");
                 relationships.add(relt);
             }
@@ -325,41 +345,36 @@ public class FreemindImporter
         final List<Node> nodes = new ArrayList<Node>();
         int result;
 
-        if (freeChild.getWorder() != null) {
-            result = freeChild.getWorder().intValue();
+        // Collect all the nodes of the same side ...
+        for (Object child : freeChilden) {
+            if (child instanceof Node) {
+                Node node = (Node) child;
+
+                final String side = node.getPOSITION();
+                if (freeChild.getPOSITION().equals(side)) {
+                    nodes.add(node);
+                }
+            }
+        }
+
+        // What is the index of the current node ?
+        int nodeIndex = 0;
+        for (Node node : nodes) {
+            if (node == freeChild) {
+                break;
+            }
+            nodeIndex++;
+        }
+
+        int size = nodes.size();
+        int center = (size - 1) / 2;
+        result = nodeIndex - center;
+
+        if (result < 0) {
+            result = (result * ORDER_SEPARATION_FACTOR * -2) - 1;
+
         } else {
-            // Collect all the nodes of the same side ...
-            for (Object child : freeChilden) {
-                if (child instanceof Node) {
-                    Node node = (Node) child;
-
-                    final String side = node.getPOSITION();
-                    if (freeChild.getPOSITION().equals(side)) {
-                        nodes.add(node);
-                    }
-                }
-            }
-
-            // What is the index of the current node ?
-            int nodeIndex = 0;
-            for (Node node : nodes) {
-                if (node == freeChild) {
-                    break;
-                }
-                nodeIndex++;
-            }
-
-            int size = nodes.size();
-            int center = (size - 1) / 2;
-            result = nodeIndex - center;
-
-            if (result < 0) {
-                result = (result * ORDER_SEPARATION_FACTOR * -2) - 1;
-
-            } else {
-                result = result * ORDER_SEPARATION_FACTOR * 2;
-            }
-
+            result = result * ORDER_SEPARATION_FACTOR * 2;
         }
         return result;
     }
@@ -374,53 +389,50 @@ public class FreemindImporter
     String convertPosition(@NotNull TopicType wiseParent, @NotNull Node freeChild, final int depth, int order, int childrenCount) {
 
         // Which side must be the node be positioned ?
-        String result = freeChild.getWcoords();
-        if (result == null) {
 
-            // Calculate X ...
+        // Calculate X ...
 
-            // Problem on setting X position:
-            // Text Size is not taken into account ...
-            int x = CENTRAL_TO_TOPIC_DISTANCE + ((depth - 1) * TOPIC_TO_TOPIC_DISTANCE);
-            if (depth == 1) {
+        // Problem on setting X position:
+        // Text Size is not taken into account ...
+        int x = CENTRAL_TO_TOPIC_DISTANCE + ((depth - 1) * TOPIC_TO_TOPIC_DISTANCE);
+        if (depth == 1) {
 
-                final String side = freeChild.getPOSITION();
-                assert side != null : "This should not happen";
-                x = x * (POSITION_LEFT.equals(side) ? -1 : 1);
+            final String side = freeChild.getPOSITION();
+            assert side != null : "This should not happen";
+            x = x * (POSITION_LEFT.equals(side) ? -1 : 1);
+        } else {
+            final Coord coord = Coord.parse(wiseParent.getPosition());
+            x = x * (coord.isOnLeftSide() ? -1 : 1);
+        }
+
+
+        // Calculate y ...
+        int y;
+        if (depth == 1) {
+
+            // Follow the following algorithm ...
+            // Order: 3 = -100  1
+            // Order: 1 = -50   2
+            // Order: 0 =  0    3
+            // Order: 2 = 50    4
+            // Order: 4 = 100   5
+            if (order % 2 == 0) {
+                y = ROOT_LEVEL_TOPIC_HEIGHT * order;
             } else {
-                final Coord coord = Coord.parse(wiseParent.getPosition());
-                x = x * (coord.isOnLeftSide() ? -1 : 1);
+                y = -ROOT_LEVEL_TOPIC_HEIGHT * (order + 1);
             }
+        } else {
 
+            // Problem: What happen if the node is more tall than what is defined here.
+            Coord coord = Coord.parse(wiseParent.getPosition());
+            int parentY = coord.y;
+            y = parentY - ((childrenCount / 2) * SECOND_LEVEL_TOPIC_HEIGHT - (order * SECOND_LEVEL_TOPIC_HEIGHT));
 
-            // Calculate y ...
-            int y;
-            if (depth == 1) {
-
-                // Follow the following algorithm ...
-                // Order: 3 = -100  1
-                // Order: 1 = -50   2
-                // Order: 0 =  0    3
-                // Order: 2 = 50    4
-                // Order: 4 = 100   5
-                if (order % 2 == 0) {
-                    y = ROOT_LEVEL_TOPIC_HEIGHT * order;
-                } else {
-                    y = -ROOT_LEVEL_TOPIC_HEIGHT * (order + 1);
-                }
-            } else {
-
-                // Problem: What happen if the node is more tall than what is defined here.
-                Coord coord = Coord.parse(wiseParent.getPosition());
-                int parentY = coord.y;
-                y = parentY - ((childrenCount / 2) * SECOND_LEVEL_TOPIC_HEIGHT - (order * SECOND_LEVEL_TOPIC_HEIGHT));
-
-
-            }
-            result = x + "," + y;
 
         }
-        return result;
+        return x + "," + y;
+
+
     }
 
     /**
@@ -524,7 +536,7 @@ public class FreemindImporter
         return text.toString();
     }
 
-    private void convertNodeProperties(@NotNull com.wisemapping.xml.freemind.Node freeNode, @NotNull com.wisemapping.xml.mindmap.TopicType wiseTopic) {
+    private void convertNodeProperties(@NotNull com.wisemapping.jaxb.freemind.Node freeNode, @NotNull com.wisemapping.jaxb.wisemap.TopicType wiseTopic) {
         final String text = freeNode.getTEXT();
         wiseTopic.setText(text);
 

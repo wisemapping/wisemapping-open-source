@@ -155,14 +155,25 @@ web2d.peer.svg.TextPeer = new Class({
     },
 
     getWidth  : function () {
-        var computedWidth = this._native.getBBox().width;
+        // Firefox hack for this issue:http://stackoverflow.com/questions/6390065/doing-ajax-updates-in-svg-breaks-getbbox-is-there-a-workaround
+        try {
+            var computedWidth = this._native.getBBox().width;
+        } catch(e) {
+            computedWidth = 10;
+        }
+
         var width = parseInt(computedWidth);
         width = width + this._font.getWidthMargin();
         return width;
     },
 
     getHeight  : function () {
-        var computedHeight = this._native.getBBox().height;
+        // Firefox hack for this issue:http://stackoverflow.com/questions/6390065/doing-ajax-updates-in-svg-breaks-getbbox-is-there-a-workaround
+        try {
+            var computedHeight = this._native.getBBox().height;
+        } catch(e) {
+            computedHeight = 10;
+        }
         return parseInt(computedHeight);
     },
 

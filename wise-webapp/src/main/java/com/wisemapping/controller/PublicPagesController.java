@@ -65,7 +65,7 @@ public class PublicPagesController extends BaseMultiActionController {
         final MindMap mindmap = getMindmapService().getMindmapById(TRY_EXAMPLE_MINDMAP_ID);
 
         ModelAndView view = new ModelAndView("mindmapEditor", "mindmap", mindmap);
-        final String xmlMap = mindmap.getNativeXmlAsJsLiteral();
+        final String xmlMap = mindmap.getXmlAsJsLiteral();
         view.addObject(MindmapEditorController.MAP_XML_PARAM, xmlMap);
         view.addObject("editorTryMode", true);
         view.addObject("showHelp", true);

@@ -176,6 +176,10 @@ mindplot.layout.SymmetricSorter = new Class({
 
     toString:function() {
         return "Symmetric Sorter";
+    },
+
+    _getVerticalPadding: function() {
+        return mindplot.layout.SymmetricSorter.INTERNODE_VERTICAL_PADDING;
     }
 });
 

@@ -27,12 +27,41 @@ mindplot.model.NodeModel = new Class({
         this.setId(id);
         this.setType(type);
         this.areChildrenShrunken(false);
-        this.setSize(50, 20);
 
         this._children = [];
-        this._icons = [];
-        this._links = [];
-        this._notes = [];
+        this._feature = [];
+    },
+
+    createFeature: function(type, attributes) {
+        return mindplot.TopicFeature.createModel(type, this, attributes);
+    },
+
+    addFeature: function(feature) {
+        $assert(feature, 'feature can not be null');
+        this._feature.push(feature);
+    },
+
+    getFeatures: function() {
+        return this._feature;
+    },
+
+    removeFeature: function(feature) {
+        $assert(feature, 'feature can not be null');
+        this._feature.erase(feature);
+    },
+
+    findFeatureByType : function(type) {
+        $assert(type, 'type can not be null');
+        return this._feature.filter(function(feature) {
+            return feature.getType() == type;
+        });
+    },
+
+    findFeatureById : function(id) {
+        $assert($defined(id), 'id can not be null');
+        return this._feature.filter(function(feature) {
+            return feature.getId() == id;
+        })[0];
     },
 
     getPropertiesKeys : function() {
@@ -64,65 +93,8 @@ mindplot.model.NodeModel = new Class({
         });
 
         result._properties = Object.clone(this._properties);
-        result._icons = this._icons.clone();
-        result._links = this._links.clone();
-        result._notes = this._notes.clone();
+        result._feature = this._feature.clone();
         return result;
-    },
-
-    addChildren : function() {
-        $assert(child && child.isNodeModel(), 'Only NodeModel can be appended to Mindmap object');
-        this._children.push(child);
-        child._parent = this;
-    },
-
-    createLink  : function(url) {
-        $assert(url, 'Link URL must be specified.');
-        return new mindplot.model.LinkModel(url, this);
-    },
-
-    addLink  : function(link) {
-        $assert(link && link.isLinkModel(), 'Only LinkModel can be appended to Mindmap object as links');
-        this._links.push(link);
-    },
-
-    _removeLink  : function(link) {
-        $assert(link && link.isLinkModel(), 'Only LinkModel can be appended to Mindmap object as links');
-        this._links.erase(link);
-    },
-
-    createNote  : function(text) {
-        $assert(text != null, 'note text must be specified.');
-        return new mindplot.model.NoteModel(text, this);
-    },
-
-    addNote  : function(note) {
-        $assert(note && note.isNoteModel(), 'Only NoteModel can be appended to Mindmap object as links');
-        this._notes.push(note);
-    },
-
-    removeNote  : function(note) {
-        $assert(note && note.isNoteModel(), 'Only NoteModel can be appended to Mindmap object as links');
-        this._notes.erase(note);
-    },
-
-    createIcon  : function(iconType) {
-        $assert(iconType, 'IconType must be specified.');
-        return new mindplot.model.IconModel(iconType, this);
-    },
-
-    addIcon  : function(icon) {
-        $assert(icon && icon.isIconModel(), 'Only IconModel can be appended to Mindmap object as icons');
-        this._icons.push(icon);
-    },
-
-    removeIcon  : function(icon) {
-        $assert(icon && icon.isIconModel(), 'Only IconModel can be appended to Mindmap object as icons');
-        this._icons.erase(icon);
-    },
-
-    removeLastIcon  : function() {
-        this._icons.pop();
     },
 
     appendChild  : function(child) {
@@ -141,18 +113,6 @@ mindplot.model.NodeModel = new Class({
         return this._children;
     },
 
-    getIcons  : function() {
-        return this._icons;
-    },
-
-    getLinks  : function() {
-        return this._links;
-    },
-
-    getNotes  : function() {
-        return this._notes;
-    },
-
     getParent  : function() {
         return this._parent;
     },
@@ -162,10 +122,12 @@ mindplot.model.NodeModel = new Class({
         this._parent = parent;
     },
 
-    canBeConnected  : function(sourceModel, sourcePosition, targetTopicHeight) {
+    canBeConnected  : function(sourceModel, sourcePosition, targetTopicHeight,targetTopicSize) {
         $assert(sourceModel != this, 'The same node can not be parent and child if itself.');
         $assert(sourcePosition, 'childPosition can not be null.');
         $assert(targetTopicHeight, 'childrenWidth can not be null.');
+        $assert(targetTopicSize, 'targetTopicSize can not be null.');
+
 
         // Only can be connected if the node is in the left or rigth.
         var targetModel = this;
@@ -174,8 +136,7 @@ mindplot.model.NodeModel = new Class({
         var result = false;
 
         if (sourceModel.getType() == mindplot.model.INodeModel.MAIN_TOPIC_TYPE) {
-            // Finally, check current node ubication.
-            var targetTopicSize = targetModel.getSize();
+            // Finally, check current node position ...
             var yDistance = Math.abs(sourcePosition.y - targetPosition.y);
             var gap = 35 + targetTopicHeight / 2;
             if (targetModel.getChildren().length > 0) {

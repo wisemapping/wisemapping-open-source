@@ -201,7 +201,7 @@ mindplot.DesignerKeyboard = new Class({
 
         var regex = /^(?:shift|control|ctrl|alt|meta)$/;
         var modifiers = ['shift', 'control', 'alt', 'meta'];
-        var excludes = ['esc','capslock','tab','f1','f3','f4','f5','f6','f7','f8','f9','f10','f11','f12','backspace','down','up','left','right'];
+        var excludes = ['esc','capslock','tab','f1','f3','f4','f5','f6','f7','f8','f9','f10','f11','f12','backspace','down','up','left','right','control'];
 
         $(document).addEvent('keydown', function(event) {
 
@@ -243,7 +243,7 @@ mindplot.DesignerKeyboard = new Class({
     },
 
     _goToBrother : function(designer, node, direction) {
-        var brothers = node._parent._getChildren();
+        var brothers = node._parent.getChildren();
         var target = node;
         var y = node.getPosition().y;
         var x = node.getPosition().x;
@@ -280,7 +280,7 @@ mindplot.DesignerKeyboard = new Class({
 
 
     _goToSideChild : function(designer, node, side) {
-        var children = node._getChildren();
+        var children = node.getChildren();
         if (children.length > 0) {
             var target = children[0];
             var top = null;
@@ -311,7 +311,7 @@ mindplot.DesignerKeyboard = new Class({
     },
 
     _goToChild : function(designer, node) {
-        var children = node._getChildren();
+        var children = node.getChildren();
         if (children.length > 0) {
             var target = children[0];
             var top = target.getPosition().y;

@@ -16,7 +16,7 @@ The following products must be installed:
 
 WiseMapping uses Maven as packaging and project management. The project is composed of 4 maven sub-modules:
     * core-js: Utilities JavaScript libraries
-    * web2d: JavaScript 2D VML/SVG abstraction library used by the mind map editor
+    * web2d: JavaScript 2D SVG abstraction library used by the mind map editor
     * mindplot: JavaScript mind map designer core
     * wise-webapp: J2EE web application 
 

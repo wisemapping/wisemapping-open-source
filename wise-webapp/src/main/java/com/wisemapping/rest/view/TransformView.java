@@ -28,6 +28,7 @@ public class TransformView extends AbstractView {
     protected void renderMergedOutputModel(@NotNull Map<String, Object> viewMap, @NotNull HttpServletRequest request, @NotNull final HttpServletResponse response) throws Exception {
 
         final String content = (String) viewMap.get("content");
+        final String filename = (String) viewMap.get("filename");
 
         // Build format properties ...
         final ExportProperties properties = ExportProperties.create(exportFormat);
@@ -42,34 +43,30 @@ public class TransformView extends AbstractView {
             }
         }
 
-        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
-        // Change image link URL.
-        setBaseBaseImgUrl(exportFormat, properties);
-        if (exportFormat == ExportFormat.FREEMIND) {
-            ExporterFactory.export(properties, content, bos, null);
-        } else {
-            ExporterFactory.export(properties, null, bos, content);
-        }
-
         // Set format content type...
         final String contentType = exportFormat.getContentType();
         response.setContentType(contentType);
 
         // Set file name...
-        final String fileName = "map" + "." + exportFormat.getFileExtension();
+        final String fileName = (filename != null ? filename : "map") + "." + exportFormat.getFileExtension();
         response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
 
-        // Write content ...
+        // Change image link URL.
+        setBaseBaseImgUrl(exportFormat, properties);
+
+        // Write the conversion content ...
         final ServletOutputStream outputStream = response.getOutputStream();
-        outputStream.write(bos.toByteArray());
+        if (exportFormat == ExportFormat.FREEMIND) {
+            ExporterFactory.export(properties, content, outputStream, null);
+        } else {
+            ExporterFactory.export(properties, null, outputStream, content);
+        }
     }
 
     @Override
     public String getContentType() {
         return contentType;
     }
-
 
     private void setBaseBaseImgUrl(@NotNull ExportFormat format, @NotNull ExportProperties properties) {
 
@@ -78,7 +75,7 @@ public class TransformView extends AbstractView {
             baseUrl = "http://www.wisemapping.com/images";
         } else {
             final ServletContext servletContext = this.getServletContext();
-            baseUrl = "file://" + servletContext.getRealPath("/icons/") + "/";
+            baseUrl = "file://" + servletContext.getRealPath("/");
         }
         properties.setBaseImagePath(baseUrl);
     }

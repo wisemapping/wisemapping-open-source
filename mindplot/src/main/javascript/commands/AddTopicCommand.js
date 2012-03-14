@@ -16,53 +16,41 @@
  *   limitations under the License.
  */
 
-mindplot.commands.AddTopicCommand = new Class(
-    {
-        Extends:mindplot.Command,
-        initialize: function(model, parentTopicId, animated) {
-            $assert(model, 'Model can not be null');
-            this._model = model;
-            this._parentId = parentTopicId;
-            this._id = mindplot.Command._nextUUID();
-            this._animated = $defined(animated) ? animated : false;
-        },
+mindplot.commands.AddTopicCommand = new Class({
+    Extends:mindplot.Command,
+    initialize: function(model, parentTopicId) {
+        $assert(model, 'Model can not be null');
 
-        execute: function(commandContext) {
+        this.parent();
+        this._model = model;
+        this._parentId = parentTopicId;
+    },
 
-            // Add a new topic ...
-           var topic = commandContext.createTopic(this._model, !this._animated);
+    execute: function(commandContext) {
 
-            // Connect to topic ...
-            if ($defined(this._parentId)) {
-                var parentTopic = commandContext.findTopics(this._parentId)[0];
-                commandContext.connect(topic, parentTopic, !this._animated);
-            }
+        // Add a new topic ...
+        var topic = commandContext.createTopic(this._model, false);
 
-            var doneFn = function() {
-                // Finally, focus ...
-                var designer = commandContext._designer;
-                designer.onObjectFocusEvent(topic);
-                topic.setOnFocus(true);
-            };
-
-            if (this._animated) {
-                core.Utils.setVisibilityAnimated([topic,topic.getOutgoingLine()], true, doneFn);
-            } else  {
-                doneFn.attempt();
-            }
-        },
-
-        undoExecute: function(commandContext) {
-            // Finally, delete the topic from the workspace ...
-            var topicId = this._model.getId();
-            var topic = commandContext.findTopics(topicId)[0];
-            var doneFn = function() {
-                commandContext.deleteTopic(topic);
-            };
-            if (this._animated) {
-                core.Utils.setVisibilityAnimated([topic,topic.getOutgoingLine()], false, doneFn);
-            }
-            else
-                doneFn.attempt();
+        // Connect to topic ...
+        if ($defined(this._parentId)) {
+            var parentTopic = commandContext.findTopics(this._parentId)[0];
+            commandContext.connect(topic, parentTopic);
         }
-    });
+
+        // Finally, focus ...
+        var designer = commandContext._designer;
+        var fade = new mindplot.util.FadeEffect([topic,topic.getOutgoingLine()], true);
+        fade.addEvent('complete', function() {
+            designer.onObjectFocusEvent(topic);
+            topic.setOnFocus(true);
+        });
+        fade.start();
+    },
+
+    undoExecute: function(commandContext) {
+        // Finally, delete the topic from the workspace ...
+        var topicId = this._model.getId();
+        var topic = commandContext.findTopics(topicId)[0];
+        commandContext.deleteTopic(topic);
+    }
+});

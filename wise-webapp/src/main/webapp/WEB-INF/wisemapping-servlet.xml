@@ -16,7 +16,7 @@
                 <value>/c/userRegistration.htm</value>
                 <value>/c/captcha.htm</value>
                 <value>/c/publicView.htm</value>
-                <value>/c/export.htm</value>
+                <value>/service/*</value>
                 <value>/c/search.htm</value>
                 <value>/c/keyboard.htm</value>
                 <value>/c/renameMap.htm</value>
@@ -107,11 +107,7 @@
         <property name="userService" ref="userService"/>
     </bean>
 
-    <bean id="exportController" class="com.wisemapping.controller.ExportController">
-        <property name="methodNameResolver" ref="paramResolverByAction"/>
-        <property name="mindmapService" ref="mindmapService"/>
-        <property name="userService" ref="userService"/>
-    </bean>
+
     <bean id="publishController" class="com.wisemapping.controller.MindmapPublishController">
         <property name="methodNameResolver" ref="paramResolverByAction2"/>
         <property name="mindmapService" ref="mindmapService"/>
@@ -303,7 +299,6 @@
                 <prop key="/c/editor.htm">editorController</prop>
                 <prop key="/c/cooker.htm">cookerController</prop>
                 <prop key="/c/settings.htm">settingsController</prop>
-                <prop key="/c/export.htm">exportController</prop>
                 <prop key="/c/publish.htm">publishController</prop>
                 <prop key="/c/editProfile.htm">editProfileController</prop>
                 <prop key="/c/tags.htm">tagsController</prop>

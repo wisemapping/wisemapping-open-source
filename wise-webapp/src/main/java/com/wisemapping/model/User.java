@@ -18,15 +18,12 @@
 
 package com.wisemapping.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.*;
 
-@XmlRootElement(name="user")
 public class User
-    extends Colaborator
-    implements Serializable
-{
+        extends Collaborator
+        implements Serializable {
 
     private String firstname;
     private String lastname;
@@ -40,13 +37,11 @@ public class User
     public User() {
     }
 
-    public void setTags(Set<String> tags)
-    {
+    public void setTags(Set<String> tags) {
         this.tags = tags;
     }
 
-    public Set<String> getTags()
-    {
+    public Set<String> getTags() {
         return tags;
     }
 
@@ -94,20 +89,17 @@ public class User
         return activationDate;
     }
 
-    public boolean isAllowSendEmail()
-    {
+    public boolean isAllowSendEmail() {
         return allowSendEmail;
     }
 
-    public void setAllowSendEmail(boolean allowSendEmail)
-    {
+    public void setAllowSendEmail(boolean allowSendEmail) {
         this.allowSendEmail = allowSendEmail;
     }
 
-    public boolean getAllowSendEmail()
-    {
+    public boolean getAllowSendEmail() {
         return allowSendEmail;
-    }    
+    }
 
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -118,7 +110,7 @@ public class User
         if (!getEmail().equals(user.getEmail())) return false;
         if (firstname != null ? !firstname.equals(user.firstname) : user.firstname != null) return false;
         if (lastname != null ? !lastname.equals(user.lastname) : user.lastname != null) return false;
-        if (password != null ? !password.equals(user.password) : user.password != null) return false;
+        if (username != null ? !username.equals(user.username) : user.username != null) return false;
 
         return true;
     }

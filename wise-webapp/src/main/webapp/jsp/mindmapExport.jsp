@@ -1,13 +1,13 @@
 <%@ include file="/jsp/init.jsp" %>
 <h1>
-    <spring:message code="EXPORT"/>
-    '${mindmap.title}'</h1>
+    <spring:message code="EXPORT"/>'${mindmap.title}'</h1>
 
 <div>
-    <form method="post" id="exportForm" name="exportForm" action="<c:url value="export.htm"/>" style="height:100%;">
-        <input type="hidden" name="action" value="export"/>
-        <input type="hidden" name="mapId" value="${mindmap.id}"/>
-        <input type="hidden" name="mapSvg" value=""/>
+    <form method="POST" id="exportForm" name="exportForm" action="<c:url value="/service/transform"/>"
+          style="height:100%;" enctype="application/x-www-form-urlencoded">
+        <input name="svgXml" value="" type="hidden"/>
+        <input name="mapXml" value="" type="hidden"/>
+        <input name="filename" value="${mindmap.title}" type="hidden"/>
         <table>
             <tbody>
             <tr>
@@ -85,14 +85,36 @@
     });
 
     $('ok').addEvent('click', function(event) {
-        $('exportForm').submit();
+
+        var form = $('exportForm');
+
+        // Look for the selected format and append export suffix...
+        var value = $$('input[name=exportFormat]:checked')[0].get('value');
+        var suffix;
+        if (value == 'IMG_EXPORT_FORMAT') {
+            var selected = $('imgFormat');
+            suffix = selected.options[selected.selectedIndex].value;
+        } else {
+            suffix = value;
+        }
+        suffix = suffix.toLowerCase();
+        form.action = form.action + "." + suffix;
+
+        // Store SVG o native map...
+        if (suffix == "freemind") {
+            var mindmap = designer.getMindmap();
+            var serializer = mindplot.persistence.XMLSerializerFactory.getSerializerFromMindmap(mindmap);
+            var domMap = serializer.toXML(mindmap);
+            form.mapXml.value = core.Utils.innerXML(domMap);
+        } else {
+            form.svgXml.value = $("workspaceContainer").innerHTML;
+        }
+
+        // Finally, submit map ...
+        form.submit();
+
+
         MooDialog.Request.active.close();
     });
-
-    $('cancel').addEvent('click', function(event) {
-        MooDialog.Request.active.close();
-    });
-
-    document.exportForm.mapSvg.value = $("workspaceContainer").innerHTML;
 
 </script>

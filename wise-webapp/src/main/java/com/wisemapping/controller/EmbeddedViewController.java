@@ -48,7 +48,7 @@ public class EmbeddedViewController extends BaseMultiActionController {
             if (userAgent.isBrowserSupported()) {
                 view = new ModelAndView("embeddedView");
                 view.addObject("mindmap", mindmap);
-                final String xmlMap = mindmap.getNativeXmlAsJsLiteral();
+                final String xmlMap = mindmap.getXmlAsJsLiteral();
                 view.addObject("mapXml", xmlMap);
 
                 final String zoomStr = httpServletRequest.getParameter("zoom");

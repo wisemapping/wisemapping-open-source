@@ -50,8 +50,8 @@ public class MindmapCooker extends BaseMultiActionController {
         final int mapId = Integer.parseInt(mindmapId);
         final MindMap mindmap = getMindmapService().getMindmapById(mapId);
 
-        String nativeXml = httpServletRequest.getParameter("nativeXml");
-        mindmap.setNativeXml(nativeXml);
+        String xml = httpServletRequest.getParameter("xml");
+        mindmap.setXmlStr(xml);
 
         getMindmapService().updateMindmap(mindmap, false);
 

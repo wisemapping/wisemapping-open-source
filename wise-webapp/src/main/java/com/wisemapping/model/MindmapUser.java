@@ -23,19 +23,19 @@ public class MindmapUser {
     private int id;
     private int roleId;
     private MindMap mindMap;   
-    private Colaborator colaborator;
+    private Collaborator collaborator;
 
     public MindmapUser(){ }
 
-    public MindmapUser(int role, Colaborator colaborator , MindMap mindmap)
+    public MindmapUser(int role, Collaborator collaborator, MindMap mindmap)
     {
         this.roleId = role;
         this.mindMap =mindmap;
-        this.colaborator = colaborator;
+        this.collaborator = collaborator;
 
         // Guarantee referential integrity
 		mindmap.addMindmapUser(this);
-		colaborator.addMindmapUser(this);
+		collaborator.addMindmapUser(this);
     }
 
     public int getId() {
@@ -78,11 +78,11 @@ public class MindmapUser {
         this.mindMap = mindMap;
     }
 
-    public Colaborator getColaborator() {
-        return colaborator;
+    public Collaborator getCollaborator() {
+        return collaborator;
     }
 
-    public void setColaborator(Colaborator colaborator) {
-        this.colaborator = colaborator;
+    public void setCollaborator(Collaborator collaborator) {
+        this.collaborator = collaborator;
     }    
 }

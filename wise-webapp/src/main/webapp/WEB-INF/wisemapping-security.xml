@@ -8,12 +8,18 @@
           http://www.springframework.org/schema/security
           http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="/WEB-INF/app.properties"/>
+    </bean>
+
+
     <bean id="encoder"
           class="com.wisemapping.security.CustomPasswordEncoder"/>
 
     <sec:http pattern="/css/**" security="none"/>
     <sec:http pattern="/js/**" security="none"/>
     <sec:http pattern="/images/**" security="none"/>
+    <sec:http pattern="/icons/**" security="none"/>
     <sec:http pattern="/favicon.ico" security="none"/>
     <sec:http pattern="/c/login.htm" security="none"/>
     <sec:http pattern="/c/userregistration.htm" security="none"/>
@@ -26,15 +32,12 @@
     <sec:http pattern="/c/embeddedview.htm" security="none"/>
     <sec:http pattern="/c/export.htm" security="none"/>
     <sec:http pattern="/c/publicview.htm" security="none"/>
-    <sec:http pattern="/dwr/engine.js" security="none"/>
-    <sec:http pattern="/dwr/interface/loggerservice.js" security="none"/>
-    <sec:http pattern="/dwr/call/plaincall/loggerservice.logerror.dwr" security="none"/>
+    <sec:http pattern="/service/transform*" security="none"/>
 
-    <sec:http use-expressions="true" create-session="stateless" entry-point-ref="digestEntryPoint"
-              pattern="/service/**">
+    <sec:http use-expressions="true" create-session="never" pattern="/service/**">
+        <sec:intercept-url pattern="/service/admin/users/**" access="isAuthenticated() and hasRole('ROLE_ADMIN')"/>
         <sec:intercept-url pattern="/service/**" access="isAuthenticated()"/>
         <sec:http-basic/>
-        <sec:custom-filter ref="digestFilter" after="BASIC_AUTH_FILTER"/>
     </sec:http>
 
     <sec:http use-expressions="true">
@@ -52,24 +55,12 @@
     </sec:authentication-manager>
 
     <bean id="dbAuthenticationProvider" class="com.wisemapping.security.AuthenticationProvider">
-        <property name="userManager" ref="userManager"/>
+        <property name="userDetailsService" ref="userDetailsService"/>
         <property name="encoder" ref="encoder"/>
     </bean>
 
-    <bean id="userDetailsService" class="com.wisemapping.security.UserDetailService">
+    <bean id="userDetailsService" class="com.wisemapping.security.UserDetailsService">
         <property name="userManager" ref="userManager"/>
-    </bean>
-
-    <bean id="digestFilter" class="org.springframework.security.web.authentication.www.DigestAuthenticationFilter">
-        <property name="userDetailsService" ref="userDetailsService"/>
-        <property name="authenticationEntryPoint" ref="digestEntryPoint"/>
-    </bean>
-
-    <bean id="digestEntryPoint"
-          class="org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint">
-        <property name="realmName" value="Wise Contacts Realm via Digest Authentication"/>
-        <property name="key" value="wisemapping-digest"/>
-        <property name="nonceValiditySeconds" value="10"/>
-
+        <property name="adminUser" value="${admin.user}"/>
     </bean>
 </beans>

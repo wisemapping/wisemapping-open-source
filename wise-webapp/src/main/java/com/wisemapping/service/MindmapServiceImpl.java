@@ -22,6 +22,8 @@ import com.wisemapping.dao.MindmapManager;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.mail.Mailer;
 import com.wisemapping.model.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.*;
@@ -36,7 +38,7 @@ public class MindmapServiceImpl
 
     public boolean isAllowedToColaborate(User user, int mapId, UserRole grantedRole) {
         final MindMap map = mindmapManager.getMindmapById(mapId);
-        return isAllowedToColaborate(user, map, grantedRole);
+        return isAllowedToCollaborate(user, map, grantedRole);
     }
 
     public boolean isAllowedToView(User user, int mapId, UserRole grantedRole) {
@@ -51,13 +53,13 @@ public class MindmapServiceImpl
             if (map.isPublic()) {
                 isAllowed = true;
             } else if (user != null) {
-                isAllowed = isAllowedToColaborate(user, map, grantedRole);
+                isAllowed = isAllowedToCollaborate(user, map, grantedRole);
             }
         }
         return isAllowed;
     }
 
-    public boolean isAllowedToColaborate(User user, MindMap map, UserRole grantedRole) {
+    public boolean isAllowedToCollaborate(@NotNull User user, @Nullable MindMap map, UserRole grantedRole) {
         boolean isAllowed = false;
         if (map != null) {
             if (map.getOwner().getId() == user.getId()) {
@@ -66,7 +68,7 @@ public class MindmapServiceImpl
                 final Set<MindmapUser> users = map.getMindmapUsers();
                 UserRole rol = null;
                 for (MindmapUser mindmapUser : users) {
-                    if (mindmapUser.getColaborator().getId() == user.getId()) {
+                    if (mindmapUser.getCollaborator().getId() == user.getId()) {
                         rol = mindmapUser.getRole();
                         break;
                     }
@@ -92,13 +94,14 @@ public class MindmapServiceImpl
     }
 
     public List<MindmapUser> getMindmapUserByUser(User user) {
-        return mindmapManager.getMindmapUserByColaborator(user.getId());
+        return mindmapManager.getMindmapUserByCollaborator(user.getId());
     }
 
     public void updateMindmap(MindMap mindMap, boolean saveHistory) throws WiseMappingException {
         if (mindMap.getTitle() == null || mindMap.getTitle().length() == 0) {
             throw new WiseMappingException("The tile can not be empty");
         }
+
         mindmapManager.updateMindmap(mindMap, saveHistory);
     }
 
@@ -115,10 +118,10 @@ public class MindmapServiceImpl
         Set<MindmapUser> mindmapusers = mindmap.getMindmapUsers();
         MindmapUser mindmapuserToDelete = null;
         for (MindmapUser mindmapuser : mindmapusers) {
-            if (mindmapuser.getColaborator().getId() == colaboratorId) {
+            if (mindmapuser.getCollaborator().getId() == colaboratorId) {
                 mindmapuserToDelete = mindmapuser;
                 //@TODO evaluar si el colaborador no tiene mas asociaciones si hay que eliminarlo, por ahora NO
-//                final List<MindmapUser> otherAsociations = mindmapManager.getMindmapUserByColaborator(colaboratorId);
+//                final List<MindmapUser> otherAsociations = mindmapManager.getMindmapUserByCollaborator(colaboratorId);
 //                if (otherAsociations != null)
 //                {
 //
@@ -126,8 +129,8 @@ public class MindmapServiceImpl
 //                    // Is not a User
 //                    if (user == null)
 //                    {
-//                        final Colaborator col = mindmapManager.getColaboratorBy(colaboratorId);
-//                        mindmapManager.removeColaborator(col);
+//                        final Collaborator col = mindmapManager.getCollaboratorBy(colaboratorId);
+//                        mindmapManager.removeCollaborator(col);
 //                    }
 //                }
                 break;
@@ -149,7 +152,7 @@ public class MindmapServiceImpl
         }
     }
 
-    public void addMindmap(MindMap map, User user) throws WiseMappingException {
+    public void addMindmap(@NotNull MindMap map, @NotNull User user) throws WiseMappingException {
 
         final String title = map.getTitle();
 
@@ -169,16 +172,18 @@ public class MindmapServiceImpl
         map.setLastModificationTime(creationTime);
         map.setOwner(user);
 
-        final MindmapUser mindmapUser = new MindmapUser(UserRole.OWNER.ordinal(), user, map);
+        // Hack to reload dbuser ...
+        final User dbUser = userService.getUserBy(user.getId());
+        final MindmapUser mindmapUser = new MindmapUser(UserRole.OWNER.ordinal(), dbUser, map);
         map.getMindmapUsers().add(mindmapUser);
 
         mindmapManager.addMindmap(user, map);
     }
 
-    public void addColaborators(MindMap mindmap, String[] colaboratorEmails, UserRole role, ColaborationEmail email)
+    public void addCollaborators(MindMap mindmap, String[] colaboratorEmails, UserRole role, ColaborationEmail email)
             throws InvalidColaboratorException {
         if (colaboratorEmails != null && colaboratorEmails.length > 0) {
-            final Colaborator owner = mindmap.getOwner();
+            final Collaborator owner = mindmap.getOwner();
             final Set<MindmapUser> mindmapUsers = mindmap.getMindmapUsers();
 
             for (String colaboratorEmail : colaboratorEmails) {
@@ -187,7 +192,7 @@ public class MindmapServiceImpl
                 }
                 MindmapUser mindmapUser = getMindmapUserBy(colaboratorEmail, mindmapUsers);
                 if (mindmapUser == null) {
-                    addColaborator(colaboratorEmail, role, mindmap, email);
+                    addCollaborator(colaboratorEmail, role, mindmap, email);
                 } else if (mindmapUser.getRole() != role) {
                     // If the relationship already exists and the role changed then only update the role
                     mindmapUser.setRoleId(role.ordinal());
@@ -244,7 +249,7 @@ public class MindmapServiceImpl
     public void revertMapToHistory(MindMap map, int historyId)
             throws IOException, WiseMappingException {
         final MindMapHistory history = mindmapManager.getHistory(historyId);
-        map.setNativeXml(history.getNativeXml());
+        map.setXml(history.getXml());
         updateMindmap(map, false);
     }
 
@@ -252,7 +257,7 @@ public class MindmapServiceImpl
         MindmapUser mindmapUser = null;
 
         for (MindmapUser user : mindmapUsers) {
-            if (user.getColaborator().getEmail().equals(email)) {
+            if (user.getCollaborator().getEmail().equals(email)) {
                 mindmapUser = user;
                 break;
             }
@@ -260,17 +265,17 @@ public class MindmapServiceImpl
         return mindmapUser;
     }
 
-    private void addColaborator(String colaboratorEmail, UserRole role, MindMap mindmap, ColaborationEmail email) {
+    private void addCollaborator(String colaboratorEmail, UserRole role, MindMap mindmap, ColaborationEmail email) {
 
-        Colaborator colaborator = mindmapManager.getColaboratorBy(colaboratorEmail);
-        if (colaborator == null) {
-            colaborator = new Colaborator();
-            colaborator.setEmail(colaboratorEmail);
-            colaborator.setCreationDate(Calendar.getInstance());
-            mindmapManager.addColaborator(colaborator);
+        Collaborator collaborator = mindmapManager.getCollaboratorBy(colaboratorEmail);
+        if (collaborator == null) {
+            collaborator = new Collaborator();
+            collaborator.setEmail(colaboratorEmail);
+            collaborator.setCreationDate(Calendar.getInstance());
+            mindmapManager.addCollaborator(collaborator);
         }
 
-        final MindmapUser newMindmapUser = new MindmapUser(role.ordinal(), colaborator, mindmap);
+        final MindmapUser newMindmapUser = new MindmapUser(role.ordinal(), collaborator, mindmap);
         mindmap.getMindmapUsers().add(newMindmapUser);
 
         mindmapManager.saveMindmap(mindmap);

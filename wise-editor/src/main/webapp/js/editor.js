@@ -30,17 +30,23 @@ function buildDesigner(options) {
         window.waitDialog.destroy();
     });
 
-    designer.addEvent('loadError', function(e) {
+    window.onerror = function()
+    {
         window.waitDialog.close();
         window.waitDialog.destroy();
+        errorDialog.show();
         console.log(e);
-    });
-
+    };
 
     // Configure default persistence manager ...
     var persistence;
     if (options.persistenceManager) {
-        persistence = eval("new " + options.persistenceManager + "()");
+        if (options.persistenceManager instanceof String) {
+            persistence = eval("new " + options.persistenceManager + "()");
+        }
+        else {
+            persistence = options.persistenceManager;
+        }
 
     } else {
         persistence = new mindplot.LocalStorageManager();
@@ -49,7 +55,7 @@ function buildDesigner(options) {
 
     // Register toolbar event ...
     if ($('toolbar')) {
-        var menu = new mindplot.widget.Menu(designer, 'toolbar');
+        var menu = new mindplot.widget.Menu(designer, 'toolbar', "");
 
         //  If a node has focus, focus can be move to another node using the keys.
         designer._cleanScreen = function() {
@@ -90,6 +96,7 @@ function loadDesignerOptions(jsonConf) {
         };
         result = {readOnly:false,zoom:0.85,saveOnLoad:true,size:containerSize,viewPort:viewPort,container:'mindplot'};
     }
+    console.log("result:" + JSON.encode(result));
     return result;
 }
 
@@ -104,6 +111,70 @@ editor.WaitDialog = new Class({
                 autoOpen:true,
                 useEscKey:false,
                 title:'Loading ...',
+                onInitialize: function(wrapper) {
+                    wrapper.setStyle('opacity', 0);
+                    this.fx = new Fx.Morph(wrapper, {
+                        duration: 100,
+                        transition: Fx.Transitions.Bounce.easeOut
+                    });
+                    this.overlay = new Overlay(this.options.inject, {
+                        duration: this.options.duration
+                    });
+                    if (this.options.closeOnOverlayClick) this.overlay.addEvent('click', this.close.bind(this));
+                },
+
+                onBeforeOpen: function() {
+                    this.overlay.open();
+                    this.fx.start({
+                        'margin-top': [-200, -100],
+                        opacity: [0, 1]
+                    }).chain(function() {
+                        this.fireEvent('show');
+                    }.bind(this));
+                },
+
+                onBeforeClose: function() {
+                    this.fx.start({
+                        'margin-top': [-100, 0],
+                        opacity: 0,
+                        duration: 200
+                    }).chain(function() {
+                        this.fireEvent('hide');
+                    }.bind(this));
+                    this.overlay.close();
+                }}
+        );
+        this.setContent(panel);
+    },
+
+    _buildPanel : function () {
+        var result = new Element('div');
+        result.setStyles({
+            'text-align':'center',
+            width: '400px'
+        });
+        var img = new Element('img', {'src': 'images/ajax-loader.gif'});
+        img.inject(result);
+        return result;
+    },
+
+    show : function() {
+        this.open();
+    }
+
+});
+
+
+editor.FatalErrorDialog = new Class({
+    Extends:MooDialog,
+    initialize : function() {
+        var panel = this._buildPanel();
+        this.parent({
+                closeButton:false,
+                destroyOnClose:true,
+                autoOpen:true,
+                useEscKey:false,
+                title:'Outch!!. An unexpected error has occurred',
                 onInitialize: function(wrapper) {
                     wrapper.setStyle('opacity', 0);
                     this.fx = new Fx.Morph(wrapper, {
@@ -138,8 +209,7 @@ editor.WaitDialog = new Class({
                     }.bind(this));
                     this.overlay.close();
                 }}
-        )
-            ;
+        );
         this.setContent(panel);
     },
 
@@ -149,8 +219,12 @@ editor.WaitDialog = new Class({
             'text-align':'center',
             width: '400px'
         });
-        var img = new Element('img', {'src': '../images/ajax-loader.gif'});
+        var p = new Element('p', {'text': 'We\'re sorry, an error has occurred and we can not process your request. Please try again, or go to the home page.'});
+        p.inject(result);
+
+        var img = new Element('img', {'src': 'images/alert-sign.png'});
         img.inject(result);
+
         return result;
     },
 
@@ -160,33 +234,39 @@ editor.WaitDialog = new Class({
 
 });
 
+
 editor.Help = {
-    buildHelp:function(panel){
+    buildHelp:function(panel) {
         var container = new Element('div');
         container.setStyles({width:'100%', textAlign:'center'});
-        var content1 = Help.buildContentIcon('../images/black-keyboard.png', 'Keyboard Shortcuts', function(){MOOdalBox.open('keyboard.htm','KeyBoard Shortcuts', '500px 400px', false);panel.hidePanel();});
-        var content2 = Help.buildContentIcon('../images/firstSteps.png', 'Editor First Steps', function(){
-           var wOpen;
-           var sOptions;
+        var content1 = Help.buildContentIcon('images/black-keyboard.png', 'Keyboard Shortcuts', function() {
+            MOOdalBox.open('keyboard.htm', 'KeyBoard Shortcuts', '500px 400px', false);
+            panel.hidePanel();
+        });
+        var content2 = Help.buildContentIcon('images/firstSteps.png', 'Editor First Steps', function() {
+            var wOpen;
+            var sOptions;
 
-           sOptions = 'status=yes,menubar=yes,scrollbars=yes,resizable=yes,toolbar=yes';
-           sOptions = sOptions + ',width=' + (screen.availWidth - 10).toString();
-           sOptions = sOptions + ',height=' + (screen.availHeight - 122).toString();
-           sOptions = sOptions + ',screenX=0,screenY=0,left=0,top=0';
+            sOptions = 'status=yes,menubar=yes,scrollbars=yes,resizable=yes,toolbar=yes';
+            sOptions = sOptions + ',width=' + (screen.availWidth - 10).toString();
+            sOptions = sOptions + ',height=' + (screen.availHeight - 122).toString();
+            sOptions = sOptions + ',screenX=0,screenY=0,left=0,top=0';
 
-           wOpen = window.open("firststeps.htm", "WiseMapping", "width=100px, height=100px");
-           wOpen.focus();
-           wOpen.moveTo( 0, 0 );
-           wOpen.resizeTo( screen.availWidth, screen.availHeight );
-           panel.hidePanel();
+            wOpen = window.open("firststeps.htm", "WiseMapping", "width=100px, height=100px");
+            wOpen.focus();
+            wOpen.moveTo(0, 0);
+            wOpen.resizeTo(screen.availWidth, screen.availHeight);
+            panel.hidePanel();
         });
 
-        container.addEvent('show', function(){
-            content1.effect('opacity',{duration:800}).start(0,100);
-            var eff = function(){content2.effect('opacity',{duration:800}).start(0,100);};
+        container.addEvent('show', function() {
+            content1.effect('opacity', {duration:800}).start(0, 100);
+            var eff = function() {
+                content2.effect('opacity', {duration:800}).start(0, 100);
+            };
             eff.delay(150);
         });
-        container.addEvent('hide', function(){
+        container.addEvent('hide', function() {
             content1.effect('opacity').set(0);
             content2.effect('opacity').set(0)
         });
@@ -194,25 +274,25 @@ editor.Help = {
         content2.inject(container);
         return container;
     },
-    buildContentIcon:function(image, text, onClickFn){
+    buildContentIcon:function(image, text, onClickFn) {
         var container = new Element('div').setStyles({margin:'15px 0px 0px 0px', opacity:0, padding:'5px 0px', border: '1px solid transparent', cursor:'pointer'});
 
         var icon = new Element('div');
-        icon.addEvent('click',onClickFn);
+        icon.addEvent('click', onClickFn);
         var img = new Element('img');
-        img.setProperty('src',image);
+        img.setProperty('src', image);
         img.inject(icon);
         icon.inject(container);
 
         var textContainer = new Element('div').setStyles({width:'100%', color:'white'});
-        textContainer.innerHTML=text;
+        textContainer.innerHTML = text;
         textContainer.inject(container);
 
-        container.addEvent('mouseover', function(event){
+        container.addEvent('mouseover', function() {
             $(this).setStyle('border-top', '1px solid #BBB4D6');
             $(this).setStyle('border-bottom', '1px solid #BBB4D6');
         }.bindWithEvent(container));
-        container.addEvent('mouseout', function(event){
+        container.addEvent('mouseout', function() {
             $(this).setStyle('border-top', '1px solid transparent');
             $(this).setStyle('border-bottom', '1px solid transparent');
 
@@ -225,6 +305,7 @@ editor.Help = {
 // Show loading dialog ...
 waitDialog = new editor.WaitDialog();
 waitDialog.show();
+errorDialog = new editor.FatalErrorDialog();
 
 // Loading libraries ...
-Asset.javascript("../js/mindplot-min.js");
+Asset.javascript("js/mindplot-min.js");
