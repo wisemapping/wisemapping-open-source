@@ -84,7 +84,11 @@ public class MindMap {
     }
 
     public String getXmlStr() throws UnsupportedEncodingException {
-        return new String(this.xml, UTF_8);
+        String result = null;
+        if (this.xml != null) {
+            result = new String(this.xml, UTF_8);
+        }
+        return result;
     }
 
     public byte[] getZippedXml()
@@ -219,4 +223,15 @@ public class MindMap {
     public User getOwner() {
         return owner;
     }
+
+    public static String getDefaultMindmapXml(@NotNull final String title) {
+
+        final StringBuilder result = new StringBuilder();
+        result.append("<result version='tango'>");
+        result.append("<topic central=\"true\" text=\"");
+        result.append(title);
+        result.append("\"/></result>");
+        return result.toString();
+    }
+
 }

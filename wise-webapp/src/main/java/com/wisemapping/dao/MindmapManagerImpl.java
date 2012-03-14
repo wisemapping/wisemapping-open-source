@@ -147,7 +147,7 @@ public class MindmapManagerImpl
     }
 
     public MindMap getMindmapById(int mindmapId) {
-        return (MindMap) getHibernateTemplate().get(MindMap.class, mindmapId);
+        return getHibernateTemplate().get(MindMap.class, mindmapId);
     }
 
     public MindMap getMindmapByTitle(final String title, final User user) {

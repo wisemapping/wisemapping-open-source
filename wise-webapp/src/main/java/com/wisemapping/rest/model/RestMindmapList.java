@@ -16,8 +16,10 @@ import java.util.List;
 
 @XmlRootElement(name = "maps")
 @XmlAccessorType(XmlAccessType.PROPERTY)
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE,
-        getterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY, isGetterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY)
+@JsonAutoDetect(
+        fieldVisibility = JsonAutoDetect.Visibility.NONE,
+        getterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY,
+        isGetterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY)
 public class RestMindmapList {
 
     private List<RestMindmap> mindmaps;

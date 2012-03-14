@@ -26,7 +26,7 @@ public class AdminController extends BaseController {
         if (userBy == null) {
             throw new IllegalArgumentException("User could not be found");
         }
-            return new ModelAndView("userView", "user", new RestUser(userBy));
+        return new ModelAndView("userView", "user", new RestUser(userBy));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "admin/users/email/{email}", produces = {"application/json", "text/html", "application/xml"})
@@ -39,9 +39,19 @@ public class AdminController extends BaseController {
         return new ModelAndView("userView", "user", new RestUser(user));
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "admin/users/username/{username}", produces = {"application/json", "text/html", "application/xml"})
+    @ResponseBody
+    public ModelAndView getUserByUsername(@PathVariable String username) throws IOException {
+        final User user = userService.getUserByUsername(username);
+        if (user == null) {
+            throw new IllegalArgumentException("User '" + username + "' could not be found");
+        }
+        return new ModelAndView("userView", "user", new RestUser(user));
+    }
+
     @RequestMapping(method = RequestMethod.POST, value = "admin/users", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void getUserByEmail(@RequestBody RestUser user, HttpServletResponse response) throws IOException, WiseMappingException {
+    public void createUser(@RequestBody RestUser user, HttpServletResponse response) throws IOException, WiseMappingException {
         if (user == null) {
             throw new IllegalArgumentException("User could not be found");
         }
@@ -52,6 +62,16 @@ public class AdminController extends BaseController {
             throw new IllegalArgumentException("User already exists with this email.");
         }
 
+        final String username = user.getUsername();
+        if (username == null || username.isEmpty()) {
+            throw new IllegalArgumentException("username can not be null");
+        }
+
+        if (userService.getUserByUsername(username) != null) {
+            throw new IllegalArgumentException("User already exists with this username.");
+        }
+
+        // Run some other validations ...
         final User delegated = user.getDelegated();
         final String lastname = delegated.getLastname();
         if (lastname == null || lastname.isEmpty()) {
@@ -59,17 +79,13 @@ public class AdminController extends BaseController {
         }
 
         final String firstName = delegated.getFirstname();
-          if (firstName == null || firstName.isEmpty()) {
-              throw new IllegalArgumentException("firstname can not be null");
-          }
+        if (firstName == null || firstName.isEmpty()) {
+            throw new IllegalArgumentException("firstname can not be null");
+        }
 
-        final String username = delegated.getUsername();
-          if (username == null || username.isEmpty()) {
-              throw new IllegalArgumentException("username can not be null");
-          }
-
+        // Finally create the user ...
         userService.createUser(delegated, false);
-        response.setHeader("Location","/service/admin/users/" + user.getId());
+        response.setHeader("Location", "/service/admin/users/" + user.getId());
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "admin/users/{id}/password", consumes = {"text/plain"})

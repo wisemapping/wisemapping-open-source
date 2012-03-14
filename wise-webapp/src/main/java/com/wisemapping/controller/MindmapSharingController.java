@@ -85,7 +85,7 @@ public class MindmapSharingController extends BaseMultiActionController {
         final ColaborationEmail email = new ColaborationEmail();
         email.setSubject(request.getParameter("subject"));
         email.setMessage(request.getParameter("message"));
-        getMindmapService().addColaborators(mindMap, emails, role, email);
+        getMindmapService().addCollaborators(mindMap, emails, role, email);
 
         return new MindMapBean(mindMap);
     }

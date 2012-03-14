@@ -4,7 +4,9 @@ package com.wisemapping.rest.model;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.User;
 import org.codehaus.jackson.annotate.*;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -21,6 +23,7 @@ import java.util.Date;
         isGetterVisibility = JsonAutoDetect.Visibility.NONE,
         getterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY
 )
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RestMindmap {
 
     @JsonIgnore
@@ -33,10 +36,6 @@ public class RestMindmap {
 
     public RestMindmap(@NotNull MindMap mindmap) {
         this.mindmap = mindmap;
-    }
-
-    public String getOwner() {
-        return mindmap.getOwner().getUsername();
     }
 
     public Calendar getCreationTime() {
@@ -79,9 +78,10 @@ public class RestMindmap {
         return mindmap.getXmlStr();
     }
 
-    public void setXml(@NotNull String xml) throws IOException {
+    public void setXml(@Nullable String xml) throws IOException {
 
-        mindmap.setXmlStr(xml);
+        if (xml != null)
+            mindmap.setXmlStr(xml);
     }
 
     public void setId(int id) {
@@ -101,11 +101,10 @@ public class RestMindmap {
     }
 
     public void setOwner(User owner) {
-        mindmap.setOwner(owner);
+
     }
 
     public void setCreator(String creatorUser) {
-        mindmap.setCreator(creatorUser);
     }
 
 
@@ -114,11 +113,9 @@ public class RestMindmap {
     }
 
     public void setLastModificationTime(Calendar lastModificationTime) {
-        mindmap.setLastModificationTime(lastModificationTime);
     }
 
     public void setLastModifierUser(String lastModifierUser) {
-        mindmap.setLastModifierUser(lastModifierUser);
     }
 
     public String getProperties() {

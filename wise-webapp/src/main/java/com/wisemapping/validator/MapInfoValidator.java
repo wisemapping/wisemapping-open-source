@@ -64,11 +64,11 @@ public class MapInfoValidator implements Validator {
                 }
             }
             ValidatorUtils.rejectIfExceeded(errors,
-                                            "description",
-                                            "The description must have less than "+Constants.MAX_MAP_DESCRIPTION_LENGTH + " characters.",
-                                            desc,
-                                            Constants.MAX_MAP_DESCRIPTION_LENGTH);            
-       }
+                    "description",
+                    "The description must have less than " + Constants.MAX_MAP_DESCRIPTION_LENGTH + " characters.",
+                    desc,
+                    Constants.MAX_MAP_DESCRIPTION_LENGTH);
+        }
 
     }
 

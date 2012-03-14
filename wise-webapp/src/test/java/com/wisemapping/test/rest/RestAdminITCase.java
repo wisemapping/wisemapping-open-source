@@ -26,8 +26,8 @@ import java.util.List;
 public class RestAdminITCase {
 
     @NonNls
-    private static final String HOST_PORT = "http://localhost:8080/";
-    private static final String BASE_REST_URL = HOST_PORT + "service";
+    private static final String HOST_PORT = "http://localhost:8080";
+    private static final String BASE_REST_URL = HOST_PORT + "/service";
 
     @Test(dataProvider = "ContentType-Provider-Function")
     public void changePassword(final @NotNull MediaType mediaType) {    // Configure media types ...
@@ -35,13 +35,7 @@ public class RestAdminITCase {
         final RestTemplate templateRest = createTemplate();
 
         // Fill user data ...
-        final RestUser restUser = new RestUser();
-        final String email = "foo-to-change" + System.nanoTime() + "@example.org";
-        restUser.setEmail(email);
-        restUser.setUsername("foo");
-        restUser.setFirstname("foo first name");
-        restUser.setLastname("foo last name");
-        restUser.setPassword("foo password");
+        final RestUser restUser = createDummyUser();
 
         // User has been created ...
         final URI location = createUser(requestHeaders, templateRest, restUser);
@@ -52,7 +46,6 @@ public class RestAdminITCase {
         // Change password ...
         requestHeaders.setContentType(MediaType.TEXT_PLAIN);
         HttpEntity<String> createUserEntity = new HttpEntity<String>("some-new-password", requestHeaders);
-        System.out.println("Changed password to:" + email);
         templateRest.put(BASE_REST_URL + "/admin/users/{id}/password", createUserEntity, result.getBody().getId());
     }
 
@@ -62,14 +55,7 @@ public class RestAdminITCase {
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate templateRest = createTemplate();
 
-        // Fill user data ...
-        final RestUser restUser = new RestUser();
-        final String email = "foo-to-delete" + System.nanoTime() + "@example.org";
-        restUser.setEmail(email);
-        restUser.setUsername("foo");
-        restUser.setFirstname("foo first name");
-        restUser.setLastname("foo last name");
-        restUser.setPassword("foo password");
+        final RestUser restUser = createDummyUser();
 
         // User has been created ...
         final URI location = createUser(requestHeaders, templateRest, restUser);
@@ -89,22 +75,33 @@ public class RestAdminITCase {
         }
     }
 
+
     @Test(dataProvider = "ContentType-Provider-Function")
-    public void createNewUser(final @NotNull MediaType mediaType) {
+    public void findUserByUsername(final @NotNull MediaType mediaType) {    // Configure media types ...
+        final HttpHeaders requestHeaders = createHeaders(mediaType);
+        final RestTemplate templateRest = createTemplate();
+
+        final RestUser restUser = createDummyUser();
+
+        // User has been created ...
+        createUser(requestHeaders, templateRest, restUser);
+
+        // Check that the user has been created ...
+        HttpEntity<RestUser> findUserEntity = new HttpEntity<RestUser>(requestHeaders);
+        final ResponseEntity<RestUser> responseEntity = templateRest.exchange(BASE_REST_URL + "/admin/users/username/" + restUser.getUsername(), HttpMethod.GET, findUserEntity, RestUser.class);
+
+        assertEquals(responseEntity.getBody().getUsername(), restUser.getUsername());
+
+    }
+
+    public String createNewUser(final @NotNull MediaType mediaType) {
 
         // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate templateRest = createTemplate();
 
         // Fill user data ...
-        final RestUser restUser = new RestUser();
-
-        final String email = "foo" + System.nanoTime() + "@example.org";
-        restUser.setEmail(email);
-        restUser.setUsername("foo");
-        restUser.setFirstname("foo first name");
-        restUser.setLastname("foo last name");
-        restUser.setPassword("foo password");
+        final RestUser restUser = createDummyUser();
 
         // Create a new user ...
         final URI location = createUser(requestHeaders, templateRest, restUser);
@@ -113,16 +110,21 @@ public class RestAdminITCase {
         ResponseEntity<RestUser> result = findUser(requestHeaders, templateRest, location);
         assertEquals(result.getBody(), restUser, "Returned object object seems not be the same.");
 
-
         // Find by email and check ...
-        result = findUserByEmail(requestHeaders, templateRest, email);
+        result = findUserByEmail(requestHeaders, templateRest, restUser.getEmail());
         assertEquals(result.getBody(), restUser, "Returned object object seems not be the same.");
 
+        return restUser.getEmail();
+    }
+
+    @Test(dataProvider = "ContentType-Provider-Function")
+    public void createUser(final @NotNull MediaType mediaType) {
+        this.createNewUser(mediaType);
     }
 
     private ResponseEntity<RestUser> findUser(HttpHeaders requestHeaders, RestTemplate templateRest, URI location) {
         HttpEntity<RestUser> findUserEntity = new HttpEntity<RestUser>(requestHeaders);
-        final String url = "http://localhost:8080" + location;
+        final String url = HOST_PORT + location;
         return templateRest.exchange(url, HttpMethod.GET, findUserEntity, RestUser.class);
     }
 
@@ -130,7 +132,7 @@ public class RestAdminITCase {
         HttpEntity<RestUser> findUserEntity = new HttpEntity<RestUser>(requestHeaders);
 
         // Add extension only to avoid the fact that the last part is extracted ...
-        final String url = "http://localhost:8080/service/admin/users/email/{email}.json";
+        final String url = BASE_REST_URL + "/admin/users/email/{email}.json";
         return templateRest.exchange(url, HttpMethod.GET, findUserEntity, RestUser.class, email);
     }
 
@@ -139,7 +141,7 @@ public class RestAdminITCase {
         return templateRest.postForLocation(BASE_REST_URL + "/admin/users", createUserEntity);
     }
 
-    private HttpHeaders createHeaders(MediaType mediaType) {
+    private HttpHeaders createHeaders(@NotNull MediaType mediaType) {
         List<MediaType> acceptableMediaTypes = new ArrayList<MediaType>();
         acceptableMediaTypes.add(mediaType);
         final HttpHeaders requestHeaders = new HttpHeaders();
@@ -163,6 +165,19 @@ public class RestAdminITCase {
         };
         return new RestTemplate(s);
     }
+
+    private RestUser createDummyUser() {
+        final RestUser restUser = new RestUser();
+        final String username = "foo-to-delete" + System.nanoTime();
+        final String email = username + "@example.org";
+        restUser.setEmail(email);
+        restUser.setUsername(username);
+        restUser.setFirstname("foo first name");
+        restUser.setLastname("foo last name");
+        restUser.setPassword("admin");
+        return restUser;
+    }
+
 
     @DataProvider(name = "ContentType-Provider-Function")
     public Object[][] contentTypes() {
