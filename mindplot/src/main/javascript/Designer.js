@@ -109,6 +109,16 @@ mindplot.Designer = new Class({
 
 
             $(document).addEvent('mousewheel', function(event) {
+                var containerCoords = screenManager.getContainer().getCoordinates();
+                if (event.client.y < containerCoords.top || 
+                    event.client.y > containerCoords.bottom ||
+                    event.client.x < containerCoords.left ||
+                    event.client.x > containerCoords.right
+                    ) {
+                    return true;
+                }
+
+                event.preventDefault();
                 if (event.wheel > 0) {
                     this.zoomIn(1.05);
                 }
