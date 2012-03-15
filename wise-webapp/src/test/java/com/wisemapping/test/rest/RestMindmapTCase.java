@@ -2,6 +2,7 @@ package com.wisemapping.test.rest;
 
 
 import com.wisemapping.rest.model.RestMindmap;
+import com.wisemapping.rest.model.RestMindmapList;
 import com.wisemapping.rest.model.RestUser;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
 
 
@@ -28,7 +30,7 @@ import static org.testng.Assert.fail;
 public class RestMindmapTCase {
 
     private String userEmail = "admin@wisemapping.com";
-    private static final String HOST_PORT = "http://localhost:8080";
+    private static final String HOST_PORT = "http://127.0.0.1:8080";
     private static final String BASE_REST_URL = HOST_PORT + "/service";
 
     @BeforeClass
@@ -39,26 +41,65 @@ public class RestMindmapTCase {
     }
 
     @Test(dataProvider = "ContentType-Provider-Function")
+    public void listMaps(final @NotNull MediaType mediaType) {    // Configure media types ...
+        final HttpHeaders requestHeaders = createHeaders(mediaType);
+        final RestTemplate templateRest = createTemplate();
+
+        // Create a sample map ...
+        final String title1 = "List Maps 1  - " + mediaType.toString();
+        addNewMap(requestHeaders, templateRest, title1);
+
+        final String title2 = "List Maps 2 - " + mediaType.toString();
+        addNewMap(requestHeaders, templateRest, title2);
+
+        // Check that the map has been created ...
+        final HttpEntity findMapEntity = new HttpEntity(requestHeaders);
+        final ResponseEntity<RestMindmapList> response = templateRest.exchange(BASE_REST_URL + "/maps", HttpMethod.GET, findMapEntity, RestMindmapList.class);
+
+        // Validate that the two maps are there ...
+        final RestMindmapList body = response.getBody();
+        final List<RestMindmap> mindmaps = body.getMindmaps();
+
+        boolean found1 = false;
+        boolean found2 = false;
+        for (RestMindmap mindmap : mindmaps) {
+            if (mindmap.getTitle().equals(title1)) {
+                found1 = true;
+            }
+            if (mindmap.getTitle().equals(title2)) {
+                found2 = true;
+            }
+        }
+        assertTrue(found1 && found2, "Map could not be found");
+
+    }
+
+    private URI addNewMap(HttpHeaders requestHeaders, RestTemplate templateRest, String title) {
+        final RestMindmap restMindmap = new RestMindmap();
+        restMindmap.setTitle(title);
+        restMindmap.setDescription("My Map Desc");
+        // Create a new map ...
+        HttpEntity<RestMindmap> createUserEntity = new HttpEntity<RestMindmap>(restMindmap, requestHeaders);
+        return templateRest.postForLocation(BASE_REST_URL + "/maps", createUserEntity);
+
+
+    }
+
+
+    @Test(dataProvider = "ContentType-Provider-Function")
     public void createMap(final @NotNull MediaType mediaType) {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate templateRest = createTemplate();
 
         // Create a sample map ...
-        final RestMindmap restMindmap = new RestMindmap();
         final String title = "My Map " + mediaType.toString();
-        restMindmap.setTitle(title);
-        restMindmap.setDescription("My Map Desc");
-
-        // Create a new map ...
-        HttpEntity<RestMindmap> createUserEntity = new HttpEntity<RestMindmap>(restMindmap, requestHeaders);
-        final URI resourceLocation = templateRest.postForLocation(BASE_REST_URL + "/maps", createUserEntity);
+        final URI resourceLocation = addNewMap(requestHeaders, templateRest, title);
 
         // Check that the map has been created ...
-        HttpEntity<RestUser> findUserEntity = new HttpEntity<RestUser>(requestHeaders);
-        final ResponseEntity<RestMindmap> response = templateRest.exchange(HOST_PORT + resourceLocation.toString(), HttpMethod.GET, findUserEntity, RestMindmap.class);
+        final HttpEntity findMapEntity = new HttpEntity(requestHeaders);
+        final ResponseEntity<RestMindmap> response = templateRest.exchange(HOST_PORT + resourceLocation.toString(), HttpMethod.GET, findMapEntity, RestMindmap.class);
         assertEquals(response.getBody().getTitle(), title);
     }
-
 
     @Test(dataProvider = "ContentType-Provider-Function")
     public void updateMapXml(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
@@ -66,14 +107,8 @@ public class RestMindmapTCase {
         final RestTemplate templateRest = createTemplate();
 
         // Create a sample map ...
-        final RestMindmap restMindmap = new RestMindmap();
         final String title = "Update XML sample " + mediaType.toString();
-        restMindmap.setTitle(title);
-        restMindmap.setDescription("My Map Desc");
-
-        // Create a new map ...
-        HttpEntity<RestMindmap> createUserEntity = new HttpEntity<RestMindmap>(restMindmap, requestHeaders);
-        final URI resourceLocation = templateRest.postForLocation(BASE_REST_URL + "/maps", createUserEntity);
+        final URI resourceLocation = addNewMap(requestHeaders, templateRest, title);
 
         // Update map xml content ...
         final String resourceUrl = HOST_PORT + resourceLocation.toString();
@@ -83,8 +118,8 @@ public class RestMindmapTCase {
         templateRest.put(resourceUrl + "/xml", updateEntity);
 
         // Check that the map has been updated ...
-        HttpEntity<RestUser> findUserEntity = new HttpEntity<RestUser>(requestHeaders);
-        final ResponseEntity<RestMindmap> response = templateRest.exchange(HOST_PORT + resourceLocation.toString(), HttpMethod.GET, findUserEntity, RestMindmap.class);
+        final HttpEntity findMapEntity = new HttpEntity(requestHeaders);
+        final ResponseEntity<RestMindmap> response = templateRest.exchange(HOST_PORT + resourceLocation.toString(), HttpMethod.GET, findMapEntity, RestMindmap.class);
         assertEquals(response.getBody().getXml(), newXmlContent);
     }
 
@@ -95,14 +130,8 @@ public class RestMindmapTCase {
         final RestTemplate templateRest = createTemplate();
 
         // Create a sample map ...
-        final RestMindmap newRestMindmap = new RestMindmap();
         final String title = "Update sample " + mediaType.toString();
-        newRestMindmap.setTitle(title);
-        newRestMindmap.setDescription("My Map Desc");
-
-        // Create a new map ...
-        final HttpEntity<RestMindmap> createUserEntity = new HttpEntity<RestMindmap>(newRestMindmap, requestHeaders);
-        final URI resourceLocation = templateRest.postForLocation(BASE_REST_URL + "/maps", createUserEntity);
+        final URI resourceLocation = addNewMap(requestHeaders, templateRest, title);
 
         // Build map to update ...
         final RestMindmap mapToUpdate = new RestMindmap();
