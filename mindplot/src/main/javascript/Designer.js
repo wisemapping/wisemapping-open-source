@@ -309,7 +309,7 @@ mindplot.Designer = new Class({
         },
 
         createChildForSelectedNode : function() {
-
+            console.log("createChildForSelectedNode");        //TODO(gb): Remove trace!!!
             var nodes = this.getModel().filterSelectedTopics();
             if (nodes.length <= 0) {
                 // If there are more than one node selected,
@@ -368,8 +368,8 @@ mindplot.Designer = new Class({
         createSiblingForSelectedNode : function() {
             var nodes = this.getModel().filterSelectedTopics();
             if (nodes.length <= 0) {
-                // If there are more than one node selected,
-                $notify('Could not create a topic. Only one node must be selected.');
+                // If there are no nodes selected,
+                $notify('Could not create a topic. At least one node must be selected.');
                 return;
 
             }
@@ -387,6 +387,13 @@ mindplot.Designer = new Class({
             } else {
                 var parentTopic = topic.getOutgoingConnectedTopic();
                 var siblingModel = this._createSiblingModel(topic);
+
+                // Hack: if parent is central topic, add node below not on opposite side.
+                // This should be done in the layout
+                if (parentTopic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
+                    siblingModel.setOrder(topic.getOrder() + 2);
+                }
+
                 var parentTopicId = parentTopic.getId();
 
                 this._actionDispatcher.addTopic(siblingModel, parentTopicId, true);
