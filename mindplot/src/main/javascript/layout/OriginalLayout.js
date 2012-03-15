@@ -121,7 +121,7 @@ mindplot.layout.OriginalLayout = new Class({
                 var parentX = parentPosition.x;
                 var parentY = parentPosition.y;
 
-                var newPos = {x:parentX + offset.x, y:parentY + offset.y};
+                var newPos = {x:parentX + offset.x, y:parentY + offset.y + this._calculateAlignOffset(node, child, heightById)};
                 this._treeSet.updateBranchPosition(child, newPos);
             }.bind(this));
 
@@ -132,6 +132,38 @@ mindplot.layout.OriginalLayout = new Class({
         children.forEach(function(child) {
             this._layoutChildren(child, heightById);
         }, this);
+    },
+
+    _calculateAlignOffset: function(node, child, heightById) {
+        if (child.isFree()) {
+            return 0;
+        }
+
+        var offset = 0;
+
+        var nodeHeight = node.getSize().height;
+        var childHeight = child.getSize().height;
+
+        var children = this._treeSet.getChildren(child);
+
+        if (children.length == 1 && children[0].getSize().height > childHeight) {           // A
+            offset = children[0].getSize().height/2 - childHeight/2;
+        } else if (children.length == 1 && childHeight > children[0].getSize().height) {    // B
+            offset = 0;
+        } else if (children.length == 1 && nodeHeight > childHeight) {
+            offset = nodeHeight/2 - childHeight/2;
+        }
+        else if (children.length == 0 && childHeight <= nodeHeight) {
+            offset = nodeHeight/2 - childHeight/2;
+        }
+        else if (childHeight > nodeHeight && children.length > 0) {
+            offset = nodeHeight/2 - childHeight/2;
+        }
+        else {
+            offset = 0;
+        }
+
+        return offset;
     },
 
     _fixOverlapping: function(node, heightById) {
