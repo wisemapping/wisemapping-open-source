@@ -57,7 +57,7 @@ public class MindmapSharingController extends BaseMultiActionController {
         final MindMap mindmap = getMindmapFromRequest(request);
         final String colaboratorId = request.getParameter(COLABORATOR_ID);
         long colaborator = Long.parseLong(colaboratorId);
-        getMindmapService().removeColaboratorFromMindmap(mindmap, colaborator);
+        getMindmapService().removeCollaboratorFromMindmap(mindmap, colaborator);
         return mindmap;
     }
 

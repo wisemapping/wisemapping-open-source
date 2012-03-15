@@ -103,7 +103,7 @@ public class AdminController extends BaseController {
         userService.changePassword(user);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "admin/users/{id}", produces = {"application/json", "text/html", "application/xml"})
+    @RequestMapping(method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void getUserByEmail(@PathVariable long id) throws IOException, WiseMappingException {
         final User user = userService.getUserBy(id);

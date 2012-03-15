@@ -20,6 +20,7 @@ package com.wisemapping.service;
 
 import com.wisemapping.model.*;
 import com.wisemapping.exceptions.WiseMappingException;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.io.IOException;
@@ -45,9 +46,9 @@ public interface MindmapService {
 
     public void addTags(MindMap mindmap, String tags);
 
-    public void removeColaboratorFromMindmap(MindMap mindmap, long colaboratorId);
+    public void removeCollaboratorFromMindmap(@NotNull final MindMap mindmap, long colaboratorId);
 
-    public void removeMindmap(MindMap mindmap, User user) throws WiseMappingException;
+    public void removeMindmap(@NotNull final MindMap mindmap, @NotNull final User user) throws WiseMappingException;
 
     public List<MindMap> search(MindMapCriteria criteria);
 

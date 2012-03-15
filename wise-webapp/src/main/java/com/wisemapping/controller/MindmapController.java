@@ -89,7 +89,7 @@ public class MindmapController extends BaseMultiActionController {
         final User user = Utils.getUser(request);
 
         final MindMap mindmap = getMindmapFromRequest(request);
-        getMindmapService().removeColaboratorFromMindmap(mindmap, user.getId());
+        getMindmapService().removeCollaboratorFromMindmap(mindmap, user.getId());
 
         return list(request, response);
     }

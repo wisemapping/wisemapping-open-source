@@ -113,26 +113,13 @@ public class MindmapServiceImpl
         return mindmapManager.search(criteria);
     }
 
-    public void removeColaboratorFromMindmap(MindMap mindmap, long colaboratorId) {
+    public void removeCollaboratorFromMindmap(@NotNull MindMap mindmap, long userId) {
         // remove colaborator association
         Set<MindmapUser> mindmapusers = mindmap.getMindmapUsers();
         MindmapUser mindmapuserToDelete = null;
         for (MindmapUser mindmapuser : mindmapusers) {
-            if (mindmapuser.getCollaborator().getId() == colaboratorId) {
+            if (mindmapuser.getCollaborator().getId() == userId) {
                 mindmapuserToDelete = mindmapuser;
-                //@TODO evaluar si el colaborador no tiene mas asociaciones si hay que eliminarlo, por ahora NO
-//                final List<MindmapUser> otherAsociations = mindmapManager.getMindmapUserByCollaborator(colaboratorId);
-//                if (otherAsociations != null)
-//                {
-//
-//                    final User user = userService.getUserBy(colaboratorId);
-//                    // Is not a User
-//                    if (user == null)
-//                    {
-//                        final Collaborator col = mindmapManager.getCollaboratorBy(colaboratorId);
-//                        mindmapManager.removeCollaborator(col);
-//                    }
-//                }
                 break;
             }
         }
@@ -143,12 +130,11 @@ public class MindmapServiceImpl
         }
     }
 
-    public void removeMindmap(MindMap mindmap, User user) throws WiseMappingException {
+    public void removeMindmap(@NotNull MindMap mindmap, @NotNull User user) throws WiseMappingException {
         if (mindmap.getOwner().equals(user)) {
-
             mindmapManager.removeMindmap(mindmap);
         } else {
-            this.removeColaboratorFromMindmap(mindmap, user.getId());
+            this.removeCollaboratorFromMindmap(mindmap, user.getId());
         }
     }
 
@@ -160,7 +146,7 @@ public class MindmapServiceImpl
             throw new IllegalArgumentException("The tile can not be empty");
         }
 
-        if (user==null) {
+        if (user == null) {
             throw new IllegalArgumentException("User can not be null");
         }
 
@@ -227,8 +213,7 @@ public class MindmapServiceImpl
         final MindMap savedWelcome = getMindmapById(Constants.WELCOME_MAP_ID);
 
         // Is there a welcomed map configured ?        
-        if(savedWelcome!=null)
-        {
+        if (savedWelcome != null) {
             final MindMap welcomeMap = new MindMap();
             welcomeMap.setTitle(savedWelcome.getTitle() + " " + user.getFirstname());
             welcomeMap.setDescription(savedWelcome.getDescription());

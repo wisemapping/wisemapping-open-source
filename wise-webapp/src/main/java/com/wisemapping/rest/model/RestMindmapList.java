@@ -3,9 +3,7 @@ package com.wisemapping.rest.model;
 
 import com.wisemapping.model.MindMap;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.util.CollectionUtils;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -24,21 +22,21 @@ import java.util.List;
         isGetterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY)
 public class RestMindmapList {
 
-    private List<RestMindmap> mindmaps;
+    private List<RestMindmapInfo> mindmapsInfo;
 
     public RestMindmapList() {
         this(Collections.<MindMap>emptyList());
     }
 
     public RestMindmapList(@NotNull List<MindMap> mindmaps) {
-        this.mindmaps = new ArrayList<RestMindmap>();
+        this.mindmapsInfo = new ArrayList<RestMindmapInfo>();
         for (MindMap mindMap : mindmaps) {
-            this.mindmaps.add(new RestMindmap(mindMap));
+            this.mindmapsInfo.add(new RestMindmapInfo(mindMap));
         }
     }
 
     public int getCount() {
-        return this.mindmaps.size();
+        return this.mindmapsInfo.size();
     }
 
     public void setCount(int count) {
@@ -46,11 +44,11 @@ public class RestMindmapList {
     }
 
     @XmlElement(name = "map")
-    public List<RestMindmap> getMindmaps() {
-        return mindmaps;
+    public List<RestMindmapInfo> getMindmapsInfo() {
+        return mindmapsInfo;
     }
 
-    public void setMindmaps(List<RestMindmap> mindmaps) {
-        this.mindmaps = mindmaps;
+    public void setMindmapsInfo(List<RestMindmapInfo> mindmapsInfo) {
+        this.mindmapsInfo = mindmapsInfo;
     }
 }

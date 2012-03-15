@@ -25,14 +25,13 @@ import java.util.List;
 
 /**
  * Pendings:
- *  Change map title
- *  List with filter
- *  Clone
- *  Delete map
- *  Discard Changed
- *  Public ?
- *  Admin operations for get/update
- *  Check visibility
+ * Change map title
+ * List with filter
+ * Clone
+ * Discard Changed
+ * Public ?
+ * Admin operations for get/update
+ * Check visibility
  */
 @Controller
 public class MindmapController extends BaseController {
@@ -86,6 +85,15 @@ public class MindmapController extends BaseController {
         updateMindmap(minor, mindMap, user);
     }
 
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/maps/{id}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void updateMap(@PathVariable int id) throws IOException, WiseMappingException {
+        final User user = Utils.getUser();
+        final MindMap mindmap = mindmapService.getMindmapById(id);
+        mindmapService.removeMindmap(mindmap, user);
+    }
+
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/xml", consumes = {"application/xml"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateMapXml(@RequestBody String xml, @PathVariable int id, @RequestParam(required = false) boolean minor) throws IOException, WiseMappingException {
@@ -102,7 +110,7 @@ public class MindmapController extends BaseController {
         updateMindmap(minor, mindMap, user);
     }
 
-    private void updateMindmap(boolean minor, MindMap mindMap, User user) throws WiseMappingException {
+    private void updateMindmap(boolean minor, @NotNull final MindMap mindMap, @NotNull final User user) throws WiseMappingException {
         final Calendar now = Calendar.getInstance();
         mindMap.setLastModificationTime(now);
         mindMap.setLastModifierUser(user.getUsername());
