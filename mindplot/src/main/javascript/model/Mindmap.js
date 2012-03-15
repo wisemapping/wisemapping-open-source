@@ -91,7 +91,7 @@ mindplot.model.Mindmap = new Class({
         },
 
         createNode : function(type, id) {
-            $assert(type, "node type can not be null");
+            type = !$defined(type) ? mindplot.model.INodeModel.MAIN_TOPIC_TYPE : type;
             return new mindplot.model.NodeModel(type, this, id);
         },
 

@@ -21,8 +21,8 @@ mindplot.TopicEditor = new Class({
     Static: {
         _instance: null,
 
-        configure: function(options) {
-            this._instance = new mindplot.TopicEditor();
+        configure: function(readOnly) {
+            this._instance = new mindplot.TopicEditor(readOnly);
         },
 
         getInstance : function() {
@@ -30,7 +30,8 @@ mindplot.TopicEditor = new Class({
         }
     },
 
-    initialize:function() {
+    initialize:function(readOnly) {
+        this._readOnly = readOnly;
         this._activeEditor = null;
         this._multilineEditor = new mindplot.MultilineTextEditor();
     },
@@ -51,11 +52,11 @@ mindplot.TopicEditor = new Class({
 
         // Open the new editor ...
         var model = topic.getModel();
-        if (model.getShapeType() != mindplot.model.TopicShape.IMAGE) {
+        if (model.getShapeType() != mindplot.model.TopicShape.IMAGE && !this._readOnly) {
             this._multilineEditor.show(topic, options ? options.text : null);
             this._activeEditor = this._multilineEditor;
         } else {
-            // To be implemented....
+            this.fireEvent("editnode", {model:model,readOnly:this._readOnly});
         }
     },
 

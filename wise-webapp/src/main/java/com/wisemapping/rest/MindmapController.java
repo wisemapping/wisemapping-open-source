@@ -7,7 +7,6 @@ import com.wisemapping.model.MindmapUser;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestMindmap;
 import com.wisemapping.rest.model.RestMindmapList;
-import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapService;
 import org.jetbrains.annotations.NotNull;
@@ -21,9 +20,20 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
+
+/**
+ * Pendings:
+ *  Change map title
+ *  List with filter
+ *  Clone
+ *  Delete map
+ *  Discard Changed
+ *  Public ?
+ *  Admin operations for get/update
+ *  Check visibility
+ */
 @Controller
 public class MindmapController extends BaseController {
     @Autowired
@@ -91,7 +101,6 @@ public class MindmapController extends BaseController {
         // Update map ...
         updateMindmap(minor, mindMap, user);
     }
-
 
     private void updateMindmap(boolean minor, MindMap mindMap, User user) throws WiseMappingException {
         final Calendar now = Calendar.getInstance();

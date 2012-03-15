@@ -33,7 +33,80 @@
             designer.loadMap(mindmap);
         });
 
+
+        $(document).addEvent('loadcomplete', function(resource) {
+
+            $("dragImageNode").addEvent('mousedown', function(event) {
+                event.preventDefault();
+
+                // Create a image node ...
+                var mindmap = designer.getMindmap();
+                var node = mindmap.createNode();
+                node.setImageSize(80, 43);
+                node.setMetadata("{'media':'video,'url':'http://www.youtube.com/watch?v=P3FrXftyuzw&feature=g-vrec&context=G2b4ab69RVAAAAAAAAAA'}");
+                node.setImageUrl("images/logo-small.png");
+                node.setShapeType(mindplot.model.TopicShape.IMAGE);
+
+                designer.addDraggedNode(event, node);
+            });
+
+
+            $("dragTextNode").addEvent('mousedown', function(event) {
+                event.preventDefault();
+
+                // Create a image node ...
+                var mindmap = designer.getMindmap();
+                var node = mindmap.createNode();
+                node.setText("Node Text !!!!");
+                node.setMetadata("{'media':'test'}");
+                node.setShapeType(mindplot.model.TopicShape.RECTANGLE);
+
+                // Add link ...
+                var link = node.createFeature(mindplot.TopicFeature.Link.id, {url:"http://www.wisemapping.com"});
+                node.addFeature(link);
+
+                // Add Note ...
+                var note = node.createFeature(mindplot.TopicFeature.Note.id, {text:"This is a note"});
+                node.addFeature(note);
+
+
+                designer.addDraggedNode(event, node);
+            });
+
+            designer.addEvent("editnode", function(event) {
+                var node = event.model;
+
+                alert("Node Id:" + node.getId());
+                alert("Node Metadata:" + node.getMetadata());
+                alert("Is Read Only:" + event.readOnly);
+            });
+        });
     </script>
+    <style>
+        #dragPanel {
+            border: 2px black solid;
+            position: absolute;
+            background: gray;
+            width: 100px;
+            height: 300px;
+            z-index: 100;
+            padding: 5px;
+            border-radius: 15px;
+            top: 150px;
+            left: 10px;
+            text-align: center;
+        }
+
+        #dragPanel .textNode {
+            background-color: #E0E5EF;
+            height: 20px;
+            width: 80px;
+            border: 3px #023BB9 solid;
+            padding: 4px;
+            cursor: move
+        }
+
+    </style>
 </head>
 <body>
 
@@ -125,6 +198,14 @@
     <div id="footer">
         <div id="footerLogo"></div>
     </div>
+</div>
+
+<div id="dragPanel">
+    <div id="dragImageNode" style="cursor: move">
+        <img src="images/logo-small.png"/>
+    </div>
+    <div id="dragTextNode" class="textNode">Text Node !!</div>
+
 </div>
 
 <div id="mindplot"></div>
