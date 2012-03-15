@@ -118,21 +118,22 @@ mindplot.Designer = new Class({
 
 
             $(document).addEvent('mousewheel', function(event) {
-                var containerCoords = screenManager.getContainer().getCoordinates();
-                if (event.client.y < containerCoords.top || 
-                    event.client.y > containerCoords.bottom ||
-                    event.client.x < containerCoords.left ||
-                    event.client.x > containerCoords.right
-                    ) {
-                    return true;
-                }
+                // Change mousewheel handling so we let the default
+                //event happen if we are outside the container.
+                var coords = screenManager.getContainer().getCoordinates();
+                var isOutsideContainer = event.client.y < coords.top ||
+                    event.client.y > coords.bottom ||
+                    event.client.x < coords.left ||
+                    event.client.x > coords.right;
 
-                event.preventDefault();
-                if (event.wheel > 0) {
-                    this.zoomIn(1.05);
-                }
-                else {
-                    this.zoomOut(1.05);
+                if (!isOutsideContainer) {
+                    if (event.wheel > 0) {
+                        this.zoomIn(1.05);
+                    }
+                    else {
+                        this.zoomOut(1.05);
+                    }
+                    event.preventDefault();
                 }
             }.bind(this));
 
