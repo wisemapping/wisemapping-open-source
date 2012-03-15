@@ -147,6 +147,30 @@ mindplot.layout.RootedTreeSet = new Class({
         return siblings;
     },
 
+    hasSinglePathToSingleLeaf: function(node) {
+        $assert(node, 'node cannot be null');
+        return this._hasSinglePathToSingleLeaf(node);
+    },
+
+    _hasSinglePathToSingleLeaf: function(node) {
+       var children = this.getChildren(node);
+
+        if (children.length == 1) {
+            return this._hasSinglePathToSingleLeaf(children[0]);
+        }
+
+        return children.length == 0;
+    },
+
+    isStartOfSubBranch: function(node) {
+        return this.getSiblings(node).length > 0 && this.getChildren(node).length == 1;
+    },
+
+    isLeaf: function(node) {
+        $assert(node, 'node cannot be null');
+        return this.getChildren(node).length == 0;
+    },
+
     getParent:function(node) {
         $assert(node, 'node cannot be null');
         return node._parent;

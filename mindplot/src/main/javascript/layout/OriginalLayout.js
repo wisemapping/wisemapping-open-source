@@ -144,26 +144,32 @@ mindplot.layout.OriginalLayout = new Class({
         var nodeHeight = node.getSize().height;
         var childHeight = child.getSize().height;
 
-        var children = this._treeSet.getChildren(child);
-
-        if (children.length == 1 && children[0].getSize().height > childHeight) {           // A
-            offset = children[0].getSize().height/2 - childHeight/2;
-        } else if (children.length == 1 && childHeight > children[0].getSize().height) {    // B
-            offset = 0;
-        } else if (children.length == 1 && nodeHeight > childHeight) {
-            offset = nodeHeight/2 - childHeight/2;
+        if (this._treeSet.isStartOfSubBranch(child) && this._branchIsTaller(child, heightById)) {
+            if (this._treeSet.hasSinglePathToSingleLeaf(child)) {
+                offset = heightById[child.getId()]/2 - (childHeight + child.getSorter()._getVerticalPadding()*2)/2;
+            } else {
+                offset = this._treeSet.isLeaf(child) ? 0 : -(childHeight - nodeHeight)/2;
+            }
+        } else if (nodeHeight > childHeight) {
+            if (this._treeSet.getSiblings(child).length > 0) {
+                offset = 0;
+            } else {
+                offset = nodeHeight/2 - childHeight/2;
+            }
         }
-        else if (children.length == 0 && childHeight <= nodeHeight) {
-            offset = nodeHeight/2 - childHeight/2;
-        }
-        else if (childHeight > nodeHeight && children.length > 0) {
-            offset = nodeHeight/2 - childHeight/2;
-        }
-        else {
-            offset = 0;
+        else if (childHeight > nodeHeight) {
+            if (this._treeSet.getSiblings(child).length > 0) {
+                offset = 0;
+            } else {
+                offset = -(childHeight / 2 - nodeHeight / 2);
+            }
         }
 
         return offset;
+    },
+
+    _branchIsTaller: function(node, heightById) {
+        return heightById[node.getId()] > (node.getSize().height + node.getSorter()._getVerticalPadding()*2);
     },
 
     _fixOverlapping: function(node, heightById) {

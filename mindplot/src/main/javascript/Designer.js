@@ -320,7 +320,6 @@ mindplot.Designer = new Class({
         },
 
         createChildForSelectedNode : function() {
-            console.log("createChildForSelectedNode");        //TODO(gb): Remove trace!!!
             var nodes = this.getModel().filterSelectedTopics();
             if (nodes.length <= 0) {
                 // If there are more than one node selected,
