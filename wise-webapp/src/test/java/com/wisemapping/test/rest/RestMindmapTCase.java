@@ -41,18 +41,18 @@ public class RestMindmapTCase {
     @Test(dataProvider = "ContentType-Provider-Function")
     public void listMaps(final @NotNull MediaType mediaType) {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
-        final RestTemplate templateRest = createTemplate();
+        final RestTemplate template = createTemplate();
 
         // Create a sample map ...
         final String title1 = "List Maps 1  - " + mediaType.toString();
-        addNewMap(requestHeaders, templateRest, title1);
+        addNewMap(requestHeaders, template, title1);
 
         final String title2 = "List Maps 2 - " + mediaType.toString();
-        addNewMap(requestHeaders, templateRest, title2);
+        addNewMap(requestHeaders, template, title2);
 
         // Check that the map has been created ...
         final HttpEntity findMapEntity = new HttpEntity(requestHeaders);
-        final ResponseEntity<RestMindmapList> response = templateRest.exchange(BASE_REST_URL + "/maps", HttpMethod.GET, findMapEntity, RestMindmapList.class);
+        final ResponseEntity<RestMindmapList> response = template.exchange(BASE_REST_URL + "/maps", HttpMethod.GET, findMapEntity, RestMindmapList.class);
 
         // Validate that the two maps are there ...
         final RestMindmapList body = response.getBody();
@@ -75,41 +75,79 @@ public class RestMindmapTCase {
     @Test(dataProvider = "ContentType-Provider-Function")
     public void deleteMap(final @NotNull MediaType mediaType) {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
-        final RestTemplate templateRest = createTemplate();
+        final RestTemplate template = createTemplate();
 
         // Create a sample map ...
         final String title1 = "Map to delete  - " + mediaType.toString();
-        final URI resourceLocation = addNewMap(requestHeaders, templateRest, title1);
+        final URI resourceUri = addNewMap(requestHeaders, template, title1);
 
         // Now remove it ...
-        templateRest.delete(HOST_PORT + resourceLocation.toString());
+        template.delete(HOST_PORT + resourceUri.toString());
 
         // Check that has been removed ...
         try {
-            findMap(requestHeaders, templateRest, resourceLocation);
-            fail("Map could not be removed:" + resourceLocation);
+            findMap(requestHeaders, template, resourceUri);
+            fail("Map could not be removed:" + resourceUri);
         } catch (Exception e) {
         }
     }
 
-    private URI addNewMap(HttpHeaders requestHeaders, RestTemplate templateRest, String title) {
+    @Test(dataProvider = "ContentType-Provider-Function")
+    public void changeMapTitle(final @NotNull MediaType mediaType) {    // Configure media types ...
+        final HttpHeaders requestHeaders = createHeaders(mediaType);
+        final RestTemplate template = createTemplate();
+
+        // Create a sample map ...
+        final URI resourceUri = addNewMap(requestHeaders, template, "Map to change title  - " + mediaType.toString());
+
+        // Change map title ...
+        requestHeaders.setContentType(MediaType.TEXT_PLAIN);
+        final String newTitle = "New map to change title  - " + mediaType.toString();
+        final HttpEntity<String> updateEntity = new HttpEntity<String>(newTitle, requestHeaders);
+        template.put(HOST_PORT + resourceUri + "/title", updateEntity);
+
+        // Load map again ..
+        final RestMindmap map = findMap(requestHeaders, template, resourceUri);
+        assertEquals(newTitle, map.getTitle());
+    }
+
+    @Test(dataProvider = "ContentType-Provider-Function")
+    public void changeMapDescription(final @NotNull MediaType mediaType) {    // Configure media types ...
+        final HttpHeaders requestHeaders = createHeaders(mediaType);
+        final RestTemplate template = createTemplate();
+
+        // Create a sample map ...
+        final URI resourceUri = addNewMap(requestHeaders, template, "Map to change title  - " + mediaType.toString());
+
+        // Change map title ...
+        requestHeaders.setContentType(MediaType.TEXT_PLAIN);
+        final String newDescription = "New map to change title  - " + mediaType.toString();
+        final HttpEntity<String> updateEntity = new HttpEntity<String>(newDescription, requestHeaders);
+        template.put(HOST_PORT + resourceUri + "/description", updateEntity);
+
+        // Load map again ..
+        final RestMindmap map = findMap(requestHeaders, template, resourceUri);
+        assertEquals(newDescription, map.getDescription());
+    }
+
+    private URI addNewMap(HttpHeaders requestHeaders, RestTemplate template, String title) {
         final RestMindmapInfo restMindmap = new RestMindmapInfo();
         restMindmap.setTitle(title);
         restMindmap.setDescription("My Map Desc");
 
         // Create a new map ...
         HttpEntity<RestMindmapInfo> createUserEntity = new HttpEntity<RestMindmapInfo>(restMindmap, requestHeaders);
-        return templateRest.postForLocation(BASE_REST_URL + "/maps", createUserEntity);
+        return template.postForLocation(BASE_REST_URL + "/maps", createUserEntity);
     }
 
     @Test(dataProvider = "ContentType-Provider-Function")
     public void discardChange(final @NotNull MediaType mediaType) {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
-        final RestTemplate templateRest = createTemplate();
+        final RestTemplate template = createTemplate();
 
         // Create a sample map ...
         final String title = "Add map to discard " + mediaType.toString();
-        final URI resourceLocation = addNewMap(requestHeaders, templateRest, title);
+        final URI resourceUri = addNewMap(requestHeaders, template, title);
 
         // Update with "minor" flag ...
 
@@ -121,38 +159,38 @@ public class RestMindmapTCase {
     @Test(dataProvider = "ContentType-Provider-Function")
     public void updateMapXml(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
-        final RestTemplate templateRest = createTemplate();
+        final RestTemplate template = createTemplate();
 
         // Create a sample map ...
         final String title = "Update XML sample " + mediaType.toString();
-        final URI resourceLocation = addNewMap(requestHeaders, templateRest, title);
+        final URI resourceUri = addNewMap(requestHeaders, template, title);
 
         // Update map xml content ...
-        final String resourceUrl = HOST_PORT + resourceLocation.toString();
+        final String resourceUrl = HOST_PORT + resourceUri.toString();
         requestHeaders.setContentType(MediaType.APPLICATION_XML);
         final String newXmlContent = "<map>this is not valid</map>";
         HttpEntity<String> updateEntity = new HttpEntity<String>(newXmlContent, requestHeaders);
-        templateRest.put(resourceUrl + "/xml", updateEntity);
+        template.put(resourceUrl + "/xml", updateEntity);
 
         // Check that the map has been updated ...
-        final RestMindmap response = findMap(requestHeaders, templateRest, resourceLocation);
+        final RestMindmap response = findMap(requestHeaders, template, resourceUri);
         assertEquals(response.getXml(), newXmlContent);
     }
 
-    private RestMindmap findMap(HttpHeaders requestHeaders, RestTemplate templateRest, URI resourceLocation) {
+    private RestMindmap findMap(HttpHeaders requestHeaders, RestTemplate template, URI resourceUri) {
         final HttpEntity findMapEntity = new HttpEntity(requestHeaders);
-        final ResponseEntity<RestMindmap> response = templateRest.exchange(HOST_PORT + resourceLocation.toString(), HttpMethod.GET, findMapEntity, RestMindmap.class);
+        final ResponseEntity<RestMindmap> response = template.exchange(HOST_PORT + resourceUri.toString(), HttpMethod.GET, findMapEntity, RestMindmap.class);
         return response.getBody();
     }
 
     @Test(dataProvider = "ContentType-Provider-Function")
     public void updateMap(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
-        final RestTemplate templateRest = createTemplate();
+        final RestTemplate template = createTemplate();
 
         // Create a sample map ...
         final String title = "Update sample " + mediaType.toString();
-        final URI resourceLocation = addNewMap(requestHeaders, templateRest, title);
+        final URI resourceUri = addNewMap(requestHeaders, template, title);
 
         // Build map to update ...
         final RestMindmap mapToUpdate = new RestMindmap();
@@ -160,14 +198,14 @@ public class RestMindmapTCase {
         mapToUpdate.setProperties("{zoom:x}");
 
         // Update map ...
-        final String resourceUrl = HOST_PORT + resourceLocation.toString();
+        final String resourceUrl = HOST_PORT + resourceUri.toString();
         requestHeaders.setContentType(MediaType.APPLICATION_XML);
         final HttpEntity<RestMindmap> updateEntity = new HttpEntity<RestMindmap>(mapToUpdate, requestHeaders);
-        templateRest.put(resourceUrl, updateEntity);
+        template.put(resourceUrl, updateEntity);
 
         // Check that the map has been updated ...
         HttpEntity<RestUser> findUserEntity = new HttpEntity<RestUser>(requestHeaders);
-        final ResponseEntity<RestMindmap> response = templateRest.exchange(HOST_PORT + resourceLocation.toString(), HttpMethod.GET, findUserEntity, RestMindmap.class);
+        final ResponseEntity<RestMindmap> response = template.exchange(HOST_PORT + resourceUri.toString(), HttpMethod.GET, findUserEntity, RestMindmap.class);
         assertEquals(response.getBody().getXml(), mapToUpdate.getXml());
         assertEquals(response.getBody().getProperties(), mapToUpdate.getProperties());
     }

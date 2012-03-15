@@ -144,6 +144,7 @@ public class RestAdminITCase {
     private HttpHeaders createHeaders(@NotNull MediaType mediaType) {
         List<MediaType> acceptableMediaTypes = new ArrayList<MediaType>();
         acceptableMediaTypes.add(mediaType);
+
         final HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.setAccept(acceptableMediaTypes);
         requestHeaders.setContentType(mediaType);

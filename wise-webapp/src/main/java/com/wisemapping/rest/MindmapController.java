@@ -85,6 +85,37 @@ public class MindmapController extends BaseController {
         updateMindmap(minor, mindMap, user);
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/title", consumes = {"text/plain"}, produces = {"application/json", "text/html", "application/xml"})
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void changeMapTitle(@RequestBody String title, @PathVariable int id) throws WiseMappingException {
+
+        final MindMap mindMap = mindmapService.getMindmapById(id);
+        final User user = Utils.getUser();
+
+        // Is there a map with the same name ?
+        if (mindmapService.getMindmapByTitle(title, user) != null) {
+            throw new IllegalArgumentException("Map already exists with this title");
+        }
+
+        // Update map ...
+        final MindMap mindmap = mindmapService.getMindmapById(id);
+        mindmap.setTitle(title);
+        updateMindmap(true, mindMap, user);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/description", consumes = {"text/plain"}, produces = {"application/json", "text/html", "application/xml"})
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void changeMapDescription(@RequestBody String description, @PathVariable int id) throws WiseMappingException {
+
+        final MindMap mindMap = mindmapService.getMindmapById(id);
+        final User user = Utils.getUser();
+
+        // Update map ...
+        final MindMap mindmap = mindmapService.getMindmapById(id);
+        mindmap.setDescription(description);
+        updateMindmap(true, mindMap, user);
+    }
+
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/maps/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
