@@ -64,8 +64,8 @@ mindplot.layout.SymmetricTestSuite = new Class({
         manager.plot("testSymmetry",{width:1600, height:400});
 
         // All nodes should be positioned symmetrically with respect to their common ancestors
-        $assert(manager.find(14).getPosition().y == -manager.find(13).getPosition().y, "Symmetry is not respected");
-        $assert(manager.find(5).getPosition().y == -manager.find(11).getPosition().y, "Symmetry is not respected");
+        $assert(manager.find(14).getPosition().y == manager.find(13).getPosition().y, "Symmetry is not respected");
+        $assert(manager.find(5).getPosition().y == manager.find(10).getPosition().y, "Symmetry is not respected");
         $assert(manager.find(11).getPosition().y - manager.find(6).getPosition().y ==
             -(manager.find(12).getPosition().y - manager.find(6).getPosition().y), "Symmetry is not respected");
         $assert(manager.find(8).getPosition().y - manager.find(1).getPosition().y ==

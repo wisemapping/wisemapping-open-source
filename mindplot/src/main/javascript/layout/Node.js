@@ -174,12 +174,6 @@ mindplot.layout.Node = new Class({
         return this._sorter;
     },
 
-    getVertex: function() {
-        var a = {x: this.getPosition().x - this.getSize().width / 2, y:this.getPosition().y - this.getSize().height / 2};
-        var b = {x: this.getPosition().x + this.getSize().width / 2, y:this.getPosition().y + this.getSize().height / 2};
-        return {a:a, b:b};
-    },
-
     toString: function() {
         return "[id:" + this.getId() + ", order:" + this.getOrder() + ", position: {" + this.getPosition().x + "," + this.getPosition().y + "}, size: {" + this.getSize().width + "," + this.getSize().height + "}, shrink:" + this.areChildrenShrunken() + "]";
     }

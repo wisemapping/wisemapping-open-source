@@ -21,7 +21,9 @@ mindplot.layout.TestSuite = new Class({
     initialize:function() {
         $("basicTest").setStyle("display","block");
 
-        this.testAligned();
+//        this.testAligned();
+        this.testBaselineAligned1();
+        this.testBaselineAligned2();
         this.testEvents();
         this.testEventsComplex();
         this.testDisconnect();
@@ -56,6 +58,71 @@ mindplot.layout.TestSuite = new Class({
         $assert(manager.find(1).getPosition().x == manager.find(5).getPosition().x, "Sibling nodes are not horizontally aligned");
         $assert(manager.find(1).getPosition().x == manager.find(6).getPosition().x, "Sibling nodes are not horizontally aligned");
         $assert(manager.find(1).getPosition().x == manager.find(7).getPosition().x, "Sibling nodes are not horizontally aligned");
+
+        console.log("OK!\n\n");
+    },
+
+    testBaselineAligned1: function() {
+        console.log("testBaselineAligned1:");
+        var position = {x:0,y:0};
+        var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
+
+        manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(0, 1, 0);
+        manager.addNode(3, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(1, 3, 0);
+        manager.addNode(5, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(3, 5, 0);
+        manager.addNode(6, {width:140, height:130}, position).connectNode(3, 6, 1);
+        manager.addNode(7, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(6, 7, 0);
+        manager.addNode(8, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(7, 8, 0);
+        manager.addNode(9, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(7, 9, 1);
+        manager.addNode(10, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(7, 10, 2);
+        manager.addNode(11, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(7, 11, 3);
+        manager.addNode(12, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(7, 12, 4);
+        manager.addNode(13, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(7, 13, 5);
+        manager.addNode(14, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(7, 14, 6);
+        manager.addNode(15, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(7, 15, 7);
+        manager.addNode(16, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(7, 16, 8);
+        manager.addNode(17, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(7, 17, 9);
+        manager.addNode(29, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(6, 29, 1);
+        manager.addNode(30, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(6, 30, 2);
+        manager.addNode(31, {width:100, height:50}, position).connectNode(6, 31, 3);
+
+        manager.addNode(4, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(1, 4, 1);
+        manager.addNode(18, {width:80, height:70}, position).connectNode(4, 18, 0);
+        manager.addNode(19, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(18, 19, 0);
+        manager.addNode(20, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(19, 20, 0);
+        manager.addNode(21, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(20, 21, 0);
+
+        manager.addNode(2, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(0, 2, 1);
+        manager.addNode(22, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(2, 22, 0);
+        manager.addNode(24, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(22, 24, 0);
+
+        manager.addNode(23, {width:80, height:50}, position).connectNode(2, 23, 1);
+        manager.addNode(25, {width:80, height:40}, position).connectNode(23, 25, 0);
+        manager.addNode(26, {width:80, height:80}, position).connectNode(25, 26, 0);
+        manager.addNode(27, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(26, 27, 0);
+        manager.addNode(28, {width:80, height:80}, position).connectNode(27, 28, 0);
+
+//        manager.layout();
+//        manager.plot("testBaselineAligned1", {width:1600,height:800});
+
+        console.log("OK!\n\n");
+    },
+
+    testBaselineAligned2: function() {
+        console.log("testBaselineAligned2:");
+        var position = {x:0,y:0};
+        var manager = new mindplot.layout.LayoutManager(0, mindplot.layout.TestSuite.ROOT_NODE_SIZE);
+
+        manager.addNode(1, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(0, 1, 0);
+        manager.addNode(2, {width: 130, height:200}, position).connectNode(1, 2, 0);
+        manager.addNode(3, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(2, 3, 0);
+        manager.addNode(4, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(2, 4, 1);
+        manager.addNode(5, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(2, 5, 2);
+        manager.addNode(6, mindplot.layout.TestSuite.NODE_SIZE, position).connectNode(2, 6, 3);
+
+
+        manager.layout();
+        manager.plot("testBaselineAligned2", {width:1600,height:800});
 
         console.log("OK!\n\n");
     },
