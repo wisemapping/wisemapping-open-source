@@ -2667,7 +2667,7 @@
 		{
 			var oCol;
 			
-			/* Take an independent copy of the data source so we can bash it about as we wish */
+			/* Take an independent shallowCopy of the data source so we can bash it about as we wish */
 			var aDataIn = ($.isArray(aDataSupplied)) ?
 				aDataSupplied.slice() :
 				$.extend( true, {}, aDataSupplied );
@@ -3113,7 +3113,7 @@
 				bIncludeHidden = false;
 			}
 
-			/* Make a copy of the master layout array, but without the visible columns in it */
+			/* Make a shallowCopy of the master layout array, but without the visible columns in it */
 			for ( i=0, iLen=aoSource.length ; i<iLen ; i++ )
 			{
 				aoLocal[i] = aoSource[i].slice();
@@ -6487,7 +6487,7 @@
 						 */
 						iColShifted = fnShiftCol( aLayout, i, iColumn );
 						
-						/* If there is col / rowspan, copy the information into the layout grid */
+						/* If there is col / rowspan, shallowCopy the information into the layout grid */
 						for ( l=0 ; l<iColspan ; l++ )
 						{
 							for ( k=0 ; k<iRowspan ; k++ )
@@ -6964,7 +6964,7 @@
 				}
 			}
 			
-			/* Make a complete and independent copy of the settings object */
+			/* Make a complete and independent shallowCopy of the settings object */
 			var oSettings = new classSettings();
 			_aoSettings.push( oSettings );
 			

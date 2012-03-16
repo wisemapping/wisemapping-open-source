@@ -98,4 +98,9 @@ public class RestMindmapInfo {
 
     public void setLastModifierUser(String lastModifierUser) {
     }
+
+    @JsonIgnore
+    public MindMap getDelegated(){
+        return this.mindmap;
+    }
 }

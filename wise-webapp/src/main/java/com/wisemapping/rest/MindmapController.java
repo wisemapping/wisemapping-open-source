@@ -6,6 +6,7 @@ import com.wisemapping.model.MindMap;
 import com.wisemapping.model.MindmapUser;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestMindmap;
+import com.wisemapping.rest.model.RestMindmapInfo;
 import com.wisemapping.rest.model.RestMindmapList;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapService;
@@ -25,7 +26,6 @@ import java.util.List;
 
 /**
  * Pendings:
- * Change map title
  * List with filter
  * Clone
  * Discard Changed
@@ -175,14 +175,52 @@ public class MindmapController extends BaseController {
         if (xml == null || xml.isEmpty()) {
             xml = MindMap.getDefaultMindmapXml(restMindmap.getTitle());
         }
-        delegated.setXmlStr(xml);
         delegated.setOwner(user);
+        delegated.setXmlStr(xml);
 
         // Add new mindmap ...
         mindmapService.addMindmap(delegated, user);
 
+
         // Return the new created map ...
         response.setHeader("Location", "/service/maps/" + delegated.getId());
     }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/maps/{id}", consumes = {"application/xml", "application/json"})
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public void copyMap(@RequestBody RestMindmapInfo restMindmap, @PathVariable int id, @NotNull HttpServletResponse response) throws IOException, WiseMappingException {
+
+        final String title = restMindmap.getTitle();
+        if (title == null || title.isEmpty()) {
+            throw new IllegalArgumentException("Map title can not be null");
+        }
+
+        final String description = restMindmap.getDescription();
+        if (description == null || description.isEmpty()) {
+            throw new IllegalArgumentException("Map details can not be null");
+        }
+
+        // Some basic validations ...
+        final User user = Utils.getUser();
+        final MindMap searchByMap = mindmapService.getMindmapByTitle(title, user);
+        if (searchByMap != null) {
+            throw new IllegalArgumentException("Map already exists with title '" + title + "'");
+        }
+
+        // Create a shallowCopy of the map ...
+        final MindMap mindMap = mindmapService.getMindmapById(id);
+        final MindMap clonedMap = mindMap.shallowClone();
+        clonedMap.setTitle(restMindmap.getTitle());
+        clonedMap.setDescription(restMindmap.getDescription());
+        clonedMap.setOwner(user);
+
+        // Add new mindmap ...
+        mindmapService.addMindmap(clonedMap, user);
+
+        // Return the new created map ...
+        response.setHeader("Location", "/service/maps/" + clonedMap.getId());
+
+    }
+
 
 }

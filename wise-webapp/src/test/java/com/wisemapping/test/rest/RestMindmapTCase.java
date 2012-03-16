@@ -6,6 +6,7 @@ import com.wisemapping.rest.model.RestMindmap;
 import com.wisemapping.rest.model.RestMindmapList;
 import com.wisemapping.rest.model.RestUser;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.http.*;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.security.crypto.codec.Base64;
@@ -39,7 +40,7 @@ public class RestMindmapTCase {
     }
 
     @Test(dataProvider = "ContentType-Provider-Function")
-    public void listMaps(final @NotNull MediaType mediaType) {    // Configure media types ...
+    public void listMaps(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate();
 
@@ -69,11 +70,10 @@ public class RestMindmapTCase {
             }
         }
         assertTrue(found1 && found2, "Map could not be found");
-
     }
 
     @Test(dataProvider = "ContentType-Provider-Function")
-    public void deleteMap(final @NotNull MediaType mediaType) {    // Configure media types ...
+    public void deleteMap(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate();
 
@@ -93,7 +93,7 @@ public class RestMindmapTCase {
     }
 
     @Test(dataProvider = "ContentType-Provider-Function")
-    public void changeMapTitle(final @NotNull MediaType mediaType) {    // Configure media types ...
+    public void changeMapTitle(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate();
 
@@ -112,7 +112,7 @@ public class RestMindmapTCase {
     }
 
     @Test(dataProvider = "ContentType-Provider-Function")
-    public void changeMapDescription(final @NotNull MediaType mediaType) {    // Configure media types ...
+    public void changeMapDescription(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate();
 
@@ -128,32 +128,6 @@ public class RestMindmapTCase {
         // Load map again ..
         final RestMindmap map = findMap(requestHeaders, template, resourceUri);
         assertEquals(newDescription, map.getDescription());
-    }
-
-    private URI addNewMap(HttpHeaders requestHeaders, RestTemplate template, String title) {
-        final RestMindmapInfo restMindmap = new RestMindmapInfo();
-        restMindmap.setTitle(title);
-        restMindmap.setDescription("My Map Desc");
-
-        // Create a new map ...
-        HttpEntity<RestMindmapInfo> createUserEntity = new HttpEntity<RestMindmapInfo>(restMindmap, requestHeaders);
-        return template.postForLocation(BASE_REST_URL + "/maps", createUserEntity);
-    }
-
-    @Test(dataProvider = "ContentType-Provider-Function")
-    public void discardChange(final @NotNull MediaType mediaType) {    // Configure media types ...
-        final HttpHeaders requestHeaders = createHeaders(mediaType);
-        final RestTemplate template = createTemplate();
-
-        // Create a sample map ...
-        final String title = "Add map to discard " + mediaType.toString();
-        final URI resourceUri = addNewMap(requestHeaders, template, title);
-
-        // Update with "minor" flag ...
-
-        // Revert the change ...
-
-        // Check that the map is the
     }
 
     @Test(dataProvider = "ContentType-Provider-Function")
@@ -177,11 +151,30 @@ public class RestMindmapTCase {
         assertEquals(response.getXml(), newXmlContent);
     }
 
-    private RestMindmap findMap(HttpHeaders requestHeaders, RestTemplate template, URI resourceUri) {
-        final HttpEntity findMapEntity = new HttpEntity(requestHeaders);
-        final ResponseEntity<RestMindmap> response = template.exchange(HOST_PORT + resourceUri.toString(), HttpMethod.GET, findMapEntity, RestMindmap.class);
-        return response.getBody();
+    @Test(dataProvider = "ContentType-Provider-Function")
+    public void cloneMap(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
+        final HttpHeaders requestHeaders = createHeaders(mediaType);
+        final RestTemplate template = createTemplate();
+
+        // Create a sample map ...
+        final String title = "Map to clone  sample " + mediaType.toString();
+        final String xml = "<map><node text='this is a cloned map'></map>";
+        final URI newMapUri = addNewMap(requestHeaders, template, title, xml);
+
+        // Clone map ...
+        final RestMindmapInfo restMindmap = new RestMindmapInfo();
+        restMindmap.setTitle("Cloned map but with previous content." + mediaType.toString());
+        restMindmap.setDescription("Cloned map desc");
+
+        // Create a new map ...
+        final HttpEntity<RestMindmapInfo> cloneEntity = new HttpEntity<RestMindmapInfo>(restMindmap, requestHeaders);
+        final URI clonedMapUri = template.postForLocation(HOST_PORT + newMapUri, cloneEntity);
+
+        // Check that the map has been updated ...
+        final RestMindmap response = findMap(requestHeaders, template, clonedMapUri);
+        assertEquals(response.getXml(), xml);
     }
+
 
     @Test(dataProvider = "ContentType-Provider-Function")
     public void updateMap(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
@@ -204,10 +197,34 @@ public class RestMindmapTCase {
         template.put(resourceUrl, updateEntity);
 
         // Check that the map has been updated ...
-        HttpEntity<RestUser> findUserEntity = new HttpEntity<RestUser>(requestHeaders);
-        final ResponseEntity<RestMindmap> response = template.exchange(HOST_PORT + resourceUri.toString(), HttpMethod.GET, findUserEntity, RestMindmap.class);
+        HttpEntity<RestUser> findMapEntity = new HttpEntity<RestUser>(requestHeaders);
+        final ResponseEntity<RestMindmap> response = template.exchange(HOST_PORT + resourceUri.toString(), HttpMethod.GET, findMapEntity, RestMindmap.class);
         assertEquals(response.getBody().getXml(), mapToUpdate.getXml());
         assertEquals(response.getBody().getProperties(), mapToUpdate.getProperties());
+    }
+
+    private RestMindmap findMap(HttpHeaders requestHeaders, RestTemplate template, URI resourceUri) {
+        final HttpEntity findMapEntity = new HttpEntity(requestHeaders);
+        final ResponseEntity<RestMindmap> response = template.exchange(HOST_PORT + resourceUri.toString(), HttpMethod.GET, findMapEntity, RestMindmap.class);
+        return response.getBody();
+    }
+
+    private URI addNewMap(@NotNull HttpHeaders requestHeaders, @NotNull RestTemplate template, @NotNull String title, @Nullable String xml) throws IOException {
+        final RestMindmap restMindmap = new RestMindmap();
+        restMindmap.setTitle(title);
+        restMindmap.setDescription("My Map Desc");
+        if (xml != null) {
+            restMindmap.setXml(xml);
+        }
+
+        // Create a new map ...
+        HttpEntity<RestMindmap> createUserEntity = new HttpEntity<RestMindmap>(restMindmap, requestHeaders);
+        return template.postForLocation(BASE_REST_URL + "/maps", createUserEntity);
+    }
+
+
+    private URI addNewMap(@NotNull HttpHeaders requestHeaders, @NotNull RestTemplate template, @NotNull String title) throws IOException {
+        return addNewMap(requestHeaders, template, title, null);
     }
 
     private HttpHeaders createHeaders(@NotNull MediaType mediaType) {

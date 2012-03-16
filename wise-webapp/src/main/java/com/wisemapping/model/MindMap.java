@@ -16,15 +16,6 @@
 *   limitations under the License.
 */
 
-// ...........................................................................................................
-// (C) Copyright  1996/2007 Fuego Inc.  All Rights Reserved
-// THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF Fuego Inc.
-// The copyright notice above does not evidence any actual or intended
-// publication of such source code.
-//
-// Last changed on 2007-08-01 19:08:21 (-0300), by: imanzano. $Revision$
-// ...........................................................................................................
-
 package com.wisemapping.model;
 
 import com.wisemapping.util.ZipUtils;
@@ -93,7 +84,11 @@ public class MindMap {
 
     public byte[] getZippedXml()
             throws IOException {
-        return ZipUtils.stringToZip(new String(this.xml, UTF_8));
+        byte[] result = this.xml;
+        if (result != null) {
+          result =  ZipUtils.stringToZip(new String(result, UTF_8));
+        }
+        return result;
     }
 
     public void setZippedXml(byte[] xml)
@@ -234,4 +229,14 @@ public class MindMap {
         return result.toString();
     }
 
+    public MindMap shallowClone() {
+        final MindMap result = new MindMap();
+        result.setDescription(this.getDescription());
+        result.setTitle(this.getTitle());
+        result.setProperties(this.getProperties());
+        result.setXml(this.getXml());
+        result.setTags(this.getTags());
+
+        return result;
+    }
 }

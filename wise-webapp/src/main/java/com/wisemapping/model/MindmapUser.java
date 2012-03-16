@@ -62,7 +62,7 @@ public class MindmapUser {
         return getRole() == UserRole.OWNER;
     }
 
-    public boolean isCollaborator() {
+    public boolean isColaborator() {
         return getRole() == UserRole.COLLABORATOR;
     }
 

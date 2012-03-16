@@ -16,15 +16,6 @@
 *   limitations under the License.
 */
 
-// ...........................................................................................................
-// (C) Copyright  1996/2007 Fuego Inc.  All Rights Reserved
-// THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF Fuego Inc.
-// The copyright notice above does not evidence any actual or intended
-// publication of such source code.
-//
-// Last changed on 2007-04-03 09:29:20 (-0300), by: nachomanz. $Revision$
-// ...........................................................................................................
-
 package com.wisemapping.controller;
 
 import com.wisemapping.model.User;
