@@ -45,11 +45,6 @@ mindplot.LinkIcon = new Class({
 
     getModel : function() {
         return this._linksModel;
-    },
-
-    remove : function() {
-        var actionDispatcher = mindplot.ActionDispatcher.getInstance();
-        actionDispatcher.removeLinkFromTopic(this._topic.getId());
     }
 });
 mindplot.LinkIcon.IMAGE_URL = "images/links.png";

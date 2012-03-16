@@ -75,11 +75,6 @@ mindplot.NoteIcon = new Class({
 
     getModel : function() {
         return this._linksModel;
-    },
-
-    remove : function() {
-        var actionDispatcher = mindplot.ActionDispatcher.getInstance();
-        actionDispatcher.removeNoteFromTopic(this._topic.getId());
     }
 });
 

@@ -182,7 +182,15 @@ mindplot.widget.FloatingTip = new Class({
 
         }
 
-        var tipSz = tip.getSize(), trgC = elem.getCoordinates(body);
+        var tipSz = tip.getSize();
+        var trgC = elem.getCoordinates(body);
+
+        // Paulo: This is hack for Firefox 10.
+        trgC.right = trgC.right == null ? trgC.left : trgC.right;
+        trgC.bottom = trgC.bottom == null ? trgC.top : trgC.bottom;
+        trgC.height = !$defined(trgC.height) ? 0 : trgC.height;
+        trgC.width = !$defined(trgC.width) ? 0 : trgC.width;
+
         var pos = { x: trgC.left + o.offset.x, y: trgC.top + o.offset.y };
 
         if (opos == 'inside') {
