@@ -30,7 +30,7 @@ function buildDesigner(options) {
         window.waitDialog.destroy();
     });
 
-    window.onerror = function()
+    window.onerror = function(e)
     {
         window.waitDialog.close();
         window.waitDialog.destroy();
