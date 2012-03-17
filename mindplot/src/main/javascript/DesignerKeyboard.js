@@ -18,6 +18,17 @@
 
 mindplot.DesignerKeyboard = new Class({
     Extends:Keyboard,
+    Static:{
+        register: function(designer) {
+            this._instance = new mindplot.DesignerKeyboard(designer);
+            this._instance.activate();
+        },
+
+        getInstance: function(){
+          return this._instance;
+        }
+    },
+
     initialize : function(designer) {
         $assert(designer, "designer can not be null");
         this.parent({defaultEventType: 'keydown'});
@@ -335,8 +346,3 @@ mindplot.DesignerKeyboard = new Class({
     }
 
 });
-
-mindplot.DesignerKeyboard.register = function(designer) {
-    this._instance = new mindplot.DesignerKeyboard(designer);
-    this._instance.activate();
-};
