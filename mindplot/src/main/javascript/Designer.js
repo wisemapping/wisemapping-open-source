@@ -64,6 +64,18 @@ mindplot.Designer = new Class({
             mindplot.TopicEditor.configure(this.isReadOnly());
         },
 
+        /**
+         * Deactivates the keyboard events so you can enter text into forms
+         */
+        deactivateKeyboard: function() {
+            mindplot.DesignerKeyboard.getInstance().deactivate();
+            this.deselectAll();
+        },
+        activateKeyboard: function() {
+            mindplot.DesignerKeyboard.getInstance().activate();
+        },
+
+
         _registerEvents : function() {
             // Register mouse events ...
             this._registerMouseEvents();
@@ -282,6 +294,23 @@ mindplot.Designer = new Class({
                 object.setOnFocus(false);
             });
         },
+                      
+        /**
+         * Set the zoom of the map.
+         * @param: zoom: number between 0.3 and 1.9
+         */
+        setZoom: function(zoom) {
+            if (zoom > 1.9 || zoom < 0.3) {
+                $notify("Zoom too high. Cannot apply zoom above 1.9 or below 0.3");
+                console.log("Tried to set zoom to " + zoom + " which is utside allowed range.");
+                return;
+            }
+            this.getModel().setZoom(zoom);
+            this._workspace.setZoom(zoom);
+
+        },
+
+                     
 
         zoomOut : function(factor) {
             if (!factor)
