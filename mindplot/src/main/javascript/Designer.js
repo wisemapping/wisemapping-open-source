@@ -61,7 +61,7 @@ mindplot.Designer = new Class({
             // Set editor working area ...
             this.setViewPort(options.viewPort);
 
-            mindplot.TopicEditor.configure(this.isReadOnly());
+            mindplot.TopicEventDispatcher.configure(this.isReadOnly());
         },
 
         /**
@@ -71,6 +71,10 @@ mindplot.Designer = new Class({
             mindplot.DesignerKeyboard.getInstance().deactivate();
             this.deselectAll();
         },
+
+        /**
+         * Activates the keyboard events so you can enter text into forms
+         */
         activateKeyboard: function() {
             mindplot.DesignerKeyboard.getInstance().activate();
         },
@@ -85,8 +89,8 @@ mindplot.Designer = new Class({
         },
 
         addEvent: function(type, listener) {
-            if (type == "editnode") {
-                var editor = mindplot.TopicEditor.getInstance();
+            if (type == mindplot.TopicEvent.EDIT || type == mindplot.TopicEvent.CLICK) {
+                var editor = mindplot.TopicEventDispatcher.getInstance();
                 editor.addEvent(type, listener);
             } else {
                 this.parent(type, listener);
@@ -294,7 +298,7 @@ mindplot.Designer = new Class({
                 object.setOnFocus(false);
             });
         },
-                      
+
         /**
          * Set the zoom of the map.
          * @param: zoom: number between 0.3 and 1.9
@@ -302,15 +306,12 @@ mindplot.Designer = new Class({
         setZoom: function(zoom) {
             if (zoom > 1.9 || zoom < 0.3) {
                 $notify("Zoom too high. Cannot apply zoom above 1.9 or below 0.3");
-                console.log("Tried to set zoom to " + zoom + " which is utside allowed range.");
+                console.log("Tried to set zoom to " + zoom + " which is outside allowed range.");
                 return;
             }
             this.getModel().setZoom(zoom);
             this._workspace.setZoom(zoom);
-
         },
-
-                     
 
         zoomOut : function(factor) {
             if (!factor)

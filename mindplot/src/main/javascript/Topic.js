@@ -49,7 +49,7 @@ mindplot.Topic = new Class({
         });
 
         this.addEvent('dblclick', function (event) {
-            this._getTopicEditor().show(this);
+            this._getTopicEventDispatcher().show(this);
             event.stopPropagation(true);
         }.bind(this));
     },
@@ -583,7 +583,7 @@ mindplot.Topic = new Class({
         elem.addEvent('mouseout', outout);
 
         // Focus events ...
-        var mouseDown = function(event) {
+        elem.addEvent('mousedown', function(event) {
             var value = true;
             if ((event.meta && Browser.Platform.mac) || (event.control && !Browser.Platform.mac)) {
                 value = !this.isOnFocus();
@@ -591,8 +591,10 @@ mindplot.Topic = new Class({
                 event.preventDefault();
             }
             topic.setOnFocus(value);
-        }.bind(this);
-        elem.addEvent('mousedown', mouseDown);
+
+            var eventDispatcher = this._getTopicEventDispatcher();
+            eventDispatcher.process(mindplot.TopicEvent.CLICK, this);
+        }.bind(this));
     },
 
     areChildrenShrunken : function() {
@@ -658,7 +660,7 @@ mindplot.Topic = new Class({
     },
 
     showTextEditor : function(text) {
-        this._getTopicEditor().show(this, {text:text});
+        this._getTopicEventDispatcher().show(this, {text:text});
     },
 
     showNoteEditor : function() {
@@ -735,11 +737,11 @@ mindplot.Topic = new Class({
     },
 
     closeEditors : function() {
-        this._getTopicEditor().close(true);
+        this._getTopicEventDispatcher().close(true);
     },
 
-    _getTopicEditor : function() {
-        return mindplot.TopicEditor.getInstance();
+    _getTopicEventDispatcher : function() {
+        return mindplot.TopicEventDispatcher.getInstance();
     },
 
     /**
@@ -1128,7 +1130,7 @@ mindplot.Topic = new Class({
         }
 
         // If a drag node is create for it, let's hide the editor.
-        this._getTopicEditor().close();
+        this._getTopicEventDispatcher().close();
 
         return result;
     },

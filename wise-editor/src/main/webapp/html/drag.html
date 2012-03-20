@@ -73,12 +73,22 @@
                 designer.addDraggedNode(event, node);
             });
 
-            designer.addEvent("editnode", function(event) {
+            designer.addEvent(mindplot.TopicEvent.EDIT, function(event) {
                 var node = event.model;
 
-                alert("Node Id:" + node.getId());
-                alert("Node Metadata:" + node.getMetadata());
-                alert("Is Read Only:" + event.readOnly);
+                console.log("Event: edit");
+                console.log("Node Id:" + node.getId());
+                console.log("Node Metadata:" + node.getMetadata());
+                console.log("Is Read Only:" + event.readOnly);
+            });
+
+            designer.addEvent(mindplot.TopicEvent.CLICK, function(event) {
+                var node = event.model;
+
+                console.log("Event: click");
+                console.log("Node Id:" + node.getId());
+                console.log("Node Metadata:" + node.getMetadata());
+                console.log("Is Read Only:" + event.readOnly);
             });
         });
     </script>

@@ -16,13 +16,13 @@
  *   limitations under the License.
  */
 
-mindplot.TopicEditor = new Class({
+mindplot.TopicEventDispatcher = new Class({
     Extends: Events,
     Static: {
         _instance: null,
 
         configure: function(readOnly) {
-            this._instance = new mindplot.TopicEditor(readOnly);
+            this._instance = new mindplot.TopicEventDispatcher(readOnly);
         },
 
         getInstance : function() {
@@ -44,6 +44,10 @@ mindplot.TopicEditor = new Class({
     },
 
     show : function(topic, options) {
+        this.process(mindplot.TopicEvent.EDIT, topic, options);
+    },
+
+    process : function(eventType, topic, options) {
 
         // Close all previous open editor ....
         if (this.isVisible()) {
@@ -52,11 +56,11 @@ mindplot.TopicEditor = new Class({
 
         // Open the new editor ...
         var model = topic.getModel();
-        if (model.getShapeType() != mindplot.model.TopicShape.IMAGE && !this._readOnly) {
+        if (model.getShapeType() != mindplot.model.TopicShape.IMAGE && !this._readOnly && eventType == mindplot.TopicEvent.EDIT) {
             this._multilineEditor.show(topic, options ? options.text : null);
             this._activeEditor = this._multilineEditor;
         } else {
-            this.fireEvent("editnode", {model:model,readOnly:this._readOnly});
+            this.fireEvent(eventType, {model:model,readOnly:this._readOnly});
         }
     },
 
@@ -64,4 +68,10 @@ mindplot.TopicEditor = new Class({
         return this._activeEditor != null && this._activeEditor.isVisible();
     }
 });
+
+
+mindplot.TopicEvent = {
+    EDIT : "editnode",
+    CLICK : "clicknode"
+};
 
