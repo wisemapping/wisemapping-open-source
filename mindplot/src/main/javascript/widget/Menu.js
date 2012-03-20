@@ -59,6 +59,8 @@ mindplot.widget.Menu = new Class({
             }
         };
         this._toolbarElems.push(new mindplot.widget.FontFamilyPanel("fontFamily", fontFamilyModel));
+        this._registerTooltip('fontFamily', "Text type");
+
 
         var fontSizeModel = {
             getValue: function() {
@@ -79,6 +81,8 @@ mindplot.widget.Menu = new Class({
             }
         };
         this._toolbarElems.push(new mindplot.widget.FontSizePanel("fontSize", fontSizeModel));
+        this._registerTooltip('fontSize', "Text size");
+
 
         var topicShapeModel = {
             getValue: function() {
@@ -99,6 +103,8 @@ mindplot.widget.Menu = new Class({
             }
         };
         this._toolbarElems.push(new mindplot.widget.TopicShapePanel("topicShape", topicShapeModel));
+        this._registerTooltip('topicShape', "Topic shape");
+
 
         // Create icon panel dialog ...
         var topicIconModel = {
@@ -110,6 +116,8 @@ mindplot.widget.Menu = new Class({
             }
         };
         this._toolbarElems.push(new mindplot.widget.IconPanel('topicIcon', topicIconModel));
+        this._registerTooltip('topicIcon', "Icon");
+
 
         // Topic color item ...
         var topicColorModel =
@@ -132,6 +140,8 @@ mindplot.widget.Menu = new Class({
             }
         };
         this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('topicColor', topicColorModel, widgetsBaseUrl));
+        this._registerTooltip('topicColor', "Topic color");
+
 
         // Border color item ...
         var borderColorModel =
@@ -154,6 +164,8 @@ mindplot.widget.Menu = new Class({
             }
         };
         this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('topicBorder', borderColorModel, widgetsBaseUrl));
+        this._registerTooltip('topicBorder', "Border color");
+
 
         // Font color item ...
         var fontColorModel =
@@ -176,8 +188,10 @@ mindplot.widget.Menu = new Class({
             }
         };
         this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('fontColor', fontColorModel, baseUrl));
+        this._registerTooltip('fontColor', "Text color");
 
-        this._addButton('export', false, false, function() {
+
+        this._addButton('export', false, false, "Export", function() {
             var reqDialog = new MooDialog.Request('c/export.htm?mapId=' + mapId, null,
                 {'class': 'exportModalDialog',
                     closeButton:true,
@@ -191,60 +205,86 @@ mindplot.widget.Menu = new Class({
             });
             MooDialog.Request.active = reqDialog;
         });
+        this._registerTooltip('export', "Export");
+
 
         this._addButton('print', false, false, function() {
             printMap();
         });
+        this._registerTooltip('print', "Print");
 
         this._addButton('zoomIn', false, false, function() {
             designer.zoomIn();
         });
+        this._registerTooltip('zoomIn', "Zoom in");
 
         this._addButton('zoomOut', false, false, function() {
             designer.zoomOut();
         });
+        this._registerTooltip('zoomOut', "Zoom out");
+
 
         this._addButton('undoEdition', false, false, function() {
             designer.undo();
         });
+        this._registerTooltip('undoEdition', "Undo", "meta+Z");
+
 
         this._addButton('redoEdition', false, false, function() {
             designer.redo();
         });
+        this._registerTooltip('redoEdition', "Redo", "meta+Y");
+
 
         this._addButton('addTopic', true, false, function() {
             designer.createChildForSelectedNode();
         });
+        this._registerTooltip('addTopic', "Add topic", "Enter");
+
 
         this._addButton('deleteTopic', true, true, function() {
             designer.deleteCurrentNode();
         });
+        this._registerTooltip('deleteTopic', "Delete topic", "Backspace");
+
 
         this._addButton('topicLink', true, false, function() {
             designer.addLink();
         });
+        this._registerTooltip('topicLink', "Add link");
+
 
         this._addButton('topicRelation', true, false, function(event) {
             designer.showRelPivot(event);
         });
+        this._registerTooltip('topicRelation', "Relationship");
+
 
         this._addButton('topicNote', true, false, function() {
             designer.addNote();
         });
+        this._registerTooltip('topicNote', "Add note");
+
 
         this._addButton('fontBold', true, false, function() {
             designer.changeFontWeight();
         });
+        this._registerTooltip('fontBold', "Text bold", "meta+B");
+
 
         this._addButton('fontItalic', true, false, function() {
             designer.changeFontStyle();
         });
+        this._registerTooltip('fontItalic', "Text italic", "meta+I");
+
 
         var saveElem = $('save');
         if (saveElem) {
             this._addButton('save', false, false, function() {
                 this.save(saveElem, designer, true);
             }.bind(this));
+            this._registerTooltip('save', "Save", "meta+S");
+
 
             if (!readOnly) {
                 // To prevent the user from leaving the page with changes ...
@@ -269,6 +309,7 @@ mindplot.widget.Menu = new Class({
                 this.discard();
                 window.location.reload();
             }.bind(this));
+            this._registerTooltip('discard', "Discard");
         }
 
         var tagElem = $('tagIt');
@@ -404,7 +445,18 @@ mindplot.widget.Menu = new Class({
                 fn(event);
                 this.clear();
             }.bind(this), {topicAction:topic,relAction:rel});
+
             this._toolbarElems.push(button);
+        }
+    },
+
+    _registerTooltip: function(buttonId, text, shortcut) {
+        if ($(buttonId)) {
+            var tooltip = text;
+            if (shortcut) {
+                tooltip = tooltip + " (" + shortcut + ")";
+            }
+            new mindplot.widget.KeyboardShortcutTooltip($(buttonId), tooltip);
         }
     }
 });

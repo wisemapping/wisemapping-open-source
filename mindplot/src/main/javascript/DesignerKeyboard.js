@@ -97,6 +97,14 @@ mindplot.DesignerKeyboard = new Class({
                 designer.redo();
             }.bind(this),
 
+            'ctrl+y' :function() {
+                designer.redo();
+            }.bind(this),
+
+            'meta+y' : function() {
+                designer.redo();
+            }.bind(this),
+
             'ctrl+a' : function(event) {
                 designer.selectAll();
                 event.preventDefault();

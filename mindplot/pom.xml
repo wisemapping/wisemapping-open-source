@@ -148,6 +148,7 @@
                                     <filelist dir="${basedir}/src/main/javascript/widget/" files="LinkEditor.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/widget/" files="FloatingTip.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/widget/" files="LinkIconTooltip.js"/>
+                                    <filelist dir="${basedir}/src/main/javascript/widget/" files="KeyboardShortcutTooltip.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"
                                               files="widget/ColorPalettePanel.js"/>
                                     <filelist dir="${basedir}/src/main/javascript/"

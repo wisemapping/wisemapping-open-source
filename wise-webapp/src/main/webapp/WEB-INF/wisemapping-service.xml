@@ -54,7 +54,7 @@
                 <prop key="mail.smtp.socketFactory.fallback">false</prop>
                 <prop key="mail.smtp.quitwait">false</prop>
                 <prop key="mail.smtp.debug">true</prop>
-
+                <prop key="mail.smtp.starttls.enable">${mail.smtp.starttls.enable}</prop>
             </props>
         </constructor-arg>
         <constructor-arg ref="smtpAuthenticator"/>
