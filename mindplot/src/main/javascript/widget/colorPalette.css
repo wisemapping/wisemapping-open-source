@@ -59,7 +59,7 @@ tr {
 }
 
 .palette-cell-selected .palette-colorswatch {
-    background: url(//ssl.gstatic.com/editor/editortoolbar.png) no-repeat -368px 0;
+    background: url(../../images/editortoolbar.png) no-repeat -368px 0;
     border: 1px solid #333;
     color: white;
     font-weight: bold;
