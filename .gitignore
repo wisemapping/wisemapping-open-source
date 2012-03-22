@@ -4,7 +4,7 @@ wisemapping.ipr
 wisemapping.iws
 wisemapping.iml
 wisemapping.ids
-wise-webapp/wisemapping.log*
+*/wisemapping.log*
 */.DS_Store
 .DS_Store
 target

@@ -116,10 +116,10 @@
 
     <bean id="userValidator" class="com.wisemapping.validator.UserValidator">
         <property name="userService" ref="userService"/>
+        <property name="captchaService" ref="reCaptcha"/>
     </bean>
 
-    <bean id="userController" class="com.wisemapping.controller.UserController">
-        <!--<property name="captchaService" ref="captchaService"/>-->
+    <bean id="userController" class="com.wisemapping.controller.UserRegistrationController">
         <property name="sessionForm" value="false"/>
         <property name="commandName" value="user"/>
         <property name="commandClass" value="com.wisemapping.view.UserBean"/>
@@ -127,7 +127,9 @@
         <property name="formView" value="userRegistration"/>
         <property name="successView" value="userRegistrationConfirmation"/>
         <property name="userService" ref="userService"/>
-        <property name="emailConfirmEnabled" value="${user.confirm.registration}"/>
+        <property name="emailConfirmEnabled" value="${registration.email.enabled}"/>
+        <property name="captchaEnabled" value="${registration.recaptcha.enabled}"/>
+        <property name="captchaService" ref="reCaptcha"/>
     </bean>
 
     <bean id="forgotPasswordValidator" class="com.wisemapping.validator.ForgotPasswordValidator"/>
@@ -275,10 +277,6 @@
         <property name="mindmapService" ref="mindmapService"/>
     </bean>
 
-    <!--<bean id="captchaController" class="com.wisemapping.controller.CaptchaController">-->
-        <!--<property name="captchaService" ref="captchaService"/>-->
-    <!--</bean>-->
-
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="interceptors">
             <list>
@@ -337,5 +335,9 @@
         <property name="paramName" value="language"/>
     </bean>
 
-
+    <bean id="reCaptcha" class="net.tanesha.recaptcha.ReCaptchaImpl">
+        <property name="privateKey" value="${registration.recaptcha.privateKey}"/>
+        <property name="publicKey" value="${registration.recaptcha.publicKey}"/>
+        <property name="includeNoscript" value="false"/>
+    </bean>
 </beans>

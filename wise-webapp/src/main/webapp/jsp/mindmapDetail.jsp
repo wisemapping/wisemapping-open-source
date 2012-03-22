@@ -1,19 +1,6 @@
 <%@ include file="/jsp/init.jsp" %>
 <%--@elvariable id="wisemapDetail" type="com.wisemapping.view.MindMapBean"--%>
 
-<script type="text/javascript">
-    if(typeof isOldIE != "undefined"){
-        window.onload = function() {
-            var boxGenerator = RUZEE.ShadedBorder.create({ corner:16,  border:1 });
-            boxGenerator.render('detailContent');
-            boxGenerator.render('detail');
-        };
-    }
-
-    MOOdalBox.reloadRequered = true;
-
-</script>
-
 <c:url value="mymaps.htm" var="shareMap">
     <c:param name="action" value="collaborator"/>
     <c:param name="userEmail" value="${pageContext.request.userPrincipal.name}"/>

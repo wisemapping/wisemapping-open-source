@@ -22,6 +22,9 @@ import com.wisemapping.controller.Messages;
 import com.wisemapping.service.UserService;
 import com.wisemapping.view.UserBean;
 import com.wisemapping.model.Constants;
+import net.tanesha.recaptcha.ReCaptcha;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -30,12 +33,14 @@ public class UserValidator
         implements Validator {
 
     private UserService userService;
+    private ReCaptcha captchaService;
+
 
     public boolean supports(final Class clazz) {
         return clazz.equals(UserBean.class);
     }
 
-    public void validate(Object obj, Errors errors) {
+    public void validate(@Nullable Object obj, @NotNull Errors errors) {
         UserBean user = (UserBean) obj;
         if (user == null) {
             errors.rejectValue("user", "error.not-specified");
@@ -65,30 +70,30 @@ public class UserValidator
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", Messages.FIELD_REQUIRED);
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "retypePassword", Messages.FIELD_REQUIRED);
             ValidatorUtils.rejectIfExceeded(errors,
-                                "firstname",
-                                "The firstname must have less than "+ Constants.MAX_USER_FIRSTNAME_LENGTH + " characters.",
-                                user.getFirstname(),
-                                Constants.MAX_USER_FIRSTNAME_LENGTH);
+                    "firstname",
+                    "The firstname must have less than " + Constants.MAX_USER_FIRSTNAME_LENGTH + " characters.",
+                    user.getFirstname(),
+                    Constants.MAX_USER_FIRSTNAME_LENGTH);
             ValidatorUtils.rejectIfExceeded(errors,
-                                "lastname",
-                                "The lastname must have less than "+ Constants.MAX_USER_LASTNAME_LENGTH + " characters.",
-                                user.getLastname(),
-                                Constants.MAX_USER_LASTNAME_LENGTH);
+                    "lastname",
+                    "The lastname must have less than " + Constants.MAX_USER_LASTNAME_LENGTH + " characters.",
+                    user.getLastname(),
+                    Constants.MAX_USER_LASTNAME_LENGTH);
             ValidatorUtils.rejectIfExceeded(errors,
-                                "username",
-                                "The username must have less than "+ Constants.MAX_USER_USERNAME_LENGTH + " characters.",
-                                username,
-                                Constants.MAX_USER_USERNAME_LENGTH);
+                    "username",
+                    "The username must have less than " + Constants.MAX_USER_USERNAME_LENGTH + " characters.",
+                    username,
+                    Constants.MAX_USER_USERNAME_LENGTH);
             ValidatorUtils.rejectIfExceeded(errors,
-                                "password",
-                                "The password must have less than "+ Constants.MAX_USER_PASSWORD_LENGTH + " characters.",
-                                user.getPassword(),
-                                Constants.MAX_USER_PASSWORD_LENGTH);
+                    "password",
+                    "The password must have less than " + Constants.MAX_USER_PASSWORD_LENGTH + " characters.",
+                    user.getPassword(),
+                    Constants.MAX_USER_PASSWORD_LENGTH);
             ValidatorUtils.rejectIfExceeded(errors,
-                                "retypePassword",
-                                "The retypePassword must have less than "+ Constants.MAX_USER_PASSWORD_LENGTH + " characters.",
-                                user.getRetypePassword(),
-                                Constants.MAX_USER_PASSWORD_LENGTH);
+                    "retypePassword",
+                    "The retypePassword must have less than " + Constants.MAX_USER_PASSWORD_LENGTH + " characters.",
+                    user.getRetypePassword(),
+                    Constants.MAX_USER_PASSWORD_LENGTH);
 
             final String password = user.getPassword();
             if (password != null && !password.equals(user.getRetypePassword())) {
@@ -99,5 +104,13 @@ public class UserValidator
 
     public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+
+    public void setCaptchaService(@NotNull final ReCaptcha captchaService) {
+        this.captchaService = captchaService;
+    }
+
+    public ReCaptcha getCaptchaService() {
+        return captchaService;
     }
 }

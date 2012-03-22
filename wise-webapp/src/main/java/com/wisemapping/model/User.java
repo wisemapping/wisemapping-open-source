@@ -107,12 +107,12 @@ public class User
 
         final User user = (User) o;
 
-        if (!getEmail().equals(user.getEmail())) return false;
+        final String email = getEmail();
+        if (email != null ? !email.equals(user.getEmail()) : user.getEmail() != null) return false;
         if (firstname != null ? !firstname.equals(user.firstname) : user.firstname != null) return false;
         if (lastname != null ? !lastname.equals(user.lastname) : user.lastname != null) return false;
-        if (username != null ? !username.equals(user.username) : user.username != null) return false;
+        return !(username != null ? !username.equals(user.username) : user.username != null);
 
-        return true;
     }
 
     public int hashCode() {
@@ -120,7 +120,7 @@ public class User
         result = (firstname != null ? firstname.hashCode() : 0);
         result = 29 * result + (lastname != null ? lastname.hashCode() : 0);
         result = 29 * result + (password != null ? password.hashCode() : 0);
-        result = 29 * result + getEmail().hashCode();
+        result = 29 * result + (getEmail() != null ? getEmail().hashCode() : 0);
         return result;
     }
 

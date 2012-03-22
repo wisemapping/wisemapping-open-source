@@ -48,8 +48,7 @@
                     </c:if>
                     <tr>
                         <td class="formLabel">
-                            <spring:message code="EMAIL"/>
-                            :
+                            <spring:message code="EMAIL"/>:
                         </td>
                         <td>
                             <input type='text' tabindex="1" id="email" name='j_username'/>
@@ -57,8 +56,7 @@
                     </tr>
                     <tr>
                         <td class="formLabel">
-                            <spring:message code="PASSWORD"/>
-                            :
+                            <spring:message code="PASSWORD"/>:
                         </td>
                         <td>
                             <input type='password' tabindex="2" id="password" name='j_password'/>
