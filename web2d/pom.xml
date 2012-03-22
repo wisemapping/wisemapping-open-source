@@ -46,7 +46,7 @@
                             <outputDirectory>target/compress</outputDirectory>
                             <aggregations>
                                 <aggregation>
-                                    <output>${basedir}/target/classes/web2d.svg.js</output>
+                                    <output>${basedir}/target/classes/web2d.svg-min.js</output>
                                     <inputDir>${basedir}/target/compress</inputDir>
                                     <includes>
                                         <include>header.js</include>
