@@ -13,15 +13,20 @@ function JSPomLoader(pomUrl, callback) {
         onSuccess: function(responseText, responseXML) {
 
             // Collect JS Urls ...
-            var concatRoot = responseXML.getElementsByTagName('concat');
+            var concatRoot = responseXML.getElementsByTagName('includes');
             var fileSetArray = Array.filter(concatRoot[0].childNodes, function(elem) {
                 return elem.nodeType == Node.ELEMENT_NODE
             });
 
             jsUrls = new Array();
             Array.each(fileSetArray, function(elem) {
-                    var jsUrl = elem.getAttribute("dir") + elem.getAttribute("files");
-                    jsUrls.push(jsUrl.replace("${basedir}", pomUrl.substring(0, pomUrl.lastIndexOf('/'))));
+                    var jsUrl = elem.firstChild.nodeValue;
+                    if (jsUrl.indexOf("${basedir}") != -1) {
+                        jsUrls.push(pomUrl.substring(0, pomUrl.lastIndexOf('/')) + jsUrl.replace("${basedir}",""));
+                    } else {
+
+                        jsUrls.push(pomUrl.substring(0, pomUrl.lastIndexOf('/')) + "/src/main/javascript/" + jsUrl);
+                    }
                 }
             );
 

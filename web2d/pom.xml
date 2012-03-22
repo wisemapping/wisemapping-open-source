@@ -14,7 +14,7 @@
 
     <build>
         <plugins>
-              <plugin>
+            <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
@@ -25,16 +25,15 @@
                         </goals>
                         <configuration>
                             <tasks>
-                                <mkdir  dir="${basedir}/target/classes"/>                  
+                                <mkdir dir="${basedir}/target/classes"/>
                             </tasks>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
             <plugin>
-                <groupId>net.sf.alchim</groupId>
+                <groupId>net.alchim31.maven</groupId>
                 <artifactId>yuicompressor-maven-plugin</artifactId>
-                <version>0.7.1</version>
                 <executions>
                     <execution>
                         <phase>generate-resources</phase>
@@ -42,50 +41,52 @@
                             <goal>compress</goal>
                         </goals>
                         <configuration>
+                            <nosuffix>true</nosuffix>
                             <sourceDirectory>src/main/javascript/</sourceDirectory>
-                            <outputDirectory>target/tmp/</outputDirectory>
+                            <outputDirectory>target/compress</outputDirectory>
                             <aggregations>
                                 <aggregation>
-                                    <output>${basedir}/target/classes/web2d.svg-min.js</output>
+                                    <output>${basedir}/target/classes/web2d.svg.js</output>
+                                    <inputDir>${basedir}/target/compress</inputDir>
                                     <includes>
-                                        <include>${basedir}/target/tmp/header-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/utils/EventUtils-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/utils/TransformUtils-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/svg/ElementPeer-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/svg/ElipsePeer-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/svg/Font-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/svg/ArialFont-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/svg/PolyLinePeer-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/svg/CurvedLinePeer-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/svg/ArrowPeer-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/svg/TextPeer-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/svg/WorkspacePeer-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/svg/GroupPeer-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/svg/RectPeer-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/svg/ImagePeer-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/svg/TimesFont-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/svg/LinePeer-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/svg/TahomaFont-min.js</include>
-                                        <include>${basedir}/target/tmp/peer/svg/VerdanaFont-min.js</include>
-                                        <include>${basedir}/target/tmp/Element-min.js</include>
-                                        <include>${basedir}/target/tmp/Elipse-min.js</include>
-                                        <include>${basedir}/target/tmp/Font-min.js</include>
-                                        <include>${basedir}/target/tmp/Group-min.js</include>
-                                        <include>${basedir}/target/tmp/Image-min.js</include>
-                                        <include>${basedir}/target/tmp/Line-min.js</include>
-                                        <include>${basedir}/target/tmp/PolyLine-min.js</include>
-                                        <include>${basedir}/target/tmp/CurvedLine-min.js</include>
-                                        <include>${basedir}/target/tmp/Arrow-min.js</include>
-                                        <include>${basedir}/target/tmp/Rect-min.js</include>
-                                        <include>${basedir}/target/tmp/Text-min.js</include>
-                                        <include>${basedir}/target/tmp/Toolkit-min.js</include>
-                                        <include>${basedir}/target/tmp/Workspace-min.js</include>
+                                        <include>header.js</include>
+                                        <include>peer/utils/EventUtils.js</include>
+                                        <include>peer/utils/TransformUtils.js</include>
+                                        <include>peer/svg/ElementPeer.js</include>
+                                        <include>peer/svg/ElipsePeer.js</include>
+                                        <include>peer/svg/Font.js</include>
+                                        <include>peer/svg/ArialFont.js</include>
+                                        <include>peer/svg/PolyLinePeer.js</include>
+                                        <include>peer/svg/CurvedLinePeer.js</include>
+                                        <include>peer/svg/ArrowPeer.js</include>
+                                        <include>peer/svg/TextPeer.js</include>
+                                        <include>peer/svg/WorkspacePeer.js</include>
+                                        <include>peer/svg/GroupPeer.js</include>
+                                        <include>peer/svg/RectPeer.js</include>
+                                        <include>peer/svg/ImagePeer.js</include>
+                                        <include>peer/svg/TimesFont.js</include>
+                                        <include>peer/svg/LinePeer.js</include>
+                                        <include>peer/svg/TahomaFont.js</include>
+                                        <include>peer/svg/VerdanaFont.js</include>
+                                        <include>Element.js</include>
+                                        <include>Elipse.js</include>
+                                        <include>Font.js</include>
+                                        <include>Group.js</include>
+                                        <include>Image.js</include>
+                                        <include>Line.js</include>
+                                        <include>PolyLine.js</include>
+                                        <include>CurvedLine.js</include>
+                                        <include>Arrow.js</include>
+                                        <include>Rect.js</include>
+                                        <include>Text.js</include>
+                                        <include>Toolkit.js</include>
+                                        <include>Workspace.js</include>
                                     </includes>
                                 </aggregation>
                             </aggregations>
                             <nomunge>true</nomunge>
                             <jswarn>false</jswarn>
-                            <force>true</force>
+                            <force>false</force>
                         </configuration>
                     </execution>
                 </executions>

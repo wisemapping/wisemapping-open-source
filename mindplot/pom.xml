@@ -47,157 +47,6 @@
                         </goals>
                         <configuration>
                             <tasks>
-
-                                <mkdir dir="${basedir}/target/classes"/>
-                                <concat destfile="${basedir}/target/tmp/mindplot.js" append="false">
-                                    <filelist dir="${basedir}/src/main/javascript/" files="header.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="TopicEventDispatcher.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="model/IMindmap.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="model/Mindmap.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="model/INodeModel.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="model/NodeModel.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="model/RelationshipModel.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="ActionDispatcher.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="StandaloneActionDispatcher.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="DesignerModel.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="Designer.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="ScreenManager.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="Workspace.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="ShrinkConnector.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="DesignerKeyboard.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="NodeGraph.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="Topic.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="CentralTopic.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="MainTopic.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="DragTopic.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="DragManager.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="DragPivot.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="ConnectionLine.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="RelationshipLine.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="DragConnector.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="TextEditor.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="MultilineTextEditor.js"/>
-                                    <!--<filelist dir="${basedir}/src/main/javascript/" files="RichTextEditor.js"/>-->
-                                    <filelist dir="${basedir}/src/main/javascript/" files="TextEditorFactory.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="util/Shape.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="util/FadeEffect.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="persistence/ModelCodeName.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="persistence/XMLSerializer_Pela.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="persistence/XMLSerializer_Tango.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="persistence/Pela2TangoMigrator.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="persistence/XMLSerializer_Beta.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="persistence/Beta2PelaMigrator.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="persistence/XMLSerializerFactory.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="PersistenceManager.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="RestPersistenceManager.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="LocalStorageManager.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="EditorProperties.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="IconGroup.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="Icon.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="LinkIcon.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="NoteIcon.js"/>
-
-                                    <filelist dir="${basedir}/src/main/javascript/" files="ActionIcon.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="ImageIcon.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="model/FeatureModel.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="model/IconModel.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="model/LinkModel.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="model/NoteModel.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="Command.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="DesignerActionRunner.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="DesignerUndoManager.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="ControlPoint.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="EditorOptions.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="RelationshipPivot.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="TopicFeature.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/commands/"
-                                              files="GenericFunctionCommand.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/commands/" files="DeleteCommand.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/commands/"
-                                              files="DragTopicCommand.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/commands/"
-                                              files="AddTopicCommand.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="commands/ChangeFeatureToTopicCommand.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="commands/RemoveFeatureFromTopicCommand.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="commands/AddFeatureToTopicCommand.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="commands/AddRelationshipCommand.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="commands/MoveControlPointCommand.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="collaboration/CollaborationManager.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="collaboration/framework/AbstractCollaborativeFramework.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="collaboration/framework/AbstractCollaborativeModelFactory.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/widget/" files="ToolbarNotifier.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/widget/" files="ToolbarItem.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/widget/" files="ToolbarPaneItem.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/widget/" files="NoteEditor.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/widget/" files="LinkEditor.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/widget/" files="FloatingTip.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/widget/" files="LinkIconTooltip.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/widget/" files="KeyboardShortcutTooltip.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="widget/ColorPalettePanel.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="widget/ListToolbarPanel.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="widget/FontFamilyPanel.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="widget/FontSizePanel.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="widget/TopicShapePanel.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="widget/IconPanel.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="widget/IMenu.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="widget/Menu.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="TopicFeature.js"/>
-
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layout/EventBusDispatcher.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="layout/ChangeEvent.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layout/LayoutManager.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layout/Node.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layout/RootedTreeSet.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layout/ChildrenSorterStrategy.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layout/AbstractBasicSorter.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layout/BalancedSorter.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layout/SymmetricSorter.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layout/GridSorter.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/"
-                                              files="layout/OriginalLayout.js"/>
-                                    <filelist dir="${basedir}/src/main/javascript/" files="layout/EventBus.js"/>
-
-                                    <filelist dir="${basedir}/src/main/javascript/" files="footer.js"/>
-                                </concat>
-
-                                <concat destfile="${basedir}/target/classes/mindplot.js" append="false">
-                                    <filelist dir="${basedir}/../web2d/target/classes/" files="web2d.svg-min.js"/>
-                                    <filelist dir="${basedir}/target/tmp/" files="mindplot.js"/>
-                                </concat>
-
                                 <copy toDir="${basedir}/target/classes/">
                                     <fileset dir="${basedir}/src/main/javascript/">
                                         <include name="libraries/**/*"/>
@@ -212,9 +61,8 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>net.sf.alchim</groupId>
+                <groupId>net.alchim31.maven</groupId>
                 <artifactId>yuicompressor-maven-plugin</artifactId>
-                <version>0.7.1</version>
                 <executions>
                     <execution>
                         <phase>generate-resources</phase>
@@ -222,16 +70,125 @@
                             <goal>compress</goal>
                         </goals>
                         <configuration>
-                            <sourceDirectory>${basedir}/target/tmp/</sourceDirectory>
-                            <outputDirectory>${basedir}/target/classes/</outputDirectory>
-
+                            <sourceDirectory>${basedir}/src/main/javascript</sourceDirectory>
+                            <outputDirectory>${basedir}/target/compress/</outputDirectory>
+                            <nosuffix>true</nosuffix>
+                            <excludes>
+                                <exclude>libraries/**/*.js</exclude>
+                            </excludes>
                             <aggregations>
                                 <aggregation>
-                                    <output>${basedir}/target/classes/mindplot-min.js</output>
+                                    <output>${project.build.directory}/classes/mindplot-min.js</output>
+                                    <inputDir>${basedir}/target/compress</inputDir>
+                                    <includes>
+                                        <include>header.js</include>
+                                        <include>${basedir}/../web2d/target/classes/web2d.svg-min.js</include>
+                                        <include>TopicEventDispatcher.js</include>
+                                        <include>model/IMindmap.js</include>
+                                        <include>model/Mindmap.js</include>
+                                        <include>model/INodeModel.js</include>
+                                        <include>model/NodeModel.js</include>
+                                        <include>model/RelationshipModel.js</include>
+                                        <include>ActionDispatcher.js</include>
+                                        <include>StandaloneActionDispatcher.js</include>
+                                        <include>DesignerModel.js</include>
+                                        <include>Designer.js</include>
+                                        <include>ScreenManager.js</include>
+                                        <include>Workspace.js</include>
+                                        <include>ShrinkConnector.js</include>
+                                        <include>DesignerKeyboard.js</include>
+                                        <include>NodeGraph.js</include>
+                                        <include>Topic.js</include>
+                                        <include>CentralTopic.js</include>
+                                        <include>MainTopic.js</include>
+                                        <include>DragTopic.js</include>
+                                        <include>DragManager.js</include>
+                                        <include>DragPivot.js</include>
+                                        <include>ConnectionLine.js</include>
+                                        <include>RelationshipLine.js</include>
+                                        <include>DragConnector.js</include>
+                                        <include>TextEditor.js</include>
+                                        <include>MultilineTextEditor.js</include>
+                                        <include>TextEditorFactory.js</include>
+                                        <include>util/Shape.js</include>
+                                        <include>util/FadeEffect.js</include>
+                                        <include>persistence/ModelCodeName.js</include>
+                                        <include>persistence/XMLSerializer_Pela.js</include>
+                                        <include>persistence/XMLSerializer_Tango.js</include>
+                                        <include>persistence/Pela2TangoMigrator.js</include>
+                                        <include>persistence/XMLSerializer_Beta.js</include>
+                                        <include>persistence/Beta2PelaMigrator.js</include>
+                                        <include>persistence/XMLSerializerFactory.js</include>
+                                        <include>PersistenceManager.js</include>
+                                        <include>RestPersistenceManager.js</include>
+                                        <include>LocalStorageManager.js</include>
+                                        <include>EditorProperties.js</include>
+                                        <include>IconGroup.js</include>
+                                        <include>Icon.js</include>
+                                        <include>LinkIcon.js</include>
+                                        <include>NoteIcon.js</include>
+                                        <include>ActionIcon.js</include>
+                                        <include>ImageIcon.js</include>
+                                        <include>model/FeatureModel.js</include>
+                                        <include>model/IconModel.js</include>
+                                        <include>model/LinkModel.js</include>
+                                        <include>model/NoteModel.js</include>
+                                        <include>Command.js</include>
+                                        <include>DesignerActionRunner.js</include>
+                                        <include>DesignerUndoManager.js</include>
+                                        <include>ControlPoint.js</include>
+                                        <include>EditorOptions.js</include>
+                                        <include>RelationshipPivot.js</include>
+                                        <include>TopicFeature.js</include>
+                                        <include>commands/GenericFunctionCommand.js</include>
+                                        <include>commands/DeleteCommand.js</include>
+                                        <include>commands/DragTopicCommand.js</include>
+                                        <include>commands/AddTopicCommand.js</include>
+                                        <include>commands/ChangeFeatureToTopicCommand.js</include>
+                                        <include>commands/RemoveFeatureFromTopicCommand.js</include>
+                                        <include>commands/AddFeatureToTopicCommand.js</include>
+                                        <include>commands/AddRelationshipCommand.js</include>
+                                        <include>commands/MoveControlPointCommand.js</include>
+                                        <include>collaboration/CollaborationManager.js</include>
+                                        <include>collaboration/framework/AbstractCollaborativeFramework.js</include>
+                                        <include>collaboration/framework/AbstractCollaborativeModelFactory.js</include>
+                                        <include>widget/ToolbarNotifier.js</include>
+                                        <include>widget/ToolbarItem.js</include>
+                                        <include>widget/ToolbarPaneItem.js</include>
+                                        <include>widget/NoteEditor.js</include>
+                                        <include>widget/LinkEditor.js</include>
+                                        <include>widget/FloatingTip.js</include>
+                                        <include>widget/LinkIconTooltip.js</include>
+                                        <include>widget/KeyboardShortcutTooltip.js</include>
+                                        <include>widget/ColorPalettePanel.js</include>
+                                        <include>widget/ListToolbarPanel.js</include>
+                                        <include>widget/FontFamilyPanel.js</include>
+                                        <include>widget/FontSizePanel.js</include>
+                                        <include>widget/TopicShapePanel.js</include>
+                                        <include>widget/IconPanel.js</include>
+                                        <include>widget/IMenu.js</include>
+                                        <include>widget/Menu.js</include>
+                                        <include>TopicFeature.js</include>
+                                        <include>layout/EventBusDispatcher.js</include>
+                                        <include>layout/ChangeEvent.js</include>
+                                        <include>layout/LayoutManager.js</include>
+                                        <include>layout/Node.js</include>
+                                        <include>layout/RootedTreeSet.js</include>
+                                        <include>layout/ChildrenSorterStrategy.js</include>
+                                        <include>layout/AbstractBasicSorter.js</include>
+                                        <include>layout/BalancedSorter.js</include>
+                                        <include>layout/SymmetricSorter.js</include>
+                                        <include>layout/GridSorter.js</include>
+                                        <include>layout/OriginalLayout.js</include>
+                                        <include>layout/EventBus.js</include>
+                                        <include>footer.js</include>
+                                    </includes>
                                 </aggregation>
                             </aggregations>
-                            <jswarn>true</jswarn>
-                            <force>true</force>
+                            <jswarn>false</jswarn>
+                            <force>false</force>
+                            <encoding>UTF-8</encoding>
+                            <statistics>false</statistics>
                         </configuration>
                     </execution>
                 </executions>
@@ -244,8 +201,6 @@
                     <skipTests>true</skipTests>
                 </configuration>
             </plugin>
-
-
         </plugins>
     </build>
 </project>
