@@ -48,6 +48,7 @@ mindplot.TopicEventDispatcher = new Class({
     },
 
     process : function(eventType, topic, options) {
+        $assert(eventType, "eventType can not be null");
 
         // Close all previous open editor ....
         if (this.isVisible()) {

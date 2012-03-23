@@ -28,6 +28,10 @@ mindplot.NodeGraph = new Class({
         this._size = {width:50,height:20};
     },
 
+    isReadOnly : function(){
+        return this._options.readOnly;
+    },
+
     getType : function() {
         var model = this.getModel();
         return model.getType();

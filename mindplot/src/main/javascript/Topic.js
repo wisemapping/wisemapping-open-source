@@ -34,7 +34,7 @@ mindplot.Topic = new Class({
         }
 
         // Register events for the topic ...
-        if (!options.readOnly) {
+        if (!this.isReadOnly()) {
             this._registerEvents();
         }
     },
@@ -50,7 +50,7 @@ mindplot.Topic = new Class({
 
         this.addEvent('dblclick', function (event) {
             this._getTopicEventDispatcher().show(this);
-            event.stopPropagation(true);
+            event.stopPropagation();
         }.bind(this));
     },
 
@@ -134,7 +134,7 @@ mindplot.Topic = new Class({
             this._setBorderColor(brColor, false);
 
             // Define the pointer ...
-            if (this.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
+            if (this.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE && !this.isReadOnly()) {
                 this._innerShape.setCursor('move');
             } else {
                 this._innerShape.setCursor('default');
@@ -584,16 +584,21 @@ mindplot.Topic = new Class({
 
         // Focus events ...
         elem.addEvent('mousedown', function(event) {
-            var value = true;
-            if ((event.meta && Browser.Platform.mac) || (event.control && !Browser.Platform.mac)) {
-                value = !this.isOnFocus();
-                event.stopPropagation();
-                event.preventDefault();
+            if (!this.isReadOnly()) {
+                // Disable topic selection of readOnly mode ...
+                var value = true;
+                if ((event.meta && Browser.Platform.mac) || (event.control && !Browser.Platform.mac)) {
+                    value = !this.isOnFocus();
+                    event.stopPropagation();
+                    event.preventDefault();
+                }
+                topic.setOnFocus(value);
             }
-            topic.setOnFocus(value);
 
             var eventDispatcher = this._getTopicEventDispatcher();
             eventDispatcher.process(mindplot.TopicEvent.CLICK, this);
+            event.stopPropagation();
+
         }.bind(this));
     },
 
