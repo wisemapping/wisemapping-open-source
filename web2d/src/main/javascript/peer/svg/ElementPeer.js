@@ -19,6 +19,13 @@
 web2d.peer.svg.ElementPeer = new Class({
     initialize :function(svgElement) {
         this._native = svgElement;
+        if (!this._native.addEvent) {
+            // Hack bug: https://bugzilla.mozilla.org/show_bug.cgi?id=740811
+            for (var key in Element) {
+                this._native[key] = Element.prototype[key];
+            }
+        }
+
         this._size = {width:1,height:1};
         this._changeListeners = {};
         // http://support.adobe.com/devsup/devsup.nsf/docs/50493.htm
@@ -82,7 +89,8 @@ web2d.peer.svg.ElementPeer = new Class({
      * http://developer.mozilla.org/en/docs/addEvent
      */
     addEvent : function(type, listener) {
-        this._native.addEvent(type, listener);
+        //  this._native.addEvent(type, listener);
+        this._native.addEventListener(type, listener);
     },
 
     fireEvent : function(type) {
