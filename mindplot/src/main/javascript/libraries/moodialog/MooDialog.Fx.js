@@ -20,13 +20,14 @@ MooDialog.implement('options', {
 			property: 'opacity',
 			duration: this.options.duration
 		}).set(0);
-		this.overlay = new Overlay(this.options.inject, {
-			duration: this.options.duration
-		});
-		if (this.options.closeOnOverlayClick) this.overlay.addEvent('click', this.close.bind(this));
 	},
 
 	onBeforeOpen: function(wrapper){
+        this.overlay = new Overlay(this.options.inject, {
+            duration: this.options.duration
+        });
+        if (this.options.closeOnOverlayClick)
+            this.overlay.addEvent('click', this.close.bind(this));
 		this.overlay.open();
 		this.fx.start(1).chain(function(){
 			this.fireEvent('show');
@@ -34,7 +35,7 @@ MooDialog.implement('options', {
 	},
 
 	onBeforeClose: function(wrapper){
-		this.overlay.close();
+		this.overlay.destroy();
 		this.fx.start(0).chain(function(){
 			this.fireEvent('hide');
 		}.bind(this));

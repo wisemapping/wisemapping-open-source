@@ -31,14 +31,17 @@ mindplot.widget.LinkEditor = new Class({
                     duration: 600,
                     transition: Fx.Transitions.Bounce.easeOut
                 });
-                this.overlay = new Overlay(this.options.inject, {
-                    duration: this.options.duration
-                });
-                if (this.options.closeOnOverlayClick) this.overlay.addEvent('click', this.close.bind(this));
             },
 
             onBeforeOpen: function() {
+                this.overlay = new Overlay(this.options.inject, {
+                    duration: this.options.duration
+                });
+                if (this.options.closeOnOverlayClick)
+                    this.overlay.addEvent('click', this.close.bind(this));
+
                 this.overlay.open();
+
                 this.fx.start({
                     'margin-top': [-200, -100],
                     opacity: [0, 1]
@@ -54,7 +57,7 @@ mindplot.widget.LinkEditor = new Class({
                 }).chain(function() {
                     this.fireEvent('hide');
                 }.bind(this));
-                this.overlay.close();
+                this.overlay.destroy();
             }
         });
         this.setContent(panel);

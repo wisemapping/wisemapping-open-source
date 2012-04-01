@@ -78,7 +78,8 @@ var MooDialog = new Class({
 		}
 
 		this.addEvent('hide', function(){
-			if (options.destroyOnHide) this.destroy();
+			if (options.destroyOnHide)
+                this.destroy();
 		}.bind(this));
 
 		this.fireEvent('initialize', wrapper);

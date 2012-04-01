@@ -50,8 +50,6 @@
                                     <includes>
                                         <include>${basedir}/target/tmp/header-min.js</include>
                                         <include>${basedir}/target/tmp/Functions-min.js</include>
-                                        <include>${basedir}/target/tmp/Monitor-min.js</include>
-                                        <include>${basedir}/target/tmp/Point-min.js</include>
                                         <include>${basedir}/target/tmp/Utils-min.js</include>
                                         <!-- @Todo:Review this -->
                                         <include>

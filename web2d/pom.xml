@@ -81,6 +81,8 @@
                                         <include>Text.js</include>
                                         <include>Toolkit.js</include>
                                         <include>Workspace.js</include>
+                                        <include>Point.js</include>
+
                                     </includes>
                                 </aggregation>
                             </aggregations>

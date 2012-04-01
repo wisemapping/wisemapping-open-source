@@ -89,11 +89,10 @@ web2d.peer.svg.ElementPeer = new Class({
      * http://developer.mozilla.org/en/docs/addEvent
      */
     addEvent : function(type, listener) {
-        //  this._native.addEvent(type, listener);
-        this._native.addEventListener(type, listener);
+        this._native.addEvent(type, listener);
     },
 
-    fireEvent : function(type) {
+    fireEvent : function(type, event) {
         this._native.fireEvent(type, event);
     },
 

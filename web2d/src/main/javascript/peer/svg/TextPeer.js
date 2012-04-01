@@ -16,6 +16,7 @@
  *   limitations under the License.
  */
 
+
 web2d.peer.svg.TextPeer = new Class({
     Extends: web2d.peer.svg.ElementPeer,
     initialize : function() {
@@ -39,10 +40,11 @@ web2d.peer.svg.TextPeer = new Class({
     },
 
     setText  : function(text) {
-        var childs = this._native.getChildren();
-        childs.forEach(function(child) {
-            child.dispose();
-        });
+        var i = 0;
+        var childs = this._native.childNodes;
+        for (i = 0; i < childs.length; i++) {
+            Element.dispose(childs[i]);
+        }
 
         this._text = text;
         var lines = text.split('\n');
@@ -71,10 +73,10 @@ web2d.peer.svg.TextPeer = new Class({
         this._native.setAttribute('x', x);
 
         // tspan must be positioned manually.
-        this._native.getElements('tspan').forEach(function(span) {
-            span.setAttribute('x', x);
-        });
-
+        var tspans = this._native.childNodes;
+        for (var i = 0; i < tspans.length; i++) {
+            tspans[i].setAttribute('x', x);
+        }
     },
 
     getPosition  : function() {

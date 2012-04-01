@@ -55,18 +55,18 @@ mindplot.NodeGraph = new Class({
     },
 
     addEvent : function(type, listener) {
-        var elem = type.substr(0, 3) == "ont" ? this._event : this.get2DElement();
+        var elem = this.get2DElement();
         elem.addEvent(type, listener);
     },
 
     removeEvent : function(type, listener) {
-        var elem = type.substr(0, 3) == "ont" ? this._event : this.get2DElement();
+        var elem = this.get2DElement();
         elem.removeEvent(type, listener);
     },
 
-    fireEvent: function(type) {
-        var elem = type.substr(0, 3) == "ont" ? this._event : this.get2DElement();
-        elem.fireEvent(type, this);
+    fireEvent: function(type, event) {
+        var elem = this.get2DElement();
+        elem.fireEvent(type, event);
     },
 
     setMouseEventsEnabled : function(isEnabled) {

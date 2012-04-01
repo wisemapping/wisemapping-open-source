@@ -30,8 +30,7 @@ function buildDesigner(options) {
         window.waitDialog.destroy();
     });
 
-    window.onerror = function(e)
-    {
+    window.onerror = function(e) {
         window.waitDialog.close();
         window.waitDialog.destroy();
         errorDialog.show();
@@ -69,6 +68,7 @@ function buildDesigner(options) {
 
 function loadDesignerOptions(jsonConf) {
     // Load map options ...
+    var result;
     if (jsonConf) {
         var request = new Request.JSON({
                 url: jsonConf,
@@ -96,7 +96,6 @@ function loadDesignerOptions(jsonConf) {
         };
         result = {readOnly:false,zoom:0.85,saveOnLoad:true,size:containerSize,viewPort:viewPort,container:'mindplot'};
     }
-    console.log("result:" + JSON.encode(result));
     return result;
 }
 
@@ -108,7 +107,7 @@ editor.WaitDialog = new Class({
         this.parent({
                 closeButton:false,
                 destroyOnClose:true,
-                autoOpen:true,
+                autoOpen:false,
                 useEscKey:false,
                 title:'Loading ...',
                 onInitialize: function(wrapper) {
@@ -120,7 +119,6 @@ editor.WaitDialog = new Class({
                     this.overlay = new Overlay(this.options.inject, {
                         duration: this.options.duration
                     });
-                    if (this.options.closeOnOverlayClick) this.overlay.addEvent('click', this.close.bind(this));
                 },
 
                 onBeforeOpen: function() {
@@ -130,6 +128,8 @@ editor.WaitDialog = new Class({
                         opacity: [0, 1]
                     }).chain(function() {
                         this.fireEvent('show');
+                        this.wrapper.setStyle('display', 'block');
+
                     }.bind(this));
                 },
 
@@ -140,8 +140,10 @@ editor.WaitDialog = new Class({
                         duration: 200
                     }).chain(function() {
                         this.fireEvent('hide');
+                        this.wrapper.setStyle('display', 'none');
+                        this.overlay.destroy();
+
                     }.bind(this));
-                    this.overlay.close();
                 }}
         );
         this.setContent(panel);
@@ -181,14 +183,14 @@ editor.FatalErrorDialog = new Class({
                         duration: 100,
                         transition: Fx.Transitions.Bounce.easeOut
                     });
+                },
+
+                onBeforeOpen: function() {
                     this.overlay = new Overlay(this.options.inject, {
                         duration: this.options.duration
                     });
-                    if (this.options.closeOnOverlayClick) this.overlay.addEvent('click', this.close.bind(this));
-                }
-                ,
-
-                onBeforeOpen: function() {
+                    if (this.options.closeOnOverlayClick)
+                        this.overlay.addEvent('click', this.close.bind(this));
                     this.overlay.open();
                     this.fx.start({
                         'margin-top': [-200, -100],
@@ -207,7 +209,7 @@ editor.FatalErrorDialog = new Class({
                     }).chain(function() {
                         this.fireEvent('hide');
                     }.bind(this));
-                    this.overlay.close();
+                    this.overlay.destroy();
                 }}
         );
         this.setContent(panel);
