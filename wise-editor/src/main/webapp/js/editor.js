@@ -112,6 +112,7 @@ editor.WaitDialog = new Class({
                 title:'Loading ...',
                 onInitialize: function(wrapper) {
                     wrapper.setStyle('opacity', 0);
+                    this.wrapper.setStyle('display', 'none');
                     this.fx = new Fx.Morph(wrapper, {
                         duration: 100,
                         transition: Fx.Transitions.Bounce.easeOut
@@ -179,6 +180,7 @@ editor.FatalErrorDialog = new Class({
                 title:'Outch!!. An unexpected error has occurred',
                 onInitialize: function(wrapper) {
                     wrapper.setStyle('opacity', 0);
+                    this.wrapper.setStyle('display', 'none');
                     this.fx = new Fx.Morph(wrapper, {
                         duration: 100,
                         transition: Fx.Transitions.Bounce.easeOut
@@ -197,9 +199,9 @@ editor.FatalErrorDialog = new Class({
                         opacity: [0, 1]
                     }).chain(function() {
                         this.fireEvent('show');
+                        this.wrapper.setStyle('display', 'block');
                     }.bind(this));
-                }
-                ,
+                },
 
                 onBeforeClose: function() {
                     this.fx.start({
@@ -207,9 +209,11 @@ editor.FatalErrorDialog = new Class({
                         opacity: 0,
                         duration: 200
                     }).chain(function() {
+                        this.wrapper.setStyle('display', 'none');
                         this.fireEvent('hide');
+                        this.overlay.destroy();
+
                     }.bind(this));
-                    this.overlay.destroy();
                 }}
         );
         this.setContent(panel);
