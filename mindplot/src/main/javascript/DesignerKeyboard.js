@@ -24,8 +24,8 @@ mindplot.DesignerKeyboard = new Class({
             this._instance.activate();
         },
 
-        getInstance: function(){
-          return this._instance;
+        getInstance: function() {
+            return this._instance;
         }
     },
 
@@ -224,7 +224,7 @@ mindplot.DesignerKeyboard = new Class({
 
         $(document).addEvent('keydown', function(event) {
 
-            // Convert key to mootool keyboard event format...
+            // Convert key to mootools keyboard event format...
             var keys = [];
             modifiers.each(function(mod) {
                 if (event[mod]) keys.push(mod);
@@ -243,7 +243,7 @@ mindplot.DesignerKeyboard = new Class({
             }
 
             // If it's not registered, let's
-            if (!isRegistered && !excludes.contains(key) && !excludes.contains(event.key) && 'meta+[' != key) {
+            if (!isRegistered && !excludes.contains(key) && !excludes.contains(event.key) && 'meta+[' != key && 'meta+à' != key) {
                 var nodes = designer.getModel().filterSelectedTopics();
                 if (nodes.length > 0) {
 
