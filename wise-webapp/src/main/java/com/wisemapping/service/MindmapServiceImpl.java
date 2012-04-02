@@ -47,16 +47,15 @@ public class MindmapServiceImpl
     }
 
     public boolean isAllowedToView(User user, MindMap map, UserRole grantedRole) {
-        boolean isAllowed = false;
+        boolean result = false;
         if (map != null) {
-
             if (map.isPublic()) {
-                isAllowed = true;
+                result = true;
             } else if (user != null) {
-                isAllowed = isAllowedToCollaborate(user, map, grantedRole);
+                result = isAllowedToCollaborate(user, map, grantedRole);
             }
         }
-        return isAllowed;
+        return result;
     }
 
     public boolean isAllowedToCollaborate(@NotNull User user, @Nullable MindMap map, UserRole grantedRole) {

@@ -26,7 +26,6 @@
                 <value>update*</value>
                 <value>add*</value>
                 <value>remove*</value>
-                <value>remove*</value>
             </list>
         </property>
     </bean>

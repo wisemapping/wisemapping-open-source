@@ -38,17 +38,6 @@ public abstract class BaseMultiActionController
     private MindmapService mindmapService;
     private UserService userService;
 
-    protected List<MindmapUser> getMindmapUsersFromRequest(HttpServletRequest request) {
-        List<MindmapUser> result = new ArrayList<MindmapUser>();
-        final String mindmapIds = request.getParameter("mindmapIds");
-
-        final String ids[] = mindmapIds.split(",");
-        for (String id : ids)
-            if (mindmapIds.length()!=0){
-                result.add(getMindmapUser(Integer.parseInt(id), request));
-            }
-        return result;
-    }
 
     protected List<MindMap> getMindmapsFromRequest(HttpServletRequest request) {
         List<MindMap> result = new ArrayList<MindMap>();

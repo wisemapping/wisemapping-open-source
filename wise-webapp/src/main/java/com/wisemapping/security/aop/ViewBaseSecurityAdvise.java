@@ -23,25 +23,23 @@ import org.aopalliance.intercept.MethodInvocation;
 import com.wisemapping.model.UserRole;
 import com.wisemapping.model.User;
 import com.wisemapping.model.MindMap;
+import org.jetbrains.annotations.NotNull;
 
 public class ViewBaseSecurityAdvise
         extends BaseSecurityAdvice
-        implements MethodInterceptor
-{
+        implements MethodInterceptor {
     private UserRole grantedRole = UserRole.VIEWER;
 
-    public Object invoke(MethodInvocation methodInvocation) throws Throwable {
+    public Object invoke(@NotNull MethodInvocation methodInvocation) throws Throwable {
         checkRole(methodInvocation);
         return methodInvocation.proceed();
     }
 
-    protected boolean isAllowed(User user, MindMap map)
-    {
-        return getMindmapService().isAllowedToView(user,map,grantedRole);
+    protected boolean isAllowed(User user, MindMap map) {
+        return getMindmapService().isAllowedToView(user, map, grantedRole);
     }
 
-    protected boolean isAllowed(User user, int mapId)
-    {
-        return getMindmapService().isAllowedToView(user,mapId,grantedRole);
-    }    
+    protected boolean isAllowed(User user, int mapId) {
+        return getMindmapService().isAllowedToView(user, mapId, grantedRole);
+    }
 }

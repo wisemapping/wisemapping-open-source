@@ -64,8 +64,6 @@
                                         <include>
                                             ${basedir}/../mindplot/src/main/javascript/libraries/moodialog/MooDialog.Fx.js
                                         </include>
-                                        <include>${basedir}/target/tmp/footer-min.js</include>
-
                                     </includes>
                                 </aggregation>
                             </aggregations>

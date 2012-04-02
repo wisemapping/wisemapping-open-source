@@ -1,0 +1,117 @@
+<div class="modalDialog">
+    <h1>Export</h1>
+
+    <div>
+        <form method="POST" id="exportForm" name="exportForm" action="http://localhost:8080/service/transform"
+              style="height:100%;" enctype="application/x-www-form-urlencoded">
+            <input name="svgXml" value="" type="hidden"/>
+            <input name="mapXml" value="" type="hidden"/>
+            <input name="filename" value="welcome" type="hidden"/>
+            <table>
+                <tbody>
+                <tr>
+                    <td>
+                        <input type="radio" id="svg" name="exportFormat" value="svg">
+                        <b> Scalable Vector Graphics (SVG)</b>
+
+                        <p>
+                            Scalable Vector Graphics (SVG) is an XML markup language for describing two-dimensional
+                            vector graphics. This format will enable you to print your maps without quality lost at any
+                            resolution.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="radio" name="exportFormat" value="PDF" id="pdf">
+                        <b>Portable Document Format (PDF)</b>
+
+                        <p>
+                            Get your map as Portable Document Format(PDF) to share use in your presentations.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="radio" id="freemind" name="exportFormat" value="FREEMIND" checked="checked">
+                        <b>Freemind (version 0.9.0)</b>
+
+                        <p>
+                            FreeMind is a nice desktop mind mapping application that has the great benefit of being
+                            free.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="radio" name="exportFormat" id="img" value="IMG_EXPORT_FORMAT">
+                        <b>Image File</b>
+                        <select name="imgFormat" id="imgFormat" style="visibility:hidden;margin-left:5px;">
+                            <option>PNG</option>
+                            <option>JPEG</option>
+                        </select>
+
+                        <p>
+                            Get a graphic representation of your map including all colors and shapes to reuse in
+                            documents or for archiving
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:center;margin-top:10px;">
+                        <input type="button" id="ok" value="Ok" class="btn-primary">
+                        <input type="button" value="Cancel" class="btn-secondary"
+                               onclick="MooDialog.Request.active.close();">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+
+</div>
+<script type="text/javascript">
+    $('img').addEvent('click', function(event) {
+        $('imgFormat').setStyle('visibility', 'visible');
+    });
+    $('pdf').addEvent('click', function(event) {
+        $('imgFormat').setStyle('visibility', 'hidden');
+    });
+    $('svg').addEvent('click', function(event) {
+        $('imgFormat').setStyle('visibility', 'hidden');
+    });
+
+    $('ok').addEvent('click', function(event) {
+
+        var form = $('exportForm');
+
+        // Look for the selected format and append export suffix...
+        var value = $$('input[name=exportFormat]:checked')[0].get('value');
+        var suffix;
+        if (value == 'IMG_EXPORT_FORMAT') {
+            var selected = $('imgFormat');
+            suffix = selected.options[selected.selectedIndex].value;
+        } else {
+            suffix = value;
+        }
+        suffix = suffix.toLowerCase();
+        form.action = form.action + "." + suffix;
+
+        // Store SVG o native map...
+        if (suffix == "freemind") {
+            var mindmap = designer.getMindmap();
+            var serializer = mindplot.persistence.XMLSerializerFactory.getSerializerFromMindmap(mindmap);
+            var domMap = serializer.toXML(mindmap);
+            form.mapXml.value = core.Utils.innerXML(domMap);
+        } else {
+            form.svgXml.value = $("workspaceContainer").innerHTML;
+        }
+
+        // Finally, submit map ...
+        form.submit();
+
+
+        MooDialog.Request.active.close();
+    });
+
+</script>

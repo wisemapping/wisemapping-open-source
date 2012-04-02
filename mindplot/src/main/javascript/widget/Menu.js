@@ -191,7 +191,7 @@ mindplot.widget.Menu = new Class({
         this._registerTooltip('fontColor', "Text color");
 
 
-        this._addButton('export', false, false, "Export", function() {
+        this._addButton('export', false, false, function() {
             var reqDialog = new MooDialog.Request('c/export.htm?mapId=' + mapId, null,
                 {'class': 'exportModalDialog',
                     closeButton:true,

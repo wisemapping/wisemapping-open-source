@@ -2,43 +2,6 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
-    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="/WEB-INF/app.properties"/>
-    </bean>
-
-    <bean id="browserSupportInterceptor" class="com.wisemapping.filter.BrowserSupportInterceptor">
-        <property name="exclude">
-            <list>
-                <value>/</value>
-                <value>/index.jsp</value>
-                <value>/c/home.htm</value>
-                <value>/c/login.htm</value>
-                <value>/c/userRegistration.htm</value>
-                <value>/c/captcha.htm</value>
-                <value>/c/publicView.htm</value>
-                <value>/service/*</value>
-                <value>/c/search.htm</value>
-                <value>/c/keyboard.htm</value>
-                <value>/c/renameMap.htm</value>
-                <value>/c/embeddedView.htm</value>
-                <value>/c/forgotPassword.htm</value>
-            </list>
-        </property>
-    </bean>
-
-    <bean id="exceptionHadlerResolver"
-          class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-        <property name="defaultStatusCode" value="500"/>
-        <property name="defaultErrorView" value="unexpectedError"/>
-        <property name="exceptionMappings">
-            <props>
-                <prop key="com.wisemapping.exceptions.UnsupportedBrowserException">browserNotSupported</prop>
-                <!-- Security exceptions are wrapped in this exceptions -->
-                <prop key="java.lang.reflect.UndeclaredThrowableException">securityError</prop>
-                <prop key="com.wisemapping.exceptions.EmailNotExistsException">emailNotExistsError</prop>
-            </props>
-        </property>
-    </bean>
 
     <bean id="paramResolverByAction"
           class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
@@ -50,19 +13,6 @@
         <property name="paramName" value="actionId"/>
     </bean>
 
-    <bean id="mindmapController" class="com.wisemapping.controller.MindmapController">
-        <property name="methodNameResolver" ref="paramResolverByAction"/>
-        <property name="mindmapService" ref="mindmapService"/>
-        <property name="userService" ref="userService"/>
-    </bean>
-
-    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-        <property name="basenames">
-            <list>
-                <value>messages</value>
-            </list>
-        </property>
-    </bean>
 
     <!--<bean id="localeResolver"
           class="org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver">
@@ -286,7 +236,6 @@
         </property>
         <property name="mappings">
             <props>
-                <prop key="/c/mymaps.htm">mindmapController</prop>
                 <prop key="/c/userRegistration.htm">userController</prop>
                 <prop key="/c/sharing.htm">sharingController</prop>
                 <prop key="/c/home.htm">homeController</prop>
@@ -311,33 +260,5 @@
                 <prop key="/c/installCFG.htm">homeController</prop>
             </props>
         </property>
-    </bean>
-
-    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="viewClass" value="org.springframework.web.servlet.view.tiles.TilesJstlView"/>
-    </bean>
-
-    <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles.TilesConfigurer">
-        <property name="definitions">
-            <list>
-                <value>/WEB-INF/defs/definitions.xml</value>
-            </list>
-        </property>
-    </bean>
-
-    <bean id="localeResolver"
-          class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
-        <property name="defaultLocale" value="en"/>
-    </bean>
-
-    <bean id="localeChangeInterceptor"
-          class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-        <property name="paramName" value="language"/>
-    </bean>
-
-    <bean id="reCaptcha" class="net.tanesha.recaptcha.ReCaptchaImpl">
-        <property name="privateKey" value="${registration.recaptcha.privateKey}"/>
-        <property name="publicKey" value="${registration.recaptcha.publicKey}"/>
-        <property name="includeNoscript" value="false"/>
     </bean>
 </beans>

@@ -26,13 +26,15 @@ function buildDesigner(options) {
     // Register load events ...
     designer = new mindplot.Designer(options, container);
     designer.addEvent('loadSuccess', function() {
-        window.waitDialog.close();
-        window.waitDialog.destroy();
+        window.waitDialog.close.delay(1000,window.waitDialog);
+        window.waitDialog = null;
     });
 
     window.onerror = function(e) {
-        window.waitDialog.close();
-        window.waitDialog.destroy();
+        if (window.waitDialog) {
+            window.waitDialog.close.delay(1000,window.waitDialog);
+            window.waitDialog = null;
+        }
         errorDialog.show();
         console.log(e);
     };
@@ -117,12 +119,12 @@ editor.WaitDialog = new Class({
                         duration: 100,
                         transition: Fx.Transitions.Bounce.easeOut
                     });
-                    this.overlay = new Overlay(this.options.inject, {
-                        duration: this.options.duration
-                    });
                 },
 
                 onBeforeOpen: function() {
+                    this.overlay = new Overlay(this.options.inject, {
+                        duration: this.options.duration
+                    });
                     this.overlay.open();
                     this.fx.start({
                         'margin-top': [-200, -100],
@@ -142,7 +144,6 @@ editor.WaitDialog = new Class({
                     }).chain(function() {
                         this.fireEvent('hide');
                         this.wrapper.setStyle('display', 'none');
-                        this.overlay.destroy();
 
                     }.bind(this));
                 }}
@@ -163,6 +164,11 @@ editor.WaitDialog = new Class({
 
     show : function() {
         this.open();
+    },
+
+    destroy: function() {
+        this.parent();
+        this.overlay.destroy();
     }
 
 });
@@ -211,12 +217,16 @@ editor.FatalErrorDialog = new Class({
                     }).chain(function() {
                         this.wrapper.setStyle('display', 'none');
                         this.fireEvent('hide');
-                        this.overlay.destroy();
 
                     }.bind(this));
                 }}
         );
         this.setContent(panel);
+    },
+
+    destroy: function() {
+        this.parent();
+        this.overlay.destroy();
     },
 
     _buildPanel : function () {

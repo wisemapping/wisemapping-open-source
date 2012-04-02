@@ -1,7 +1,8 @@
+<!DOCTYPE HTML>
+
 <%--@elvariable id="mindmap" type="com.wisemapping.model.MindMap"--%>
 <%--@elvariable id="editorTryMode" type="java.lang.Boolean"--%>
 <%--@elvariable id="user" type="com.wisemapping.model.User"--%>
-<!DOCTYPE HTML>
 
 <%@ include file="/jsp/init.jsp" %>
 <c:url value="mymaps.htm" var="shareMap">
@@ -11,10 +12,12 @@
 <html>
 <head>
     <base href="../"/>
+    <title><spring:message code="SITE.TITLE"/> - ${mindmap.title} </title>
+    <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
+
     <!--[if lt IE 9]>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <![endif]-->
-    <title><spring:message code="SITE.TITLE"/> - ${mindmap.title} </title>
 
     <link rel="stylesheet/less" type="text/css" href="css/editor.less"/>
     <script type='text/javascript' src='js/mootools-core.js'></script>

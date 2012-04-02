@@ -29,43 +29,35 @@ import org.aopalliance.intercept.MethodInvocation;
 public abstract class BaseSecurityAdvice {
     private MindmapService mindmapService = null;
 
-    public void checkRole(MethodInvocation methodInvocation) throws UnexpectedArgumentException,AccessDeniedSecurityException
-    {
+    public void checkRole(MethodInvocation methodInvocation) throws UnexpectedArgumentException, AccessDeniedSecurityException {
         final User user = Utils.getUser();
 
         final Object argument = methodInvocation.getArguments()[0];
 
         boolean isAllowed;
 
-        if (argument instanceof MindMap)
-        {
-            isAllowed = isAllowed(user,(MindMap)  argument);
-        }
-        else if (argument instanceof Integer)
-        {
-            isAllowed = isAllowed(user, ((Integer)argument));
-        }
-        else
-        {
-            throw new UnexpectedArgumentException("Argument " +argument);
+        if (argument instanceof MindMap) {
+            isAllowed = isAllowed(user, (MindMap) argument);
+        } else if (argument instanceof Integer) {
+            isAllowed = isAllowed(user, ((Integer) argument));
+        } else {
+            throw new UnexpectedArgumentException("Argument " + argument);
         }
 
-        if (!isAllowed)
-        {
-            throw new AccessDeniedSecurityException("User not allowed to invoke:" + methodInvocation);
+        if (!isAllowed) {
+            throw new AccessDeniedSecurityException("User '" + user.getEmail() + "' not allowed to invoke:" + methodInvocation);
         }
     }
 
     protected abstract boolean isAllowed(User user, MindMap map);
+
     protected abstract boolean isAllowed(User user, int mapId);
 
-    protected MindmapService getMindmapService()
-    {
+    protected MindmapService getMindmapService() {
         return mindmapService;
     }
 
-    public void setMindmapService(MindmapService service)
-    {
+    public void setMindmapService(MindmapService service) {
         this.mindmapService = service;
     }
 }

@@ -222,7 +222,7 @@ public class MindMap {
     public static String getDefaultMindmapXml(@NotNull final String title) {
 
         final StringBuilder result = new StringBuilder();
-        result.append("<result version='tango'>");
+        result.append("<map version=\"tango\">");
         result.append("<topic central=\"true\" text=\"");
         result.append(title);
         result.append("\"/></result>");
