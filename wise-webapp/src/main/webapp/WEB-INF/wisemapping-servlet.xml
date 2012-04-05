@@ -13,10 +13,9 @@
         <property name="paramName" value="actionId"/>
     </bean>
 
-
-    <!--<bean id="localeResolver"
-          class="org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver">
-    </bean>-->
+    <!--<bean id="localeResolver"-->
+          <!--class="org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver">-->
+    <!--</bean>-->
 
     <bean id="homeResolver" class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
         <property name="mappings">

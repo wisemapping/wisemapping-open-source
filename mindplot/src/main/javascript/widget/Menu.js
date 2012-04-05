@@ -209,8 +209,9 @@ mindplot.widget.Menu = new Class({
 
 
         this._addButton('print', false, false, function() {
-            printMap();
+            window.open('c/print.htm?mapId=' + mapId)
         });
+
         this._registerTooltip('print', "Print");
 
         this._addButton('zoomIn', false, false, function() {

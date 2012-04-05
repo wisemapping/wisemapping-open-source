@@ -43,7 +43,7 @@
         <sec:intercept-url pattern="/c/*.htm" access="isFullyAuthenticated()"/>
         <sec:form-login login-page="/c/login.htm"
                         default-target-url='/c/mymaps.htm'
-                        always-use-default-target='true'
+                        always-use-default-target='false'
                         authentication-failure-url="/c/login.htm?login_error=2"
                         login-processing-url="/j_spring_security_check"/>
         <sec:remember-me key="wisemapping-hashed-key"/>

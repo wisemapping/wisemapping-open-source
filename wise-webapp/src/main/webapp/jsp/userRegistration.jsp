@@ -2,15 +2,13 @@
 
 
 <div id="userRegistrationContent">
-    <div id="userRegistration">
+    <div id="userRegistration" class="sb">
         <h1>
             <spring:message code="USER_REGISTRATION"/>
         </h1>
 
         <h2>
-            <spring:message code="REGISTRATION_TITLE_MSG"/>
-            <br/><br/>
-            <spring:message code="FIELD_REQUIRED_MSG"/>
+            <spring:message code="REGISTRATION_TITLE_MSG"/> <spring:message code="FIELD_REQUIRED_MSG"/>
         </h2>
         <form:form method="post" commandName="user">
             <table>
@@ -18,7 +16,7 @@
                 <tr>
                     <td class="formLabel">
                         <span class="fieldRequired">*</span>
-                        <spring:message code="EMAIL"/>:
+                        <label for="email"><spring:message code="EMAIL"/>:</label>
                     </td>
                     <td>
                         <form:input path="email" id="email"/>
@@ -28,7 +26,7 @@
                 <tr>
                     <td class="formLabel">
                         <span class="fieldRequired">*</span>
-                        <spring:message code="USERNAME"/>:
+                        <label for="username"> <spring:message code="USERNAME"/>:</label>
                     </td>
                     <td>
                         <form:input path="username" id="username"/>
@@ -38,7 +36,7 @@
                 <tr>
                     <td class="formLabel">
                         <span class="fieldRequired">*</span>
-                        <spring:message code="FIRSTNAME"/>:
+                        <label for="firstname"><spring:message code="FIRSTNAME"/>:</label>
                     </td>
                     <td>
                         <form:input path="firstname" id="firstname"/>
@@ -48,7 +46,7 @@
                 <tr>
                     <td class="formLabel">
                         <span class="fieldRequired">*</span>
-                        <spring:message code="LASTNAME"/>:
+                        <label for="lastname"><spring:message code="LASTNAME"/>:</label>
                     </td>
                     <td>
                         <form:input path="lastname" id="lastname"/>
@@ -58,7 +56,7 @@
                 <tr>
                     <td class="formLabel">
                         <span class="fieldRequired">*</span>
-                        <spring:message code="PASSWORD"/>:
+                        <label for="password"><spring:message code="PASSWORD"/>:</label>
                     </td>
                     <td>
                         <form:password path="password" id="password"/>
@@ -68,7 +66,7 @@
                 <tr>
                     <td class="formLabel">
                         <span class="fieldRequired">*</span>
-                        <spring:message code="RETYPE_PASSWORD"/>:
+                        <label for="retypePassword"><spring:message code="RETYPE_PASSWORD"/>:</label>
                     </td>
                     <td>
                         <form:password path="retypePassword" id="retypePassword"/>
@@ -81,7 +79,7 @@
                         </td>
                         <td>
                             <form:errors path="captcha" cssClass="errorMsg"/>
-                            ${requestScope.captchaHtml}
+                                ${requestScope.captchaHtml}
                         </td>
                     </tr>
                 </c:if>

@@ -225,7 +225,7 @@ public class MindMap {
         result.append("<map version=\"tango\">");
         result.append("<topic central=\"true\" text=\"");
         result.append(title);
-        result.append("\"/></result>");
+        result.append("\"/></map>");
         return result.toString();
     }
 

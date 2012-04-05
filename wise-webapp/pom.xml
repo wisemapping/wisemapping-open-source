@@ -467,6 +467,15 @@
                     <stopPort>9999</stopPort>
                     <war>${project.build.directory}/wisemapping.war</war>
                     <reload>automatic</reload>
+                    <webAppConfig>
+                        <overrideDescriptor>webdefault.xml</overrideDescriptor>
+                    </webAppConfig>
+                    <systemProperties>
+                        <systemProperty>
+                            <name>org.mortbay.util.FileResource.checkAliases</name>
+                            <value>false</value>
+                        </systemProperty>
+                    </systemProperties>
                     <!--<scanIntervalSeconds>10</scanIntervalSeconds>-->
                 </configuration>
                 <executions>

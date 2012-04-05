@@ -79,7 +79,7 @@
 
         <div class="leftMenu">
             <div class="button">
-                <a href="newMap.htm" rel="moodalbox 500px 190px" title="<spring:message code="NEW_MAP_MSG"/>">
+                <a href="newMap.htm" title="<spring:message code="NEW_MAP_MSG"/>">
                     <spring:message code="NEW_MINDMAP"/>
                 </a>
             </div>

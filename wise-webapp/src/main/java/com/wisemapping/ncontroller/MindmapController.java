@@ -33,14 +33,8 @@ public class MindmapController {
         return new ModelAndView("mindmapExport", "mindmap", modelObject);
     }
 
-    @RequestMapping(value = "edit")
-    public ModelAndView edit(@RequestParam(required = true) long mapId) {
-        final MindMapBean modelObject = findMindmapBean(mapId);
-        return new ModelAndView("mindmapEditor", "wisemapsList", modelObject);
-    }
-
     @RequestMapping(value = "collaborator")
-    public ModelAndView collaborator(@RequestParam(required = true) long mapId) {
+    public ModelAndView showCollaborator(@RequestParam(required = true) long mapId) {
         final MindMapBean modelObject = findMindmapBean(mapId);
         return new ModelAndView("mindmapCollaborator", "mindmap", modelObject);
     }
@@ -52,9 +46,17 @@ public class MindmapController {
     }
 
     @RequestMapping(value = "detail")
-    public ModelAndView detail(@RequestParam(required = true) long mapId) {
+    public ModelAndView showDetails(@RequestParam(required = true) long mapId) {
         final MindMapBean modelObject = findMindmapBean(mapId);
         final ModelAndView view = new ModelAndView("mindmapDetail", "wisemapDetail", modelObject);
+        view.addObject("user", Utils.getUser());
+        return view;
+    }
+
+    @RequestMapping(value = "print")
+    public ModelAndView showPrintPage(@RequestParam(required = true) long mapId) {
+        final MindMap mindmap = findMindmap(mapId);
+        final ModelAndView view = new ModelAndView("mindmapPrint", "mindmap", mindmap);
         view.addObject("user", Utils.getUser());
         return view;
     }
@@ -66,14 +68,6 @@ public class MindmapController {
         mindmap.setPublic(isPublic);
         mindmapService.updateMindmap(mindmap, false);
         return new ModelAndView("mindmapDetail", "wisemapDetail", new MindMapBean(mindmap));
-    }
-
-    @RequestMapping(value = "editMindmap")
-    public ModelAndView editMindmap(@RequestParam(required = true) long mapId) throws WiseMappingException {
-        final MindMapBean mindmap = findMindmapBean(mapId);
-        final ModelAndView view = new ModelAndView("editMindmap", "mindmap", mindmap);
-        view.addObject("user", Utils.getUser());
-        return view;
     }
 
     @RequestMapping(value = "mymaps")

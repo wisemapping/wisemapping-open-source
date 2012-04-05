@@ -13,37 +13,43 @@
             <tr>
                 <td>
                     <input type="radio" id="svg" name="exportFormat" value="SVG"/>
-                    <b>
-                        <spring:message code="SVG_EXPORT_FORMAT"/>
-                    </b>
+                    <label for="svg">
+                        <b>
+                            <spring:message code="SVG_EXPORT_FORMAT"/>
+                        </b>
 
-                    <p>
-                        <spring:message code="SVG_EXPORT_FORMAT_DETAILS"/>
-                    </p>
+                        <p>
+                            <spring:message code="SVG_EXPORT_FORMAT_DETAILS"/>
+                        </p>
+                    </label>
                 </td>
             </tr>
             <tr>
                 <td>
                     <input type="radio" name="exportFormat" value="PDF" id="pdf"/>
-                    <b>
-                        <spring:message code="PDF_EXPORT_FORMAT"/>
-                    </b>
+                    <label for="pdf">
+                        <b>
+                            <spring:message code="PDF_EXPORT_FORMAT"/>
+                        </b>
 
-                    <p>
-                        <spring:message code="PDF_EXPORT_FORMAT_DETAILS"/>
-                    </p>
+                        <p>
+                            <spring:message code="PDF_EXPORT_FORMAT_DETAILS"/>
+                        </p>
+                    </label>
                 </td>
             </tr>
             <tr>
                 <td>
                     <input type="radio" id="freemind" name="exportFormat" value="FREEMIND" checked="checked"/>
-                    <b>
-                        <spring:message code="FREEMIND_EXPORT_FORMAT"/>
-                    </b>
+                    <label for="freemind">
+                        <b>
+                            <spring:message code="FREEMIND_EXPORT_FORMAT"/>
+                        </b>
 
-                    <p>
-                        <spring:message code="FREEMIND_EXPORT_FORMAT_DETAILS"/>
-                    </p>
+                        <p>
+                            <spring:message code="FREEMIND_EXPORT_FORMAT_DETAILS"/>
+                        </p>
+                    </label>
                 </td>
             </tr>
             <tr>
@@ -55,17 +61,18 @@
                     <option>PNG</option>
                     <option>JPEG</option>
                 </select>
-
-                    <p>
-                        <spring:message code="IMG_EXPORT_FORMAT_DETAILS"/>
-                    </p>
+                    <label for="img">
+                        <p>
+                            <spring:message code="IMG_EXPORT_FORMAT_DETAILS"/>
+                        </p>
+                    </label>
                 </td>
             </tr>
             <tr>
                 <td style="text-align:center;margin-top:10px;">
                     <input type="button" id="ok" value="<spring:message code="OK"/>" class="btn-primary">
                     <input type="button" id="cancel" value="<spring:message code="CANCEL"/>" class="btn-secondary"
-                           onclick="">
+                           onclick="MooDialog.Request.active.close()">
                 </td>
             </tr>
             </tbody>

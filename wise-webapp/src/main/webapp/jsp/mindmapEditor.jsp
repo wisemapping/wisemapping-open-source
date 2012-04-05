@@ -2,7 +2,8 @@
 
 <%--@elvariable id="mindmap" type="com.wisemapping.model.MindMap"--%>
 <%--@elvariable id="editorTryMode" type="java.lang.Boolean"--%>
-<%--@elvariable id="user" type="com.wisemapping.model.User"--%>
+<%--@elvariable id="editorTryMode" type="java.lang.String"--%>
+<%--@elvariable id="mapXml" type="com.wisemapping.model.User"--%>
 
 <%@ include file="/jsp/init.jsp" %>
 <c:url value="mymaps.htm" var="shareMap">
@@ -32,7 +33,7 @@
 
         $(document).addEvent('loadcomplete', function(resource) {
             var mapId = '${mindmap.id}';
-            var mapXml = '${mapXml}';
+            var mapXml = '${mindmap.xmlAsJsLiteral}';
 
             // Configure designer options ...
             var options = loadDesignerOptions();

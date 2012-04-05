@@ -39,7 +39,7 @@
                 </c:if>
                 <tr>
                     <td class="formLabel">
-                        <spring:message code="EMAIL"/>:
+                        <label for="email"><spring:message code="EMAIL"/>:</label>
                     </td>
                     <td>
                         <input type='text' tabindex="1" id="email" name='j_username'/>
@@ -47,7 +47,7 @@
                 </tr>
                 <tr>
                     <td class="formLabel">
-                        <spring:message code="PASSWORD"/>:
+                        <label for="password"><spring:message code="PASSWORD"/>:</label>
                     </td>
                     <td>
                         <input type='password' tabindex="2" id="password" name='j_password'/>
@@ -58,7 +58,7 @@
                         <input type="checkbox" id="rememberme" name="_spring_security_remember_me"/>
                     </td>
                     <td>
-                        <spring:message code="REMEMBER_ME"/>
+                        <label for="rememberme"><spring:message code="REMEMBER_ME"/>:</label>
                     </td>
                 </tr>
                 <tr>
@@ -79,9 +79,7 @@
 </div>
 
 <div id="register">
-    <b>
-        <spring:message code="NOT_READY_A_USER"/>
-    </b>
+    <b><spring:message code="NOT_READY_A_USER"/></b>
     <spring:message code="NOT_READY_A_USER_MESSAGE"/>
     <a href="userRegistration.htm">
         <spring:message code="JOIN_NOW"/>
@@ -89,12 +87,9 @@
 </div>
 
 <c:if test="${isHsql== 'true'}">
-
-
     <div style="padding:10px;background-color: #E0EFFF; border-radius: 5px 5px 5px 5px;border-style:solid;border-color:gray">
-        <img src="../images/info.png" style="margin:0 4px">Note: Although HSQLDB is bundled with WiseMapping by
-        default during the installation, we do not recommend this database for production use. Please consider using
-        MySQL 5.5 instead. You can find more information how to configure MySQL <a
+        <img src="../images/info.png" style="margin:0 4px" alt="info">
+        <spring:message code="NO_PRODUCTION_DATABASE_CONFIGURED"/>&nbsp;<a
             href="http://www.wisemapping.org/documentation/configu">here</a>.
     </div>
 </c:if>
