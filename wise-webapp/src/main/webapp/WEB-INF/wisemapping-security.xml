@@ -39,12 +39,13 @@
         <sec:http-basic/>
     </sec:http>
 
-    <sec:http use-expressions="true">
+    <sec:http use-expressions="true" access-denied-page="/c/login.htm">
         <sec:intercept-url pattern="/c/*.htm" access="isFullyAuthenticated()"/>
-        <sec:form-login login-page="/c/login.htm" default-target-url='/c/mymaps.htm'
-                        always-use-default-target='true' authentication-failure-url="/c/login.htm?login_error=2"
+        <sec:form-login login-page="/c/login.htm"
+                        default-target-url='/c/mymaps.htm'
+                        always-use-default-target='true'
+                        authentication-failure-url="/c/login.htm?login_error=2"
                         login-processing-url="/j_spring_security_check"/>
-        <sec:remember-me key="_spring_security_remember_me" user-service-ref="userDetailsService"/>
         <sec:logout logout-url="/c/logout.htm" invalidate-session="true" logout-success-url="/c/login.htm"/>
     </sec:http>
 
@@ -62,4 +63,5 @@
         <property name="userManager" ref="userManager"/>
         <property name="adminUser" value="${admin.user}"/>
     </bean>
+
 </beans>

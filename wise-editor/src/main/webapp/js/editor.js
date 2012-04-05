@@ -26,13 +26,13 @@ function buildDesigner(options) {
     // Register load events ...
     designer = new mindplot.Designer(options, container);
     designer.addEvent('loadSuccess', function() {
-        window.waitDialog.close.delay(1000,window.waitDialog);
+        window.waitDialog.close.delay(1000, window.waitDialog);
         window.waitDialog = null;
     });
 
     window.onerror = function(e) {
         if (window.waitDialog) {
-            window.waitDialog.close.delay(1000,window.waitDialog);
+            window.waitDialog.close.delay(1000, window.waitDialog);
             window.waitDialog = null;
         }
         errorDialog.show();
@@ -56,7 +56,7 @@ function buildDesigner(options) {
 
     // Register toolbar event ...
     if ($('toolbar')) {
-        var menu = new mindplot.widget.Menu(designer, 'toolbar', "");
+        var menu = new mindplot.widget.Menu(designer, 'toolbar', options.mapId, "");
 
         //  If a node has focus, focus can be move to another node using the keys.
         designer._cleanScreen = function() {
