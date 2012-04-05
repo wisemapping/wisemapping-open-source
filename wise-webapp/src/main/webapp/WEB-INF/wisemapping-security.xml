@@ -30,7 +30,6 @@
     <sec:http pattern="/c/search.htm" security="none"/>
     <sec:http pattern="/c/keyboard.htm" security="none"/>
     <sec:http pattern="/c/embeddedview.htm" security="none"/>
-    <sec:http pattern="/c/export.htm" security="none"/>
     <sec:http pattern="/c/publicview.htm" security="none"/>
     <sec:http pattern="/service/transform*" security="none"/>
 
@@ -45,7 +44,7 @@
         <sec:form-login login-page="/c/login.htm" default-target-url='/c/mymaps.htm'
                         always-use-default-target='true' authentication-failure-url="/c/login.htm?login_error=2"
                         login-processing-url="/j_spring_security_check"/>
-        <sec:remember-me key="rememberMeKey" user-service-ref="userDetailsService"/>
+        <sec:remember-me key="_spring_security_remember_me" user-service-ref="userDetailsService"/>
         <sec:logout logout-url="/c/logout.htm" invalidate-session="true" logout-success-url="/c/login.htm"/>
     </sec:http>
 

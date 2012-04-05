@@ -45,7 +45,7 @@ public abstract class BaseSecurityAdvice {
         }
 
         if (!isAllowed) {
-            throw new AccessDeniedSecurityException("User '" + user.getEmail() + "' not allowed to invoke:" + methodInvocation);
+            throw new AccessDeniedSecurityException("User '" + (user != null ? user.getEmail() : "none") + "' not allowed to invoke:" + methodInvocation);
         }
     }
 

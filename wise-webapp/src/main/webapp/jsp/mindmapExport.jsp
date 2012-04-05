@@ -112,8 +112,6 @@
 
         // Finally, submit map ...
         form.submit();
-
-
         MooDialog.Request.active.close();
     });
 

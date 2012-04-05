@@ -40,6 +40,9 @@
             var userOptions = ${mindmap.properties};
             options.zoom = userOptions.zoom;
 
+            // Set map id ...
+            options.mapId = mapId;
+
             // Build designer ...
             var designer = buildDesigner(options);
 
