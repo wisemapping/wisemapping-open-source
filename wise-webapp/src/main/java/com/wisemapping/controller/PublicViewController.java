@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.wisemapping.model.MindMap;
 
 public class PublicViewController extends BaseMultiActionController {
-    private static final String MAP_ID = "mapId";
 
     protected ModelAndView handleNoSuchRequestHandlingMethod(NoSuchRequestHandlingMethodException noSuchRequestHandlingMethodException, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
             throws Exception

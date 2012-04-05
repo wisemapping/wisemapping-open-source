@@ -327,6 +327,7 @@ mindplot.widget.Menu = new Class({
                     }
                 });
             });
+            this._registerTooltip('tagIt', "Tag");
         }
 
         var shareElem = $('shareIt');
@@ -345,6 +346,8 @@ mindplot.widget.Menu = new Class({
                 });
 
             });
+            this._registerTooltip('shareIt', "Collaborators");
+
         }
 
         var publishElem = $('publishIt');
@@ -363,6 +366,7 @@ mindplot.widget.Menu = new Class({
                 });
 
             });
+            this._registerTooltip('publishIt', "Publish");
         }
 
         var historyElem = $('history');
@@ -381,6 +385,7 @@ mindplot.widget.Menu = new Class({
                     }
                 });
             });
+            this._registerTooltip('history', "History");
         }
 
         this._registerEvents(designer);
