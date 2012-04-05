@@ -46,6 +46,7 @@
                         always-use-default-target='true'
                         authentication-failure-url="/c/login.htm?login_error=2"
                         login-processing-url="/j_spring_security_check"/>
+        <sec:remember-me key="wisemapping-hashed-key"/>
         <sec:logout logout-url="/c/logout.htm" invalidate-session="true" logout-success-url="/c/login.htm"/>
     </sec:http>
 
