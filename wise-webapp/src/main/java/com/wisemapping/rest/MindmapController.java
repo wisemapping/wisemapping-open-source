@@ -1,6 +1,7 @@
 package com.wisemapping.rest;
 
 
+import com.sun.jdi.IntegerType;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.MindmapUser;
@@ -24,15 +25,6 @@ import java.util.Calendar;
 import java.util.List;
 
 
-/**
- * Pendings:
- * List with filter
- * Clone
- * Discard Changed
- * Public ?
- * Admin operations for get/update
- * Check visibility
- */
 @Controller
 public class MindmapController extends BaseController {
     @Autowired
@@ -123,6 +115,17 @@ public class MindmapController extends BaseController {
         final User user = Utils.getUser();
         final MindMap mindmap = mindmapService.getMindmapById(id);
         mindmapService.removeMindmap(mindmap, user);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/maps/batch")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void batchDelete(@RequestParam(required = false) String ids) throws IOException, WiseMappingException {
+        final User user = Utils.getUser();
+        final String[] mapsIds = ids.split(",");
+        for (final String mapId : mapsIds) {
+            final MindMap mindmap = mindmapService.getMindmapById(Integer.parseInt(mapId));
+            mindmapService.removeMindmap(mindmap, user);
+        }
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/xml", consumes = {"application/xml"}, produces = {"application/json", "text/html", "application/xml"})

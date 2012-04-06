@@ -62,6 +62,4 @@
         </div>
     </div>
 </c:if>
-<div id="headerLoading">
-    <spring:message code="LOADING_MSG"/>
-</div>
+

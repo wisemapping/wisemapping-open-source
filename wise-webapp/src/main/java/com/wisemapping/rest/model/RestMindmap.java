@@ -74,6 +74,11 @@ public class RestMindmap {
         return mindmap.isPublic();
     }
 
+
+    public void setPublic(boolean value) {
+       // return mindmap.isPublic();
+    }
+
     public String getXml() throws IOException {
         return mindmap.getXmlStr();
     }
