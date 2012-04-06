@@ -177,8 +177,7 @@
                                     type: 'POST',
                                     contentType:"application/json; charset=utf-8",
                                     success : function(data, textStatus, jqXHR) {
-                                        var location = jqXHR.getResponseHeader("Location");
-                                        var mapId = location.substring(location.lastIndexOf('/') + 1, location.length);
+                                        var mapId = jqXHR.getResponseHeader("ResourceId");
                                         window.location = "c/editor.htm?action=open&mapId=" + mapId;
                                     },
                                     error: function() {

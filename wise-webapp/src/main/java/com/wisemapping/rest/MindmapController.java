@@ -183,9 +183,10 @@ public class MindmapController extends BaseController {
         // Add new mindmap ...
         mindmapService.addMindmap(delegated, user);
 
-
         // Return the new created map ...
         response.setHeader("Location", "/service/maps/" + delegated.getId());
+        response.setHeader("ResourceId", Integer.toString(delegated.getId()));
+
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/maps/{id}", consumes = {"application/xml", "application/json"})
