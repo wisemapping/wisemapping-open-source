@@ -50,7 +50,6 @@ jQuery.fn.dataTableExt.removeSelectedRows = function() {
         url: "../service/maps/batch?ids=" + mapIds.join(","),
         type:"DELETE",
         success : function(data, textStatus, jqXHR) {
-            console.log("delete success");
             var trs = $('.select  input:checked[id!="selectAll"]').parent().parent();
             trs.each(function() {
                 $('#mindmapListTable').dataTable().fnDeleteRow(this);
@@ -60,6 +59,4 @@ jQuery.fn.dataTableExt.removeSelectedRows = function() {
             alert("Unexpected error removing maps. Refresh before continue.");
         }
     });
-
-
 };

@@ -1,7 +1,6 @@
 package com.wisemapping.rest;
 
 
-import com.sun.jdi.IntegerType;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.MindmapUser;

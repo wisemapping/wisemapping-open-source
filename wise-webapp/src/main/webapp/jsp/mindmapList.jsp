@@ -9,8 +9,6 @@
 
 <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
 <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
-<script type='text/javascript' src='../js/mootools-core.js'></script>
-
 <link rel="stylesheet/less" type="text/css" href="css/mymaps.less"/>
 <script src="js/less.js" type="text/javascript"></script>
 
@@ -163,8 +161,37 @@
         $("#buttons .newMap").button({
             icons: { primary: "ui-icon-circle-plus" }
         }).click(function() {
-                    window.location = "c/newMap.htm"
-        });
+                    $("#new-dialog-modal").dialog({
+                        modal: true,
+                        buttons: {
+                            "Create": function() {
+                                var formData = {};
+                                $('#new-dialog-modal input').each(function(index, elem) {
+                                    formData[elem.name] = elem.value;
+                                });
+
+                                jQuery.ajax("../service/maps", {
+                                    async:false,
+                                    dataType: 'json',
+                                    data: JSON.stringify(formData),
+                                    type: 'POST',
+                                    contentType:"application/json; charset=utf-8",
+                                    success : function(data, textStatus, jqXHR) {
+                                        var location = jqXHR.getResponseHeader("Location");
+                                        var mapId = location.substring(location.lastIndexOf('/') + 1, location.length);
+                                        window.location = "c/editor.htm?action=open&mapId=" + mapId;
+                                    },
+                                    error: function() {
+                                        alert("Unexpected error removing maps. Refresh before continue.");
+                                    }
+                                });
+                            },
+                            Cancel: function() {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
+                });
 
         $("#buttons .importMap").button({
             icons: { primary: "ui-icon-trash" }
@@ -196,8 +223,6 @@
                     }
                 });
     });
-
-
 </script>
 </head>
 <body>
@@ -216,6 +241,27 @@
         <div id="buttons">
             <div id="delete-dialog-modal" title="Delete maps" style="display: none">
                 <p>Are you sure you want to delete maps <span></span> ?</p>
+            </div>
+            <div id="new-dialog-modal" title="New" style="display: none">
+                <table>
+                    <tr>
+                        <td class="formLabel">
+                            <span class="fieldRequired">*</span>
+                            <label for="title"><spring:message code="NAME"/>:</label>
+                        </td>
+                        <td>
+                            <input name="title" id="title" tabindex="1" type="text" required="true"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="formLabel">
+                            <label for="description"><spring:message code="DESCRIPTION"/>:</label>
+                        </td>
+                        <td>
+                            <input name="description" id="description" tabindex="2"/>
+                        </td>
+                    </tr>
+                </table>
             </div>
             <div id="share-dialog-modal" title="Share maps" style="display: none">
                 <p>Are you sure you want to share maps <span></span> ?</p>
