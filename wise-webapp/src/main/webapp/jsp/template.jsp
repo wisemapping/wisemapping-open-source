@@ -23,10 +23,6 @@
     <link rel="stylesheet" type="text/css" href="../css/wisehome.css"/>
     <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
-    <script type='text/javascript'
-            src='https://ajax.googleapis.com/ajax/libs/mootools/1.3.2/mootools-yui-compressed.js'></script>
-    <script type='text/javascript' src='../js/mootools-more.js'></script>
-
 </head>
 <body>
 

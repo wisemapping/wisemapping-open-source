@@ -134,10 +134,6 @@
         <property name="mindmapService" ref="mindmapService"/>
     </bean>
 
-    <bean id="newMapValidator" class="com.wisemapping.validator.MapInfoValidator">
-        <property name="mindmapService" ref="mindmapService"/>
-    </bean>
-
     <bean id="importMapValidator" class="com.wisemapping.validator.ImportMapValidator">
         <property name="mindmapService" ref="mindmapService"/>
     </bean>
@@ -159,19 +155,7 @@
         <property name="userService" ref="userService"/>
     </bean>
 
-    <bean id="newMapController" class="com.wisemapping.controller.NewMindmapController">
-        <property name="sessionForm" value="false"/>
-        <property name="commandName" value="newMap"/>
-        <property name="commandClass" value="com.wisemapping.view.MindMapInfoBean"/>
-        <property name="validator" ref="newMapValidator"/>
-        <property name="formView" value="newMap"/>
-        <property name="errorView" value="newMapError"/>
-        <property name="mindmapService" ref="mindmapService"/>
-        <property name="userService" ref="userService"/>
-    </bean>
-
-
-    <bean id="importMapController" class="com.wisemapping.controller.ImportController">
+      <bean id="importMapController" class="com.wisemapping.controller.ImportController">
         <property name="sessionForm" value="false"/>
         <property name="commandName" value="importMap"/>
         <property name="commandClass" value="com.wisemapping.view.ImportMapBean"/>
@@ -254,7 +238,6 @@
                 <prop key="/c/embeddedView.htm">embeddedView</prop>
                 <prop key="/c/renameMap.htm">renameMapController</prop>
                 <prop key="/c/importMap.htm">importMapController</prop>
-                <prop key="/c/newMap.htm">newMapController</prop>
                 <prop key="/c/history.htm">historyController</prop>
                 <prop key="/c/installCFG.htm">homeController</prop>
             </props>

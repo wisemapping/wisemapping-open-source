@@ -109,18 +109,6 @@
 
 
     <!-- Dialog Forms -->
-    <definition name="newMap" extends="formDialogTemplate">
-        <put name="title" value="NEW_MINDMAP"/>
-        <put name="details" value="FIELD_REQUIRED_MSG"/>
-        <put name="body" value="/jsp/newMap.jsp"/>
-    </definition>
-
-
-    <definition name="newMapError" extends="pageTemplate">
-        <put name="title" value="NEW_MINDMAP"/>
-        <put name="details" value="FIELD_REQUIRED_MSG"/>
-        <put name="body" value="/jsp/newMapError.jsp"/>
-    </definition>
 
     <definition name="setting" extends="formDialogTemplate">
         <put name="title" value="SETTINGS"/>

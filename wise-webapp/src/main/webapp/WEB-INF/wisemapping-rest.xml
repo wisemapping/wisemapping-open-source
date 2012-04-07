@@ -22,6 +22,7 @@
                 <value>com.wisemapping.rest.model.RestMindmapInfo</value>
                 <value>com.wisemapping.rest.model.RestMindmapList</value>
                 <value>com.wisemapping.rest.model.RestUser</value>
+                <value>com.wisemapping.rest.model.RestErrors</value>
             </list>
         </property>
     </bean>
@@ -88,4 +89,14 @@
     <bean id="transformViewWise" class="com.wisemapping.rest.view.ImportTransformationView">
         <constructor-arg value="application/wisemapping+xml"/>
     </bean>
+
+
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>messages</value>
+            </list>
+        </property>
+    </bean>
+
 </beans>

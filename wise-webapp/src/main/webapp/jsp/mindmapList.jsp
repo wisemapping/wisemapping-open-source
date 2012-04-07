@@ -161,10 +161,14 @@
         $("#buttons .newMap").button({
             icons: { primary: "ui-icon-circle-plus" }
         }).click(function() {
+                    // Clean previous dialog content ...
+                    $("#new-dialog-modal div[id='errorMessage']").text("").removeClass("ui-state-highlight");
+
                     $("#new-dialog-modal").dialog({
                         modal: true,
                         buttons: {
                             "Create": function() {
+
                                 var formData = {};
                                 $('#new-dialog-modal input').each(function(index, elem) {
                                     formData[elem.name] = elem.value;
@@ -180,12 +184,37 @@
                                         var mapId = jqXHR.getResponseHeader("ResourceId");
                                         window.location = "c/editor.htm?action=open&mapId=" + mapId;
                                     },
-                                    error: function() {
-                                        alert("Unexpected error removing maps. Refresh before continue.");
+                                    error: function(jqXHR, textStatus, errorThrown) {
+                                        if (jqXHR.status == 400) {
+                                            var errors = JSON.parse(jqXHR.responseText);
+                                            // Clean previous marks ....
+                                            $('#new-dialog-modal input').each(function(index, elem) {
+                                                $(elem).removeClass("ui-state-error");
+                                            });
+
+                                            // Mark fields with errors ...
+                                            var fieldErrors = errors.fieldErrors;
+                                            if (fieldErrors) {
+                                                for (var fieldName in fieldErrors) {
+                                                    // Mark the field ...
+                                                    var message = fieldErrors[fieldName];
+                                                    var inputField = $("#new-dialog-modal input[name='" + fieldName + "']");
+                                                    $(inputField).addClass("ui-state-error");
+
+
+                                                    $("#new-dialog-modal div[id='errorMessage']").text(message).addClass("ui-state-highlight");
+                                                }
+
+                                            }
+
+                                        } else {
+                                            alert("Unexpected error removing maps. Refresh before continue.");
+                                        }
+
                                     }
                                 });
                             },
-                            Cancel: function() {
+                            Cancel:function() {
                                 $(this).dialog("close");
                             }
                         }
@@ -221,7 +250,8 @@
                         });
                     }
                 });
-    });
+    })
+            ;
 </script>
 </head>
 <body>
@@ -241,7 +271,9 @@
             <div id="delete-dialog-modal" title="Delete maps" style="display: none">
                 <p>Are you sure you want to delete maps <span></span> ?</p>
             </div>
-            <div id="new-dialog-modal" title="New" style="display: none">
+            <div id="new-dialog-modal" title="Add new map" style="display: none">
+                <div id="errorMessage"></div>
+
                 <table>
                     <tr>
                         <td class="formLabel">
@@ -281,7 +313,7 @@
                 </div>
             </div>
             <div id="map-table">
-                <table cellpadding="0" cellspacing="0" border="0" class="display" id="mindmapListTable">
+                <table class="display" id="mindmapListTable">
 
                 </table>
             </div>

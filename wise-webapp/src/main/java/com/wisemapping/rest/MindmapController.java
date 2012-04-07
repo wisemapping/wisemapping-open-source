@@ -10,10 +10,13 @@ import com.wisemapping.rest.model.RestMindmapInfo;
 import com.wisemapping.rest.model.RestMindmapList;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapService;
+import com.wisemapping.validator.MapInfoValidator;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -154,22 +157,15 @@ public class MindmapController extends BaseController {
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createMap(@RequestBody RestMindmap restMindmap, @NotNull HttpServletResponse response) throws IOException, WiseMappingException {
 
-        final String title = restMindmap.getTitle();
-        if (title == null || title.isEmpty()) {
-            throw new IllegalArgumentException("Map title can not be null");
-        }
-
-        final String description = restMindmap.getDescription();
-        if (description == null || description.isEmpty()) {
-            throw new IllegalArgumentException("Map details can not be null");
+        // Validate ...
+        final BindingResult result = new BeanPropertyBindingResult(restMindmap, "");
+        new MapInfoValidator(mindmapService).validate(restMindmap.getDelegated(), result);
+        if (result.hasErrors()) {
+            throw new ValidationException(result);
         }
 
         // Some basic validations ...
         final User user = Utils.getUser();
-        final MindMap mindMap = mindmapService.getMindmapByTitle(title, user);
-        if (mindMap != null) {
-            throw new IllegalArgumentException("Map already exists with title '" + title + "'");
-        }
 
         // If the user has not specified the xml content, add one ...
         final MindMap delegated = restMindmap.getDelegated();
@@ -186,7 +182,6 @@ public class MindmapController extends BaseController {
         // Return the new created map ...
         response.setHeader("Location", "/service/maps/" + delegated.getId());
         response.setHeader("ResourceId", Integer.toString(delegated.getId()));
-
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/maps/{id}", consumes = {"application/xml", "application/json"})
@@ -222,8 +217,8 @@ public class MindmapController extends BaseController {
 
         // Return the new created map ...
         response.setHeader("Location", "/service/maps/" + clonedMap.getId());
+        response.setHeader("ResourceId", Integer.toString(clonedMap.getId()));
 
     }
-
 
 }

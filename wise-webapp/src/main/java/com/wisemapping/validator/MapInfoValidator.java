@@ -24,6 +24,7 @@ import com.wisemapping.model.User;
 import com.wisemapping.model.Constants;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.view.MindMapInfoBean;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -37,8 +38,16 @@ public class MapInfoValidator implements Validator {
         return clazz.equals(MindMapInfoBean.class);
     }
 
-    public void validate(Object obj, Errors errors) {
-        final MindMapInfoBean map = (MindMapInfoBean) obj;
+    public MapInfoValidator() {
+
+    }
+
+    public MapInfoValidator(@NotNull MindmapService service) {
+        this.mindmapService = service;
+    }
+
+    public void validate(Object obj, @NotNull Errors errors) {
+        final MindMap map = (MindMap) obj;
         if (map == null) {
             errors.rejectValue("map", "error.not-specified", null, "Value required.");
         } else {
@@ -53,9 +62,8 @@ public class MapInfoValidator implements Validator {
                             new Object[]{Constants.MAX_MAP_NAME_LENGTH},
                             "The title must have less than " + Constants.MAX_MAP_NAME_LENGTH + " characters.");
                 } else {
-                    // Map alredy exists ?
+                    // Map already exists ?
                     final MindmapService service = this.getMindmapService();
-
                     final User user = com.wisemapping.security.Utils.getUser();
                     final MindMap mindMap = service.getMindmapByTitle(title, user);
                     if (mindMap != null) {

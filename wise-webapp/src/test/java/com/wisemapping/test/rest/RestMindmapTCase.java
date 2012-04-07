@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.http.*;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.security.crypto.codec.Base64;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -110,6 +111,33 @@ public class RestMindmapTCase {
         final RestMindmap map = findMap(requestHeaders, template, resourceUri);
         assertEquals(newTitle, map.getTitle());
     }
+
+    @Test(dataProvider = "ContentType-Provider-Function")
+    public void validateMapsCreation(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
+        final HttpHeaders requestHeaders = createHeaders(mediaType);
+        final RestTemplate template = createTemplate();
+
+        // Create a sample map ...
+        final String title = "Map to change title  - " + mediaType.toString();
+        final URI resourceUri = addNewMap(requestHeaders, template, title);
+
+        // Try to create a map with the same title ..
+        final RestMindmap restMindmap = new RestMindmap();
+        restMindmap.setTitle(title);
+        restMindmap.setDescription("My Map Desc");
+
+        try {
+            HttpEntity<RestMindmap> createUserEntity = new HttpEntity<RestMindmap>(restMindmap, requestHeaders);
+            template.postForLocation(BASE_REST_URL + "/maps", createUserEntity);
+        } catch (HttpClientErrorException cause) {
+            final String responseBodyAsString = cause.getResponseBodyAsString();
+            assert(responseBodyAsString.contains("Map name already exists."));
+            return;
+        }
+        fail("Wrong response");
+
+    }
+
 
     @Test(dataProvider = "ContentType-Provider-Function")
     public void changeMapDescription(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
