@@ -41,7 +41,11 @@
                     sClass : "columName",
                     sTitle : "Name",
                     bUseRendered : false,
-                    mDataProp: "title"
+                    mDataProp: "title",
+                    fnRender : function(obj) {
+                        return '<a href="c/editor.htm?action=open&mapId=' + obj.aData.id + '">' + obj.aData.title + '</a>';
+                    }
+
                 },
                 {
                     sTitle : "Description",
@@ -157,77 +161,82 @@
                     }
                 });
 
-
         $("#buttons .newMap").button({
             icons: { primary: "ui-icon-circle-plus" }
         }).click(function() {
-                    // Clean previous dialog content ...
-                    $("#new-dialog-modal div[id='errorMessage']").text("").removeClass("ui-state-highlight");
-
-                    $("#new-dialog-modal").dialog({
+                    $("#new-dialog-modal").dialogForm({
                         modal: true,
-                        buttons: {
-                            "Create": function() {
-
-                                var formData = {};
-                                $('#new-dialog-modal input').each(function(index, elem) {
-                                    formData[elem.name] = elem.value;
-                                });
-
-                                jQuery.ajax("../service/maps", {
-                                    async:false,
-                                    dataType: 'json',
-                                    data: JSON.stringify(formData),
-                                    type: 'POST',
-                                    contentType:"application/json; charset=utf-8",
-                                    success : function(data, textStatus, jqXHR) {
-                                        var mapId = jqXHR.getResponseHeader("ResourceId");
-                                        window.location = "c/editor.htm?action=open&mapId=" + mapId;
-                                    },
-                                    error: function(jqXHR, textStatus, errorThrown) {
-                                        if (jqXHR.status == 400) {
-                                            var errors = JSON.parse(jqXHR.responseText);
-                                            // Clean previous marks ....
-                                            $('#new-dialog-modal input').each(function(index, elem) {
-                                                $(elem).removeClass("ui-state-error");
-                                            });
-
-                                            // Mark fields with errors ...
-                                            var fieldErrors = errors.fieldErrors;
-                                            if (fieldErrors) {
-                                                for (var fieldName in fieldErrors) {
-                                                    // Mark the field ...
-                                                    var message = fieldErrors[fieldName];
-                                                    var inputField = $("#new-dialog-modal input[name='" + fieldName + "']");
-                                                    $(inputField).addClass("ui-state-error");
-
-
-                                                    $("#new-dialog-modal div[id='errorMessage']").text(message).addClass("ui-state-highlight");
-                                                }
-
-                                            }
-
-                                        } else {
-                                            alert("Unexpected error removing maps. Refresh before continue.");
-                                        }
-
-                                    }
-                                });
-                            },
-                            Cancel:function() {
-                                $(this).dialog("close");
-                            }
-                        }
+                        acceptButtonLabel : "Create",
+                        cancelButtonLabel : "Cancel",
+                        redirect: "c/editor.htm?action=open",
+                        url :  "../service/maps"
                     });
                 });
 
-        $("#buttons .importMap").button({
-            icons: { primary: "ui-icon-trash" }
-        });
 
-        $("#buttons .moreActions").button({
-            icons: { primary: "ui-icon-triangle-1-s" }
-        });
+        $("#buttons .duplicateMap").button({
+            icons: { primary: "ui-icon-copy" }
+        }).click(function() {
+                    // Map to be cloned ...
+                    var tableElem = $('#mindmapListTable');
+                    var rows = tableElem.dataTableExt.getSelectedRows();
+                    if (rows.length > 0) {
+
+                        // Obtain map name  ...
+                        var rowData = tableElem.dataTable().fnGetData(rows[0]);
+                        $('#duplicateMessage').text("Duplicate '" + rowData.title + "'");
+
+                        // Obtains map id ...
+                        var mapId = rowData.id;
+
+                        // Initialize dialog ...
+                        $("#duplicate-dialog-modal").dialogForm({
+                            modal: true,
+                            acceptButtonLabel : "Duplicated",
+                            cancelButtonLabel : "Cancel",
+                            redirect: "c/editor.htm?action=open",
+                            url :  "../service/maps/" + mapId
+                        });
+                    }
+                });
+
+        $("#buttons .renameMap").button({
+            icons: { primary: "ui-icon-gear" }
+        }).click(function() {
+                    // Map to be cloned ...
+                    var tableElem = $('#mindmapListTable');
+                    var rows = tableElem.dataTableExt.getSelectedRows();
+                    if (rows.length > 0) {
+
+                        // Obtain map name  ...
+                        var dataTable = tableElem.dataTable();
+                        var rowData = dataTable.fnGetData(rows[0]);
+
+                        // Fill dialog with default values ...
+                        var mapId = rowData.id;
+                        $("#rename-dialog-modal input[name='title']").attr('value', rowData.title);
+                        $("#rename-dialog-modal input[name='description']").attr('value', rowData.description);
+
+                        // Initialize dialog ...
+                        $("#rename-dialog-modal").dialogForm({
+                            modal: true,
+                            type: 'PUT',
+                            acceptButtonLabel : "Rename",
+                            cancelButtonLabel : "Cancel",
+                            postUpdate: function(reqBodyData) {
+                                // Remove old entry ...
+                                dataTable.fnDeleteRow(rowData);
+
+                                // Add a new one...
+                                rowData.title = reqBodyData.title;
+                                rowData.description = reqBodyData.description;
+                                dataTable.fnAddData(rowData);
+                            },
+                            url :  "../service/maps/" + mapId
+                        });
+                    }
+                });
+
 
         $("#buttons .delete").button({
             icons: { primary: "ui-icon-trash" }
@@ -250,8 +259,16 @@
                         });
                     }
                 });
-    })
-            ;
+
+        $("#buttons .importMap").button({
+            icons: { primary: "ui-icon-trash" }
+        });
+
+        $("#buttons .moreActions").button({
+            icons: { primary: "ui-icon-triangle-1-s" }
+        });
+
+    });
 </script>
 </head>
 <body>
@@ -271,6 +288,7 @@
             <div id="delete-dialog-modal" title="Delete maps" style="display: none">
                 <p>Are you sure you want to delete maps <span></span> ?</p>
             </div>
+            <!-- New map dialog -->
             <div id="new-dialog-modal" title="Add new map" style="display: none">
                 <div id="errorMessage"></div>
 
@@ -278,10 +296,37 @@
                     <tr>
                         <td class="formLabel">
                             <span class="fieldRequired">*</span>
+                            <label for="newTitle"><spring:message code="NAME"/>:</label>
+                        </td>
+                        <td>
+                            <input name="title" id="newTitle" type="text" required="true"
+                                   placeholder="Name used to identify your map"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="formLabel">
+                            <label for="newDec"><spring:message code="DESCRIPTION"/>:</label>
+                        </td>
+                        <td>
+                            <input name="description" id="newDec" type="text"
+                                   placeholder="Some description for your map"/>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Duplicate map dialog -->
+            <div id="duplicate-dialog-modal" title="Copy Map" style="display: none">
+                <div id="duplicateMessage"></div>
+                <div id="errorMessage"></div>
+                <table>
+                    <tr>
+                        <td class="formLabel">
+                            <span class="fieldRequired">*</span>
                             <label for="title"><spring:message code="NAME"/>:</label>
                         </td>
                         <td>
-                            <input name="title" id="title" tabindex="1" type="text" required="true"/>
+                            <input name="title" id="title" type="text" required="true"/>
                         </td>
                     </tr>
                     <tr>
@@ -289,29 +334,50 @@
                             <label for="description"><spring:message code="DESCRIPTION"/>:</label>
                         </td>
                         <td>
-                            <input name="description" id="description" tabindex="2"/>
+                            <input name="description" id="description" type="text"
+                                   placeholder="Some description for your map"/>
                         </td>
                     </tr>
                 </table>
             </div>
+
+            <!-- Duplicate map dialog -->
+            <div id="rename-dialog-modal" title="Rename" style="display: none">
+                <div id="errorMessage"></div>
+                <table>
+                    <tr>
+                        <td class="formLabel">
+                            <span class="fieldRequired">*</span>
+                            <label for="renTitle"><spring:message code="NAME"/>:</label>
+                        </td>
+                        <td>
+                            <input name="title" id="renTitle" required="true"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="formLabel">
+                            <label for="renDescription"><spring:message code="DESCRIPTION"/>:</label>
+                        </td>
+                        <td>
+                            <input name="description" id="renDescription"/>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+
             <div id="share-dialog-modal" title="Share maps" style="display: none">
                 <p>Are you sure you want to share maps <span></span> ?</p>
             </div>
             <button class="newMap">New</button>
+            <button class="duplicateMap">Duplicate</button>
             <button class="delete">Delete</button>
+            <button class="renameMap">Rename</button>
             <button class="importMap">Import</button>
             <button class="moreActions">More</button>
         </div>
 
         <div>
-            <div id="tags">
-                <h2>Mes dossiers:</h2>
-
-                <div id="tags-list"></div>
-                <div id="tags-actions">
-                    <button>Nouveau Dossier</button>
-                </div>
-            </div>
             <div id="map-table">
                 <table class="display" id="mindmapListTable">
 

@@ -43,20 +43,95 @@ jQuery.fn.dataTableExt.getSelectedMapsIds = function() {
     return ids;
 };
 
+jQuery.fn.dataTableExt.getSelectedRows = function() {
+    return $('.select  input:checked[id!="selectAll"]').parent().parent();
+};
+
 jQuery.fn.dataTableExt.removeSelectedRows = function() {
     var mapIds = this.getSelectedMapsIds();
+    var trs = this.getSelectedRows();
     jQuery.ajax({
         async:false,
         url: "../service/maps/batch?ids=" + mapIds.join(","),
         type:"DELETE",
         success : function(data, textStatus, jqXHR) {
-            var trs = $('.select  input:checked[id!="selectAll"]').parent().parent();
             trs.each(function() {
                 $('#mindmapListTable').dataTable().fnDeleteRow(this);
             });
         },
-        error: function(){
+        error: function() {
             alert("Unexpected error removing maps. Refresh before continue.");
         }
     });
+};
+
+
+jQuery.fn.dialogForm = function(options) {
+
+    var containerId = this[0].id;
+    var url = options.url;
+    var acceptButtonLabel = options.acceptButtonLabel;
+
+    // Clean previous dialog content ...
+    $("#" + containerId + " div[id='errorMessage']").text("").removeClass("ui-state-highlight");
+
+    options.buttons = {};
+    options.buttons[acceptButtonLabel] = function() {
+        var formData = {};
+        $('#' + containerId + ' input').each(function(index, elem) {
+            formData[elem.name] = elem.value;
+        });
+
+        jQuery.ajax(url, {
+            async:false,
+            dataType: 'json',
+            data: JSON.stringify(formData),
+            type: options.type ? options.type : 'POST',
+            contentType:"application/json; charset=utf-8",
+            success : function(data, textStatus, jqXHR) {
+                if (options.redirect) {
+                    var mapId = jqXHR.getResponseHeader("ResourceId");
+                    window.location = options.redirect + "&mapId=" + mapId;
+                } else if (options.postUpdate) {
+                    options.postUpdate(formData);
+                }
+                $(this).dialog("close");
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status == 400) {
+                    var errors = JSON.parse(jqXHR.responseText);
+                    // Clean previous marks ....
+                    $("#" + containerId + ' input').each(function(index, elem) {
+                        $(elem).removeClass("ui-state-error");
+                    });
+
+                    // Mark fields with errors ...
+                    var fieldErrors = errors.fieldErrors;
+                    if (fieldErrors) {
+                        for (var fieldName in fieldErrors) {
+                            // Mark the field ...
+                            var message = fieldErrors[fieldName];
+                            var inputField = $("#" + containerId + " input[name='" + fieldName + "']");
+                            $(inputField).addClass("ui-state-error");
+                            $("#" + containerId + " div[id='errorMessage']").text(message).addClass("ui-state-highlight");
+                        }
+
+                    }
+
+                } else {
+                    alert("Unexpected error removing maps. Refresh before continue.");
+                }
+
+            }
+        });
+    };
+
+    var cancelButtonLabel = options.cancelButtonLabel;
+    options.buttons[cancelButtonLabel] = function() {
+        $(this).dialog("close");
+    };
+
+    // Open the modal dialog ...
+    this.dialog(options);
+
 };

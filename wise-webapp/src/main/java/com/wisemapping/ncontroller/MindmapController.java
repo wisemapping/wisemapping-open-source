@@ -98,14 +98,6 @@ public class MindmapController {
         return view;
     }
 
-    @RequestMapping(value = "delete")
-    public ModelAndView delete(@RequestParam(required = true) long mapId, @NotNull HttpServletRequest request) throws WiseMappingException {
-        final User user = Utils.getUser();
-        final MindMap mindmap = findMindmap(mapId);
-        mindmapService.removeCollaboratorFromMindmap(mindmap, user.getId());
-        return list(request);
-    }
-
     @RequestMapping(value = "updateMindmap")
     public ModelAndView updateMindmap(@RequestParam(required = true) long mapId, @RequestParam(required = true) String title, @RequestParam(required = true) String description, @NotNull HttpServletRequest request) throws WiseMappingException {
         final MindMap mindmap = findMindmap(mapId);

@@ -187,23 +187,15 @@ public class MindmapController extends BaseController {
     @RequestMapping(method = RequestMethod.POST, value = "/maps/{id}", consumes = {"application/xml", "application/json"})
     @ResponseStatus(value = HttpStatus.CREATED)
     public void copyMap(@RequestBody RestMindmapInfo restMindmap, @PathVariable int id, @NotNull HttpServletResponse response) throws IOException, WiseMappingException {
-
-        final String title = restMindmap.getTitle();
-        if (title == null || title.isEmpty()) {
-            throw new IllegalArgumentException("Map title can not be null");
-        }
-
-        final String description = restMindmap.getDescription();
-        if (description == null || description.isEmpty()) {
-            throw new IllegalArgumentException("Map details can not be null");
+       // Validate ...
+        final BindingResult result = new BeanPropertyBindingResult(restMindmap, "");
+        new MapInfoValidator(mindmapService).validate(restMindmap.getDelegated(), result);
+        if (result.hasErrors()) {
+            throw new ValidationException(result);
         }
 
         // Some basic validations ...
         final User user = Utils.getUser();
-        final MindMap searchByMap = mindmapService.getMindmapByTitle(title, user);
-        if (searchByMap != null) {
-            throw new IllegalArgumentException("Map already exists with title '" + title + "'");
-        }
 
         // Create a shallowCopy of the map ...
         final MindMap mindMap = mindmapService.getMindmapById(id);
