@@ -22,8 +22,8 @@ title VARCHAR(255)  NOT NULL,
 description VARCHAR(255)  NOT NULL,
 xml LONGVARBINARY NOT NULL,
 public BOOLEAN not null,
-creation_date date,
-edition_date date,
+creation_date DATETIME,
+edition_date DATETIME,
 owner_id INTEGER not null,
 tags varchar(1014)  ,
 last_editor varchar(255)  ,
@@ -36,7 +36,7 @@ CREATE TABLE MINDMAP_HISTORY
 (id INTEGER NOT NULL IDENTITY,
 xml LONGVARBINARY NOT NULL,
 mindmap_id INTEGER NOT NULL,
-creation_date datetime,
+creation_date DATETIME,
 creator_user varchar(255));
 
 CREATE TABLE MINDMAP_COLABORATOR

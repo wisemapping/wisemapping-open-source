@@ -61,7 +61,7 @@
                     bSearchable : false,
                     sTitle : "Last Modified",
                     bUseRendered: false,
-                    sType: "numeric",
+                    sType: "date",
                     mDataProp: "lastModificationTime",
                     fnRender : function(obj) {
                         var time = obj.aData.lastModificationTime;
@@ -275,7 +275,7 @@
     // Register time update functions ....
     setTimeout(function() {
         jQuery("abbr.timeago").timeago()
-    }, 30000);
+    }, 50000);
 </script>
 </head>
 <body>
