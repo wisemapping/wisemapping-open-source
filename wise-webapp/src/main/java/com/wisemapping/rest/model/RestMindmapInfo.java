@@ -11,8 +11,10 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 @XmlRootElement(name = "map")
 @XmlAccessorType(XmlAccessType.PROPERTY)
@@ -27,6 +29,13 @@ public class RestMindmapInfo {
 
     @JsonIgnore
     private MindMap mindmap;
+    @JsonIgnore
+    static private SimpleDateFormat sdf;
+
+    static {
+        sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
 
     public RestMindmapInfo() {
         this(new MindMap());
@@ -37,8 +46,8 @@ public class RestMindmapInfo {
         this.mindmap = mindmap;
     }
 
-    public Calendar getCreationTime() {
-        return mindmap.getCreationTime();
+    public String getCreationTime() {
+        return this.toISO8601(mindmap.getCreationTime().getTime());
     }
 
     public String getDescription() {
@@ -65,8 +74,9 @@ public class RestMindmapInfo {
         return mindmap.getLastModifierUser();
     }
 
-    public Date getLastModificationDate() {
-        return mindmap.getLastModificationDate();
+    public String getLastModificationTime() {
+        final Calendar calendar = mindmap.getLastModificationTime();
+        return this.toISO8601(calendar.getTime());
     }
 
     public boolean isPublic() {
@@ -93,14 +103,18 @@ public class RestMindmapInfo {
 
     }
 
-    public void setLastModificationTime(Calendar lastModificationTime) {
+    public void setLastModificationTime(String value) {
     }
 
-    public void setLastModifierUser(String lastModifierUser) {
+    public void setLastModifierUser(String value) {
     }
 
     @JsonIgnore
-    public MindMap getDelegated(){
+    public MindMap getDelegated() {
         return this.mindmap;
+    }
+
+    private String toISO8601(@NotNull Date date) {
+        return sdf.format(date) + "Z";
     }
 }

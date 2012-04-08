@@ -19,6 +19,8 @@
 <link href="css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet">
 <script type="text/javascript" language="javascript" src="js/jquery.dataTables.js"></script>
 <script type="text/javascript" language="javascript" src="js/jquery.dataTables.plugins.js"></script>
+<script type="text/javascript" language="javascript" src="js/jquery.timeago.js"></script>
+
 <script type="text/javascript" charset="utf-8">
     $(function() {
 
@@ -60,9 +62,10 @@
                     sTitle : "Last Modified",
                     bUseRendered: false,
                     sType: "numeric",
-                    mDataProp: "lastModificationDate",
+                    mDataProp: "lastModificationTime",
                     fnRender : function(obj) {
-                        return obj.aData.lastModificationDate + ", " + obj.aData.lastModifierUser;
+                        var time = obj.aData.lastModificationTime;
+                        return '<abbr class="timeago" title="' + time + '">' + jQuery.timeago(time) + '</abbr>' + ' ' + '<span style="color: #777;font-size: 75%;padding-left: 5px;">' + obj.aData.lastModifierUser + '</span>';
                     }
                 },
                 {
@@ -267,8 +270,12 @@
         $("#buttons .moreActions").button({
             icons: { primary: "ui-icon-triangle-1-s" }
         });
-
     });
+
+    // Register time update functions ....
+    setTimeout(function() {
+        jQuery("abbr.timeago").timeago()
+    }, 30000);
 </script>
 </head>
 <body>

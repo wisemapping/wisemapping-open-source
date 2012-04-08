@@ -12,8 +12,10 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 @XmlRootElement(name = "map")
 @XmlAccessorType(XmlAccessType.PROPERTY)
@@ -28,6 +30,13 @@ public class RestMindmap {
 
     @JsonIgnore
     private MindMap mindmap;
+    @JsonIgnore
+    static private SimpleDateFormat sdf;
+
+    static {
+        sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
 
     public RestMindmap() {
         this(new MindMap());
@@ -38,9 +47,15 @@ public class RestMindmap {
         this.mindmap = mindmap;
     }
 
-    public Calendar getCreationTime() {
-        return mindmap.getCreationTime();
+    public String getCreationTime() {
+        final Calendar creationTime = mindmap.getCreationTime();
+        String result = null;
+        if (creationTime != null) {
+            result = this.toISO8601(creationTime.getTime());
+        }
+        return result;
     }
+
 
     public String getDescription() {
         return mindmap.getDescription();
@@ -66,8 +81,9 @@ public class RestMindmap {
         return mindmap.getLastModifierUser();
     }
 
-    public Date getLastModificationDate() {
-        return mindmap.getLastModificationDate();
+    public String getLastModificationTime() {
+        final Calendar date = mindmap.getLastModificationTime();
+        return toISO8601(date.getTime());
     }
 
     public boolean isPublic() {
@@ -76,7 +92,7 @@ public class RestMindmap {
 
 
     public void setPublic(boolean value) {
-       // return mindmap.isPublic();
+        // return mindmap.isPublic();
     }
 
     public String getXml() throws IOException {
@@ -117,7 +133,7 @@ public class RestMindmap {
         mindmap.setProperties(properties);
     }
 
-    public void setLastModificationTime(Calendar lastModificationTime) {
+    public void setLastModificationTime(final String value) {
     }
 
     public void setLastModifierUser(String lastModifierUser) {
@@ -130,5 +146,13 @@ public class RestMindmap {
     @JsonIgnore
     public MindMap getDelegated() {
         return this.mindmap;
+    }
+
+    private String toISO8601(@Nullable Date date) {
+        String result = "";
+        if (date != null) {
+            result = sdf.format(date) + "Z";
+        }
+        return result;
     }
 }
