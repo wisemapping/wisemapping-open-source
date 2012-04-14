@@ -31,11 +31,6 @@
         <property name="mindmapService" ref="mindmapService"/>
     </bean>
 
-    <bean id="editorController" class="com.wisemapping.controller.MindmapEditorController">
-        <property name="methodNameResolver" ref="paramResolverByAction"/>
-        <property name="mindmapService" ref="mindmapService"/>
-        <property name="userService" ref="userService"/>
-    </bean>
 
     <bean id="cookerController" class="com.wisemapping.controller.MindmapCooker">
         <property name="methodNameResolver" ref="paramResolverByAction"/>
@@ -226,7 +221,6 @@
                 <prop key="/c/forgotPassword.htm">forgotPasswordController</prop>
                 <prop key="/c/activation.htm">activationController</prop>
                 <prop key="/c/changePassword.htm">changePasswordController</prop>
-                <prop key="/c/editor.htm">editorController</prop>
                 <prop key="/c/cooker.htm">cookerController</prop>
                 <prop key="/c/settings.htm">settingsController</prop>
                 <prop key="/c/publish.htm">publishController</prop>

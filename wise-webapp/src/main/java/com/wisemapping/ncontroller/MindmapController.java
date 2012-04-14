@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,10 +28,46 @@ public class MindmapController {
     @Autowired
     private MindmapService mindmapService;
 
-    @RequestMapping(value = "export")
-    public ModelAndView export(@RequestParam(required = true) long mapId) throws IOException {
-        final MindMapBean modelObject = findMindmapBean(mapId);
+    @RequestMapping(value = "map/{id}/export")
+    public ModelAndView export(@PathVariable int id) throws IOException {
+        final MindMapBean modelObject = findMindmapBean(id);
         return new ModelAndView("mindmapExport", "mindmap", modelObject);
+    }
+
+    @RequestMapping(value = "map/{id}/details")
+    public ModelAndView showDetails(@PathVariable int id) {
+        final MindMapBean modelObject = findMindmapBean(id);
+        final ModelAndView view = new ModelAndView("mindmapDetail", "wisemapDetail", modelObject);
+        view.addObject("user", Utils.getUser());
+        return view;
+    }
+
+    @RequestMapping(value = "map/{id}/print")
+    public ModelAndView showPrintPage(@PathVariable int id) {
+        final MindMap mindmap = findMindmap(id);
+        final ModelAndView view = new ModelAndView("mindmapPrint", "mindmap", mindmap);
+        view.addObject("user", Utils.getUser());
+        return view;
+    }
+
+    @RequestMapping(value = "map/{id}/edit")
+    public ModelAndView editMap(@PathVariable int id, @NotNull HttpServletRequest request)
+    {
+        ModelAndView view;
+        final UserAgent userAgent = UserAgent.create(request);
+        if (userAgent.needsGCF()) {
+            view = new ModelAndView("gcfPluginNeeded");
+//            view.addObject(MINDMAP_ID_PARAMETER, mindmapId);
+        } else {
+
+            final MindMap mindmap = mindmapService.getMindmapById(id);
+            view = new ModelAndView("mindmapEditor", "mindmap", mindmap);
+            view.addObject("editorTryMode", false);
+            final boolean showHelp = isWelcomeMap(mindmap);
+            view.addObject("showHelp", showHelp);
+            view.addObject("user", Utils.getUser());
+        }
+        return view;
     }
 
     @RequestMapping(value = "collaborator")
@@ -43,22 +80,6 @@ public class MindmapController {
     public ModelAndView viewer(@RequestParam(required = true) long mapId) {
         final MindMapBean modelObject = findMindmapBean(mapId);
         return new ModelAndView("mindmapViewer", "wisemapsList", modelObject);
-    }
-
-    @RequestMapping(value = "detail")
-    public ModelAndView showDetails(@RequestParam(required = true) long mapId) {
-        final MindMapBean modelObject = findMindmapBean(mapId);
-        final ModelAndView view = new ModelAndView("mindmapDetail", "wisemapDetail", modelObject);
-        view.addObject("user", Utils.getUser());
-        return view;
-    }
-
-    @RequestMapping(value = "print")
-    public ModelAndView showPrintPage(@RequestParam(required = true) long mapId) {
-        final MindMap mindmap = findMindmap(mapId);
-        final ModelAndView view = new ModelAndView("mindmapPrint", "mindmap", mindmap);
-        view.addObject("user", Utils.getUser());
-        return view;
     }
 
     @RequestMapping(value = "changeStatus")
@@ -129,6 +150,11 @@ public class MindmapController {
     private MindMapBean findMindmapBean(long mapId) {
         return new MindMapBean(findMindmap(mapId));
     }
+
+    private boolean isWelcomeMap(MindMap map) {
+        return map.getTitle().startsWith("Welcome ");
+    }
+
 
     private static final String USER_AGENT = "wisemapping.userAgent";
 }

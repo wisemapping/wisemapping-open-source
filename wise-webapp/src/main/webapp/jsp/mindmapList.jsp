@@ -3,7 +3,7 @@
 <%@ include file="/jsp/init.jsp" %>
 <html>
 <head>
-<base href="../">
+<base href="${pageContext.request.contextPath}/"/>
 <title><spring:message code="SITE.TITLE"/></title>
 <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
 
@@ -45,9 +45,8 @@
                     bUseRendered : false,
                     mDataProp: "title",
                     fnRender : function(obj) {
-                        return '<a href="c/editor.htm?action=open&mapId=' + obj.aData.id + '">' + obj.aData.title + '</a>';
+                        return '<a href="c/map/' + obj.aData.id + '/edit.htm">' + obj.aData.title + '</a>';
                     }
-
                 },
                 {
                     sTitle : "Description",
@@ -75,10 +74,9 @@
                     bSortable : false,
                     bSearchable : false,
                     fnRender : function(obj) {
-                        return '<span class="ui-icon ui-icon-circle-triangle-e" style="margin: 0 auto;"></span>';
+                        return '<a href="c/map/' + obj.aData.id + '/details.htm"><span class="ui-icon ui-icon-circle-triangle-e" style="margin: 0 auto;"></span></a>';
                     }
                 }
-
             ],
             "bAutoWidth" : false,
             "oLanguage" : {

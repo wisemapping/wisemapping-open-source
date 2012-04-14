@@ -192,7 +192,7 @@ mindplot.widget.Menu = new Class({
 
 
         this._addButton('export', false, false, function() {
-            var reqDialog = new MooDialog.Request('c/export.htm?mapId=' + mapId, null,
+            var reqDialog = new MooDialog.Request('c/map/' + mapId + '/export.htm', null,
                 {'class': 'exportModalDialog',
                     closeButton:true,
                     destroyOnClose:true,
@@ -209,7 +209,7 @@ mindplot.widget.Menu = new Class({
 
 
         this._addButton('print', false, false, function() {
-            window.open('c/print.htm?mapId=' + mapId)
+            window.open('c/map/' + mapId + '/print.htm');
         });
 
         this._registerTooltip('print', "Print");

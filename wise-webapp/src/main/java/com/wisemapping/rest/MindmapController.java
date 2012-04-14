@@ -210,7 +210,6 @@ public class MindmapController extends BaseController {
         // Return the new created map ...
         response.setHeader("Location", "/service/maps/" + clonedMap.getId());
         response.setHeader("ResourceId", Integer.toString(clonedMap.getId()));
-
     }
 
 }

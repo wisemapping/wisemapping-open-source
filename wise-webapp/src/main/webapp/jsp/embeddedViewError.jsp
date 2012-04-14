@@ -6,7 +6,6 @@
         <spring:message code="NO_ENOUGH_PERMISSIONS"/>
     </title>
     <meta http-equiv="Content-type" value="text/html; charset=utf-8">
-    <link rel="stylesheet" type="text/css" href="../css/wisehome.css">
     <link rel="stylesheet" type="text/css" href="../css/embedded.css">
     <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon">

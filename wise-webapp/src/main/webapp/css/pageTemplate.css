@@ -138,12 +138,6 @@
     padding: 9px 9px 0;
 }
 
-#searchTitleContainer {
-    background: url( ../images/search3.png ) no-repeat left;
-    padding-left: 35px;
-    padding-bottom: 10px;
-}
-
 #searchTitle {
     height: 16px;
     top: 3px;
@@ -174,62 +168,11 @@
     margin-right: 10px;
 }
 
-#searchBtnStart {
-    width: 6px;
-    height: 25px;
-    background: url( ../images/btnStart.png ) no-repeat left top;
-    float: left;
-}
-
-#searchBtnBody {
-    background: url( ../images/btnBody.png );
-    height: 18px;
-    float: left;
-    padding: 5px 0 0;
-    text-align: center;
-    color: black;
-}
-
-#searchBtnEnd {
-    width: 7px;
-    height: 25px;
-    background: url( ../images/btnEnd.png ) no-repeat right top;
-    float: left;
-}
-
-#tryNow {
-    clear: both;
-    font-size: 20px;
-    text-align: center;
-    margin-top: 10px;
-    margin-left: 20px;
-    height:70px;
-}
 
 div#tryNow a {
     text-decoration: none;
 }
 
-div#tryNow .tryBtnStart {
-    width: 10px;
-    height: 70px;
-    background: url( ../images/tryItStartBtn2.png ) no-repeat left top;
-    float: left;
-}
-
-div#tryNow .tryBtnBody {
-    height: 70px;
-    background: url( ../images/tryItBodyBtn2.png );
-    float: left;
-    width: 145px;
-}
-
-div#tryNow .tryBtnEnd {
-    width: 11px;
-    height: 70px;
-    background: url( ../images/tryItEndBtn2.png ) no-repeat right top;
-    float: left;
-}
 
 div#tryNow .tryBtnText {
     padding: 0 20px;
@@ -267,27 +210,6 @@ div#video img {
 
 div#video a {
     text-decoration: none;
-}
-
-div#video .videoBtnStart {
-    width: 10px;
-    height: 51px;
-    background: url( ../images/videoStart.png ) no-repeat left top;
-    float: left;
-}
-
-div#video .videoBtnBody {
-    height: 51px;
-    background: url( ../images/videoBody.png );
-    float: left;
-    width: 145px;
-}
-
-div#video .videoBtnEnd {
-    width: 10px;
-    height: 51px;
-    background: url( ../images/videoEnd.png ) no-repeat right top;
-    float: left;
 }
 
 div#video .videoBtnText {
@@ -359,28 +281,6 @@ div#signUpButton .signUpBtnContainer {
     left: 60px;
 }
 
-div#signUpButton .signUpStartBtn {
-    width: 5px;
-    height: 25px;
-    background: url( ../images/signUpStartBtn.png ) no-repeat left top;
-    float: left;
-}
-
-div#signUpButton .signUpBodyBtn {
-    height: 25px;
-    width: 70px;
-    background: url( ../images/signUpBodyBtn.png );
-    white-space: nowrap;
-    float: left;
-
-}
-
-div#signUpButton .signUpEndBtn {
-    width: 7px;
-    height: 25px;
-    background: url( ../images/signUpEndBtn.png ) no-repeat right top;
-    float: left;
-}
 
 div#signUpButton .signUpText {
     padding: 0 20px;
@@ -483,22 +383,6 @@ div#mainBody {
     height: 300px;
 }
 
-div#news li {
-    background: transparent url( ../images/icon_triangle_grey_12x13.gif ) no-repeat scroll 0;
-    list-style: none outside none;
-    margin-bottom: 12px;
-    padding: 2px 0 5px 20px;
-}
-
-div#news ul {
-    padding: 5px 40px;
-}
-
-div#news h1 {
-    font-size: 200%;
-    color: #1E4BA5;
-    font-weight: bold;
-}
 
 div#login {
     float: right;

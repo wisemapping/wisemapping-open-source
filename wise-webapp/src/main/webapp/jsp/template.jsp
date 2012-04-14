@@ -7,6 +7,7 @@
 <tiles:importAttribute name="details" scope="request"/>
 <html>
 <head>
+    <base href="${pageContext.request.contextPath}/"/>
     <title>
         <spring:message code="SITE.TITLE"/>
         -
@@ -20,7 +21,7 @@
         </c:choose>
     </title>
     <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" type="text/css" href="../css/wisehome.css"/>
+    <link rel="stylesheet" type="text/css" href="css/pageTemplate.css"/>
     <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
 </head>
