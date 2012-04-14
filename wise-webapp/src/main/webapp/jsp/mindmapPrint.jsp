@@ -12,15 +12,9 @@
 
 <%@ include file="/jsp/init.jsp" %>
 
-<%
-    Calendar calendar = Calendar.getInstance(request.getLocale());
-    calendar.setTimeInMillis(System.currentTimeMillis());
-    DateFormat dateFormat = SimpleDateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, request.getLocale());
-    String todayString = dateFormat.format(calendar.getTime());
-%>
 <html>
 <head>
-    <base href="../"/>
+    <base href="${pageContext.request.contextPath}/"/>
     <title><spring:message code="SITE.TITLE"/> - ${mindmap.title} </title>
     <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
 
@@ -112,7 +106,7 @@
 
 <div id="mapContainer">
     <%--<div id="infoPanel">--%>
-        <%--<div id="dragImageNode" style="cursor: move">--%>
+    <%--<div id="dragImageNode" style="cursor: move">--%>
     <%--</div>--%>
     <div id="mindplot"></div>
     <div id="printLogo"></div>

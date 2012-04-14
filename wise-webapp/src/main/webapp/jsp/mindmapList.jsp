@@ -265,6 +265,16 @@
             icons: { primary: "ui-icon-trash" }
         });
 
+        $("#buttons .printMap").button({
+            icons: { primary: "ui-icon-trash" }
+        }).click(function() {
+                    var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
+                    if (mapIds.length > 0) {
+                        window.open('c/map/' + mapIds[0] + '/print.htm');
+                    }
+        });
+
+
         $("#buttons .moreActions").button({
             icons: { primary: "ui-icon-triangle-1-s" }
         });
@@ -379,6 +389,7 @@
             <button class="delete">Delete</button>
             <button class="renameMap">Rename</button>
             <button class="importMap">Import</button>
+            <button class="printMap">Print</button>
             <button class="moreActions">More</button>
         </div>
 
