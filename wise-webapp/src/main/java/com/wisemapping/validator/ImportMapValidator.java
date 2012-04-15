@@ -25,6 +25,7 @@ import com.wisemapping.importer.ImporterException;
 import com.wisemapping.importer.ImporterFactory;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.view.ImportMapBean;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 
@@ -32,26 +33,25 @@ import java.io.ByteArrayInputStream;
 
 public class ImportMapValidator extends MapInfoValidator {
 
-   public boolean supports(final Class clazz) {
+    public boolean supports(final Class clazz) {
         return clazz.equals(ImportMapBean.class);
     }
 
-    public void validate(Object obj, Errors errors) {
-        ImportMapBean bean = (ImportMapBean) obj;
+    public void validate(Object obj, @NotNull Errors errors) {
+        final ImportMapBean bean = (ImportMapBean) obj;
 
-        super.validate(obj,errors);
-
+        this.validateMapInfo(errors, bean.getTitle(), bean.getDescription());
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mapFile", Messages.FIELD_REQUIRED);
         try {
             final Importer importer = ImporterFactory.getInstance().getImporter(ImportFormat.FREEMIND);
             final ByteArrayInputStream stream = new ByteArrayInputStream(bean.getMapFile().getBytes());
-            final MindMap map = importer.importMap(bean.getTitle(),bean.getDescription(),stream);
+            final MindMap map = importer.importMap(bean.getTitle(), bean.getDescription(), stream);
 
             bean.setImportedMap(map);
 
         } catch (ImporterException e) {
-              Object[] errorArgs  = new Object[]{e.getMessage()};
-              errors.rejectValue("mapFile", Messages.IMPORT_MAP_ERROR,errorArgs,"FreeMind could not be imported.");
+            Object[] errorArgs = new Object[]{e.getMessage()};
+            errors.rejectValue("mapFile", Messages.IMPORT_MAP_ERROR, errorArgs, "FreeMind could not be imported.");
         }
     }
 }

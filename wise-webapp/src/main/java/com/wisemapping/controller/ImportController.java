@@ -46,7 +46,7 @@ public class ImportController
     public ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors)
             throws ServletException, WiseMappingException, ImporterException {
         final ImportMapBean bean = (ImportMapBean) command;
- 
+
         User user = Utils.getUser();
         final UserService userService = this.getUserService();
 
@@ -55,16 +55,14 @@ public class ImportController
         mindMap.setOwner(user);
 
         final MindmapService mindmapService = this.getMindmapService();
-        mindmapService.addMindmap(mindMap,user);
+        mindmapService.addMindmap(mindMap, user);
 
-        final StringBuilder redirectionTo = new StringBuilder("redirect:editor.htm?mapId=");
-        redirectionTo.append(mindMap.getId());
-        redirectionTo.append("&action=open");
+        final StringBuilder redirectionTo = new StringBuilder("redirect:" + mindMap.getId() + "/edit.htm");
         return new ModelAndView(redirectionTo.toString());
     }
 
-     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
-        throws ServletException {
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
+            throws ServletException {
         // to actually be able to convert Multipart instance to a String
         // we have to register a custom editor
         binder.registerCustomEditor(String.class, new StringMultipartFileEditor());

@@ -193,7 +193,7 @@
                         // Initialize dialog ...
                         $("#duplicate-dialog-modal").dialogForm({
                             modal: true,
-                            acceptButtonLabel : "Duplicated",
+                            acceptButtonLabel : "Duplicate",
                             cancelButtonLabel : "Cancel",
                             redirect: "c/map/{header.resourceId}/edit.htm",
                             url :  "../service/maps/" + mapId
@@ -263,7 +263,9 @@
 
         $("#buttons .importMap").button({
             icons: { primary: "ui-icon-trash" }
-        });
+        }).click(function() {
+                    window.open('c/map/import.htm');
+                });
 
         $("#buttons .printMap").button({
             icons: { primary: "ui-icon-print" }
@@ -272,12 +274,24 @@
                     if (mapIds.length > 0) {
                         window.open('c/map/' + mapIds[0] + '/print.htm');
                     }
-        });
+                });
+
+        $("#buttons .publishMap").button({
+            icons: { primary: "ui-icon-print" }
+        }).click(function() {
+                });
+
+        $("#buttons .shareMap").button({
+            icons: { primary: "ui-icon-print" }
+        }).click(function() {
+                });
+
+        $("#buttons .tagMap").button({
+            icons: { primary: "ui-icon-print" }
+        }).click(function() {
+                });
 
 
-        $("#buttons .moreActions").button({
-            icons: { primary: "ui-icon-triangle-1-s" }
-        });
     });
 
     // Register time update functions ....
@@ -300,6 +314,18 @@
         </div>
 
         <div id="buttons">
+            <button class="newMap">New</button>
+            <button class="importMap">Import</button>
+            <button class="duplicateMap">Duplicate</button>
+            <button class="delete">Delete</button>
+            <button class="renameMap">Rename</button>
+            <button class="printMap">Print</button>
+            <button class="publishMap">Publish</button>
+            <button class="shareMap">Collaborate</button>
+            <button class="tagMap">Tag</button>
+        </div>
+
+        <div>
             <div id="delete-dialog-modal" title="Delete maps" style="display: none">
                 <p>Are you sure you want to delete maps <span></span> ?</p>
             </div>
@@ -384,13 +410,6 @@
             <div id="share-dialog-modal" title="Share maps" style="display: none">
                 <p>Are you sure you want to share maps <span></span> ?</p>
             </div>
-            <button class="newMap">New</button>
-            <button class="duplicateMap">Duplicate</button>
-            <button class="delete">Delete</button>
-            <button class="renameMap">Rename</button>
-            <button class="importMap">Import</button>
-            <button class="printMap">Print</button>
-            <button class="moreActions">More</button>
         </div>
 
         <div>

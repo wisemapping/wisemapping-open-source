@@ -158,19 +158,13 @@
         <put name="body" value="/jsp/mindmapRename.jsp"/>
     </definition>
 
-    <definition name="importMap" extends="formDialogTemplate">
-        <put name="title" value="IMPORT_MINDMAP"/>
-        <put name="details" value="IMPORT_MINDMAP_INFO"/>
-        <put name="body" value="/jsp/mindmapImport.jsp"/>
-    </definition>
-
     <definition name="keyboard" extends="formDialogTemplate">
         <put name="title" value="KEYBOARD"/>
         <put name="details" value="KEYBOARD_MSG"/>
         <put name="body" value="/jsp/keyboard.jsp"/>
     </definition>
 
-    <definition name="importMapError" extends="pageTemplate">
+    <definition name="importMap" extends="pageTemplate">
         <put name="title" value="IMPORT_MINDMAP"/>
         <put name="details" value="IMPORT_MINDMAP_INFO"/>
         <put name="body" value="/jsp/mindmapImportError.jsp"/>

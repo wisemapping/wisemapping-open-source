@@ -1,12 +1,11 @@
 <%@ include file="/jsp/init.jsp" %>
-<div>
+<div id="importContainer">
     <form:form method="post" commandName="importMap" enctype="multipart/form-data">
         <table>
             <tr>
                 <td class="formLabel">
                     <span class="fieldRequired">*</span>
-                    <spring:message code="NAME"/>
-                    :
+                    <spring:message code="NAME"/>:
                 </td>
                 <td>
                     <form:input path="title" id="title" tabindex="1"/>
@@ -15,39 +14,29 @@
             </tr>
             <tr>
                 <td class="formLabel">
-                    <spring:message code="DESCRIPTION"/>
-                    :
+                    <spring:message code="DESCRIPTION"/>:
                 </td>
                 <td>
                     <form:input path="description" id="description" tabindex="2"/>
                     <form:errors path="description" cssClass="errorMsg"/>
                 </td>
             </tr>
-             <tr>
+            <tr>
                 <td class="formLabel">
                     <span class="fieldRequired">*</span>
-                    <spring:message code="FREE_MIND_FILE"/>
-                    :
+                    <spring:message code="FREE_MIND_FILE"/>:
                 </td>
                 <td>
                     <input type="file" name="mapFile"/>
-                   <form:errors path="mapFile" cssClass="errorMsg"/>
+                    <form:errors path="mapFile" cssClass="errorMsg"/>
                 </td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
                 <td>
-                    <input type="submit" value="<spring:message code="SUBMIT"/>" class="btn-primary">
-                       <c:choose>
-                    <c:when test="${!errorView}">
-                    <input type="button" value="<spring:message code="CANCEL"/>" class="btn-primary"
-                           onclick="MOOdalBox.close();">
-                    </c:when>
-                     <c:otherwise>
-                    <input type="button" value="<spring:message code="BACK"/>" class="btn-primary"
-                           onclick="window.location='mymaps.htm'">
-                    </c:otherwise>
-                    </c:choose>
+                    <input type="submit" value="<spring:message code="IMPORT"/>" class="btn-primary">
+                    <input type="button" value="<spring:message code="CANCEL"/>" class="btn-secondary"
+                           onclick="window.location='/c/mymaps.htm'">
                 </td>
             </tr>
         </table>

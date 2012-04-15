@@ -125,24 +125,11 @@
         <property name="userService" ref="userService"/>
     </bean>
 
-    <bean id="renameMapValidator" class="com.wisemapping.validator.RenameMapValidator">
-        <property name="mindmapService" ref="mindmapService"/>
-    </bean>
 
     <bean id="importMapValidator" class="com.wisemapping.validator.ImportMapValidator">
         <property name="mindmapService" ref="mindmapService"/>
     </bean>
 
-    <bean id="renameMapController" class="com.wisemapping.controller.RenameMindmapController">
-        <property name="sessionForm" value="false"/>
-        <property name="commandName" value="renameMap"/>
-        <property name="commandClass" value="com.wisemapping.view.MindMapInfoBean"/>
-        <property name="validator" ref="renameMapValidator"/>
-        <property name="formView" value="renameMap"/>
-        <property name="successView" value="closeDialog"/>
-        <property name="mindmapService" ref="mindmapService"/>
-        <property name="userService" ref="userService"/>
-    </bean>
 
     <bean id="historyController" class="com.wisemapping.controller.HistoryController">
         <property name="methodNameResolver" ref="paramResolverByAction"/>
@@ -156,7 +143,7 @@
         <property name="commandClass" value="com.wisemapping.view.ImportMapBean"/>
         <property name="validator" ref="importMapValidator"/>
         <property name="formView" value="importMap"/>
-        <property name="errorView" value="importMapError"/>
+        <property name="errorView" value="importMap"/>
         <property name="mindmapService" ref="mindmapService"/>
         <property name="userService" ref="userService"/>
     </bean>
@@ -183,11 +170,6 @@
 
     <bean id="activationController" class="com.wisemapping.controller.ActivationController">
         <property name="userService" ref="userService"/>
-    </bean>
-
-    <bean id="searchController" class="com.wisemapping.controller.SearchController">
-        <property name="methodNameResolver" ref="paramResolverByAction"/>
-        <property name="mindmapService" ref="mindmapService"/>
     </bean>
 
     <bean id="keyboardController" class="com.wisemapping.controller.KeyboardController">
@@ -226,12 +208,9 @@
                 <prop key="/c/publish.htm">publishController</prop>
                 <prop key="/c/editProfile.htm">editProfileController</prop>
                 <prop key="/c/tags.htm">tagsController</prop>
-                <prop key="/c/search.htm">searchController</prop>
-                <prop key="/c/keyboard.htm">keyboardController</prop>
                 <prop key="/c/publicView.htm">publicView</prop>
                 <prop key="/c/embeddedView.htm">embeddedView</prop>
-                <prop key="/c/renameMap.htm">renameMapController</prop>
-                <prop key="/c/importMap.htm">importMapController</prop>
+                <prop key="/c/map/import.htm">importMapController</prop>
                 <prop key="/c/history.htm">historyController</prop>
                 <prop key="/c/installCFG.htm">homeController</prop>
             </props>

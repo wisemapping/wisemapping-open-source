@@ -48,36 +48,43 @@ public class MapInfoValidator implements Validator {
 
     public void validate(Object obj, @NotNull Errors errors) {
         final MindMap map = (MindMap) obj;
+
+
         if (map == null) {
             errors.rejectValue("map", "error.not-specified", null, "Value required.");
         } else {
 
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "title", Messages.FIELD_REQUIRED);
-
             final String title = map.getTitle();
             final String desc = map.getDescription();
-            if (title != null && title.length() > 0) {
-                if (title.length() > Constants.MAX_MAP_NAME_LENGTH) {
-                    errors.rejectValue("title", "field.max.length",
-                            new Object[]{Constants.MAX_MAP_NAME_LENGTH},
-                            "The title must have less than " + Constants.MAX_MAP_NAME_LENGTH + " characters.");
-                } else {
-                    // Map already exists ?
-                    final MindmapService service = this.getMindmapService();
-                    final User user = com.wisemapping.security.Utils.getUser();
-                    final MindMap mindMap = service.getMindmapByTitle(title, user);
-                    if (mindMap != null) {
-                        errors.rejectValue("title", Messages.MAP_TITLE_ALREADY_EXISTS);
-                    }
-                }
-            }
-            ValidatorUtils.rejectIfExceeded(errors,
-                    "description",
-                    "The description must have less than " + Constants.MAX_MAP_DESCRIPTION_LENGTH + " characters.",
-                    desc,
-                    Constants.MAX_MAP_DESCRIPTION_LENGTH);
+            validateMapInfo(errors, title, desc);
         }
 
+    }
+
+    protected void validateMapInfo(Errors errors, String title, String desc) {
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "title", Messages.FIELD_REQUIRED);
+
+
+        if (title != null && title.length() > 0) {
+            if (title.length() > Constants.MAX_MAP_NAME_LENGTH) {
+                errors.rejectValue("title", "field.max.length",
+                        new Object[]{Constants.MAX_MAP_NAME_LENGTH},
+                        "The title must have less than " + Constants.MAX_MAP_NAME_LENGTH + " characters.");
+            } else {
+                // Map already exists ?
+                final MindmapService service = this.getMindmapService();
+                final User user = com.wisemapping.security.Utils.getUser();
+                final MindMap mindMap = service.getMindmapByTitle(title, user);
+                if (mindMap != null) {
+                    errors.rejectValue("title", Messages.MAP_TITLE_ALREADY_EXISTS);
+                }
+            }
+        }
+        ValidatorUtils.rejectIfExceeded(errors,
+                "description",
+                "The description must have less than " + Constants.MAX_MAP_DESCRIPTION_LENGTH + " characters.",
+                desc,
+                Constants.MAX_MAP_DESCRIPTION_LENGTH);
     }
 
     public MindmapService getMindmapService() {

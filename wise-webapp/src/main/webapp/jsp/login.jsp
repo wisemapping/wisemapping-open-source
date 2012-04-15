@@ -3,7 +3,7 @@
 <%@ include file="/jsp/init.jsp" %>
 
 <div id="loginContent">
-    <div id="news" class="sb">
+    <div class="sb loginNews">
         <h1>What is New: </h1>
         <ul>
             <li>Links Between Nodes</li>
@@ -67,7 +67,7 @@
                         <input type="submit" class="btn-primary" id="submitButton"
                                value="<spring:message code="SIGN_IN"/>">
 
-                        <div style="text-align:right;"><a href="<c:url value="forgotPassword.htm"/>">
+                        <div style="text-align:right;"><a href="<c:url value="/c/forgotPassword.htm"/>">
                             <spring:message code="FORGOT_PASSWORD"/>
                         </a></div>
                     </td>
@@ -81,7 +81,7 @@
 <div id="register">
     <b><spring:message code="NOT_READY_A_USER"/></b>
     <spring:message code="NOT_READY_A_USER_MESSAGE"/>
-    <a href="userRegistration.htm">
+    <a href="c/userRegistration.htm">
         <spring:message code="JOIN_NOW"/>
     </a>
 </div>
