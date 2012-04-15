@@ -169,7 +169,7 @@
                         modal: true,
                         acceptButtonLabel : "Create",
                         cancelButtonLabel : "Cancel",
-                        redirect: "c/editor.htm?action=open",
+                        redirect: "c/map/{header.resourceId}/edit.htm",
                         url :  "../service/maps"
                     });
                 });
@@ -195,7 +195,7 @@
                             modal: true,
                             acceptButtonLabel : "Duplicated",
                             cancelButtonLabel : "Cancel",
-                            redirect: "c/editor.htm?action=open",
+                            redirect: "c/map/{header.resourceId}/edit.htm",
                             url :  "../service/maps/" + mapId
                         });
                     }
@@ -266,7 +266,7 @@
         });
 
         $("#buttons .printMap").button({
-            icons: { primary: "ui-icon-trash" }
+            icons: { primary: "ui-icon-print" }
         }).click(function() {
                     var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
                     if (mapIds.length > 0) {

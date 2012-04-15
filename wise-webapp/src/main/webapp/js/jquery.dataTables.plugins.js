@@ -90,8 +90,11 @@ jQuery.fn.dialogForm = function(options) {
             contentType:"application/json; charset=utf-8",
             success : function(data, textStatus, jqXHR) {
                 if (options.redirect) {
-                    var mapId = jqXHR.getResponseHeader("ResourceId");
-                    window.location = options.redirect + "&mapId=" + mapId;
+                    var resourceId = jqXHR.getResponseHeader("ResourceId");
+                    var redirectUrl = options.redirect;
+                    redirectUrl = redirectUrl.replace("{header.resourceId}", resourceId);
+                    window.location = redirectUrl;
+
                 } else if (options.postUpdate) {
                     options.postUpdate(formData);
                 }
