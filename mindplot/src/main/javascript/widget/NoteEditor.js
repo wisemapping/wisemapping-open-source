@@ -67,7 +67,11 @@ mindplot.widget.NoteEditor = new Class({
         var form = new Element('form', {'action': 'none', 'id':'noteFormId'});
 
         // Add textarea ...
-        var textArea = new Element('textarea', {placeholder: 'Write your note here ...',required:true});
+        var textArea = new Element('textarea',
+            {placeholder: 'Write your note here ...',
+                required:true,
+                autofocus:'autofocus'
+            });
         if (model.getValue() != null)
             textArea.value = model.getValue();
 

@@ -75,7 +75,12 @@ mindplot.widget.LinkEditor = new Class({
         select.inject(form);
 
         // Add Input ...
-        var input = new Element('input', {placeholder: 'http://www.example.com/',type:'url',required:true});
+        var input = new Element('input', {
+            placeholder: 'http://www.example.com/',
+            type:'url',
+            required:true,
+            autofocus:''
+        });
         if (model.getValue() != null)
             input.value = model.getValue();
 
