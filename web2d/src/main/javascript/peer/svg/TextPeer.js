@@ -40,27 +40,23 @@ web2d.peer.svg.TextPeer = new Class({
     },
 
     setText  : function(text) {
-        var i = 0;
-        var childs = this._native.childNodes;
-        for (i = 0; i < childs.length; i++) {
-            Element.dispose(childs[i]);
+        // Remove all previous nodes ...
+        while (this._native.firstChild) {
+            this._native.removeChild(this._native.firstChild);
         }
 
         this._text = text;
-        var lines = text.split('\n');
+        if (text) {
+            var lines = text.split('\n');
+            lines.forEach(function(line) {
+                var tspan = window.document.createElementNS(this.svgNamespace, 'tspan');
+                tspan.setAttribute('dy', '1em');
+                tspan.setAttribute('x', this.getPosition().x);
 
-        var tspans = [];
-        lines.forEach(function(line) {
-
-            var tspan = window.document.createElementNS(this.svgNamespace, 'tspan');
-            tspan.setAttribute('dy', '1em');
-            tspan.setAttribute('x', this.getPosition().x);
-            var tspanContent = window.document.createTextNode(line.length == 0 ? " " : line);
-            tspan.appendChild(tspanContent);
-            tspans.push(tspan);
-
-            this._native.appendChild(tspan);
-        }.bind(this));
+                tspan.textContent = line.length == 0 ? " " : line;
+                this._native.appendChild(tspan);
+            }.bind(this));
+        }
     },
 
     getText  : function() {
@@ -73,10 +69,10 @@ web2d.peer.svg.TextPeer = new Class({
         this._native.setAttribute('x', x);
 
         // tspan must be positioned manually.
-        var tspans = this._native.childNodes;
-        for (var i = 0; i < tspans.length; i++) {
-            tspans[i].setAttribute('x', x);
-        }
+        this._native.getElements('tspan').forEach(function(span) {
+            span.setAttribute('x', x);
+        });
+
     },
 
     getPosition  : function() {
