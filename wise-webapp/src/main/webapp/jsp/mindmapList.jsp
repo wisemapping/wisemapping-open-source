@@ -28,6 +28,9 @@
             bProcessing : true,
             sAjaxSource : "../service/maps",
             sAjaxDataProp: 'mindmapsInfo',
+            fnInitComplete: function() {
+                $('#mindmapListTable tbody').change(updateToolbar);
+            },
             aoColumns: [
                 {
                     sTitle : '<input type="checkbox" id="selectAll"/>',
@@ -87,7 +90,7 @@
         });
 
         $('#mindmapListTable_filter').appendTo("#toolbar");
-        $("#mindmapListTable_length").appendTo("#buttons");
+        $("#mindmapListTable_length").appendTo("#actionButtons");
 
         $('input:checkbox[id="selectAll"]').click(function() {
             $("#mindmapListTable").dataTableExt.selectAllMaps();
@@ -123,7 +126,7 @@
 <!--Buttons-->
 <script type="text/javascript" charset="utf-8">
     $(function() {
-        $("#buttons .show-tags").button({
+        $("#actionButtons .show-tags").button({
             icons: { primary: "ui-icon-folder-open" }
         }).click(function() {
                     if ($("#tags").css("opacity") == 0) {
@@ -140,7 +143,7 @@
                     }
                 });
 
-        $("#buttons .share").button({
+        $("#actionButtons .share").button({
             icons: { primary: "ui-icon-transferthick-e-w" }
         }).click(function() {
                     var selectedMaps = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
@@ -162,7 +165,8 @@
                     }
                 });
 
-        $("#buttons .newMap").button({
+        // Creation buttons actions ...
+        $("#createButtons .newMap").button({
             icons: { primary: "ui-icon-circle-plus" }
         }).click(function() {
                     $("#new-dialog-modal").dialogForm({
@@ -174,8 +178,16 @@
                     });
                 });
 
+        $("#createButtons .importMap").button({
+            icons: { primary: "ui-icon-trash" }
+        }).click(function() {
+                    window.open('c/map/import.htm');
+                });
 
-        $("#buttons .duplicateMap").button({
+        $("#createButtons").buttonset();
+
+
+        $("#actionButtons .duplicateMap").button({
             icons: { primary: "ui-icon-copy" }
         }).click(function() {
                     // Map to be cloned ...
@@ -201,7 +213,7 @@
                     }
                 });
 
-        $("#buttons .renameMap").button({
+        $("#actionButtons .renameMap").button({
             icons: { primary: "ui-icon-gear" }
         }).click(function() {
                     // Map to be cloned ...
@@ -239,7 +251,7 @@
                 });
 
 
-        $("#buttons .delete").button({
+        $("#actionButtons .delete").button({
             icons: { primary: "ui-icon-trash" }
         }).click(function() {
                     var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
@@ -261,13 +273,7 @@
                     }
                 });
 
-        $("#buttons .importMap").button({
-            icons: { primary: "ui-icon-trash" }
-        }).click(function() {
-                    window.open('c/map/import.htm');
-                });
-
-        $("#buttons .printMap").button({
+        $("#actionButtons .printMap").button({
             icons: { primary: "ui-icon-print" }
         }).click(function() {
                     var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
@@ -276,21 +282,29 @@
                     }
                 });
 
-        $("#buttons .publishMap").button({
+        $("#actionButtons .publishMap").button({
             icons: { primary: "ui-icon-print" }
         }).click(function() {
                 });
 
-        $("#buttons .shareMap").button({
+        $("#actionButtons .shareMap").button({
             icons: { primary: "ui-icon-print" }
         }).click(function() {
                 });
 
-        $("#buttons .tagMap").button({
+        $("#actionButtons .tagMap").button({
             icons: { primary: "ui-icon-print" }
         }).click(function() {
                 });
 
+        $("#actionButtons .moreActions").button({
+            icons: {
+                primary: "ui-icon-gear",
+                secondary: "ui-icon-triangle-1-s"
+            },
+            text: false
+        }).click(function() {
+                });
 
     });
 
@@ -298,6 +312,7 @@
     setTimeout(function() {
         jQuery("abbr.timeago").timeago()
     }, 50000);
+
 </script>
 </head>
 <body>
@@ -313,16 +328,22 @@
 
         </div>
 
-        <div id="buttons">
-            <button class="newMap">New</button>
-            <button class="importMap">Import</button>
-            <button class="duplicateMap">Duplicate</button>
-            <button class="delete">Delete</button>
-            <button class="renameMap">Rename</button>
-            <button class="printMap">Print</button>
-            <button class="publishMap">Publish</button>
-            <button class="shareMap">Collaborate</button>
-            <button class="tagMap">Tag</button>
+        <div id="buttonsToolbar">
+            <div id="createButtons">
+                <button class="newMap">New</button>
+                <button class="importMap">Import</button>
+            </div>
+            <div id="actionButtons" style="display:none">
+                <button class="duplicateMap">Duplicate</button>
+                <button class="delete">Delete</button>
+                <button class="renameMap">Rename</button>
+                <button class="printMap">Print</button>
+                <button class="publishMap">Publish</button>
+                <button class="shareMap">Collaborate</button>
+                <button class="tagMap">Tag</button>
+                <button class="moreActions">More</button>
+
+            </div>
         </div>
 
         <div>

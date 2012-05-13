@@ -79,7 +79,7 @@ mindplot.widget.LinkEditor = new Class({
             placeholder: 'http://www.example.com/',
             type:'url',
             required:true,
-            autofocus:''
+            autofocus:'autofocus'
         });
         if (model.getValue() != null)
             input.value = model.getValue();

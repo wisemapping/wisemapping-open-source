@@ -31,6 +31,7 @@ jQuery.fn.dataTableExt.selectAllMaps = function() {
             $(this).prop("checked", false);
         });
     }
+    updateToolbar();
 };
 
 jQuery.fn.dataTableExt.getSelectedMapsIds = function() {
@@ -138,3 +139,17 @@ jQuery.fn.dialogForm = function(options) {
     this.dialog(options);
 
 };
+
+
+// Update toolbar events ...
+function updateToolbar() {
+    var selected = $("#mindmapListTable tbody input:checked").length > 0;
+    if (selected) {
+        $("#actionButtons").show();
+    } else {
+        $("#actionButtons").hide();
+    }
+}
+
+
+

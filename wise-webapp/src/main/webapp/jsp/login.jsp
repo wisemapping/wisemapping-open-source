@@ -17,7 +17,7 @@
             <spring:message code="SIGN_IN"/>
         </h1>
 
-        <form action="<c:url value='/j_spring_security_check'/>" method="POST">
+        <form action="<c:url value='/c/j_spring_security_check'/>" method="POST">
             <table>
                 <tbody>
                 <c:if test="${not empty param.login_error}">
