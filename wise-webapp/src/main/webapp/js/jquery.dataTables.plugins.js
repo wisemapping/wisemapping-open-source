@@ -76,8 +76,7 @@ jQuery.fn.dialogForm = function(options) {
     // Clean previous dialog content ...
     $("#" + containerId + " div[id='errorMessage']").text("").removeClass("ui-state-highlight");
 
-    options.buttons = {};
-    options.buttons[acceptButtonLabel] = function() {
+    $('#' + containerId + ' .btn-accept').click(function() {
         var formData = {};
         $('#' + containerId + ' input').each(function(index, elem) {
             formData[elem.name] = elem.value;
@@ -116,8 +115,7 @@ jQuery.fn.dialogForm = function(options) {
                             // Mark the field ...
                             var message = fieldErrors[fieldName];
                             var inputField = $("#" + containerId + " input[name='" + fieldName + "']");
-                            $(inputField).addClass("ui-state-error");
-                            $("#" + containerId + " div[id='errorMessage']").text(message).addClass("ui-state-highlight");
+                            $("#" + containerId + " div[id='errorMessage']").text(message).addClass("alert alert-error");
                         }
 
                     }
@@ -128,15 +126,14 @@ jQuery.fn.dialogForm = function(options) {
 
             }
         });
-    };
+    }.bind(this));
 
-    var cancelButtonLabel = options.cancelButtonLabel;
-    options.buttons[cancelButtonLabel] = function() {
-        $(this).dialog("close");
-    };
+    $('#' + containerId + ' .btn-cancel').click(function() {
+        this.modal('hide');
+    }.bind(this));
 
     // Open the modal dialog ...
-    this.dialog(options);
+    this.modal(options);
 
 };
 
@@ -145,9 +142,13 @@ jQuery.fn.dialogForm = function(options) {
 function updateToolbar() {
     var selected = $("#mindmapListTable tbody input:checked").length > 0;
     if (selected) {
-        $("#actionButtons").show();
+        $("#actionsBtn").show();
+        $("#deleteBtn").show();
+
     } else {
-        $("#actionButtons").hide();
+        $("#actionsBtn").hide();
+        $("#deleteBtn").hide();
+
     }
 }
 

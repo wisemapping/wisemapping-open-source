@@ -9,16 +9,21 @@
 
 <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
 <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
+
 <link rel="stylesheet/less" type="text/css" href="css/mymaps.less"/>
 <script src="js/less.js" type="text/javascript"></script>
 
+<script type="text/javascript" language="javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap.js"></script>
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css"/>
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-responsive.css"/>
+
 
 <!--jQuery DataTables-->
-<script type="text/javascript" language="javascript" src="js/jquery.js"></script>
-<script type="text/javascript" language="javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
-<link href="css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet">
-<script type="text/javascript" language="javascript" src="js/jquery.dataTables.js"></script>
+<script type="text/javascript" language="javascript" src="js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" language="javascript" src="js/jquery.dataTables.plugins.js"></script>
+
+<!-- Update timer plugging -->
 <script type="text/javascript" language="javascript" src="js/jquery.timeago.js"></script>
 
 <script type="text/javascript" charset="utf-8">
@@ -166,9 +171,8 @@
                 });
 
         // Creation buttons actions ...
-        $("#createButtons .newMap").button({
-            icons: { primary: "ui-icon-circle-plus" }
-        }).click(function() {
+        $("#newBtn").click(
+                function() {
                     $("#new-dialog-modal").dialogForm({
                         modal: true,
                         acceptButtonLabel : "Create",
@@ -178,40 +182,34 @@
                     });
                 });
 
-        $("#createButtons .importMap").button({
-            icons: { primary: "ui-icon-trash" }
-        }).click(function() {
-                    window.open('c/map/import.htm');
+        $("#importMap").click(function() {
+            window.open('c/map/import.htm');
+        });
+
+
+        $("#duplicateBtn").click(function() {
+            // Map to be cloned ...
+            var tableElem = $('#mindmapListTable');
+            var rows = tableElem.dataTableExt.getSelectedRows();
+            if (rows.length > 0) {
+
+                // Obtain map name  ...
+                var rowData = tableElem.dataTable().fnGetData(rows[0]);
+                $('#duplicateMessage').text("Duplicate '" + rowData.title + "'");
+
+                // Obtains map id ...
+                var mapId = rowData.id;
+
+                // Initialize dialog ...
+                $("#duplicate-dialog-modal").dialogForm({
+                    modal: true,
+                    acceptButtonLabel : "Duplicate",
+                    cancelButtonLabel : "Cancel",
+                    redirect: "c/map/{header.resourceId}/edit.htm",
+                    url :  "../service/maps/" + mapId
                 });
-
-        $("#createButtons").buttonset();
-
-
-        $("#actionButtons .duplicateMap").button({
-            icons: { primary: "ui-icon-copy" }
-        }).click(function() {
-                    // Map to be cloned ...
-                    var tableElem = $('#mindmapListTable');
-                    var rows = tableElem.dataTableExt.getSelectedRows();
-                    if (rows.length > 0) {
-
-                        // Obtain map name  ...
-                        var rowData = tableElem.dataTable().fnGetData(rows[0]);
-                        $('#duplicateMessage').text("Duplicate '" + rowData.title + "'");
-
-                        // Obtains map id ...
-                        var mapId = rowData.id;
-
-                        // Initialize dialog ...
-                        $("#duplicate-dialog-modal").dialogForm({
-                            modal: true,
-                            acceptButtonLabel : "Duplicate",
-                            cancelButtonLabel : "Cancel",
-                            redirect: "c/map/{header.resourceId}/edit.htm",
-                            url :  "../service/maps/" + mapId
-                        });
-                    }
-                });
+            }
+        });
 
         $("#actionButtons .renameMap").button({
             icons: { primary: "ui-icon-gear" }
@@ -304,6 +302,9 @@
             },
             text: false
         }).click(function() {
+                    $("#actionPane").toggle('fast', function(event) {
+                        console.log(event);
+                    });
                 });
 
     });
@@ -323,26 +324,34 @@
         <jsp:param name="showLogout" value="true"/>
     </jsp:include>
 
+
     <div id="mindmapListContainer">
-        <div id="toolbar" class="toolbar">
+        <div id="buttonsToolbar" class="btn-toolbar">
 
-        </div>
-
-        <div id="buttonsToolbar">
-            <div id="createButtons">
-                <button class="newMap">New</button>
-                <button class="importMap">Import</button>
+            <div class="btn-group">
+                <button class="btn" id="newBtn"><i class="icon-file"></i> New</button>
+                <button class="btn" id="importBtn"><i class="icon-upload"></i> Import</button>
             </div>
-            <div id="actionButtons" style="display:none">
-                <button class="duplicateMap">Duplicate</button>
-                <button class="delete">Delete</button>
-                <button class="renameMap">Rename</button>
-                <button class="printMap">Print</button>
-                <button class="publishMap">Publish</button>
-                <button class="shareMap">Collaborate</button>
-                <button class="tagMap">Tag</button>
-                <button class="moreActions">More</button>
 
+            <div class="btn-group" id="deleteBtn" style="display:none">
+                <button class="btn"><i class="icon-trash"></i> Delete</button>
+            </div>
+            <div class="btn-group" id="actionsBtn" style="display:none">
+
+                <button class="btn dropdown-toggle" data-toggle="dropdown">
+                    <i class="icon-asterisk"></i> More
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li id="duplicateBtn"><a href="#" onclick="return false">Duplicate</a></li>
+                    <li id="renameMap"><a href="#" onclick="return false">Rename</a></li>
+                    <li id="printMap"><a href="#" onclick="return false"><i class="icon-print"></i> Print</a></li>
+                    <li id="publishMap"><a href="#" onclick="return false"><i class="icon-globe"></i>Publish</a></li>
+                    <li id="exportMap"><a href="#" onclick="return false"><i class="icon-download-alt"></i> Export</a>
+                    </li>
+                    <li id="shareMap"><a href="#" onclick="return false"><i class="icon-share"></i> Share</a></li>
+                    <li id="tagMap"><a href="#" onclick="return false"><i class="icon-tags"></i> Tag</a></li>
+                </ul>
             </div>
         </div>
 
@@ -350,57 +359,63 @@
             <div id="delete-dialog-modal" title="Delete maps" style="display: none">
                 <p>Are you sure you want to delete maps <span></span> ?</p>
             </div>
-            <!-- New map dialog -->
-            <div id="new-dialog-modal" title="Add new map" style="display: none">
-                <div id="errorMessage"></div>
 
-                <table>
-                    <tr>
-                        <td class="formLabel">
-                            <span class="fieldRequired">*</span>
-                            <label for="newTitle"><spring:message code="NAME"/>:</label>
-                        </td>
-                        <td>
-                            <input name="title" id="newTitle" type="text" required="true"
-                                   placeholder="Name used to identify your map"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="formLabel">
-                            <label for="newDec"><spring:message code="DESCRIPTION"/>:</label>
-                        </td>
-                        <td>
-                            <input name="description" id="newDec" type="text"
-                                   placeholder="Some description for your map"/>
-                        </td>
-                    </tr>
-                </table>
+            <!-- New map dialog -->
+            <div id="new-dialog-modal" title="Add new map" class="modal fade" style="display:none">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">x</button>
+                    <h3>Create a new map</h3>
+                </div>
+                <div class="modal-body">
+                    <div id="errorMessage"></div>
+                    <form class="form-horizontal">
+                        <fieldset>
+                            <div class="control-group">
+                                <label class="control-label" for="newTitle"><spring:message code="NAME"/>:</label>
+                                <input class="control" name="title" id="newTitle" type="text" required="true"
+                                       placeholder="Name used to identify your map"/>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="newDec"><spring:message code="DESCRIPTION"/>:</label>
+                                <input class="control" name="description" id="newDec" type="text"
+                                       placeholder="Some description for your map"/>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-accept">Create</button>
+                    <button class="btn btn-cancel">Close</button>
+                </div>
             </div>
 
             <!-- Duplicate map dialog -->
-            <div id="duplicate-dialog-modal" title="Copy Map" style="display: none">
-                <div id="duplicateMessage"></div>
-                <div id="errorMessage"></div>
-                <table>
-                    <tr>
-                        <td class="formLabel">
-                            <span class="fieldRequired">*</span>
-                            <label for="title"><spring:message code="NAME"/>:</label>
-                        </td>
-                        <td>
-                            <input name="title" id="title" type="text" required="true"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="formLabel">
-                            <label for="description"><spring:message code="DESCRIPTION"/>:</label>
-                        </td>
-                        <td>
-                            <input name="description" id="description" type="text"
-                                   placeholder="Some description for your map"/>
-                        </td>
-                    </tr>
-                </table>
+            <div id="duplicate-dialog-modal" class="modal fade" style="display: none">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">X</button>
+                    <h3 id="duplicateMessage"></h3>
+                </div>
+                <div class="modal-body">
+                    <div id="errorMessage"></div>
+                    <form class="form-horizontal">
+                        <fieldset>
+                            <div class="control-group">
+                                <label for="title" class="control-label"><spring:message code="NAME"/>: </label>
+                                <input name="title" id="title" type="text" required="true" class="control"/>
+                            </div>
+                            <div class="control-group">
+                                <label for="description" class="control-label"><spring:message
+                                        code="DESCRIPTION"/>: </label>
+                                <input name="description" id="description" type="text"
+                                       placeholder="Some description for your map" class="control"/>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-accept">Duplicate</button>
+                    <button class="btn btn-cancel">Close</button>
+                </div>
             </div>
 
             <!-- Duplicate map dialog -->
