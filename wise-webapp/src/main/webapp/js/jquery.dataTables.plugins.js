@@ -71,12 +71,12 @@ jQuery.fn.dialogForm = function(options) {
 
     var containerId = this[0].id;
     var url = options.url;
-    var acceptButtonLabel = options.acceptButtonLabel;
 
     // Clean previous dialog content ...
     $("#" + containerId + " div[id='errorMessage']").text("").removeClass("ui-state-highlight");
 
-    $('#' + containerId + ' .btn-accept').click(function() {
+    var acceptBtn = $('#' + containerId + ' .btn-accept');
+    acceptBtn.click(function() {
         var formData = {};
         $('#' + containerId + ' input').each(function(index, elem) {
             formData[elem.name] = elem.value;
@@ -93,12 +93,14 @@ jQuery.fn.dialogForm = function(options) {
                     var resourceId = jqXHR.getResponseHeader("ResourceId");
                     var redirectUrl = options.redirect;
                     redirectUrl = redirectUrl.replace("{header.resourceId}", resourceId);
+                    $(acceptBtn).button('loading');
+                    $("#" + containerId).modal('hide');
                     window.location = redirectUrl;
 
                 } else if (options.postUpdate) {
+
                     options.postUpdate(formData);
                 }
-                $(this).dialog("close");
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 if (jqXHR.status == 400) {

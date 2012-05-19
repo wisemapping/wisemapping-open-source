@@ -129,52 +129,11 @@
 <!--Buttons-->
 <script type="text/javascript" charset="utf-8">
     $(function() {
-        $("#actionButtons .show-tags").button({
-            icons: { primary: "ui-icon-folder-open" }
-        }).click(function() {
-                    if ($("#tags").css("opacity") == 0) {
-                        $("#tags").css("opacity", 1);
-                        $("#mindmapListTable").animate({
-                            width: "77%"
-                        }, 1000);
-                    } else {
-                        $("#mindmapListTable").animate({
-                            width: "100%"
-                        }, 1000, function() {
-                            $("#tags").css("opacity", 0);
-                        });
-                    }
-                });
-
-        $("#actionButtons .share").button({
-            icons: { primary: "ui-icon-transferthick-e-w" }
-        }).click(function() {
-                    var selectedMaps = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
-                    var html2 = $('#share-dialog-modal p span').html(selectedMaps.toString());
-
-                    if (selectedMaps.length > 0) {
-                        $("#share-dialog-modal").dialog({
-                            height: 140,
-                            modal: true,
-                            buttons: {
-                                "Delete": function() {
-                                    $(this).dialog("close");
-                                },
-                                Cancel: function() {
-                                    $(this).dialog("close");
-                                }
-                            }
-                        });
-                    }
-                });
-
         // Creation buttons actions ...
         $("#newBtn").click(
                 function() {
                     $("#new-dialog-modal").dialogForm({
                         modal: true,
-                        acceptButtonLabel : "Create",
-                        cancelButtonLabel : "Cancel",
                         redirect: "c/map/{header.resourceId}/edit.htm",
                         url :  "../service/maps"
                     });
@@ -183,7 +142,6 @@
         $("#importBtn").click(function() {
             window.open('c/map/import.htm');
         });
-
 
         $("#duplicateBtn").click(function() {
             // Map to be cloned ...
@@ -201,8 +159,6 @@
                 // Initialize dialog ...
                 $("#duplicate-dialog-modal").dialogForm({
                     modal: true,
-                    acceptButtonLabel : "Duplicate",
-                    cancelButtonLabel : "Cancel",
                     redirect: "c/map/{header.resourceId}/edit.htm",
                     url :  "../service/maps/" + mapId
                 });
@@ -210,45 +166,40 @@
         });
 
         $("#renameBtn").click(function() {
-                    // Map to be cloned ...
-                    var tableElem = $('#mindmapListTable');
-                    var rows = tableElem.dataTableExt.getSelectedRows();
-                    if (rows.length > 0) {
+            // Map to be cloned ...
+            var tableElem = $('#mindmapListTable');
+            var rows = tableElem.dataTableExt.getSelectedRows();
+            if (rows.length > 0) {
 
-                        // Obtain map name  ...
-                        var dataTable = tableElem.dataTable();
-                        var rowData = dataTable.fnGetData(rows[0]);
+                // Obtain map name  ...
+                var dataTable = tableElem.dataTable();
+                var rowData = dataTable.fnGetData(rows[0]);
 
-                        // Fill dialog with default values ...
-                        var mapId = rowData.id;
-                        $("#rename-dialog-modal input[name='title']").attr('value', rowData.title);
-                        $("#rename-dialog-modal input[name='description']").attr('value', rowData.description);
+                // Fill dialog with default values ...
+                var mapId = rowData.id;
+                $("#rename-dialog-modal input[name='title']").attr('value', rowData.title);
+                $("#rename-dialog-modal input[name='description']").attr('value', rowData.description);
 
+                // Set title ...
+                $('#renameDialogTitle').text("Rename '" + rowData.title + "'");
 
-                        // Set title ...
-                        $('#renameDialogTitle').text("Rename '" + rowData.title + "'");
+                // Initialize dialog ...
+                $("#rename-dialog-modal").dialogForm({
+                    modal: true,
+                    type: 'PUT',
+                    postUpdate: function(reqBodyData) {
+                        // Remove old entry ...
+                        dataTable.fnDeleteRow(rowData);
 
-
-                        // Initialize dialog ...
-                        $("#rename-dialog-modal").dialogForm({
-                            modal: true,
-                            type: 'PUT',
-                            acceptButtonLabel : "Rename",
-                            cancelButtonLabel : "Cancel",
-                            postUpdate: function(reqBodyData) {
-                                // Remove old entry ...
-                                dataTable.fnDeleteRow(rowData);
-
-                                // Add a new one...
-                                rowData.title = reqBodyData.title;
-                                rowData.description = reqBodyData.description;
-                                dataTable.fnAddData(rowData);
-                            },
-                            url :  "../service/maps/" + mapId
-                        });
-                    }
+                        // Add a new one...
+                        rowData.title = reqBodyData.title;
+                        rowData.description = reqBodyData.description;
+                        dataTable.fnAddData(rowData);
+                    },
+                    url :  "../service/maps/" + mapId + "/title"
                 });
-
+            }
+        });
 
         $("#deleteBtn").click(function() {
             var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
@@ -270,29 +221,28 @@
             }
         });
 
-        $("#actionButtons .printMap").button({
-            icons: { primary: "ui-icon-print" }
-        }).click(function() {
-                    var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
-                    if (mapIds.length > 0) {
-                        window.open('c/map/' + mapIds[0] + '/print.htm');
-                    }
-                });
+        $("#printBtn").click(function() {
+            var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
+            if (mapIds.length > 0) {
+                window.open('c/map/' + mapIds[0] + '/print.htm');
+            }
+        });
 
-        $("#actionButtons .publishMap").button({
-            icons: { primary: "ui-icon-print" }
-        }).click(function() {
-                });
+        $("#actionButtons .publishMap").click(function() {
+        });
 
-        $("#actionButtons .shareMap").button({
-            icons: { primary: "ui-icon-print" }
-        }).click(function() {
-                });
+        $("#actionButtons .shareMap").click(function() {
+        });
 
-        $("#actionButtons .tagMap").button({
-            icons: { primary: "ui-icon-print" }
-        }).click(function() {
-                });
+        $("#actionButtons .tagMap").click(function() {
+        });
+
+        $("#actionButtons .share").click(function() {
+        });
+
+        $("#actionButtons .tags").click(function() {
+        });
+
     });
 
     // Register time update functions ....
@@ -329,9 +279,10 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li id="duplicateBtn"><a href="#" onclick="return false"><i class="icon-plus-sign"></i> Duplicate</a></li>
+                    <li id="duplicateBtn"><a href="#" onclick="return false"><i class="icon-plus-sign"></i>
+                        Duplicate</a></li>
                     <li id="renameBtn"><a href="#" onclick="return false"><i class="icon-edit"></i> Rename</a></li>
-                    <li id="printMap"><a href="#" onclick="return false"><i class="icon-print"></i> Print</a></li>
+                    <li id="printBtn"><a href="#" onclick="return false"><i class="icon-print"></i> Print</a></li>
                     <li id="publishMap"><a href="#" onclick="return false"><i class="icon-globe"></i>Publish</a></li>
                     <li id="exportMap"><a href="#" onclick="return false"><i class="icon-download-alt"></i> Export</a>
                     </li>
@@ -370,7 +321,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary btn-accept">Create</button>
+                    <button class="btn btn-primary btn-accept" data-loading-text="Creating ...">Create</button>
                     <button class="btn btn-cancel">Close</button>
                 </div>
             </div>
