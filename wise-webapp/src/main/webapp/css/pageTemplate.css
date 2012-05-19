@@ -32,23 +32,12 @@ div#mainBody {
 
 div#login {
     float: right;
-    width: 250px;
+    width: 300px;
 }
 
-#forgotPasswordContainer {
-    width: 500px;
-    padding: 10px;
-}
-
-/* This is used to fix IE explorer bug rendering rounded corners*/
 div#loginContent {
     width: 100%;
-    min-height: 250px;
-}
-
-
-div#userRegistration {
-    padding: 10px;
+    min-height: 340px;
 }
 
 div#register {
@@ -219,10 +208,15 @@ div.installCFG h2 {
 div.fform {
     background: #eeeeee;
     border: 1px solid #cfcfcf;
-    padding: 5px 20px;
+    padding: 5px 25px;
     -moz-border-radius: 8px;
     -khtml-border-radius: 8px;
     -webkit-border-radius: 8px;
     border-radius: 8px;
+
+}
+
+div.fform label {
+    font-weight: bold;
 }
 

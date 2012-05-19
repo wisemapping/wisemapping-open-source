@@ -2,7 +2,7 @@
 <div id="footer">
     <div style="width:30%; float:left;">&nbsp;</div>
     <div style="float:left; width:40%;">
-        <p><a href="http://www.wisemapping.com"><spring:message code="COPYRIGHT"/></a></p>
+        <p><a href="http://www.wisemapping.org"><spring:message code="COPYRIGHT"/></a></p>
     </div>
 
     <div style="float:left; text-align:left;padding:5px;">

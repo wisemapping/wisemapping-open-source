@@ -18,17 +18,6 @@
             <spring:message code="SIGN_IN"/>
         </h1>
 
-        <c:if test="${not empty param.login_error}">
-            <c:choose>
-                <c:when test="${param.login_error == 3}">
-                    <spring:message code="USER_INACTIVE"/>
-                </c:when>
-                <c:otherwise>
-                    <spring:message code="LOGIN_ERROR"/>
-                </c:otherwise>
-            </c:choose>
-        </c:if>
-
         <form action="<c:url value='/c/j_spring_security_check'/>" method="POST">
             <fieldset>
                 <label for="email">
@@ -38,8 +27,20 @@
                     <label for="password"><spring:message code="PASSWORD"/></label>
                     <input type='password' tabindex="2" id="password" name='j_password' required="required"/>
 
+                    <c:if test="${not empty param.login_error}">
+                    <c:choose>
+                    <c:when test="${param.login_error == 3}">
+                    <div class="alert alert-error"><spring:message code="USER_INACTIVE"/></div>
+                    </c:when>
+                    <c:otherwise>
+                    <div class="alert alert-error"><spring:message code="LOGIN_ERROR"/></div>
+                    </c:otherwise>
+                    </c:choose>
+                    </c:if>
+
                     <div class="form-inline">
-                        <input type="submit" class="btn btn-primary" value="<spring:message code="SIGN_IN"/>" data-toggle="button">&nbsp;&nbsp;&nbsp;
+                        <input type="submit" class="btn btn-primary" value="<spring:message code="SIGN_IN"/>"
+                               data-toggle="button">&nbsp;&nbsp;&nbsp;
                         <input type="checkbox" id="rememberme" name="_spring_security_remember_me"/>
                         <label for="rememberme"><spring:message code="REMEMBER_ME"/></label>
                     </div>
