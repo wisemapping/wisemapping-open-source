@@ -3,31 +3,10 @@
 
 @import "pageHeaders.css";
 
-/* INTRO STYLES */
-.button {
-    cursor: pointer;
-}
-
-.contentDescription {
-    font-size: 15px;
-    font-weight: normal;
-}
 
 #loginContent .loginNews {
     float: left;
     width: 300px;
-}
-
-#joinContent {
-    padding: 5px 10px;
-}
-
-/* Finish homepage styles  */
-
-div#mainBody {
-    margin: 10px auto;
-    width: 900px; /*margin-bottom: 100px; *//* height brokes all the tables on IE*/
-    height: 300px;
 }
 
 div#login {
