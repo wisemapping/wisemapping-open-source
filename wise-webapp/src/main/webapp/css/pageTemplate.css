@@ -1,5 +1,5 @@
-/* GLOBAL COMPONENTS */
-@import "common.css";
+@import "../bootstrap/css/bootstrap.min.css";
+@import "pageHeaders.css";
 
 /* INTRO STYLES */
 .button {
@@ -191,3 +191,109 @@ div.pageBodyContent ol li {
     border-radius: 16px;
 }
 
+.errorMsg {
+    color: #990000;
+    font-size: 90%;
+    font-weight: bold;
+    padding-left: 5px;
+}
+
+div.pageBody {
+    margin: 10px auto;
+    width: 800px;
+    min-height: 500px;
+}
+
+div.pageBodyContent {
+    padding-top: 30px;
+}
+
+div.pageBodyContent h1 {
+    color: #093A9D;
+    font-size: 200%;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+div.pageBodyContent h2 {
+    color: gray;
+    font-size: 150%;
+    border-bottom: 1px dashed #BBB4D6;
+    margin: 20px 0;
+}
+
+div.pageBodyContent ul {
+    padding: 5px;
+}
+
+div.pageBodyContent li {
+    list-style-type: disc;
+    margin-left: 12px;
+}
+
+/*--   End Main Page Style -- */
+
+/* Share Styles */
+#userEmails {
+    float: left;
+    width: 50%;
+    padding: 5px;
+}
+
+#userEmails textarea {
+    width: 100%;
+}
+
+#currentUsers {
+    float: left;
+    width: 40%;
+    height: 400px;
+    padding: 5px;
+    padding-left: 15px;
+    margin-left: 15px;
+    border-left: 1px dotted gray;
+}
+
+#currentUsers table {
+    width: 100%;
+}
+
+#invitation {
+    border: 1px dotted gray;
+}
+
+td.formLabel {
+    text-align: right;
+    padding: 2px 10px;
+    white-space: nowrap;
+    font-weight: bolder;
+    vertical-align: top;
+}
+
+span.fieldRequired {
+    font-weight: bold;
+    color: #ff4500;
+    margin: 0 4px;
+}
+
+div.installCFG {
+    width: 100%;
+    font-size: 130%;
+}
+
+div.installCFG h1 {
+    width: 100%;
+    font-size: 130%;
+}
+
+div.installCFG h2 {
+    font-size: 100%;
+    border-bottom: 0 solid black;
+}
+
+.chromeFrameInstallDefaultStyle {
+    position: relative;
+    left: 0;
+    top: 0;
+    margin: 0;
+}

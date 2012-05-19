@@ -35,9 +35,9 @@
                     <tr>
                         <td>&nbsp;</td>
                         <td>
-                            <input type="submit" value="<spring:message code="SUBMIT"/>" class="btn-primary"
+                            <input type="submit" value="<spring:message code="SUBMIT"/>" class="btn btn-primary"
                                    id="submitButton">
-                            <input type="button" value="<spring:message code="CANCEL"/>" class="btn-secondary"
+                            <input type="button" value="<spring:message code="CANCEL"/>" class="btn"
                                    onclick="window.location='<c:url value="mymaps.htm"/>'">
                         </td>
                     </tr>

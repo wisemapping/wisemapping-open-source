@@ -64,7 +64,7 @@
                 <tr>
                     <td>&nbsp;</td>
                     <td>
-                        <input type="submit" class="btn-primary" id="submitButton"
+                        <input type="submit" class="btn btn-primary" id="submitButton"
                                value="<spring:message code="SIGN_IN"/>">
 
                         <div style="text-align:right;"><a href="<c:url value="/c/forgotPassword.htm"/>">

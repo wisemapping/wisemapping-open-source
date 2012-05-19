@@ -15,8 +15,6 @@
 
 <script type="text/javascript" language="javascript" src="js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap.js"></script>
-<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css"/>
-<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-responsive.css"/>
 
 
 <!--jQuery DataTables-->
@@ -182,7 +180,7 @@
                     });
                 });
 
-        $("#importMap").click(function() {
+        $("#importBtn").click(function() {
             window.open('c/map/import.htm');
         });
 
@@ -195,7 +193,7 @@
 
                 // Obtain map name  ...
                 var rowData = tableElem.dataTable().fnGetData(rows[0]);
-                $('#duplicateMessage').text("Duplicate '" + rowData.title + "'");
+                $('#dupDialogTitle').text("Duplicate '" + rowData.title + "'");
 
                 // Obtains map id ...
                 var mapId = rowData.id;
@@ -211,9 +209,7 @@
             }
         });
 
-        $("#actionButtons .renameMap").button({
-            icons: { primary: "ui-icon-gear" }
-        }).click(function() {
+        $("#renameBtn").click(function() {
                     // Map to be cloned ...
                     var tableElem = $('#mindmapListTable');
                     var rows = tableElem.dataTableExt.getSelectedRows();
@@ -227,6 +223,11 @@
                         var mapId = rowData.id;
                         $("#rename-dialog-modal input[name='title']").attr('value', rowData.title);
                         $("#rename-dialog-modal input[name='description']").attr('value', rowData.description);
+
+
+                        // Set title ...
+                        $('#renameDialogTitle').text("Rename '" + rowData.title + "'");
+
 
                         // Initialize dialog ...
                         $("#rename-dialog-modal").dialogForm({
@@ -249,27 +250,25 @@
                 });
 
 
-        $("#actionButtons .delete").button({
-            icons: { primary: "ui-icon-trash" }
-        }).click(function() {
-                    var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
-                    if (mapIds.length > 0) {
-                        var html2 = $('#delete-dialog-modal p span');
-                        $("#delete-dialog-modal").dialog({
-                            height: 140,
-                            modal: true,
-                            buttons: {
-                                "Delete": function() {
-                                    $('#mindmapListTable').dataTableExt.removeSelectedRows();
-                                    $(this).dialog("close");
-                                },
-                                Cancel: function() {
-                                    $(this).dialog("close");
-                                }
-                            }
-                        });
+        $("#deleteBtn").click(function() {
+            var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
+            if (mapIds.length > 0) {
+                var html2 = $('#delete-dialog-modal p span');
+                $("#delete-dialog-modal").dialog({
+                    height: 140,
+                    modal: true,
+                    buttons: {
+                        "Delete": function() {
+                            $('#mindmapListTable').dataTableExt.removeSelectedRows();
+                            $(this).dialog("close");
+                        },
+                        Cancel: function() {
+                            $(this).dialog("close");
+                        }
                     }
                 });
+            }
+        });
 
         $("#actionButtons .printMap").button({
             icons: { primary: "ui-icon-print" }
@@ -294,19 +293,6 @@
             icons: { primary: "ui-icon-print" }
         }).click(function() {
                 });
-
-        $("#actionButtons .moreActions").button({
-            icons: {
-                primary: "ui-icon-gear",
-                secondary: "ui-icon-triangle-1-s"
-            },
-            text: false
-        }).click(function() {
-                    $("#actionPane").toggle('fast', function(event) {
-                        console.log(event);
-                    });
-                });
-
     });
 
     // Register time update functions ....
@@ -343,8 +329,8 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li id="duplicateBtn"><a href="#" onclick="return false">Duplicate</a></li>
-                    <li id="renameMap"><a href="#" onclick="return false">Rename</a></li>
+                    <li id="duplicateBtn"><a href="#" onclick="return false"><i class="icon-plus-sign"></i> Duplicate</a></li>
+                    <li id="renameBtn"><a href="#" onclick="return false"><i class="icon-edit"></i> Rename</a></li>
                     <li id="printMap"><a href="#" onclick="return false"><i class="icon-print"></i> Print</a></li>
                     <li id="publishMap"><a href="#" onclick="return false"><i class="icon-globe"></i>Publish</a></li>
                     <li id="exportMap"><a href="#" onclick="return false"><i class="icon-download-alt"></i> Export</a>
@@ -393,7 +379,7 @@
             <div id="duplicate-dialog-modal" class="modal fade" style="display: none">
                 <div class="modal-header">
                     <button class="close" data-dismiss="modal">X</button>
-                    <h3 id="duplicateMessage"></h3>
+                    <h3 id="dupDialogTitle"></h3>
                 </div>
                 <div class="modal-body">
                     <div id="errorMessage"></div>
@@ -418,35 +404,35 @@
                 </div>
             </div>
 
-            <!-- Duplicate map dialog -->
-            <div id="rename-dialog-modal" title="Rename" style="display: none">
-                <div id="errorMessage"></div>
-                <table>
-                    <tr>
-                        <td class="formLabel">
-                            <span class="fieldRequired">*</span>
-                            <label for="renTitle"><spring:message code="NAME"/>:</label>
-                        </td>
-                        <td>
-                            <input name="title" id="renTitle" required="true"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="formLabel">
-                            <label for="renDescription"><spring:message code="DESCRIPTION"/>:</label>
-                        </td>
-                        <td>
-                            <input name="description" id="renDescription"/>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-
-            <div id="share-dialog-modal" title="Share maps" style="display: none">
-                <p>Are you sure you want to share maps <span></span> ?</p>
+            <!-- Rename map dialog -->
+            <div id="rename-dialog-modal" class="modal fade" style="display: none">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">x</button>
+                    <h3 id="renameDialogTitle"></h3>
+                </div>
+                <div class="modal-body">
+                    <div id="errorMessage"></div>
+                    <form class="form-horizontal">
+                        <fieldset>
+                            <div class="control-group">
+                                <label for="renTitle" class="control-label"><spring:message code="NAME"/>: </label>
+                                <input name="title" id="renTitle" class="control" required="true"/>
+                            </div>
+                            <div class="control-group">
+                                <label for="renDescription" class="control-label"><spring:message
+                                        code="DESCRIPTION"/>:</label>
+                                <input name="description" class="control" id="renDescription"/>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-accept">Rename</button>
+                    <button class="btn btn-cancel">Close</button>
+                </div>
             </div>
         </div>
+
 
         <div>
             <div id="map-table">
