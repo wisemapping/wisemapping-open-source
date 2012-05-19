@@ -22,8 +22,13 @@
     </title>
     <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" type="text/css" href="css/pageTemplate.css"/>
+
     <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
+
+    <script type="text/javascript" language="javascript" src="js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap.js"></script>
+
 </head>
 <body>
 

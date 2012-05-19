@@ -3,78 +3,49 @@
 <%@ include file="/jsp/init.jsp" %>
 
 <div id="loginContent">
-    <div class="sb loginNews">
+    <div class="loginNews">
         <h1>What is New: </h1>
         <ul>
             <li>Links Between Nodes</li>
             <li>FreeMind 0.9 Update</li>
             <li>Improved HTML 5.0 Support</li>
-            <li>Firefox 6.0 is officially supported</li>
+            <li>Firefox 12 officially supported</li>
         </ul>
     </div>
-    <div id="login" class="sb">
+
+    <div id="login" class="fform">
         <h1>
             <spring:message code="SIGN_IN"/>
         </h1>
 
-        <form action="<c:url value='/c/j_spring_security_check'/>" method="POST">
-            <table>
-                <tbody>
-                <c:if test="${not empty param.login_error}">
-                    <tr>
-                        <td>
-                            &nbsp;
-                        </td>
-                        <td class="errorMsg">
-                            <c:choose>
-                                <c:when test="${param.login_error == 3}">
-                                    <spring:message code="USER_INACTIVE"/>
-                                </c:when>
-                                <c:otherwise>
-                                    <spring:message code="LOGIN_ERROR"/>
-                                </c:otherwise>
-                            </c:choose>
-                        </td>
-                    </tr>
-                </c:if>
-                <tr>
-                    <td class="formLabel">
-                        <label for="email"><spring:message code="EMAIL"/>:</label>
-                    </td>
-                    <td>
-                        <input type='text' tabindex="1" id="email" name='j_username'/>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="formLabel">
-                        <label for="password"><spring:message code="PASSWORD"/>:</label>
-                    </td>
-                    <td>
-                        <input type='password' tabindex="2" id="password" name='j_password'/>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="formLabel">
-                        <input type="checkbox" id="rememberme" name="_spring_security_remember_me"/>
-                    </td>
-                    <td>
-                        <label for="rememberme"><spring:message code="REMEMBER_ME"/>:</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>
-                        <input type="submit" class="btn btn-primary" id="submitButton"
-                               value="<spring:message code="SIGN_IN"/>">
+        <c:if test="${not empty param.login_error}">
+            <c:choose>
+                <c:when test="${param.login_error == 3}">
+                    <spring:message code="USER_INACTIVE"/>
+                </c:when>
+                <c:otherwise>
+                    <spring:message code="LOGIN_ERROR"/>
+                </c:otherwise>
+            </c:choose>
+        </c:if>
 
-                        <div style="text-align:right;"><a href="<c:url value="/c/forgotPassword.htm"/>">
-                            <spring:message code="FORGOT_PASSWORD"/>
-                        </a></div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+        <form action="<c:url value='/c/j_spring_security_check'/>" method="POST">
+            <fieldset>
+                <label for="email">
+                    <spring:message code="EMAIL"/>
+                    <input type='email' tabindex="1" id="email" name='j_username' required="required"/>
+
+                    <label for="password"><spring:message code="PASSWORD"/></label>
+                    <input type='password' tabindex="2" id="password" name='j_password' required="required"/>
+
+                    <div class="form-inline">
+                        <input type="submit" class="btn btn-primary" value="<spring:message code="SIGN_IN"/>" data-toggle="button">&nbsp;&nbsp;&nbsp;
+                        <input type="checkbox" id="rememberme" name="_spring_security_remember_me"/>
+                        <label for="rememberme"><spring:message code="REMEMBER_ME"/></label>
+                    </div>
+            </fieldset>
         </form>
+        <a href="<c:url value="/c/forgotPassword.htm"/>"><spring:message code="FORGOT_PASSWORD"/></a>
     </div>
 </div>
 

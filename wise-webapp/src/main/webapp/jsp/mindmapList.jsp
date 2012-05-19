@@ -338,7 +338,7 @@
                         <fieldset>
                             <div class="control-group">
                                 <label for="title" class="control-label"><spring:message code="NAME"/>: </label>
-                                <input name="title" id="title" type="text" required="true" class="control"/>
+                                <input name="title" id="title" type="text" required="required" class="control"/>
                             </div>
                             <div class="control-group">
                                 <label for="description" class="control-label"><spring:message
@@ -350,7 +350,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary btn-accept">Duplicate</button>
+                    <button class="btn btn-primary btn-accept" data-loading-text="Duplicating ...">Duplicate</button>
                     <button class="btn btn-cancel">Close</button>
                 </div>
             </div>
@@ -367,7 +367,7 @@
                         <fieldset>
                             <div class="control-group">
                                 <label for="renTitle" class="control-label"><spring:message code="NAME"/>: </label>
-                                <input name="title" id="renTitle" class="control" required="true"/>
+                                <input name="title" id="renTitle" class="control" required="required"/>
                             </div>
                             <div class="control-group">
                                 <label for="renDescription" class="control-label"><spring:message

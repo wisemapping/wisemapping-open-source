@@ -1,4 +1,6 @@
 @import "../bootstrap/css/bootstrap.min.css";
+@import "../bootstrap/css/bootstrap-responsive.min.css";
+
 @import "pageHeaders.css";
 
 /* INTRO STYLES */
@@ -13,7 +15,7 @@
 
 #loginContent .loginNews {
     float: left;
-    width: 400px;
+    width: 300px;
 }
 
 #joinContent {
@@ -24,14 +26,13 @@
 
 div#mainBody {
     margin: 10px auto;
-    width: 800px; /*margin-bottom: 100px; *//* height brokes all the tables on IE*/
+    width: 900px; /*margin-bottom: 100px; *//* height brokes all the tables on IE*/
     height: 300px;
 }
 
 div#login {
     float: right;
-    width: 350px;
-    padding: 10px;
+    width: 250px;
 }
 
 #forgotPasswordContainer {
@@ -45,24 +46,6 @@ div#loginContent {
     min-height: 250px;
 }
 
-div#loginContent td, div#userRegistrationContent td, div#forgotPasswordContent td {
-    padding: 3px;
-}
-
-div#login h1, div#forgotPasswordContainer h1, div#userRegistration h1 {
-    color: gray;
-    font-size: 200%;
-    margin-bottom: 10px;
-    font-weight: normal;
-}
-
-div#forgotPasswordContainer h2, div#userRegistration h2 {
-    color: black;
-    margin-bottom: 5px;
-    font-size: 110%;
-    border: none;
-    font-weight: normal;
-}
 
 div#userRegistration {
     padding: 10px;
@@ -146,57 +129,6 @@ div.pageBodyContent ol li {
     list-style-type: decimal;
 }
 
-#login.sb, #userRegistration.sb, #forgotPasswordContainer.sb {
-    background: #eeeeee;
-    border: 1px solid #cfcfcf;
-    -moz-border-radius: 8px;
-    -khtml-border-radius: 8px;
-    -webkit-border-radius: 8px;
-    border-radius: 8px;
-}
-
-#detailContent.sb {
-    background: #C3DEF5;
-    border: 1px solid #A7C6DF;
-    -moz-border-radius: 16px;
-    -khtml-border-radius: 16px;
-    -webkit-border-radius: 16px;
-    border-radius: 16px;
-}
-
-#detail.sb {
-    background: white;
-    border: 1px solid #E5E5E5;
-    -moz-border-radius: 16px;
-    -khtml-border-radius: 16px;
-    -webkit-border-radius: 16px;
-    border-radius: 16px;
-}
-
-#userRegistration.sb {
-    background: #eeeeee;
-    border: 1px solid #cfcfcf;
-    -moz-border-radius: 8px;
-    -khtml-border-radius: 8px;
-    -webkit-border-radius: 8px;
-    border-radius: 16px;
-}
-
-#importContainer table {
-    background: #eeeeee;
-    border: 1px solid #cfcfcf;
-    -moz-border-radius: 8px;
-    -khtml-border-radius: 8px;
-    -webkit-border-radius: 8px;
-    border-radius: 16px;
-}
-
-.errorMsg {
-    color: #990000;
-    font-size: 90%;
-    font-weight: bold;
-    padding-left: 5px;
-}
 
 div.pageBody {
     margin: 10px auto;
@@ -210,7 +142,7 @@ div.pageBodyContent {
 
 div.pageBodyContent h1 {
     color: #093A9D;
-    font-size: 200%;
+    font-size: 150%;
     margin-bottom: 5px;
     font-weight: bold;
 }
@@ -262,20 +194,6 @@ div.pageBodyContent li {
     border: 1px dotted gray;
 }
 
-td.formLabel {
-    text-align: right;
-    padding: 2px 10px;
-    white-space: nowrap;
-    font-weight: bolder;
-    vertical-align: top;
-}
-
-span.fieldRequired {
-    font-weight: bold;
-    color: #ff4500;
-    margin: 0 4px;
-}
-
 div.installCFG {
     width: 100%;
     font-size: 130%;
@@ -297,3 +215,14 @@ div.installCFG h2 {
     top: 0;
     margin: 0;
 }
+
+div.fform {
+    background: #eeeeee;
+    border: 1px solid #cfcfcf;
+    padding: 5px 20px;
+    -moz-border-radius: 8px;
+    -khtml-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+}
+
