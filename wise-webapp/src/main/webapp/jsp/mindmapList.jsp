@@ -84,8 +84,8 @@
                     }
                 }
             ],
-            "bAutoWidth" : false,
-            "oLanguage" : {
+            AutoWidth : false,
+            oLanguage : {
                 "sSearch" : "Search",
                 "sInfo" : "Page _END_ of _TOTAL_"
             },
@@ -293,10 +293,6 @@
         </div>
 
         <div>
-            <div id="delete-dialog-modal" title="Delete maps" style="display: none">
-                <p>Are you sure you want to delete maps <span></span> ?</p>
-            </div>
-
             <!-- New map dialog -->
             <div id="new-dialog-modal" title="Add new map" class="modal fade" style="display:none">
                 <div class="modal-header">
@@ -310,7 +306,7 @@
                             <div class="control-group">
                                 <label class="control-label" for="newTitle"><spring:message code="NAME"/>:</label>
                                 <input class="control" name="title" id="newTitle" type="text" required="true"
-                                       placeholder="Name used to identify your map"/>
+                                       placeholder="Name of the new map to create" autofocus="autofocus"/>
                             </div>
                             <div class="control-group">
                                 <label class="control-label" for="newDec"><spring:message code="DESCRIPTION"/>:</label>
@@ -337,8 +333,8 @@
                     <form class="form-horizontal">
                         <fieldset>
                             <div class="control-group">
-                                <label for="title" class="control-label"><spring:message code="NAME"/>: </label>
-                                <input name="title" id="title" type="text" required="required" class="control"/>
+                                <label for="title" class="control-label"><spring:message code="NAME" />: </label>
+                                <input name="title" id="title" type="text" required="required" placeholder="Name of the new map to create" autofocus="autofocus" class="control"/>
                             </div>
                             <div class="control-group">
                                 <label for="description" class="control-label"><spring:message
@@ -367,7 +363,7 @@
                         <fieldset>
                             <div class="control-group">
                                 <label for="renTitle" class="control-label"><spring:message code="NAME"/>: </label>
-                                <input name="title" id="renTitle" class="control" required="required"/>
+                                <input name="title" id="renTitle" required="required" autofocus="autofocus" class="control"/>
                             </div>
                             <div class="control-group">
                                 <label for="renDescription" class="control-label"><spring:message
@@ -383,7 +379,6 @@
                 </div>
             </div>
         </div>
-
 
         <div>
             <div id="map-table">
