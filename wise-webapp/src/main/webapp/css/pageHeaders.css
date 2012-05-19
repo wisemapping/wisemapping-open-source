@@ -1,6 +1,6 @@
 /* HEADER STYLES */
 #header {
-    margin-top: 2px;
+    margin-top: 0px;
     height: 78px;
     width: 100%;
     background: white;
@@ -31,7 +31,7 @@
 }
 
 #headerLogo {
-    margin-top: 8px;
+    margin-top: 13px;
     height: 80px;
     width: 160px;
     background: url("../images/logo-medium.png") no-repeat;
@@ -100,30 +100,6 @@ div#headerButtons activelink a, div#headerButtons activelink a:hover {
     border-bottom: 0;
 }
 
-#signUpHeader {
-    padding-right: 8px;
-    padding-top: 4px;
-    position: absolute;
-    right: 0;
-    z-index: 50;
-    text-align: center;
-}
-
-#signUpHeader a, #signUpHeader a:hover {
-    font-size: 100%;
-    color: #BBB4D6;
-    text-decoration: underline;
-}
-
-#editorHeader {
-    height: 40px;
-    width: 100%;
-    background: white;
-    border-bottom: 1px solid #bbb4d6;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
 
 #footer {
     width: 100%;
@@ -166,6 +142,11 @@ div#headerActions {
     position: absolute;
     right: 0;
     z-index: 50;
+
+}
+
+#headerActions span {
+    border-bottom: 3px solid  #F7C931;
 }
 
 div#headerActions a:hover, div#headerActions a:active, div#headerActions a:link, div#headerActions a:visited {

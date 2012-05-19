@@ -8,27 +8,19 @@
         <c:choose>
             <c:when test="${principal != null}">
                 <div id="headerActions">
-                    <spring:message code="WELCOME"/>
-                    , ${principal.firstname}
-                    | <a href="${pageContext.request.contextPath}/c/mymaps.htm">
-                    <spring:message code="MY_WISEMAPS"/>
-                </a>
-                    | <a href="${pageContext.request.contextPath}/c/settings.htm" rel="moodalbox 400px 250px wizard"
-                         title="<spring:message code="SETTINGS_DETAIL"/>">
-                    <spring:message code="SETTINGS"/>
-                </a>
-                    | <a href="${pageContext.request.contextPath}/c/logout.htm" title="<spring:message code="LOGOUT"/>">
-                    <spring:message code="LOGOUT"/>
-                </a>
+                    <spring:message code="WELCOME"/>, ${principal.firstname}
+                    | <span><a href="${pageContext.request.contextPath}/c/mymaps.htm"><spring:message code="MY_WISEMAPS"/></a></span>
+                    | <span><a href="${pageContext.request.contextPath}/c/settings.htm" title="<spring:message code="SETTINGS_DETAIL"/>"><spring:message code="SETTINGS"/></a></span>
+                    | <span><a href="${pageContext.request.contextPath}/c/logout.htm" title="<spring:message code="LOGOUT"/>"><spring:message code="LOGOUT"/></a></span>
                 </div>
             </c:when>
             <c:when test="${param.removeSignin!=true}">
-                <div id="signUpHeader">
+                <div id="headerActions">
                     <spring:message code="ALREADY_A_MEMBER"/>
-                    <a href="${pageContext.request.contextPath}/c/login.htm" title="<spring:message code="SIGN_IN"/>">
+                    <span><a href="${pageContext.request.contextPath}/c/login.htm" title="<spring:message code="SIGN_IN"/>">
                         <spring:message code="SIGN_IN"/>
-                    </a>
-                </div>
+                    </a></span>
+                    </div>
             </c:when>
         </c:choose>
         <div class="header_languages">
