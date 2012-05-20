@@ -72,8 +72,11 @@ jQuery.fn.dialogForm = function(options) {
     var containerId = this[0].id;
     var url = options.url;
 
-    // Clean previous dialog content ...
-    $("#" + containerId + " div[id='errorMessage']").text("").removeClass("ui-state-highlight");
+    // Clear previous state ...
+    $("#" + containerId + " .errorMessage").text("").removeClass("alert alert-error");
+    $("#" + containerId + " .control-group").removeClass('error');
+    $("#" + containerId + " input").attr('value','');
+
 
     var acceptBtn = $('#' + containerId + ' .btn-accept');
     acceptBtn.click(function() {
@@ -117,7 +120,9 @@ jQuery.fn.dialogForm = function(options) {
                             // Mark the field ...
                             var message = fieldErrors[fieldName];
                             var inputField = $("#" + containerId + " input[name='" + fieldName + "']");
-                            $("#" + containerId + " div[id='errorMessage']").text(message).addClass("alert alert-error");
+
+                            $("#" + containerId + " .errorMessage").text(message).addClass("alert alert-error");
+                            inputField.parent().addClass('error');
                         }
 
                     }

@@ -247,18 +247,6 @@ table.display {
 	background: @th-background-color url('../images/sort_desc_disabled.png') no-repeat center right;
 }
 
-
-/* ----------------------------- Rows ----------------------------------- */
-
-tr.odd {
-	background-color: @odd-color;
-}
-
-tr.even {
-	background-color: @even-color;
-}
-
-
 /* ----------------------------- Misc ----------------------------------- */
 
 .dataTables_scroll {
@@ -331,62 +319,3 @@ td.details {
 	background-color: #ccc;
 }
 
-.paging_full_numbers span.paginate_active {
-	background-color: #99B3FF;
-}
-
-table.display tr.even.row_selected td {
-	background-color: #B0BED9;
-}
-
-table.display tr.odd.row_selected td {
-	background-color: #9FAFD1;
-}
-
-
-/* ------------------------ Sorting classes ----------------------------- */
-
-tr.odd {
-    td.sorting_1 {
-        background-color: @sorting-odd-color;
-    }
-
-    td.sorting_2 {
-        background-color: #DADCFF;
-    }
-
-    td.sorting_3 {
-        background-color: #E0E2FF;
-    }
-}
-
-tr.even {
-    td.sorting_1 {
-        background-color: @sorting-even-color;
-    }
-
-    td.sorting_2 {
-        background-color: #F2F3FF;
-    }
-
-    td.sorting_3 {
-        background-color: #F9F9FF;
-    }
-}
-
-/* ------------------------------ Tags ---------------------------------- */
-
-table.display span.tag {
-    color: white;
-    padding: 5px 10px;
-    background: desaturate(@red, 30%);
-    .rounded-corners(3px);
-}
-
-#mindmapListTable .columName {
-    cursor: pointer
-}
-
-#mindmapListTable tr:hover {
-    background: #e0ffff;
-}

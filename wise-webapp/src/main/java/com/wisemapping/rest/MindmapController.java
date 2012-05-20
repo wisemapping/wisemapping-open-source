@@ -121,7 +121,7 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/maps/batch")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void batchDelete(@RequestParam(required = false) String ids) throws IOException, WiseMappingException {
+    public void batchDelete(@RequestParam(required = true) String ids) throws IOException, WiseMappingException {
         final User user = Utils.getUser();
         final String[] mapsIds = ids.split(",");
         for (final String mapId : mapsIds) {

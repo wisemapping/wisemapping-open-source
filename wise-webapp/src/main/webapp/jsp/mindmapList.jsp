@@ -202,21 +202,19 @@
         });
 
         $("#deleteBtn").click(function() {
-            var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
+            var tableUI = $('#mindmapListTable');
+
+            var mapIds = tableUI.dataTableExt.getSelectedMapsIds();
             if (mapIds.length > 0) {
-                var html2 = $('#delete-dialog-modal p span');
-                $("#delete-dialog-modal").dialog({
-                    height: 140,
+                // Initialize dialog ...
+                $("#delete-dialog-modal").dialogForm({
                     modal: true,
-                    buttons: {
-                        "Delete": function() {
-                            $('#mindmapListTable').dataTableExt.removeSelectedRows();
-                            $(this).dialog("close");
-                        },
-                        Cancel: function() {
-                            $(this).dialog("close");
-                        }
-                    }
+                    type: 'DELETE',
+                    postUpdate: function(reqBodyData) {
+                        // Remove old entry ...
+                        tableUI.dataTableExt.removeSelectedRows();
+                    },
+                    url :  "../service/maps/batch?ids="+mapIds.join(',')
                 });
             }
         });
@@ -245,6 +243,7 @@
 
     });
 
+
     // Register time update functions ....
     setTimeout(function() {
         jQuery("abbr.timeago").timeago()
@@ -253,7 +252,6 @@
 </script>
 </head>
 <body>
-
 <div class="content">
     <jsp:include page="header.jsp">
         <jsp:param name="removeSignin" value="false"/>
@@ -300,7 +298,7 @@
                     <h3>Create a new map</h3>
                 </div>
                 <div class="modal-body">
-                    <div id="errorMessage"></div>
+                    <div class="errorMessage"></div>
                     <form class="form-horizontal">
                         <fieldset>
                             <div class="control-group">
@@ -329,12 +327,14 @@
                     <h3 id="dupDialogTitle"></h3>
                 </div>
                 <div class="modal-body">
-                    <div id="errorMessage"></div>
+                    <div class="errorMessage"></div>
                     <form class="form-horizontal">
                         <fieldset>
                             <div class="control-group">
-                                <label for="title" class="control-label"><spring:message code="NAME" />: </label>
-                                <input name="title" id="title" type="text" required="required" placeholder="Name of the new map to create" autofocus="autofocus" class="control"/>
+                                <label for="title" class="control-label"><spring:message code="NAME"/>: </label>
+                                <input name="title" id="title" type="text" required="required"
+                                       placeholder="Name of the new map to create" autofocus="autofocus"
+                                       class="control"/>
                             </div>
                             <div class="control-group">
                                 <label for="description" class="control-label"><spring:message
@@ -358,12 +358,13 @@
                     <h3 id="renameDialogTitle"></h3>
                 </div>
                 <div class="modal-body">
-                    <div id="errorMessage"></div>
+                    <div class="errorMessage"></div>
                     <form class="form-horizontal">
                         <fieldset>
                             <div class="control-group">
                                 <label for="renTitle" class="control-label"><spring:message code="NAME"/>: </label>
-                                <input name="title" id="renTitle" required="required" autofocus="autofocus" class="control"/>
+                                <input name="title" id="renTitle" required="required" autofocus="autofocus"
+                                       class="control"/>
                             </div>
                             <div class="control-group">
                                 <label for="renDescription" class="control-label"><spring:message
@@ -380,14 +381,34 @@
             </div>
         </div>
 
+        <!-- Delete map dialog -->
+        <div id="delete-dialog-modal" class="modal fade" style="display: none">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">x</button>
+                <h3>Delete MindMap</h3>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-block">
+                    <h4 class="alert-heading">Warning!</h4>Deleted mindmap can not be recovered. Do you want to continue
+                    ?
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary btn-accept">Delete</button>
+                <button class="btn btn-cancel">Close</button>
+            </div>
+        </div>
+
         <div>
             <div id="map-table">
-                <table class="display" id="mindmapListTable">
+                <table class="table table-bordered" id="mindmapListTable">
 
                 </table>
             </div>
         </div>
     </div>
+
+</div>
 </div>
 
 
