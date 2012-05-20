@@ -19,7 +19,7 @@
 
 <!--jQuery DataTables-->
 <script type="text/javascript" language="javascript" src="js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" language="javascript" src="js/jquery.dataTables.plugins.js"></script>
+<script type="text/javascript" language="javascript" src="js/mymaps.js"></script>
 
 <!-- Update timer plugging -->
 <script type="text/javascript" language="javascript" src="js/jquery.timeago.js"></script>
@@ -55,10 +55,6 @@
                     }
                 },
                 {
-                    sTitle : "Description",
-                    mDataProp : "description"
-                },
-                {
                     sTitle : "Owner",
                     mDataProp :"creator"
                 },
@@ -71,16 +67,6 @@
                     fnRender : function(obj) {
                         var time = obj.aData.lastModificationTime;
                         return '<abbr class="timeago" title="' + time + '">' + jQuery.timeago(time) + '</abbr>' + ' ' + '<span style="color: #777;font-size: 75%;padding-left: 5px;">' + obj.aData.lastModifierUser + '</span>';
-                    }
-                },
-                {
-                    sTitle: "Details",
-                    sClass: "center",
-                    sWidth : "15px",
-                    bSortable : false,
-                    bSearchable : false,
-                    fnRender : function(obj) {
-                        return '<a href="c/map/' + obj.aData.id + '/details.htm"><span class="ui-icon ui-icon-circle-triangle-e" style="margin: 0 auto;"></span></a>';
                     }
                 }
             ],
@@ -214,7 +200,7 @@
                         // Remove old entry ...
                         tableUI.dataTableExt.removeSelectedRows();
                     },
-                    url :  "../service/maps/batch?ids="+mapIds.join(',')
+                    url :  "../service/maps/batch?ids=" + mapIds.join(',')
                 });
             }
         });
@@ -226,6 +212,25 @@
             }
         });
 
+        $("#infoBtn").click(function() {
+            var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
+            if (mapIds.length > 0) {
+                $('#info-dialog-modal .modal-body').load("c/map/" + mapIds[0] + "/details.htm", function() {
+                    $('#info-dialog-modal').modal();
+                });
+
+            }
+        });
+
+        $("#exportBtn").click(function() {
+            var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
+            if (mapIds.length > 0) {
+                $('#export-dialog-modal .modal-body').load("c/map/" + mapIds[0] + "/export.htm", function() {
+                    $('#export-dialog-modal').modal();
+                });
+
+            }
+        });
         $("#actionButtons .publishMap").click(function() {
         });
 
@@ -270,20 +275,23 @@
             <div class="btn-group" id="deleteBtn" style="display:none">
                 <button class="btn"><i class="icon-trash"></i> Delete</button>
             </div>
-            <div class="btn-group" id="actionsBtn" style="display:none">
 
+            <div class="btn-group" id="infoBtn" style="display:none">
+                <button class="btn"><i class="icon-exclamation-sign"></i> Info</button>
+            </div>
+
+            <div class="btn-group" id="actionsBtn" style="display:none">
                 <button class="btn dropdown-toggle" data-toggle="dropdown">
                     <i class="icon-asterisk"></i> More
                     <span class="caret"></span>
                 </button>
+
                 <ul class="dropdown-menu">
-                    <li id="duplicateBtn"><a href="#" onclick="return false"><i class="icon-plus-sign"></i>
-                        Duplicate</a></li>
+                    <li id="duplicateBtn"><a href="#" onclick="return false"><i class="icon-plus-sign"></i> Duplicate</a></li>
                     <li id="renameBtn"><a href="#" onclick="return false"><i class="icon-edit"></i> Rename</a></li>
                     <li id="printBtn"><a href="#" onclick="return false"><i class="icon-print"></i> Print</a></li>
                     <li id="publishMap"><a href="#" onclick="return false"><i class="icon-globe"></i>Publish</a></li>
-                    <li id="exportMap"><a href="#" onclick="return false"><i class="icon-download-alt"></i> Export</a>
-                    </li>
+                    <li id="exportBtn"><a href="#" onclick="return false"><i class="icon-download-alt"></i> Export</a></li>
                     <li id="shareMap"><a href="#" onclick="return false"><i class="icon-share"></i> Share</a></li>
                     <li id="tagMap"><a href="#" onclick="return false"><i class="icon-tags"></i> Tag</a></li>
                 </ul>
@@ -316,7 +324,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary btn-accept" data-loading-text="Creating ...">Create</button>
-                    <button class="btn btn-cancel">Close</button>
+                    <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
 
@@ -347,7 +355,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary btn-accept" data-loading-text="Duplicating ...">Duplicate</button>
-                    <button class="btn btn-cancel">Close</button>
+                    <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
 
@@ -376,7 +384,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary btn-accept">Rename</button>
-                    <button class="btn btn-cancel">Close</button>
+                    <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>
@@ -389,13 +397,40 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-block">
-                    <h4 class="alert-heading">Warning!</h4>Deleted mindmap can not be recovered. Do you want to continue
-                    ?
+                    <h4 class="alert-heading">Warning!</h4>Deleted mindmap can not be recovered. Do you want to
+                    continue ?.
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary btn-accept">Delete</button>
-                <button class="btn btn-cancel">Close</button>
+                <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Info map dialog -->
+        <div id="info-dialog-modal" class="modal fade" style="display: none">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">x</button>
+                <h3>Info</h3>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+        <div id="export-dialog-modal" class="modal fade" style="display: none">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">x</button>
+                <h3>Export</h3>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" data-dismiss="modal">Close</button>
             </div>
         </div>
 
@@ -408,7 +443,6 @@
         </div>
     </div>
 
-</div>
 </div>
 
 

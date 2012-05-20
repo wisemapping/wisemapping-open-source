@@ -32,58 +32,6 @@ div#register a {
     font-weight: bold;
 }
 
-/* WiseMap details */
-#detailContent {
-    width: 700px;
-    height: 100%;
-    padding: 10px;
-}
-
-#detail {
-    margin: 10px auto;
-    height: 100%;
-    padding: 8px;
-}
-
-#detail table {
-    background-color: white;
-    width: 100%;
-}
-
-#detail td {
-    padding: 5px;
-    vertical-align: top;
-}
-
-#detailTitle {
-    color: #093A9D;
-    font-weight: bold;
-    font-size: 14px;
-    padding-left: 5px;
-}
-
-#detailTitle img {
-    padding-left: 5px;
-}
-
-#detailTitle span {
-    color: #8e9181;
-    font-weight: normal;
-    font-size: 14px;
-}
-
-#detail h1 {
-    color: black;
-    font-weight: bolder;
-}
-
-#detail .evenRow {
-    background-color: #ebeef1;
-}
-
-#detail .oddRow {
-    background-color: #eff3f5;
-}
 
 div.pageBodyContent ol {
     margin-left: 12px;

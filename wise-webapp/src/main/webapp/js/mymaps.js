@@ -75,7 +75,7 @@ jQuery.fn.dialogForm = function(options) {
     // Clear previous state ...
     $("#" + containerId + " .errorMessage").text("").removeClass("alert alert-error");
     $("#" + containerId + " .control-group").removeClass('error');
-    $("#" + containerId + " input").attr('value','');
+    $("#" + containerId + " input").attr('value', '');
 
 
     var acceptBtn = $('#' + containerId + ' .btn-accept');
@@ -97,7 +97,6 @@ jQuery.fn.dialogForm = function(options) {
                     var redirectUrl = options.redirect;
                     redirectUrl = redirectUrl.replace("{header.resourceId}", resourceId);
                     $(acceptBtn).button('loading');
-                    $("#" + containerId).modal('hide');
                     window.location = redirectUrl;
 
                 } else if (options.postUpdate) {
@@ -147,14 +146,21 @@ jQuery.fn.dialogForm = function(options) {
 
 // Update toolbar events ...
 function updateToolbar() {
-    var selected = $("#mindmapListTable tbody input:checked").length > 0;
+
+    $("#mindmapListTable tbody input:checked").parent().parent().addClass('row-selected');
+    $("#mindmapListTable tbody input:not(:checked)").parent().parent().removeClass('row-selected');
+
+    var inputs = $("#mindmapListTable tbody input:checked");
+    var selected = inputs.length > 0;
     if (selected) {
         $("#actionsBtn").show();
         $("#deleteBtn").show();
-
+        $("#infoBtn").show();
     } else {
         $("#actionsBtn").hide();
         $("#deleteBtn").hide();
+        $("#infoBtn").hide();
+
 
     }
 }

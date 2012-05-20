@@ -83,8 +83,8 @@ public class MindMapBean {
         return result;
     }
 
-    public Calendar getLastEditTime() {
-        return mindMap.getLastModificationTime();
+    public String getLastEditTime() {
+        return DateFormat.getInstance().format(mindMap.getLastModificationTime().getTime());
     }
 
     public String getCreationTime() {

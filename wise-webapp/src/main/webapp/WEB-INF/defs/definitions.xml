@@ -81,15 +81,6 @@
         <put name="body" value="/jsp/login.jsp"/>
     </definition>
 
-    <definition name="browserNotSupported" extends="pageTemplate">
-        <put name="title" value="USUPPORTED_BROWSER"/>
-        <put name="body" value="/jsp/browserNotSupported.jsp"/>
-    </definition>
-
-    <definition name="mindmapDetail" extends="pageTemplate">
-        <put name="title" value="MINDMAP_DETAIL"/>
-        <put name="body" value="/jsp/mindmapDetail.jsp"/>
-    </definition>
 
     <definition name="search" extends="pageTemplate">
         <put name="title" value="SEARCH"/>
@@ -109,6 +100,11 @@
 
 
     <!-- Dialog Forms -->
+
+    <definition name="mindmapDetail" extends="formDialogTemplate">
+        <put name="title" value="MINDMAP_DETAIL"/>
+        <put name="body" value="/jsp/mindmapDetail.jsp"/>
+    </definition>
 
     <definition name="setting" extends="formDialogTemplate">
         <put name="title" value="SETTINGS"/>
