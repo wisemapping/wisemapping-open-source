@@ -265,15 +265,15 @@
                 <button class="btn" id="importBtn"><i class="icon-upload"></i> Import</button>
             </div>
 
-            <div class="btn-group" id="deleteBtn" style="display:none">
+            <div class="btn-group act-multiple" id="deleteBtn" style="display:none">
                 <button class="btn"><i class="icon-trash"></i> Delete</button>
             </div>
 
-            <div class="btn-group" id="infoBtn" style="display:none">
+            <div class="btn-group act-single" id="infoBtn" style="display:none">
                 <button class="btn"><i class="icon-exclamation-sign"></i> Info</button>
             </div>
 
-            <div class="btn-group" id="actionsBtn" style="display:none">
+            <div class="btn-group act-single" id="actionsBtn" style="display:none">
                 <button class="btn dropdown-toggle" data-toggle="dropdown">
                     <i class="icon-asterisk"></i> More
                     <span class="caret"></span>

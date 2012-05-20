@@ -151,17 +151,24 @@ function updateToolbar() {
     $("#mindmapListTable tbody input:not(:checked)").parent().parent().removeClass('row-selected');
 
     var inputs = $("#mindmapListTable tbody input:checked");
-    var selected = inputs.length > 0;
-    if (selected) {
-        $("#actionsBtn").show();
-        $("#deleteBtn").show();
-        $("#infoBtn").show();
-    } else {
-        $("#actionsBtn").hide();
-        $("#deleteBtn").hide();
-        $("#infoBtn").hide();
+
+    $("#buttonsToolbar .act-multiple").hide();
+    $("#buttonsToolbar .act-single").hide();
 
 
+    console.log($("#buttonsToolbar .act-multiple"));
+
+
+
+
+
+    if (inputs.length > 0) {
+        if (inputs.length == 1) {
+            $("#buttonsToolbar .act-single").show();
+            $("#buttonsToolbar .act-multiple").show();
+        } else {
+            $("#buttonsToolbar .act-multiple").show();
+        }
     }
 }
 
