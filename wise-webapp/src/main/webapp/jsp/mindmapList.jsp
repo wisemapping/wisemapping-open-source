@@ -11,10 +11,10 @@
 <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
 
 <link rel="stylesheet/less" type="text/css" href="css/mymaps.less"/>
-<script src="js/less.js" type="text/javascript"></script>
 
 <script type="text/javascript" language="javascript" src="js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap.js"></script>
+<script src="js/less.js" type="text/javascript"></script>
 
 
 <!--jQuery DataTables-->
@@ -70,45 +70,39 @@
                     }
                 }
             ],
-            AutoWidth : false,
+            bAutoWidth : false,
             oLanguage : {
-                "sSearch" : "Search",
-                "sInfo" : "Page _END_ of _TOTAL_"
+                "sSearch" : "",
+                "sInfo" : "_START_-_END_ of _TOTAL_"
             },
             bStateSave:true
         });
 
-        $('#mindmapListTable_filter').appendTo("#toolbar");
-        $("#mindmapListTable_length").appendTo("#actionButtons");
+        // Customize search action ...
+        $('#mindmapListTable_filter').appendTo("#tableActions");
+        $('#mindmapListTable_filter input').addClass('input-medium search-query');
+        $('#mindmapListTable_filter input').attr('placeholder', 'Search');
+        $("#mindmapListTable_info").appendTo("#pageInfo");
+
+        // Re-arrange pagination actions ...
+        $("#tableFooter").appendTo("#mindmapListTable_wrapper");
+        $("#mindmapListTable_length").appendTo("#tableFooter");
+        $('#mindmapListTable_length select').addClass('span1');
+
 
         $('input:checkbox[id="selectAll"]').click(function() {
             $("#mindmapListTable").dataTableExt.selectAllMaps();
         });
-    });
-</script>
 
-<!--Tags-->
-<script type="text/javascript" charset="utf-8">
-
-    var tags = ['ThinkMapping', 'Akostic', 'Clients', 'Favoris'];
-
-    $(function() {
-        for (i in tags) {
-            var outerDiv = $('<div class="tag">' + tags[i] + '</div>');
-            var icon = $('<span class="ui-icon ui-icon-folder-collapsed"></span>');
-            outerDiv.append(icon);
-            $("#tags-list").append(outerDiv);
-        }
-
-        $("#tags-actions button").button({
-            icons: { primary: "ui-icon-plusthick" }
+        // Hack for changing the lagination buttons ...
+        $('#nPageBtn').click(function() {
+            $('#mindmapListTable_next').click();
+        });
+         $('#pPageBtn').click(function() {
+            $('#mindmapListTable_previous').click();
         });
 
-        $("#tags-list .tag").each(function(index) {
-            $(this).click(function() {
-                console.log("ddfsfds");
-            })
-        })
+
     });
 </script>
 
@@ -248,7 +242,6 @@
 
     });
 
-
     // Register time update functions ....
     setTimeout(function() {
         jQuery("abbr.timeago").timeago()
@@ -287,14 +280,23 @@
                 </button>
 
                 <ul class="dropdown-menu">
-                    <li id="duplicateBtn"><a href="#" onclick="return false"><i class="icon-plus-sign"></i> Duplicate</a></li>
+                    <li id="duplicateBtn"><a href="#" onclick="return false"><i class="icon-plus-sign"></i>
+                        Duplicate</a></li>
                     <li id="renameBtn"><a href="#" onclick="return false"><i class="icon-edit"></i> Rename</a></li>
                     <li id="printBtn"><a href="#" onclick="return false"><i class="icon-print"></i> Print</a></li>
                     <li id="publishMap"><a href="#" onclick="return false"><i class="icon-globe"></i>Publish</a></li>
-                    <li id="exportBtn"><a href="#" onclick="return false"><i class="icon-download-alt"></i> Export</a></li>
+                    <li id="exportBtn"><a href="#" onclick="return false"><i class="icon-download-alt"></i> Export</a>
+                    </li>
                     <li id="shareMap"><a href="#" onclick="return false"><i class="icon-share"></i> Share</a></li>
                     <li id="tagMap"><a href="#" onclick="return false"><i class="icon-tags"></i> Tag</a></li>
                 </ul>
+            </div>
+            <div id="tableActions" class="btn-toolbar">
+                <div class="btn-group" id="pageButtons">
+                    <button class="btn" id="pPageBtn"><strong>&lt;</strong></button>
+                    <button class="btn" id="nPageBtn"><strong>&gt;</strong></button>
+                </div>
+                <div id="pageInfo"></div>
             </div>
         </div>
 
@@ -434,13 +436,14 @@
             </div>
         </div>
 
-        <div>
-            <div id="map-table">
-                <table class="table table-bordered" id="mindmapListTable">
 
-                </table>
-            </div>
+        <div id="map-table">
+            <table class="table table-bordered" id="mindmapListTable">
+
+            </table>
+            <div id="tableFooter" class="form-inline"></div>
         </div>
+
     </div>
 
 </div>
