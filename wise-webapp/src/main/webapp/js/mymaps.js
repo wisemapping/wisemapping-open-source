@@ -31,7 +31,7 @@ jQuery.fn.dataTableExt.selectAllMaps = function() {
             $(this).prop("checked", false);
         });
     }
-    updateToolbar();
+    updateStatus();
 };
 
 jQuery.fn.dataTableExt.getSelectedMapsIds = function() {
@@ -107,11 +107,6 @@ jQuery.fn.dialogForm = function(options) {
             error: function(jqXHR, textStatus, errorThrown) {
                 if (jqXHR.status == 400) {
                     var errors = JSON.parse(jqXHR.responseText);
-                    // Clean previous marks ....
-                    $("#" + containerId + ' input').each(function(index, elem) {
-                        $(elem).removeClass("ui-state-error");
-                    });
-
                     // Mark fields with errors ...
                     var fieldErrors = errors.fieldErrors;
                     if (fieldErrors) {
@@ -145,27 +140,30 @@ jQuery.fn.dialogForm = function(options) {
 
 
 // Update toolbar events ...
-function updateToolbar() {
+function updateStatus() {
 
+    // Mark column row selection values ...
     $("#mindmapListTable tbody input:checked").parent().parent().addClass('row-selected');
     $("#mindmapListTable tbody input:not(:checked)").parent().parent().removeClass('row-selected');
 
-    var inputs = $("#mindmapListTable tbody input:checked");
-
+    // Update toolbar ...
     $("#buttonsToolbar .act-multiple").hide();
     $("#buttonsToolbar .act-single").hide();
 
+    var tableElem = $('#mindmapListTable');
+    var selectedRows = tableElem.dataTableExt.getSelectedRows();
 
-    console.log($("#buttonsToolbar .act-multiple"));
-
-
-
-
-
-    if (inputs.length > 0) {
-        if (inputs.length == 1) {
+    if (selectedRows.length > 0) {
+        if (selectedRows.length == 1) {
             $("#buttonsToolbar .act-single").show();
             $("#buttonsToolbar .act-multiple").show();
+
+            // Can be executed by the owner ?
+            var rowData = tableElem.dataTable().fnGetData(selectedRows[0]);
+            if (rowData.ownerEmail != principalEmail) {
+                $("#buttonsToolbar #publishBtn").hide();
+                $("#buttonsToolbar #shareBtn").hide();
+            }
         } else {
             $("#buttonsToolbar .act-multiple").show();
         }

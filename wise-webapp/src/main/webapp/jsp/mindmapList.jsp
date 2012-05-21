@@ -16,7 +16,6 @@
 <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap.js"></script>
 <script src="js/less.js" type="text/javascript"></script>
 
-
 <!--jQuery DataTables-->
 <script type="text/javascript" language="javascript" src="js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" language="javascript" src="js/mymaps.js"></script>
@@ -25,20 +24,20 @@
 <script type="text/javascript" language="javascript" src="js/jquery.timeago.js"></script>
 
 <script type="text/javascript" charset="utf-8">
+    var principalEmail = '${principal.email}';
     $(function() {
-
         var jQueryDataTable = $('#mindmapListTable').dataTable({
             bProcessing : true,
             sAjaxSource : "../service/maps",
             sAjaxDataProp: 'mindmapsInfo',
             fnInitComplete: function() {
-                $('#mindmapListTable tbody').change(updateToolbar);
+                $('#mindmapListTable tbody').change(updateStatus);
             },
             aoColumns: [
                 {
                     sTitle : '<input type="checkbox" id="selectAll"/>',
                     sWidth : "15px",
-                    sClass : "select center",
+                    sClass : "select",
                     bSortable : false,
                     bSearchable : false,
                     fnRender : function(obj) {
@@ -46,7 +45,6 @@
                     }
                 },
                 {
-                    sClass : "columName",
                     sTitle : "Name",
                     bUseRendered : false,
                     mDataProp: "title",
@@ -55,8 +53,14 @@
                     }
                 },
                 {
+                    bVisible: false,
+                    bSearchable : false,
+                    sTitle : "Owner Email",
+                    mDataProp: "ownerEmail"
+                },
+                {
                     sTitle : "Owner",
-                    mDataProp :"creator"
+                    mDataProp :"owner"
                 },
                 {
                     bSearchable : false,
@@ -98,11 +102,9 @@
         $('#nPageBtn').click(function() {
             $('#mindmapListTable_next').click();
         });
-         $('#pPageBtn').click(function() {
+        $('#pPageBtn').click(function() {
             $('#mindmapListTable_previous').click();
         });
-
-
     });
 </script>
 
@@ -216,16 +218,17 @@
             }
         });
 
-        $("#exportBtn").click(function() {
+        $("#publishBtn").click(function() {
             var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
             if (mapIds.length > 0) {
-                $('#export-dialog-modal .modal-body').load("c/map/" + mapIds[0] + "/export.htm", function() {
-                    $('#export-dialog-modal').modal();
-                });
-
+                $('#publish-dialog-modal .modal-body').load("c/map/" + mapIds[0] + "/publish.htm",
+                        function() {
+                            $('#publish-dialog-modal .btn-accept').click(function() {
+                                $('#publish-dialog-modal #publishForm').submit();
+                            });
+                            $('#publish-dialog-modal').modal();
+                        });
             }
-        });
-        $("#actionButtons .publishMap").click(function() {
         });
 
         $("#actionButtons .shareMap").click(function() {
@@ -250,7 +253,7 @@
 </script>
 </head>
 <body>
-<div class="content">
+<div style="min-height: 500px">
     <jsp:include page="header.jsp">
         <jsp:param name="removeSignin" value="false"/>
         <jsp:param name="showLogout" value="true"/>
@@ -261,21 +264,21 @@
         <div id="buttonsToolbar" class="btn-toolbar">
 
             <div class="btn-group">
-                <button class="btn" id="newBtn"><i class="icon-file"></i> New</button>
-                <button class="btn" id="importBtn"><i class="icon-upload"></i> Import</button>
+                <button class="btn btn-info" id="newBtn"><i class="icon-file icon-white"></i> New</button>
+                <button class="btn btn-info" id="importBtn"><i class="icon-upload icon-white"></i> Import</button>
             </div>
 
             <div class="btn-group act-multiple" id="deleteBtn" style="display:none">
-                <button class="btn"><i class="icon-trash"></i> Delete</button>
+                <button class="btn btn-info"><i class="icon-trash icon-white"></i> Delete</button>
             </div>
 
             <div class="btn-group act-single" id="infoBtn" style="display:none">
-                <button class="btn"><i class="icon-exclamation-sign"></i> Info</button>
+                <button class="btn btn-info"><i class="icon-exclamation-sign icon-white"></i> Info</button>
             </div>
 
             <div class="btn-group act-single" id="actionsBtn" style="display:none">
-                <button class="btn dropdown-toggle" data-toggle="dropdown">
-                    <i class="icon-asterisk"></i> More
+                <button class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                    <i class="icon-asterisk icon-white"></i> More
                     <span class="caret"></span>
                 </button>
 
@@ -284,10 +287,8 @@
                         Duplicate</a></li>
                     <li id="renameBtn"><a href="#" onclick="return false"><i class="icon-edit"></i> Rename</a></li>
                     <li id="printBtn"><a href="#" onclick="return false"><i class="icon-print"></i> Print</a></li>
-                    <li id="publishMap"><a href="#" onclick="return false"><i class="icon-globe"></i>Publish</a></li>
-                    <li id="exportBtn"><a href="#" onclick="return false"><i class="icon-download-alt"></i> Export</a>
-                    </li>
-                    <li id="shareMap"><a href="#" onclick="return false"><i class="icon-share"></i> Share</a></li>
+                    <li id="publishBtn"><a href="#" onclick="return false"><i class="icon-globe"></i>Publish</a></li>
+                    <li id="shareBtn"><a href="#" onclick="return false"><i class="icon-share"></i> Share</a></li>
                     <li id="tagMap"><a href="#" onclick="return false"><i class="icon-tags"></i> Tag</a></li>
                 </ul>
             </div>
@@ -423,19 +424,20 @@
             </div>
         </div>
 
-        <div id="export-dialog-modal" class="modal fade" style="display: none">
+        <!-- Publish Dialog Config -->
+        <div id="publish-dialog-modal" class="modal fade" style="display: none">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">x</button>
-                <h3>Export</h3>
+                <h3>Publish</h3>
             </div>
             <div class="modal-body">
 
             </div>
             <div class="modal-footer">
-                <button class="btn btn-cancel" data-dismiss="modal">Close</button>
+                <button class="btn btn-primary btn-accept" data-loading-text="Saving...">Accept</button>
+                <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
             </div>
         </div>
-
 
         <div id="map-table">
             <table class="table table-bordered" id="mindmapListTable">
@@ -445,7 +447,6 @@
         </div>
 
     </div>
-
 </div>
 
 

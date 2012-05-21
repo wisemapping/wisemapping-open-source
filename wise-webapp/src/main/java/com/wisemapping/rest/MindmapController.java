@@ -110,10 +110,26 @@ public class MindmapController extends BaseController {
         updateMindmap(true, mindMap, user);
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/publish", consumes = {"text/plain"}, produces = {"application/json", "text/html", "application/xml"})
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void changeMapPublish(@RequestBody String value, @PathVariable int id) throws WiseMappingException {
+
+        final MindMap mindMap = mindmapService.getMindmapById(id);
+        final User user = Utils.getUser();
+
+        if (!mindMap.getOwner().equals(user)) {
+            throw new IllegalArgumentException("No enough to execute this operation");
+        }
+
+        // Update map status ...
+        mindMap.setPublic(Boolean.parseBoolean(value));
+        updateMindmap(true, mindMap, user);
+
+    }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/maps/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateMap(@PathVariable int id) throws IOException, WiseMappingException {
+    public void updateMap( @PathVariable int id) throws IOException, WiseMappingException {
         final User user = Utils.getUser();
         final MindMap mindmap = mindmapService.getMindmapById(id);
         mindmapService.removeMindmap(mindmap, user);
@@ -187,7 +203,7 @@ public class MindmapController extends BaseController {
     @RequestMapping(method = RequestMethod.POST, value = "/maps/{id}", consumes = {"application/xml", "application/json"})
     @ResponseStatus(value = HttpStatus.CREATED)
     public void copyMap(@RequestBody RestMindmapInfo restMindmap, @PathVariable int id, @NotNull HttpServletResponse response) throws IOException, WiseMappingException {
-       // Validate ...
+        // Validate ...
         final BindingResult result = new BeanPropertyBindingResult(restMindmap, "");
         new MapInfoValidator(mindmapService).validate(restMindmap.getDelegated(), result);
         if (result.hasErrors()) {

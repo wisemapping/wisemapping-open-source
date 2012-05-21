@@ -52,12 +52,6 @@
     </bean>
 
 
-    <bean id="publishController" class="com.wisemapping.controller.MindmapPublishController">
-        <property name="methodNameResolver" ref="paramResolverByAction2"/>
-        <property name="mindmapService" ref="mindmapService"/>
-        <property name="userService" ref="userService"/>
-    </bean>
-
     <bean id="userValidator" class="com.wisemapping.validator.UserValidator">
         <property name="userService" ref="userService"/>
         <property name="captchaService" ref="reCaptcha"/>
@@ -205,7 +199,6 @@
                 <prop key="/c/changePassword.htm">changePasswordController</prop>
                 <prop key="/c/cooker.htm">cookerController</prop>
                 <prop key="/c/settings.htm">settingsController</prop>
-                <prop key="/c/publish.htm">publishController</prop>
                 <prop key="/c/editProfile.htm">editProfileController</prop>
                 <prop key="/c/tags.htm">tagsController</prop>
                 <prop key="/c/publicView.htm">publicView</prop>

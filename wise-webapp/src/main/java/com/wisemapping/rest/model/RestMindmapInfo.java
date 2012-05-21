@@ -70,6 +70,15 @@ public class RestMindmapInfo {
         return mindmap.getCreator();
     }
 
+    public String getOwnerEmail() {
+        return mindmap.getOwner().getEmail();
+    }
+
+    public String getOwner() {
+        final User owner = mindmap.getOwner();
+        return owner.getUsername();
+    }
+
     public String getLastModifierUser() {
         return mindmap.getLastModifierUser();
     }
@@ -107,6 +116,12 @@ public class RestMindmapInfo {
     }
 
     public void setLastModifierUser(String value) {
+    }
+
+    public void setOwnerEmail(String value) {
+    }
+
+    public void setOwner(String value) {
     }
 
     @JsonIgnore

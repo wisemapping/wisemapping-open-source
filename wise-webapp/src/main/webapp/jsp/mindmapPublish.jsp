@@ -1,124 +1,123 @@
 <%@ include file="/jsp/init.jsp" %>
-<h1>
-    <spring:message code="PUBLISH"/>
-    '${mindmap.title}'
-</h1>
 
-<h2>
-    <spring:message code="PUBLISH_DETAILS"/>
-</h2>
 
-<div>
-    <form method="post" id="publishForm" name="publishForm" action="<c:url value="publish.htm"/>" style="height:100%;">
-        <input type="hidden" name="actionId" value="save"/>
-        <input type="hidden" name="mapId" value="${mindmap.id}"/>
-        <table>
-            <colgroup>
-                <col width="20%"/>
-                <col width="80%"/>
-            </colgroup>
-            <tbody>
-                <tr>
-                    <td>
-                        &nbsp;
-                    </td>
-                    <td>
+<form method="post" id="publishForm" action="#" class="form-horizontal">
+    <fieldset>
+        <div class="control-group">
+            <label for="enablePublicView" class="control-label">Enable Sharing:
+                <input type="checkbox" id="enablePublicView" name="publicView" class="control"
+                        <c:if test="${mindmap.public}">
+                            checked="checked"
+                        </c:if>/>
+            </label>
+        </div>
+    </fieldset>
+</form>
 
-                        <input type="checkbox" id="publicViewId" name="publicView" value="true"
-                                <c:if test="${mindmap.public}">
+<p><span class="label label-important">Warning</span> <spring:message code="PUBLISH_DETAILS"/></p>
 
-                                    checked="checked"
-                                </c:if>
+<div id="sharingPanel">
 
-                                />
-                        <spring:message code="PUBLISH_MAP_TO_INTERNET"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        &nbsp;
-                    </td>
-                    <td>
-                        <div id="disabledPanel"
-                             style="position:absolute;background-color:white;opacity:0.8;width:600px;height:160px;left:10px;visibility:hidden;">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#embedTab" data-toggle="pill">Embed</a></li>
+        <li><a href="#publicUrlTab" data-toggle="pill">Public URLs</a></li>
+    </ul>
 
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="formLabel">
-                        <spring:message code="URL"/>:
-                    </td>
-                    <td style="padding-bottom: 5px;">
-                        <input name="url" value="http://www.wisemapping.com/c/publicView.htm?mapId=${mindmap.id}"
-                               style="width:400px" readonly="readonly"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="formLabel">
-                        <spring:message code="DIRECT_LINK"/>:
-                    </td>
-                    <td>
-                        <textarea style="width:400px;height:30px;overflow:hidden;" cols="55" rows="3" readonly="readonly">
-&lt;a href="http://www.wisemapping.com/c/publicView.htm?mapId=${mindmap.id}">${mindmap.title}&lt;/a></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="formLabel">
-                        &nbsp;
-                    </td>
-                    <td>
-                        &nbsp;
-                    </td>
-                </tr>
-                <tr>
-                    <td class="formLabel" style="white-space:normal;">
-                        <spring:message code="BLOG_INCLUSION"/>:
-                    </td>
-                    <td>
-                        <textarea style="width:400px;height:70px;overflow:hidden;" cols="55" rows="5" readonly="readonly">
-&lt;iframe
-style="width:600px;height:400px;border: 1px solid black"
-src="http://www.wisemapping.com/c/embeddedView.htm?mapId=${mindmap.id}&zoom=1"&gt;
-&lt;/iframe&gt;
-                         </textarea>
+    <div class="tab-content">
+        <div class="tab-pane fade active in" id="embedTab">
 
-                        <p><spring:message code="EMBEDDED_MAP_SIZE"/></p>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-align:center;margin-top:30px;" colspan="2">
-                        <input type="submit" id="ok" value="<spring:message code="OK"/>" class="btn-primary">
-                        <input type="button" value="<spring:message code="CANCEL"/>" class="btn-secondary" id="cancelBtn">
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </form>
+            <spring:message code="BLOG_INCLUSION"/>
+
+            <form class="form-inline" action="#" style="text-align: center">
+                <fieldset>
+
+                    <label for="frameWith">Frame width:</label>
+                    <input type="number" id="frameWith" name="frameWith" value="600" class="span1" min="0"/>
+
+                    <label for="frameHeight" class="control-label">Frame height:</label>
+                    <input type="number" id="frameHeight" name="frameHeight" value="400" class="span1" min="0"/>
+
+                    <label for="mapZoom">Zoom %:</label>
+                    <input type="number" id="mapZoom" name="mapZoom" value="80" class="span1" min="10"
+                           max="200" step="10"/>
+                </fieldset>
+            </form>
+            <label><spring:message code="BLOG_SNIPPET"/></label>
+                <pre id="embedCode">&lt;iframe style="width:600px;height:400px;border: 1px
+solid black" src="http://www.wisemapping.com/c/embeddedView.htm?mapId=${mindmap.id}&zoom=1"&gt; &lt;/iframe&gt;</pre>
+        </div>
+
+        <div class="tab-pane fade" id="publicUrlTab">
+            <spring:message code="URL"/>:
+            <input name="url" value="http://www.wisemapping.com/c/publicView.htm?mapId=${mindmap.id}"
+                   style="width:400px"
+                   readonly="readonly"/>
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript">
+    // Update tabs display status ...
+    var checkboxElems = $('#publishForm input:checkbox');
+    var updateTabsDisplay = function() {
+        var divElem = $('#sharingPanel');
+        checkboxElems[0].checked ? divElem.show() : divElem.hide();
+    };
+    checkboxElems.change(updateTabsDisplay);
+    updateTabsDisplay();
 
-    var isPublicPanelEnabled = false;
-    var panelEnabler = function()
-    {
-        if (isPublicPanelEnabled)
-        {
-            $('disabledPanel').setStyle("visibility", "hidden");
-        } else
-        {
-            $('disabledPanel').setStyle("visibility", "visible");
+    // Change snippet code based on the user options ...
+    var replaceCode = function(regExpr, strReplace, factor) {
+        var preElem = $('#sharingPanel #embedCode')[0];
+        var fieldValue = this.value;
+        if (!isNaN(fieldValue) && fieldValue.length > 0) {
+            var textVal = $(preElem).text().replace(regExpr, strReplace.replace('%s', fieldValue * factor));
+            $(preElem).text(textVal);
         }
-        isPublicPanelEnabled = !isPublicPanelEnabled;
     };
 
-    if (${mindmap.public==false})
-    {
-        panelEnabler();
-    }
-    $('publicViewId').addEvent('click', panelEnabler);
-
-     $('cancelBtn').addEvent('click', function(event) {
-        MooDialog.Request.active.close();
+    $('#sharingPanel #frameWith').keyup(function() {
+        replaceCode.bind(this)(/width:[0-9]+px/g, "width:%spx", 1);
     });
+
+    $('#sharingPanel #frameWith').change(function() {
+        replaceCode.bind(this)(/width:[0-9]+px/g, "width:%spx", 1);
+    });
+
+    $('#sharingPanel #frameHeight').keyup(function() {
+        replaceCode.bind(this)(/height:[0-9]+px/g, "height:%spx", 1);
+    });
+
+    $('#sharingPanel #frameHeight').change(function() {
+        replaceCode.bind(this)(/height:[0-9]+px/g, "height:%spx", 1);
+    });
+
+    $('#sharingPanel #mapZoom').keyup(function() {
+        replaceCode.bind(this)(/zoom=.+\"/g, "zoom=%s\"", 0.1);
+    });
+
+    $('#sharingPanel #mapZoom').change(function() {
+        replaceCode.bind(this)(/zoom=.+\"/g, "zoom=%s\"", 0.01);
+    });
+
+
+    // Save status on click ...
+    $('#publishForm').submit(function(event) {
+        jQuery.ajax("service/maps/${mindmap.id}/publish", {
+            async:false,
+            dataType: 'json',
+            data: $('#publishForm #enablePublicView')[0].checked ? 'true' : 'false',
+            type: 'PUT',
+            contentType:"text/plain",
+            success : function(data, textStatus, jqXHR) {
+                $('#publish-dialog-modal').modal('hide');
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert(textStatus);
+            }
+        });
+        event.preventDefault();
+    });
+
 </script>
+

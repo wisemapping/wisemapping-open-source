@@ -49,9 +49,16 @@ public class MindmapController {
         return view;
     }
 
+    @RequestMapping(value = "map/{id}/publish")
+    public ModelAndView showPublishPage(@PathVariable int id) {
+        final MindMap mindmap = findMindmap(id);
+        final ModelAndView view = new ModelAndView("mindmapPublish", "mindmap", mindmap);
+        view.addObject("user", Utils.getUser());
+        return view;
+    }
+
     @RequestMapping(value = "map/{id}/edit")
-    public ModelAndView editMap(@PathVariable int id, @NotNull HttpServletRequest request)
-    {
+    public ModelAndView editMap(@PathVariable int id, @NotNull HttpServletRequest request) {
         ModelAndView view;
         final UserAgent userAgent = UserAgent.create(request);
         if (userAgent.needsGCF()) {
