@@ -53,6 +53,7 @@ jQuery.fn.dataTableExt.removeSelectedRows = function() {
     trs.each(function() {
         $('#mindmapListTable').dataTable().fnDeleteRow(this);
     });
+    updateStatus();
 };
 
 
@@ -62,18 +63,24 @@ jQuery.fn.dialogForm = function(options) {
     var url = options.url;
 
     // Clear previous state ...
-    $("#" + containerId + " .errorMessage").text("").removeClass("alert alert-error");
-    $("#" + containerId + " .control-group").removeClass('error');
-    $("#" + containerId + " input").attr('value', '');
+    $("#" + containerId).find('.errorMessage').text("").removeClass("alert alert-error");
+    $("#" + containerId).find('.control-group').removeClass('error');
 
+    // Clear form values ...
+    if (options.clearForm == undefined || options.clearForm) {
+        $("#" + containerId).find('input').attr('value', '');
+    }
 
+    // Reset button state ...
     var acceptBtn = $('#' + containerId + ' .btn-accept');
+    acceptBtn.button('reset');
+
     acceptBtn.click(function() {
         var formData = {};
         $('#' + containerId + ' input').each(function(index, elem) {
             formData[elem.name] = elem.value;
         });
-
+        $(acceptBtn).button('loading');
         var dialogElem = this;
         jQuery.ajax(url, {
             async:false,
@@ -86,7 +93,6 @@ jQuery.fn.dialogForm = function(options) {
                     var resourceId = jqXHR.getResponseHeader("ResourceId");
                     var redirectUrl = options.redirect;
                     redirectUrl = redirectUrl.replace("{header.resourceId}", resourceId);
-                    $(acceptBtn).button('loading');
                     window.location = redirectUrl;
 
                 } else if (options.postUpdate) {
@@ -105,14 +111,18 @@ jQuery.fn.dialogForm = function(options) {
                             var message = fieldErrors[fieldName];
                             var inputField = $("#" + containerId + " input[name='" + fieldName + "']");
 
-                            $("#" + containerId + " .errorMessage").text(message).addClass("alert alert-error");
+                            $("#" + containerId).find(".errorMessage").text(message).addClass("alert alert-error");
                             inputField.parent().addClass('error');
                         }
 
                     }
 
                 } else {
-                    alert("Unexpected error removing maps. Refresh before continue.");
+                    console.log(errorThrown);
+                    console.log(jqXHR);
+
+                    dialogElem.modal('hide');
+                    $('#messagesPanel div').text(errorThrown).parent().show();
                 }
 
             }
@@ -136,22 +146,19 @@ function updateStatus() {
     $("#mindmapListTable tbody input:checked").parent().parent().addClass('row-selected');
     $("#mindmapListTable tbody input:not(:checked)").parent().parent().removeClass('row-selected');
 
-    $("#buttonsToolbar .act-multiple").hide();
-    $("#buttonsToolbar .act-single").hide();
+    $('#buttonsToolbar').find('.act-single').hide().end().find('.act-multiple').hide();
 
     var tableElem = $('#mindmapListTable');
     var selectedRows = tableElem.dataTableExt.getSelectedRows();
 
     if (selectedRows.length > 0) {
         if (selectedRows.length == 1) {
-            $("#buttonsToolbar .act-single").show();
-            $("#buttonsToolbar .act-multiple").show();
+            $('#buttonsToolbar').find('.act-single').show().end().find('.act-multiple').show();
 
             // Can be executed by the owner ?
             var rowData = tableElem.dataTable().fnGetData(selectedRows[0]);
             if (rowData.ownerEmail != principalEmail) {
-                $("#buttonsToolbar #publishBtn").hide();
-                $("#buttonsToolbar #shareBtn").hide();
+                $("#buttonsToolbar").find('#publishBtn').hide().end().find('#shareBtn').hide();
             }
         } else {
             $("#buttonsToolbar .act-multiple").show();

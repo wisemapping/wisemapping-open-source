@@ -219,7 +219,7 @@ public class RestMindmapTCase {
         mapToUpdate.setProperties("{zoom:x}");
 
         // Update map ...
-        final String resourceUrl = HOST_PORT + resourceUri.toString();
+        final String resourceUrl = HOST_PORT + resourceUri.toString() + "/document";
         requestHeaders.setContentType(MediaType.APPLICATION_XML);
         final HttpEntity<RestMindmap> updateEntity = new HttpEntity<RestMindmap>(mapToUpdate, requestHeaders);
         template.put(resourceUrl, updateEntity);

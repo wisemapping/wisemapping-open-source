@@ -4,7 +4,6 @@
         <table>
             <tr>
                 <td class="formLabel">
-                    <span class="fieldRequired">*</span>
                     <spring:message code="NAME"/>:
                 </td>
                 <td>
@@ -34,8 +33,8 @@
             <tr>
                 <td>&nbsp;</td>
                 <td>
-                    <input type="submit" value="<spring:message code="IMPORT"/>" class="btn-primary">
-                    <input type="button" value="<spring:message code="CANCEL"/>" class="btn-secondary"
+                    <input type="submit" value="<spring:message code="IMPORT"/>" class="btn btn-primary">
+                    <input type="button" value="<spring:message code="CANCEL"/>" class="btn"
                            onclick="window.location='/c/mymaps.htm'">
                 </td>
             </tr>

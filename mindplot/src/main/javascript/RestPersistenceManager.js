@@ -33,7 +33,7 @@ mindplot.RESTPersistenceManager = new Class({
             };
 
             var request = new Request({
-                url:this.saveUrl + mapId + "?minor=" + !saveHistory,
+                url:this.saveUrl.replace("{id}", mapId) + "?minor=" + !saveHistory,
                 method: 'put',
                 onSuccess:function(responseText, responseXML) {
                     events.onSuccess();

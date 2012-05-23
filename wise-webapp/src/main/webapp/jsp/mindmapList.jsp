@@ -78,7 +78,7 @@
             oLanguage : {
                 "sSearch" : "",
                 "sInfo" : "_START_-_END_ of _TOTAL_",
-                "sEmptyTable": "Hey, you don't have any mindmap. Go head and create one clicking the 'New' button !!!"
+                "sEmptyTable": "Hey, you don't have any mindmap. Go ahead and create one clicking on the 'New' button !!!"
             },
             bStateSave:true
         });
@@ -167,16 +167,15 @@
                 // Initialize dialog ...
                 $("#rename-dialog-modal").dialogForm({
                     type: 'PUT',
+                    clearForm: false,
                     postUpdate: function(reqBodyData) {
-                        // Remove old entry ...
-                        dataTable.fnDeleteRow(rowData);
+                        tableElem.dataTableExt.removeSelectedRows();
 
-                        // Add a new one...
                         rowData.title = reqBodyData.title;
                         rowData.description = reqBodyData.description;
-                        dataTable.fnAddData(rowData);
+                        dataTable.fnAddData(JSON.parse(JSON.stringify(rowData)));
                     },
-                    url :  "../service/maps/" + mapId + "/title"
+                    url :  "../service/maps/" + mapId
                 });
             }
         });
@@ -251,201 +250,207 @@
 </head>
 <body>
 <div style="min-height: 500px">
-    <jsp:include page="header.jsp">
-        <jsp:param name="removeSignin" value="false"/>
-        <jsp:param name="showLogout" value="true"/>
-    </jsp:include>
+<jsp:include page="header.jsp">
+    <jsp:param name="removeSignin" value="false"/>
+    <jsp:param name="showLogout" value="true"/>
+</jsp:include>
 
+<div id="mindmapListContainer">
+    <div id="messagesPanel" class="alert alert-error alert-block fade in hide" style="margin-top: 10px">
+        <strong><spring:message code="UNEXPECTED_ERROR"/></strong>
 
-    <div id="mindmapListContainer">
-        <div id="buttonsToolbar" class="btn-toolbar">
+        <p><spring:message code="UNEXPECTED_ERROR_SERVER_ERROR"/></p>
 
-            <div class="btn-group">
-                <button class="btn btn-info" id="newBtn"><i class="icon-file icon-white"></i> New</button>
-                <button class="btn btn-info" id="importBtn"><i class="icon-upload icon-white"></i> Import</button>
-            </div>
-
-            <div class="btn-group act-multiple" id="deleteBtn" style="display:none">
-                <button class="btn btn-info"><i class="icon-trash icon-white"></i> Delete</button>
-            </div>
-
-            <div class="btn-group act-single" id="infoBtn" style="display:none">
-                <button class="btn btn-info"><i class="icon-exclamation-sign icon-white"></i> Info</button>
-            </div>
-
-            <div class="btn-group act-single" id="actionsBtn" style="display:none">
-                <button class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                    <i class="icon-asterisk icon-white"></i> More
-                    <span class="caret"></span>
-                </button>
-
-                <ul class="dropdown-menu">
-                    <li id="duplicateBtn"><a href="#" onclick="return false"><i class="icon-plus-sign"></i>
-                        Duplicate</a></li>
-                    <li id="renameBtn"><a href="#" onclick="return false"><i class="icon-edit"></i> Rename</a></li>
-                    <li id="printBtn"><a href="#" onclick="return false"><i class="icon-print"></i> Print</a></li>
-                    <li id="publishBtn"><a href="#" onclick="return false"><i class="icon-globe"></i>Publish</a></li>
-                    <li id="shareBtn"><a href="#" onclick="return false"><i class="icon-share"></i> Share</a></li>
-                    <li id="tagMap"><a href="#" onclick="return false"><i class="icon-tags"></i> Tag</a></li>
-                </ul>
-            </div>
-            <div id="tableActions" class="btn-toolbar">
-                <div class="btn-group" id="pageButtons">
-                    <button class="btn" id="pPageBtn"><strong>&lt;</strong></button>
-                    <button class="btn" id="nPageBtn"><strong>&gt;</strong></button>
-                </div>
-                <div id="pageInfo"></div>
-            </div>
-        </div>
-
-        <div>
-            <!-- New map dialog -->
-            <div id="new-dialog-modal" title="Add new map" class="modal fade" style="display:none">
-                <div class="modal-header">
-                    <button class="close" data-dismiss="modal">x</button>
-                    <h3>Create a new map</h3>
-                </div>
-                <div class="modal-body">
-                    <div class="errorMessage"></div>
-                    <form class="form-horizontal">
-                        <fieldset>
-                            <div class="control-group">
-                                <label class="control-label" for="newTitle"><spring:message code="NAME"/>:</label>
-                                <input class="control" name="title" id="newTitle" type="text" required="true"
-                                       placeholder="Name of the new map to create" autofocus="autofocus"/>
-                            </div>
-                            <div class="control-group">
-                                <label class="control-label" for="newDec"><spring:message code="DESCRIPTION"/>:</label>
-                                <input class="control" name="description" id="newDec" type="text"
-                                       placeholder="Some description for your map"/>
-                            </div>
-                        </fieldset>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary btn-accept" data-loading-text="Creating ...">Create</button>
-                    <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
-                </div>
-            </div>
-
-            <!-- Duplicate map dialog -->
-            <div id="duplicate-dialog-modal" class="modal fade" style="display: none">
-                <div class="modal-header">
-                    <button class="close" data-dismiss="modal">X</button>
-                    <h3 id="dupDialogTitle"></h3>
-                </div>
-                <div class="modal-body">
-                    <div class="errorMessage"></div>
-                    <form class="form-horizontal">
-                        <fieldset>
-                            <div class="control-group">
-                                <label for="title" class="control-label"><spring:message code="NAME"/>: </label>
-                                <input name="title" id="title" type="text" required="required"
-                                       placeholder="Name of the new map to create" autofocus="autofocus"
-                                       class="control"/>
-                            </div>
-                            <div class="control-group">
-                                <label for="description" class="control-label"><spring:message
-                                        code="DESCRIPTION"/>: </label>
-                                <input name="description" id="description" type="text"
-                                       placeholder="Some description for your map" class="control"/>
-                            </div>
-                        </fieldset>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary btn-accept" data-loading-text="Duplicating ...">Duplicate</button>
-                    <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
-                </div>
-            </div>
-
-            <!-- Rename map dialog -->
-            <div id="rename-dialog-modal" class="modal fade" style="display: none">
-                <div class="modal-header">
-                    <button class="close" data-dismiss="modal">x</button>
-                    <h3 id="renameDialogTitle"></h3>
-                </div>
-                <div class="modal-body">
-                    <div class="errorMessage"></div>
-                    <form class="form-horizontal">
-                        <fieldset>
-                            <div class="control-group">
-                                <label for="renTitle" class="control-label"><spring:message code="NAME"/>: </label>
-                                <input name="title" id="renTitle" required="required" autofocus="autofocus"
-                                       class="control"/>
-                            </div>
-                            <div class="control-group">
-                                <label for="renDescription" class="control-label"><spring:message
-                                        code="DESCRIPTION"/>:</label>
-                                <input name="description" class="control" id="renDescription"/>
-                            </div>
-                        </fieldset>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary btn-accept">Rename</button>
-                    <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Delete map dialog -->
-        <div id="delete-dialog-modal" class="modal fade" style="display: none">
-            <div class="modal-header">
-                <button class="close" data-dismiss="modal">x</button>
-                <h3>Delete MindMap</h3>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-block">
-                    <h4 class="alert-heading">Warning!</h4>Deleted mindmap can not be recovered. Do you want to
-                    continue ?.
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary btn-accept">Delete</button>
-                <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
-
-        <!-- Info map dialog -->
-        <div id="info-dialog-modal" class="modal fade" style="display: none">
-            <div class="modal-header">
-                <button class="close" data-dismiss="modal">x</button>
-                <h3>Info</h3>
-            </div>
-            <div class="modal-body">
-
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-cancel" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-
-        <!-- Publish Dialog Config -->
-        <div id="publish-dialog-modal" class="modal fade" style="display: none">
-            <div class="modal-header">
-                <button class="close" data-dismiss="modal">x</button>
-                <h3>Publish</h3>
-            </div>
-            <div class="modal-body">
-
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary btn-accept" data-loading-text="Saving...">Accept</button>
-                <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
-
-        <div id="map-table">
-            <table class="table table-bordered" id="mindmapListTable">
-
-            </table>
-            <div id="tableFooter" class="form-inline"></div>
-        </div>
-
+        <div></div>
     </div>
-</div>
 
+    <div id="buttonsToolbar" class="btn-toolbar">
+
+        <div class="btn-group">
+            <button id="newBtn" class="btn btn-info"><i class="icon-file icon-white"></i> New</button>
+            <button id="importBtn" class="btn btn-info"><i class="icon-upload icon-white"></i> Import</button>
+        </div>
+
+        <div class="btn-group act-multiple" id="deleteBtn" style="display:none">
+            <button class="btn btn-info"><i class="icon-trash icon-white"></i> Delete</button>
+        </div>
+
+        <div id="infoBtn" class="btn-group act-single" style="display:none">
+            <button class="btn btn-info"><i class="icon-exclamation-sign icon-white"></i> Info</button>
+        </div>
+
+        <div id="actionsBtn" class="btn-group act-single" style="display:none">
+            <button class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                <i class="icon-asterisk icon-white"></i> More
+                <span class="caret"></span>
+            </button>
+
+            <ul class="dropdown-menu">
+                <li id="duplicateBtn"><a href="#" onclick="return false"><i class="icon-plus-sign"></i>
+                    Duplicate</a></li>
+                <li id="renameBtn"><a href="#" onclick="return false"><i class="icon-edit"></i> Rename</a></li>
+                <li id="printBtn"><a href="#" onclick="return false"><i class="icon-print"></i> Print</a></li>
+                <li id="publishBtn"><a href="#" onclick="return false"><i class="icon-globe"></i>Publish</a></li>
+                <li id="shareBtn"><a href="#" onclick="return false"><i class="icon-share"></i> Share</a></li>
+                <li id="tagMap"><a href="#" onclick="return false"><i class="icon-tags"></i> Tag</a></li>
+            </ul>
+        </div>
+        <div id="tableActions" class="btn-toolbar">
+            <div class="btn-group" id="pageButtons">
+                <button class="btn" id="pPageBtn"><strong>&lt;</strong></button>
+                <button class="btn" id="nPageBtn"><strong>&gt;</strong></button>
+            </div>
+            <div id="pageInfo"></div>
+        </div>
+    </div>
+
+    <div>
+        <!-- New map dialog -->
+        <div id="new-dialog-modal" title="Add new map" class="modal fade" style="display:none">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">x</button>
+                <h3>Create a new map</h3>
+            </div>
+            <div class="modal-body">
+                <div class="errorMessage"></div>
+                <form class="form-horizontal">
+                    <fieldset>
+                        <div class="control-group">
+                            <label class="control-label" for="newTitle"><spring:message code="NAME"/>:</label>
+                            <input class="control" name="title" id="newTitle" type="text" required="true"
+                                   placeholder="Name of the new map to create" autofocus="autofocus"/>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="newDec"><spring:message code="DESCRIPTION"/>:</label>
+                            <input class="control" name="description" id="newDec" type="text"
+                                   placeholder="Some description for your map"/>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary btn-accept" data-loading-text="Saving ...">Create</button>
+                <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Duplicate map dialog -->
+        <div id="duplicate-dialog-modal" class="modal fade" style="display: none">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">X</button>
+                <h3 id="dupDialogTitle"></h3>
+            </div>
+            <div class="modal-body">
+                <div class="errorMessage"></div>
+                <form class="form-horizontal">
+                    <fieldset>
+                        <div class="control-group">
+                            <label for="title" class="control-label"><spring:message code="NAME"/>: </label>
+                            <input name="title" id="title" type="text" required="required"
+                                   placeholder="Name of the new map to create" autofocus="autofocus"
+                                   class="control"/>
+                        </div>
+                        <div class="control-group">
+                            <label for="description" class="control-label"><spring:message
+                                    code="DESCRIPTION"/>: </label>
+                            <input name="description" id="description" type="text"
+                                   placeholder="Some description for your map" class="control"/>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary btn-accept" data-loading-text="Saving ...">Duplicate</button>
+                <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Rename map dialog -->
+        <div id="rename-dialog-modal" class="modal fade" style="display: none">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">x</button>
+                <h3 id="renameDialogTitle"></h3>
+            </div>
+            <div class="modal-body">
+                <div class="errorMessage"></div>
+                <form class="form-horizontal">
+                    <fieldset>
+                        <div class="control-group">
+                            <label for="renTitle" class="control-label"><spring:message code="NAME"/>: </label>
+                            <input name="title" id="renTitle" required="required" autofocus="autofocus"
+                                   class="control"/>
+                        </div>
+                        <div class="control-group">
+                            <label for="renDescription" class="control-label"><spring:message
+                                    code="DESCRIPTION"/>:</label>
+                            <input name="description" class="control" id="renDescription"/>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary btn-accept" data-loading-text="Saving ...">Rename</button>
+                <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete map dialog -->
+    <div id="delete-dialog-modal" class="modal fade" style="display: none">
+        <div class="modal-header">
+            <button class="close" data-dismiss="modal">x</button>
+            <h3>Delete MindMap</h3>
+        </div>
+        <div class="modal-body">
+            <div class="alert alert-block">
+                <h4 class="alert-heading">Warning!</h4>Deleted mindmap can not be recovered. Do you want to
+                continue ?.
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary btn-accept" data-loading-text="Saving ...">Delete</button>
+            <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Info map dialog -->
+    <div id="info-dialog-modal" class="modal fade" style="display: none">
+        <div class="modal-header">
+            <button class="close" data-dismiss="modal">x</button>
+            <h3>Info</h3>
+        </div>
+        <div class="modal-body">
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-cancel" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+
+    <!-- Publish Dialog Config -->
+    <div id="publish-dialog-modal" class="modal fade" style="display: none">
+        <div class="modal-header">
+            <button class="close" data-dismiss="modal">x</button>
+            <h3>Publish</h3>
+        </div>
+        <div class="modal-body">
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary btn-accept" data-loading-text="Saving...">Accept</button>
+            <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+        </div>
+    </div>
+
+    <div id="map-table">
+        <table class="table table-bordered" id="mindmapListTable">
+
+        </table>
+        <div id="tableFooter" class="form-inline"></div>
+    </div>
+
+</div>
+</div>
 
 <jsp:include page="footer.jsp"/>
 </body>

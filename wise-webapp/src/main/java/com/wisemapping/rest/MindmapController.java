@@ -54,9 +54,9 @@ public class MindmapController extends BaseController {
         return new ModelAndView("mapsView", "list", restMindmapList);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/document", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateMap(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor) throws IOException, WiseMappingException {
+    public void updateDocument(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor) throws IOException, WiseMappingException {
 
         final MindMap mindMap = mindmapService.getMindmapById(id);
         final User user = Utils.getUser();
@@ -79,6 +79,58 @@ public class MindmapController extends BaseController {
         updateMindmap(minor, mindMap, user);
     }
 
+
+    /**
+     * The intention of this method is the update of several properties at once ...
+     */
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void updateMap(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor) throws IOException, WiseMappingException {
+
+        final MindMap mindMap = mindmapService.getMindmapById(id);
+        final User user = Utils.getUser();
+
+        // Update document properties ...
+        final String properties = restMindmap.getProperties();
+        if (properties != null) {
+            mindMap.setProperties(properties);
+        }
+        final String xml = restMindmap.getXml();
+        if (xml != null) {
+            mindMap.setXmlStr(xml);
+        }
+
+        // Update title  ...
+        final String title = restMindmap.getTitle();
+        if (title != null && !title.equals(mindMap.getTitle())) {
+            if (mindmapService.getMindmapByTitle(title, user) != null) {
+                throw buildValidationException("title", "You already have a map with this title");
+            }
+            mindMap.setTitle(title);
+        }
+
+        // Update description ...
+        final String description = restMindmap.getDescription();
+        if (description != null) {
+            mindMap.setDescription(description);
+        }
+
+        final String tags = restMindmap.getTags();
+        if (tags != null) {
+            mindMap.setTags(tags);
+        }
+
+        // Update map ...
+        updateMindmap(minor, mindMap, user);
+    }
+
+    private ValidationException buildValidationException(@NotNull String fieldName, @NotNull String message) throws ValidationException {
+        final BindingResult result = new BeanPropertyBindingResult(new RestMindmap(), "");
+        result.rejectValue(fieldName, "error.not-specified", null, message);
+        return new ValidationException(result);
+    }
+
+
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/title", consumes = {"text/plain"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void changeMapTitle(@RequestBody String title, @PathVariable int id) throws WiseMappingException {
@@ -88,7 +140,8 @@ public class MindmapController extends BaseController {
 
         // Is there a map with the same name ?
         if (mindmapService.getMindmapByTitle(title, user) != null) {
-            throw new IllegalArgumentException("Map already exists with this title");
+
+            throw buildValidationException("title", "You already have a mindmap with this title");
         }
 
         // Update map ...
@@ -129,7 +182,7 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/maps/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateMap( @PathVariable int id) throws IOException, WiseMappingException {
+    public void updateMap(@PathVariable int id) throws IOException, WiseMappingException {
         final User user = Utils.getUser();
         final MindMap mindmap = mindmapService.getMindmapById(id);
         mindmapService.removeMindmap(mindmap, user);
