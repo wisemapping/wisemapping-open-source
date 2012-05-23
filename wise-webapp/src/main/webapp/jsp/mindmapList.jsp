@@ -77,7 +77,8 @@
             bAutoWidth : false,
             oLanguage : {
                 "sSearch" : "",
-                "sInfo" : "_START_-_END_ of _TOTAL_"
+                "sInfo" : "_START_-_END_ of _TOTAL_",
+                "sEmptyTable": "Hey, you don't have any mindmap. Go head and create one clicking the 'New' button !!!"
             },
             bStateSave:true
         });
@@ -115,7 +116,6 @@
         $("#newBtn").click(
                 function() {
                     $("#new-dialog-modal").dialogForm({
-                        modal: true,
                         redirect: "c/map/{header.resourceId}/edit.htm",
                         url :  "../service/maps"
                     });
@@ -140,7 +140,6 @@
 
                 // Initialize dialog ...
                 $("#duplicate-dialog-modal").dialogForm({
-                    modal: true,
                     redirect: "c/map/{header.resourceId}/edit.htm",
                     url :  "../service/maps/" + mapId
                 });
@@ -167,7 +166,6 @@
 
                 // Initialize dialog ...
                 $("#rename-dialog-modal").dialogForm({
-                    modal: true,
                     type: 'PUT',
                     postUpdate: function(reqBodyData) {
                         // Remove old entry ...
@@ -190,7 +188,6 @@
             if (mapIds.length > 0) {
                 // Initialize dialog ...
                 $("#delete-dialog-modal").dialogForm({
-                    modal: true,
                     type: 'DELETE',
                     postUpdate: function(reqBodyData) {
                         // Remove old entry ...

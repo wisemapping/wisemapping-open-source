@@ -49,20 +49,9 @@ jQuery.fn.dataTableExt.getSelectedRows = function() {
 };
 
 jQuery.fn.dataTableExt.removeSelectedRows = function() {
-    var mapIds = this.getSelectedMapsIds();
     var trs = this.getSelectedRows();
-    jQuery.ajax({
-        async:false,
-        url: "../service/maps/batch?ids=" + mapIds.join(","),
-        type:"DELETE",
-        success : function(data, textStatus, jqXHR) {
-            trs.each(function() {
-                $('#mindmapListTable').dataTable().fnDeleteRow(this);
-            });
-        },
-        error: function() {
-            alert("Unexpected error removing maps. Refresh before continue.");
-        }
+    trs.each(function() {
+        $('#mindmapListTable').dataTable().fnDeleteRow(this);
     });
 };
 
@@ -85,6 +74,7 @@ jQuery.fn.dialogForm = function(options) {
             formData[elem.name] = elem.value;
         });
 
+        var dialogElem = this;
         jQuery.ajax(url, {
             async:false,
             dataType: 'json',
@@ -100,9 +90,9 @@ jQuery.fn.dialogForm = function(options) {
                     window.location = redirectUrl;
 
                 } else if (options.postUpdate) {
-
                     options.postUpdate(formData);
                 }
+                dialogElem.modal('hide');
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 if (jqXHR.status == 400) {
@@ -134,7 +124,7 @@ jQuery.fn.dialogForm = function(options) {
     }.bind(this));
 
     // Open the modal dialog ...
-    this.modal(options);
+    this.modal();
 
 };
 
@@ -146,7 +136,6 @@ function updateStatus() {
     $("#mindmapListTable tbody input:checked").parent().parent().addClass('row-selected');
     $("#mindmapListTable tbody input:not(:checked)").parent().parent().removeClass('row-selected');
 
-    // Update toolbar ...
     $("#buttonsToolbar .act-multiple").hide();
     $("#buttonsToolbar .act-single").hide();
 
