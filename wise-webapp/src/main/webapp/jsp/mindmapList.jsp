@@ -273,7 +273,7 @@
     <div id="mindmapListContainer">
         <div id="foldersContainer">
             <ul class="nav nav-list">
-                <li class="nav-header">Folders</li>
+                <li class="nav-header">Filters</li>
                 <li data-filter="all" class="active"><a href="#"><i class="icon-inbox icon-white"></i> All</a></li>
                 <li data-filter="my_maps"><a href="#"><i class="icon-user"></i> My Maps</a></li>
                 <li data-filter="shared_with_me"><a href="#"><i class="icon-share"></i> Shared With Me</a></li>

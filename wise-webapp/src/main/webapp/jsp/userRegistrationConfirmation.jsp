@@ -1,7 +1,6 @@
 <%@ include file="/jsp/init.jsp" %>
 
-<div class="modalDialog">
-
+<div>
     <h1>
         <spring:message code="USER_REGISTRATION"/>
     </h1>

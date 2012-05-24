@@ -9,11 +9,9 @@
     <definition name="homepage" page="/jsp/homepage.jsp"/>
     <definition name="mindmapList" page="/jsp/mindmapList.jsp"/>
     <definition name="embeddedView" page="/jsp/embeddedView.jsp"/>
-    <definition name="embeddedViewImg" page="/jsp/embeddedViewImg.jsp"/>
     <definition name="embeddedViewNotSupported" page="/jsp/embeddedViewNotSupported.jsp"/>
     <definition name="mindmapEditor" page="/jsp/mindmapEditor.jsp"/>
     <definition name="mindmapCooker" page="/jsp/mindmapCooker.jsp"/>
-    <definition name="closeDialog" page="/jsp/closeDialog.jsp"/>
     <definition name="embeddedViewError" page="/jsp/embeddedViewError.jsp"/>
     <definition name="mindmapPrint" page="/jsp/mindmapPrint.jsp"/>
 
@@ -134,12 +132,6 @@
         <put name="title" value=""/>
         <put name="details" value=""/>
         <put name="body" value="/jsp/mindmapCollaborator.jsp"/>
-    </definition>
-
-    <definition name="renameMap" extends="formDialogTemplate">
-        <put name="title" value="RENAME"/>
-        <put name="details" value="FIELD_REQUIRED_MSG"/>
-        <put name="body" value="/jsp/mindmapRename.jsp"/>
     </definition>
 
     <definition name="keyboard" extends="formDialogTemplate">
