@@ -71,7 +71,7 @@ jQuery.fn.dialogForm = function(options) {
         $("#" + containerId).find('input').attr('value', '');
     }
 
-    // Reset button state ...
+    // Clear button "Saving..." state ...
     var acceptBtn = $('#' + containerId + ' .btn-accept');
     acceptBtn.button('reset');
 
@@ -107,14 +107,13 @@ jQuery.fn.dialogForm = function(options) {
                     var fieldErrors = errors.fieldErrors;
                     if (fieldErrors) {
                         for (var fieldName in fieldErrors) {
-                            // Mark the field ...
+                            // Mark the field with errors ...
                             var message = fieldErrors[fieldName];
                             var inputField = $("#" + containerId + " input[name='" + fieldName + "']");
 
                             $("#" + containerId).find(".errorMessage").text(message).addClass("alert alert-error");
                             inputField.parent().addClass('error');
                         }
-
                     }
 
                 } else {

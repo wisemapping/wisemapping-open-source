@@ -83,7 +83,11 @@ public class RestMindmap {
 
     public String getLastModificationTime() {
         final Calendar date = mindmap.getLastModificationTime();
-        return toISO8601(date.getTime());
+        String result = null;
+        if (date != null) {
+            result = toISO8601(date.getTime());
+        }
+        return result;
     }
 
     public boolean isPublic() {
