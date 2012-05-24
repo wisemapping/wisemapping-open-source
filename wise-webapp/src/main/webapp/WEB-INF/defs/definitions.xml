@@ -81,18 +81,6 @@
         <put name="body" value="/jsp/login.jsp"/>
     </definition>
 
-
-    <definition name="search" extends="pageTemplate">
-        <put name="title" value="SEARCH"/>
-        <put name="body" value="/jsp/search.jsp"/>
-    </definition>
-
-
-    <definition name="searchResult" extends="pageTemplate">
-        <put name="title" value="SEARCH"/>
-        <put name="body" value="/jsp/searchResult.jsp"/>
-    </definition>
-
     <definition name="mindmapPublicView" extends="pageTemplate">
         <put name="title" value="PUBLIC_MAP_VIEW"/>
         <put name="body" value="/jsp/mindmapPublicView.jsp"/>

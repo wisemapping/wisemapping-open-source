@@ -309,10 +309,10 @@
                             Duplicate</a></li>
                         <li id="renameBtn"><a href="#" onclick="return false"><i class="icon-edit"></i> Rename</a></li>
                         <li id="printBtn"><a href="#" onclick="return false"><i class="icon-print"></i> Print</a></li>
-                        <li id="publishBtn"><a href="#" onclick="return false"><i class="icon-globe"></i>Publish</a>
-                        </li>
+                        <li id="publishBtn"><a href="#" onclick="return false"><i class="icon-globe"></i>Publish</a></li>
                         <li id="shareBtn"><a href="#" onclick="return false"><i class="icon-share"></i> Share</a></li>
-                        <li id="tagMap"><a href="#" onclick="return false"><i class="icon-tags"></i> Tag</a></li>
+                        <li id="tagBtn"><a href="#" onclick="return false"><i class="icon-tags"></i> Tag</a></li>
+                        <li id="historyBtn"><a href="#" onclick="return false"><i class="icon-time"></i> History</a></li>
                     </ul>
                 </div>
 
