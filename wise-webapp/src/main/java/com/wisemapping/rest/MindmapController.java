@@ -41,15 +41,19 @@ public class MindmapController extends BaseController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/maps", produces = {"application/json", "text/html", "application/xml"})
-    public ModelAndView getMindmaps() throws IOException {
+    public ModelAndView getMindmaps(@RequestParam(required = false) String q) throws IOException {
         final User user = com.wisemapping.security.Utils.getUser();
+
+        final MindmapFilter filter = MindmapFilter.parse(q);
 
         final List<MindmapUser> mapsByUser = mindmapService.getMindmapUserByUser(user);
         final List<MindMap> mindmaps = new ArrayList<MindMap>();
         for (MindmapUser mindmapUser : mapsByUser) {
-            mindmaps.add(mindmapUser.getMindMap());
+            final MindMap mindmap = mindmapUser.getMindMap();
+            if (filter.accept(mindmap, user)) {
+                mindmaps.add(mindmap);
+            }
         }
-
         final RestMindmapList restMindmapList = new RestMindmapList(mindmaps);
         return new ModelAndView("mapsView", "list", restMindmapList);
     }
