@@ -230,7 +230,6 @@
         $("#actionButtons .tags").click(function() {
         });
 
-
         $('#foldersContainer li').click(function(event) {
             // Deselect previous option ...
             $('#foldersContainer li').removeClass('active');
@@ -238,7 +237,8 @@
 
             // Select the new item ...
             var dataTable = $('#mindmapListTable').dataTable();
-            $(this).addClass('active').filter('i').addClass('icon-white');
+            $(this).addClass('active');
+            $('#foldersContainer .active i').addClass('icon-white');
 
             // Reload the table data ...
             dataTable.fnReloadAjax("../service/maps?q=" + $(this).attr('data-filter'));
@@ -274,8 +274,8 @@
         <div id="foldersContainer">
             <ul class="nav nav-list">
                 <li class="nav-header">Folders</li>
-                <li data-filter="all" class="active"><a href="#"><i class="icon-inbox"></i> All</a></li>
-                <li data-filter="my_maps" ><a href="#"><i class="icon-user"></i> My Maps</a></li>
+                <li data-filter="all" class="active"><a href="#"><i class="icon-inbox icon-white"></i> All</a></li>
+                <li data-filter="my_maps"><a href="#"><i class="icon-user"></i> My Maps</a></li>
                 <li data-filter="shared_with_me"><a href="#"><i class="icon-share"></i> Shared With Me</a></li>
                 <li data-filter="public"><a href="#"><i class="icon-globe"></i> Public Maps</a></li>
             </ul>
