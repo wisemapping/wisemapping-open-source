@@ -20,30 +20,29 @@
 
         <form action="<c:url value='/c/j_spring_security_check'/>" method="POST">
             <fieldset>
-                <label for="email">
-                    <spring:message code="EMAIL"/>
-                    <input type='email' tabindex="1" id="email" name='j_username' required="required"/>
+                <label for="email"><spring:message code="EMAIL"/></label>
+                <input type='email' tabindex="1" id="email" name='j_username' required="required"/>
 
-                    <label for="password"><spring:message code="PASSWORD"/></label>
-                    <input type='password' tabindex="2" id="password" name='j_password' required="required"/>
+                <label for="password"><spring:message code="PASSWORD"/></label>
+                <input type='password' tabindex="2" id="password" name='j_password' required="required"/>
 
-                    <c:if test="${not empty param.login_error}">
+                <c:if test="${not empty param.login_error}">
                     <c:choose>
-                    <c:when test="${param.login_error == 3}">
-                    <div class="alert alert-error"><spring:message code="USER_INACTIVE"/></div>
-                    </c:when>
-                    <c:otherwise>
-                    <div class="alert alert-error"><spring:message code="LOGIN_ERROR"/></div>
-                    </c:otherwise>
+                        <c:when test="${param.login_error == 3}">
+                            <div class="alert alert-error"><spring:message code="USER_INACTIVE"/></div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="alert alert-error"><spring:message code="LOGIN_ERROR"/></div>
+                        </c:otherwise>
                     </c:choose>
-                    </c:if>
+                </c:if>
 
-                    <div class="form-inline">
-                        <input type="submit" class="btn btn-primary" value="<spring:message code="SIGN_IN"/>"
-                               data-toggle="button">&nbsp;&nbsp;&nbsp;
-                        <input type="checkbox" id="rememberme" name="_spring_security_remember_me"/>
-                        <label for="rememberme"><spring:message code="REMEMBER_ME"/></label>
-                    </div>
+                <div class="form-inline">
+                    <input type="submit" class="btn btn-primary" value="<spring:message code="SIGN_IN"/>"
+                           data-toggle="button">&nbsp;&nbsp;&nbsp;
+                    <input type="checkbox" id="rememberme" name="_spring_security_remember_me"/>
+                    <label for="rememberme"><spring:message code="REMEMBER_ME"/></label>
+                </div>
             </fieldset>
         </form>
         <a href="<c:url value="/c/forgotPassword.htm"/>"><spring:message code="FORGOT_PASSWORD"/></a>

@@ -163,7 +163,7 @@
     <definition name="importMap" extends="pageTemplate">
         <put name="title" value="IMPORT_MINDMAP"/>
         <put name="details" value="IMPORT_MINDMAP_INFO"/>
-        <put name="body" value="/jsp/mindmapImportError.jsp"/>
+        <put name="body" value="/jsp/mindmapImport.jsp"/>
     </definition>
 
     <definition name="activationAccountConfirmation" extends="pageTemplate">
