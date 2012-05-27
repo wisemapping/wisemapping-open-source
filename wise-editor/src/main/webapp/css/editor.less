@@ -59,7 +59,6 @@ div#small_error_icon {
     font-size: 11px;
 }
 
-/* */
 .btn-primary {
     cursor: pointer;
     display: inline-block;
@@ -143,160 +142,48 @@ div#small_error_icon {
 /** */
 /* Modal dialogs definitions */
 
-.tagItModalDialog, .historyModalDialog, .shareItModalDialog, .exportModalDialog, .publishModalDialog {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    z-index: 11000;
-    width: 400px;
-    margin: -250px 0 0 -250px;
-    background-color: #ffffff;
-    border: 1px solid #999;
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    border: 1px solid #999;
-    /* IE6-7 */
+div.modalDialog {
+   position: fixed;
+   top: 50%;
+   left: 50%;
+   z-index: 11000;
+   width: 500px;
+   margin: -250px 0 0 -250px;
+   background-color: #ffffff;
+   border: 1px solid #999;
+   padding: 10px;
+   overflow: auto;
 
+    /* IE6-7 */
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
     -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
     -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
     box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+
     -webkit-background-clip: padding-box;
     -moz-background-clip: padding-box;
     background-clip: padding-box;
-    padding: 30px;
 }
 
-.shareItModalDialog {
-    width: 500px;
+div.modalDialog .content {
+    padding: 5px 5px;
 }
 
-.publishModalDialog {
-    width: 600px;
-}
-
-.tagItModalDialog .title, .historyModalDialog .title, .shareItModalDialog .title, .exportModalDialog .title, .publishModalDialog .title {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    border-bottom: 1px solid #a1aec5;
+div.modalDialog .title
+{
     font-weight: bold;
     text-shadow: 1px 1px 0 #fff;
     border-bottom: 1px solid #eee;
-    padding: 5px 30px;
-    font-size: 18px
+    padding: 5px 15px;
+    font-size: 18px;
 }
-
-.tagItModalDialog .content {
-    height: 130px;
-}
-
-.historyModalDialog .content {
-    height: 300px;
-}
-
-.shareItModalDialog .content {
-    height: 300px;
-}
-
-.exportModalDialog .content {
-    height: 280px;
-}
-
-.publishModalDialog  .content {
-    height: 330px;
-}
-
-.modalDialog h1 {
-    font-size: 14px;
-}
-
-.modalDialog h2 {
-    font-size: 14px;
-    margin: 5px;
-}
-
-td.formLabel {
-    text-align: right;
-    padding: 2px 10px;
-    font-weight: bolder;
-    vertical-align: top;
-}
-
-#keyboardTable {
-    clear: both;
-    width: 100%;
-    height: 300px;
-    overflow: auto;
-    border: 0 solid gray;
-    background-color: white;
-    z-index: 2;
-    position: relative;
-}
-
-#keyboardTable table {
-    width: 100%;
-    border: 0 solid gray;
-}
-
-#keyboardTable thead {
-    background-color: #093A9D;
-    font-size: 12px;
-    font-weight: normal;
-    padding: 5px;
-}
-
-#keyboardTable td {
-    border-bottom: 1px solid #EEEEEE;
-    color: #5f5f5f;
-    font-size: 12px;
-    padding: 3px;
-}
-
-#keyboardTable th {
-    color: white;
-    border-right: 1px dotted #ffffff;
-    font-weight: bold;
-    text-align: center;
-    font-size: 12px;
-    padding: 5px;
-}
-
-#keyboardTable tbody tr:hover {
-    background-color: #E2f0f6;
-}
-
-#keyboardTable tr {
-    padding: 5px;
-}
-
-/*---   Modal Dialog Form  ---*/
-div.modalDialog {
-    padding: 15px 30px;
-}
-
-div.modalDialog td {
-    padding: 3px;
-}
-
-div.modalDialog h1 {
-    color: #093A9D;
-    font-size: 200%;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-div.modalDialog h2 {
-    color: gray;
-    font-size: 110%;
-    margin: 9px 0;
-}
-
-div.modalDialog h5 {
-    color: gray;
-    font-size: 90%; /*border-bottom: 1px dashed #BBB4D6;*/
-}
-
 /*---   End Modal Dialog Form  ---*/
+
+.publishModalDialog .content{
+    height:420px;
+}
+
+
+

@@ -44,8 +44,9 @@ function createStorageManager(mindplot) {
                 if (xml == null) {
                     throw "Map could not be loaded";
                 }
-            return core.Utils.createDocumentFromText(xml);
-        }
+                var parser = new DOMParser();
+                return parser.parseFromString(xml,  "text/xml");
+           }
 
     }
     );

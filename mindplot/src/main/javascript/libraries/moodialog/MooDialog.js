@@ -42,11 +42,10 @@ var MooDialog = new Class({
 		options = this.options;
 
 		var wrapper = this.wrapper = new Element('div.' + options['class'].replace(' ', '.')).inject(options.inject);
-		this.content = new Element('div.content').inject(wrapper);
 
 		if (options.title){
 			this.title = new Element('div.title').set('text', options.title).inject(wrapper);
-			wrapper.addClass('MooDialogTitle');
+//			this.title.addClass('MooDialogTitle');
 		}
 
 		if (options.closeButton){
@@ -54,6 +53,7 @@ var MooDialog = new Class({
 				events: {click: this.close.bind(this)}
 			}).inject(wrapper);
 		}
+        this.content = new Element('div.content').inject(wrapper);
 
 
 		/*<ie6>*/// IE 6 scroll

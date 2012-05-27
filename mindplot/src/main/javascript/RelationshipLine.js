@@ -60,7 +60,7 @@ mindplot.RelationshipLine = new Class({
         this._line2d.setStroke(2);
         var ctrlPoints = this._line2d.getControlPoints();
         if (!this._line2d.isDestControlPointCustom() && !this._line2d.isSrcControlPointCustom()) {
-            var defaultPoints = core.Utils.calculateDefaultControlPoints(sourcePosition, targetPosition);
+            var defaultPoints = mindplot.util.Shape.calculateDefaultControlPoints(sourcePosition, targetPosition);
             ctrlPoints[0].x = defaultPoints[0].x;
             ctrlPoints[0].y = defaultPoints[0].y;
             ctrlPoints[1].x = defaultPoints[1].x;
@@ -73,8 +73,8 @@ mindplot.RelationshipLine = new Class({
         var tpoint = new core.Point();
         tpoint.x = parseInt(ctrlPoints[1].x) + parseInt(targetPosition.x);
         tpoint.y = parseInt(ctrlPoints[1].y) + parseInt(targetPosition.y);
-        sPos = core.Utils.calculateRelationShipPointCoordinates(sourceTopic, spoint);
-        tPos = core.Utils.calculateRelationShipPointCoordinates(targetTopic, tpoint);
+        sPos = mindplot.util.Shape.calculateRelationShipPointCoordinates(sourceTopic, spoint);
+        tPos = mindplot.util.Shape.calculateRelationShipPointCoordinates(targetTopic, tpoint);
 
         line2d.setFrom(sPos.x, sPos.y);
         line2d.setTo(tPos.x, tPos.y);

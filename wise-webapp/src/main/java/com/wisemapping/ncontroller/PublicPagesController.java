@@ -22,6 +22,7 @@ import com.wisemapping.service.MindmapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -30,10 +31,6 @@ public class PublicPagesController {
     @Autowired
     private MindmapService mindmapService;
 
-    @RequestMapping(value = "faq")
-    public ModelAndView faq() {
-        return new ModelAndView("faq");
-    }
 
     @RequestMapping(value = "aboutUs")
     public ModelAndView aboutUs() {
@@ -59,4 +56,10 @@ public class PublicPagesController {
     public ModelAndView home() {
         return new ModelAndView("homepage");
     }
+
+    @RequestMapping(value = "iframeWrapper")
+      public ModelAndView showIframe(@RequestParam(required = true) String url) {
+          return new ModelAndView("iframeWrapper", "url", url);
+      }
+
 }

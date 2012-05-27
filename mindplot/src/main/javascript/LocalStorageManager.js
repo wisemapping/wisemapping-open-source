@@ -51,7 +51,9 @@ mindplot.LocalStorageManager = new Class({
                 }
 
             }
-            return core.Utils.createDocumentFromText(xml);
+
+            var parser = new DOMParser();
+            return  parser.parseFromString(xml, "text/xml");
         }
     }
 );

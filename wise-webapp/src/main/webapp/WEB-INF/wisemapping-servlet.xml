@@ -180,7 +180,7 @@
         </property>
         <property name="mappings">
             <props>
-                <prop key="/c/map/import.htm">importMapController</prop>
+                <prop key="/c/maps/import.htm">importMapController</prop>
 
                 <!-- Review -->
                 <prop key="/c/publicView.htm">publicView</prop>

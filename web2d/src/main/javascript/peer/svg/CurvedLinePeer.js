@@ -178,7 +178,7 @@ web2d.peer.svg.CurvedLinePeer = new Class({
 
     _calculateAutoControlPoints : function(avoidControlPointFix) {
         //Both points available, calculate real points
-        var defaultpoints = core.Utils.calculateDefaultControlPoints(new core.Point(this._x1, this._y1), new core.Point(this._x2, this._y2));
+        var defaultpoints = mindplot.util.Shape.calculateDefaultControlPoints(new core.Point(this._x1, this._y1), new core.Point(this._x2, this._y2));
         if (!this._customControlPoint_1 && !($defined(avoidControlPointFix) && avoidControlPointFix == 0)) {
             this._control1.x = defaultpoints[0].x;
             this._control1.y = defaultpoints[0].y;

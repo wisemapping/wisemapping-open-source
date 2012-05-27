@@ -87,7 +87,9 @@
             var designer = buildDesigner(options);
 
             // Load map from XML ...
-            var domDocument = core.Utils.createDocumentFromText(mapXml);
+            var parser = new DOMParser();
+            var domDocument = parser.parseFromString(mapXml, "text/xml");
+
             var persistence = mindplot.PersistenceManager.getInstance();
             var mindmap = persistence.loadFromDom(mapId, domDocument);
             designer.loadMap(mindmap);

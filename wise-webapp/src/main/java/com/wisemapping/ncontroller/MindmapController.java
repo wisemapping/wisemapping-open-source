@@ -27,13 +27,13 @@ public class MindmapController {
     @Autowired
     private MindmapService mindmapService;
 
-    @RequestMapping(value = "map/{id}/export")
+    @RequestMapping(value = "maps/{id}/export")
     public ModelAndView export(@PathVariable int id) throws IOException {
         final MindMapBean modelObject = findMindmapBean(id);
         return new ModelAndView("mindmapExport", "mindmap", modelObject);
     }
 
-    @RequestMapping(value = "map/{id}/details")
+    @RequestMapping(value = "maps/{id}/details")
     public ModelAndView showDetails(@PathVariable int id) {
         final MindMapBean modelObject = findMindmapBean(id);
         final ModelAndView view = new ModelAndView("mindmapDetail", "wisemapDetail", modelObject);
@@ -41,23 +41,25 @@ public class MindmapController {
         return view;
     }
 
-    @RequestMapping(value = "map/{id}/print")
+    @RequestMapping(value = "maps/{id}/print")
     public ModelAndView showPrintPage(@PathVariable int id) {
         final MindMap mindmap = findMindmap(id);
-        final ModelAndView view = new ModelAndView("mindmapPrint", "mindmap", mindmap);
-        view.addObject("user", Utils.getUser());
-        return view;
+        return new ModelAndView("mindmapPrint", "mindmap", mindmap);
     }
 
-    @RequestMapping(value = "map/{id}/publish")
+    @RequestMapping(value = "maps/{id}/publish")
     public ModelAndView showPublishPage(@PathVariable int id) {
         final MindMap mindmap = findMindmap(id);
-        final ModelAndView view = new ModelAndView("mindmapPublish", "mindmap", mindmap);
-        view.addObject("user", Utils.getUser());
-        return view;
+        return new ModelAndView("mindmapPublish", "mindmap", mindmap);
     }
 
-    @RequestMapping(value = "map/{id}/edit")
+    @RequestMapping(value = "maps/{id}/publishf")
+    public ModelAndView showPublishPageFull(@PathVariable int id) {
+        final MindMap mindmap = findMindmap(id);
+        return new ModelAndView("mindmapPublishFull", "mindmap", mindmap);
+    }
+
+    @RequestMapping(value = "maps/{id}/edit")
     public ModelAndView editMap(@PathVariable int id, @NotNull HttpServletRequest request) {
         ModelAndView view;
         final UserAgent userAgent = UserAgent.create(request);

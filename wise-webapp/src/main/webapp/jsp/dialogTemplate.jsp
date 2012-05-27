@@ -5,7 +5,7 @@
 <tiles:importAttribute name="title" scope="page"/>
 <tiles:importAttribute name="details" scope="page"/>
 
-<div class="modalDialog">
+<div>
     <!--  Header can be customized -->
     <tiles:insert name="body"/>
 </div>

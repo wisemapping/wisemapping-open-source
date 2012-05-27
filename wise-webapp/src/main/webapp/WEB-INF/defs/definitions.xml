@@ -22,7 +22,13 @@
         <put name="body" value="/jsp/error.jsp" type="page"/>
     </definition>
 
-    <definition name="formDialogTemplate" page="/jsp/formDialogTemplate.jsp">
+    <definition name="dialogTemplate" page="/jsp/dialogTemplate.jsp">
+        <put name="title" value="title" type="string"/>
+        <put name="details" value="details" type="string"/>
+        <put name="body" value="/jsp/error.jsp" type="page"/>
+    </definition>
+
+    <definition name="dialogFullTemplate" page="/jsp/dialogFullTemplate.jsp">
         <put name="title" value="title" type="string"/>
         <put name="details" value="details" type="string"/>
         <put name="body" value="/jsp/error.jsp" type="page"/>
@@ -32,6 +38,9 @@
         <put name="body" value="/jsp/errorTemplate.jsp" type="page"/>
     </definition>
 
+    <definition name="iframeWrapper" page="/jsp/iframeWrapper.jsp"/>
+
+    <!-- Error Pages -->
     <definition name="gcfPluginNeeded" extends="pageTemplate">
         <put name="body" value="/jsp/gcfPluginNeeded.jsp" type="page"/>
         <put name="title" value="INSTALL_CFG"/>
@@ -42,7 +51,6 @@
         <put name="title" value="INSTALL_CFG"/>
     </definition>
 
-    <!-- Error Pages -->
     <definition name="unexpectedError" extends="errorTemplate">
         <put name="title" value="UNEXPECTED_ERROR"/>
         <put name="details" value="UNEXPECTED_ERROR_DETAILS"/>
@@ -87,54 +95,60 @@
 
     <!-- Dialog Forms -->
 
-    <definition name="mindmapDetail" extends="formDialogTemplate">
+    <definition name="mindmapDetail" extends="dialogTemplate">
         <put name="title" value="MINDMAP_DETAIL"/>
         <put name="body" value="/jsp/mindmapDetail.jsp"/>
     </definition>
 
-    <definition name="setting" extends="formDialogTemplate">
+    <definition name="setting" extends="dialogTemplate">
         <put name="title" value="SETTINGS"/>
         <put name="details" value="SETTINGS_MSG"/>
         <put name="body" value="/jsp/setting.jsp"/>
     </definition>
 
-    <definition name="editProfile" extends="formDialogTemplate">
+    <definition name="editProfile" extends="dialogTemplate">
         <put name="title" value="EDIT_PROFILE"/>
         <put name="details" value="FIELD_REQUIRED_MSG"/>
         <put name="body" value="/jsp/editProfile.jsp"/>
     </definition>
 
-    <definition name="changePassword" extends="formDialogTemplate">
+    <definition name="changePassword" extends="dialogTemplate">
         <put name="title" value="CHANGE_PASSWORD"/>
         <put name="details" value="FIELD_REQUIRED_MSG"/>
         <put name="body" value="/jsp/changePassword.jsp"/>
     </definition>
 
-    <definition name="mindmapTags" extends="formDialogTemplate">
+    <definition name="mindmapTags" extends="dialogTemplate">
         <put name="title" value=""/>
         <put name="details" value=""/>
         <put name="body" value="/jsp/mindmapTags.jsp"/>
     </definition>
 
-    <definition name="mindmapExport" extends="formDialogTemplate">
+    <definition name="mindmapExport" extends="dialogTemplate">
         <put name="title" value=""/>
         <put name="details" value=""/>
         <put name="body" value="/jsp/mindmapExport.jsp"/>
     </definition>
 
-    <definition name="mindmapPublish" extends="formDialogTemplate">
+    <definition name="mindmapPublish" extends="dialogTemplate">
         <put name="title" value=""/>
         <put name="details" value=""/>
         <put name="body" value="/jsp/mindmapPublish.jsp"/>
     </definition>
 
-    <definition name="mindmapCollaborator" extends="formDialogTemplate">
+    <definition name="mindmapPublishFull" extends="dialogFullTemplate">
+        <put name="title" value=""/>
+        <put name="details" value=""/>
+        <put name="body" value="/jsp/mindmapPublish.jsp"/>
+    </definition>
+
+    <definition name="mindmapCollaborator" extends="dialogTemplate">
         <put name="title" value=""/>
         <put name="details" value=""/>
         <put name="body" value="/jsp/mindmapCollaborator.jsp"/>
     </definition>
 
-    <definition name="keyboard" extends="formDialogTemplate">
+    <definition name="keyboard" extends="dialogTemplate">
         <put name="title" value="KEYBOARD"/>
         <put name="details" value="KEYBOARD_MSG"/>
         <put name="body" value="/jsp/keyboard.jsp"/>
@@ -156,7 +170,7 @@
         <put name="body" value="/jsp/activationAccountConfirmationFail.jsp"/>
     </definition>
 
-    <definition name="mindmapHistory" extends="formDialogTemplate">
+    <definition name="mindmapHistory" extends="dialogTemplate">
         <put name="title" value="HISTORY"/>
         <put name="details" value="HISTORY_INFO"/>
         <put name="body" value="/jsp/mindmapHistory.jsp"/>

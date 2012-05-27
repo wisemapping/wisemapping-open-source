@@ -28,7 +28,9 @@
                 var editorProperties = {zoom:${zoom},saveOnLoad:true,collab:'standalone',readOnly:true};
                 designer = buildDesigner(editorProperties);
 
-                var domDocument = core.Utils.createDocumentFromText(mapXml);
+                var parser = new DOMParser();
+                var domDocument = parser.parseFromString(mapXml, "text/xml");
+
                 var serializer = mindplot.persistence.XMLSerializerFactory.getSerializerFromDocument(domDocument);
                 var mindmap = serializer.loadFromDom(domDocument, mapId);
 

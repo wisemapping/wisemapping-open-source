@@ -193,7 +193,7 @@ mindplot.widget.Menu = new Class({
 
         this._addButton('export', false, false, function() {
             var reqDialog = new MooDialog.Request('c/map/' + mapId + '/export.htm', null,
-                {'class': 'exportModalDialog',
+                {'class': 'modalDialog exportModalDialog',
                     closeButton:true,
                     destroyOnClose:true,
                     title:'Export'
@@ -317,7 +317,7 @@ mindplot.widget.Menu = new Class({
         if (tagElem) {
             this._addButton('tagIt', false, false, function() {
                 var reqDialog = new MooDialog.Request('c/tags.htm?mapId=' + mapId, null,
-                    {'class': 'tagItModalDialog',
+                    {'class': 'modalDialog tagItModalDialog',
                         closeButton:true,
                         destroyOnClose:true,
                         title:'Tags'
@@ -335,7 +335,7 @@ mindplot.widget.Menu = new Class({
         if (shareElem) {
             this._addButton('shareIt', false, false, function() {
                 var reqDialog = new MooDialog.Request('c/mymaps.htm?action=collaborator&mapId=' + mapId, null,
-                    {'class': 'shareItModalDialog',
+                    {'class': 'modalDialog  shareItModalDialog',
                         closeButton:true,
                         destroyOnClose:true,
                         title:'Share It'
@@ -354,8 +354,8 @@ mindplot.widget.Menu = new Class({
         var publishElem = $('publishIt');
         if (publishElem) {
             this._addButton('publishIt', false, false, function() {
-                var reqDialog = new MooDialog.Request('c/publish.htm?mapId=' + mapId, null,
-                    {'class': 'publishModalDialog',
+                var reqDialog = new MooDialog.Request('c/iframeWrapper.htm?url=c/maps/' + mapId + "/publishf.htm", null,
+                    {'class': 'modalDialog publishModalDialog',
                         closeButton:true,
                         destroyOnClose:true,
                         title:'Publish'
@@ -365,6 +365,7 @@ mindplot.widget.Menu = new Class({
                         reqDialog.setContent('loading...');
                     }
                 });
+                MooDialog.Request.active = reqDialog;
 
             });
             this._registerTooltip('publishIt', "Publish");
@@ -375,7 +376,7 @@ mindplot.widget.Menu = new Class({
 
             this._addButton('history', false, false, function() {
                 var reqDialog = new MooDialog.Request('c/history.htm?action=list&goToMindmapList&mapId=' + mapId, null,
-                    {'class': 'historyModalDialog',
+                    {'class': 'modalDialog historyModalDialog',
                         closeButton:true,
                         destroyOnClose:true,
                         title:'History'

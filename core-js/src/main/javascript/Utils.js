@@ -20,9 +20,6 @@ core.Utils = {
 
 };
 
-Math.sign = function(value) {
-    return (value >= 0) ? 1 : -1;
-};
 
 core.Utils.innerXML = function(/*Node*/node) {
     //	summary:
@@ -51,7 +48,7 @@ core.Utils.createDocument = function() {
                 doc = new ActiveXObject(prefixes[i] + ".XMLDOM");
             } catch(e) { /* squelch */
             }
-            ;
+
 
             if ($defined(doc)) {
                 break;
@@ -64,78 +61,4 @@ core.Utils.createDocument = function() {
 
     return doc;
     //	DOMDocument
-};
-
-core.Utils.createDocumentFromText = function(/*string*/str, /*string?*/mimetype) {
-    //	summary:
-    //		attempts to create a Document object based on optional mime-type,
-    //		using str as the contents of the document
-    if (!$defined(mimetype)) {
-        mimetype = "text/xml";
-    }
-    if ($defined(window.DOMParser)) {
-        var parser = new DOMParser();
-        return parser.parseFromString(str, mimetype);
-        //	DOMDocument
-    } else if ($defined(window.ActiveXObject)) {
-        var domDoc = core.Utils.createDocument();
-        if ($defined(domDoc)) {
-            domDoc.async = false;
-            domDoc.loadXML(str);
-            return domDoc;
-            //	DOMDocument
-        }
-    }
-    return null;
-};
-
-core.Utils.calculateRelationShipPointCoordinates = function(topic, controlPoint) {
-    var size = topic.getSize();
-    var position = topic.getPosition();
-    var m = (position.y - controlPoint.y) / (position.x - controlPoint.x);
-    var y,x;
-    var gap = 5;
-    if (controlPoint.y > position.y + (size.height / 2)) {
-        y = position.y + (size.height / 2) + gap;
-        x = position.x - ((position.y - y) / m);
-        if (x > position.x + (size.width / 2)) {
-            x = position.x + (size.width / 2);
-        } else if (x < position.x - (size.width / 2)) {
-            x = position.x - (size.width / 2);
-        }
-    } else if (controlPoint.y < position.y - (size.height / 2)) {
-        y = position.y - (size.height / 2) - gap;
-        x = position.x - ((position.y - y) / m);
-        if (x > position.x + (size.width / 2)) {
-            x = position.x + (size.width / 2);
-        } else if (x < position.x - (size.width / 2)) {
-            x = position.x - (size.width / 2);
-        }
-    } else if (controlPoint.x < (position.x - size.width / 2)) {
-        x = position.x - (size.width / 2) - gap;
-        y = position.y - (m * (position.x - x));
-    } else {
-        x = position.x + (size.width / 2) + gap;
-        y = position.y - (m * (position.x - x));
-    }
-
-    return new core.Point(x, y);
-};
-
-core.Utils.calculateDefaultControlPoints = function(srcPos, tarPos) {
-    var y = srcPos.y - tarPos.y;
-    var x = srcPos.x - tarPos.x;
-    var m = y / x;
-    var l = Math.sqrt(y * y + x * x) / 3;
-    var fix = 1;
-    if (srcPos.x > tarPos.x) {
-        fix = -1;
-    }
-
-    var x1 = srcPos.x + Math.sqrt(l * l / (1 + (m * m))) * fix;
-    var y1 = m * (x1 - srcPos.x) + srcPos.y;
-    var x2 = tarPos.x + Math.sqrt(l * l / (1 + (m * m))) * fix * -1;
-    var y2 = m * (x2 - tarPos.x) + tarPos.y;
-
-    return [new core.Point(-srcPos.x + x1, -srcPos.y + y1),new core.Point(-tarPos.x + x2, -tarPos.y + y2)];
 };

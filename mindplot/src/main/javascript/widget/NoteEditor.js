@@ -93,7 +93,7 @@ mindplot.widget.NoteEditor = new Class({
         }.bind(this));
 
         // Add buttons ...
-        var buttonContainer = new Element('div').setStyles({paddingTop:5, textAlign:'center'});
+        var buttonContainer = new Element('div').setStyles({paddingTop:5, textAlign:'right'});
 
         // Create accept button ...
         var okButton = new Element('input', {type:'submit', value:'Accept','class':'btn-primary'});
@@ -112,7 +112,6 @@ mindplot.widget.NoteEditor = new Class({
             }.bind(this));
             buttonContainer.inject(form);
         }
-
 
         // Create cancel button ...
         var cButton = new Element('input', {type:'button', value:'Cancel','class':'btn-secondary'});

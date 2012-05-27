@@ -61,7 +61,7 @@ mindplot.widget.LinkIconTooltip = new Class({
         var imgContainer = new Element('div');
         imgContainer.setStyles({
             width: '100%',
-            textAlign: 'center',
+            textAlign: 'right',
             'padding-bottom':'5px',
             'padding-top': '5px'
         });

@@ -96,11 +96,11 @@ mindplot.ControlPoint = new Class({
         var pos = screen.getWorkspaceMousePosition(event);
         var topic = null;
         if (point == 0) {
-            var cords = core.Utils.calculateRelationShipPointCoordinates(this._line.getSourceTopic(), pos);
+            var cords = mindplot.util.Shape.calculateRelationShipPointCoordinates(this._line.getSourceTopic(), pos);
             this._line.setFrom(cords.x, cords.y);
             this._line.setSrcControlPoint(new core.Point(pos.x - cords.x, pos.y - cords.y));
         } else {
-            var cords = core.Utils.calculateRelationShipPointCoordinates(this._line.getTargetTopic(), pos);
+            var cords = mindplot.util.Shape.calculateRelationShipPointCoordinates(this._line.getTargetTopic(), pos);
             this._line.setTo(cords.x, cords.y);
             this._line.setDestControlPoint(new core.Point(pos.x - cords.x, pos.y - cords.y));
         }

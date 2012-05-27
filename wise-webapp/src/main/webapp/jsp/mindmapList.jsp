@@ -49,7 +49,7 @@
                     bUseRendered : false,
                     mDataProp: "title",
                     fnRender : function(obj) {
-                        return '<a href="c/map/' + obj.aData.id + '/edit.htm">' + obj.aData.title + '</a>';
+                        return '<a href="c/maps/' + obj.aData.id + '/edit.htm">' + obj.aData.title + '</a>';
                     }
                 },
                 {
@@ -110,13 +110,13 @@
         $("#newBtn").click(
                 function() {
                     $("#new-dialog-modal").dialogForm({
-                        redirect: "c/map/{header.resourceId}/edit.htm",
+                        redirect: "c/maps/{header.resourceId}/edit.htm",
                         url :  "../service/maps"
                     });
                 });
 
         $("#importBtn").click(function() {
-            window.open('c/map/import.htm');
+            window.open('c/maps/import.htm');
         });
 
         $("#duplicateBtn").click(function() {
@@ -134,7 +134,7 @@
 
                 // Initialize dialog ...
                 $("#duplicate-dialog-modal").dialogForm({
-                    redirect: "c/map/{header.resourceId}/edit.htm",
+                    redirect: "c/maps/{header.resourceId}/edit.htm",
                     url :  "../service/maps/" + mapId
                 });
             }
@@ -194,14 +194,14 @@
         $("#printBtn").click(function() {
             var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
             if (mapIds.length > 0) {
-                window.open('c/map/' + mapIds[0] + '/print.htm');
+                window.open('c/maps/' + mapIds[0] + '/print.htm');
             }
         });
 
         $("#infoBtn").click(function() {
             var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
             if (mapIds.length > 0) {
-                $('#info-dialog-modal .modal-body').load("c/map/" + mapIds[0] + "/details.htm", function() {
+                $('#info-dialog-modal .modal-body').load("c/maps/" + mapIds[0] + "/details.htm", function() {
                     $('#info-dialog-modal').modal();
                 });
 
@@ -211,7 +211,7 @@
         $("#publishBtn").click(function() {
             var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
             if (mapIds.length > 0) {
-                $('#publish-dialog-modal .modal-body').load("c/map/" + mapIds[0] + "/publish.htm",
+                $('#publish-dialog-modal .modal-body').load("c/maps/" + mapIds[0] + "/publish.htm",
                         function() {
                             $('#publish-dialog-modal .btn-accept').click(function() {
                                 $('#publish-dialog-modal #publishForm').submit();
@@ -309,10 +309,12 @@
                             Duplicate</a></li>
                         <li id="renameBtn"><a href="#" onclick="return false"><i class="icon-edit"></i> Rename</a></li>
                         <li id="printBtn"><a href="#" onclick="return false"><i class="icon-print"></i> Print</a></li>
-                        <li id="publishBtn"><a href="#" onclick="return false"><i class="icon-globe"></i>Publish</a></li>
+                        <li id="publishBtn"><a href="#" onclick="return false"><i class="icon-globe"></i>Publish</a>
+                        </li>
                         <li id="shareBtn"><a href="#" onclick="return false"><i class="icon-share"></i> Share</a></li>
                         <li id="tagBtn"><a href="#" onclick="return false"><i class="icon-tags"></i> Tag</a></li>
-                        <li id="historyBtn"><a href="#" onclick="return false"><i class="icon-time"></i> History</a></li>
+                        <li id="historyBtn"><a href="#" onclick="return false"><i class="icon-time"></i> History</a>
+                        </li>
                     </ul>
                 </div>
 
@@ -470,5 +472,6 @@
             <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
         </div>
     </div>
+</div>
 </body>
 </html>
