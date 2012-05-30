@@ -3,257 +3,31 @@
 <%@ include file="/jsp/init.jsp" %>
 <html>
 <head>
-<base href="${pageContext.request.contextPath}/"/>
-<title><spring:message code="SITE.TITLE"/></title>
-<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+    <base href="${pageContext.request.contextPath}/"/>
+    <title><spring:message code="SITE.TITLE"/></title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
 
-<link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
-<link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
+    <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
 
-<link rel="stylesheet/less" type="text/css" href="css/mymaps.less"/>
+    <link rel="stylesheet/less" type="text/css" href="css/mymaps.less"/>
 
-<script type="text/javascript" language="javascript" src="js/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap.js"></script>
-<script src="js/less.js" type="text/javascript"></script>
+    <script type="text/javascript" language="javascript" src="js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap.js"></script>
+    <script src="js/less.js" type="text/javascript"></script>
 
-<!--jQuery DataTables-->
-<script type="text/javascript" language="javascript" src="js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" language="javascript" src="js/mymaps.js"></script>
+    <!--jQuery DataTables-->
+    <script type="text/javascript" language="javascript" src="js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript" src="js/mymaps.js"></script>
 
-<!-- Update timer plugging -->
-<script type="text/javascript" language="javascript" src="js/jquery.timeago.js"></script>
-
-<script type="text/javascript" charset="utf-8">
-    var principalEmail = '${principal.email}';
-    $(function() {
-        var jQueryDataTable = $('#mindmapListTable').dataTable({
-            bProcessing : true,
-            sAjaxSource : "../service/maps",
-            sAjaxDataProp: 'mindmapsInfo',
-            fnInitComplete: function() {
-                $('#mindmapListTable tbody').change(updateStatusToolbar);
-                $('#mindmapListTable .starredOff').click(function() {
-                    updateStarred(this);
-                });
-            },
-            aoColumns: [
-                {
-                    sTitle : '<input type="checkbox" id="selectAll"/>',
-                    sWidth : "55px",
-                    sClass : "select",
-                    bSortable : false,
-                    bSearchable : false,
-                    mDataProp: "starred",
-                    bUseRendered : false,
-                    fnRender : function(obj) {
-                        return '<input type="checkbox" id="' + obj.aData.id + '"/><span data-mid="' + obj.aData.id + '" class="' + (obj.aData.starred ? 'starredOn' : 'starredOff') + '"></span>';
-                    }
-                },
-                {
-                    sTitle : "Name",
-                    sWidth:"270px",
-                    bUseRendered : false,
-                    mDataProp: "title",
-                    fnRender : function(obj) {
-                        return '<span class="starOff"></span><a href="c/maps/' + obj.aData.id + '/edit.htm">' + obj.aData.title + '</a>';
-                    }
-                },
-                {
-                    sTitle : "Owner",
-                    mDataProp :"owner"
-                },
-                {
-                    bSearchable : false,
-                    sTitle : "Last Modified",
-                    bUseRendered: false,
-                    sType: "date",
-                    mDataProp: "lastModificationTime",
-                    fnRender : function(obj) {
-                        var time = obj.aData.lastModificationTime;
-                        return '<abbr class="timeago" title="' + time + '">' + jQuery.timeago(time) + '</abbr>' + ' ' + '<span style="color: #777;font-size: 75%;padding-left: 5px;">' + obj.aData.lastModifierUser + '</span>';
-                    }
-                }
-            ],
-            bAutoWidth : false,
-            oLanguage : {
-                "sSearch" : "",
-                "sInfo" : "_START_-_END_ of _TOTAL_",
-                "sEmptyTable": "No mindmap available for the selected filter criteria."
-            },
-            bStateSave:true
-        });
-
-        // Customize search action ...
-        $('#mindmapListTable_filter').appendTo("#tableActions");
-        $('#mindmapListTable_filter input').addClass('input-medium search-query');
-        $('#mindmapListTable_filter input').attr('placeholder', 'Search');
-        $("#mindmapListTable_info").appendTo("#pageInfo");
-
-        // Re-arrange pagination actions ...
-        $("#tableFooter").appendTo("#mindmapListTable_wrapper");
-        $("#mindmapListTable_length").appendTo("#tableFooter");
-        $('#mindmapListTable_length select').addClass('span1');
+    <!-- Update timer plugging -->
+    <script type="text/javascript" language="javascript" src="js/jquery.timeago.js"></script>
 
 
-        $('input:checkbox[id="selectAll"]').click(function() {
-            $("#mindmapListTable").dataTableExt.selectAllMaps();
-        });
+    <script type="text/javascript" language="javascript">
+        var principalEmail = '${principal.email}';
+    </script>
 
-        // Hack for changing the lagination buttons ...
-        $('#nPageBtn').click(function() {
-            $('#mindmapListTable_next').click();
-        });
-        $('#pPageBtn').click(function() {
-            $('#mindmapListTable_previous').click();
-        });
-    });
-</script>
-
-<!--Buttons-->
-<script type="text/javascript" charset="utf-8">
-    $(function() {
-        // Creation buttons actions ...
-        $("#newBtn").click(
-                function() {
-                    $("#new-dialog-modal").dialogForm({
-                        redirect: "c/maps/{header.resourceId}/edit.htm",
-                        url :  "../service/maps"
-                    });
-                });
-
-        $("#importBtn").click(function() {
-            window.open('c/maps/import.htm');
-        });
-
-        $("#duplicateBtn").click(function() {
-            // Map to be cloned ...
-            var tableElem = $('#mindmapListTable');
-            var rows = tableElem.dataTableExt.getSelectedRows();
-            if (rows.length > 0) {
-
-                // Obtain map name  ...
-                var rowData = tableElem.dataTable().fnGetData(rows[0]);
-                $('#dupDialogTitle').text("Duplicate '" + rowData.title + "'");
-
-                // Obtains map id ...
-                var mapId = rowData.id;
-
-                // Initialize dialog ...
-                $("#duplicate-dialog-modal").dialogForm({
-                    redirect: "c/maps/{header.resourceId}/edit.htm",
-                    url :  "../service/maps/" + mapId
-                });
-            }
-        });
-
-        $("#renameBtn").click(function() {
-            // Map to be cloned ...
-            var tableElem = $('#mindmapListTable');
-            var rows = tableElem.dataTableExt.getSelectedRows();
-            if (rows.length > 0) {
-
-                // Obtain map name  ...
-                var dataTable = tableElem.dataTable();
-                var rowData = dataTable.fnGetData(rows[0]);
-
-                // Fill dialog with default values ...
-                var mapId = rowData.id;
-                $("#rename-dialog-modal input[name='title']").attr('value', rowData.title);
-                $("#rename-dialog-modal input[name='description']").attr('value', rowData.description);
-
-                // Set title ...
-                $('#renameDialogTitle').text("Rename '" + rowData.title + "'");
-
-                // Initialize dialog ...
-                $("#rename-dialog-modal").dialogForm({
-                    type: 'PUT',
-                    clearForm: false,
-                    postUpdate: function(reqBodyData) {
-                        tableElem.dataTableExt.removeSelectedRows();
-
-                        rowData.title = reqBodyData.title;
-                        rowData.description = reqBodyData.description;
-                        dataTable.fnAddData(JSON.parse(JSON.stringify(rowData)));
-                    },
-                    url :  "../service/maps/" + mapId
-                });
-            }
-        });
-
-        $("#deleteBtn").click(function() {
-            var tableUI = $('#mindmapListTable');
-
-            var mapIds = tableUI.dataTableExt.getSelectedMapsIds();
-            if (mapIds.length > 0) {
-                // Initialize dialog ...
-                $("#delete-dialog-modal").dialogForm({
-                    type: 'DELETE',
-                    postUpdate: function(reqBodyData) {
-                        // Remove old entry ...
-                        tableUI.dataTableExt.removeSelectedRows();
-                    },
-                    url :  "../service/maps/batch?ids=" + mapIds.join(',')
-                });
-            }
-        });
-
-        $("#printBtn").click(function() {
-            var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
-            if (mapIds.length > 0) {
-                window.open('c/maps/' + mapIds[0] + '/print.htm');
-            }
-        });
-
-        $("#infoBtn").click(function() {
-            var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
-            if (mapIds.length > 0) {
-                $('#info-dialog-modal .modal-body').load("c/maps/" + mapIds[0] + "/details.htm", function() {
-                    $('#info-dialog-modal').modal();
-                });
-
-            }
-        });
-
-        $("#publishBtn").click(function() {
-            var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
-            if (mapIds.length > 0) {
-                $('#publish-dialog-modal .modal-body').load("c/maps/" + mapIds[0] + "/publish.htm",
-                        function() {
-                            $('#publish-dialog-modal .btn-accept').click(function() {
-                                $('#publish-dialog-modal #publishForm').submit();
-                            });
-                            $('#publish-dialog-modal').modal();
-                        });
-            }
-        });
-
-        $("#actionButtons .shareMap").click(function() {
-        });
-
-
-        $('#foldersContainer li').click(function(event) {
-            // Deselect previous option ...
-            $('#foldersContainer li').removeClass('active');
-            $('#foldersContainer i').removeClass('icon-white');
-
-            // Select the new item ...
-            var dataTable = $('#mindmapListTable').dataTable();
-            $(this).addClass('active');
-            $('#foldersContainer .active i').addClass('icon-white');
-
-            // Reload the table data ...
-            dataTable.fnReloadAjax("../service/maps?q=" + $(this).attr('data-filter'));
-
-            event.preventDefault();
-        });
-    });
-
-    // Register time update functions ....
-    setTimeout(function() {
-        jQuery("abbr.timeago").timeago()
-    }, 50000);
-
-</script>
 </head>
 <body>
 <jsp:include page="header.jsp">
