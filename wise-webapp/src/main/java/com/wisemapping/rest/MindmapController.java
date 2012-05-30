@@ -1,3 +1,21 @@
+/*
+*    Copyright [2011] [wisemapping]
+*
+*   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+*   It is basically the Apache License, Version 2.0 (the "License") plus the
+*   "powered by wisemapping" text requirement on every single page;
+*   you may not use this file except in compliance with the License.
+*   You may obtain a copy of the license at
+*
+*       http://www.wisemapping.org/license
+*
+*   Unless required by applicable law or agreed to in writing, software
+*   distributed under the License is distributed on an "AS IS" BASIS,
+*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*   See the License for the specific language governing permissions and
+*   limitations under the License.
+*/
+
 package com.wisemapping.rest;
 
 
@@ -35,8 +53,9 @@ public class MindmapController extends BaseController {
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/json", "text/html", "application/xml"})
     @ResponseBody
     public ModelAndView getMindmap(@PathVariable int id) throws IOException {
+        final User user = com.wisemapping.security.Utils.getUser();
         final MindMap mindMap = mindmapService.getMindmapById(id);
-        final RestMindmap map = new RestMindmap(mindMap);
+        final RestMindmap map = new RestMindmap(mindMap, user);
         return new ModelAndView("mapView", "map", map);
     }
 
@@ -54,7 +73,7 @@ public class MindmapController extends BaseController {
                 mindmaps.add(mindmap);
             }
         }
-        final RestMindmapList restMindmapList = new RestMindmapList(mindmaps);
+        final RestMindmapList restMindmapList = new RestMindmapList(mindmaps, user);
         return new ModelAndView("mapsView", "list", restMindmapList);
     }
 
@@ -137,7 +156,7 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/title", consumes = {"text/plain"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void changeMapTitle(@RequestBody String title, @PathVariable int id) throws WiseMappingException {
+    public void updateMapTitle(@RequestBody String title, @PathVariable int id) throws WiseMappingException {
 
         final MindMap mindMap = mindmapService.getMindmapById(id);
         final User user = Utils.getUser();
@@ -156,7 +175,7 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/description", consumes = {"text/plain"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void changeMapDescription(@RequestBody String description, @PathVariable int id) throws WiseMappingException {
+    public void updateMapDescription(@RequestBody String description, @PathVariable int id) throws WiseMappingException {
 
         final MindMap mindMap = mindmapService.getMindmapById(id);
         final User user = Utils.getUser();
@@ -169,7 +188,7 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/publish", consumes = {"text/plain"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void changeMapPublish(@RequestBody String value, @PathVariable int id) throws WiseMappingException {
+    public void updatePublishState(@RequestBody String value, @PathVariable int id) throws WiseMappingException {
 
         final MindMap mindMap = mindmapService.getMindmapById(id);
         final User user = Utils.getUser();
@@ -182,6 +201,18 @@ public class MindmapController extends BaseController {
         mindMap.setPublic(Boolean.parseBoolean(value));
         updateMindmap(true, mindMap, user);
 
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/starred", consumes = {"text/plain"}, produces = {"application/json", "text/html", "application/xml"})
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void updateStarredState(@RequestBody String value, @PathVariable int id) throws WiseMappingException {
+
+        final MindMap mindMap = mindmapService.getMindmapById(id);
+        final User user = Utils.getUser();
+
+        // Update map status ...
+        mindMap.setStarred(user, Boolean.parseBoolean(value));
+        updateMindmap(true, mindMap, user);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/maps/{id}")

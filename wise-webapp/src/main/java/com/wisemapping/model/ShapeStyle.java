@@ -21,9 +21,9 @@ package com.wisemapping.model;
 public enum ShapeStyle
 {
     LINE("line"),
-    ROUNDED_RETAGLE("rounded rectagle"),
-    RECTAGLE("rectagle"),
-    ELIPSE("elipse");
+    ROUNDED_RECTANGLE("rounded rectagle"),
+    RECTANGLE("rectagle"),
+    ELLIPSE("elipse");
 
     private String style;
 

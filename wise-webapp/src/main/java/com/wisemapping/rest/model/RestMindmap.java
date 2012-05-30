@@ -1,10 +1,10 @@
 package com.wisemapping.rest.model;
 
 
+import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.User;
 import org.codehaus.jackson.annotate.*;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,7 +27,8 @@ import java.util.TimeZone;
 )
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RestMindmap {
-
+    @JsonIgnore
+    private Collaborator collaborator;
     @JsonIgnore
     private MindMap mindmap;
     @JsonIgnore
@@ -39,12 +40,13 @@ public class RestMindmap {
     }
 
     public RestMindmap() {
-        this(new MindMap());
+        this(new MindMap(), null);
 
     }
 
-    public RestMindmap(@NotNull MindMap mindmap) {
+    public RestMindmap(@NotNull MindMap mindmap, @NotNull Collaborator collaborator) {
         this.mindmap = mindmap;
+        this.collaborator = collaborator;
     }
 
     public String getCreationTime() {
@@ -145,6 +147,18 @@ public class RestMindmap {
 
     public String getProperties() {
         return mindmap.getProperties();
+    }
+
+    public boolean getStarred() {
+        boolean result = false;
+        if (collaborator != null) {
+            result = mindmap.isStarred(collaborator);
+        }
+        return result;
+    }
+
+    public void setStarred(boolean value) {
+        mindmap.setStarred(collaborator, value);
     }
 
     @JsonIgnore

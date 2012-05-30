@@ -140,10 +140,10 @@ public class FreemindExporter
 
         final String shape = mindmapTopic.getShape();
         if (shape != null && !shape.isEmpty()) {
-            if (isRoot && !ShapeStyle.ROUNDED_RETAGLE.getStyle().endsWith(shape) || !isRoot && !ShapeStyle.LINE.getStyle().endsWith(shape)) {
+            if (isRoot && !ShapeStyle.ROUNDED_RECTANGLE.getStyle().endsWith(shape) || !isRoot && !ShapeStyle.LINE.getStyle().endsWith(shape)) {
 
                 String style = shape;
-                if (ShapeStyle.ROUNDED_RETAGLE.getStyle().equals(shape)) {
+                if (ShapeStyle.ROUNDED_RECTANGLE.getStyle().equals(shape)) {
                     style = "bubble";
                 }
                 freemindNode.setSTYLE(style);

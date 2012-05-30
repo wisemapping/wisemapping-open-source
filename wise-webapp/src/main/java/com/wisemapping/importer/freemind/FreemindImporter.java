@@ -128,7 +128,7 @@ public class FreemindImporter
 
             convertNodeProperties(freeNode, wiseTopic);
 
-            wiseTopic.setShape(ShapeStyle.ROUNDED_RETAGLE.getStyle());
+            wiseTopic.setShape(ShapeStyle.ROUNDED_RECTANGLE.getStyle());
             mindmapMap.getTopic().add(wiseTopic);
             mindmapMap.setName(mapName);
 
@@ -631,7 +631,7 @@ public class FreemindImporter
         String result = node.getSTYLE();
         // In freemind a node without style is a line
         if ("bubble".equals(result)) {
-            result = ShapeStyle.ROUNDED_RETAGLE.getStyle();
+            result = ShapeStyle.ROUNDED_RECTANGLE.getStyle();
         } else {
             result = ShapeStyle.LINE.getStyle();
         }

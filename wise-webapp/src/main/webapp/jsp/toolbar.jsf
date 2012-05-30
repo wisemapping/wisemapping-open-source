@@ -76,10 +76,7 @@
         </div>
     </div>
     <div id="collaboration" class="buttonContainer">
-        <div id="tagIt" class="buttonOn">
-            <img src="../images/tag.png"/>
-        </div>
-        <div id="shareIt" class="buttonOn">
+    <div id="shareIt" class="buttonOn">
             <img src="../images/share.png"/>
         </div>
         <div id="publishIt" class="buttonOn">

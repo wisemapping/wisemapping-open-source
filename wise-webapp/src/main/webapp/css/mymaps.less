@@ -132,6 +132,10 @@ input#selectAll {
 
 /* ----------------------------- Misc ----------------------------------- */
 
+.messagesPanel {
+    width: @body-width;
+}
+
 .dataTables_empty {
 	text-align: center;
 }
@@ -173,4 +177,24 @@ input#selectAll {
     float: left;
     margin-right: 2%;
     margin-top: 80px
+}
+
+span.starredOff{
+    background: url('../images/star-off.png') no-repeat center left;
+    padding: 10px;
+    margin: 0 0px 0 15px;
+}
+
+span.starredOff:hover{
+    background: url('../images/star-off-hover.png') no-repeat center left;
+}
+
+span.starredOn{
+    background: url('../images/star-on.png') no-repeat center left;
+    padding: 10px;
+    margin: 0 0px 0 15px;
+}
+
+span.starredOn:hover{
+    background: url('../images/star-on-hover.png') no-repeat center left;
 }

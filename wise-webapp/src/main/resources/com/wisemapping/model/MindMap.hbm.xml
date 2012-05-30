@@ -27,7 +27,14 @@
                 inverse="true">
             <key column="MINDMAP_ID" not-null="true"/>                
             <one-to-many class="com.wisemapping.model.MindmapUser"/>
-        </set>        
+        </set>
+
+         <set name="collaboratorProperties"
+                cascade="all, delete-orphan"
+                inverse="true">
+            <key column="MINDMAP_ID" not-null="true"/>
+            <one-to-many class="com.wisemapping.model.CollaboratorProperties"/>
+        </set>
 
     </class>
 

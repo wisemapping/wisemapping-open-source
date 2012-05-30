@@ -137,20 +137,6 @@
         <property name="userService" ref="userService"/>
     </bean>
 
-    <bean id="tagValidator" class="com.wisemapping.validator.TagValidator">
-    </bean>
-
-    <bean id="tagsController" class="com.wisemapping.controller.TagsController">
-        <property name="sessionForm" value="false"/>
-        <property name="commandName" value="tag"/>
-        <property name="commandClass" value="com.wisemapping.view.TagBean"/>
-        <property name="validator" ref="tagValidator"/>
-        <property name="formView" value="mindmapTags"/>
-        <property name="successView" value="closeDialog"/>
-        <property name="mindmapService" ref="mindmapService"/>
-        <property name="userService" ref="userService"/>
-    </bean>
-
     <bean id="multipartResolver"
           class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <!-- one of the properties available; the maximum file size in bytes -->
@@ -196,7 +182,6 @@
                 <prop key="/c/cooker.htm">cookerController</prop>
                 <prop key="/c/settings.htm">settingsController</prop>
                 <prop key="/c/editProfile.htm">editProfileController</prop>
-                <prop key="/c/tags.htm">tagsController</prop>
                 <prop key="/c/history.htm">historyController</prop>
             </props>
         </property>

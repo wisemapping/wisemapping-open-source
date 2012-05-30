@@ -19,7 +19,6 @@
 package com.wisemapping.model;
 
 import com.wisemapping.util.ZipUtils;
-import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -33,17 +32,18 @@ public class MindMap {
     private static final String UTF_8 = "UTF-8";
 
     //~ Instance fields ......................................................................................
-
+    private int id;
     private Calendar creationTime;
     private String creator;
     private String description;
 
-    private int id;
     private boolean isPublic;
     private Calendar lastModificationTime;
     private String lastModifierUser;
 
     private Set<MindmapUser> mindmapUsers = new HashSet<MindmapUser>();
+    private Set<CollaboratorProperties> collaboratorProperties = new HashSet<CollaboratorProperties>();
+
     private User owner;
     private String properties;
     private String tags;
@@ -86,7 +86,7 @@ public class MindMap {
             throws IOException {
         byte[] result = this.xml;
         if (result != null) {
-          result =  ZipUtils.stringToZip(new String(result, UTF_8));
+            result = ZipUtils.stringToZip(new String(result, UTF_8));
         }
         return result;
     }
@@ -217,6 +217,41 @@ public class MindMap {
 
     public User getOwner() {
         return owner;
+    }
+
+    public Set<CollaboratorProperties> getCollaboratorProperties() {
+        return collaboratorProperties;
+    }
+
+    public void setCollaboratorProperties(@NotNull Set<CollaboratorProperties> collaboratorProperties) {
+        this.collaboratorProperties = collaboratorProperties;
+    }
+
+    private CollaboratorProperties findUserProperty(@NotNull Collaborator collaborator) {
+        final Set<CollaboratorProperties> collaboratorProperties = this.getCollaboratorProperties();
+        CollaboratorProperties result = null;
+        for (CollaboratorProperties collaboratorProperty : collaboratorProperties) {
+            final Collaborator propCollab = collaboratorProperty.getCollaborator();
+            if (propCollab != null && propCollab.getEmail().equals(collaborator.getEmail())) {
+                result = collaboratorProperty;
+                break;
+            }
+        }
+        return result;
+    }
+
+    public void setStarred(@NotNull Collaborator collaborator, boolean value) {
+        CollaboratorProperties collaboratorProperties = this.findUserProperty(collaborator);
+        if (collaboratorProperties == null) {
+            collaboratorProperties = new CollaboratorProperties(collaborator, this);
+        }
+        collaboratorProperties.setStarred(value);
+        this.getCollaboratorProperties().add(collaboratorProperties);
+    }
+
+    public boolean isStarred(@NotNull Collaborator collaborator) {
+        final CollaboratorProperties collaboratorProperty = this.findUserProperty(collaborator);
+        return collaboratorProperty != null && collaboratorProperty.getStarred();
     }
 
     public static String getDefaultMindmapXml(@NotNull final String title) {

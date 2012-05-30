@@ -13,23 +13,32 @@ password varchar(255)  NOT NULL,
 activationCode BIGINT NOT NULL,
 activation_date DATE,
 allowSendEmail CHAR(1) NOT NULL,
-FOREIGN KEY(colaborator_id) REFERENCES colaborator(id)
+FOREIGN KEY(colaborator_id) REFERENCES COLABORATOR(id)
 );
 
 CREATE TABLE MINDMAP (
 id INTEGER NOT NULL IDENTITY,
-title VARCHAR(255)  NOT NULL,
+title VARCHAR(255) NOT NULL,
 description VARCHAR(255)  NOT NULL,
 xml LONGVARBINARY NOT NULL,
-public BOOLEAN not null,
+public BOOLEAN NOT NULL,
 creation_date DATETIME,
 edition_date DATETIME,
-owner_id INTEGER not null,
+owner_id INTEGER NOT NULL,
 tags varchar(1014)  ,
 last_editor varchar(255)  ,
 creator_user varchar(255)  ,
 editor_properties varchar(512)
 --FOREIGN KEY(owner_id) REFERENCES USER(colaborator_id)
+);
+
+CREATE TABLE MINDMAP_COLLABORATOR_PROPERTIES
+(id INTEGER NOT NULL IDENTITY,
+mindmap_id INTEGER NOT NULL,
+collaborator_id INTEGER NOT NULL,
+starred BOOLEAN NOT NULL,
+FOREIGN KEY(collaborator_id) REFERENCES COLABORATOR(id),
+FOREIGN KEY(mindmap_id) REFERENCES MINDMAP(id)
 );
 
 CREATE TABLE MINDMAP_HISTORY
@@ -44,15 +53,15 @@ CREATE TABLE MINDMAP_COLABORATOR
 colaborator_id INTEGER NOT NULL,
 mindmap_id INTEGER NOT NULL,
 role_id INTEGER NOT NULL,
-FOREIGN KEY(colaborator_id) REFERENCES colaborator(id),
-FOREIGN KEY(mindmap_id) REFERENCES mindmap(id)
+FOREIGN KEY(colaborator_id) REFERENCES COLABORATOR(id),
+FOREIGN KEY(mindmap_id) REFERENCES MINDMAP(id)
 );
 
 CREATE TABLE TAG
 (id INTEGER NOT NULL IDENTITY,
 name varchar(255)  NOT NULL,
 user_id INTEGER NOT NULL,
---FOREIGN KEY(user_id) REFERENCES user(colaborator_id)
+--FOREIGN KEY(user_id) REFERENCES USER(colaborator_id)
 );
 
 CREATE TABLE USER_LOGIN

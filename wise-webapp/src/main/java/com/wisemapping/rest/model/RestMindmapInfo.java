@@ -1,6 +1,7 @@
 package com.wisemapping.rest.model;
 
 
+import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.User;
 import org.codehaus.jackson.annotate.*;
@@ -10,7 +11,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -29,6 +29,7 @@ public class RestMindmapInfo {
 
     @JsonIgnore
     private MindMap mindmap;
+    private Collaborator collaborator;
     @JsonIgnore
     static private SimpleDateFormat sdf;
 
@@ -38,12 +39,13 @@ public class RestMindmapInfo {
     }
 
     public RestMindmapInfo() {
-        this(new MindMap());
+        this(new MindMap(), null);
 
     }
 
-    public RestMindmapInfo(@NotNull MindMap mindmap) {
+    public RestMindmapInfo(@NotNull MindMap mindmap, @Nullable Collaborator collaborator) {
         this.mindmap = mindmap;
+        this.collaborator = collaborator;
     }
 
     public String getCreationTime() {
@@ -93,7 +95,14 @@ public class RestMindmapInfo {
     }
 
     public void setId(int id) {
-        mindmap.setId(id);
+    }
+
+    public boolean getStarred() {
+        return mindmap.isStarred(collaborator);
+    }
+
+    public void setStarred(int value) {
+
     }
 
     public void setTitle(String title) {

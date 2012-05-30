@@ -31,25 +31,31 @@
             sAjaxSource : "../service/maps",
             sAjaxDataProp: 'mindmapsInfo',
             fnInitComplete: function() {
-                $('#mindmapListTable tbody').change(updateStatus);
+                $('#mindmapListTable tbody').change(updateStatusToolbar);
+                $('#mindmapListTable .starredOff').click(function() {
+                    updateStarred(this);
+                });
             },
             aoColumns: [
                 {
                     sTitle : '<input type="checkbox" id="selectAll"/>',
-                    sWidth : "15px",
+                    sWidth : "55px",
                     sClass : "select",
                     bSortable : false,
                     bSearchable : false,
+                    mDataProp: "starred",
+                    bUseRendered : false,
                     fnRender : function(obj) {
-                        return '<input type="checkbox" id="' + obj.aData.id + '"/>';
+                        return '<input type="checkbox" id="' + obj.aData.id + '"/><span data-mid="' + obj.aData.id + '" class="' + (obj.aData.starred ? 'starredOn' : 'starredOff') + '"></span>';
                     }
                 },
                 {
                     sTitle : "Name",
+                    sWidth:"270px",
                     bUseRendered : false,
                     mDataProp: "title",
                     fnRender : function(obj) {
-                        return '<a href="c/maps/' + obj.aData.id + '/edit.htm">' + obj.aData.title + '</a>';
+                        return '<span class="starOff"></span><a href="c/maps/' + obj.aData.id + '/edit.htm">' + obj.aData.title + '</a>';
                     }
                 },
                 {
@@ -224,11 +230,6 @@
         $("#actionButtons .shareMap").click(function() {
         });
 
-        $("#actionButtons .tagMap").click(function() {
-        });
-
-        $("#actionButtons .tags").click(function() {
-        });
 
         $('#foldersContainer li').click(function(event) {
             // Deselect previous option ...
@@ -277,6 +278,7 @@
                 <li data-filter="all" class="active"><a href="#"><i class="icon-inbox icon-white"></i> All</a></li>
                 <li data-filter="my_maps"><a href="#"><i class="icon-user"></i> My Maps</a></li>
                 <li data-filter="shared_with_me"><a href="#"><i class="icon-share"></i> Shared With Me</a></li>
+                <li data-filter="starred"><a href="#"><i class="icon-star"></i> Starred</a></li>
                 <li data-filter="public"><a href="#"><i class="icon-globe"></i> Public Maps</a></li>
             </ul>
         </div>
@@ -309,10 +311,9 @@
                             Duplicate</a></li>
                         <li id="renameBtn"><a href="#" onclick="return false"><i class="icon-edit"></i> Rename</a></li>
                         <li id="printBtn"><a href="#" onclick="return false"><i class="icon-print"></i> Print</a></li>
-                        <li id="publishBtn"><a href="#" onclick="return false"><i class="icon-globe"></i>Publish</a>
+                        <li id="publishBtn"><a href="#" onclick="return false"><i class="icon-globe"></i> Publish</a>
                         </li>
                         <li id="shareBtn"><a href="#" onclick="return false"><i class="icon-share"></i> Share</a></li>
-                        <li id="tagBtn"><a href="#" onclick="return false"><i class="icon-tags"></i> Tag</a></li>
                         <li id="historyBtn"><a href="#" onclick="return false"><i class="icon-time"></i> History</a>
                         </li>
                     </ul>

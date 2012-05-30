@@ -71,7 +71,7 @@ jQuery.fn.dataTableExt.selectAllMaps = function() {
             $(this).prop("checked", false);
         });
     }
-    updateStatus();
+    updateStatusToolbar();
 };
 
 jQuery.fn.dataTableExt.getSelectedMapsIds = function() {
@@ -93,7 +93,7 @@ jQuery.fn.dataTableExt.removeSelectedRows = function() {
     trs.each(function() {
         $('#mindmapListTable').dataTable().fnDeleteRow(this);
     });
-    updateStatus();
+    updateStatusToolbar();
 };
 
 
@@ -179,7 +179,7 @@ jQuery.fn.dialogForm = function(options) {
 
 
 // Update toolbar events ...
-function updateStatus() {
+function updateStatusToolbar() {
 
     // Mark column row selection values ...
     $("#mindmapListTable tbody input:checked").parent().parent().addClass('row-selected');
@@ -204,6 +204,53 @@ function updateStatus() {
         }
     }
 }
+
+
+// Update toolbar events ...
+function updateStarred(spanElem) {
+    $(spanElem).removeClass('starredOff');
+    $(spanElem).addClass('starredOn');
+
+    // Retrieve row data ...
+    var tableElem = $('#mindmapListTable');
+    var trElem = $(spanElem).parent().parent();
+    var rowData = tableElem.dataTable().fnGetData(trElem[0]);
+
+    // Update status ...
+    var starred = !rowData.starred;
+    var mapId = rowData.id;
+    if (starred) {
+        $(spanElem).removeClass('starredOff');
+        $(spanElem).addClass('starredOn');
+    } else {
+        $(spanElem).removeClass('starredOn');
+        $(spanElem).addClass('starredOff');
+    }
+
+    jQuery.ajax("service/maps/" + mapId + "/starred", {
+        async:false,
+        dataType: 'json',
+        data: "" + starred,
+        type: 'PUT',
+        contentType:"text/plain",
+        success : function() {
+            if (starred) {
+                $(spanElem).removeClass('starredOff');
+                $(spanElem).addClass('starredOn');
+            } else {
+                $(spanElem).removeClass('starredOn');
+                $(spanElem).addClass('starredOff');
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            $('#messagesPanel div').text(errorThrown).parent().show();
+        }
+    });
+
+    // Finally update st
+    rowData.starred = starred;
+}
+
 
 
 
