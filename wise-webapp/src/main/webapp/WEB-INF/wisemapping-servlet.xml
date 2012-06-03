@@ -136,11 +136,6 @@
         <property name="mindmapService" ref="mindmapService"/>
     </bean>
 
-    <bean id="embeddedView" class="com.wisemapping.controller.EmbeddedViewController">
-        <property name="methodNameResolver" ref="paramResolverByAction"/>
-        <property name="mindmapService" ref="mindmapService"/>
-    </bean>
-
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="interceptors">
             <list>
@@ -152,7 +147,6 @@
             <props>
                 <!-- Review -->
                 <prop key="publicView">publicView</prop>
-                <prop key="embeddedView">embeddedView</prop>
 
                 <!-- Forms based -->
                 <prop key="userRegistration">userController</prop>

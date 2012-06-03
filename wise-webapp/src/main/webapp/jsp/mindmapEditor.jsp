@@ -6,10 +6,6 @@
 <%--@elvariable id="mapXml" type="com.wisemapping.model.User"--%>
 
 <%@ include file="/jsp/init.jsp" %>
-<c:url value="maps/" var="shareMap">
-    <c:param name="action" value="collaborator"/>
-    <c:param name="userEmail" value="${pageContext.request.userPrincipal.name}"/>
-</c:url>
 <html>
 <head>
     <base href="../../../"/>
@@ -60,12 +56,6 @@
 <body>
 
 <div id="actionsContainer"></div>
-<div>
-    <c:url value="maps/" var="shareMap">
-        <c:param name="action" value="collaborator"/>
-        <c:param name="userEmail" value="${pageContext.request.userPrincipal.name}"/>
-    </c:url>
-</div>
 
 <div id="header">
     <div id="headerInfo">

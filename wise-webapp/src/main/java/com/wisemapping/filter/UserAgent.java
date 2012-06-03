@@ -55,7 +55,6 @@ public class UserAgent implements Serializable {
         firefox = UserAgent.create("Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.8.1.12) Gecko/20080129 Iceweasel/2.0.0.12 (Debian-2.0.0.12-0etch1)");
         assert firefox.isBrowserSupported();
 
-
     }
 
 
@@ -323,10 +322,10 @@ public class UserAgent implements Serializable {
     public boolean isBrowserSupported() {
         // Is it a supported browser ?.
         final UserAgent.Product product = this.getProduct();
-        boolean result = product == UserAgent.Product.FIREFOX && this.isVersionGreatedOrEqualThan(3, 0);
+        boolean result = product == UserAgent.Product.FIREFOX && this.isVersionGreatedOrEqualThan(10, 0);
         result = result || product == UserAgent.Product.EXPLORER && this.isVersionGreatedOrEqualThan(7, 0) && this.getOs() == UserAgent.OS.WINDOWS;
-        result = result || product == UserAgent.Product.OPERA && this.isVersionGreatedOrEqualThan(9, 0);
-        result = result || product == UserAgent.Product.CHROME && this.isVersionGreatedOrEqualThan(8, 0);
+        result = result || product == UserAgent.Product.OPERA && this.isVersionGreatedOrEqualThan(11, 0);
+        result = result || product == UserAgent.Product.CHROME && this.isVersionGreatedOrEqualThan(19, 0);
         result = result || product == UserAgent.Product.SAFARI && this.isVersionGreatedOrEqualThan(5, 0);
         return result;
     }

@@ -23,48 +23,11 @@
     <![endif]-->
 
     <link rel="stylesheet/less" type="text/css" href="css/embedded.less"/>
-
-    <style type="text/css" media="print">
-        @page {
-            size: A4 landscape;
-        }
-
-        body {
-            overflow: visible
-        }
-
-        #embFooter {
-            display: none;
-        }
-
-        #footerLogo {
-            display: block;
-        }
-
-        div#printLogo {
-            width: 114px;
-            height: 56px;
-            position: absolute;
-            display: list-item;
-            list-style-image: url(../images/logo-xsmall.png);
-            list-style-position: inside;
-            right: 10px;
-            bottom: -30px;
-        }
-
-        div#infoPanel {
-            display: none;
-        }
-    </style>
-
     <script type='text/javascript' src='js/mootools-core.js'></script>
     <script type='text/javascript' src='js/mootools-more.js'></script>
     <script type='text/javascript' src='js/core.js'></script>
     <script type='text/javascript' src='js/less.js'></script>
 
-
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 
     <script type="text/javascript">
         var mapId = '${mindmap.id}';
@@ -77,7 +40,7 @@
 
             options.persistenceManager = new mindplot.RESTPersistenceManager("service/maps/");
             var userOptions = ${mindmap.properties};
-            options.zoom = userOptions.zoom;
+            options.zoom = ${zoom};
 
             // Set map id ...
             options.mapId = mapId;
@@ -107,13 +70,8 @@
     </script>
 </head>
 <body>
-
 <div id="mapContainer">
-    <%--<div id="infoPanel">--%>
-    <%--<div id="dragImageNode" style="cursor: move">--%>
-    <%--</div>--%>
     <div id="mindplot"></div>
-    <div id="printLogo"></div>
 
     <div id="embFooter">
         <a href="${pageContext.request.contextPath}/c/home" target="new">
@@ -129,6 +87,7 @@
         </div>
     </div>
 </div>
+
 <script type="text/javascript" src="../js/editor.js"></script>
 </body>
 </html>

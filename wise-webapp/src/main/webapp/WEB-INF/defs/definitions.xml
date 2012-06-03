@@ -8,11 +8,9 @@
 
     <definition name="homepage" page="/jsp/homepage.jsp"/>
     <definition name="mindmapList" page="/jsp/mindmapList.jsp"/>
-    <definition name="embeddedView" page="/jsp/embeddedView.jsp"/>
-    <definition name="embeddedViewNotSupported" page="/jsp/embeddedViewNotSupported.jsp"/>
+    <definition name="mindmapEmbedded" page="/jsp/mindmapEmbed.jsp"/>
     <definition name="mindmapEditor" page="/jsp/mindmapEditor.jsp"/>
     <definition name="mindmapCooker" page="/jsp/mindmapCooker.jsp"/>
-    <definition name="embeddedViewError" page="/jsp/embeddedViewError.jsp"/>
     <definition name="mindmapPrint" page="/jsp/mindmapPrint.jsp"/>
 
     <!-- Template Declaration -->

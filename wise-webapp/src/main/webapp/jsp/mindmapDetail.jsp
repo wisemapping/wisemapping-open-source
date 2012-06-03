@@ -17,7 +17,7 @@
                 <li><strong><spring:message code="CREATION_TIME"/>:</strong> ${wisemapDetail.creationTime}</li>
                 <li><strong><spring:message code="LAST_UPDATE"/>:</strong> ${wisemapDetail.lastEditTime}</li>
                 <li><strong><spring:message code="LAST_UPDATE_BY"/>:</strong> ${wisemapDetail.lastEditor}</li>
-                <li><strong> <spring:message code="TAGS"/>:</strong> ${wisemapDetail.tags}</li>
+                <li><strong> <spring:message code="STARRED"/>:</strong> ${wisemapDetail.starred}</li>
             </ul>
         </div>
         <div class="tab-pane fade" id="collaborators">

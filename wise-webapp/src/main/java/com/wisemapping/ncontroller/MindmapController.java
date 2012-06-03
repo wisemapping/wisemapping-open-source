@@ -23,6 +23,13 @@ import java.util.List;
 
 @Controller
 public class MindmapController {
+
+    private String baseUrl;
+
+    MindmapController() {
+
+    }
+
     @Autowired
     private MindmapService mindmapService;
 
@@ -97,6 +104,17 @@ public class MindmapController {
             view.addObject("showHelp", showHelp);
             view.addObject("user", Utils.getUser());
         }
+        return view;
+    }
+
+    @RequestMapping(value = "maps/{id}/embed")
+    public ModelAndView embeddedView(@PathVariable int id, @RequestParam(required = false) Float zoom, @NotNull HttpServletRequest request) {
+        ModelAndView view;
+        final UserAgent userAgent = UserAgent.create(request);
+        final MindMap mindmap = mindmapService.getMindmapById(id);
+        view = new ModelAndView("mindmapEmbedded", "mindmap", mindmap);
+        view.addObject("user", Utils.getUser());
+        view.addObject("zoom", zoom == null ? 1 : zoom);
         return view;
     }
 
