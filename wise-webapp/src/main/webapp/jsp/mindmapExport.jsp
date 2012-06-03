@@ -39,7 +39,7 @@
 
                 <select name="imgFormat" id="imgFormat" style="display:none">
                     <option value='png'>PNG</option>
-                    <option value='jpeg'>JPEG</option>
+                    <option value='jpg'>JPEG</option>
                 </select>
             </label>
         </fieldset>

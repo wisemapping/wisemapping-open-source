@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -116,7 +115,7 @@ public class TransformerController extends BaseController {
             case PNG:
                 result = this.transformPng(svg);
                 break;
-            case JPEG:
+            case JPG:
                 result = this.transformJpeg(svg);
                 break;
             case PDF:

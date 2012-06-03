@@ -32,7 +32,7 @@ public class ExportProperties {
 
     public static ExportProperties create(final ExportFormat format) {
         ExportProperties result;
-        if (format == ExportFormat.JPEG || format == ExportFormat.PNG) {
+        if (format == ExportFormat.JPG || format == ExportFormat.PNG) {
             result = new ImageProperties(format);
         } else {
             result = new GenericProperties(format);

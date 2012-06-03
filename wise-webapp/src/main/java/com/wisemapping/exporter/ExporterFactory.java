@@ -18,7 +18,6 @@
 
 package com.wisemapping.exporter;
 
-import com.wisemapping.model.MindMap;
 import org.apache.batik.transcoder.Transcoder;
 import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderInput;
@@ -79,7 +78,7 @@ public class ExporterFactory {
                 transcoder.transcode(input, trascoderOutput);
                 break;
             }
-            case JPEG: {
+            case JPG: {
                 // Create a JPEG transcoder
                 final Transcoder transcoder = new JPEGTranscoder();
                 transcoder.addTranscodingHint(JPEGTranscoder.KEY_QUALITY, new Float(.99));

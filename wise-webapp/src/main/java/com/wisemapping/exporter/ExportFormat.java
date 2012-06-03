@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 public enum ExportFormat {
     SVG("image/svg+xml", "svg"),
-    JPEG("image/jpeg", "jpg"),
+    JPG("image/jpeg", "jpg"),
     PNG("image/png", "png"),
     PDF("application/pdf", "pdf"),
     FREEMIND("application/freemind", "mm"),

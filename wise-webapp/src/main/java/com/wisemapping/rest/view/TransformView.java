@@ -83,7 +83,7 @@ public class TransformView extends AbstractView {
             ExporterFactory.export(properties, content, outputStream, null);
         } else if (exportFormat == ExportFormat.WISEMAPPING) {
             final Object mindmap = viewMap.get("mindmap");
-            StreamResult result = new StreamResult(outputStream);
+            final StreamResult result = new StreamResult(outputStream);
             jaxbMarshaller.marshal(mindmap, result);
         } else {
             ExporterFactory.export(properties, null, outputStream, content);

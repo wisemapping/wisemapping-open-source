@@ -37,9 +37,8 @@
                 <entry key="freemind" value="application/freemind"/>
                 <entry key="pdf" value="application/pdf"/>
                 <entry key="png" value="image/png"/>
-                <entry key="jpeg" value="image/jpg"/>
+                <entry key="jpg" value="image/jpeg"/>
                 <entry key="svg" value="image/svg+xml"/>
-                <entry key="svg" value="application/svg+xml"/>
                 <entry key="wxml" value="application/wisemapping+xml"/>
             </map>
         </property>
