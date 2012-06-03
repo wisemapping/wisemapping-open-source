@@ -21,6 +21,10 @@ package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.exporter.ExportFormat;
+import com.wisemapping.importer.ImportFormat;
+import com.wisemapping.importer.Importer;
+import com.wisemapping.importer.ImporterException;
+import com.wisemapping.importer.ImporterFactory;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.MindmapUser;
 import com.wisemapping.model.User;
@@ -29,6 +33,7 @@ import com.wisemapping.rest.model.RestMindmapInfo;
 import com.wisemapping.rest.model.RestMindmapList;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapService;
+import com.wisemapping.service.UserService;
 import com.wisemapping.validator.MapInfoValidator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -42,6 +47,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -85,8 +91,7 @@ public class MindmapController extends BaseController {
         return new ModelAndView("transformViewFreemind", values);
     }
 
-
-    @RequestMapping(method = RequestMethod.GET, value = "/maps", produces = {"application/json", "text/html", "application/xml"})
+    @RequestMapping(method = RequestMethod.GET, value = "/maps/", produces = {"application/json", "text/html", "application/xml"})
     public ModelAndView retrieveList(@RequestParam(required = false) String q) throws IOException {
         final User user = com.wisemapping.security.Utils.getUser();
 
@@ -128,7 +133,6 @@ public class MindmapController extends BaseController {
         // Update map ...
         saveMindmap(minor, mindMap, user);
     }
-
 
     /**
      * The intention of this method is the update of several properties at once ...
@@ -297,6 +301,20 @@ public class MindmapController extends BaseController {
         // Return the new created map ...
         response.setHeader("Location", "/service/maps/" + delegated.getId());
         response.setHeader("ResourceId", Integer.toString(delegated.getId()));
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/maps", consumes = {"application/freemind"})
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public void createMapFromFreemind(@RequestBody byte[] freemindXml, @RequestParam(required = true) String title, @RequestParam(required = false) String description, @NotNull HttpServletResponse response) throws IOException, WiseMappingException, ImporterException {
+
+        // Convert map ...
+        final Importer importer = ImporterFactory.getInstance().getImporter(ImportFormat.FREEMIND);
+        final ByteArrayInputStream stream = new ByteArrayInputStream(freemindXml);
+        final MindMap mindMap = importer.importMap(title, description, stream);
+
+        // Save new map ...
+        final User user = Utils.getUser();
+        createMap(new RestMindmap(mindMap, user), response);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/maps/{id}", consumes = {"application/xml", "application/json"})

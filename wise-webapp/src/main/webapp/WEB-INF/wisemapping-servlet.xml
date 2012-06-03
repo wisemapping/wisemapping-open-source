@@ -114,28 +114,12 @@
         <property name="userService" ref="userService"/>
     </bean>
 
-
-    <bean id="importMapValidator" class="com.wisemapping.validator.ImportMapValidator">
-        <property name="mindmapService" ref="mindmapService"/>
-    </bean>
-
-
     <bean id="historyController" class="com.wisemapping.controller.HistoryController">
         <property name="methodNameResolver" ref="paramResolverByAction"/>
         <property name="mindmapService" ref="mindmapService"/>
         <property name="userService" ref="userService"/>
     </bean>
 
-    <bean id="importMapController" class="com.wisemapping.controller.ImportController">
-        <property name="sessionForm" value="false"/>
-        <property name="commandName" value="importMap"/>
-        <property name="commandClass" value="com.wisemapping.view.ImportMapBean"/>
-        <property name="validator" ref="importMapValidator"/>
-        <property name="formView" value="importMap"/>
-        <property name="errorView" value="importMap"/>
-        <property name="mindmapService" ref="mindmapService"/>
-        <property name="userService" ref="userService"/>
-    </bean>
 
     <bean id="multipartResolver"
           class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
@@ -166,8 +150,6 @@
         </property>
         <property name="mappings">
             <props>
-                <prop key="maps/import">importMapController</prop>
-
                 <!-- Review -->
                 <prop key="publicView">publicView</prop>
                 <prop key="embeddedView">embeddedView</prop>

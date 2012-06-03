@@ -32,6 +32,11 @@ public class MindmapController {
         return new ModelAndView("mindmapExport", "mindmap", modelObject);
     }
 
+    @RequestMapping(value = "maps/import")
+    public ModelAndView showImportPAge() throws IOException {
+        return new ModelAndView("mindmapImport");
+    }
+
     @RequestMapping(value = "maps/{id}/exportf")
     public ModelAndView showExportPageFull(@PathVariable int id) throws IOException {
         final MindMapBean modelObject = findMindmapBean(id);
@@ -75,7 +80,6 @@ public class MindmapController {
         final MindMap mindmap = findMindmap(id);
         return new ModelAndView("mindmapPublishFull", "mindmap", mindmap);
     }
-
 
     @RequestMapping(value = "maps/{id}/edit")
     public ModelAndView editMap(@PathVariable int id, @NotNull HttpServletRequest request) {

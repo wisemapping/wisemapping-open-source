@@ -260,7 +260,7 @@ function callbackOnTableInit() {
 $(function() {
     $('#mindmapListTable').dataTable({
         bProcessing : true,
-        sAjaxSource : "../service/maps",
+        sAjaxSource : "../service/maps/",
         sAjaxDataProp: 'mindmapsInfo',
         fnInitComplete: function() {
             $('#mindmapListTable tbody').change(updateStatusToolbar);
@@ -349,7 +349,7 @@ $(function() {
         });
 
     $("#importBtn").click(function() {
-        window.open('c/maps/import');
+        window.location = 'c/maps/import';
     });
 
     $("#duplicateBtn").click(function() {
@@ -483,7 +483,7 @@ $(function() {
         $('#foldersContainer .active i').addClass('icon-white');
 
         // Reload the table data ...
-        dataTable.fnReloadAjax("../service/maps?q=" + $(this).attr('data-filter'), callbackOnTableInit, true);
+        dataTable.fnReloadAjax("../service/maps/?q=" + $(this).attr('data-filter'), callbackOnTableInit, true);
         event.preventDefault();
     });
 });
