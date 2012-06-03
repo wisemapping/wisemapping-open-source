@@ -3,7 +3,7 @@
 <h1>Mindmap Cooker</h1>
 
 <div>
-    <form action='<c:url value="/c/cooker.htm"/>' method="post">
+    <form action='<c:url value="/c/cooker"/>' method="post">
         <input type="hidden" name="action" value="save"/>
         <input type="hidden" name="mapId" value="${mindmap.id}"/>
         <table>

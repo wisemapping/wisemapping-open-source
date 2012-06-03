@@ -75,7 +75,6 @@ jQuery.fn.dataTableExt.selectAllMaps = function() {
 };
 
 jQuery.fn.dataTableExt.getSelectedMapsIds = function() {
-    console.log(this)
     var selectedRows = $('#mindmapListTable').dataTableExt.getSelectedRows();
     var dataTable = $('#mindmapListTable').dataTable();
     return  selectedRows.map(function() {
@@ -286,7 +285,7 @@ $(function() {
                 bUseRendered : false,
                 mDataProp: "title",
                 fnRender : function(obj) {
-                    return '<a href="c/maps/' + obj.aData.id + '/edit.htm">' + obj.aData.title + '</a>';
+                    return '<a href="c/maps/' + obj.aData.id + '/edit">' + obj.aData.title + '</a>';
                 }
             },
             {
@@ -344,13 +343,13 @@ $(function() {
     $("#newBtn").click(
         function() {
             $("#new-dialog-modal").dialogForm({
-                redirect: "c/maps/{header.resourceId}/edit.htm",
+                redirect: "c/maps/{header.resourceId}/edit",
                 url :  "../service/maps"
             });
         });
 
     $("#importBtn").click(function() {
-        window.open('c/maps/import.htm');
+        window.open('c/maps/import');
     });
 
     $("#duplicateBtn").click(function() {
@@ -368,7 +367,7 @@ $(function() {
 
             // Initialize dialog ...
             $("#duplicate-dialog-modal").dialogForm({
-                redirect: "c/maps/{header.resourceId}/edit.htm",
+                redirect: "c/maps/{header.resourceId}/edit",
                 url :  "../service/maps/" + mapId
             });
         }
@@ -412,15 +411,16 @@ $(function() {
         var tableUI = $('#mindmapListTable');
 
         var mapIds = tableUI.dataTableExt.getSelectedMapsIds();
+
         if (mapIds.length > 0) {
             // Initialize dialog ...
             $("#delete-dialog-modal").dialogForm({
                 type: 'DELETE',
-                postUpdate: function(reqBodyData) {
+                postUpdate: function() {
                     // Remove old entry ...
                     tableUI.dataTableExt.removeSelectedRows();
                 },
-                url :  "../service/maps/batch?ids=" + mapIds.join(',')
+                url :  "../service/maps/batch?ids=" + jQuery.makeArray(mapIds).join(',')
             });
         }
     });
@@ -428,14 +428,14 @@ $(function() {
     $("#printBtn").click(function() {
         var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
         if (mapIds.length > 0) {
-            window.open('c/maps/' + mapIds[0] + '/print.htm');
+            window.open('c/maps/' + mapIds[0] + '/print');
         }
     });
 
     $("#infoBtn").click(function() {
         var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
         if (mapIds.length > 0) {
-            $('#info-dialog-modal .modal-body').load("c/maps/" + mapIds[0] + "/details.htm", function() {
+            $('#info-dialog-modal .modal-body').load("c/maps/" + mapIds[0] + "/details", function() {
                 $('#info-dialog-modal').modal();
             });
 
@@ -445,7 +445,7 @@ $(function() {
     $("#publishBtn").click(function() {
         var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
         if (mapIds.length > 0) {
-            $('#publish-dialog-modal .modal-body').load("c/maps/" + mapIds[0] + "/publish.htm",
+            $('#publish-dialog-modal .modal-body').load("c/maps/" + mapIds[0] + "/publish",
                 function() {
                     $('#publish-dialog-modal .btn-accept').click(function() {
                         submitDialogForm();
@@ -454,6 +454,19 @@ $(function() {
                 });
         }
     });
+
+    $("#exportBtn").click(function() {
+            var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
+            if (mapIds.length > 0) {
+                $('#export-dialog-modal .modal-body').load("c/maps/" + mapIds[0] + "/export",
+                    function() {
+                        $('#export-dialog-modal .btn-accept').click(function() {
+                            submitDialogForm();
+                        });
+                        $('#export-dialog-modal').modal();
+                    });
+            }
+        });
 
     $("#actionButtons .shareMap").click(function() {
     });

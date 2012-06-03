@@ -129,7 +129,7 @@ public class UserServiceImpl
         model.put("user", user);
 
 
-        final String activationUrl = "http://wisemapping.com/c/activation.htm?code=" + user.getActivationCode();
+        final String activationUrl = "http://wisemapping.com/c/activation?code=" + user.getActivationCode();
         logger.info("create User - acrivationUrl: " + activationUrl);
         model.put("emailcheck", activationUrl);
         mailer.sendEmail(mailer.getRegistrationEmail(), user.getEmail(), "Welcome to Wisemapping!", model,

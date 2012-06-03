@@ -57,7 +57,7 @@ public class ImportController
         final MindmapService mindmapService = this.getMindmapService();
         mindmapService.addMindmap(mindMap, user);
 
-        final StringBuilder redirectionTo = new StringBuilder("redirect:" + mindMap.getId() + "/edit.htm");
+        final StringBuilder redirectionTo = new StringBuilder("redirect:" + mindMap.getId() + "/edit");
         return new ModelAndView(redirectionTo.toString());
     }
 

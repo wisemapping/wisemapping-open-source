@@ -20,6 +20,7 @@ package com.wisemapping.rest;
 
 
 import com.wisemapping.exceptions.WiseMappingException;
+import com.wisemapping.exporter.ExportFormat;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.MindmapUser;
 import com.wisemapping.model.User;
@@ -30,6 +31,7 @@ import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.validator.MapInfoValidator;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -38,11 +40,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 
 @Controller
@@ -50,17 +51,43 @@ public class MindmapController extends BaseController {
     @Autowired
     private MindmapService mindmapService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/json", "text/html", "application/xml"})
+
+    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/json", "application/xml", "text/html"})
     @ResponseBody
-    public ModelAndView getMindmap(@PathVariable int id) throws IOException {
+    public ModelAndView retrieve(@PathVariable int id) throws IOException {
         final User user = com.wisemapping.security.Utils.getUser();
         final MindMap mindMap = mindmapService.getMindmapById(id);
         final RestMindmap map = new RestMindmap(mindMap, user);
+
         return new ModelAndView("mapView", "map", map);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/wisemapping+xml"}, params = {"download=wxml"})
+    @ResponseBody
+    public ModelAndView retrieveAsWise(@PathVariable int id) throws IOException {
+        final MindMap mindMap = mindmapService.getMindmapById(id);
+        final Map<String, Object> values = new HashMap<String, Object>();
+
+        final User user = com.wisemapping.security.Utils.getUser();
+        values.put("mindmap", new RestMindmap(mindMap, user));
+        values.put("filename", mindMap.getTitle());
+        return new ModelAndView("transformViewWise", values);
+    }
+
+
+    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/freemind"}, params = {"download=mm"})
+    @ResponseBody
+    public ModelAndView retrieveDocumentAsFreemind(@PathVariable int id) throws IOException {
+        final MindMap mindMap = mindmapService.getMindmapById(id);
+        final Map<String, Object> values = new HashMap<String, Object>();
+        values.put("content", mindMap.getXmlStr());
+        values.put("filename", mindMap.getTitle());
+        return new ModelAndView("transformViewFreemind", values);
+    }
+
+
     @RequestMapping(method = RequestMethod.GET, value = "/maps", produces = {"application/json", "text/html", "application/xml"})
-    public ModelAndView getMindmaps(@RequestParam(required = false) String q) throws IOException {
+    public ModelAndView retrieveList(@RequestParam(required = false) String q) throws IOException {
         final User user = com.wisemapping.security.Utils.getUser();
 
         final MindmapFilter filter = MindmapFilter.parse(q);
@@ -99,7 +126,7 @@ public class MindmapController extends BaseController {
         mindMap.setXmlStr(xml);
 
         // Update map ...
-        updateMindmap(minor, mindMap, user);
+        saveMindmap(minor, mindMap, user);
     }
 
 
@@ -108,7 +135,7 @@ public class MindmapController extends BaseController {
      */
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateMap(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor) throws IOException, WiseMappingException {
+    public void update(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor) throws IOException, WiseMappingException {
 
         final MindMap mindMap = mindmapService.getMindmapById(id);
         final User user = Utils.getUser();
@@ -144,7 +171,7 @@ public class MindmapController extends BaseController {
         }
 
         // Update map ...
-        updateMindmap(minor, mindMap, user);
+        saveMindmap(minor, mindMap, user);
     }
 
     private ValidationException buildValidationException(@NotNull String fieldName, @NotNull String message) throws ValidationException {
@@ -156,7 +183,7 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/title", consumes = {"text/plain"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateMapTitle(@RequestBody String title, @PathVariable int id) throws WiseMappingException {
+    public void updateTitle(@RequestBody String title, @PathVariable int id) throws WiseMappingException {
 
         final MindMap mindMap = mindmapService.getMindmapById(id);
         final User user = Utils.getUser();
@@ -170,12 +197,12 @@ public class MindmapController extends BaseController {
         // Update map ...
         final MindMap mindmap = mindmapService.getMindmapById(id);
         mindmap.setTitle(title);
-        updateMindmap(true, mindMap, user);
+        saveMindmap(true, mindMap, user);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/description", consumes = {"text/plain"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateMapDescription(@RequestBody String description, @PathVariable int id) throws WiseMappingException {
+    public void updateDescription(@RequestBody String description, @PathVariable int id) throws WiseMappingException {
 
         final MindMap mindMap = mindmapService.getMindmapById(id);
         final User user = Utils.getUser();
@@ -183,7 +210,7 @@ public class MindmapController extends BaseController {
         // Update map ...
         final MindMap mindmap = mindmapService.getMindmapById(id);
         mindmap.setDescription(description);
-        updateMindmap(true, mindMap, user);
+        saveMindmap(true, mindMap, user);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/publish", consumes = {"text/plain"}, produces = {"application/json", "text/html", "application/xml"})
@@ -199,7 +226,7 @@ public class MindmapController extends BaseController {
 
         // Update map status ...
         mindMap.setPublic(Boolean.parseBoolean(value));
-        updateMindmap(true, mindMap, user);
+        saveMindmap(true, mindMap, user);
 
     }
 
@@ -212,7 +239,7 @@ public class MindmapController extends BaseController {
 
         // Update map status ...
         mindMap.setStarred(user, Boolean.parseBoolean(value));
-        updateMindmap(true, mindMap, user);
+        saveMindmap(true, mindMap, user);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/maps/{id}")
@@ -234,23 +261,7 @@ public class MindmapController extends BaseController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/xml", consumes = {"application/xml"}, produces = {"application/json", "text/html", "application/xml"})
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateMapXml(@RequestBody String xml, @PathVariable int id, @RequestParam(required = false) boolean minor) throws IOException, WiseMappingException {
-
-        final MindMap mindMap = mindmapService.getMindmapById(id);
-        final User user = Utils.getUser();
-
-        if (xml == null || xml.isEmpty()) {
-            throw new IllegalArgumentException("Map xml can not be null");
-        }
-        mindMap.setXmlStr(xml);
-
-        // Update map ...
-        updateMindmap(minor, mindMap, user);
-    }
-
-    private void updateMindmap(boolean minor, @NotNull final MindMap mindMap, @NotNull final User user) throws WiseMappingException {
+    private void saveMindmap(boolean minor, @NotNull final MindMap mindMap, @NotNull final User user) throws WiseMappingException {
         final Calendar now = Calendar.getInstance();
         mindMap.setLastModificationTime(now);
         mindMap.setLastModifierUser(user.getUsername());
@@ -290,7 +301,7 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/maps/{id}", consumes = {"application/xml", "application/json"})
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void copyMap(@RequestBody RestMindmapInfo restMindmap, @PathVariable int id, @NotNull HttpServletResponse response) throws IOException, WiseMappingException {
+    public void createDuplicate(@RequestBody RestMindmapInfo restMindmap, @PathVariable int id, @NotNull HttpServletResponse response) throws IOException, WiseMappingException {
         // Validate ...
         final BindingResult result = new BeanPropertyBindingResult(restMindmap, "");
         new MapInfoValidator(mindmapService).validate(restMindmap.getDelegated(), result);
@@ -315,5 +326,4 @@ public class MindmapController extends BaseController {
         response.setHeader("Location", "/service/maps/" + clonedMap.getId());
         response.setHeader("ResourceId", Integer.toString(clonedMap.getId()));
     }
-
 }

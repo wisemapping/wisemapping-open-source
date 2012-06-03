@@ -20,8 +20,8 @@
     <bean id="homeResolver" class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
         <property name="mappings">
             <props>
-                <prop key="/c/try.htm">tryEditor</prop>
-                <prop key="/c/installCFG.htm">installCFG</prop>
+                <prop key="try">tryEditor</prop>
+                <prop key="installCFG">installCFG</prop>
             </props>
         </property>
     </bean>
@@ -80,7 +80,7 @@
     <bean id="settingResolver" class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
         <property name="mappings">
             <props>
-                <prop key="/c/settings.htm">settings</prop>
+                <prop key="settings">settings</prop>
             </props>
         </property>
     </bean>
@@ -166,23 +166,23 @@
         </property>
         <property name="mappings">
             <props>
-                <prop key="/c/maps/import.htm">importMapController</prop>
+                <prop key="maps/import">importMapController</prop>
 
                 <!-- Review -->
-                <prop key="/c/publicView.htm">publicView</prop>
-                <prop key="/c/embeddedView.htm">embeddedView</prop>
+                <prop key="publicView">publicView</prop>
+                <prop key="embeddedView">embeddedView</prop>
 
                 <!-- Forms based -->
-                <prop key="/c/userRegistration.htm">userController</prop>
-                <prop key="/c/sharing.htm">sharingController</prop>
-                <prop key="/c/login.htm">loginController</prop>
-                <prop key="/c/forgotPassword.htm">forgotPasswordController</prop>
-                <prop key="/c/activation.htm">activationController</prop>
-                <prop key="/c/changePassword.htm">changePasswordController</prop>
-                <prop key="/c/cooker.htm">cookerController</prop>
-                <prop key="/c/settings.htm">settingsController</prop>
-                <prop key="/c/editProfile.htm">editProfileController</prop>
-                <prop key="/c/history.htm">historyController</prop>
+                <prop key="userRegistration">userController</prop>
+                <prop key="sharing">sharingController</prop>
+                <prop key="login">loginController</prop>
+                <prop key="forgotPassword">forgotPasswordController</prop>
+                <prop key="activation">activationController</prop>
+                <prop key="changePassword">changePasswordController</prop>
+                <prop key="cooker">cookerController</prop>
+                <prop key="settings">settingsController</prop>
+                <prop key="editProfile">editProfileController</prop>
+                <prop key="history">historyController</prop>
             </props>
         </property>
     </bean>

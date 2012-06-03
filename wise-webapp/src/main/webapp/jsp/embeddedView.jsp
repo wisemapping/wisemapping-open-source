@@ -89,7 +89,7 @@
 <div id="mapContainer">
     <div id="mindplot"></div>
     <div id="embFooter">
-        <a href="${pageContext.request.contextPath}/c/home.htm" target="new">
+        <a href="${pageContext.request.contextPath}/c/home" target="new">
             <div id="logo"></div>
         </a>
 

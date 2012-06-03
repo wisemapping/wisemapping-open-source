@@ -8,6 +8,6 @@
 <div class="installCFG">
     <spring:message code="INSTALL_CFG_REASON"/>
     <br/><br/>
-    <a href="${pageContext.request.contextPath}/c/installCFG.htm?mapId=${mapId}"><spring:message code="INSTALL_CFG_CLICK_HERE"/></a>
+    <a href="${pageContext.request.contextPath}/c/installCFG?mapId=${mapId}"><spring:message code="INSTALL_CFG_CLICK_HERE"/></a>
 </div>
 

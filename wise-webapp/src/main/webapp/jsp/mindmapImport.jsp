@@ -23,7 +23,7 @@
 
         <input type="submit" value="<spring:message code="IMPORT"/>" class="btn btn-primary"/>
         <input type="button" value="<spring:message code="CANCEL"/>" class="btn"
-               onclick="window.location='/c/mymaps.htm'">
+               onclick="window.location='/c/maps/'">
 
     </form:form>
 </div>

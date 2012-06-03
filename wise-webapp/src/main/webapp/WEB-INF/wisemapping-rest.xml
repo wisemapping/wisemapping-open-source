@@ -29,7 +29,6 @@
 
     <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
         <property name="defaultContentType" value="application/json"/>
-        <property name="favorPathExtension" value="true"/>
         <property name="mediaTypes">
             <map>
                 <entry key="html" value="text/html"/>
@@ -41,7 +40,7 @@
                 <entry key="jpeg" value="image/jpg"/>
                 <entry key="svg" value="image/svg+xml"/>
                 <entry key="svg" value="application/svg+xml"/>
-                <entry key="wise" value="application/wisemapping+xml"/>
+                <entry key="wxml" value="application/wisemapping+xml"/>
             </map>
         </property>
         <property name="viewResolvers">
@@ -86,7 +85,7 @@
         <constructor-arg value="image/svg+xml"/>
     </bean>
 
-    <bean id="transformViewWise" class="com.wisemapping.rest.view.ImportTransformationView">
+    <bean id="transformViewWise" class="com.wisemapping.rest.view.TransformView">
         <constructor-arg value="application/wisemapping+xml"/>
     </bean>
 

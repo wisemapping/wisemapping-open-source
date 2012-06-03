@@ -25,7 +25,7 @@
 <div>${mindmap.description}</div>
 <div>${mindmap.userRole}</div>
 
-<form method="post" action="<c:url value="sharing.htm"/>">
+<form method="post" action="<c:url value="sharing"/>">
     <input type="hidden" name="action" value="addViewer"/>
     <input type="hidden" name="mapId" value="${mindmap.id}"/>
 
@@ -46,7 +46,7 @@
                             <textarea name="userEmails" id="viewers" tabindex="1" cols="50" rows="5"></textarea><br/>
                             <input type="submit" value="<spring:message code="ADD"/>">
                             <input type="button" value="<spring:message code="CANCEL"/>"
-                                   onclick="window.location='<c:url value="mymaps.htm"/>'">
+                                   onclick="window.location='<c:url value="maps/"/>'">
                         </div>
                     </td>
                     <td>
@@ -77,7 +77,7 @@
     </div>
 </form>
 
-<form name="removeViewerForm" action="<c:url value="sharing.htm"/>">
+<form name="removeViewerForm" action="<c:url value="sharing"/>">
     <input type="hidden" name="action" value="removeViewer"/>
     <input type="hidden" name="mapId" value="${mindmap.id}"/>
     <input type="hidden" name="userEmail" value=""/>

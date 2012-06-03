@@ -4,7 +4,7 @@
 </h1>
 
 
-<c:url value="embeddedView.htm?mapId=${mindmap.id}&fullView=true"
+<c:url value="embeddedView?mapId=${mindmap.id}&fullView=true"
        var="embeddedUrl"/>
 
 

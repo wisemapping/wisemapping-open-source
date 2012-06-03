@@ -92,7 +92,7 @@ public class MindmapServiceImpl
         return mindmapManager.getMindmapById(mindmapId);
     }
 
-    public List<MindmapUser> getMindmapUserByUser(User user) {
+    public List<MindmapUser> getMindmapUserByUser(@NotNull User user) {
         return mindmapManager.getMindmapUserByCollaborator(user.getId());
     }
 

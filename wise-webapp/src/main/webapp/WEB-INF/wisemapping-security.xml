@@ -21,17 +21,18 @@
     <sec:http pattern="/images/**" security="none"/>
     <sec:http pattern="/icons/**" security="none"/>
     <sec:http pattern="/favicon.ico" security="none"/>
-    <sec:http pattern="/c/login.htm" security="none"/>
-    <sec:http pattern="/c/userregistration.htm" security="none"/>
-    <sec:http pattern="/c/activation.htm" security="none"/>
-    <sec:http pattern="/c/forgotpassword.htm" security="none"/>
-    <sec:http pattern="/c/home.htm" security="none"/>
-    <sec:http pattern="/c/try.htm" security="none"/>
-    <sec:http pattern="/c/search.htm" security="none"/>
-    <sec:http pattern="/c/keyboard.htm" security="none"/>
-    <sec:http pattern="/c/embeddedview.htm" security="none"/>
-    <sec:http pattern="/c/publicview.htm" security="none"/>
-    <sec:http pattern="/service/transform*" security="none"/>
+
+    <sec:http pattern="/c/login" security="none"/>
+    <sec:http pattern="/c/userregistration" security="none"/>
+    <sec:http pattern="/c/activation" security="none"/>
+    <sec:http pattern="/c/forgotpassword" security="none"/>
+    <sec:http pattern="/c/home" security="none"/>
+    <sec:http pattern="/c/try" security="none"/>
+    <sec:http pattern="/c/search" security="none"/>
+    <sec:http pattern="/c/keyboard" security="none"/>
+    <sec:http pattern="/c/embeddedview" security="none"/>
+    <sec:http pattern="/c/publicview" security="none"/>
+    <sec:http pattern="/c/termsOfUse" security="none"/>
 
     <sec:http use-expressions="true" create-session="never" pattern="/service/**">
         <sec:intercept-url pattern="/service/admin/users/**" access="isAuthenticated() and hasRole('ROLE_ADMIN')"/>
@@ -39,15 +40,15 @@
         <sec:http-basic/>
     </sec:http>
 
-    <sec:http use-expressions="true" access-denied-page="/c/login.htm">
-        <sec:intercept-url pattern="/c/*.htm" access="isFullyAuthenticated()"/>
-        <sec:form-login login-page="/c/login.htm"
-                        default-target-url='/c/mymaps.htm'
+    <sec:http use-expressions="true" access-denied-page="/c/login">
+        <sec:intercept-url pattern="/c/**" access="isFullyAuthenticated()"/>
+        <sec:form-login login-page="/c/login"
+                        default-target-url='/c/maps/'
                         always-use-default-target='false'
-                        authentication-failure-url="/c/login.htm?login_error=2"
+                        authentication-failure-url="/c/login?login_error=2"
                         login-processing-url="/c/j_spring_security_check"/>
         <sec:remember-me key="wisemapping-hashed-key"/>
-        <sec:logout logout-url="/c/logout.htm" invalidate-session="true" logout-success-url="/c/login.htm"/>
+        <sec:logout logout-url="/c/logout" invalidate-session="true" logout-success-url="/c/login"/>
     </sec:http>
 
     <sec:authentication-manager alias="authenticationManager">

@@ -45,14 +45,14 @@
                 </div>
             </fieldset>
         </form>
-        <a href="<c:url value="/c/forgotPassword.htm"/>"><spring:message code="FORGOT_PASSWORD"/></a>
+        <a href="<c:url value="/c/forgotPassword"/>"><spring:message code="FORGOT_PASSWORD"/></a>
     </div>
 </div>
 
 <div id="register">
     <b><spring:message code="NOT_READY_A_USER"/></b>
     <spring:message code="NOT_READY_A_USER_MESSAGE"/>
-    <a href="c/userRegistration.htm">
+    <a href="c/userRegistration">
         <spring:message code="JOIN_NOW"/>
     </a>
 </div>

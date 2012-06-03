@@ -28,7 +28,6 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.IOException;
 
 @Controller
-@RequestMapping("/c/")
 public class ExtensionsController {
     @Autowired
     private MindmapService mindmapService;

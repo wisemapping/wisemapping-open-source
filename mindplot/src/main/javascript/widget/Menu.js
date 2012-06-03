@@ -192,7 +192,7 @@ mindplot.widget.Menu = new Class({
 
 
         this._addButton('export', false, false, function() {
-            var reqDialog = new MooDialog.Request('c/map/' + mapId + '/export.htm', null,
+            var reqDialog = new MooDialog.Request('c/iframeWrapper.htm?url=c/maps/' + mapId + "/exportf", null,
                 {'class': 'modalDialog exportModalDialog',
                     closeButton:true,
                     destroyOnClose:true,
@@ -207,9 +207,8 @@ mindplot.widget.Menu = new Class({
         });
         this._registerTooltip('export', "Export");
 
-
         this._addButton('print', false, false, function() {
-            window.open('c/map/' + mapId + '/print.htm');
+            window.open('c/map/' + mapId + '/print');
         });
 
         this._registerTooltip('print', "Print");
@@ -354,7 +353,7 @@ mindplot.widget.Menu = new Class({
         var publishElem = $('publishIt');
         if (publishElem) {
             this._addButton('publishIt', false, false, function() {
-                var reqDialog = new MooDialog.Request('c/iframeWrapper.htm?url=c/maps/' + mapId + "/publishf.htm", null,
+                var reqDialog = new MooDialog.Request('c/iframeWrapper.htm?url=c/maps/' + mapId + "/publishf", null,
                     {'class': 'modalDialog publishModalDialog',
                         closeButton:true,
                         destroyOnClose:true,

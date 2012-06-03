@@ -22,19 +22,25 @@ import com.wisemapping.exporter.ExportFormat;
 import com.wisemapping.exporter.ExportProperties;
 import com.wisemapping.exporter.ExporterFactory;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.web.servlet.view.AbstractView;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.transform.stream.StreamResult;
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 public class TransformView extends AbstractView {
 
     private String contentType;
     private ExportFormat exportFormat;
+    @Autowired
+    private Jaxb2Marshaller jaxbMarshaller;
 
     public TransformView(@NotNull final String contentType) {
         this.contentType = contentType;
@@ -75,6 +81,10 @@ public class TransformView extends AbstractView {
         final ServletOutputStream outputStream = response.getOutputStream();
         if (exportFormat == ExportFormat.FREEMIND) {
             ExporterFactory.export(properties, content, outputStream, null);
+        } else if (exportFormat == ExportFormat.WISEMAPPING) {
+            final Object mindmap = viewMap.get("mindmap");
+            StreamResult result = new StreamResult(outputStream);
+            jaxbMarshaller.marshal(mindmap, result);
         } else {
             ExporterFactory.export(properties, null, outputStream, content);
         }

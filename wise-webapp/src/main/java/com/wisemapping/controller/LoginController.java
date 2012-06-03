@@ -38,7 +38,7 @@ public class LoginController
 
         ModelAndView result;
         if (user != null) {
-            result = new ModelAndView("forward:/c/mymaps.htm");
+            result = new ModelAndView("forward:/c/maps/");
 
         } else {
             result = new ModelAndView("login");
@@ -59,7 +59,7 @@ public class LoginController
         userLogin.setEmail(username);
         //userManager.auditLogin(userLogin);
 
-        return new ModelAndView("forward:/c/mymaps.htm");
+        return new ModelAndView("forward:/c/maps/");
     }
 
     public void setDriver(String driver) {

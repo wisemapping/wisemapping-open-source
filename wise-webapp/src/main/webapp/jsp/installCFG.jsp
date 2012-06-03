@@ -22,6 +22,6 @@
     CFInstall.check({
         mode: "inline",
         node:"prompt",
-        destination:"${pageContext.request.contextPath}/c/editor.htm?mapId="+getURLParameter("mapId")
+        destination:"${pageContext.request.contextPath}/c/editor?mapId="+getURLParameter("mapId")
     });
 </script>

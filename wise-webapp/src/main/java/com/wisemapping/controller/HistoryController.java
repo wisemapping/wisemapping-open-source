@@ -60,11 +60,11 @@ public class HistoryController
         String goToMindmapList = request.getParameter("goToMindmapList");
         if (goToMindmapList != null)
         {
-            redirectionTo.append("mymaps.htm");
+            redirectionTo.append("maps/");
         }
         else
         {
-            redirectionTo.append("editor.htm?mapId=");
+            redirectionTo.append("editor?mapId=");
             redirectionTo.append(map.getId());
             redirectionTo.append("&action=open");
         }

@@ -99,21 +99,8 @@ public class TransformerController extends BaseController {
         return new ModelAndView("transformViewFreemind", values);
     }
 
-
-    @RequestMapping(method = RequestMethod.POST, value = "/transform", produces = {"application/wisemapping+xml"}, consumes = {"application/freemind"})
-    @ResponseBody
-    public ModelAndView transformWisemapping(@RequestBody @Nullable final String content) throws IOException {
-        final Map<String, Object> values = new HashMap<String, Object>();
-        if (content == null || content.length() == 0) {
-            throw new IllegalArgumentException("Body can not be null.");
-        }
-        values.put("content", content);
-        return new ModelAndView("transformViewWise", values);
-    }
-
     @RequestMapping(method = RequestMethod.POST, value = "/transform", consumes = {"application/x-www-form-urlencoded"})
-    public ModelAndView transform(@NotNull HttpServletRequest request,
-                                  @NotNull HttpServletResponse response) throws IOException {
+    public ModelAndView transform(@NotNull HttpServletRequest request) throws IOException {
         final String svg = request.getParameter(PARAM_SVG_XML);
         final String mapXml = request.getParameter(PARAM_WISE_MAP_XML);
         final String filename = request.getParameter(PARAM_FILENAME);

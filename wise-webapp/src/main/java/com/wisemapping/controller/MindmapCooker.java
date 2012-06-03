@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.wisemapping.model.MindMap;
 
 /**
- * Usage: http://localhost:8080/wisemapping/c/cooker.htm?action=edit&mapId=12
+ * Usage: http://localhost:8080/wisemapping/c/cooker?action=edit&mapId=12
  */
 public class MindmapCooker extends BaseMultiActionController {
 

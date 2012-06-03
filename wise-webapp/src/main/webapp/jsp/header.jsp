@@ -9,15 +9,15 @@
             <c:when test="${principal != null}">
                 <div id="headerActions">
                     <spring:message code="WELCOME"/>, ${principal.firstname}
-                    | <span><a href="${pageContext.request.contextPath}/c/mymaps.htm"><spring:message code="MY_WISEMAPS"/></a></span>
-                    | <span><a href="${pageContext.request.contextPath}/c/settings.htm" title="<spring:message code="SETTINGS_DETAIL"/>"><spring:message code="SETTINGS"/></a></span>
-                    | <span><a href="${pageContext.request.contextPath}/c/logout.htm" title="<spring:message code="LOGOUT"/>"><spring:message code="LOGOUT"/></a></span>
+                    | <span><a href="${pageContext.request.contextPath}/c/maps/"><spring:message code="MY_WISEMAPS"/></a></span>
+                    | <span><a href="${pageContext.request.contextPath}/c/settings" title="<spring:message code="SETTINGS_DETAIL"/>"><spring:message code="SETTINGS"/></a></span>
+                    | <span><a href="${pageContext.request.contextPath}/c/logout" title="<spring:message code="LOGOUT"/>"><spring:message code="LOGOUT"/></a></span>
                 </div>
             </c:when>
             <c:when test="${param.removeSignin!=true}">
                 <div id="headerActions">
                     <spring:message code="ALREADY_A_MEMBER"/>
-                    <span><a href="${pageContext.request.contextPath}/c/login.htm" title="<spring:message code="SIGN_IN"/>">
+                    <span><a href="${pageContext.request.contextPath}/c/login" title="<spring:message code="SIGN_IN"/>">
                         <spring:message code="SIGN_IN"/>
                     </a></span>
                     </div>
@@ -40,12 +40,12 @@
     <div id="headerContent">
         <div id="headerButtons">
             <%--<div id="blogLink">--%>
-                <%--<a href="${pageContext.request.contextPath}/c/blog.htm" title="<spring:message code="BLOG_TITLE"/>">--%>
+                <%--<a href="${pageContext.request.contextPath}/c/blog" title="<spring:message code="BLOG_TITLE"/>">--%>
                     <%--<spring:message code="BLOG"/>--%>
                 <%--</a>--%>
             <%--</div>--%>
         </div>
-        <a href="${pageContext.request.contextPath}/c/home.htm" title="Homepage">
+        <a href="${pageContext.request.contextPath}/c/home" title="Homepage">
             <div id="headerLogo">&nbsp;</div>
         </a>
 

@@ -22,15 +22,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/c/")
 public class MindmapController {
     @Autowired
     private MindmapService mindmapService;
 
     @RequestMapping(value = "maps/{id}/export")
-    public ModelAndView export(@PathVariable int id) throws IOException {
+    public ModelAndView showExportPage(@PathVariable int id) throws IOException {
         final MindMapBean modelObject = findMindmapBean(id);
         return new ModelAndView("mindmapExport", "mindmap", modelObject);
+    }
+
+    @RequestMapping(value = "maps/{id}/exportf")
+    public ModelAndView showExportPageFull(@PathVariable int id) throws IOException {
+        final MindMapBean modelObject = findMindmapBean(id);
+        return new ModelAndView("mindmapExportFull", "mindmap", modelObject);
     }
 
     @RequestMapping(value = "maps/{id}/details")
@@ -47,6 +52,18 @@ public class MindmapController {
         return new ModelAndView("mindmapPrint", "mindmap", mindmap);
     }
 
+    @RequestMapping(value = "maps/{id}/share")
+    public ModelAndView showSharePage(@PathVariable int id) {
+        final MindMap mindmap = findMindmap(id);
+        return new ModelAndView("mindmapShare", "mindmap", mindmap);
+    }
+
+    @RequestMapping(value = "maps/{id}/sharef")
+    public ModelAndView showSharePageFull(@PathVariable int id) {
+        final MindMap mindmap = findMindmap(id);
+        return new ModelAndView("mindmapShareFull", "mindmap", mindmap);
+    }
+
     @RequestMapping(value = "maps/{id}/publish")
     public ModelAndView showPublishPage(@PathVariable int id) {
         final MindMap mindmap = findMindmap(id);
@@ -58,6 +75,7 @@ public class MindmapController {
         final MindMap mindmap = findMindmap(id);
         return new ModelAndView("mindmapPublishFull", "mindmap", mindmap);
     }
+
 
     @RequestMapping(value = "maps/{id}/edit")
     public ModelAndView editMap(@PathVariable int id, @NotNull HttpServletRequest request) {
@@ -99,7 +117,7 @@ public class MindmapController {
         return new ModelAndView("mindmapDetail", "wisemapDetail", new MindMapBean(mindmap));
     }
 
-    @RequestMapping(value = "mymaps")
+    @RequestMapping(value = "maps/")
     public ModelAndView list(@NotNull HttpServletRequest request) {
         final HttpSession session = request.getSession(false);
 

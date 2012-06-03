@@ -8,9 +8,7 @@ import org.codehaus.jackson.annotate.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -105,6 +103,7 @@ public class RestMindmap {
         return mindmap.getXmlStr();
     }
 
+
     public void setXml(@Nullable String xml) throws IOException {
 
         if (xml != null)
@@ -127,8 +126,12 @@ public class RestMindmap {
         mindmap.setDescription(description);
     }
 
-    public void setOwner(User owner) {
+    public void setOwner(String owner) {
 
+    }
+
+    public String getOwner() {
+        return mindmap.getOwner().getEmail();
     }
 
     public void setCreator(String creatorUser) {

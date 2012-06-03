@@ -270,7 +270,7 @@ public class UserAgent implements Serializable {
 
     /**
      * All known robot user-agent headers (list can be found
-     * <a href="http://www.robotstxt.org/wc/active.html">here</a>).
+     * <a href="http://www.robotstxt.org/wc/activel">here</a>).
      * <p/>
      * <p>NOTE: To avoid bad detection:</p>
      * <p/>

@@ -1,9 +1,9 @@
 <%@ include file="/jsp/init.jsp" %>
-<c:url value="mymaps.htm" var="shareMap">
+<c:url value="maps/" var="shareMap">
     <c:param name="action" value="removeCollaborator"/>
     <c:param name="userEmail" value="${pageContext.request.userPrincipal.name}"/>
 </c:url>
-<c:url value="sharing.htm" var="removeCollaborator">
+<c:url value="sharing" var="removeCollaborator">
     <c:param name="actionId" value="removeCollaborator"/>
     <c:param name="mapId" value="${mindmap.id}"/>
 </c:url>
@@ -13,7 +13,7 @@
 
 <div id="addCollaboratorPanel">
     <form method="post" name="sharingForm"
-          action="${pageContext.request.contextPath}/c/sharing.htm?mapId=${mindmap.id}">
+          action="${pageContext.request.contextPath}/c/sharing?mapId=${mindmap.id}">
 
         <div id="userEmails">
             <h2>

@@ -58,7 +58,7 @@
         %>
     </tbody>
 </table>
-<form name="revertForm" action="<c:url value="history.htm"/>">
+<form name="revertForm" action="<c:url value="history"/>">
     <input type="hidden" name="action" value="revert"/>
     <%        
         if (request.getAttribute("goToMindmapList") != null)

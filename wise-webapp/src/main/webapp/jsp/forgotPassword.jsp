@@ -16,7 +16,7 @@
 
                 <input type="submit" value="<spring:message code="SUBMIT"/>" class="btn btn-primary"/>
                 <input type="button" value="<spring:message code="CANCEL"/>" class="btn"
-                       onclick="window.location='<c:url value="c/mymaps.htm"/>'"/>
+                       onclick="window.location='<c:url value="c/maps/"/>'"/>
             </fieldset>
         </form:form>
     </div>
@@ -27,7 +27,7 @@
         <spring:message code="NOT_READY_A_USER"/>
     </b>
     <spring:message code="NOT_READY_A_USER_MESSAGE"/>
-    <a href="userRegistration.htm">
+    <a href="userRegistration">
         <spring:message code="JOIN_NOW"/>
     </a>
 </div>

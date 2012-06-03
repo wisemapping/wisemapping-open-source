@@ -25,7 +25,9 @@ public enum ExportFormat {
     JPEG("image/jpeg", "jpg"),
     PNG("image/png", "png"),
     PDF("application/pdf", "pdf"),
-    FREEMIND("application/freemind", "mm");
+    FREEMIND("application/freemind", "mm"),
+    WISEMAPPING("application/wisemapping+xml", "wxml");
+
 
     private String contentType;
     private String fileExtension;

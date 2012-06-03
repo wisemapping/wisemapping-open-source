@@ -13,14 +13,14 @@
                 <div id="headerActions">
                     <spring:message code="WELCOME"/>
                     , ${principal.firstname}
-                    | <a href="${pageContext.request.contextPath}/c/mymaps.htm" title="<spring:message code="MY_WISEMAPS"/>">
+                    | <a href="${pageContext.request.contextPath}/c/maps/" title="<spring:message code="MY_WISEMAPS"/>">
                     <spring:message code="MY_WISEMAPS"/>
                 </a>
-                    | <a href="${pageContext.request.contextPath}/c/settings.htm" rel="moodalbox 400px 250px wizard"
+                    | <a href="${pageContext.request.contextPath}/c/settings" rel="moodalbox 400px 250px wizard"
                          title="<spring:message code="SETTINGS_DETAIL"/>">
                     <spring:message code="SETTINGS"/>
                 </a>
-                    | <a href="${pageContext.request.contextPath}/c/logout.htm" title="<spring:message code="LOGOUT"/>">
+                    | <a href="${pageContext.request.contextPath}/c/logout" title="<spring:message code="LOGOUT"/>">
                     <spring:message code="LOGOUT"/>
                 </a>
                 </div>
@@ -28,7 +28,7 @@
             <c:when test="${param.removeSignin!=true}">
                 <div id="signUpHeader">
                     <spring:message code="ALREADY_A_MEMBER"/>
-                    <a href="${pageContext.request.contextPath}/c/login.htm" title="<spring:message code="SIGN_IN"/>">
+                    <a href="${pageContext.request.contextPath}/c/login" title="<spring:message code="SIGN_IN"/>">
                         <spring:message code="SIGN_IN"/>
                     </a>
                 </div>

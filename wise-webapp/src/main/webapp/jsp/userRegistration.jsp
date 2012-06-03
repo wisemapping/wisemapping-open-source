@@ -42,7 +42,7 @@
             <div>
                 <p>
                     <spring:message code="TERM_OF_THE_SERVICE"/>
-                    <spring:message code="WISEMAPPING_ACCOUNT_MESSAGE"/> <a href="termsOfUse.htm"><spring:message
+                    <spring:message code="WISEMAPPING_ACCOUNT_MESSAGE"/> <a href="c/termsOfUse"><spring:message
                         code="HERE"/></a>
                     <spring:message code="REGISTRATION_CLICK_ADVICE"/>
                 </p>
@@ -51,7 +51,7 @@
             <input type="submit" value="<spring:message code="REGISTER" />" id="submitButton"
                    class="btn btn-primary">
             <input type="button" value="<spring:message code="CANCEL"/>"
-                   onclick="window.location='<c:url value="mymaps.htm"/>'" class="btn">
+                   onclick="window.location='c/<c:url value="maps/"/>'" class="btn">
             </form:form>
     </div>
 </div>

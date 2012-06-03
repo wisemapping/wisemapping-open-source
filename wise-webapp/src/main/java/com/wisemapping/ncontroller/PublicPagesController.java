@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/c/")
 public class PublicPagesController {
     @Autowired
     private MindmapService mindmapService;

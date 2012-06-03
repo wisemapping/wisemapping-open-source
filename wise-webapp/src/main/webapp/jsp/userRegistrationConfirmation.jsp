@@ -24,7 +24,7 @@
     </c:if>
    <c:if test="${confirmByEmail==false}">
         <p>
-           Your account has been created successfully, click <a href="login.htm">here</a> to sign in and start enjoying WiseMapping.
+           Your account has been created successfully, click <a href="c/login">here</a> to sign in and start enjoying WiseMapping.
         </p>
     </c:if>
 </div>

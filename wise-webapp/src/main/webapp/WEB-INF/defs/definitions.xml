@@ -118,13 +118,13 @@
         <put name="body" value="/jsp/changePassword.jsp"/>
     </definition>
 
-    <definition name="mindmapTags" extends="dialogTemplate">
+    <definition name="mindmapExport" extends="dialogTemplate">
         <put name="title" value=""/>
         <put name="details" value=""/>
-        <put name="body" value="/jsp/mindmapTags.jsp"/>
+        <put name="body" value="/jsp/mindmapExport.jsp"/>
     </definition>
 
-    <definition name="mindmapExport" extends="dialogTemplate">
+    <definition name="mindmapExportFull" extends="dialogFullTemplate">
         <put name="title" value=""/>
         <put name="details" value=""/>
         <put name="body" value="/jsp/mindmapExport.jsp"/>
@@ -140,6 +140,18 @@
         <put name="title" value=""/>
         <put name="details" value=""/>
         <put name="body" value="/jsp/mindmapPublish.jsp"/>
+    </definition>
+
+    <definition name="mindmapShare" extends="dialogTemplate">
+        <put name="title" value=""/>
+        <put name="details" value=""/>
+        <put name="body" value="/jsp/mindmapShare.jsp"/>
+    </definition>
+
+    <definition name="mindmapShareFull" extends="dialogFullTemplate">
+        <put name="title" value=""/>
+        <put name="details" value=""/>
+        <put name="body" value="/jsp/mindmapShare.jsp"/>
     </definition>
 
     <definition name="mindmapCollaborator" extends="dialogTemplate">

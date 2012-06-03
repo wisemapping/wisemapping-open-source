@@ -66,17 +66,17 @@
             <list>
                 <value>/</value>
                 <value>/index.jsp</value>
-                <value>/c/home.htm</value>
-                <value>/c/login.htm</value>
-                <value>/c/userRegistration.htm</value>
-                <value>/c/captcha.htm</value>
-                <value>/c/publicView.htm</value>
+                <value>/c/home</value>
+                <value>/c/login</value>
+                <value>/c/userRegistration</value>
+                <value>/c/captcha</value>
+                <value>/c/publicView</value>
                 <value>/service/*</value>
-                <value>/c/search.htm</value>
-                <value>/c/keyboard.htm</value>
-                <value>/c/renameMap.htm</value>
-                <value>/c/embeddedView.htm</value>
-                <value>/c/forgotPassword.htm</value>
+                <value>/c/search</value>
+                <value>/c/keyboard</value>
+                <value>/c/renameMap</value>
+                <value>/c/embeddedView</value>
+                <value>/c/forgotPassword</value>
             </list>
         </property>
     </bean>

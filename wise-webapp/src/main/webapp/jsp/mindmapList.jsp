@@ -37,15 +37,14 @@
 
 <div style="min-height: 500px">
 
-    <div id="messagesPanel" class="alert alert-error alert-block fade in hide" style="margin-top: 10px">
-        <strong><spring:message code="UNEXPECTED_ERROR"/></strong>
-
-        <p><spring:message code="UNEXPECTED_ERROR_SERVER_ERROR"/></p>
-
-        <div></div>
-    </div>
-
     <div id="mindmapListContainer">
+        <div id="messagesPanel" class="alert alert-error alert-block fade in hide" style="margin-top: 10px">
+            <strong><spring:message code="UNEXPECTED_ERROR"/></strong>
+            <p><spring:message code="UNEXPECTED_ERROR_SERVER_ERROR"/></p>
+
+            <div></div>
+        </div>
+
         <div id="foldersContainer">
             <ul class="nav nav-list">
                 <li class="nav-header">Filters</li>
@@ -84,10 +83,12 @@
                         <li id="duplicateBtn"><a href="#" onclick="return false"><i class="icon-plus-sign"></i>
                             Duplicate</a></li>
                         <li id="renameBtn"><a href="#" onclick="return false"><i class="icon-edit"></i> Rename</a></li>
-                        <li id="printBtn"><a href="#" onclick="return false"><i class="icon-print"></i> Print</a></li>
                         <li id="publishBtn"><a href="#" onclick="return false"><i class="icon-globe"></i> Publish</a>
                         </li>
                         <li id="shareBtn"><a href="#" onclick="return false"><i class="icon-share"></i> Share</a></li>
+                        <li id="exportBtn"><a href="#" onclick="return false"><i class="icon-download"></i> Export</a>
+                        </li>
+                        <li id="printBtn"><a href="#" onclick="return false"><i class="icon-print"></i> Print</a></li>
                         <li id="historyBtn"><a href="#" onclick="return false"><i class="icon-time"></i> History</a>
                         </li>
                     </ul>
@@ -247,6 +248,22 @@
             <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
         </div>
     </div>
+
+    <!-- Export Dialog Config -->
+    <div id="export-dialog-modal" class="modal fade" style="display: none">
+        <div class="modal-header">
+            <button class="close" data-dismiss="modal">x</button>
+            <h3>Export</h3>
+        </div>
+        <div class="modal-body">
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary btn-accept" data-loading-text="Exporting...">Export</button>
+            <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+        </div>
+    </div>
+
 </div>
 </body>
 </html>

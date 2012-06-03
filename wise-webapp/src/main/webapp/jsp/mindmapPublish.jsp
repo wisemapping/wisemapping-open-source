@@ -45,12 +45,12 @@
             </div>
             <label><spring:message code="BLOG_SNIPPET"/></label>
                 <pre id="embedCode">&lt;iframe style="width:600px;height:400px;border: 1px
-solid black" src="http://www.wisemapping.com/c/embeddedView.htm?mapId=${mindmap.id}&zoom=1"&gt; &lt;/iframe&gt;</pre>
+solid black" src="http://www.wisemapping.com/c/embeddedView?mapId=${mindmap.id}&zoom=1"&gt; &lt;/iframe&gt;</pre>
         </div>
 
         <div class="tab-pane fade" id="publicUrlTab">
             <spring:message code="URL"/>:
-            <input name="url" value="http://www.wisemapping.com/c/publicView.htm?mapId=${mindmap.id}"
+            <input name="url" value="http://www.wisemapping.com/c/publicView?mapId=${mindmap.id}"
                    style="width:400px"
                    readonly="readonly"/>
         </div>

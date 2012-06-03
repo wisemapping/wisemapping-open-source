@@ -34,7 +34,7 @@ public class MindmapEditorController extends BaseMultiActionController {
     public static final String MAP_XML_PARAM = "mapXml";
 
     public ModelAndView handleNoSuchRequestHandlingMethod(NoSuchRequestHandlingMethodException noSuchRequestHandlingMethodException, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
-        return new ModelAndView(new RedirectView("mymaps.htm"));
+        return new ModelAndView(new RedirectView("maps/"));
     }
 
     public ModelAndView open(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
