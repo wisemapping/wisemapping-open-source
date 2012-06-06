@@ -293,12 +293,17 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/maps", consumes = {"application/freemind"})
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void createMapFromFreemind(@RequestBody byte[] freemindXml, @RequestParam(required = true) String title, @RequestParam(required = false) String description, @NotNull HttpServletResponse response) throws IOException, WiseMappingException, ImporterException {
+    public void createMapFromFreemind(@RequestBody byte[] freemindXml, @RequestParam(required = true) String title, @RequestParam(required = false) String description, @NotNull HttpServletResponse response) throws IOException, WiseMappingException {
 
         // Convert map ...
-        final Importer importer = ImporterFactory.getInstance().getImporter(ImportFormat.FREEMIND);
-        final ByteArrayInputStream stream = new ByteArrayInputStream(freemindXml);
-        final MindMap mindMap = importer.importMap(title, "", stream);
+        final MindMap mindMap;
+        try {
+            final Importer importer = ImporterFactory.getInstance().getImporter(ImportFormat.FREEMIND);
+            final ByteArrayInputStream stream = new ByteArrayInputStream(freemindXml);
+            mindMap = importer.importMap(title, "", stream);
+        } catch (ImporterException e) {
+            throw buildValidationException("xml", "The selected file does not seems to be a valid Freemind or WiseMapping file. Contact support in case the problem persists.");
+        }
 
         // Save new map ...
         final User user = Utils.getUser();

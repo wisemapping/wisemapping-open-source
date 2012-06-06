@@ -68,9 +68,8 @@
 </div>
 
 <c:if test="${isHsql== 'true'}">
-    <div style="padding:10px;background-color: #E0EFFF; border-radius: 5px 5px 5px 5px;border-style:solid;border-color:gray">
-        <img src="../images/info.png" style="margin:0 4px" alt="info">
-        <spring:message code="NO_PRODUCTION_DATABASE_CONFIGURED"/>&nbsp;<a
+    <div class="alert alert-info">
+       <span class="label label-important">Warning</span> <spring:message code="NO_PRODUCTION_DATABASE_CONFIGURED"/>&nbsp;<a
             href="http://www.wisemapping.org/documentation/configu">here</a>.
     </div>
 </c:if>

@@ -252,10 +252,10 @@ function updateStarred(spanElem) {
 
 function callbackOnTableInit() {
     // Register starred events ...
-    console.log($('#mindmapListTable .starredOff, #mindmapListTable .starredOn'));
     $('#mindmapListTable .starredOff, #mindmapListTable .starredOn').click(function() {
         updateStarred(this);
     });
+    updateStatusToolbar();
 }
 
 $(function() {

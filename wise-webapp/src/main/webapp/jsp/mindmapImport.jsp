@@ -9,7 +9,7 @@
         <fieldset>
             <div class="control-group">
                 <label for="mapFile" class="control-label"><spring:message code="MIND_FILE"/>: </label>
-                <input type="file" name="mapFile" id="mapFile" required="required" class="control"/>
+                <input type="file" name="file" id="mapFile" required="required" class="control"/>
             </div>
             <div class="control-group">
                 <label for="title" class="control-label"><spring:message code="NAME"/>: </label>
@@ -30,11 +30,6 @@
 
 
 <script type="text/javascript">
-
-    // @Todo: Pending: report errors, manage corrupted mapsmanage case,escape url parameters, import with same title tries to save in post XML, explanation.
-
-    $('#messagePanel').hide();
-
     // Save status on click ...
     var contentType = null;
     var fileContent = null;

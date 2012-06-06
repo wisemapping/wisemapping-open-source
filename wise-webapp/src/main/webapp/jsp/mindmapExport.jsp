@@ -3,11 +3,6 @@
 <p class="alert alert-info">
     <spring:message code="EXPORT_DETAILS"/>
 </p>
-
-<p id="exportInfo">
-    <span class="label label-important">Warning</span> <spring:message code="EXPORT_FORMAT_RESTRICTIONS"/>
-</p>
-
 <div>
     <form method="GET" class="form-horizontal" action="service/maps/${mindmap.id}"
           enctype="application/x-www-form-urlencoded" id="dialogMainForm">
@@ -49,6 +44,12 @@
         </fieldset>
     </form>
 </div>
+
+
+<p id="exportInfo">
+    <span class="label label-important">Warning</span> <spring:message code="EXPORT_FORMAT_RESTRICTIONS"/>
+</p>
+
 
 
 <script type="text/javascript">
