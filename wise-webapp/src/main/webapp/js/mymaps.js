@@ -157,7 +157,6 @@ jQuery.fn.dialogForm = function(options) {
                 } else {
                     console.log(errorThrown);
                     console.log(jqXHR);
-
                     dialogElem.modal('hide');
                     $('#messagesPanel div').text(errorThrown).parent().show();
                 }

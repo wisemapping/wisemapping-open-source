@@ -126,7 +126,7 @@
                 <fieldset>
                     <div class="control-group">
                         <label class="control-label" for="newTitle"><spring:message code="NAME"/>:</label>
-                        <input class="control" name="title" id="newTitle" type="text" required="true"
+                        <input class="control" name="title" id="newTitle" type="text" required="required"
                                placeholder="Name of the new map to create" autofocus="autofocus"/>
                     </div>
                     <div class="control-group">
@@ -146,7 +146,7 @@
     <!-- Duplicate map dialog -->
     <div id="duplicate-dialog-modal" class="modal fade" style="display: none">
         <div class="modal-header">
-            <button class="close" data-dismiss="modal">X</button>
+            <button class="close" data-dismiss="modal">x</button>
             <h3 id="dupDialogTitle"></h3>
         </div>
         <div class="modal-body">
@@ -265,7 +265,7 @@
         </div>
     </div>
 
-    <!-- Export Dialog Config -->
+    <!-- Import Dialog Config -->
     <div id="import-dialog-modal" class="modal fade" style="display: none">
         <div class="modal-header">
             <button class="close" data-dismiss="modal">x</button>

@@ -1,14 +1,11 @@
 <%@ include file="/jsp/init.jsp" %>
 
-<div id="messagePanel" class="alert alert-error">
-
-</div>
-
 <div>
 
-    <p class="well"><spring:message code="IMPORT_MINDMAP_INFO"/></p>
+    <p class="alert alert-info"><spring:message code="IMPORT_MINDMAP_INFO"/></p>
 
     <form method="POST" enctype="multipart/form-data" action="#" id="dialogMainForm" class="form-horizontal">
+        <div class="errorMessage"></div>
         <fieldset>
             <div class="control-group">
                 <label for="mapFile" class="control-label"><spring:message code="MIND_FILE"/>: </label>
@@ -16,7 +13,8 @@
             </div>
             <div class="control-group">
                 <label for="title" class="control-label"><spring:message code="NAME"/>: </label>
-                <input type="text" id="title" required="required" placeholder="Name of the new map to create"
+                <input type="text" id="title" name="title" required="required"
+                       placeholder="Name of the new map to create"
                        class="control"/>
             </div>
             <div class="control-group">
@@ -66,7 +64,25 @@
                         window.location = "c/maps/" + resourceId + "/edit";
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
-                        $('#messagePanel').text(textStatus);
+                        if (jqXHR.status == 400) {
+                            var errors = JSON.parse(jqXHR.responseText);
+                            // Mark fields with errors ...
+                            var fieldErrors = errors.fieldErrors;
+                            if (fieldErrors) {
+                                for (var fieldName in fieldErrors) {
+                                    // Mark the field with errors ...
+                                    var message = fieldErrors[fieldName];
+                                    var inputField = $("#dialogMainForm input[name='" + fieldName + "']");
+                                    $("#dialogMainForm").find(".errorMessage").text(message).addClass("alert alert-error");
+                                    inputField.parent().addClass('error');
+                                }
+                            }
+
+                        } else {
+                            console.log(errorThrown);
+                            console.log(jqXHR);
+                            $('#messagesPanel div').text(errorThrown).parent().show();
+                        }
                     }
                 });
         event.preventDefault();

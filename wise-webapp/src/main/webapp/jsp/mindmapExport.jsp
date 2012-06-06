@@ -1,7 +1,11 @@
 <%@ include file="/jsp/init.jsp" %>
 
-<p>
+<p class="alert alert-info">
     <spring:message code="EXPORT_DETAILS"/>
+</p>
+
+<p id="exportInfo">
+    <span class="label label-important">Warning</span> <spring:message code="EXPORT_FORMAT_RESTRICTIONS"/>
 </p>
 
 <div>
@@ -45,10 +49,6 @@
         </fieldset>
     </form>
 </div>
-<p>
-    <span class="alert alert-info" id="exportInfo"><i class="icon-info-sign"></i> <spring:message
-            code="EXPORT_FORMAT_RESTRICTIONS"/></span>
-</p>
 
 
 <script type="text/javascript">
