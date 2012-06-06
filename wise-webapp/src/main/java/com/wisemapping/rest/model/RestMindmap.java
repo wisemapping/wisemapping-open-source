@@ -4,6 +4,7 @@ package com.wisemapping.rest.model;
 import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.User;
+import com.wisemapping.security.Utils;
 import org.codehaus.jackson.annotate.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -38,7 +39,7 @@ public class RestMindmap {
     }
 
     public RestMindmap() {
-        this(new MindMap(), null);
+        this(new MindMap(), Utils.getUser());
 
     }
 
@@ -55,7 +56,6 @@ public class RestMindmap {
         }
         return result;
     }
-
 
     public String getDescription() {
         return mindmap.getDescription();
@@ -161,7 +161,9 @@ public class RestMindmap {
     }
 
     public void setStarred(boolean value) {
-        mindmap.setStarred(collaborator, value);
+        if (collaborator != null) {
+            mindmap.setStarred(collaborator, value);
+        }
     }
 
     @JsonIgnore

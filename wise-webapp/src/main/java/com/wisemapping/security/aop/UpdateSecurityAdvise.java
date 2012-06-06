@@ -24,11 +24,11 @@ import com.wisemapping.model.MindMap;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.jetbrains.annotations.NotNull;
 
 public class UpdateSecurityAdvise
-    extends BaseSecurityAdvice
-    implements MethodInterceptor
-{
+        extends BaseSecurityAdvice
+        implements MethodInterceptor {
 
     private UserRole grantedRole = UserRole.COLLABORATOR;
 
@@ -37,13 +37,18 @@ public class UpdateSecurityAdvise
         return methodInvocation.proceed();
     }
 
-    protected boolean isAllowed(User user, MindMap map)
-    {
-        return getMindmapService().isAllowedToView(user,map,grantedRole);
+    protected boolean isAllowed(@NotNull User user, @NotNull MindMap map) {
+        boolean result;
+        if (map.getOwner() == null) {
+            // This means that the map is new and  is an add operation.
+            result = true;
+        } else {
+            result = getMindmapService().isAllowedToView(user, map, grantedRole);
+        }
+        return result;
     }
 
-    protected boolean isAllowed(User user, int mapId)
-    {
-        return getMindmapService().isAllowedToView(user,mapId,grantedRole);
+    protected boolean isAllowed(User user, int mapId) {
+        return getMindmapService().isAllowedToView(user, mapId, grantedRole);
     }
 }

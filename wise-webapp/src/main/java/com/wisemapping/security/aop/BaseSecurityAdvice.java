@@ -31,9 +31,7 @@ public abstract class BaseSecurityAdvice {
 
     public void checkRole(MethodInvocation methodInvocation) throws UnexpectedArgumentException, AccessDeniedSecurityException {
         final User user = Utils.getUser();
-
         final Object argument = methodInvocation.getArguments()[0];
-
         boolean isAllowed;
 
         if (argument instanceof MindMap) {

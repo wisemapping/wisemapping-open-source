@@ -41,6 +41,7 @@ final public class Utils {
         return result;
     }
 
+    @NotNull
     public static User getUser() {
         User result = null;
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -50,6 +51,10 @@ final public class Utils {
             if (principal != null && principal instanceof UserDetails) {
                 result = ((UserDetails)principal).getUser();
             }
+        }
+
+        if(result==null){
+            throw new IllegalStateException("User could not be retrieved");
         }
         return result;
     }

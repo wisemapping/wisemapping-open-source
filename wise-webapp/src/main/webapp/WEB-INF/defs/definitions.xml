@@ -164,9 +164,7 @@
         <put name="body" value="/jsp/keyboard.jsp"/>
     </definition>
 
-    <definition name="mindmapImport" extends="pageTemplate">
-        <put name="title" value="IMPORT_MINDMAP"/>
-        <put name="details" value="IMPORT_MINDMAP_INFO"/>
+    <definition name="mindmapImport" extends="dialogTemplate">
         <put name="body" value="/jsp/mindmapImport.jsp"/>
     </definition>
 

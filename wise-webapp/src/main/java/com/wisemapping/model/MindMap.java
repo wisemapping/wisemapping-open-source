@@ -211,7 +211,10 @@ public class MindMap {
         this.creationTime = creationTime;
     }
 
-    public void setOwner(User owner) {
+    public void setOwner(@NotNull User owner) {
+        if (owner == null) {
+            throw new IllegalArgumentException("Owner can not be null");
+        }
         this.owner = owner;
     }
 
@@ -241,6 +244,10 @@ public class MindMap {
     }
 
     public void setStarred(@NotNull Collaborator collaborator, boolean value) {
+        if(collaborator==null){
+              throw new IllegalStateException("Collaborator can not be null");
+        }
+
         CollaboratorProperties collaboratorProperties = this.findUserProperty(collaborator);
         if (collaboratorProperties == null) {
             collaboratorProperties = new CollaboratorProperties(collaborator, this);

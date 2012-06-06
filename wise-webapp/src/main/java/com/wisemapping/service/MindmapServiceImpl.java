@@ -36,7 +36,7 @@ public class MindmapServiceImpl
     private UserService userService;
     private Mailer mailer;
 
-    public boolean isAllowedToColaborate(User user, int mapId, UserRole grantedRole) {
+    public boolean isAllowedToCollaborate(@NotNull User user, int mapId, @NotNull UserRole grantedRole) {
         final MindMap map = mindmapManager.getMindmapById(mapId);
         return isAllowedToCollaborate(user, map, grantedRole);
     }
@@ -46,7 +46,7 @@ public class MindmapServiceImpl
         return isAllowedToView(user, map, grantedRole);
     }
 
-    public boolean isAllowedToView(User user, MindMap map, UserRole grantedRole) {
+    public boolean isAllowedToView(@NotNull User user, @NotNull MindMap map, @NotNull UserRole grantedRole) {
         boolean result = false;
         if (map != null) {
             if (map.isPublic()) {
@@ -162,16 +162,16 @@ public class MindmapServiceImpl
         final MindmapUser mindmapUser = new MindmapUser(UserRole.OWNER.ordinal(), dbUser, map);
         map.getMindmapUsers().add(mindmapUser);
 
-        mindmapManager.addMindmap(user, map);
+        mindmapManager.addMindmap(dbUser, map);
     }
 
-    public void addCollaborators(MindMap mindmap, String[] colaboratorEmails, UserRole role, ColaborationEmail email)
+    public void addCollaborators(MindMap mindmap, String[] collaboratorEmails, UserRole role, ColaborationEmail email)
             throws InvalidColaboratorException {
-        if (colaboratorEmails != null && colaboratorEmails.length > 0) {
+        if (collaboratorEmails != null && collaboratorEmails.length > 0) {
             final Collaborator owner = mindmap.getOwner();
             final Set<MindmapUser> mindmapUsers = mindmap.getMindmapUsers();
 
-            for (String colaboratorEmail : colaboratorEmails) {
+            for (String colaboratorEmail : collaboratorEmails) {
                 if (owner.getEmail().equals(colaboratorEmail)) {
                     throw new InvalidColaboratorException("The user " + owner.getEmail() + " is the owner");
                 }

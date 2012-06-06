@@ -161,6 +161,8 @@ jQuery.fn.dialogForm = function(options) {
                     dialogElem.modal('hide');
                     $('#messagesPanel div').text(errorThrown).parent().show();
                 }
+                var acceptBtn = $('#' + containerId + ' .btn-accept');
+                acceptBtn.button('reset');
 
             }
         });
@@ -348,10 +350,6 @@ $(function() {
             });
         });
 
-    $("#importBtn").click(function() {
-        window.location = 'c/maps/import';
-    });
-
     $("#duplicateBtn").click(function() {
         // Map to be cloned ...
         var tableElem = $('#mindmapListTable');
@@ -433,40 +431,36 @@ $(function() {
     });
 
     $("#infoBtn").click(function() {
-        var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
-        if (mapIds.length > 0) {
-            $('#info-dialog-modal .modal-body').load("c/maps/" + mapIds[0] + "/details", function() {
-                $('#info-dialog-modal').modal();
-            });
-
-        }
+        showEmbeddedDialog("c/maps/{mapId}/details", 'info-dialog-modal');
     });
 
     $("#publishBtn").click(function() {
-        var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
-        if (mapIds.length > 0) {
-            $('#publish-dialog-modal .modal-body').load("c/maps/" + mapIds[0] + "/publish",
-                function() {
-                    $('#publish-dialog-modal .btn-accept').click(function() {
-                        submitDialogForm();
-                    });
-                    $('#publish-dialog-modal').modal();
-                });
-        }
+        showEmbeddedDialog("c/maps/{mapId}/publish", "publish-dialog-modal");
     });
 
     $("#exportBtn").click(function() {
-            var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
-            if (mapIds.length > 0) {
-                $('#export-dialog-modal .modal-body').load("c/maps/" + mapIds[0] + "/export",
-                    function() {
-                        $('#export-dialog-modal .btn-accept').click(function() {
-                            submitDialogForm();
-                        });
-                        $('#export-dialog-modal').modal();
+        showEmbeddedDialog("c/maps/{mapId}/export", 'export-dialog-modal');
+    });
+
+    $("#importBtn").click(function() {
+        showEmbeddedDialog("c/maps/import", 'import-dialog-modal', true);
+    });
+
+
+    var showEmbeddedDialog = function(urlTemplate, dialogElemId, ignore) {
+        var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
+        if (mapIds.length > 0 || ignore) {
+            var mapId = mapIds[0];
+            $('#' + dialogElemId + ' .modal-body').load(urlTemplate.replace("{mapId}", mapId),
+                function() {
+                    $('#' + dialogElemId + ' .btn-accept').click(function() {
+                        submitDialogForm();
                     });
-            }
-        });
+                    $('#' + dialogElemId).modal();
+                });
+        }
+    };
+
 
     $("#actionButtons .shareMap").click(function() {
     });

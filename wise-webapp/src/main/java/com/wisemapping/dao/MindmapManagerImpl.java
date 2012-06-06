@@ -19,6 +19,7 @@
 package com.wisemapping.dao;
 
 import com.wisemapping.model.*;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.SimpleExpression;
@@ -35,10 +36,10 @@ public class MindmapManagerImpl
 
     public Collaborator getCollaboratorBy(final String email) {
         final Collaborator collaborator;
-        final List colaborators = getHibernateTemplate().find("from com.wisemapping.model.Collaborator collaborator where email=?", email);
-        if (colaborators != null && !colaborators.isEmpty()) {
-            assert colaborators.size() == 1 : "More than one user with the same username!";
-            collaborator = (Collaborator) colaborators.get(0);
+        final List<Collaborator> collaborators = getHibernateTemplate().find("from com.wisemapping.model.Collaborator collaborator where email=?", email);
+        if (collaborators != null && !collaborators.isEmpty()) {
+            assert collaborators.size() == 1 : "More than one user with the same username!";
+            collaborator = collaborators.get(0);
         } else {
             collaborator = null;
         }
@@ -46,24 +47,22 @@ public class MindmapManagerImpl
     }
 
     public List<MindMap> search(MindMapCriteria criteria) {
-        return search(criteria,-1);
+        return search(criteria, -1);
     }
 
-    public List<MindMapHistory> getHistoryFrom(int mindmapId)
-    {        
+    public List<MindMapHistory> getHistoryFrom(int mindmapId) {
         final Criteria hibernateCriteria = getSession().createCriteria(MindMapHistory.class);
-        hibernateCriteria.add(Restrictions.eq("mindmapId",mindmapId));
-        hibernateCriteria.addOrder( Order.desc("creationTime"));
+        hibernateCriteria.add(Restrictions.eq("mindmapId", mindmapId));
+        hibernateCriteria.addOrder(Order.desc("creationTime"));
         // Mientras no haya paginacion solo los 10 primeros
         // This line throws errors in some environments, so getting all history and taking firsts 10 records
         // hibernateCriteria.setMaxResults(10);
         List list = hibernateCriteria.list();
-        return list.subList(0,(10<list.size()?10:list.size()));
+        return list.subList(0, (10 < list.size() ? 10 : list.size()));
     }
 
-    public MindMapHistory getHistory(int historyId)
-    {
-       return (MindMapHistory) getHibernateTemplate().get(MindMapHistory.class, historyId);
+    public MindMapHistory getHistory(int historyId) {
+        return (MindMapHistory) getHibernateTemplate().get(MindMapHistory.class, historyId);
     }
 
     public List<MindMap> search(MindMapCriteria criteria, int maxResult) {
@@ -161,9 +160,8 @@ public class MindmapManagerImpl
         return result;
     }
 
-    public void addView(int mapId)
-    {
-        
+    public void addView(int mapId) {
+
     }
 
     public void addMindmap(User user, MindMap mindMap) {
@@ -175,11 +173,10 @@ public class MindmapManagerImpl
         getSession().save(mindMap);
     }
 
-    public void updateMindmap(MindMap mindMap, boolean saveHistory) {
+    public void updateMindmap(@NotNull MindMap mindMap, boolean saveHistory) {
         assert mindMap != null : "Save Mindmap: Mindmap is required!";
         getHibernateTemplate().saveOrUpdate(mindMap);
-        if (saveHistory)
-        {
+        if (saveHistory) {
             saveHistory(mindMap);
         }
     }
@@ -188,8 +185,7 @@ public class MindmapManagerImpl
         getHibernateTemplate().delete(mindMap);
     }
 
-    public void saveHistory(MindMap mindMap)
-    {
+    public void saveHistory(MindMap mindMap) {
         final MindMapHistory history = new MindMapHistory();
 
         history.setXml(mindMap.getXml());

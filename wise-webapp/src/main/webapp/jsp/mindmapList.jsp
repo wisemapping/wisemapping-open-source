@@ -40,6 +40,7 @@
     <div id="mindmapListContainer">
         <div id="messagesPanel" class="alert alert-error alert-block fade in hide" style="margin-top: 10px">
             <strong><spring:message code="UNEXPECTED_ERROR"/></strong>
+
             <p><spring:message code="UNEXPECTED_ERROR_SERVER_ERROR"/></p>
 
             <div></div>
@@ -264,6 +265,20 @@
         </div>
     </div>
 
+    <!-- Export Dialog Config -->
+    <div id="import-dialog-modal" class="modal fade" style="display: none">
+        <div class="modal-header">
+            <button class="close" data-dismiss="modal">x</button>
+            <h3>Import</h3>
+        </div>
+        <div class="modal-body">
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary btn-accept" data-loading-text="Importing...">Import</button>
+            <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+        </div>
+    </div>
 </div>
 </body>
 </html>

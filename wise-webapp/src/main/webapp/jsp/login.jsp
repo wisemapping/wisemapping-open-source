@@ -2,6 +2,15 @@
 
 <%@ include file="/jsp/init.jsp" %>
 
+
+<script type="text/javascript" language="javascript">
+    $(function() {
+        $('.btn-primary').click(function() {
+            $(this).button("loading");
+        });
+    });
+</script>
+
 <div id="loginContent">
     <div class="loginNews">
         <h1>What is New: </h1>
@@ -38,8 +47,9 @@
                 </c:if>
 
                 <div class="form-inline">
-                    <input type="submit" class="btn btn-primary" value="<spring:message code="SIGN_IN"/>"
-                           data-toggle="button">&nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-primary" data-loading-text="<spring:message code="SIGN_IN"/> ...">
+                        <spring:message code="SIGN_IN"/></button>
+                    &nbsp;&nbsp;&nbsp;
                     <input type="checkbox" id="rememberme" name="_spring_security_remember_me"/>
                     <label for="rememberme"><spring:message code="REMEMBER_ME"/></label>
                 </div>

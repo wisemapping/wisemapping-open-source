@@ -22,6 +22,7 @@ import com.wisemapping.model.MindMap;
 import com.wisemapping.model.MindmapUser;
 import com.wisemapping.model.UserRole;
 import com.wisemapping.model.User;
+import com.wisemapping.security.Utils;
 
 import java.text.DateFormat;
 import java.util.*;
@@ -55,6 +56,10 @@ public class MindMapBean {
 
     public int getId() {
         return mindMap.getId();
+    }
+
+    public boolean isStarred() {
+        return mindMap.isStarred(Utils.getUser());
     }
 
     public List<ColaboratorBean> getViewers() {

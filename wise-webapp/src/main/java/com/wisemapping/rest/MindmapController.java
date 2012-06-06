@@ -174,12 +174,6 @@ public class MindmapController extends BaseController {
         saveMindmap(minor, mindMap, user);
     }
 
-    private ValidationException buildValidationException(@NotNull String fieldName, @NotNull String message) throws ValidationException {
-        final BindingResult result = new BeanPropertyBindingResult(new RestMindmap(), "");
-        result.rejectValue(fieldName, "error.not-specified", null, message);
-        return new ValidationException(result);
-    }
-
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/title", consumes = {"text/plain"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
@@ -261,16 +255,17 @@ public class MindmapController extends BaseController {
         }
     }
 
-    private void saveMindmap(boolean minor, @NotNull final MindMap mindMap, @NotNull final User user) throws WiseMappingException {
-        final Calendar now = Calendar.getInstance();
-        mindMap.setLastModificationTime(now);
-        mindMap.setLastModifierUser(user.getUsername());
-        mindmapService.updateMindmap(mindMap, minor);
-    }
-
-    @RequestMapping(method = RequestMethod.POST, value = "/maps", consumes = {"application/xml", "application/json"})
+    @RequestMapping(method = RequestMethod.POST, value = "/maps", consumes = {"application/xml", "application/json", "application/wisemapping+xml"})
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void createMap(@RequestBody RestMindmap restMindmap, @NotNull HttpServletResponse response) throws IOException, WiseMappingException {
+    public void createMap(@RequestBody RestMindmap restMindmap, @NotNull HttpServletResponse response, @RequestParam(required = false) String title, @RequestParam(required = false) String description) throws IOException, WiseMappingException {
+
+        // Overwrite title and description if they where specified by parameter.
+        if (title != null && !title.isEmpty()) {
+            restMindmap.setTitle(title);
+        }
+        if (description != null && !description.isEmpty()) {
+            restMindmap.setDescription(description);
+        }
 
         // Validate ...
         final BindingResult result = new BeanPropertyBindingResult(restMindmap, "");
@@ -279,19 +274,16 @@ public class MindmapController extends BaseController {
             throw new ValidationException(result);
         }
 
-        // Some basic validations ...
-        final User user = Utils.getUser();
-
         // If the user has not specified the xml content, add one ...
         final MindMap delegated = restMindmap.getDelegated();
         String xml = restMindmap.getXml();
         if (xml == null || xml.isEmpty()) {
             xml = MindMap.getDefaultMindmapXml(restMindmap.getTitle());
         }
-        delegated.setOwner(user);
         delegated.setXmlStr(xml);
 
         // Add new mindmap ...
+        final User user = Utils.getUser();
         mindmapService.addMindmap(delegated, user);
 
         // Return the new created map ...
@@ -306,11 +298,11 @@ public class MindmapController extends BaseController {
         // Convert map ...
         final Importer importer = ImporterFactory.getInstance().getImporter(ImportFormat.FREEMIND);
         final ByteArrayInputStream stream = new ByteArrayInputStream(freemindXml);
-        final MindMap mindMap = importer.importMap(title, description, stream);
+        final MindMap mindMap = importer.importMap(title, "", stream);
 
         // Save new map ...
         final User user = Utils.getUser();
-        createMap(new RestMindmap(mindMap, user), response);
+        createMap(new RestMindmap(mindMap, user), response, title, description);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/maps/{id}", consumes = {"application/xml", "application/json"})
@@ -339,5 +331,18 @@ public class MindmapController extends BaseController {
         // Return the new created map ...
         response.setHeader("Location", "/service/maps/" + clonedMap.getId());
         response.setHeader("ResourceId", Integer.toString(clonedMap.getId()));
+    }
+
+    private void saveMindmap(boolean minor, @NotNull final MindMap mindMap, @NotNull final User user) throws WiseMappingException {
+        final Calendar now = Calendar.getInstance();
+        mindMap.setLastModificationTime(now);
+        mindMap.setLastModifierUser(user.getUsername());
+        mindmapService.updateMindmap(mindMap, minor);
+    }
+
+    private ValidationException buildValidationException(@NotNull String fieldName, @NotNull String message) throws ValidationException {
+        final BindingResult result = new BeanPropertyBindingResult(new RestMindmap(), "");
+        result.rejectValue(fieldName, "error.not-specified", null, message);
+        return new ValidationException(result);
     }
 }
