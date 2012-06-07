@@ -445,6 +445,10 @@ $(function() {
         showEmbeddedDialog("c/maps/import", 'import-dialog-modal', true);
     });
 
+    $("#shareBtn").click(function() {
+        showEmbeddedDialog("c/maps/{mapId}/share", 'share-dialog-modal', true);
+    });
+
 
     var showEmbeddedDialog = function(urlTemplate, dialogElemId, ignore) {
         var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();

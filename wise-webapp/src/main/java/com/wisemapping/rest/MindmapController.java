@@ -76,7 +76,6 @@ public class MindmapController extends BaseController {
         return new ModelAndView("transformViewWise", values);
     }
 
-
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/freemind"}, params = {"download=mm"})
     @ResponseBody
     public ModelAndView retrieveDocumentAsFreemind(@PathVariable int id) throws IOException {
@@ -103,6 +102,14 @@ public class MindmapController extends BaseController {
         }
         final RestMindmapList restMindmapList = new RestMindmapList(mindmaps, user);
         return new ModelAndView("mapsView", "list", restMindmapList);
+    }
+
+
+    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}/history", produces = {"application/json", "text/html", "application/xml"})
+    public ModelAndView retrieveHistory(@PathVariable int id) throws IOException {
+        final User user = com.wisemapping.security.Utils.getUser();
+
+        return null;
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/document", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
@@ -302,6 +309,7 @@ public class MindmapController extends BaseController {
             final ByteArrayInputStream stream = new ByteArrayInputStream(freemindXml);
             mindMap = importer.importMap(title, "", stream);
         } catch (ImporterException e) {
+            // @Todo: This should be an illegal argument exception. Review the all the other cases.
             throw buildValidationException("xml", "The selected file does not seems to be a valid Freemind or WiseMapping file. Contact support in case the problem persists.");
         }
 

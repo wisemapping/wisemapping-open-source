@@ -279,6 +279,22 @@
             <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
         </div>
     </div>
+
+    <!-- Share Dialog Config -->
+    <div id="share-dialog-modal" class="modal fade" style="display: none">
+        <div class="modal-header">
+            <button class="close" data-dismiss="modal">x</button>
+            <h3>Share</h3>
+        </div>
+        <div class="modal-body">
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary btn-accept" data-loading-text="Saving ..">Accept</button>
+            <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+        </div>
+    </div>
+
 </div>
 </body>
 </html>

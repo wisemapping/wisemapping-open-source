@@ -27,6 +27,10 @@ import java.util.*;
 public class RestErrors {
     @JsonIgnore
     private Errors errors;
+
+    @JsonIgnore
+    private List<String> globalErrors;
+
     @JsonIgnore
     MessageSource messageSource;
 
@@ -38,15 +42,24 @@ public class RestErrors {
 
         this.errors = errors;
         this.messageSource = messageSource;
+        this.globalErrors = this.processGlobalErrors(errors, messageSource);
     }
 
-    public List<String> getGlobalErrors() {
+    public RestErrors(@NotNull String errorMsg) {
+        globalErrors.add(errorMsg);
+    }
+
+    private List<String> processGlobalErrors(@NotNull Errors errors, @NotNull MessageSource messageSource) {
         final List<String> result = new ArrayList<String>();
         final List<ObjectError> globalErrors = errors.getGlobalErrors();
         for (ObjectError globalError : globalErrors) {
             result.add(globalError.getObjectName());
         }
         return result;
+    }
+
+    public List<String> getGlobalErrors() {
+        return globalErrors;
     }
 
     public void setGlobalErrors(List<String> list) {

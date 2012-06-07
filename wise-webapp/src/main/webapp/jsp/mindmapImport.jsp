@@ -72,7 +72,14 @@
                                     inputField.parent().addClass('error');
                                 }
                             }
-
+                            var globalErrors = errors.globalErrors;
+                            if (globalErrors) {
+                                for (var error in globalErrors) {
+                                    // Mark the field with errors ...
+                                    $("#dialogMainForm").find(".errorMessage").text(error).addClass("alert alert-error");
+                                    inputField.parent().addClass('error');
+                                }
+                            }
                         } else {
                             console.log(errorThrown);
                             console.log(jqXHR);
