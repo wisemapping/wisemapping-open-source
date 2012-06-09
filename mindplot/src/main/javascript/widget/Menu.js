@@ -333,7 +333,7 @@ mindplot.widget.Menu = new Class({
         var shareElem = $('shareIt');
         if (shareElem) {
             this._addButton('shareIt', false, false, function() {
-                var reqDialog = new MooDialog.Request('c/mymaps.htm?action=collaborator&mapId=' + mapId, null,
+                var reqDialog = new MooDialog.Request('c/iframeWrapper.htm?url=c/maps/' + mapId + "/publishf", null,
                     {'class': 'modalDialog  shareItModalDialog',
                         closeButton:true,
                         destroyOnClose:true,
@@ -344,9 +344,9 @@ mindplot.widget.Menu = new Class({
                         reqDialog.setContent('loading...');
                     }
                 });
-
+                MooDialog.Request.active = reqDialog;
             });
-            this._registerTooltip('shareIt', "Collaborators");
+            this._registerTooltip('shareIt', "Share");
 
         }
 

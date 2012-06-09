@@ -26,8 +26,8 @@
             <list>
                 <value>com/wisemapping/model/Collaborator.hbm.xml</value>
                 <value>com/wisemapping/model/MindMap.hbm.xml</value>
-                <value>com/wisemapping/model/MindmapUser.hbm.xml</value>
-                <value>com/wisemapping/model/CollaboratorProperties.hbm.xml</value>
+                <value>com/wisemapping/model/MindmapCollaboration.hbm.xml</value>
+                <value>com/wisemapping/model/MindmapCollaborationProperties.hbm.xml</value>
                 <value>com/wisemapping/model/UserLogin.hbm.xml</value>
                 <value>com/wisemapping/model/MindMapHistory.hbm.xml</value>
             </list>

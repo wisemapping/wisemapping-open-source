@@ -20,19 +20,19 @@ package com.wisemapping.model;
 
 import org.jetbrains.annotations.NotNull;
 
-public class CollaboratorProperties {
+public class MindmapCollaborationProperties {
     private long id;
     private boolean starred;
     private Collaborator collaborator;
     private MindMap mindmap;
 
 
-    public CollaboratorProperties(@NotNull Collaborator collaborator, @NotNull MindMap mindmap) {
+    public MindmapCollaborationProperties(@NotNull Collaborator collaborator, @NotNull MindMap mindmap) {
         this.collaborator = collaborator;
         this.mindmap = mindmap;
     }
 
-    public CollaboratorProperties(){
+    public MindmapCollaborationProperties(){
 
     }
 

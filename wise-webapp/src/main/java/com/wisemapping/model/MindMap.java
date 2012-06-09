@@ -41,8 +41,8 @@ public class MindMap {
     private Calendar lastModificationTime;
     private String lastModifierUser;
 
-    private Set<MindmapUser> mindmapUsers = new HashSet<MindmapUser>();
-    private Set<CollaboratorProperties> collaboratorProperties = new HashSet<CollaboratorProperties>();
+    private Set<Collaboration> collaborations = new HashSet<Collaboration>();
+    private Set<MindmapCollaborationProperties> collaboratorProperties = new HashSet<MindmapCollaborationProperties>();
 
     private User owner;
     private String properties;
@@ -55,8 +55,8 @@ public class MindMap {
     public MindMap() {
     }
 
-    public MindMap(Set<MindmapUser> mindmapUsers) {
-        this.mindmapUsers = mindmapUsers;
+    public MindMap(Set<Collaboration> collaborations) {
+        this.collaborations = collaborations;
     }
 
     //~ Methods ..............................................................................................
@@ -111,16 +111,16 @@ public class MindMap {
         return ret;
     }
 
-    public Set<MindmapUser> getMindmapUsers() {
-        return mindmapUsers;
+    public Set<Collaboration> getCollaborations() {
+        return collaborations;
     }
 
-    public void setMindmapUsers(Set<MindmapUser> mindmapUsers) {
-        this.mindmapUsers = mindmapUsers;
+    public void setCollaborations(Set<Collaboration> collaborations) {
+        this.collaborations = collaborations;
     }
 
-    public void addMindmapUser(MindmapUser mindmapUser) {
-        mindmapUsers.add(mindmapUser);
+    public void addMindmapUser(Collaboration collaboration) {
+        collaborations.add(collaboration);
     }
 
     public boolean isPublic() {
@@ -222,18 +222,18 @@ public class MindMap {
         return owner;
     }
 
-    public Set<CollaboratorProperties> getCollaboratorProperties() {
+    public Set<MindmapCollaborationProperties> getCollaboratorProperties() {
         return collaboratorProperties;
     }
 
-    public void setCollaboratorProperties(@NotNull Set<CollaboratorProperties> collaboratorProperties) {
+    public void setCollaboratorProperties(@NotNull Set<MindmapCollaborationProperties> collaboratorProperties) {
         this.collaboratorProperties = collaboratorProperties;
     }
 
-    private CollaboratorProperties findUserProperty(@NotNull Collaborator collaborator) {
-        final Set<CollaboratorProperties> collaboratorProperties = this.getCollaboratorProperties();
-        CollaboratorProperties result = null;
-        for (CollaboratorProperties collaboratorProperty : collaboratorProperties) {
+    private MindmapCollaborationProperties findUserProperty(@NotNull Collaborator collaborator) {
+        final Set<MindmapCollaborationProperties> collaboratorProperties = this.getCollaboratorProperties();
+        MindmapCollaborationProperties result = null;
+        for (MindmapCollaborationProperties collaboratorProperty : collaboratorProperties) {
             final Collaborator propCollab = collaboratorProperty.getCollaborator();
             if (propCollab != null && propCollab.getEmail().equals(collaborator.getEmail())) {
                 result = collaboratorProperty;
@@ -248,16 +248,16 @@ public class MindMap {
               throw new IllegalStateException("Collaborator can not be null");
         }
 
-        CollaboratorProperties collaboratorProperties = this.findUserProperty(collaborator);
+        MindmapCollaborationProperties collaboratorProperties = this.findUserProperty(collaborator);
         if (collaboratorProperties == null) {
-            collaboratorProperties = new CollaboratorProperties(collaborator, this);
+            collaboratorProperties = new MindmapCollaborationProperties(collaborator, this);
         }
         collaboratorProperties.setStarred(value);
         this.getCollaboratorProperties().add(collaboratorProperties);
     }
 
     public boolean isStarred(@NotNull Collaborator collaborator) {
-        final CollaboratorProperties collaboratorProperty = this.findUserProperty(collaborator);
+        final MindmapCollaborationProperties collaboratorProperty = this.findUserProperty(collaborator);
         return collaboratorProperty != null && collaboratorProperty.getStarred();
     }
 

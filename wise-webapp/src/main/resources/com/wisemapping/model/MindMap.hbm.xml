@@ -22,18 +22,18 @@
 
         <many-to-one name="owner" column="owner_id" unique="true" not-null="true"/>
 
-        <set name="mindmapUsers"
+        <set name="collaborations"
                 cascade="all, delete-orphan"
                 inverse="true">
             <key column="MINDMAP_ID" not-null="true"/>                
-            <one-to-many class="com.wisemapping.model.MindmapUser"/>
+            <one-to-many class="com.wisemapping.model.Collaboration"/>
         </set>
 
          <set name="collaboratorProperties"
                 cascade="all, delete-orphan"
                 inverse="true">
             <key column="MINDMAP_ID" not-null="true"/>
-            <one-to-many class="com.wisemapping.model.CollaboratorProperties"/>
+            <one-to-many class="com.wisemapping.model.MindmapCollaborationProperties"/>
         </set>
 
     </class>

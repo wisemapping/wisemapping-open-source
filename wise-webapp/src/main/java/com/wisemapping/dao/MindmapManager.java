@@ -28,11 +28,11 @@ public interface MindmapManager {
 
     Collaborator getCollaboratorBy(long id);
     
-    List<MindmapUser> getMindmapUserByCollaborator(final long collaboratorId);
+    List<Collaboration> getMindmapUserByCollaborator(final long collaboratorId);
 
-    List<MindmapUser> getMindmapUserByRole(final UserRole userRole);
+    List<Collaboration> getMindmapUserByRole(final CollaborationRole userRole);
 
-    MindmapUser getMindmapUserBy(final int mindmapId, final User user);
+    Collaboration getMindmapUserBy(final int mindmapId, final User user);
 
     List<MindMap> getAllMindmaps();
 
@@ -44,8 +44,6 @@ public interface MindmapManager {
 
     void addMindmap(User user, MindMap mindMap);
 
-    public void addView(int mapId);
-
     void saveMindmap(MindMap mindMap);
 
     void updateMindmap(MindMap mindMap, boolean saveHistory);
@@ -54,7 +52,7 @@ public interface MindmapManager {
 
     void removeMindmap(MindMap mindap);
 
-    void removeMindmapUser(MindmapUser mindmapUser);
+    void removeMindmapUser(Collaboration collaboration);
 
     public List<MindMap> search(MindMapCriteria criteria);
 

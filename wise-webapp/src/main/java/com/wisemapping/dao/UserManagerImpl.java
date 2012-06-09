@@ -18,11 +18,10 @@
 
 package com.wisemapping.dao;
 
+import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Collaborator;
-import com.wisemapping.model.MindmapUser;
 import com.wisemapping.model.User;
 import com.wisemapping.model.UserLogin;
-import com.wisemapping.security.CustomPasswordEncoder;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
@@ -110,11 +109,11 @@ public class UserManagerImpl
         user.setPassword(passwordEncoder.encodePassword(user.getPassword(),null));
         assert user != null : "Trying to store a null user";
 
-        final Set<MindmapUser> set = col.getMindmapUsers();
-        for (MindmapUser mindmapUser : set) {
-            MindmapUser newMapUser = new MindmapUser();
-            newMapUser.setRoleId(mindmapUser.getRole().ordinal());
-            newMapUser.setMindMap(mindmapUser.getMindMap());
+        final Set<Collaboration> set = col.getCollaborations();
+        for (Collaboration collaboration : set) {
+            Collaboration newMapUser = new Collaboration();
+            newMapUser.setRoleId(collaboration.getRole().ordinal());
+            newMapUser.setMindMap(collaboration.getMindMap());
             newMapUser.setCollaborator(user);
             user.addMindmapUser(newMapUser);
         }

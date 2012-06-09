@@ -29,19 +29,19 @@ public interface MindmapService {
 
     public static final String TAG_SEPARATOR = " ";
 
-    public MindmapUser getMindmapUserBy(int mindmapId, User user);
+    public Collaboration getMindmapUserBy(int mindmapId, User user);
 
     public MindMap getMindmapById(int mindmapId);
 
     public MindMap getMindmapByTitle(String title, User user);
 
-    public List<MindmapUser> getMindmapUserByUser(User user);
+    public List<Collaboration> getMindmapUserByUser(User user);
 
     public void updateMindmap(MindMap mindMap, boolean saveHistory) throws WiseMappingException;
 
     public void addMindmap(MindMap map, User user) throws WiseMappingException;
 
-    public void addCollaborators(MindMap mindmap, String[] collaboratorEmails, UserRole role, ColaborationEmail email)
+    public void addCollaborators(MindMap mindmap, String[] collaboratorEmails, CollaborationRole role, ColaborationEmail email)
             throws InvalidColaboratorException;
 
     public void addTags(MindMap mindmap, String tags);
@@ -56,17 +56,15 @@ public interface MindmapService {
 
     public List<MindMapHistory> getMindMapHistory(int mindmapId);
 
-    public boolean isAllowedToView(User user, MindMap map, UserRole allowedRole);
+    public boolean isAllowedToView(User user, MindMap map, CollaborationRole allowedRole);
 
-    public boolean isAllowedToView(User user, int mapId, UserRole allowedRole);
+    public boolean isAllowedToView(User user, int mapId, CollaborationRole allowedRole);
 
-    public boolean isAllowedToCollaborate(User user, int mapId, UserRole grantedRole);
+    public boolean isAllowedToCollaborate(User user, int mapId, CollaborationRole grantedRole);
 
-    public boolean isAllowedToCollaborate(User user, MindMap map, UserRole grantedRole);
+    public boolean isAllowedToCollaborate(User user, MindMap map, CollaborationRole grantedRole);
 
     public void addWelcomeMindmap(User user) throws WiseMappingException;
-
-    public void addView(int mapId);
 
     public void revertMapToHistory(MindMap map, int historyId) throws IOException, WiseMappingException;
 }

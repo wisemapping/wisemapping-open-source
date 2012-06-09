@@ -24,8 +24,8 @@ import com.wisemapping.importer.ImportFormat;
 import com.wisemapping.importer.Importer;
 import com.wisemapping.importer.ImporterException;
 import com.wisemapping.importer.ImporterFactory;
+import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.MindMap;
-import com.wisemapping.model.MindmapUser;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestMindmap;
 import com.wisemapping.rest.model.RestMindmapInfo;
@@ -92,10 +92,10 @@ public class MindmapController extends BaseController {
 
         final MindmapFilter filter = MindmapFilter.parse(q);
 
-        final List<MindmapUser> mapsByUser = mindmapService.getMindmapUserByUser(user);
+        final List<Collaboration> mapsByUser = mindmapService.getMindmapUserByUser(user);
         final List<MindMap> mindmaps = new ArrayList<MindMap>();
-        for (MindmapUser mindmapUser : mapsByUser) {
-            final MindMap mindmap = mindmapUser.getMindMap();
+        for (Collaboration collaboration : mapsByUser) {
+            final MindMap mindmap = collaboration.getMindMap();
             if (filter.accept(mindmap, user)) {
                 mindmaps.add(mindmap);
             }
@@ -200,6 +200,25 @@ public class MindmapController extends BaseController {
         mindmap.setTitle(title);
         saveMindmap(true, mindMap, user);
     }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/collabs", consumes = {"application/json", "application/xml"}, produces = {"application/json", "text/html", "application/xml"})
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void updateCollabs(@PathVariable int id) throws WiseMappingException {
+
+        final MindMap mindMap = mindmapService.getMindmapById(id);
+        final User user = Utils.getUser();
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}/collabs", produces = {"application/json", "text/html", "application/xml"})
+    public ModelAndView retrieveList(@PathVariable int id) throws IOException {
+        final MindMap mindMap = mindmapService.getMindmapById(id);
+        final User user = Utils.getUser();
+
+        final Set<Collaboration> collaborations = mindMap.getCollaborations();
+
+        return new ModelAndView("mapsView", "list", collaborations);
+    }
+
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/description", consumes = {"text/plain"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)

@@ -23,6 +23,8 @@
                 <value>com.wisemapping.rest.model.RestMindmapList</value>
                 <value>com.wisemapping.rest.model.RestUser</value>
                 <value>com.wisemapping.rest.model.RestErrors</value>
+                <value>com.wisemapping.rest.model.RestCollaboration</value>
+                <value>com.wisemapping.rest.model.RestCollaborationList</value>
             </list>
         </property>
     </bean>

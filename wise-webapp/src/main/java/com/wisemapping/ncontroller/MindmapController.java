@@ -4,7 +4,7 @@ package com.wisemapping.ncontroller;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.filter.UserAgent;
 import com.wisemapping.model.MindMap;
-import com.wisemapping.model.MindmapUser;
+import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.User;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapService;
@@ -186,10 +186,10 @@ public class MindmapController {
     }
 
     private List<MindMapBean> findMindMapBeanList(@NotNull User user) {
-        final List<MindmapUser> userMindmaps = mindmapService.getMindmapUserByUser(user);
+        final List<Collaboration> userMindmaps = mindmapService.getMindmapUserByUser(user);
 
         final List<MindMapBean> mindMapBeans = new ArrayList<MindMapBean>(userMindmaps.size());
-        for (MindmapUser mindmap : userMindmaps) {
+        for (Collaboration mindmap : userMindmaps) {
             mindMapBeans.add(new MindMapBean(mindmap.getMindMap()));
         }
         return mindMapBeans;

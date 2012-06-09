@@ -19,9 +19,9 @@
 package com.wisemapping.controller;
 
 import com.wisemapping.model.ColaborationEmail;
+import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.User;
-import com.wisemapping.model.UserRole;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.InvalidColaboratorException;
 import com.wisemapping.view.MindMapBean;
@@ -36,14 +36,14 @@ public class MindmapSharingController extends BaseMultiActionController {
     public ModelAndView addCollaborator(HttpServletRequest request, HttpServletResponse response)
             throws InvalidColaboratorException {
         logger.info("Sharing Controller: add collaborators action");
-        addColaborator(request, UserRole.COLLABORATOR);
+        addColaborator(request, CollaborationRole.EDITOR);
         return new ModelAndView("closeDialog");
     }
 
     public ModelAndView addViewer(HttpServletRequest request, HttpServletResponse response)
             throws InvalidColaboratorException {
         logger.info("Sharing Controller: add viewer action");
-        addColaborator(request, UserRole.VIEWER);
+        addColaborator(request, CollaborationRole.VIEWER);
         return new ModelAndView("closeDialog");
     }
 
@@ -72,7 +72,7 @@ public class MindmapSharingController extends BaseMultiActionController {
         return result;
     }
 
-    private MindMapBean addColaborator(HttpServletRequest request, UserRole role) throws InvalidColaboratorException {
+    private MindMapBean addColaborator(HttpServletRequest request, CollaborationRole role) throws InvalidColaboratorException {
         final MindMap mindMap = getMindmapFromRequest(request);
         User user = Utils.getUser();
         if (!mindMap.getOwner().equals(user)) {

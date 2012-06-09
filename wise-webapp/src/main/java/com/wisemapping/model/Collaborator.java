@@ -27,27 +27,27 @@ public class Collaborator {
     private long id;
     private String email;
     private Calendar creationDate;
-    private Set<MindmapUser> mindmapUsers = new HashSet<MindmapUser>();
+    private Set<Collaboration> collaborations = new HashSet<Collaboration>();
 
     public Collaborator() {}
 
-     public Collaborator(Set<MindmapUser> mindmapUsers) {
-        this.mindmapUsers = mindmapUsers;
+     public Collaborator(Set<Collaboration> collaborations) {
+        this.collaborations = collaborations;
     }
 
-    public void setMindmapUsers(Set<MindmapUser> mindmapUsers)
+    public void setCollaborations(Set<Collaboration> collaborations)
     {
-        this.mindmapUsers = mindmapUsers;
+        this.collaborations = collaborations;
     }
 
-    public void addMindmapUser(MindmapUser mindmaUser)
+    public void addMindmapUser(Collaboration mindmaUser)
     {
-       mindmapUsers.add(mindmaUser);
+       collaborations.add(mindmaUser);
     }
 
-    public Set<MindmapUser> getMindmapUsers()
+    public Set<Collaboration> getCollaborations()
     {
-        return mindmapUsers;
+        return collaborations;
     }
 
     public long getId() {

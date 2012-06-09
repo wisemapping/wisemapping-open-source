@@ -18,9 +18,9 @@
 
 package com.wisemapping.view;
 
+import com.wisemapping.model.Collaboration;
+import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.MindMap;
-import com.wisemapping.model.MindmapUser;
-import com.wisemapping.model.UserRole;
 import com.wisemapping.model.User;
 import com.wisemapping.security.Utils;
 
@@ -34,8 +34,8 @@ public class MindMapBean {
 
     public MindMapBean(final MindMap mindmap) {
         this.mindMap = mindmap;
-        this.colaborators = getColaboratorBy(mindmap.getMindmapUsers(), UserRole.COLLABORATOR);
-        this.viewers = getColaboratorBy(mindmap.getMindmapUsers(), UserRole.VIEWER);
+        this.colaborators = getColaboratorBy(mindmap.getCollaborations(), CollaborationRole.EDITOR);
+        this.viewers = getColaboratorBy(mindmap.getCollaborations(), CollaborationRole.VIEWER);
     }
 
     public MindMap getMindMap() {
@@ -104,10 +104,10 @@ public class MindMapBean {
         return mindMap.getTags();
     }
 
-    private List<ColaboratorBean> getColaboratorBy(Set<MindmapUser> source, UserRole role) {
+    private List<ColaboratorBean> getColaboratorBy(Set<Collaboration> source, CollaborationRole role) {
         List<ColaboratorBean> col = new ArrayList<ColaboratorBean>();
         if (source != null) {
-            for (MindmapUser mu : source) {
+            for (Collaboration mu : source) {
                 if (mu.getRole() == role) {
                     col.add(new ColaboratorBean(mu.getCollaborator(), mu.getRole()));
                 }

@@ -18,14 +18,14 @@
 
 package com.wisemapping.model;
 
-public enum UserRole {
-    OWNER(true, true, true), COLLABORATOR(true, true, false), VIEWER(false, true, false);
+public enum CollaborationRole {
+    OWNER(true, true, true), EDITOR(true, true, false), VIEWER(false, true, false);
 
     private final boolean hasEditPermission;
     private final boolean hasViewPermission;
     private final boolean hasDeletePermission;
 
-    private UserRole(boolean hasEditPermission, boolean hasViewPermission, boolean hasDeletePermission) {
+    private CollaborationRole(boolean hasEditPermission, boolean hasViewPermission, boolean hasDeletePermission) {
         this.hasEditPermission = hasEditPermission;
         this.hasViewPermission = hasViewPermission;
         this.hasDeletePermission = hasDeletePermission;

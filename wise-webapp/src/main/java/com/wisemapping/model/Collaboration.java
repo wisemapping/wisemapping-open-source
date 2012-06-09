@@ -18,24 +18,26 @@
 
 package com.wisemapping.model;
 
-public class MindmapUser {
+import org.jetbrains.annotations.NotNull;
+
+public class Collaboration {
 
     private int id;
-    private int roleId;
-    private MindMap mindMap;   
+    private CollaborationRole role;
+    private MindMap mindMap;
     private Collaborator collaborator;
 
-    public MindmapUser(){ }
+    public Collaboration() {
+    }
 
-    public MindmapUser(int role, Collaborator collaborator, MindMap mindmap)
-    {
-        this.roleId = role;
-        this.mindMap =mindmap;
+    public Collaboration(@NotNull CollaborationRole role, @NotNull Collaborator collaborator, @NotNull MindMap mindmap) {
+        this.role = role;
+        this.mindMap = mindmap;
         this.collaborator = collaborator;
 
         // Guarantee referential integrity
-		mindmap.addMindmapUser(this);
-		collaborator.addMindmapUser(this);
+        mindmap.addMindmapUser(this);
+        collaborator.addMindmapUser(this);
     }
 
     public int getId() {
@@ -47,27 +49,27 @@ public class MindmapUser {
     }
 
     public int getRoleId() {
-        return roleId;
+        return role.ordinal();
     }
 
     public void setRoleId(int roleId) {
-        this.roleId = roleId;
+        this.role = CollaborationRole.values()[roleId];
     }
 
-    public UserRole getRole() {
-        return UserRole.values()[roleId];
+    public CollaborationRole getRole() {
+        return role;
     }
 
     public boolean isOwner() {
-        return getRole() == UserRole.OWNER;
+        return getRole() == CollaborationRole.OWNER;
     }
 
-    public boolean isColaborator() {
-        return getRole() == UserRole.COLLABORATOR;
+    public boolean isEditor() {
+        return getRole() == CollaborationRole.EDITOR;
     }
 
     public boolean isViewer() {
-        return getRole() == UserRole.VIEWER;
+        return getRole() == CollaborationRole.VIEWER;
     }
 
     public MindMap getMindMap() {
@@ -78,11 +80,12 @@ public class MindmapUser {
         this.mindMap = mindMap;
     }
 
+    @NotNull
     public Collaborator getCollaborator() {
         return collaborator;
     }
 
-    public void setCollaborator(Collaborator collaborator) {
+    public void setCollaborator(@NotNull Collaborator collaborator) {
         this.collaborator = collaborator;
-    }    
+    }
 }

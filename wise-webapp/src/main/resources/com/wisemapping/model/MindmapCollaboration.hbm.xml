@@ -5,25 +5,25 @@
 
 <hibernate-mapping>
 
-    <class name="com.wisemapping.model.CollaboratorProperties" table="MINDMAP_COLLABORATOR_PROPERTIES">
+    <class name="com.wisemapping.model.Collaboration" table="MINDMAP_COLABORATOR">
         <id name="id">
             <generator class="increment"/>
         </id>
 
-        <property name="starred" column="starred" unique="false" not-null="true"/>
+        <property name="roleId" column="ROLE_ID" unique="true" not-null="true"/>
 
         <!-- Read-only association property -->
-        <many-to-one name="mindmap"
-                       column="MINDMAP_ID"
-                       not-null="true"
-                       class="com.wisemapping.model.MindMap"
-                  />
+        <many-to-one name="mindMap"
+                     column="MINDMAP_ID"
+                     not-null="true"
+                     class="com.wisemapping.model.MindMap"
+        />
 
         <many-to-one name="collaborator"
-                     column="COLLABORATOR_ID"
+                     column="COLABORATOR_ID"
                      not-null="true"
                      class="com.wisemapping.model.Collaborator"
-         />
+                />
     </class>
 
 </hibernate-mapping>

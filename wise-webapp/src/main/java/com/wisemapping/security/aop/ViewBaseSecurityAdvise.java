@@ -20,7 +20,7 @@ package com.wisemapping.security.aop;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import com.wisemapping.model.UserRole;
+import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.User;
 import com.wisemapping.model.MindMap;
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 public class ViewBaseSecurityAdvise
         extends BaseSecurityAdvice
         implements MethodInterceptor {
-    private UserRole grantedRole = UserRole.VIEWER;
+    private CollaborationRole grantedRole = CollaborationRole.VIEWER;
 
     public Object invoke(@NotNull MethodInvocation methodInvocation) throws Throwable {
         checkRole(methodInvocation);

@@ -36,17 +36,17 @@ public class MindmapServiceImpl
     private UserService userService;
     private Mailer mailer;
 
-    public boolean isAllowedToCollaborate(@NotNull User user, int mapId, @NotNull UserRole grantedRole) {
+    public boolean isAllowedToCollaborate(@NotNull User user, int mapId, @NotNull CollaborationRole grantedRole) {
         final MindMap map = mindmapManager.getMindmapById(mapId);
         return isAllowedToCollaborate(user, map, grantedRole);
     }
 
-    public boolean isAllowedToView(User user, int mapId, UserRole grantedRole) {
+    public boolean isAllowedToView(User user, int mapId, CollaborationRole grantedRole) {
         final MindMap map = mindmapManager.getMindmapById(mapId);
         return isAllowedToView(user, map, grantedRole);
     }
 
-    public boolean isAllowedToView(@NotNull User user, @NotNull MindMap map, @NotNull UserRole grantedRole) {
+    public boolean isAllowedToView(@NotNull User user, @NotNull MindMap map, @NotNull CollaborationRole grantedRole) {
         boolean result = false;
         if (map != null) {
             if (map.isPublic()) {
@@ -58,17 +58,17 @@ public class MindmapServiceImpl
         return result;
     }
 
-    public boolean isAllowedToCollaborate(@NotNull User user, @Nullable MindMap map, UserRole grantedRole) {
+    public boolean isAllowedToCollaborate(@NotNull User user, @Nullable MindMap map, CollaborationRole grantedRole) {
         boolean isAllowed = false;
         if (map != null) {
             if (map.getOwner().getId() == user.getId()) {
                 isAllowed = true;
             } else {
-                final Set<MindmapUser> users = map.getMindmapUsers();
-                UserRole rol = null;
-                for (MindmapUser mindmapUser : users) {
-                    if (mindmapUser.getCollaborator().getId() == user.getId()) {
-                        rol = mindmapUser.getRole();
+                final Set<Collaboration> users = map.getCollaborations();
+                CollaborationRole rol = null;
+                for (Collaboration collaboration : users) {
+                    if (collaboration.getCollaborator().getId() == user.getId()) {
+                        rol = collaboration.getRole();
                         break;
                     }
                 }
@@ -80,7 +80,7 @@ public class MindmapServiceImpl
         return isAllowed;
     }
 
-    public MindmapUser getMindmapUserBy(int mindmapId, User user) {
+    public Collaboration getMindmapUserBy(int mindmapId, User user) {
         return mindmapManager.getMindmapUserBy(mindmapId, user);
     }
 
@@ -92,7 +92,7 @@ public class MindmapServiceImpl
         return mindmapManager.getMindmapById(mindmapId);
     }
 
-    public List<MindmapUser> getMindmapUserByUser(@NotNull User user) {
+    public List<Collaboration> getMindmapUserByUser(@NotNull User user) {
         return mindmapManager.getMindmapUserByCollaborator(user.getId());
     }
 
@@ -113,10 +113,10 @@ public class MindmapServiceImpl
     }
 
     public void removeCollaboratorFromMindmap(@NotNull MindMap mindmap, long userId) {
-        // remove colaborator association
-        Set<MindmapUser> mindmapusers = mindmap.getMindmapUsers();
-        MindmapUser mindmapuserToDelete = null;
-        for (MindmapUser mindmapuser : mindmapusers) {
+        // remove collaborator association
+        Set<Collaboration> mindmapusers = mindmap.getCollaborations();
+        Collaboration mindmapuserToDelete = null;
+        for (Collaboration mindmapuser : mindmapusers) {
             if (mindmapuser.getCollaborator().getId() == userId) {
                 mindmapuserToDelete = mindmapuser;
                 break;
@@ -159,28 +159,28 @@ public class MindmapServiceImpl
 
         // Hack to reload dbuser ...
         final User dbUser = userService.getUserBy(user.getId());
-        final MindmapUser mindmapUser = new MindmapUser(UserRole.OWNER.ordinal(), dbUser, map);
-        map.getMindmapUsers().add(mindmapUser);
+        final Collaboration collaboration = new Collaboration(CollaborationRole.OWNER, dbUser, map);
+        map.getCollaborations().add(collaboration);
 
         mindmapManager.addMindmap(dbUser, map);
     }
 
-    public void addCollaborators(MindMap mindmap, String[] collaboratorEmails, UserRole role, ColaborationEmail email)
+    public void addCollaborators(MindMap mindmap, String[] collaboratorEmails, CollaborationRole role, ColaborationEmail email)
             throws InvalidColaboratorException {
         if (collaboratorEmails != null && collaboratorEmails.length > 0) {
             final Collaborator owner = mindmap.getOwner();
-            final Set<MindmapUser> mindmapUsers = mindmap.getMindmapUsers();
+            final Set<Collaboration> collaborations = mindmap.getCollaborations();
 
             for (String colaboratorEmail : collaboratorEmails) {
                 if (owner.getEmail().equals(colaboratorEmail)) {
                     throw new InvalidColaboratorException("The user " + owner.getEmail() + " is the owner");
                 }
-                MindmapUser mindmapUser = getMindmapUserBy(colaboratorEmail, mindmapUsers);
-                if (mindmapUser == null) {
+                Collaboration collaboration = getMindmapUserBy(colaboratorEmail, collaborations);
+                if (collaboration == null) {
                     addCollaborator(colaboratorEmail, role, mindmap, email);
-                } else if (mindmapUser.getRole() != role) {
+                } else if (collaboration.getRole() != role) {
                     // If the relationship already exists and the role changed then only update the role
-                    mindmapUser.setRoleId(role.ordinal());
+                    collaboration.setRoleId(role.ordinal());
                     mindmapManager.updateMindmap(mindmap, false);
                 }
             }
@@ -222,10 +222,6 @@ public class MindmapServiceImpl
         }
     }
 
-    public void addView(int mapId) {
-        mindmapManager.addView(mapId);
-    }
-
     public List<MindMapHistory> getMindMapHistory(int mindmapId) {
         return mindmapManager.getHistoryFrom(mindmapId);
     }
@@ -237,19 +233,19 @@ public class MindmapServiceImpl
         updateMindmap(map, false);
     }
 
-    private MindmapUser getMindmapUserBy(String email, Set<MindmapUser> mindmapUsers) {
-        MindmapUser mindmapUser = null;
+    private Collaboration getMindmapUserBy(String email, Set<Collaboration> collaborations) {
+        Collaboration collaboration = null;
 
-        for (MindmapUser user : mindmapUsers) {
+        for (Collaboration user : collaborations) {
             if (user.getCollaborator().getEmail().equals(email)) {
-                mindmapUser = user;
+                collaboration = user;
                 break;
             }
         }
-        return mindmapUser;
+        return collaboration;
     }
 
-    private void addCollaborator(String colaboratorEmail, UserRole role, MindMap mindmap, ColaborationEmail email) {
+    private void addCollaborator(String colaboratorEmail, CollaborationRole role, MindMap mindmap, ColaborationEmail email) {
 
         Collaborator collaborator = mindmapManager.getCollaboratorBy(colaboratorEmail);
         if (collaborator == null) {
@@ -259,8 +255,8 @@ public class MindmapServiceImpl
             mindmapManager.addCollaborator(collaborator);
         }
 
-        final MindmapUser newMindmapUser = new MindmapUser(role.ordinal(), collaborator, mindmap);
-        mindmap.getMindmapUsers().add(newMindmapUser);
+        final Collaboration newCollaboration = new Collaboration(role, collaborator, mindmap);
+        mindmap.getCollaborations().add(newCollaboration);
 
         mindmapManager.saveMindmap(mindmap);
 

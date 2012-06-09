@@ -34,6 +34,7 @@ public class MindmapManagerImpl
         extends HibernateDaoSupport
         implements MindmapManager {
 
+    @Override
     public Collaborator getCollaboratorBy(final String email) {
         final Collaborator collaborator;
         final List<Collaborator> collaborators = getHibernateTemplate().find("from com.wisemapping.model.Collaborator collaborator where email=?", email);
@@ -46,10 +47,12 @@ public class MindmapManagerImpl
         return collaborator;
     }
 
+    @Override
     public List<MindMap> search(MindMapCriteria criteria) {
         return search(criteria, -1);
     }
 
+    @Override
     public List<MindMapHistory> getHistoryFrom(int mindmapId) {
         final Criteria hibernateCriteria = getSession().createCriteria(MindMapHistory.class);
         hibernateCriteria.add(Restrictions.eq("mindmapId", mindmapId));
@@ -61,10 +64,12 @@ public class MindmapManagerImpl
         return list.subList(0, (10 < list.size() ? 10 : list.size()));
     }
 
+    @Override
     public MindMapHistory getHistory(int historyId) {
-        return (MindMapHistory) getHibernateTemplate().get(MindMapHistory.class, historyId);
+        return getHibernateTemplate().get(MindMapHistory.class, historyId);
     }
 
+    @Override
     public List<MindMap> search(MindMapCriteria criteria, int maxResult) {
         final Criteria hibernateCriteria = getSession().createCriteria(MindMap.class);
         //always search public maps
@@ -103,22 +108,25 @@ public class MindmapManagerImpl
         return hibernateCriteria.list();
     }
 
+    @Override
     public Collaborator getCollaboratorBy(long id) {
-        return (Collaborator) getHibernateTemplate().get(Collaborator.class, id);
+        return getHibernateTemplate().get(Collaborator.class, id);
     }
 
-    public List<MindmapUser> getMindmapUserByCollaborator(final long colaboratorId) {
-        return getHibernateTemplate().find("from com.wisemapping.model.MindmapUser mindmapUser where colaborator_id=?", colaboratorId);
+    @Override
+    public List<Collaboration> getMindmapUserByCollaborator(final long colaboratorId) {
+        return getHibernateTemplate().find("from com.wisemapping.model.Collaboration mindmapUser where colaborator_id=?", colaboratorId);
     }
 
-    public List<MindmapUser> getMindmapUserByRole(final UserRole userRole) {
-        return getHibernateTemplate().find("from com.wisemapping.model.MindmapUser mindmapUser where roleId=?", userRole.ordinal());
+    @Override
+    public List<Collaboration> getMindmapUserByRole(final CollaborationRole collaborationRole) {
+        return getHibernateTemplate().find("from com.wisemapping.model.Collaboration mindmapUser where roleId=?", collaborationRole.ordinal());
     }
+    @Override
+    public Collaboration getMindmapUserBy(final int mindmapId, final User user) {
+        final Collaboration result;
 
-    public MindmapUser getMindmapUserBy(final int mindmapId, final User user) {
-        final MindmapUser result;
-
-        final List<MindmapUser> mindMaps = getHibernateTemplate().find("from com.wisemapping.model.MindmapUser mindmapUser where mindMap.id=? and colaborator_id=?", new Object[]{mindmapId, user.getId()});
+        final List<Collaboration> mindMaps = getHibernateTemplate().find("from com.wisemapping.model.Collaboration mindmapUser where mindMap.id=? and colaborator_id=?", new Object[]{mindmapId, user.getId()});
         if (mindMaps != null && !mindMaps.isEmpty()) {
             result = mindMaps.get(0);
         } else {
@@ -128,27 +136,33 @@ public class MindmapManagerImpl
         return result;
     }
 
+    @Override
     public void addCollaborator(Collaborator collaborator) {
         assert collaborator != null : "ADD MINDMAP COLABORATOR: Collaborator is required!";
         getHibernateTemplate().save(collaborator);
     }
 
-    public void removeMindmapUser(MindmapUser mindmapUser) {
-        getHibernateTemplate().delete(mindmapUser);
+    @Override
+    public void removeMindmapUser(Collaboration collaboration) {
+        getHibernateTemplate().delete(collaboration);
     }
 
+    @Override
     public void removeCollaborator(Collaborator collaborator) {
         getHibernateTemplate().delete(collaborator);
     }
 
+    @Override
     public List<MindMap> getAllMindmaps() {
         return getHibernateTemplate().find("from com.wisemapping.model.MindMap wisemapping");
     }
 
+    @Override
     public MindMap getMindmapById(int mindmapId) {
         return getHibernateTemplate().get(MindMap.class, mindmapId);
     }
 
+    @Override
     public MindMap getMindmapByTitle(final String title, final User user) {
         final MindMap result;
         List<MindMap> mindMaps = getHibernateTemplate().find("from com.wisemapping.model.MindMap wisemapping where title=? and creator=?", new Object[]{title, user.getUsername()});
@@ -160,19 +174,18 @@ public class MindmapManagerImpl
         return result;
     }
 
-    public void addView(int mapId) {
-
-    }
-
+    @Override
     public void addMindmap(User user, MindMap mindMap) {
         saveMindmap(mindMap);
     }
 
+    @Override
     public void saveMindmap(MindMap mindMap) {
         assert mindMap != null : "Save Mindmap: Mindmap is required!";
         getSession().save(mindMap);
     }
 
+    @Override
     public void updateMindmap(@NotNull MindMap mindMap, boolean saveHistory) {
         assert mindMap != null : "Save Mindmap: Mindmap is required!";
         getHibernateTemplate().saveOrUpdate(mindMap);
@@ -181,11 +194,12 @@ public class MindmapManagerImpl
         }
     }
 
+    @Override
     public void removeMindmap(MindMap mindMap) {
         getHibernateTemplate().delete(mindMap);
     }
 
-    public void saveHistory(MindMap mindMap) {
+    private void saveHistory(MindMap mindMap) {
         final MindMapHistory history = new MindMapHistory();
 
         history.setXml(mindMap.getXml());

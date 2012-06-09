@@ -18,7 +18,7 @@
 
 package com.wisemapping.security.aop;
 
-import com.wisemapping.model.UserRole;
+import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.User;
 import com.wisemapping.model.MindMap;
 
@@ -30,7 +30,7 @@ public class UpdateSecurityAdvise
         extends BaseSecurityAdvice
         implements MethodInterceptor {
 
-    private UserRole grantedRole = UserRole.COLLABORATOR;
+    private CollaborationRole grantedRole = CollaborationRole.EDITOR;
 
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
         checkRole(methodInvocation);
