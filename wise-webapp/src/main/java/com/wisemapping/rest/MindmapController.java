@@ -27,7 +27,7 @@ import com.wisemapping.importer.ImporterFactory;
 import com.wisemapping.model.*;
 import com.wisemapping.rest.model.*;
 import com.wisemapping.security.Utils;
-import com.wisemapping.service.InvalidCollaborationException;
+import com.wisemapping.service.CollaborationException;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.validator.MapInfoValidator;
 import org.jetbrains.annotations.NotNull;
@@ -205,7 +205,7 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/collabs", consumes = {"application/json", "application/xml"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateCollabs(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws InvalidCollaborationException {
+    public void updateCollabs(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws CollaborationException {
         final MindMap mindMap = mindmapService.getMindmapById(id);
         final User user = Utils.getUser();
         if (!mindMap.getOwner().equals(user)) {
@@ -215,16 +215,16 @@ public class MindmapController extends BaseController {
         // Compare one by one if some of the elements has been changed ....
         final Set<Collaboration> collabsToRemove = new HashSet<Collaboration>(mindMap.getCollaborations());
         for (RestCollaboration restCollab : restCollabs.getCollaborations()) {
-            final Collaboration collaboration = mindMap.findCollaborationByEmail(restCollab.getEmail());
+            final Collaboration collaboration = mindMap.findCollaboration(restCollab.getEmail());
+            // Validate role format ...
+            String roleStr = restCollab.getRole();
+            if (roleStr == null) {
+                throw new IllegalArgumentException(roleStr + " is not a valid role");
+            }
 
-            if (CollaborationRole.valueOf(restCollab.getRole()) != CollaborationRole.OWNER) {
-
-                // Validate role ...
-                String roleStr = restCollab.getRole();
-                if (roleStr == null) {
-                    throw new IllegalArgumentException(roleStr + " is not a valid role");
-                }
-                final CollaborationRole role = CollaborationRole.valueOf(roleStr.toUpperCase());
+            // Is owner ?
+            final CollaborationRole role = CollaborationRole.valueOf(roleStr.toUpperCase());
+            if (role != CollaborationRole.OWNER) {
                 mindmapService.addCollaboration(mindMap, restCollab.getEmail(), role);
             }
 

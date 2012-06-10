@@ -1,6 +1,7 @@
 package com.wisemapping.rest.model;
 
 
+import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.User;
@@ -161,7 +162,7 @@ public class RestMindmap {
         return result;
     }
 
-    public void setStarred(boolean value) {
+    public void setStarred(boolean value) throws WiseMappingException {
         if (collaborator != null) {
             mindmap.setStarred(collaborator, value);
         }

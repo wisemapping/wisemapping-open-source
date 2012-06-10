@@ -42,9 +42,9 @@ public interface MindmapService {
     public void addMindmap(MindMap map, User user) throws WiseMappingException;
 
     public void addCollaboration(@NotNull MindMap mindmap, @NotNull String email, @NotNull CollaborationRole role)
-            throws InvalidCollaborationException;
+            throws CollaborationException;
 
-    public void removeCollaboration(@NotNull Collaboration collaboration);
+    public void removeCollaboration(@NotNull Collaboration collaboration) throws CollaborationException;
 
     public void addTags(MindMap mindmap, String tags);
 

@@ -23,14 +23,6 @@ import org.jetbrains.annotations.NotNull;
 public class CollaborationProperties {
     private long id;
     private boolean starred;
-    private Collaborator collaborator;
-    private MindMap mindmap;
-
-
-    public CollaborationProperties(@NotNull Collaborator collaborator, @NotNull MindMap mindmap) {
-        this.collaborator = collaborator;
-        this.mindmap = mindmap;
-    }
 
     public CollaborationProperties(){
 
@@ -43,13 +35,6 @@ public class CollaborationProperties {
     public void setStarred(boolean starred) {
         this.starred = starred;
     }
-    public Collaborator getCollaborator() {
-        return collaborator;
-    }
-
-    public void setCollaborator(Collaborator collaborator) {
-        this.collaborator = collaborator;
-    }
 
     public long getId() {
         return id;
@@ -57,13 +42,5 @@ public class CollaborationProperties {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public MindMap getMindmap() {
-        return mindmap;
-    }
-
-    public void setMindmap(@NotNull MindMap mindmap) {
-        this.mindmap = mindmap;
     }
 }

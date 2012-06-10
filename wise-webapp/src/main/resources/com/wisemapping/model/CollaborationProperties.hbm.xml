@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="com.wisemapping.model.CollaborationProperties" table="COLLABORATION_PROPERTIES">
+        <id name="id">
+            <generator class="increment"/>
+        </id>
+        <property name="starred" column="starred" unique="false" not-null="true"/>
+    </class>
+
+</hibernate-mapping>

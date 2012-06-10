@@ -18,7 +18,9 @@
 
 package com.wisemapping.service;
 
-public class InvalidUserEmailException  extends Exception
+import com.wisemapping.exceptions.WiseMappingException;
+
+public class InvalidUserEmailException  extends WiseMappingException
 {
     public InvalidUserEmailException(String msg)
     {

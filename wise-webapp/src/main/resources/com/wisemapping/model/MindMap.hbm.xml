@@ -28,14 +28,6 @@
             <key column="MINDMAP_ID" not-null="true"/>
             <one-to-many class="com.wisemapping.model.Collaboration"/>
         </set>
-
-        <set name="collaborationProperties"
-             cascade="all, delete-orphan"
-             inverse="true">
-            <key column="MINDMAP_ID" not-null="true"/>
-            <one-to-many class="com.wisemapping.model.CollaborationProperties"/>
-        </set>
-
     </class>
 
 </hibernate-mapping>

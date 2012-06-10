@@ -18,10 +18,12 @@
 
 package com.wisemapping.service;
 
-public class InvalidCollaborationException
-    extends Exception
+import com.wisemapping.exceptions.WiseMappingException;
+
+public class CollaborationException
+    extends WiseMappingException
 {
-    public InvalidCollaborationException(String msg)
+    public CollaborationException(String msg)
     {
         super(msg);
     }

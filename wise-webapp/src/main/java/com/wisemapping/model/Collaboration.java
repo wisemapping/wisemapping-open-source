@@ -22,10 +22,11 @@ import org.jetbrains.annotations.NotNull;
 
 public class Collaboration {
 
-    private int id;
+    private long id;
     private CollaborationRole role;
     private MindMap mindMap;
     private Collaborator collaborator;
+    private CollaborationProperties collaborationProperties;
 
     public Collaboration() {
     }
@@ -40,11 +41,11 @@ public class Collaboration {
         collaborator.addMindmapUser(this);
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -91,5 +92,13 @@ public class Collaboration {
 
     public void setCollaborator(@NotNull Collaborator collaborator) {
         this.collaborator = collaborator;
+    }
+
+    public CollaborationProperties getCollaborationProperties() {
+        return collaborationProperties;
+    }
+
+    public void setCollaborationProperties(@NotNull CollaborationProperties collaborationProperties) {
+        this.collaborationProperties = collaborationProperties;
     }
 }

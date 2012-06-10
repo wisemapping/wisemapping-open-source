@@ -74,20 +74,6 @@ public class MindMapBean {
         return mindMap.getLastModifierUser();
     }
 
-    public String getLastEditDate() {
-        String result = "";
-        Calendar lastEditTime = Calendar.getInstance();
-        lastEditTime.setTime(mindMap.getLastModificationTime().getTime());
-        Calendar now = Calendar.getInstance();
-        int dayDiff = getDaysBetween(now, lastEditTime);
-        if (dayDiff > 0) {
-            result = dayDiff + " days ago";
-        } else if (dayDiff == 0) {
-            result = "today";
-        }
-        return result;
-    }
-
     public String getLastEditTime() {
         return DateFormat.getInstance().format(mindMap.getLastModificationTime().getTime());
     }
@@ -114,32 +100,6 @@ public class MindMapBean {
             }
         }
         return col;
-    }
-
-    private static int getDaysBetween(java.util.Calendar d1, java.util.Calendar d2) {
-        if (d1.after(d2)) {  // swap dates so that d1 is start and d2 is end
-            java.util.Calendar swap = d1;
-            d1 = d2;
-            d2 = swap;
-        }
-        int days = d2.get(java.util.Calendar.DAY_OF_YEAR) -
-                d1.get(java.util.Calendar.DAY_OF_YEAR);
-        int y2 = d2.get(java.util.Calendar.YEAR);
-        if (d1.get(java.util.Calendar.YEAR) != y2) {
-            d1 = (java.util.Calendar) d1.clone();
-            do {
-                days += d1.getActualMaximum(java.util.Calendar.DAY_OF_YEAR);
-                d1.add(java.util.Calendar.YEAR, 1);
-            } while (d1.get(java.util.Calendar.YEAR) != y2);
-        }
-        return days;
-    }
-
-    public static class MindMapBeanComparator implements Comparator<MindMapBean> {
-
-        public int compare(MindMapBean o1, MindMapBean o2) {
-            return o1.getLastEditTime().compareTo(o2.getLastEditTime());
-        }
     }
 
     public int getCountColaborators() {

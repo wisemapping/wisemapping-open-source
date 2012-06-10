@@ -114,14 +114,18 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public void removeCollaboration(@NotNull Collaboration collaboration) {
+    public void removeCollaboration(@NotNull Collaboration collaboration) throws CollaborationException {
         // remove collaborator association
         final MindMap mindMap = collaboration.getMindMap();
-        Set<Collaboration> collaborations = mindMap.getCollaborations();
+        final Set<Collaboration> collaborations = mindMap.getCollaborations();
 
         // When you delete an object from hibernate you have to delete it from *all* collections it exists in...
-        collaborations.remove(collaboration);
+        if (mindMap.getOwner().getEmail().equals(collaboration.getCollaborator().getEmail())) {
+            throw new CollaborationException("User is the creator and must have ownership permissions");
+        }
+
         mindmapManager.removeCollaboration(collaboration);
+        collaborations.remove(collaboration);
     }
 
     @Override
@@ -129,7 +133,7 @@ public class MindmapServiceImpl
         if (mindmap.getOwner().equals(user)) {
             mindmapManager.removeMindmap(mindmap);
         } else {
-            final Collaboration collaboration = mindmap.findCollaborationByEmail(user.getEmail());
+            final Collaboration collaboration = mindmap.findCollaboration(user);
             if (collaboration != null) {
                 this.removeCollaboration(collaboration);
             }
@@ -157,7 +161,7 @@ public class MindmapServiceImpl
         map.setLastModificationTime(creationTime);
         map.setOwner(user);
 
-        // Hack to reload dbuser ...
+        // Add map creator with owner permissions ...
         final User dbUser = userService.getUserBy(user.getId());
         final Collaboration collaboration = new Collaboration(CollaborationRole.OWNER, dbUser, map);
         map.getCollaborations().add(collaboration);
@@ -167,13 +171,18 @@ public class MindmapServiceImpl
 
     @Override
     public void addCollaboration(@NotNull MindMap mindmap, @NotNull String email, @NotNull CollaborationRole role)
-            throws InvalidCollaborationException {
+            throws CollaborationException {
 
         // Validate
         final Collaborator owner = mindmap.getOwner();
         final Set<Collaboration> collaborations = mindmap.getCollaborations();
         if (owner.getEmail().equals(email)) {
-            throw new InvalidCollaborationException("The user " + owner.getEmail() + " is the owner");
+            throw new CollaborationException("The user " + owner.getEmail() + " is the owner");
+        }
+
+        if (role == CollaborationRole.OWNER) {
+            throw new CollaborationException("Ownership can not be modified");
+
         }
 
         Collaboration collaboration = getCollaborationBy(email, collaborations);

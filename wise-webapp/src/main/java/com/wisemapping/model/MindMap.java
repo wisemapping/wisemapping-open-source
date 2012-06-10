@@ -18,6 +18,7 @@
 
 package com.wisemapping.model;
 
+import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.util.ZipUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -43,7 +44,6 @@ public class MindMap {
     private String lastModifierUser;
 
     private Set<Collaboration> collaborations = new HashSet<Collaboration>();
-    private Set<CollaborationProperties> collaborationProperties = new HashSet<CollaborationProperties>();
 
     private User owner;
     private String properties;
@@ -125,7 +125,12 @@ public class MindMap {
     }
 
     @Nullable
-    public Collaboration findCollaborationByEmail(@NotNull String email) {
+    public Collaboration findCollaboration(@NotNull Collaborator collaborator) {
+        return this.findCollaboration(collaborator.getEmail());
+    }
+
+    @Nullable
+    public Collaboration findCollaboration(@NotNull String email) {
         Collaboration result = null;
         for (Collaboration collaboration : collaborations) {
             if (collaboration.getCollaborator().getEmail().equals(email)) {
@@ -235,38 +240,25 @@ public class MindMap {
         return owner;
     }
 
-    public Set<CollaborationProperties> getCollaborationProperties() {
-        return collaborationProperties;
-    }
-
-    public void setCollaborationProperties(@NotNull Set<CollaborationProperties> collaborationProperties) {
-        this.collaborationProperties = collaborationProperties;
-    }
-
     private CollaborationProperties findUserProperty(@NotNull Collaborator collaborator) {
-        final Set<CollaborationProperties> collaborationProp = this.getCollaborationProperties();
-        CollaborationProperties result = null;
-        for (CollaborationProperties collaboratorProperty : collaborationProp) {
-            final Collaborator propCollab = collaboratorProperty.getCollaborator();
-            if (propCollab != null && propCollab.getEmail().equals(collaborator.getEmail())) {
-                result = collaboratorProperty;
-                break;
-            }
-        }
-        return result;
+        final Collaboration collaboration = this.findCollaboration(collaborator);
+        return collaboration != null ? collaboration.getCollaborationProperties() : null;
     }
 
-    public void setStarred(@NotNull Collaborator collaborator, boolean value) {
+    public void setStarred(@NotNull Collaborator collaborator, boolean value) throws WiseMappingException {
         if (collaborator == null) {
             throw new IllegalStateException("Collaborator can not be null");
         }
 
-        CollaborationProperties collaboratorProperties = this.findUserProperty(collaborator);
-        if (collaboratorProperties == null) {
-            collaboratorProperties = new CollaborationProperties(collaborator, this);
+        final Collaboration collaboration = this.findCollaboration(collaborator);
+        if(collaboration==null){
+            throw new WiseMappingException("User is not collaborator");
         }
-        collaboratorProperties.setStarred(value);
-        this.getCollaborationProperties().add(collaboratorProperties);
+
+        if (collaboration.getCollaborationProperties() == null) {
+            collaboration.setCollaborationProperties(new CollaborationProperties());
+        }
+        collaboration.getCollaborationProperties().setStarred(value);
     }
 
     public boolean isStarred(@NotNull Collaborator collaborator) {
