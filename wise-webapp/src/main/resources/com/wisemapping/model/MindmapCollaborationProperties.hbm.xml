@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
 
-    <class name="com.wisemapping.model.MindmapCollaborationProperties" table="MINDMAP_COLLABORATION_PROPERTIES">
+    <class name="com.wisemapping.model.CollaborationProperties" table="MINDMAP_COLLABORATION_PROPERTIES">
         <id name="id">
             <generator class="increment"/>
         </id>

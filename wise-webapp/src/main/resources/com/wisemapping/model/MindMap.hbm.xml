@@ -11,7 +11,7 @@
         </id>
         <property name="title"/>
         <property name="public"/>
-        <property name="description"/>        
+        <property name="description"/>
         <property name="zippedXml" column="XML"/>
         <property name="lastModifierUser" column="last_editor"/>
         <property name="lastModificationTime" column="edition_date"/>
@@ -23,17 +23,17 @@
         <many-to-one name="owner" column="owner_id" unique="true" not-null="true"/>
 
         <set name="collaborations"
-                cascade="all, delete-orphan"
-                inverse="true">
-            <key column="MINDMAP_ID" not-null="true"/>                
+             cascade="all,delete-orphan"
+             inverse="true">
+            <key column="MINDMAP_ID" not-null="true"/>
             <one-to-many class="com.wisemapping.model.Collaboration"/>
         </set>
 
-         <set name="collaboratorProperties"
-                cascade="all, delete-orphan"
-                inverse="true">
+        <set name="collaborationProperties"
+             cascade="all, delete-orphan"
+             inverse="true">
             <key column="MINDMAP_ID" not-null="true"/>
-            <one-to-many class="com.wisemapping.model.MindmapCollaborationProperties"/>
+            <one-to-many class="com.wisemapping.model.CollaborationProperties"/>
         </set>
 
     </class>

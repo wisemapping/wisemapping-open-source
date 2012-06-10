@@ -39,11 +39,11 @@ public class RestMindmap {
     }
 
     public RestMindmap() {
-        this(new MindMap(), Utils.getUser());
+        this(new MindMap(), null);
 
     }
 
-    public RestMindmap(@NotNull MindMap mindmap, @NotNull Collaborator collaborator) {
+    public RestMindmap(@NotNull MindMap mindmap, @Nullable Collaborator collaborator) {
         this.mindmap = mindmap;
         this.collaborator = collaborator;
     }
@@ -131,7 +131,8 @@ public class RestMindmap {
     }
 
     public String getOwner() {
-        return mindmap.getOwner().getEmail();
+        final User owner = mindmap.getOwner();
+        return owner != null ? owner.getEmail() : null;
     }
 
     public void setCreator(String creatorUser) {

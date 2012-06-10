@@ -61,7 +61,7 @@
         return role;
     }
 
-    function addCollaborator(email, role) {
+    function addCollaboration(email, role) {
         // Add row to the table ...
         var tableElem = $("#collabsTable");
         var rowTemplate = '\
@@ -106,17 +106,24 @@
     };
 
     $(function() {
-        var loadedCollabs = [
-            {email:'paulo1@pveiga.com.ar',role:'viewer'},
-            {email:'paulo2@pveiga.com.ar',role:'editor'},
-            {email:'paulo3@pveiga.com.ar',role:'editor'}
-        ];
+        jQuery.ajax("service/maps/${mindmap.id}/collabs", {
+            async:false,
+            dataType: 'json',
+            type: 'GET',
+            contentType:"text/plain",
+            success : function(data, textStatus, jqXHR) {
+                // Init table will all values ...
+                var collabs = data.collaborations;
+                for (var i = 0; i < collabs.length; i++) {
+                    var collab = collabs[i];
+                    addCollaboration(collab.email, collab.role);
+                }
 
-        // Init table will all values ...
-        for (var i = 0; i < loadedCollabs.length; i++) {
-            var collab = loadedCollabs[i];
-            addCollaborator(collab.email, collab.role);
-        }
+            },
+            error:function(jqXHR, textStatus, errorThrown) {
+                alert(textStatus);
+            }
+        });
     });
 
     $("#addBtn").click(function(event) {
@@ -164,7 +171,7 @@
             $("#collabEmails").val("");
             for (i = 0; i < emails.length; i++) {
                 email = emails[i];
-                addCollaborator(email, role);
+                addCollaboration(email, role);
             }
         } else {
 
@@ -190,20 +197,38 @@
     }
 
     function buildCollabModel() {
-        return $('#collabsTable tr').map(function() {
+        var collabs = $('#collabsTable tr').map(function() {
             return {
                 email: $(this).attr('data-collab'),
                 role: $(this).attr('data-role')
             };
         });
+        collabs = jQuery.makeArray(collabs);
 
+        return {
+            count:collabs.length,
+            collaborations:collabs
+        };
     }
 
     // Hook for interaction with the main parent window ...
     var submitDialogForm = function() {
 
         console.log(buildCollabModel());
+        jQuery.ajax("service/maps/${mindmap.id}/collabs", {
+            async:false,
+            dataType: 'json',
+            type: 'PUT',
+            data: JSON.stringify(buildCollabModel()),
+            contentType:"application/json",
+            success : function(data, textStatus, jqXHR) {
 
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert(textStatus);
+            }
+
+        });
     }
 </script>
 

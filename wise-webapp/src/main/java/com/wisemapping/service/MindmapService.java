@@ -35,24 +35,22 @@ public interface MindmapService {
 
     public MindMap getMindmapByTitle(String title, User user);
 
-    public List<Collaboration> getMindmapUserByUser(User user);
+    public List<Collaboration> getCollaborationsBy(@NotNull User user);
 
     public void updateMindmap(MindMap mindMap, boolean saveHistory) throws WiseMappingException;
 
     public void addMindmap(MindMap map, User user) throws WiseMappingException;
 
-    public void addCollaborators(MindMap mindmap, String[] collaboratorEmails, CollaborationRole role, ColaborationEmail email)
-            throws InvalidColaboratorException;
+    public void addCollaboration(@NotNull MindMap mindmap, @NotNull String email, @NotNull CollaborationRole role)
+            throws InvalidCollaborationException;
+
+    public void removeCollaboration(@NotNull Collaboration collaboration);
 
     public void addTags(MindMap mindmap, String tags);
-
-    public void removeCollaboratorFromMindmap(@NotNull final MindMap mindmap, long colaboratorId);
 
     public void removeMindmap(@NotNull final MindMap mindmap, @NotNull final User user) throws WiseMappingException;
 
     public List<MindMap> search(MindMapCriteria criteria);
-
-    public List<MindMap> getPublicMaps(int cant);
 
     public List<MindMapHistory> getMindMapHistory(int mindmapId);
 

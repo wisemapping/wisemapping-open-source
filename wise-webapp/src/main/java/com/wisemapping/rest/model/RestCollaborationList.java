@@ -10,9 +10,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @XmlRootElement(name = "collaboration")
 @XmlAccessorType(XmlAccessType.PROPERTY)
@@ -25,7 +23,7 @@ public class RestCollaborationList {
     private List<RestCollaboration> collaborations;
 
     public RestCollaborationList() {
-
+        collaborations = new ArrayList<RestCollaboration>();
     }
 
     public int getCount() {
@@ -36,9 +34,13 @@ public class RestCollaborationList {
 
     }
 
-    @XmlElement(name = "collaborate")
+    @XmlElement(name = "collaborations")
     public List<RestCollaboration> getCollaborations() {
         return collaborations;
+    }
+
+    public void addCollaboration(@NotNull RestCollaboration collaboration) {
+        collaborations.add(collaboration);
     }
 
     public void setCollaborations(@NotNull List<RestCollaboration> collaborations) {

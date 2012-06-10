@@ -11,6 +11,7 @@ import com.wisemapping.service.MindmapService;
 import com.wisemapping.view.MindMapBean;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,10 +27,7 @@ public class MindmapController {
 
     private String baseUrl;
 
-    MindmapController() {
-
-    }
-
+    @Qualifier("mindmapService")
     @Autowired
     private MindmapService mindmapService;
 
@@ -186,7 +184,7 @@ public class MindmapController {
     }
 
     private List<MindMapBean> findMindMapBeanList(@NotNull User user) {
-        final List<Collaboration> userMindmaps = mindmapService.getMindmapUserByUser(user);
+        final List<Collaboration> userMindmaps = mindmapService.getCollaborationsBy(user);
 
         final List<MindMapBean> mindMapBeans = new ArrayList<MindMapBean>(userMindmaps.size());
         for (Collaboration mindmap : userMindmaps) {

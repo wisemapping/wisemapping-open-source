@@ -10,7 +10,6 @@
     <definition name="mindmapList" page="/jsp/mindmapList.jsp"/>
     <definition name="mindmapEmbedded" page="/jsp/mindmapEmbed.jsp"/>
     <definition name="mindmapEditor" page="/jsp/mindmapEditor.jsp"/>
-    <definition name="mindmapCooker" page="/jsp/mindmapCooker.jsp"/>
     <definition name="mindmapPrint" page="/jsp/mindmapPrint.jsp"/>
 
     <!-- Template Declaration -->
@@ -85,12 +84,6 @@
         <put name="body" value="/jsp/login.jsp"/>
     </definition>
 
-    <definition name="mindmapPublicView" extends="pageTemplate">
-        <put name="title" value="PUBLIC_MAP_VIEW"/>
-        <put name="body" value="/jsp/mindmapPublicView.jsp"/>
-    </definition>
-
-
     <!-- Dialog Forms -->
 
     <definition name="mindmapDetail" extends="dialogTemplate">
@@ -150,12 +143,6 @@
         <put name="title" value=""/>
         <put name="details" value=""/>
         <put name="body" value="/jsp/mindmapShare.jsp"/>
-    </definition>
-
-    <definition name="mindmapCollaborator" extends="dialogTemplate">
-        <put name="title" value=""/>
-        <put name="details" value=""/>
-        <put name="body" value="/jsp/mindmapCollaborator.jsp"/>
     </definition>
 
     <definition name="keyboard" extends="dialogTemplate">

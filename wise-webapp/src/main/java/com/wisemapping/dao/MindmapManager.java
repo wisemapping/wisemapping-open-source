@@ -19,12 +19,13 @@
 package com.wisemapping.dao;
 
 import com.wisemapping.model.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public interface MindmapManager {
 
-    Collaborator getCollaboratorBy(String email);
+    Collaborator getCollaboratorBy(@NotNull String email);
 
     Collaborator getCollaboratorBy(long id);
     
@@ -48,11 +49,11 @@ public interface MindmapManager {
 
     void updateMindmap(MindMap mindMap, boolean saveHistory);
 
-    void removeCollaborator(Collaborator collaborator);
+    void removeCollaborator(@NotNull Collaborator collaborator);
 
     void removeMindmap(MindMap mindap);
 
-    void removeMindmapUser(Collaboration collaboration);
+    void removeCollaboration(Collaboration collaboration);
 
     public List<MindMap> search(MindMapCriteria criteria);
 

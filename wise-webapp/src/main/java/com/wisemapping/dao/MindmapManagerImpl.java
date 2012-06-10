@@ -122,6 +122,7 @@ public class MindmapManagerImpl
     public List<Collaboration> getMindmapUserByRole(final CollaborationRole collaborationRole) {
         return getHibernateTemplate().find("from com.wisemapping.model.Collaboration mindmapUser where roleId=?", collaborationRole.ordinal());
     }
+
     @Override
     public Collaboration getMindmapUserBy(final int mindmapId, final User user) {
         final Collaboration result;
@@ -138,17 +139,17 @@ public class MindmapManagerImpl
 
     @Override
     public void addCollaborator(Collaborator collaborator) {
-        assert collaborator != null : "ADD MINDMAP COLABORATOR: Collaborator is required!";
+        assert collaborator != null : "ADD MINDMAP COLLABORATOR: Collaborator is required!";
         getHibernateTemplate().save(collaborator);
     }
 
     @Override
-    public void removeMindmapUser(Collaboration collaboration) {
+    public void removeCollaboration(Collaboration collaboration) {
         getHibernateTemplate().delete(collaboration);
     }
 
     @Override
-    public void removeCollaborator(Collaborator collaborator) {
+    public void removeCollaborator(@NotNull Collaborator collaborator) {
         getHibernateTemplate().delete(collaborator);
     }
 

@@ -84,18 +84,22 @@ public class MindmapServiceImpl
         return mindmapManager.getMindmapUserBy(mindmapId, user);
     }
 
+    @Override
     public MindMap getMindmapByTitle(String title, User user) {
         return mindmapManager.getMindmapByTitle(title, user);
     }
 
+    @Override
     public MindMap getMindmapById(int mindmapId) {
         return mindmapManager.getMindmapById(mindmapId);
     }
 
-    public List<Collaboration> getMindmapUserByUser(@NotNull User user) {
+    @Override
+    public List<Collaboration> getCollaborationsBy(@NotNull User user) {
         return mindmapManager.getMindmapUserByCollaborator(user.getId());
     }
 
+    @Override
     public void updateMindmap(MindMap mindMap, boolean saveHistory) throws WiseMappingException {
         if (mindMap.getTitle() == null || mindMap.getTitle().length() == 0) {
             throw new WiseMappingException("The tile can not be empty");
@@ -104,39 +108,35 @@ public class MindmapServiceImpl
         mindmapManager.updateMindmap(mindMap, saveHistory);
     }
 
-    public List<MindMap> getPublicMaps(int cant) {
-        return mindmapManager.search(null, cant);
-    }
-
+    @Override
     public List<MindMap> search(MindMapCriteria criteria) {
         return mindmapManager.search(criteria);
     }
 
-    public void removeCollaboratorFromMindmap(@NotNull MindMap mindmap, long userId) {
+    @Override
+    public void removeCollaboration(@NotNull Collaboration collaboration) {
         // remove collaborator association
-        Set<Collaboration> mindmapusers = mindmap.getCollaborations();
-        Collaboration mindmapuserToDelete = null;
-        for (Collaboration mindmapuser : mindmapusers) {
-            if (mindmapuser.getCollaborator().getId() == userId) {
-                mindmapuserToDelete = mindmapuser;
-                break;
-            }
-        }
-        if (mindmapuserToDelete != null) {
-            // When you delete an object from hibernate you have to delete it from *all* collections it exists in...
-            mindmapusers.remove(mindmapuserToDelete);
-            mindmapManager.removeMindmapUser(mindmapuserToDelete);
-        }
+        final MindMap mindMap = collaboration.getMindMap();
+        Set<Collaboration> collaborations = mindMap.getCollaborations();
+
+        // When you delete an object from hibernate you have to delete it from *all* collections it exists in...
+        collaborations.remove(collaboration);
+        mindmapManager.removeCollaboration(collaboration);
     }
 
+    @Override
     public void removeMindmap(@NotNull MindMap mindmap, @NotNull User user) throws WiseMappingException {
         if (mindmap.getOwner().equals(user)) {
             mindmapManager.removeMindmap(mindmap);
         } else {
-            this.removeCollaboratorFromMindmap(mindmap, user.getId());
+            final Collaboration collaboration = mindmap.findCollaborationByEmail(user.getEmail());
+            if (collaboration != null) {
+                this.removeCollaboration(collaboration);
+            }
         }
     }
 
+    @Override
     public void addMindmap(@NotNull MindMap map, @NotNull User user) throws WiseMappingException {
 
         final String title = map.getTitle();
@@ -165,29 +165,52 @@ public class MindmapServiceImpl
         mindmapManager.addMindmap(dbUser, map);
     }
 
-    public void addCollaborators(MindMap mindmap, String[] collaboratorEmails, CollaborationRole role, ColaborationEmail email)
-            throws InvalidColaboratorException {
-        if (collaboratorEmails != null && collaboratorEmails.length > 0) {
-            final Collaborator owner = mindmap.getOwner();
-            final Set<Collaboration> collaborations = mindmap.getCollaborations();
+    @Override
+    public void addCollaboration(@NotNull MindMap mindmap, @NotNull String email, @NotNull CollaborationRole role)
+            throws InvalidCollaborationException {
 
-            for (String colaboratorEmail : collaboratorEmails) {
-                if (owner.getEmail().equals(colaboratorEmail)) {
-                    throw new InvalidColaboratorException("The user " + owner.getEmail() + " is the owner");
-                }
-                Collaboration collaboration = getMindmapUserBy(colaboratorEmail, collaborations);
-                if (collaboration == null) {
-                    addCollaborator(colaboratorEmail, role, mindmap, email);
-                } else if (collaboration.getRole() != role) {
-                    // If the relationship already exists and the role changed then only update the role
-                    collaboration.setRoleId(role.ordinal());
-                    mindmapManager.updateMindmap(mindmap, false);
-                }
-            }
+        // Validate
+        final Collaborator owner = mindmap.getOwner();
+        final Set<Collaboration> collaborations = mindmap.getCollaborations();
+        if (owner.getEmail().equals(email)) {
+            throw new InvalidCollaborationException("The user " + owner.getEmail() + " is the owner");
+        }
+
+        Collaboration collaboration = getCollaborationBy(email, collaborations);
+        if (collaboration == null) {
+            final Collaborator collaborator = addCollaborator(email);
+            collaboration = new Collaboration(role, collaborator, mindmap);
+            mindmap.getCollaborations().add(collaboration);
+            mindmapManager.saveMindmap(mindmap);
+
+            // Sent collaboration email ...
+            final Map<String, Object> model = new HashMap<String, Object>();
+            model.put("role", role);
+            model.put("map", mindmap);
+            model.put("message", "message");
+            mailer.sendEmail(mailer.getSiteEmail(), email, "Collaboration", model, "newColaborator.vm");
+
+        } else if (collaboration.getRole() != role) {
+            // If the relationship already exists and the role changed then only update the role
+            collaboration.setRole(role);
+            mindmapManager.updateMindmap(mindmap, false);
         }
     }
 
-    public void addTags(MindMap mindmap, String tags) {
+    private Collaborator addCollaborator(String email) {
+        // Add a new collaborator ...
+        Collaborator collaborator = mindmapManager.getCollaboratorBy(email);
+        if (collaborator == null) {
+            collaborator = new Collaborator();
+            collaborator.setEmail(email);
+            collaborator.setCreationDate(Calendar.getInstance());
+            mindmapManager.addCollaborator(collaborator);
+        }
+        return collaborator;
+    }
+
+    @Override
+    public void addTags(@NotNull MindMap mindmap, String tags) {
         mindmap.setTags(tags);
         mindmapManager.updateMindmap(mindmap, false);
         if (tags != null && tags.length() > 0) {
@@ -233,7 +256,7 @@ public class MindmapServiceImpl
         updateMindmap(map, false);
     }
 
-    private Collaboration getMindmapUserBy(String email, Set<Collaboration> collaborations) {
+    private Collaboration getCollaborationBy(String email, Set<Collaboration> collaborations) {
         Collaboration collaboration = null;
 
         for (Collaboration user : collaborations) {
@@ -245,27 +268,6 @@ public class MindmapServiceImpl
         return collaboration;
     }
 
-    private void addCollaborator(String colaboratorEmail, CollaborationRole role, MindMap mindmap, ColaborationEmail email) {
-
-        Collaborator collaborator = mindmapManager.getCollaboratorBy(colaboratorEmail);
-        if (collaborator == null) {
-            collaborator = new Collaborator();
-            collaborator.setEmail(colaboratorEmail);
-            collaborator.setCreationDate(Calendar.getInstance());
-            mindmapManager.addCollaborator(collaborator);
-        }
-
-        final Collaboration newCollaboration = new Collaboration(role, collaborator, mindmap);
-        mindmap.getCollaborations().add(newCollaboration);
-
-        mindmapManager.saveMindmap(mindmap);
-
-        final Map<String, Object> model = new HashMap<String, Object>();
-        model.put("role", role);
-        model.put("map", mindmap);
-        model.put("message", email.getMessage());
-        mailer.sendEmail(mailer.getSiteEmail(), colaboratorEmail, email.getSubject(), model, "newColaborator.vm");
-    }
 
     public void setMindmapManager(MindmapManager mindmapManager) {
         this.mindmapManager = mindmapManager;

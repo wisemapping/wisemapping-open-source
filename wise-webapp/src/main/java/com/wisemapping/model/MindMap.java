@@ -20,6 +20,7 @@ package com.wisemapping.model;
 
 import com.wisemapping.util.ZipUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -42,7 +43,7 @@ public class MindMap {
     private String lastModifierUser;
 
     private Set<Collaboration> collaborations = new HashSet<Collaboration>();
-    private Set<MindmapCollaborationProperties> collaboratorProperties = new HashSet<MindmapCollaborationProperties>();
+    private Set<CollaborationProperties> collaborationProperties = new HashSet<CollaborationProperties>();
 
     private User owner;
     private String properties;
@@ -53,10 +54,6 @@ public class MindMap {
     //~ Constructors .........................................................................................
 
     public MindMap() {
-    }
-
-    public MindMap(Set<Collaboration> collaborations) {
-        this.collaborations = collaborations;
     }
 
     //~ Methods ..............................................................................................
@@ -119,8 +116,24 @@ public class MindMap {
         this.collaborations = collaborations;
     }
 
-    public void addMindmapUser(Collaboration collaboration) {
+    public void addCollaboration(@NotNull Collaboration collaboration) {
         collaborations.add(collaboration);
+    }
+
+    public void removedCollaboration(@NotNull Collaboration collaboration) {
+        collaborations.add(collaboration);
+    }
+
+    @Nullable
+    public Collaboration findCollaborationByEmail(@NotNull String email) {
+        Collaboration result = null;
+        for (Collaboration collaboration : collaborations) {
+            if (collaboration.getCollaborator().getEmail().equals(email)) {
+                result = collaboration;
+                break;
+            }
+        }
+        return result;
     }
 
     public boolean isPublic() {
@@ -222,18 +235,18 @@ public class MindMap {
         return owner;
     }
 
-    public Set<MindmapCollaborationProperties> getCollaboratorProperties() {
-        return collaboratorProperties;
+    public Set<CollaborationProperties> getCollaborationProperties() {
+        return collaborationProperties;
     }
 
-    public void setCollaboratorProperties(@NotNull Set<MindmapCollaborationProperties> collaboratorProperties) {
-        this.collaboratorProperties = collaboratorProperties;
+    public void setCollaborationProperties(@NotNull Set<CollaborationProperties> collaborationProperties) {
+        this.collaborationProperties = collaborationProperties;
     }
 
-    private MindmapCollaborationProperties findUserProperty(@NotNull Collaborator collaborator) {
-        final Set<MindmapCollaborationProperties> collaboratorProperties = this.getCollaboratorProperties();
-        MindmapCollaborationProperties result = null;
-        for (MindmapCollaborationProperties collaboratorProperty : collaboratorProperties) {
+    private CollaborationProperties findUserProperty(@NotNull Collaborator collaborator) {
+        final Set<CollaborationProperties> collaborationProp = this.getCollaborationProperties();
+        CollaborationProperties result = null;
+        for (CollaborationProperties collaboratorProperty : collaborationProp) {
             final Collaborator propCollab = collaboratorProperty.getCollaborator();
             if (propCollab != null && propCollab.getEmail().equals(collaborator.getEmail())) {
                 result = collaboratorProperty;
@@ -244,20 +257,20 @@ public class MindMap {
     }
 
     public void setStarred(@NotNull Collaborator collaborator, boolean value) {
-        if(collaborator==null){
-              throw new IllegalStateException("Collaborator can not be null");
+        if (collaborator == null) {
+            throw new IllegalStateException("Collaborator can not be null");
         }
 
-        MindmapCollaborationProperties collaboratorProperties = this.findUserProperty(collaborator);
+        CollaborationProperties collaboratorProperties = this.findUserProperty(collaborator);
         if (collaboratorProperties == null) {
-            collaboratorProperties = new MindmapCollaborationProperties(collaborator, this);
+            collaboratorProperties = new CollaborationProperties(collaborator, this);
         }
         collaboratorProperties.setStarred(value);
-        this.getCollaboratorProperties().add(collaboratorProperties);
+        this.getCollaborationProperties().add(collaboratorProperties);
     }
 
     public boolean isStarred(@NotNull Collaborator collaborator) {
-        final MindmapCollaborationProperties collaboratorProperty = this.findUserProperty(collaborator);
+        final CollaborationProperties collaboratorProperty = this.findUserProperty(collaborator);
         return collaboratorProperty != null && collaboratorProperty.getStarred();
     }
 

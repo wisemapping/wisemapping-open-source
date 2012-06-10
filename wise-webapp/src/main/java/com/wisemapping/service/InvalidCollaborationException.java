@@ -16,28 +16,13 @@
 *   limitations under the License.
 */
 
-package com.wisemapping.model;
+package com.wisemapping.service;
 
-public class ColaborationEmail
+public class InvalidCollaborationException
+    extends Exception
 {
-    private String subject;
-    private String message;
-
-    public ColaborationEmail(){}
-
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+    public InvalidCollaborationException(String msg)
+    {
+        super(msg);
     }
 }

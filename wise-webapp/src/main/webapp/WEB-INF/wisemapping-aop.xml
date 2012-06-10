@@ -23,6 +23,7 @@
         </property>
         <property name="mappedNames">
             <list>
+                <value>save*</value>
                 <value>update*</value>
                 <value>add*</value>
                 <value>remove*</value>

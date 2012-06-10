@@ -24,17 +24,15 @@ import com.wisemapping.importer.ImportFormat;
 import com.wisemapping.importer.Importer;
 import com.wisemapping.importer.ImporterException;
 import com.wisemapping.importer.ImporterFactory;
-import com.wisemapping.model.Collaboration;
-import com.wisemapping.model.MindMap;
-import com.wisemapping.model.User;
-import com.wisemapping.rest.model.RestMindmap;
-import com.wisemapping.rest.model.RestMindmapInfo;
-import com.wisemapping.rest.model.RestMindmapList;
+import com.wisemapping.model.*;
+import com.wisemapping.rest.model.*;
 import com.wisemapping.security.Utils;
+import com.wisemapping.service.InvalidCollaborationException;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.validator.MapInfoValidator;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -50,14 +48,14 @@ import java.util.*;
 
 @Controller
 public class MindmapController extends BaseController {
+    @Qualifier("mindmapService")
     @Autowired
     private MindmapService mindmapService;
-
 
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/json", "application/xml", "text/html"})
     @ResponseBody
     public ModelAndView retrieve(@PathVariable int id) throws IOException {
-        final User user = com.wisemapping.security.Utils.getUser();
+        final User user = Utils.getUser();
         final MindMap mindMap = mindmapService.getMindmapById(id);
         final RestMindmap map = new RestMindmap(mindMap, user);
 
@@ -70,7 +68,7 @@ public class MindmapController extends BaseController {
         final MindMap mindMap = mindmapService.getMindmapById(id);
         final Map<String, Object> values = new HashMap<String, Object>();
 
-        final User user = com.wisemapping.security.Utils.getUser();
+        final User user = Utils.getUser();
         values.put("mindmap", new RestMindmap(mindMap, user));
         values.put("filename", mindMap.getTitle());
         return new ModelAndView("transformViewWise", values);
@@ -88,13 +86,13 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/maps/", produces = {"application/json", "text/html", "application/xml"})
     public ModelAndView retrieveList(@RequestParam(required = false) String q) throws IOException {
-        final User user = com.wisemapping.security.Utils.getUser();
+        final User user = Utils.getUser();
 
         final MindmapFilter filter = MindmapFilter.parse(q);
+        final List<Collaboration> collaborations = mindmapService.getCollaborationsBy(user);
 
-        final List<Collaboration> mapsByUser = mindmapService.getMindmapUserByUser(user);
         final List<MindMap> mindmaps = new ArrayList<MindMap>();
-        for (Collaboration collaboration : mapsByUser) {
+        for (Collaboration collaboration : collaborations) {
             final MindMap mindmap = collaboration.getMindMap();
             if (filter.accept(mindmap, user)) {
                 mindmaps.add(mindmap);
@@ -107,9 +105,13 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}/history", produces = {"application/json", "text/html", "application/xml"})
     public ModelAndView retrieveHistory(@PathVariable int id) throws IOException {
-        final User user = com.wisemapping.security.Utils.getUser();
-
-        return null;
+        final MindMap mindMap = mindmapService.getMindmapById(id);
+        final Set<Collaboration> collaborations = mindMap.getCollaborations();
+        final RestCollaborationList result = new RestCollaborationList();
+        for (Collaboration collaboration : collaborations) {
+            result.addCollaboration(new RestCollaboration(collaboration));
+        }
+        return new ModelAndView("collabView", "list", result);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/document", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
@@ -203,20 +205,56 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/collabs", consumes = {"application/json", "application/xml"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateCollabs(@PathVariable int id) throws WiseMappingException {
-
+    public void updateCollabs(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws InvalidCollaborationException {
         final MindMap mindMap = mindmapService.getMindmapById(id);
         final User user = Utils.getUser();
+        if (!mindMap.getOwner().equals(user)) {
+            throw new IllegalArgumentException("No enough permissions");
+        }
+
+        // Compare one by one if some of the elements has been changed ....
+        final Set<Collaboration> collabsToRemove = new HashSet<Collaboration>(mindMap.getCollaborations());
+        for (RestCollaboration restCollab : restCollabs.getCollaborations()) {
+            final Collaboration collaboration = mindMap.findCollaborationByEmail(restCollab.getEmail());
+
+            if (CollaborationRole.valueOf(restCollab.getRole()) != CollaborationRole.OWNER) {
+
+                // Validate role ...
+                String roleStr = restCollab.getRole();
+                if (roleStr == null) {
+                    throw new IllegalArgumentException(roleStr + " is not a valid role");
+                }
+                final CollaborationRole role = CollaborationRole.valueOf(roleStr.toUpperCase());
+                mindmapService.addCollaboration(mindMap, restCollab.getEmail(), role);
+            }
+
+            if (collaboration != null) {
+                collabsToRemove.remove(collaboration);
+            }
+
+        }
+
+        // Remove all collaborations that no applies anymore ..
+        for (final Collaboration collaboration : collabsToRemove) {
+            mindmapService.removeCollaboration(collaboration);
+        }
     }
 
+
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}/collabs", produces = {"application/json", "text/html", "application/xml"})
-    public ModelAndView retrieveList(@PathVariable int id) throws IOException {
+    public ModelAndView retrieveList(@PathVariable int id) {
         final MindMap mindMap = mindmapService.getMindmapById(id);
-        final User user = Utils.getUser();
 
         final Set<Collaboration> collaborations = mindMap.getCollaborations();
+        final List<RestCollaboration> collabs = new ArrayList<RestCollaboration>();
+        for (Collaboration collaboration : collaborations) {
+            collabs.add(new RestCollaboration(collaboration));
+        }
 
-        return new ModelAndView("mapsView", "list", collaborations);
+        final RestCollaborationList restCollaborationList = new RestCollaborationList();
+        restCollaborationList.setCollaborations(collabs);
+
+        return new ModelAndView("collabsView", "list", restCollaborationList);
     }
 
 

@@ -36,7 +36,7 @@ public class Collaboration {
         this.collaborator = collaborator;
 
         // Guarantee referential integrity
-        mindmap.addMindmapUser(this);
+        mindmap.addCollaboration(this);
         collaborator.addMindmapUser(this);
     }
 
@@ -58,6 +58,10 @@ public class Collaboration {
 
     public CollaborationRole getRole() {
         return role;
+    }
+
+    public void setRole(@NotNull CollaborationRole role) {
+        this.role = role;
     }
 
     public boolean isOwner() {

@@ -1,13 +1,12 @@
 package com.wisemapping.test.model;
 
 
-import com.wisemapping.rest.model.RestMindmap;
-import com.wisemapping.rest.model.RestMindmapInfo;
-import com.wisemapping.rest.model.RestUser;
+import com.wisemapping.rest.model.*;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.List;
 
 @Test
 public class JsonTest {
@@ -29,7 +28,6 @@ public class JsonTest {
 
     @Test
     void serialize() throws IOException {
-        String mapJson = "{\"id\":\"1\",\"xml\":\"<map name=\\\"1\\\" version=\\\"tango\\\"><topic central=\\\"true\\\" text=\\\"ss\\\" id=\\\"1\\\"/></map>\",\"properties\":\"{\\\"zoom\\\":0.85}\"}";
         ObjectMapper mapper = new ObjectMapper();
 
         final RestMindmap value = new RestMindmap();
@@ -37,6 +35,19 @@ public class JsonTest {
         value.setTitle("desck");
         final String restMindmap = mapper.writeValueAsString(value);
         System.out.println(restMindmap);
+    }
+
+    @Test
+    void deserializeCollbsList() throws IOException {
+        String collbsJson = "{\"count\":1,\"collaborations\":[{\"email\":\"paulo@pveiga.com.ar\",\"role\":\"editor\"}]}";
+        ObjectMapper mapper = new ObjectMapper();
+
+        final RestCollaborationList list = mapper.readValue(collbsJson, RestCollaborationList.class);
+        final List<RestCollaboration> collaborations = list.getCollaborations();
+        for (RestCollaboration collaboration : collaborations) {
+            final String role = collaboration.getRole();
+            final String email = collaboration.getEmail();
+        }
     }
 
 

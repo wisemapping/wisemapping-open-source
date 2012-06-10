@@ -1,6 +1,7 @@
 package com.wisemapping.rest.model;
 
 
+import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.CollaborationRole;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -10,7 +11,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "collaborators")
+@XmlRootElement(name = "collaboration")
 @XmlAccessorType(XmlAccessType.PROPERTY)
 @JsonAutoDetect(
         fieldVisibility = JsonAutoDetect.Visibility.NONE,
@@ -18,11 +19,13 @@ import javax.xml.bind.annotation.XmlRootElement;
         isGetterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY)
 public class RestCollaboration {
 
-    @JsonIgnore
     private String email;
+    private String role;
 
-    @JsonIgnore
-    private CollaborationRole role;
+    public RestCollaboration(@NotNull Collaboration collaboration) {
+        this.email = collaboration.getCollaborator().getEmail();
+        this.role = collaboration.getRole().name();
+    }
 
     public RestCollaboration() {
 
@@ -32,19 +35,21 @@ public class RestCollaboration {
         if (value == null) {
             throw new IllegalStateException("role can not be null");
         }
+        // Only check ...
+        CollaborationRole.valueOf(value.toUpperCase());
+        role = value;
 
-        role = CollaborationRole.valueOf(value.toUpperCase());
     }
 
     public String getRole() {
-        return role.toString().toLowerCase();
+        return role;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(@NotNull String email) {
         this.email = email;
     }
 }

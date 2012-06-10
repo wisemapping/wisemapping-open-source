@@ -26,20 +26,12 @@
         </property>
     </bean>
 
-
     <bean id="loginController" class="com.wisemapping.controller.LoginController">
         <property name="methodNameResolver" ref="paramResolverByAction"/>
         <property name="mindmapService" ref="mindmapService"/>
         <property name="userService" ref="userService"/>
         <property name="driver" value="${database.driver}"/>
     </bean>
-
-    <bean id="sharingController" class="com.wisemapping.controller.MindmapSharingController">
-        <property name="methodNameResolver" ref="paramResolverByAction2"/>
-        <property name="mindmapService" ref="mindmapService"/>
-        <property name="userService" ref="userService"/>
-    </bean>
-
 
     <bean id="userValidator" class="com.wisemapping.validator.UserValidator">
         <property name="userService" ref="userService"/>
@@ -136,7 +128,6 @@
             <props>
                 <!-- Forms based -->
                 <prop key="userRegistration">userController</prop>
-                <prop key="sharing">sharingController</prop>
                 <prop key="login">loginController</prop>
                 <prop key="forgotPassword">forgotPasswordController</prop>
                 <prop key="activation">activationController</prop>
