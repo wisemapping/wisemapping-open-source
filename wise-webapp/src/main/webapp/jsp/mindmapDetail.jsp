@@ -4,7 +4,7 @@
 <div>
     <ul class="nav nav-tabs">
         <li class="active"><a href="#general" data-toggle="pill">General</a></li>
-        <li><a href="#collaborators" data-toggle="pill">Collaborators</a></li>
+        <li><a href="#collaborators" data-toggle="pill">Shared</a></li>
         <li><a href="#publish" data-toggle="pill">Publish</a></li>
     </ul>
 
@@ -13,7 +13,7 @@
             <ul class="unstyled">
                 <li><strong><spring:message code="NAME"/>:</strong> ${wisemapDetail.title}</li>
                 <li><strong><spring:message code="DESCRIPTION"/>:</strong> ${wisemapDetail.description}</li>
-                <li><strong><spring:message code="OWNER"/>:</strong> ${wisemapDetail.creationUser}</li>
+                <li><strong><spring:message code="CREATOR"/>:</strong> ${wisemapDetail.creator.username}</li>
                 <li><strong><spring:message code="CREATION_TIME"/>:</strong> ${wisemapDetail.creationTime}</li>
                 <li><strong><spring:message code="LAST_UPDATE"/>:</strong> ${wisemapDetail.lastEditTime}</li>
                 <li><strong><spring:message code="LAST_UPDATE_BY"/>:</strong> ${wisemapDetail.lastEditor}</li>

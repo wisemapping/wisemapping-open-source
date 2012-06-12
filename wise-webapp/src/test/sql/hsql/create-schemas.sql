@@ -24,12 +24,11 @@ xml LONGVARBINARY NOT NULL,
 public BOOLEAN NOT NULL,
 creation_date DATETIME,
 edition_date DATETIME,
-owner_id INTEGER NOT NULL,
+creator_id INTEGER NOT NULL,
 tags varchar(1014)  ,
 last_editor varchar(255)  ,
-creator_user varchar(255)  ,
 editor_properties varchar(512)
---FOREIGN KEY(owner_id) REFERENCES USER(colaborator_id)
+--FOREIGN KEY(creator_id) REFERENCES USER(colaborator_id)
 );
 
 

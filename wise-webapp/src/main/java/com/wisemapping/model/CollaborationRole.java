@@ -19,27 +19,9 @@
 package com.wisemapping.model;
 
 public enum CollaborationRole {
-    OWNER(true, true, true), EDITOR(true, true, false), VIEWER(false, true, false);
+    OWNER, EDITOR, VIEWER;
 
-    private final boolean hasEditPermission;
-    private final boolean hasViewPermission;
-    private final boolean hasDeletePermission;
-
-    private CollaborationRole(boolean hasEditPermission, boolean hasViewPermission, boolean hasDeletePermission) {
-        this.hasEditPermission = hasEditPermission;
-        this.hasViewPermission = hasViewPermission;
-        this.hasDeletePermission = hasDeletePermission;
-    }
-
-    public boolean hasEditPermission() {
-        return hasEditPermission;
-    }
-
-    public boolean hasViewPermission() {
-        return hasViewPermission;
-    }
-
-    public boolean hasDeletePermission() {
-        return hasDeletePermission;
+    public String getLabel(){
+        return this.name().toLowerCase();
     }
 }

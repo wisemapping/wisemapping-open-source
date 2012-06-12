@@ -36,52 +36,27 @@ public class MindmapServiceImpl
     private UserService userService;
     private Mailer mailer;
 
-    public boolean isAllowedToCollaborate(@NotNull User user, int mapId, @NotNull CollaborationRole grantedRole) {
+    @Override
+    public boolean hasPermissions(@NotNull User user, int mapId, @NotNull CollaborationRole grantedRole) {
         final MindMap map = mindmapManager.getMindmapById(mapId);
-        return isAllowedToCollaborate(user, map, grantedRole);
+        return hasPermissions(user, map, grantedRole);
     }
 
-    public boolean isAllowedToView(User user, int mapId, CollaborationRole grantedRole) {
-        final MindMap map = mindmapManager.getMindmapById(mapId);
-        return isAllowedToView(user, map, grantedRole);
-    }
-
-    public boolean isAllowedToView(@NotNull User user, @NotNull MindMap map, @NotNull CollaborationRole grantedRole) {
+    @Override
+    public boolean hasPermissions(@Nullable User user, @Nullable MindMap map, @NotNull CollaborationRole role) {
         boolean result = false;
         if (map != null) {
-            if (map.isPublic()) {
+            if (map.isPublic() && role == CollaborationRole.VIEWER) {
                 result = true;
             } else if (user != null) {
-                result = isAllowedToCollaborate(user, map, grantedRole);
+                final Collaboration collaboration = map.findCollaboration(user);
+                if (collaboration != null) {
+                    result = collaboration.hasPermissions(role);
+                }
+
             }
         }
         return result;
-    }
-
-    public boolean isAllowedToCollaborate(@NotNull User user, @Nullable MindMap map, CollaborationRole grantedRole) {
-        boolean isAllowed = false;
-        if (map != null) {
-            if (map.getOwner().getId() == user.getId()) {
-                isAllowed = true;
-            } else {
-                final Set<Collaboration> users = map.getCollaborations();
-                CollaborationRole rol = null;
-                for (Collaboration collaboration : users) {
-                    if (collaboration.getCollaborator().getId() == user.getId()) {
-                        rol = collaboration.getRole();
-                        break;
-                    }
-                }
-                // only if the user has a role for the current map
-                isAllowed = rol != null &&
-                        (grantedRole.equals(rol) || rol.ordinal() < grantedRole.ordinal());
-            }
-        }
-        return isAllowed;
-    }
-
-    public Collaboration getMindmapUserBy(int mindmapId, User user) {
-        return mindmapManager.getMindmapUserBy(mindmapId, user);
     }
 
     @Override
@@ -119,18 +94,18 @@ public class MindmapServiceImpl
         final MindMap mindMap = collaboration.getMindMap();
         final Set<Collaboration> collaborations = mindMap.getCollaborations();
 
-        // When you delete an object from hibernate you have to delete it from *all* collections it exists in...
-        if (mindMap.getOwner().getEmail().equals(collaboration.getCollaborator().getEmail())) {
+        if (mindMap.getCreator().getEmail().equals(collaboration.getCollaborator().getEmail())) {
             throw new CollaborationException("User is the creator and must have ownership permissions");
         }
 
+        // When you delete an object from hibernate you have to delete it from *all* collections it exists in...
         mindmapManager.removeCollaboration(collaboration);
         collaborations.remove(collaboration);
     }
 
     @Override
     public void removeMindmap(@NotNull MindMap mindmap, @NotNull User user) throws WiseMappingException {
-        if (mindmap.getOwner().equals(user)) {
+        if (mindmap.getCreator().equals(user)) {
             mindmapManager.removeMindmap(mindmap);
         } else {
             final Collaboration collaboration = mindmap.findCollaboration(user);
@@ -155,11 +130,10 @@ public class MindmapServiceImpl
 
         final Calendar creationTime = Calendar.getInstance();
         final String username = user.getUsername();
-        map.setCreator(username);
         map.setLastModifierUser(username);
         map.setCreationTime(creationTime);
         map.setLastModificationTime(creationTime);
-        map.setOwner(user);
+        map.setCreator(user);
 
         // Add map creator with owner permissions ...
         final User dbUser = userService.getUserBy(user.getId());
@@ -174,8 +148,7 @@ public class MindmapServiceImpl
             throws CollaborationException {
 
         // Validate
-        final Collaborator owner = mindmap.getOwner();
-        final Set<Collaboration> collaborations = mindmap.getCollaborations();
+        final Collaborator owner = mindmap.getCreator();
         if (owner.getEmail().equals(email)) {
             throw new CollaborationException("The user " + owner.getEmail() + " is the owner");
         }
@@ -185,6 +158,7 @@ public class MindmapServiceImpl
 
         }
 
+        final Set<Collaboration> collaborations = mindmap.getCollaborations();
         Collaboration collaboration = getCollaborationBy(email, collaborations);
         if (collaboration == null) {
             final Collaborator collaborator = addCollaborator(email);
@@ -224,7 +198,7 @@ public class MindmapServiceImpl
         mindmapManager.updateMindmap(mindmap, false);
         if (tags != null && tags.length() > 0) {
             final String tag[] = tags.split(TAG_SEPARATOR);
-            final User user = mindmap.getOwner();
+            final User user = mindmap.getCreator();
             // Add new Tags to User
             boolean updateUser = false;
             for (String userTag : tag) {

@@ -115,7 +115,7 @@ public class UserManagerImpl
             newMapUser.setRoleId(collaboration.getRole().ordinal());
             newMapUser.setMindMap(collaboration.getMindMap());
             newMapUser.setCollaborator(user);
-            user.addMindmapUser(newMapUser);
+            user.addCollaboration(newMapUser);
         }
 
         getHibernateTemplate().delete(col);

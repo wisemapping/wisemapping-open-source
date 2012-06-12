@@ -1,9 +1,11 @@
 package com.wisemapping.rest.model;
 
 
+import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.User;
+import com.wisemapping.security.Utils;
 import org.codehaus.jackson.annotate.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -69,16 +71,20 @@ public class RestMindmapInfo {
     }
 
     public String getCreator() {
-        return mindmap.getCreator();
+        return mindmap.getCreator().getUsername();
     }
 
-    public String getOwnerEmail() {
-        return mindmap.getOwner().getEmail();
+    public void setCreator() {
+        // Do nothing ...
     }
 
-    public String getOwner() {
-        final User owner = mindmap.getOwner();
-        return owner.getUsername();
+    public String getRole() {
+        final Collaboration collaboration = mindmap.findCollaboration(Utils.getUser());
+        return collaboration != null ? collaboration.getRole().getLabel() : "none";
+    }
+
+    public void setRole() {
+        // Do nothing ...
     }
 
     public String getLastModifierUser() {
@@ -117,7 +123,7 @@ public class RestMindmapInfo {
         mindmap.setDescription(description);
     }
 
-    public void setCreator(String creatorUser) {
+    public void setCreator(String email) {
 
     }
 
@@ -125,12 +131,6 @@ public class RestMindmapInfo {
     }
 
     public void setLastModifierUser(String value) {
-    }
-
-    public void setOwnerEmail(String value) {
-    }
-
-    public void setOwner(String value) {
     }
 
     @JsonIgnore

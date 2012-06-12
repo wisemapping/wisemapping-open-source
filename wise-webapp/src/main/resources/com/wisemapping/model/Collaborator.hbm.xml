@@ -13,11 +13,11 @@
         <property name="creationDate" column="creation_date"/>
 
         <set name="collaborations"
-			cascade="all, delete-orphan"
-			inverse="true">
+             cascade="all, delete-orphan"
+             inverse="true">
             <key column="COLABORATOR_ID" not-null="true"/>
             <one-to-many class="com.wisemapping.model.Collaboration"/>
-	    </set>
+        </set>
 
         <joined-subclass name="com.wisemapping.model.User" table="USER">
             <key column="COLABORATOR_ID"/>
@@ -30,7 +30,7 @@
             <property name="allowSendEmail"/>
             <set name="tags" table="TAG">
                 <key column="user_id"/>
-                <element column="name" type="string"/>                
+                <element column="name" type="string"/>
             </set>
         </joined-subclass>
     </class>

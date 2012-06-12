@@ -18,10 +18,8 @@
 
 package com.wisemapping.model;
 
-import org.jetbrains.annotations.NotNull;
-
 public class CollaborationProperties {
-    private long id;
+    private int id;
     private boolean starred;
 
     public CollaborationProperties(){
@@ -36,11 +34,11 @@ public class CollaborationProperties {
         this.starred = starred;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 }

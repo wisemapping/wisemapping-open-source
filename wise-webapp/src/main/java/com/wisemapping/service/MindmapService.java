@@ -29,8 +29,6 @@ public interface MindmapService {
 
     public static final String TAG_SEPARATOR = " ";
 
-    public Collaboration getMindmapUserBy(int mindmapId, User user);
-
     public MindMap getMindmapById(int mindmapId);
 
     public MindMap getMindmapByTitle(String title, User user);
@@ -54,13 +52,9 @@ public interface MindmapService {
 
     public List<MindMapHistory> getMindMapHistory(int mindmapId);
 
-    public boolean isAllowedToView(User user, MindMap map, CollaborationRole allowedRole);
+    public boolean hasPermissions(User user, MindMap map, CollaborationRole allowedRole);
 
-    public boolean isAllowedToView(User user, int mapId, CollaborationRole allowedRole);
-
-    public boolean isAllowedToCollaborate(User user, int mapId, CollaborationRole grantedRole);
-
-    public boolean isAllowedToCollaborate(User user, MindMap map, CollaborationRole grantedRole);
+    public boolean hasPermissions(User user, int mapId, CollaborationRole allowedRole);
 
     public void addWelcomeMindmap(User user) throws WiseMappingException;
 

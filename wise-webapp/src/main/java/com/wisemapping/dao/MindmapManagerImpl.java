@@ -166,7 +166,7 @@ public class MindmapManagerImpl
     @Override
     public MindMap getMindmapByTitle(final String title, final User user) {
         final MindMap result;
-        List<MindMap> mindMaps = getHibernateTemplate().find("from com.wisemapping.model.MindMap wisemapping where title=? and creator=?", new Object[]{title, user.getUsername()});
+        List<MindMap> mindMaps = getHibernateTemplate().find("from com.wisemapping.model.MindMap wisemapping where title=? and creator=?", new Object[]{title, user});
         if (mindMaps != null && !mindMaps.isEmpty()) {
             result = mindMaps.get(0);
         } else {

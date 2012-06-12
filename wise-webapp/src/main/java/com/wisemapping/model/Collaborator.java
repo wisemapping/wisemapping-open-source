@@ -18,6 +18,8 @@
 
 package com.wisemapping.model;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Calendar;
 import java.util.Set;
 import java.util.HashSet;
@@ -40,9 +42,9 @@ public class Collaborator {
         this.collaborations = collaborations;
     }
 
-    public void addMindmapUser(Collaboration mindmaUser)
+    public void addCollaboration(@NotNull Collaboration collaboration)
     {
-       collaborations.add(mindmaUser);
+       collaborations.add(collaboration);
     }
 
     public Set<Collaboration> getCollaborations()

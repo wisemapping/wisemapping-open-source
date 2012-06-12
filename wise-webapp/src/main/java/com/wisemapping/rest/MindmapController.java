@@ -207,8 +207,10 @@ public class MindmapController extends BaseController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateCollabs(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws CollaborationException {
         final MindMap mindMap = mindmapService.getMindmapById(id);
+
+        // Only owner can change collaborators...
         final User user = Utils.getUser();
-        if (!mindMap.getOwner().equals(user)) {
+        if (!mindMap.hasPermissions(user, CollaborationRole.OWNER)) {
             throw new IllegalArgumentException("No enough permissions");
         }
 
@@ -276,9 +278,9 @@ public class MindmapController extends BaseController {
     public void updatePublishState(@RequestBody String value, @PathVariable int id) throws WiseMappingException {
 
         final MindMap mindMap = mindmapService.getMindmapById(id);
-        final User user = Utils.getUser();
 
-        if (!mindMap.getOwner().equals(user)) {
+        final User user = Utils.getUser();
+        if (!!mindMap.hasPermissions(user, CollaborationRole.OWNER)) {
             throw new IllegalArgumentException("No enough to execute this operation");
         }
 
@@ -393,7 +395,7 @@ public class MindmapController extends BaseController {
         final MindMap clonedMap = mindMap.shallowClone();
         clonedMap.setTitle(restMindmap.getTitle());
         clonedMap.setDescription(restMindmap.getDescription());
-        clonedMap.setOwner(user);
+        clonedMap.setCreator(user);
 
         // Add new mindmap ...
         mindmapService.addMindmap(clonedMap, user);

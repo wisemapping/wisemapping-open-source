@@ -36,7 +36,7 @@ public enum MindmapFilter {
     MY_MAPS("my_maps") {
         @Override
         boolean accept(@NotNull MindMap mindmap, @NotNull User user) {
-            return mindmap.getOwner().equals(user);
+            return mindmap.getCreator().equals(user);
         }
     },
     STARRED("starred") {

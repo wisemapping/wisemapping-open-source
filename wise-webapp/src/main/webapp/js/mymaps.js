@@ -195,7 +195,7 @@ function updateStatusToolbar() {
 
             // Can be executed by the owner ?
             var rowData = tableElem.dataTable().fnGetData(selectedRows[0]);
-            if (rowData.ownerEmail != principalEmail) {
+            if (rowData.role != 'owner') {
                 $("#buttonsToolbar").find('#publishBtn').hide().end().find('#shareBtn').hide();
             }
         } else {
@@ -290,8 +290,8 @@ $(function() {
                 }
             },
             {
-                sTitle : "Owner",
-                mDataProp :"owner"
+                sTitle : "Creator",
+                mDataProp :"creator"
             },
             {
                 bSearchable : false,

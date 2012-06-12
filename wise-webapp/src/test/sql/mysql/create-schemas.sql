@@ -25,12 +25,11 @@ xml blob NOT NULL,
 public BOOL not null default 0,
 creation_date datetime,
 edition_date datetime,
-owner_id INTEGER not null,
+creator_id INTEGER not null,
 tags varchar(1014) CHARACTER SET utf8 ,
 last_editor varchar(255) CHARACTER SET utf8 ,
-creator_user varchar(255) CHARACTER SET utf8 ,
 editor_properties varchar(512) CHARACTER SET utf8 ,
-FOREIGN KEY(owner_id) REFERENCES USER(colaborator_id)
+FOREIGN KEY(creator_id) REFERENCES USER(colaborator_id)
 ) CHARACTER SET utf8 ;
 
 

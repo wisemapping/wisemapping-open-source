@@ -82,10 +82,6 @@ public class MindMapBean {
         return DateFormat.getInstance().format(mindMap.getCreationTime().getTime());
     }
 
-    public String getCreationUser() {
-        return mindMap.getCreator();
-    }
-
     public String getTags() {
         return mindMap.getTags();
     }
@@ -126,7 +122,7 @@ public class MindMapBean {
         mindMap.setDescription(d);
     }
 
-    public User getOwner() {
-        return mindMap.getOwner();
+    public User getCreator() {
+        return mindMap.getCreator();
     }
 }

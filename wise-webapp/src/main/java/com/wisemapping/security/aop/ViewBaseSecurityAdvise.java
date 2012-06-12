@@ -28,7 +28,6 @@ import org.jetbrains.annotations.NotNull;
 public class ViewBaseSecurityAdvise
         extends BaseSecurityAdvice
         implements MethodInterceptor {
-    private CollaborationRole grantedRole = CollaborationRole.VIEWER;
 
     public Object invoke(@NotNull MethodInvocation methodInvocation) throws Throwable {
         checkRole(methodInvocation);
@@ -36,10 +35,10 @@ public class ViewBaseSecurityAdvise
     }
 
     protected boolean isAllowed(User user, MindMap map) {
-        return getMindmapService().isAllowedToView(user, map, grantedRole);
+        return getMindmapService().hasPermissions(user, map, CollaborationRole.VIEWER);
     }
 
     protected boolean isAllowed(User user, int mapId) {
-        return getMindmapService().isAllowedToView(user, mapId, grantedRole);
+        return getMindmapService().hasPermissions(user, mapId, CollaborationRole.VIEWER);
     }
 }

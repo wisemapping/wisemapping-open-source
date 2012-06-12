@@ -5,7 +5,6 @@ import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.User;
-import com.wisemapping.security.Utils;
 import org.codehaus.jackson.annotate.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -75,7 +74,7 @@ public class RestMindmap {
     }
 
     public String getCreator() {
-        return mindmap.getCreator();
+        return mindmap.getCreator().getEmail();
     }
 
     public String getLastModifierUser() {
@@ -132,7 +131,7 @@ public class RestMindmap {
     }
 
     public String getOwner() {
-        final User owner = mindmap.getOwner();
+        final User owner = mindmap.getCreator();
         return owner != null ? owner.getEmail() : null;
     }
 

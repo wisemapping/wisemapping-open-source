@@ -30,8 +30,6 @@ public class UpdateSecurityAdvise
         extends BaseSecurityAdvice
         implements MethodInterceptor {
 
-    private CollaborationRole grantedRole = CollaborationRole.EDITOR;
-
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
         checkRole(methodInvocation);
         return methodInvocation.proceed();
@@ -39,16 +37,16 @@ public class UpdateSecurityAdvise
 
     protected boolean isAllowed(@NotNull User user, @NotNull MindMap map) {
         boolean result;
-        if (map.getOwner() == null) {
+        if (map.getCreator() == null) {
             // This means that the map is new and  is an add operation.
             result = true;
         } else {
-            result = getMindmapService().isAllowedToView(user, map, grantedRole);
+            result = getMindmapService().hasPermissions(user, map, CollaborationRole.EDITOR);
         }
         return result;
     }
 
     protected boolean isAllowed(User user, int mapId) {
-        return getMindmapService().isAllowedToView(user, mapId, grantedRole);
+        return getMindmapService().hasPermissions(user, mapId, CollaborationRole.EDITOR);
     }
 }

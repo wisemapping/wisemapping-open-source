@@ -38,7 +38,7 @@ public class Collaboration {
 
         // Guarantee referential integrity
         mindmap.addCollaboration(this);
-        collaborator.addMindmapUser(this);
+        collaborator.addCollaboration(this);
     }
 
     public long getId() {
@@ -65,18 +65,6 @@ public class Collaboration {
         this.role = role;
     }
 
-    public boolean isOwner() {
-        return getRole() == CollaborationRole.OWNER;
-    }
-
-    public boolean isEditor() {
-        return getRole() == CollaborationRole.EDITOR;
-    }
-
-    public boolean isViewer() {
-        return getRole() == CollaborationRole.VIEWER;
-    }
-
     public MindMap getMindMap() {
         return mindMap;
     }
@@ -100,5 +88,10 @@ public class Collaboration {
 
     public void setCollaborationProperties(@NotNull CollaborationProperties collaborationProperties) {
         this.collaborationProperties = collaborationProperties;
+    }
+
+    public boolean hasPermissions(@NotNull CollaborationRole role) {
+        return this.getRole().ordinal() <= role.ordinal();
+
     }
 }

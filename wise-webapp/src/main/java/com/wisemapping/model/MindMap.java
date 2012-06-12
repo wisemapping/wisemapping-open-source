@@ -36,7 +36,6 @@ public class MindMap {
     //~ Instance fields ......................................................................................
     private int id;
     private Calendar creationTime;
-    private String creator;
     private String description;
 
     private boolean isPublic;
@@ -45,7 +44,7 @@ public class MindMap {
 
     private Set<Collaboration> collaborations = new HashSet<Collaboration>();
 
-    private User owner;
+    private User creator;
     private String properties;
     private String tags;
     private String title;
@@ -169,14 +168,6 @@ public class MindMap {
         this.lastModifierUser = lastModifierUser;
     }
 
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creatorUser) {
-        this.creator = creatorUser;
-    }
-
     public int getId() {
         return id;
     }
@@ -229,15 +220,15 @@ public class MindMap {
         this.creationTime = creationTime;
     }
 
-    public void setOwner(@NotNull User owner) {
-        if (owner == null) {
+    public void setCreator(@NotNull User creator) {
+        if (creator == null) {
             throw new IllegalArgumentException("Owner can not be null");
         }
-        this.owner = owner;
+        this.creator = creator;
     }
 
-    public User getOwner() {
-        return owner;
+    public User getCreator() {
+        return creator;
     }
 
     private CollaborationProperties findUserProperty(@NotNull Collaborator collaborator) {
@@ -251,7 +242,7 @@ public class MindMap {
         }
 
         final Collaboration collaboration = this.findCollaboration(collaborator);
-        if(collaboration==null){
+        if (collaboration == null) {
             throw new WiseMappingException("User is not collaborator");
         }
 
@@ -285,5 +276,15 @@ public class MindMap {
         result.setTags(this.getTags());
 
         return result;
+    }
+
+    public boolean hasPermissions(@NotNull Collaborator collaborator, @NotNull CollaborationRole role) {
+        final Collaboration collaboration = this.findCollaboration(collaborator);
+        boolean result = false;
+        if (collaboration != null) {
+            result = collaboration.hasPermissions(role);
+        }
+        return result;
+
     }
 }
