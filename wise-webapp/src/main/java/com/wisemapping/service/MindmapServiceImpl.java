@@ -166,12 +166,16 @@ public class MindmapServiceImpl
             mindmap.getCollaborations().add(collaboration);
             mindmapManager.saveMindmap(mindmap);
 
-            // Sent collaboration email ...
-            final Map<String, Object> model = new HashMap<String, Object>();
-            model.put("role", role);
-            model.put("map", mindmap);
-            model.put("message", "message");
-            mailer.sendEmail(mailer.getSiteEmail(), email, "Collaboration", model, "newColaborator.vm");
+            try {
+                // Sent collaboration email ...
+                final Map<String, Object> model = new HashMap<String, Object>();
+                model.put("role", role);
+                model.put("map", mindmap);
+                model.put("message", "message");
+                mailer.sendEmail(mailer.getSiteEmail(), email, "Collaboration", model, "newColaborator.vm");
+            } catch (Exception e) {
+               e.printStackTrace();
+            }
 
         } else if (collaboration.getRole() != role) {
             // If the relationship already exists and the role changed then only update the role

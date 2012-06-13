@@ -28,6 +28,11 @@
 
 <div id="sharingContainer">
     <table class="table" id="collabsTable">
+        <colgroup>
+            <col width="70%"/>
+            <col width="20%"/>
+            <col width="10%"/>
+        </colgroup>
     </table>
 </div>
 
@@ -51,19 +56,25 @@
 
 <script type="text/javascript">
 
-    $("#errorMsg").hide();
+$("#errorMsg").hide();
+var messages = {
+    owner: 'Is owner',
+    editor: 'Can edit',
+    viewer: 'Can view'};
 
-    function onClickShare(aElem) {
-        var role = $(aElem).attr('data-role');
-        var roleDec = role == 'viewer' ? "Can view" : "Can edit";
-        var btnElem = $(aElem).parent().parent().parent().find(".dropdown-toggle");
-        btnElem.text(roleDec).append(' <span class="caret"> </span>');
-        return role;
-    }
+function onClickShare(aElem) {
+    var role = $(aElem).attr('data-role');
+    var roleDec = messages[role];
+    var btnElem = $(aElem).parent().parent().parent().find(".dropdown-toggle");
+    btnElem.text(roleDec).append(' <span class="caret"> </span>');
+    return role;
+}
 
-    function addCollaboration(email, role) {
+function addCollaboration(email, role) {
+    var rowStr;
+    var tableElem = $("#collabsTable");
+    if (role != "owner") {
         // Add row to the table ...
-        var tableElem = $("#collabsTable");
         var rowTemplate = '\
                    <tr data-collab="{email}" data-role="{role}">\
                    <td>{email}</td>\
@@ -71,21 +82,22 @@
                        <div class="btn-group">\
                            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#""></a>\
                            <ul class="dropdown-menu">\
-                               <li><a href="#" data-role="editor">Can edit</a></li>\
-                               <li><a href="#" data-role="viewer">Can view</a></li>\
+                               <li><a href="#" data-role="editor">' + messages['editor'] + '</a></li>\
+                               <li><a href="#" data-role="viewer">' + messages['viewer'] + '</a></li>\
                            </ul>\
                        </div>\
                    </td>\
                  <td><a href="#">x</a></td>\
                 </tr>';
 
-        var rowStr = rowTemplate.replace(/{email}/g, email);
+        rowStr = rowTemplate.replace(/{email}/g, email);
         rowStr = rowStr.replace(/{role}/g, role);
         var elem = tableElem.append(rowStr);
 
         // Register change role event  ...
         var rowElem = $("#collabsTable tr:last");
         $(rowElem.find(".dropdown-menu a").click(function() {
+            reportError(null);
             var role = onClickShare(this);
             rowElem.attr('data-role', role);
             event.preventDefault();
@@ -94,141 +106,162 @@
 
         // Register remove event ...
         rowElem.find("td:last a").click(function(event) {
+            reportError(null);
             var email = rowElem.attr('data-collab');
             removeCollab(email);
             event.preventDefault();
         });
+    } else {
+        rowStr = '<tr data-collab=' + email + ' data-role="' + role + '">\
+                            <td>' + email + ' (You)</td>\
+                            <td><button class="btn btn-secondary">' + messages[role] + '</button></td>\
+                              <td></td>\
+                             </tr>';
+        tableElem.append(rowStr);
+
     }
+}
 
-    var removeCollab = function(email) {
-        // Remove html entry ...
-        $('#collabsTable tr[data-collab="' + email + '"]').detach();
-    };
+var removeCollab = function(email) {
+    // Remove html entry ...
+    $('#collabsTable tr[data-collab="' + email + '"]').detach();
+};
 
-    $(function() {
-        jQuery.ajax("service/maps/${mindmap.id}/collabs", {
-            async:false,
-            dataType: 'json',
-            type: 'GET',
-            contentType:"text/plain",
-            success : function(data, textStatus, jqXHR) {
-                // Init table will all values ...
-                var collabs = data.collaborations;
-                for (var i = 0; i < collabs.length; i++) {
-                    var collab = collabs[i];
-                    addCollaboration(collab.email, collab.role);
-                }
-
-            },
-            error:function(jqXHR, textStatus, errorThrown) {
-                alert(textStatus);
-            }
-        });
-    });
-
-    $("#addBtn").click(function(event) {
-        var i,email;
-        var emailsStr = $("#collabEmails").val();
-        var role = $("#shareRole").attr('data-role');
-
-        // Clear previous state ...
-        $("#errorMsg").text("").hide();
-
-        // Split emails ...
-        var valid = true;
-        if (emailsStr.length > 0) {
-            var emails = jQuery.grep(emailsStr.split(/[;|,|\s]/), function(val) {
-                return val.length > 0
+$(function() {
+    jQuery.ajax("service/maps/${mindmap.id}/collabs", {
+        async:false,
+        dataType: 'json',
+        type: 'GET',
+        contentType:"text/plain",
+        success : function(data, textStatus, jqXHR) {
+            // Owner roles is the first in the table ...
+            var collabs = data.collaborations.sort(function(a, b) {
+                return a.role > b.role;
             });
 
-            var model = buildCollabModel();
-            for (i = 0; i < emails.length; i++) {
-                email = emails[i];
-                if (!isValidEmailAddress(email)) {
-                    reportError("Invalid email address:" + email);
-                    valid = false;
-                }
-
-                // Is there a collab with the same email  ?
-                var useExists = jQuery.grep(model,
-                        function(val) {
-                            return val.email == email;
-                        }).length > 0;
-                if (useExists) {
-                    reportError(email + " is already in the shared list");
-                    valid = false;
-                }
-
+            // Add all the colums in the table ...
+            for (var i = 0; i < collabs.length; i++) {
+                var collab = collabs[i];
+                addCollaboration(collab.email, collab.role);
             }
-        } else {
-            reportError("Emails address can not be empty");
-            valid = false;
-        }
 
-
-        if (valid) {
-            // Emails are valid, add them as rows ...
-            $("#collabEmails").val("");
-            for (i = 0; i < emails.length; i++) {
-                email = emails[i];
-                addCollaboration(email, role);
-            }
-        } else {
-
+        },
+        error:function(jqXHR, textStatus, errorThrown) {
+            alert(textStatus);
         }
     });
+});
 
-    // Register change event  ...
-    $("#shareRole a").click(function() {
-        var role = onClickShare(this);
-        $(this).parent().attr('data-role', role);
+$("#addBtn").click(function(event) {
+    var i,email;
+    var emailsStr = $("#collabEmails").val();
+    var role = $("#shareRole").attr('data-role');
 
-        event.preventDefault();
-    });
+    reportError(null);
 
-    function isValidEmailAddress(emailAddress) {
-        var pattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i);
-        return pattern.test(emailAddress);
+    // Split emails ...
+    var valid = true;
+    if (emailsStr.length > 0) {
+        var emails = jQuery.grep(emailsStr.split(/[;|,|\s]/), function(val) {
+            return val.length > 0
+        });
+
+        var model = buildCollabModel();
+        for (i = 0; i < emails.length; i++) {
+            email = emails[i];
+            if (!isValidEmailAddress(email)) {
+                reportError("Invalid email address:" + email);
+                valid = false;
+            }
+
+            // Is there a collab with the same email  ?
+            var useExists = jQuery.grep(model.collaborations,
+                    function(val) {
+                        return val.email.trim() == email.trim();
+                    }).length > 0;
+
+            if (useExists) {
+                reportError(email + " is already in the shared list");
+                valid = false;
+            }
+
+        }
+    } else {
+        reportError("Emails address can not be empty");
+        valid = false;
     }
 
-    function reportError(msg) {
+
+    if (valid) {
+        // Emails are valid, add them as rows ...
+        $("#collabEmails").val("");
+        for (i = 0; i < emails.length; i++) {
+            email = emails[i];
+            addCollaboration(email, role);
+        }
+    } else {
+
+    }
+});
+
+// Register change event  ...
+$("#shareRole a").click(function() {
+    var role = onClickShare(this);
+    $(this).parent().attr('data-role', role);
+
+    event.preventDefault();
+});
+
+function isValidEmailAddress(emailAddress) {
+    var pattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i);
+    return pattern.test(emailAddress);
+}
+
+function reportError(msg) {
+    if (msg) {
         $('#errorMsg').show();
         $('#errorMsg').append("<p>" + msg + "</p>");
+    } else {
+        $("#errorMsg").text("").hide();
     }
+}
 
-    function buildCollabModel() {
-        var collabs = $('#collabsTable tr').map(function() {
-            return {
-                email: $(this).attr('data-collab'),
-                role: $(this).attr('data-role')
-            };
-        });
-        collabs = jQuery.makeArray(collabs);
-
+function buildCollabModel() {
+    var collabs = $('#collabsTable tr').map(function() {
         return {
-            count:collabs.length,
-            collaborations:collabs
+            email: $(this).attr('data-collab'),
+            role: $(this).attr('data-role')
         };
-    }
+    });
+    collabs = jQuery.makeArray(collabs);
 
-    // Hook for interaction with the main parent window ...
-    var submitDialogForm = function() {
+    return {
+        count:collabs.length,
+        collaborations:collabs
+    };
+}
 
-        console.log(buildCollabModel());
-        jQuery.ajax("service/maps/${mindmap.id}/collabs", {
-            async:false,
-            dataType: 'json',
-            type: 'PUT',
-            data: JSON.stringify(buildCollabModel()),
-            contentType:"application/json",
-            success : function(data, textStatus, jqXHR) {
+// Hook for interaction with the main parent window ...
+var submitDialogForm = function() {
 
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                alert(textStatus);
-            }
+    var collabs = buildCollabModel();
+    collabs.collaborations = jQuery.grep(collabs.collaborations, function() {
+        return this.role != 'owner';
+    });
 
-        });
-    }
+    jQuery.ajax("service/maps/${mindmap.id}/collabs", {
+        async:false,
+        dataType: 'json',
+        type: 'PUT',
+        data: JSON.stringify(collabs),
+        contentType:"application/json",
+        success : function(data, textStatus, jqXHR) {
+            $('#share-dialog-modal').modal('hide');
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            reportError(textStatus);
+        }
+    });
+}
 </script>
 

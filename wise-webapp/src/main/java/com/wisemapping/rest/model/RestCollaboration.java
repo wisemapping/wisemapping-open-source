@@ -24,7 +24,7 @@ public class RestCollaboration {
 
     public RestCollaboration(@NotNull Collaboration collaboration) {
         this.email = collaboration.getCollaborator().getEmail();
-        this.role = collaboration.getRole().name();
+        this.role = collaboration.getRole().getLabel();
     }
 
     public RestCollaboration() {
