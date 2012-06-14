@@ -68,7 +68,7 @@ public class UserServiceImpl
             model.put("user", user);
             model.put("password", password);
 
-            mailer.sendEmail(mailer.getRegistrationEmail(), user.getEmail(), "WiseMapping : Recovery Password", model, "recoveryMail.vm");
+            mailer.sendEmail(mailer.getRegistrationEmail(), user.getEmail(), "WiseMapping : Recovery Password", model, "passwordRecovery.vm");
         } else {
             throw new InvalidUserEmailException("The email '" + email + "' does not exists.");
         }
@@ -134,8 +134,6 @@ public class UserServiceImpl
         model.put("emailcheck", activationUrl);
         mailer.sendEmail(mailer.getRegistrationEmail(), user.getEmail(), "Welcome to Wisemapping!", model,
                 "confirmationMail.vm");
-        mailer.sendEmail(mailer.getRegistrationEmail(), mailer.getRegistrationEmail(), "Wisemapping : New User", model,
-                "activeUserAccountMail.vm");
     }
 
     public void changePassword(User user) {
