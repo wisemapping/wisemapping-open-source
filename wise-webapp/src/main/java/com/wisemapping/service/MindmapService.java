@@ -21,6 +21,7 @@ package com.wisemapping.service;
 import com.wisemapping.model.*;
 import com.wisemapping.exceptions.WiseMappingException;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.io.IOException;
@@ -42,7 +43,7 @@ public interface MindmapService {
     public void addCollaboration(@NotNull MindMap mindmap, @NotNull String email, @NotNull CollaborationRole role)
             throws CollaborationException;
 
-    public void removeCollaboration(@NotNull Collaboration collaboration) throws CollaborationException;
+    public void removeCollaboration(@NotNull MindMap mindmap,  @NotNull Collaboration collaboration) throws CollaborationException;
 
     public void addTags(MindMap mindmap, String tags);
 
@@ -52,9 +53,9 @@ public interface MindmapService {
 
     public List<MindMapHistory> getMindMapHistory(int mindmapId);
 
-    public boolean hasPermissions(User user, MindMap map, CollaborationRole allowedRole);
+    public boolean hasPermissions(@Nullable User user, MindMap map, CollaborationRole allowedRole);
 
-    public boolean hasPermissions(User user, int mapId, CollaborationRole allowedRole);
+    public boolean hasPermissions(@Nullable User user, int mapId, CollaborationRole allowedRole);
 
     public void addWelcomeMindmap(User user) throws WiseMappingException;
 

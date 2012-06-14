@@ -2,6 +2,12 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
+    <bean id="mailer" class="com.wisemapping.mail.Mailer" singleton="true">
+        <constructor-arg index="0" value="${mail.registrationEmail}"/>
+        <constructor-arg index="1" value="${mail.siteEmail}"/>
+        <property name="mailSender" ref="mailSender"/>
+        <property name="velocityEngine" ref="velocityEngine"/>
+    </bean>
 
     <bean id="userServiceTarget" class="com.wisemapping.service.UserServiceImpl">
         <property name="userManager" ref="userManager"/>
@@ -24,7 +30,7 @@
     <bean id="mindMapServiceTarget" class="com.wisemapping.service.MindmapServiceImpl">
         <property name="mindmapManager" ref="mindmapManager"/>
         <property name="userService" ref="userService"/>
-        <property name="mailer" ref="mailer"/>
+        <property name="notificationService" ref="notificationService"/>
     </bean>
 
     <bean id="mindmapService"
@@ -40,37 +46,19 @@
         <property name="target" ref="mindMapServiceTarget"/>
     </bean>
 
-    <bean id="smtpAuthenticator" class="com.wisemapping.mail.SmtpAuthenticator">
-        <constructor-arg value="${mail.user}"/>
-        <constructor-arg value="${mail.password}"/>
-    </bean>
-
-    <bean id="mailSession" class="javax.mail.Session" factory-method="getInstance">
-        <constructor-arg>
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="${mail.smtp.host}"/>
+        <property name="port" value="${mail.smtp.port}"/>
+        <property name="protocol" value="smtp"/>
+        <property name="username" value="${mail.username}"/>
+        <property name="password" value="${mail.password}"/>
+        <property name="javaMailProperties">
             <props>
                 <prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
-                <prop key="mail.smtp.socketFactory.port">${mail.smtp.socketFactory.port}</prop>
-                <prop key="mail.smtp.socketFactory.class">${mail.smtp.socketFactory.class}</prop>
-                <prop key="mail.smtp.socketFactory.fallback">false</prop>
-                <prop key="mail.smtp.quitwait">false</prop>
-                <prop key="mail.smtp.debug">true</prop>
                 <prop key="mail.smtp.starttls.enable">${mail.smtp.starttls.enable}</prop>
+                <prop key="mail.smtp.quitwait">${mail.smtp.quitwait}</prop>
             </props>
-        </constructor-arg>
-        <constructor-arg ref="smtpAuthenticator"/>
-    </bean>
-
-    <bean id="mailer" class="com.wisemapping.mail.Mailer" singleton="true">
-        <constructor-arg index="0" value="${mail.registrationEmail}"/>
-        <constructor-arg index="1" value="${mail.siteEmail}"/>
-
-        <property name="mailSender" ref="mailSender"/>
-        <property name="velocityEngine" ref="velocityEngine"/>
-    </bean>
-
-    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="host" value="${mail.host}"/>
-        <property name="session" ref="mailSession"/>
+        </property>
     </bean>
 
     <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
@@ -81,4 +69,10 @@
             </value>
         </property>
     </bean>
+
+    <bean id="notificationService" class="com.wisemapping.mail.NotificationService" singleton="true">
+        <property name="baseUrl" value="${site.baseurl}"/>
+        <property name="mailer" ref="mailer"/>
+    </bean>
+
 </beans>

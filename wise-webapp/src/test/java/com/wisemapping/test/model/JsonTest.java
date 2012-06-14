@@ -29,12 +29,11 @@ public class JsonTest {
     @Test
     void serialize() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-
-        final RestMindmap value = new RestMindmap();
-        value.setTitle("titl");
-        value.setTitle("desck");
-        final String restMindmap = mapper.writeValueAsString(value);
-        System.out.println(restMindmap);
+//
+//        final RestMindmap value = new RestMindmap();
+//        value.setTitle("titl");
+//        value.setTitle("desck");
+//        final String restMindmap = mapper.writeValueAsString(value);
     }
 
     @Test

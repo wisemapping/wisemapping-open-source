@@ -21,9 +21,13 @@ package com.wisemapping.service;
 import com.wisemapping.dao.MindmapManager;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.mail.Mailer;
+import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.*;
+import com.wisemapping.security.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.io.IOException;
 import java.util.*;
@@ -32,9 +36,15 @@ import java.util.*;
 public class MindmapServiceImpl
         implements MindmapService {
 
+    @Autowired
     private MindmapManager mindmapManager;
+
+    @Autowired
+    @Qualifier("userService")
     private UserService userService;
-    private Mailer mailer;
+
+    @Autowired
+    private NotificationService notificationService;
 
     @Override
     public boolean hasPermissions(@NotNull User user, int mapId, @NotNull CollaborationRole grantedRole) {
@@ -89,7 +99,7 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public void removeCollaboration(@NotNull Collaboration collaboration) throws CollaborationException {
+    public void removeCollaboration(@NotNull MindMap mindmap, @NotNull Collaboration collaboration) throws CollaborationException {
         // remove collaborator association
         final MindMap mindMap = collaboration.getMindMap();
         final Set<Collaboration> collaborations = mindMap.getCollaborations();
@@ -110,7 +120,7 @@ public class MindmapServiceImpl
         } else {
             final Collaboration collaboration = mindmap.findCollaboration(user);
             if (collaboration != null) {
-                this.removeCollaboration(collaboration);
+                this.removeCollaboration(mindmap, collaboration);
             }
         }
     }
@@ -166,16 +176,9 @@ public class MindmapServiceImpl
             mindmap.getCollaborations().add(collaboration);
             mindmapManager.saveMindmap(mindmap);
 
-            try {
-                // Sent collaboration email ...
-                final Map<String, Object> model = new HashMap<String, Object>();
-                model.put("role", role);
-                model.put("map", mindmap);
-                model.put("message", "message");
-                mailer.sendEmail(mailer.getSiteEmail(), email, "Collaboration", model, "newColaborator.vm");
-            } catch (Exception e) {
-               e.printStackTrace();
-            }
+            // Notify by email ...
+            final User user = Utils.getUser();
+            notificationService.newCollaboration(collaboration, mindmap, user, null);
 
         } else if (collaboration.getRole() != role) {
             // If the relationship already exists and the role changed then only update the role
@@ -264,7 +267,7 @@ public class MindmapServiceImpl
         this.userService = userService;
     }
 
-    public void setMailer(Mailer mailer) {
-        this.mailer = mailer;
+    public void setNotificationService(NotificationService notificationService) {
+        this.notificationService = notificationService;
     }
 }

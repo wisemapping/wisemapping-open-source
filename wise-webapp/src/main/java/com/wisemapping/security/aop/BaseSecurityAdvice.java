@@ -25,6 +25,8 @@ import com.wisemapping.exceptions.UnexpectedArgumentException;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapService;
 import org.aopalliance.intercept.MethodInvocation;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class BaseSecurityAdvice {
     private MindmapService mindmapService = null;
@@ -47,9 +49,9 @@ public abstract class BaseSecurityAdvice {
         }
     }
 
-    protected abstract boolean isAllowed(User user, MindMap map);
+    protected abstract boolean isAllowed(@Nullable User user, MindMap map);
 
-    protected abstract boolean isAllowed(User user, int mapId);
+    protected abstract boolean isAllowed(@Nullable User user, int mapId);
 
     protected MindmapService getMindmapService() {
         return mindmapService;

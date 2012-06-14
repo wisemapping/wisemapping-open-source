@@ -36,8 +36,7 @@ public class UserManagerImpl
 
     private PasswordEncoder passwordEncoder;
 
-    public void setEncoder(PasswordEncoder passwordEncoder)
-    {
+    public void setEncoder(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -47,14 +46,12 @@ public class UserManagerImpl
 
 
     @Override
-    public User getUserBy(final String email) {
-        final User user;
-        final List users = getHibernateTemplate().find("from com.wisemapping.model.User colaborator where email=?", email);
+    public User getUserBy(@NotNull final String email) {
+        User user = null;
+        final List<User> users = getHibernateTemplate().find("from com.wisemapping.model.User colaborator where email=?", email);
         if (users != null && !users.isEmpty()) {
             assert users.size() == 1 : "More than one user with the same email!";
-            user = (User) users.get(0);
-        } else {
-            user = null;
+            user = users.get(0);
         }
         return user;
     }
@@ -100,13 +97,13 @@ public class UserManagerImpl
     @Override
     public void createUser(User user) {
         assert user != null : "Trying to store a null user";
-        user.setPassword(passwordEncoder.encodePassword(user.getPassword(),null));
+        user.setPassword(passwordEncoder.encodePassword(user.getPassword(), null));
         getHibernateTemplate().saveOrUpdate(user);
     }
 
     @Override
     public User createUser(@NotNull User user, @NotNull Collaborator col) {
-        user.setPassword(passwordEncoder.encodePassword(user.getPassword(),null));
+        user.setPassword(passwordEncoder.encodePassword(user.getPassword(), null));
         assert user != null : "Trying to store a null user";
 
         final Set<Collaboration> set = col.getCollaborations();
@@ -139,7 +136,7 @@ public class UserManagerImpl
 
     public void updateUser(User user) {
         assert user != null : "user is null";
-        user.setPassword(passwordEncoder.encodePassword(user.getPassword(),null));
+        user.setPassword(passwordEncoder.encodePassword(user.getPassword(), null));
         getHibernateTemplate().update(user);
     }
 

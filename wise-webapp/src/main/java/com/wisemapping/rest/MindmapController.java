@@ -238,7 +238,7 @@ public class MindmapController extends BaseController {
 
         // Remove all collaborations that no applies anymore ..
         for (final Collaboration collaboration : collabsToRemove) {
-            mindmapService.removeCollaboration(collaboration);
+            mindmapService.removeCollaboration(mindMap, collaboration);
         }
     }
 

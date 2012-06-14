@@ -34,11 +34,11 @@ public class ViewBaseSecurityAdvise
         return methodInvocation.proceed();
     }
 
-    protected boolean isAllowed(User user, MindMap map) {
+    protected boolean isAllowed(@NotNull User user, MindMap map) {
         return getMindmapService().hasPermissions(user, map, CollaborationRole.VIEWER);
     }
 
-    protected boolean isAllowed(User user, int mapId) {
+    protected boolean isAllowed(@NotNull User user, int mapId) {
         return getMindmapService().hasPermissions(user, mapId, CollaborationRole.VIEWER);
     }
 }

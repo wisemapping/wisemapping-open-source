@@ -45,6 +45,10 @@ public class User
         return tags;
     }
 
+    public String getFullName() {
+        return this.getFirstname() + " " + this.getLastname();
+    }
+
     public String getFirstname() {
         return firstname;
     }

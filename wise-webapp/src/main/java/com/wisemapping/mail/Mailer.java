@@ -39,19 +39,16 @@ public final class Mailer {
 
     //~ Methods ..............................................................................................
 
-    public Mailer(String registrationEmail, String siteEmail)
-    {
+    public Mailer(String registrationEmail, String siteEmail) {
         this.registrationEmail = registrationEmail;
         this.siteEmail = siteEmail;
     }
 
-    public String getRegistrationEmail()
-    {
+    public String getRegistrationEmail() {
         return registrationEmail;
     }
 
-    public String getSiteEmail()
-    {
+    public String getSiteEmail() {
         return siteEmail;
     }
 
@@ -66,11 +63,12 @@ public final class Mailer {
                         message.setFrom(from);
                         message.setSubject(subject);
 
-                        final String text =
+                        final String messageBody =
                                 VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "/mail/" + templateMail,
                                         model);
+                        System.out.println(message);
 
-                        message.setText(text, true);
+                        message.setText(messageBody, true);
                     }
                 };
 

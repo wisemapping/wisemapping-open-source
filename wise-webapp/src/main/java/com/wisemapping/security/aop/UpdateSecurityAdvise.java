@@ -25,6 +25,7 @@ import com.wisemapping.model.MindMap;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class UpdateSecurityAdvise
         extends BaseSecurityAdvice
@@ -35,7 +36,7 @@ public class UpdateSecurityAdvise
         return methodInvocation.proceed();
     }
 
-    protected boolean isAllowed(@NotNull User user, @NotNull MindMap map) {
+    protected boolean isAllowed(@Nullable User user, @NotNull MindMap map) {
         boolean result;
         if (map.getCreator() == null) {
             // This means that the map is new and  is an add operation.
@@ -46,7 +47,7 @@ public class UpdateSecurityAdvise
         return result;
     }
 
-    protected boolean isAllowed(User user, int mapId) {
+    protected boolean isAllowed(@Nullable User user, int mapId) {
         return getMindmapService().hasPermissions(user, mapId, CollaborationRole.EDITOR);
     }
 }
