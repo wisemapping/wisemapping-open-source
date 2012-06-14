@@ -57,7 +57,7 @@ final public class NotificationService {
             model.put("message", "message");
             model.put("ownerName", user.getFirstname());
             model.put("mapEditUrl", baseUrl + "/c/maps/" + mindmap.getId() + "/edit");
-            model.put("baseUrl", baseUrl + "/c/maps/" + mindmap.getId() + "/edit");
+            model.put("baseUrl", baseUrl);
 
             mailer.sendEmail(formMail, collabEmail, subject, model, "newCollaboration.vm");
         } catch (Exception e) {
