@@ -102,12 +102,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-struts</artifactId>
-            <version>${org.springframework.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
             <version>2.0</version>
@@ -141,16 +135,10 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.struts</groupId>
-            <artifactId>struts-tiles</artifactId>
-            <version>1.3.8</version>
+            <groupId>org.apache.tiles</groupId>
+            <artifactId>tiles-jsp</artifactId>
+            <version>2.1.4</version>
             <scope>runtime</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>antlr</groupId>
-                    <artifactId>antlr</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

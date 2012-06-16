@@ -1,174 +1,171 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
-
-<!DOCTYPE tiles-definitions PUBLIC
-        "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
-        "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+ <!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 
 <tiles-definitions>
 
-    <definition name="homepage" page="/jsp/homepage.jsp"/>
-    <definition name="mindmapList" page="/jsp/mindmapList.jsp"/>
-    <definition name="mindmapEmbedded" page="/jsp/mindmapEmbed.jsp"/>
-    <definition name="mindmapEditor" page="/jsp/mindmapEditor.jsp"/>
-    <definition name="mindmapPrint" page="/jsp/mindmapPrint.jsp"/>
+    <definition name="homepage" template="/jsp/homepage.jsp"/>
+    <definition name="mindmapList" template="/jsp/mindmapList.jsp"/>
+    <definition name="mindmapEmbedded" template="/jsp/mindmapEmbed.jsp"/>
+    <definition name="mindmapEditor" template="/jsp/mindmapEditor.jsp"/>
+    <definition name="mindmapPrint" template="/jsp/mindmapPrint.jsp"/>
 
     <!-- Template Declaration -->
-    <definition name="pageTemplate" page="/jsp/template.jsp">
-        <put name="title" value="" type="string"/>
-        <put name="details" value="" type="string"/>
-        <put name="body" value="/jsp/error.jsp" type="page"/>
+    <definition name="pageTemplate" template="/jsp/template.jsp">
+        <put-attribute name="title" value="" type="string"/>
+        <put-attribute name="details" value="" type="string"/>
+        <put-attribute name="body" value="/jsp/error.jsp" type="page"/>
     </definition>
 
-    <definition name="dialogTemplate" page="/jsp/dialogTemplate.jsp">
-        <put name="title" value="title" type="string"/>
-        <put name="details" value="details" type="string"/>
-        <put name="body" value="/jsp/error.jsp" type="page"/>
+    <definition name="dialogTemplate" template="/jsp/dialogTemplate.jsp">
+        <put-attribute name="title" value="title" type="string"/>
+        <put-attribute name="details" value="details" type="string"/>
+        <put-attribute name="body" value="/jsp/error.jsp" type="page"/>
     </definition>
 
-    <definition name="dialogFullTemplate" page="/jsp/dialogFullTemplate.jsp">
-        <put name="title" value="title" type="string"/>
-        <put name="details" value="details" type="string"/>
-        <put name="body" value="/jsp/error.jsp" type="page"/>
+    <definition name="dialogFullTemplate" template="/jsp/dialogFullTemplate.jsp">
+        <put-attribute name="title" value="title" type="string"/>
+        <put-attribute name="details" value="details" type="string"/>
+        <put-attribute name="body" value="/jsp/error.jsp" type="page"/>
     </definition>
 
     <definition name="errorTemplate" extends="pageTemplate">
-        <put name="body" value="/jsp/errorTemplate.jsp" type="page"/>
+        <put-attribute name="body" value="/jsp/errorTemplate.jsp" type="page"/>
     </definition>
 
-    <definition name="iframeWrapper" page="/jsp/iframeWrapper.jsp"/>
+    <definition name="iframeWrapper" template="/jsp/iframeWrapper.jsp"/>
 
     <!-- Error Pages -->
     <definition name="gcfPluginNeeded" extends="pageTemplate">
-        <put name="body" value="/jsp/gcfPluginNeeded.jsp" type="page"/>
-        <put name="title" value="INSTALL_CFG"/>
+        <put-attribute name="body" value="/jsp/gcfPluginNeeded.jsp" type="page"/>
+        <put-attribute name="title" value="INSTALL_CFG"/>
     </definition>
 
     <definition name="installCFG" extends="pageTemplate">
-        <put name="body" value="/jsp/installCFG.jsp" type="page"/>
-        <put name="title" value="INSTALL_CFG"/>
+        <put-attribute name="body" value="/jsp/installCFG.jsp" type="page"/>
+        <put-attribute name="title" value="INSTALL_CFG"/>
     </definition>
 
     <definition name="unexpectedError" extends="errorTemplate">
-        <put name="title" value="UNEXPECTED_ERROR"/>
-        <put name="details" value="UNEXPECTED_ERROR_DETAILS"/>
+        <put-attribute name="title" value="UNEXPECTED_ERROR"/>
+        <put-attribute name="details" value="UNEXPECTED_ERROR_DETAILS"/>
     </definition>
 
     <definition name="securityError" extends="errorTemplate">
-        <put name="title" value="NO_ENOUGH_PERMISSIONS"/>
-        <put name="details" value="NO_ENOUGH_PERMISSIONS_DETAILS"/>
+        <put-attribute name="title" value="NO_ENOUGH_PERMISSIONS"/>
+        <put-attribute name="details" value="NO_ENOUGH_PERMISSIONS_DETAILS"/>
     </definition>
 
     <definition name="emailNotExistsError" extends="errorTemplate">
-        <put name="title" value="INVALID_EMAIL_ERROR"/>
-        <put name="body" value="/jsp/emailNotExistsError.jsp"/>
+        <put-attribute name="title" value="INVALID_EMAIL_ERROR"/>
+        <put-attribute name="body" value="/jsp/emailNotExistsError.jsp"/>
     </definition>
 
     <!-- Main Pages -->
     <definition name="forgotPassword" extends="pageTemplate">
-        <put name="title" value="FORGOT_PASSWORD"/>
-        <put name="body" value="/jsp/forgotPassword.jsp"/>
+        <put-attribute name="title" value="FORGOT_PASSWORD"/>
+        <put-attribute name="body" value="/jsp/forgotPassword.jsp"/>
     </definition>
 
     <definition name="userRegistration" extends="pageTemplate">
-        <put name="title" value="USER_REGISTRATION"/>
-        <put name="body" value="/jsp/userRegistration.jsp"/>
+        <put-attribute name="title" value="USER_REGISTRATION"/>
+        <put-attribute name="body" value="/jsp/userRegistration.jsp"/>
     </definition>
 
     <definition name="userRegistrationConfirmation" extends="pageTemplate">
-        <put name="title" value="USER_REGISTRATION"/>
-        <put name="body" value="/jsp/userRegistrationConfirmation.jsp"/>
+        <put-attribute name="title" value="USER_REGISTRATION"/>
+        <put-attribute name="body" value="/jsp/userRegistrationConfirmation.jsp"/>
     </definition>
 
     <definition name="login" extends="pageTemplate">
-        <put name="title" value="LOGIN"/>
-        <put name="body" value="/jsp/login.jsp"/>
+        <put-attribute name="title" value="LOGIN"/>
+        <put-attribute name="body" value="/jsp/login.jsp"/>
     </definition>
 
     <!-- Dialog Forms -->
 
     <definition name="mindmapDetail" extends="dialogTemplate">
-        <put name="title" value="MINDMAP_DETAIL"/>
-        <put name="body" value="/jsp/mindmapDetail.jsp"/>
+        <put-attribute name="title" value="MINDMAP_DETAIL"/>
+        <put-attribute name="body" value="/jsp/mindmapDetail.jsp"/>
     </definition>
 
     <definition name="setting" extends="dialogTemplate">
-        <put name="title" value="SETTINGS"/>
-        <put name="details" value="SETTINGS_MSG"/>
-        <put name="body" value="/jsp/setting.jsp"/>
+        <put-attribute name="title" value="SETTINGS"/>
+        <put-attribute name="details" value="SETTINGS_MSG"/>
+        <put-attribute name="body" value="/jsp/setting.jsp"/>
     </definition>
 
     <definition name="editProfile" extends="dialogTemplate">
-        <put name="title" value="EDIT_PROFILE"/>
-        <put name="details" value="FIELD_REQUIRED_MSG"/>
-        <put name="body" value="/jsp/editProfile.jsp"/>
+        <put-attribute name="title" value="EDIT_PROFILE"/>
+        <put-attribute name="details" value="FIELD_REQUIRED_MSG"/>
+        <put-attribute name="body" value="/jsp/editProfile.jsp"/>
     </definition>
 
     <definition name="changePassword" extends="dialogTemplate">
-        <put name="title" value="CHANGE_PASSWORD"/>
-        <put name="details" value="FIELD_REQUIRED_MSG"/>
-        <put name="body" value="/jsp/changePassword.jsp"/>
+        <put-attribute name="title" value="CHANGE_PASSWORD"/>
+        <put-attribute name="details" value="FIELD_REQUIRED_MSG"/>
+        <put-attribute name="body" value="/jsp/changePassword.jsp"/>
     </definition>
 
     <definition name="mindmapExport" extends="dialogTemplate">
-        <put name="title" value=""/>
-        <put name="details" value=""/>
-        <put name="body" value="/jsp/mindmapExport.jsp"/>
+        <put-attribute name="title" value=""/>
+        <put-attribute name="details" value=""/>
+        <put-attribute name="body" value="/jsp/mindmapExport.jsp"/>
     </definition>
 
     <definition name="mindmapExportFull" extends="dialogFullTemplate">
-        <put name="title" value=""/>
-        <put name="details" value=""/>
-        <put name="body" value="/jsp/mindmapExport.jsp"/>
+        <put-attribute name="title" value=""/>
+        <put-attribute name="details" value=""/>
+        <put-attribute name="body" value="/jsp/mindmapExport.jsp"/>
     </definition>
 
     <definition name="mindmapPublish" extends="dialogTemplate">
-        <put name="title" value=""/>
-        <put name="details" value=""/>
-        <put name="body" value="/jsp/mindmapPublish.jsp"/>
+        <put-attribute name="title" value=""/>
+        <put-attribute name="details" value=""/>
+        <put-attribute name="body" value="/jsp/mindmapPublish.jsp"/>
     </definition>
 
     <definition name="mindmapPublishFull" extends="dialogFullTemplate">
-        <put name="title" value=""/>
-        <put name="details" value=""/>
-        <put name="body" value="/jsp/mindmapPublish.jsp"/>
+        <put-attribute name="title" value=""/>
+        <put-attribute name="details" value=""/>
+        <put-attribute name="body" value="/jsp/mindmapPublish.jsp"/>
     </definition>
 
     <definition name="mindmapShare" extends="dialogTemplate">
-        <put name="title" value=""/>
-        <put name="details" value=""/>
-        <put name="body" value="/jsp/mindmapShare.jsp"/>
+        <put-attribute name="title" value=""/>
+        <put-attribute name="details" value=""/>
+        <put-attribute name="body" value="/jsp/mindmapShare.jsp"/>
     </definition>
 
     <definition name="mindmapShareFull" extends="dialogFullTemplate">
-        <put name="title" value=""/>
-        <put name="details" value=""/>
-        <put name="body" value="/jsp/mindmapShare.jsp"/>
+        <put-attribute name="title" value=""/>
+        <put-attribute name="details" value=""/>
+        <put-attribute name="body" value="/jsp/mindmapShare.jsp"/>
     </definition>
 
     <definition name="keyboard" extends="dialogTemplate">
-        <put name="title" value="KEYBOARD"/>
-        <put name="details" value="KEYBOARD_MSG"/>
-        <put name="body" value="/jsp/keyboard.jsp"/>
+        <put-attribute name="title" value="KEYBOARD"/>
+        <put-attribute name="details" value="KEYBOARD_MSG"/>
+        <put-attribute name="body" value="/jsp/keyboard.jsp"/>
     </definition>
 
     <definition name="mindmapImport" extends="dialogTemplate">
-        <put name="body" value="/jsp/mindmapImport.jsp"/>
+        <put-attribute name="body" value="/jsp/mindmapImport.jsp"/>
     </definition>
 
     <definition name="activationAccountConfirmation" extends="pageTemplate">
-        <put name="title" value="ACCOUNT_ACTIVED"/>
-        <put name="body" value="/jsp/activationAccountConfirmation.jsp"/>
+        <put-attribute name="title" value="ACCOUNT_ACTIVED"/>
+        <put-attribute name="body" value="/jsp/activationAccountConfirmation.jsp"/>
     </definition>
 
     <definition name="activationAccountConfirmationFail" extends="pageTemplate">
-        <put name="title" value="ACCOUNT_ACTIVED_FAIL"/>
-        <put name="body" value="/jsp/activationAccountConfirmationFail.jsp"/>
+        <put-attribute name="title" value="ACCOUNT_ACTIVED_FAIL"/>
+        <put-attribute name="body" value="/jsp/activationAccountConfirmationFail.jsp"/>
     </definition>
 
     <definition name="mindmapHistory" extends="dialogTemplate">
-        <put name="title" value="HISTORY"/>
-        <put name="details" value="HISTORY_INFO"/>
-        <put name="body" value="/jsp/mindmapHistory.jsp"/>
+        <put-attribute name="title" value="HISTORY"/>
+        <put-attribute name="details" value="HISTORY_INFO"/>
+        <put-attribute name="body" value="/jsp/mindmapHistory.jsp"/>
     </definition>
-
 </tiles-definitions>

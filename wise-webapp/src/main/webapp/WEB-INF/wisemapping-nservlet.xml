@@ -33,11 +33,11 @@
         </property>
     </bean>
 
-    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="viewClass" value="org.springframework.web.servlet.view.tiles.TilesJstlView"/>
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"/>
     </bean>
 
-    <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles.TilesConfigurer">
+    <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
         <property name="definitions">
             <list>
                 <value>/WEB-INF/defs/definitions.xml</value>
@@ -76,7 +76,7 @@
                 <value>/c/keyboard</value>
                 <value>/c/renameMap</value>
                 <value>/c/embeddedView</value>
-                <value>/c/forgotPassword</value>
+                <value>/c/user/resetPassword</value>
             </list>
         </property>
     </bean>

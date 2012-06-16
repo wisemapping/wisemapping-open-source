@@ -1,4 +1,4 @@
-<%@ taglib prefix="tiles" uri="http://struts.apache.org/tags-tiles" %>
+<!DOCTYPE HTML>
 <%@ include file="/jsp/init.jsp" %>
 
 <div>

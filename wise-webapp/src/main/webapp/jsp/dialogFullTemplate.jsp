@@ -1,4 +1,4 @@
-<%@ taglib prefix="tiles" uri="http://struts.apache.org/tags-tiles" %>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ include file="/jsp/init.jsp" %>
 
 <tiles:importAttribute name="title" scope="page"/>
@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-responsive.min.css"/>
 <body>
 <div style="padding-top:20px">
-    <tiles:insert name="body"/>
+    <tiles:insertAttribute name="body"/>
 </div>
 </body>
 </html>

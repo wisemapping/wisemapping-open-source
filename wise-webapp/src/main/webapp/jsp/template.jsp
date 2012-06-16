@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <%@page pageEncoding="UTF-8" %>
-<%@ taglib prefix="tiles" uri="http://struts.apache.org/tags-tiles" %>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ include file="/jsp/init.jsp" %>
 
 <tiles:importAttribute name="title" scope="request"/>
@@ -37,7 +37,7 @@
 <div class="pageBody">
 
     <div class="pageBodyContent">
-        <tiles:insert name="body"/>
+        <tiles:insertAttribute name="body"/>
     </div>
 </div>
 

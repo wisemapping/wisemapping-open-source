@@ -1,4 +1,4 @@
-<%@ taglib prefix="tiles" uri="http://struts.apache.org/tags-tiles" %>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 
 <%@ include file="/jsp/init.jsp" %>
 
@@ -6,6 +6,5 @@
 <tiles:importAttribute name="details" scope="page"/>
 
 <div>
-    <!--  Header can be customized -->
-    <tiles:insert name="body"/>
+    <tiles:insertAttribute name="body"/>
 </div>
