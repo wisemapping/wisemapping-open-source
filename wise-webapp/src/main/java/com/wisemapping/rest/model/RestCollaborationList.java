@@ -21,6 +21,7 @@ import java.util.*;
 public class RestCollaborationList {
 
     private List<RestCollaboration> collaborations;
+    private String message;
 
     public RestCollaborationList() {
         collaborations = new ArrayList<RestCollaboration>();
@@ -45,5 +46,13 @@ public class RestCollaborationList {
 
     public void setCollaborations(@NotNull List<RestCollaboration> collaborations) {
         this.collaborations = collaborations;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

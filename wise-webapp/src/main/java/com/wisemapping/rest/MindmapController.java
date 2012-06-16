@@ -227,9 +227,10 @@ public class MindmapController extends BaseController {
             // Is owner ?
             final CollaborationRole role = CollaborationRole.valueOf(roleStr.toUpperCase());
             if (role != CollaborationRole.OWNER) {
-                mindmapService.addCollaboration(mindMap, restCollab.getEmail(), role);
+                mindmapService.addCollaboration(mindMap, restCollab.getEmail(), role, restCollabs.getMessage());
             }
 
+            // Remove from the list of pendings to remove ...
             if (collaboration != null) {
                 collabsToRemove.remove(collaboration);
             }

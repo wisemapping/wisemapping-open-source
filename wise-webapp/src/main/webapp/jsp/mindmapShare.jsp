@@ -13,13 +13,26 @@
     }
 
     #collabEmails {
-        float: left;
         width: 300px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-bottom: 0;
     }
 
     #roleBtn {
-        float: left;
-        margin: 0px 10px;
+        margin: 0 10px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    #addBtn {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    #collabMessage {
+        display: block;
+        width: 100%;
     }
 
 </style>
@@ -38,25 +51,43 @@
 
 <div class="well">
     <div id="errorMsg" class="alert alert-error"></div>
-    <p>Add People: </p>
-    <input type="text" id="collabEmails" name="collabEmails"
-           placeholder="Enter collaborators emails separared by comas."/>
+    <div>
 
-    <div class="btn-group" id="roleBtn">
-        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Can edit
-            <span class="caret"> </span>
-        </a>
-        <ul class="dropdown-menu" data-role="editor" id="shareRole">
-            <li><a href="#" data-role="editor">Can edit</a></li>
-            <li><a href="#" data-role="viewer">Can view</a></li>
-        </ul>
+        <p><strong>Add People:</strong></p>
+
+        <input type="text" id="collabEmails" name="collabEmails"
+               placeholder="Enter collaborators emails separared by comas."/>
+
+        <div class="btn-group" id="roleBtn">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Can edit
+                <span class="caret"> </span>
+            </a>
+            <ul class="dropdown-menu" data-role="editor" id="shareRole">
+                <li><a href="#" data-role="editor">Can edit</a></li>
+                <li><a href="#" data-role="viewer">Can view</a></li>
+            </ul>
+        </div>
+        <button id="addBtn" class="btn btn-primary">Add</button>
     </div>
-    <button id="addBtn" class="btn btn-primary">Add</button>
+    <div style="margin-top: 10px;">
+        <p><strong>Notify people via email</strong> - <a href="#" id="addMessageLink">Add message</a></p>
+        <textarea cols="4" id="collabMessage" placeholder="Optional: Include a personal message">
+
+        </textarea>
+    </div>
 </div>
+
 
 <script type="text/javascript">
 
 $("#errorMsg").hide();
+$("#collabMessage").hide();
+
+$("#addMessageLink").click(function(event) {
+    $("#collabMessage").toggle().val("");
+    event.preventDefault();
+});
+
 var messages = {
     owner: 'Is owner',
     editor: 'Can edit',
@@ -248,6 +279,7 @@ var submitDialogForm = function() {
     collabs.collaborations = jQuery.grep(collabs.collaborations, function() {
         return this.role != 'owner';
     });
+    collabs['message'] = $("#collabMessage").val();
 
     jQuery.ajax("service/maps/${mindmap.id}/collabs", {
         async:false,

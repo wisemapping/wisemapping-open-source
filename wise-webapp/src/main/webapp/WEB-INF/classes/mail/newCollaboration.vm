@@ -23,12 +23,10 @@
         </table>
     </div>
     <div style="font-size: 13px; background-color: #FFF; padding: 10px 7px 7px 7px; min-height: 100px">
-        #if( ! $message )
-        <p>${message}</p>
+        #if($message )
+        <pre style="font-family: Arial, sans-serif; color: #000; ">${message}</pre>
         #end
         <p>Click to open: <a href="${mapEditUrl}">${mindmap.title}</a></p>
-        <br/>
-
         <p style="color: #898989;">Do you have a WiseMapping account ?. Don't worry, you can create an account for
             free. </p>
     </div>

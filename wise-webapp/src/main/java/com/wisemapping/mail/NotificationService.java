@@ -59,6 +59,7 @@ final public class NotificationService {
             model.put("mapEditUrl", baseUrl + "/c/maps/" + mindmap.getId() + "/edit");
             model.put("baseUrl", formMail);
             model.put("senderMail", user.getEmail());
+            model.put("message", message);
 
 
             mailer.sendEmail(formMail, collabEmail, subject, model, "newCollaboration.vm");

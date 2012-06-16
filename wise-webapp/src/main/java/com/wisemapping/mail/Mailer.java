@@ -20,6 +20,7 @@
 package com.wisemapping.mail;
 
 import org.apache.velocity.app.VelocityEngine;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -53,7 +54,7 @@ public final class Mailer {
     }
 
     public void sendEmail(final String from, final String to, final String subject, final Map model,
-                          final String templateMail) {
+                          @NotNull final String templateMail) {
         final MimeMessagePreparator preparator =
                 new MimeMessagePreparator() {
                     public void prepare(MimeMessage mimeMessage)
@@ -63,11 +64,7 @@ public final class Mailer {
                         message.setFrom(from);
                         message.setSubject(subject);
 
-                        final String messageBody =
-                                VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "/mail/" + templateMail,
-                                        model);
-                        System.out.println(message);
-
+                        final String messageBody = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "/mail/" + templateMail, model);
                         message.setText(messageBody, true);
                     }
                 };

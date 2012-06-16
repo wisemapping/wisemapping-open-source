@@ -20,7 +20,6 @@ package com.wisemapping.service;
 
 import com.wisemapping.dao.MindmapManager;
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.mail.Mailer;
 import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.*;
 import com.wisemapping.security.Utils;
@@ -47,7 +46,7 @@ public class MindmapServiceImpl
     private NotificationService notificationService;
 
     @Override
-    public boolean hasPermissions(@NotNull User user, int mapId, @NotNull CollaborationRole grantedRole) {
+    public boolean hasPermissions(@Nullable User user, int mapId, @NotNull CollaborationRole grantedRole) {
         final MindMap map = mindmapManager.getMindmapById(mapId);
         return hasPermissions(user, map, grantedRole);
     }
@@ -134,6 +133,7 @@ public class MindmapServiceImpl
             throw new IllegalArgumentException("The tile can not be empty");
         }
 
+        //noinspection ConstantConditions
         if (user == null) {
             throw new IllegalArgumentException("User can not be null");
         }
@@ -154,7 +154,7 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public void addCollaboration(@NotNull MindMap mindmap, @NotNull String email, @NotNull CollaborationRole role)
+    public void addCollaboration(@NotNull MindMap mindmap, @NotNull String email, @NotNull CollaborationRole role, @Nullable String message)
             throws CollaborationException {
 
         // Validate
@@ -178,7 +178,7 @@ public class MindmapServiceImpl
 
             // Notify by email ...
             final User user = Utils.getUser();
-            notificationService.newCollaboration(collaboration, mindmap, user, null);
+            notificationService.newCollaboration(collaboration, mindmap, user, message);
 
         } else if (collaboration.getRole() != role) {
             // If the relationship already exists and the role changed then only update the role
