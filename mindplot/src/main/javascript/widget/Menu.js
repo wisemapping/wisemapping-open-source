@@ -315,7 +315,7 @@ mindplot.widget.Menu = new Class({
         var tagElem = $('tagIt');
         if (tagElem) {
             this._addButton('tagIt', false, false, function() {
-                var reqDialog = new MooDialog.Request('c/tags.htm?mapId=' + mapId, null,
+                var reqDialog = new MooDialog.Request('c/tags?mapId=' + mapId, null,
                     {'class': 'modalDialog tagItModalDialog',
                         closeButton:true,
                         destroyOnClose:true,
@@ -333,11 +333,11 @@ mindplot.widget.Menu = new Class({
         var shareElem = $('shareIt');
         if (shareElem) {
             this._addButton('shareIt', false, false, function() {
-                var reqDialog = new MooDialog.Request('c/iframeWrapper.htm?url=c/maps/' + mapId + "/publishf", null,
-                    {'class': 'modalDialog  shareItModalDialog',
+                var reqDialog = new MooDialog.Request('c/iframeWrapper?url=c/maps/' + mapId + "/sharef", null,
+                    {'class': 'modalDialog shareModalDialog',
                         closeButton:true,
                         destroyOnClose:true,
-                        title:'Share It'
+                        title:'Share'
                     });
                 reqDialog.setRequestOptions({
                     onRequest: function() {
@@ -353,7 +353,7 @@ mindplot.widget.Menu = new Class({
         var publishElem = $('publishIt');
         if (publishElem) {
             this._addButton('publishIt', false, false, function() {
-                var reqDialog = new MooDialog.Request('c/iframeWrapper.htm?url=c/maps/' + mapId + "/publishf", null,
+                var reqDialog = new MooDialog.Request('c/iframeWrapper?url=c/maps/' + mapId + "/publishf", null,
                     {'class': 'modalDialog publishModalDialog',
                         closeButton:true,
                         destroyOnClose:true,
@@ -374,7 +374,7 @@ mindplot.widget.Menu = new Class({
         if (historyElem) {
 
             this._addButton('history', false, false, function() {
-                var reqDialog = new MooDialog.Request('c/history.htm?action=list&goToMindmapList&mapId=' + mapId, null,
+                var reqDialog = new MooDialog.Request('c/history?action=list&goToMindmapList&mapId=' + mapId, null,
                     {'class': 'modalDialog historyModalDialog',
                         closeButton:true,
                         destroyOnClose:true,

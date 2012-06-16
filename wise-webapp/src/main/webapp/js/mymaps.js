@@ -456,18 +456,13 @@ $(function() {
             var mapId = mapIds[0];
             $('#' + dialogElemId + ' .modal-body').load(urlTemplate.replace("{mapId}", mapId),
                 function() {
-                    $('#' + dialogElemId + ' .btn-accept').click(function() {
+                    $('#' + dialogElemId + ' .btn-accept').unbind('click').click(function() {
                         submitDialogForm();
                     });
                     $('#' + dialogElemId).modal();
                 });
         }
     };
-
-
-    $("#actionButtons .shareMap").click(function() {
-    });
-
 
     $('#foldersContainer li').click(function(event) {
         // Deselect previous option ...

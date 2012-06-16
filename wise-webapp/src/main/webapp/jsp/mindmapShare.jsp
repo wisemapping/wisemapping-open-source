@@ -56,7 +56,7 @@
         <p><strong>Add People:</strong></p>
 
         <input type="text" id="collabEmails" name="collabEmails"
-               placeholder="Enter collaborators emails separared by comas."/>
+               placeholder="Enter collaborators emails separared by comas." class="span1"/>
 
         <div class="btn-group" id="roleBtn">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Can edit
@@ -101,14 +101,14 @@ function onClickShare(aElem) {
     return role;
 }
 
-function addCollaboration(email, role) {
+function addCollaboration(email, role, changeType) {
     var rowStr;
     var tableElem = $("#collabsTable");
     if (role != "owner") {
         // Add row to the table ...
         var rowTemplate = '\
                    <tr data-collab="{email}" data-role="{role}">\
-                   <td>{email}</td>\
+                   <td>{email}{typeIcon}</td>\
                    <td>\
                        <div class="btn-group">\
                            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#""></a>\
@@ -123,6 +123,7 @@ function addCollaboration(email, role) {
 
         rowStr = rowTemplate.replace(/{email}/g, email);
         rowStr = rowStr.replace(/{role}/g, role);
+        rowStr = rowStr.replace(/{typeIcon}/g, changeType ? ' <span class="label label-success">' + changeType + '</span>' : "");
         var elem = tableElem.append(rowStr);
 
         // Register change role event  ...
@@ -228,7 +229,7 @@ $("#addBtn").click(function(event) {
         $("#collabEmails").val("");
         for (i = 0; i < emails.length; i++) {
             email = emails[i];
-            addCollaboration(email, role);
+            addCollaboration(email, role, 'New');
         }
     } else {
 
