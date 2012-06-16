@@ -1,6 +1,4 @@
 <%@ include file="/jsp/init.jsp" %>
-
-
 <div>
     <div class="fform">
 
@@ -35,23 +33,28 @@
                 <form:errors path="retypePassword" cssClass="errorMsg"/>
 
             <c:if test="${requestScope.captchaEnabled}">
-                <form:errors path="captcha" cssClass="errorMsg"/>
                 ${requestScope.captchaHtml}
+            <p>
+                <form:errors path="captcha" cssClass="errorMsg"/>
+            </p>
             </c:if>
 
             <div>
                 <p>
                     <spring:message code="TERM_OF_THE_SERVICE"/>
                     <spring:message code="WISEMAPPING_ACCOUNT_MESSAGE"/> <a href="c/termsOfUse"><spring:message
-                        code="HERE"/></a>
+                        code="HERE"/></a>.
                     <spring:message code="REGISTRATION_CLICK_ADVICE"/>
                 </p>
             </div>
 
-            <input type="submit" value="<spring:message code="REGISTER" />" id="submitButton"
+            <input type="submit" value="<spring:message code="REGISTER"/>"
+                   data-loading-text="<spring:message code="REGISTER"/> ..." id="submitButton"
                    class="btn btn-primary">
             <input type="button" value="<spring:message code="CANCEL"/>"
                    onclick="window.location='c/<c:url value="maps/"/>'" class="btn">
             </form:form>
     </div>
 </div>
+
+

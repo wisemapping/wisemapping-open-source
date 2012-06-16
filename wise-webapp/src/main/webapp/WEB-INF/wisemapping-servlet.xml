@@ -3,24 +3,6 @@
 
 <beans>
 
-      <bean id="userValidator" class="com.wisemapping.validator.UserValidator">
-        <property name="userService" ref="userService"/>
-        <property name="captchaService" ref="reCaptcha"/>
-    </bean>
-
-    <bean id="userController" class="com.wisemapping.controller.UserRegistrationController">
-        <property name="sessionForm" value="false"/>
-        <property name="commandName" value="user"/>
-        <property name="commandClass" value="com.wisemapping.view.UserBean"/>
-        <property name="validator" ref="userValidator"/>
-        <property name="formView" value="userRegistration"/>
-        <property name="successView" value="userRegistrationConfirmation"/>
-        <property name="userService" ref="userService"/>
-        <property name="emailConfirmEnabled" value="${registration.email.enabled}"/>
-        <property name="captchaEnabled" value="${registration.recaptcha.enabled}"/>
-        <property name="captchaService" ref="reCaptcha"/>
-    </bean>
-
     <bean id="settingResolver" class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
         <property name="mappings">
             <props>
@@ -61,24 +43,4 @@
     <bean id="activationController" class="com.wisemapping.controller.ActivationController">
         <property name="userService" ref="userService"/>
     </bean>
-
-    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-        <property name="interceptors">
-            <list>
-                <ref bean="browserSupportInterceptor"/>
-                <ref bean="localeChangeInterceptor"/>
-            </list>
-        </property>
-        <property name="mappings">
-            <props>
-                <!-- Forms based -->
-                <prop key="userRegistration">usersController</prop>
-                <prop key="login">loginController</prop>
-                <prop key="activation">activationController</prop>
-                <prop key="changePassword">changePasswordController</prop>
-                <prop key="settings">settingsController</prop>
-                <prop key="editProfile">editProfileController</prop>
-            </props>
-        </property>
-    </bean>
-</beans>
+ans>

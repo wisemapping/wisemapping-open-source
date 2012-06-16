@@ -23,7 +23,7 @@
     <sec:http pattern="/favicon.ico" security="none"/>
 
     <sec:http pattern="/c/login" security="none"/>
-    <sec:http pattern="/c/userregistration" security="none"/>
+    <sec:http pattern="/c/user/registration" security="none"/>
     <sec:http pattern="/c/user/resetpassword" security="none"/>
     <sec:http pattern="/c/home" security="none"/>
     <sec:http pattern="/c/maps/*/embed" security="none"/>

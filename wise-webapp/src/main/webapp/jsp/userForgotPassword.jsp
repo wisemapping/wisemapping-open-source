@@ -33,7 +33,7 @@
         <spring:message code="NOT_READY_A_USER"/>
     </b>
     <spring:message code="NOT_READY_A_USER_MESSAGE"/>
-    <a href="c/userRegistration">
+    <a href="c/user/registration">
         <spring:message code="JOIN_NOW"/>
     </a>
 </div>

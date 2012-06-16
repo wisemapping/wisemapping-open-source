@@ -29,8 +29,8 @@ import java.util.*;
 
 public class MindMapBean {
     private MindMap mindMap;
-    private List<ColaboratorBean> viewers;
-    private List<ColaboratorBean> colaborators;
+    private List<CollaboratorBean> viewers;
+    private List<CollaboratorBean> colaborators;
 
     public MindMapBean(final MindMap mindmap) {
         this.mindMap = mindmap;
@@ -62,11 +62,11 @@ public class MindMapBean {
         return mindMap.isStarred(Utils.getUser());
     }
 
-    public List<ColaboratorBean> getViewers() {
+    public List<CollaboratorBean> getViewers() {
         return viewers;
     }
 
-    public List<ColaboratorBean> getCollaborators() {
+    public List<CollaboratorBean> getCollaborators() {
         return colaborators;
     }
 
@@ -86,12 +86,12 @@ public class MindMapBean {
         return mindMap.getTags();
     }
 
-    private List<ColaboratorBean> getColaboratorBy(Set<Collaboration> source, CollaborationRole role) {
-        List<ColaboratorBean> col = new ArrayList<ColaboratorBean>();
+    private List<CollaboratorBean> getColaboratorBy(Set<Collaboration> source, CollaborationRole role) {
+        List<CollaboratorBean> col = new ArrayList<CollaboratorBean>();
         if (source != null) {
             for (Collaboration mu : source) {
                 if (mu.getRole() == role) {
-                    col.add(new ColaboratorBean(mu.getCollaborator(), mu.getRole()));
+                    col.add(new CollaboratorBean(mu.getCollaborator(), mu.getRole()));
                 }
             }
         }

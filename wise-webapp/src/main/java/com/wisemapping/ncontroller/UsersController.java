@@ -19,11 +19,19 @@
 package com.wisemapping.ncontroller;
 
 
+import com.wisemapping.controller.Messages;
+import com.wisemapping.exceptions.WiseMappingException;
+import com.wisemapping.model.User;
 import com.wisemapping.service.InvalidUserEmailException;
 import com.wisemapping.service.UserService;
+import com.wisemapping.validator.UserValidator;
+import com.wisemapping.view.UserBean;
+import net.tanesha.recaptcha.ReCaptcha;
+import net.tanesha.recaptcha.ReCaptchaResponse;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -32,12 +40,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Properties;
+
 @Controller
 public class UsersController {
 
     @Qualifier("userService")
     @Autowired
     private UserService userService;
+
+    @Value("${registration.email.enabled}")
+    boolean emailConfirmEnabled;
+
+    @Autowired
+    private ReCaptcha captchaService;
+
+    @Value("${registration.recaptcha.enabled}")
+    private boolean captchaEnabled;
+
 
     @RequestMapping(value = "user/resetPassword", method = RequestMethod.GET)
     public ModelAndView showResetPasswordPage() {
@@ -59,7 +80,62 @@ public class UsersController {
         return result;
     }
 
-    public void setUserService(@NotNull UserService userService) {
-        this.userService = userService;
+    @RequestMapping(value = "user/registration", method = RequestMethod.GET)
+    public ModelAndView showRegistrationPage(@NotNull HttpServletRequest request) {
+        if (captchaEnabled) {
+            // If captcha is enabled, generate it ...
+            final Properties prop = new Properties();
+            prop.put("theme", "white");
+
+            final String captchaHtml = captchaService.createRecaptchaHtml(null, prop);
+            request.setAttribute("captchaHtml", captchaHtml);
+            request.setAttribute("captchaEnabled", true);
+        }
+        return new ModelAndView("userRegistration", "user", new UserBean());
+    }
+
+    @RequestMapping(value = "user/registration", method = RequestMethod.POST)
+    public ModelAndView registerUser(@ModelAttribute("user") UserBean userBean, @NotNull HttpServletRequest request, @NotNull BindingResult bindingResult) throws WiseMappingException {
+        ModelAndView result;
+        validateRegistrationForm(userBean, request, bindingResult);
+        if (bindingResult.hasErrors()) {
+            result = this.showRegistrationPage(request);
+            result.addObject("user", userBean);
+        } else {
+            final User user = new User();
+
+            // trim() the email email in order to remove spaces ...
+            user.setEmail(userBean.getEmail().trim());
+            user.setUsername(userBean.getUsername());
+            user.setFirstname(userBean.getFirstname());
+            user.setLastname(userBean.getLastname());
+            user.setPassword(userBean.getPassword());
+            userService.createUser(user, emailConfirmEnabled);
+
+            // Forward to the success view ...
+            result = new ModelAndView("userRegistrationSuccess");
+            result.addObject("confirmByEmail", emailConfirmEnabled);
+        }
+        return result;
+    }
+
+    private BindingResult validateRegistrationForm(@NotNull UserBean userBean, @NotNull HttpServletRequest request, @NotNull BindingResult bindingResult) {
+        final UserValidator userValidator = new UserValidator();
+        userValidator.setUserService(userService);
+        userValidator.setCaptchaService(captchaService);
+        userValidator.validate(userBean, bindingResult);
+
+        // If captcha is enabled, generate it ...
+        if (captchaEnabled) {
+            final String challenge = request.getParameter("recaptcha_challenge_field");
+            final String uresponse = request.getParameter("recaptcha_response_field");
+
+            final String remoteAddr = request.getRemoteAddr();
+            final ReCaptchaResponse reCaptchaResponse = captchaService.checkAnswer(remoteAddr, challenge, uresponse);
+            if (!reCaptchaResponse.isValid()) {
+                bindingResult.rejectValue("captcha", Messages.CAPTCHA_ERROR);
+            }
+        }
+        return bindingResult;
     }
 }

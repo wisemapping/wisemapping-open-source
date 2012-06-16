@@ -74,7 +74,7 @@
                 <value>/index.jsp</value>
                 <value>/c/home</value>
                 <value>/c/login</value>
-                <value>/c/userRegistration</value>
+                <value>/c/user/registration</value>
                 <value>/c/captcha</value>
                 <value>/c/publicView</value>
                 <value>/service/*</value>

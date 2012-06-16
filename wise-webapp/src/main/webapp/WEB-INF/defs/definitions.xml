@@ -77,9 +77,9 @@
         <put-attribute name="body" value="/jsp/userRegistration.jsp"/>
     </definition>
 
-    <definition name="userRegistrationConfirmation" extends="pageTemplate">
+    <definition name="userRegistrationSuccess" extends="pageTemplate">
         <put-attribute name="title" value="USER_REGISTRATION"/>
-        <put-attribute name="body" value="/jsp/userRegistrationConfirmation.jsp"/>
+        <put-attribute name="body" value="/jsp/userRegistrationSuccess.jsp"/>
     </definition>
 
     <definition name="login" extends="pageTemplate">

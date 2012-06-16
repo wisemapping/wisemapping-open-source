@@ -42,7 +42,7 @@ public class LoginController {
             result = new ModelAndView("forward:/c/maps/");
         } else {
             result = new ModelAndView("login");
-            result.addObject("isHsql", driver.indexOf("hsql") != -1);
+            result.addObject("isHsql", driver.contains("hsql"));
         }
         return result;
     }

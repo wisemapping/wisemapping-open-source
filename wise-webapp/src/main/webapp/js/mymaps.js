@@ -196,7 +196,7 @@ function updateStatusToolbar() {
             // Can be executed by the owner ?
             var rowData = tableElem.dataTable().fnGetData(selectedRows[0]);
             if (rowData.role != 'owner') {
-                $("#buttonsToolbar").find('#publishBtn').hide().end().find('#shareBtn').hide();
+                $("#buttonsToolbar").find('#publishBtn').hide().end().find('#shareBtn').hide().end().find('#renameBtn').hide();
             }
         } else {
             $("#buttonsToolbar .act-multiple").show();

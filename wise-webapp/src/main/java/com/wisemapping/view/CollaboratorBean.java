@@ -22,20 +22,20 @@ import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.User;
 
-public class ColaboratorBean
+public class CollaboratorBean
 {
     private CollaborationRole collaborationRole;
     private boolean isUser;
     private Collaborator collaborator;
 
-    public ColaboratorBean(Collaborator collaborator, CollaborationRole role)
+    public CollaboratorBean(Collaborator collaborator, CollaborationRole role)
     {
         this.collaborator = collaborator;
         this.collaborationRole = role;
         this.isUser = false;
     }
 
-    public ColaboratorBean(User user, CollaborationRole role)
+    public CollaboratorBean(User user, CollaborationRole role)
     {
         this.collaborator = user;
         this.collaborationRole = role;
