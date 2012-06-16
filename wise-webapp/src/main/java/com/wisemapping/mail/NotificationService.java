@@ -43,7 +43,7 @@ final public class NotificationService {
 
         try {
             // Sent collaboration email ...
-            final String formMail = mailer.getSiteEmail();
+            final String formMail = mailer.getServerSenderEmail();
 
             // Is the user already registered user ?.
             final String collabEmail = collaboration.getCollaborator().getEmail();
@@ -69,6 +69,21 @@ final public class NotificationService {
 
     }
 
+    public void resetPassword(@NotNull User user, @NotNull String temporalPassword) {
+        try {
+            final Map<String, Object> model = new HashMap<String, Object>();
+            model.put("user", user);
+            model.put("temporalPassword", temporalPassword);
+            model.put("supportEmail", mailer.getSupportEmail());
+            model.put("password", temporalPassword);
+            model.put("baseUrl", this.baseUrl);
+
+            mailer.sendEmail(mailer.getServerSenderEmail(), user.getEmail(), "Reset Your WiseMapping Password", model, "passwordRecovery.vm");
+        } catch (Exception e) {
+            handleException(e);
+        }
+    }
+
     private void handleException(Exception e) {
         e.printStackTrace();
     }
@@ -82,5 +97,20 @@ final public class NotificationService {
     }
 
 
+    public void activateAccount(@NotNull User user) {
+        final Map<String, User> model = new HashMap<String, User>();
+        model.put("user", user);
+        mailer.sendEmail(mailer.getServerSenderEmail(), user.getEmail(), "WiseMapping : Active account", model, "activationAccountMail.vm");
+    }
+
+    public void sendRegistrationEmail(@NotNull User user) {
+        final Map<String, Object> model = new HashMap<String, Object>();
+        model.put("user", user);
+        final String activationUrl = "http://wisemapping.com/c/activation?code=" + user.getActivationCode();
+        model.put("emailcheck", activationUrl);
+        mailer.sendEmail(mailer.getServerSenderEmail(), user.getEmail(), "Welcome to Wisemapping!", model,
+                "confirmationMail.vm");
+    }
 }
+
 

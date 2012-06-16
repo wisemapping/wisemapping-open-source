@@ -15,7 +15,7 @@
     <div class="loginNews">
         <h1>What is New: </h1>
         <ul>
-            <li>Links Between Nodes</li>
+            <li>Complerly new UI</li>
             <li>FreeMind 0.9 Update</li>
             <li>Improved HTML 5.0 Support</li>
             <li>Firefox 12 officially supported</li>

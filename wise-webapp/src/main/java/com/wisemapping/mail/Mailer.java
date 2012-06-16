@@ -35,22 +35,18 @@ public final class Mailer {
 
     private JavaMailSender mailSender;
     private VelocityEngine velocityEngine;
-    private String registrationEmail;
-    private String siteEmail;
+    private String serverFromEmail;
+    private String supportEmail;
 
     //~ Methods ..............................................................................................
 
-    public Mailer(String registrationEmail, String siteEmail) {
-        this.registrationEmail = registrationEmail;
-        this.siteEmail = siteEmail;
+    public Mailer(@NotNull String siteEmail, @NotNull String supportEmail) {
+        this.serverFromEmail = siteEmail;
+        this.supportEmail = supportEmail;
     }
 
-    public String getRegistrationEmail() {
-        return registrationEmail;
-    }
-
-    public String getSiteEmail() {
-        return siteEmail;
+    public String getServerSenderEmail() {
+        return serverFromEmail;
     }
 
     public void sendEmail(final String from, final String to, final String subject, final Map model,
@@ -78,5 +74,9 @@ public final class Mailer {
 
     public void setVelocityEngine(VelocityEngine engine) {
         this.velocityEngine = engine;
+    }
+
+    public String getSupportEmail() {
+        return supportEmail;
     }
 }

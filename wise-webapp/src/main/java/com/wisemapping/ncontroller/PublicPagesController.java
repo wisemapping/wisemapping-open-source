@@ -20,6 +20,7 @@ package com.wisemapping.ncontroller;
 
 import com.wisemapping.service.MindmapService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class PublicPagesController {
+    @Qualifier("mindmapService")
     @Autowired
     private MindmapService mindmapService;
 
@@ -57,8 +59,7 @@ public class PublicPagesController {
     }
 
     @RequestMapping(value = "iframeWrapper")
-      public ModelAndView showIframe(@RequestParam(required = true) String url) {
-          return new ModelAndView("iframeWrapper", "url", url);
-      }
-
+    public ModelAndView showIframe(@RequestParam(required = true) String url) {
+        return new ModelAndView("iframeWrapper", "url", url);
+    }
 }

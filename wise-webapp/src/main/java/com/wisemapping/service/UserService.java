@@ -28,7 +28,7 @@ public interface UserService {
 
     public User createUser(@NotNull User user, boolean emailConfirmEnabled) throws WiseMappingException;
 
-    public void changePassword(User user);
+    public void changePassword(@NotNull User user);
 
     public User getUserBy(String email);
 
@@ -38,7 +38,7 @@ public interface UserService {
 
     public void updateUser(User user);
 
-    public void sendEmailPassword(String email) throws InvalidUserEmailException;
+    public void resetPassword(@NotNull String email) throws InvalidUserEmailException;
 
     public User reloadUser(final User user);
 

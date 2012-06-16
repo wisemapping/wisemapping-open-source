@@ -21,6 +21,7 @@ package com.wisemapping.service;
 import com.wisemapping.dao.UserManager;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.mail.Mailer;
+import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.User;
 import org.apache.log4j.Logger;
@@ -35,8 +36,7 @@ public class UserServiceImpl
         implements UserService {
     private UserManager userManager;
     private MindmapService mindmapService;
-    private Mailer mailer;
-    final static Logger logger = Logger.getLogger("org.wisemapping.service");
+    private NotificationService notificationService;
 
     public void activateAccount(long code)
             throws InvalidActivationCodeException {
@@ -47,9 +47,7 @@ public class UserServiceImpl
             final Calendar now = Calendar.getInstance();
             user.setActivationDate(now);
             userManager.updateUser(user);
-            final Map<String, User> model = new HashMap<String, User>();
-            model.put("user", user);
-            mailer.sendEmail(mailer.getRegistrationEmail(), user.getEmail(), "WiseMapping : Active account", model, "activationAccountMail.vm");
+            notificationService.activateAccount(user);
         }
     }
 
@@ -57,18 +55,19 @@ public class UserServiceImpl
         return this.getUserBy(user.getId());
     }
 
-    public void sendEmailPassword(String email)
+    public void resetPassword(@NotNull String email)
             throws InvalidUserEmailException {
         final User user = userManager.getUserBy(email);
         if (user != null) {
-            final Map<String, Object> model = new HashMap<String, Object>();
+            // Generate a random password ...
             final String password = randomstring(8, 10);
             user.setPassword(password);
             changePassword(user);
-            model.put("user", user);
-            model.put("password", password);
 
-            mailer.sendEmail(mailer.getRegistrationEmail(), user.getEmail(), "WiseMapping : Recovery Password", model, "passwordRecovery.vm");
+            // Send an email with the new temporal password ...
+            notificationService.resetPassword(user, password);
+
+
         } else {
             throw new InvalidUserEmailException("The email '" + email + "' does not exists.");
         }
@@ -91,8 +90,8 @@ public class UserServiceImpl
         return lo + i;
     }
 
-    public void deleteUser(@NotNull User user){
-       userManager.deleteUser(user);
+    public void deleteUser(@NotNull User user) {
+        userManager.deleteUser(user);
     }
 
     public User createUser(@NotNull User user, boolean emailConfirmEnabled) throws WiseMappingException {
@@ -119,24 +118,12 @@ public class UserServiceImpl
 
         // Send registration email.
         if (emailConfirmEnabled) {
-            sendRegistrationEmail(user);
+            notificationService.sendRegistrationEmail(user);
         }
         return user;
     }
 
-    private void sendRegistrationEmail(User user) {
-        final Map<String, Object> model = new HashMap<String, Object>();
-        model.put("user", user);
-
-
-        final String activationUrl = "http://wisemapping.com/c/activation?code=" + user.getActivationCode();
-        logger.info("create User - acrivationUrl: " + activationUrl);
-        model.put("emailcheck", activationUrl);
-        mailer.sendEmail(mailer.getRegistrationEmail(), user.getEmail(), "Welcome to Wisemapping!", model,
-                "confirmationMail.vm");
-    }
-
-    public void changePassword(User user) {
+    public void changePassword(@NotNull User user) {
         userManager.updateUser(user);
     }
 
@@ -152,19 +139,19 @@ public class UserServiceImpl
         return userManager.getUserBy(id);
     }
 
-    public void updateUser(User user) {
+    public void updateUser(@NotNull User user) {
         userManager.updateUser(user);
     }
 
-    public void setUserManager(UserManager userManager) {
+    public void setUserManager(@NotNull UserManager userManager) {
         this.userManager = userManager;
     }
 
-    public void setMailer(Mailer mailer) {
-        this.mailer = mailer;
+    public void setMindmapService(@NotNull MindmapService mindmapService) {
+        this.mindmapService = mindmapService;
     }
 
-    public void setMindmapService(MindmapService mindmapService) {
-        this.mindmapService = mindmapService;
+    public void setNotificationService(NotificationService notificationService) {
+        this.notificationService = notificationService;
     }
 }

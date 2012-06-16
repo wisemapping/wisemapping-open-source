@@ -1,6 +1,6 @@
- <!DOCTYPE tiles-definitions PUBLIC
-       "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
-       "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+        "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 
 <tiles-definitions>
 
@@ -30,19 +30,19 @@
     </definition>
 
     <definition name="errorTemplate" extends="pageTemplate">
-        <put-attribute name="body" value="/jsp/errorTemplate.jsp" type="page"/>
+        <put-attribute name="body" value="/jsp/errorTemplate.jsp"/>
     </definition>
 
     <definition name="iframeWrapper" template="/jsp/iframeWrapper.jsp"/>
 
     <!-- Error Pages -->
     <definition name="gcfPluginNeeded" extends="pageTemplate">
-        <put-attribute name="body" value="/jsp/gcfPluginNeeded.jsp" type="page"/>
+        <put-attribute name="body" value="/jsp/gcfPluginNeeded.jsp"/>
         <put-attribute name="title" value="INSTALL_CFG"/>
     </definition>
 
     <definition name="installCFG" extends="pageTemplate">
-        <put-attribute name="body" value="/jsp/installCFG.jsp" type="page"/>
+        <put-attribute name="body" value="/jsp/installCFG.jsp"/>
         <put-attribute name="title" value="INSTALL_CFG"/>
     </definition>
 
@@ -56,15 +56,20 @@
         <put-attribute name="details" value="NO_ENOUGH_PERMISSIONS_DETAILS"/>
     </definition>
 
-    <definition name="emailNotExistsError" extends="errorTemplate">
+    <!-- Main Pages -->
+    <definition name="forgotPasswordError" extends="errorTemplate">
         <put-attribute name="title" value="INVALID_EMAIL_ERROR"/>
-        <put-attribute name="body" value="/jsp/emailNotExistsError.jsp"/>
+        <put-attribute name="body" value="/jsp/userForgotPasswordError.jsp"/>
     </definition>
 
-    <!-- Main Pages -->
+    <definition name="forgotPasswordSuccess" extends="errorTemplate">
+        <put-attribute name="title" value="FORGOT_PASSWORD"/>
+        <put-attribute name="body" value="/jsp/userForgotPasswordSuccess.jsp"/>
+    </definition>
+
     <definition name="forgotPassword" extends="pageTemplate">
         <put-attribute name="title" value="FORGOT_PASSWORD"/>
-        <put-attribute name="body" value="/jsp/forgotPassword.jsp"/>
+        <put-attribute name="body" value="/jsp/userForgotPassword.jsp"/>
     </definition>
 
     <definition name="userRegistration" extends="pageTemplate">

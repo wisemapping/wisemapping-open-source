@@ -51,18 +51,6 @@
         <property name="captchaService" ref="reCaptcha"/>
     </bean>
 
-    <bean id="forgotPasswordValidator" class="com.wisemapping.validator.ForgotPasswordValidator"/>
-
-    <bean id="forgotPasswordController" class="com.wisemapping.controller.ForgotPasswordController">
-        <property name="sessionForm" value="false"/>
-        <property name="commandName" value="forgotPassword"/>
-        <property name="commandClass" value="com.wisemapping.view.ForgotPasswordBean"/>
-        <property name="validator" ref="forgotPasswordValidator"/>
-        <property name="formView" value="forgotPassword"/>
-        <property name="successView" value="mindmap"/>
-        <property name="userService" ref="userService"/>
-    </bean>
-
     <bean id="settingResolver" class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
         <property name="mappings">
             <props>
@@ -127,9 +115,8 @@
         <property name="mappings">
             <props>
                 <!-- Forms based -->
-                <prop key="userRegistration">userController</prop>
+                <prop key="userRegistration">usersController</prop>
                 <prop key="login">loginController</prop>
-                <prop key="forgotPassword">forgotPasswordController</prop>
                 <prop key="activation">activationController</prop>
                 <prop key="changePassword">changePasswordController</prop>
                 <prop key="settings">settingsController</prop>

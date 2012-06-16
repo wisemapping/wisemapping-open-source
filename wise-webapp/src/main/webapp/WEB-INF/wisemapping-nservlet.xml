@@ -28,7 +28,6 @@
                 <prop key="com.wisemapping.exceptions.UnsupportedBrowserException">browserNotSupported</prop>
                 <!-- Security exceptions are wrapped in this exceptions -->
                 <prop key="java.lang.reflect.UndeclaredThrowableException">securityError</prop>
-                <prop key="com.wisemapping.exceptions.EmailNotExistsException">emailNotExistsError</prop>
             </props>
         </property>
     </bean>

@@ -1,10 +1,6 @@
-<%@ page import="org.apache.log4j.Logger" %>
 <%@ page autoFlush="true" buffer="none" %>
 <%@ include file="/jsp/init.jsp" %>
 
-<%!
-    final Logger logger = Logger.getLogger("com.wisemapping");
-%>
 <div style="position:relative;">
     <div id="prompt">
         <!-- if IE without GCF, prompt goes here -->
