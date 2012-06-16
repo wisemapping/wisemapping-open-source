@@ -3,37 +3,7 @@
 
 <beans>
 
-    <bean id="paramResolverByAction"
-          class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
-        <property name="paramName" value="action"/>
-    </bean>
-
-    <bean id="paramResolverByAction2"
-          class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
-        <property name="paramName" value="actionId"/>
-    </bean>
-
-    <!--<bean id="localeResolver"-->
-    <!--class="org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver">-->
-    <!--</bean>-->
-
-    <bean id="homeResolver" class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
-        <property name="mappings">
-            <props>
-                <prop key="try">tryEditor</prop>
-                <prop key="installCFG">installCFG</prop>
-            </props>
-        </property>
-    </bean>
-
-    <bean id="loginController" class="com.wisemapping.controller.LoginController">
-        <property name="methodNameResolver" ref="paramResolverByAction"/>
-        <property name="mindmapService" ref="mindmapService"/>
-        <property name="userService" ref="userService"/>
-        <property name="driver" value="${database.driver}"/>
-    </bean>
-
-    <bean id="userValidator" class="com.wisemapping.validator.UserValidator">
+      <bean id="userValidator" class="com.wisemapping.validator.UserValidator">
         <property name="userService" ref="userService"/>
         <property name="captchaService" ref="reCaptcha"/>
     </bean>
@@ -88,19 +58,6 @@
         <property name="userService" ref="userService"/>
     </bean>
 
-    <bean id="historyController" class="com.wisemapping.controller.HistoryController">
-        <property name="methodNameResolver" ref="paramResolverByAction"/>
-        <property name="mindmapService" ref="mindmapService"/>
-        <property name="userService" ref="userService"/>
-    </bean>
-
-
-    <bean id="multipartResolver"
-          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <!-- one of the properties available; the maximum file size in bytes -->
-        <property name="maxUploadSize" value="522240"/>
-    </bean>
-
     <bean id="activationController" class="com.wisemapping.controller.ActivationController">
         <property name="userService" ref="userService"/>
     </bean>
@@ -121,7 +78,6 @@
                 <prop key="changePassword">changePasswordController</prop>
                 <prop key="settings">settingsController</prop>
                 <prop key="editProfile">editProfileController</prop>
-                <prop key="history">historyController</prop>
             </props>
         </property>
     </bean>

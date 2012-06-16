@@ -15,6 +15,7 @@
     <context:annotation-config/>
     <mvc:annotation-driven/>
 
+
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location" value="/WEB-INF/app.properties"/>
     </bean>
@@ -58,6 +59,12 @@
         <property name="privateKey" value="${registration.recaptcha.privateKey}"/>
         <property name="publicKey" value="${registration.recaptcha.publicKey}"/>
         <property name="includeNoscript" value="false"/>
+    </bean>
+
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- one of the properties available; the maximum file size in bytes -->
+        <property name="maxUploadSize" value="522240"/>
     </bean>
 
     <bean id="browserSupportInterceptor" class="com.wisemapping.filter.BrowserSupportInterceptor">
