@@ -25,13 +25,13 @@
         </c:choose>
         <div class="header_languages">
             <div class="header_language_flag">
-                <a href="?language=en"><img src="../images/uk.gif" alt="English"></a>
+                <a href="?language=en"><img src="../images/flag-uk.gif" alt="English"></a>
             </div>
             <div class="header_language_flag">
-                <a href="?language=fr"><img src="../images/fr.gif" alt="Frances"></a>
+                <a href="?language=fr"><img src="../images/flag-fr.gif" alt="Frances"></a>
             </div>
             <div class="header_language_flag">
-                <a href="?language=es"><img src="../images/es.gif" alt="Espanol"></a>
+                <a href="?language=es"><img src="../images/flag-es.gif" alt="Español"></a>
             </div>
         </div>
     </div>

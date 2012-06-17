@@ -31,11 +31,11 @@ import java.util.*;
 public class MindMapBean {
     private MindMap mindMap;
     private List<CollaboratorBean> viewers;
-    private List<CollaboratorBean> colaborators;
+    private List<CollaboratorBean> collaborators;
 
     public MindMapBean(final MindMap mindmap) {
         this.mindMap = mindmap;
-        this.colaborators = filterCollaboratorBy(mindmap.getCollaborations(), CollaborationRole.EDITOR);
+        this.collaborators = filterCollaboratorBy(mindmap.getCollaborations(), CollaborationRole.EDITOR);
         this.viewers = filterCollaboratorBy(mindmap.getCollaborations(), CollaborationRole.VIEWER);
     }
 
@@ -64,7 +64,7 @@ public class MindMapBean {
     }
 
     public List<CollaboratorBean> getCollaborators() {
-        return colaborators;
+        return collaborators;
     }
 
     public String getLastEditor() {
@@ -96,7 +96,7 @@ public class MindMapBean {
     }
 
     public int getCountCollaborators() {
-        return colaborators != null ? colaborators.size() : 0;
+        return collaborators != null ? collaborators.size() : 0;
     }
 
     public int getCountViewers() {
@@ -133,6 +133,14 @@ public class MindMapBean {
 
     public boolean isOwner() {
         return mindMap.hasPermissions(Utils.getUser(), CollaborationRole.OWNER);
+    }
+
+    public boolean isEditor() {
+        return mindMap.hasPermissions(Utils.getUser(), CollaborationRole.EDITOR);
+    }
+
+    public MindMap getDelegated(){
+        return mindMap;
     }
 
 }

@@ -18,7 +18,7 @@
 
     <!--jQuery DataTables-->
     <script type="text/javascript" language="javascript" src="js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" language="javascript" src="js/mymaps.js"></script>
+    <script type="text/javascript" language="javascript" src="js/mindmapList.js"></script>
 
     <!-- Update timer plugging -->
     <script type="text/javascript" language="javascript" src="js/jquery.timeago.js"></script>

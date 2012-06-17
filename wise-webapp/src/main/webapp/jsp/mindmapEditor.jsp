@@ -36,6 +36,7 @@
             options.persistenceManager = new mindplot.RESTPersistenceManager("service/maps/{id}/document");
             var userOptions = ${mindmap.properties};
             options.zoom = userOptions.zoom;
+            options.readOnly = ${!!readOnlyMode};
 
             // Set map id ...
             options.mapId = mapId;

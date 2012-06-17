@@ -20,6 +20,7 @@ package com.wisemapping.ncontroller;
 
 
 import com.wisemapping.filter.UserAgent;
+import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapService;
@@ -56,13 +57,6 @@ public class MindmapController {
 
     @RequestMapping(value = "maps/{id}/print")
     public String showPrintPage(@PathVariable int id, @NotNull Model model) {
-        final MindMap mindmap = findMindmap(id);
-        model.addAttribute("mindmap", mindmap);
-        return "mindmapPrint";
-    }
-
-    @RequestMapping(value = "maps/{id}/view")
-    public String showViewPage(@PathVariable int id, @NotNull Model model) {
         final MindMap mindmap = findMindmap(id);
         model.addAttribute("mindmap", mindmap);
         return "mindmapPrint";
@@ -124,23 +118,27 @@ public class MindmapController {
         return "mindmapList";
     }
 
-    @RequestMapping(value = "maps/{id}/edit")
-    public ModelAndView editMap(@PathVariable int id, @NotNull HttpServletRequest request) {
-        ModelAndView view;
-        final UserAgent userAgent = UserAgent.create(request);
-        if (userAgent.needsGCF()) {
-            view = new ModelAndView("gcfPluginNeeded");
-//            view.addObject(MINDMAP_ID_PARAMETER, mindmapId);
-        } else {
+    @RequestMapping(value = "maps/{id}/edit", method = RequestMethod.GET)
+    public String showMindmapEditorPage(@PathVariable int id, @NotNull Model model) {
+        final MindMapBean mindmapBean = findMindmapBean(id);
+        final MindMap mindmap = mindmapBean.getDelegated();
 
-            final MindMapBean mindmap = findMindmapBean(id);
-            view = new ModelAndView("mindmapEditor", "mindmap", mindmap);
-            view.addObject("editorTryMode", false);
-            final boolean showHelp = isWelcomeMap(mindmap);
-            view.addObject("showHelp", showHelp);
-            view.addObject("user", Utils.getUser());
+        String result;
+        if (mindmap.hasPermissions(Utils.getUser(), CollaborationRole.EDITOR)) {
+            model.addAttribute("mindmap", mindmapBean);
+            result = "mindmapEditor";
+        } else {
+            result = "redirect:view";
         }
-        return view;
+        return result;
+    }
+
+    @RequestMapping(value = "maps/{id}/view", method = RequestMethod.GET)
+    public String showMindmapViewerPage(@PathVariable int id, @NotNull Model model) {
+        final MindMapBean mindmapBean = findMindmapBean(id);
+        model.addAttribute("mindmap", mindmapBean);
+        model.addAttribute("readOnlyMode", true);
+        return "mindmapEditor";
     }
 
     @RequestMapping(value = "maps/{id}/embed")

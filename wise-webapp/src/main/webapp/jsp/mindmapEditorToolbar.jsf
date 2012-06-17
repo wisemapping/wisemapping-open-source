@@ -2,27 +2,28 @@
 
 <div id="toolbar">
     <div id="persist" class="buttonContainer">
-        <div id="save" class="buttonOn">
-            <img src="../images/save.png"/>
-        </div>
-        <div id="discard" class="buttonOn">
-            <img src="../images/discard.png"/>
-        </div>
+        <c:if test="${!readOnlyMode}">
+            <div id="save" class="buttonOn">
+                <img src="../images/save.png"/>
+            </div>
+            <div id="discard" class="buttonOn">
+                <img src="../images/discard.png"/>
+            </div>
+        </c:if>
         <div id="print" class="buttonOn">
             <img src="../images/print.png"/>
         </div>
-        <div id="export" class="buttonOn">
-            <img src="../images/export.png"/>
-        </div>
     </div>
-    <div id="edit" class="buttonContainer">
-        <div id="undoEdition" class="buttonOn">
-            <img src="../images/undo.png"/>
+    <c:if test="${!readOnlyMode}">
+        <div id="edit" class="buttonContainer">
+            <div id="undoEdition" class="buttonOn">
+                <img src="../images/undo.png"/>
+            </div>
+            <div id="redoEdition" class="buttonOn">
+                <img src="../images/redo.png"/>
+            </div>
         </div>
-        <div id="redoEdition" class="buttonOn">
-            <img src="../images/redo.png"/>
-        </div>
-    </div>
+    </c:if>
     <div id="zoom" class="buttonContainer">
         <div id="zoomIn" class="buttonOn">
             <img src="../images/zoom-in.png"/>
@@ -31,55 +32,56 @@
             <img src="../images/zoom-out.png"/>
         </div>
     </div>
-    <div id="node" class="buttonContainer">
-        <div id="topicShape" class="buttonExtOn">
-            <img src="../images/topic-shape.png"/>
+    <c:if test="${!readOnlyMode}">
+        <div id="node" class="buttonContainer">
+            <div id="topicShape" class="buttonExtOn">
+                <img src="../images/topic-shape.png"/>
+            </div>
+            <div id="addTopic" class="buttonOn">
+                <img src="../images/topic-add.png"/>
+            </div>
+            <div id="deleteTopic" class="buttonOn">
+                <img src="../images/topic-delete.png"/>
+            </div>
+            <div id="topicBorder" class="buttonExtOn">
+                <img src="../images/topic-border.png"/>
+            </div>
+            <div id="topicColor" class="buttonExtOn">
+                <img src="../images/topic-color.png"/>
+            </div>
+            <div id="topicIcon" class="buttonExtOn">
+                <img src="../images/topic-icon.png"/>
+            </div>
+            <div id="topicNote" class="buttonOn">
+                <img src="../images/topic-note.png"/>
+            </div>
+            <div id="topicLink" class="buttonOn">
+                <img src="../images/topic-link.png"/>
+            </div>
+            <div id="topicRelation" class="buttonOn">
+                <img src="../images/topic-relation.png"/>
+            </div>
         </div>
-        <div id="addTopic" class="buttonOn">
-            <img src="../images/topic-add.png"/>
+        <div id="font" class="buttonContainer">
+            <div id="fontFamily" class="buttonOn">
+                <img src="../images/font-type.png"/>
+            </div>
+            <div id="fontSize" class="buttonExtOn">
+                <img src="../images/font-size.png"/>
+            </div>
+            <div id="fontBold" class="buttonOn">
+                <img src="../images/font-bold.png"/>
+            </div>
+            <div id="fontItalic" class="buttonOn">
+                <img src="../images/font-italic.png"/>
+            </div>
+            <div id="fontColor" class="buttonExtOn">
+                <img src="../images/font-color.png"/>
+            </div>
         </div>
-        <div id="deleteTopic" class="buttonOn">
-            <img src="../images/topic-delete.png"/>
-        </div>
-        <div id="topicBorder" class="buttonExtOn">
-            <img src="../images/topic-border.png"/>
-        </div>
-        <div id="topicColor" class="buttonExtOn">
-            <img src="../images/topic-color.png"/>
-        </div>
-        <div id="topicIcon" class="buttonExtOn">
-            <img src="../images/topic-icon.png"/>
-        </div>
-        <div id="topicNote" class="buttonOn">
-            <img src="../images/topic-note.png"/>
-        </div>
-        <div id="topicLink" class="buttonOn">
-            <img src="../images/topic-link.png"/>
-        </div>
-        <div id="topicRelation" class="buttonOn">
-            <img src="../images/topic-relation.png"/>
-        </div>
-    </div>
-    <div id="font" class="buttonContainer">
-        <div id="fontFamily" class="buttonOn">
-            <img src="../images/font-type.png"/>
-        </div>
-        <div id="fontSize" class="buttonExtOn">
-            <img src="../images/font-size.png"/>
-        </div>
-        <div id="fontBold" class="buttonOn">
-            <img src="../images/font-bold.png"/>
-        </div>
-        <div id="fontItalic" class="buttonOn">
-            <img src="../images/font-italic.png"/>
-        </div>
-        <div id="fontColor" class="buttonExtOn">
-            <img src="../images/font-color.png"/>
-        </div>
-    </div>
-
+    </c:if>
     <div id="collaboration" class="buttonContainer">
-        <c:if test="${mindmap.owner}">
+        <c:if test="${mindmap.owner && !readOnlyMode}">
             <div id="shareIt" class="buttonOn">
                 <img src="../images/share.png"/>
             </div>
@@ -87,9 +89,14 @@
                 <img src="../images/public.png"/>
             </div>
         </c:if>
-        <div id="history" class="buttonOn">
-            <img src="../images/history.png"/>
+        <div id="export" class="buttonOn">
+            <img src="../images/export.png"/>
         </div>
+        <c:if test="${!readOnlyMode}">
+            <div id="history" class="buttonOn">
+                <img src="../images/history.png"/>
+            </div>
+        </c:if>
     </div>
     <div id="headerNotifier"></div>
 </div>

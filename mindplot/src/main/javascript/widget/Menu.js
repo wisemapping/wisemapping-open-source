@@ -38,158 +38,173 @@ mindplot.widget.Menu = new Class({
 
         // Create panels ...
         var designerModel = designer.getModel();
-        var fontFamilyModel = {
-            getValue: function() {
-                var nodes = designerModel.filterSelectedTopics();
-                var result = null;
-                for (var i = 0; i < nodes.length; i++) {
-                    var fontFamily = nodes[i].getFontFamily();
-                    if (result != null && result != fontFamily) {
-                        result = null;
-                        break;
+
+        var fontFamilyBtn = $('fontFamily');
+        if (fontFamilyBtn) {
+            var fontFamilyModel = {
+                getValue: function() {
+                    var nodes = designerModel.filterSelectedTopics();
+                    var result = null;
+                    for (var i = 0; i < nodes.length; i++) {
+                        var fontFamily = nodes[i].getFontFamily();
+                        if (result != null && result != fontFamily) {
+                            result = null;
+                            break;
+                        }
+                        result = fontFamily;
                     }
-                    result = fontFamily;
+                    return result;
+                },
+
+                setValue: function(value) {
+                    designer.changeFontFamily(value);
+
                 }
-                return result;
-            },
+            };
+            this._toolbarElems.push(new mindplot.widget.FontFamilyPanel("fontFamily", fontFamilyModel));
+            this._registerTooltip('fontFamily', "Text font");
+        }
 
-            setValue: function(value) {
-                designer.changeFontFamily(value);
-
-            }
-        };
-        this._toolbarElems.push(new mindplot.widget.FontFamilyPanel("fontFamily", fontFamilyModel));
-        this._registerTooltip('fontFamily', "Text font");
-
-
-        var fontSizeModel = {
-            getValue: function() {
-                var nodes = designerModel.filterSelectedTopics();
-                var result = null;
-                for (var i = 0; i < nodes.length; i++) {
-                    var fontSize = nodes[i].getFontSize();
-                    if (result != null && result != fontSize) {
-                        result = null;
-                        break;
+        var fontSizeBtn = $('fontSize');
+        if (fontSizeBtn) {
+            var fontSizeModel = {
+                getValue: function() {
+                    var nodes = designerModel.filterSelectedTopics();
+                    var result = null;
+                    for (var i = 0; i < nodes.length; i++) {
+                        var fontSize = nodes[i].getFontSize();
+                        if (result != null && result != fontSize) {
+                            result = null;
+                            break;
+                        }
+                        result = fontSize;
                     }
-                    result = fontSize;
+                    return result;
+                },
+                setValue: function(value) {
+                    designer.changeFontSize(value);
                 }
-                return result;
-            },
-            setValue: function(value) {
-                designer.changeFontSize(value);
-            }
-        };
-        this._toolbarElems.push(new mindplot.widget.FontSizePanel("fontSize", fontSizeModel));
-        this._registerTooltip('fontSize', "Text size");
+            };
+            this._toolbarElems.push(new mindplot.widget.FontSizePanel("fontSize", fontSizeModel));
+            this._registerTooltip('fontSize', "Text size");
+        }
 
-
-        var topicShapeModel = {
-            getValue: function() {
-                var nodes = designerModel.filterSelectedTopics();
-                var result = null;
-                for (var i = 0; i < nodes.length; i++) {
-                    var shapeType = nodes[i].getShapeType();
-                    if (result != null && result != shapeType) {
-                        result = null;
-                        break;
+        var topicShapeBtn = $('topicShapeBtn');
+        if (topicShapeBtn) {
+            var topicShapeModel = {
+                getValue: function() {
+                    var nodes = designerModel.filterSelectedTopics();
+                    var result = null;
+                    for (var i = 0; i < nodes.length; i++) {
+                        var shapeType = nodes[i].getShapeType();
+                        if (result != null && result != shapeType) {
+                            result = null;
+                            break;
+                        }
+                        result = shapeType;
                     }
-                    result = shapeType;
+                    return result;
+                },
+                setValue: function(value) {
+                    designer.changeTopicShape(value);
                 }
-                return result;
-            },
-            setValue: function(value) {
-                designer.changeTopicShape(value);
-            }
-        };
-        this._toolbarElems.push(new mindplot.widget.TopicShapePanel("topicShape", topicShapeModel));
-        this._registerTooltip('topicShape', "Topic shape");
+            };
+            this._toolbarElems.push(new mindplot.widget.TopicShapePanel("topicShape", topicShapeModel));
+            this._registerTooltip('topicShape', "Topic shape");
+        }
 
-
-        // Create icon panel dialog ...
-        var topicIconModel = {
-            getValue: function() {
-                return null;
-            },
-            setValue: function(value) {
-                designer.addIconType(value);
-            }
-        };
-        this._toolbarElems.push(new mindplot.widget.IconPanel('topicIcon', topicIconModel));
-        this._registerTooltip('topicIcon', "Icon");
-
+        var topicIconBtn = $('topicIcon');
+        if (topicIconBtn) {
+            // Create icon panel dialog ...
+            var topicIconModel = {
+                getValue: function() {
+                    return null;
+                },
+                setValue: function(value) {
+                    designer.addIconType(value);
+                }
+            };
+            this._toolbarElems.push(new mindplot.widget.IconPanel('topicIcon', topicIconModel));
+            this._registerTooltip('topicIcon', "Icon");
+        }
 
         // Topic color item ...
-        var topicColorModel =
-        {
-            getValue : function() {
-                var nodes = designerModel.filterSelectedTopics();
-                var result = null;
-                for (var i = 0; i < nodes.length; i++) {
-                    var color = nodes[i].getBackgroundColor();
-                    if (result != null && result != color) {
-                        result = null;
-                        break;
-                    }
-                    result = color;
-                }
-                return result;
-            },
-            setValue : function (hex) {
-                designer.changeBackgroundColor(hex);
-            }
-        };
-        this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('topicColor', topicColorModel, widgetsBaseUrl));
-        this._registerTooltip('topicColor', "Topic color");
+        var topicColorBtn = $('topicColor');
+        if (topicColorBtn) {
 
+            var topicColorModel = {
+                getValue : function() {
+                    var nodes = designerModel.filterSelectedTopics();
+                    var result = null;
+                    for (var i = 0; i < nodes.length; i++) {
+                        var color = nodes[i].getBackgroundColor();
+                        if (result != null && result != color) {
+                            result = null;
+                            break;
+                        }
+                        result = color;
+                    }
+                    return result;
+                },
+                setValue : function (hex) {
+                    designer.changeBackgroundColor(hex);
+                }
+            };
+            this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('topicColor', topicColorModel, widgetsBaseUrl));
+            this._registerTooltip('topicColor', "Topic color");
+        }
 
         // Border color item ...
-        var borderColorModel =
-        {
-            getValue : function() {
-                var nodes = designerModel.filterSelectedTopics();
-                var result = null;
-                for (var i = 0; i < nodes.length; i++) {
-                    var color = nodes[i].getBorderColor();
-                    if (result != null && result != color) {
-                        result = null;
-                        break;
+        var topicBorderBtn = $('topicBorder');
+        if (topicBorderBtn) {
+            var borderColorModel =
+            {
+                getValue : function() {
+                    var nodes = designerModel.filterSelectedTopics();
+                    var result = null;
+                    for (var i = 0; i < nodes.length; i++) {
+                        var color = nodes[i].getBorderColor();
+                        if (result != null && result != color) {
+                            result = null;
+                            break;
+                        }
+                        result = color;
                     }
-                    result = color;
+                    return result;
+                },
+                setValue : function (hex) {
+                    designer.changeBorderColor(hex);
                 }
-                return result;
-            },
-            setValue : function (hex) {
-                designer.changeBorderColor(hex);
-            }
-        };
-        this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('topicBorder', borderColorModel, widgetsBaseUrl));
-        this._registerTooltip('topicBorder', "Border color");
-
+            };
+            this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('topicBorder', borderColorModel, widgetsBaseUrl));
+            this._registerTooltip('topicBorder', "Border color");
+        }
 
         // Font color item ...
-        var fontColorModel =
-        {
-            getValue : function() {
-                var result = null;
-                var nodes = designerModel.filterSelectedTopics();
-                for (var i = 0; i < nodes.length; i++) {
-                    var color = nodes[i].getFontColor();
-                    if (result != null && result != color) {
-                        result = null;
-                        break;
+        var fontColorBtn = $('fontColor');
+        if (fontColorBtn) {
+            var fontColorModel =
+            {
+                getValue : function() {
+                    var result = null;
+                    var nodes = designerModel.filterSelectedTopics();
+                    for (var i = 0; i < nodes.length; i++) {
+                        var color = nodes[i].getFontColor();
+                        if (result != null && result != color) {
+                            result = null;
+                            break;
+                        }
+                        result = color;
                     }
-                    result = color;
+                    return result;
+                },
+                setValue : function (hex) {
+                    designer.changeFontColor(hex);
                 }
-                return result;
-            },
-            setValue : function (hex) {
-                designer.changeFontColor(hex);
-            }
-        };
-        this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('fontColor', fontColorModel, baseUrl));
-        this._registerTooltip('fontColor', "Text color");
-
+            };
+            this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('fontColor', fontColorModel, baseUrl));
+            this._registerTooltip('fontColor', "Text color");
+        }
 
         this._addButton('export', false, false, function() {
             var reqDialog = new MooDialog.Request('c/iframeWrapper.htm?url=c/maps/' + mapId + "/exportf", null,
@@ -208,7 +223,7 @@ mindplot.widget.Menu = new Class({
         this._registerTooltip('export', "Export");
 
         this._addButton('print', false, false, function() {
-            window.open('c/map/' + mapId + '/print');
+            window.open('c/maps/' + mapId + '/print');
         });
 
         this._registerTooltip('print', "Print");
