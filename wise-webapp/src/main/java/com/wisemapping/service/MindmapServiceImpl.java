@@ -28,7 +28,6 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import java.io.IOException;
 import java.util.*;
 
 
@@ -74,17 +73,17 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public MindMap getMindmapById(int mindmapId) {
+    public MindMap findMindmapById(int mindmapId) {
         return mindmapManager.getMindmapById(mindmapId);
     }
 
     @Override
-    public List<Collaboration> getCollaborationsBy(@NotNull User user) {
+    public List<Collaboration> findCollaborationsBy(@NotNull User user) {
         return mindmapManager.getMindmapUserByCollaborator(user.getId());
     }
 
     @Override
-    public void updateMindmap(MindMap mindMap, boolean saveHistory) throws WiseMappingException {
+    public void updateMindmap(@NotNull MindMap mindMap, boolean saveHistory) throws WiseMappingException {
         if (mindMap.getTitle() == null || mindMap.getTitle().length() == 0) {
             throw new WiseMappingException("The tile can not be empty");
         }
@@ -221,7 +220,7 @@ public class MindmapServiceImpl
     }
 
     public void addWelcomeMindmap(User user) throws WiseMappingException {
-        final MindMap savedWelcome = getMindmapById(Constants.WELCOME_MAP_ID);
+        final MindMap savedWelcome = findMindmapById(Constants.WELCOME_MAP_ID);
 
         // Is there a welcomed map configured ?        
         if (savedWelcome != null) {
@@ -234,15 +233,32 @@ public class MindmapServiceImpl
         }
     }
 
-    public List<MindMapHistory> getMindMapHistory(int mindmapId) {
+    public List<MindMapHistory> findMindmapHistory(int mindmapId) {
         return mindmapManager.getHistoryFrom(mindmapId);
     }
 
-    public void revertMapToHistory(MindMap map, int historyId)
-            throws IOException, WiseMappingException {
+    public void revertChange(@NotNull MindMap mindmap, int historyId)
+            throws WiseMappingException {
         final MindMapHistory history = mindmapManager.getHistory(historyId);
-        map.setXml(history.getXml());
-        updateMindmap(map, false);
+        mindmap.setXml(history.getXml());
+        updateMindmap(mindmap, true);
+    }
+
+    @Override
+    public MindMapHistory findMindmapHistory(int id, int hid) throws WiseMappingException {
+        final List<MindMapHistory> mindmapHistory = this.findMindmapHistory(id);
+        MindMapHistory result = null;
+        for (MindMapHistory history : mindmapHistory) {
+            if (history.getId() == hid) {
+                result = history;
+                break;
+            }
+        }
+
+        if (result == null) {
+            throw new WiseMappingException("History could not be found for mapid=" + id + ",hid" + hid);
+        }
+        return result;
     }
 
     private Collaboration getCollaborationBy(String email, Set<Collaboration> collaborations) {

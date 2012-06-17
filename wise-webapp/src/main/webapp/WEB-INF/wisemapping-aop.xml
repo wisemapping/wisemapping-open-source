@@ -11,7 +11,9 @@
         <property name="mappedNames">
             <list>
                 <value>getMindmapUserBy</value>
-                <value>getMindmapById</value>                
+                <value>getMindmapById</value>
+                <value>find*</value>
+                <value>filter*</value>
             </list>
         </property>
     </bean>
@@ -27,6 +29,7 @@
                 <value>update*</value>
                 <value>add*</value>
                 <value>remove*</value>
+                <value>revert*</value>
             </list>
         </property>
     </bean>

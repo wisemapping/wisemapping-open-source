@@ -53,7 +53,7 @@ public class TagsController
             throws ServletException, WiseMappingException, ImporterException
     {
         final TagBean bean = (TagBean) command;
-        final MindMap mindmap = getMindmapService().getMindmapById(bean.getMindmapId());
+        final MindMap mindmap = getMindmapService().findMindmapById(bean.getMindmapId());
         getMindmapService().addTags(mindmap, bean.getMindmapTags());
         return new ModelAndView(getSuccessView());
     }

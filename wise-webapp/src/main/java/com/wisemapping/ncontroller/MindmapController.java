@@ -19,9 +19,10 @@
 package com.wisemapping.ncontroller;
 
 
-import com.wisemapping.filter.UserAgent;
+import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.MindMap;
+import com.wisemapping.model.MindMapHistory;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.view.MindMapBean;
@@ -33,8 +34,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 public class MindmapController {
@@ -141,10 +142,22 @@ public class MindmapController {
         return "mindmapEditor";
     }
 
+    @RequestMapping(value = "maps/{id}/{hid}/view", method = RequestMethod.GET)
+    public String showMindmapViewerRevPage(@PathVariable int id, @PathVariable int hid, @NotNull Model model) throws WiseMappingException {
+        final MindMapBean mindmapBean = findMindmapBean(id);
+
+        final MindMapHistory mindmapHistory = mindmapService.findMindmapHistory(id, hid);
+        mindmapBean.getDelegated().setXml(mindmapHistory.getXml());
+        model.addAttribute("mindmap", mindmapBean);
+        model.addAttribute("readOnlyMode", true);
+
+        return "mindmapEditor";
+    }
+
     @RequestMapping(value = "maps/{id}/embed")
     public ModelAndView embeddedView(@PathVariable int id, @RequestParam(required = false) Float zoom) {
         ModelAndView view;
-        final MindMap mindmap = mindmapService.getMindmapById(id);
+        final MindMap mindmap = mindmapService.findMindmapById(id);
         view = new ModelAndView("mindmapEmbedded", "mindmap", mindmap);
         view.addObject("user", Utils.getUser());
         view.addObject("zoom", zoom == null ? 1 : zoom);
@@ -153,7 +166,7 @@ public class MindmapController {
 
 
     private MindMap findMindmap(long mapId) {
-        final MindMap mindmap = mindmapService.getMindmapById((int) mapId);
+        final MindMap mindmap = mindmapService.findMindmapById((int) mapId);
         if (mindmap == null) {
             throw new IllegalArgumentException("Mindmap could not be found");
         }

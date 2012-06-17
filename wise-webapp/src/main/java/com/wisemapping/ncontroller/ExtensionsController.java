@@ -37,7 +37,7 @@ public class ExtensionsController {
     @RequestMapping(value = "try")
     public ModelAndView tryEditor() throws IOException {
 
-        final MindMap mindmap = mindmapService.getMindmapById(TRY_EXAMPLE_MINDMAP_ID);
+        final MindMap mindmap = mindmapService.findMindmapById(TRY_EXAMPLE_MINDMAP_ID);
 
         ModelAndView view = new ModelAndView("mindmapEditor", "mindmap", mindmap);
         final String xmlMap = mindmap.getXmlAsJsLiteral();

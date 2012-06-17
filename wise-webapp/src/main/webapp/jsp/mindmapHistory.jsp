@@ -43,13 +43,16 @@
 
             tableElem.find('tr a.view').each(function() {
                 $(this).click(function(event) {
-                    window.open("/c/maps/${mindmapId}/view");
+                    window.open("/c/maps/${mindmapId}/" + $(this).closest("tr").attr("data-history-id") + "/view");
                     event.preventDefault();
                 });
             });
             tableElem.find('tr a.revert').each(function() {
                 $(this).click(function(event) {
-                    window.location = "/c/maps/${mindmapId}/edit";
+                    var url = "service/maps/${mindmapId}/history/" + $(this).closest("tr").attr("data-history-id");
+                    jQuery.post(url, function(data) {
+                        window.parent.location = "c/maps/${mindmapId}/edit";
+                    });
                     event.preventDefault();
                 });
             });

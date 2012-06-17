@@ -8,7 +8,7 @@
 <%@ include file="/jsp/init.jsp" %>
 <html>
 <head>
-    <base href="../../../"/>
+    <base href="${pageContext.request.contextPath}/"/>
     <title><spring:message code="SITE.TITLE"/> - ${mindmap.title} </title>
     <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
 
@@ -63,10 +63,10 @@
         <div id="headerActions">
 
             <spring:message code="WELCOME"/>, ${principal.firstname}|<span><a
-                href="${pageContext.request.contextPath}/c/maps/"><spring:message code="MY_WISEMAPS"/></a></span> |
-            <span><a id="settings" href="${pageContext.request.contextPath}/c/settings"
+                href="c/maps/"><spring:message code="MY_WISEMAPS"/></a></span> |
+            <span><a id="settings" href="c/settings"
                      title="<spring:message code="SETTINGS_DETAIL"/>"><spring:message code="SETTINGS"/></a></span>
-            | <span><a href="${pageContext.request.contextPath}/c/logout" title="<spring:message code="LOGOUT"/>">
+            | <span><a href="c/logout" title="<spring:message code="LOGOUT"/>">
             <spring:message code="LOGOUT"/>
         </a></span>
         </div>

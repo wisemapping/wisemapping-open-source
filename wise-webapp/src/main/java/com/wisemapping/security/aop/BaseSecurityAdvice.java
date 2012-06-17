@@ -18,6 +18,7 @@
 
 package com.wisemapping.security.aop;
 
+import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.User;
 import com.wisemapping.exceptions.AccessDeniedSecurityException;
@@ -40,6 +41,9 @@ public abstract class BaseSecurityAdvice {
             isAllowed = isAllowed(user, (MindMap) argument);
         } else if (argument instanceof Integer) {
             isAllowed = isAllowed(user, ((Integer) argument));
+        } else if (argument instanceof Collaborator) {
+            // Read operation find on the user are allowed ...
+            isAllowed = user.equals(argument);
         } else {
             throw new UnexpectedArgumentException("Argument " + argument);
         }

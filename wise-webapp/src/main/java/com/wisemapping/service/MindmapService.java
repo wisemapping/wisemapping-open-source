@@ -30,11 +30,11 @@ public interface MindmapService {
 
     public static final String TAG_SEPARATOR = " ";
 
-    public MindMap getMindmapById(int mindmapId);
+    public MindMap findMindmapById(int mindmapId);
 
     public MindMap getMindmapByTitle(String title, User user);
 
-    public List<Collaboration> getCollaborationsBy(@NotNull User user);
+    public List<Collaboration> findCollaborationsBy(@NotNull User user);
 
     public void updateMindmap(MindMap mindMap, boolean saveHistory) throws WiseMappingException;
 
@@ -45,13 +45,13 @@ public interface MindmapService {
 
     public void removeCollaboration(@NotNull MindMap mindmap,  @NotNull Collaboration collaboration) throws CollaborationException;
 
-    public void addTags(MindMap mindmap, String tags);
+    public void addTags(@NotNull MindMap mindmap, String tags);
 
     public void removeMindmap(@NotNull final MindMap mindmap, @NotNull final User user) throws WiseMappingException;
 
     public List<MindMap> search(MindMapCriteria criteria);
 
-    public List<MindMapHistory> getMindMapHistory(int mindmapId);
+    public List<MindMapHistory> findMindmapHistory(int mindmapId);
 
     public boolean hasPermissions(@Nullable User user, MindMap map, CollaborationRole allowedRole);
 
@@ -59,5 +59,7 @@ public interface MindmapService {
 
     public void addWelcomeMindmap(User user) throws WiseMappingException;
 
-    public void revertMapToHistory(MindMap map, int historyId) throws IOException, WiseMappingException;
+    public void revertChange(@NotNull MindMap map, int historyId) throws WiseMappingException;
+
+    MindMapHistory findMindmapHistory(int id, int hid) throws WiseMappingException;
 }
