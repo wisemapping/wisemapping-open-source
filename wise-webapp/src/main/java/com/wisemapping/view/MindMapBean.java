@@ -24,6 +24,7 @@ import com.wisemapping.model.MindMap;
 import com.wisemapping.model.User;
 import com.wisemapping.security.Utils;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.*;
 
@@ -34,12 +35,8 @@ public class MindMapBean {
 
     public MindMapBean(final MindMap mindmap) {
         this.mindMap = mindmap;
-        this.colaborators = getColaboratorBy(mindmap.getCollaborations(), CollaborationRole.EDITOR);
-        this.viewers = getColaboratorBy(mindmap.getCollaborations(), CollaborationRole.VIEWER);
-    }
-
-    public MindMap getMindMap() {
-        return mindMap;
+        this.colaborators = filterCollaboratorBy(mindmap.getCollaborations(), CollaborationRole.EDITOR);
+        this.viewers = filterCollaboratorBy(mindmap.getCollaborations(), CollaborationRole.VIEWER);
     }
 
     public boolean getPublic() {
@@ -86,7 +83,7 @@ public class MindMapBean {
         return mindMap.getTags();
     }
 
-    private List<CollaboratorBean> getColaboratorBy(Set<Collaboration> source, CollaborationRole role) {
+    private List<CollaboratorBean> filterCollaboratorBy(Set<Collaboration> source, CollaborationRole role) {
         List<CollaboratorBean> col = new ArrayList<CollaboratorBean>();
         if (source != null) {
             for (Collaboration mu : source) {
@@ -98,7 +95,7 @@ public class MindMapBean {
         return col;
     }
 
-    public int getCountColaborators() {
+    public int getCountCollaborators() {
         return colaborators != null ? colaborators.size() : 0;
     }
 
@@ -107,7 +104,7 @@ public class MindMapBean {
     }
 
     public int getCountShared() {
-        return getCountColaborators() + getCountViewers();
+        return getCountCollaborators() + getCountViewers();
     }
 
     public boolean isShared() {
@@ -122,7 +119,20 @@ public class MindMapBean {
         mindMap.setDescription(d);
     }
 
+    public String getXmlAsJsLiteral() throws IOException {
+        return this.mindMap.getXmlAsJsLiteral();
+    }
+
+    public String getProperties() {
+        return this.mindMap.getProperties();
+    }
+
     public User getCreator() {
         return mindMap.getCreator();
     }
+
+    public boolean isOwner() {
+        return mindMap.hasPermissions(Utils.getUser(), CollaborationRole.OWNER);
+    }
+
 }

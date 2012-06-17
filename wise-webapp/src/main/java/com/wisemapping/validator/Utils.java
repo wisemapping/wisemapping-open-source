@@ -26,7 +26,7 @@ import java.util.regex.Matcher;
 
 import com.wisemapping.controller.Messages;
 
-public class Utils {
+final public class Utils {
     //Set the email emailPattern string
 
     static private Pattern emailPattern = Pattern.compile(".+@.+\\.[a-z]+");

@@ -46,17 +46,10 @@ public class BaseSimpleFormController extends SimpleFormController
         return mindmapService;
     }
 
-    public void setMindmapService(MindmapService mindmapService) {
-        this.mindmapService = mindmapService;
-    }
-
     public String getErrorView() {
         return errorView;
     }
 
-    public void setErrorView(String errorView) {
-        this.errorView = errorView;
-    }
 
     @Override protected org.springframework.web.servlet.ModelAndView showForm(javax.servlet.http.HttpServletRequest httpServletRequest, javax.servlet.http.HttpServletResponse httpServletResponse, org.springframework.validation.BindException bindException) throws java.lang.Exception
      {
@@ -68,15 +61,6 @@ public class BaseSimpleFormController extends SimpleFormController
             view.addObject("errorView",true);
         }
         return view;
-    }
-
-    /* TODO codigo repetido en BaseMultiActionController */
-     protected MindMap getMindmapFromRequest(HttpServletRequest request) {
-        final String mapIdStr = request.getParameter(BaseMultiActionController.MAP_ID_PARAMNAME);
-        assert mapIdStr != null : "mapId parameter can not be null";
-        logger.info("MapIdStr:" + mapIdStr);
-        int mapId = Integer.parseInt(mapIdStr);
-        return mindmapService.getMindmapById(mapId);
     }
 }
 

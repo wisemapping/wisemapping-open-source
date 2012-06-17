@@ -374,7 +374,7 @@ mindplot.widget.Menu = new Class({
         if (historyElem) {
 
             this._addButton('history', false, false, function() {
-                var reqDialog = new MooDialog.Request('c/history?action=list&goToMindmapList&mapId=' + mapId, null,
+                var reqDialog = new MooDialog.Request('c/iframeWrapper?url=c/maps/' + mapId + "/historyf", null,
                     {'class': 'modalDialog historyModalDialog',
                         closeButton:true,
                         destroyOnClose:true,

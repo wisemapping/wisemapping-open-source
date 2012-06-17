@@ -295,6 +295,19 @@
         </div>
     </div>
 
+    <!-- History Dialog Config -->
+    <div id="history-dialog-modal" class="modal fade" style="display: none">
+        <div class="modal-header">
+            <button class="close" data-dismiss="modal">x</button>
+            <h3>History</h3>
+        </div>
+        <div class="modal-body">
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-cancel" data-dismiss="modal">Close</button>
+        </div>
+    </div>
 </div>
 </body>
 </html>

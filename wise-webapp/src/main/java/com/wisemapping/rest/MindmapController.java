@@ -105,13 +105,12 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}/history", produces = {"application/json", "text/html", "application/xml"})
     public ModelAndView retrieveHistory(@PathVariable int id) throws IOException {
-        final MindMap mindMap = mindmapService.getMindmapById(id);
-        final Set<Collaboration> collaborations = mindMap.getCollaborations();
-        final RestCollaborationList result = new RestCollaborationList();
-        for (Collaboration collaboration : collaborations) {
-            result.addCollaboration(new RestCollaboration(collaboration));
+        final List<MindMapHistory> histories = mindmapService.getMindMapHistory(id);
+        final RestMindmapHistoryList result = new RestMindmapHistoryList();
+        for (MindMapHistory history : histories) {
+            result.addHistory(new RestMindmapHistory(history));
         }
-        return new ModelAndView("collabView", "list", result);
+        return new ModelAndView("historyView", "list", result);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/document", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
@@ -410,7 +409,7 @@ public class MindmapController extends BaseController {
         final Calendar now = Calendar.getInstance();
         mindMap.setLastModificationTime(now);
         mindMap.setLastModifierUser(user.getUsername());
-        mindmapService.updateMindmap(mindMap, minor);
+        mindmapService.updateMindmap(mindMap, !minor);
     }
 
     private ValidationException buildValidationException(@NotNull String fieldName, @NotNull String message) throws ValidationException {

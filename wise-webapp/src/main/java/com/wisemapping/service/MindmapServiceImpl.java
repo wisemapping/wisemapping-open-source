@@ -88,7 +88,6 @@ public class MindmapServiceImpl
         if (mindMap.getTitle() == null || mindMap.getTitle().length() == 0) {
             throw new WiseMappingException("The tile can not be empty");
         }
-
         mindmapManager.updateMindmap(mindMap, saveHistory);
     }
 

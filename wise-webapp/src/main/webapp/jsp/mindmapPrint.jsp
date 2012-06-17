@@ -5,10 +5,6 @@
 <%--@elvariable id="editorTryMode" type="java.lang.String"--%>
 <%--@elvariable id="mapXml" type="com.wisemapping.model.User"--%>
 
-<%@ page import="java.text.DateFormat" %>
-<%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="java.util.Calendar" %>
-
 
 <%@ include file="/jsp/init.jsp" %>
 

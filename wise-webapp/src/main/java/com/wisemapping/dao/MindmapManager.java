@@ -47,7 +47,7 @@ public interface MindmapManager {
 
     void saveMindmap(MindMap mindMap);
 
-    void updateMindmap(MindMap mindMap, boolean saveHistory);
+    void updateMindmap(@NotNull MindMap mindMap, boolean saveHistory);
 
     void removeCollaborator(@NotNull Collaborator collaborator);
 

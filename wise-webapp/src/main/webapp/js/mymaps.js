@@ -433,6 +433,10 @@ $(function() {
         showEmbeddedDialog("c/maps/{mapId}/details", 'info-dialog-modal');
     });
 
+    $("#historyBtn").click(function() {
+        showEmbeddedDialog("c/maps/{mapId}/history", 'history-dialog-modal');
+    });
+
     $("#publishBtn").click(function() {
         showEmbeddedDialog("c/maps/{mapId}/publish", "publish-dialog-modal");
     });

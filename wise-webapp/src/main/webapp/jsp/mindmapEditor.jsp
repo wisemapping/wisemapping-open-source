@@ -75,7 +75,7 @@
 
         <div id="headerMapTitle">Title: <span>${mindmap.title}</span></div>
     </div>
-    <%@ include file="/jsp/toolbar.jsf" %>
+    <%@ include file="/jsp/mindmapEditorToolbar.jsf" %>
 </div>
 
 <div id="mindplot"></div>

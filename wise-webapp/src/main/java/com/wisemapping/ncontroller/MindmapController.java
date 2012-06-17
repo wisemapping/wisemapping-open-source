@@ -1,4 +1,3 @@
-
 /*
 *    Copyright [2011] [wisemapping]
 *
@@ -20,11 +19,8 @@
 package com.wisemapping.ncontroller;
 
 
-import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.filter.UserAgent;
 import com.wisemapping.model.MindMap;
-import com.wisemapping.model.Collaboration;
-import com.wisemapping.model.User;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.view.MindMapBean;
@@ -32,77 +28,100 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class MindmapController {
-
-    private String baseUrl;
 
     @Qualifier("mindmapService")
     @Autowired
     private MindmapService mindmapService;
 
-    @RequestMapping(value = "maps/{id}/export")
-    public ModelAndView showExportPage(@PathVariable int id) throws IOException {
-        final MindMapBean modelObject = findMindmapBean(id);
-        return new ModelAndView("mindmapExport", "mindmap", modelObject);
-    }
-
     @RequestMapping(value = "maps/import")
-    public ModelAndView showImportPAge() throws IOException {
-        return new ModelAndView("mindmapImport");
-    }
-
-    @RequestMapping(value = "maps/{id}/exportf")
-    public ModelAndView showExportPageFull(@PathVariable int id) throws IOException {
-        final MindMapBean modelObject = findMindmapBean(id);
-        return new ModelAndView("mindmapExportFull", "mindmap", modelObject);
+    public String showImportPage() {
+        return "mindmapImport";
     }
 
     @RequestMapping(value = "maps/{id}/details")
-    public ModelAndView showDetails(@PathVariable int id) {
-        final MindMapBean modelObject = findMindmapBean(id);
-        final ModelAndView view = new ModelAndView("mindmapDetail", "wisemapDetail", modelObject);
-        view.addObject("user", Utils.getUser());
-        return view;
+    public String showDetails(@PathVariable int id, @NotNull Model model) {
+        final MindMapBean mindmap = findMindmapBean(id);
+        model.addAttribute("mindmap", mindmap);
+        return "mindmapDetail";
     }
 
     @RequestMapping(value = "maps/{id}/print")
-    public ModelAndView showPrintPage(@PathVariable int id) {
+    public String showPrintPage(@PathVariable int id, @NotNull Model model) {
         final MindMap mindmap = findMindmap(id);
-        return new ModelAndView("mindmapPrint", "mindmap", mindmap);
+        model.addAttribute("mindmap", mindmap);
+        return "mindmapPrint";
+    }
+
+    @RequestMapping(value = "maps/{id}/view")
+    public String showViewPage(@PathVariable int id, @NotNull Model model) {
+        final MindMap mindmap = findMindmap(id);
+        model.addAttribute("mindmap", mindmap);
+        return "mindmapPrint";
+    }
+
+    @RequestMapping(value = "maps/{id}/export")
+    public String showExportPage(@PathVariable int id, @NotNull Model model) throws IOException {
+        final MindMap mindmap = findMindmap(id);
+        model.addAttribute("mindmap", mindmap);
+        return "mindmapExport";
+    }
+
+    @RequestMapping(value = "maps/{id}/exportf")
+    public String showExportPageFull(@PathVariable int id, @NotNull Model model) throws IOException {
+        showExportPage(id, model);
+        return "mindmapExportFull";
     }
 
     @RequestMapping(value = "maps/{id}/share")
-    public ModelAndView showSharePage(@PathVariable int id) {
+    public String showSharePage(@PathVariable int id, @NotNull Model model) {
         final MindMap mindmap = findMindmap(id);
-        return new ModelAndView("mindmapShare", "mindmap", mindmap);
+        model.addAttribute("mindmap", mindmap);
+        return "mindmapShare";
     }
 
     @RequestMapping(value = "maps/{id}/sharef")
-    public ModelAndView showSharePageFull(@PathVariable int id) {
-        final MindMap mindmap = findMindmap(id);
-        return new ModelAndView("mindmapShareFull", "mindmap", mindmap);
+    public String showSharePageFull(@PathVariable int id, @NotNull Model model) {
+        showSharePage(id, model);
+        return "mindmapShareFull";
     }
 
     @RequestMapping(value = "maps/{id}/publish")
-    public ModelAndView showPublishPage(@PathVariable int id) {
+    public String showPublishPage(@PathVariable int id, @NotNull Model model) {
         final MindMap mindmap = findMindmap(id);
-        return new ModelAndView("mindmapPublish", "mindmap", mindmap);
+        model.addAttribute("mindmap", mindmap);
+        return "mindmapPublish";
     }
 
     @RequestMapping(value = "maps/{id}/publishf")
-    public ModelAndView showPublishPageFull(@PathVariable int id) {
-        final MindMap mindmap = findMindmap(id);
-        return new ModelAndView("mindmapPublishFull", "mindmap", mindmap);
+    public String showPublishPageFull(@PathVariable int id, @NotNull Model model) {
+        showPublishPage(id, model);
+        return "mindmapPublishFull";
+    }
+
+    @RequestMapping(value = "maps/{id}/history", method = RequestMethod.GET)
+    public String showHistoryPage(@PathVariable int id, @NotNull Model model) {
+        model.addAttribute("mindmapId", id);
+        return "mindmapHistory";
+    }
+
+    @RequestMapping(value = "maps/{id}/historyf", method = RequestMethod.GET)
+    public String showHistoryPageFull(@PathVariable int id, @NotNull Model model) {
+        showHistoryPage(id, model);
+        return "mindmapHistoryFull";
+    }
+
+    @RequestMapping(value = "maps/")
+    public String showListPage() {
+        return "mindmapList";
     }
 
     @RequestMapping(value = "maps/{id}/edit")
@@ -114,7 +133,7 @@ public class MindmapController {
 //            view.addObject(MINDMAP_ID_PARAMETER, mindmapId);
         } else {
 
-            final MindMap mindmap = mindmapService.getMindmapById(id);
+            final MindMapBean mindmap = findMindmapBean(id);
             view = new ModelAndView("mindmapEditor", "mindmap", mindmap);
             view.addObject("editorTryMode", false);
             final boolean showHelp = isWelcomeMap(mindmap);
@@ -125,9 +144,8 @@ public class MindmapController {
     }
 
     @RequestMapping(value = "maps/{id}/embed")
-    public ModelAndView embeddedView(@PathVariable int id, @RequestParam(required = false) Float zoom, @NotNull HttpServletRequest request) {
+    public ModelAndView embeddedView(@PathVariable int id, @RequestParam(required = false) Float zoom) {
         ModelAndView view;
-        final UserAgent userAgent = UserAgent.create(request);
         final MindMap mindmap = mindmapService.getMindmapById(id);
         view = new ModelAndView("mindmapEmbedded", "mindmap", mindmap);
         view.addObject("user", Utils.getUser());
@@ -135,64 +153,6 @@ public class MindmapController {
         return view;
     }
 
-    @RequestMapping(value = "collaborator")
-    public ModelAndView showCollaborator(@RequestParam(required = true) long mapId) {
-        final MindMapBean modelObject = findMindmapBean(mapId);
-        return new ModelAndView("mindmapCollaborator", "mindmap", modelObject);
-    }
-
-    @RequestMapping(value = "viewer")
-    public ModelAndView viewer(@RequestParam(required = true) long mapId) {
-        final MindMapBean modelObject = findMindmapBean(mapId);
-        return new ModelAndView("mindmapViewer", "wisemapsList", modelObject);
-    }
-
-    @RequestMapping(value = "changeStatus")
-    public ModelAndView changeStatus(@RequestParam(required = true) long mapId) throws WiseMappingException {
-        final MindMap mindmap = findMindmap(mapId);
-        boolean isPublic = !mindmap.isPublic();
-        mindmap.setPublic(isPublic);
-        mindmapService.updateMindmap(mindmap, false);
-        return new ModelAndView("mindmapDetail", "wisemapDetail", new MindMapBean(mindmap));
-    }
-
-    @RequestMapping(value = "maps/")
-    public ModelAndView list(@NotNull HttpServletRequest request) {
-        final HttpSession session = request.getSession(false);
-
-        // Try to loaded from the request ...
-        UserAgent userAgent = null;
-        if (session != null) {
-            userAgent = (UserAgent) session.getAttribute(USER_AGENT);
-        }
-
-        // I could not loaded. I will create a new one...
-        if (userAgent == null) {
-            userAgent = UserAgent.create(request);
-            if (session != null) {
-                session.setAttribute(USER_AGENT, userAgent);
-            }
-        }
-
-        // It's a supported browser ?.
-        final UserAgent.OS os = userAgent.getOs();
-
-        final User user = Utils.getUser();
-        final ModelAndView view = new ModelAndView("mindmapList", "wisemapsList", findMindMapBeanList(user));
-        view.addObject("isMAC", os == UserAgent.OS.MAC);
-        view.addObject("user", user);
-        return view;
-    }
-
-    @RequestMapping(value = "updateMindmap")
-    public ModelAndView updateMindmap(@RequestParam(required = true) long mapId, @RequestParam(required = true) String title, @RequestParam(required = true) String description, @NotNull HttpServletRequest request) throws WiseMappingException {
-        final MindMap mindmap = findMindmap(mapId);
-        mindmap.setTitle(title);
-        mindmap.setDescription(description);
-
-        mindmapService.updateMindmap(mindmap, false);
-        return list(request);
-    }
 
     private MindMap findMindmap(long mapId) {
         final MindMap mindmap = mindmapService.getMindmapById((int) mapId);
@@ -202,24 +162,11 @@ public class MindmapController {
         return mindmap;
     }
 
-    private List<MindMapBean> findMindMapBeanList(@NotNull User user) {
-        final List<Collaboration> userMindmaps = mindmapService.getCollaborationsBy(user);
-
-        final List<MindMapBean> mindMapBeans = new ArrayList<MindMapBean>(userMindmaps.size());
-        for (Collaboration mindmap : userMindmaps) {
-            mindMapBeans.add(new MindMapBean(mindmap.getMindMap()));
-        }
-        return mindMapBeans;
-    }
-
     private MindMapBean findMindmapBean(long mapId) {
         return new MindMapBean(findMindmap(mapId));
     }
 
-    private boolean isWelcomeMap(MindMap map) {
+    private boolean isWelcomeMap(MindMapBean map) {
         return map.getTitle().startsWith("Welcome ");
     }
-
-
-    private static final String USER_AGENT = "wisemapping.userAgent";
 }

@@ -3,6 +3,11 @@
 
 <beans>
 
+      <bean id="userValidator" class="com.wisemapping.validator.UserValidator">
+        <property name="userService" ref="userService"/>
+        <property name="captchaService" ref="reCaptcha"/>
+    </bean>
+
     <bean id="settingResolver" class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
         <property name="mappings">
             <props>

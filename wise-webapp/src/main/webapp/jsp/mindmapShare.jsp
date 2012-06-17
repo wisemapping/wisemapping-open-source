@@ -231,8 +231,6 @@ $("#addBtn").click(function(event) {
             email = emails[i];
             addCollaboration(email, role, 'New');
         }
-    } else {
-
     }
 });
 

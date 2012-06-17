@@ -106,12 +106,6 @@
         <put-attribute name="body" value="/jsp/editProfile.jsp"/>
     </definition>
 
-    <definition name="changePassword" extends="dialogTemplate">
-        <put-attribute name="title" value="CHANGE_PASSWORD"/>
-        <put-attribute name="details" value="FIELD_REQUIRED_MSG"/>
-        <put-attribute name="body" value="/jsp/changePassword.jsp"/>
-    </definition>
-
     <definition name="mindmapExport" extends="dialogTemplate">
         <put-attribute name="title" value=""/>
         <put-attribute name="details" value=""/>
@@ -148,14 +142,20 @@
         <put-attribute name="body" value="/jsp/mindmapShare.jsp"/>
     </definition>
 
-    <definition name="keyboard" extends="dialogTemplate">
-        <put-attribute name="title" value="KEYBOARD"/>
-        <put-attribute name="details" value="KEYBOARD_MSG"/>
-        <put-attribute name="body" value="/jsp/keyboard.jsp"/>
-    </definition>
-
     <definition name="mindmapImport" extends="dialogTemplate">
         <put-attribute name="body" value="/jsp/mindmapImport.jsp"/>
+    </definition>
+
+    <definition name="mindmapHistory" extends="dialogTemplate">
+        <put-attribute name="title" value="HISTORY"/>
+        <put-attribute name="details" value="HISTORY_INFO"/>
+        <put-attribute name="body" value="/jsp/mindmapHistory.jsp"/>
+    </definition>
+
+    <definition name="mindmapHistoryFull" extends="dialogFullTemplate">
+        <put-attribute name="title" value="HISTORY"/>
+        <put-attribute name="details" value="HISTORY_INFO"/>
+        <put-attribute name="body" value="/jsp/mindmapHistory.jsp"/>
     </definition>
 
     <definition name="activationAccountConfirmation" extends="pageTemplate">
@@ -168,9 +168,16 @@
         <put-attribute name="body" value="/jsp/activationAccountConfirmationFail.jsp"/>
     </definition>
 
-    <definition name="mindmapHistory" extends="dialogTemplate">
-        <put-attribute name="title" value="HISTORY"/>
-        <put-attribute name="details" value="HISTORY_INFO"/>
-        <put-attribute name="body" value="/jsp/mindmapHistory.jsp"/>
+    <definition name="keyboard" extends="dialogTemplate">
+        <put-attribute name="title" value="KEYBOARD"/>
+        <put-attribute name="details" value="KEYBOARD_MSG"/>
+        <put-attribute name="body" value="/jsp/keyboard.jsp"/>
     </definition>
+
+    <definition name="changePassword" extends="dialogTemplate">
+        <put-attribute name="title" value="CHANGE_PASSWORD"/>
+        <put-attribute name="details" value="FIELD_REQUIRED_MSG"/>
+        <put-attribute name="body" value="/jsp/changePassword.jsp"/>
+    </definition>
+
 </tiles-definitions>

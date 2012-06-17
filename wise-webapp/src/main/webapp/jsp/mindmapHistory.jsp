@@ -1,74 +1,62 @@
-<%@ page import="java.util.List" %>
-<%@ page import="com.wisemapping.view.HistoryBean" %>
 <%@ include file="/jsp/init.jsp" %>
-<script type="text/javascript">
-    function revertHistory(mapId, historyId)
-    {
-        document.revertForm.mapId.value = mapId;
-        document.revertForm.historyId.value = historyId;
-        document.revertForm.submit();
-        return false;
+
+<style type="text/css">
+    #historyContainer {
+        overflow-y: scroll;
+        max-height: 400px;
     }
-</script>
-<table style="border:1px gray dashed;width:100%;margin-top:10px;">
-    <thead>
-        <tr style="border:1px gray dashed;color:white;background:black;">
-            <td>
-                <spring:message code="MODIFIED"/>
-            </td>
-            <td>
-                <spring:message code="BY"/>
-            </td>
-            <td>
-                &nbsp;
-            </td>
-        </tr>
-    </thead>
-    <tbody>
-        <%
-            final List<HistoryBean> list = (List<HistoryBean>) request.getAttribute("historyBeanList");
-            if (list != null && !list.isEmpty()) {
-        %>
-        <%
-            for (HistoryBean history : list) {
 
-        %>
+    #historyContainer table {
+        font-size: 100%;
+    }
+</style>
 
-        <tr>
-            <td>
-                <%=history.getCreation(request.getLocale())%>
-            </td>
-            <td>
-                <%=history.getAuthor()%>
-            </td>
-            <td>
-                <a onclick="return revertHistory('<%=history.getMindMapId()%>',<%=history.getHistoryId()%>)" href=""><spring:message code="REVERT"/></a>
-            </td>
-        </tr>
-        <%
-            }
-        } else {
-        %>
 
-        <td colspan="3">
-            <spring:message code="NO_HISTORY_RESULTS"/>
-        </td>
-        <%
-            }
-        %>
-    </tbody>
-</table>
-<form name="revertForm" action="<c:url value="history"/>">
-    <input type="hidden" name="action" value="revert"/>
-    <%        
-        if (request.getAttribute("goToMindmapList") != null)
-        {
-    %>
-        <input type="hidden" name="goToMindmapList"/>
-    <%
+<div id="historyContainer">
+    <table class="table table-condensed" id="historyTable">
+        <colgroup>
+            <col width="50%"/>
+            <col width="30%"/>
+            <col width="10%"/>
+            <col width="10%"/>
+        </colgroup>
+    </table>
+</div>
+
+<script type="text/javascript">
+    var tableElem = $('#historyTable');
+    jQuery.ajax("service/maps/${mindmapId}/history", {
+        async:false,
+        dataType: 'json',
+        type: 'GET',
+        contentType:"text/plain",
+        success : function(data, textStatus, jqXHR) {
+            $(data.changes).each(function() {
+                tableElem.append('\
+                  <tr data-history-id="' + this.id + '">\
+                   <td>' + this.creator + '</td>\
+                   <td><abbr class="timeago" title="' + this.creationTime + '">' + jQuery.timeago(this.creationTime) + '</abbr></td>\
+                   <td><a class="view" href="#">view</a></td>\
+                   <td><a class="revert" href="#">revert</a></td>\
+               </tr>');
+            });
+
+            tableElem.find('tr a.view').each(function() {
+                $(this).click(function(event) {
+                    window.open("/c/maps/${mindmapId}/view");
+                    event.preventDefault();
+                });
+            });
+            tableElem.find('tr a.revert').each(function() {
+                $(this).click(function(event) {
+                    window.location = "/c/maps/${mindmapId}/edit";
+                    event.preventDefault();
+                });
+            });
+
+        },
+        error:function(jqXHR, textStatus, errorThrown) {
+            alert(textStatus);
         }
-    %>
-    <input type="hidden" name="mapId"/>
-    <input type="hidden" name="historyId"/>
-</form>
-
+    });
+</script>
