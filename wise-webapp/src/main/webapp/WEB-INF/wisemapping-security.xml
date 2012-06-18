@@ -40,12 +40,12 @@
 
     <sec:http use-expressions="true" create-session="never" pattern="/service/**">
         <sec:intercept-url pattern="/service/admin/users/**" access="isAuthenticated() and hasRole('ROLE_ADMIN')"/>
-        <sec:intercept-url pattern="/service/**" access="isAuthenticated()"/>
+        <sec:intercept-url pattern="/service/**" access="isAuthenticated() and hasRole('ROLE_USER')"/>
         <sec:http-basic/>
     </sec:http>
 
     <sec:http use-expressions="true" access-denied-page="/c/login">
-        <sec:intercept-url pattern="/c/**" access="isFullyAuthenticated()"/>
+        <sec:intercept-url pattern="/c/**/*" access="isAuthenticated() and hasRole('ROLE_USER')"/>
         <sec:form-login login-page="/c/login"
                         default-target-url='/c/maps/'
                         always-use-default-target='false'

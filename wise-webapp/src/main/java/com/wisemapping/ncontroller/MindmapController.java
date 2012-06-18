@@ -36,7 +36,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
-import java.util.List;
 
 @Controller
 public class MindmapController {
@@ -177,13 +176,13 @@ public class MindmapController {
 
     @Deprecated
     @RequestMapping(value = "publicView", method = RequestMethod.GET)
-    public String showPublicViewPageLegacy(@RequestParam(required = true) int mapId, @NotNull Model model) throws WiseMappingException {
+    public String showPublicViewPageLegacy(@RequestParam(required = true) int mapId) {
         return "redirect:maps/" + mapId + "/public";
     }
 
     @Deprecated
     @RequestMapping(value = "embeddedView", method = RequestMethod.GET)
-    public String showPublicViewLegacyPage(@RequestParam(required = true) int mapId, @RequestParam(required = false) int zoom, @NotNull Model model) throws WiseMappingException {
+    public String showPublicViewLegacyPage(@RequestParam(required = true) int mapId, @RequestParam(required = false) int zoom) {
         return "redirect:maps/" + mapId + "/embed?zoom=" + zoom;
     }
 
