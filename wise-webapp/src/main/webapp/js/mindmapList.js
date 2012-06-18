@@ -270,7 +270,7 @@ $(function() {
         aoColumns: [
             {
                 sTitle : '<input type="checkbox" id="selectAll"/>',
-                sWidth : "55px",
+                sWidth : "60px",
                 sClass : "select",
                 bSortable : false,
                 bSearchable : false,
