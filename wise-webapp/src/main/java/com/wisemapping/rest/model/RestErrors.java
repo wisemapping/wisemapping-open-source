@@ -46,6 +46,7 @@ public class RestErrors {
     }
 
     public RestErrors(@NotNull String errorMsg) {
+        globalErrors = new ArrayList<String>();
         globalErrors.add(errorMsg);
     }
 
@@ -68,9 +69,11 @@ public class RestErrors {
 
     public Map<String, String> getFieldErrors() {
         final Map<String, String> result = new HashMap<String, String>();
-        final List<FieldError> fieldErrors = errors.getFieldErrors();
-        for (FieldError fieldError : fieldErrors) {
-            result.put(fieldError.getField(), messageSource.getMessage(fieldError, Locale.ENGLISH));
+        if (errors != null) {
+            final List<FieldError> fieldErrors = errors.getFieldErrors();
+            for (FieldError fieldError : fieldErrors) {
+                result.put(fieldError.getField(), messageSource.getMessage(fieldError, Locale.ENGLISH));
+            }
         }
         return result;
     }

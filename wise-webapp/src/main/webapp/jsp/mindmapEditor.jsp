@@ -70,7 +70,7 @@
             <spring:message code="LOGOUT"/>
         </a></span>
         </div>
-        <a href="${pageContext.request.contextPath}/c/maps/">
+        <a href="c/maps/">
             <div id="headerLogo"></div>
         </a>
 

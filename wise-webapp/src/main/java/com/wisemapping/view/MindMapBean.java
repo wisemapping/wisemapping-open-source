@@ -18,45 +18,46 @@
 
 package com.wisemapping.view;
 
-import com.wisemapping.model.Collaboration;
-import com.wisemapping.model.CollaborationRole;
-import com.wisemapping.model.MindMap;
-import com.wisemapping.model.User;
-import com.wisemapping.security.Utils;
+import com.wisemapping.exceptions.WiseMappingException;
+import com.wisemapping.model.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.*;
 
 public class MindMapBean {
-    private MindMap mindMap;
+    private MindMap mindmap;
     private List<CollaboratorBean> viewers;
     private List<CollaboratorBean> collaborators;
+    private Collaborator collaborator;
 
-    public MindMapBean(final MindMap mindmap) {
-        this.mindMap = mindmap;
+    public MindMapBean(@NotNull final MindMap mindmap, @Nullable final Collaborator collaborator) {
+        this.mindmap = mindmap;
+        this.collaborator = collaborator;
         this.collaborators = filterCollaboratorBy(mindmap.getCollaborations(), CollaborationRole.EDITOR);
         this.viewers = filterCollaboratorBy(mindmap.getCollaborations(), CollaborationRole.VIEWER);
     }
 
     public boolean getPublic() {
-        return mindMap.isPublic();
+        return mindmap.isPublic();
     }
 
     public String getTitle() {
-        return mindMap.getTitle();
+        return mindmap.getTitle();
     }
 
     public String getDescription() {
-        return mindMap.getDescription();
+        return mindmap.getDescription();
     }
 
     public int getId() {
-        return mindMap.getId();
+        return mindmap.getId();
     }
 
     public boolean isStarred() {
-        return mindMap.isStarred(Utils.getUser());
+        return mindmap.isStarred(collaborator);
     }
 
     public List<CollaboratorBean> getViewers() {
@@ -68,19 +69,19 @@ public class MindMapBean {
     }
 
     public String getLastEditor() {
-        return mindMap.getLastModifierUser();
+        return mindmap.getLastModifierUser();
     }
 
     public String getLastEditTime() {
-        return DateFormat.getInstance().format(mindMap.getLastModificationTime().getTime());
+        return DateFormat.getInstance().format(mindmap.getLastModificationTime().getTime());
     }
 
     public String getCreationTime() {
-        return DateFormat.getInstance().format(mindMap.getCreationTime().getTime());
+        return DateFormat.getInstance().format(mindmap.getCreationTime().getTime());
     }
 
     public String getTags() {
-        return mindMap.getTags();
+        return mindmap.getTags();
     }
 
     private List<CollaboratorBean> filterCollaboratorBy(Set<Collaboration> source, CollaborationRole role) {
@@ -112,35 +113,36 @@ public class MindMapBean {
     }
 
     public void setTitle(String t) {
-        mindMap.setTitle(t);
+        mindmap.setTitle(t);
     }
 
     public void setDescription(String d) {
-        mindMap.setDescription(d);
+        mindmap.setDescription(d);
     }
 
     public String getXmlAsJsLiteral() throws IOException {
-        return this.mindMap.getXmlAsJsLiteral();
+        return this.mindmap.getXmlAsJsLiteral();
     }
 
-    public String getProperties() {
-        return this.mindMap.getProperties();
+    public String getProperties() throws WiseMappingException {
+        final CollaborationProperties collaboration = this.mindmap.getCollaborationProperties(collaborator);
+        return collaboration.getMindmapProperties();
     }
 
     public User getCreator() {
-        return mindMap.getCreator();
+        return mindmap.getCreator();
     }
 
     public boolean isOwner() {
-        return mindMap.hasPermissions(Utils.getUser(), CollaborationRole.OWNER);
+        return mindmap.hasPermissions(collaborator, CollaborationRole.OWNER);
     }
 
     public boolean isEditor() {
-        return mindMap.hasPermissions(Utils.getUser(), CollaborationRole.EDITOR);
+        return mindmap.hasPermissions(collaborator, CollaborationRole.EDITOR);
     }
 
-    public MindMap getDelegated(){
-        return mindMap;
+    public MindMap getDelegated() {
+        return mindmap;
     }
 
 }

@@ -78,8 +78,8 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public List<Collaboration> findCollaborationsBy(@NotNull User user) {
-        return mindmapManager.getMindmapUserByCollaborator(user.getId());
+    public List<Collaboration> findCollaborations(@NotNull User user) {
+        return mindmapManager.findCollaboration(user.getId());
     }
 
     @Override

@@ -89,7 +89,7 @@ public class MindmapController extends BaseController {
         final User user = Utils.getUser();
 
         final MindmapFilter filter = MindmapFilter.parse(q);
-        final List<Collaboration> collaborations = mindmapService.findCollaborationsBy(user);
+        final List<Collaboration> collaborations = mindmapService.findCollaborations(user);
 
         final List<MindMap> mindmaps = new ArrayList<MindMap>();
         for (Collaboration collaboration : collaborations) {
@@ -125,7 +125,7 @@ public class MindmapController extends BaseController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateDocument(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor) throws IOException, WiseMappingException {
 
-        final MindMap mindMap = mindmapService.findMindmapById(id);
+        final MindMap mindmap = mindmapService.findMindmapById(id);
         final User user = Utils.getUser();
 
         // Validate arguments ...
@@ -133,17 +133,20 @@ public class MindmapController extends BaseController {
         if (properties == null) {
             throw new IllegalArgumentException("Map properties can not be null");
         }
-        mindMap.setProperties(properties);
+
+        // Update collaboration properties ...
+        final CollaborationProperties collaborationProperties = mindmap.getCollaborationProperties(user);
+        collaborationProperties.setMindmapProperties(properties);
 
         // Validate content ...
         final String xml = restMindmap.getXml();
         if (xml == null) {
             throw new IllegalArgumentException("Map xml can not be null");
         }
-        mindMap.setXmlStr(xml);
+        mindmap.setXmlStr(xml);
 
         // Update map ...
-        saveMindmap(minor, mindMap, user);
+        saveMindmap(minor, mindmap, user);
     }
 
     /**
@@ -153,41 +156,43 @@ public class MindmapController extends BaseController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void update(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor) throws IOException, WiseMappingException {
 
-        final MindMap mindMap = mindmapService.findMindmapById(id);
+        final MindMap mindmap = mindmapService.findMindmapById(id);
         final User user = Utils.getUser();
 
-        // Update document properties ...
-        final String properties = restMindmap.getProperties();
-        if (properties != null) {
-            mindMap.setProperties(properties);
-        }
         final String xml = restMindmap.getXml();
         if (xml != null) {
-            mindMap.setXmlStr(xml);
+            mindmap.setXmlStr(xml);
         }
 
         // Update title  ...
         final String title = restMindmap.getTitle();
-        if (title != null && !title.equals(mindMap.getTitle())) {
+        if (title != null && !title.equals(mindmap.getTitle())) {
             if (mindmapService.getMindmapByTitle(title, user) != null) {
                 throw buildValidationException("title", "You already have a map with this title");
             }
-            mindMap.setTitle(title);
+            mindmap.setTitle(title);
         }
 
         // Update description ...
         final String description = restMindmap.getDescription();
         if (description != null) {
-            mindMap.setDescription(description);
+            mindmap.setDescription(description);
         }
 
         final String tags = restMindmap.getTags();
         if (tags != null) {
-            mindMap.setTags(tags);
+            mindmap.setTags(tags);
+        }
+
+        // Update document properties ...
+        final String properties = restMindmap.getProperties();
+        if (properties != null) {
+            final CollaborationProperties collaborationProperties = mindmap.getCollaborationProperties(user);
+            collaborationProperties.setMindmapProperties(properties);
         }
 
         // Update map ...
-        saveMindmap(minor, mindMap, user);
+        saveMindmap(minor, mindmap, user);
     }
 
 

@@ -174,7 +174,7 @@ public class MindmapController {
     }
 
     private MindMapBean findMindmapBean(long mapId) {
-        return new MindMapBean(findMindmap(mapId));
+        return new MindMapBean(findMindmap(mapId), Utils.getUser());
     }
 
     private boolean isWelcomeMap(MindMapBean map) {

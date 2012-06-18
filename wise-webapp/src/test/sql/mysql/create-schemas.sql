@@ -28,7 +28,6 @@ edition_date datetime,
 creator_id INTEGER not null,
 tags varchar(1014) CHARACTER SET utf8 ,
 last_editor varchar(255) CHARACTER SET utf8 ,
-editor_properties varchar(512) CHARACTER SET utf8 ,
 FOREIGN KEY(creator_id) REFERENCES USER(colaborator_id)
 ) CHARACTER SET utf8 ;
 
@@ -43,7 +42,8 @@ creator_user varchar(255) CHARACTER SET utf8
 
 CREATE TABLE COLLABORATION_PROPERTIES(
 id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-starred BOOL NOT NULL default 0
+starred BOOL NOT NULL default 0,
+mindmap_properties varchar(512) CHARACTER SET utf8
 ) CHARACTER SET utf8;
 
 CREATE TABLE COLLABORATION (

@@ -9,6 +9,7 @@
         <id name="id">
             <generator class="increment"/>
         </id>
+        <property name="mindmapProperties" column="mindmap_properties" unique="false" not-null="false"/>
         <property name="starred" column="starred" unique="false" not-null="true"/>
     </class>
 

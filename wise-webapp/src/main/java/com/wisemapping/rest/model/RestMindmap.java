@@ -2,9 +2,8 @@ package com.wisemapping.rest.model;
 
 
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.model.Collaborator;
-import com.wisemapping.model.MindMap;
-import com.wisemapping.model.User;
+import com.wisemapping.model.*;
+import com.wisemapping.security.Utils;
 import org.codehaus.jackson.annotate.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -32,21 +31,27 @@ public class RestMindmap {
     private MindMap mindmap;
     @JsonIgnore
     static private SimpleDateFormat sdf;
+    private String properties;
 
     static {
         sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
-    public RestMindmap() {
+    public RestMindmap() throws WiseMappingException {
         this(new MindMap(), null);
 
     }
 
-    public RestMindmap(@NotNull MindMap mindmap, @Nullable Collaborator collaborator) {
+    public RestMindmap(@NotNull MindMap mindmap, @Nullable Collaborator collaborator) throws WiseMappingException {
         this.mindmap = mindmap;
         this.collaborator = collaborator;
+        if (collaborator != null) {
+            final CollaborationProperties collaborationProperties = mindmap.getCollaborationProperties(collaborator);
+            this.properties = collaborationProperties.getMindmapProperties();
+        }
     }
+
 
     public String getCreationTime() {
         final Calendar creationTime = mindmap.getCreationTime();
@@ -139,8 +144,8 @@ public class RestMindmap {
     }
 
 
-    public void setProperties(String properties) {
-        mindmap.setProperties(properties);
+    public void setProperties(@Nullable String properties) {
+        this.properties = properties;
     }
 
     public void setLastModificationTime(final String value) {
@@ -150,7 +155,7 @@ public class RestMindmap {
     }
 
     public String getProperties() {
-        return mindmap.getProperties();
+        return properties;
     }
 
     public boolean getStarred() {

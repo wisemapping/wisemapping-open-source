@@ -109,25 +109,25 @@ public class MindmapManagerImpl
     }
 
     @Override
-    public Collaborator getCollaboratorBy(long id) {
+    public Collaborator findCollaborator(long id) {
         return getHibernateTemplate().get(Collaborator.class, id);
     }
 
     @Override
-    public List<Collaboration> getMindmapUserByCollaborator(final long colaboratorId) {
-        return getHibernateTemplate().find("from com.wisemapping.model.Collaboration mindmapUser where colaborator_id=?", colaboratorId);
+    public List<Collaboration> findCollaboration(final long collaboratorId) {
+        return getHibernateTemplate().find("from com.wisemapping.model.Collaboration collaboration where colaborator_id=?", collaboratorId);
     }
 
     @Override
-    public List<Collaboration> getMindmapUserByRole(final CollaborationRole collaborationRole) {
-        return getHibernateTemplate().find("from com.wisemapping.model.Collaboration mindmapUser where roleId=?", collaborationRole.ordinal());
+    public List<Collaboration> findCollaboration(final CollaborationRole collaborationRole) {
+        return getHibernateTemplate().find("from com.wisemapping.model.Collaboration collaboration where roleId=?", collaborationRole.ordinal());
     }
 
     @Override
-    public Collaboration getMindmapUserBy(final int mindmapId, final User user) {
+    public Collaboration findCollaboration(final int mindmapId, final User user) {
         final Collaboration result;
 
-        final List<Collaboration> mindMaps = getHibernateTemplate().find("from com.wisemapping.model.Collaboration mindmapUser where mindMap.id=? and colaborator_id=?", new Object[]{mindmapId, user.getId()});
+        final List<Collaboration> mindMaps = getHibernateTemplate().find("from com.wisemapping.model.Collaboration collaboration where mindMap.id=? and colaborator_id=?", new Object[]{mindmapId, user.getId()});
         if (mindMaps != null && !mindMaps.isEmpty()) {
             result = mindMaps.get(0);
         } else {

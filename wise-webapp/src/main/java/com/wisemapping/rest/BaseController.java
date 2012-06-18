@@ -21,6 +21,7 @@ package com.wisemapping.rest;
 import com.wisemapping.rest.model.RestErrors;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 public class BaseController {
 
+    @Qualifier("messageSource")
     @Autowired
     private ResourceBundleMessageSource messageSource;
 
@@ -36,6 +38,7 @@ public class BaseController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public RestErrors handleClientErrors(@NotNull IllegalArgumentException ex) {
+        ex.printStackTrace();
         return new RestErrors(ex.getMessage());
     }
 

@@ -92,21 +92,6 @@ public class MindMap {
         this.xml = ZipUtils.zipToString(xml).getBytes(UTF_8);
     }
 
-    public void setProperties(String properties) {
-        this.properties = properties;
-    }
-
-    public String getProperties() {
-        String ret;
-        if (properties == null) {
-            ret = "{zoom:0.85,saveOnLoad:true}";
-        } else {
-            ret = properties;
-        }
-
-        return ret;
-    }
-
     public Set<Collaboration> getCollaborations() {
         return collaborations;
     }
@@ -237,6 +222,12 @@ public class MindMap {
     }
 
     public void setStarred(@NotNull Collaborator collaborator, boolean value) throws WiseMappingException {
+        final CollaborationProperties collaborationProperties = getCollaborationProperties(collaborator);
+        collaborationProperties.setStarred(value);
+    }
+
+    @NotNull
+    public CollaborationProperties getCollaborationProperties(@NotNull Collaborator collaborator) throws WiseMappingException {
         if (collaborator == null) {
             throw new IllegalStateException("Collaborator can not be null");
         }
@@ -245,11 +236,7 @@ public class MindMap {
         if (collaboration == null) {
             throw new WiseMappingException("User is not collaborator");
         }
-
-        if (collaboration.getCollaborationProperties() == null) {
-            collaboration.setCollaborationProperties(new CollaborationProperties());
-        }
-        collaboration.getCollaborationProperties().setStarred(value);
+        return collaboration.getCollaborationProperties();
     }
 
     public boolean isStarred(@NotNull Collaborator collaborator) {
@@ -271,7 +258,6 @@ public class MindMap {
         final MindMap result = new MindMap();
         result.setDescription(this.getDescription());
         result.setTitle(this.getTitle());
-        result.setProperties(this.getProperties());
         result.setXml(this.getXml());
         result.setTags(this.getTags());
 

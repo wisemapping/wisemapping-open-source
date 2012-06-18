@@ -27,7 +27,6 @@ edition_date DATETIME,
 creator_id INTEGER NOT NULL,
 tags varchar(1014)  ,
 last_editor varchar(255)  ,
-editor_properties varchar(512)
 --FOREIGN KEY(creator_id) REFERENCES USER(colaborator_id)
 );
 
@@ -40,13 +39,14 @@ creator_user varchar(255));
 
 CREATE TABLE COLLABORATION_PROPERTIES
 (id INTEGER NOT NULL IDENTITY,
-starred BOOLEAN NOT NULL
+starred BOOLEAN NOT NULL,
+mindmap_properties varchar(512)
 );
 
 CREATE TABLE COLLABORATION
 (id INTEGER NOT NULL IDENTITY,
 colaborator_id INTEGER NOT NULL,
-properties_id INTEGER,
+properties_id INTEGER NOT NULL,
 mindmap_id INTEGER NOT NULL,
 role_id INTEGER NOT NULL,
 FOREIGN KEY(colaborator_id) REFERENCES COLABORATOR(id),

@@ -34,7 +34,7 @@ public interface MindmapService {
 
     public MindMap getMindmapByTitle(String title, User user);
 
-    public List<Collaboration> findCollaborationsBy(@NotNull User user);
+    public List<Collaboration> findCollaborations(@NotNull User user);
 
     public void updateMindmap(MindMap mindMap, boolean saveHistory) throws WiseMappingException;
 
@@ -43,7 +43,7 @@ public interface MindmapService {
     public void addCollaboration(@NotNull MindMap mindmap, @NotNull String email, @NotNull CollaborationRole role, @Nullable String message)
             throws CollaborationException;
 
-    public void removeCollaboration(@NotNull MindMap mindmap,  @NotNull Collaboration collaboration) throws CollaborationException;
+    public void removeCollaboration(@NotNull MindMap mindmap, @NotNull Collaboration collaboration) throws CollaborationException;
 
     public void addTags(@NotNull MindMap mindmap, String tags);
 

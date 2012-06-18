@@ -82,8 +82,14 @@ public class Collaboration {
         this.collaborator = collaborator;
     }
 
+    @NotNull
     public CollaborationProperties getCollaborationProperties() {
-        return collaborationProperties;
+        CollaborationProperties result = collaborationProperties;
+        if (result == null) {
+            collaborationProperties = new CollaborationProperties();
+            result = collaborationProperties;
+        }
+        return result;
     }
 
     public void setCollaborationProperties(@NotNull CollaborationProperties collaborationProperties) {

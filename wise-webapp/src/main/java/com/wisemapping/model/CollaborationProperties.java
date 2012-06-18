@@ -18,11 +18,15 @@
 
 package com.wisemapping.model;
 
+import org.jetbrains.annotations.NotNull;
+
 public class CollaborationProperties {
+    private static final String DEFAULT_JSON_PROPERTIES = "{zoom:0.8}";
     private int id;
     private boolean starred;
+    private String mindmapProperties;
 
-    public CollaborationProperties(){
+    public CollaborationProperties() {
 
     }
 
@@ -40,5 +44,14 @@ public class CollaborationProperties {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @NotNull
+    public String getMindmapProperties() {
+        return mindmapProperties == null ? DEFAULT_JSON_PROPERTIES : mindmapProperties;
+    }
+
+    public void setMindmapProperties(@NotNull String mindmapProperties) {
+        this.mindmapProperties = mindmapProperties;
     }
 }
