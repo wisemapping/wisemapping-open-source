@@ -141,6 +141,12 @@ public class MindMapBean {
         return mindmap.hasPermissions(collaborator, CollaborationRole.EDITOR);
     }
 
+    public String getRole() {
+        final Collaboration collaboration = this.mindmap.findCollaboration(collaborator);
+        return collaboration.getRole().getLabel();
+    }
+
+
     public MindMap getDelegated() {
         return mindmap;
     }

@@ -22,17 +22,22 @@
         </div>
         <div class="tab-pane fade" id="collaborators">
             <ul class="unstyled">
-                <li><strong><spring:message
-                        code="EDITORS"/>(${mindmap.countCollaborators}): </strong>
-                    <c:forEach items="${mindmap.collaborators}" var="mindmapCollaborator">
-                        ${mindmapCollaborator.username}
-                    </c:forEach>
+                <li>
+                    <strong><spring:message code="YOUR_ROLE"/></strong>: ${mindmap.role}
                 </li>
-                <li><strong><spring:message code="VIEWERS"/>(${mindmap.countViewers}): </strong>
-                    <c:forEach items="${mindmap.viewers}" var="mindmapViewer">
-                        ${mindmapViewer.username}
-                    </c:forEach>
-                </li>
+                <c:if test="${mindmap.owner}">
+                    <li><strong><spring:message
+                            code="EDITORS"/>(${mindmap.countCollaborators}): </strong>
+                        <c:forEach items="${mindmap.collaborators}" var="mindmapCollaborator">
+                            ${mindmapCollaborator.username}
+                        </c:forEach>
+                    </li>
+                    <li><strong><spring:message code="VIEWERS"/>(${mindmap.countViewers}): </strong>
+                        <c:forEach items="${mindmap.viewers}" var="mindmapViewer">
+                            ${mindmapViewer.username}
+                        </c:forEach>
+                    </li>
+                </c:if>
             </ul>
         </div>
 
