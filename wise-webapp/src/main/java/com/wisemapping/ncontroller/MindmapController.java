@@ -29,6 +29,7 @@ import com.wisemapping.view.MindMapBean;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -40,9 +41,14 @@ import java.util.List;
 @Controller
 public class MindmapController {
 
+
     @Qualifier("mindmapService")
     @Autowired
     private MindmapService mindmapService;
+
+    @Value("${site.baseurl}")
+    String siteBaseUrl;
+
 
     @RequestMapping(value = "maps/import")
     public String showImportPage() {
@@ -58,7 +64,7 @@ public class MindmapController {
 
     @RequestMapping(value = "maps/{id}/print")
     public String showPrintPage(@PathVariable int id, @NotNull Model model) {
-        final MindMap mindmap = findMindmap(id);
+        final MindMapBean mindmap = findMindmapBean(id);
         model.addAttribute("mindmap", mindmap);
         return "mindmapPrint";
     }
@@ -93,6 +99,7 @@ public class MindmapController {
     public String showPublishPage(@PathVariable int id, @NotNull Model model) {
         final MindMap mindmap = findMindmap(id);
         model.addAttribute("mindmap", mindmap);
+        model.addAttribute("baseUrl", siteBaseUrl);
         return "mindmapPublish";
     }
 
@@ -155,15 +162,30 @@ public class MindmapController {
     }
 
     @RequestMapping(value = "maps/{id}/embed")
-    public ModelAndView embeddedView(@PathVariable int id, @RequestParam(required = false) Float zoom) {
+    public ModelAndView showEmbeddedPage(@PathVariable int id, @RequestParam(required = false) Float zoom) {
         ModelAndView view;
-        final MindMap mindmap = mindmapService.findMindmapById(id);
+        final MindMapBean mindmap = findMindmapBean(id);
         view = new ModelAndView("mindmapEmbedded", "mindmap", mindmap);
-        view.addObject("user", Utils.getUser());
         view.addObject("zoom", zoom == null ? 1 : zoom);
         return view;
     }
 
+    @RequestMapping(value = "maps/{id}/public", method = RequestMethod.GET)
+    public String showPublicViewPage(@PathVariable int id, @NotNull Model model) throws WiseMappingException {
+        return this.showPrintPage(id, model);
+    }
+
+    @Deprecated
+    @RequestMapping(value = "publicView", method = RequestMethod.GET)
+    public String showPublicViewPageLegacy(@RequestParam(required = true) int mapId, @NotNull Model model) throws WiseMappingException {
+        return "redirect:maps/" + mapId + "/public";
+    }
+
+    @Deprecated
+    @RequestMapping(value = "embeddedView", method = RequestMethod.GET)
+    public String showPublicViewLegacyPage(@RequestParam(required = true) int mapId, @RequestParam(required = false) int zoom, @NotNull Model model) throws WiseMappingException {
+        return "redirect:maps/" + mapId + "/embed?zoom=" + zoom;
+    }
 
     private MindMap findMindmap(long mapId) {
         final MindMap mindmap = mindmapService.findMindmapById((int) mapId);

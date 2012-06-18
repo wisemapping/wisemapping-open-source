@@ -293,7 +293,7 @@ public class MindmapController extends BaseController {
         final MindMap mindMap = mindmapService.findMindmapById(id);
 
         final User user = Utils.getUser();
-        if (!!mindMap.hasPermissions(user, CollaborationRole.OWNER)) {
+        if (!mindMap.hasPermissions(user, CollaborationRole.OWNER)) {
             throw new IllegalArgumentException("No enough to execute this operation");
         }
 

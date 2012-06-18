@@ -62,7 +62,6 @@ final public class NotificationService {
             model.put("message", message);
             model.put("supportEmail", mailer.getSupportEmail());
 
-
             mailer.sendEmail(formMail, collabEmail, subject, model, "newCollaboration.vm");
         } catch (Exception e) {
             handleException(e);

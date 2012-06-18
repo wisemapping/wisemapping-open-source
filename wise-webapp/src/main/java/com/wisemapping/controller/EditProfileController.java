@@ -34,7 +34,7 @@ public class EditProfileController extends BaseSimpleFormController {
 
 
     protected Object formBackingObject(HttpServletRequest httpServletRequest) throws Exception {
-        final User model = Utils.getUser(httpServletRequest);
+        final User model = Utils.getUser();
         return new UserBean(model);
     }
 
@@ -47,7 +47,7 @@ public class EditProfileController extends BaseSimpleFormController {
         final UserService userService = this.getUserService();
 
         // Reload user only in case of beeing necessary...
-        final User model = Utils.getUser(request);
+        final User model = Utils.getUser();
         final User user = userService.reloadUser(model);
 
         user.setFirstname(bean.getFirstname());

@@ -20,6 +20,7 @@ package com.wisemapping.security;
 
 import com.wisemapping.model.User;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,19 +31,14 @@ final public class Utils {
     private Utils() {
     }
 
-    public static User getUser(@NotNull final HttpServletRequest request) {
-
-        final AbstractAuthenticationToken token = (AbstractAuthenticationToken) request.getUserPrincipal();
-        User result = null;
-        if (token != null) {
-            final UserDetails userDetails = (UserDetails) token.getPrincipal();
-            result = userDetails.getUser();
-        }
-        return result;
-    }
-
+    @SuppressWarnings({"ConstantConditions"})
     @NotNull
     public static User getUser() {
+        return getUser(false);
+    }
+
+    @Nullable
+    public static User getUser(boolean forceCheck) {
         User result = null;
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.getDetails() != null)
@@ -53,7 +49,7 @@ final public class Utils {
             }
         }
 
-        if(result==null){
+        if(result==null && forceCheck){
             throw new IllegalStateException("User could not be retrieved");
         }
         return result;

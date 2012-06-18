@@ -1,6 +1,7 @@
 package com.wisemapping.test.rest;
 
 
+import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.rest.model.RestMindmapInfo;
 import com.wisemapping.rest.model.RestMindmap;
 import com.wisemapping.rest.model.RestMindmapList;
@@ -41,7 +42,7 @@ public class RestMindmapTCase {
     }
 
     @Test(dataProvider = "ContentType-Provider-Function")
-    public void listMaps(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
+    public void listMaps(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate();
 
@@ -74,7 +75,7 @@ public class RestMindmapTCase {
     }
 
     @Test(dataProvider = "ContentType-Provider-Function")
-    public void deleteMap(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
+    public void deleteMap(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate();
 
@@ -94,7 +95,7 @@ public class RestMindmapTCase {
     }
 
     @Test(dataProvider = "ContentType-Provider-Function")
-    public void changeMapTitle(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
+    public void changeMapTitle(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate();
 
@@ -113,7 +114,7 @@ public class RestMindmapTCase {
     }
 
     @Test(dataProvider = "ContentType-Provider-Function")
-    public void validateMapsCreation(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
+    public void validateMapsCreation(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate();
 
@@ -140,7 +141,7 @@ public class RestMindmapTCase {
 
 
     @Test(dataProvider = "ContentType-Provider-Function")
-    public void changeMapDescription(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
+    public void changeMapDescription(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate();
 
@@ -159,7 +160,7 @@ public class RestMindmapTCase {
     }
 
     @Test(dataProvider = "ContentType-Provider-Function")
-    public void updateMapXml(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
+    public void updateMapXml(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate();
 
@@ -180,7 +181,7 @@ public class RestMindmapTCase {
     }
 
     @Test(dataProvider = "ContentType-Provider-Function")
-    public void cloneMap(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
+    public void cloneMap(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate();
 
@@ -205,7 +206,7 @@ public class RestMindmapTCase {
 
 
     @Test(dataProvider = "ContentType-Provider-Function")
-    public void updateMap(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
+    public void updateMap(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate();
 
@@ -237,7 +238,7 @@ public class RestMindmapTCase {
         return response.getBody();
     }
 
-    private URI addNewMap(@NotNull HttpHeaders requestHeaders, @NotNull RestTemplate template, @NotNull String title, @Nullable String xml) throws IOException {
+    private URI addNewMap(@NotNull HttpHeaders requestHeaders, @NotNull RestTemplate template, @NotNull String title, @Nullable String xml) throws IOException, WiseMappingException {
         final RestMindmap restMindmap = new RestMindmap();
         restMindmap.setTitle(title);
         restMindmap.setDescription("My Map Desc");
@@ -251,7 +252,7 @@ public class RestMindmapTCase {
     }
 
 
-    private URI addNewMap(@NotNull HttpHeaders requestHeaders, @NotNull RestTemplate template, @NotNull String title) throws IOException {
+    private URI addNewMap(@NotNull HttpHeaders requestHeaders, @NotNull RestTemplate template, @NotNull String title) throws IOException, WiseMappingException {
         return addNewMap(requestHeaders, template, title, null);
     }
 

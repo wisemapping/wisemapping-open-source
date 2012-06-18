@@ -35,8 +35,8 @@ public class LoginController {
     private String driver;
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
-    protected ModelAndView showLoginPage(HttpServletRequest request) {
-        final User user = Utils.getUser(request);
+    protected ModelAndView showLoginPage() {
+        final User user = Utils.getUser(false);
         ModelAndView result;
         if (user != null) {
             result = new ModelAndView("forward:/c/maps/");

@@ -38,8 +38,8 @@ public class ChangePasswordController
                                  BindException errors)
             throws ServletException {
         final ChangePasswordBean bean = (ChangePasswordBean) command;
-        // Reload user only in case of beeing necessary...
-        final User model = Utils.getUser(request);
+        // Reload user only in case of being necessary...
+        final User model = Utils.getUser();
 
         final UserService userService = this.getUserService();
         final User user = userService.reloadUser(model);

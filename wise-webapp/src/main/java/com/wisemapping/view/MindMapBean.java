@@ -125,8 +125,15 @@ public class MindMapBean {
     }
 
     public String getProperties() throws WiseMappingException {
-        final CollaborationProperties collaboration = this.mindmap.findCollaborationProperties(collaborator);
-        return collaboration.getMindmapProperties();
+        String result;
+        if (collaborator != null) {
+            final CollaborationProperties properties = this.mindmap.findCollaborationProperties(collaborator);
+            result = properties.getMindmapProperties();
+        } else {
+            // It must be public view ...
+            result = CollaborationProperties.DEFAULT_JSON_PROPERTIES;
+        }
+        return result;
     }
 
     public User getCreator() {

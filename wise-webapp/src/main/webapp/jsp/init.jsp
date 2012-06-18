@@ -8,7 +8,7 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
-    User user = Utils.getUser(request);
+    User user = Utils.getUser(false);
     request.setAttribute("principal", user);
 
     UserAgent userAgent = null;

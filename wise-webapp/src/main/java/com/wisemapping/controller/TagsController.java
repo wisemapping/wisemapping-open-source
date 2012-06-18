@@ -38,7 +38,7 @@ public class TagsController
     protected Object formBackingObject(HttpServletRequest httpServletRequest) throws Exception {
 
         final MindMap mindmap = null;
-        final User user = Utils.getUser(httpServletRequest);
+        final User user = Utils.getUser();
         final User dbUser = getUserService().getUserBy(user.getId());
 
         final TagBean tagBean = new TagBean();
