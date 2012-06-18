@@ -35,7 +35,7 @@ public class MindmapManagerImpl
         implements MindmapManager {
 
     @Override
-    public Collaborator getCollaboratorBy(final String email) {
+    public Collaborator findCollaborator(@NotNull final String email) {
         final Collaborator collaborator;
         final List<Collaborator> collaborators = getHibernateTemplate().find("from com.wisemapping.model.Collaborator collaborator where email=?", email);
         if (collaborators != null && !collaborators.isEmpty()) {
@@ -67,6 +67,11 @@ public class MindmapManagerImpl
     @Override
     public MindMapHistory getHistory(int historyId) {
         return getHibernateTemplate().get(MindMapHistory.class, historyId);
+    }
+
+    @Override
+    public void updateCollaboration(@NotNull Collaboration collaboration) {
+        getHibernateTemplate().save(collaboration);
     }
 
     @Override
@@ -138,7 +143,7 @@ public class MindmapManagerImpl
     }
 
     @Override
-    public void addCollaborator(Collaborator collaborator) {
+    public void addCollaborator(@NotNull Collaborator collaborator) {
         assert collaborator != null : "ADD MINDMAP COLLABORATOR: Collaborator is required!";
         getHibernateTemplate().save(collaborator);
     }

@@ -23,17 +23,19 @@
         </table>
     </div>
     <div style="font-size: 13px; background-color: #FFF; padding: 10px 7px 7px 7px; min-height: 100px">
+        <p><strong>Message from ${senderMail}: </strong></p>
         #if($message )
         <pre style="font-family: Arial, sans-serif; color: #000; ">${message}</pre>
         #end
         <p>Click to open: <a href="${mapEditUrl}">${mindmap.title}</a></p>
+
         <p style="color: #898989;">Do you have a WiseMapping account ?. Don't worry, you can create an account for
             free. </p>
     </div>
 </div>
 
 <p style="font-size: 13px;font-family: Arial, sans-serif">Important: Do not reply this email. If
-    you need to contact mindmap sender, you can send an email clicking <a href="mailto:${senderMail}">here</a>.
+    you need further help or have any concerns regarding your account, contact us to <a href="mailto:${supportEmail}">here</a>.
 </p>
 </body>
 </html>

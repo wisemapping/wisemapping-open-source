@@ -25,7 +25,7 @@ import java.util.List;
 
 public interface MindmapManager {
 
-    Collaborator getCollaboratorBy(@NotNull String email);
+    Collaborator findCollaborator(@NotNull String email);
 
     Collaborator findCollaborator(long id);
     
@@ -62,4 +62,6 @@ public interface MindmapManager {
     public List<MindMapHistory> getHistoryFrom(int mindmapId);
 
     public MindMapHistory getHistory(int historyId);
+
+    void updateCollaboration(@NotNull Collaboration collaboration);
 }

@@ -54,7 +54,7 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/json", "application/xml", "text/html"})
     @ResponseBody
-    public ModelAndView retrieve(@PathVariable int id) throws IOException {
+    public ModelAndView retrieve(@PathVariable int id) throws WiseMappingException {
         final User user = Utils.getUser();
         final MindMap mindMap = mindmapService.findMindmapById(id);
         final RestMindmap map = new RestMindmap(mindMap, user);
@@ -64,7 +64,7 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/wisemapping+xml"}, params = {"download=wxml"})
     @ResponseBody
-    public ModelAndView retrieveAsWise(@PathVariable int id) throws IOException {
+    public ModelAndView retrieveAsWise(@PathVariable int id) throws WiseMappingException {
         final MindMap mindMap = mindmapService.findMindmapById(id);
         final Map<String, Object> values = new HashMap<String, Object>();
 
@@ -116,14 +116,14 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(value = "maps/{id}/history/{hid}", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateRevertMindmap(@PathVariable int id, @PathVariable int hid) throws IOException, WiseMappingException {
+    public void updateRevertMindmap(@PathVariable int id, @PathVariable int hid) throws WiseMappingException {
         final MindMap mindmap = mindmapService.findMindmapById(id);
         mindmapService.revertChange(mindmap, hid);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/document", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateDocument(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor) throws IOException, WiseMappingException {
+    public void updateDocument(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor) throws WiseMappingException, IOException {
 
         final MindMap mindmap = mindmapService.findMindmapById(id);
         final User user = Utils.getUser();
@@ -135,7 +135,7 @@ public class MindmapController extends BaseController {
         }
 
         // Update collaboration properties ...
-        final CollaborationProperties collaborationProperties = mindmap.getCollaborationProperties(user);
+        final CollaborationProperties collaborationProperties = mindmap.findCollaborationProperties(user);
         collaborationProperties.setMindmapProperties(properties);
 
         // Validate content ...
@@ -187,7 +187,7 @@ public class MindmapController extends BaseController {
         // Update document properties ...
         final String properties = restMindmap.getProperties();
         if (properties != null) {
-            final CollaborationProperties collaborationProperties = mindmap.getCollaborationProperties(user);
+            final CollaborationProperties collaborationProperties = mindmap.findCollaborationProperties(user);
             collaborationProperties.setMindmapProperties(properties);
         }
 
@@ -307,12 +307,17 @@ public class MindmapController extends BaseController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateStarredState(@RequestBody String value, @PathVariable int id) throws WiseMappingException {
 
-        final MindMap mindMap = mindmapService.findMindmapById(id);
+        final MindMap mindmap = mindmapService.findMindmapById(id);
         final User user = Utils.getUser();
 
         // Update map status ...
-        mindMap.setStarred(user, Boolean.parseBoolean(value));
-        saveMindmap(true, mindMap, user);
+        final boolean starred = Boolean.parseBoolean(value);
+        final Collaboration collaboration = mindmap.findCollaboration(user);
+        if (collaboration == null) {
+            throw new WiseMappingException("No enough permissions.");
+        }
+        collaboration.getCollaborationProperties().setStarred(starred);
+        mindmapService.updateCollaboration(user, collaboration);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/maps/{id}")
@@ -425,7 +430,7 @@ public class MindmapController extends BaseController {
         mindmapService.updateMindmap(mindMap, !minor);
     }
 
-    private ValidationException buildValidationException(@NotNull String fieldName, @NotNull String message) throws ValidationException {
+    private ValidationException buildValidationException(@NotNull String fieldName, @NotNull String message) throws WiseMappingException {
         final BindingResult result = new BeanPropertyBindingResult(new RestMindmap(), "");
         result.rejectValue(fieldName, "error.not-specified", null, message);
         return new ValidationException(result);

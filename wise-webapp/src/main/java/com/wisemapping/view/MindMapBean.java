@@ -125,7 +125,7 @@ public class MindMapBean {
     }
 
     public String getProperties() throws WiseMappingException {
-        final CollaborationProperties collaboration = this.mindmap.getCollaborationProperties(collaborator);
+        final CollaborationProperties collaboration = this.mindmap.findCollaborationProperties(collaborator);
         return collaboration.getMindmapProperties();
     }
 

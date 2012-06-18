@@ -60,6 +60,7 @@ final public class NotificationService {
             model.put("baseUrl", formMail);
             model.put("senderMail", user.getEmail());
             model.put("message", message);
+            model.put("supportEmail", mailer.getSupportEmail());
 
 
             mailer.sendEmail(formMail, collabEmail, subject, model, "newCollaboration.vm");

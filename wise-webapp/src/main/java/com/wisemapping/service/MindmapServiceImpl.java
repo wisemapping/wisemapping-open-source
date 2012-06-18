@@ -187,7 +187,7 @@ public class MindmapServiceImpl
 
     private Collaborator addCollaborator(String email) {
         // Add a new collaborator ...
-        Collaborator collaborator = mindmapManager.getCollaboratorBy(email);
+        Collaborator collaborator = mindmapManager.findCollaborator(email);
         if (collaborator == null) {
             collaborator = new Collaborator();
             collaborator.setEmail(email);
@@ -219,6 +219,7 @@ public class MindmapServiceImpl
         }
     }
 
+    @Override
     public void addWelcomeMindmap(User user) throws WiseMappingException {
         final MindMap savedWelcome = findMindmapById(Constants.WELCOME_MAP_ID);
 
@@ -233,10 +234,12 @@ public class MindmapServiceImpl
         }
     }
 
+    @Override
     public List<MindMapHistory> findMindmapHistory(int mindmapId) {
         return mindmapManager.getHistoryFrom(mindmapId);
     }
 
+    @Override
     public void revertChange(@NotNull MindMap mindmap, int historyId)
             throws WiseMappingException {
         final MindMapHistory history = mindmapManager.getHistory(historyId);
@@ -259,6 +262,14 @@ public class MindmapServiceImpl
             throw new WiseMappingException("History could not be found for mapid=" + id + ",hid" + hid);
         }
         return result;
+    }
+
+    @Override
+    public void updateCollaboration(@NotNull Collaborator collaborator, @NotNull Collaboration collaboration) throws WiseMappingException {
+        if (collaborator.equals(collaboration.getCollaborator())) {
+            throw new WiseMappingException("No enough permissions for this operation.");
+        }
+        mindmapManager.updateCollaboration(collaboration);
     }
 
     private Collaboration getCollaborationBy(String email, Set<Collaboration> collaborations) {

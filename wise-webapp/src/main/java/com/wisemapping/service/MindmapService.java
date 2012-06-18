@@ -28,38 +28,40 @@ import java.io.IOException;
 
 public interface MindmapService {
 
-    public static final String TAG_SEPARATOR = " ";
+    static final String TAG_SEPARATOR = " ";
 
-    public MindMap findMindmapById(int mindmapId);
+    MindMap findMindmapById(int mindmapId);
 
-    public MindMap getMindmapByTitle(String title, User user);
+    MindMap getMindmapByTitle(String title, User user);
 
-    public List<Collaboration> findCollaborations(@NotNull User user);
+    List<Collaboration> findCollaborations(@NotNull User user);
 
-    public void updateMindmap(MindMap mindMap, boolean saveHistory) throws WiseMappingException;
+    void updateMindmap(MindMap mindMap, boolean saveHistory) throws WiseMappingException;
 
-    public void addMindmap(MindMap map, User user) throws WiseMappingException;
+    void addMindmap(MindMap map, User user) throws WiseMappingException;
 
-    public void addCollaboration(@NotNull MindMap mindmap, @NotNull String email, @NotNull CollaborationRole role, @Nullable String message)
+    void addCollaboration(@NotNull MindMap mindmap, @NotNull String email, @NotNull CollaborationRole role, @Nullable String message)
             throws CollaborationException;
 
-    public void removeCollaboration(@NotNull MindMap mindmap, @NotNull Collaboration collaboration) throws CollaborationException;
+    void removeCollaboration(@NotNull MindMap mindmap, @NotNull Collaboration collaboration) throws CollaborationException;
 
-    public void addTags(@NotNull MindMap mindmap, String tags);
+    void addTags(@NotNull MindMap mindmap, String tags);
 
-    public void removeMindmap(@NotNull final MindMap mindmap, @NotNull final User user) throws WiseMappingException;
+    void removeMindmap(@NotNull final MindMap mindmap, @NotNull final User user) throws WiseMappingException;
 
-    public List<MindMap> search(MindMapCriteria criteria);
+    List<MindMap> search(MindMapCriteria criteria);
 
-    public List<MindMapHistory> findMindmapHistory(int mindmapId);
+    List<MindMapHistory> findMindmapHistory(int mindmapId);
 
-    public boolean hasPermissions(@Nullable User user, MindMap map, CollaborationRole allowedRole);
+    boolean hasPermissions(@Nullable User user, MindMap map, CollaborationRole allowedRole);
 
-    public boolean hasPermissions(@Nullable User user, int mapId, CollaborationRole allowedRole);
+    boolean hasPermissions(@Nullable User user, int mapId, CollaborationRole allowedRole);
 
-    public void addWelcomeMindmap(User user) throws WiseMappingException;
+    void addWelcomeMindmap(User user) throws WiseMappingException;
 
-    public void revertChange(@NotNull MindMap map, int historyId) throws WiseMappingException;
+    void revertChange(@NotNull MindMap map, int historyId) throws WiseMappingException;
 
     MindMapHistory findMindmapHistory(int id, int hid) throws WiseMappingException;
+
+    void updateCollaboration(@NotNull Collaborator collaborator, @NotNull Collaboration collaboration) throws WiseMappingException;
 }

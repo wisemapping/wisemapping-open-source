@@ -222,12 +222,12 @@ public class MindMap {
     }
 
     public void setStarred(@NotNull Collaborator collaborator, boolean value) throws WiseMappingException {
-        final CollaborationProperties collaborationProperties = getCollaborationProperties(collaborator);
+        final CollaborationProperties collaborationProperties = findCollaborationProperties(collaborator);
         collaborationProperties.setStarred(value);
     }
 
     @NotNull
-    public CollaborationProperties getCollaborationProperties(@NotNull Collaborator collaborator) throws WiseMappingException {
+    public CollaborationProperties findCollaborationProperties(@NotNull Collaborator collaborator) throws WiseMappingException {
         if (collaborator == null) {
             throw new IllegalStateException("Collaborator can not be null");
         }

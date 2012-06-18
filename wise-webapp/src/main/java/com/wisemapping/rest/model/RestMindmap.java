@@ -3,7 +3,6 @@ package com.wisemapping.rest.model;
 
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.*;
-import com.wisemapping.security.Utils;
 import org.codehaus.jackson.annotate.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -47,7 +46,7 @@ public class RestMindmap {
         this.mindmap = mindmap;
         this.collaborator = collaborator;
         if (collaborator != null) {
-            final CollaborationProperties collaborationProperties = mindmap.getCollaborationProperties(collaborator);
+            final CollaborationProperties collaborationProperties = mindmap.findCollaborationProperties(collaborator);
             this.properties = collaborationProperties.getMindmapProperties();
         }
     }
