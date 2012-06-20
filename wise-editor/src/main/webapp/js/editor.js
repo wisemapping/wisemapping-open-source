@@ -158,6 +158,7 @@ editor.WaitDialog = new Class({
             width: '400px'
         });
         var img = new Element('img', {'src': 'images/ajax-loader.gif'});
+        img.setStyle('margin-top', '15px');
         img.inject(result);
         return result;
     },
