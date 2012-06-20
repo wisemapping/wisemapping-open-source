@@ -56,16 +56,16 @@ public class ExportTest {
     public Object[][] parameterIntTestProvider() {
 
         final File dataDir = new File(DATA_DIR_PATH);
-        final File[] freeMindFiles = dataDir.listFiles(new FilenameFilter() {
+        final File[] svgFile = dataDir.listFiles(new FilenameFilter() {
 
             public boolean accept(File dir, String name) {
                 return name.endsWith(".svg");
             }
         });
 
-        final Object[][] result = new Object[freeMindFiles.length][2];
-        for (int i = 0; i < freeMindFiles.length; i++) {
-            File freeMindFile = freeMindFiles[i];
+        final Object[][] result = new Object[svgFile.length][2];
+        for (int i = 0; i < svgFile.length; i++) {
+            File freeMindFile = svgFile[i];
             final String name = freeMindFile.getName();
             result[i] = new Object[]{freeMindFile, new File(DATA_DIR_PATH, name.substring(0, name.lastIndexOf(".")) + ".png")};
         }

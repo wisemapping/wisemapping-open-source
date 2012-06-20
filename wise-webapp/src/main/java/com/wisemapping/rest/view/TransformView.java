@@ -62,7 +62,7 @@ public class TransformView extends AbstractView {
                 final ExportProperties.ImageProperties.Size size = ExportProperties.ImageProperties.Size.valueOf(sizeStr);
                 imageProperties.setSize(size);
             } else {
-                imageProperties.setSize(ExportProperties.ImageProperties.Size.LARGE);
+                imageProperties.setSize(ExportProperties.ImageProperties.Size.MEDIUM);
             }
         }
 

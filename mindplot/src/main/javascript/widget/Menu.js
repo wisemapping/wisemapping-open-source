@@ -89,7 +89,7 @@ mindplot.widget.Menu = new Class({
             this._registerTooltip('fontSize', "Text size");
         }
 
-        var topicShapeBtn = $('topicShapeBtn');
+        var topicShapeBtn = $('topicShape');
         if (topicShapeBtn) {
             var topicShapeModel = {
                 getValue: function() {

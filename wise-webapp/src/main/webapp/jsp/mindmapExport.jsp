@@ -3,6 +3,7 @@
 <p class="alert alert-info">
     <spring:message code="EXPORT_DETAILS"/>
 </p>
+
 <div>
     <form method="GET" class="form-horizontal" action="service/maps/${mindmap.id}"
           enctype="application/x-www-form-urlencoded" id="dialogMainForm">
@@ -51,7 +52,6 @@
 </p>
 
 
-
 <script type="text/javascript">
 
     // No way to obtain map svg. Hide panels..
@@ -96,6 +96,8 @@
 
         // Close dialog ...
         $('#export-dialog-modal').modal('hide');
+
+        return true;
     }
 
 </script>
