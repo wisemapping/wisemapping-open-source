@@ -16,18 +16,15 @@
 *   limitations under the License.
 */
 
-package com.wisemapping.controller;
+package com.wisemapping.validator;
 
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-public class SettingsController  {
-
-    public ModelAndView handleNoSuchRequestHandlingMethod(NoSuchRequestHandlingMethodException noSuchRequestHandlingMethodException, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
-            throws Exception {
-        return new ModelAndView("setting");
-    }
+public interface Messages {
+    String EMAIL_ALREADY_EXIST = "EMAIL_ALREADY_EXIST";
+    String NO_VALID_EMAIL_ADDRESS = "NO_VALID_EMAIL_ADDRESS";
+    String USERNAME_ALREADY_EXIST = "USERNAME_ALREADY_EXIST";
+    String FIELD_REQUIRED = "FIELD_REQUIRED";
+    String IMPORT_MAP_ERROR = "IMPORT_MAP_ERROR";
+    String MAP_TITLE_ALREADY_EXISTS = "MAP_TITLE_ALREADY_EXISTS";
+    String PASSWORD_MISSMATCH = "PASSWORD_MISSMATCH";
+    String CAPTCHA_ERROR = "CAPTCHA_ERROR";
 }

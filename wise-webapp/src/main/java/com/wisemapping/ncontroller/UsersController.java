@@ -19,9 +19,10 @@
 package com.wisemapping.ncontroller;
 
 
-import com.wisemapping.controller.Messages;
+import com.wisemapping.validator.Messages;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.User;
+import com.wisemapping.security.Utils;
 import com.wisemapping.service.InvalidUserEmailException;
 import com.wisemapping.service.UserService;
 import com.wisemapping.validator.UserValidator;
@@ -33,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -117,6 +119,12 @@ public class UsersController {
             result.addObject("confirmByEmail", emailConfirmEnabled);
         }
         return result;
+    }
+
+    @RequestMapping(value = "account/settings", method = RequestMethod.GET)
+    public String showUserSettingsPage(@NotNull Model model) {
+        model.addAttribute("user", Utils.getUser());
+        return "accountSettings";
     }
 
     private BindingResult validateRegistrationForm(@NotNull UserBean userBean, @NotNull HttpServletRequest request, @NotNull BindingResult bindingResult) {

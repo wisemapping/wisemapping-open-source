@@ -24,8 +24,6 @@ import org.springframework.validation.ValidationUtils;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-import com.wisemapping.controller.Messages;
-
 final public class Utils {
     //Set the email emailPattern string
 

@@ -10,28 +10,32 @@
                     <a href="${baseUrl}">
                         <img style="border: 0;margin-top: 10px;"
                              src="${baseUrl}/images/logo-small.png"
-                             alt="WiseMapping Log"/>
+                             alt="WiseMapping"/>
 
                     </a>
                 </td>
                 <td valign="bottom" height="32px" style="padding: 0;font-size: 16px;">
-                    Your password has been reset
+                    ${messageTitle}
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
     <div style="font-size: 13px; background-color: #FFF; padding: 10px 7px 7px 7px; min-height: 100px">
-        <p>A temporal password has been generated for you account. </p>
+        Hi ${firstName}:
+        <p>
+            ${messageBody}
+        </p>
 
-        <p><strong>New Password: ${password}</strong></p>
-
-        <p>You can login clicking <a href="${baseUrl}/c/login">here</a>.We strongly encourage you to change the password as soon as possible.</p>
+        <p style="color: #898989;">Regards,<br/>
+            The WiseMapping Team<br/>
+        </p>
     </div>
 </div>
 
 <p style="font-size: 13px;font-family: Arial, sans-serif">Important: Do not reply this email. If
-    you need further help or have any concerns regarding your account, contact us to <a href="mailto:${supportEmail}">here</a>.
+    you need further help or believe you have received this email in error, contact us to <a
+            href="mailto:${supportEmail}">here</a>.
 </p>
 </body>
 </html>

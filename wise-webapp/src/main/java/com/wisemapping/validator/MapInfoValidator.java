@@ -18,7 +18,6 @@
 
 package com.wisemapping.validator;
 
-import com.wisemapping.controller.Messages;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.User;
 import com.wisemapping.model.Constants;

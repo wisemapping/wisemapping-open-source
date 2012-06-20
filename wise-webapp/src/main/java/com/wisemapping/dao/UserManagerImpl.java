@@ -87,14 +87,6 @@ public class UserManagerImpl
     }
 
     @Override
-    public boolean authenticate(final String email, final String password) {
-        final boolean result;
-        final User user = getUserBy(email);
-        result = user != null && user.getPassword().equals(password);
-        return result;
-    }
-
-    @Override
     public void createUser(User user) {
         assert user != null : "Trying to store a null user";
         user.setPassword(passwordEncoder.encodePassword(user.getPassword(), null));
@@ -134,7 +126,7 @@ public class UserManagerImpl
         getHibernateTemplate().save(userLogin);
     }
 
-    public void updateUser(User user) {
+    public void updateUser(@NotNull User user) {
         assert user != null : "user is null";
         user.setPassword(passwordEncoder.encodePassword(user.getPassword(), null));
         getHibernateTemplate().update(user);

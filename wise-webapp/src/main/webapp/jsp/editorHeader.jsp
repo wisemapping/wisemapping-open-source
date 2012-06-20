@@ -17,8 +17,8 @@
                     <spring:message code="MY_WISEMAPS"/>
                 </a>
                     | <a href="${pageContext.request.contextPath}/c/settings" rel="moodalbox 400px 250px wizard"
-                         title="<spring:message code="SETTINGS_DETAIL"/>">
-                    <spring:message code="SETTINGS"/>
+                         title="<spring:message code="ACCOUNT_DETAIL"/>">
+                    <spring:message code="ACCOUNT"/>
                 </a>
                     | <a href="${pageContext.request.contextPath}/c/logout" title="<spring:message code="LOGOUT"/>">
                     <spring:message code="LOGOUT"/>

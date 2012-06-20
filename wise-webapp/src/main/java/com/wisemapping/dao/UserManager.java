@@ -34,8 +34,6 @@ public interface UserManager {
 
     User getUserByUsername(String username);
 
-    boolean authenticate(String email, String password);
-
     void createUser(User user);
 
     void auditLogin(UserLogin userLogin);

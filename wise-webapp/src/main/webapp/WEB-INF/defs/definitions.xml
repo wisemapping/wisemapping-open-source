@@ -94,10 +94,9 @@
         <put-attribute name="body" value="/jsp/mindmapDetail.jsp"/>
     </definition>
 
-    <definition name="setting" extends="dialogTemplate">
+    <definition name="accountSettings" extends="dialogTemplate">
         <put-attribute name="title" value="SETTINGS"/>
-        <put-attribute name="details" value="SETTINGS_MSG"/>
-        <put-attribute name="body" value="/jsp/setting.jsp"/>
+        <put-attribute name="body" value="/jsp/accountSettings.jsp"/>
     </definition>
 
     <definition name="editProfile" extends="dialogTemplate">
@@ -173,11 +172,4 @@
         <put-attribute name="details" value="KEYBOARD_MSG"/>
         <put-attribute name="body" value="/jsp/keyboard.jsp"/>
     </definition>
-
-    <definition name="changePassword" extends="dialogTemplate">
-        <put-attribute name="title" value="CHANGE_PASSWORD"/>
-        <put-attribute name="details" value="FIELD_REQUIRED_MSG"/>
-        <put-attribute name="body" value="/jsp/changePassword.jsp"/>
-    </definition>
-
 </tiles-definitions>

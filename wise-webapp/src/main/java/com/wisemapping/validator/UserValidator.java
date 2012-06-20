@@ -18,7 +18,6 @@
 
 package com.wisemapping.validator;
 
-import com.wisemapping.controller.Messages;
 import com.wisemapping.service.UserService;
 import com.wisemapping.view.UserBean;
 import com.wisemapping.model.Constants;

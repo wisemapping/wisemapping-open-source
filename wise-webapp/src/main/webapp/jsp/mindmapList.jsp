@@ -115,7 +115,7 @@
 
 <div id="dialogsContainer">
     <!-- New map dialog -->
-    <div id="new-dialog-modal" title="Add new map" class="modal fade" style="display:none">
+    <div id="new-dialog-modal" title="Add new map" class="modal fade">
         <div class="modal-header">
             <button class="close" data-dismiss="modal">x</button>
             <h3>Create a new map</h3>
@@ -144,7 +144,7 @@
     </div>
 
     <!-- Duplicate map dialog -->
-    <div id="duplicate-dialog-modal" class="modal fade" style="display: none">
+    <div id="duplicate-dialog-modal" class="modal fade">
         <div class="modal-header">
             <button class="close" data-dismiss="modal">x</button>
             <h3 id="dupDialogTitle"></h3>
@@ -175,7 +175,7 @@
     </div>
 
     <!-- Rename map dialog -->
-    <div id="rename-dialog-modal" class="modal fade" style="display: none">
+    <div id="rename-dialog-modal" class="modal fade">
         <div class="modal-header">
             <button class="close" data-dismiss="modal">x</button>
             <h3 id="renameDialogTitle"></h3>
@@ -204,7 +204,7 @@
     </div>
 
     <!-- Delete map dialog -->
-    <div id="delete-dialog-modal" class="modal fade" style="display: none">
+    <div id="delete-dialog-modal" class="modal fade">
         <div class="modal-header">
             <button class="close" data-dismiss="modal">x</button>
             <h3>Delete MindMap</h3>
@@ -222,7 +222,7 @@
     </div>
 
     <!-- Info map dialog -->
-    <div id="info-dialog-modal" class="modal fade" style="display: none">
+    <div id="info-dialog-modal" class="modal fade">
         <div class="modal-header">
             <button class="close" data-dismiss="modal">x</button>
             <h3>Info</h3>
@@ -236,7 +236,7 @@
     </div>
 
     <!-- Publish Dialog Config -->
-    <div id="publish-dialog-modal" class="modal fade" style="display: none">
+    <div id="publish-dialog-modal" class="modal fade">
         <div class="modal-header">
             <button class="close" data-dismiss="modal">x</button>
             <h3>Publish</h3>
@@ -251,7 +251,7 @@
     </div>
 
     <!-- Export Dialog Config -->
-    <div id="export-dialog-modal" class="modal fade" style="display: none">
+    <div id="export-dialog-modal" class="modal fade">
         <div class="modal-header">
             <button class="close" data-dismiss="modal">x</button>
             <h3>Export</h3>
@@ -266,7 +266,7 @@
     </div>
 
     <!-- Import Dialog Config -->
-    <div id="import-dialog-modal" class="modal fade" style="display: none">
+    <div id="import-dialog-modal" class="modal fade">
         <div class="modal-header">
             <button class="close" data-dismiss="modal">x</button>
             <h3>Import</h3>
@@ -281,7 +281,7 @@
     </div>
 
     <!-- Share Dialog Config -->
-    <div id="share-dialog-modal" class="modal fade" style="display: none">
+    <div id="share-dialog-modal" class="modal fade">
         <div class="modal-header">
             <button class="close" data-dismiss="modal">x</button>
             <h3>Share</h3>
@@ -296,7 +296,7 @@
     </div>
 
     <!-- History Dialog Config -->
-    <div id="history-dialog-modal" class="modal fade" style="display: none">
+    <div id="history-dialog-modal" class="modal fade" >
         <div class="modal-header">
             <button class="close" data-dismiss="modal">x</button>
             <h3>History</h3>

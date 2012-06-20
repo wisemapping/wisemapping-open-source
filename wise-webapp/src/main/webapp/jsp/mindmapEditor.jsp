@@ -64,9 +64,9 @@
 
             <spring:message code="WELCOME"/>, ${principal.firstname}|<span><a
                 href="c/maps/"><spring:message code="MY_WISEMAPS"/></a></span> |
-            <span><a id="settings" href="c/settings"
-                     title="<spring:message code="SETTINGS_DETAIL"/>"><spring:message code="SETTINGS"/></a></span>
-            | <span><a href="c/logout" title="<spring:message code="LOGOUT"/>">
+            <%--<span><a id="settings" href="c/settings"--%>
+                     <%--title="<spring:message code="ACCOUNT_DETAIL"/>"><spring:message code="ACCOUNT"/></a></span> |--%>
+            <span><a href="c/logout" title="<spring:message code="LOGOUT"/>">
             <spring:message code="LOGOUT"/>
         </a></span>
         </div>

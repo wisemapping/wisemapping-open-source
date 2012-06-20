@@ -49,11 +49,11 @@
 
                         <li><strong><spring:message code="URL"/>:</strong>
                         <li><input name="url"
-                                   value="http://www.wisemapping.com/c/publicView?mapId=${mindmap.id}"
+                                   value="${baseUrl}/c/maps/${mindmap.id}/public"
                                    style="width:400px" readonly="readonly"/>
                         </li>
                         <li><strong><spring:message code="BLOG_SNIPPET"/></strong>
-                            <pre>&lt;iframe style="border:0;width:600px;height:400px;border: 1px solid black" src="http://www.wisemapping.com/c/embeddedView?mapId=${mindmap.id}&amp;amzoom=1"&gt;&lt;/iframe&gt;</pre>
+                            <pre>&lt;iframe style="border:0;width:600px;height:400px;border: 1px solid black" src="${baseUrl}/c/maps/${mindmap.id}/embed?zoom=1"&gt;&lt;/iframe&gt;</pre>
                         </li>
                         <li><spring:message code="EMBEDDED_MAP_SIZE"/></li>
                     </ul>

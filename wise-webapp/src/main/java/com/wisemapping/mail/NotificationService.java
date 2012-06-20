@@ -49,7 +49,7 @@ final public class NotificationService {
             final String collabEmail = collaboration.getCollaborator().getEmail();
 
             // Build the subject ...
-            final String subject = user.getFullName() + " has shared a mindmap with you";
+            final String subject = "[WiseMapping] " + user.getFullName() + " has shared a mindmap with you";
 
             // Fill template properties ...
             final Map<String, Object> model = new HashMap<String, Object>();
@@ -70,15 +70,44 @@ final public class NotificationService {
     }
 
     public void resetPassword(@NotNull User user, @NotNull String temporalPassword) {
+        final String mailSubject = "[WiseMapping] Your new password";
+        final String messageTitle = "Your new password has been generated";
+        final String messageBody =
+                "<p>Someone, most likely you, requested a new password for your WiseMapping account. </p>\n" +
+                        "<p><strong>Here is your new password: : " + temporalPassword + "</strong></p>\n" +
+                        "<p>You can login clicking <a href=\"" + this.baseUrl + "/c/login\">here</a>. We strongly encourage you to change the password as soon as possible.</p>";
+
+        sendTemplateMail(user, mailSubject, messageTitle, messageBody);
+    }
+
+    public void passwordChanged(@NotNull User user) {
+        final String mailSubject = "[WiseMapping] Your password has been changed";
+        final String messageTitle = "Your password has been changed successfully";
+        final String messageBody =
+                "<p>This is only an notification that your password has been changed. No further action is required.</p>";
+
+        sendTemplateMail(user, mailSubject, messageTitle, messageBody);
+    }
+
+    public void newAccountCreated(@NotNull User user) {
+        final String mailSubject = "Welcome to WiseMapping !";
+        final String messageTitle = "Your account has been created successfully";
+        final String messageBody =
+                "<p> Thank you for your interest in WiseMapping.  If have any feedback or idea, send us an email to <a href=\"mailto:feedback@wisemapping.com\">feedback@wisemapping.com</a> .We'd love to hear from  you.</p>";
+        sendTemplateMail(user, mailSubject, messageTitle, messageBody);
+    }
+
+    private void sendTemplateMail(@NotNull User user, @NotNull String mailSubject, @NotNull String messageTitle, @NotNull String messageBody) {
+
         try {
             final Map<String, Object> model = new HashMap<String, Object>();
-            model.put("user", user);
-            model.put("temporalPassword", temporalPassword);
-            model.put("supportEmail", mailer.getSupportEmail());
-            model.put("password", temporalPassword);
+            model.put("firstName", user.getFirstname());
+            model.put("messageTitle", messageTitle);
+            model.put("messageBody", messageBody);
             model.put("baseUrl", this.baseUrl);
+            model.put("supportEmail", mailer.getSupportEmail());
 
-            mailer.sendEmail(mailer.getServerSenderEmail(), user.getEmail(), "Reset Your WiseMapping Password", model, "passwordRecovery.vm");
+            mailer.sendEmail(mailer.getServerSenderEmail(), user.getEmail(), mailSubject, model, "baseLayout.vm");
         } catch (Exception e) {
             handleException(e);
         }
@@ -100,7 +129,7 @@ final public class NotificationService {
     public void activateAccount(@NotNull User user) {
         final Map<String, User> model = new HashMap<String, User>();
         model.put("user", user);
-        mailer.sendEmail(mailer.getServerSenderEmail(), user.getEmail(), "WiseMapping : Active account", model, "activationAccountMail.vm");
+        mailer.sendEmail(mailer.getServerSenderEmail(), user.getEmail(), "[WiseMapping] Active account", model, "activationAccountMail.vm");
     }
 
     public void sendRegistrationEmail(@NotNull User user) {

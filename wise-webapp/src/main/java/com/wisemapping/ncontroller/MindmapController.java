@@ -58,6 +58,7 @@ public class MindmapController {
     public String showDetails(@PathVariable int id, @NotNull Model model) {
         final MindMapBean mindmap = findMindmapBean(id);
         model.addAttribute("mindmap", mindmap);
+        model.addAttribute("baseUrl", siteBaseUrl);
         return "mindmapDetail";
     }
 

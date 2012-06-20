@@ -62,7 +62,7 @@ public class UserServiceImpl
             // Generate a random password ...
             final String password = randomstring(8, 10);
             user.setPassword(password);
-            changePassword(user);
+            updateUser(user);
 
             // Send an email with the new temporal password ...
             notificationService.resetPassword(user, password);
@@ -119,11 +119,16 @@ public class UserServiceImpl
         // Send registration email.
         if (emailConfirmEnabled) {
             notificationService.sendRegistrationEmail(user);
+        } else {
+            // Send a welcome email ..
+            notificationService.newAccountCreated(user);
         }
+
         return user;
     }
 
     public void changePassword(@NotNull User user) {
+        notificationService.passwordChanged(user);
         userManager.updateUser(user);
     }
 
