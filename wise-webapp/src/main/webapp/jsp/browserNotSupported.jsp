@@ -1,21 +1,21 @@
 <%@ include file="/jsp/init.jsp" %>
 
-<h1>
-    <spring:message code="USUPPORTED_BROWSER"/>
-</h1>
+<h2>Opps!!!. Your browser is not currently supported</h2>
 
-<h2>You are using an unsupported browser.</h2>
-
-<p>Although you can use our site with that browser, some features may not be functional.</p>
-WiseMapping is optimized for use with:
+<p>Your browser has not been fully tested and it might not be completely functional. WiseMapping has been optimized
+    for:</p>
 <ul>
-    <li>Internet Explorer 7.0 or greater</li>
-    <li>Firefox 3.0 or greater</li>
+    <li>Chrome 19 or greater</li>
+    <li>Firefox 11.0 or greater</li>
     <li>Opera 11 or greater</li>
     <li>Safari 5 or greater</li>
+    <li>Internet Explorer 8.0 or greater</li>
 </ul>
+<p>
+    Try again with one of the browsers previously listed.
+</p>
 
 <p>
-    We are working to support more browser in the future. Stay tuned !
-
-<p>
+    <span class="label label-info">Note:</span> Browsers are listed based on performance and
+     hours of testing invested by our team.
+</p>

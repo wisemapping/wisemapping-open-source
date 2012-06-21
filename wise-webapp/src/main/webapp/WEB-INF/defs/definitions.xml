@@ -10,6 +10,7 @@
     <definition name="mindmapEditor" template="/jsp/mindmapEditor.jsp"/>
     <definition name="mindmapPrint" template="/jsp/mindmapPrint.jsp"/>
 
+
     <!-- Template Declaration -->
     <definition name="pageTemplate" template="/jsp/template.jsp">
         <put-attribute name="title" value="" type="string"/>
@@ -57,6 +58,11 @@
     </definition>
 
     <!-- Main Pages -->
+    <definition name="login" extends="pageTemplate">
+        <put-attribute name="title" value="LOGIN"/>
+        <put-attribute name="body" value="/jsp/login.jsp"/>
+    </definition>
+
     <definition name="forgotPasswordError" extends="errorTemplate">
         <put-attribute name="title" value="INVALID_EMAIL_ERROR"/>
         <put-attribute name="body" value="/jsp/userForgotPasswordError.jsp"/>
@@ -82,9 +88,14 @@
         <put-attribute name="body" value="/jsp/userRegistrationSuccess.jsp"/>
     </definition>
 
-    <definition name="login" extends="pageTemplate">
-        <put-attribute name="title" value="LOGIN"/>
-        <put-attribute name="body" value="/jsp/login.jsp"/>
+    <definition name="userRegistrationSuccess" extends="pageTemplate">
+        <put-attribute name="title" value="USER_REGISTRATION"/>
+        <put-attribute name="body" value="/jsp/userRegistrationSuccess.jsp"/>
+    </definition>
+
+    <definition name="browserNotSupported" extends="pageTemplate">
+        <put-attribute name="title" value="UNSUPPORTED_BROWSER"/>
+        <put-attribute name="body" value="/jsp/browserNotSupported.jsp"/>
     </definition>
 
     <!-- Dialog Forms -->

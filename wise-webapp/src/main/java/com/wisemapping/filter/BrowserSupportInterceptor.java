@@ -18,6 +18,7 @@
 
 package com.wisemapping.filter;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,17 +27,17 @@ import javax.servlet.http.HttpSession;
 
 import com.wisemapping.exceptions.UnsupportedBrowserException;
 
-import java.util.List;
+import java.util.Set;
 
 public class BrowserSupportInterceptor extends HandlerInterceptorAdapter {
-    private List<String> exclude;
+    private Set<String> exclude;
     public static final String USER_AGENT = "wisemapping.userAgent";
 
-    public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
+    public boolean preHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, Object object) throws Exception {
 
-        final String servletPath = httpServletRequest.getServletPath();
-        if (exclude != null && !exclude.contains(servletPath)) {
-            final HttpSession session = httpServletRequest.getSession(false);
+        final String requestUri = request.getRequestURI();
+        if (exclude != null && !exclude.contains(requestUri)) {
+            final HttpSession session = request.getSession(false);
 
             // Try to loaded from the request ...
             UserAgent userAgent = null;
@@ -46,7 +47,7 @@ public class BrowserSupportInterceptor extends HandlerInterceptorAdapter {
 
             // I could not loaded. I will create a new one...
             if (userAgent == null) {
-                userAgent = UserAgent.create(httpServletRequest);
+                userAgent = UserAgent.create(request);
                 if (session != null) {
                     session.setAttribute(USER_AGENT, userAgent);
                 }
@@ -61,11 +62,7 @@ public class BrowserSupportInterceptor extends HandlerInterceptorAdapter {
     }
 
 
-    public List<String> getExclude() {
-        return exclude;
-    }
-
-    public void setExclude(List<String> exclude) {
+    public void setExclude(Set<String> exclude) {
         this.exclude = exclude;
     }
 }

@@ -15,6 +15,29 @@
     <context:annotation-config/>
     <mvc:annotation-driven/>
 
+    <!-- Interceptors Registration -->
+    <mvc:interceptors>
+        <bean id="browserSupportInterceptor" class="com.wisemapping.filter.BrowserSupportInterceptor">
+            <property name="exclude">
+                <set>
+                    <value>/</value>
+                    <value>/index.jsp</value>
+                    <value>/c/home</value>
+                    <value>/c/j_spring_security</value>
+                    <value>/c/login</value>
+                    <value>/service/</value>
+                    <value>/c/maps/*/embed</value>
+                    <value>/c/maps/*/public</value>
+                    <value>/c/embeddedView</value>
+                    <value>/c/user/resetPassword</value>
+                    <value>/c/user/registration</value>
+                </set>
+            </property>
+        </bean>
+        <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+            <property name="paramName" value="locale"/>
+        </bean>
+    </mvc:interceptors>
 
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location" value="/WEB-INF/app.properties"/>
@@ -50,11 +73,6 @@
         <property name="defaultLocale" value="en"/>
     </bean>
 
-    <bean id="localeChangeInterceptor"
-          class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-        <property name="paramName" value="language"/>
-    </bean>
-
     <bean id="reCaptcha" class="net.tanesha.recaptcha.ReCaptchaImpl">
         <property name="privateKey" value="${registration.recaptcha.privateKey}"/>
         <property name="publicKey" value="${registration.recaptcha.publicKey}"/>
@@ -65,26 +83,6 @@
           class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <!-- one of the properties available; the maximum file size in bytes -->
         <property name="maxUploadSize" value="522240"/>
-    </bean>
-
-    <bean id="browserSupportInterceptor" class="com.wisemapping.filter.BrowserSupportInterceptor">
-        <property name="exclude">
-            <list>
-                <value>/</value>
-                <value>/index.jsp</value>
-                <value>/c/home</value>
-                <value>/c/login</value>
-                <value>/c/user/registration</value>
-                <value>/c/captcha</value>
-                <value>/c/publicView</value>
-                <value>/service/*</value>
-                <value>/c/search</value>
-                <value>/c/keyboard</value>
-                <value>/c/renameMap</value>
-                <value>/c/embeddedView</value>
-                <value>/c/user/resetPassword</value>
-            </list>
-        </property>
     </bean>
 
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">

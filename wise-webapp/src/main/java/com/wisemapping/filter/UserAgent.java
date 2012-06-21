@@ -114,7 +114,7 @@ public class UserAgent implements Serializable {
 
             this.os = parseOS(productDetails);
 
-            if (userAgentHeader.indexOf("MSIE") != -1) {
+            if (userAgentHeader.contains("MSIE")) {
                 // Explorer Browser : http://msdn2.microsoft.com/en-us/library/ms537503.aspx
                 // Format: Mozilla/MozVer (compatible; MSIE IEVer[; Provider]; Platform[; Extension]*) [Addition]
                 // SampleTest: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0; Google Wireless Transcoder;)
@@ -128,14 +128,14 @@ public class UserAgent implements Serializable {
 
                 // Explorer Parse ...
                 this.product = Product.EXPLORER;
-                this.hasGCFInstalled = productDetails.indexOf("chromeframe") != -1;
-            } else if (userAgentHeader.indexOf("iCab") != -1 || userAgentHeader.indexOf("Safari") != -1) {
+                this.hasGCFInstalled = productDetails.contains("chromeframe");
+            } else if (userAgentHeader.contains("iCab") || userAgentHeader.contains("Safari")) {
                 // Safari:
                 //Formats:  Mozilla/5.0 (Windows; U; Windows NT 5.1; en) AppleWebKit/522.13.1 (KHTML, like Gecko) Version/3.0.2 Safari/522.13.1
                 //Chrome:
                 //Formats: "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_4; en-US) AppleWebKit/534.7 (KHTML, like Gecko) Chrome/7.0.517.44 Safari/534.7"
                 String versionStr = "";
-                if (userAgentHeader.indexOf("Chrome") != -1) {
+                if (userAgentHeader.contains("Chrome")) {
                     this.product = Product.CHROME;
                     versionStr = userAgentHeader.substring(userAgentHeader.indexOf("Chrome") + 7, userAgentHeader.lastIndexOf(" "));
                 } else {
@@ -145,11 +145,11 @@ public class UserAgent implements Serializable {
 
                 parseVersion(versionStr);
 
-            } else if (userAgentHeader.indexOf("Konqueror") != -1) {
+            } else if (userAgentHeader.contains("Konqueror")) {
                 this.product = Product.KONQUEOR;
-            } else if (userAgentHeader.indexOf("KMeleon") != -1) {
+            } else if (userAgentHeader.contains("KMeleon")) {
                 this.product = Product.KMELEON;
-            } else if (userAgentHeader.indexOf("Gecko") != -1) {
+            } else if (userAgentHeader.contains("Gecko")) {
                 // Firefox/Mozilla/Camino:
                 // Mozilla/MozVer (Platform; Security; SubPlatform; Language; rv:Revision[; Extension]*) Gecko/GeckVer [Product/ProdVer]
                 // SampleTest: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20050302 Firefox/0.9.6
@@ -195,7 +195,7 @@ public class UserAgent implements Serializable {
 
                 }
 
-            } else if (userAgentHeader.indexOf("Opera") != -1) {
+            } else if (userAgentHeader.contains("Opera")) {
                 // Opera:
                 // Samples: Opera/9.0 (Windows NT 5.1; U; en)
                 // Opera/8.5 (Macintosh; PPC Mac OS X; U; en)
@@ -212,14 +212,14 @@ public class UserAgent implements Serializable {
                 }
                 parseVersion(productVersion);
 
-            } else if (userAgentHeader.indexOf("4.7") != -1) {
+            } else if (userAgentHeader.contains("4.7")) {
                 this.product = Product.NETSCAPE;
-            } else if (userAgentHeader.indexOf("Lynx") != -1) {
+            } else if (userAgentHeader.contains("Lynx")) {
                 this.product = Product.LYNX;
             } else {
                 // It's a robot ..
                 for (String botAgent : botAgents) {
-                    if (userAgentHeader.indexOf(botAgent) != -1) {
+                    if (userAgentHeader.contains(botAgent)) {
                         // set a key in the session, so the next time we don't have to manually
                         // detect the robot again
                         this.product = Product.ROBOT;
