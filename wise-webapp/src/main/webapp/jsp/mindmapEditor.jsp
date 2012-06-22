@@ -11,11 +11,9 @@
     <base href="${pageContext.request.contextPath}/"/>
     <title><spring:message code="SITE.TITLE"/> - ${mindmap.title} </title>
     <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
-
     <!--[if lt IE 9]>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <![endif]-->
-
     <link rel="stylesheet/less" type="text/css" href="css/editor.less"/>
     <script type='text/javascript' src='js/mootools-core.js'></script>
     <script type='text/javascript' src='js/mootools-more.js'></script>

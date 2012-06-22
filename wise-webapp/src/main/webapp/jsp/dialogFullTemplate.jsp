@@ -1,3 +1,5 @@
+<!DOCTYPE HTML>
+
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ include file="/jsp/init.jsp" %>
 
@@ -8,7 +10,9 @@
 <head>
     <base href="${pageContext.request.contextPath}/"/>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
-
+    <!--[if lt IE 9]>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <![endif]-->
     <script type="text/javascript" language="javascript" src="js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap.js"></script>
     <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css"/>

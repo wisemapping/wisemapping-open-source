@@ -6,11 +6,14 @@
     <base href="${pageContext.request.contextPath}/"/>
     <title><spring:message code="SITE.TITLE"/></title>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+    <!--[if lt IE 9]>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <![endif]-->
 
     <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
 
-    <link rel="stylesheet/less" type="text/css" href="css/mymaps.less"/>
+    <link rel="stylesheet/less" type="text/css" href="css/mindmapList.less"/>
 
     <script type="text/javascript" language="javascript" src="js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap.js"></script>

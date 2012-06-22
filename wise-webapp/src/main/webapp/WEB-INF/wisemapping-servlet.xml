@@ -25,6 +25,7 @@
                     <value>/c/home</value>
                     <value>/c/j_spring_security</value>
                     <value>/c/login</value>
+                    <value>/c/GCFInstall</value>
                     <value>/service/</value>
                     <value>/c/maps/*/embed</value>
                     <value>/c/maps/*/public</value>
@@ -50,6 +51,7 @@
         <property name="exceptionMappings">
             <props>
                 <prop key="com.wisemapping.exceptions.UnsupportedBrowserException">browserNotSupported</prop>
+                <prop key="com.wisemapping.exceptions.GoogleChromeFrameRequiredException">GCFPluginRequired</prop>
                 <!-- Security exceptions are wrapped in this exceptions -->
                 <prop key="java.lang.reflect.UndeclaredThrowableException">securityError</prop>
             </props>

@@ -37,13 +37,13 @@
     <definition name="iframeWrapper" template="/jsp/iframeWrapper.jsp"/>
 
     <!-- Error Pages -->
-    <definition name="gcfPluginNeeded" extends="pageTemplate">
-        <put-attribute name="body" value="/jsp/gcfPluginNeeded.jsp"/>
+    <definition name="GCFPluginRequired" extends="pageTemplate">
+        <put-attribute name="body" value="/jsp/GCFPluginRequired.jsp"/>
         <put-attribute name="title" value="INSTALL_CFG"/>
     </definition>
 
-    <definition name="installCFG" extends="pageTemplate">
-        <put-attribute name="body" value="/jsp/installCFG.jsp"/>
+    <definition name="GCFInstall" extends="pageTemplate">
+        <put-attribute name="body" value="/jsp/GCFInstall.jsp"/>
         <put-attribute name="title" value="INSTALL_CFG"/>
     </definition>
 

@@ -34,32 +34,32 @@ public class PublicPagesController {
 
 
     @RequestMapping(value = "aboutUs")
-    public ModelAndView aboutUs() {
-        return new ModelAndView("aboutUs");
+    public String aboutUs() {
+        return "aboutUs";
     }
 
     @RequestMapping(value = "crew")
-    public ModelAndView crew() {
-        return new ModelAndView("crew");
+    public String crew() {
+        return "crew";
     }
 
-    @RequestMapping(value = "installCFG")
-    public ModelAndView installCFG() {
-        return new ModelAndView("installCFG");
+    @RequestMapping(value = "GCFInstall")
+    public String showGCFInstallationPage() {
+        return "GCFInstall";
     }
 
     @RequestMapping(value = "keyboard")
-    public ModelAndView newsPage() {
-        return new ModelAndView("keyboard");
+    public String newsPage() {
+        return "keyboard";
     }
 
     @RequestMapping(value = "home")
-    public ModelAndView home() {
-        return new ModelAndView("homepage");
+    public String home() {
+        return "homepage";
     }
 
     @RequestMapping(value = "iframeWrapper")
-    public ModelAndView showIframe(@RequestParam(required = true) String url) {
+    public ModelAndView showIframePage(@RequestParam(required = true) String url) {
         return new ModelAndView("iframeWrapper", "url", url);
     }
 }

@@ -120,21 +120,6 @@ div#paypal {
     cursor: pointer;
 }
 
-#headerLoading {
-    padding-left: 40px;
-    background: url('../images/ajax-loader.gif') #BBB4D6 no-repeat left;
-    position: absolute;
-    right: 3px;
-    top: 5px;
-    width: 75px;
-    height: 20px;
-    color: white;
-    font-weight: bold;
-    border: 1px solid;
-    border-color: #f5f5f5;
-    background-position: 5px 2px;
-    visibility: hidden;
-}
 
 div#headerActions {
     padding-right: 8px;

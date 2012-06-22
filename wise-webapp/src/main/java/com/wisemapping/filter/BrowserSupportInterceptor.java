@@ -18,6 +18,7 @@
 
 package com.wisemapping.filter;
 
+import com.wisemapping.exceptions.GoogleChromeFrameRequiredException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -57,6 +58,13 @@ public class BrowserSupportInterceptor extends HandlerInterceptorAdapter {
             if (!userAgent.isBrowserSupported()) {
                 throw new UnsupportedBrowserException();
             }
+
+            // Is a Explorer 9 or less without Google Chrome Frame ?.
+            if (!userAgent.needsGCF()) {
+                throw new GoogleChromeFrameRequiredException();
+            }
+
+
         }
         return true;
     }

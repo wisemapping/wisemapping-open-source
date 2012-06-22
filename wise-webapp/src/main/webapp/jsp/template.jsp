@@ -36,7 +36,6 @@
 <jsp:include page="header.jsp"/>
 
 <div class="pageBody">
-
     <div class="pageBodyContent">
         <tiles:insertAttribute name="body"/>
     </div>

@@ -1,3 +1,5 @@
+<!DOCTYPE HTML>
+
 <%@ page import="org.apache.log4j.Logger" %>
 <%@ page autoFlush="true" buffer="none" %>
 <%@ include file="/jsp/init.jsp" %>
@@ -5,9 +7,9 @@
 <%!
     final Logger logger = Logger.getLogger("com.wisemapping");
 %>
-<h1>
+<h2>
     <spring:message code="${requestScope.title}"/>
-</h1>
+</h2>
 
 <p style="font-weight:bold;">
      <spring:message code="${requestScope.details}"/>

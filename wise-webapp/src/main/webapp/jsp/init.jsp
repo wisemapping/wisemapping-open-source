@@ -10,10 +10,4 @@
 <%
     User user = Utils.getUser(false);
     request.setAttribute("principal", user);
-
-    UserAgent userAgent = null;
-    final HttpSession session = request.getSession();
-    if (session != null) {
-        userAgent = (UserAgent) session.getAttribute(BrowserSupportInterceptor.USER_AGENT);
-    }
 %>
