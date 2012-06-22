@@ -1,4 +1,4 @@
-CREATE TABLE COLABORATOR (
+CREATE TABLE COLLABORATOR (
 id INTEGER NOT NULL IDENTITY,
 email varchar(255) NOT NULL,
 creation_date date);
@@ -13,7 +13,7 @@ password varchar(255)  NOT NULL,
 activationCode BIGINT NOT NULL,
 activation_date DATE,
 allowSendEmail CHAR(1) NOT NULL,
-FOREIGN KEY(colaborator_id) REFERENCES COLABORATOR(id)
+FOREIGN KEY(colaborator_id) REFERENCES COLLABORATOR(id)
 );
 
 CREATE TABLE MINDMAP (
@@ -49,7 +49,7 @@ colaborator_id INTEGER NOT NULL,
 properties_id INTEGER NOT NULL,
 mindmap_id INTEGER NOT NULL,
 role_id INTEGER NOT NULL,
-FOREIGN KEY(colaborator_id) REFERENCES COLABORATOR(id),
+FOREIGN KEY(colaborator_id) REFERENCES COLLABORATOR(id),
 FOREIGN KEY(mindmap_id) REFERENCES MINDMAP(id),
 FOREIGN KEY(properties_id) REFERENCES COLLABORATION_PROPERTIES(id)
 );

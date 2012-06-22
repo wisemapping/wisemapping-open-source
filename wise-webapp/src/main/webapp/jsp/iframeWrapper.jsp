@@ -14,10 +14,12 @@
         var iframeWindow = $('dialogContentIframe').contentWindow;
         var delay = iframeWindow.submitDialogForm();
 
-        if (MooDialog.Request.active && !delay) {
-            MooDialog.Request.active.close();
-        } else {
-            MooDialog.Request.active.close.delay(3000,MooDialog.Request.active);
+        if (MooDialog.Request.active) {
+            if (!delay) {
+                MooDialog.Request.active.close();
+            } else {
+                MooDialog.Request.active.close.delay(3000, MooDialog.Request.active);
+            }
         }
     });
 
