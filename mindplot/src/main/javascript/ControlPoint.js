@@ -29,12 +29,25 @@ mindplot.ControlPoint = new Class({
             new web2d.Line({strokeColor:"#6589de", strokeWidth:1, opacity:0.3})];
 
         this._isBinded = false;
-        this._controlPointsController[0].addEvent('mousedown', this._mouseDown.bindWithEvent(this, mindplot.ControlPoint.FROM));
-        this._controlPointsController[0].addEvent('click', this._mouseClick.bindWithEvent(this));
-        this._controlPointsController[0].addEvent('dblclick', this._mouseClick.bindWithEvent(this));
-        this._controlPointsController[1].addEvent('mousedown', this._mouseDown.bindWithEvent(this, mindplot.ControlPoint.TO));
-        this._controlPointsController[1].addEvent('click', this._mouseClick.bindWithEvent(this));
-        this._controlPointsController[1].addEvent('dblclick', this._mouseClick.bindWithEvent(this));
+        this._controlPointsController[0].addEvent('mousedown', function(event) {
+            (this._mouseDown.bind(this))(event, mindplot.ControlPoint.FROM);
+        }.bind(this));
+        this._controlPointsController[0].addEvent('click', function(event) {
+            (this._mouseClick.bind(this))(event);
+        }.bind(this));
+        this._controlPointsController[0].addEvent('dblclick', function(event) {
+            (this._mouseClick.bind(this))(event);
+        }.bind(this));
+
+        this._controlPointsController[1].addEvent('mousedown', function(event) {
+            (this._mouseDown.bind(this))(event, mindplot.ControlPoint.TO);
+        }.bind(this));
+        this._controlPointsController[1].addEvent('click', function(event) {
+            (this._mouseClick.bind(this))(event);
+        }.bind(this));
+        this._controlPointsController[1].addEvent('dblclick', function(event) {
+            (this._mouseClick.bind(this))(event);
+        }.bind(this));
     },
 
 
@@ -81,9 +94,15 @@ mindplot.ControlPoint = new Class({
     _mouseDown  : function(event, point) {
         if (!this._isBinded) {
             this._isBinded = true;
-            this._mouseMoveFunction = this._mouseMoveEvent.bindWithEvent(this, point);
+
+            this._mouseMoveFunction = function(event) {
+                (this._mouseMoveEvent.bind(this))(event, point);
+            }.bind(this);
+
             this._workspace.getScreenManager().addEvent('mousemove', this._mouseMoveFunction);
-            this._mouseUpFunction = this._mouseUp.bindWithEvent(this, point);
+            this._mouseUpFunction = function(event) {
+                (this._mouseUp.bind(this))(event, point);
+            }.bind(this);
             this._workspace.getScreenManager().addEvent('mouseup', this._mouseUpFunction);
         }
         event.preventDefault();
@@ -119,11 +138,7 @@ mindplot.ControlPoint = new Class({
 
         var actionDispatcher = mindplot.ActionDispatcher.getInstance();
         actionDispatcher.moveControlPoint(this, point);
-
         this._isBinded = false;
-        /*event.preventDefault();
-         event.stop();
-         return false;*/
     },
 
     _mouseClick  : function(event) {

@@ -321,12 +321,12 @@ editor.Help = {
         container.addEvent('mouseover', function() {
             $(this).setStyle('border-top', '1px solid #BBB4D6');
             $(this).setStyle('border-bottom', '1px solid #BBB4D6');
-        }.bindWithEvent(container));
+        }.bind(this));
         container.addEvent('mouseout', function() {
             $(this).setStyle('border-top', '1px solid transparent');
             $(this).setStyle('border-bottom', '1px solid transparent');
 
-        }.bindWithEvent(container));
+        }.bind(this));
         return container;
     }
 };

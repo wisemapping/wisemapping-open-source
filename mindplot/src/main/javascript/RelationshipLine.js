@@ -120,7 +120,7 @@ mindplot.RelationshipLine = new Class({
     addToWorkspace : function(workspace) {
         workspace.appendChild(this._focusShape);
         workspace.appendChild(this._controlPointsController);
-        this._controlPointControllerListener = this._initializeControlPointController.bindWithEvent(this, workspace);
+        this._controlPointControllerListener = this._initializeControlPointController.bind(this);
         this._line2d.addEvent('click', this._controlPointControllerListener);
         this._isInWorkspace = true;
 
@@ -130,7 +130,7 @@ mindplot.RelationshipLine = new Class({
         this.parent(workspace);
     },
 
-    _initializeControlPointController : function(event, workspace) {
+    _initializeControlPointController : function() {
         this.setOnFocus(true);
     },
 

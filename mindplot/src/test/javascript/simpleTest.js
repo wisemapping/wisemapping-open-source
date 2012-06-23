@@ -11,7 +11,7 @@ TestCase("Mindplot test",{
             buildMindmapDesigner();
 
             // Register Events ...
-            $(document).addEvent('keydown', designer.keyEventHandler.bindWithEvent(designer));
+//            $(document).addEvent('keydown', designer.keyEventHandler.bindWithEvent(designer));
 
             /*// Autosave ...
             if (!isTryMode)
