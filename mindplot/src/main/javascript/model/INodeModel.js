@@ -118,6 +118,7 @@ mindplot.model.INodeModel = new Class({
     },
 
     setOrder  : function(value) {
+        $assert(typeof value === 'number' && isFinite(value) || value == null, "Order must be null or a number");
         this.putProperty('order', value);
     },
 

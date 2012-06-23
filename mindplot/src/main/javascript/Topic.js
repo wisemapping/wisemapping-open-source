@@ -1115,7 +1115,7 @@ mindplot.Topic = new Class({
             if (this.getModel().isConnected())
                 mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeConnectEvent, {parentNode:this.getOutgoingConnectedTopic().getModel(), childNode: this.getModel()});
 
-        }
+            }
         this._isInWorkspace = true;
         this._adjustShapes();
     },

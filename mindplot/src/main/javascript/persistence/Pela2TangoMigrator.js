@@ -30,6 +30,7 @@ mindplot.persistence.Pela2TangoMigrator = new Class({
         var mindmap = this._pelaSerializer.loadFromDom(dom, mapId);
         mindmap.setVersion(mindplot.persistence.ModelCodeName.TANGO);
         this._fixOrder(mindmap);
+        this._fixPosition(mindmap);
         return mindmap;
     },
 
@@ -56,11 +57,38 @@ mindplot.persistence.Pela2TangoMigrator = new Class({
         });
 
         for (i = 0; i < rightNodes.length; i++) {
-            rightNodes[i].setOrder(i*2);
+            rightNodes[i].setOrder(i * 2);
         }
 
         for (i = 0; i < leftNodes.length; i++) {
-            leftNodes[i].setOrder(i*2+1);
+            leftNodes[i].setOrder(i * 2 + 1);
         }
+    },
+
+    _fixPosition : function(mindmap) {
+        // Position was not required in previous versions. Try to synthesize one .
+        var centralNode = mindmap.getBranches()[0];
+        var children = centralNode.getChildren();
+        for (var i = 0; i < children.length; i++) {
+            var child = children[i];
+            var position = child.getPosition();
+            this._fixNodePosition(child, position)
+
+        }
+    },
+    _fixNodePosition : function(node, parentPosition) {
+        // Position was not required in previous versions. Try to synthesize one .
+        var position = node.getPosition();
+        if (!position) {
+            position = {x:parentPosition.x + 30,y:parentPosition.y};
+            node.setPosition(position.x, position.y);
+        }
+        var children = node.getChildren();
+        for (var i = 0; i < children.length; i++) {
+            var child = children[i];
+            this._fixNodePosition(child, position);
+
+        }
+
     }
 });

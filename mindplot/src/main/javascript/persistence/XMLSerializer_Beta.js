@@ -195,7 +195,7 @@ mindplot.persistence.XMLSerializer_Beta = new Class({
 
         var order = domElem.getAttribute('order');
         if ($defined(order)) {
-            topic.setOrder(order);
+            topic.setOrder(parseInt(order));
         }
 
         var shape = domElem.getAttribute('shape');
