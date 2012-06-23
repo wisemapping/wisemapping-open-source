@@ -285,7 +285,8 @@ mindplot.persistence.XMLSerializer_Beta = new Class({
     },
 
     _deserializeNote : function(domElem, topic) {
-        return  mindplot.TopicFeature.createModel(mindplot.TopicFeature.Note.id, topic, {text:domElem.getAttribute("url")});
+        var text = domElem.getAttribute("text");
+        return  mindplot.TopicFeature.createModel(mindplot.TopicFeature.Note.id, topic, {text:text == null ? " " : text});
     }});
 
 mindplot.persistence.XMLSerializer_Beta.MAP_ROOT_NODE = 'map';
