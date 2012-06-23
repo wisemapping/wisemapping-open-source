@@ -25,6 +25,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -140,6 +143,65 @@ final public class NotificationService {
         mailer.sendEmail(mailer.getServerSenderEmail(), user.getEmail(), "Welcome to Wisemapping!", model,
                 "confirmationMail.vm");
     }
+
+    public void reportMindmapEditorError(@NotNull MindMap mindmap, @NotNull User user, @NotNull String userAgent, @Nullable String jsErrorMsg) {
+
+        try {
+            final Map<String, Object> model = new HashMap<String, Object>();
+            model.put("user", user);
+            model.put("errorMsg", jsErrorMsg);
+            model.put("mapXML", mindmap.getXmlStr().replaceAll("<", "&lt;"));
+            model.put("mapId", mindmap.getId());
+            model.put("mapTitle", mindmap.getTitle());
+            model.put("userAgent", userAgent);
+
+            final String errorReporterEmail = mailer.getErrorReporterEmail();
+            if (errorReporterEmail != null) {
+                mailer.sendEmail(mailer.getServerSenderEmail(), errorReporterEmail, "[WiseMapping] Editor error from " + user.getEmail(), model,
+                        "editorErrorReport.vm");
+            }
+        } catch (Exception e) {
+            handleException(e);
+        }
+    }
+
+    public void reportMindmapExportError(@NotNull String exportContent, @NotNull User user, @NotNull String userAgent, @NotNull Throwable exception) {
+        try {
+            final Map<String, Object> model = new HashMap<String, Object>();
+            model.put("user", user);
+            model.put("errorMsg", stackTraceToString(exception));
+            model.put("mapXML", exportContent.replaceAll("<", "&lt;"));
+            model.put("userAgent", userAgent);
+
+            final String errorReporterEmail = mailer.getErrorReporterEmail();
+            if (errorReporterEmail != null) {
+                mailer.sendEmail(mailer.getServerSenderEmail(), errorReporterEmail, "[WiseMapping] Export error from " + user.getEmail(), model,
+                        "editorErrorReport.vm");
+            }
+        } catch (Exception e) {
+            handleException(e);
+        }
+    }
+
+    public String stackTraceToString(@NotNull Throwable e) {
+        String retValue = null;
+        StringWriter sw = null;
+        PrintWriter pw = null;
+        try {
+            sw = new StringWriter();
+            pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            retValue = sw.toString();
+        } finally {
+            try {
+                if (pw != null) pw.close();
+                if (sw != null) sw.close();
+            } catch (IOException ignore) {
+            }
+        }
+        return retValue;
+    }
+
 }
 
 

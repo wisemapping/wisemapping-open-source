@@ -20,16 +20,33 @@ $assert = function(assert, message) {
             stack = e;
         }
         console.log(message + "," + stack);
+        window.errorStack = stackTrace();
         throw message;
-//        wLogger.error(message + "," + stack);
-//        core.Logger.logError(message + "," + stack);
-
     }
 };
 
 Math.sign = function(value) {
     return (value >= 0) ? 1 : -1;
 };
+
+function stackTrace() {
+    var result = "";
+    var isCallstackPopulated = false;
+    try {
+        null.eval();
+    } catch(e) {
+        if (e.stack) { //Firefox  and Chrome...
+            result = e.stack;
+            isCallstackPopulated = true;
+        }
+        else if (window.opera && e.message) { //Opera
+            result = e.message;
+            isCallstackPopulated = true;
+        }
+    }
+    return result;
+}
+
 
 /*
  * DOMParser HTML extension

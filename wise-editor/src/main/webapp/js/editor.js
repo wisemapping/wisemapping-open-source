@@ -30,13 +30,26 @@ function buildDesigner(options) {
         window.waitDialog = null;
     });
 
-    window.onerror = function(e) {
+    window.onerror = function(message, url, lineNo) {
+        // Log error message ...
+
         if (window.waitDialog) {
             window.waitDialog.close.delay(1000, window.waitDialog);
             window.waitDialog = null;
         }
+        var req = new Request({
+            method: 'post',
+            url: "/service/logger/editor",
+            headers: {"Content-Type":"application/json","Accept":"application/json"},
+            emulation:false,
+            urlEncoded:false
+        }).post(JSON.encode({
+            jsErrorMsg : "message: " + message + ", line:" + lineNo + ", :" + url,
+            jsStack : window.errorStack,
+            userAgent: navigator.userAgent,
+            mapId: options.mapId}));
+
         errorDialog.show();
-        console.log(e);
     };
 
     // Configure default persistence manager ...

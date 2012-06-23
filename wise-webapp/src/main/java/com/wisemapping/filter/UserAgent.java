@@ -331,9 +331,7 @@ public class UserAgent implements Serializable {
     }
 
     public boolean needsGCF() {
-        return true;
-//        final UserAgent.Product product = this.getProduct();
-//        return product == UserAgent.Product.EXPLORER && this.isVersionLessThan(9) && this.getOs() == UserAgent.OS.WINDOWS && !this.hasGCFInstalled;
+        final UserAgent.Product product = this.getProduct();
+        return product == UserAgent.Product.EXPLORER && this.isVersionLessThan(9) && this.getOs() == UserAgent.OS.WINDOWS && !this.hasGCFInstalled;
     }
-
 }

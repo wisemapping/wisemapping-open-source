@@ -37,12 +37,14 @@ public final class Mailer {
     private VelocityEngine velocityEngine;
     private String serverFromEmail;
     private String supportEmail;
+    private String errorReporterEmail;
 
     //~ Methods ..............................................................................................
 
-    public Mailer(@NotNull String siteEmail, @NotNull String supportEmail) {
+    public Mailer(@NotNull String siteEmail, @NotNull String supportEmail,@NotNull String errorReporterEmail) {
         this.serverFromEmail = siteEmail;
         this.supportEmail = supportEmail;
+        this.errorReporterEmail = errorReporterEmail;
     }
 
     public String getServerSenderEmail() {
@@ -78,5 +80,9 @@ public final class Mailer {
 
     public String getSupportEmail() {
         return supportEmail;
+    }
+
+    public String getErrorReporterEmail() {
+        return errorReporterEmail;
     }
 }

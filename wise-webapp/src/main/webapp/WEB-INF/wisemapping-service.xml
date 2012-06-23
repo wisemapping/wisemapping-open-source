@@ -5,6 +5,8 @@
     <bean id="mailer" class="com.wisemapping.mail.Mailer" singleton="true">
         <constructor-arg index="0" value="${mail.serverSendEmail}"/>
         <constructor-arg index="1" value="${mail.supportEmail}"/>
+        <constructor-arg index="2" value="${mail.errorReporterEmail}"/>
+
         <property name="mailSender" ref="mailSender"/>
         <property name="velocityEngine" ref="velocityEngine"/>
     </bean>

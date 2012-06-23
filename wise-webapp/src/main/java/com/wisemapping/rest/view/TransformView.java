@@ -18,25 +18,38 @@
 
 package com.wisemapping.rest.view;
 
+import com.wisemapping.exporter.ExportException;
 import com.wisemapping.exporter.ExportFormat;
 import com.wisemapping.exporter.ExportProperties;
 import com.wisemapping.exporter.ExporterFactory;
+import com.wisemapping.mail.NotificationService;
+import com.wisemapping.security.Utils;
+import org.apache.batik.transcoder.TranscoderException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.oxm.XmlMappingException;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.web.servlet.view.AbstractView;
+import org.xml.sax.SAXException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.stream.StreamResult;
+import java.io.IOException;
 import java.util.Map;
 
 public class TransformView extends AbstractView {
 
     private String contentType;
     private ExportFormat exportFormat;
+    private NotificationService notificationService;
+
     @Autowired
     private Jaxb2Marshaller jaxbMarshaller;
 
@@ -75,16 +88,20 @@ public class TransformView extends AbstractView {
         // Change image link URL.
         setBaseBaseImgUrl(exportFormat, properties);
 
-        // Write the conversion content ...
-        final ServletOutputStream outputStream = response.getOutputStream();
-        if (exportFormat == ExportFormat.FREEMIND) {
-            ExporterFactory.export(properties, content, outputStream, null);
-        } else if (exportFormat == ExportFormat.WISEMAPPING) {
-            final Object mindmap = viewMap.get("mindmap");
-            final StreamResult result = new StreamResult(outputStream);
-            jaxbMarshaller.marshal(mindmap, result);
-        } else {
-            ExporterFactory.export(properties, null, outputStream, content);
+        try {
+            // Write the conversion content ...
+            final ServletOutputStream outputStream = response.getOutputStream();
+            if (exportFormat == ExportFormat.FREEMIND) {
+                ExporterFactory.export(properties, content, outputStream, null);
+            } else if (exportFormat == ExportFormat.WISEMAPPING) {
+                final Object mindmap = viewMap.get("mindmap");
+                final StreamResult result = new StreamResult(outputStream);
+                jaxbMarshaller.marshal(mindmap, result);
+            } else {
+                ExporterFactory.export(properties, null, outputStream, content);
+            }
+        } catch (Throwable e) {
+            notificationService.reportMindmapExportError(content, Utils.getUser(), request.getHeader("User-Agent"),e);
         }
     }
 

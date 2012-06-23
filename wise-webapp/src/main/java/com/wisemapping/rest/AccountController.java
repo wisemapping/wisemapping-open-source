@@ -18,8 +18,12 @@
 
 package com.wisemapping.rest;
 
+import com.wisemapping.mail.NotificationService;
+import com.wisemapping.model.MindMap;
 import com.wisemapping.model.User;
+import com.wisemapping.rest.model.RestLogItem;
 import com.wisemapping.security.Utils;
+import com.wisemapping.service.MindmapService;
 import com.wisemapping.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -32,6 +36,13 @@ public class AccountController extends BaseController {
     @Qualifier("userService")
     @Autowired
     private UserService userService;
+
+    @Qualifier("mindmapService")
+    @Autowired
+    private MindmapService mindmapService;
+
+    @Autowired
+    private NotificationService notificationService;
 
     @RequestMapping(method = RequestMethod.PUT, value = "account/password", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
@@ -68,4 +79,13 @@ public class AccountController extends BaseController {
         user.setLastname(lastname);
         userService.updateUser(user);
     }
+
+    @RequestMapping(method = RequestMethod.POST, value = "logger/editor", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void changePassword(@RequestBody RestLogItem item) {
+        final MindMap mindmap = mindmapService.findMindmapById(item.getMapId());
+        final User user = Utils.getUser();
+        notificationService.reportMindmapEditorError(mindmap, user, item.getUserAgent(), item.getJsErrorMsg() + "\n" + item.getJsStack());
+    }
+
 }

@@ -60,7 +60,7 @@ public class BrowserSupportInterceptor extends HandlerInterceptorAdapter {
             }
 
             // Is a Explorer 9 or less without Google Chrome Frame ?.
-            if (!userAgent.needsGCF()) {
+            if (userAgent.needsGCF()) {
                 throw new GoogleChromeFrameRequiredException();
             }
 

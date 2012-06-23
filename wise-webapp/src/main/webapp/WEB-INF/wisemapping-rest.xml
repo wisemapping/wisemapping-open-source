@@ -25,6 +25,7 @@
                 <value>com.wisemapping.rest.model.RestErrors</value>
                 <value>com.wisemapping.rest.model.RestCollaboration</value>
                 <value>com.wisemapping.rest.model.RestCollaborationList</value>
+                <value>com.wisemapping.rest.model.RestLogItem</value>
             </list>
         </property>
     </bean>
