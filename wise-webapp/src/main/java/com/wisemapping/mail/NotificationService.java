@@ -156,7 +156,7 @@ final public class NotificationService {
             model.put("userAgent", userAgent);
 
             final String errorReporterEmail = mailer.getErrorReporterEmail();
-            if (errorReporterEmail != null) {
+            if (errorReporterEmail != null && !errorReporterEmail.isEmpty()) {
                 mailer.sendEmail(mailer.getServerSenderEmail(), errorReporterEmail, "[WiseMapping] Editor error from " + user.getEmail(), model,
                         "editorErrorReport.vm");
             }
@@ -174,7 +174,7 @@ final public class NotificationService {
             model.put("userAgent", userAgent);
 
             final String errorReporterEmail = mailer.getErrorReporterEmail();
-            if (errorReporterEmail != null) {
+            if (errorReporterEmail != null && !errorReporterEmail.isEmpty()) {
                 mailer.sendEmail(mailer.getServerSenderEmail(), errorReporterEmail, "[WiseMapping] Export error from " + user.getEmail(), model,
                         "editorErrorReport.vm");
             }
