@@ -21,7 +21,7 @@ package com.wisemapping.dao;
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.User;
-import com.wisemapping.model.UserLogin;
+import com.wisemapping.model.AccessAuditory;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
@@ -121,9 +121,9 @@ public class UserManagerImpl
         getHibernateTemplate().flush();
     }
 
-    public void auditLogin(UserLogin userLogin) {
-        assert userLogin != null : "userLogin is null";
-        getHibernateTemplate().save(userLogin);
+    public void auditLogin(@NotNull AccessAuditory accessAuditory) {
+        assert accessAuditory != null : "accessAuditory is null";
+        getHibernateTemplate().save(accessAuditory);
     }
 
     public void updateUser(@NotNull User user) {

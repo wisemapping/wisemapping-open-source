@@ -53,6 +53,8 @@
 
 <script type="text/javascript">
     $('#changePasswordMsg').hide();
+    $('#changeInfoMsg').hide();
+
     function postChange(url, postBody, msgContainerId, successMsg) {
         // Change success message ...
         jQuery.ajax(url, {

@@ -40,7 +40,7 @@ public interface UserService {
 
     public void resetPassword(@NotNull String email) throws InvalidUserEmailException;
 
-    public User reloadUser(final User user);
-
     public void deleteUser(@NotNull User user);
+
+    public void auditLogin(@NotNull User user);
 }

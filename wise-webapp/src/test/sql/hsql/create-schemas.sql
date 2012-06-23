@@ -62,9 +62,12 @@ user_id INTEGER NOT NULL,
 --FOREIGN KEY(user_id) REFERENCES USER(colaborator_id)
 );
 
-CREATE TABLE USER_LOGIN
-(id INTEGER NOT NULL IDENTITY,
-email varchar(255),
-login_date date);
+CREATE TABLE ACCESS_AUDITORY (
+id INTEGER NOT NULL IDENTITY,
+user_id INTEGER NOT NULL,
+login_date date,
+FOREIGN KEY(user_id) REFERENCES USER(id)
+);
+
 COMMIT;
 SHUTDOWN;

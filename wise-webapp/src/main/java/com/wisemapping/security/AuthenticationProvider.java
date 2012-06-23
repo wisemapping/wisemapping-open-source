@@ -26,6 +26,7 @@ public class AuthenticationProvider implements org.springframework.security.auth
         if (user == null || credentials == null || !encoder.isPasswordValid(user.getPassword(), credentials, null)) {
             throw new BadCredentialsException("Username/Password does not match for " + auth.getPrincipal());
         }
+        userDetailsService.getUserService().auditLogin(user);
         return new UsernamePasswordAuthenticationToken(userDetails, credentials, userDetails.getAuthorities());
     }
 

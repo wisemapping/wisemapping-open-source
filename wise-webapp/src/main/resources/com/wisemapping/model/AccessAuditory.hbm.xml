@@ -5,12 +5,16 @@
 
 <hibernate-mapping>
 
-    <class name="com.wisemapping.model.UserLogin" table="USER_LOGIN">
-      	<id name="id">
+    <class name="com.wisemapping.model.AccessAuditory" table="ACCESS_AUDITORY">
+        <id name="id">
             <generator class="increment"/>
         </id>
         <property name="loginDate" column="login_Date"/>
-        <property name="email"/>                       
+        <many-to-one name="user"
+                     column="USER_ID"
+                     not-null="true"
+                     class="com.wisemapping.model.User"
+                />
     </class>
 
 </hibernate-mapping>

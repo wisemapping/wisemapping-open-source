@@ -13,7 +13,25 @@ ALTER TABLE `wisemapping`.`mindmap` DROP COLUMN `editor_properties` , DROP COLUM
 ALTER TABLE `wisemapping`.`mindmap` CHANGE COLUMN `owner_id` `creator_id` INT(11) NOT NULL
 , DROP INDEX `owner_id`
 , ADD INDEX `owner_id` (`creator_id` ASC) ;
-
 ALTER TABLE `wisemapping`.`collaboration` ADD COLUMN `properties_id` INT(11) NULL DEFAULT NULL  AFTER `role_id` ;
+DROP TABLE USER_LOGIN;
 
-#INSERT INTO `wisemapping`.`collaborator` (`id`, `email`, `creation_date`) VALUES (8081, 'fake@wisemapping.com', '2007-10-09');
+CREATE TABLE ACCESS_AUDITORY (
+id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+user_id INTEGER NOT NULL,
+login_date date
+) CHARACTER SET utf8 ;
+
+ALTER TABLE ACCESS_AUDITORY
+  ADD CONSTRAINT `user_id`
+  FOREIGN KEY ()
+  REFERENCES `wisemapping`.`USER` ()
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION
+, ADD INDEX `user_id` () ;
+
+
+# INSERT INTO `wisemapping`.`collaborator` (`id`, `email`, `creation_date`) VALUES (8081, 'fake@wisemapping.com', '2007-10-09');
+# DELETE FROM `wisemapping`.`USER` where activation_date is null;
+# DROP TABLE FEEDBACK;
+

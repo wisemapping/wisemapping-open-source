@@ -20,16 +20,13 @@ package com.wisemapping.service;
 
 import com.wisemapping.dao.UserManager;
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.mail.Mailer;
 import com.wisemapping.mail.NotificationService;
+import com.wisemapping.model.AccessAuditory;
 import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.User;
-import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 public class UserServiceImpl
@@ -38,6 +35,7 @@ public class UserServiceImpl
     private MindmapService mindmapService;
     private NotificationService notificationService;
 
+    @Override
     public void activateAccount(long code)
             throws InvalidActivationCodeException {
         final User user = userManager.getUserByActivationCode(code);
@@ -51,10 +49,7 @@ public class UserServiceImpl
         }
     }
 
-    public User reloadUser(final User user) {
-        return this.getUserBy(user.getId());
-    }
-
+    @Override
     public void resetPassword(@NotNull String email)
             throws InvalidUserEmailException {
         final User user = userManager.getUserBy(email);
@@ -66,8 +61,6 @@ public class UserServiceImpl
 
             // Send an email with the new temporal password ...
             notificationService.resetPassword(user, password);
-
-
         } else {
             throw new InvalidUserEmailException("The email '" + email + "' does not exists.");
         }
@@ -90,8 +83,17 @@ public class UserServiceImpl
         return lo + i;
     }
 
+    @Override
     public void deleteUser(@NotNull User user) {
         userManager.deleteUser(user);
+    }
+
+    @Override
+    public void auditLogin(@NotNull User user) {
+        final AccessAuditory accessAuditory = new AccessAuditory();
+        accessAuditory.setUser(user);
+        accessAuditory.setLoginDate(Calendar.getInstance());
+        userManager.auditLogin(accessAuditory);
     }
 
     public User createUser(@NotNull User user, boolean emailConfirmEnabled) throws WiseMappingException {
@@ -127,23 +129,28 @@ public class UserServiceImpl
         return user;
     }
 
+    @Override
     public void changePassword(@NotNull User user) {
         notificationService.passwordChanged(user);
         userManager.updateUser(user);
     }
 
+    @Override
     public User getUserBy(String email) {
         return userManager.getUserBy(email);
     }
 
+    @Override
     public User getUserByUsername(String username) {
         return userManager.getUserByUsername(username);
     }
 
+    @Override
     public User getUserBy(long id) {
         return userManager.getUserBy(id);
     }
 
+    @Override
     public void updateUser(@NotNull User user) {
         userManager.updateUser(user);
     }

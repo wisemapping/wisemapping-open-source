@@ -16,37 +16,44 @@
 *   limitations under the License.
 */
 
-package com.wisemapping.dao;
+package com.wisemapping.model;
 
-import com.wisemapping.model.Collaborator;
-import com.wisemapping.model.User;
-import com.wisemapping.model.AccessAuditory;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.Calendar;
 
-public interface UserManager {
+public class AccessAuditory
+        implements Serializable {
 
-    List<User> getAllUsers();
+    private int id;
+    private Calendar loginDate = null;
+    private User user = null;
 
-    User getUserBy(String email);
+    public AccessAuditory() {
+    }
 
-    public User getUserBy(long id);
+    public int getId() {
+        return id;
+    }
 
-    User getUserByUsername(String username);
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    void createUser(User user);
+    public void setLoginDate(@NotNull Calendar loginDate) {
+        this.loginDate = loginDate;
+    }
 
-    void auditLogin(@NotNull AccessAuditory accessAuditory);
+    public Calendar getLoginDate() {
+        return loginDate;
+    }
 
-    void updateUser(User user);
+    public void setUser(@NotNull User user) {
+        this.user = user;
+    }
 
-    User getUserByActivationCode(long code);
-
-    public Collaborator getCollaboratorBy(String email);
-
-    public User createUser(User user, Collaborator col);
-
-    public void deleteUser(User user);
-
+    public User getUser() {
+        return this.user;
+    }
 }

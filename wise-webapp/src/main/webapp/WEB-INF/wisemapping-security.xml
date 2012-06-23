@@ -68,7 +68,7 @@
     </bean>
 
     <bean id="userDetailsService" class="com.wisemapping.security.UserDetailsService">
-        <property name="userManager" ref="userManager"/>
+        <property name="userService" ref="userService"/>
         <property name="adminUser" value="${admin.user}"/>
     </bean>
 
