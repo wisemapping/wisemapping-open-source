@@ -475,7 +475,7 @@ mindplot.widget.Menu = new Class({
         if ($(buttonId)) {
             var tooltip = text;
             if (shortcut) {
-                shortcut = Browser.Platform.mac ? shortcut.replace("meta+", "⌘") : shortcut.replace("meta+", "ctrl");
+                shortcut = Browser.Platform.mac ? shortcut.replace("meta+", "⌘") : shortcut.replace("meta+", "ctrl+");
                 tooltip = tooltip + " (" + shortcut + ")";
             }
             new mindplot.widget.KeyboardShortcutTooltip($(buttonId), tooltip);
