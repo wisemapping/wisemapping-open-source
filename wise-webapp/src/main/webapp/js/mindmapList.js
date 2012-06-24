@@ -425,34 +425,33 @@ $(function() {
     $("#printBtn").click(function() {
         var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
         if (mapIds.length > 0) {
-            window.open('c/maps/' + mapIds[0] + '/print');
+            window.open('/c/maps/' + mapIds[0] + '/print');
         }
     });
 
     $("#infoBtn").click(function() {
-        showEmbeddedDialog("c/maps/{mapId}/details", 'info-dialog-modal');
+        showEmbeddedDialog("/c/maps/{mapId}/details", 'info-dialog-modal');
     });
 
     $("#historyBtn").click(function() {
-        showEmbeddedDialog("c/maps/{mapId}/history", 'history-dialog-modal');
+        showEmbeddedDialog("/c/maps/{mapId}/history", 'history-dialog-modal');
     });
 
     $("#publishBtn").click(function() {
-        showEmbeddedDialog("c/maps/{mapId}/publish", "publish-dialog-modal");
+        showEmbeddedDialog("/c/maps/{mapId}/publish", "publish-dialog-modal");
     });
 
     $("#exportBtn").click(function() {
-        showEmbeddedDialog("c/maps/{mapId}/export", 'export-dialog-modal');
+        showEmbeddedDialog("/c/maps/{mapId}/export", 'export-dialog-modal');
     });
 
     $("#importBtn").click(function() {
-        showEmbeddedDialog("c/maps/import", 'import-dialog-modal', true);
+        showEmbeddedDialog("/c/maps/import", 'import-dialog-modal', true);
     });
 
     $("#shareBtn").click(function() {
-        showEmbeddedDialog("c/maps/{mapId}/share", 'share-dialog-modal', true);
+        showEmbeddedDialog("/c/maps/{mapId}/share", 'share-dialog-modal', true);
     });
-
 
     var showEmbeddedDialog = function(urlTemplate, dialogElemId, ignore) {
         var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();

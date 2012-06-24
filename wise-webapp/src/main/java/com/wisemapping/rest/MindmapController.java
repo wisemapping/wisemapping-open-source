@@ -413,7 +413,6 @@ public class MindmapController extends BaseController {
         final MindMap clonedMap = mindMap.shallowClone();
         clonedMap.setTitle(restMindmap.getTitle());
         clonedMap.setDescription(restMindmap.getDescription());
-        clonedMap.setCreator(user);
 
         // Add new mindmap ...
         mindmapService.addMindmap(clonedMap, user);
