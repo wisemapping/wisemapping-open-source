@@ -8,7 +8,7 @@
 
 <html>
 <head>
-    <base href="${pageContext.request.contextPath}/"/>
+    <base href="${baseURL}/">
     <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
     <!--[if lt IE 9]>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">

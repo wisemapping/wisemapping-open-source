@@ -344,7 +344,7 @@ $(function() {
     $("#newBtn").click(
         function() {
             $("#new-dialog-modal").dialogForm({
-                redirect: "c/maps/{header.resourceId}/edit",
+                redirect: "/c/maps/{header.resourceId}/edit",
                 url :  "../service/maps"
             });
         });
@@ -364,7 +364,7 @@ $(function() {
 
             // Initialize dialog ...
             $("#duplicate-dialog-modal").dialogForm({
-                redirect: "c/maps/{header.resourceId}/edit",
+                redirect: "/c/maps/{header.resourceId}/edit",
                 url :  "../service/maps/" + mapId
             });
         }

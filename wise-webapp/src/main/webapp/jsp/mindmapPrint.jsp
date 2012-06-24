@@ -10,7 +10,7 @@
 
 <html>
 <head>
-    <base href="${pageContext.request.contextPath}/"/>
+    <base href="${baseURL}/">
     <title><spring:message code="SITE.TITLE"/> - ${mindmap.title} </title>
     <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
 

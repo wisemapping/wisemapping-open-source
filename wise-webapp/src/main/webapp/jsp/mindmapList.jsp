@@ -3,15 +3,15 @@
 <%@ include file="/jsp/init.jsp" %>
 <html>
 <head>
-    <base href="${pageContext.request.contextPath}/"/>
+    <base href="${baseURL}">
     <title><spring:message code="SITE.TITLE"/></title>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
     <!--[if lt IE 9]>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <![endif]-->
 
-    <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
-    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon"/>
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
 
     <link rel="stylesheet/less" type="text/css" href="css/mindmapList.less"/>
 
