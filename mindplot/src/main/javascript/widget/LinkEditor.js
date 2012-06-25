@@ -71,13 +71,13 @@ mindplot.widget.LinkEditor = new Class({
         var select = new Element('select');
         select.setStyles({margin: '5px'});
         new Element('option', {text:'URL'}).inject(select);
-        new Element('option', {text:'Mail'}).inject(select);
+//        new Element('option', {text:'Mail'}).inject(select);
         select.inject(form);
 
         // Add Input ...
         var input = new Element('input', {
             placeholder: 'http://www.example.com/',
-            type:'url',
+            type:Browser.ie ? 'text' : 'url', // IE workaround
             required:true,
             autofocus:'autofocus'
         });
