@@ -77,7 +77,7 @@
     <%@ include file="/jsp/mindmapEditorToolbar.jsf" %>
 </div>
 
-<div id="mindplot"></div>
+<div id="mindplot" onselectstart="return false;"></div>
 <script type="text/javascript" src="js/editor.js"></script>
 </body>
 </html>

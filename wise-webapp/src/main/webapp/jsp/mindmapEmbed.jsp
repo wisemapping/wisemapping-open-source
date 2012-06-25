@@ -71,7 +71,7 @@
 </head>
 <body>
 <div id="mapContainer">
-    <div id="mindplot"></div>
+    <div id="mindplot" onselectstart="return false;"></div>
 
     <div id="embFooter">
         <a href="${pageContext.request.contextPath}/c/home" target="new">
