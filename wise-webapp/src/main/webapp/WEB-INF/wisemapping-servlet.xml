@@ -36,7 +36,7 @@
             </property>
         </bean>
         <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-            <property name="paramName" value="locale"/>
+            <property name="paramName" value="language"/>
         </bean>
     </mvc:interceptors>
 
@@ -87,7 +87,7 @@
         <property name="maxUploadSize" value="522240"/>
     </bean>
 
-    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource" >
         <property name="basenames">
             <list>
                 <value>messages</value>

@@ -74,7 +74,7 @@
     <div id="mindplot" onselectstart="return false;"></div>
 
     <div id="embFooter">
-        <a href="${pageContext.request.contextPath}/c/home" target="new">
+        <a href="/c/home" target="new">
             <div id="footerLogo"></div>
         </a>
 

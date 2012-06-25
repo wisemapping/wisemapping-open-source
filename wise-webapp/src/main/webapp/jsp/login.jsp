@@ -2,7 +2,6 @@
 
 <%@ include file="/jsp/init.jsp" %>
 
-
 <script type="text/javascript" language="javascript">
     $(function() {
         $('.btn-primary').click(function() {
