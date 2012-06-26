@@ -372,7 +372,16 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
                     value = child.nodeValue;
                 }
             }
+        } else {
+            // Notes must be decoded ...
+            value = unescape(value);
+
+            // Hack for empty nodes ...
+            if (value == "") {
+                value = " ";
+            }
         }
+
         return value;
     },
 
