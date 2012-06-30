@@ -2,12 +2,10 @@
 <%@include file="/jsp/init.jsp" %>
 
 <div>
-    <h2 style="font-weight:bold;">Thanks for signing up!</h2>
+    <h2 style="font-weight:bold;"><spring:message code="THANKS_FOR_SIGN_UP"/></h2>
     <c:if test="${confirmByEmail==true}">
         <p>
-            You will receive a confirmation message shortly from WiseMapping. This message will ask you to activate your
-            WiseMapping account.
-            Please select the link to activate and start creating and sharing maps.
+            <spring:message code="SIGN_UP_CONFIRMATION_EMAIL"/>
         </p>
         <br/>
 
@@ -23,8 +21,7 @@
     </c:if>
     <c:if test="${confirmByEmail==false}">
         <p>
-            Your account has been created successfully, click <a href="c/login">here</a> to sign in and start enjoying
-            WiseMapping.
+            <spring:message code="SIGN_UP_SUCCESS"/>
         </p>
     </c:if>
 </div>

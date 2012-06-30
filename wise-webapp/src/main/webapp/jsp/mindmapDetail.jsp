@@ -5,8 +5,8 @@
 <div>
     <ul class="nav nav-tabs">
         <li class="active"><a href="#general" data-toggle="pill">General</a></li>
-        <li><a href="#collaborators" data-toggle="pill">Shared</a></li>
-        <li><a href="#publish" data-toggle="pill">Publish</a></li>
+        <li><a href="#collaborators" data-toggle="pill"><spring:message code="SHARED"/></a></li>
+        <li><a href="#publish" data-toggle="pill"><spring:message code="PUBLIC"/></a></li>
     </ul>
 
     <div class="tab-content">

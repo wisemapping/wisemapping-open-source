@@ -29,8 +29,86 @@
 
 
     <script type="text/javascript" language="javascript">
-        var principalEmail = '${principal.email}';
-    </script>
+        $(function () {
+            $('#mindmapListTable').dataTable({
+                bProcessing:true,
+                sAjaxSource:"../service/maps/",
+                sAjaxDataProp:'mindmapsInfo',
+                fnInitComplete:function () {
+                    $('#mindmapListTable tbody').change(updateStatusToolbar);
+                    callbackOnTableInit();
+                },
+                aoColumns:[
+                    {
+                        sTitle:'<input type="checkbox" id="selectAll"/>',
+                        sWidth:"60px",
+                        sClass:"select",
+                        bSortable:false,
+                        bSearchable:false,
+                        mDataProp:"starred",
+                        bUseRendered:false,
+                        fnRender:function (obj) {
+                            return '<input type="checkbox"/><span class="' + (obj.aData.starred ? 'starredOn' : 'starredOff') + '"></span>';
+                        }
+                    },
+                    {
+                        sTitle:"<spring:message code="NAME"/>",
+                        sWidth:"270px",
+                        bUseRendered:false,
+                        mDataProp:"title",
+                        fnRender:function (obj) {
+                            return '<a href="c/maps/' + obj.aData.id + '/edit">' + obj.aData.title + '</a>';
+                        }
+                    },
+                    {
+                        sTitle:"Creator",
+                        mDataProp:"creator"
+                    },
+                    {
+                        bSearchable:false,
+                        sTitle:"<spring:message code="LAST_UPDATE"/>",
+                        bUseRendered:false,
+                        sType:"date",
+                        mDataProp:"lastModificationTime",
+                        fnRender:function (obj) {
+                            var time = obj.aData.lastModificationTime;
+                            return '<abbr class="timeago" title="' + time + '">' + jQuery.timeago(time) + '</abbr>' + ' ' + '<span style="color: #777;font-size: 75%;padding-left: 5px;">' + obj.aData.lastModifierUser + '</span>';
+                        }
+                    }
+                ],
+                bAutoWidth:false,
+                oLanguage:{
+                    "sSearch":"",
+                    "sInfo":"_START_-_END_ of _TOTAL_",
+                    "sEmptyTable":"<spring:message code="NO_SEARCH_RESULT"/>"
+                },
+                bStateSave:true
+            });
+
+            // Customize search action ...
+            $('#mindmapListTable_filter').appendTo("#tableActions");
+            $('#mindmapListTable_filter input').addClass('input-medium search-query');
+            $('#mindmapListTable_filter input').attr('placeholder', 'Search');
+            $("#mindmapListTable_info").appendTo("#pageInfo");
+
+            // Re-arrange pagination actions ...
+            $("#tableFooter").appendTo("#mindmapListTable_wrapper");
+            $("#mindmapListTable_length").appendTo("#tableFooter");
+            $('#mindmapListTable_length select').addClass('span1');
+
+
+            $('input:checkbox[id="selectAll"]').click(function () {
+                $("#mindmapListTable").dataTableExt.selectAllMaps();
+            });
+
+            // Hack for changing the pagination buttons ...
+            $('#nPageBtn').click(function () {
+                $('#mindmapListTable_next').click();
+            });
+            $('#pPageBtn').click(function () {
+                $('#mindmapListTable_previous').click();
+            });
+        });    </script>
 
 </head>
 <body>
@@ -52,7 +130,7 @@
 
         <div id="foldersContainer">
             <ul class="nav nav-list">
-                <li class="nav-header">Filters</li>
+                <li class="nav-header"><spring:message code="FILTERS"/></li>
                 <li data-filter="all" class="active"><a href="#"><i class="icon-inbox icon-white"></i> <spring:message
                         code="ALL_MAPS"/></a></li>
                 <li data-filter="my_maps"><a href="#"><i class="icon-user"></i> <spring:message code="MY_MAPS"/></a>
@@ -70,36 +148,46 @@
             <div id="buttonsToolbar" class="btn-toolbar">
 
                 <div class="btn-group">
-                    <button id="newBtn" class="btn btn-primary"><i class="icon-file icon-white"></i> New</button>
-                    <button id="importBtn" class="btn btn-primary"><i class="icon-upload icon-white"></i> Import
+                    <button id="newBtn" class="btn btn-primary"><i class="icon-file icon-white"></i> <spring:message
+                            code="NEW"/></button>
+                    <button id="importBtn" class="btn btn-primary"><i class="icon-upload icon-white"></i>
+                        <spring:message code="IMPORT"/>
                     </button>
                 </div>
 
                 <div class="btn-group act-multiple" id="deleteBtn" style="display:none">
-                    <button class="btn btn-primary"><i class="icon-trash icon-white"></i> Delete</button>
+                    <button class="btn btn-primary"><i class="icon-trash icon-white"></i> <spring:message
+                            code="DELETE"/></button>
                 </div>
 
                 <div id="infoBtn" class="btn-group act-single" style="display:none">
-                    <button class="btn btn-primary"><i class="icon-exclamation-sign icon-white"></i> Info</button>
+                    <button class="btn btn-primary"><i class="icon-exclamation-sign icon-white"></i> <spring:message
+                            code="INFO"/></button>
                 </div>
 
                 <div id="actionsBtn" class="btn-group act-single" style="display:none">
                     <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                        <i class="icon-asterisk icon-white"></i> More
+                        <i class="icon-asterisk icon-white"></i> <spring:message code="MORE"/>
                         <span class="caret"></span>
                     </button>
 
                     <ul class="dropdown-menu">
                         <li id="duplicateBtn"><a href="#" onclick="return false"><i class="icon-plus-sign"></i>
-                            Duplicate</a></li>
-                        <li id="renameBtn"><a href="#" onclick="return false"><i class="icon-edit"></i> Rename</a></li>
-                        <li id="publishBtn"><a href="#" onclick="return false"><i class="icon-globe"></i> Publish</a>
+                            <spring:message code="DUPLICATE"/></a></li>
+                        <li id="renameBtn"><a href="#" onclick="return false"><i class="icon-edit"></i> <spring:message
+                                code="RENAME"/></a></li>
+                        <li id="publishBtn"><a href="#" onclick="return false"><i class="icon-globe"></i>
+                            <spring:message code="PUBLISH"/></a>
                         </li>
-                        <li id="shareBtn"><a href="#" onclick="return false"><i class="icon-share"></i> Share</a></li>
-                        <li id="exportBtn"><a href="#" onclick="return false"><i class="icon-download"></i> Export</a>
+                        <li id="shareBtn"><a href="#" onclick="return false"><i class="icon-share"></i> <spring:message
+                                code="SHARE"/></a></li>
+                        <li id="exportBtn"><a href="#" onclick="return false"><i class="icon-download"></i> <spring:message
+                                code="EXPORT"/></a>
                         </li>
-                        <li id="printBtn"><a href="#" onclick="return false"><i class="icon-print"></i> Print</a></li>
-                        <li id="historyBtn"><a href="#" onclick="return false"><i class="icon-time"></i> History</a>
+                        <li id="printBtn"><a href="#" onclick="return false"><i class="icon-print"></i> <spring:message
+                                code="PRINT"/></a></li>
+                        <li id="historyBtn"><a href="#" onclick="return false"><i class="icon-time"></i> <spring:message
+                                code="HISTORY"/></a>
                         </li>
                     </ul>
                 </div>
@@ -123,208 +211,210 @@
 
 
 <div id="dialogsContainer">
-    <!-- New map dialog -->
-    <div id="new-dialog-modal" title="Add new map" class="modal fade">
-        <div class="modal-header">
-            <button class="close" data-dismiss="modal">x</button>
-            <h3><spring:message code="NEW_MAP_MSG"/></h3>
-        </div>
-        <div class="modal-body">
-            <div class="errorMessage"></div>
-            <form class="form-horizontal">
-                <fieldset>
-                    <div class="control-group">
-                        <label class="control-label" for="newTitle"><spring:message code="NAME"/>:</label>
-                        <input class="control" name="title" id="newTitle" type="text" required="required"
-                               placeholder="Name of the new map to create" autofocus="autofocus"/>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="newDec"><spring:message code="DESCRIPTION"/>:</label>
-                        <input class="control" name="description" id="newDec" type="text"
-                               placeholder="Some description for your map"/>
-                    </div>
-                </fieldset>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary btn-accept" data-loading-text="Saving ..."><spring:message
-                    code="CREATE"/></button>
-            <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
+<!-- New map dialog -->
+<div id="new-dialog-modal" title="<spring:message code="ADD_NEW_MAP"/>" class="modal fade">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">x</button>
+        <h3><spring:message code="NEW_MAP_MSG"/></h3>
+    </div>
+    <div class="modal-body">
+        <div class="errorMessage"></div>
+        <form class="form-horizontal">
+            <fieldset>
+                <div class="control-group">
+                    <label class="control-label" for="newTitle"><spring:message code="NAME"/>:</label>
+                    <input class="control" name="title" id="newTitle" type="text" required="required"
+                           placeholder="<spring:message code="MAP_NAME_HINT"/>" autofocus="autofocus"/>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="newDec"><spring:message code="DESCRIPTION"/>:</label>
+                    <input class="control" name="description" id="newDec" type="text"
+                           placeholder="<spring:message code="MAP_DESCRIPTION_HINT"/>"/>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message
+                code="SAVING"/>"><spring:message
+                code="CREATE"/></button>
+        <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
+    </div>
+</div>
+
+<!-- Duplicate map dialog -->
+<div id="duplicate-dialog-modal" class="modal fade">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">x</button>
+        <h3 id="dupDialogTitle"></h3>
+    </div>
+    <div class="modal-body">
+        <div class="errorMessage"></div>
+        <form class="form-horizontal">
+            <fieldset>
+                <div class="control-group">
+                    <label for="title" class="control-label"><spring:message code="NAME"/>: </label>
+                    <input name="title" id="title" type="text" required="required"
+                           placeholder="Name of the new map to create" autofocus="autofocus"
+                           class="control"/>
+                </div>
+                <div class="control-group">
+                    <label for="description" class="control-label"><spring:message
+                            code="DESCRIPTION"/>: </label>
+                    <input name="description" id="description" type="text"
+                           placeholder="Some description for your map" class="control"/>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/>">
+            <spring:message code="DUPLICATE"/></button>
+        <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
+    </div>
+</div>
+
+<!-- Rename map dialog -->
+<div id="rename-dialog-modal" class="modal fade">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">x</button>
+        <h3 id="renameDialogTitle"><spring:message
+                code="RENAME"/></h3>
+    </div>
+    <div class="modal-body">
+        <div class="errorMessage"></div>
+        <form class="form-horizontal">
+            <fieldset>
+                <div class="control-group">
+                    <label for="renTitle" class="control-label"><spring:message code="NAME"/>: </label>
+                    <input name="title" id="renTitle" required="required" autofocus="autofocus"
+                           class="control"/>
+                </div>
+                <div class="control-group">
+                    <label for="renDescription" class="control-label"><spring:message
+                            code="DESCRIPTION"/>:</label>
+                    <input name="description" class="control" id="renDescription"/>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/>"><spring:message
+                code="RENAME"/></button>
+        <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
+    </div>
+</div>
+
+<!-- Delete map dialog -->
+<div id="delete-dialog-modal" class="modal fade">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">x</button>
+        <h3><spring:message code="DELETE_MINDMAP"/></h3>
+    </div>
+    <div class="modal-body">
+        <div class="alert alert-block">
+            <h4 class="alert-heading"><spring:message code="WARNING"/>!</h4><spring:message code="DELETE_MAPS_WARNING"/>
         </div>
     </div>
-
-    <!-- Duplicate map dialog -->
-    <div id="duplicate-dialog-modal" class="modal fade">
-        <div class="modal-header">
-            <button class="close" data-dismiss="modal">x</button>
-            <h3 id="dupDialogTitle"></h3>
-        </div>
-        <div class="modal-body">
-            <div class="errorMessage"></div>
-            <form class="form-horizontal">
-                <fieldset>
-                    <div class="control-group">
-                        <label for="title" class="control-label"><spring:message code="NAME"/>: </label>
-                        <input name="title" id="title" type="text" required="required"
-                               placeholder="Name of the new map to create" autofocus="autofocus"
-                               class="control"/>
-                    </div>
-                    <div class="control-group">
-                        <label for="description" class="control-label"><spring:message
-                                code="DESCRIPTION"/>: </label>
-                        <input name="description" id="description" type="text"
-                               placeholder="Some description for your map" class="control"/>
-                    </div>
-                </fieldset>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/> ...">
-                <spring:message code="DUPLICATE"/></button>
-            <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
-        </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-accept" data-loading-text="Saving ..."><spring:message
+                code="DELETE"/></button>
+        <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
     </div>
+</div>
 
-    <!-- Rename map dialog -->
-    <div id="rename-dialog-modal" class="modal fade">
-        <div class="modal-header">
-            <button class="close" data-dismiss="modal">x</button>
-            <h3 id="renameDialogTitle"></h3>
-        </div>
-        <div class="modal-body">
-            <div class="errorMessage"></div>
-            <form class="form-horizontal">
-                <fieldset>
-                    <div class="control-group">
-                        <label for="renTitle" class="control-label"><spring:message code="NAME"/>: </label>
-                        <input name="title" id="renTitle" required="required" autofocus="autofocus"
-                               class="control"/>
-                    </div>
-                    <div class="control-group">
-                        <label for="renDescription" class="control-label"><spring:message
-                                code="DESCRIPTION"/>:</label>
-                        <input name="description" class="control" id="renDescription"/>
-                    </div>
-                </fieldset>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary btn-accept" data-loading-text="Saving ..."><spring:message
-                    code="RENAME"/></button>
-            <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
-        </div>
+<!-- Info map dialog -->
+<div id="info-dialog-modal" class="modal fade">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">x</button>
+        <h3><spring:message code="INFO"/></h3>
     </div>
+    <div class="modal-body">
 
-    <!-- Delete map dialog -->
-    <div id="delete-dialog-modal" class="modal fade">
-        <div class="modal-header">
-            <button class="close" data-dismiss="modal">x</button>
-            <h3><spring:message code="DELETE_MINDMAP"/></h3>
-        </div>
-        <div class="modal-body">
-            <div class="alert alert-block">
-                <h4 class="alert-heading">Warning!</h4>Deleted mindmap can not be recovered. Do you want to
-                continue ?.
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary btn-accept" data-loading-text="Saving ..."><spring:message
-                    code="DELETE"/></button>
-            <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
-        </div>
     </div>
-
-    <!-- Info map dialog -->
-    <div id="info-dialog-modal" class="modal fade">
-        <div class="modal-header">
-            <button class="close" data-dismiss="modal">x</button>
-            <h3><spring:message code="INFO"/></h3>
-        </div>
-        <div class="modal-body">
-
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CLOSE"/></button>
-        </div>
+    <div class="modal-footer">
+        <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CLOSE"/></button>
     </div>
+</div>
 
-    <!-- Publish Dialog Config -->
-    <div id="publish-dialog-modal" class="modal fade">
-        <div class="modal-header">
-            <button class="close" data-dismiss="modal">x</button>
-            <h3><spring:message code="PUBLISH"/></h3>
-        </div>
-        <div class="modal-body">
-
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/>...">
-                <spring:message code="ACCEPT"/></button>
-            <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
-        </div>
+<!-- Publish Dialog Config -->
+<div id="publish-dialog-modal" class="modal fade">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">x</button>
+        <h3><spring:message code="PUBLISH"/></h3>
     </div>
+    <div class="modal-body">
 
-    <!-- Export Dialog Config -->
-    <div id="export-dialog-modal" class="modal fade">
-        <div class="modal-header">
-            <button class="close" data-dismiss="modal">x</button>
-            <h3><spring:message code="EXPORT"/></h3>
-        </div>
-        <div class="modal-body">
-
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary btn-accept" data-loading-text="Exporting..."><spring:message
-                    code="EXPORT"/></button>
-            <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
-        </div>
     </div>
-
-    <!-- Import Dialog Config -->
-    <div id="import-dialog-modal" class="modal fade">
-        <div class="modal-header">
-            <button class="close" data-dismiss="modal">x</button>
-            <h3><spring:message code="IMPORT"/></h3>
-        </div>
-        <div class="modal-body">
-
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary btn-accept" data-loading-text="Importing..."><spring:message
-                    code="IMPORT"/></button>
-            <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
-        </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/>...">
+            <spring:message code="ACCEPT"/></button>
+        <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
     </div>
+</div>
 
-    <!-- Share Dialog Config -->
-    <div id="share-dialog-modal" class="modal fade">
-        <div class="modal-header">
-            <button class="close" data-dismiss="modal">x</button>
-            <h3><spring:message code="SHARE"/></h3>
-        </div>
-        <div class="modal-body">
-
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/> ...">
-                <spring:message code="ACCEPT"/></button>
-            <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
-        </div>
+<!-- Export Dialog Config -->
+<div id="export-dialog-modal" class="modal fade">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">x</button>
+        <h3><spring:message code="EXPORT"/></h3>
     </div>
+    <div class="modal-body">
 
-    <!-- History Dialog Config -->
-    <div id="history-dialog-modal" class="modal fade">
-        <div class="modal-header">
-            <button class="close" data-dismiss="modal">x</button>
-            <h3><spring:message code="HISTORY"/></h3>
-        </div>
-        <div class="modal-body">
-
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CLOSE"/></button>
-        </div>
     </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-accept" data-loading-text="Exporting..."><spring:message
+                code="EXPORT"/></button>
+        <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
+    </div>
+</div>
+
+<!-- Import Dialog Config -->
+<div id="import-dialog-modal" class="modal fade">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">x</button>
+        <h3><spring:message code="IMPORT"/></h3>
+    </div>
+    <div class="modal-body">
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message
+                    code="IMPORTING"/>"><spring:message
+                code="IMPORT"/></button>
+        <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
+    </div>
+</div>
+
+<!-- Share Dialog Config -->
+<div id="share-dialog-modal" class="modal fade">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">x</button>
+        <h3><spring:message code="SHARE"/></h3>
+    </div>
+    <div class="modal-body">
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/>">
+            <spring:message code="ACCEPT"/></button>
+        <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
+    </div>
+</div>
+
+<!-- History Dialog Config -->
+<div id="history-dialog-modal" class="modal fade">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">x</button>
+        <h3><spring:message code="HISTORY"/></h3>
+    </div>
+    <div class="modal-body">
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CLOSE"/></button>
+    </div>
+</div>
 </div>
 </body>
 </html>

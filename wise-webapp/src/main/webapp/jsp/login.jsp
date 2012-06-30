@@ -13,13 +13,8 @@
 
 <div id="loginContent">
     <div class="loginNews">
-        <h1>What is New: </h1>
-        <ul>
-            <li>New User Interface</li>
-            <li>FreeMind 0.9 Update</li>
-            <li>Improved HTML 5.0 Support</li>
-            <li>Firefox 12 officially supported</li>
-        </ul>
+        <h1><spring:message code="WHAT_IS_NEW"/>: </h1>
+        <spring:message code="WHAT_IS_NEW_DETAILS"/>
     </div>
 
     <div id="login" class="fform">
@@ -69,7 +64,7 @@
 
 <c:if test="${isHsql== 'true'}">
     <div class="alert alert-info">
-       <span class="label label-important">Warning</span> <spring:message code="NO_PRODUCTION_DATABASE_CONFIGURED"/>&nbsp;<a
-            href="http://www.wisemapping.org/documentation/configu">here</a>.
+       <span class="label label-important"><spring:message code="WARNING"/></span> <spring:message code="NO_PRODUCTION_DATABASE_CONFIGURED"/>&nbsp;<a
+            href="http://www.wisemapping.org/documentation/configu"><spring:message code="HERE"/></a>.
     </div>
 </c:if>

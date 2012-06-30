@@ -1,7 +1,6 @@
 <%@page pageEncoding="UTF-8" %>
 <%@include file="/jsp/init.jsp" %>
 
-<h2>The email is not register or you account is not active yet.</h2>
+<h2><spring:message code="ACCOUNT_DOES_NOT_EXISTS"/></h2>
 
-<p>If the problem persist please send us an email to <a
-        href="mailto:support@wisemapping.com">support@wisemapping.com </a></p>
+<p><spring:message code="ACCOUNT_DOES_NOT_EXISTS_SUPPORT"/></p>

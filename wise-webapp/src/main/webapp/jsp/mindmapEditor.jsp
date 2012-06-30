@@ -1,3 +1,5 @@
+<%@ page import="com.wisemapping.security.Utils" %>
+<%@ page import="com.wisemapping.model.User" %>
 <%@page pageEncoding="UTF-8" %>
 <%@ include file="/jsp/init.jsp" %>
 
@@ -7,6 +9,12 @@
 <%--@elvariable id="editorTryMode" type="java.lang.Boolean"--%>
 <%--@elvariable id="editorTryMode" type="java.lang.String"--%>
 <%--@elvariable id="mapXml" type="com.wisemapping.model.User"--%>
+<%
+    User user = Utils.getUser(true);
+    if (user != null) {
+        request.setAttribute("principal", user);
+    }
+%>
 
 <html>
 <head>

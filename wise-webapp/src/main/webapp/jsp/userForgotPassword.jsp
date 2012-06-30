@@ -22,7 +22,7 @@
                 <label for="email"><spring:message code="EMAIL"/></label>
                 <input id="email" type="email" required="required" name="email"/>
 
-                <input type="submit" value="<spring:message code="SUBMIT"/>" class="btn btn-primary"  data-loading-text="Seding ..."/>
+                <input type="submit" value="<spring:message code="SEND_ME_A_NEW_PASSWORD"/>" class="btn btn-primary"  data-loading-text="<spring:message code="SENDING"/>"/>
                 <input type="button" value="<spring:message code="CANCEL"/>" class="btn"
                        onclick="window.location='<c:url value="c/maps/"/>'"/>
             </fieldset>
