@@ -38,8 +38,8 @@
                   <tr data-history-id="' + this.id + '">\
                    <td>' + this.creator + '</td>\
                    <td><abbr class="timeago" title="' + this.creationTime + '">' + jQuery.timeago(this.creationTime) + '</abbr></td>\
-                   <td><a class="view" href="#">view</a></td>\
-                   <td><a class="revert" href="#">revert</a></td>\
+                   <td><a class="view" href="#"><spring:message code="VIEW"/></a></td>\
+                   <td><a class="revert" href="#"><spring:message code="REVERT"/></a></td>\
                </tr>');
                 });
             } else {
@@ -64,7 +64,7 @@
 
         },
         error:function (jqXHR, textStatus, errorThrown) {
-            console.log(textStatus);
+            console.l(textStatus);
         }
     });
 </script>

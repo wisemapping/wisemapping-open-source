@@ -6,6 +6,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -68,11 +69,12 @@ public class RestErrors {
     }
 
     public Map<String, String> getFieldErrors() {
+        Locale locale = LocaleContextHolder.getLocale();
         final Map<String, String> result = new HashMap<String, String>();
         if (errors != null) {
             final List<FieldError> fieldErrors = errors.getFieldErrors();
             for (FieldError fieldError : fieldErrors) {
-                result.put(fieldError.getField(), messageSource.getMessage(fieldError, Locale.ENGLISH));
+                result.put(fieldError.getField(), messageSource.getMessage(fieldError, locale));
             }
         }
         return result;

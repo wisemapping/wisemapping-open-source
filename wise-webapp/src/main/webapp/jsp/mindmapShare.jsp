@@ -15,7 +15,7 @@
     }
 
     #collabEmails {
-        width: 300px;
+        width: 250px;
         display: inline-block;
         vertical-align: middle;
         margin-bottom: 0;
@@ -44,9 +44,9 @@
 <div id="sharingContainer">
     <table class="table" id="collabsTable">
         <colgroup>
-            <col width="70%"/>
-            <col width="20%"/>
-            <col width="10%"/>
+            <col width="65%"/>
+            <col width="30%"/>
+            <col width="5%"/>
         </colgroup>
     </table>
 </div>
@@ -72,7 +72,9 @@
         <button id="addBtn" class="btn btn-primary"><spring:message code="ADD"/></button>
     </div>
     <div style="margin-top: 10px;">
-        <p><strong><spring:message code="EMAIL_NOTIFICATION_MESSAGE"/></strong> - <a href="#" id="addMessageLink"><spring:message code="ADD_MESSAGE"/></a></p>
+        <p><strong><spring:message code="EMAIL_NOTIFICATION_MESSAGE"/></strong> - <a href="#"
+                                                                                     id="addMessageLink"><spring:message
+                code="ADD_MESSAGE"/></a></p>
         <textarea cols="4" id="collabMessage" placeholder="<spring:message code="OPTIONAL_CUSTOM_MESSAGE"/>">
 
         </textarea>
@@ -85,15 +87,15 @@
 $("#errorMsg").hide();
 $("#collabMessage").hide();
 
-$("#addMessageLink").click(function(event) {
+$("#addMessageLink").click(function (event) {
     $("#collabMessage").toggle().val("");
     event.preventDefault();
 });
 
 var messages = {
-    owner: '<spring:message code="IS_OWNER"/>',
-    editor: '<spring:message code="CAN_EDIT"/>',
-    viewer: '<spring:message code="CAN_VIEW"/>'};
+    owner:'<spring:message code="IS_OWNER"/>',
+    editor:'<spring:message code="CAN_EDIT"/>',
+    viewer:'<spring:message code="CAN_VIEW"/>'};
 
 function onClickShare(aElem) {
     var role = $(aElem).attr('data-role');
@@ -130,7 +132,7 @@ function addCollaboration(email, role, changeType) {
 
         // Register change role event  ...
         var rowElem = $("#collabsTable tr:last");
-        $(rowElem.find(".dropdown-menu a").click(function() {
+        $(rowElem.find(".dropdown-menu a").click(function () {
             reportError(null);
             var role = onClickShare(this);
             rowElem.attr('data-role', role);
@@ -139,7 +141,7 @@ function addCollaboration(email, role, changeType) {
         rowElem.find('.dropdown-menu a[data-role="' + role + '"]').click();
 
         // Register remove event ...
-        rowElem.find("td:last a").click(function(event) {
+        rowElem.find("td:last a").click(function (event) {
             reportError(null);
             var email = rowElem.attr('data-collab');
             removeCollab(email);
@@ -147,7 +149,7 @@ function addCollaboration(email, role, changeType) {
         });
     } else {
         rowStr = '<tr data-collab=' + email + ' data-role="' + role + '">\
-                            <td>' + email + ' (You)</td>\
+                            <td>' + email + ' (<spring:message code="YOU"/>)</td>\
                             <td><button class="btn btn-secondary">' + messages[role] + '</button></td>\
                               <td></td>\
                              </tr>';
@@ -156,20 +158,20 @@ function addCollaboration(email, role, changeType) {
     }
 }
 
-var removeCollab = function(email) {
+var removeCollab = function (email) {
     // Remove html entry ...
     $('#collabsTable tr[data-collab="' + email + '"]').detach();
 };
 
-$(function() {
+$(function () {
     jQuery.ajax("service/maps/${mindmap.id}/collabs", {
         async:false,
-        dataType: 'json',
-        type: 'GET',
+        dataType:'json',
+        type:'GET',
         contentType:"text/plain",
-        success : function(data, textStatus, jqXHR) {
+        success:function (data, textStatus, jqXHR) {
             // Owner roles is the first in the table ...
-            var collabs = data.collaborations.sort(function(a, b) {
+            var collabs = data.collaborations.sort(function (a, b) {
                 return a.role <= b.role;
             });
 
@@ -180,14 +182,14 @@ $(function() {
             }
 
         },
-        error:function(jqXHR, textStatus, errorThrown) {
+        error:function (jqXHR, textStatus, errorThrown) {
             alert(textStatus);
         }
     });
 });
 
-$("#addBtn").click(function(event) {
-    var i,email;
+$("#addBtn").click(function (event) {
+    var i, email;
     var emailsStr = $("#collabEmails").val();
     var role = $("#shareRole").attr('data-role');
 
@@ -196,7 +198,7 @@ $("#addBtn").click(function(event) {
     // Split emails ...
     var valid = true;
     if (emailsStr.length > 0) {
-        var emails = jQuery.grep(emailsStr.split(/[;|,|\s]/), function(val) {
+        var emails = jQuery.grep(emailsStr.split(/[;|,|\s]/), function (val) {
             return val.length > 0
         });
 
@@ -210,7 +212,7 @@ $("#addBtn").click(function(event) {
 
             // Is there a collab with the same email  ?
             var useExists = jQuery.grep(model.collaborations,
-                    function(val) {
+                    function (val) {
                         return val.email.trim() == email.trim();
                     }).length > 0;
 
@@ -231,13 +233,13 @@ $("#addBtn").click(function(event) {
         $("#collabEmails").val("");
         for (i = 0; i < emails.length; i++) {
             email = emails[i];
-            addCollaboration(email, role, 'New');
+            addCollaboration(email, role, '<spring:message code="NEW"/>');
         }
     }
 });
 
 // Register change event  ...
-$("#shareRole a").click(function() {
+$("#shareRole a").click(function () {
     var role = onClickShare(this);
     $(this).parent().attr('data-role', role);
 
@@ -259,10 +261,10 @@ function reportError(msg) {
 }
 
 function buildCollabModel() {
-    var collabs = $('#collabsTable tr').map(function() {
+    var collabs = $('#collabsTable tr').map(function () {
         return {
-            email: $(this).attr('data-collab'),
-            role: $(this).attr('data-role')
+            email:$(this).attr('data-collab'),
+            role:$(this).attr('data-role')
         };
     });
     collabs = jQuery.makeArray(collabs);
@@ -274,24 +276,24 @@ function buildCollabModel() {
 }
 
 // Hook for interaction with the main parent window ...
-var submitDialogForm = function() {
+var submitDialogForm = function () {
 
     var collabs = buildCollabModel();
-    collabs.collaborations = jQuery.grep(collabs.collaborations, function() {
+    collabs.collaborations = jQuery.grep(collabs.collaborations, function () {
         return this.role != 'owner';
     });
     collabs['message'] = $("#collabMessage").val();
 
     jQuery.ajax("service/maps/${mindmap.id}/collabs", {
         async:false,
-        dataType: 'json',
-        type: 'PUT',
-        data: JSON.stringify(collabs),
+        dataType:'json',
+        type:'PUT',
+        data:JSON.stringify(collabs),
         contentType:"application/json",
-        success : function(data, textStatus, jqXHR) {
+        success:function (data, textStatus, jqXHR) {
             $('#share-dialog-modal').modal('hide');
         },
-        error: function(jqXHR, textStatus, errorThrown) {
+        error:function (jqXHR, textStatus, errorThrown) {
             reportError(textStatus);
         }
     });

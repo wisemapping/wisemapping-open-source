@@ -45,7 +45,6 @@ public class MindMap {
     private Set<Collaboration> collaborations = new HashSet<Collaboration>();
 
     private User creator;
-    private String properties;
     private String tags;
     private String title;
     private byte[] xml;

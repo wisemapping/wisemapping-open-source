@@ -81,7 +81,7 @@
             <div id="headerLogo"></div>
         </a>
 
-        <div id="headerMapTitle">Title: <span>${mindmap.title}</span></div>
+        <div id="headerMapTitle"><spring:message code="NAME"/>: <span>${mindmap.title}</span></div>
     </div>
     <%@ include file="/jsp/mindmapEditorToolbar.jsf" %>
 </div>

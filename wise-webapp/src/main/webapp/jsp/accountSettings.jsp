@@ -111,15 +111,15 @@
 
         var fistname = $('#changeUserForm #firstname').val();
         var lastname = $('#changeUserForm #lastname').val();
-        postChange("service/account/firstname", fistname, 'changeInfoMsg', 'Your info has been changed successfully');
-        postChange("service/account/lastname", lastname, 'changeInfoMsg', 'Your info has been changed successfully');
+        postChange("service/account/firstname", fistname, 'changeInfoMsg', '<spring:message code="INFO_UPDATE_SUCCESS"/>');
+        postChange("service/account/lastname", lastname, 'changeInfoMsg', '<spring:message code="INFO_UPDATE_SUCCESS"/>');
         event.preventDefault();
     });
 
     $('#languageForm').submit(function (event) {
 
         var locale = $('#languageForm option:selected').val();
-        postChange("service/account/locale", locale, 'languageMsg', 'Your info has been changed successfully');
+        postChange("service/account/locale", locale, 'languageMsg', '<spring:message code="INFO_UPDATE_SUCCESS"/>');
         event.preventDefault();
     });
 </script>

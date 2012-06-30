@@ -71,7 +71,7 @@ public class RestMindmapInfo {
     }
 
     public String getCreator() {
-        return mindmap.getCreator().getUsername();
+        return mindmap.getCreator().getFullName();
     }
 
     public void setCreator() {
