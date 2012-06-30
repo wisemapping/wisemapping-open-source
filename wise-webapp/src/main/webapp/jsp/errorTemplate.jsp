@@ -13,9 +13,9 @@
     <spring:message code="${requestScope.title}"/>
 </h2>
 
-<p style="font-weight:bold;">
-     <spring:message code="${requestScope.details}"/>
-</p>
+<strong>
+    <spring:message code="${requestScope.details}"/>
+</strong>
 <!--
 <%
     final Throwable exception = (Throwable) request.getAttribute("exception");
@@ -23,12 +23,11 @@
         exception.printStackTrace(response.getWriter());
         String usrMail = "anonymous";
         final User user = Utils.getUser(false);
-        if(user!=null)
-        {
+        if (user != null) {
             usrMail = user.getEmail();
         }
 
-        logger.error("Unexpected error on user '" + usrMail+ " ':", exception);
+        logger.error("Unexpected error on user '" + usrMail + " ':", exception);
 
     }
 %>

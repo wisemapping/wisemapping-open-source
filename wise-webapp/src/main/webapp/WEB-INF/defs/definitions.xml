@@ -94,7 +94,7 @@
     </definition>
 
     <definition name="browserNotSupported" extends="pageTemplate">
-        <put-attribute name="title" value="UNSUPPORTED_BROWSER"/>
+        <put-attribute name="title" value="BROWSER_NOT_SUPPORTED_TITLE"/>
         <put-attribute name="body" value="/jsp/browserNotSupported.jsp"/>
     </definition>
 
