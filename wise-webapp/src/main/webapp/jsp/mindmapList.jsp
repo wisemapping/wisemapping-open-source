@@ -61,7 +61,7 @@
                         }
                     },
                     {
-                        sTitle:"Creator",
+                        sTitle:"<spring:message code="CREATOR"/>",
                         mDataProp:"creator"
                     },
                     {
@@ -181,8 +181,9 @@
                         </li>
                         <li id="shareBtn"><a href="#" onclick="return false"><i class="icon-share"></i> <spring:message
                                 code="SHARE"/></a></li>
-                        <li id="exportBtn"><a href="#" onclick="return false"><i class="icon-download"></i> <spring:message
-                                code="EXPORT"/></a>
+                        <li id="exportBtn"><a href="#" onclick="return false"><i class="icon-download"></i>
+                            <spring:message
+                                    code="EXPORT"/></a>
                         </li>
                         <li id="printBtn"><a href="#" onclick="return false"><i class="icon-print"></i> <spring:message
                                 code="PRINT"/></a></li>
@@ -278,8 +279,7 @@
 <div id="rename-dialog-modal" class="modal fade">
     <div class="modal-header">
         <button class="close" data-dismiss="modal">x</button>
-        <h3 id="renameDialogTitle"><spring:message
-                code="RENAME"/></h3>
+        <h3 id="renameDialogTitle"><spring:message code="RENAME"/></h3>
     </div>
     <div class="modal-body">
         <div class="errorMessage"></div>

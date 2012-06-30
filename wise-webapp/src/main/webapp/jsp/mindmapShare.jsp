@@ -39,7 +39,7 @@
 
 </style>
 
-<p><strong>Who has access:</strong></p>
+<p><strong><spring:message code="WHO_CAN_ACCESS"/>:</strong></p>
 
 <div id="sharingContainer">
     <table class="table" id="collabsTable">
@@ -55,25 +55,25 @@
     <div id="errorMsg" class="alert alert-error"></div>
     <div>
 
-        <p><strong>Add People:</strong></p>
+        <p><strong><spring:message code="ADD_PEOPLE"/>:</strong></p>
 
         <input type="text" id="collabEmails" name="collabEmails"
-               placeholder="Enter collaborators emails separared by comas." class="span1"/>
+               placeholder="<spring:message code="COLLABORATORS_SEPARATED_BY_COMA"/>" class="span1"/>
 
         <div class="btn-group" id="roleBtn">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Can edit
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><spring:message code="CAN_EDIT"/>
                 <span class="caret"> </span>
             </a>
             <ul class="dropdown-menu" data-role="editor" id="shareRole">
-                <li><a href="#" data-role="editor">Can edit</a></li>
-                <li><a href="#" data-role="viewer">Can view</a></li>
+                <li><a href="#" data-role="editor"><spring:message code="CAN_EDIT"/></a></li>
+                <li><a href="#" data-role="viewer"><spring:message code="CAN_VIEW"/></a></li>
             </ul>
         </div>
-        <button id="addBtn" class="btn btn-primary">Add</button>
+        <button id="addBtn" class="btn btn-primary"><spring:message code="ADD"/></button>
     </div>
     <div style="margin-top: 10px;">
-        <p><strong>Notify people via email</strong> - <a href="#" id="addMessageLink">Add message</a></p>
-        <textarea cols="4" id="collabMessage" placeholder="Optional: Include a personal message">
+        <p><strong><spring:message code="EMAIL_NOTIFICATION_MESSAGE"/></strong> - <a href="#" id="addMessageLink"><spring:message code="ADD_MESSAGE"/></a></p>
+        <textarea cols="4" id="collabMessage" placeholder="<spring:message code="OPTIONAL_CUSTOM_MESSAGE"/>">
 
         </textarea>
     </div>
@@ -91,9 +91,9 @@ $("#addMessageLink").click(function(event) {
 });
 
 var messages = {
-    owner: 'Is owner',
-    editor: 'Can edit',
-    viewer: 'Can view'};
+    owner: '<spring:message code="IS_OWNER"/>',
+    editor: '<spring:message code="CAN_EDIT"/>',
+    viewer: '<spring:message code="CAN_VIEW"/>'};
 
 function onClickShare(aElem) {
     var role = $(aElem).attr('data-role');

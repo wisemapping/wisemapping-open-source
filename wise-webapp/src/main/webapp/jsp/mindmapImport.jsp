@@ -35,11 +35,11 @@
     var contentType = null;
     var fileContent = null;
 
-    $('#cancelButton').click(function() {
+    $('#cancelButton').click(function () {
         window.location = '/c/maps/';
     });
 
-    $('#dialogMainForm').submit(function(event) {
+    $('#dialogMainForm').submit(function (event) {
         // Load form parameters ...
         var title = $('#dialogMainForm #title').attr('value');
         title = title == undefined ? "" : title;
@@ -51,15 +51,15 @@
         jQuery.ajax("service/maps?title=" + encodeURI(title) + "&description=" + encodeURI(description),
                 {
                     async:false,
-                    data: fileContent,
-                    type: 'POST',
-                    dataType: 'json',
+                    data:fileContent,
+                    type:'POST',
+                    dataType:'json',
                     contentType:contentType,
-                    success : function(data, textStatus, jqXHR) {
+                    success:function (data, textStatus, jqXHR) {
                         var resourceId = jqXHR.getResponseHeader("ResourceId");
                         window.location = "c/maps/" + resourceId + "/edit";
                     },
-                    error: function(jqXHR, textStatus, errorThrown) {
+                    error:function (jqXHR, textStatus, errorThrown) {
                         if (jqXHR.status == 400) {
                             var errors = JSON.parse(jqXHR.responseText);
                             // Mark fields with errors ...
@@ -91,7 +91,7 @@
         event.preventDefault();
     });
 
-    $('#dialogMainForm #mapFile').change(function(event) {
+    $('#dialogMainForm #mapFile').change(function (event) {
         var file = event.target.files[0];
         var reader = new FileReader();
 
@@ -100,7 +100,7 @@
         $('#dialogMainForm #title').attr('value', jQuery.camelCase(title));
 
         // Closure to capture the file information.
-        reader.onload = (function(event) {
+        reader.onload = (function (event) {
             fileContent = event.target.result;
             contentType = file.name.lastIndexOf(".wxml") != -1 ? "application/xml" : "application/freemind";
         });
@@ -110,7 +110,7 @@
     });
 
     // Hook for interaction with the main parent window ...
-    var submitDialogForm = function() {
+    var submitDialogForm = function () {
         $('#dialogMainForm').submit();
     }
 

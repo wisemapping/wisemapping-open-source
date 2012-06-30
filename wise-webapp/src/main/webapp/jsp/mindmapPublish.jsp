@@ -10,7 +10,7 @@
 </style>
 
 <form method="post" id="dialogMainForm" action="#" class="well form-inline">
-    <label for="enablePublicView" class="control-label">Enable Sharing:
+    <label for="enablePublicView" class="control-label"><spring:message code="ENABLE_PUBLISHING"/>:
         <input type="checkbox" id="enablePublicView" name="publicView"
                 <c:if test="${mindmap.public}">
                     checked="checked"
@@ -18,13 +18,14 @@
     </label>
 </form>
 
-<p><span class="label label-important">Warning</span> <spring:message code="PUBLISH_DETAILS"/></p>
+<p><span class="label label-important"> <spring:message code="WARNING"/></span> <spring:message code="PUBLISH_DETAILS"/>
+</p>
 
 <div id="publishPanel">
 
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#embedTab" data-toggle="pill">Embed</a></li>
-        <li><a href="#publicUrlTab" data-toggle="pill">Public URLs</a></li>
+        <li class="active"><a href="#embedTab" data-toggle="pill"><spring:message code="EMBED"/></a></li>
+        <li><a href="#publicUrlTab" data-toggle="pill"><spring:message code="PUBLIC_URL"/></a></li>
     </ul>
 
     <div class="tab-content">
@@ -32,17 +33,15 @@
             <spring:message code="BLOG_INCLUSION"/>
             <div id="wizardContainer">
                 <form class="form-inline" action="#">
-                    <label for="frameWith">Frame width:</label>
-                    <input type="number" id="frameWith" name="frameWith" value="600" class="span2"
-                           min="0"/>
+                    <label for="frameWidth"><spring:message code="FRAME_WIDTH"/>:</label>
+                    <input type="number" id="frameWidth" name="frameWidth" value="600" class="span2" min="0"/>
 
-                    <label for="frameHeight">Frame height:</label>
+                    <label for="frameHeight"><spring:message code="FRAME_HEIGHT"/>:</label>
                     <input type="number" id="frameHeight" name="frameHeight" value="400" class="span2" min="0"/>
 
-                    <label for="mapZoom">Zoom %:</label>
-                    <input type="number" id="mapZoom"
-                           name="mapZoom" value="80"
-                           class="span2" min="10" max="200" step="10"/>
+                    <label for="mapZoom"><spring:message code="ZOOM"/> %:</label>
+                    <input type="number" id="mapZoom" name="mapZoom" value="80" class="span2" min="10" max="200"
+                           step="10"/>
                 </form>
             </div>
             <label><spring:message code="BLOG_SNIPPET"/></label>
@@ -62,7 +61,7 @@ solid black" src="${baseUrl}/c/maps/${mindmap.id}/embed?zoom=1"&gt; &lt;/iframe&
 <script type="text/javascript">
     // Update tabs display status ...
     var checkboxElems = $('#dialogMainForm input:checkbox');
-    var updateTabsDisplay = function() {
+    var updateTabsDisplay = function () {
         var divElem = $('#publishPanel');
         checkboxElems[0].checked ? divElem.show() : divElem.hide();
     };
@@ -70,7 +69,7 @@ solid black" src="${baseUrl}/c/maps/${mindmap.id}/embed?zoom=1"&gt; &lt;/iframe&
     updateTabsDisplay();
 
     // Change snippet code based on the user options ...
-    var replaceCode = function(regExpr, strReplace, factor) {
+    var replaceCode = function (regExpr, strReplace, factor) {
         var preElem = $('#publishPanel #embedCode')[0];
         var fieldValue = this.value;
         if (!isNaN(fieldValue) && fieldValue.length > 0) {
@@ -79,43 +78,43 @@ solid black" src="${baseUrl}/c/maps/${mindmap.id}/embed?zoom=1"&gt; &lt;/iframe&
         }
     };
 
-    $('#publishPanel #frameWith').keyup(function() {
+    $('#publishPanel #frameWidth').keyup(function () {
         replaceCode.bind(this)(/width:[0-9]+px/g, "width:%spx", 1);
     });
 
-    $('#publishPanel #frameWith').change(function() {
+    $('#publishPanel #frameWidth').change(function () {
         replaceCode.bind(this)(/width:[0-9]+px/g, "width:%spx", 1);
     });
 
-    $('#publishPanel #frameHeight').keyup(function() {
+    $('#publishPanel #frameHeight').keyup(function () {
         replaceCode.bind(this)(/height:[0-9]+px/g, "height:%spx", 1);
     });
 
-    $('#publishPanel #frameHeight').change(function() {
+    $('#publishPanel #frameHeight').change(function () {
         replaceCode.bind(this)(/height:[0-9]+px/g, "height:%spx", 1);
     });
 
-    $('#publishPanel #mapZoom').keyup(function() {
+    $('#publishPanel #mapZoom').keyup(function () {
         replaceCode.bind(this)(/zoom=.+\"/g, "zoom=%s\"", 0.1);
     });
 
-    $('#publishPanel #mapZoom').change(function() {
+    $('#publishPanel #mapZoom').change(function () {
         replaceCode.bind(this)(/zoom=.+\"/g, "zoom=%s\"", 0.01);
     });
 
 
     // Save status on click ...
-    $('#dialogMainForm').submit(function(event) {
+    $('#dialogMainForm').submit(function (event) {
         jQuery.ajax("service/maps/${mindmap.id}/publish", {
             async:false,
-            dataType: 'json',
-            data: $('#dialogMainForm #enablePublicView')[0].checked ? 'true' : 'false',
-            type: 'PUT',
+            dataType:'json',
+            data:$('#dialogMainForm #enablePublicView')[0].checked ? 'true' : 'false',
+            type:'PUT',
             contentType:"text/plain",
-            success : function(data, textStatus, jqXHR) {
+            success:function (data, textStatus, jqXHR) {
                 $('#publish-dialog-modal').modal('hide');
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error:function (jqXHR, textStatus, errorThrown) {
                 alert(textStatus);
             }
         });
@@ -123,7 +122,7 @@ solid black" src="${baseUrl}/c/maps/${mindmap.id}/embed?zoom=1"&gt; &lt;/iframe&
     });
 
     // Hook for interaction with the main parent window ...
-    var submitDialogForm = function() {
+    var submitDialogForm = function () {
         $('#dialogMainForm').submit();
     }
 </script>

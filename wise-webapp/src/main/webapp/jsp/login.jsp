@@ -42,7 +42,7 @@
                 </c:if>
 
                 <div class="form-inline">
-                    <button class="btn btn-primary" data-loading-text="<spring:message code="SIGN_IN"/> ...">
+                    <button class="btn btn-primary" data-loading-text="<spring:message code="SIGN_ING"/>">
                         <spring:message code="SIGN_IN"/></button>
                     &nbsp;&nbsp;&nbsp;
                     <input type="checkbox" id="rememberme" name="_spring_security_remember_me"/>
