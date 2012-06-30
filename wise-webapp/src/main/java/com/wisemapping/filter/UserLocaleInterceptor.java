@@ -43,16 +43,9 @@ public class UserLocaleInterceptor extends HandlerInterceptorAdapter {
 
         if (user != null && session != null) {
             String userLocale = user.getLocale();
-            final String sessionLocale = (String) session.getAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME);
-            if (userLocale != null && !userLocale.equals(sessionLocale)) {
-//                LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
-//                if (localeResolver == null) {
-//                    throw new IllegalStateException("No LocaleResolver found: not in a DispatcherServlet request?");
-//                }
-//                LocaleEditor localeEditor = new LocaleEditor();
-//                localeEditor.setAsText(userLocale);
-//                localeResolver.setLocale(request, response, (Locale) localeEditor.getValue());
-                session.setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, userLocale);
+            final Locale sessionLocale = (Locale) session.getAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME);
+            if ((userLocale != null) && ((sessionLocale == null) || (!userLocale.equals(sessionLocale.getISO3Language())))) {
+                session.setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, new Locale(userLocale));
             }
         }
         return true;

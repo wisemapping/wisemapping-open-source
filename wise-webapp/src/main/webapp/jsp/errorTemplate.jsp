@@ -1,6 +1,8 @@
 <!DOCTYPE HTML>
 
 <%@ page import="org.apache.log4j.Logger" %>
+<%@ page import="com.wisemapping.security.Utils" %>
+<%@ page import="com.wisemapping.model.User" %>
 <%@ page autoFlush="true" buffer="none" %>
 <%@ include file="/jsp/init.jsp" %>
 
@@ -20,6 +22,7 @@
     if (exception != null) {
         exception.printStackTrace(response.getWriter());
         String usrMail = "anonymous";
+        final User user = Utils.getUser(false);
         if(user!=null)
         {
             usrMail = user.getEmail();

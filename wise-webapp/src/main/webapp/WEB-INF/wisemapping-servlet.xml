@@ -70,9 +70,7 @@
     </bean>
 
     <bean id="localeResolver"
-          class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
-        <property name="defaultLocale" value="en"/>
-    </bean>
+          class="org.springframework.web.servlet.i18n.SessionLocaleResolver"/>
 
     <bean id="reCaptcha" class="net.tanesha.recaptcha.ReCaptchaImpl">
         <property name="privateKey" value="${registration.recaptcha.privateKey}"/>
