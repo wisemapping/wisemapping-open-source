@@ -28,6 +28,7 @@
             <property name="activationDate" column="activation_date"/>
             <property name="activationCode"/>
             <property name="allowSendEmail"/>
+            <property name="locale"/>
             <set name="tags" table="TAG">
                 <key column="user_id"/>
                 <element column="name" type="string"/>

@@ -1,5 +1,7 @@
+<%@page pageEncoding="UTF-8" %>
+<%@include file="/jsp/init.jsp" %>
+
 <!DOCTYPE HTML>
-<%@ include file="/jsp/init.jsp" %>
 
 <div>
     <iframe src='${url}' style="border: 0;width: 100%;height:100%" id="dialogContentIframe"></iframe>

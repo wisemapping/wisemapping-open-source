@@ -13,6 +13,7 @@ password varchar(255)  NOT NULL,
 activationCode BIGINT NOT NULL,
 activation_date DATE,
 allowSendEmail CHAR(1) NOT NULL,
+locale varchar(5),
 FOREIGN KEY(colaborator_id) REFERENCES COLLABORATOR(id)
 );
 

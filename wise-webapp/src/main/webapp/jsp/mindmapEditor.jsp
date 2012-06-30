@@ -1,3 +1,6 @@
+<%@page pageEncoding="UTF-8" %>
+<%@ include file="/jsp/init.jsp" %>
+
 <!DOCTYPE HTML>
 
 <%--@elvariable id="mindmap" type="com.wisemapping.model.MindMap"--%>
@@ -5,12 +8,10 @@
 <%--@elvariable id="editorTryMode" type="java.lang.String"--%>
 <%--@elvariable id="mapXml" type="com.wisemapping.model.User"--%>
 
-<%@ include file="/jsp/init.jsp" %>
 <html>
 <head>
     <base href="${baseURL}/">
     <title><spring:message code="SITE.TITLE"/> - ${mindmap.title} </title>
-    <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
     <!--[if lt IE 9]>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <![endif]-->

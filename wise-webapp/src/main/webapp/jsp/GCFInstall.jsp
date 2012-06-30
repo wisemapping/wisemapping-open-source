@@ -1,5 +1,6 @@
-<%@ page autoFlush="true" buffer="none" %>
-<%@ include file="/jsp/init.jsp" %>
+<%@page pageEncoding="UTF-8" %>
+<%@include file="/jsp/init.jsp" %>
+
 
 <div style="position:relative;">
     <div id="prompt">

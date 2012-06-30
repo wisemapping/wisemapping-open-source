@@ -1,7 +1,17 @@
 <%@page pageEncoding="UTF-8" %>
+
+<%@ page import="com.wisemapping.model.User" %>
+<%@ page import="com.wisemapping.security.Utils" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
+<%
+    User user = Utils.getUser(false);
+    if (user != null) {
+        request.setAttribute("principal", user);
+    }
+%>
 
 <div id="settings-dialog-modal" class="modal fade">
     <div class="modal-header">
@@ -12,7 +22,7 @@
 
     </div>
     <div class="modal-footer">
-        <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CLOSE"/></button>
+        <button class="btn btn-cancel"><spring:message code="CLOSE"/></button>
     </div>
 </div>
 <div id="header">
@@ -39,17 +49,6 @@
                 </div>
             </c:when>
         </c:choose>
-        <div class="header_languages">
-            <div class="header_language_flag">
-                <a href="/c/login?language=en"><img src="/images/flag-uk.gif" alt="English"></a>
-            </div>
-            <div class="header_language_flag">
-                <a href="/c/login?language=fr"><img src="/images/flag-fr.gif" alt="Frances"></a>
-            </div>
-            <div class="header_language_flag">
-                <a href="/c/login?language=es"><img src="/images/flag-es.gif" alt="Español"></a>
-            </div>
-        </div>
     </div>
 </div>
 <c:if test="${param.onlyActionHeader!=true}">
@@ -67,12 +66,15 @@
 
 <script type="text/javascript">
     $('#userSettingsBtn').click(
-            function(event) {
-                $('#settings-dialog-modal .modal-body').load("/c/account/settings"),function() {
-                    $('#settings-dialog-modal .btn-accept').unbind('click').click(function() {
-                        // hacer lago ...
-                    });
-                };
+            function (event) {
+                $('#settings-dialog-modal .modal-body').load("/c/account/settings",
+                        function () {
+                            $('#settings-dialog-modal .btn-cancel').unbind('click').click(function () {
+                                $('#settings-dialog-modal').modal("hide");
+                                window.location.reload();
+                            });
+                        }
+                );
                 $('#settings-dialog-modal').modal();
                 event.preventDefault();
 

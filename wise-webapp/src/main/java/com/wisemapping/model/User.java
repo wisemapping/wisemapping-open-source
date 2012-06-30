@@ -18,6 +18,8 @@
 
 package com.wisemapping.model;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -33,6 +35,8 @@ public class User
     private String username;
     private Set<String> tags = new HashSet<String>();
     private boolean allowSendEmail = false;
+    private String locale;
+
 
     public User() {
     }
@@ -119,6 +123,7 @@ public class User
 
     }
 
+
     public int hashCode() {
         int result;
         result = (firstname != null ? firstname.hashCode() : 0);
@@ -136,4 +141,11 @@ public class User
         this.username = username;
     }
 
+    public String getLocale() {
+        return locale;
+    }
+
+    public void setLocale(@NotNull String locale) {
+        this.locale = locale;
+    }
 }

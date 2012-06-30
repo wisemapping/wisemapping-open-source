@@ -1,11 +1,12 @@
+<%@page pageEncoding="UTF-8" %>
+<%@include file="/jsp/init.jsp" %>
+
 <!DOCTYPE HTML>
 
-<%@ include file="/jsp/init.jsp" %>
 <html>
 <head>
     <base href="${baseURL}">
     <title><spring:message code="SITE.TITLE"/></title>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
     <!--[if lt IE 9]>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <![endif]-->
@@ -52,11 +53,16 @@
         <div id="foldersContainer">
             <ul class="nav nav-list">
                 <li class="nav-header">Filters</li>
-                <li data-filter="all" class="active"><a href="#"><i class="icon-inbox icon-white"></i> All</a></li>
-                <li data-filter="my_maps"><a href="#"><i class="icon-user"></i> My Maps</a></li>
-                <li data-filter="shared_with_me"><a href="#"><i class="icon-share"></i> Shared With Me</a></li>
-                <li data-filter="starred"><a href="#"><i class="icon-star"></i> Starred</a></li>
-                <li data-filter="public"><a href="#"><i class="icon-globe"></i> Public Maps</a></li>
+                <li data-filter="all" class="active"><a href="#"><i class="icon-inbox icon-white"></i> <spring:message
+                        code="ALL_MAPS"/></a></li>
+                <li data-filter="my_maps"><a href="#"><i class="icon-user"></i> <spring:message code="MY_MAPS"/></a>
+                </li>
+                <li data-filter="shared_with_me"><a href="#"><i class="icon-share"></i> <spring:message
+                        code="SHARED_WITH_ME"/></a></li>
+                <li data-filter="starred"><a href="#"><i class="icon-star"></i> <spring:message code="STARRED"/></a>
+                </li>
+                <li data-filter="public"><a href="#"><i class="icon-globe"></i> <spring:message code="PUBLIC_MAPS"/></a>
+                </li>
             </ul>
         </div>
 
@@ -121,7 +127,7 @@
     <div id="new-dialog-modal" title="Add new map" class="modal fade">
         <div class="modal-header">
             <button class="close" data-dismiss="modal">x</button>
-            <h3>Create a new map</h3>
+            <h3><spring:message code="NEW_MAP_MSG"/></h3>
         </div>
         <div class="modal-body">
             <div class="errorMessage"></div>
@@ -141,8 +147,9 @@
             </form>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary btn-accept" data-loading-text="Saving ...">Create</button>
-            <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-primary btn-accept" data-loading-text="Saving ..."><spring:message
+                    code="CREATE"/></button>
+            <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
         </div>
     </div>
 
@@ -172,8 +179,9 @@
             </form>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary btn-accept" data-loading-text="Saving ...">Duplicate</button>
-            <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/> ...">
+                <spring:message code="DUPLICATE"/></button>
+            <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
         </div>
     </div>
 
@@ -201,8 +209,9 @@
             </form>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary btn-accept" data-loading-text="Saving ...">Rename</button>
-            <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-primary btn-accept" data-loading-text="Saving ..."><spring:message
+                    code="RENAME"/></button>
+            <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
         </div>
     </div>
 
@@ -210,7 +219,7 @@
     <div id="delete-dialog-modal" class="modal fade">
         <div class="modal-header">
             <button class="close" data-dismiss="modal">x</button>
-            <h3>Delete MindMap</h3>
+            <h3><spring:message code="DELETE_MINDMAP"/></h3>
         </div>
         <div class="modal-body">
             <div class="alert alert-block">
@@ -219,8 +228,9 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary btn-accept" data-loading-text="Saving ...">Delete</button>
-            <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-primary btn-accept" data-loading-text="Saving ..."><spring:message
+                    code="DELETE"/></button>
+            <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
         </div>
     </div>
 
@@ -228,13 +238,13 @@
     <div id="info-dialog-modal" class="modal fade">
         <div class="modal-header">
             <button class="close" data-dismiss="modal">x</button>
-            <h3>Info</h3>
+            <h3><spring:message code="INFO"/></h3>
         </div>
         <div class="modal-body">
 
         </div>
         <div class="modal-footer">
-            <button class="btn btn-cancel" data-dismiss="modal">Close</button>
+            <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CLOSE"/></button>
         </div>
     </div>
 
@@ -242,14 +252,15 @@
     <div id="publish-dialog-modal" class="modal fade">
         <div class="modal-header">
             <button class="close" data-dismiss="modal">x</button>
-            <h3>Publish</h3>
+            <h3><spring:message code="PUBLISH"/></h3>
         </div>
         <div class="modal-body">
 
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary btn-accept" data-loading-text="Saving...">Accept</button>
-            <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/>...">
+                <spring:message code="ACCEPT"/></button>
+            <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
         </div>
     </div>
 
@@ -257,14 +268,15 @@
     <div id="export-dialog-modal" class="modal fade">
         <div class="modal-header">
             <button class="close" data-dismiss="modal">x</button>
-            <h3>Export</h3>
+            <h3><spring:message code="EXPORT"/></h3>
         </div>
         <div class="modal-body">
 
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary btn-accept" data-loading-text="Exporting...">Export</button>
-            <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-primary btn-accept" data-loading-text="Exporting..."><spring:message
+                    code="EXPORT"/></button>
+            <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
         </div>
     </div>
 
@@ -272,14 +284,15 @@
     <div id="import-dialog-modal" class="modal fade">
         <div class="modal-header">
             <button class="close" data-dismiss="modal">x</button>
-            <h3>Import</h3>
+            <h3><spring:message code="IMPORT"/></h3>
         </div>
         <div class="modal-body">
 
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary btn-accept" data-loading-text="Importing...">Import</button>
-            <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-primary btn-accept" data-loading-text="Importing..."><spring:message
+                    code="IMPORT"/></button>
+            <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
         </div>
     </div>
 
@@ -287,28 +300,29 @@
     <div id="share-dialog-modal" class="modal fade">
         <div class="modal-header">
             <button class="close" data-dismiss="modal">x</button>
-            <h3>Share</h3>
+            <h3><spring:message code="SHARE"/></h3>
         </div>
         <div class="modal-body">
 
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary btn-accept" data-loading-text="Saving ..">Accept</button>
-            <button class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/> ...">
+                <spring:message code="ACCEPT"/></button>
+            <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
         </div>
     </div>
 
     <!-- History Dialog Config -->
-    <div id="history-dialog-modal" class="modal fade" >
+    <div id="history-dialog-modal" class="modal fade">
         <div class="modal-header">
             <button class="close" data-dismiss="modal">x</button>
-            <h3>History</h3>
+            <h3><spring:message code="HISTORY"/></h3>
         </div>
         <div class="modal-body">
 
         </div>
         <div class="modal-footer">
-            <button class="btn btn-cancel" data-dismiss="modal">Close</button>
+            <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CLOSE"/></button>
         </div>
     </div>
 </div>

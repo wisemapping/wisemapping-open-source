@@ -1,4 +1,6 @@
-<%@ include file="/jsp/init.jsp" %>
+<%@page pageEncoding="UTF-8" %>
+<%@include file="/jsp/init.jsp" %>
+
 <div>
     <div class="fform">
 

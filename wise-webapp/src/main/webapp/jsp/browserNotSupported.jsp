@@ -1,6 +1,7 @@
-<%@ include file="/jsp/init.jsp" %>
+<%@page pageEncoding="UTF-8" %>
+<%@include file="/jsp/init.jsp" %>
 
-<h2>Opps!!!. Your browser is not currently supported</h2>
+<h2>Ups!!!. Your browser is not currently supported</h2>
 
 <p>Your browser has not been fully tested and it might not be completely functional. WiseMapping has been optimized
     for:</p>

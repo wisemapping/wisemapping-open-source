@@ -1,17 +1,17 @@
+<%@page pageEncoding="UTF-8" %>
+<%@include file="/jsp/init.jsp" %>
+
 <!DOCTYPE HTML>
 
-<%@page pageEncoding="UTF-8" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
-<%@ include file="/jsp/init.jsp" %>
-
 <tiles:importAttribute name="title" scope="request"/>
 <tiles:importAttribute name="details" scope="request"/>
+
 <html>
 <head>
     <base href="${baseURL}/">
     <title>
-        <spring:message code="SITE.TITLE"/>
-        -
+        <spring:message code="SITE.TITLE"/>-
         <c:choose>
             <c:when test="${requestScope.viewTitle!=null}">
                 ${requestScope.viewTitle}
@@ -21,7 +21,6 @@
             </c:otherwise>
         </c:choose>
     </title>
-    <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" type="text/css" href="css/pageTemplate.css"/>
 
     <link rel="icon" href="images/favicon.ico" type="image/x-icon"/>

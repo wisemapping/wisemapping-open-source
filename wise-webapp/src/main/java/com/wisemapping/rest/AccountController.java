@@ -80,6 +80,21 @@ public class AccountController extends BaseController {
         userService.updateUser(user);
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "account/locale", consumes = {"text/plain"})
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void changeLanguage(@RequestBody String language) {
+        if (language == null) {
+            throw new IllegalArgumentException("language can not be null");
+
+        } if (!language.equals("en") && !language.equals("es") ){
+            throw new IllegalArgumentException("language not supported yet");
+        }
+
+        final User user = Utils.getUser();
+        user.setLocale(language);
+        userService.updateUser(user);
+    }
+
     @RequestMapping(method = RequestMethod.POST, value = "logger/editor", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void changePassword(@RequestBody RestLogItem item) {

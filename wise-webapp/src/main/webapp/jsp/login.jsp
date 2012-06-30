@@ -1,6 +1,7 @@
-<%--@elvariable id="isHsql" type="boolean"--%>
-
+<%@page pageEncoding="UTF-8" %>
 <%@ include file="/jsp/init.jsp" %>
+
+<%--@elvariable id="isHsql" type="boolean"--%>
 
 <script type="text/javascript" language="javascript">
     $(function() {

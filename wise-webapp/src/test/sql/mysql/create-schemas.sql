@@ -14,6 +14,7 @@ password varchar(255) CHARACTER SET utf8 NOT NULL,
 activationCode BIGINT(20) NOT NULL,
 activation_date date,
 allowSendEmail char(1) CHARACTER SET utf8 NOT NULL default 0,
+locale varchar(5),
 FOREIGN KEY(colaborator_id) REFERENCES COLLABORATOR(id) ON DELETE CASCADE ON UPDATE NO ACTION
 ) CHARACTER SET utf8 ;
 

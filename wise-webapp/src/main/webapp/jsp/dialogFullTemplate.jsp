@@ -1,7 +1,9 @@
+<%@page pageEncoding="UTF-8" %>
+<%@include file="/jsp/init.jsp" %>
+
 <!DOCTYPE HTML>
 
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
-<%@ include file="/jsp/init.jsp" %>
 
 <tiles:importAttribute name="title" scope="page"/>
 <tiles:importAttribute name="details" scope="page"/>
@@ -9,7 +11,6 @@
 <html>
 <head>
     <base href="${baseURL}/">
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
     <!--[if lt IE 9]>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <![endif]-->

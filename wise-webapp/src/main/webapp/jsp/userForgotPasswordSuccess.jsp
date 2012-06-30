@@ -1,4 +1,5 @@
-<%@ include file="/jsp/init.jsp" %>
+<%@page pageEncoding="UTF-8" %>
+<%@include file="/jsp/init.jsp" %>
 
 <h2>
     Your temporal password has been sent

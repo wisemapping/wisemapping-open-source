@@ -35,8 +35,7 @@
                 </set>
             </property>
         </bean>
-        <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-            <property name="paramName" value="language"/>
+        <bean id="userLocaleInterceptor" class="com.wisemapping.filter.UserLocaleInterceptor">
         </bean>
     </mvc:interceptors>
 

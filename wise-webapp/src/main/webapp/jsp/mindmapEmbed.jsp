@@ -1,3 +1,6 @@
+<%@page pageEncoding="UTF-8" %>
+<%@include file="/jsp/init.jsp" %>
+
 <!DOCTYPE HTML>
 
 <%--@elvariable id="mindmap" type="com.wisemapping.model.MindMap"--%>
@@ -5,18 +8,11 @@
 <%--@elvariable id="editorTryMode" type="java.lang.String"--%>
 <%--@elvariable id="mapXml" type="com.wisemapping.model.User"--%>
 
-<%@ page import="java.text.DateFormat" %>
-<%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="java.util.Calendar" %>
-
-
-<%@ include file="/jsp/init.jsp" %>
 
 <html>
 <head>
     <base href="${baseURL}/">
     <title><spring:message code="SITE.TITLE"/> - ${mindmap.title} </title>
-    <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
 
     <!--[if lt IE 9]>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
@@ -32,7 +28,7 @@
     <script type="text/javascript">
         var mapId = '${mindmap.id}';
         var mapXml = '${mindmap.xmlAsJsLiteral}';
-        $(document).addEvent('loadcomplete', function(resource) {
+        $(document).addEvent('loadcomplete', function (resource) {
 
             // Configure designer options ...
             var options = loadDesignerOptions();
@@ -59,11 +55,11 @@
             var mindmap = persistence.loadFromDom(mapId, domDocument);
             designer.loadMap(mindmap);
 
-            $('zoomIn').addEvent('click', function() {
+            $('zoomIn').addEvent('click', function () {
                 designer.zoomIn();
             });
 
-            $('zoomOut').addEvent('click', function() {
+            $('zoomOut').addEvent('click', function () {
                 designer.zoomOut();
             });
         });

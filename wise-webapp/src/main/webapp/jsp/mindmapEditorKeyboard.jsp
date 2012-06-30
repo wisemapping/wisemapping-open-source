@@ -1,6 +1,7 @@
-<!DOCTYPE HTML>
-
+<%@page pageEncoding="UTF-8" %>
 <%@ include file="/jsp/init.jsp" %>
+
+<!DOCTYPE HTML>
 
 <div id="keyboardTable">
     <table>

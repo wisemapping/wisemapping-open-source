@@ -31,6 +31,8 @@ ALTER TABLE ACCESS_AUDITORY
 , ADD INDEX `user_id` () ;
 
 
+ALTER TABLE `wisemapping`.`user` ADD COLUMN `locale` VARCHAR(5) NULL  AFTER `allowSendEmail` ;
+
 # INSERT INTO `wisemapping`.`collaborator` (`id`, `email`, `creation_date`) VALUES (8081, 'fake@wisemapping.com', '2007-10-09');
 # DELETE FROM `wisemapping`.`USER` where activation_date is null;
 # DROP TABLE FEEDBACK;

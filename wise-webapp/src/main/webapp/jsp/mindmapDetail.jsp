@@ -1,4 +1,5 @@
-<%@ include file="/jsp/init.jsp" %>
+<%@page pageEncoding="UTF-8" %>
+<%@include file="/jsp/init.jsp" %>
 <%--@elvariable id="mindmap" type="com.wisemapping.view.MindMapBean"--%>
 
 <div>
