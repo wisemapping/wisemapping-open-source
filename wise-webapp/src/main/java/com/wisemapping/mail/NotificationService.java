@@ -117,6 +117,7 @@ final public class NotificationService {
     }
 
     private void handleException(Exception e) {
+        System.err.println("An expected error has occurred trying to send an email notification. Usually, the main reason for this is that the SMTP server properties has not been configured properly. Edit the WEB-INF/app.properties file and verify the SMTP server configuration properties.");
         e.printStackTrace();
     }
 
@@ -136,12 +137,16 @@ final public class NotificationService {
     }
 
     public void sendRegistrationEmail(@NotNull User user) {
-        final Map<String, Object> model = new HashMap<String, Object>();
-        model.put("user", user);
-        final String activationUrl = "http://wisemapping.com/c/activation?code=" + user.getActivationCode();
-        model.put("emailcheck", activationUrl);
-        mailer.sendEmail(mailer.getServerSenderEmail(), user.getEmail(), "Welcome to Wisemapping!", model,
-                "confirmationMail.vm");
+        try {
+            final Map<String, Object> model = new HashMap<String, Object>();
+            model.put("user", user);
+            final String activationUrl = "http://wisemapping.com/c/activation?code=" + user.getActivationCode();
+            model.put("emailcheck", activationUrl);
+            mailer.sendEmail(mailer.getServerSenderEmail(), user.getEmail(), "Welcome to Wisemapping!", model,
+                    "confirmationMail.vm");
+        } catch (Exception e) {
+            handleException(e);
+        }
     }
 
     public void reportMindmapEditorError(@NotNull MindMap mindmap, @NotNull User user, @NotNull String userAgent, @Nullable String jsErrorMsg) {
