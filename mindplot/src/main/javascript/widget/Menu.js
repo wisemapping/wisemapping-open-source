@@ -17,21 +17,21 @@
  */
 
 mindplot.widget.Menu = new Class({
-    Extends: mindplot.widget.IMenu,
+    Extends:mindplot.widget.IMenu,
 
-    initialize : function(designer, containerId, mapId, readOnly, baseUrl) {
+    initialize:function (designer, containerId, mapId, readOnly, baseUrl) {
         this.parent(designer, containerId, mapId);
 
         baseUrl = !$defined(baseUrl) ? "" : baseUrl;
         var widgetsBaseUrl = baseUrl + "css/widget";
 
         // Stop event propagation ...
-        $(this._containerId).addEvent('click', function(event) {
+        $(this._containerId).addEvent('click', function (event) {
             event.stopPropagation();
             return false;
         });
 
-        $(this._containerId).addEvent('dblclick', function(event) {
+        $(this._containerId).addEvent('dblclick', function (event) {
             event.stopPropagation();
             return false;
         });
@@ -42,7 +42,7 @@ mindplot.widget.Menu = new Class({
         var fontFamilyBtn = $('fontFamily');
         if (fontFamilyBtn) {
             var fontFamilyModel = {
-                getValue: function() {
+                getValue:function () {
                     var nodes = designerModel.filterSelectedTopics();
                     var result = null;
                     for (var i = 0; i < nodes.length; i++) {
@@ -56,19 +56,19 @@ mindplot.widget.Menu = new Class({
                     return result;
                 },
 
-                setValue: function(value) {
+                setValue:function (value) {
                     designer.changeFontFamily(value);
 
                 }
             };
             this._toolbarElems.push(new mindplot.widget.FontFamilyPanel("fontFamily", fontFamilyModel));
-            this._registerTooltip('fontFamily', "Text font");
+            this._registerTooltip('fontFamily', $msg('FONT_FAMILY'));
         }
 
         var fontSizeBtn = $('fontSize');
         if (fontSizeBtn) {
             var fontSizeModel = {
-                getValue: function() {
+                getValue:function () {
                     var nodes = designerModel.filterSelectedTopics();
                     var result = null;
                     for (var i = 0; i < nodes.length; i++) {
@@ -81,18 +81,18 @@ mindplot.widget.Menu = new Class({
                     }
                     return result;
                 },
-                setValue: function(value) {
+                setValue:function (value) {
                     designer.changeFontSize(value);
                 }
             };
             this._toolbarElems.push(new mindplot.widget.FontSizePanel("fontSize", fontSizeModel));
-            this._registerTooltip('fontSize', "Text size");
+            this._registerTooltip('fontSize', $msg('FONT_SIZE'));
         }
 
         var topicShapeBtn = $('topicShape');
         if (topicShapeBtn) {
             var topicShapeModel = {
-                getValue: function() {
+                getValue:function () {
                     var nodes = designerModel.filterSelectedTopics();
                     var result = null;
                     for (var i = 0; i < nodes.length; i++) {
@@ -105,27 +105,27 @@ mindplot.widget.Menu = new Class({
                     }
                     return result;
                 },
-                setValue: function(value) {
+                setValue:function (value) {
                     designer.changeTopicShape(value);
                 }
             };
             this._toolbarElems.push(new mindplot.widget.TopicShapePanel("topicShape", topicShapeModel));
-            this._registerTooltip('topicShape', "Topic shape");
+            this._registerTooltip('topicShape', $msg('TOPIC_SHAPE'));
         }
 
         var topicIconBtn = $('topicIcon');
         if (topicIconBtn) {
             // Create icon panel dialog ...
             var topicIconModel = {
-                getValue: function() {
+                getValue:function () {
                     return null;
                 },
-                setValue: function(value) {
+                setValue:function (value) {
                     designer.addIconType(value);
                 }
             };
             this._toolbarElems.push(new mindplot.widget.IconPanel('topicIcon', topicIconModel));
-            this._registerTooltip('topicIcon', "Icon");
+            this._registerTooltip('topicIcon', $msg('TOPIC_ICON'));
         }
 
         // Topic color item ...
@@ -133,7 +133,7 @@ mindplot.widget.Menu = new Class({
         if (topicColorBtn) {
 
             var topicColorModel = {
-                getValue : function() {
+                getValue:function () {
                     var nodes = designerModel.filterSelectedTopics();
                     var result = null;
                     for (var i = 0; i < nodes.length; i++) {
@@ -146,12 +146,12 @@ mindplot.widget.Menu = new Class({
                     }
                     return result;
                 },
-                setValue : function (hex) {
+                setValue:function (hex) {
                     designer.changeBackgroundColor(hex);
                 }
             };
             this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('topicColor', topicColorModel, widgetsBaseUrl));
-            this._registerTooltip('topicColor', "Topic color");
+            this._registerTooltip('topicColor', $msg('TOPIC_COLOR'));
         }
 
         // Border color item ...
@@ -159,7 +159,7 @@ mindplot.widget.Menu = new Class({
         if (topicBorderBtn) {
             var borderColorModel =
             {
-                getValue : function() {
+                getValue:function () {
                     var nodes = designerModel.filterSelectedTopics();
                     var result = null;
                     for (var i = 0; i < nodes.length; i++) {
@@ -172,12 +172,12 @@ mindplot.widget.Menu = new Class({
                     }
                     return result;
                 },
-                setValue : function (hex) {
+                setValue:function (hex) {
                     designer.changeBorderColor(hex);
                 }
             };
             this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('topicBorder', borderColorModel, widgetsBaseUrl));
-            this._registerTooltip('topicBorder', "Border color");
+            this._registerTooltip('topicBorder', $msg('TOPIC_BORDER_COLOR'));
         }
 
         // Font color item ...
@@ -185,7 +185,7 @@ mindplot.widget.Menu = new Class({
         if (fontColorBtn) {
             var fontColorModel =
             {
-                getValue : function() {
+                getValue:function () {
                     var result = null;
                     var nodes = designerModel.filterSelectedTopics();
                     for (var i = 0; i < nodes.length; i++) {
@@ -198,107 +198,107 @@ mindplot.widget.Menu = new Class({
                     }
                     return result;
                 },
-                setValue : function (hex) {
+                setValue:function (hex) {
                     designer.changeFontColor(hex);
                 }
             };
             this._toolbarElems.push(new mindplot.widget.ColorPalettePanel('fontColor', fontColorModel, baseUrl));
-            this._registerTooltip('fontColor', "Text color");
+            this._registerTooltip('fontColor', $msg('FONT_COLOR'));
         }
 
-        this._addButton('export', false, false, function() {
+        this._addButton('export', false, false, function () {
             var reqDialog = new MooDialog.Request('/c/iframeWrapper.htm?url=c/maps/' + mapId + "/exportf", null,
-                {'class': 'modalDialog exportModalDialog',
+                {'class':'modalDialog exportModalDialog',
                     closeButton:true,
                     destroyOnClose:true,
-                    title:'Export'
+                    title:$msg('EXPORT')
                 });
             reqDialog.setRequestOptions({
-                onRequest: function() {
-                    reqDialog.setContent('loading...');
+                onRequest:function () {
+                    reqDialog.setContent($msg('LOADING'));
                 }
             });
             MooDialog.Request.active = reqDialog;
         });
-        this._registerTooltip('export', "Export");
+        this._registerTooltip('export', $msg('EXPORT'));
 
-        this._addButton('print', false, false, function() {
+        this._addButton('print', false, false, function () {
             window.open('/c/maps/' + mapId + '/print');
         });
 
-        this._registerTooltip('print', "Print");
+        this._registerTooltip('print', $msg('PRINT'));
 
-        this._addButton('zoomIn', false, false, function() {
+        this._addButton('zoomIn', false, false, function () {
             designer.zoomIn();
         });
-        this._registerTooltip('zoomIn', "Zoom in");
+        this._registerTooltip('zoomIn', $msg('ZOOM_IN'));
 
-        this._addButton('zoomOut', false, false, function() {
+        this._addButton('zoomOut', false, false, function () {
             designer.zoomOut();
         });
-        this._registerTooltip('zoomOut', "Zoom out");
+        this._registerTooltip('zoomOut', $msg('ZOOM_OUT'));
 
 
-        this._addButton('undoEdition', false, false, function() {
+        this._addButton('undoEdition', false, false, function () {
             designer.undo();
         });
-        this._registerTooltip('undoEdition', "Undo", "meta+Z");
+        this._registerTooltip('undoEdition', $msg('UNDO'), "meta+Z");
 
 
-        this._addButton('redoEdition', false, false, function() {
+        this._addButton('redoEdition', false, false, function () {
             designer.redo();
         });
-        this._registerTooltip('redoEdition', "Redo", "meta+Y");
+        this._registerTooltip('redoEdition', $msg('REDO'), "meta+Y");
 
 
-        this._addButton('addTopic', true, false, function() {
+        this._addButton('addTopic', true, false, function () {
             designer.createChildForSelectedNode();
         });
-        this._registerTooltip('addTopic', "Add topic", "Enter");
+        this._registerTooltip('addTopic', $msg('ADD_TOPIC'), "Enter");
 
 
-        this._addButton('deleteTopic', true, true, function() {
+        this._addButton('deleteTopic', true, true, function () {
             designer.deleteCurrentNode();
         });
-        this._registerTooltip('deleteTopic', "Delete topic", "Backspace");
+        this._registerTooltip('deleteTopic', $msg('TOPIC_DELETE'), "Backspace");
 
 
-        this._addButton('topicLink', true, false, function() {
+        this._addButton('topicLink', true, false, function () {
             designer.addLink();
         });
-        this._registerTooltip('topicLink', "Add link");
+        this._registerTooltip('topicLink', $msg('TOPIC_LINK'));
 
 
-        this._addButton('topicRelation', true, false, function(event) {
+        this._addButton('topicRelation', true, false, function (event) {
             designer.showRelPivot(event);
         });
-        this._registerTooltip('topicRelation', "Relationship");
+        this._registerTooltip('topicRelation', $msg('TOPIC_RELATIONSHIP'));
 
 
-        this._addButton('topicNote', true, false, function() {
+        this._addButton('topicNote', true, false, function () {
             designer.addNote();
         });
-        this._registerTooltip('topicNote', "Add note");
+        this._registerTooltip('topicNote', $msg('TOPIC_NOTE'));
 
 
-        this._addButton('fontBold', true, false, function() {
+        this._addButton('fontBold', true, false, function () {
             designer.changeFontWeight();
         });
-        this._registerTooltip('fontBold', "Text bold", "meta+B");
+        this._registerTooltip('fontBold', $msg('FONT_BOLD'), "meta+B");
 
 
-        this._addButton('fontItalic', true, false, function() {
+        this._addButton('fontItalic', true, false, function () {
             designer.changeFontStyle();
         });
-        this._registerTooltip('fontItalic', "Text italic", "meta+I");
+        this._registerTooltip('fontItalic', $msg('FONT_ITALIC'), "meta+I");
 
 
         var saveElem = $('save');
         if (saveElem) {
-            this._addButton('save', false, false, function() {
+            this._addButton('save', false, false, function () {
                 this.save(saveElem, designer, true);
             }.bind(this));
-            this._registerTooltip('save', "Save", "meta+S");
+            this._registerTooltip('save', $msg('SAVE'), "meta+S");
 
 
             if (!readOnly) {
@@ -310,7 +310,7 @@ mindplot.widget.Menu = new Class({
                 }.bind(this));
 
                 // Autosave on a fixed period of time ...
-                (function() {
+                (function () {
                     if (designer.needsSave()) {
                         this.save(saveElem, designer, false);
                     }
@@ -320,25 +320,25 @@ mindplot.widget.Menu = new Class({
 
         var discardElem = $('discard');
         if (discardElem) {
-            this._addButton('discard', false, false, function() {
+            this._addButton('discard', false, false, function () {
                 this.discard();
                 window.location.reload();
             }.bind(this));
-            this._registerTooltip('discard', "Discard");
+            this._registerTooltip('discard', $msg('DISCARD_CHANGES'));
         }
 
         var tagElem = $('tagIt');
         if (tagElem) {
-            this._addButton('tagIt', false, false, function() {
+            this._addButton('tagIt', false, false, function () {
                 var reqDialog = new MooDialog.Request('c/tags?mapId=' + mapId, null,
-                    {'class': 'modalDialog tagItModalDialog',
+                    {'class':'modalDialog tagItModalDialog',
                         closeButton:true,
                         destroyOnClose:true,
                         title:'Tags'
                     });
                 reqDialog.setRequestOptions({
-                    onRequest: function() {
-                        reqDialog.setContent('loading...');
+                    onRequest:function () {
+                        reqDialog.setContent($msg('LOADING'));
                     }
                 });
             });
@@ -347,80 +347,80 @@ mindplot.widget.Menu = new Class({
 
         var shareElem = $('shareIt');
         if (shareElem) {
-            this._addButton('shareIt', false, false, function() {
+            this._addButton('shareIt', false, false, function () {
                 var reqDialog = new MooDialog.Request('/c/iframeWrapper?url=c/maps/' + mapId + "/sharef", null,
-                    {'class': 'modalDialog shareModalDialog',
+                    {'class':'modalDialog shareModalDialog',
                         closeButton:true,
                         destroyOnClose:true,
-                        title:'Share'
+                        title:$msg('COLLABORATE')
                     });
                 reqDialog.setRequestOptions({
-                    onRequest: function() {
-                        reqDialog.setContent('loading...');
+                    onRequest:function () {
+                        reqDialog.setContent($msg('LOADING'));
                     }
                 });
                 MooDialog.Request.active = reqDialog;
             });
-            this._registerTooltip('shareIt', "Share");
+            this._registerTooltip('shareIt', $msg('COLLABORATE'));
 
         }
 
         var publishElem = $('publishIt');
         if (publishElem) {
-            this._addButton('publishIt', false, false, function() {
+            this._addButton('publishIt', false, false, function () {
                 var reqDialog = new MooDialog.Request('/c/iframeWrapper?url=c/maps/' + mapId + "/publishf", null,
-                    {'class': 'modalDialog publishModalDialog',
+                    {'class':'modalDialog publishModalDialog',
                         closeButton:true,
                         destroyOnClose:true,
-                        title:'Publish'
+                        title:$msg('PUBLISH')
                     });
                 reqDialog.setRequestOptions({
-                    onRequest: function() {
-                        reqDialog.setContent('loading...');
+                    onRequest:function () {
+                        reqDialog.setContent($msg('LOADING'));
                     }
                 });
                 MooDialog.Request.active = reqDialog;
 
             });
-            this._registerTooltip('publishIt', "Publish");
+            this._registerTooltip('publishIt', $msg('PUBLISH'));
         }
 
         var historyElem = $('history');
         if (historyElem) {
 
-            this._addButton('history', false, false, function() {
+            this._addButton('history', false, false, function () {
                 var reqDialog = new MooDialog.Request('/c/iframeWrapper?url=c/maps/' + mapId + "/historyf", null,
-                    {'class': 'modalDialog historyModalDialog',
+                    {'class':'modalDialog historyModalDialog',
                         closeButton:true,
                         destroyOnClose:true,
-                        title:'History'
+                        title:$msg('HISTORY')
                     });
                 reqDialog.setRequestOptions({
-                    onRequest: function() {
-                        reqDialog.setContent('loading...');
+                    onRequest:function () {
+                        reqDialog.setContent($msg('LOADING'));
                     }
                 });
             });
-            this._registerTooltip('history', "History");
+            this._registerTooltip('history', $msg('HISTORY'));
         }
 
         this._registerEvents(designer);
     },
 
-    _registerEvents : function(designer) {
+    _registerEvents:function (designer) {
 
         // Register on close events ...
-        this._toolbarElems.forEach(function(elem) {
-            elem.addEvent('show', function() {
+        this._toolbarElems.forEach(function (elem) {
+            elem.addEvent('show', function () {
                 this.clear()
             }.bind(this));
         }.bind(this));
 
-        designer.addEvent('onblur', function() {
+        designer.addEvent('onblur', function () {
             var topics = designer.getModel().filterSelectedTopics();
             var rels = designer.getModel().filterSelectedRelations();
 
-            this._toolbarElems.forEach(function(button) {
+            this._toolbarElems.forEach(function (button) {
                 var disable = false;
                 if (button.isTopicAction() && button.isRelAction()) {
                     disable = rels.length == 0 && topics.length == 0;
@@ -442,11 +442,11 @@ mindplot.widget.Menu = new Class({
             })
         }.bind(this));
 
-        designer.addEvent('onfocus', function() {
+        designer.addEvent('onfocus', function () {
             var topics = designer.getModel().filterSelectedTopics();
             var rels = designer.getModel().filterSelectedRelations();
 
-            this._toolbarElems.forEach(function(button) {
+            this._toolbarElems.forEach(function (button) {
                 if (button.isTopicAction() && topics.length > 0) {
                     button.enable();
                 }
@@ -462,16 +462,16 @@ mindplot.widget.Menu = new Class({
         // Register Events ...
         if ($(buttonId)) {
 
-            var button = new mindplot.widget.ToolbarItem(buttonId, function(event) {
+            var button = new mindplot.widget.ToolbarItem(buttonId, function (event) {
                 fn(event);
                 this.clear();
-            }.bind(this), {topicAction:topic,relAction:rel});
+            }.bind(this), {topicAction:topic, relAction:rel});
 
             this._toolbarElems.push(button);
         }
     },
 
-    _registerTooltip: function(buttonId, text, shortcut) {
+    _registerTooltip:function (buttonId, text, shortcut) {
         if ($(buttonId)) {
             var tooltip = text;
             if (shortcut) {

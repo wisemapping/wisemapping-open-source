@@ -71,7 +71,7 @@ mindplot.CentralTopic = new Class({
     },
 
     _defaultText : function() {
-        return "Central Topic";
+        return $msg('CENTRAL_TOPIC');
     },
 
     _defaultBackgroundColor : function() {

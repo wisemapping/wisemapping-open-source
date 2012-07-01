@@ -25,12 +25,12 @@ function buildDesigner(options) {
 
     // Register load events ...
     designer = new mindplot.Designer(options, container);
-    designer.addEvent('loadSuccess', function() {
+    designer.addEvent('loadSuccess', function () {
         window.waitDialog.close.delay(1000, window.waitDialog);
         window.waitDialog = null;
     });
 
-    window.onerror = function(message, url, lineNo) {
+    window.onerror = function (message, url, lineNo) {
         // Log error message ...
 
         if (window.waitDialog) {
@@ -38,16 +38,16 @@ function buildDesigner(options) {
             window.waitDialog = null;
         }
         var req = new Request({
-            method: 'post',
-            url: "/service/logger/editor",
-            headers: {"Content-Type":"application/json","Accept":"application/json"},
+            method:'post',
+            url:"/service/logger/editor",
+            headers:{"Content-Type":"application/json", "Accept":"application/json"},
             emulation:false,
             urlEncoded:false
         }).post(JSON.encode({
-            jsErrorMsg : "message: " + message + ", line:" + lineNo + ", :" + url,
-            jsStack : window.errorStack,
-            userAgent: navigator.userAgent,
-            mapId: options.mapId}));
+            jsErrorMsg:"message: " + message + ", line:" + lineNo + ", :" + url,
+            jsStack:window.errorStack,
+            userAgent:navigator.userAgent,
+            mapId:options.mapId}));
 
         errorDialog.show();
     };
@@ -72,7 +72,7 @@ function buildDesigner(options) {
         var menu = new mindplot.widget.Menu(designer, 'toolbar', options.mapId, "");
 
         //  If a node has focus, focus can be move to another node using the keys.
-        designer._cleanScreen = function() {
+        designer._cleanScreen = function () {
             menu.clear()
         };
     }
@@ -86,13 +86,12 @@ function loadDesignerOptions(jsonConf) {
     var result;
     if (jsonConf) {
         var request = new Request.JSON({
-                url: jsonConf,
+                url:jsonConf,
                 async:false,
-                onSuccess:
-                    function(options) {
-                        this.options = options;
+                onSuccess:function (options) {
+                    this.options = options;
 
-                    }.bind(this)
+                }.bind(this)
             }
         );
         request.get();
@@ -101,15 +100,15 @@ function loadDesignerOptions(jsonConf) {
     else {
         // Set workspace screen size as default. In this way, resize issues are solved.
         var containerSize = {
-            height: parseInt(screen.height),
-            width:  parseInt(screen.width)
+            height:parseInt(screen.height),
+            width:parseInt(screen.width)
         };
 
         var viewPort = {
-            height: parseInt(window.innerHeight - 70), // Footer and Header
-            width:  parseInt(window.innerWidth)
+            height:parseInt(window.innerHeight - 70), // Footer and Header
+            width:parseInt(window.innerWidth)
         };
-        result = {readOnly:false,zoom:0.85,saveOnLoad:true,size:containerSize,viewPort:viewPort,container:'mindplot'};
+        result = {readOnly:false, zoom:0.85, saveOnLoad:true, size:containerSize, viewPort:viewPort, container:'mindplot', location:'en'};
     }
     return result;
 }
@@ -117,7 +116,7 @@ function loadDesignerOptions(jsonConf) {
 editor = {};
 editor.WaitDialog = new Class({
     Extends:MooDialog,
-    initialize : function() {
+    initialize:function () {
         var panel = this._buildPanel();
         this.parent({
                 closeButton:false,
@@ -125,36 +124,36 @@ editor.WaitDialog = new Class({
                 autoOpen:false,
                 useEscKey:false,
                 title:'Loading ...',
-                onInitialize: function(wrapper) {
+                onInitialize:function (wrapper) {
                     wrapper.setStyle('opacity', 0);
                     this.wrapper.setStyle('display', 'none');
                     this.fx = new Fx.Morph(wrapper, {
-                        duration: 100,
-                        transition: Fx.Transitions.Bounce.easeOut
+                        duration:100,
+                        transition:Fx.Transitions.Bounce.easeOut
                     });
                 },
 
-                onBeforeOpen: function() {
+                onBeforeOpen:function () {
                     this.overlay = new Overlay(this.options.inject, {
-                        duration: this.options.duration
+                        duration:this.options.duration
                     });
                     this.overlay.open();
                     this.fx.start({
-                        'margin-top': [-200, -100],
-                        opacity: [0, 1]
-                    }).chain(function() {
+                        'margin-top':[-200, -100],
+                        opacity:[0, 1]
+                    }).chain(function () {
                         this.fireEvent('show');
                         this.wrapper.setStyle('display', 'block');
 
                     }.bind(this));
                 },
 
-                onBeforeClose: function() {
+                onBeforeClose:function () {
                     this.fx.start({
-                        'margin-top': [-100, 0],
-                        opacity: 0,
-                        duration: 200
-                    }).chain(function() {
+                        'margin-top':[-100, 0],
+                        opacity:0,
+                        duration:200
+                    }).chain(function () {
                         this.fireEvent('hide');
                         this.wrapper.setStyle('display', 'none');
 
@@ -164,23 +163,23 @@ editor.WaitDialog = new Class({
         this.setContent(panel);
     },
 
-    _buildPanel : function () {
+    _buildPanel:function () {
         var result = new Element('div');
         result.setStyles({
             'text-align':'center',
-            width: '400px'
+            width:'400px'
         });
-        var img = new Element('img', {'src': 'images/ajax-loader.gif'});
+        var img = new Element('img', {'src':'images/ajax-loader.gif'});
         img.setStyle('margin-top', '15px');
         img.inject(result);
         return result;
     },
 
-    show : function() {
+    show:function () {
         this.open();
     },
 
-    destroy: function() {
+    destroy:function () {
         this.parent();
         this.overlay.destroy();
     }
@@ -190,75 +189,76 @@ editor.WaitDialog = new Class({
 
 editor.FatalErrorDialog = new Class({
     Extends:MooDialog,
-    initialize : function() {
-        var panel = this._buildPanel();
+    initialize:function () {
         this.parent({
                 closeButton:false,
                 destroyOnClose:true,
                 autoOpen:true,
                 useEscKey:false,
                 title:'Outch!!. An unexpected error has occurred',
-                onInitialize: function(wrapper) {
+                onInitialize:function (wrapper) {
                     wrapper.setStyle('opacity', 0);
                     this.wrapper.setStyle('display', 'none');
                     this.fx = new Fx.Morph(wrapper, {
-                        duration: 100,
-                        transition: Fx.Transitions.Bounce.easeOut
+                        duration:100,
+                        transition:Fx.Transitions.Bounce.easeOut
                     });
                 },
 
-                onBeforeOpen: function() {
+                onBeforeOpen:function () {
+                    var panel = this._buildPanel();
+                    this.setContent(panel);
+
                     this.overlay = new Overlay(this.options.inject, {
-                        duration: this.options.duration
+                        duration:this.options.duration
                     });
                     if (this.options.closeOnOverlayClick)
                         this.overlay.addEvent('click', this.close.bind(this));
                     this.overlay.open();
                     this.fx.start({
-                        'margin-top': [-200, -100],
-                        opacity: [0, 1]
-                    }).chain(function() {
+                        'margin-top':[-200, -100],
+                        opacity:[0, 1]
+                    }).chain(function () {
                         this.fireEvent('show');
                         this.wrapper.setStyle('display', 'block');
                     }.bind(this));
                 },
 
-                onBeforeClose: function() {
+                onBeforeClose:function () {
                     this.fx.start({
-                        'margin-top': [-100, 0],
-                        opacity: 0,
-                        duration: 200
-                    }).chain(function() {
+                        'margin-top':[-100, 0],
+                        opacity:0,
+                        duration:200
+                    }).chain(function () {
                         this.wrapper.setStyle('display', 'none');
                         this.fireEvent('hide');
 
                     }.bind(this));
                 }}
         );
-        this.setContent(panel);
     },
 
-    destroy: function() {
+    destroy:function () {
         this.parent();
         this.overlay.destroy();
     },
 
-    _buildPanel : function () {
+    _buildPanel:function () {
         var result = new Element('div');
         result.setStyles({
             'text-align':'center',
-            width: '400px'
+            width:'400px'
         });
-        var p = new Element('p', {'text': 'We\'re sorry, an error has occurred and we can not process your request. Please try again, or go to the home page.'});
+        var p = new Element('p', {'text':$msg('UNEXPECTED_ERROR_LOADING')});
         p.inject(result);
 
-        var img = new Element('img', {'src': 'images/alert-sign.png'});
+        var img = new Element('img', {'src':'images/alert-sign.png'});
         img.inject(result);
 
         return result;
     },
 
-    show : function() {
+    show:function () {
         this.open();
     }
 
@@ -266,14 +266,14 @@ editor.FatalErrorDialog = new Class({
 
 
 editor.Help = {
-    buildHelp:function(panel) {
+    buildHelp:function (panel) {
         var container = new Element('div');
         container.setStyles({width:'100%', textAlign:'center'});
-        var content1 = Help.buildContentIcon('images/black-keyboard.png', 'Keyboard Shortcuts', function() {
+        var content1 = Help.buildContentIcon('images/black-keyboard.png', 'Keyboard Shortcuts', function () {
             MOOdalBox.open('keyboard.htm', 'KeyBoard Shortcuts', '500px 400px', false);
             panel.hidePanel();
         });
-        var content2 = Help.buildContentIcon('images/firstSteps.png', 'Editor First Steps', function() {
+        var content2 = Help.buildContentIcon('images/firstSteps.png', 'Editor First Steps', function () {
             var wOpen;
             var sOptions;
 
@@ -289,14 +289,14 @@ editor.Help = {
             panel.hidePanel();
         });
 
-        container.addEvent('show', function() {
+        container.addEvent('show', function () {
             content1.effect('opacity', {duration:800}).start(0, 100);
-            var eff = function() {
+            var eff = function () {
                 content2.effect('opacity', {duration:800}).start(0, 100);
             };
             eff.delay(150);
         });
-        container.addEvent('hide', function() {
+        container.addEvent('hide', function () {
             content1.effect('opacity').set(0);
             content2.effect('opacity').set(0)
         });
@@ -304,8 +304,8 @@ editor.Help = {
         content2.inject(container);
         return container;
     },
-    buildContentIcon:function(image, text, onClickFn) {
-        var container = new Element('div').setStyles({margin:'15px 0px 0px 0px', opacity:0, padding:'5px 0px', border: '1px solid transparent', cursor:'pointer'});
+    buildContentIcon:function (image, text, onClickFn) {
+        var container = new Element('div').setStyles({margin:'15px 0px 0px 0px', opacity:0, padding:'5px 0px', border:'1px solid transparent', cursor:'pointer'});
 
         var icon = new Element('div');
         icon.addEvent('click', onClickFn);
@@ -318,11 +318,11 @@ editor.Help = {
         textContainer.innerHTML = text;
         textContainer.inject(container);
 
-        container.addEvent('mouseover', function() {
+        container.addEvent('mouseover', function () {
             $(this).setStyle('border-top', '1px solid #BBB4D6');
             $(this).setStyle('border-bottom', '1px solid #BBB4D6');
         }.bind(this));
-        container.addEvent('mouseout', function() {
+        container.addEvent('mouseout', function () {
             $(this).setStyle('border-top', '1px solid transparent');
             $(this).setStyle('border-bottom', '1px solid transparent');
 

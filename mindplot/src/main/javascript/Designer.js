@@ -17,11 +17,14 @@
  */
 
 mindplot.Designer = new Class({
-        Extends: Events,
-        initialize: function(options, divElement) {
+        Extends:Events,
+        initialize:function (options, divElement) {
             $assert(options, "options must be defined");
             $assert(options.zoom, "zoom must be defined");
             $assert(divElement, "divElement must be defined");
+
+            // Set up i18n location ...
+            mindplot.Messages.init(options.location);
 
             this._options = options;
 
@@ -36,7 +39,7 @@ mindplot.Designer = new Class({
                 this._actionDispatcher = new mindplot.BrixActionDispatcher(commandContext);
             }
 
-            this._actionDispatcher.addEvent("modelUpdate", function(event) {
+            this._actionDispatcher.addEvent("modelUpdate", function (event) {
                 this.fireEvent("modelUpdate", event);
             }.bind(this));
 
@@ -67,7 +70,7 @@ mindplot.Designer = new Class({
         /**
          * Deactivates the keyboard events so you can enter text into forms
          */
-        deactivateKeyboard: function() {
+        deactivateKeyboard:function () {
             mindplot.DesignerKeyboard.getInstance().deactivate();
             this.deselectAll();
         },
@@ -75,12 +78,12 @@ mindplot.Designer = new Class({
         /**
          * Activates the keyboard events so you can enter text into forms
          */
-        activateKeyboard: function() {
+        activateKeyboard:function () {
             mindplot.DesignerKeyboard.getInstance().activate();
         },
 
 
-        _registerEvents : function() {
+        _registerEvents:function () {
             // Register mouse events ...
             this._registerMouseEvents();
 
@@ -88,7 +91,7 @@ mindplot.Designer = new Class({
             mindplot.DesignerKeyboard.register(this);
         },
 
-        addEvent: function(type, listener) {
+        addEvent:function (type, listener) {
             if (type == mindplot.TopicEvent.EDIT || type == mindplot.TopicEvent.CLICK) {
                 var editor = mindplot.TopicEventDispatcher.getInstance();
                 editor.addEvent(type, listener);
@@ -97,15 +100,15 @@ mindplot.Designer = new Class({
             }
         },
 
-        _registerMouseEvents : function() {
+        _registerMouseEvents:function () {
             var workspace = this._workspace;
             var screenManager = workspace.getScreenManager();
 
             // Initialize workspace event listeners.
-            screenManager.addEvent('update', function() {
+            screenManager.addEvent('update', function () {
                 // Topic must be set to his original state. All editors must be closed.
                 var topics = this.getModel().getTopics();
-                topics.forEach(function(object) {
+                topics.forEach(function (object) {
                     object.closeEditors();
                 });
 
@@ -116,12 +119,12 @@ mindplot.Designer = new Class({
             }.bind(this));
 
             // Deselect on click ...
-            screenManager.addEvent('click', function(event) {
+            screenManager.addEvent('click', function (event) {
                 this.onObjectFocusEvent(null, event);
             }.bind(this));
 
             // Create nodes on double click...
-            screenManager.addEvent('dblclick', function(event) {
+            screenManager.addEvent('dblclick', function (event) {
                 if (workspace.isWorkspaceEventsEnabled()) {
 
                     var mousePos = screenManager.getWorkspaceMousePosition(event);
@@ -133,7 +136,7 @@ mindplot.Designer = new Class({
             }.bind(this));
 
 
-            $(document).addEvent('mousewheel', function(event) {
+            $(document).addEvent('mousewheel', function (event) {
                 // Change mousewheel handling so we let the default
                 //event happen if we are outside the container.
                 var coords = screenManager.getContainer().getCoordinates();
@@ -155,21 +158,21 @@ mindplot.Designer = new Class({
 
         },
 
-        _buildDragManager: function(workspace) {
+        _buildDragManager:function (workspace) {
 
             var designerModel = this.getModel();
             var dragConnector = new mindplot.DragConnector(designerModel, this._workspace);
             var dragManager = new mindplot.DragManager(workspace, this._eventBussDispatcher);
             var topics = designerModel.getTopics();
 
-            dragManager.addEvent('startdragging', function() {
+            dragManager.addEvent('startdragging', function () {
                 // Enable all mouse events.
                 for (var i = 0; i < topics.length; i++) {
                     topics[i].setMouseEventsEnabled(false);
                 }
             });
 
-            dragManager.addEvent('dragging', function(event, dragTopic) {
+            dragManager.addEvent('dragging', function (event, dragTopic) {
                 dragTopic.updateFreeLayout(event);
                 if (!dragTopic.isFreeLayoutOn(event)) {
                     // The node is being drag. Is the connection still valid ?
@@ -181,7 +184,7 @@ mindplot.Designer = new Class({
                 }
             });
 
-            dragManager.addEvent('enddragging', function(event, dragTopic) {
+            dragManager.addEvent('enddragging', function (event, dragTopic) {
                 for (var i = 0; i < topics.length; i++) {
                     topics[i].setMouseEventsEnabled(true);
                 }
@@ -191,14 +194,14 @@ mindplot.Designer = new Class({
             return dragManager;
         },
 
-        setViewPort : function(size) {
+        setViewPort:function (size) {
             this._workspace.setViewPort(size);
             var model = this.getModel();
             this._workspace.setZoom(model.getZoom(), true);
         },
 
 
-        _buildNodeGraph : function(model, readOnly) {
+        _buildNodeGraph:function (model, readOnly) {
             var workspace = this._workspace;
 
             // Create node graph ...
@@ -210,7 +213,7 @@ mindplot.Designer = new Class({
             // Add Topic events ...
             if (!readOnly) {
                 // If a node had gained focus, clean the rest of the nodes ...
-                topic.addEvent('mousedown', function(event) {
+                topic.addEvent('mousedown', function (event) {
                     this.onObjectFocusEvent(topic, event);
                 }.bind(this));
 
@@ -243,7 +246,7 @@ mindplot.Designer = new Class({
                 topic.connectTo(targetTopic, workspace);
             }
 
-            topic.addEvent('ontblur', function() {
+            topic.addEvent('ontblur', function () {
                 var topics = this.getModel().filterSelectedTopics();
                 var rels = this.getModel().filterSelectedRelations();
 
@@ -252,7 +255,7 @@ mindplot.Designer = new Class({
                 }
             }.bind(this));
 
-            topic.addEvent('ontfocus', function() {
+            topic.addEvent('ontfocus', function () {
                 var topics = this.getModel().filterSelectedTopics();
                 var rels = this.getModel().filterSelectedRelations();
 
@@ -264,16 +267,16 @@ mindplot.Designer = new Class({
             return  topic;
         },
 
-        onObjectFocusEvent : function(currentObject, event) {
+        onObjectFocusEvent:function (currentObject, event) {
             // Close node editors ..
             var topics = this.getModel().getTopics();
-            topics.forEach(function(topic) {
+            topics.forEach(function (topic) {
                 topic.closeEditors();
             });
 
             var model = this.getModel();
             var objects = model.getObjects();
-            objects.forEach(function(object) {
+            objects.forEach(function (object) {
                 // Disable all nodes on focus but not the current if Ctrl key isn't being pressed
                 if (!$defined(event) || (!event.control && !event.meta)) {
                     if (object.isOnFocus() && object != currentObject) {
@@ -284,17 +287,17 @@ mindplot.Designer = new Class({
 
         },
 
-        selectAll : function() {
+        selectAll:function () {
             var model = this.getModel();
             var objects = model.getObjects();
-            objects.forEach(function(object) {
+            objects.forEach(function (object) {
                 object.setOnFocus(true);
             });
         },
 
-        deselectAll : function() {
+        deselectAll:function () {
             var objects = this.getModel().getObjects();
-            objects.forEach(function(object) {
+            objects.forEach(function (object) {
                 object.setOnFocus(false);
             });
         },
@@ -303,17 +306,16 @@ mindplot.Designer = new Class({
          * Set the zoom of the map.
          * @param: zoom: number between 0.3 and 1.9
          */
-        setZoom: function(zoom) {
+        setZoom:function (zoom) {
             if (zoom > 1.9 || zoom < 0.3) {
-                $notify("Zoom too high. Cannot apply zoom above 1.9 or below 0.3");
-                console.log("Tried to set zoom to " + zoom + " which is outside allowed range.");
+                $notify($msg('ZOOM_IN_ERROR'));
                 return;
             }
             this.getModel().setZoom(zoom);
             this._workspace.setZoom(zoom);
         },
 
-        zoomOut : function(factor) {
+        zoomOut:function (factor) {
             if (!factor)
                 factor = 1.2;
 
@@ -324,12 +326,12 @@ mindplot.Designer = new Class({
                 this._workspace.setZoom(scale);
             }
             else {
-                $notify('No more zoom can be applied');
+                $notify($msg('ZOOM_ERROR'));
             }
 
         },
 
-        zoomIn : function(factor) {
+        zoomIn:function (factor) {
             if (!factor)
                 factor = 1.2;
 
@@ -341,26 +343,26 @@ mindplot.Designer = new Class({
                 this._workspace.setZoom(scale);
             }
             else {
-                $notify('No more zoom can be applied');
+                $notify($msg('ZOOM_ERROR'));
             }
         },
 
-        getModel : function() {
+        getModel:function () {
             return this._model;
         },
 
-        createChildForSelectedNode : function() {
+        createChildForSelectedNode:function () {
             var nodes = this.getModel().filterSelectedTopics();
             if (nodes.length <= 0) {
                 // If there are more than one node selected,
-                $notify('Could not create a topic. Only one node must be selected.');
+                $notify($msg('ONE_TOPIC_MUST_BE_SELECTED'));
                 return;
 
             }
             if (nodes.length != 1) {
 
                 // If there are more than one node selected,
-                $notify('Could not create a topic. One topic must be selected.');
+                $notify($msg('ONLY_ONE_TOPIC_MUST_BE_SELECTED'));
                 return;
             }
 
@@ -374,7 +376,7 @@ mindplot.Designer = new Class({
 
         },
 
-        _createChildModel : function(topic, mousePos) {
+        _createChildModel:function (topic, mousePos) {
             // Create a new node ...
             var model = topic.getModel();
             var mindmap = model.getMindmap();
@@ -391,7 +393,7 @@ mindplot.Designer = new Class({
             return childModel;
         },
 
-        addDraggedNode: function(event, model) {
+        addDraggedNode:function (event, model) {
             $assert(event, "event can not be null");
             $assert(model, "model can not be null");
 
@@ -405,17 +407,17 @@ mindplot.Designer = new Class({
             topic.fireEvent("mousedown", event);
         },
 
-        createSiblingForSelectedNode : function() {
+        createSiblingForSelectedNode:function () {
             var nodes = this.getModel().filterSelectedTopics();
             if (nodes.length <= 0) {
                 // If there are no nodes selected,
-                $notify('Could not create a topic. At least one node must be selected.');
+                $notify($msg('ONE_TOPIC_MUST_BE_SELECTED'));
                 return;
 
             }
             if (nodes.length > 1) {
                 // If there are more than one node selected,
-                $notify('Could not create a topic. One topic must be selected.');
+                $notify($msg('ONLY_ONE_TOPIC_MUST_BE_SELECTED'));
                 return;
             }
 
@@ -435,12 +437,11 @@ mindplot.Designer = new Class({
                 }
 
                 var parentTopicId = parentTopic.getId();
-
                 this._actionDispatcher.addTopic(siblingModel, parentTopicId, true);
             }
         },
 
-        _createSiblingModel : function(topic) {
+        _createSiblingModel:function (topic) {
             var result = null;
             var parentTopic = topic.getOutgoingConnectedTopic();
             if (parentTopic != null) {
@@ -458,7 +459,7 @@ mindplot.Designer = new Class({
             return result;
         },
 
-        showRelPivot : function(event) {
+        showRelPivot:function (event) {
             // Current mouse position ....
             var screen = this._workspace.getScreenManager();
             var pos = screen.getWorkspaceMousePosition(event);
@@ -468,7 +469,7 @@ mindplot.Designer = new Class({
             this._relPivot.start(selectedTopic, pos);
         },
 
-        connectByRelation : function(sourceTopic, targetTopic) {
+        connectByRelation:function (sourceTopic, targetTopic) {
             $assert(sourceTopic, "sourceTopic can not be null");
             $assert(targetTopic, "targetTopic can not be null");
 
@@ -480,25 +481,25 @@ mindplot.Designer = new Class({
             this._actionDispatcher.connectByRelation(model);
         },
 
-        needsSave : function() {
+        needsSave:function () {
             //@Todo: Review all this ...
             return this._actionDispatcher._actionRunner.hasBeenChanged();
         },
 
 
-        getMindmapProperties : function() {
+        getMindmapProperties:function () {
             return   {zoom:this.getModel().getZoom()};
         },
 
-        loadMap : function(mindmapModel) {
+        loadMap:function (mindmapModel) {
             $assert(mindmapModel, "mindmapModel can not be null");
             this._mindmap = mindmapModel;
 
 //            try {
             // Init layout manager ...
-            var size = {width:25,height:25};
+            var size = {width:25, height:25};
             var layoutManager = new mindplot.layout.LayoutManager(mindmapModel.getCentralTopic().getId(), size);
-            layoutManager.addEvent('change', function(event) {
+            layoutManager.addEvent('change', function (event) {
                 var id = event.getId();
                 var topic = this.getModel().findTopicById(id);
                 topic.setPosition(event.getPosition());
@@ -536,27 +537,27 @@ mindplot.Designer = new Class({
 //            }
         },
 
-        getMindmap : function() {
+        getMindmap:function () {
             return this._mindmap;
         },
 
-        undo : function() {
+        undo:function () {
             // @Todo: This is a hack...
             this._actionDispatcher._actionRunner.undo();
         },
 
-        redo : function() {
+        redo:function () {
             this._actionDispatcher._actionRunner.redo();
         },
 
-        isReadOnly : function() {
+        isReadOnly:function () {
             return this._options.readOnly;
         },
 
-        _nodeModelToNodeGraph : function(nodeModel, isVisible) {
+        _nodeModelToNodeGraph:function (nodeModel, isVisible) {
             $assert(nodeModel, "Node model can not be null");
             var children = nodeModel.getChildren().slice();
-            children = children.sort(function(a, b) {
+            children = children.sort(function (a, b) {
                 return a.getOrder() - b.getOrder()
             });
 
@@ -576,7 +577,7 @@ mindplot.Designer = new Class({
             return nodeGraph;
         },
 
-        _relationshipModelToRelationship : function(model) {
+        _relationshipModelToRelationship:function (model) {
             $assert(model, "Node model can not be null");
 
             var relationship = this._buildRelationship(model);
@@ -593,12 +594,12 @@ mindplot.Designer = new Class({
             return relationship;
         },
 
-        createRelationship : function(model) {
+        createRelationship:function (model) {
             this._mindmap.addRelationship(model);
             return this._relationshipModelToRelationship(model);
         },
 
-        removeRelationship : function(model) {
+        removeRelationship:function (model) {
             this._mindmap.removeRelationship(model);
             var relationship = this._relationships[model.getId()];
             var sourceTopic = relationship.getSourceTopic();
@@ -609,7 +610,7 @@ mindplot.Designer = new Class({
             delete this._relationships[model.getId()];
         },
 
-        _buildRelationship : function (model) {
+        _buildRelationship:function (model) {
             var elem = this;
 
             var fromNodeId = model.getFromNode();
@@ -651,7 +652,7 @@ mindplot.Designer = new Class({
             relationLine.setModel(model);
 
             //Add Listeners
-            relationLine.addEvent('onfocus', function(event) {
+            relationLine.addEvent('onfocus', function (event) {
                 elem.onObjectFocusEvent(relationLine, event);
             });
 
@@ -661,7 +662,7 @@ mindplot.Designer = new Class({
             return  relationLine;
         },
 
-        _removeNode : function(node) {
+        _removeNode:function (node) {
             if (node.getTopicType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
                 var parent = node._parent;
                 node.disconnect(this._workspace);
@@ -684,9 +685,9 @@ mindplot.Designer = new Class({
             }
         },
 
-        deleteCurrentNode : function() {
+        deleteCurrentNode:function () {
 
-            var validateFunc = function(object) {
+            var validateFunc = function (object) {
                 return object.getType() == mindplot.RelationshipLine.type || object.getTopicType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE
             };
             var validateError = 'Central topic can not be deleted.';
@@ -701,7 +702,7 @@ mindplot.Designer = new Class({
 
         },
 
-        changeFontFamily : function(font) {
+        changeFontFamily:function (font) {
             var topicsIds = this.getModel().filterTopicsIds();
             if (topicsIds.length > 0) {
                 this._actionDispatcher.changeFontFamilyToTopic(topicsIds, font);
@@ -709,14 +710,14 @@ mindplot.Designer = new Class({
             }
         },
 
-        changeFontStyle : function() {
+        changeFontStyle:function () {
             var topicsIds = this.getModel().filterTopicsIds();
             if (topicsIds.length > 0) {
                 this._actionDispatcher.changeFontStyleToTopic(topicsIds);
             }
         },
 
-        changeFontColor : function(color) {
+        changeFontColor:function (color) {
             $assert(color, "color can not be null");
 
             var topicsIds = this.getModel().filterTopicsIds();
@@ -725,9 +726,9 @@ mindplot.Designer = new Class({
             }
         },
 
-        changeBackgroundColor : function(color) {
+        changeBackgroundColor:function (color) {
 
-            var validateFunc = function(topic) {
+            var validateFunc = function (topic) {
                 return topic.getShapeType() != mindplot.model.TopicShape.LINE;
             };
             var validateError = 'Color can not be set to line topics.';
@@ -738,8 +739,8 @@ mindplot.Designer = new Class({
             }
         },
 
-        changeBorderColor : function(color) {
-            var validateFunc = function(topic) {
+        changeBorderColor:function (color) {
+            var validateFunc = function (topic) {
                 return topic.getShapeType() != mindplot.model.TopicShape.LINE;
             };
             var validateError = 'Color can not be set to line topics.';
@@ -749,15 +750,15 @@ mindplot.Designer = new Class({
             }
         },
 
-        changeFontSize : function(size) {
+        changeFontSize:function (size) {
             var topicsIds = this.getModel().filterTopicsIds();
             if (topicsIds.length > 0) {
                 this._actionDispatcher.changeFontSizeToTopic(topicsIds, size);
             }
         },
 
-        changeTopicShape : function(shape) {
-            var validateFunc = function(topic) {
+        changeTopicShape:function (shape) {
+            var validateFunc = function (topic) {
                 return !(topic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE && shape == mindplot.model.TopicShape.LINE)
             };
 
@@ -768,38 +769,38 @@ mindplot.Designer = new Class({
             }
         },
 
-        changeFontWeight : function() {
+        changeFontWeight:function () {
             var topicsIds = this.getModel().filterTopicsIds();
             if (topicsIds.length > 0) {
                 this._actionDispatcher.changeFontWeightToTopic(topicsIds);
             }
         },
 
-        addIconType : function(iconType) {
+        addIconType:function (iconType) {
             var topicsIds = this.getModel().filterTopicsIds();
             if (topicsIds.length > 0) {
                 this._actionDispatcher.addFeatureToTopic(topicsIds[0], mindplot.TopicFeature.Icon.id, {id:iconType});
             }
         },
 
-        addLink : function() {
+        addLink:function () {
             var model = this.getModel();
             var topic = model.selectedTopic();
             topic.showLinkEditor();
         },
 
-        addNote : function() {
+        addNote:function () {
             var model = this.getModel();
             var topic = model.selectedTopic();
             topic.showNoteEditor();
         },
 
-        goToNode : function(node) {
+        goToNode:function (node) {
             node.setOnFocus(true);
             this.onObjectFocusEvent(node);
         },
 
-        getWorkSpace : function() {
+        getWorkSpace:function () {
             return this._workspace;
         }
     }

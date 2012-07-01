@@ -50,7 +50,7 @@ solid black" src="${baseUrl}/c/maps/${mindmap.id}/embed?zoom=1"&gt; &lt;/iframe&
         </div>
 
         <div class="tab-pane fade" id="publicUrlTab">
-            <spring:message code="URL"/>:
+            <spring:message code="DIRECT_LINK"/>:
             <input name="url" value="${baseUrl}/c/maps/${mindmap.id}/public"
                    style="width:400px"
                    readonly="readonly"/>

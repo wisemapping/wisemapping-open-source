@@ -18,7 +18,7 @@
 
 mindplot.widget.IMenu = new Class({
 
-    initialize : function(designer, containerId, mapId) {
+    initialize:function (designer, containerId, mapId) {
         $assert(designer, "designer can not be null");
         $assert(containerId, "containerId can not be null");
 
@@ -28,13 +28,13 @@ mindplot.widget.IMenu = new Class({
         this._mapId = mapId;
     },
 
-    clear : function() {
-        this._toolbarElems.forEach(function(item) {
+    clear:function () {
+        this._toolbarElems.forEach(function (item) {
             item.hide();
         });
     },
 
-    discard: function() {
+    discard:function () {
         var persistenceManager = mindplot.PersistenceManager.getInstance();
         var mindmap = designer.getMindmap();
         persistenceManager.discard(mindmap.getId());
@@ -47,7 +47,7 @@ mindplot.widget.IMenu = new Class({
 
         // Display save message ..
         if (saveHistory) {
-            $notify("Saving ...");
+            $notify($msg('SAVING'));
             saveElem.setStyle('cursor', 'wait');
         } else {
             console.log("Saving without history ...");
@@ -56,16 +56,16 @@ mindplot.widget.IMenu = new Class({
         // Call persistence manager for saving ...
         var persistenceManager = mindplot.PersistenceManager.getInstance();
         persistenceManager.save(mindmap, mindmapProp, saveHistory, {
-            onSuccess: function() {
+            onSuccess:function () {
                 if (saveHistory) {
                     saveElem.setStyle('cursor', 'pointer');
-                    $notify("Save complete");
+                    $notify($msg('SAVE_COMPLETE'));
                 }
             },
-            onError: function() {
+            onError:function () {
                 if (saveHistory) {
                     saveElem.setStyle('cursor', 'pointer');
-                    $notify("Save could not be completed. Try latter.");
+                    $notify($msg('SAVE_COULD_NOT_BE_COMPLETED'));
                 }
             }
         });

@@ -193,12 +193,12 @@ mindplot.MainTopic = new Class({
         var result = "";
         if ($defined(targetTopic)) {
             if (targetTopic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
-                result = "Main Topic";
+                result = $msg('MAIN_TOPIC');
             } else {
-                result = "Sub Topic";
+                result = $msg('SUB_TOPIC');
             }
         } else {
-            result = "Isolated Topic";
+            result = $msg('ISOLATED_TOPIC');;
         }
         return result;
     },
