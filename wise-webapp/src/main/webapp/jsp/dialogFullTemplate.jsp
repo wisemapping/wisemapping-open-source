@@ -1,5 +1,11 @@
+<%@ page import="java.util.Locale" %>
+<%@ page import="org.springframework.context.i18n.LocaleContextHolder" %>
 <%@page pageEncoding="UTF-8" %>
 <%@include file="/jsp/init.jsp" %>
+<%
+    final Locale locale = LocaleContextHolder.getLocale();
+    request.setAttribute("locale", locale.getLanguage());
+%>
 
 <!DOCTYPE HTML>
 
@@ -19,6 +25,8 @@
     <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-responsive.min.css"/>
     <script type="text/javascript" language="javascript" src="js/jquery.timeago.js"></script>
+    <script type="text/javascript" language="javascript" src="js/jquery.timeago.${locale}.js"></script>
+
 <body>
 <div style="padding-top:20px">
     <tiles:insertAttribute name="body"/>

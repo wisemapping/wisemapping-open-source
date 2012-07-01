@@ -3,9 +3,9 @@
 
 <div>
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#changeUserPanel" data-toggle="pill"><spring:message code="GENERAL"/>:</a></li>
-        <li><a href="#changePasswordPanel" data-toggle="pill"><spring:message code="SECURITY"/>:</a></li>
-        <li><a href="#languagePanel" data-toggle="pill"><spring:message code="LANGUAGE"/>:</a></li>
+        <li class="active"><a href="#changeUserPanel" data-toggle="pill"><spring:message code="GENERAL"/></a></li>
+        <li><a href="#changePasswordPanel" data-toggle="pill"><spring:message code="SECURITY"/></a></li>
+        <li><a href="#languagePanel" data-toggle="pill"><spring:message code="LANGUAGE"/></a></li>
     </ul>
 
     <div class="tab-content">

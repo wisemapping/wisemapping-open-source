@@ -9,13 +9,6 @@
 <%--@elvariable id="editorTryMode" type="java.lang.Boolean"--%>
 <%--@elvariable id="editorTryMode" type="java.lang.String"--%>
 <%--@elvariable id="mapXml" type="com.wisemapping.model.User"--%>
-<%
-    User user = Utils.getUser();
-    if (user != null) {
-        request.setAttribute("principal", user);
-    }
-%>
-
 <html>
 <head>
     <base href="${baseURL}/">
@@ -34,7 +27,7 @@
 
     <script type="text/javascript">
 
-        $(document).addEvent('loadcomplete', function(resource) {
+        $(document).addEvent('loadcomplete', function (resource) {
             var mapId = '${mindmap.id}';
             var mapXml = '${mindmap.xmlAsJsLiteral}';
 
@@ -70,13 +63,13 @@
     <div id="headerInfo">
         <div id="headerActions">
 
-            <spring:message code="WELCOME"/>, ${principal.firstname}|<span><a
-                href="c/maps/"><spring:message code="MY_WISEMAPS"/></a></span> |
+            <spring:message code="WELCOME"/>, ${principal.firstname} | <span><a href="c/maps/"><spring:message
+                code="MY_WISEMAPS"/></a></span> |
             <%--<span><a id="settings" href="c/settings"--%>
-                     <%--title="<spring:message code="ACCOUNT_DETAIL"/>"><spring:message code="ACCOUNT"/></a></span> |--%>
+            <%--title="<spring:message code="ACCOUNT_DETAIL"/>"><spring:message code="ACCOUNT"/></a></span> |--%>
             <span><a href="c/logout" title="<spring:message code="LOGOUT"/>">
-            <spring:message code="LOGOUT"/>
-        </a></span>
+                <spring:message code="LOGOUT"/>
+            </a></span>
         </div>
         <a href="c/maps/">
             <div id="headerLogo"></div>

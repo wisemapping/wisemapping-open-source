@@ -6,8 +6,8 @@
 <div>
     <iframe src='${url}' style="border: 0;width: 100%;height:100%" id="dialogContentIframe"></iframe>
     <div style="float: right;margin-right: 25px">
-        <input type="button" class="btn-primary" value="Accept" id="submitBtn"/>
-        <input type="button" class="btn-secondary" value="Cancel" id="cancelBtn"/>
+        <input type="button" class="btn-primary" value="<spring:message code="ACCEPT"/>" id="submitBtn"/>
+        <input type="button" class="btn-secondary" value="<spring:message code="CANCEL"/>" id="cancelBtn"/>
     </div>
 </div>
 

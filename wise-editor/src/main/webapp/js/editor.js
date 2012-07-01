@@ -123,7 +123,7 @@ editor.WaitDialog = new Class({
                 destroyOnClose:true,
                 autoOpen:false,
                 useEscKey:false,
-                title:'Loading ...',
+                title:'',
                 onInitialize:function (wrapper) {
                     wrapper.setStyle('opacity', 0);
                     this.wrapper.setStyle('display', 'none');

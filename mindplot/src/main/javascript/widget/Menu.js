@@ -211,7 +211,7 @@ mindplot.widget.Menu = new Class({
                 {'class':'modalDialog exportModalDialog',
                     closeButton:true,
                     destroyOnClose:true,
-                    title:$msg('EXPORT')
+                    title: $msg('EXPORT')
                 });
             reqDialog.setRequestOptions({
                 onRequest:function () {

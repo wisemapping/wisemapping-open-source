@@ -26,6 +26,7 @@
 
     <!-- Update timer plugging -->
     <script type="text/javascript" language="javascript" src="js/jquery.timeago.js"></script>
+    <script type="text/javascript" language="javascript" src="js/jquery.timeago.${locale}.js"></script>
 
 
     <script type="text/javascript" language="javascript">
@@ -78,8 +79,11 @@
                 ],
                 bAutoWidth:false,
                 oLanguage:{
+                    "sLengthMenu":"<spring:message code="SHOW_REGISTERS"/>",
                     "sSearch":"",
-                    "sInfo":"_START_-_END_ of _TOTAL_",
+                    "sZeroRecords": "<spring:message code="NO_MATCHING_FOUND"/>",
+                    "sLoadingRecords":"<spring:message code="LOADING"/>",
+                    "sInfo":"<spring:message code="TABLE_ROWS"/>",
                     "sEmptyTable":"<spring:message code="NO_SEARCH_RESULT"/>"
                 },
                 bStateSave:true

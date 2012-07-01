@@ -23,6 +23,7 @@ import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.MindMapHistory;
+import com.wisemapping.model.User;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.view.MindMapBean;
@@ -67,6 +68,7 @@ public class MindmapController {
     @RequestMapping(value = "maps/{id}/print")
     public String showPrintPage(@PathVariable int id, @NotNull Model model) {
         final MindMapBean mindmap = findMindmapBean(id);
+        model.addAttribute("principal", Utils.getUser());
         model.addAttribute("mindmap", mindmap);
         return "mindmapPrint";
     }
@@ -124,7 +126,9 @@ public class MindmapController {
     }
 
     @RequestMapping(value = "maps/")
-    public String showListPage() {
+    public String showListPage(@NotNull Model model) {
+        final Locale locale = LocaleContextHolder.getLocale();
+        model.addAttribute("locale", locale.getLanguage());
         return "mindmapList";
     }
 
@@ -140,6 +144,7 @@ public class MindmapController {
             // Configure default locale for the editor ...
             final Locale locale = LocaleContextHolder.getLocale();
             model.addAttribute("locale", locale.getLanguage());
+            model.addAttribute("principal", Utils.getUser());
             result = "mindmapEditor";
         } else {
             result = "redirect:view";
