@@ -10,7 +10,7 @@
 <%--@elvariable id="editorTryMode" type="java.lang.String"--%>
 <%--@elvariable id="mapXml" type="com.wisemapping.model.User"--%>
 <%
-    User user = Utils.getUser(true);
+    User user = Utils.getUser();
     if (user != null) {
         request.setAttribute("principal", user);
     }
@@ -44,6 +44,7 @@
             var userOptions = ${mindmap.properties};
             options.zoom = userOptions.zoom;
             options.readOnly = ${!!readOnlyMode};
+            options.locale = '${locale}';
 
             // Set map id ...
             options.mapId = mapId;

@@ -24,7 +24,7 @@ mindplot.Designer = new Class({
             $assert(divElement, "divElement must be defined");
 
             // Set up i18n location ...
-            mindplot.Messages.init(options.location);
+            mindplot.Messages.init(options.locale);
 
             this._options = options;
 

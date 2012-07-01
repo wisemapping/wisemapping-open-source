@@ -30,12 +30,14 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.util.Locale;
 
 @Controller
 public class MindmapController {
@@ -134,6 +136,10 @@ public class MindmapController {
         String result;
         if (mindmap.hasPermissions(Utils.getUser(), CollaborationRole.EDITOR)) {
             model.addAttribute("mindmap", mindmapBean);
+
+            // Configure default locale for the editor ...
+            final Locale locale = LocaleContextHolder.getLocale();
+            model.addAttribute("locale", locale.getLanguage());
             result = "mindmapEditor";
         } else {
             result = "redirect:view";

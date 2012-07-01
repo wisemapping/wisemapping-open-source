@@ -248,7 +248,7 @@ mindplot.widget.Menu = new Class({
         this._addButton('redoEdition', false, false, function () {
             designer.redo();
         });
-        this._registerTooltip('redoEdition', $msg('REDO'), "meta+Y");
+        this._registerTooltip('redoEdition', $msg('REDO'), "meta+shift+Z");
 
 
         this._addButton('addTopic', true, false, function () {

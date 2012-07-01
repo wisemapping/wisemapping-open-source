@@ -108,7 +108,7 @@ function loadDesignerOptions(jsonConf) {
             height:parseInt(window.innerHeight - 70), // Footer and Header
             width:parseInt(window.innerWidth)
         };
-        result = {readOnly:false, zoom:0.85, saveOnLoad:true, size:containerSize, viewPort:viewPort, container:'mindplot', location:'en'};
+        result = {readOnly:false, zoom:0.85, saveOnLoad:true, size:containerSize, viewPort:viewPort, container:'mindplot', locale:'en'};
     }
     return result;
 }

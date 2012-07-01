@@ -18,8 +18,8 @@
 
 mindplot.Messages = new Class({
     Static:{
-        init:function (location) {
-            var locale = $defined(location) ? location : 'en';
+        init:function (locale) {
+            locale = $defined(locale) ? locale : 'en';
             mindplot.Messages.__bundle = mindplot.Messages.BUNDLES[locale];
             console.log(mindplot.Messages.__bundle);
         }
