@@ -5,7 +5,7 @@
 
 <html>
 <head>
-    <base href="${baseURL}">
+    <base href="${baseURL}/">
     <title><spring:message code="SITE.TITLE"/></title>
     <!--[if lt IE 9]>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
@@ -33,7 +33,7 @@
         $(function () {
             $('#mindmapListTable').dataTable({
                 bProcessing:true,
-                sAjaxSource:"../service/maps/",
+                sAjaxSource:"service/maps/",
                 sAjaxDataProp:'mindmapsInfo',
                 fnInitComplete:function () {
                     $('#mindmapListTable tbody').change(updateStatusToolbar);

@@ -207,7 +207,7 @@ mindplot.widget.Menu = new Class({
         }
 
         this._addButton('export', false, false, function () {
-            var reqDialog = new MooDialog.Request('/c/iframeWrapper.htm?url=c/maps/' + mapId + "/exportf", null,
+            var reqDialog = new MooDialog.Request('c/iframeWrapper.htm?url=c/maps/' + mapId + "/exportf", null,
                 {'class':'modalDialog exportModalDialog',
                     closeButton:true,
                     destroyOnClose:true,
@@ -223,7 +223,7 @@ mindplot.widget.Menu = new Class({
         this._registerTooltip('export', $msg('EXPORT'));
 
         this._addButton('print', false, false, function () {
-            window.open('/c/maps/' + mapId + '/print');
+            window.open('c/maps/' + mapId + '/print');
         });
 
         this._registerTooltip('print', $msg('PRINT'));
@@ -348,7 +348,7 @@ mindplot.widget.Menu = new Class({
         var shareElem = $('shareIt');
         if (shareElem) {
             this._addButton('shareIt', false, false, function () {
-                var reqDialog = new MooDialog.Request('/c/iframeWrapper?url=c/maps/' + mapId + "/sharef", null,
+                var reqDialog = new MooDialog.Request('c/iframeWrapper?url=c/maps/' + mapId + "/sharef", null,
                     {'class':'modalDialog shareModalDialog',
                         closeButton:true,
                         destroyOnClose:true,
@@ -368,7 +368,7 @@ mindplot.widget.Menu = new Class({
         var publishElem = $('publishIt');
         if (publishElem) {
             this._addButton('publishIt', false, false, function () {
-                var reqDialog = new MooDialog.Request('/c/iframeWrapper?url=c/maps/' + mapId + "/publishf", null,
+                var reqDialog = new MooDialog.Request('c/iframeWrapper?url=c/maps/' + mapId + "/publishf", null,
                     {'class':'modalDialog publishModalDialog',
                         closeButton:true,
                         destroyOnClose:true,
@@ -389,7 +389,7 @@ mindplot.widget.Menu = new Class({
         if (historyElem) {
 
             this._addButton('history', false, false, function () {
-                var reqDialog = new MooDialog.Request('/c/iframeWrapper?url=c/maps/' + mapId + "/historyf", null,
+                var reqDialog = new MooDialog.Request('c/iframeWrapper?url=c/maps/' + mapId + "/historyf", null,
                     {'class':'modalDialog historyModalDialog',
                         closeButton:true,
                         destroyOnClose:true,

@@ -263,8 +263,8 @@ $(function() {
     $("#newBtn").click(
         function() {
             $("#new-dialog-modal").dialogForm({
-                redirect: "/c/maps/{header.resourceId}/edit",
-                url :  "../service/maps"
+                redirect: "c/maps/{header.resourceId}/edit",
+                url :  "service/maps"
             });
         });
 
@@ -283,8 +283,8 @@ $(function() {
 
             // Initialize dialog ...
             $("#duplicate-dialog-modal").dialogForm({
-                redirect: "/c/maps/{header.resourceId}/edit",
-                url :  "../service/maps/" + mapId
+                redirect: "c/maps/{header.resourceId}/edit",
+                url :  "service/maps/" + mapId
             });
         }
     });
@@ -318,7 +318,7 @@ $(function() {
                     rowData.description = reqBodyData.description;
                     dataTable.fnAddData(JSON.parse(JSON.stringify(rowData)));
                 },
-                url :  "../service/maps/" + mapId
+                url :  "service/maps/" + mapId
             });
         }
     });
@@ -336,7 +336,7 @@ $(function() {
                     // Remove old entry ...
                     tableUI.dataTableExt.removeSelectedRows();
                 },
-                url :  "../service/maps/batch?ids=" + jQuery.makeArray(mapIds).join(',')
+                url :  "service/maps/batch?ids=" + jQuery.makeArray(mapIds).join(',')
             });
         }
     });
@@ -344,32 +344,32 @@ $(function() {
     $("#printBtn").click(function() {
         var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
         if (mapIds.length > 0) {
-            window.open('/c/maps/' + mapIds[0] + '/print');
+            window.open('c/maps/' + mapIds[0] + '/print');
         }
     });
 
     $("#infoBtn").click(function() {
-        showEmbeddedDialog("/c/maps/{mapId}/details", 'info-dialog-modal');
+        showEmbeddedDialog("c/maps/{mapId}/details", 'info-dialog-modal');
     });
 
     $("#historyBtn").click(function() {
-        showEmbeddedDialog("/c/maps/{mapId}/history", 'history-dialog-modal');
+        showEmbeddedDialog("c/maps/{mapId}/history", 'history-dialog-modal');
     });
 
     $("#publishBtn").click(function() {
-        showEmbeddedDialog("/c/maps/{mapId}/publish", "publish-dialog-modal");
+        showEmbeddedDialog("c/maps/{mapId}/publish", "publish-dialog-modal");
     });
 
     $("#exportBtn").click(function() {
-        showEmbeddedDialog("/c/maps/{mapId}/export", 'export-dialog-modal');
+        showEmbeddedDialog("c/maps/{mapId}/export", 'export-dialog-modal');
     });
 
     $("#importBtn").click(function() {
-        showEmbeddedDialog("/c/maps/import", 'import-dialog-modal', true);
+        showEmbeddedDialog("c/maps/import", 'import-dialog-modal', true);
     });
 
     $("#shareBtn").click(function() {
-        showEmbeddedDialog("/c/maps/{mapId}/share", 'share-dialog-modal', true);
+        showEmbeddedDialog("c/maps/{mapId}/share", 'share-dialog-modal', true);
     });
 
     var showEmbeddedDialog = function(urlTemplate, dialogElemId, ignore) {
@@ -397,7 +397,7 @@ $(function() {
         $('#foldersContainer .active i').addClass('icon-white');
 
         // Reload the table data ...
-        dataTable.fnReloadAjax("../service/maps/?q=" + $(this).attr('data-filter'), callbackOnTableInit, true);
+        dataTable.fnReloadAjax("service/maps/?q=" + $(this).attr('data-filter'), callbackOnTableInit, true);
         event.preventDefault();
     });
 });
