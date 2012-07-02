@@ -36,7 +36,7 @@
     var fileContent = null;
 
     $('#cancelButton').click(function () {
-        window.location = '/c/maps/';
+        window.location = 'c/maps/';
     });
 
     $('#dialogMainForm').submit(function (event) {

@@ -48,7 +48,7 @@
 
             tableElem.find('tr a.view').each(function () {
                 $(this).click(function (event) {
-                    window.open("/c/maps/${mindmapId}/" + $(this).closest("tr").attr("data-history-id") + "/view");
+                    window.open("c/maps/${mindmapId}/" + $(this).closest("tr").attr("data-history-id") + "/view");
                     event.preventDefault();
                 });
             });

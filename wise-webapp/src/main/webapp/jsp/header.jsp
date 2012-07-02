@@ -31,19 +31,19 @@
             <c:when test="${principal != null}">
                 <div id="headerActions">
                     <spring:message code="WELCOME"/>, ${principal.firstname}
-                    | <span><a href="/c/maps/"><spring:message
+                    | <span><a href="c/maps/"><spring:message
                         code="MY_WISEMAPS"/></a></span>
                     | <span><a id="userSettingsBtn" href="#"
                                title="<spring:message code="ACCOUNT_DETAIL"/>"><spring:message
                         code="ACCOUNT"/></a></span>
-                    | <span><a href="/c/logout"
+                    | <span><a href="c/logout"
                                title="<spring:message code="LOGOUT"/>"><spring:message code="LOGOUT"/></a></span>
                 </div>
             </c:when>
             <c:when test="${param.removeSignin!=true}">
                 <div id="headerActions">
                     <spring:message code="ALREADY_A_MEMBER"/>
-                    <span><a href="/c/login" title="<spring:message code="SIGN_IN"/>">
+                    <span><a href="c/login" title="<spring:message code="SIGN_IN"/>">
                         <spring:message code="SIGN_IN"/>
                     </a></span>
                 </div>
@@ -53,7 +53,7 @@
 </div>
 <c:if test="${param.onlyActionHeader!=true}">
     <div id="headerContent">
-        <a href="/c/home" title="Homepage">
+        <a href="c/home" title="Homepage">
             <div id="headerLogo">&nbsp;</div>
         </a>
 
@@ -67,7 +67,7 @@
 <script type="text/javascript">
     $('#userSettingsBtn').click(
             function (event) {
-                $('#settings-dialog-modal .modal-body').load("/c/account/settings",
+                $('#settings-dialog-modal .modal-body').load("c/account/settings",
                         function () {
                             $('#settings-dialog-modal .btn-cancel').unbind('click').click(function () {
                                 $('#settings-dialog-modal').modal("hide");

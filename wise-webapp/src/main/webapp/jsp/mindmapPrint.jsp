@@ -111,7 +111,7 @@
     <div id="printLogo"></div>
 
     <div id="embFooter">
-        <a href="/c/home" target="new">
+        <a href="c/home" target="new">
             <div id="footerLogo"></div>
         </a>
 
