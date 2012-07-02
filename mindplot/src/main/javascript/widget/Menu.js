@@ -211,7 +211,7 @@ mindplot.widget.Menu = new Class({
                 {'class':'modalDialog exportModalDialog',
                     closeButton:true,
                     destroyOnClose:true,
-                    title: $msg('EXPORT')
+                    title:$msg('EXPORT')
                 });
             reqDialog.setRequestOptions({
                 onRequest:function () {
@@ -405,6 +405,28 @@ mindplot.widget.Menu = new Class({
         }
 
         this._registerEvents(designer);
+
+        // Keyboard Shortcuts Action ...
+        var keyboardShortcut = $('keyboardShortcuts');
+        if (keyboardShortcut) {
+
+            keyboardShortcut.addEvent('click', function (event) {
+                var reqDialog = new MooDialog.Request('c/keyboard', null,
+                    {'class':'modalDialog keyboardModalDialog',
+                        closeButton:true,
+                        destroyOnClose:true,
+                        title:$msg('SHORTCUTS')
+                    });
+                reqDialog.setRequestOptions({
+                    onRequest:function () {
+                        reqDialog.setContent($msg('LOADING'));
+                    }
+                });
+                MooDialog.Request.active = reqDialog;
+                event.preventDefault();
+            });
+        }
+
     },
 
     _registerEvents:function (designer) {

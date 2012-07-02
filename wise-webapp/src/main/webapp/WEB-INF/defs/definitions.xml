@@ -181,6 +181,6 @@
     <definition name="keyboard" extends="dialogTemplate">
         <put-attribute name="title" value="KEYBOARD"/>
         <put-attribute name="details" value="KEYBOARD_MSG"/>
-        <put-attribute name="body" value="/jsp/keyboard.jsp"/>
+        <put-attribute name="body" value="/jsp/mindmapEditorKeyboard.jsp"/>
     </definition>
 </tiles-definitions>
