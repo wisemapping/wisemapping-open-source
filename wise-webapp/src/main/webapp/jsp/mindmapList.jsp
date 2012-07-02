@@ -81,10 +81,11 @@
                 oLanguage:{
                     "sLengthMenu":"<spring:message code="SHOW_REGISTERS"/>",
                     "sSearch":"",
-                    "sZeroRecords": "<spring:message code="NO_MATCHING_FOUND"/>",
+                    "sZeroRecords":"<spring:message code="NO_MATCHING_FOUND"/>",
                     "sLoadingRecords":"<spring:message code="LOADING"/>",
                     "sInfo":"<spring:message code="TABLE_ROWS"/>",
-                    "sEmptyTable":"<spring:message code="NO_SEARCH_RESULT"/>"
+                    "sEmptyTable":"<spring:message code="NO_SEARCH_RESULT"/>",
+                    "sProcessing":"<spring:message code="LOADING"/>"
                 },
                 bStateSave:true
             });

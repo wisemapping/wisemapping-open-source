@@ -11,7 +11,7 @@
 }
 
 #headerToolbar {
-    height: 25px;
+    height: 30px;
     width: 100%;
     background-color: #171a17;
     border-top: 1px solid #999999;
@@ -31,7 +31,7 @@
 }
 
 #headerLogo {
-    margin-top: 13px;
+    margin-top: 18px;
     height: 80px;
     width: 160px;
     background: url("../images/logo-medium.png") no-repeat;

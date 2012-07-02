@@ -260,7 +260,7 @@ mindplot.widget.Menu = new Class({
         this._addButton('deleteTopic', true, true, function () {
             designer.deleteCurrentNode();
         });
-        this._registerTooltip('deleteTopic', $msg('TOPIC_DELETE'), "Backspace");
+        this._registerTooltip('deleteTopic', $msg('TOPIC_DELETE'), "Delete");
 
 
         this._addButton('topicLink', true, false, function () {
