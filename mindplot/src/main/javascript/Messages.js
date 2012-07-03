@@ -71,14 +71,15 @@ mindplot.Messages.BUNDLES = {
         SAVE_COMPLETE:'Save Complete',
         ZOOM_IN_ERROR:'Zoom too high.',
         ZOOM_ERROR:'No more zoom can be applied.',
-        ONLY_ONE_TOPIC_MUST_BE_SELECTED:'Could not create a topic. Only one node must be selected.',
+        ONLY_ONE_TOPIC_MUST_BE_SELECTED:'Could not create a topic. Only one topic must be selected.',
         ONE_TOPIC_MUST_BE_SELECTED:'Could not create a topic. One topic must be selected.',
         SAVE_COULD_NOT_BE_COMPLETED:'Save could not be completed. Try latter.',
         UNEXPECTED_ERROR_LOADING:"We're sorry, an unexpected error has occurred. Try again reloading the editor.\nIf the problem persists, contact us to support@wisemapping.com.",
         MAIN_TOPIC:'Main Topic',
         SUB_TOPIC:'Sub Topic',
         ISOLATED_TOPIC:'Isolated Topic',
-        CENTRAL_TOPIC: 'Central Topic'
+        CENTRAL_TOPIC: 'Central Topic',
+        ONLY_ONE_TOPIC_MUST_BE_SELECTED_COLLAPSE:'Children can not be collapsed. One topic must be selected.'
     },
     'es':{
         DISCARD_CHANGES:'Descartar Cambios',
@@ -123,7 +124,8 @@ mindplot.Messages.BUNDLES = {
         MAIN_TOPIC:'Tópico Principal',
         SUB_TOPIC:'Tópico Secundario',
         ISOLATED_TOPIC:'Tópico Aislado',
-        CENTRAL_TOPIC: 'Tópico Central'
+        CENTRAL_TOPIC: 'Tópico Central',
+        ONLY_ONE_TOPIC_MUST_BE_SELECTED_COLLAPSE:'Tópicos hijos no pueden ser colapsados. Solo un topic debe ser seleccionado.'
     }
 };
 

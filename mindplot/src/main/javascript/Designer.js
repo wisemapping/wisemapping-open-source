@@ -354,18 +354,12 @@ mindplot.Designer = new Class({
 
         shrinkSelectedBranch:function () {
             var nodes = this.getModel().filterSelectedTopics();
-            if (nodes.length <= 0) {
+            if (nodes.length <= 0 || nodes.length != 1) {
                 // If there are more than one node selected,
-                $notify($msg('ONE_TOPIC_MUST_BE_SELECTED'));
+                $notify($msg('ONLY_ONE_TOPIC_MUST_BE_SELECTED_COLLAPSE'));
                 return;
 
             }
-            if (nodes.length != 1) {
-                // If there are more than one node selected,
-                $notify($msg('ONLY_ONE_TOPIC_MUST_BE_SELECTED'));
-                return;
-            }
-
             // Execute event ...
             var topic = nodes[0];
             this._actionDispatcher.shrinkBranch([topic.getId()], !topic.areChildrenShrunken());
