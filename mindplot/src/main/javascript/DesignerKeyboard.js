@@ -237,7 +237,7 @@ mindplot.DesignerKeyboard = new Class({
             }
 
             // If it's not registered, let's
-            if (!isRegistered && !excludes.contains(key) && !excludes.contains(event.key) && 'meta+[' != key && 'meta+à' != key) {
+            if (!isRegistered && !excludes.contains(key) && !excludes.contains(event.key) && !event.meta && !event.control) {
                 var nodes = designer.getModel().filterSelectedTopics();
                 if (nodes.length > 0) {
 
