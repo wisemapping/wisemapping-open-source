@@ -2,24 +2,27 @@
 <%@ include file="/jsp/init.jsp" %>
 
 <!DOCTYPE HTML>
+
+<p><spring:message code="KEYBOARD_SHORTCUTS_MSG"/></p>
 <style type="text/css">
     #keyboardTable {
-        font-family: Arial,verdana,serif;
+        font-family: Arial, verdana, serif;
         font-size: 13px;
     }
 
     #keyboardTable td {
         padding: 3px;
-        white-space:nowrap;
+        white-space: nowrap;
     }
+
     #keyboardTable th {
         padding: 5px;
-        white-space:nowrap;
+        white-space: nowrap;
     }
 
     #keyboardTable th {
         background-color: #000000;
-        color:#ffffff;
+        color: #ffffff;
     }
 </style>
 

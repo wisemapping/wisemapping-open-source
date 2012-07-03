@@ -15,6 +15,11 @@
     <context:annotation-config/>
     <mvc:annotation-driven/>
 
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="/WEB-INF/app.properties"/>
+    </bean>
+
+
     <!-- Interceptors Registration -->
     <mvc:interceptors>
         <bean id="browserSupportInterceptor" class="com.wisemapping.filter.BrowserSupportInterceptor">
@@ -37,11 +42,16 @@
         </bean>
         <bean id="userLocaleInterceptor" class="com.wisemapping.filter.UserLocaleInterceptor">
         </bean>
+        <bean id="requestInterceptor" class="com.wisemapping.filter.RequestPropertiesInterceptor">
+            <property name="attributes">
+                <map>
+                    <entry key="google.analytics.enabled" value="${google.analytics.enabled}"/>
+                    <entry key="google.analytics.account" value="${google.analytics.account}"/>
+                </map>
+            </property>
+        </bean>
     </mvc:interceptors>
 
-    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="/WEB-INF/app.properties"/>
-    </bean>
 
     <bean id="exceptionHandlerResolver"
           class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
@@ -73,8 +83,8 @@
           class="org.springframework.web.servlet.i18n.SessionLocaleResolver"/>
 
     <bean id="reCaptcha" class="net.tanesha.recaptcha.ReCaptchaImpl">
-        <property name="privateKey" value="${registration.recaptcha.privateKey}"/>
-        <property name="publicKey" value="${registration.recaptcha.publicKey}"/>
+        <property name="privateKey" value="${google.recaptcha.privateKey}"/>
+        <property name="publicKey" value="${google.recaptcha.publicKey}"/>
         <property name="includeNoscript" value="false"/>
     </bean>
 
@@ -84,7 +94,7 @@
         <property name="maxUploadSize" value="522240"/>
     </bean>
 
-    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource" >
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basenames">
             <list>
                 <value>messages</value>

@@ -78,8 +78,9 @@ mindplot.Messages.BUNDLES = {
         MAIN_TOPIC:'Main Topic',
         SUB_TOPIC:'Sub Topic',
         ISOLATED_TOPIC:'Isolated Topic',
-        CENTRAL_TOPIC: 'Central Topic',
-        ONLY_ONE_TOPIC_MUST_BE_SELECTED_COLLAPSE:'Children can not be collapsed. One topic must be selected.'
+        CENTRAL_TOPIC:'Central Topic',
+        ONLY_ONE_TOPIC_MUST_BE_SELECTED_COLLAPSE:'Children can not be collapsed. One topic must be selected.',
+        SHORTCUTS:'Keyboard Shortcuts'
     },
     'es':{
         DISCARD_CHANGES:'Descartar Cambios',
@@ -124,8 +125,9 @@ mindplot.Messages.BUNDLES = {
         MAIN_TOPIC:'Tópico Principal',
         SUB_TOPIC:'Tópico Secundario',
         ISOLATED_TOPIC:'Tópico Aislado',
-        CENTRAL_TOPIC: 'Tópico Central',
-        ONLY_ONE_TOPIC_MUST_BE_SELECTED_COLLAPSE:'Tópicos hijos no pueden ser colapsados. Solo un topic debe ser seleccionado.'
+        CENTRAL_TOPIC:'Tópico Central',
+        ONLY_ONE_TOPIC_MUST_BE_SELECTED_COLLAPSE:'Tópicos hijos no pueden ser colapsados. Solo un topic debe ser seleccionado.',
+        SHORTCUTS:'Accesos directos'
     }
 };
 

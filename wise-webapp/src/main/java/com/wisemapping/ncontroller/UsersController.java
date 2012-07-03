@@ -58,7 +58,7 @@ public class UsersController {
     @Autowired
     private ReCaptcha captchaService;
 
-    @Value("${registration.recaptcha.enabled}")
+    @Value("${google.recaptcha.enabled}")
     private boolean captchaEnabled;
 
 
