@@ -19,140 +19,134 @@
 mindplot.DesignerKeyboard = new Class({
     Extends:Keyboard,
     Static:{
-        register: function(designer) {
+        register:function (designer) {
             this._instance = new mindplot.DesignerKeyboard(designer);
             this._instance.activate();
         },
 
-        getInstance: function() {
+        getInstance:function () {
             return this._instance;
         }
     },
 
-    initialize : function(designer) {
+    initialize:function (designer) {
         $assert(designer, "designer can not be null");
-        this.parent({defaultEventType: 'keydown'});
+        this.parent({defaultEventType:'keydown'});
         this._registerEvents(designer);
     },
 
 
-    _registerEvents : function(designer) {
+    _registerEvents:function (designer) {
 
         // Try with the keyboard ..
         var model = designer.getModel();
         var keyboardEvents = {
-            'backspace':function(event) {
+            'backspace':function (event) {
                 event.preventDefault();
                 event.stopPropagation();
                 designer.deleteCurrentNode();
 
             }.bind(this),
 
-            'space' : function() {
-                var node = model.selectedTopic();
-                if (node) {
-                    var model = topic.getModel();
-                    var isShrink = !model.areChildrenShrunken();
-                    topic.setChildrenShrunken(isShrink);
-                }
+            'space':function () {
+                designer.shrinkSelectedBranch();
             }.bind(this),
 
-            'f2' : function() {
+            'f2':function () {
                 var node = model.selectedTopic();
                 if (node) {
                     node.showTextEditor();
                 }
             }.bind(this),
 
-            'delete' : function() {
+            'delete':function () {
                 designer.deleteCurrentNode();
             }.bind(this),
 
-            'enter' :
-                function() {
-                    designer.createSiblingForSelectedNode();
-                }.bind(this),
+            'enter':function () {
+                designer.createSiblingForSelectedNode();
+            }.bind(this),
 
-            'insert' : function() {
+            'insert':function () {
                 designer.createChildForSelectedNode();
             }.bind(this),
 
-            'meta+enter' : function() {
+            'meta+enter':function () {
                 designer.createChildForSelectedNode();
             }.bind(this),
 
-            'ctrl+z' : function() {
+            'ctrl+z':function () {
                 designer.undo();
             }.bind(this),
 
-            'meta+z' : function() {
+            'meta+z':function () {
                 designer.undo();
             }.bind(this),
 
-            'ctrl+z+shift' :function() {
+            'ctrl+z+shift':function () {
                 designer.redo();
             }.bind(this),
 
-            'meta+z+shift' : function() {
+            'meta+z+shift':function () {
                 designer.redo();
             }.bind(this),
 
-            'ctrl+y' :function() {
+            'ctrl+y':function () {
                 designer.redo();
             }.bind(this),
 
-            'meta+y' : function() {
+            'meta+y':function () {
                 designer.redo();
             }.bind(this),
 
-            'ctrl+a' : function(event) {
+            'ctrl+a':function (event) {
                 designer.selectAll();
                 event.preventDefault();
             },
 
-            'ctrl+b' : function() {
+            'ctrl+b':function () {
                 designer.changeFontWeight();
             },
 
-            'meta+b' : function() {
+            'meta+b':function () {
                 designer.changeFontWeight();
             },
 
-            'ctrl+s' : function(event) {
+            'ctrl+s':function (event) {
                 event.preventDefault();
                 $('save').fireEvent('click');
             },
 
-            'meta+s' : function(event) {
+            'meta+s':function (event) {
                 event.preventDefault();
                 $('save').fireEvent('click');
             },
 
-            'ctrl+i' : function() {
+            'ctrl+i':function () {
                 designer.changeFontStyle();
             },
 
-            'meta+i' : function() {
+            'meta+i':function () {
                 designer.changeFontStyle();
             },
 
-            'meta+shift+a' : function(event) {
+            'meta+shift+a':function (event) {
                 designer.deselectAll();
                 event.preventDefault();
             },
 
-            'ctrl+shift+a' : function(event) {
+            'ctrl+shift+a':function (event) {
                 designer.deselectAll();
                 event.preventDefault();
 
             },
 
-            'meta+a' : function(event) {
+            'meta+a':function (event) {
                 designer.selectAll();
                 event.preventDefault();
             },
 
-            'right' : function() {
+            'right':function () {
                 var node = model.selectedTopic();
                 if (node) {
                     if (node.getTopicType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
@@ -172,7 +166,7 @@ mindplot.DesignerKeyboard = new Class({
                 }
             }.bind(this),
 
-            'left' : function() {
+            'left':function () {
                 var node = model.selectedTopic();
                 if (node) {
                     if (node.getTopicType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
@@ -192,7 +186,7 @@ mindplot.DesignerKeyboard = new Class({
                 }
             }.bind(this),
 
-            'up' : function() {
+            'up':function () {
                 var node = model.selectedTopic();
                 if (node) {
                     if (node.getTopicType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
@@ -204,7 +198,7 @@ mindplot.DesignerKeyboard = new Class({
                 }
             }.bind(this),
 
-            'down' : function() {
+            'down':function () {
                 var node = model.selectedTopic();
                 if (node) {
                     if (node.getTopicType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
@@ -220,13 +214,13 @@ mindplot.DesignerKeyboard = new Class({
 
         var regex = /^(?:shift|control|ctrl|alt|meta)$/;
         var modifiers = ['shift', 'control', 'alt', 'meta'];
-        var excludes = ['esc','capslock','tab','f1','f3','f4','f5','f6','f7','f8','f9','f10','f11','f12','backspace','down','up','left','right','control'];
+        var excludes = ['esc', 'capslock', 'tab', 'f1', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10', 'f11', 'f12', 'backspace', 'down', 'up', 'left', 'right', 'control'];
 
-        $(document).addEvent('keydown', function(event) {
+        $(document).addEvent('keydown', function (event) {
 
             // Convert key to mootools keyboard event format...
             var keys = [];
-            modifiers.each(function(mod) {
+            modifiers.each(function (mod) {
                 if (event[mod]) keys.push(mod);
             });
             if (!regex.test(event.key))
@@ -261,7 +255,7 @@ mindplot.DesignerKeyboard = new Class({
 
     },
 
-    _goToBrother : function(designer, node, direction) {
+    _goToBrother:function (designer, node, direction) {
         var brothers = node._parent.getChildren();
         var target = node;
         var y = node.getPosition().y;
@@ -298,7 +292,7 @@ mindplot.DesignerKeyboard = new Class({
     },
 
 
-    _goToSideChild : function(designer, node, side) {
+    _goToSideChild:function (designer, node, side) {
         var children = node.getChildren();
         if (children.length > 0) {
             var target = children[0];
@@ -324,12 +318,12 @@ mindplot.DesignerKeyboard = new Class({
         }
     },
 
-    _goToParent : function(designer, node) {
+    _goToParent:function (designer, node) {
         var parent = node._parent;
         this._goToNode(designer, parent);
     },
 
-    _goToChild : function(designer, node) {
+    _goToChild:function (designer, node) {
         var children = node.getChildren();
         if (children.length > 0) {
             var target = children[0];
@@ -345,7 +339,7 @@ mindplot.DesignerKeyboard = new Class({
         }
     },
 
-    _goToNode : function(designer, node) {
+    _goToNode:function (designer, node) {
         // First deselect all the nodes ...
         designer.deselectAll();
 

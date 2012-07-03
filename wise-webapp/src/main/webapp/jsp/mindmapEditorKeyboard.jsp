@@ -64,6 +64,11 @@
             <td><spring:message code="JUST_START_TYPING"/> | F2</td>
         </tr>
         <tr>
+            <td><spring:message code="COLLAPSE_CHILDREN"/></td>
+            <td>Space bar</td>
+            <td>Space bar</td>
+        </tr>
+        <tr>
             <td><spring:message code="TOPIC_NAVIGATION"/></td>
             <td><spring:message code="ARROW_KEYS"/></td>
             <td><spring:message code="ARROW_KEYS"/></td>

@@ -624,7 +624,6 @@ mindplot.Topic = new Class({
         model.setChildrenShrunken(value);
 
         // Change render base on the state.
-
         var shrinkConnector = this.getShrinkConnector();
         if ($defined(shrinkConnector)) {
             shrinkConnector.changeRender(value);
