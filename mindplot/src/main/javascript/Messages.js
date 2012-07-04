@@ -21,7 +21,6 @@ mindplot.Messages = new Class({
         init:function (locale) {
             locale = $defined(locale) ? locale : 'en';
             mindplot.Messages.__bundle = mindplot.Messages.BUNDLES[locale];
-            console.log(mindplot.Messages.__bundle);
         }
     }
 });

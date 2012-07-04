@@ -18,39 +18,61 @@
 
 mindplot.RESTPersistenceManager = new Class({
         Extends:mindplot.PersistenceManager,
-        initialize: function(saveUrl) {
+        initialize:function (saveUrl, revertUrl) {
             this.parent();
             $assert(saveUrl, "saveUrl can not be null");
+            $assert(revertUrl, "revertUrl can not be null");
             this.saveUrl = saveUrl;
+            this.revertUrl = revertUrl;
         },
 
-        saveMapXml : function(mapId, mapXml, pref, saveHistory, events) {
+        saveMapXml:function (mapId, mapXml, pref, saveHistory, events) {
 
             var data = {
                 id:mapId,
-                xml: mapXml,
-                properties: pref
+                xml:mapXml,
+                properties:pref
             };
 
             var request = new Request({
                 url:this.saveUrl.replace("{id}", mapId) + "?minor=" + !saveHistory,
-                method: 'put',
-                onSuccess:function(responseText, responseXML) {
+                method:'put',
+                onSuccess:function (responseText, responseXML) {
                     events.onSuccess();
 
                 },
-                onException:function(headerName, value) {
+                onException:function (headerName, value) {
                     events.onError();
                 },
-                onFailure:function(xhr) {
+                onFailure:function (xhr) {
                     events.onError();
                 },
-                headers: {"Content-Type":"application/json","Accept":"application/json"},
+                headers:{"Content-Type":"application/json", "Accept":"application/json"},
                 emulation:false,
                 urlEncoded:false
             });
             request.put(JSON.encode(data));
+        },
+
+        discardChanges:function (mapId) {
+            var request = new Request({
+                url:this.revertUrl.replace("{id}", mapId),
+                async:false,
+                method:'post',
+                onSuccess:function () {
+                    console.log("Revert success ....");
+                },
+                onException:function () {
+                },
+                onFailure:function () {
+                },
+                headers:{"Content-Type":"application/json", "Accept":"application/json"},
+                emulation:false,
+                urlEncoded:false
+            });
+            request.post();
         }
+
     }
 );
 

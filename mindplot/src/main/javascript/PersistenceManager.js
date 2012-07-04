@@ -47,7 +47,7 @@ mindplot.PersistenceManager = new Class({
         return  this.loadFromDom(mapId, domDocument);
     },
 
-    discard: function(mapId) {
+    discardChanges: function(mapId) {
         throw "Method must be implemented";
     },
 

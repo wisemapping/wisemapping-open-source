@@ -321,7 +321,13 @@ mindplot.widget.Menu = new Class({
         var discardElem = $('discard');
         if (discardElem) {
             this._addButton('discard', false, false, function () {
-                this.discard();
+                // Avoid autosave before leaving the page ....
+                $(window).removeEvents(['beforeunload']);
+
+                // Discard changes ...
+                this.discardChanges();
+
+                // Reload the page ...
                 window.location.reload();
             }.bind(this));
             this._registerTooltip('discard', $msg('DISCARD_CHANGES'));

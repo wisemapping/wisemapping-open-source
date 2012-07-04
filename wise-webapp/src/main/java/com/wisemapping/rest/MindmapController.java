@@ -48,6 +48,7 @@ import java.util.*;
 
 @Controller
 public class MindmapController extends BaseController {
+    public static final String LATEST_HISTORY_REVISION = "latest";
     @Qualifier("mindmapService")
     @Autowired
     private MindmapService mindmapService;
@@ -116,9 +117,21 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(value = "maps/{id}/history/{hid}", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateRevertMindmap(@PathVariable int id, @PathVariable int hid) throws WiseMappingException {
+    public void updateRevertMindmap(@PathVariable int id, @PathVariable String hid) throws WiseMappingException {
         final MindMap mindmap = mindmapService.findMindmapById(id);
-        mindmapService.revertChange(mindmap, hid);
+        final User user = Utils.getUser();
+
+        if (LATEST_HISTORY_REVISION.equals(hid)) {
+            // Revert to the latest stored version ...
+            List<MindMapHistory> mindmapHistory = mindmapService.findMindmapHistory(id);
+            if (mindmapHistory.size() > 0) {
+                final MindMapHistory mindMapHistory = mindmapHistory.get(0);
+                mindmap.setXml(mindMapHistory.getXml());
+                saveMindmap(true, mindmap, user);
+            }
+        } else {
+            mindmapService.revertChange(mindmap, Integer.parseInt(hid));
+        }
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/document", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})

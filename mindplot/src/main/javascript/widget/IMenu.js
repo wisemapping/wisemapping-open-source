@@ -34,10 +34,10 @@ mindplot.widget.IMenu = new Class({
         });
     },
 
-    discard:function () {
+    discardChanges:function () {
         var persistenceManager = mindplot.PersistenceManager.getInstance();
         var mindmap = designer.getMindmap();
-        persistenceManager.discard(mindmap.getId());
+        persistenceManager.discardChanges(mindmap.getId());
     },
 
     save:function (saveElem, designer, saveHistory) {
