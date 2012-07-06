@@ -49,8 +49,7 @@
             var parser = new DOMParser();
             var domDocument = parser.parseFromString(mapXml, "text/xml");
 
-            var persistence = mindplot.PersistenceManager.getInstance();
-            var mindmap = persistence.loadFromDom(mapId, domDocument);
+            var mindmap = mindplot.PersistenceManager.loadFromDom(mapId, domDocument);
             designer.loadMap(mindmap);
         });
     </script>

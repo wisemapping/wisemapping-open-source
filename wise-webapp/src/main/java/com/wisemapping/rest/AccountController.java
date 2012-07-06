@@ -86,8 +86,6 @@ public class AccountController extends BaseController {
         if (language == null) {
             throw new IllegalArgumentException("language can not be null");
 
-        } if (!language.equals("en") && !language.equals("es") ){
-            throw new IllegalArgumentException("language not supported yet");
         }
 
         final User user = Utils.getUser();

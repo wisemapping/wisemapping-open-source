@@ -17,11 +17,21 @@
  */
 
 mindplot.PersistenceManager = new Class({
-    initialize: function() {
+    Static:{
+        loadFromDom:function (mapId, mapDom) {
+            $assert(mapId, "mapId can not be null");
+            $assert(mapDom, "mapDom can not be null");
+
+            var serializer = mindplot.persistence.XMLSerializerFactory.getSerializerFromDocument(mapDom);
+            return serializer.loadFromDom(mapDom, mapId);
+        }
+    },
+
+    initialize:function () {
 
     },
 
-    save: function(mindmap, editorProperties, saveHistory, events) {
+    save:function (mindmap, editorProperties, saveHistory, events) {
         $assert(mindmap, "mindmap can not be null");
         $assert(editorProperties, "editorProperties can not be null");
 
@@ -35,48 +45,36 @@ mindplot.PersistenceManager = new Class({
         var pref = JSON.encode(editorProperties);
         try {
             this.saveMapXml(mapId, mapXml, pref, saveHistory, events);
-        } catch(e) {
+        } catch (e) {
             console.log(e);
             events.onError();
         }
     },
 
-    load: function(mapId) {
+    load:function (mapId) {
         $assert(mapId, "mapId can not be null");
         var domDocument = this.loadMapDom(mapId);
-        return  this.loadFromDom(mapId, domDocument);
+        return  mindplot.PersistenceManager.loadFromDom(mapId, domDocument);
     },
 
-    discardChanges: function(mapId) {
+    discardChanges:function (mapId) {
         throw "Method must be implemented";
     },
 
-    loadMapDom: function(mapId) {
+    loadMapDom:function (mapId) {
         throw "Method must be implemented";
     },
 
-    saveMapXml : function(mapId, mapXml, pref, saveHistory, events) {
-        throw "Method must be implemented";
-    },
-
-    loadFromDom : function(mapId, mapDom) {
-        $assert(mapId, "mapId can not be null");
-        $assert(mapDom, "mapDom can not be null");
-
-        var serializer = mindplot.persistence.XMLSerializerFactory.getSerializerFromDocument(mapDom);
-        return serializer.loadFromDom(mapDom, mapId);
-    },
-
-    logEntry: function(severity, message) {
+    saveMapXml:function (mapId, mapXml, pref, saveHistory, events) {
         throw "Method must be implemented";
     }
 });
 
-mindplot.PersistenceManager.init = function(instance) {
+mindplot.PersistenceManager.init = function (instance) {
     mindplot.PersistenceManager._instance = instance;
 };
 
-mindplot.PersistenceManager.getInstance = function() {
+mindplot.PersistenceManager.getInstance = function () {
     return mindplot.PersistenceManager._instance;
 };
 

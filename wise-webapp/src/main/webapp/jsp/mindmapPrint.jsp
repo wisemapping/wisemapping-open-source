@@ -47,9 +47,6 @@
             bottom: -30px;
         }
 
-        div#infoPanel {
-            display: none;
-        }
     </style>
 
     <script type='text/javascript' src='js/mootools-core.js'></script>
@@ -64,13 +61,14 @@
     <script type="text/javascript">
         var mapId = '${mindmap.id}';
         var mapXml = '${mindmap.xmlAsJsLiteral}';
-        $(document).addEvent('loadcomplete', function(resource) {
+
+        $(document).addEvent('loadcomplete', function (resource) {
 
             // Configure designer options ...
             var options = loadDesignerOptions();
+            options.locale = '${locale}';
             options.size.height = options.size.height + 50;
 
-            options.persistenceManager = new mindplot.RESTPersistenceManager("service/maps/");
             var userOptions = ${mindmap.properties};
             options.zoom = userOptions.zoom;
 
@@ -87,15 +85,14 @@
             var parser = new DOMParser();
             var domDocument = parser.parseFromString(mapXml, "text/xml");
 
-            var persistence = mindplot.PersistenceManager.getInstance();
-            var mindmap = persistence.loadFromDom(mapId, domDocument);
+            var mindmap = mindplot.PersistenceManager.loadFromDom(mapId, domDocument);
             designer.loadMap(mindmap);
 
-            $('zoomIn').addEvent('click', function() {
+            $('zoomIn').addEvent('click', function () {
                 designer.zoomIn();
             });
 
-            $('zoomOut').addEvent('click', function() {
+            $('zoomOut').addEvent('click', function () {
                 designer.zoomOut();
             });
         });
@@ -104,9 +101,6 @@
 <body>
 
 <div id="mapContainer">
-    <%--<div id="infoPanel">--%>
-    <%--<div id="dragImageNode" style="cursor: move">--%>
-    <%--</div>--%>
     <div id="mindplot"></div>
     <div id="printLogo"></div>
 

@@ -28,7 +28,7 @@
                     <label for="lastname"><strong><spring:message code="LASTNAME"/>:</strong></label>
                     <input type="text" name="lastname" id="lastname" required="required" value="${user.lastname}"/>
                     <br/>
-                    <input type="submit" id="changeUserInfoBtn" class="btn btn-primary" value="Save"/>
+                    <input type="submit" id="changeUserInfoBtn" class="btn btn-primary" value="<spring:message code="SAVE_CHANGES"/>"/>
                 </fieldset>
             </form>
 
@@ -60,10 +60,10 @@
                         <option value="es" <c:if test="${user.locale=='es'}">selected="selected" </c:if>>Spanish -
                             español
                         </option>
-                        <option value="zh_cn" <c:if test="${user.locale=='es'}">selected="selected" </c:if>>Chinese
+                        <option value="zh_cn" <c:if test="${user.locale=='zh_cn'}">selected="selected" </c:if>>Chinese
                             (Simplified Han) - 中文（简体中文）
                         </option>
-                        <option value="zh-tw" <c:if test="${user.locale=='es'}">selected="selected" </c:if>>Chinese
+                        <option value="zh_tw" <c:if test="${user.locale=='zh_tw'}">selected="selected" </c:if>>Chinese
                             (Traditional Han) - 中文 (繁體中文)
                         </option>
                     </select>

@@ -2,11 +2,33 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <div id="footer">
-    <div style="width:30%; float:left;">&nbsp;</div>
+    <div style="width:30%; float:left;">&nbsp;
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="wisemapping" data-related="wisemapping">Tweet</a>
+        <script>!function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (!d.getElementById(id)) {
+                js = d.createElement(s);
+                js.id = id;
+                js.src = "//platform.twitter.com/widgets.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }
+        }(document, "script", "twitter-wjs");</script>
+
+        <!-- Place this tag in your head or just before your close body tag -->
+        <script type="text/javascript" src="https://apis.google.com/js/plusone.js">
+            {parsetags: 'explicit'}
+        </script>
+
+        <!-- Place this tag where you want the +1 button to render -->
+        <g:plusone></g:plusone>
+
+        <!-- Place this render call where appropriate -->
+        <script type="text/javascript">gapi.plusone.go();</script>
+    </div>
     <div style="float:left; width:40%;">
         <p><a href="http://www.wisemapping.org"><spring:message code="COPYRIGHT"/></a></p>
     </div>
-    <div style="float:left; text-align:left;padding:5px;">
+    <div style="float:left; text-align:left;">
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
             <input type="hidden" name="cmd" value="_s-xclick"/>
             <input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but04.gif" name="submit"

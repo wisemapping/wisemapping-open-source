@@ -70,6 +70,8 @@ public class MindmapController {
         final MindMapBean mindmap = findMindmapBean(id);
         model.addAttribute("principal", Utils.getUser());
         model.addAttribute("mindmap", mindmap);
+        final Locale locale = LocaleContextHolder.getLocale();
+        model.addAttribute("locale", locale.toString().toLowerCase());
         return "mindmapPrint";
     }
 
@@ -128,7 +130,7 @@ public class MindmapController {
     @RequestMapping(value = "maps/")
     public String showListPage(@NotNull Model model) {
         final Locale locale = LocaleContextHolder.getLocale();
-        model.addAttribute("locale", locale.getISO3Language());
+        model.addAttribute("locale", locale.toString().toLowerCase());
         return "mindmapList";
     }
 
@@ -143,7 +145,7 @@ public class MindmapController {
 
             // Configure default locale for the editor ...
             final Locale locale = LocaleContextHolder.getLocale();
-            model.addAttribute("locale", locale.getISO3Language());
+            model.addAttribute("locale", locale.toString().toLowerCase());
             model.addAttribute("principal", Utils.getUser());
             result = "mindmapEditor";
         } else {
@@ -178,6 +180,8 @@ public class MindmapController {
         final MindMapBean mindmap = findMindmapBean(id);
         view = new ModelAndView("mindmapEmbedded", "mindmap", mindmap);
         view.addObject("zoom", zoom == null ? 1 : zoom);
+        final Locale locale = LocaleContextHolder.getLocale();
+        view.addObject("locale", locale.toString().toLowerCase());
         return view;
     }
 

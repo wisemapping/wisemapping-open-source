@@ -33,8 +33,9 @@
             // Configure designer options ...
             var options = loadDesignerOptions();
             options.size.height = options.size.height + 50;
+            options.locale = '${locale}';
 
-            options.persistenceManager = new mindplot.RESTPersistenceManager("service/maps/");
+
             var userOptions = ${mindmap.properties};
             options.zoom = ${zoom};
 
@@ -51,8 +52,7 @@
             var parser = new DOMParser();
             var domDocument = parser.parseFromString(mapXml, "text/xml");
 
-            var persistence = mindplot.PersistenceManager.getInstance();
-            var mindmap = persistence.loadFromDom(mapId, domDocument);
+            var mindmap = mindplot.PersistenceManager.loadFromDom(mapId, domDocument);
             designer.loadMap(mindmap);
 
             $('zoomIn').addEvent('click', function () {

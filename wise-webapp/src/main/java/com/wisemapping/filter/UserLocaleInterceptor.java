@@ -44,7 +44,7 @@ public class UserLocaleInterceptor extends HandlerInterceptorAdapter {
         if (user != null && session != null) {
             String userLocale = user.getLocale();
             final Locale sessionLocale = (Locale) session.getAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME);
-            if ((userLocale != null) && ((sessionLocale == null) || (!userLocale.equals(sessionLocale.getISO3Language())))) {
+            if ((userLocale != null) && ((sessionLocale == null) || (!userLocale.equals(sessionLocale.toString())))) {
                 session.setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, new Locale(userLocale));
             }
         }

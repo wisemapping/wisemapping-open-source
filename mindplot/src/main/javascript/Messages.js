@@ -134,7 +134,7 @@ mindplot.Messages.BUNDLES = {
         ONLY_ONE_TOPIC_MUST_BE_SELECTED_COLLAPSE:'Tópicos hijos no pueden ser colapsados. Solo un topic debe ser seleccionado.',
         SHORTCUTS:'Accesos directos'
     },
-    zh_CN:{
+    zh_cn:{
         ZOOM_IN:'放大',
         ZOOM_OUT:'缩小',
         TOPIC_SHAPE:'节点外形',
@@ -179,7 +179,7 @@ mindplot.Messages.BUNDLES = {
         CENTRAL_TOPIC:'中心节点',
         SHORTCUTS:'快捷键'
     },
-    zh_TW:{
+    zh_tw:{
         ZOOM_IN:'放大',
         ZOOM_OUT:'縮小',
         TOPIC_SHAPE:'節點外形',
@@ -223,7 +223,7 @@ mindplot.Messages.BUNDLES = {
         ISOLATED_TOPIC:'獨立節點',
         CENTRAL_TOPIC:'中心節點',
         SHORTCUTS:'快捷鍵'
-    },
-    zh:mindplot.Messages.BUNDLES.zh_TW
+    }
 };
+mindplot.Messages.BUNDLES['zh'] = mindplot.Messages.zh_tw;
 
