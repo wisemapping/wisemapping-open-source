@@ -57,7 +57,14 @@
                     <label for="language"><strong><spring:message code="LANGUAGE"/>:</strong></label>
                     <select name="language" id="language">
                         <option value="en">English</option>
-                        <option value="es" <c:if test="${user.locale=='es'}">selected="selected" </c:if>>Español
+                        <option value="es" <c:if test="${user.locale=='es'}">selected="selected" </c:if>>Spanish -
+                            español
+                        </option>
+                        <option value="zh_cn" <c:if test="${user.locale=='es'}">selected="selected" </c:if>>Chinese
+                            (Simplified Han) - 中文（简体中文）
+                        </option>
+                        <option value="zh-tw" <c:if test="${user.locale=='es'}">selected="selected" </c:if>>Chinese
+                            (Traditional Han) - 中文 (繁體中文)
                         </option>
                     </select>
                     <br/>

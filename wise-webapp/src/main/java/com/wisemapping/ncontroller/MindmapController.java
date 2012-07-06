@@ -128,7 +128,7 @@ public class MindmapController {
     @RequestMapping(value = "maps/")
     public String showListPage(@NotNull Model model) {
         final Locale locale = LocaleContextHolder.getLocale();
-        model.addAttribute("locale", locale.getLanguage());
+        model.addAttribute("locale", locale.getISO3Language());
         return "mindmapList";
     }
 
@@ -143,7 +143,7 @@ public class MindmapController {
 
             // Configure default locale for the editor ...
             final Locale locale = LocaleContextHolder.getLocale();
-            model.addAttribute("locale", locale.getLanguage());
+            model.addAttribute("locale", locale.getISO3Language());
             model.addAttribute("principal", Utils.getUser());
             result = "mindmapEditor";
         } else {
