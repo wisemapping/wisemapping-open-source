@@ -411,7 +411,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
             return null;
         }
         // Is the connections points valid ?. If it's not, do not load the relationship ...
-        if (mindmap.findNodeById(srcId) == null || mindmap.findNodeById(destId)) {
+        if (mindmap.findNodeById(srcId) == null || mindmap.findNodeById(destId)==null) {
             return null;
         }
 

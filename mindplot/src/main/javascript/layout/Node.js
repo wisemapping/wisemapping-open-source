@@ -16,7 +16,7 @@
  *   limitations under the License.
  */
 mindplot.layout.Node = new Class({
-    initialize:function(id, size, position, sorter) {
+    initialize:function (id, size, position, sorter) {
         $assert(typeof id === 'number' && isFinite(id), "id can not be null");
         $assert(size, "size can not be null");
         $assert(position, "position can not be null");
@@ -31,90 +31,90 @@ mindplot.layout.Node = new Class({
         this.setShrunken(false);
     },
 
-    getId:function() {
+    getId:function () {
         return this._id;
     },
 
-    setFree: function(value) {
+    setFree:function (value) {
         this._setProperty('free', value);
     },
 
-    isFree: function() {
+    isFree:function () {
         return this._getProperty('free');
     },
 
-    hasFreeChanged: function() {
+    hasFreeChanged:function () {
         return this._isPropertyChanged('free');
     },
 
-    hasFreeDisplacementChanged: function() {
+    hasFreeDisplacementChanged:function () {
         return this._isPropertyChanged('freeDisplacement');
     },
 
-    setShrunken: function(value) {
+    setShrunken:function (value) {
         this._setProperty('shrink', value);
     },
 
-    areChildrenShrunken: function() {
+    areChildrenShrunken:function () {
         return this._getProperty('shrink');
     },
 
-    setOrder: function(order) {
+    setOrder:function (order) {
         $assert(typeof order === 'number' && isFinite(order), "Order can not be null. Value:" + order);
         this._setProperty('order', order);
     },
 
-    resetPositionState : function() {
+    resetPositionState:function () {
         var prop = this._properties['position'];
         if (prop) {
             prop.hasChanged = false;
         }
     },
 
-    resetOrderState : function() {
+    resetOrderState:function () {
         var prop = this._properties['order'];
         if (prop) {
             prop.hasChanged = false;
         }
     },
 
-    resetFreeState : function() {
+    resetFreeState:function () {
         var prop = this._properties['freeDisplacement'];
         if (prop) {
             prop.hasChanged = false;
         }
     },
 
-    getOrder: function() {
+    getOrder:function () {
         return this._getProperty('order');
     },
 
-    hasOrderChanged: function() {
+    hasOrderChanged:function () {
         return this._isPropertyChanged('order');
     },
 
-    hasPositionChanged: function() {
+    hasPositionChanged:function () {
         return this._isPropertyChanged('position');
     },
 
-    hasSizeChanged: function() {
+    hasSizeChanged:function () {
         return this._isPropertyChanged('size');
     },
 
-    getPosition: function() {
+    getPosition:function () {
         return this._getProperty('position');
     },
 
-    setSize : function(size) {
+    setSize:function (size) {
         $assert($defined(size), "Size can not be null");
         this._setProperty('size', Object.clone(size));
     },
 
-    getSize: function() {
+    getSize:function () {
         return this._getProperty('size');
     },
 
-    setFreeDisplacement: function(displacement) {
+    setFreeDisplacement:function (displacement) {
         $assert($defined(displacement), "Position can not be null");
         $assert($defined(displacement.x), "x can not be null");
         $assert($defined(displacement.y), "y can not be null");
@@ -124,30 +124,33 @@ mindplot.layout.Node = new Class({
         this._setProperty('freeDisplacement', Object.clone(newDisplacement));
     },
 
-    resetFreeDisplacement: function() {
+    resetFreeDisplacement:function () {
         this._setProperty('freeDisplacement', {x:0, y:0});
     },
 
-    getFreeDisplacement: function() {
+    getFreeDisplacement:function () {
         var freeDisplacement = this._getProperty('freeDisplacement');
         return (freeDisplacement || {x:0, y:0});
     },
 
-    setPosition : function(position) {
+    setPosition:function (position) {
         $assert($defined(position), "Position can not be null");
         $assert($defined(position.x), "x can not be null");
         $assert($defined(position.y), "y can not be null");
 
-        this._setProperty('position', Object.clone(position));
+        // This is a performance improvement to avoid movements that really could be avoided.
+        var currentPos = this.getPosition();
+        if (currentPos == null || Math.abs(currentPos.x - position.x) > 2 || Math.abs(currentPos.y - position.y) > 2)
+            this._setProperty('position', position);
     },
 
-    _setProperty: function(key, value) {
+    _setProperty:function (key, value) {
         var prop = this._properties[key];
         if (!prop) {
             prop = {
                 hasChanged:false,
-                value: null,
-                oldValue : null
+                value:null,
+                oldValue:null
             };
         }
 
@@ -160,21 +163,21 @@ mindplot.layout.Node = new Class({
         this._properties[key] = prop;
     },
 
-    _getProperty: function(key) {
+    _getProperty:function (key) {
         var prop = this._properties[key];
         return $defined(prop) ? prop.value : null;
     },
 
-    _isPropertyChanged: function(key) {
+    _isPropertyChanged:function (key) {
         var prop = this._properties[key];
         return prop ? prop.hasChanged : false;
     },
 
-    getSorter: function() {
+    getSorter:function () {
         return this._sorter;
     },
 
-    toString: function() {
+    toString:function () {
         return "[id:" + this.getId() + ", order:" + this.getOrder() + ", position: {" + this.getPosition().x + "," + this.getPosition().y + "}, size: {" + this.getSize().width + "," + this.getSize().height + "}, shrink:" + this.areChildrenShrunken() + "]";
     }
 

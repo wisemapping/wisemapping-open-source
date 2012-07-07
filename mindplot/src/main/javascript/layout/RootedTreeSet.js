@@ -16,25 +16,25 @@
  *   limitations under the License.
  */
 mindplot.layout.RootedTreeSet = new Class({
-    initialize:function() {
+    initialize:function () {
         this._rootNodes = [];
     },
 
-    setRoot:function(root) {
+    setRoot:function (root) {
         $assert(root, 'root can not be null');
         this._rootNodes.push(this._decodate(root));
     },
 
-    getTreeRoots:function() {
+    getTreeRoots:function () {
         return this._rootNodes;
     },
 
-    _decodate:function(node) {
+    _decodate:function (node) {
         node._children = [];
         return node;
     },
 
-    add: function(node) {
+    add:function (node) {
         $assert(node, 'node can not be null');
         $assert(!this.find(node.getId(), false), 'node already exits with this id. Id:' + node.getId());
         $assert(!node._children, 'node already added');
@@ -42,13 +42,13 @@ mindplot.layout.RootedTreeSet = new Class({
     },
 
 
-    remove: function(nodeId) {
+    remove:function (nodeId) {
         $assert($defined(nodeId), 'nodeId can not be null');
         var node = this.find(nodeId);
         this._rootNodes.erase(node);
     },
 
-    connect: function(parentId, childId) {
+    connect:function (parentId, childId) {
         $assert($defined(parentId), 'parent can not be null');
         $assert($defined(childId), 'child can not be null');
 
@@ -61,7 +61,7 @@ mindplot.layout.RootedTreeSet = new Class({
         this._rootNodes.erase(child);
     },
 
-    disconnect: function(nodeId) {
+    disconnect:function (nodeId) {
         $assert($defined(nodeId), 'nodeId can not be null');
         var node = this.find(nodeId);
         $assert(node._parent, "Node is not connected");
@@ -71,7 +71,7 @@ mindplot.layout.RootedTreeSet = new Class({
         node._parent = null;
     },
 
-    find:function(id, validate) {
+    find:function (id, validate) {
         $assert($defined(id), 'id can not be null');
 
         var graphs = this._rootNodes;
@@ -89,7 +89,7 @@ mindplot.layout.RootedTreeSet = new Class({
 
     },
 
-    _find:function(id, parent) {
+    _find:function (id, parent) {
         if (parent.getId() == id) {
             return parent;
 
@@ -107,12 +107,12 @@ mindplot.layout.RootedTreeSet = new Class({
         return result;
     },
 
-    getChildren: function(node) {
+    getChildren:function (node) {
         $assert(node, 'node cannot be null');
         return node._children;
     },
 
-    getRootNode: function(node) {
+    getRootNode:function (node) {
         $assert(node, "node cannot be null");
         var parent = this.getParent(node);
         if ($defined(parent)) {
@@ -122,12 +122,12 @@ mindplot.layout.RootedTreeSet = new Class({
         return node;
     },
 
-    getAncestors: function(node) {
+    getAncestors:function (node) {
         $assert(node, 'node cannot be null');
         return this._getAncestors(this.getParent(node), []);
     },
 
-    _getAncestors: function(node, ancestors) {
+    _getAncestors:function (node, ancestors) {
         var result = ancestors;
         if (node) {
             result.push(node);
@@ -136,24 +136,24 @@ mindplot.layout.RootedTreeSet = new Class({
         return result;
     },
 
-    getSiblings: function(node) {
+    getSiblings:function (node) {
         $assert(node, 'node cannot be null');
         if (!$defined(node._parent)) {
             return [];
         }
-        var siblings = node._parent._children.filter(function(child) {
+        var siblings = node._parent._children.filter(function (child) {
             return child != node;
         });
         return siblings;
     },
 
-    hasSinglePathToSingleLeaf: function(node) {
+    hasSinglePathToSingleLeaf:function (node) {
         $assert(node, 'node cannot be null');
         return this._hasSinglePathToSingleLeaf(node);
     },
 
-    _hasSinglePathToSingleLeaf: function(node) {
-       var children = this.getChildren(node);
+    _hasSinglePathToSingleLeaf:function (node) {
+        var children = this.getChildren(node);
 
         if (children.length == 1) {
             return this._hasSinglePathToSingleLeaf(children[0]);
@@ -162,21 +162,21 @@ mindplot.layout.RootedTreeSet = new Class({
         return children.length == 0;
     },
 
-    isStartOfSubBranch: function(node) {
+    isStartOfSubBranch:function (node) {
         return this.getSiblings(node).length > 0 && this.getChildren(node).length == 1;
     },
 
-    isLeaf: function(node) {
+    isLeaf:function (node) {
         $assert(node, 'node cannot be null');
         return this.getChildren(node).length == 0;
     },
 
-    getParent:function(node) {
+    getParent:function (node) {
         $assert(node, 'node cannot be null');
         return node._parent;
     },
 
-    dump: function() {
+    dump:function () {
         var branches = this._rootNodes;
         var result = "";
         for (var i = 0; i < branches.length; i++) {
@@ -186,7 +186,7 @@ mindplot.layout.RootedTreeSet = new Class({
         return result;
     },
 
-    _dump:function(node, indent) {
+    _dump:function (node, indent) {
         var result = indent + node + "\n";
         var children = this.getChildren(node);
         for (var i = 0; i < children.length; i++) {
@@ -197,7 +197,7 @@ mindplot.layout.RootedTreeSet = new Class({
         return result;
     },
 
-    plot: function(canvas) {
+    plot:function (canvas) {
         var branches = this._rootNodes;
         for (var i = 0; i < branches.length; i++) {
             var branch = branches[i];
@@ -205,7 +205,7 @@ mindplot.layout.RootedTreeSet = new Class({
         }
     },
 
-    _plot: function(canvas, node, root) {
+    _plot:function (canvas, node, root) {
         var children = this.getChildren(node);
         var cx = node.getPosition().x + canvas.width / 2 - node.getSize().width / 2;
         var cy = node.getPosition().y + canvas.height / 2 - node.getSize().height / 2;
@@ -216,13 +216,13 @@ mindplot.layout.RootedTreeSet = new Class({
         var fillColor = this._rootNodes.contains(node) ? "#000" : (node.isFree() ? "#abc" : "#c00");
         rect.attr('fill', fillColor);
 
-        var rectPosition = {x: rect.attr("x") - canvas.width/2 + rect.attr("width")/2, y:rect.attr("y") - canvas.height/2 + rect.attr("height")/2};
-        var rectSize = {width: rect.attr("width"), height:rect.attr("height")};
-        rect.click(function() {
-            console.log("[id:" + node.getId() + ", order:" + node.getOrder() + ", position:(" + rectPosition.x + "," + rectPosition.y + "), size:" + rectSize.width + "x" + rectSize.height + ", freeDisplacement:(" + node.getFreeDisplacement().x + "," + node.getFreeDisplacement().y +")]");
+        var rectPosition = {x:rect.attr("x") - canvas.width / 2 + rect.attr("width") / 2, y:rect.attr("y") - canvas.height / 2 + rect.attr("height") / 2};
+        var rectSize = {width:rect.attr("width"), height:rect.attr("height")};
+        rect.click(function () {
+            console.log("[id:" + node.getId() + ", order:" + node.getOrder() + ", position:(" + rectPosition.x + "," + rectPosition.y + "), size:" + rectSize.width + "x" + rectSize.height + ", freeDisplacement:(" + node.getFreeDisplacement().x + "," + node.getFreeDisplacement().y + ")]");
         });
-        text.click(function() {
-            console.log("[id:" + node.getId() + ", order:" + node.getOrder() + ", position:(" + rectPosition.x + "," + rectPosition.y + "), size:" + rectSize.width + "x" + rectSize.height + ", freeDisplacement:(" + node.getFreeDisplacement().x + "," + node.getFreeDisplacement().y +")]");
+        text.click(function () {
+            console.log("[id:" + node.getId() + ", order:" + node.getOrder() + ", position:(" + rectPosition.x + "," + rectPosition.y + "), size:" + rectSize.width + "x" + rectSize.height + ", freeDisplacement:(" + node.getFreeDisplacement().x + "," + node.getFreeDisplacement().y + ")]");
         });
 
         for (var i = 0; i < children.length; i++) {
@@ -231,7 +231,7 @@ mindplot.layout.RootedTreeSet = new Class({
         }
     },
 
-    updateBranchPosition : function(node, position) {
+    updateBranchPosition:function (node, position) {
 
         var oldPos = node.getPosition();
         node.setPosition(position);
@@ -240,48 +240,48 @@ mindplot.layout.RootedTreeSet = new Class({
         var yOffset = oldPos.y - position.y;
 
         var children = this.getChildren(node);
-        children.forEach(function(child) {
+        children.forEach(function (child) {
             this.shiftBranchPosition(child, xOffset, yOffset);
         }.bind(this));
 
     },
 
-    shiftBranchPosition: function(node, xOffset, yOffset) {
+    shiftBranchPosition:function (node, xOffset, yOffset) {
         var position = node.getPosition();
         node.setPosition({x:position.x + xOffset, y:position.y + yOffset});
 
         var children = this.getChildren(node);
-        children.forEach(function(child) {
+        children.forEach(function (child) {
             this.shiftBranchPosition(child, xOffset, yOffset);
         }.bind(this));
     },
 
-    getSiblingsInVerticalDirection: function(node, yOffset) {
+    getSiblingsInVerticalDirection:function (node, yOffset) {
         // siblings with lower or higher order, depending on the direction of the offset and on the same side as their parent
         var parent = this.getParent(node);
-        var siblings = this.getSiblings(node).filter(function(sibling) {
+        var siblings = this.getSiblings(node).filter(function (sibling) {
             var sameSide = node.getPosition().x > parent.getPosition().x ? sibling.getPosition().x > parent.getPosition().x : sibling.getPosition().x < parent.getPosition().x;
             var orderOK = yOffset < 0 ? sibling.getOrder() < node.getOrder() : sibling.getOrder() > node.getOrder();
             return orderOK && sameSide;
         });
 
-        if (yOffset < 0 ) {
+        if (yOffset < 0) {
             siblings.reverse();
         }
 
         return siblings;
     },
 
-    getBranchesInVerticalDirection: function(node, yOffset) {
+    getBranchesInVerticalDirection:function (node, yOffset) {
         // direct descendants of the root that do not contain the node and are on the same side
         // and on the direction of the offset
         var rootNode = this.getRootNode(node);
-        var branches = this.getChildren(rootNode).filter(function(child) {
+        var branches = this.getChildren(rootNode).filter(function (child) {
             return this._find(node.getId(), child);
         }, this);
 
         var branch = branches[0];
-        var rootDescendants = this.getSiblings(branch).filter(function(sibling) {
+        var rootDescendants = this.getSiblings(branch).filter(function (sibling) {
             var sameSide = node.getPosition().x > rootNode.getPosition().x ? sibling.getPosition().x > rootNode.getPosition().x : sibling.getPosition().x < rootNode.getPosition().x;
             var sameDirection = yOffset < 0 ? sibling.getOrder() < branch.getOrder() : sibling.getOrder() > branch.getOrder();
             return sameSide && sameDirection;

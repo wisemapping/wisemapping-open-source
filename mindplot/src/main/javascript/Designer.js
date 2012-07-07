@@ -682,7 +682,7 @@ mindplot.Designer = new Class({
                 });
 
 
-            var relIds = topics.map(function (rel) {
+            var relIds = relation.map(function (rel) {
                 return rel.getId();
             });
 

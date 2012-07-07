@@ -111,14 +111,15 @@ mindplot.model.Mindmap = new Class({
         },
 
         findNodeById:function (id) {
-            var result;
-            for (var i = 0; i < this._branches; i++) {
+            var result = null;
+            for (var i = 0; i < this._branches.length; i++) {
                 var branch = this._branches[i];
-                result = branch.findNodeById(id)
+                result = branch.findNodeById(id);
                 if (result) {
                     break;
                 }
             }
+            return result;
         }
     }
 );

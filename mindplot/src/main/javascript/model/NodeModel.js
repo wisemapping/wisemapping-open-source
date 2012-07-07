@@ -189,7 +189,7 @@ mindplot.model.NodeModel = new Class({
     findNodeById  : function(id) {
         var result = null;
         if (this.getId() == id) {
-            return this;
+            result = this;
         } else {
             var children = this.getChildren();
             for (var i = 0; i < children.length; i++) {

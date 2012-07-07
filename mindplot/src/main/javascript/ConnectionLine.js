@@ -139,9 +139,7 @@ mindplot.ConnectionLine = new Class({
             else {
                 x = -mindplot.Topic.CONNECTOR_WIDTH;
             }
-            console.log("conector:" + x + ", " + y);
             connector.setPosition(x, y);
-
         }
 
     },
