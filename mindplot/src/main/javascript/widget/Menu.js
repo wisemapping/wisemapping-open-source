@@ -258,7 +258,7 @@ mindplot.widget.Menu = new Class({
 
 
         this._addButton('deleteTopic', true, true, function () {
-            designer.deleteCurrentNode();
+            designer.deleteSelectedEntities();
         });
         this._registerTooltip('deleteTopic', $msg('TOPIC_DELETE'), "Delete");
 
@@ -446,7 +446,7 @@ mindplot.widget.Menu = new Class({
 
         designer.addEvent('onblur', function () {
             var topics = designer.getModel().filterSelectedTopics();
-            var rels = designer.getModel().filterSelectedRelations();
+            var rels = designer.getModel().filterSelectedRelationships();
 
             this._toolbarElems.forEach(function (button) {
                 var disable = false;
@@ -472,7 +472,7 @@ mindplot.widget.Menu = new Class({
 
         designer.addEvent('onfocus', function () {
             var topics = designer.getModel().filterSelectedTopics();
-            var rels = designer.getModel().filterSelectedRelations();
+            var rels = designer.getModel().filterSelectedRelationships();
 
             this._toolbarElems.forEach(function (button) {
                 if (button.isTopicAction() && topics.length > 0) {

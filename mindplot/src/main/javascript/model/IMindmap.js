@@ -100,7 +100,7 @@ mindplot.model.IMindmap = new Class({
         throw "Unsupported operation";
     },
 
-    removeRelationship : function(relationship) {
+    deleteRelationship : function(relationship) {
         throw "Unsupported operation";
     },
 

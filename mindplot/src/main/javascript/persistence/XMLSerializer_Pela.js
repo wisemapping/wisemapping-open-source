@@ -176,24 +176,25 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
     },
 
     _relationshipToXML : function(document, relationship) {
-        var relationDom = document.createElement("relationship");
-        relationDom.setAttribute("srcTopicId", relationship.getFromNode());
-        relationDom.setAttribute("destTopicId", relationship.getToNode());
+        var result = document.createElement("relationship");
+        result.setAttribute("srcTopicId", relationship.getFromNode());
+        result.setAttribute("destTopicId", relationship.getToNode());
+
         var lineType = relationship.getLineType();
-        relationDom.setAttribute("lineType", lineType);
+        result.setAttribute("lineType", lineType);
         if (lineType == mindplot.ConnectionLine.CURVED || lineType == mindplot.ConnectionLine.SIMPLE_CURVED) {
             if ($defined(relationship.getSrcCtrlPoint())) {
                 var srcPoint = relationship.getSrcCtrlPoint();
-                relationDom.setAttribute("srcCtrlPoint", Math.round(srcPoint.x) + "," + Math.round(srcPoint.y));
+                result.setAttribute("srcCtrlPoint", Math.round(srcPoint.x) + "," + Math.round(srcPoint.y));
             }
             if ($defined(relationship.getDestCtrlPoint())) {
                 var destPoint = relationship.getDestCtrlPoint();
-                relationDom.setAttribute("destCtrlPoint", Math.round(destPoint.x) + "," + Math.round(destPoint.y));
+                result.setAttribute("destCtrlPoint", Math.round(destPoint.x) + "," + Math.round(destPoint.y));
             }
         }
-        relationDom.setAttribute("endArrow", relationship.getEndArrow());
-        relationDom.setAttribute("startArrow", relationship.getStartArrow());
-        return relationDom;
+        result.setAttribute("endArrow", relationship.getEndArrow());
+        result.setAttribute("startArrow", relationship.getStartArrow());
+        return result;
     },
 
     loadFromDom : function(dom, mapId) {

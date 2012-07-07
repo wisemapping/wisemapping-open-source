@@ -17,45 +17,45 @@
  */
 
 mindplot.StandaloneActionDispatcher = new Class({
-    Extends: mindplot.ActionDispatcher,
-    initialize: function(commandContext) {
+    Extends:mindplot.ActionDispatcher,
+    initialize:function (commandContext) {
         this.parent(commandContext);
         this._actionRunner = new mindplot.DesignerActionRunner(commandContext, this);
     },
 
-    hasBeenChanged: function() {
+    hasBeenChanged:function () {
         // @todo: This don't seems to belong here.
         this._actionRunner.hasBeenChanged();
     },
 
 
-    addTopic:function(nodeModel, parentTopicId, animated) {
+    addTopic:function (nodeModel, parentTopicId, animated) {
         var command = new mindplot.commands.AddTopicCommand(nodeModel, parentTopicId, animated);
         this.execute(command);
     },
 
-    connectByRelation: function(model) {
+    connectByRelation:function (model) {
         var command = new mindplot.commands.AddRelationshipCommand(model);
         this.execute(command);
     },
 
-    deleteTopics: function(topicsIds, relIds) {
+    deleteEntities:function (topicsIds, relIds) {
         var command = new mindplot.commands.DeleteCommand(topicsIds, relIds);
         this.execute(command);
     },
 
-    dragTopic: function(topicId, position, order, parentTopic) {
+    dragTopic:function (topicId, position, order, parentTopic) {
         var command = new mindplot.commands.DragTopicCommand(topicId, position, order, parentTopic);
         this.execute(command);
     },
 
-    moveTopic: function(topicId, position) {
+    moveTopic:function (topicId, position) {
         $assert($defined(topicId), "topicsId can not be null");
         $assert($defined(position), "position can not be null");
 
-        var commandFunc = function(topic, value) {
+        var commandFunc = function (topic, value) {
             var result = topic.getPosition();
-            mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMoveEvent, {node:topic.getModel(),position:value});
+            mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMoveEvent, {node:topic.getModel(), position:value});
             return result;
         };
 
@@ -63,14 +63,14 @@ mindplot.StandaloneActionDispatcher = new Class({
         this.execute(command);
     },
 
-    moveControlPoint: function(ctrlPoint, point) {
+    moveControlPoint:function (ctrlPoint, point) {
         var command = new mindplot.commands.MoveControlPointCommand(ctrlPoint, point);
         this.execute(command);
     },
 
-    changeFontStyleToTopic: function(topicsIds) {
+    changeFontStyleToTopic:function (topicsIds) {
 
-        var commandFunc = function(topic) {
+        var commandFunc = function (topic) {
             var result = topic.getFontStyle();
             var style = (result == "italic") ? "normal" : "italic";
             topic.setFontStyle(style, true);
@@ -81,10 +81,10 @@ mindplot.StandaloneActionDispatcher = new Class({
 
     },
 
-    changeTextToTopic : function(topicsIds, text) {
+    changeTextToTopic:function (topicsIds, text) {
         $assert($defined(topicsIds), "topicsIds can not be null");
 
-        var commandFunc = function(topic, value) {
+        var commandFunc = function (topic, value) {
             var result = topic.getText();
             topic.setText(value);
             return result;
@@ -94,12 +94,12 @@ mindplot.StandaloneActionDispatcher = new Class({
         this.execute(command);
     },
 
-    changeFontFamilyToTopic: function(topicIds, fontFamily) {
+    changeFontFamilyToTopic:function (topicIds, fontFamily) {
         $assert(topicIds, "topicIds can not be null");
         $assert(fontFamily, "fontFamily can not be null");
 
 
-        var commandFunc = function(topic, fontFamily) {
+        var commandFunc = function (topic, fontFamily) {
             var result = topic.getFontFamily();
             topic.setFontFamily(fontFamily, true);
 
@@ -111,11 +111,11 @@ mindplot.StandaloneActionDispatcher = new Class({
         this.execute(command);
     },
 
-    changeFontColorToTopic: function(topicsIds, color) {
+    changeFontColorToTopic:function (topicsIds, color) {
         $assert(topicsIds, "topicIds can not be null");
         $assert(color, "color can not be null");
 
-        var commandFunc = function(topic, color) {
+        var commandFunc = function (topic, color) {
             var result = topic.getFontColor();
             topic.setFontColor(color, true);
             return result;
@@ -126,11 +126,11 @@ mindplot.StandaloneActionDispatcher = new Class({
         this.execute(command);
     },
 
-    changeBackgroundColorToTopic: function(topicsIds, color) {
+    changeBackgroundColorToTopic:function (topicsIds, color) {
         $assert(topicsIds, "topicIds can not be null");
         $assert(color, "color can not be null");
 
-        var commandFunc = function(topic, color) {
+        var commandFunc = function (topic, color) {
             var result = topic.getBackgroundColor();
             topic.setBackgroundColor(color);
             return result;
@@ -141,11 +141,11 @@ mindplot.StandaloneActionDispatcher = new Class({
         this.execute(command);
     },
 
-    changeBorderColorToTopic : function(topicsIds, color) {
+    changeBorderColorToTopic:function (topicsIds, color) {
         $assert(topicsIds, "topicIds can not be null");
         $assert(color, "topicIds can not be null");
 
-        var commandFunc = function(topic, color) {
+        var commandFunc = function (topic, color) {
             var result = topic.getBorderColor();
             topic.setBorderColor(color);
             return result;
@@ -156,11 +156,11 @@ mindplot.StandaloneActionDispatcher = new Class({
         this.execute(command);
     },
 
-    changeFontSizeToTopic : function(topicsIds, size) {
+    changeFontSizeToTopic:function (topicsIds, size) {
         $assert(topicsIds, "topicIds can not be null");
         $assert(size, "size can not be null");
 
-        var commandFunc = function(topic, size) {
+        var commandFunc = function (topic, size) {
             var result = topic.getFontSize();
             topic.setFontSize(size, true);
 
@@ -172,11 +172,11 @@ mindplot.StandaloneActionDispatcher = new Class({
         this.execute(command);
     },
 
-    changeShapeTypeToTopic : function(topicsIds, shapeType) {
+    changeShapeTypeToTopic:function (topicsIds, shapeType) {
         $assert(topicsIds, "topicsIds can not be null");
         $assert(shapeType, "shapeType can not be null");
 
-        var commandFunc = function(topic, shapeType) {
+        var commandFunc = function (topic, shapeType) {
             var result = topic.getShapeType();
             topic.setShapeType(shapeType, true);
             return result;
@@ -186,10 +186,10 @@ mindplot.StandaloneActionDispatcher = new Class({
         this.execute(command);
     },
 
-    changeFontWeightToTopic : function(topicsIds) {
+    changeFontWeightToTopic:function (topicsIds) {
         $assert(topicsIds, "topicsIds can not be null");
 
-        var commandFunc = function(topic) {
+        var commandFunc = function (topic) {
             var result = topic.getFontWeight();
             var weight = (result == "bold") ? "normal" : "bold";
             topic.setFontWeight(weight, true);
@@ -202,10 +202,10 @@ mindplot.StandaloneActionDispatcher = new Class({
         this.execute(command);
     },
 
-    shrinkBranch : function(topicsIds, collapse) {
+    shrinkBranch:function (topicsIds, collapse) {
         $assert(topicsIds, "topicsIds can not be null");
 
-        var commandFunc = function(topic, isShrink) {
+        var commandFunc = function (topic, isShrink) {
             topic.setChildrenShrunken(isShrink);
             return !isShrink;
         };
@@ -214,22 +214,22 @@ mindplot.StandaloneActionDispatcher = new Class({
         this.execute(command, false);
     },
 
-    addFeatureToTopic : function(topicId, featureType, attributes) {
+    addFeatureToTopic:function (topicId, featureType, attributes) {
         var command = new mindplot.commands.AddFeatureToTopicCommand(topicId, featureType, attributes);
         this.execute(command);
     },
 
-    changeFeatureToTopic : function(topicId, featureId, attributes) {
+    changeFeatureToTopic:function (topicId, featureId, attributes) {
         var command = new mindplot.commands.ChangeFeatureToTopicCommand(topicId, featureId, attributes);
         this.execute(command);
     },
 
-    removeFeatureFromTopic : function(topicId, featureId) {
+    removeFeatureFromTopic:function (topicId, featureId) {
         var command = new mindplot.commands.RemoveFeatureFromTopicCommand(topicId, featureId);
         this.execute(command);
     },
 
-    execute:function(command) {
+    execute:function (command) {
         this._actionRunner.execute(command);
         mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.DoLayout);
     }
@@ -237,62 +237,64 @@ mindplot.StandaloneActionDispatcher = new Class({
 });
 
 mindplot.CommandContext = new Class({
-    initialize: function(designer) {
+    initialize:function (designer) {
         $assert(designer, "designer can not be null");
         this._designer = designer;
     },
 
-    findTopics:function(topicsIds) {
+    findTopics:function (topicsIds) {
         $assert($defined(topicsIds), "topicsIds can not be null");
         if (!(topicsIds instanceof Array)) {
             topicsIds = [topicsIds];
         }
 
         var designerTopics = this._designer.getModel().getTopics();
-        return  designerTopics.filter(function(topic) {
+        return  designerTopics.filter(function (topic) {
             return topicsIds.contains(topic.getId());
         });
     },
 
-    deleteTopic:function(topic) {
-        this._designer._removeNode(topic);
+    deleteTopic:function (topic) {
+        this._designer._removeTopic(topic);
     },
 
-    createTopic:function(model, isVisible) {
+    createTopic:function (model, isVisible) {
         $assert(model, "model can not be null");
         return  this._designer._nodeModelToNodeGraph(model, isVisible);
     },
 
-    createModel:function() {
+    createModel:function () {
         var mindmap = this._designer.getMindmap();
         return mindmap.createNode(mindplot.NodeModel.MAIN_TOPIC_TYPE);
     },
 
-    connect:function(childTopic, parentTopic, isVisible) {
+    connect:function (childTopic, parentTopic, isVisible) {
         childTopic.connectTo(parentTopic, this._designer._workspace, isVisible);
-    } ,
+    },
 
-    disconnect:function(topic) {
+    disconnect:function (topic) {
         topic.disconnect(this._designer._workspace);
     },
 
-    createRelationship:function(model) {
+    createRelationship:function (model) {
         $assert(model, "model cannot be null");
         return this._designer.createRelationship(model);
     },
-    removeRelationship:function(model) {
-        this._designer.removeRelationship(model);
+
+    deleteRelationship:function (relationship) {
+        this._designer._deleteRelationship(relationship);
     },
 
-    findRelationships:function(lineIds) {
-        var result = [];
-        lineIds.forEach(function(lineId) {
-            var line = this._designer.getModel().getRelationshipsById()[lineId];
-            if ($defined(line)) {
-                result.push(line);
-            }
-        }.bind(this));
-        return result;
+    findRelationships:function (relIds) {
+        $assert($defined(relIds), "relId can not be null");
+        if (!(relIds instanceof Array)) {
+            relIds = [relIds];
+        }
+
+        var designerRel = this._designer.getModel().getRelationships();
+        return  designerRel.filter(function (rel) {
+            return relIds.contains(rel.getId());
+        });
     }
 });
 

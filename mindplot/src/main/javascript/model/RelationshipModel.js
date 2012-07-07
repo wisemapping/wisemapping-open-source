@@ -16,7 +16,17 @@
  *   limitations under the License.
  */
 mindplot.model.RelationshipModel = new Class({
-    initialize:function(sourceTopicId, targetTopicId) {
+    Static:{
+        _nextUUID:function () {
+            if (!$defined(mindplot.model.RelationshipModel._uuid)) {
+                mindplot.model.RelationshipModel._uuid = 0;
+            }
+            mindplot.model.RelationshipModel._uuid = mindplot.model.RelationshipModel._uuid + 1;
+            return mindplot.model.RelationshipModel._uuid;
+        }
+    },
+
+    initialize:function (sourceTopicId, targetTopicId) {
         $assert($defined(sourceTopicId), 'from node type can not be null');
         $assert($defined(targetTopicId), 'to node type can not be null');
 
@@ -30,59 +40,60 @@ mindplot.model.RelationshipModel = new Class({
         this._startArrow = false;
     },
 
-    getFromNode : function() {
+    getFromNode:function () {
         return this._sourceTargetId;
     },
 
-    getToNode : function() {
+    getToNode:function () {
         return this._targetTopicId;
     },
 
-    getId : function() {
+    getId:function () {
+        $assert(this._id, "id is null");
         return this._id;
     },
 
-    getLineType : function() {
+    getLineType:function () {
         return this._lineType;
     },
 
-    setLineType : function(lineType) {
+    setLineType:function (lineType) {
         this._lineType = lineType;
     },
 
-    getSrcCtrlPoint : function() {
+    getSrcCtrlPoint:function () {
         return this._srcCtrlPoint;
     },
 
-    setSrcCtrlPoint : function(srcCtrlPoint) {
+    setSrcCtrlPoint:function (srcCtrlPoint) {
         this._srcCtrlPoint = srcCtrlPoint;
     },
 
-    getDestCtrlPoint : function() {
+    getDestCtrlPoint:function () {
         return this._destCtrlPoint;
     },
 
-    setDestCtrlPoint : function(destCtrlPoint) {
+    setDestCtrlPoint:function (destCtrlPoint) {
         this._destCtrlPoint = destCtrlPoint;
     },
 
-    getEndArrow : function() {
+    getEndArrow:function () {
         return this._endArrow;
     },
 
-    setEndArrow : function(endArrow) {
+    setEndArrow:function (endArrow) {
         this._endArrow = endArrow;
     },
 
-    getStartArrow : function() {
+    getStartArrow:function () {
         return this._startArrow;
     },
 
-    setStartArrow : function(startArrow) {
+    setStartArrow:function (startArrow) {
         this._startArrow = startArrow;
     },
 
-    clone : function(model) {
+    clone:function (model) {
         var result = new mindplot.model.RelationshipModel(this._sourceTargetId, this._targetTopicId);
         result._id = this._id;
         result._lineType = this._lineType;
@@ -93,21 +104,9 @@ mindplot.model.RelationshipModel = new Class({
         return result;
     },
 
-    inspect : function() {
+    inspect:function () {
         return '(fromNode:' + this.getFromNode().getId() + ' , toNode: ' + this.getToNode().getId() + ')';
     }
 });
 
-
-/**
- * @todo: This method must be implemented.
- */
-mindplot.model.RelationshipModel._nextUUID = function() {
-    if (!$defined(this._uuid)) {
-        this._uuid = 0;
-    }
-
-    this._uuid = this._uuid + 1;
-    return this._uuid;
-}
 

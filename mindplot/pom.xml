@@ -106,7 +106,7 @@
                                         <include>DragManager.js</include>
                                         <include>DragPivot.js</include>
                                         <include>ConnectionLine.js</include>
-                                        <include>RelationshipLine.js</include>
+                                        <include>Relationship.js</include>
                                         <include>DragConnector.js</include>
                                         <include>TextEditor.js</include>
                                         <include>MultilineTextEditor.js</include>

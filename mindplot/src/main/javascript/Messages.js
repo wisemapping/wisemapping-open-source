@@ -85,7 +85,9 @@ mindplot.Messages.BUNDLES = {
         ISOLATED_TOPIC:'Isolated Topic',
         CENTRAL_TOPIC:'Central Topic',
         ONLY_ONE_TOPIC_MUST_BE_SELECTED_COLLAPSE:'Children can not be collapsed. One topic must be selected.',
-        SHORTCUTS:'Keyboard Shortcuts'
+        SHORTCUTS:'Keyboard Shortcuts',
+        ENTITIES_COULD_NOT_BE_DELETED: 'Could not delete topic or relation. At least one map entity must be selected.',
+        CENTRAL_TOPIC_CAN_NOT_BE_DELETED: 'Central topic can not be deleted.'
     },
     'es':{
         DISCARD_CHANGES:'Descartar Cambios',

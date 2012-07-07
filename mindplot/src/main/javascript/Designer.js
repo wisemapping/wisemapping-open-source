@@ -248,7 +248,7 @@ mindplot.Designer = new Class({
 
             topic.addEvent('ontblur', function () {
                 var topics = this.getModel().filterSelectedTopics();
-                var rels = this.getModel().filterSelectedRelations();
+                var rels = this.getModel().filterSelectedRelationships();
 
                 if (topics.length == 0 || rels.length == 0) {
                     this.fireEvent('onblur');
@@ -257,7 +257,7 @@ mindplot.Designer = new Class({
 
             topic.addEvent('ontfocus', function () {
                 var topics = this.getModel().filterSelectedTopics();
-                var rels = this.getModel().filterSelectedRelations();
+                var rels = this.getModel().filterSelectedRelationships();
 
                 if (topics.length == 1 || rels.length == 1) {
                     this.fireEvent('onfocus');
@@ -275,7 +275,7 @@ mindplot.Designer = new Class({
             });
 
             var model = this.getModel();
-            var objects = model.getObjects();
+            var objects = model.getEntities();
             objects.forEach(function (object) {
                 // Disable all nodes on focus but not the current if Ctrl key isn't being pressed
                 if (!$defined(event) || (!event.control && !event.meta)) {
@@ -289,14 +289,14 @@ mindplot.Designer = new Class({
 
         selectAll:function () {
             var model = this.getModel();
-            var objects = model.getObjects();
+            var objects = model.getEntities();
             objects.forEach(function (object) {
                 object.setOnFocus(true);
             });
         },
 
         deselectAll:function () {
-            var objects = this.getModel().getObjects();
+            var objects = this.getModel().getEntities();
             objects.forEach(function (object) {
                 object.setOnFocus(false);
             });
@@ -475,13 +475,20 @@ mindplot.Designer = new Class({
         },
 
         showRelPivot:function (event) {
+
+            var nodes = this.getModel().filterSelectedTopics();
+            if (nodes.length <= 0) {
+                // This could not happen ...
+                $notify("Could not create relationship. Parent relationship topic must be selected first.");
+                return;
+            }
+
             // Current mouse position ....
             var screen = this._workspace.getScreenManager();
             var pos = screen.getWorkspaceMousePosition(event);
-            var selectedTopic = this.getModel().selectedTopic();
 
             // create a connection ...
-            this._relPivot.start(selectedTopic, pos);
+            this._relPivot.start(nodes[0], pos);
         },
 
         connectByRelation:function (sourceTopic, targetTopic) {
@@ -489,10 +496,8 @@ mindplot.Designer = new Class({
             $assert(targetTopic, "targetTopic can not be null");
 
             // Create a new topic model ...
-            // @Todo: Model should not be modified from here ...
             var mindmap = this.getMindmap();
             var model = mindmap.createRelationship(sourceTopic.getModel().getId(), targetTopic.getModel().getId());
-
             this._actionDispatcher.connectByRelation(model);
         },
 
@@ -614,77 +619,46 @@ mindplot.Designer = new Class({
             return this._relationshipModelToRelationship(model);
         },
 
-        removeRelationship:function (model) {
-            this._mindmap.removeRelationship(model);
-            var relationship = this._relationships[model.getId()];
+        _deleteRelationship:function (relationship) {
             var sourceTopic = relationship.getSourceTopic();
-            sourceTopic.removeRelationship(relationship);
+            sourceTopic.deleteRelationship(relationship);
+
             var targetTopic = relationship.getTargetTopic();
-            targetTopic.removeRelationship(relationship);
+            targetTopic.deleteRelationship(relationship);
+
             this._workspace.removeChild(relationship);
-            delete this._relationships[model.getId()];
+
+            this.getModel().removeRelationship(relationship);
         },
 
         _buildRelationship:function (model) {
-            var elem = this;
-
-            var fromNodeId = model.getFromNode();
-            var toNodeId = model.getToNode();
-
-            var sourceTopic = null;
-            var targetTopic = null;
             var dmodel = this.getModel();
-            var topics = dmodel.getTopics();
 
-            for (var i = 0; i < topics.length; i++) {
-                var t = topics[i];
-                if (t.getModel().getId() == fromNodeId) {
-                    sourceTopic = t;
-                }
-                if (t.getModel().getId() == toNodeId) {
-                    targetTopic = t;
-                }
-                if (targetTopic != null && sourceTopic != null) {
-                    break;
-                }
-            }
+            var sourceTopicId = model.getFromNode();
+            var sourceTopic = dmodel.findTopicById(sourceTopicId);
 
-            // Create node graph ...
-            var relationLine = new mindplot.RelationshipLine(sourceTopic, targetTopic, model.getLineType());
-            if ($defined(model.getSrcCtrlPoint())) {
-                var srcPoint = model.getSrcCtrlPoint().clone();
-                relationLine.setSrcControlPoint(srcPoint);
-            }
-            if ($defined(model.getDestCtrlPoint())) {
-                var destPoint = model.getDestCtrlPoint().clone();
-                relationLine.setDestControlPoint(destPoint);
-            }
+            var targetTopicId = model.getToNode();
+            var targetTopic = dmodel.findTopicById(targetTopicId);
 
-
-            relationLine.getLine().setDashed(3, 2);
-            relationLine.setShowEndArrow(model.getEndArrow());
-            relationLine.setShowStartArrow(model.getStartArrow());
-            relationLine.setModel(model);
-
-            //Add Listeners
-            relationLine.addEvent('onfocus', function (event) {
-                elem.onObjectFocusEvent(relationLine, event);
-            });
+            // Build relationship line ....
+            var relationship = new mindplot.Relationship(sourceTopic, targetTopic, model);
+            relationship.addEvent('onfocus', function (event) {
+                this.onObjectFocusEvent(relationship, event);
+            }.bind(this));
 
             // Append it to the workspace ...
-            dmodel.addRelationship(model.getId(), relationLine);
-
-            return  relationLine;
+            dmodel.addRelationship(relationship);
+            return  relationship;
         },
 
-        _removeNode:function (node) {
+        _removeTopic:function (node) {
             if (node.getTopicType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
                 var parent = node._parent;
                 node.disconnect(this._workspace);
 
                 //remove children
                 while (node.getChildren().length > 0) {
-                    this._removeNode(node.getChildren()[0]);
+                    this._removeTopic(node.getChildren()[0]);
                 }
 
                 this._workspace.removeChild(node);
@@ -700,19 +674,30 @@ mindplot.Designer = new Class({
             }
         },
 
-        deleteCurrentNode:function () {
+        deleteSelectedEntities:function () {
 
+            var topics = this.getModel().filterSelectedTopics();
+            var relation = this.getModel().filterSelectedRelationships();
+            if (topics.length <= 0 && relation.length <= 0) {
+                // If there are more than one node selected,
+                $notify($msg('ENTITIES_COULD_NOT_BE_DELETED'));
+                return;
+            }
+
+            // Filter the lists ...
             var validateFunc = function (object) {
-                return object.getType() == mindplot.RelationshipLine.type || object.getTopicType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE
+                return object.getType() == mindplot.Relationship.type || object.getTopicType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE
             };
-            var validateError = 'Central topic can not be deleted.';
-
+            var validateError = $msg('CENTRAL_TOPIC_CAN_NOT_BE_DELETED');
             var model = this.getModel();
-            var topicsIds = model.filterTopicsIds(validateFunc, validateError);
-            var relIds = model.filterRelationIds(validateFunc, validateError);
+            var topicIds = model.filterTopicsIds(validateFunc, validateError);
+            var relIds = model.filterSelectedRelationships().map(function (rel) {
+                return rel.getId();
+            });
 
-            if (topicsIds.length > 0 || relIds.length > 0) {
-                this._actionDispatcher.deleteTopics(topicsIds, relIds);
+            // Finally delete the topics ...
+            if (topicIds.length > 0 || relIds.length > 0) {
+                this._actionDispatcher.deleteEntities(topicIds, relIds);
             }
 
         },

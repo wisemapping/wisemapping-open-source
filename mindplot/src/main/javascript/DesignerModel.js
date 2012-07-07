@@ -17,31 +17,35 @@
  */
 
 mindplot.DesignerModel = new Class({
-    Implements: [Events],
-    initialize : function(options) {
+    Implements:[Events],
+    initialize:function (options) {
         this._zoom = options.zoom;
         this._topics = [];
-        this._relationships = {};
+        this._relationships = [];
     },
 
-    getZoom : function() {
+    getZoom:function () {
         return this._zoom;
     },
 
-    setZoom : function(zoom) {
+    setZoom:function (zoom) {
         this._zoom = zoom;
     },
 
-    getTopics : function() {
+    getTopics:function () {
         return this._topics;
     },
 
-    getCentralTopic : function() {
+    getRelationships:function () {
+        return this._relationships;
+    },
+
+    getCentralTopic:function () {
         var topics = this.getTopics();
         return topics[0];
     },
 
-    filterSelectedTopics : function() {
+    filterSelectedTopics:function () {
         var result = [];
         for (var i = 0; i < this._topics.length; i++) {
             if (this._topics[i].isOnFocus()) {
@@ -51,43 +55,43 @@ mindplot.DesignerModel = new Class({
         return result;
     },
 
-    filterSelectedRelations : function() {
+    filterSelectedRelationships:function () {
         var result = [];
-        for (var id in this._relationships) {
-            var relationship = this._relationships[id];
-            if (relationship.isOnFocus()) {
-                result.push(relationship);
+        for (var i = 0; i < this._relationships.length; i++) {
+            if (this._relationships[i].isOnFocus()) {
+                result.push(this._relationships[i]);
             }
         }
         return result;
     },
 
-    getObjects : function() {
+    getEntities:function () {
         var result = [].append(this._topics);
-        for (var id in this._relationships) {
-            result.push(this._relationships[id]);
-        }
+        result.append(this._relationships);
         return result;
     },
 
-    removeTopic : function(topic) {
+    removeTopic:function (topic) {
         $assert(topic, "topic can not be null");
         this._topics.erase(topic);
     },
 
-    addTopic : function(topic) {
+    removeRelationship:function (rel) {
+        $assert(rel, "rel can not be null");
+        this._relationships.erase(rel);
+    },
+
+    addTopic:function (topic) {
         $assert(topic, "topic can not be null");
         this._topics.push(topic);
     },
 
-    addRelationship : function(id, rel) {
+    addRelationship:function (rel) {
         $assert(rel, "rel can not be null");
-        $assert(id, "id can not be null");
-
-        this._relationships[id] = rel;
+        this._relationships.push(rel);
     },
 
-    filterTopicsIds : function(validate, errorMsg) {
+    filterTopicsIds:function (validate, errorMsg) {
         var result = [];
         var topics = this.filterSelectedTopics();
 
@@ -109,41 +113,17 @@ mindplot.DesignerModel = new Class({
         return result;
     },
 
-    filterRelationIds : function(validate, errorMsg) {
-        var result = [];
-        var relationships = this.filterSelectedRelations();
 
-        var isValid = true;
-        for (var j = 0; j < relationships.length; j++) {
-            var selectedLine = relationships[j];
-            isValid = true;
-            if ($defined(validate)) {
-                isValid = validate(selectedLine);
-            }
-
-            if (isValid) {
-                result.push(selectedLine.getId());
-            } else {
-                $notify(errorMsg);
-            }
-        }
-        return result;
-    },
-
-    getRelationshipsById : function() {
-        return this._relationships;
-    },
-
-    selectedTopic : function() {
+    selectedTopic:function () {
         var topics = this.filterSelectedTopics();
         return (topics.length > 0) ? topics[0] : null;
     },
 
-    findTopicById: function(id) {
+    findTopicById:function (id) {
         var result = null;
         for (var i = 0; i < this._topics.length; i++) {
             var topic = this._topics[i];
-            if(topic.getId()==id){
+            if (topic.getId() == id) {
                 result = topic;
                 break;
             }

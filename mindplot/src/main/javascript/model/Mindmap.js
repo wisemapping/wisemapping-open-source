@@ -106,7 +106,7 @@ mindplot.model.Mindmap = new Class({
             this._relationships.push(relationship);
         },
 
-        removeRelationship : function(relationship) {
+        deleteRelationship : function(relationship) {
             this._relationships.erase(relationship);
         }
     }

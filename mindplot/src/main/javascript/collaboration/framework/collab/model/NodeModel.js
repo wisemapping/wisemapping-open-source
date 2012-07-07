@@ -76,7 +76,7 @@ mindplot.collaboration.framework.brix.model.NodeModel = new Class({
                     for (var i = 0; i < brixChildren.size(); i++) {
                         var brixNodeModel = brixChildren.get(i);
                         var cmodel = new mindplot.collaboration.framework.brix.model.NodeModel(this._brixFramework, brixNodeModel, this.getMindmap());
-                        actionDispatcher.deleteTopics([cmodel.getId()]);
+                        actionDispatcher.deleteEntities([cmodel.getId()]);
                     }
                 } catch(e) {
                     console.trace();

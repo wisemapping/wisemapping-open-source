@@ -31,7 +31,7 @@ mindplot.ActionDispatcher = new Class({
         throw "method must be implemented.";
     },
 
-    deleteTopics: function(topicsIds, relIds) {
+    deleteEntities: function(topicsIds, relIds) {
         throw "method must be implemented.";
     },
 

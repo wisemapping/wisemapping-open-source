@@ -19,80 +19,88 @@
 mindplot.CentralTopic = new Class({
 
     Extends:mindplot.Topic,
-    initialize: function(model, options) {
+    initialize:function (model, options) {
         this.parent(model, options);
     },
 
-    _registerEvents : function() {
+    _registerEvents:function () {
         this.parent();
 
         // This disable the drag of the central topic. But solves the problem of deselecting the nodes when the screen is clicked.
-        this.addEvent('mousedown', function(event) {
+        this.addEvent('mousedown', function (event) {
             event.stopPropagation();
         });
     },
 
-    workoutIncomingConnectionPoint : function() {
+    workoutIncomingConnectionPoint:function () {
         return this.getPosition();
     },
 
-    _getInnerPadding : function() {
+    _getInnerPadding:function () {
         return 11;
     },
 
-    getTopicType : function() {
+    getTopicType:function () {
         return mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE;
     },
 
-    setCursor : function(type) {
+    setCursor:function (type) {
         type = (type == 'move') ? 'default' : type;
         this.parent(type);
     },
 
-    isConnectedToCentralTopic : function() {
+    isConnectedToCentralTopic:function () {
         return false;
     },
 
 
-    _defaultShapeType : function() {
+    _defaultShapeType:function () {
         return  mindplot.model.TopicShape.ROUNDED_RECT;
     },
 
 
-    updateTopicShape : function() {
+    updateTopicShape:function () {
 
     },
 
-    _updatePositionOnChangeSize : function(oldSize, newSize, updatePosition) {
+    _updatePositionOnChangeSize:function () {
 
         // Center main topic ...
         var zeroPoint = new core.Point(0, 0);
         this.setPosition(zeroPoint);
     },
 
-    _defaultText : function() {
+    _defaultText:function () {
         return $msg('CENTRAL_TOPIC');
     },
 
-    _defaultBackgroundColor : function() {
+    _defaultBackgroundColor:function () {
         return "rgb(80,157,192)";
     },
 
-    _defaultBorderColor : function() {
+    _defaultBorderColor:function () {
         return "rgb(57,113,177)";
     },
 
-    _defaultFontStyle : function() {
+    _defaultFontStyle:function () {
         return {
             font:"Verdana",
-            size: 10,
+            size:10,
             style:"normal",
             weight:"bold",
             color:"#ffffff"
         };
     },
 
-    getShrinkConnector : function() {
+    getShrinkConnector:function () {
         return null;
+    },
+
+    workoutOutgoingConnectionPoint:function (targetPosition) {
+        $assert(targetPosition, 'targetPoint can not be null');
+        var pos = this.getPosition();
+        var isAtRight = mindplot.util.Shape.isAtRight(targetPosition, pos);
+        var size = this.getSize();
+        return   mindplot.util.Shape.calculateRectConnectionPoint(pos, size, !isAtRight);
     }
 });

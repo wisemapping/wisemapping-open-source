@@ -32,7 +32,7 @@ mindplot.commands.AddRelationshipCommand = new Class({
         relationship.setOnFocus(true);
     },
     undoExecute: function(commandContext) {
-        var relationship = commandContext.removeRelationship(this._model);
+        var relationship = commandContext.deleteRelationship(this._model);
 
         // @Todo: Esto esta mal. Designer toca el mindmap ...
 //        this._mindmap.removeRelationship(this._model);

@@ -90,6 +90,9 @@ public class UserServiceImpl
 
     @Override
     public void auditLogin(@NotNull User user) {
+        if(user==null){
+            throw new IllegalArgumentException("User can not be null");
+        }
         final AccessAuditory accessAuditory = new AccessAuditory();
         accessAuditory.setUser(user);
         accessAuditory.setLoginDate(Calendar.getInstance());

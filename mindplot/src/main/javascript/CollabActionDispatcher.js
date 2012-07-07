@@ -139,7 +139,7 @@ mindplot.BrixActionDispatcher = new Class({
         }.bind(this));
     },
 
-    deleteTopics : function(topicsIds, relIds) {
+    deleteEntities : function(topicsIds, relIds) {
         $assert(topicsIds, "topicsIds can not be null");
         var framework = this._getFramework();
         var mindmap = framework.getModel();

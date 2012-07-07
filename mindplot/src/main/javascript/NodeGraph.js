@@ -119,7 +119,7 @@ mindplot.NodeGraph = new Class({
             this.closeEditors();
 
             // Fire event ...
-            this.fireEvent(focus ? 'ontfocus' : 'ontblur');
+            this.fireEvent(focus ? 'ontfocus' : 'ontblur',this);
 
         }
     },

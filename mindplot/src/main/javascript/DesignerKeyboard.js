@@ -42,7 +42,7 @@ mindplot.DesignerKeyboard = new Class({
         var model = designer.getModel();
         var keyboardEvents = {
             'backspace':function (event) {
-                designer.deleteCurrentNode();
+                designer.deleteSelectedEntities();
 
                 event.preventDefault();
                 event.stopPropagation();
@@ -61,7 +61,7 @@ mindplot.DesignerKeyboard = new Class({
             }.bind(this),
 
             'delete':function () {
-                designer.deleteCurrentNode();
+                designer.deleteSelectedEntities();
             }.bind(this),
 
             'enter':function () {
