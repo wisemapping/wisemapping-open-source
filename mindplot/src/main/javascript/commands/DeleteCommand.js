@@ -41,7 +41,7 @@ mindplot.commands.DeleteCommand = new Class({
                     while (relationships.length > 0) {
                         var relationship = relationships[0];
 
-                        this._deletedRelModel.push(relationship);
+                        this._deletedRelModel.push(relationship.getModel().clone());
                         commandContext.deleteRelationship(relationship);
                     }
 
@@ -87,6 +87,7 @@ mindplot.commands.DeleteCommand = new Class({
 
             }.bind(this)
         );
+
         this._deletedRelModel.forEach(function (model) {
             commandContext.addRelationship(model);
         }.bind(this));

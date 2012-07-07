@@ -17,7 +17,7 @@
  */
 mindplot.commands.MoveControlPointCommand = new Class({
     Extends:mindplot.Command,
-    initialize: function(ctrlPointController, point) {
+    initialize:function (ctrlPointController, point) {
         $assert(ctrlPointController, 'line can not be null');
         $assert($defined(point), 'point can not be null');
 
@@ -40,7 +40,7 @@ mindplot.commands.MoveControlPointCommand = new Class({
         this._point = point;
     },
 
-    execute: function(commandContext) {
+    execute:function (commandContext) {
         var model = this._line.getModel();
         switch (this._point) {
             case 0:
@@ -64,7 +64,7 @@ mindplot.commands.MoveControlPointCommand = new Class({
         this._line.getLine().updateLine(this._point);
     },
 
-    undoExecute: function(commandContext) {
+    undoExecute:function (commandContext) {
         var line = this._line;
         var model = line.getModel();
         switch (this._point) {
