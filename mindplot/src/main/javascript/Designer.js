@@ -491,15 +491,6 @@ mindplot.Designer = new Class({
             this._relPivot.start(nodes[0], pos);
         },
 
-        connectByRelation:function (sourceTopic, targetTopic) {
-            $assert(sourceTopic, "sourceTopic can not be null");
-            $assert(targetTopic, "targetTopic can not be null");
-
-            // Create a new topic model ...
-            var mindmap = this.getMindmap();
-            var model = mindmap.createRelationship(sourceTopic.getModel().getId(), targetTopic.getModel().getId());
-            this._actionDispatcher.connectByRelation(model);
-        },
 
         needsSave:function () {
             //@Todo: Review all this ...
@@ -600,21 +591,22 @@ mindplot.Designer = new Class({
         _relationshipModelToRelationship:function (model) {
             $assert(model, "Node model can not be null");
 
-            var relationship = this._buildRelationship(model);
-            var sourceTopic = relationship.getSourceTopic();
-            sourceTopic.connectByRelation(relationship);
+            var result = this._buildRelationship(model);
 
-            var targetTopic = relationship.getTargetTopic();
-            targetTopic.connectByRelation(relationship);
-            relationship.setVisibility(sourceTopic.isVisible() && targetTopic.isVisible());
+            var sourceTopic = result.getSourceTopic();
+            sourceTopic.addRelationship(result);
 
-            var workspace = this._workspace;
-            workspace.appendChild(relationship);
-            relationship.redraw();
-            return relationship;
+            var targetTopic = result.getTargetTopic();
+            targetTopic.addRelationship(result);
+
+            result.setVisibility(sourceTopic.isVisible() && targetTopic.isVisible());
+
+            this._workspace.appendChild(result);
+            result.redraw();
+            return result;
         },
 
-        createRelationship:function (model) {
+        _addRelationship:function (model) {
             this._mindmap.addRelationship(model);
             return this._relationshipModelToRelationship(model);
         },
@@ -641,14 +633,14 @@ mindplot.Designer = new Class({
             var targetTopic = dmodel.findTopicById(targetTopicId);
 
             // Build relationship line ....
-            var relationship = new mindplot.Relationship(sourceTopic, targetTopic, model);
-            relationship.addEvent('onfocus', function (event) {
-                this.onObjectFocusEvent(relationship, event);
+            var result = new mindplot.Relationship(sourceTopic, targetTopic, model);
+            result.addEvent('onfocus', function (event) {
+                this.onObjectFocusEvent(result, event);
             }.bind(this));
 
             // Append it to the workspace ...
-            dmodel.addRelationship(relationship);
-            return  relationship;
+            dmodel.addRelationship(result);
+            return  result;
         },
 
         _removeTopic:function (node) {

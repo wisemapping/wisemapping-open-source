@@ -34,7 +34,7 @@ mindplot.StandaloneActionDispatcher = new Class({
         this.execute(command);
     },
 
-    connectByRelation:function (model) {
+    addRelationship:function (model) {
         var command = new mindplot.commands.AddRelationshipCommand(model);
         this.execute(command);
     },
@@ -276,9 +276,9 @@ mindplot.CommandContext = new Class({
         topic.disconnect(this._designer._workspace);
     },
 
-    createRelationship:function (model) {
+    addRelationship:function (model) {
         $assert(model, "model cannot be null");
-        return this._designer.createRelationship(model);
+        return this._designer._addRelationship(model);
     },
 
     deleteRelationship:function (relationship) {

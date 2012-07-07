@@ -17,7 +17,7 @@
  */
 
 mindplot.RelationshipPivot = new Class({
-    initialize: function(workspace, designer) {
+    initialize:function (workspace, designer) {
         $assert(workspace, "workspace can not be null");
         $assert(designer, "designer can not be null");
         this._workspace = workspace;
@@ -29,7 +29,7 @@ mindplot.RelationshipPivot = new Class({
 
     },
 
-    start : function(sourceTopic, targetPos) {
+    start:function (sourceTopic, targetPos) {
         $assert(sourceTopic, "sourceTopic can not be null");
         $assert(targetPos, "targetPos can not be null");
 
@@ -53,14 +53,14 @@ mindplot.RelationshipPivot = new Class({
             // Register focus events on all topics ...
             var model = this._designer.getModel();
             var topics = model.getTopics();
-            topics.forEach(function(topic) {
+            topics.forEach(function (topic) {
                 topic.addEvent('ontfocus', this._onTopicClick);
             }.bind(this));
         }
 
     },
 
-    dispose : function() {
+    dispose:function () {
         var workspace = this._workspace;
 
         if (this._isActive()) {
@@ -69,7 +69,7 @@ mindplot.RelationshipPivot = new Class({
 
             var model = this._designer.getModel();
             var topics = model.getTopics();
-            topics.forEach(function(topic) {
+            topics.forEach(function (topic) {
                 topic.removeEvent('ontfocus', this._onTopicClick);
             }.bind(this));
 
@@ -81,7 +81,7 @@ mindplot.RelationshipPivot = new Class({
         }
     },
 
-    _mouseMove : function(event) {
+    _mouseMove:function (event) {
         var screen = this._workspace.getScreenManager();
         var pos = screen.getWorkspaceMousePosition(event);
 
@@ -90,21 +90,22 @@ mindplot.RelationshipPivot = new Class({
         return false;
     },
 
-    _cleanOnMouseClick : function (event) {
+    _cleanOnMouseClick:function (event) {
 
         // The user clicks on a desktop on in other element that is not a node.
         this.dispose();
         event.stopPropagation();
     },
 
-    _connectOnFocus : function(topic) {
+    _connectOnFocus:function (targetTopic) {
         var sourceTopic = this._sourceTopic;
+        var mindmap = this._designer.getMindmap();
+        var relModel = mindmap.createRelationship(targetTopic.getId(), sourceTopic.getId());
+        this._designer._actionDispatcher.addRelationship(relModel);
         this.dispose();
-        this._designer.connectByRelation(sourceTopic, topic);
-
     },
 
-    _isActive : function() {
+    _isActive:function () {
         return this._pivot != null;
     }
 });

@@ -19,15 +19,14 @@
 mindplot.commands.DeleteCommand = new Class({
     Extends:mindplot.Command,
     initialize:function (topicIds, relIds) {
-        $assert($defined(topicIds), 'topicIds can not be null');
+        $assert($defined(relIds), 'topicIds can not be null');
 
         this.parent();
         this._relIds = relIds;
         this._topicIds = topicIds;
         this._deletedTopicModels = [];
+        this._deletedRelModel = [];
         this._parentTopicIds = [];
-        this._deletedRelationships = [];
-        this._id = mindplot.Command._nextUUID();
     },
 
     execute:function (commandContext) {
@@ -42,7 +41,7 @@ mindplot.commands.DeleteCommand = new Class({
                     while (relationships.length > 0) {
                         var relationship = relationships[0];
 
-                        this._deletedRelationships.push(relationship);
+                        this._deletedRelModel.push(relationship);
                         commandContext.deleteRelationship(relationship);
                     }
 
@@ -65,7 +64,7 @@ mindplot.commands.DeleteCommand = new Class({
         var rels = commandContext.findRelationships(this._relIds);
         if (rels.length > 0) {
             rels.forEach(function (rel) {
-                this._deletedRelationships.push(rel.getModel().clone());
+                this._deletedRelModel.push(rel.getModel().clone());
                 commandContext.deleteRelationship(rel);
             }.bind(this));
         }
@@ -88,13 +87,12 @@ mindplot.commands.DeleteCommand = new Class({
 
             }.bind(this)
         );
-        this._deletedRelationships.forEach(
-            function (rel) {
-                commandContext.createRelationship(rel);
-            }.bind(this));
+        this._deletedRelModel.forEach(function (model) {
+            commandContext.addRelationship(model);
+        }.bind(this));
 
         this._deletedTopicModels = [];
         this._parentTopicIds = [];
-        this._deletedRelationships = [];
+        this._deletedRelModel = [];
     }
 });

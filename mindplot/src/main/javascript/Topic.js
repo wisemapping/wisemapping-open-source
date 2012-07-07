@@ -311,7 +311,7 @@ mindplot.Topic = new Class({
         this._adjustShapes();
     },
 
-    connectByRelation : function(relationship) {
+    addRelationship : function(relationship) {
         this._relationships.push(relationship);
     },
 

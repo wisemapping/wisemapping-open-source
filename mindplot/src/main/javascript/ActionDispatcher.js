@@ -23,7 +23,7 @@ mindplot.ActionDispatcher = new Class({
         $assert(commandContext, "commandContext can not be null");
     },
 
-    connectByRelation: function(model, mindmap) {
+    addRelationship: function(model, mindmap) {
         throw "method must be implemented.";
     },
 
