@@ -16,13 +16,13 @@
  *   limitations under the License.
  */
 mindplot.layout.BalancedSorter = new Class({
-    Extends: mindplot.layout.AbstractBasicSorter,
+    Extends:mindplot.layout.AbstractBasicSorter,
 
-    initialize: function() {
+    initialize:function () {
 
     },
 
-    predict : function(graph, parent, node, position, free) {
+    predict:function (graph, parent, node, position, free) {
         // If its a free node...
         if (free) {
             $assert($defined(position), "position cannot be null for predict in free positioning");
@@ -31,13 +31,13 @@ mindplot.layout.BalancedSorter = new Class({
             var rootNode = graph.getRootNode(parent);
             var direction = this._getRelativeDirection(rootNode.getPosition(), node.getPosition());
 
-            var limitXPos = parent.getPosition().x + direction * (parent.getSize().width/2 + node.getSize().width/2 + mindplot.layout.BalancedSorter.INTERNODE_HORIZONTAL_PADDING);
+            var limitXPos = parent.getPosition().x + direction * (parent.getSize().width / 2 + node.getSize().width / 2 + mindplot.layout.BalancedSorter.INTERNODE_HORIZONTAL_PADDING);
 
             var xPos = direction > 0 ?
                 (position.x >= limitXPos ? position.x : limitXPos) :
-                (position.x <= limitXPos ? position.x : limitXPos) ;
+                (position.x <= limitXPos ? position.x : limitXPos);
 
-            return [0, {x: xPos, y:position.y}];
+            return [0, {x:xPos, y:position.y}];
         }
 
         var rootNode = graph.getRootNode(parent);
@@ -61,10 +61,10 @@ mindplot.layout.BalancedSorter = new Class({
         }
         // Filter nodes on one side..
         var order = position ? (position.x > rootNode.getPosition().x ? 0 : 1) : ((right.length - left.length) > 0 ? 1 : 0);
-        var direction = order%2 == 0 ? 1 : -1;
+        var direction = order % 2 == 0 ? 1 : -1;
 
         // Exclude the dragged node (if set)
-        var children = this._getChildrenForOrder(parent, graph, order).filter(function(child) {
+        var children = this._getChildrenForOrder(parent, graph, order).filter(function (child) {
             return child != node;
         });
 
@@ -76,14 +76,14 @@ mindplot.layout.BalancedSorter = new Class({
         // Try to fit within ...
         var result = null;
         var last = children.getLast();
-        position = position || {x: last.getPosition().x, y:last.getPosition().y + 1};
-        children.each(function(child, index) {
+        position = position || {x:last.getPosition().x, y:last.getPosition().y + 1};
+        children.each(function (child, index) {
             var cpos = child.getPosition();
             if (position.y > cpos.y) {
                 yOffset = child == last ?
                     child.getSize().height + mindplot.layout.BalancedSorter.INTERNODE_VERTICAL_PADDING * 2 :
                     (children[index + 1].getPosition().y - child.getPosition().y) / 2;
-                result = [child.getOrder() + 2,{x:cpos.x, y:cpos.y + yOffset}];
+                result = [child.getOrder() + 2, {x:cpos.x, y:cpos.y + yOffset}];
             }
         });
 
@@ -99,7 +99,7 @@ mindplot.layout.BalancedSorter = new Class({
         return result;
     },
 
-    insert: function(treeSet, parent, child, order) {
+    insert:function (treeSet, parent, child, order) {
         var children = this._getChildrenForOrder(parent, treeSet, order);
 
         // If no children, return 0 or 1 depending on the side
@@ -124,12 +124,12 @@ mindplot.layout.BalancedSorter = new Class({
         child.setOrder(newOrder);
     },
 
-    detach:function(treeSet, node) {
+    detach:function (treeSet, node) {
         var parent = treeSet.getParent(node);
         // Filter nodes on one side..
         var children = this._getChildrenForOrder(parent, treeSet, node.getOrder());
 
-        children.each(function(child, index) {
+        children.each(function (child, index) {
             if (child.getOrder() > node.getOrder()) {
                 child.setOrder(child.getOrder() - 2);
             }
@@ -137,7 +137,7 @@ mindplot.layout.BalancedSorter = new Class({
         node.setOrder(node.getOrder() % 2 == 0 ? 0 : 1);
     },
 
-    computeOffsets:function(treeSet, node) {
+    computeOffsets:function (treeSet, node) {
         $assert(treeSet, "treeSet can no be null.");
         $assert(node, "node can no be null.");
 
@@ -145,8 +145,8 @@ mindplot.layout.BalancedSorter = new Class({
 
         // Compute heights ...
         var heights = children.map(
-            function(child) {
-                return {id:child.getId(), order:child.getOrder(), width: child.getSize().width, height:this._computeChildrenHeight(treeSet, child)};
+            function (child) {
+                return {id:child.getId(), order:child.getOrder(), width:child.getSize().width, height:this._computeChildrenHeight(treeSet, child)};
             }, this).reverse();
 
 
@@ -154,7 +154,7 @@ mindplot.layout.BalancedSorter = new Class({
         var totalPHeight = 0;
         var totalNHeight = 0;
 
-        heights.forEach(function(elem) {
+        heights.forEach(function (elem) {
             if (elem.order % 2 == 0) {
                 totalPHeight += elem.height;
             } else {
@@ -179,17 +179,17 @@ mindplot.layout.BalancedSorter = new Class({
             }
 
             var yOffset = ysum + heights[i].height / 2;
-            var xOffset = direction * (node.getSize().width / 2 + heights[i].width / 2 + + mindplot.layout.BalancedSorter.INTERNODE_HORIZONTAL_PADDING);
+            var xOffset = direction * (node.getSize().width / 2 + heights[i].width / 2 + +mindplot.layout.BalancedSorter.INTERNODE_HORIZONTAL_PADDING);
 
             $assert(!isNaN(xOffset), "xOffset can not be null");
             $assert(!isNaN(yOffset), "yOffset can not be null");
 
-            result[heights[i].id] = {x:xOffset,y:yOffset};
+            result[heights[i].id] = {x:xOffset, y:yOffset};
         }
         return result;
     },
 
-    verify:function(treeSet, node) {
+    verify:function (treeSet, node) {
         // Check that all is consistent ...
         var children = this._getChildrenForOrder(node, treeSet, node.getOrder());
 
@@ -198,37 +198,37 @@ mindplot.layout.BalancedSorter = new Class({
         var factor = node.getOrder() % 2 == 0 ? 2 : 1;
         for (var i = 0; i < children.length; i++) {
             var order = i == 0 && factor == 1 ? 1 : (factor * i);
-            $assert(children[i].getOrder() == order, "Missing order elements. Missing order: " + (i * factor));
+            $assert(children[i].getOrder() == order, "Missing order elements. Missing order: " + (i * factor) + ". Parent:" + node.getId() + ",Node:" + children[i].getId());
         }
     },
 
-    getDirection: function(treeSet, node) {
+    getDirection:function (treeSet, node) {
         return node.getOrder() % 2 == 0 ? 1 : -1;
     },
 
-    toString:function() {
+    toString:function () {
         return "Balanced Sorter";
     },
 
-    _getOrderForPosition: function(rootNode, position) {
+    _getOrderForPosition:function (rootNode, position) {
         return position.x > rootNode.getPosition().x ? 0 : 1;
     },
 
-    _getChildrenForSide: function(parent, graph, position) {
-        position = position || {x: parent.getPosition().x + 1, y:parent.getPosition().y + 1};
+    _getChildrenForSide:function (parent, graph, position) {
+        position = position || {x:parent.getPosition().x + 1, y:parent.getPosition().y + 1};
         var rootPosition = graph.getRootNode(parent).getPosition();
-        return graph.getChildren(parent).filter(function(child) {
+        return graph.getChildren(parent).filter(function (child) {
             return position.x > rootPosition.x ? child.getPosition().x > rootPosition.x : child.getPosition().x < rootPosition.x;
         });
     },
 
-    _getChildrenForOrder: function (parent, graph, order) {
-        return this._getSortedChildren(graph, parent).filter(function(child) {
+    _getChildrenForOrder:function (parent, graph, order) {
+        return this._getSortedChildren(graph, parent).filter(function (child) {
             return child.getOrder() % 2 == order % 2;
         });
     },
 
-    _getVerticalPadding: function() {
+    _getVerticalPadding:function () {
         return mindplot.layout.BalancedSorter.INTERNODE_VERTICAL_PADDING;
     }
 });

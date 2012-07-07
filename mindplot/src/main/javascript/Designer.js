@@ -506,7 +506,6 @@ mindplot.Designer = new Class({
             $assert(mindmapModel, "mindmapModel can not be null");
             this._mindmap = mindmapModel;
 
-//            try {
             // Init layout manager ...
             var size = {width:25, height:25};
             var layoutManager = new mindplot.layout.LayoutManager(mindmapModel.getCentralTopic().getId(), size);
@@ -543,9 +542,6 @@ mindplot.Designer = new Class({
             mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.DoLayout);
 
             this.fireEvent('loadSuccess');
-//            } catch(e) {
-//                this.fireEvent('loadError', e);
-//            }
         },
 
         getMindmap:function () {
@@ -591,7 +587,7 @@ mindplot.Designer = new Class({
         _relationshipModelToRelationship:function (model) {
             $assert(model, "Node model can not be null");
 
-            var result = this._buildRelationship(model);
+            var result = this._buildRelationshipShape(model);
 
             var sourceTopic = result.getSourceTopic();
             sourceTopic.addRelationship(result);
@@ -602,7 +598,6 @@ mindplot.Designer = new Class({
             result.setVisibility(sourceTopic.isVisible() && targetTopic.isVisible());
 
             this._workspace.appendChild(result);
-            result.redraw();
             return result;
         },
 
@@ -623,7 +618,7 @@ mindplot.Designer = new Class({
             this.getModel().removeRelationship(relationship);
         },
 
-        _buildRelationship:function (model) {
+        _buildRelationshipShape:function (model) {
             var dmodel = this.getModel();
 
             var sourceTopicId = model.getFromNode();
@@ -674,16 +669,20 @@ mindplot.Designer = new Class({
                 // If there are more than one node selected,
                 $notify($msg('ENTITIES_COULD_NOT_BE_DELETED'));
                 return;
+            } else if (topics.length == 1 && topics[0].getTopicType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
+                $notify($msg('CENTRAL_TOPIC_CAN_NOT_BE_DELETED'));
+                return;
             }
 
-            // Filter the lists ...
-            var validateFunc = function (object) {
-                return object.getType() == mindplot.Relationship.type || object.getTopicType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE
-            };
-            var validateError = $msg('CENTRAL_TOPIC_CAN_NOT_BE_DELETED');
-            var model = this.getModel();
-            var topicIds = model.filterTopicsIds(validateFunc, validateError);
-            var relIds = model.filterSelectedRelationships().map(function (rel) {
+            // If the central topic has been selected, I must filter ir
+            var topicIds = topics.filter(function (topic) {
+                return topic.getTopicType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE
+            }).map(function (topic) {
+                    return topic.getId()
+                });
+
+
+            var relIds = topics.map(function (rel) {
                 return rel.getId();
             });
 

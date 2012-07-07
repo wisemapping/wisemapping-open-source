@@ -16,11 +16,11 @@
  *   limitations under the License.
  */
 mindplot.layout.OriginalLayout = new Class({
-    initialize: function(treeSet) {
+    initialize:function (treeSet) {
         this._treeSet = treeSet;
     },
 
-    createNode:function(id, size, position, type) {
+    createNode:function (id, size, position, type) {
         $assert($defined(id), "id can not be null");
         $assert(size, "size can not be null");
         $assert(position, "position can not be null");
@@ -32,7 +32,7 @@ mindplot.layout.OriginalLayout = new Class({
         return new mindplot.layout.Node(id, size, position, strategy);
     },
 
-    connectNode: function(parentId, childId, order) {
+    connectNode:function (parentId, childId, order) {
 
         var parent = this._treeSet.find(parentId);
         var child = this._treeSet.find(childId);
@@ -48,7 +48,7 @@ mindplot.layout.OriginalLayout = new Class({
         sorter.verify(this._treeSet, parent);
     },
 
-    disconnectNode: function(nodeId) {
+    disconnectNode:function (nodeId) {
         var node = this._treeSet.find(nodeId);
         var parent = this._treeSet.getParent(node);
         $assert(parent, "Node already disconnected");
@@ -65,12 +65,12 @@ mindplot.layout.OriginalLayout = new Class({
         this._treeSet.disconnect(nodeId);
 
         // Fire a basic validation ...
-        sorter.verify(this._treeSet, node);
+        parent.getSorter().verify(this._treeSet, parent);
     },
 
-    layout: function() {
+    layout:function () {
         var roots = this._treeSet.getTreeRoots();
-        roots.forEach(function(node) {
+        roots.forEach(function (node) {
 
             // Calculate all node heights ...
             var sorter = node.getSorter();
@@ -83,13 +83,17 @@ mindplot.layout.OriginalLayout = new Class({
         }, this);
     },
 
-    _layoutChildren: function(node, heightById) {
+    _layoutChildren:function (node, heightById) {
 
         var nodeId = node.getId();
         var children = this._treeSet.getChildren(node);
         var parent = this._treeSet.getParent(node);
-        var childrenOrderMoved = children.some(function(child) { return child.hasOrderChanged(); });
-        var childrenSizeChanged = children.some(function(child) { return child.hasSizeChanged(); });
+        var childrenOrderMoved = children.some(function (child) {
+            return child.hasOrderChanged();
+        });
+        var childrenSizeChanged = children.some(function (child) {
+            return child.hasSizeChanged();
+        });
 
         // If ether any of the nodes has been changed of position or the height of the children is not
         // the same, children nodes must be repositioned ....
@@ -104,7 +108,7 @@ mindplot.layout.OriginalLayout = new Class({
             var offsetById = sorter.computeOffsets(this._treeSet, node);
             var parentPosition = node.getPosition();
 
-            children.forEach(function(child) {
+            children.forEach(function (child) {
                 var offset = offsetById[child.getId()];
 
                 var childFreeDisplacement = child.getFreeDisplacement();
@@ -112,7 +116,7 @@ mindplot.layout.OriginalLayout = new Class({
 
                 if ((direction > 0 && childFreeDisplacement.x < 0) || (direction < 0 && childFreeDisplacement.x > 0)) {
                     child.resetFreeDisplacement();
-                    child.setFreeDisplacement({x: -childFreeDisplacement.x, y:childFreeDisplacement.y});
+                    child.setFreeDisplacement({x:-childFreeDisplacement.x, y:childFreeDisplacement.y});
                 }
 
                 offset.x += child.getFreeDisplacement().x;
@@ -129,12 +133,12 @@ mindplot.layout.OriginalLayout = new Class({
         }
 
         // Continue reordering the children nodes ...
-        children.forEach(function(child) {
+        children.forEach(function (child) {
             this._layoutChildren(child, heightById);
         }, this);
     },
 
-    _calculateAlignOffset: function(node, child, heightById) {
+    _calculateAlignOffset:function (node, child, heightById) {
         if (child.isFree()) {
             return 0;
         }
@@ -146,15 +150,15 @@ mindplot.layout.OriginalLayout = new Class({
 
         if (this._treeSet.isStartOfSubBranch(child) && this._branchIsTaller(child, heightById)) {
             if (this._treeSet.hasSinglePathToSingleLeaf(child)) {
-                offset = heightById[child.getId()]/2 - (childHeight + child.getSorter()._getVerticalPadding()*2)/2;
+                offset = heightById[child.getId()] / 2 - (childHeight + child.getSorter()._getVerticalPadding() * 2) / 2;
             } else {
-                offset = this._treeSet.isLeaf(child) ? 0 : -(childHeight - nodeHeight)/2;
+                offset = this._treeSet.isLeaf(child) ? 0 : -(childHeight - nodeHeight) / 2;
             }
         } else if (nodeHeight > childHeight) {
             if (this._treeSet.getSiblings(child).length > 0) {
                 offset = 0;
             } else {
-                offset = nodeHeight/2 - childHeight/2;
+                offset = nodeHeight / 2 - childHeight / 2;
             }
         }
         else if (childHeight > nodeHeight) {
@@ -168,29 +172,29 @@ mindplot.layout.OriginalLayout = new Class({
         return offset;
     },
 
-    _branchIsTaller: function(node, heightById) {
-        return heightById[node.getId()] > (node.getSize().height + node.getSorter()._getVerticalPadding()*2);
+    _branchIsTaller:function (node, heightById) {
+        return heightById[node.getId()] > (node.getSize().height + node.getSorter()._getVerticalPadding() * 2);
     },
 
-    _fixOverlapping: function(node, heightById) {
+    _fixOverlapping:function (node, heightById) {
         var children = this._treeSet.getChildren(node);
 
         if (node.isFree()) {
             this._shiftBranches(node, heightById);
         }
 
-        children.forEach(function(child) {
+        children.forEach(function (child) {
             this._fixOverlapping(child, heightById);
         }, this);
     },
 
-    _shiftBranches: function(node, heightById) {
+    _shiftBranches:function (node, heightById) {
         var shiftedBranches = [node];
 
         var siblingsToShift = this._treeSet.getSiblingsInVerticalDirection(node, node.getFreeDisplacement().y);
         var last = node;
-        siblingsToShift.forEach(function(sibling) {
-            var overlappingOccurs = shiftedBranches.some(function(shiftedBranch) {
+        siblingsToShift.forEach(function (sibling) {
+            var overlappingOccurs = shiftedBranches.some(function (shiftedBranch) {
                 return this._branchesOverlap(shiftedBranch, sibling, heightById);
             }, this);
 
@@ -201,28 +205,28 @@ mindplot.layout.OriginalLayout = new Class({
             }
         }, this);
 
-        var branchesToShift = this._treeSet.getBranchesInVerticalDirection(node, node.getFreeDisplacement().y).filter(function(branch) {
+        var branchesToShift = this._treeSet.getBranchesInVerticalDirection(node, node.getFreeDisplacement().y).filter(function (branch) {
             return !shiftedBranches.contains(branch);
         });
 
-        branchesToShift.forEach(function(branch) {
+        branchesToShift.forEach(function (branch) {
             var bAmount = node.getFreeDisplacement().y;
             this._treeSet.shiftBranchPosition(branch, 0, bAmount);
             shiftedBranches.push(branch);
             last = branch;
-        },this);
+        }, this);
     },
 
-    _branchesOverlap: function(branchA, branchB, heightById) {
+    _branchesOverlap:function (branchA, branchB, heightById) {
         // a branch doesn't really overlap with itself
         if (branchA == branchB) {
             return false;
         }
 
-        var topA = branchA.getPosition().y - heightById[branchA.getId()]/2;
-        var bottomA = branchA.getPosition().y + heightById[branchA.getId()]/2;
-        var topB = branchB.getPosition().y - heightById[branchB.getId()]/2;
-        var bottomB = branchB.getPosition().y + heightById[branchB.getId()]/2;
+        var topA = branchA.getPosition().y - heightById[branchA.getId()] / 2;
+        var bottomA = branchA.getPosition().y + heightById[branchA.getId()] / 2;
+        var topB = branchB.getPosition().y - heightById[branchB.getId()] / 2;
+        var bottomB = branchB.getPosition().y + heightById[branchB.getId()] / 2;
 
         return !(topA >= bottomB || bottomA <= topB);
     }

@@ -30,10 +30,14 @@ mindplot.commands.DeleteCommand = new Class({
     },
 
     execute:function (commandContext) {
-        var topics = commandContext.findTopics(this._topicIds);
+
+        // If a parent has been selected for deletion, the children must be excluded from the delete ...
+        var topics = this._filterChildren(this._topicIds, commandContext);
+
+
         if (topics.length > 0) {
             topics.forEach(
-                function (topic, index) {
+                function (topic) {
                     var model = topic.getModel();
 
                     // Delete relationships
@@ -45,9 +49,8 @@ mindplot.commands.DeleteCommand = new Class({
                         commandContext.deleteRelationship(relationship);
                     }
 
+                    // Delete the node itself ...
                     this._deletedTopicModels.push(model);
-
-                    // Is connected?.
                     var outTopic = topic.getOutgoingConnectedTopic();
                     var outTopicId = null;
                     if (outTopic != null) {
@@ -72,9 +75,7 @@ mindplot.commands.DeleteCommand = new Class({
 
     undoExecute:function (commandContext) {
 
-        var topics = commandContext.findTopics(this._topicIds);
         var parent = commandContext.findTopics(this._parentTopicIds);
-
         this._deletedTopicModels.forEach(
             function (model, index) {
                 var topic = commandContext.createTopic(model);
@@ -95,5 +96,28 @@ mindplot.commands.DeleteCommand = new Class({
         this._deletedTopicModels = [];
         this._parentTopicIds = [];
         this._deletedRelModel = [];
+    },
+
+    _filterChildren:function (topicIds, commandContext) {
+        var topics = commandContext.findTopics(topicIds);
+
+        var result = [];
+        topics.forEach(function (topic) {
+            var parent = topic.getParent();
+            var found = false;
+            while (parent != null && !found) {
+                found = topicIds.contains(parent.getId());
+                if (found) {
+                    break;
+                }
+                parent = parent.getParent();
+            }
+
+            if (!found) {
+                result.push(topic);
+            }
+        });
+
+        return result;
     }
 });

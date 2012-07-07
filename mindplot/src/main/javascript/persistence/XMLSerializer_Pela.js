@@ -18,7 +18,7 @@
 
 mindplot.persistence.XMLSerializer_Pela = new Class({
 
-    toXML : function(mindmap) {
+    toXML:function (mindmap) {
         $assert(mindmap, "Can not save a null mindmap");
 
         var document = core.Utils.createDocument();
@@ -56,7 +56,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         return document;
     },
 
-    _topicToXML : function(document, topic) {
+    _topicToXML:function (document, topic) {
         var parentTopic = document.createElement("topic");
 
         // Set topic attributes...
@@ -164,7 +164,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         return parentTopic;
     },
 
-    _noteTextToXML : function(document, elem, text) {
+    _noteTextToXML:function (document, elem, text) {
         if (text.indexOf('\n') == -1) {
             elem.setAttribute('text', text);
         } else {
@@ -175,7 +175,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         }
     },
 
-    _relationshipToXML : function(document, relationship) {
+    _relationshipToXML:function (document, relationship) {
         var result = document.createElement("relationship");
         result.setAttribute("srcTopicId", relationship.getFromNode());
         result.setAttribute("destTopicId", relationship.getToNode());
@@ -197,7 +197,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         return result;
     },
 
-    loadFromDom : function(dom, mapId) {
+    loadFromDom:function (dom, mapId) {
         $assert(dom, "dom can not be null");
         $assert(mapId, "mapId can not be null");
 
@@ -233,7 +233,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         return mindmap;
     },
 
-    _deserializeNode : function(domElem, mindmap) {
+    _deserializeNode:function (domElem, mindmap) {
         var type = (domElem.getAttribute('central') != null) ? mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE : mindplot.model.INodeModel.MAIN_TOPIC_TYPE;
 
         // Load attributes...
@@ -363,7 +363,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         return topic;
     },
 
-    _deserializeTextAttr : function(domElem) {
+    _deserializeTextAttr:function (domElem) {
         var value = domElem.getAttribute("text");
         if (!$defined(value)) {
             var children = domElem.childNodes;
@@ -386,7 +386,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         return value;
     },
 
-    _deserializeNodeText: function(domElem) {
+    _deserializeNodeText:function (domElem) {
         var children = domElem.childNodes;
         var value = null;
         for (var i = 0; i < children.length; i++) {
@@ -398,7 +398,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         return value;
     },
 
-    _deserializeRelationship : function(domElement, mindmap) {
+    _deserializeRelationship:function (domElement, mindmap) {
         var srcId = domElement.getAttribute("srcTopicId");
         var destId = domElement.getAttribute("destTopicId");
         var lineType = domElement.getAttribute("lineType");
@@ -410,6 +410,11 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         if (srcId == destId) {
             return null;
         }
+        // Is the connections points valid ?. If it's not, do not load the relationship ...
+        if (mindmap.findNodeById(srcId) == null || mindmap.findNodeById(destId)) {
+            return null;
+        }
+
         var model = mindmap.createRelationship(srcId, destId);
         model.setLineType(lineType);
         if ($defined(srcCtrlPoint) && srcCtrlPoint != "") {

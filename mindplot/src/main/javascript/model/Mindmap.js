@@ -16,8 +16,8 @@
  *   limitations under the License.
  */
 mindplot.model.Mindmap = new Class({
-        Extends: mindplot.model.IMindmap,
-        initialize : function(id, version) {
+        Extends:mindplot.model.IMindmap,
+        initialize:function (id, version) {
             $assert(id, "Id can not be null");
             this._branches = [];
             this._description = null;
@@ -26,32 +26,32 @@ mindplot.model.Mindmap = new Class({
             this._id = id;
         },
 
-        getDescription : function() {
+        getDescription:function () {
             return this._description;
         },
 
-        setDescription : function(value) {
+        setDescription:function (value) {
             this._description = value;
         },
 
-        getId : function() {
+        getId:function () {
             return this._id;
         },
 
 
-        setId : function(id) {
+        setId:function (id) {
             this._id = id;
         },
 
-        getVersion : function() {
+        getVersion:function () {
             return this._version;
         },
 
-        setVersion : function(version) {
+        setVersion:function (version) {
             this._version = version;
         },
 
-        addBranch : function(nodeModel) {
+        addBranch:function (nodeModel) {
             $assert(nodeModel && nodeModel.isNodeModel(), 'Add node must be invoked with model objects');
             var branches = this.getBranches();
             if (branches.length == 0) {
@@ -64,20 +64,20 @@ mindplot.model.Mindmap = new Class({
             this._branches.push(nodeModel);
         },
 
-        removeBranch : function(nodeModel) {
+        removeBranch:function (nodeModel) {
             $assert(nodeModel && nodeModel.isNodeModel(), 'Remove node must be invoked with model objects');
             return this._branches.erase(nodeModel);
         },
 
-        getBranches : function() {
+        getBranches:function () {
             return this._branches;
         },
 
-        getRelationships : function() {
+        getRelationships:function () {
             return this._relationships;
         },
 
-        hasAlreadyAdded : function(node) {
+        hasAlreadyAdded:function (node) {
             var result = false;
 
             // Check in not connected nodes.
@@ -90,29 +90,40 @@ mindplot.model.Mindmap = new Class({
             }
         },
 
-        createNode : function(type, id) {
+        createNode:function (type, id) {
             type = !$defined(type) ? mindplot.model.INodeModel.MAIN_TOPIC_TYPE : type;
             return new mindplot.model.NodeModel(type, this, id);
         },
 
-        createRelationship : function(sourceNodeId, targetNodeId) {
+        createRelationship:function (sourceNodeId, targetNodeId) {
             $assert($defined(sourceNodeId), 'from node cannot be null');
             $assert($defined(targetNodeId), 'to node cannot be null');
 
             return new mindplot.model.RelationshipModel(sourceNodeId, targetNodeId);
         },
 
-        addRelationship : function(relationship) {
+        addRelationship:function (relationship) {
             this._relationships.push(relationship);
         },
 
-        deleteRelationship : function(relationship) {
+        deleteRelationship:function (relationship) {
             this._relationships.erase(relationship);
+        },
+
+        findNodeById:function (id) {
+            var result;
+            for (var i = 0; i < this._branches; i++) {
+                var branch = this._branches[i];
+                result = branch.findNodeById(id)
+                if (result) {
+                    break;
+                }
+            }
         }
     }
 );
 
-mindplot.model.Mindmap.buildEmpty = function(mapId) {
+mindplot.model.Mindmap.buildEmpty = function (mapId) {
     var result = new mindplot.model.Mindmap(mapId);
     var node = result.createNode(mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE, 0);
     result.addBranch(node);

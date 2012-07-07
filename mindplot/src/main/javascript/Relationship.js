@@ -17,9 +17,15 @@
  */
 mindplot.Relationship = new Class({
     Extends:mindplot.ConnectionLine,
+    Static:{
+        getStrokeColor:function () {
+            return '#9b74e6';
+        },
+        type: "Relationship"
+    },
     initialize:function (sourceNode, targetNode, model) {
-        $assert(sourceNode,"sourceNode can not be null");
-        $assert(targetNode,"targetNode can not be null");
+        $assert(sourceNode, "sourceNode can not be null");
+        $assert(targetNode, "targetNode can not be null");
 
         this.parent(sourceNode, targetNode, model.getLineType());
         this.setModel(model);
@@ -161,6 +167,8 @@ mindplot.Relationship = new Class({
 
         this.parent(workspace);
         this._positionArrows();
+        this.redraw();
+
     },
 
     _initializeControlPointController:function () {
@@ -306,13 +314,7 @@ mindplot.Relationship = new Class({
         this._line2d.setIsDestControlPointCustom(isCustom);
     },
 
-    getId: function(){
+    getId:function () {
         return this._model.getId();
     }
 });
-
-
-mindplot.Relationship.type = "Relationship";
-mindplot.Relationship.getStrokeColor = function () {
-    return '#9b74e6';
-};

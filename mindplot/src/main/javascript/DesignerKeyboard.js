@@ -42,10 +42,10 @@ mindplot.DesignerKeyboard = new Class({
         var model = designer.getModel();
         var keyboardEvents = {
             'backspace':function (event) {
-                designer.deleteSelectedEntities();
-
                 event.preventDefault();
                 event.stopPropagation();
+
+                designer.deleteSelectedEntities();
 
             }.bind(this),
 
@@ -73,129 +73,123 @@ mindplot.DesignerKeyboard = new Class({
             }.bind(this),
 
             'meta+enter':function (event) {
-                designer.createChildForSelectedNode();
-
                 event.preventDefault();
                 event.stopPropagation();
+                designer.createChildForSelectedNode();
 
             }.bind(this),
 
             'ctrl+z':function () {
-                designer.undo();
-
                 event.preventDefault(event);
                 event.stopPropagation();
-
+                designer.undo();
             }.bind(this),
 
             'meta+z':function (event) {
-                designer.undo();
-
                 event.preventDefault();
                 event.stopPropagation();
+
+                designer.undo();
 
             }.bind(this),
 
             'ctrl+z+shift':function (event) {
-                designer.redo();
-
                 event.preventDefault();
                 event.stopPropagation();
+
+                designer.redo();
             }.bind(this),
 
             'meta+z+shift':function (event) {
-                designer.redo();
-
                 event.preventDefault();
                 event.stopPropagation();
+
+                designer.redo();
             }.bind(this),
 
             'ctrl+y':function (event) {
-                designer.redo();
-
                 event.preventDefault();
                 event.stopPropagation();
+
+                designer.redo();
 
             }.bind(this),
 
             'meta+y':function (event) {
-                designer.redo();
-
                 event.preventDefault();
                 event.stopPropagation();
+
+                designer.redo();
 
             }.bind(this),
 
             'ctrl+a':function (event) {
-                designer.selectAll();
-
                 event.preventDefault();
                 event.stopPropagation();
+
+                designer.selectAll();
             },
 
             'ctrl+b':function (event) {
-                designer.changeFontWeight();
-
                 event.preventDefault();
                 event.stopPropagation();
+
+                designer.changeFontWeight();
             },
 
             'meta+b':function (event) {
-                designer.changeFontWeight();
-
                 event.preventDefault();
                 event.stopPropagation();
+
+                designer.changeFontWeight();
             },
 
             'ctrl+s':function (event) {
                 event.preventDefault();
-                $('save').fireEvent('click');
-
-                event.preventDefault();
                 event.stopPropagation();
+                $('save').fireEvent('click');
             },
 
             'meta+s':function (event) {
                 event.preventDefault();
-                $('save').fireEvent('click');
-
-                event.preventDefault();
                 event.stopPropagation();
+
+                $('save').fireEvent('click');
             },
 
             'ctrl+i':function (event) {
-                designer.changeFontStyle();
-
                 event.preventDefault();
                 event.stopPropagation();
+
+                designer.changeFontStyle();
             },
 
             'meta+i':function (event) {
-                designer.changeFontStyle();
-
                 event.preventDefault();
                 event.stopPropagation();
+
+                designer.changeFontStyle();
             },
 
             'meta+shift+a':function (event) {
-                designer.deselectAll();
-
                 event.preventDefault();
                 event.stopPropagation();
+
+                designer.deselectAll();
             },
 
             'ctrl+shift+a':function (event) {
-                designer.deselectAll();
-
                 event.preventDefault();
                 event.stopPropagation();
+
+                designer.deselectAll();
             },
 
             'meta+a':function (event) {
-                designer.selectAll();
-
                 event.preventDefault();
                 event.stopPropagation();
+
+                designer.selectAll();
             },
 
             'right':function () {

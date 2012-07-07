@@ -184,8 +184,25 @@ mindplot.model.NodeModel = new Class({
             }
         }
         return result;
-
     },
+
+    findNodeById  : function(id) {
+        var result = null;
+        if (this.getId() == id) {
+            return this;
+        } else {
+            var children = this.getChildren();
+            for (var i = 0; i < children.length; i++) {
+                var child = children[i];
+                result = child.findNodeById(id);
+                if (result) {
+                    break;
+                }
+            }
+        }
+        return result;
+    },
+
 
     inspect  : function() {
         return '(type:' + this.getType() + ' , id: ' + this.getId() + ')';
