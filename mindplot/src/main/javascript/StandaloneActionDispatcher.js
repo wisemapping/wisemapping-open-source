@@ -231,7 +231,6 @@ mindplot.StandaloneActionDispatcher = new Class({
 
     execute:function (command) {
         this._actionRunner.execute(command);
-        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.DoLayout);
     }
 
 });

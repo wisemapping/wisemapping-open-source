@@ -30,16 +30,21 @@ mindplot.DesignerActionRunner = new Class({
         command.execute(this._context);
         this._undoManager.enqueue(command);
         this.fireChangeEvent();
+        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.DoLayout);
+
     },
 
     undo: function() {
         this._undoManager.execUndo(this._context);
         this.fireChangeEvent();
+        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.DoLayout);
     },
 
     redo: function() {
         this._undoManager.execRedo(this._context);
         this.fireChangeEvent();
+        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.DoLayout);
+
     },
 
     fireChangeEvent : function () {

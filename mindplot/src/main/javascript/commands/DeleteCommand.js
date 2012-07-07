@@ -84,10 +84,12 @@ mindplot.commands.DeleteCommand = new Class({
                 var parentTopic = parent[index];
                 if (parentTopic != null) {
                     commandContext.connect(topic, parentTopic);
+                    topic.setOnFocus();
                 }
 
             }.bind(this)
         );
+
 
         this._deletedRelModel.forEach(function (model) {
             commandContext.addRelationship(model);

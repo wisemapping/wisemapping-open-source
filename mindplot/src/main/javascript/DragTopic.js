@@ -207,7 +207,9 @@ mindplot.DragTopic = new Class({
     },
 
     isFreeLayoutOn: function() {
-        return  this._isFreeLayoutEnabled;
+//        return  this._isFreeLayoutEnabled;
+        // Disable free layout ...
+        return false;
     }
 
 });
