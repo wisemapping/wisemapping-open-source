@@ -53,7 +53,7 @@ mindplot.RelationshipPivot = new Class({
             // Register focus events on all topics ...
             var model = this._designer.getModel();
             var topics = model.getTopics();
-            topics.forEach(function (topic) {
+            topics.each(function (topic) {
                 topic.addEvent('ontfocus', this._onTopicClick);
             }.bind(this));
         }
@@ -69,7 +69,7 @@ mindplot.RelationshipPivot = new Class({
 
             var model = this._designer.getModel();
             var topics = model.getTopics();
-            topics.forEach(function (topic) {
+            topics.each(function (topic) {
                 topic.removeEvent('ontfocus', this._onTopicClick);
             }.bind(this));
 

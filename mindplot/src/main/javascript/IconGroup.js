@@ -103,7 +103,7 @@ mindplot.IconGroup = new Class({
         this._resize(this._icons.length);
 
         // Add all again ...
-        this._icons.forEach(function(elem, i) {
+        this._icons.each(function(elem, i) {
             this._positionIcon(elem, i);
         }.bind(this));
     },

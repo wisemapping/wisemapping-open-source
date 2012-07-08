@@ -63,7 +63,7 @@ mindplot.widget.ColorPalettePanel = new Class({
         // Register on toolbar elements ...
         var colorCells = content.getElements('div[class=palette-colorswatch]');
         var model = this.getModel();
-        colorCells.forEach(function(elem) {
+        colorCells.each(function(elem) {
             elem.addEvent('click', function() {
                 var color = elem.getStyle("background-color");
                 model.setValue(color);
@@ -79,7 +79,7 @@ mindplot.widget.ColorPalettePanel = new Class({
 
         // Clear selected cell based on the color  ...
         var tdCells = panelElem.getElements("td[class='palette-cell palette-cell-selected']");
-        tdCells.forEach(function(elem) {
+        tdCells.each(function(elem) {
             elem.className = 'palette-cell';
         });
 
@@ -87,7 +87,7 @@ mindplot.widget.ColorPalettePanel = new Class({
         var colorCells = panelElem.getElements('div[class=palette-colorswatch]');
         var model = this.getModel();
         var modelValue = model.getValue();
-        colorCells.forEach(function(elem) {
+        colorCells.each(function(elem) {
             var color = elem.getStyle("background-color");
             if (modelValue == color) {
                 elem.parentNode.className = 'palette-cell palette-cell-selected';

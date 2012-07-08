@@ -29,7 +29,7 @@ mindplot.commands.AddTopicCommand = new Class({
 
     execute:function (commandContext) {
 
-        this._models.forEach(function (model, index) {
+        this._models.each(function (model, index) {
 
             // Add a new topic ...
             var topic = commandContext.createTopic(model, false);
@@ -56,7 +56,7 @@ mindplot.commands.AddTopicCommand = new Class({
 
     undoExecute:function (commandContext) {
         // Finally, delete the topic from the workspace ...
-        this._models.forEach(function (model) {
+        this._models.each(function (model) {
 
             var topicId = model.getId();
             var topic = commandContext.findTopics(topicId)[0];

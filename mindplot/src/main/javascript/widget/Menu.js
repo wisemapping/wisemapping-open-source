@@ -438,7 +438,7 @@ mindplot.widget.Menu = new Class({
     _registerEvents:function (designer) {
 
         // Register on close events ...
-        this._toolbarElems.forEach(function (elem) {
+        this._toolbarElems.each(function (elem) {
             elem.addEvent('show', function () {
                 this.clear()
             }.bind(this));
@@ -448,7 +448,7 @@ mindplot.widget.Menu = new Class({
             var topics = designer.getModel().filterSelectedTopics();
             var rels = designer.getModel().filterSelectedRelationships();
 
-            this._toolbarElems.forEach(function (button) {
+            this._toolbarElems.each(function (button) {
                 var disable = false;
                 if (button.isTopicAction() && button.isRelAction()) {
                     disable = rels.length == 0 && topics.length == 0;
@@ -474,7 +474,7 @@ mindplot.widget.Menu = new Class({
             var topics = designer.getModel().filterSelectedTopics();
             var rels = designer.getModel().filterSelectedRelationships();
 
-            this._toolbarElems.forEach(function (button) {
+            this._toolbarElems.each(function (button) {
                 if (button.isTopicAction() && topics.length > 0) {
                     button.enable();
                 }

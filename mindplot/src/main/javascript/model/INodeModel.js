@@ -213,7 +213,7 @@ mindplot.model.INodeModel = new Class({
         var source = this;
         // Copy properties ...
         var keys = source.getPropertiesKeys();
-        keys.forEach(function(key) {
+        keys.each(function(key) {
             var value = source.getProperty(key);
             target.putProperty(key, value);
         });
@@ -222,7 +222,7 @@ mindplot.model.INodeModel = new Class({
         var children = this.getChildren();
         var tmindmap = target.getMindmap();
 
-        children.forEach(function(snode) {
+        children.each(function(snode) {
             var tnode = tmindmap.createNode(snode.getType(), snode.getId());
             snode.copyTo(tnode);
             target.appendChild(tnode);
@@ -278,10 +278,10 @@ mindplot.model.INodeModel = new Class({
         var children = this.getChildren();
         if (children.length > 0) {
             result = result + ", children: {(size:" + children.length;
-            children.forEach(function(node) {
+            children.each(function(node) {
                 result = result + "=> (";
                 var keys = node.getPropertiesKeys();
-                keys.forEach(function(key) {
+                keys.each(function(key) {
                     var value = node.getProperty(key);
                     result = result + key + ":" + value + ",";
                 });

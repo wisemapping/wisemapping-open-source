@@ -443,7 +443,7 @@ mindplot.layout.FreeTestSuite = new Class({
         }
 
         var treeSet = manager._treeSet;
-        treeSet._rootNodes.forEach(function(rootNode) {
+        treeSet._rootNodes.each(function(rootNode) {
             var heightById = rootNode.getSorter().computeChildrenIdByHeights(treeSet, rootNode);
             this._assertBranchCollision(treeSet, rootNode, heightById);
         }, this);
@@ -453,7 +453,7 @@ mindplot.layout.FreeTestSuite = new Class({
         var children = treeSet.getChildren(node);
         var childOfRootNode = treeSet._rootNodes.contains(node);
 
-        children.forEach(function(child) {
+        children.each(function(child) {
             var height = heightById[child.getId()];
             var siblings = treeSet.getSiblings(child);
             if (childOfRootNode) {
@@ -461,12 +461,12 @@ mindplot.layout.FreeTestSuite = new Class({
                     return (child.getOrder() % 2) == (sibling.getOrder() % 2);
                 })
             }
-            siblings.forEach(function(sibling) {
+            siblings.each(function(sibling) {
                 this._branchesOverlap(child, sibling, heightById);
             }, this);
         }, this);
 
-        children.forEach(function(child) {
+        children.each(function(child) {
             this._assertBranchCollision(treeSet, child, heightById);
         }, this)
     },

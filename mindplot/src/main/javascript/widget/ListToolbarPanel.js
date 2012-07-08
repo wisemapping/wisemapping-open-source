@@ -26,7 +26,7 @@ mindplot.widget.ListToolbarPanel = new Class({
     _initPanel: function () {
         // Register on toolbar elements ...
         var menuElems = this.getPanelElem().getElements('div');
-        menuElems.forEach(function(elem) {
+        menuElems.each(function(elem) {
             elem.addEvent('click', function(event) {
                 event.stopPropagation();
                 this.hide();
@@ -41,7 +41,7 @@ mindplot.widget.ListToolbarPanel = new Class({
         var panelElem = this.getPanelElem();
         var menuElems = panelElem.getElements('div');
         var value = this.getModel().getValue();
-        menuElems.forEach(function(elem) {
+        menuElems.each(function(elem) {
             var elemValue = $defined(elem.getAttribute('model')) ? elem.getAttribute('model') : elem.id;
             $assert(elemValue,"elemValue can not be null");
             if (elemValue == value)

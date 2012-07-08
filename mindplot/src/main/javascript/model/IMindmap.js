@@ -135,7 +135,7 @@ mindplot.model.IMindmap = new Class({
 
         // Then the rest of the branches ...
         var sbranchs = source.getBranches();
-        sbranchs.forEach(function(snode) {
+        sbranchs.each(function(snode) {
             var tnode = target.createNode(snode.getType(), snode.getId());
             snode.copyTo(tnode);
             target.addBranch(tnode);

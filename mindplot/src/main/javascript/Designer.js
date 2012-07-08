@@ -109,7 +109,7 @@ mindplot.Designer = new Class({
             screenManager.addEvent('update', function () {
                 // Topic must be set to his original state. All editors must be closed.
                 var topics = this.getModel().getTopics();
-                topics.forEach(function (object) {
+                topics.each(function (object) {
                     object.closeEditors();
                 });
 
@@ -271,13 +271,13 @@ mindplot.Designer = new Class({
         onObjectFocusEvent:function (currentObject, event) {
             // Close node editors ..
             var topics = this.getModel().getTopics();
-            topics.forEach(function (topic) {
+            topics.each(function (topic) {
                 topic.closeEditors();
             });
 
             var model = this.getModel();
             var objects = model.getEntities();
-            objects.forEach(function (object) {
+            objects.each(function (object) {
                 // Disable all nodes on focus but not the current if Ctrl key isn't being pressed
                 if (!$defined(event) || (!event.control && !event.meta)) {
                     if (object.isOnFocus() && object != currentObject) {
@@ -291,14 +291,14 @@ mindplot.Designer = new Class({
         selectAll:function () {
             var model = this.getModel();
             var objects = model.getEntities();
-            objects.forEach(function (object) {
+            objects.each(function (object) {
                 object.setOnFocus(true);
             });
         },
 
         deselectAll:function () {
             var objects = this.getModel().getEntities();
-            objects.forEach(function (object) {
+            objects.each(function (object) {
                 object.setOnFocus(false);
             });
         },

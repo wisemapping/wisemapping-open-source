@@ -55,7 +55,7 @@ mindplot.ScreenManager = new Class({
 
     fireEvent : function(type, event) {
         if (type == 'click') {
-            this._clickEvents.forEach(function(listener) {
+            this._clickEvents.each(function(listener) {
                 listener(type, event);
             });
         }

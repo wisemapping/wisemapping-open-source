@@ -143,7 +143,7 @@ mindplot.layout.LayoutManager = new Class({
     },
 
     _flushEvents: function() {
-        this._events.forEach(function(event) {
+        this._events.each(function(event) {
             this.fireEvent('change', event);
         }, this);
         this._events = [];
@@ -153,7 +153,7 @@ mindplot.layout.LayoutManager = new Class({
         if (!nodes)
             nodes = this._treeSet.getTreeRoots();
 
-        nodes.forEach(function(node) {
+        nodes.each(function(node) {
             if (node.hasOrderChanged() || node.hasPositionChanged()) {
 
                 // Find or create a event ...

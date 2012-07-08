@@ -29,7 +29,7 @@ mindplot.widget.IMenu = new Class({
     },
 
     clear:function () {
-        this._toolbarElems.forEach(function (item) {
+        this._toolbarElems.each(function (item) {
             item.hide();
         });
     },

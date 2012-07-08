@@ -875,7 +875,7 @@ mindplot.Topic = new Class({
     },
 
     _setRelationshipLinesVisibility:function (value) {
-        this._relationships.forEach(function (relationship) {
+        this._relationships.each(function (relationship) {
             relationship.setVisibility(value);
         });
     },

@@ -38,7 +38,7 @@ mindplot.layout.AbstractBasicSorter = new Class({
             result = height;
         } else {
             var childrenHeight = 0;
-            children.forEach(function(child) {
+            children.each(function(child) {
                 childrenHeight += this._computeChildrenHeight(treeSet, child, heightCache);
             }, this);
 

@@ -73,7 +73,7 @@ mindplot.BrixActionDispatcher = new Class({
     },
 
     changeFontSizeToTopic : function(topicsIds, size) {
-        topicsIds.forEach(function(topicId) {
+        topicsIds.each(function(topicId) {
             var framework = this._getFramework();
             var topic = framework.getTopic(topicId);
             topic.setFontSize(size, true);
@@ -81,7 +81,7 @@ mindplot.BrixActionDispatcher = new Class({
     },
 
     changeFontColorToTopic : function(topicsIds, color) {
-        topicsIds.forEach(function(topicId) {
+        topicsIds.each(function(topicId) {
             var framework = this._getFramework();
             var topic = framework.getTopic(topicId);
             topic.setFontColor(color, true);
@@ -89,7 +89,7 @@ mindplot.BrixActionDispatcher = new Class({
     },
 
     changeFontFamilyToTopic : function(topicsIds, family) {
-        topicsIds.forEach(function(topicId) {
+        topicsIds.each(function(topicId) {
             var framework = this._getFramework();
             var topic = framework.getTopic(topicId);
             topic.setFontFamily(family, true);
@@ -97,7 +97,7 @@ mindplot.BrixActionDispatcher = new Class({
     },
 
     changeFontStyleToTopic : function(topicsIds) {
-        topicsIds.forEach(function(topicId) {
+        topicsIds.each(function(topicId) {
             var framework = this._getFramework();
             var topic = framework.getTopic(topicId);
             var style = ( topic.getFontStyle() == "italic") ? "normal" : "italic";
@@ -106,7 +106,7 @@ mindplot.BrixActionDispatcher = new Class({
     },
 
     changeShapeTypeToTopic : function(topicsIds, shapeType) {
-        topicsIds.forEach(function(topicId) {
+        topicsIds.each(function(topicId) {
             var framework = this._getFramework();
             var topic = framework.getTopic(topicId);
             topic.setShapeType(shapeType);
@@ -114,7 +114,7 @@ mindplot.BrixActionDispatcher = new Class({
     },
 
     changeFontWeightToTopic : function(topicsIds) {
-        topicsIds.forEach(function(topicId) {
+        topicsIds.each(function(topicId) {
             var framework = this._getFramework();
             var topic = framework.getTopic(topicId);
             var weight = (topic.getFontWeight() == "bold") ? "normal" : "bold";
@@ -123,7 +123,7 @@ mindplot.BrixActionDispatcher = new Class({
     },
 
     changeBackgroundColorToTopic : function(topicsIds, color) {
-        topicsIds.forEach(function(topicId) {
+        topicsIds.each(function(topicId) {
             var framework = this._getFramework();
             var topic = framework.getTopic(topicId);
             topic.setBackgroundColor(color, true);
@@ -132,7 +132,7 @@ mindplot.BrixActionDispatcher = new Class({
     },
 
     changeBorderColorToTopic : function(topicsIds, color) {
-        topicsIds.forEach(function(topicId) {
+        topicsIds.each(function(topicId) {
             var framework = this._getFramework();
             var topic = framework.getTopic(topicId);
             topic.setBorderColor(color);
@@ -144,7 +144,7 @@ mindplot.BrixActionDispatcher = new Class({
         var framework = this._getFramework();
         var mindmap = framework.getModel();
 
-        topicsIds.forEach(function(topicId) {
+        topicsIds.each(function(topicId) {
             var topic = framework.getTopic(topicId);
             topic.deleteNode();
         });

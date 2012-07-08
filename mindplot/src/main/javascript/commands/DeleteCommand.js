@@ -36,63 +36,61 @@ mindplot.commands.DeleteCommand = new Class({
 
 
         if (topics.length > 0) {
-            topics.forEach(
-                function (topic) {
-                    var model = topic.getModel();
+            topics.each(function (topic) {
+                var model = topic.getModel();
 
-                    // Delete relationships
-                    var relationships = topic.getRelationships();
-                    while (relationships.length > 0) {
-                        var relationship = relationships[0];
+                // Delete relationships
+                var relationships = this._collectInDepthRelationships(topic);
+                this._deletedRelModel.append(relationships.map(function (rel) {
+                    return rel.getModel().clone();
+                }));
 
-                        this._deletedRelModel.push(relationship.getModel().clone());
-                        commandContext.deleteRelationship(relationship);
-                    }
+                relationships.each(function (relationship) {
+                    commandContext.deleteRelationship(relationship);
+                });
 
-                    // Store information for undo ...
-                    var clonedModel = model.clone();
-                    this._deletedTopicModels.push(clonedModel);
-                    var outTopic = topic.getOutgoingConnectedTopic();
-                    var outTopicId = null;
-                    if (outTopic != null) {
-                        outTopicId = outTopic.getId();
-                    }
-                    this._parentTopicIds.push(outTopicId);
+                // Store information for undo ...
+                var clonedModel = model.clone();
+                this._deletedTopicModels.push(clonedModel);
+                var outTopic = topic.getOutgoingConnectedTopic();
+                var outTopicId = null;
+                if (outTopic != null) {
+                    outTopicId = outTopic.getId();
+                }
+                this._parentTopicIds.push(outTopicId);
 
-                    // Finally, delete the topic from the workspace...
-                    commandContext.deleteTopic(topic);
+                // Finally, delete the topic from the workspace...
+                commandContext.deleteTopic(topic);
 
-                }.bind(this)
-            );
+            }, this);
         }
+
         var rels = commandContext.findRelationships(this._relIds);
         if (rels.length > 0) {
-            rels.forEach(function (rel) {
+            rels.each(function (rel) {
                 this._deletedRelModel.push(rel.getModel().clone());
                 commandContext.deleteRelationship(rel);
-            }.bind(this));
+            }, this);
         }
     },
 
     undoExecute:function (commandContext) {
 
         var parent = commandContext.findTopics(this._parentTopicIds);
-        this._deletedTopicModels.forEach(
-            function (model, index) {
-                var topic = commandContext.createTopic(model);
+        this._deletedTopicModels.each(function (model, index) {
+            var topic = commandContext.createTopic(model);
 
-                // Was the topic connected?
-                var parentTopic = parent[index];
-                if (parentTopic != null) {
-                    commandContext.connect(topic, parentTopic);
-                    topic.setOnFocus(true);
-                }
+            // Was the topic connected?
+            var parentTopic = parent[index];
+            if (parentTopic != null) {
+                commandContext.connect(topic, parentTopic);
+                topic.setOnFocus(true);
+            }
 
-            }.bind(this)
-        );
+        }, this);
 
 
-        this._deletedRelModel.forEach(function (model) {
+        this._deletedRelModel.each(function (model) {
             commandContext.addRelationship(model);
         }.bind(this));
 
@@ -105,7 +103,7 @@ mindplot.commands.DeleteCommand = new Class({
         var topics = commandContext.findTopics(topicIds);
 
         var result = [];
-        topics.forEach(function (topic) {
+        topics.each(function (topic) {
             var parent = topic.getParent();
             var found = false;
             while (parent != null && !found) {
@@ -122,5 +120,20 @@ mindplot.commands.DeleteCommand = new Class({
         });
 
         return result;
+    },
+
+    _collectInDepthRelationships:function (topic) {
+        var result = [];
+        var children = topic.getChildren();
+        if (children.length > 0) {
+            var rels = children.map(function (topic) {
+                return this._collectInDepthRelationships(topic);
+            }, this);
+            result.append(rels.flatten());
+        } else {
+            result.append(topic.getRelationships());
+        }
+        return result;
     }
+
 });

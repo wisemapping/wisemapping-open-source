@@ -32,7 +32,7 @@ mindplot.commands.GenericFunctionCommand = new Class({
     execute: function(commandContext) {
         if (!this.applied) {
             var topics = commandContext.findTopics(this._topicsIds);
-            topics.forEach(function(topic) {
+            topics.each(function(topic) {
                 var oldValue = this._commandFunc(topic, this._value);
                 this._oldValues.push(oldValue);
             }.bind(this));
@@ -46,7 +46,7 @@ mindplot.commands.GenericFunctionCommand = new Class({
     undoExecute: function(commandContext) {
         if (this.applied) {
             var topics = commandContext.findTopics(this._topicsIds);
-            topics.forEach(function(topic, index) {
+            topics.each(function(topic, index) {
                 this._commandFunc(topic, this._oldValues[index]);
 
             }.bind(this));

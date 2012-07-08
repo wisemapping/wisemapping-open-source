@@ -154,7 +154,7 @@ mindplot.layout.BalancedSorter = new Class({
         var totalPHeight = 0;
         var totalNHeight = 0;
 
-        heights.forEach(function (elem) {
+        heights.each(function (elem) {
             if (elem.order % 2 == 0) {
                 totalPHeight += elem.height;
             } else {
