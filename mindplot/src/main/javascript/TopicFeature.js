@@ -41,15 +41,14 @@ mindplot.TopicFeature = {
         });
     },
 
-    createModel : function(id, topic, attributes) {
+    createModel : function(id, attributes) {
         $assert(id, 'type can not be null');
-        $assert(topic, 'topic can not be null');
         $assert(attributes, 'attributes can not be null');
 
         var model = mindplot.TopicFeature._featuresMetadataById.filter(function(elem) {
             return elem.id == id;
         })[0].model;
-        return new model(topic, attributes);
+        return new model(attributes);
     },
 
     createIcon : function(topic, model) {

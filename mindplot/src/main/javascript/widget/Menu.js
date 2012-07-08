@@ -251,10 +251,10 @@ mindplot.widget.Menu = new Class({
         this._registerTooltip('redoEdition', $msg('REDO'), "meta+shift+Z");
 
 
-        this._addButton('addTopic', true, false, function () {
+        this._addButton('addTopics', true, false, function () {
             designer.createChildForSelectedNode();
         });
-        this._registerTooltip('addTopic', $msg('ADD_TOPIC'), "Enter");
+        this._registerTooltip('addTopics', $msg('ADD_TOPIC'), "Enter");
 
 
         this._addButton('deleteTopic', true, true, function () {

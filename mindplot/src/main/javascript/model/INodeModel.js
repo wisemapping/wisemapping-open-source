@@ -56,7 +56,7 @@ mindplot.model.INodeModel = new Class({
 
     setPosition  : function(x, y) {
         $assert(!isNaN(parseInt(x)), "x position is not valid:" + x);
-        $assert(!isNaN(parseInt(y)), "x position is not valid:" + y);
+        $assert(!isNaN(parseInt(y)), "y position is not valid:" + y);
         this.putProperty('position', '{x:' + parseInt(x) + ',y:' + parseInt(y) + '}');
     },
 

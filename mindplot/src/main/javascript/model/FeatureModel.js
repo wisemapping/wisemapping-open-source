@@ -17,13 +17,11 @@
  */
 
 mindplot.model.FeatureModel = new Class({
-    initialize:function(type, topic) {
+    initialize:function(type) {
         $assert(type, 'type can not be null');
-        $assert(topic, 'topic can not be null');
 
         this._id = mindplot.model.FeatureModel._nextUUID();
         this._type = type;
-        this._topic = topic;
         this._attributes = {};
 
         // Create type method ...
@@ -51,10 +49,6 @@ mindplot.model.FeatureModel = new Class({
         $assert(key, 'key id can not be null');
 
         return this._attributes[key];
-    },
-
-    getTopic : function() {
-        return this._topic;
     },
 
     getId : function() {

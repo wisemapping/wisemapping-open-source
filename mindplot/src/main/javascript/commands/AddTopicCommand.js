@@ -18,39 +18,49 @@
 
 mindplot.commands.AddTopicCommand = new Class({
     Extends:mindplot.Command,
-    initialize: function(model, parentTopicId) {
-        $assert(model, 'Model can not be null');
+    initialize:function (models, parentTopicsId) {
+        $assert(models, 'models can not be null');
+        $assert(parentTopicsId == null || parentTopicsId.length == models.length, 'parents and models must have the same size');
 
         this.parent();
-        this._model = model;
-        this._parentId = parentTopicId;
+        this._models = models;
+        this._parentsIds = parentTopicsId;
     },
 
-    execute: function(commandContext) {
+    execute:function (commandContext) {
 
-        // Add a new topic ...
-        var topic = commandContext.createTopic(this._model, false);
+        this._models.forEach(function (model, index) {
 
-        // Connect to topic ...
-        if ($defined(this._parentId)) {
-            var parentTopic = commandContext.findTopics(this._parentId)[0];
-            commandContext.connect(topic, parentTopic);
-        }
+            // Add a new topic ...
+            var topic = commandContext.createTopic(model, false);
 
-        // Finally, focus ...
-        var designer = commandContext._designer;
-        var fade = new mindplot.util.FadeEffect([topic,topic.getOutgoingLine()], true);
-        fade.addEvent('complete', function() {
-            designer.onObjectFocusEvent(topic);
-            topic.setOnFocus(true);
-        });
-        fade.start();
+            // Connect to topic ...
+            if (this._parentsIds) {
+                var parentId = this._parentsIds[index];
+                if ($defined(parentId)) {
+                    var parentTopic = commandContext.findTopics(parentId)[0];
+                    commandContext.connect(topic, parentTopic);
+                }
+            }
+
+            // Finally, focus ...
+            var designer = commandContext._designer;
+            var fade = new mindplot.util.FadeEffect([topic, topic.getOutgoingLine()], true);
+            fade.addEvent('complete', function () {
+                designer.onObjectFocusEvent(topic);
+                topic.setOnFocus(true);
+            });
+            fade.start();
+        }.bind(this));
     },
 
-    undoExecute: function(commandContext) {
+    undoExecute:function (commandContext) {
         // Finally, delete the topic from the workspace ...
-        var topicId = this._model.getId();
-        var topic = commandContext.findTopics(topicId)[0];
-        commandContext.deleteTopic(topic);
+        this._models.forEach(function (model) {
+
+            var topicId = model.getId();
+            var topic = commandContext.findTopics(topicId)[0];
+            commandContext.deleteTopic(topic);
+        }.bind(this));
     }
 });

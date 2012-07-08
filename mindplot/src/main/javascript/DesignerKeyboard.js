@@ -93,6 +93,35 @@ mindplot.DesignerKeyboard = new Class({
 
             }.bind(this),
 
+            'ctrl+c':function () {
+                event.preventDefault(event);
+                event.stopPropagation();
+                designer.copyToClipboard();
+            }.bind(this),
+
+            'meta+c':function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                designer.copyToClipboard();
+
+            }.bind(this),
+
+            'ctrl+v':function () {
+                event.preventDefault(event);
+                event.stopPropagation();
+
+                designer.pasteClipboard();
+            }.bind(this),
+
+            'meta+v':function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                designer.pasteClipboard();
+
+            }.bind(this),
+
             'ctrl+z+shift':function (event) {
                 event.preventDefault();
                 event.stopPropagation();

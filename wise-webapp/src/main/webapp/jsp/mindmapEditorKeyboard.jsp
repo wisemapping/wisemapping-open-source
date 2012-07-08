@@ -67,6 +67,17 @@
             <td><spring:message code="JUST_START_TYPING"/> | F2</td>
         </tr>
         <tr>
+            <td><spring:message code="MULTIPLE_LINES"/></td>
+            <td>Ctrl + Enter</td>
+            <td>⌘ + Enter</td>
+        </tr>
+        <tr>
+            <td><spring:message code="COPY_AND_PASTE_TOPICS"/></td>
+            <td>Ctrl + c/Ctrl + v</td>
+            <td>⌘ + c/⌘ + c</td>
+        </tr>
+
+        <tr>
             <td><spring:message code="COLLAPSE_CHILDREN"/></td>
             <td>Space bar</td>
             <td>Space bar</td>

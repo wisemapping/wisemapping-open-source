@@ -61,7 +61,7 @@ mindplot.BrixActionDispatcher = new Class({
         return mindplot.collaboration.CollaborationManager.getInstance().getCollaborativeFramework();
     },
 
-    addTopic : function(nodeModel, parentTopicId, animated) {
+    addTopics : function(nodeModel, parentTopicId) {
         var framework = this._getFramework();
         var cmindmap = framework.getModel();
 

@@ -17,20 +17,20 @@
  */
 
 mindplot.widget.IconPanel = new Class({
-    Extends: mindplot.widget.ToolbarPaneItem,
-    initialize : function(buttonId, model) {
+    Extends:mindplot.widget.ToolbarPaneItem,
+    initialize:function (buttonId, model) {
         this.parent(buttonId, model);
     },
 
-    _updateSelectedItem : function() {
+    _updateSelectedItem:function () {
         return this.getPanelElem();
 
     },
 
-    buildPanel: function() {
-        var content = new Element('div', {'class':'toolbarPanel','id':'IconsPanel'});
-        content.setStyles({width:253,height:210,padding:5});
-        content.addEvent("click", function(event) {
+    buildPanel:function () {
+        var content = new Element('div', {'class':'toolbarPanel', 'id':'IconsPanel'});
+        content.setStyles({width:253, height:210, padding:5});
+        content.addEvent("click", function (event) {
             event.stopPropagation()
         });
 
@@ -52,12 +52,12 @@ mindplot.widget.IconPanel = new Class({
                 img.setStyles({width:16,
                     height:16,
                     padding:"0px 2px",
-                    cursor: 'pointer'
+                    cursor:'pointer'
                 }).inject(familyContent);
 
                 var panel = this;
                 var model = this.getModel();
-                img.addEvent('click', function(event) {
+                img.addEvent('click', function (event) {
                     model.setValue(this.id);
                     panel.hide();
                 }.bind(img));

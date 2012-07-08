@@ -62,7 +62,7 @@ mindplot.collaboration.framework.brix.model.NodeModel = new Class({
                         var model = new mindplot.model.NodeModel(cmodel.getType(), designer.getMindmap(), this.getId());
                         cmodel.copyTo(model);
 
-                        actionDispatcher.addTopic(model, this.getId(), true);
+                        actionDispatcher.addTopics([model], [this.getId()]);
                     }
                 } catch(e) {
                     console.trace();

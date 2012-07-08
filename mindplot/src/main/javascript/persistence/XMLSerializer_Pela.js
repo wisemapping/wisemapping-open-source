@@ -351,7 +351,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
 
                     // Create a new element ....
                     var featureType = child.tagName;
-                    var feature = mindplot.TopicFeature.createModel(featureType, topic, attributes);
+                    var feature = mindplot.TopicFeature.createModel(featureType, attributes);
                     topic.addFeature(feature);
 
                 } else if (child.tagName == "text") {
@@ -411,7 +411,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
             return null;
         }
         // Is the connections points valid ?. If it's not, do not load the relationship ...
-        if (mindmap.findNodeById(srcId) == null || mindmap.findNodeById(destId)==null) {
+        if (mindmap.findNodeById(srcId) == null || mindmap.findNodeById(destId) == null) {
             return null;
         }
 

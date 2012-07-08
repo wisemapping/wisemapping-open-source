@@ -65,6 +65,7 @@ mindplot.Designer = new Class({
             this.setViewPort(options.viewPort);
 
             mindplot.TopicEventDispatcher.configure(this.isReadOnly());
+            this._clipboard = [];
         },
 
         /**
@@ -131,7 +132,7 @@ mindplot.Designer = new Class({
 
                     var centralTopic = this.getModel().getCentralTopic();
                     var model = this._createChildModel(centralTopic, mousePos);
-                    this._actionDispatcher.addTopic(model, centralTopic.getId());
+                    this._actionDispatcher.addTopics([model], [centralTopic.getId()]);
                 }
             }.bind(this));
 
@@ -347,6 +348,41 @@ mindplot.Designer = new Class({
             }
         },
 
+        copyToClipboard:function () {
+            var topics = this.getModel().filterSelectedTopics();
+            if (topics.length <= 0) {
+                // If there are more than one node selected,
+                $notify($msg('AT_LEAST_ONE_TOPIC_MUST_BE_SELECTED'));
+                return;
+            }
+
+            // Exclude central topic ..
+            topics = topics.filter(function (topic) {
+                return topic.getTopicType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE
+            });
+
+            this._clipboard = topics.map(function (topic) {
+                var nodeModel = topic.getModel().deepCopy();
+
+                // Change position to make the new topic evident...
+                var pos = nodeModel.getPosition();
+                nodeModel.setPosition(pos.x + (60 * Math.sign(pos.x)), pos.y + 30);
+
+                return nodeModel;
+            });
+
+            $notify($msg('SELECTION_COPIED_TO_CLIPBOARD'));
+        },
+
+        pasteClipboard:function () {
+            if (this._clipboard.length == 0) {
+                $notify($msg('CLIPBOARD_IS_EMPTY'));
+                return;
+            }
+            this._actionDispatcher.addTopics(this._clipboard);
+            this._clipboard = [];
+        },
+
         getModel:function () {
             return this._model;
         },
@@ -387,7 +423,7 @@ mindplot.Designer = new Class({
             var childModel = this._createChildModel(parentTopic);
 
             // Execute event ...
-            this._actionDispatcher.addTopic(childModel, parentTopicId, true);
+            this._actionDispatcher.addTopics([childModel], [parentTopicId]);
 
         },
 
@@ -415,7 +451,7 @@ mindplot.Designer = new Class({
             // Position far from the visual area ...
             model.setPosition(1000, 1000);
 
-            this._actionDispatcher.addTopic(model, null, false);
+            this._actionDispatcher.addTopics([model]);
             var topic = this.getModel().findTopicById(model.getId());
 
             // Simulate a mouse down event to start the dragging ...
@@ -452,7 +488,7 @@ mindplot.Designer = new Class({
                 }
 
                 var parentTopicId = parentTopic.getId();
-                this._actionDispatcher.addTopic(siblingModel, parentTopicId, true);
+                this._actionDispatcher.addTopics([siblingModel], [parentTopicId]);
             }
         },
 

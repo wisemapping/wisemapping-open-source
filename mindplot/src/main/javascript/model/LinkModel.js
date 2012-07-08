@@ -18,8 +18,8 @@
 
 mindplot.model.LinkModel = new Class({
     Extends: mindplot.model.FeatureModel,
-    initialize : function(topic, attributes) {
-        this.parent(mindplot.model.LinkModel.FEATURE_TYPE, topic);
+    initialize : function(attributes) {
+        this.parent(mindplot.model.LinkModel.FEATURE_TYPE);
         this.setUrl(attributes.url);
     },
 

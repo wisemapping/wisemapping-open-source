@@ -17,8 +17,8 @@
  */
 
 mindplot.model.NodeModel = new Class({
-    Extends: mindplot.model.INodeModel,
-    initialize:function(type, mindmap, id) {
+    Extends:mindplot.model.INodeModel,
+    initialize:function (type, mindmap, id) {
         $assert(type, 'Node type can not be null');
         $assert(mindmap, 'mindmap can not be null');
         this._properties = {};
@@ -32,61 +32,61 @@ mindplot.model.NodeModel = new Class({
         this._feature = [];
     },
 
-    createFeature: function(type, attributes) {
-        return mindplot.TopicFeature.createModel(type, this, attributes);
+    createFeature:function (type, attributes) {
+        return mindplot.TopicFeature.createModel(type, attributes);
     },
 
-    addFeature: function(feature) {
+    addFeature:function (feature) {
         $assert(feature, 'feature can not be null');
         this._feature.push(feature);
     },
 
-    getFeatures: function() {
+    getFeatures:function () {
         return this._feature;
     },
 
-    removeFeature: function(feature) {
+    removeFeature:function (feature) {
         $assert(feature, 'feature can not be null');
         this._feature.erase(feature);
     },
 
-    findFeatureByType : function(type) {
+    findFeatureByType:function (type) {
         $assert(type, 'type can not be null');
-        return this._feature.filter(function(feature) {
+        return this._feature.filter(function (feature) {
             return feature.getType() == type;
         });
     },
 
-    findFeatureById : function(id) {
+    findFeatureById:function (id) {
         $assert($defined(id), 'id can not be null');
-        return this._feature.filter(function(feature) {
+        return this._feature.filter(function (feature) {
             return feature.getId() == id;
         })[0];
     },
 
-    getPropertiesKeys : function() {
+    getPropertiesKeys:function () {
         return Object.keys(this._properties);
     },
 
-    putProperty : function(key, value) {
+    putProperty:function (key, value) {
         $defined(key, 'key can not be null');
         this._properties[key] = value;
     },
 
 
-    getProperties: function() {
+    getProperties:function () {
         return this._properties;
     },
 
-    getProperty : function(key) {
+    getProperty:function (key) {
         $defined(key, 'key can not be null');
         var result = this._properties[key];
         return !$defined(result) ? null : result;
     },
 
-    clone  : function() {
+    clone:function () {
         var result = new mindplot.model.NodeModel(this.getType(), this._mindmap);
-        result._children = this._children.map(function(node) {
+        result._children = this._children.map(function (node) {
             var cnode = node.clone();
             cnode._parent = result;
             return cnode;
@@ -97,32 +97,52 @@ mindplot.model.NodeModel = new Class({
         return result;
     },
 
-    appendChild  : function(child) {
+    /**
+     * Similar to clone, assign new id to the elements ...
+     * @return {mindplot.model.NodeModel}
+     */
+    deepCopy:function () {
+        var result = new mindplot.model.NodeModel(this.getType(), this._mindmap);
+        result._children = this._children.map(function (node) {
+            var cnode = node.deepCopy();
+            cnode._parent = result;
+            return cnode;
+        });
+
+        var id = result.getId();
+        result._properties = Object.clone(this._properties);
+        result.setId(id);
+
+        result._feature = this._feature.clone();
+        return result;
+    },
+
+    appendChild:function (child) {
         $assert(child && child.isNodeModel(), 'Only NodeModel can be appended to Mindmap object');
         this._children.push(child);
         child._parent = this;
     },
 
-    removeChild  : function(child) {
+    removeChild:function (child) {
         $assert(child && child.isNodeModel(), 'Only NodeModel can be appended to Mindmap object.');
         this._children.erase(child);
         child._parent = null;
     },
 
-    getChildren  : function() {
+    getChildren:function () {
         return this._children;
     },
 
-    getParent  : function() {
+    getParent:function () {
         return this._parent;
     },
 
-    setParent  : function(parent) {
+    setParent:function (parent) {
         $assert(parent != this, 'The same node can not be parent and child if itself.');
         this._parent = parent;
     },
 
-    canBeConnected  : function(sourceModel, sourcePosition, targetTopicHeight,targetTopicSize) {
+    canBeConnected:function (sourceModel, sourcePosition, targetTopicHeight, targetTopicSize) {
         $assert(sourceModel != this, 'The same node can not be parent and child if itself.');
         $assert(sourcePosition, 'childPosition can not be null.');
         $assert(targetTopicHeight, 'childrenWidth can not be null.');
@@ -169,7 +189,7 @@ mindplot.model.NodeModel = new Class({
         return result;
     },
 
-    _isChildNode  : function(node) {
+    _isChildNode:function (node) {
         var result = false;
         if (node == this) {
             result = true;
@@ -186,7 +206,7 @@ mindplot.model.NodeModel = new Class({
         return result;
     },
 
-    findNodeById  : function(id) {
+    findNodeById:function (id) {
         var result = null;
         if (this.getId() == id) {
             result = this;

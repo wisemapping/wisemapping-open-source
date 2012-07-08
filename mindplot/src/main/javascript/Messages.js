@@ -86,8 +86,12 @@ mindplot.Messages.BUNDLES = {
         CENTRAL_TOPIC:'Central Topic',
         ONLY_ONE_TOPIC_MUST_BE_SELECTED_COLLAPSE:'Children can not be collapsed. One topic must be selected.',
         SHORTCUTS:'Keyboard Shortcuts',
-        ENTITIES_COULD_NOT_BE_DELETED: 'Could not delete topic or relation. At least one map entity must be selected.',
-        CENTRAL_TOPIC_CAN_NOT_BE_DELETED: 'Central topic can not be deleted.'
+
+        // @Todo: pending ...
+        ENTITIES_COULD_NOT_BE_DELETED:'Could not delete topic or relation. At least one map entity must be selected.',
+        CENTRAL_TOPIC_CAN_NOT_BE_DELETED:'Central topic can not be deleted.',
+        SELECTION_COPIED_TO_CLIPBOARD:'Topics copied to the clipboard',
+        CLIPBOARD_IS_EMPTY:'Nothing to copy. Clipboard is empty'
     },
     'es':{
         DISCARD_CHANGES:'Descartar Cambios',

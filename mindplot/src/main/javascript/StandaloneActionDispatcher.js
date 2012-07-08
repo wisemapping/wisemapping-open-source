@@ -29,8 +29,8 @@ mindplot.StandaloneActionDispatcher = new Class({
     },
 
 
-    addTopic:function (nodeModel, parentTopicId, animated) {
-        var command = new mindplot.commands.AddTopicCommand(nodeModel, parentTopicId, animated);
+    addTopics:function (models, parentTopicsId) {
+        var command = new mindplot.commands.AddTopicCommand(models, parentTopicsId);
         this.execute(command);
     },
 

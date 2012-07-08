@@ -1,46 +1,52 @@
-<map name="3" version="pela">
+<map name="welcome" version="tango">
     <topic central="true" text="Welcome To WiseMapping" id="1" fontStyle=";;#dfcfe6;;;" bgColor="#0a0a08">
-        <topic position="-326,50" order="2" text="Productivity" id="2" fontStyle=";;#104f11;;;" bgColor="#d9b518">
+        <topic position="178,-130" order="0" text="Try it Now!" id="11" fontStyle=";;#ffffff;;;" bgColor="#250be3"
+               brColor="#080559">
+            <topic position="272,-156" order="0" text="Double Click" id="12" fontStyle=";;#001be6;;italic;"/>
+            <topic position="274,-130" order="1" text=" INS to insert" id="13" fontStyle=";;#001be6;;italic;"/>
+            <topic position="285,-104" order="2" text="Drag map to move" id="14" fontStyle=";;#001be6;;italic;"/>
+        </topic>
+        <topic position="-189,-52" order="1" text="Productivity" id="2" fontStyle=";;#104f11;;;" bgColor="#d9b518">
             <icon id="chart_bar"/>
-            <topic position="-443,17" order="0" text="Share your ideas" id="3">
+            <topic position="-310,-78" order="0" text="Share your ideas" id="3">
                 <icon id="bulb_light_on"/>
             </topic>
-            <topic position="-429,41" order="1" text="Brainstorming" id="4"/>
-            <topic position="-413,65" order="2" text="Visual " id="5"/>
+            <topic position="-299,-52" order="1" text="Brainstorming" id="4"/>
+            <topic position="-283,-26" order="2" text="Visual " id="5"/>
         </topic>
-        <topic position="257,150" order="6" text="Features" id="15">
-            <topic position="350,81" order="0" text="Links to Sites" id="16" fontStyle=";6;;;;">
-                <link url="www.digg.com"/>
+        <topic position="185,-39" order="2" text="Mind Mapping" id="6" fontStyle=";;#602378;;;" bgColor="#edabff">
+            <topic position="303,-78" order="0" text="Share with Collegues" id="7"/>
+            <topic position="275,-52" order="1" text="Online" id="8"/>
+            <topic position="299,-26" order="2" text="Anyplace, Anytime" id="9"/>
+            <topic position="277,0" order="3" text="Free!!!" id="10"/>
+        </topic>
+        <topic position="-183,39" order="3" text="Web 2.0 Tool" id="22" fontStyle=";;#0c1d6b;;;" bgColor="#add1f7">
+            <topic position="-281,0" order="0" text="Collaborate" id="23"/>
+            <topic position="-302,26" order="1" text="No plugin required" id="24">
+                <icon id="conn_disconnect"/>
             </topic>
-            <topic position="328,105" order="1" text="Fonts" id="17"/>
-            <topic position="339,129" order="2" text="Topic Color" id="18"/>
-            <topic position="343,153" order="3" text="Topic Shapes" shape="line" id="19"/>
-            <topic position="334,177" order="4" text="Icons" id="20">
+            <topic position="-271,52" order="2" text="Share" id="25"/>
+            <topic position="-282,78" order="3" text="Easy to use" id="26"/>
+        </topic>
+        <topic position="171,91" order="4" text="Features" id="15">
+            <topic position="266,26" order="0" text="Links to Sites" id="16" fontStyle=";6;;;;">
+                <link url="http://www.digg.com" type="url"/>
+            </topic>
+            <topic position="245,52" order="1" text="Fonts" id="17"/>
+            <topic position="255,78" order="2" text="Topic Color" id="18"/>
+            <topic position="260,104" order="3" text="Topic Shapes" shape="line" id="19"/>
+            <topic position="252,130" order="4" text="Icons" id="20">
                 <icon id="object_rainbow"/>
             </topic>
-            <topic position="357,201" order="5" text="History Changes" id="21">
+            <topic position="272,156" order="5" text="History Changes" id="21">
                 <icon id="arrowc_turn_left"/>
             </topic>
         </topic>
-        <topic position="-336,-100" order="3" text="Web 2.0 Tool" id="22" fontStyle=";;#0c1d6b;;;" bgColor="#add1f7">
-            <topic position="-433,-145" order="0" text="Collaborate" id="23"/>
-            <topic position="-453,-121" order="1" text="No plugin required" id="24">
-                <icon id="conn_disconnect"/>
-            </topic>
-            <topic position="-420,-97" order="2" text="Share" id="25"/>
-            <topic position="-432,-73" order="3" text="Easy to use" id="26"/>
-        </topic>
-        <topic position="266,0" order="0" text="Try it Now!" id="11" fontStyle=";;#ffffff;;;" bgColor="#250be3"
-               brColor="#080559">
-            <topic position="358,-33" order="0" text="Double Click" id="12" fontStyle=";;#001be6;;italic;"/>
-            <topic position="362,-9" order="1" text=" INS to insert" id="13" fontStyle=";;#001be6;;italic;"/>
-            <topic position="371,15" order="2" text="Drag map to move" id="14" fontStyle=";;#001be6;;italic;"/>
-        </topic>
-        <topic position="299,-100" order="3" text="Mind Mapping" id="6" fontStyle=";;#602378;;;" bgColor="#edabff">
-            <topic position="415,-145" order="0" text="Share with Collegues" id="7"/>
-            <topic position="385,-121" order="1" text="Online" id="8"/>
-            <topic position="410,-97" order="2" text="Anyplace, Anytime" id="9"/>
-            <topic position="386,-73" order="3" text="Free!!!" id="10"/>
-        </topic>
     </topic>
+    <relationship srcTopicId="1" destTopicId="3" lineType="3" endArrow="true" startArrow="false"/>
+    <relationship srcTopicId="3" destTopicId="1" lineType="3" srcCtrlPoint="-10,-37" destCtrlPoint="-212,-107"
+                  endArrow="true" startArrow="false"/>
+    <relationship srcTopicId="6" destTopicId="14" lineType="3" endArrow="true" startArrow="false"/>
+    <relationship srcTopicId="12" destTopicId="18" lineType="3" srcCtrlPoint="184,86" destCtrlPoint="166,2"
+                  endArrow="true" startArrow="false"/>
 </map>
