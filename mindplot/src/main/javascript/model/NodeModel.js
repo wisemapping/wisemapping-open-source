@@ -86,7 +86,7 @@ mindplot.model.NodeModel = new Class({
 
     clone  : function() {
         var result = new mindplot.model.NodeModel(this.getType(), this._mindmap);
-        result._children = this._children.each(function(node) {
+        result._children = this._children.map(function(node) {
             var cnode = node.clone();
             cnode._parent = result;
             return cnode;
@@ -201,10 +201,5 @@ mindplot.model.NodeModel = new Class({
             }
         }
         return result;
-    },
-
-
-    inspect  : function() {
-        return '(type:' + this.getType() + ' , id: ' + this.getId() + ')';
     }
 });

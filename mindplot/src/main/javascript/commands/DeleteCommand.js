@@ -49,8 +49,9 @@ mindplot.commands.DeleteCommand = new Class({
                         commandContext.deleteRelationship(relationship);
                     }
 
-                    // Delete the node itself ...
-                    this._deletedTopicModels.push(model);
+                    // Store information for undo ...
+                    var clonedModel = model.clone();
+                    this._deletedTopicModels.push(clonedModel);
                     var outTopic = topic.getOutgoingConnectedTopic();
                     var outTopicId = null;
                     if (outTopic != null) {
@@ -84,7 +85,7 @@ mindplot.commands.DeleteCommand = new Class({
                 var parentTopic = parent[index];
                 if (parentTopic != null) {
                     commandContext.connect(topic, parentTopic);
-                    topic.setOnFocus();
+                    topic.setOnFocus(true);
                 }
 
             }.bind(this)
