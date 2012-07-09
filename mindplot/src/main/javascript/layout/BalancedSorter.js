@@ -202,24 +202,12 @@ mindplot.layout.BalancedSorter = new Class({
         }
     },
 
-    getDirection:function (treeSet, node) {
-        return node.getOrder() % 2 == 0 ? 1 : -1;
+    getChildDirection:function (treeSet, child) {
+        return child.getOrder() % 2 == 0 ? 1 : -1;
     },
 
     toString:function () {
         return "Balanced Sorter";
-    },
-
-    _getOrderForPosition:function (rootNode, position) {
-        return position.x > rootNode.getPosition().x ? 0 : 1;
-    },
-
-    _getChildrenForSide:function (parent, graph, position) {
-        position = position || {x:parent.getPosition().x + 1, y:parent.getPosition().y + 1};
-        var rootPosition = graph.getRootNode(parent).getPosition();
-        return graph.getChildren(parent).filter(function (child) {
-            return position.x > rootPosition.x ? child.getPosition().x > rootPosition.x : child.getPosition().x < rootPosition.x;
-        });
     },
 
     _getChildrenForOrder:function (parent, graph, order) {

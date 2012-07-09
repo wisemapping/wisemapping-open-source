@@ -294,6 +294,12 @@ mindplot.CommandContext = new Class({
         return  designerRel.filter(function (rel) {
             return relIds.contains(rel.getId());
         });
+    },
+
+    moveTopic:function (topic, position) {
+        $assert(topic, "topic cannot be null");
+        $assert(position, "position cannot be null");
+        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMoveEvent, {node:topic.getModel(), position:position});
     }
 });
 

@@ -16,12 +16,12 @@
  *   limitations under the License.
  */
 mindplot.layout.SymmetricSorter = new Class({
-    Extends: mindplot.layout.AbstractBasicSorter,
-    initialize:function() {
+    Extends:mindplot.layout.AbstractBasicSorter,
+    initialize:function () {
 
     },
 
-    predict : function(graph, parent, node, position, free) {
+    predict:function (graph, parent, node, position, free) {
         // If its a free node...
         if (free) {
             $assert($defined(position), "position cannot be null for predict in free positioning");
@@ -29,13 +29,13 @@ mindplot.layout.SymmetricSorter = new Class({
 
             var rootNode = graph.getRootNode(parent);
             var direction = this._getRelativeDirection(rootNode.getPosition(), parent.getPosition());
-            var limitXPos = parent.getPosition().x + direction * (parent.getSize().width/2 + node.getSize().width/2 + mindplot.layout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING);
+            var limitXPos = parent.getPosition().x + direction * (parent.getSize().width / 2 + node.getSize().width / 2 + mindplot.layout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING);
 
             var xPos = direction > 0 ?
                 (position.x >= limitXPos ? position.x : limitXPos) :
-                (position.x <= limitXPos ? position.x : limitXPos) ;
+                (position.x <= limitXPos ? position.x : limitXPos);
 
-            return [0, {x: xPos, y:position.y}];
+            return [0, {x:xPos, y:position.y}];
         }
 
         var rootNode = graph.getRootNode(parent);
@@ -57,11 +57,13 @@ mindplot.layout.SymmetricSorter = new Class({
         var direction = parent.getPosition().x > rootNode.getPosition().x ? 1 : -1;
 
         // No children...
-        var children = graph.getChildren(parent).filter(function(child) { return child != node; });
+        var children = graph.getChildren(parent).filter(function (child) {
+            return child != node;
+        });
         if (children.length == 0) {
             position = position || {x:parent.getPosition().x + direction, y:parent.getPosition().y};
             var pos = {
-                x: parent.getPosition().x + direction * (parent.getSize().width + mindplot.layout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING),
+                x:parent.getPosition().x + direction * (parent.getSize().width + mindplot.layout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING),
                 y:parent.getPosition().y
             };
             return [0, pos];
@@ -71,13 +73,13 @@ mindplot.layout.SymmetricSorter = new Class({
         var result = null;
         var last = children.getLast();
         position = position || {x:last.getPosition().x + direction, y:last.getPosition().y + 1};
-        children.each(function(child, index) {
+        children.each(function (child, index) {
             var cpos = child.getPosition();
             if (position.y > cpos.y) {
                 var yOffset = child == last ?
                     child.getSize().height + mindplot.layout.SymmetricSorter.INTERNODE_VERTICAL_PADDING * 2 :
                     (children[index + 1].getPosition().y + children[index + 1].getSize().height / 2 - child.getPosition().y) / 2;
-                result = [child.getOrder() + 1,{x:cpos.x, y:cpos.y + yOffset}];
+                result = [child.getOrder() + 1, {x:cpos.x, y:cpos.y + yOffset}];
             }
         });
 
@@ -93,7 +95,7 @@ mindplot.layout.SymmetricSorter = new Class({
         return result;
     },
 
-    insert: function(treeSet, parent, child, order) {
+    insert:function (treeSet, parent, child, order) {
         var children = this._getSortedChildren(treeSet, parent);
         $assert(order <= children.length, "Order must be continues and can not have holes. Order:" + order);
 
@@ -105,7 +107,7 @@ mindplot.layout.SymmetricSorter = new Class({
         child.setOrder(order);
     },
 
-    detach:function(treeSet, node) {
+    detach:function (treeSet, node) {
         var parent = treeSet.getParent(node);
         var children = this._getSortedChildren(treeSet, parent);
         var order = node.getOrder();
@@ -119,7 +121,7 @@ mindplot.layout.SymmetricSorter = new Class({
         node.setOrder(0);
     },
 
-    computeOffsets:function(treeSet, node) {
+    computeOffsets:function (treeSet, node) {
         $assert(treeSet, "treeSet can no be null.");
         $assert(node, "node can no be null.");
 
@@ -127,13 +129,13 @@ mindplot.layout.SymmetricSorter = new Class({
 
         // Compute heights ...
         var heights = children.map(
-            function(child) {
-                return {id:child.getId(), order:child.getOrder(), position: child.getPosition(), width: child.getSize().width, height: this._computeChildrenHeight(treeSet, child)};
+            function (child) {
+                return {id:child.getId(), order:child.getOrder(), position:child.getPosition(), width:child.getSize().width, height:this._computeChildrenHeight(treeSet, child)};
             }, this).reverse();
 
         // Compute the center of the branch ...
         var totalHeight = 0;
-        heights.each(function(elem) {
+        heights.each(function (elem) {
             totalHeight += elem.height;
         });
         var ysum = totalHeight / 2;
@@ -143,10 +145,7 @@ mindplot.layout.SymmetricSorter = new Class({
         for (var i = 0; i < heights.length; i++) {
             ysum = ysum - heights[i].height;
             var childNode = treeSet.find(heights[i].id);
-            var parent = treeSet.getParent(childNode);
-
-            var rootNode = treeSet.getRootNode(childNode);
-            var direction = parent.getPosition().x > rootNode.getPosition().x ? 1 : -1;
+            var direction = this.getChildDirection(treeSet, childNode);
 
             var yOffset = ysum + heights[i].height / 2;
             var xOffset = direction * (heights[i].width / 2 + node.getSize().width / 2 + mindplot.layout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING);
@@ -154,12 +153,12 @@ mindplot.layout.SymmetricSorter = new Class({
             $assert(!isNaN(xOffset), "xOffset can not be null");
             $assert(!isNaN(yOffset), "yOffset can not be null");
 
-            result[heights[i].id] = {x:xOffset,y:yOffset};
+            result[heights[i].id] = {x:xOffset, y:yOffset};
         }
         return result;
     },
 
-    verify:function(treeSet, node) {
+    verify:function (treeSet, node) {
         // Check that all is consistent ...
         var children = this._getSortedChildren(treeSet, node);
 
@@ -168,17 +167,31 @@ mindplot.layout.SymmetricSorter = new Class({
         }
     },
 
-    getDirection: function(treeSet, node) {
-        var parent = treeSet.getParent(node);
-        var rootNode = treeSet.getRootNode(node);
-        return parent.getPosition().x >= rootNode.getPosition().x ? 1 : -1;
+    getChildDirection:function (treeSet, child) {
+        $assert(treeSet, "treeSet can no be null.");
+        $assert(treeSet.getParent(child), "This should not happen");
+
+        var result;
+        var rootNode = treeSet.getRootNode(child);
+        if (treeSet.getParent(child) == rootNode) {
+            // This is the case of a isolated child ... In this case, the directions is based on the root.
+            result = Math.sign(rootNode.getPosition().x);
+        } else {
+            // if this is not the case, honor the direction of the parent ...
+            var parent = treeSet.getParent(child);
+            var grandParent = treeSet.getParent(parent);
+            var sorter = grandParent.getSorter();
+            result = sorter.getChildDirection(treeSet, parent);
+
+        }
+        return result;
     },
 
-    toString:function() {
+    toString:function () {
         return "Symmetric Sorter";
     },
 
-    _getVerticalPadding: function() {
+    _getVerticalPadding:function () {
         return mindplot.layout.SymmetricSorter.INTERNODE_VERTICAL_PADDING;
     }
 });

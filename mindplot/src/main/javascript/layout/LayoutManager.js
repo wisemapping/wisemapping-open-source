@@ -58,8 +58,10 @@ mindplot.layout.LayoutManager = new Class({
         $assert($defined(position.y), "y can not be null");
 
         var node = this._treeSet.find(id);
-        node.setFree(true);
-        node.setFreeDisplacement({x:position.x - node.getPosition().x, y:position.y - node.getPosition().y});
+        // @Todo: this should not be here. This is broking the isolated node support...
+//        node.setFree(true);
+//        node.setFreeDisplacement({x:position.x - node.getPosition().x, y:position.y - node.getPosition().y});
+        node.setPosition(position);
     },
 
     connectNode: function(parentId, childId, order) {

@@ -112,7 +112,7 @@ mindplot.layout.OriginalLayout = new Class({
                 var offset = offsetById[child.getId()];
 
                 var childFreeDisplacement = child.getFreeDisplacement();
-                var direction = node.getSorter().getDirection(this._treeSet, child);
+                var direction = node.getSorter().getChildDirection(this._treeSet, child);
 
                 if ((direction > 0 && childFreeDisplacement.x < 0) || (direction < 0 && childFreeDisplacement.x > 0)) {
                     child.resetFreeDisplacement();

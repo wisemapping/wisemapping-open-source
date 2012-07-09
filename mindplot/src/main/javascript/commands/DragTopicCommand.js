@@ -18,7 +18,7 @@
 
 mindplot.commands.DragTopicCommand = new Class({
     Extends:mindplot.Command,
-    initialize: function(topicIds, position, order, parentTopic) {
+    initialize:function (topicIds, position, order, parentTopic) {
         $assert(topicIds, "topicIds must be defined");
 
         this._topicsIds = topicIds;
@@ -31,21 +31,16 @@ mindplot.commands.DragTopicCommand = new Class({
         this._id = mindplot.Command._nextUUID();
     },
 
-    execute: function(commandContext) {
+    execute:function (commandContext) {
 
         var topic = commandContext.findTopics([this._topicsIds])[0];
 
         // Save old position ...
         var origParentTopic = topic.getOutgoingConnectedTopic();
-        var origOrder = null;
-        var origPosition = null;
-
-        // Cache nodes position ...
-        var topics = designer.getModel().getTopics();
 
         // In this case, topics are positioned using order ...
-        origOrder = topic.getOrder();
-        origPosition = topic.getPosition();
+        var origOrder = topic.getOrder();
+        var origPosition = topic.getPosition();
 
         // Disconnect topic ..
         if ($defined(origParentTopic) && origParentTopic != this._parentId) {
@@ -56,8 +51,7 @@ mindplot.commands.DragTopicCommand = new Class({
         if (this._order != null) {
             topic.setOrder(this._order);
         } else if (this._position != null) {
-            // Set position ...
-            topic.setPosition(this._position);
+            commandContext.moveTopic(topic, this._position);
         } else {
             $assert("Illegal command state exception.");
         }
@@ -83,7 +77,7 @@ mindplot.commands.DragTopicCommand = new Class({
 
     },
 
-    undoExecute: function(commandContext) {
+    undoExecute:function (commandContext) {
         this.execute(commandContext);
     }
 });
