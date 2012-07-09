@@ -68,7 +68,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
             parentTopic.setAttribute("position", pos.x + ',' + pos.y);
 
             var order = topic.getOrder();
-            if (!isNaN(order))
+            if (typeof order === 'number' && isFinite(order))
                 parentTopic.setAttribute("order", order);
         }
 
