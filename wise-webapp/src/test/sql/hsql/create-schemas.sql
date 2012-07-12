@@ -67,7 +67,7 @@ CREATE TABLE ACCESS_AUDITORY (
 id INTEGER NOT NULL IDENTITY,
 user_id INTEGER NOT NULL,
 login_date date,
-FOREIGN KEY(user_id) REFERENCES USER(id)
+--FOREIGN KEY(user_id) REFERENCES USER(id)    // Temporally disabled. Exception during first login. Need review..
 );
 
 COMMIT;
