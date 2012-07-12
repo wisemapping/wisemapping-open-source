@@ -74,7 +74,7 @@
         <tr>
             <td><spring:message code="COPY_AND_PASTE_TOPICS"/></td>
             <td>Ctrl + c/Ctrl + v</td>
-            <td>⌘ + c/⌘ + c</td>
+            <td>⌘ + c/⌘ + v</td>
         </tr>
 
         <tr>
