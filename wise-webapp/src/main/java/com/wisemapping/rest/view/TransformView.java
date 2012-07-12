@@ -18,30 +18,21 @@
 
 package com.wisemapping.rest.view;
 
-import com.wisemapping.exporter.ExportException;
 import com.wisemapping.exporter.ExportFormat;
 import com.wisemapping.exporter.ExportProperties;
 import com.wisemapping.exporter.ExporterFactory;
 import com.wisemapping.mail.NotificationService;
 import com.wisemapping.security.Utils;
-import org.apache.batik.transcoder.TranscoderException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.oxm.XmlMappingException;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.web.servlet.view.AbstractView;
-import org.xml.sax.SAXException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.JAXBException;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.stream.StreamResult;
-import java.io.IOException;
 import java.util.Map;
 
 public class TransformView extends AbstractView {
@@ -53,8 +44,9 @@ public class TransformView extends AbstractView {
     @Autowired
     private Jaxb2Marshaller jaxbMarshaller;
 
-    public TransformView(@NotNull final String contentType) {
+    public TransformView(@NotNull final String contentType,@NotNull NotificationService notificationService) {
         this.contentType = contentType;
+        this.notificationService = notificationService;
         this.exportFormat = ExportFormat.fromContentType(contentType);
     }
 
@@ -86,19 +78,19 @@ public class TransformView extends AbstractView {
         response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
 
         // Change image link URL.
-        setBaseBaseImgUrl(exportFormat, properties);
-
+        final ServletContext servletContext = request.getSession().getServletContext();
+        final ExporterFactory factory = new ExporterFactory(servletContext);
         try {
             // Write the conversion content ...
             final ServletOutputStream outputStream = response.getOutputStream();
             if (exportFormat == ExportFormat.FREEMIND) {
-                ExporterFactory.export(properties, content, outputStream, null);
+                factory.export(properties, content, outputStream, null);
             } else if (exportFormat == ExportFormat.WISEMAPPING) {
                 final Object mindmap = viewMap.get("mindmap");
                 final StreamResult result = new StreamResult(outputStream);
                 jaxbMarshaller.marshal(mindmap, result);
             } else {
-                ExporterFactory.export(properties, null, outputStream, content);
+                factory.export(properties, null, outputStream, content);
             }
         } catch (Throwable e) {
             notificationService.reportMindmapExportError(content, Utils.getUser(), request.getHeader("User-Agent"),e);
@@ -109,19 +101,5 @@ public class TransformView extends AbstractView {
     public String getContentType() {
         return contentType;
     }
-
-    private void setBaseBaseImgUrl(@NotNull ExportFormat format, @NotNull ExportProperties properties) {
-
-        final String baseUrl;
-        if (format == ExportFormat.SVG) {
-            baseUrl = "http://www.wisemapping.com/images";
-        } else {
-            final ServletContext servletContext = this.getServletContext();
-            baseUrl = "file://" + servletContext.getRealPath("/");
-        }
-        properties.setBaseImagePath(baseUrl);
-    }
-
     private static final String IMG_SIZE_PARAMETER = "imgSize";
-
 }

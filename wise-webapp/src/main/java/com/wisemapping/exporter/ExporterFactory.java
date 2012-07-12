@@ -31,7 +31,9 @@ import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import sun.misc.BASE64Encoder;
 
+import javax.servlet.ServletContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -48,16 +50,19 @@ public class ExporterFactory {
     private static final String GROUP_NODE_NAME = "g";
     private static final String RECT_NODE_NAME = "rect";
     private static final String IMAGE_NODE_NAME = "image";
+    private File baseImgDir;
 
-
-    private ExporterFactory() throws ParserConfigurationException {
-
+    public ExporterFactory(@NotNull final ServletContext servletContext) throws ParserConfigurationException {
+        this.baseImgDir = new File(servletContext.getRealPath("/"));
     }
 
-    public static void export(@NotNull ExportProperties properties, @Nullable String xml, @NotNull OutputStream output, @Nullable String mapSvg) throws TranscoderException, IOException, ParserConfigurationException, SAXException, XMLStreamException, TransformerException, JAXBException, ExportException {
+    public ExporterFactory(@NotNull final File baseImgDir) throws ParserConfigurationException {
+        this.baseImgDir = baseImgDir;
+    }
+
+    public void export(@NotNull ExportProperties properties, @Nullable String xml, @NotNull OutputStream output, @Nullable String mapSvg) throws TranscoderException, IOException, ParserConfigurationException, SAXException, XMLStreamException, TransformerException, JAXBException, ExportException {
         final ExportFormat format = properties.getFormat();
 
-        final String imgPath = properties.getBaseImgPath();
         switch (format) {
             case PNG: {
                 // Create a JPEG transcoder
@@ -68,7 +73,7 @@ public class ExporterFactory {
                 transcoder.addTranscodingHint(ImageTranscoder.KEY_WIDTH, size.getWidth());
 
                 // Create the transcoder input.
-                final Document document = normalizeSvg(mapSvg, imgPath);
+                final Document document = normalizeSvg(mapSvg, false);
                 final String svgString = domToString(document);
                 final TranscoderInput input = new TranscoderInput(new CharArrayReader(svgString.toCharArray()));
 
@@ -89,7 +94,7 @@ public class ExporterFactory {
                 transcoder.addTranscodingHint(ImageTranscoder.KEY_WIDTH, size.getWidth());
 
                 // Create the transcoder input.
-                final Document document = normalizeSvg(mapSvg, imgPath);
+                final Document document = normalizeSvg(mapSvg, false);
                 final String svgString = domToString(document);
                 final TranscoderInput input = new TranscoderInput(new CharArrayReader(svgString.toCharArray()));
 
@@ -104,7 +109,7 @@ public class ExporterFactory {
                 final Transcoder transcoder = new PDFTranscoder();
 
                 // Create the transcoder input.
-                final Document document = normalizeSvg(mapSvg, imgPath);
+                final Document document = normalizeSvg(mapSvg, false);
                 final String svgString = domToString(document);
                 final TranscoderInput input = new TranscoderInput(new CharArrayReader(svgString.toCharArray()));
 
@@ -115,7 +120,7 @@ public class ExporterFactory {
                 break;
             }
             case SVG: {
-                final Document dom = normalizeSvg(mapSvg, imgPath);
+                final Document dom = normalizeSvg(mapSvg, true);
                 output.write(domToString(dom).getBytes("UTF-8"));
                 break;
             }
@@ -129,7 +134,7 @@ public class ExporterFactory {
         }
     }
 
-    private static Document normalizeSvg(@NotNull String svgXml, final String imgBaseUrl) throws XMLStreamException, ParserConfigurationException, IOException, SAXException, TransformerException {
+    private Document normalizeSvg(@NotNull String svgXml, boolean embedImg) throws XMLStreamException, ParserConfigurationException, IOException, SAXException, TransformerException {
 
         final DocumentBuilder documentBuilder = getDocumentBuilder();
         svgXml = svgXml.replaceFirst("<svg ", "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
@@ -155,7 +160,8 @@ public class ExporterFactory {
 
         fitSvg(document);
 
-        fixImageTagHref(document, imgBaseUrl);
+        final Node child = document.getFirstChild();
+        fixImageTagHref(document, (Element) child);
 
         return document;
 
@@ -187,12 +193,7 @@ public class ExporterFactory {
         return result.toString();
     }
 
-    private static void fixImageTagHref(Document document, String imgBaseUrl) {
-        final Node child = document.getFirstChild();
-        fixImageTagHref(document, (Element) child, imgBaseUrl);
-    }
-
-    private static void fixImageTagHref(@NotNull Document document, @NotNull Element element, String imgBaseUrl) {
+    private void fixImageTagHref(@NotNull Document document, @NotNull Element element) {
 
         final NodeList list = element.getChildNodes();
 
@@ -201,7 +202,7 @@ public class ExporterFactory {
             // find all groups
             if (GROUP_NODE_NAME.equals(node.getNodeName())) {
                 // Must continue looking ....
-                fixImageTagHref(document, (Element) node, imgBaseUrl);
+                fixImageTagHref(document, (Element) node);
 
             } else if (IMAGE_NODE_NAME.equals(node.getNodeName())) {
 
@@ -209,16 +210,59 @@ public class ExporterFactory {
 
                 // Cook image href ...
                 final String imgUrl = elem.getAttribute("href");
-                int index = imgUrl.lastIndexOf("/");
                 elem.removeAttribute("href");
-                if (index != -1) {
-                    final String iconName = imgUrl.substring(index + 1);
-                    // Hack for backward compatibility . This can be removed in 2012. :)
-                    String imgPath;
-                    imgPath = imgBaseUrl + "/" + imgUrl;
-                    elem.setAttribute("xlink:href", imgPath);
+                FileInputStream fis = null;
+
+                // Obtains file name ...
+                try {
+                    final File iconFile = iconFile(imgUrl);
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    fis = new FileInputStream(iconFile);
+                    BASE64Encoder encoder = new BASE64Encoder();
+                    encoder.encode(fis, bos);
+
+                    elem.setAttribute("xlink:href", "data:image/png;base64," + bos.toString("8859_1"));
                     elem.appendChild(document.createTextNode(" "));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    close(fis);
                 }
+            }
+        }
+    }
+
+    private File iconFile(@NotNull final String imgUrl) throws IOException {
+        int index = imgUrl.lastIndexOf("/");
+        final String iconName = imgUrl.substring(index + 1);
+        final File iconsDir = new File(baseImgDir, "icons");
+
+        File iconFile = new File(iconsDir, iconName);
+        if (!iconFile.exists()) {
+            // It's not a icon, must be a note, attach image ...
+            final File legacyIconsDir = new File(baseImgDir, "images");
+            iconFile = new File(legacyIconsDir, iconName);
+        }
+
+        if (!iconFile.exists()) {
+            final File legacyIconsDir = new File(iconsDir, "legacy");
+            iconFile = new File(legacyIconsDir, iconName);
+        }
+
+        if (!iconFile.exists()) {
+            throw new IOException("Icon could not be found:" + imgUrl);
+        }
+
+        return iconFile;
+    }
+
+
+    private void close(Closeable fis) {
+        if (fis != null) {
+            try {
+                fis.close();
+            } catch (IOException e) {
+                // Ignore ...
             }
         }
     }

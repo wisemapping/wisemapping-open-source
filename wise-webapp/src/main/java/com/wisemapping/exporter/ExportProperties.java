@@ -40,14 +40,6 @@ public class ExportProperties {
         return result;
     }
 
-    public void setBaseImagePath(String baseUrl) {
-        this.baseImgPath = baseUrl;
-    }
-
-    public String getBaseImgPath() {
-        return baseImgPath;
-    }
-
     static public class GenericProperties extends ExportProperties {
         private GenericProperties(ExportFormat format) {
             super(format);

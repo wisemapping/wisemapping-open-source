@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--suppress SpringModelInspection -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
@@ -69,26 +70,32 @@
 
     <bean id="transformViewPdf" class="com.wisemapping.rest.view.TransformView">
         <constructor-arg value="application/pdf"/>
+        <constructor-arg ref="notificationService"/>
     </bean>
 
     <bean id="transformViewPng" class="com.wisemapping.rest.view.TransformView">
         <constructor-arg value="image/png"/>
+        <constructor-arg ref="notificationService"/>
     </bean>
 
     <bean id="transformViewJpeg" class="com.wisemapping.rest.view.TransformView">
         <constructor-arg value="image/jpeg"/>
+        <constructor-arg ref="notificationService"/>
     </bean>
 
     <bean id="transformViewFreemind" class="com.wisemapping.rest.view.TransformView">
         <constructor-arg value="application/freemind"/>
+        <constructor-arg ref="notificationService"/>
     </bean>
 
     <bean id="transformViewSvg" class="com.wisemapping.rest.view.TransformView">
         <constructor-arg value="image/svg+xml"/>
+        <constructor-arg ref="notificationService"/>
     </bean>
 
     <bean id="transformViewWise" class="com.wisemapping.rest.view.TransformView">
         <constructor-arg value="application/wisemapping+xml"/>
+        <constructor-arg ref="notificationService"/>
     </bean>
 
 

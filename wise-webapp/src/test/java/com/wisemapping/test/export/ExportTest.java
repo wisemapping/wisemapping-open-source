@@ -6,7 +6,6 @@ import com.wisemapping.exporter.ExportProperties;
 import com.wisemapping.exporter.ExporterFactory;
 import com.wisemapping.importer.ImporterException;
 
-import com.wisemapping.model.MindMap;
 import org.apache.batik.transcoder.TranscoderException;
 import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
@@ -33,20 +32,17 @@ public class ExportTest {
         final ExportProperties properties = ExportProperties.create(format);
         final ExportProperties.ImageProperties imageProperties = (ExportProperties.ImageProperties) properties;
         imageProperties.setSize(ExportProperties.ImageProperties.Size.LARGE);
-        String baseUrl = "file://" + svgFile.getParentFile().getAbsolutePath() + "/../../../../../../wise-editor/src/main/webapp/icons";
-        properties.setBaseImagePath(baseUrl);
 
+        String baseUrl = svgFile.getParentFile().getAbsolutePath() + "/../../../../../../wise-editor/src/main/webapp";
+        ExporterFactory factory = new ExporterFactory(new File(baseUrl));
         // Write content ...
         if (pngFile.exists()) {
             // Export mile content ...
             final ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            ExporterFactory.export(imageProperties, null, bos, svgXml);
-
-//            Assert.assertEquals(expContent.toString().trim(), expContent.toString().trim());
-
+            factory.export(imageProperties, null, bos, svgXml);
         } else {
             OutputStream outputStream = new FileOutputStream(pngFile, false);
-            ExporterFactory.export(imageProperties, null, outputStream, svgXml);
+            factory.export(imageProperties, null, outputStream, svgXml);
             outputStream.close();
         }
     }
