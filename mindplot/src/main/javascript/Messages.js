@@ -35,7 +35,9 @@ $msg = function (key) {
     if (!mindplot.Messages.__bundle) {
         mindplot.Messages.init('en');
     }
-    return mindplot.Messages.__bundle[key];
+
+    var msg = mindplot.Messages.__bundle[key];
+    return msg ? msg : key;
 };
 
 mindplot.Messages.BUNDLES = {
@@ -86,12 +88,13 @@ mindplot.Messages.BUNDLES = {
         CENTRAL_TOPIC:'Central Topic',
         ONLY_ONE_TOPIC_MUST_BE_SELECTED_COLLAPSE:'Children can not be collapsed. One topic must be selected.',
         SHORTCUTS:'Keyboard Shortcuts',
-
-        // @Todo: pending ...
         ENTITIES_COULD_NOT_BE_DELETED:'Could not delete topic or relation. At least one map entity must be selected.',
         CENTRAL_TOPIC_CAN_NOT_BE_DELETED:'Central topic can not be deleted.',
         SELECTION_COPIED_TO_CLIPBOARD:'Topics copied to the clipboard',
-        CLIPBOARD_IS_EMPTY:'Nothing to copy. Clipboard is empty'
+        CLIPBOARD_IS_EMPTY:'Nothing to copy. Clipboard is empty',
+        AT_LEAST_ONE_TOPIC_MUST_BE_SELECTED:'At least one topic must be selected.',
+        RELATIONSHIP_COULD_NOT_BE_CREATED:'Relationship could not be created. A parent relationship topic must be selected first.'
+
     },
     'es':{
         DISCARD_CHANGES:'Descartar Cambios',
@@ -138,7 +141,14 @@ mindplot.Messages.BUNDLES = {
         ISOLATED_TOPIC:'Tópico Aislado',
         CENTRAL_TOPIC:'Tópico Central',
         ONLY_ONE_TOPIC_MUST_BE_SELECTED_COLLAPSE:'Tópicos hijos no pueden ser colapsados. Solo un topic debe ser seleccionado.',
-        SHORTCUTS:'Accesos directos'
+        SHORTCUTS:'Accesos directos',
+        ENTITIES_COULD_NOT_BE_DELETED:'El tópico o la relación no pudo ser borrada. Debe selecionar al menos una.',
+        CENTRAL_TOPIC_CAN_NOT_BE_DELETED:'El tópico central no puede ser borrado.',
+        SELECTION_COPIED_TO_CLIPBOARD:'Tópicos copiados al clipboard',
+        CLIPBOARD_IS_EMPTY:'Nada que copiar. Clipboard está vacio.',
+        AT_LEAST_ONE_TOPIC_MUST_BE_SELECTED:'Al menos un tópico debe ser seleccionado.',
+        RELATIONSHIP_COULD_NOT_BE_CREATED:'La relación no pudo ser creada. Una relación padre debe ser seleccionada primero.'
+
     },
     zh_cn:{
         ZOOM_IN:'放大',

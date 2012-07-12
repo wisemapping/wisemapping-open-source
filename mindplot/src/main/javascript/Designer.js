@@ -515,7 +515,7 @@ mindplot.Designer = new Class({
             var nodes = this.getModel().filterSelectedTopics();
             if (nodes.length <= 0) {
                 // This could not happen ...
-                $notify("Could not create relationship. Parent relationship topic must be selected first.");
+                $notify($msg('RELATIONSHIP_COULD_NOT_BE_CREATED'));
                 return;
             }
 
