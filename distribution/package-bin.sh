@@ -54,6 +54,9 @@ cp $BASE_DIR/wisemapping.xml $JETTY_DIR/contexts/
 # Distribute scripts
 cp -r $BASE_DIR/../wise-webapp/src/test/sql $TARGET_DIR/wisemapping-$WISE_VERSION/config
 
+# Store version
+echo $1 $WISE_WEBAPP_DIR/version
+
 # Zip all ...
 cd $TARGET_DIR
 zip -r wisemapping-$WISE_VERSION.zip wisemapping-$WISE_VERSION

@@ -4,7 +4,8 @@
 <!DOCTYPE HTML>
 
 <div>
-    <iframe src='${url}' style="border: 0;width: 100%;height:100%" id="dialogContentIframe"></iframe>
+    <iframe src='${url}' style="border: 0;width: 100%;height:100%;min-height:400px;overflow-y: auto;"
+            id="dialogContentIframe"></iframe>
     <div style="float: right;margin-right: 25px">
         <input type="button" class="btn-primary" value="<spring:message code="ACCEPT"/>" id="submitBtn"/>
         <input type="button" class="btn-secondary" value="<spring:message code="CANCEL"/>" id="cancelBtn"/>
@@ -12,7 +13,7 @@
 </div>
 
 <script type="text/javascript">
-    $('submitBtn').addEvent('click', function() {
+    $('submitBtn').addEvent('click', function () {
         var iframeWindow = $('dialogContentIframe').contentWindow;
         var delay = iframeWindow.submitDialogForm();
 
@@ -25,7 +26,7 @@
         }
     });
 
-    $('cancelBtn').addEvent('click', function() {
+    $('cancelBtn').addEvent('click', function () {
         if (MooDialog.Request.active) {
             MooDialog.Request.active.close();
         }
