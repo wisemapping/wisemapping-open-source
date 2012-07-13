@@ -307,7 +307,7 @@
 
                 <configuration>
                     <driver>org.hsqldb.jdbc.JDBCDriver</driver>
-                    <url>jdbc:hsqldb:file:${basedir}/target/db/wisemapping</url>
+                    <url>jdbc:hsqldb:file:${project.basedir}/target/db/wisemapping</url>
                     <username>sa</username>
                     <!--all executions are ignored if -Dmaven.test.skipDB=true
                      Use this flag if you want to reuse an already created HSQL database instance
@@ -339,7 +339,7 @@
                             <onError>continue</onError>
                             <orderFile>ascending</orderFile>
                             <fileset>
-                                <basedir>${basedir}</basedir>
+                                <basedir>${project.basedir}</basedir>
                                 <includes>
                                     <include>src/test/sql/hsql/drop-schemas.sql</include>
                                 </includes>
@@ -356,7 +356,7 @@
                         <configuration>
                             <orderFile>ascending</orderFile>
                             <fileset>
-                                <basedir>${basedir}</basedir>
+                                <basedir>${project.basedir}</basedir>
                                 <includes>
                                     <include>src/test/sql/hsql/create-schemas.sql</include>
                                 </includes>
@@ -372,7 +372,7 @@
                         <configuration>
                             <orderFile>ascending</orderFile>
                             <fileset>
-                                <basedir>${basedir}</basedir>
+                                <basedir>${project.basedir}</basedir>
                                 <includes>
                                     <include>src/test/sql/hsql/test-data.sql</include>
                                 </includes>
@@ -461,9 +461,13 @@
                     <war>${project.build.directory}/wisemapping.war</war>
                     <reload>automatic</reload>
                     <webAppConfig>
-                        <overrideDescriptor>webdefault.xml</overrideDescriptor>
+                        <overrideDescriptor>${project.basedir}/webdefault.xml</overrideDescriptor>
                     </webAppConfig>
                     <systemProperties>
+                        <systemProperty>
+                            <name>org.mortbay.util.FileResource.checkAliases</name>
+                            <value>false</value>
+                        </systemProperty>
                         <systemProperty>
                             <name>org.mortbay.util.FileResource.checkAliases</name>
                             <value>false</value>

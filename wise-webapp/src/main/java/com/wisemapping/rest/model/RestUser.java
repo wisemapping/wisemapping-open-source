@@ -78,7 +78,7 @@ public class RestUser {
         return user.getId();
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         user.setId(id);
     }
 

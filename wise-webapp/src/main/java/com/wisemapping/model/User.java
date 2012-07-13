@@ -18,7 +18,7 @@
 
 package com.wisemapping.model;
 
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.util.*;
@@ -141,11 +141,12 @@ public class User
         this.username = username;
     }
 
+    @Nullable
     public String getLocale() {
         return locale;
     }
 
-    public void setLocale(@NotNull String locale) {
+    public void setLocale(@Nullable String locale) {
         this.locale = locale;
     }
 }
