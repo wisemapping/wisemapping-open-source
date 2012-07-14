@@ -638,20 +638,23 @@ mindplot.Designer = new Class({
         },
 
         _addRelationship:function (model) {
-            this._mindmap.addRelationship(model);
+            var mindmap = this.getMindmap();
+            mindmap.addRelationship(model);
             return this._relationshipModelToRelationship(model);
         },
 
-        _deleteRelationship:function (relationship) {
-            var sourceTopic = relationship.getSourceTopic();
-            sourceTopic.deleteRelationship(relationship);
+        _deleteRelationship:function (rel) {
+            var sourceTopic = rel.getSourceTopic();
+            sourceTopic.deleteRelationship(rel);
 
-            var targetTopic = relationship.getTargetTopic();
-            targetTopic.deleteRelationship(relationship);
+            var targetTopic = rel.getTargetTopic();
+            targetTopic.deleteRelationship(rel);
 
-            this._workspace.removeChild(relationship);
+            this.getModel().removeRelationship(rel);
+            this._workspace.removeChild(rel);
 
-            this.getModel().removeRelationship(relationship);
+            var mindmap = this.getMindmap();
+            mindmap.deleteRelationship(rel.getModel());
         },
 
         _buildRelationshipShape:function (model) {
