@@ -55,8 +55,7 @@ cp $BASE_DIR/wisemapping.xml $JETTY_DIR/contexts/
 cp -r $BASE_DIR/../wise-webapp/src/test/sql $TARGET_DIR/wisemapping-$WISE_VERSION/config
 
 # Store version
-echo $1 > $WISE_WEBAPP_DIR/version
-git rev-parse HEAD >> $WISE_WEBAPP_DIR/version
+echo $1 $WISE_WEBAPP_DIR/version
 
 # Zip all ...
 cd $TARGET_DIR
