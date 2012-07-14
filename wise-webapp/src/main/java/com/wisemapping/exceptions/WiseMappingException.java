@@ -25,4 +25,10 @@ public class WiseMappingException
     {
         super(str);
     }
+    public WiseMappingException(String str,Exception e)
+    {
+        super(str);
+        initCause(e);
+    }
+
 }

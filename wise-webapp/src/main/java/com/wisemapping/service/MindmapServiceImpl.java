@@ -219,20 +219,7 @@ public class MindmapServiceImpl
         }
     }
 
-    @Override
-    public void addWelcomeMindmap(User user) throws WiseMappingException {
-        final MindMap savedWelcome = findMindmapById(Constants.WELCOME_MAP_ID);
 
-        // Is there a welcomed map configured ?        
-        if (savedWelcome != null) {
-            final MindMap welcomeMap = new MindMap();
-            welcomeMap.setTitle(savedWelcome.getTitle() + " " + user.getFirstname());
-            welcomeMap.setDescription(savedWelcome.getDescription());
-            welcomeMap.setXml(savedWelcome.getXml());
-
-            addMindmap(welcomeMap, user);
-        }
-    }
 
     @Override
     public List<MindMapHistory> findMindmapHistory(int mindmapId) {

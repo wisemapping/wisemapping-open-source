@@ -20,14 +20,10 @@ package com.wisemapping.model;
 
 public class Constants {
 
-    public static int WELCOME_MAP_ID =49 ;
     public  static final int MAX_MAP_NAME_LENGTH = 512;
     public static final int MAX_MAP_DESCRIPTION_LENGTH = 512;
     public static final int MAX_USER_USERNAME_LENGTH = 255;
     public static final int MAX_USER_LASTNAME_LENGTH = 255;
     public static final int MAX_USER_FIRSTNAME_LENGTH = 255;
     public static final int MAX_USER_PASSWORD_LENGTH = 255;
-    public static final int MAX_COMMENT_LENGTH = 512;
-    public static final int MAX_SUBJECT_LENGTH = 100;
-    public static final int MAX_TAGS_LENGTH=1014;
 }

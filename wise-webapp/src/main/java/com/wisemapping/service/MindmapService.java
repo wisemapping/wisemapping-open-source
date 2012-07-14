@@ -57,8 +57,6 @@ public interface MindmapService {
 
     boolean hasPermissions(@Nullable User user, int mapId, CollaborationRole allowedRole);
 
-    void addWelcomeMindmap(User user) throws WiseMappingException;
-
     void revertChange(@NotNull MindMap map, int historyId) throws WiseMappingException;
 
     MindMapHistory findMindmapHistory(int id, int hid) throws WiseMappingException;

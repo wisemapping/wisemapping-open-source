@@ -23,10 +23,17 @@ import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.AccessAuditory;
 import com.wisemapping.model.Collaborator;
+import com.wisemapping.model.MindMap;
 import com.wisemapping.model.User;
+import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.UUID;
 
 public class UserServiceImpl
@@ -34,6 +41,8 @@ public class UserServiceImpl
     private UserManager userManager;
     private MindmapService mindmapService;
     private NotificationService notificationService;
+    private MessageSource messageSource;
+
 
     @Override
     public void activateAccount(long code)
@@ -90,7 +99,7 @@ public class UserServiceImpl
 
     @Override
     public void auditLogin(@NotNull User user) {
-        if(user==null){
+        if (user == null) {
             throw new IllegalArgumentException("User can not be null");
         }
         final AccessAuditory accessAuditory = new AccessAuditory();
@@ -119,7 +128,8 @@ public class UserServiceImpl
         }
 
         //create welcome map
-        mindmapService.addWelcomeMindmap(user);
+        final MindMap mindMap = buildWelcomeMindmap(user.getFirstname());
+        mindmapService.addMindmap(mindMap, user);
 
         // Send registration email.
         if (emailConfirmEnabled) {
@@ -130,6 +140,29 @@ public class UserServiceImpl
         }
 
         return user;
+    }
+
+    private MindMap buildWelcomeMindmap(@NotNull String username) throws WiseMappingException {
+        //To change body of created methods use File | Settings | File Templates.
+        final Locale locale = LocaleContextHolder.getLocale();
+        MindMap result = new MindMap();
+
+        final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+        InputStream resourceAsStream = contextClassLoader.getResourceAsStream("samples/welcome_" + locale.toString() + ".xml");
+        if (resourceAsStream == null) {
+            resourceAsStream = contextClassLoader.getResourceAsStream("samples/welcome_en.xml");
+        }
+        try {
+            final byte[] bytes = IOUtils.toByteArray(resourceAsStream);
+            result.setXml(bytes);
+            result.setTitle(messageSource.getMessage("WELCOME", null, locale) + " " + username);
+            result.setDescription("");
+
+        } catch (IOException e) {
+            throw new WiseMappingException("Could not be loaded", e);
+        }
+
+        return result;
     }
 
     @Override
@@ -168,5 +201,9 @@ public class UserServiceImpl
 
     public void setNotificationService(NotificationService notificationService) {
         this.notificationService = notificationService;
+    }
+
+    public void setMessageSource(@NotNull MessageSource messageSource) {
+        this.messageSource = messageSource;
     }
 }
