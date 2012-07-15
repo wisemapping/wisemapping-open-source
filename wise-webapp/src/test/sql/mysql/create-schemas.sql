@@ -10,9 +10,9 @@ colaborator_id INTEGER NOT NULL,
 firstname varchar(255) CHARACTER SET utf8 NOT NULL,
 lastname varchar(255) CHARACTER SET utf8 NOT NULL,
 password varchar(255) CHARACTER SET utf8 NOT NULL,
-activationCode BIGINT(20) NOT NULL,
+activation_code BIGINT(20) NOT NULL,
 activation_date date,
-allowSendEmail char(1) CHARACTER SET utf8 NOT NULL default 0,
+allow_send_email char(1) CHARACTER SET utf8 NOT NULL default 0,
 locale varchar(5),
 FOREIGN KEY(colaborator_id) REFERENCES COLLABORATOR(id) ON DELETE CASCADE ON UPDATE NO ACTION
 ) CHARACTER SET utf8 ;
@@ -37,7 +37,8 @@ CREATE TABLE MINDMAP_HISTORY
 xml blob NOT NULL,
 mindmap_id INTEGER NOT NULL,
 creation_date datetime,
-editor_id INTEGER NOT NULL
+editor_id INTEGER NOT NULL,
+FOREIGN KEY(mindmap_id) REFERENCES MINDMAP(id) ON DELETE CASCADE ON UPDATE NO ACTION
 ) CHARACTER SET utf8 ;
 
 CREATE TABLE COLLABORATION_PROPERTIES(
