@@ -39,7 +39,7 @@
             <div>
                 <p>
                     <spring:message code="TERM_OF_THE_SERVICE"/>
-                    <spring:message code="WISEMAPPING_ACCOUNT_MESSAGE"/> <a href="c/termsOfUse"><spring:message
+                    <spring:message code="WISEMAPPING_ACCOUNT_MESSAGE"/> <a href="c/termsOfUse" target="_blank"><spring:message
                         code="HERE"/></a>.
                     <spring:message code="REGISTRATION_CLICK_ADVICE"/>
                 </p>
