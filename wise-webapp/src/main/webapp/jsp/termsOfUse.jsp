@@ -44,10 +44,9 @@
 </ol>
 <br/>
 Violation of any of these agreements will result in the termination of your Account. While WiseMapping prohibits
-such conduct and Content on the Service, you understand and agree that Wisemaping cannot be responsible for the
+such conduct and Content on the Service, you understand and agree that WiseMapping cannot be responsible for the
 Content posted using WiseMapping.com and you nonetheless may be exposed to such materials. You agree to use the
 Service at your own risk.
-</p>
 <h2>Copyright and Content Ownership</h2>
 
 <p>
@@ -69,7 +68,6 @@ Service at your own risk.
         content, which violates these Terms.
     </li>
 </ol>
-</p>
 <h2>publishing and Shareing Content</h2>
 
 <p>
@@ -86,15 +84,7 @@ Service at your own risk.
 
 <p>
     Mind Maps® is a registered trade-mark of The Buzan Organisation, Ltd. in the UK and the USA.<br/>
-    Mindjet® and MindManager® are registered trademarks of Mindjet Corporation, USA<br/>
-    All other trademarks are the property of their respective owners.<br/>
-    <br/>
-
-    Wise Mapping uses clip art and graphics from the OpenClipart library distributed under the Creative Commons
-    license.<br/>
-    Wise Mapping uses the FamFam Silk Icon library licensed under the Creative Commons Attribution 2.5 license.<br/>
-    Wise Mapping based some of it's icon and uses icons from the Tango Desctop Project Icon library licensed under
-    the Creative Commons Attribution Share-Alike license<br/>
+    WiseMapping uses the FamFam Silk Icon library licensed under the Creative Commons Attribution 2.5 license.<br/>
 </p>
 
 <h2>Termination</h2>
@@ -105,7 +95,7 @@ Service at your own risk.
     termination
     of the Service will result in the deactivation or deletion of your Account or your access to your Account, and
     the
-    forfeiture and relinquishment of all Content in your Account. WiseMaping reserves the right to refuse service to
+    forfeiture and relinquishment of all Content in your Account. WiseMapping reserves the right to refuse service to
     anyone for any reason at any time.
 </p>
 
@@ -163,10 +153,10 @@ Service at your own risk.
     </li>
     <li>The failure of WiseMapping to exercise or enforce any right or provision of the Terms of Service shall not
         constitute a waiver of such right or provision. The Terms of Service constitutes the entire agreement
-        between you and WiseMaping and govern your use of the Service, superceding any prior agreements between you
+        between you and WiseMapping and govern your use of the Service, superceding any prior agreements between you
         and WiseMapping (including, but not limited to, any prior versions of the Terms of Service).
     </li>
-    <li>Questions about the Terms of Service should be sent to support@WiseMapping.com.</li>
+    <li>Questions about the Terms of Service should be sent to support@wisemapping.com.</li>
 </ol>
 
 <h2>Personal Information</h2>
