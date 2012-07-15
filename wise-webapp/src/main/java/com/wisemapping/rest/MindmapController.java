@@ -405,7 +405,7 @@ public class MindmapController extends BaseController {
 
         // Save new map ...
         final User user = Utils.getUser();
-        createMap(new RestMindmap(mindMap, user), response, title, description);
+        createMap(new RestMindmap(mindMap, null), response, title, description);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/maps/{id}", consumes = {"application/xml", "application/json"})
