@@ -39,7 +39,7 @@ public class MindmapManagerImpl
         final Collaborator collaborator;
         final List<Collaborator> collaborators = getHibernateTemplate().find("from com.wisemapping.model.Collaborator collaborator where email=?", email);
         if (collaborators != null && !collaborators.isEmpty()) {
-            assert collaborators.size() == 1 : "More than one user with the same username!";
+            assert collaborators.size() == 1 : "More than one user with the same email!";
             collaborator = collaborators.get(0);
         } else {
             collaborator = null;

@@ -404,7 +404,6 @@ public class MindmapController extends BaseController {
         }
 
         // Save new map ...
-        final User user = Utils.getUser();
         createMap(new RestMindmap(mindMap, null), response, title, description);
     }
 

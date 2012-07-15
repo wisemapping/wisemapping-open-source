@@ -142,7 +142,7 @@ public class UserServiceImpl
         return user;
     }
 
-    private MindMap buildWelcomeMindmap(@NotNull String username) throws WiseMappingException {
+    private MindMap buildWelcomeMindmap(@NotNull String firstName) throws WiseMappingException {
         //To change body of created methods use File | Settings | File Templates.
         final Locale locale = LocaleContextHolder.getLocale();
         MindMap result = new MindMap();
@@ -155,7 +155,7 @@ public class UserServiceImpl
         try {
             final byte[] bytes = IOUtils.toByteArray(resourceAsStream);
             result.setXml(bytes);
-            result.setTitle(messageSource.getMessage("WELCOME", null, locale) + " " + username);
+            result.setTitle(messageSource.getMessage("WELCOME", null, locale) + " " + firstName);
             result.setDescription("");
 
         } catch (IOException e) {

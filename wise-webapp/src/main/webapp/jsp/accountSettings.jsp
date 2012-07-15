@@ -18,17 +18,14 @@
                     <input type="text" name="password" id="email" required="required" readonly="readonly"
                            value="${user.email}"/>
 
-                    <label for="userName"><strong><spring:message code="USERNAME"/>:</strong></label>
-                    <input type="text" name="password" id="userName" required="required" value="${user.username}"
-                           readonly="readonly"/>
-
                     <label for="firstname"><strong><spring:message code="FIRSTNAME"/>:</strong></label>
                     <input type="text" name="firstname" id="firstname" required="required" value="${user.firstname}"/>
 
                     <label for="lastname"><strong><spring:message code="LASTNAME"/>:</strong></label>
                     <input type="text" name="lastname" id="lastname" required="required" value="${user.lastname}"/>
                     <br/>
-                    <input type="submit" id="changeUserInfoBtn" class="btn btn-primary" value="<spring:message code="SAVE_CHANGES"/>"/>
+                    <input type="submit" id="changeUserInfoBtn" class="btn btn-primary"
+                           value="<spring:message code="SAVE_CHANGES"/>"/>
                 </fieldset>
             </form>
 

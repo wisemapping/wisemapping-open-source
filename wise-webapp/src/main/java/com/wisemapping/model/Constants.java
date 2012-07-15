@@ -22,7 +22,6 @@ public class Constants {
 
     public  static final int MAX_MAP_NAME_LENGTH = 512;
     public static final int MAX_MAP_DESCRIPTION_LENGTH = 512;
-    public static final int MAX_USER_USERNAME_LENGTH = 255;
     public static final int MAX_USER_LASTNAME_LENGTH = 255;
     public static final int MAX_USER_FIRSTNAME_LENGTH = 255;
     public static final int MAX_USER_PASSWORD_LENGTH = 255;

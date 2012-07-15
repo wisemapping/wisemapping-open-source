@@ -22,7 +22,7 @@ public class JsonTest {
         String json2 = "{\"title\":\"some title\",\"description\":\"description here\"}";
         mapper.readValue(json2, RestMindmap.class);
 
-        String userJson = "{\"username\":\"admin\",\"email\":\"admin@wisemapping.org\",\"tags\":[],\"creationDate\":1329706800000,\"firstname\":\"Wise\",\"lastname\":\"test\",\"password\":\"test\"}";
+        String userJson = "{\"email\":\"admin@wisemapping.org\",\"tags\":[],\"creationDate\":1329706800000,\"firstname\":\"Wise\",\"lastname\":\"test\",\"password\":\"test\"}";
         final RestUser restUser = mapper.readValue(userJson, RestUser.class);
     }
 
