@@ -52,11 +52,6 @@ public class ExtensionsController {
         return new ModelAndView("privacyPolicy");
     }
 
-    @RequestMapping(value = "termsOfUse")
-    public ModelAndView termsOfUse() {
-        return new ModelAndView("termsOfUse");
-    }
-
     @RequestMapping(value = "faq")
     public ModelAndView faq() {
         return new ModelAndView("faq");

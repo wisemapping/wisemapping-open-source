@@ -110,6 +110,10 @@ div.pageBodyContent li {
     border: 1px dotted gray;
 }
 
+span.errorMsg{
+    color: red;
+}
+
 div.fform {
     background: #eeeeee;
     border: 1px solid #cfcfcf;

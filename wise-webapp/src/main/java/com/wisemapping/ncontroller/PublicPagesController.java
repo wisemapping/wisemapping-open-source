@@ -38,6 +38,11 @@ public class PublicPagesController {
         return "aboutUs";
     }
 
+    @RequestMapping(value = "termsOfUse")
+    public String showTermsOfUse() {
+        return "termsOfUse";
+    }
+
     @RequestMapping(value = "crew")
     public String crew() {
         return "crew";
