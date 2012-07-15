@@ -44,7 +44,7 @@ public class RestMindmapHistory {
     public RestMindmapHistory(@NotNull MindMapHistory history) {
         this.id = history.getId();
         this.creation = history.getCreationTime();
-        this.creator = history.getCreator();
+        this.creator = history.getEditor().getFullName();
     }
 
     public String getCreationTime() {

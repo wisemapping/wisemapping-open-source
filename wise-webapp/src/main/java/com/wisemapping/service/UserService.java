@@ -34,8 +34,6 @@ public interface UserService {
 
     public User getUserBy(long id);
 
-    public User getUserByUsername(String username);
-
     public void updateUser(User user);
 
     public void resetPassword(@NotNull String email) throws InvalidUserEmailException;

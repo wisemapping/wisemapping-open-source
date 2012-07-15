@@ -13,11 +13,6 @@
                 <form:input path="email" id="email" type="email" required="required"/>
                 <form:errors path="email" cssClass="errorMsg"/>
 
-            <label for="username"> <spring:message code="USERNAME"/></label>
-                <form:input path="username" id="username" required="required"/>
-                <form:errors path="username" cssClass="errorMsg"/>
-
-
             <label for="firstname"><spring:message code="FIRSTNAME"/></label>
                 <form:input path="firstname" id="firstname" required="required"/>
                 <form:errors path="firstname" cssClass="errorMsg"/>

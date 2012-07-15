@@ -177,11 +177,6 @@ public class UserServiceImpl
     }
 
     @Override
-    public User getUserByUsername(String username) {
-        return userManager.getUserByUsername(username);
-    }
-
-    @Override
     public User getUserBy(long id) {
         return userManager.getUserBy(id);
     }

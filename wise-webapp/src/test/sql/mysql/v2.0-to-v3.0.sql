@@ -30,8 +30,14 @@ ALTER TABLE ACCESS_AUDITORY
   ON UPDATE NO ACTION
 , ADD INDEX `user_id` () ;
 
+ALTER TABLE `wisemapping`.`mindmap_history` DROP COLUMN `creator_user` , ADD COLUMN `editor_id` INT(11) NULL DEFAULT NULL  AFTER `creation_date`;
 
 ALTER TABLE `wisemapping`.`user` ADD COLUMN `locale` VARCHAR(5) NULL  AFTER `allowSendEmail` ;
+
+ALTER TABLE `wisemapping`.`mindmap` DROP COLUMN `last_editor` , ADD COLUMN `last_editor_id` INT(11) NULL DEFAULT NULL  AFTER `tags` ;
+
+ALTER TABLE `wisemapping2`.`user` DROP COLUMN `username` , CHANGE COLUMN `activationCode` `activation_code` BIGINT(20) NOT NULL  , CHANGE COLUMN `allowSendEmail` `allow_send_email` CHAR(1) NOT NULL DEFAULT '0'  ;
+
 
 # INSERT INTO `wisemapping`.`collaborator` (`id`, `email`, `creation_date`) VALUES (8081, 'fake@wisemapping.com', '2007-10-09');
 # DELETE FROM `wisemapping`.`USER` where activation_date is null;

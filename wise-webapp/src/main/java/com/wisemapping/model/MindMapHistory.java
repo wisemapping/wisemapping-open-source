@@ -18,21 +18,19 @@
 
 package com.wisemapping.model;
 
-import com.wisemapping.util.ZipUtils;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Calendar;
-import java.io.IOException;
 
 public class MindMapHistory {
 
     private int id;
     private Calendar creationTime;
-    private String creator;
+    private User editor;
     private byte[] xml;
     private int mindmapId;
 
-    public MindMapHistory()
-    {
+    public MindMapHistory() {
 
     }
 
@@ -60,12 +58,13 @@ public class MindMapHistory {
         this.creationTime = creationTime;
     }
 
-    public String getCreator() {
-        return creator;
+    @Nullable
+    public User getEditor() {
+        return editor;
     }
 
-    public void setCreator(String creator) {
-        this.creator = creator;
+    public void setEditor(@Nullable User editor) {
+        this.editor = editor;
     }
 
     public byte[] getXml() {

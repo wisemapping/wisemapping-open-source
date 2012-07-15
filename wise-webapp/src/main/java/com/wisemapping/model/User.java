@@ -32,7 +32,6 @@ public class User
     private String password;
     private long activationCode;
     private Calendar activationDate;
-    private String username;
     private Set<String> tags = new HashSet<String>();
     private boolean allowSendEmail = false;
     private String locale;
@@ -118,9 +117,7 @@ public class User
         final String email = getEmail();
         if (email != null ? !email.equals(user.getEmail()) : user.getEmail() != null) return false;
         if (firstname != null ? !firstname.equals(user.firstname) : user.firstname != null) return false;
-        if (lastname != null ? !lastname.equals(user.lastname) : user.lastname != null) return false;
-        return !(username != null ? !username.equals(user.username) : user.username != null);
-
+        return !(lastname != null ? !lastname.equals(user.lastname) : user.lastname != null);
     }
 
 
@@ -131,14 +128,6 @@ public class User
         result = 29 * result + (password != null ? password.hashCode() : 0);
         result = 29 * result + (getEmail() != null ? getEmail().hashCode() : 0);
         return result;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     @Nullable

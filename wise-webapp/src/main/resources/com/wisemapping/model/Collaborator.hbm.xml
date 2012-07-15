@@ -21,13 +21,12 @@
 
         <joined-subclass name="com.wisemapping.model.User" table="USER">
             <key column="COLABORATOR_ID"/>
-            <property name="username" not-null="true"/>
             <property name="firstname"/>
             <property name="lastname"/>
             <property name="password"/>
             <property name="activationDate" column="activation_date"/>
-            <property name="activationCode"/>
-            <property name="allowSendEmail"/>
+            <property name="activationCode" column="activation_code"/>
+            <property name="allowSendEmail" column="allow_send_email"/>
             <property name="locale"/>
             <set name="tags" table="TAG">
                 <key column="user_id"/>

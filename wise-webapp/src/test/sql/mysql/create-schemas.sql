@@ -7,7 +7,6 @@ creation_date date
 CREATE TABLE USER (
 id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
 colaborator_id INTEGER NOT NULL,
-username varchar(255) CHARACTER SET utf8  NOT NULL,
 firstname varchar(255) CHARACTER SET utf8 NOT NULL,
 lastname varchar(255) CHARACTER SET utf8 NOT NULL,
 password varchar(255) CHARACTER SET utf8 NOT NULL,
@@ -28,7 +27,7 @@ creation_date datetime,
 edition_date datetime,
 creator_id INTEGER not null,
 tags varchar(1014) CHARACTER SET utf8 ,
-last_editor varchar(255) CHARACTER SET utf8 ,
+last_editor_id INTEGER NOT NULL,
 FOREIGN KEY(creator_id) REFERENCES USER(colaborator_id) ON DELETE CASCADE ON UPDATE NO ACTION
 ) CHARACTER SET utf8 ;
 
@@ -38,7 +37,7 @@ CREATE TABLE MINDMAP_HISTORY
 xml blob NOT NULL,
 mindmap_id INTEGER NOT NULL,
 creation_date datetime,
-creator_user varchar(255) CHARACTER SET utf8
+editor_id INTEGER NOT NULL
 ) CHARACTER SET utf8 ;
 
 CREATE TABLE COLLABORATION_PROPERTIES(

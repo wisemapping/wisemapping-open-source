@@ -4,7 +4,7 @@
 
 <div>
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#general" data-toggle="pill">General</a></li>
+        <li class="active"><a href="#general" data-toggle="pill"><spring:message code="DESCRIPTION"/></a></li>
         <li><a href="#collaborators" data-toggle="pill"><spring:message code="SHARED"/></a></li>
         <li><a href="#publish" data-toggle="pill"><spring:message code="PUBLIC"/></a></li>
     </ul>
@@ -14,7 +14,7 @@
             <ul class="unstyled">
                 <li><strong><spring:message code="NAME"/>:</strong> ${mindmap.title}</li>
                 <li><strong><spring:message code="DESCRIPTION"/>:</strong> ${mindmap.description}</li>
-                <li><strong><spring:message code="CREATOR"/>:</strong> ${mindmap.creator.username}</li>
+                <li><strong><spring:message code="CREATOR"/>:</strong> ${mindmap.creator.fullName}</li>
                 <li><strong><spring:message code="CREATION_TIME"/>:</strong> ${mindmap.creationTime}</li>
                 <li><strong><spring:message code="LAST_UPDATE"/>:</strong> ${mindmap.lastEditTime}</li>
                 <li><strong><spring:message code="LAST_UPDATE_BY"/>:</strong> ${mindmap.lastEditor}</li>

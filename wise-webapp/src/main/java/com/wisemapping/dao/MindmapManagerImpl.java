@@ -201,16 +201,16 @@ public class MindmapManagerImpl
     }
 
     @Override
-    public void removeMindmap(MindMap mindMap) {
+    public void removeMindmap(@NotNull final MindMap mindMap) {
         getHibernateTemplate().delete(mindMap);
     }
 
-    private void saveHistory(MindMap mindMap) {
+    private void saveHistory(@NotNull final MindMap mindMap) {
         final MindMapHistory history = new MindMapHistory();
 
         history.setXml(mindMap.getXml());
         history.setCreationTime(Calendar.getInstance());
-        history.setCreator(mindMap.getLastModifierUser());
+        history.setEditor(mindMap.getLastEditor());
         history.setMindmapId(mindMap.getId());
         getHibernateTemplate().saveOrUpdate(history);
     }

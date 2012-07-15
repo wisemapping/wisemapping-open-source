@@ -66,14 +66,6 @@ public class RestUser {
 //        return user.isActive();
 //    }
 
-    public String getUsername() {
-        return user.getUsername();
-    }
-
-    public void setUsername(String username) {
-        user.setUsername(username);
-    }
-
     public long getId() {
         return user.getId();
     }

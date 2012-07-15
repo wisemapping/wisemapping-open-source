@@ -56,14 +56,6 @@ public class UserValidator
                 Utils.validateEmailAddress(email, errors);
             }
 
-            // Validate username ...
-            final String username = user.getUsername();
-            if (username != null && userService.getUserByUsername(username) != null) {
-                errors.rejectValue("username", Messages.USERNAME_ALREADY_EXIST);
-            } else {
-                ValidationUtils.rejectIfEmpty(errors, "username", Messages.FIELD_REQUIRED);
-            }
-
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstname", Messages.FIELD_REQUIRED);
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastname", Messages.FIELD_REQUIRED);
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", Messages.FIELD_REQUIRED);
@@ -78,11 +70,6 @@ public class UserValidator
                     "The lastname must have less than " + Constants.MAX_USER_LASTNAME_LENGTH + " characters.",
                     user.getLastname(),
                     Constants.MAX_USER_LASTNAME_LENGTH);
-            ValidatorUtils.rejectIfExceeded(errors,
-                    "username",
-                    "The username must have less than " + Constants.MAX_USER_USERNAME_LENGTH + " characters.",
-                    username,
-                    Constants.MAX_USER_USERNAME_LENGTH);
             ValidatorUtils.rejectIfExceeded(errors,
                     "password",
                     "The password must have less than " + Constants.MAX_USER_PASSWORD_LENGTH + " characters.",

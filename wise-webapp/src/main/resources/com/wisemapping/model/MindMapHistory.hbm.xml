@@ -11,9 +11,9 @@
         </id>
 
         <property name="mindmapId" column="mindmap_id"/>
-	    <property name="xml" column="XML"/>
-	    <property name="creationTime" column="creation_date"/>
-        <property name="creator" column="creator_user"/>
+        <property name="xml" column="XML"/>
+        <property name="creationTime" column="creation_date"/>
+        <many-to-one name="editor" column="editor_id" unique="false" not-null="false" lazy="proxy"/>
     </class>
 
 </hibernate-mapping>

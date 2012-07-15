@@ -108,7 +108,6 @@ public class UsersController {
 
             // trim() the email email in order to remove spaces ...
             user.setEmail(userBean.getEmail().trim());
-            user.setUsername(userBean.getUsername());
             user.setFirstname(userBean.getFirstname());
             user.setLastname(userBean.getLastname());
             user.setPassword(userBean.getPassword());

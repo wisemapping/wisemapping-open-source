@@ -33,8 +33,6 @@ public interface UserManager {
 
     public User getUserBy(long id);
 
-    User getUserByUsername(String username);
-
     void createUser(User user);
 
     void auditLogin(@NotNull AccessAuditory accessAuditory);

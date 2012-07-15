@@ -58,16 +58,6 @@ public class AdminController extends BaseController {
         return new ModelAndView("userView", "user", new RestUser(user));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "admin/users/username/{username}", produces = {"application/json", "text/html", "application/xml"})
-    @ResponseBody
-    public ModelAndView getUserByUsername(@PathVariable String username) throws IOException {
-        final User user = userService.getUserByUsername(username);
-        if (user == null) {
-            throw new IllegalArgumentException("User '" + username + "' could not be found");
-        }
-        return new ModelAndView("userView", "user", new RestUser(user));
-    }
-
     @RequestMapping(method = RequestMethod.POST, value = "admin/users", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createUser(@RequestBody RestUser user, HttpServletResponse response) throws IOException, WiseMappingException {
@@ -79,15 +69,6 @@ public class AdminController extends BaseController {
         final String email = user.getEmail();
         if (userService.getUserBy(email) != null) {
             throw new IllegalArgumentException("User already exists with this email.");
-        }
-
-        final String username = user.getUsername();
-        if (username == null || username.isEmpty()) {
-            throw new IllegalArgumentException("username can not be null");
-        }
-
-        if (userService.getUserByUsername(username) != null) {
-            throw new IllegalArgumentException("User already exists with this username.");
         }
 
         // Run some other validations ...

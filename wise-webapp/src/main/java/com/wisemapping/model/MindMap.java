@@ -40,7 +40,7 @@ public class MindMap {
 
     private boolean isPublic;
     private Calendar lastModificationTime;
-    private String lastModifierUser;
+    private User lastEditor;
 
     private Set<Collaboration> collaborations = new HashSet<Collaboration>();
 
@@ -144,12 +144,13 @@ public class MindMap {
         this.lastModificationTime = lastModificationTime;
     }
 
-    public String getLastModifierUser() {
-        return lastModifierUser;
+    @Nullable
+    public User getLastEditor() {
+        return lastEditor;
     }
 
-    public void setLastModifierUser(String lastModifierUser) {
-        this.lastModifierUser = lastModifierUser;
+    public void setLastEditor(@Nullable User lastEditor) {
+        this.lastEditor = lastEditor;
     }
 
     public int getId() {

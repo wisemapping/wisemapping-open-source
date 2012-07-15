@@ -137,8 +137,7 @@ public class MindmapServiceImpl
         }
 
         final Calendar creationTime = Calendar.getInstance();
-        final String username = user.getUsername();
-        map.setLastModifierUser(username);
+        map.setLastEditor(user);
         map.setCreationTime(creationTime);
         map.setLastModificationTime(creationTime);
         map.setCreator(user);

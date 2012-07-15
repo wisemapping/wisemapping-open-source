@@ -81,8 +81,8 @@ public class RestMindmap {
         return mindmap.getCreator().getEmail();
     }
 
-    public String getLastModifierUser() {
-        return mindmap.getLastModifierUser();
+    public Collaborator getLastModifierUser() {
+        return mindmap.getLastEditor();
     }
 
     public String getLastModificationTime() {

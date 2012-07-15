@@ -6,13 +6,12 @@ creation_date date);
 CREATE TABLE USER (
 id INTEGER NOT NULL IDENTITY,
 colaborator_id INTEGER NOT NULL,
-username varchar(255)   NOT NULL,
 firstname varchar(255)  NOT NULL,
 lastname varchar(255)  NOT NULL,
 password varchar(255)  NOT NULL,
-activationCode BIGINT NOT NULL,
+activation_code BIGINT NOT NULL,
 activation_date DATE,
-allowSendEmail CHAR(1) NOT NULL,
+allow_send_email CHAR(1) NOT NULL,
 locale varchar(5),
 FOREIGN KEY(colaborator_id) REFERENCES COLLABORATOR(id)
 );
@@ -27,7 +26,7 @@ creation_date DATETIME,
 edition_date DATETIME,
 creator_id INTEGER NOT NULL,
 tags varchar(1014)  ,
-last_editor varchar(255)  ,
+last_editor_id INTEGER NOT NULL
 --FOREIGN KEY(creator_id) REFERENCES USER(colaborator_id)
 );
 
@@ -36,7 +35,7 @@ CREATE TABLE MINDMAP_HISTORY
 xml LONGVARBINARY NOT NULL,
 mindmap_id INTEGER NOT NULL,
 creation_date DATETIME,
-creator_user varchar(255));
+editor_id INTEGER NOT NULL);
 
 CREATE TABLE COLLABORATION_PROPERTIES
 (id INTEGER NOT NULL IDENTITY,

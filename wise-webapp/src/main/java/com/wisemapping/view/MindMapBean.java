@@ -69,7 +69,8 @@ public class MindMapBean {
     }
 
     public String getLastEditor() {
-        return mindmap.getLastModifierUser();
+        final User lastEditor = mindmap.getLastEditor();
+        return lastEditor != null ? lastEditor.getFullName() : "";
     }
 
     public String getLastEditTime() {

@@ -75,25 +75,6 @@ public class RestAdminITCase {
         }
     }
 
-
-    @Test(dataProvider = "ContentType-Provider-Function")
-    public void findUserByUsername(final @NotNull MediaType mediaType) {    // Configure media types ...
-        final HttpHeaders requestHeaders = createHeaders(mediaType);
-        final RestTemplate templateRest = createTemplate();
-
-        final RestUser restUser = createDummyUser();
-
-        // User has been created ...
-        createUser(requestHeaders, templateRest, restUser);
-
-        // Check that the user has been created ...
-        HttpEntity<RestUser> findUserEntity = new HttpEntity<RestUser>(requestHeaders);
-        final ResponseEntity<RestUser> responseEntity = templateRest.exchange(BASE_REST_URL + "/admin/users/username/" + restUser.getUsername(), HttpMethod.GET, findUserEntity, RestUser.class);
-
-        assertEquals(responseEntity.getBody().getUsername(), restUser.getUsername());
-
-    }
-
     public String createNewUser(final @NotNull MediaType mediaType) {
 
         // Configure media types ...
@@ -172,7 +153,6 @@ public class RestAdminITCase {
         final String username = "foo-to-delete" + System.nanoTime();
         final String email = username + "@example.org";
         restUser.setEmail(email);
-        restUser.setUsername(username);
         restUser.setFirstname("foo first name");
         restUser.setLastname("foo last name");
         restUser.setPassword("admin");

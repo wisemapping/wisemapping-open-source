@@ -74,19 +74,6 @@ public class UserManagerImpl
     }
 
     @Override
-    public User getUserByUsername(String username) {
-        final User user;
-        final List users = getHibernateTemplate().find("from com.wisemapping.model.User colaborator where username=?", username);
-        if (users != null && !users.isEmpty()) {
-            assert users.size() == 1 : "More than one user with the same username!";
-            user = (User) users.get(0);
-        } else {
-            user = null;
-        }
-        return user;
-    }
-
-    @Override
     public void createUser(User user) {
         assert user != null : "Trying to store a null user";
         user.setPassword(passwordEncoder.encodePassword(user.getPassword(), null));

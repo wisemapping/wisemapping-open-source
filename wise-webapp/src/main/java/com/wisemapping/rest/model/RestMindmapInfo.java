@@ -88,7 +88,8 @@ public class RestMindmapInfo {
     }
 
     public String getLastModifierUser() {
-        return mindmap.getLastModifierUser();
+        final User user = mindmap.getLastEditor();
+        return user != null ? user.getFullName() : "unknown";
     }
 
     public String getLastModificationTime() {

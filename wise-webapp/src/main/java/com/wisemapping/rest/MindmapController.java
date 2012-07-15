@@ -438,7 +438,7 @@ public class MindmapController extends BaseController {
     private void saveMindmap(boolean minor, @NotNull final MindMap mindMap, @NotNull final User user) throws WiseMappingException {
         final Calendar now = Calendar.getInstance();
         mindMap.setLastModificationTime(now);
-        mindMap.setLastModifierUser(user.getUsername());
+        mindMap.setLastEditor(user);
         mindmapService.updateMindmap(mindMap, !minor);
     }
 
