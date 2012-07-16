@@ -109,8 +109,8 @@
             <div id="footerLogo"></div>
         </a>
 
-        <div id="zoomIn" class="button"></div>
         <div id="zoomOut" class="button"></div>
+        <div id="zoomIn" class="button"></div>
 
         <div id="mapDetails">
             <span class="title"><spring:message code="CREATOR"/>:</span><span>${mindmap.creator.fullName}</span>
