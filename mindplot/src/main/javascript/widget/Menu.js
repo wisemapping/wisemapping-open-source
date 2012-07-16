@@ -271,7 +271,7 @@ mindplot.widget.Menu = new Class({
         this._addButton('addTopic', true, false, function () {
             designer.createChildForSelectedNode();
         });
-        this._registerTooltip('addTopics', $msg('ADD_TOPIC'), "Enter");
+        this._registerTooltip('addTopic', $msg('ADD_TOPIC'), "Enter");
 
 
         this._addButton('deleteTopic', true, true, function () {
