@@ -55,6 +55,10 @@ mindplot.widget.ToolbarItem = new Class({
         return elem;
     }.protect(),
 
+    getButtonId : function(){
+      return this._buttonId;
+    },
+
     show : function() {
         this.fireEvent('show');
     },

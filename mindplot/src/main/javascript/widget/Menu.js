@@ -239,17 +239,34 @@ mindplot.widget.Menu = new Class({
         this._registerTooltip('zoomOut', $msg('ZOOM_OUT'));
 
 
-        this._addButton('undoEdition', false, false, function () {
+        var undoButton = this._addButton('undoEdition', false, false, function () {
             designer.undo();
         });
+        undoButton.disable();
         this._registerTooltip('undoEdition', $msg('UNDO'), "meta+Z");
 
 
-        this._addButton('redoEdition', false, false, function () {
+        var redoButton = this._addButton('redoEdition', false, false, function () {
             designer.redo();
         });
+        redoButton.disable();
         this._registerTooltip('redoEdition', $msg('REDO'), "meta+shift+Z");
 
+        if (redoButton && undoButton) {
+            designer.addEvent('modelUpdate', function (event) {
+                if (event.undoSteps > 0) {
+                    undoButton.enable();
+                } else {
+                    undoButton.disable();
+                }
+                if (event.redoSteps > 0) {
+                    redoButton.enable();
+                } else {
+                    redoButton.disable();
+                }
+
+            }.bind(this));
+        }
 
         this._addButton('addTopics', true, false, function () {
             designer.createChildForSelectedNode();
@@ -442,24 +459,27 @@ mindplot.widget.Menu = new Class({
             var rels = designer.getModel().filterSelectedRelationships();
 
             this._toolbarElems.each(function (button) {
-                var disable = false;
-                if (button.isTopicAction() && button.isRelAction()) {
-                    disable = rels.length == 0 && topics.length == 0;
-                } else if (!button.isTopicAction() && !button.isRelAction()) {
-                    disable = false;
-                }
-                else if (button.isTopicAction() && topics.length == 0) {
-                    disable = true;
-                } else if (button.isRelAction() && rels.length == 0) {
-                    disable = true;
-                }
+                var buttonId = button.getButtonId();
+                if (buttonId != "undoEdition" && buttonId != "redoEdition") {
 
-                if (disable) {
-                    button.disable();
-                } else {
-                    button.enable();
-                }
+                    var disable = false;
+                    if (button.isTopicAction() && button.isRelAction()) {
+                        disable = rels.length == 0 && topics.length == 0;
+                    } else if (!button.isTopicAction() && !button.isRelAction()) {
+                        disable = false;
+                    }
+                    else if (button.isTopicAction() && topics.length == 0) {
+                        disable = true;
+                    } else if (button.isRelAction() && rels.length == 0) {
+                        disable = true;
+                    }
 
+                    if (disable) {
+                        button.disable();
+                    } else {
+                        button.enable();
+                    }
+                }
             })
         }.bind(this));
 
@@ -468,12 +488,16 @@ mindplot.widget.Menu = new Class({
             var rels = designer.getModel().filterSelectedRelationships();
 
             this._toolbarElems.each(function (button) {
-                if (button.isTopicAction() && topics.length > 0) {
-                    button.enable();
-                }
+                var buttonId = button.getButtonId();
+                if (buttonId != "undoEdition" && buttonId != "redoEdition") {
 
-                if (button.isRelAction() && rels.length > 0) {
-                    button.enable();
+                    if (button.isTopicAction() && topics.length > 0) {
+                        button.enable();
+                    }
+
+                    if (button.isRelAction() && rels.length > 0) {
+                        button.enable();
+                    }
                 }
             })
         }.bind(this));
@@ -481,6 +505,7 @@ mindplot.widget.Menu = new Class({
 
     _addButton:function (buttonId, topic, rel, fn) {
         // Register Events ...
+        var result = null;
         if ($(buttonId)) {
 
             var button = new mindplot.widget.ToolbarItem(buttonId, function (event) {
@@ -489,7 +514,9 @@ mindplot.widget.Menu = new Class({
             }.bind(this), {topicAction:topic, relAction:rel});
 
             this._toolbarElems.push(button);
+            result = button;
         }
+        return result;
     },
 
     _registerTooltip:function (buttonId, text, shortcut) {
