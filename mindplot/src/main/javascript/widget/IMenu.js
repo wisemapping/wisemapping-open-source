@@ -26,6 +26,12 @@ mindplot.widget.IMenu = new Class({
         this._toolbarElems = [];
         this._containerId = containerId;
         this._mapId = mapId;
+        this._mindmapUpdated = false;
+
+        // Register update events ...
+        this._designer.addEvent('modelUpdate', function () {
+            this.setRequireChange(true);
+        }.bind(this));
     },
 
     clear:function () {
@@ -35,9 +41,17 @@ mindplot.widget.IMenu = new Class({
     },
 
     discardChanges:function () {
+        // Avoid autosave before leaving the page ....
+        this.setRequireChange(false);
+
+        // Finally call discard function ...
         var persistenceManager = mindplot.PersistenceManager.getInstance();
         var mindmap = designer.getMindmap();
         persistenceManager.discardChanges(mindmap.getId());
+
+        // Reload the page ...
+        window.location.reload();
+
     },
 
     save:function (saveElem, designer, saveHistory) {
@@ -54,6 +68,7 @@ mindplot.widget.IMenu = new Class({
         }
 
         // Call persistence manager for saving ...
+        var menu = this;
         var persistenceManager = mindplot.PersistenceManager.getInstance();
         persistenceManager.save(mindmap, mindmapProp, saveHistory, {
             onSuccess:function () {
@@ -61,6 +76,7 @@ mindplot.widget.IMenu = new Class({
                     saveElem.setStyle('cursor', 'pointer');
                     $notify($msg('SAVE_COMPLETE'));
                 }
+                menu.setRequireChange(false);
             },
             onError:function () {
                 if (saveHistory) {
@@ -69,5 +85,13 @@ mindplot.widget.IMenu = new Class({
                 }
             }
         });
+    },
+
+    isSaveRequired:function () {
+        return this._mindmapUpdated;
+    },
+
+    setRequireChange:function (value) {
+        this._mindmapUpdated = value;
     }
 });

@@ -527,13 +527,6 @@ mindplot.Designer = new Class({
             this._relPivot.start(nodes[0], pos);
         },
 
-
-        needsSave:function () {
-            //@Todo: Review all this ...
-            return this._actionDispatcher._actionRunner.hasBeenChanged();
-        },
-
-
         getMindmapProperties:function () {
             return   {zoom:this.getModel().getZoom()};
         },

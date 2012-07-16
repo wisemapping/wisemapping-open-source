@@ -304,14 +304,14 @@ mindplot.widget.Menu = new Class({
             if (!readOnly) {
                 // To prevent the user from leaving the page with changes ...
                 $(window).addEvent('beforeunload', function () {
-                    if (designer.needsSave()) {
+                    if (this.isSaveRequired()) {
                         this.save(saveElem, designer, false);
                     }
                 }.bind(this));
 
                 // Autosave on a fixed period of time ...
                 (function () {
-                    if (designer.needsSave()) {
+                    if (this.isSaveRequired()) {
                         this.save(saveElem, designer, false);
                     }
                 }.bind(this)).periodical(30000);
@@ -321,14 +321,7 @@ mindplot.widget.Menu = new Class({
         var discardElem = $('discard');
         if (discardElem) {
             this._addButton('discard', false, false, function () {
-                // Avoid autosave before leaving the page ....
-                $(window).removeEvents(['beforeunload']);
-
-                // Discard changes ...
                 this.discardChanges();
-
-                // Reload the page ...
-                window.location.reload();
             }.bind(this));
             this._registerTooltip('discard', $msg('DISCARD_CHANGES'));
         }

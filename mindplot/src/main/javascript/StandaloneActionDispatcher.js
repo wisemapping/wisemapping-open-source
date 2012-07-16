@@ -23,12 +23,6 @@ mindplot.StandaloneActionDispatcher = new Class({
         this._actionRunner = new mindplot.DesignerActionRunner(commandContext, this);
     },
 
-    hasBeenChanged:function () {
-        // @todo: This don't seems to belong here.
-        this._actionRunner.hasBeenChanged();
-    },
-
-
     addTopics:function (models, parentTopicsId) {
         var command = new mindplot.commands.AddTopicCommand(models, parentTopicsId);
         this.execute(command);

@@ -21,8 +21,6 @@ mindplot.DesignerUndoManager = new Class({
         this._undoQueue = [];
         this._redoQueue = [];
         this._baseId = 0;
-        this._fireChange = fireChange;
-
     },
 
     enqueue:function(command) {
@@ -62,9 +60,9 @@ mindplot.DesignerUndoManager = new Class({
     },
 
     markAsChangeBase: function() {
-        var undoLenght = this._undoQueue.length;
-        if (undoLenght > 0) {
-            var command = this._undoQueue[undoLenght - 1];
+        var undoLength = this._undoQueue.length;
+        if (undoLength > 0) {
+            var command = this._undoQueue[undoLength - 1];
             this._baseId = command.getId();
         } else {
             this._baseId = 0;
@@ -73,11 +71,11 @@ mindplot.DesignerUndoManager = new Class({
 
     hasBeenChanged: function() {
         var result = true;
-        var undoLenght = this._undoQueue.length;
-        if (undoLenght == 0 && this._baseId == 0) {
+        var undoLength= this._undoQueue.length;
+        if (undoLength == 0 && this._baseId == 0) {
             result = false;
-        } else if (undoLenght > 0) {
-            var command = this._undoQueue[undoLenght - 1];
+        } else if (undoLength > 0) {
+            var command = this._undoQueue[undoLength - 1];
             result = (this._baseId != command.getId());
         }
         return result;
