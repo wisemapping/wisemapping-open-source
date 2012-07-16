@@ -21,7 +21,7 @@ mindplot.Relationship = new Class({
         getStrokeColor:function () {
             return '#9b74e6';
         },
-        type: "Relationship"
+        type:"Relationship"
     },
     initialize:function (sourceNode, targetNode, model) {
         $assert(sourceNode, "sourceNode can not be null");
@@ -202,8 +202,7 @@ mindplot.Relationship = new Class({
 
             this._controlPointsController.setVisibility(focus);
             this._onFocus = focus;
-            console.log("foucus:....");
-
+            this.fireEvent(focus ? 'ontfocus' : 'ontblur', this);
         }
     },
 
@@ -316,5 +315,10 @@ mindplot.Relationship = new Class({
 
     getId:function () {
         return this._model.getId();
+    },
+
+    fireEvent:function (type, event) {
+        var elem = this._line2d;
+        elem.fireEvent(type, event);
     }
 });

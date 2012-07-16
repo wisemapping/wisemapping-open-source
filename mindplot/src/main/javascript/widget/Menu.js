@@ -268,7 +268,7 @@ mindplot.widget.Menu = new Class({
             }.bind(this));
         }
 
-        this._addButton('addTopics', true, false, function () {
+        this._addButton('addTopic', true, false, function () {
             designer.createChildForSelectedNode();
         });
         this._registerTooltip('addTopics', $msg('ADD_TOPIC'), "Enter");
@@ -459,25 +459,14 @@ mindplot.widget.Menu = new Class({
             var rels = designer.getModel().filterSelectedRelationships();
 
             this._toolbarElems.each(function (button) {
-                var buttonId = button.getButtonId();
-                if (buttonId != "undoEdition" && buttonId != "redoEdition") {
+                var isTopicAction = button.isTopicAction();
+                var isRelAction = button.isRelAction();
 
-                    var disable = false;
-                    if (button.isTopicAction() && button.isRelAction()) {
-                        disable = rels.length == 0 && topics.length == 0;
-                    } else if (!button.isTopicAction() && !button.isRelAction()) {
-                        disable = false;
-                    }
-                    else if (button.isTopicAction() && topics.length == 0) {
-                        disable = true;
-                    } else if (button.isRelAction() && rels.length == 0) {
-                        disable = true;
-                    }
-
-                    if (disable) {
-                        button.disable();
-                    } else {
+                if (isTopicAction || isRelAction) {
+                    if ((isTopicAction && topics.length != 0) || (isRelAction && rels.length != 0)) {
                         button.enable();
+                    } else {
+                        button.disable();
                     }
                 }
             })
@@ -488,14 +477,16 @@ mindplot.widget.Menu = new Class({
             var rels = designer.getModel().filterSelectedRelationships();
 
             this._toolbarElems.each(function (button) {
-                var buttonId = button.getButtonId();
-                if (buttonId != "undoEdition" && buttonId != "redoEdition") {
+                var isTopicAction = button.isTopicAction();
+                var isRelAction = button.isRelAction();
 
-                    if (button.isTopicAction() && topics.length > 0) {
+                if (isTopicAction || isRelAction) {
+
+                    if (isTopicAction && topics.length > 0) {
                         button.enable();
                     }
 
-                    if (button.isRelAction() && rels.length > 0) {
+                    if (isRelAction && rels.length > 0) {
                         button.enable();
                     }
                 }

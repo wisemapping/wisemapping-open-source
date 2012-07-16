@@ -661,12 +661,30 @@ mindplot.Designer = new Class({
 
             // Build relationship line ....
             var result = new mindplot.Relationship(sourceTopic, targetTopic, model);
-            result.addEvent('onfocus', function (event) {
-                this.onObjectFocusEvent(result, event);
+
+            result.addEvent('ontblur', function () {
+                var topics = this.getModel().filterSelectedTopics();
+                var rels = this.getModel().filterSelectedRelationships();
+
+                if (topics.length == 0 || rels.length == 0) {
+                    this.fireEvent('onblur');
+                }
+            }.bind(this));
+
+            result.addEvent('ontfocus', function () {
+                var topics = this.getModel().filterSelectedTopics();
+                var rels = this.getModel().filterSelectedRelationships();
+
+                if (topics.length == 1 || rels.length == 1) {
+                    this.fireEvent('onfocus');
+                }
             }.bind(this));
 
             // Append it to the workspace ...
             dmodel.addRelationship(result);
+
+
+
             return  result;
         },
 
