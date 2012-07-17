@@ -26,15 +26,16 @@ import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.User;
 import org.apache.commons.io.IOUtils;
+import org.apache.velocity.app.VelocityEngine;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Calendar;
-import java.util.Locale;
-import java.util.UUID;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
 
 public class UserServiceImpl
         implements UserService {
@@ -42,6 +43,7 @@ public class UserServiceImpl
     private MindmapService mindmapService;
     private NotificationService notificationService;
     private MessageSource messageSource;
+    private VelocityEngine velocityEngine;
 
 
     @Override
@@ -131,6 +133,7 @@ public class UserServiceImpl
         final MindMap mindMap = buildWelcomeMindmap(user.getFirstname());
         mindmapService.addMindmap(mindMap, user);
 
+
         // Send registration email.
         if (emailConfirmEnabled) {
             notificationService.sendRegistrationEmail(user);
@@ -142,24 +145,27 @@ public class UserServiceImpl
         return user;
     }
 
-    private MindMap buildWelcomeMindmap(@NotNull String firstName) throws WiseMappingException {
+    public MindMap buildWelcomeMindmap(@NotNull String firstName) {
         //To change body of created methods use File | Settings | File Templates.
-        final Locale locale = LocaleContextHolder.getLocale();
-        MindMap result = new MindMap();
+        Locale locale = LocaleContextHolder.getLocale();
 
-        final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-        InputStream resourceAsStream = contextClassLoader.getResourceAsStream("samples/welcome_" + locale.toString() + ".xml");
-        if (resourceAsStream == null) {
-            resourceAsStream = contextClassLoader.getResourceAsStream("samples/welcome_en.xml");
-        }
+        // @TODO: Remove this once is translated
+        locale = Locale.ENGLISH;
+        MindMap result = new MindMap();
+        final Map<String, Object> model = new HashMap<String, Object>();
+        model.put("messages", messageSource);
+        model.put("noArgs", new Object[]{});
+        model.put("locale", locale);
+
+        final String mapXml = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "/samples/tutorial.vm", model);
+
         try {
-            final byte[] bytes = IOUtils.toByteArray(resourceAsStream);
-            result.setXml(bytes);
+            result.setXmlStr(mapXml);
             result.setTitle(messageSource.getMessage("WELCOME", null, locale) + " " + firstName);
             result.setDescription("");
 
         } catch (IOException e) {
-            throw new WiseMappingException("Could not be loaded", e);
+            e.printStackTrace();
         }
 
         return result;
@@ -200,5 +206,9 @@ public class UserServiceImpl
 
     public void setMessageSource(@NotNull MessageSource messageSource) {
         this.messageSource = messageSource;
+    }
+
+    public void setVelocityEngine(VelocityEngine velocityEngine) {
+        this.velocityEngine = velocityEngine;
     }
 }

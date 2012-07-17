@@ -16,7 +16,7 @@
         <property name="mindmapService" ref="mindMapServiceTarget"/>
         <property name="notificationService" ref="notificationService"/>
         <property name="messageSource" ref="messageSource"/>
-
+        <property name="velocityEngine" ref="velocityEngine"/>
     </bean>
 
     <bean id="userService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">

@@ -21,6 +21,7 @@ package com.wisemapping.mail;
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.MindMap;
 import com.wisemapping.model.User;
+import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,16 +138,17 @@ final public class NotificationService {
     }
 
     public void sendRegistrationEmail(@NotNull User user) {
-        try {
-            final Map<String, Object> model = new HashMap<String, Object>();
-            model.put("user", user);
-            final String activationUrl = "http://wisemapping.com/c/activation?code=" + user.getActivationCode();
-            model.put("emailcheck", activationUrl);
-            mailer.sendEmail(mailer.getServerSenderEmail(), user.getEmail(), "Welcome to Wisemapping!", model,
-                    "confirmationMail.vm");
-        } catch (Exception e) {
-            handleException(e);
-        }
+        throw new UnsupportedOperationException("Not implemented yet");
+//        try {
+//            final Map<String, Object> model = new HashMap<String, Object>();
+//            model.put("user", user);
+//            final String activationUrl = "http://wisemapping.com/c/activation?code=" + user.getActivationCode();
+//            model.put("emailcheck", activationUrl);
+//            mailer.sendEmail(mailer.getServerSenderEmail(), user.getEmail(), "Welcome to Wisemapping!", model,
+//                    "confirmationMail.vm");
+//        } catch (Exception e) {
+//            handleException(e);
+//        }
     }
 
     public void reportMindmapEditorError(@NotNull MindMap mindmap, @NotNull User user, @NotNull String userAgent, @Nullable String jsErrorMsg) {
@@ -198,11 +200,8 @@ final public class NotificationService {
             e.printStackTrace(pw);
             retValue = sw.toString();
         } finally {
-            try {
-                if (pw != null) pw.close();
-                if (sw != null) sw.close();
-            } catch (IOException ignore) {
-            }
+            IOUtils.closeQuietly(pw);
+            IOUtils.closeQuietly(sw);
         }
         return retValue;
     }
