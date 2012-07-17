@@ -236,7 +236,7 @@ mindplot.DesignerKeyboard = new Class({
                         }
                     }
                 } else {
-                    var centralTopic = designer.getCentralTopic();
+                    var centralTopic = model.getCentralTopic();
                     this._goToNode(designer, centralTopic);
                 }
             }.bind(this),
@@ -256,7 +256,7 @@ mindplot.DesignerKeyboard = new Class({
                         }
                     }
                 } else {
-                    var centralTopic = designer.getCentralTopic();
+                    var centralTopic = model.getCentralTopic();
                     this._goToNode(designer, centralTopic);
                 }
             }.bind(this),
@@ -268,7 +268,7 @@ mindplot.DesignerKeyboard = new Class({
                         this._goToBrother(designer, node, 'UP');
                     }
                 } else {
-                    var centralTopic = designer.getCentralTopic();
+                    var centralTopic = model.getCentralTopic();
                     this._goToNode(designer, centralTopic);
                 }
             }.bind(this),
@@ -280,7 +280,7 @@ mindplot.DesignerKeyboard = new Class({
                         this._goToBrother(designer, node, 'DOWN');
                     }
                 } else {
-                    var centralTopic = designer.getCentralTopic();
+                    var centralTopic = model.getCentralTopic();
                     this._goToNode(designer, centralTopic);
                 }
             }.bind(this)
@@ -331,7 +331,7 @@ mindplot.DesignerKeyboard = new Class({
     },
 
     _goToBrother:function (designer, node, direction) {
-        var brothers = node._parent.getChildren();
+        var brothers = node.getParent().getChildren();
         var target = node;
         var y = node.getPosition().y;
         var x = node.getPosition().x;
@@ -394,8 +394,10 @@ mindplot.DesignerKeyboard = new Class({
     },
 
     _goToParent:function (designer, node) {
-        var parent = node._parent;
-        this._goToNode(designer, parent);
+        var parent = node.getParent();
+        if (parent) {
+            this._goToNode(designer, parent);
+        }
     },
 
     _goToChild:function (designer, node) {
