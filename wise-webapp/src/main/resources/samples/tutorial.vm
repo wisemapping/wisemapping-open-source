@@ -1,20 +1,20 @@
 <map name="usage" version="tango">
-    <topic central="true" text="How to Start ?" id="1" fontStyle=";;#eeeeee;;;" bgColor="#0a0a08">
+    <topic central="true" text="${messages.getMessage("TUTORIAL.HOW_TO_START",$noArgs,$locale)}" id="1" fontStyle=";;#eeeeee;;;" bgColor="#0a0a08">
         <icon id="sign_help"/>
-        <topic position="171,-40" order="0" text="Topics Properties" id="11" fontStyle=";;#444444;;;" bgColor="#250be3"
+        <topic position="171,-40" order="0" text="${messages.getMessage("TUTORIAL.TOPIC_PROPERTIES",$noArgs,$locale)}" id="11" fontStyle=";;#444444;;;" bgColor="#250be3"
                brColor="#080559">
             <icon id="sign_cancel"/>
             <topic position="295,-92" order="1" text="${messages.getMessage("TUTORIAL.ADD_NOTES",$noArgs,$locale)}" id="31">
-                <note><![CDATA[This is a simple note !.]]></note>
+                <note><![CDATA[${messages.getMessage("SAMPLE_NOTE",$noArgs,$locale)}]]></note>
             </topic>
-            <topic position="321,-118" order="0" text="Add Links to Web Pages" id="7" fontStyle=";;#444444;;;">
+            <topic position="321,-118" order="0" text="${messages.getMessage("TUTORIAL.ADD_LINKS_WEBPAGES",$noArgs,$locale)}" id="7" fontStyle=";;#444444;;;">
                 <link url="http://www.google.com" type="url"/>
             </topic>
             <topic position="310,-14" order="3" text="${messages.getMessage("TUTORIAL.MULTIPLE_TEXT_STYLES",$noArgs,$locale)}"
                    id="32">
-                <topic position="402,-40" order="0" text="Color" id="33" fontStyle=";;#ff0000;;;"/>
-                <topic position="402,-13" order="1" text="Style" id="35" fontStyle=";;;bold;italic;"/>
-                <topic position="400,12" order="2" text="Type" id="36" fontStyle="Times;6;;;;"/>
+                <topic position="402,-40" order="0" text="${messages.getMessage("TUTORIAL.FONT_COLOR",$noArgs,$locale)}" id="33" fontStyle=";;#ff0000;;;"/>
+                <topic position="402,-13" order="1" text="${messages.getMessage("TUTORIAL.FONT_STYLE",$noArgs,$locale)}" id="35" fontStyle=";;;bold;italic;"/>
+                <topic position="400,12" order="2" text="${messages.getMessage("TUTORIAL.FONT_TYPE",$noArgs,$locale)}" id="36" fontStyle="Times;6;;;;"/>
             </topic>
             <topic position="302,38" order="4" text="${messages.getMessage("TUTORIAL.DIFFERENT_SHAPES",$noArgs,$locale)}" shape="rectagle" id="8"
                    fontStyle=";;#444444;;;"/>
@@ -22,7 +22,7 @@
                 <icon id="face_wink"/>
             </topic>
         </topic>
-        <topic position="-188,-66" order="1" text="Edition Using Keyboard" id="22" fontStyle=";;#444444;;;"
+        <topic position="-188,-66" order="1" text="${messages.getMessage("TUTORIAL.EDITION_USING_KEYBOARD",$noArgs,$locale)}" id="22" fontStyle=";;#444444;;;"
                bgColor="#add1f7">
             <icon id="hard_keyboard"/>
             <topic position="-348,-119" order="0" id="26" fontStyle=";;#444444;;;">
@@ -38,12 +38,12 @@
                    fontStyle=";;#444444;;;"/>
             <topic position="-355,-8" order="4" text="${messages.getMessage("TUTORIAL.MORE_KEY_TIPS",$noArgs,$locale)}" id="50"/>
         </topic>
-        <topic position="134,92" order="2" text="Sharing" id="6" fontStyle=";;#444444;;;" bgColor="#edabff">
-            <topic position="253,65" order="0" text="Invite Friends to Collaborate" id="9" fontStyle=";;#444444;;;"/>
-            <topic position="226,92" order="1" text="Embed in Blogs" id="10" fontStyle=";;#444444;;;"/>
-            <topic position="257,119" order="2" text="Public your mindmap as public" id="15" fontStyle=";;#444444;;;"/>
+        <topic position="134,92" order="2" text="${messages.getMessage("TUTORIAL.SHARING",$noArgs,$locale)}" id="6" fontStyle=";;#444444;;;" bgColor="#edabff">
+            <topic position="253,65" order="0" text="${messages.getMessage("TUTORIAL.INVITE_FRIEND",$noArgs,$locale)}" id="9" fontStyle=";;#444444;;;"/>
+            <topic position="226,92" order="1" text="${messages.getMessage("TUTORIAL.EMBED_IN_BLOGS",$noArgs,$locale)}" id="10" fontStyle=";;#444444;;;"/>
+            <topic position="257,119" order="2" text="${messages.getMessage("TUTORIAL.PUBLISH_YOUR_MAPS",$noArgs,$locale)}" id="15" fontStyle=";;#444444;;;"/>
         </topic>
-        <topic position="-178,71" order="3" text="Edition Using Mouse" id="2" fontStyle=";;#444444;;;"
+        <topic position="-178,71" order="3" text="${messages.getMessage("TUTORIAL.EDITION_USING_MOUSE",$noArgs,$locale)}" id="2" fontStyle=";;#444444;;;"
                bgColor="#d9b518">
             <icon id="hard_mouse"/>
             <topic position="-327,22" order="0" id="4" fontStyle=";;#444444;;;">
@@ -55,7 +55,7 @@
             <topic position="-327,92" order="2" id="5" fontStyle=";;#444444;;;">
                 <text><![CDATA[${messages.getMessage("TUTORIAL.DRAG_AND_DROP_TO_POSITION",$noArgs,$locale)}]]></text>
             </topic>
-            <topic position="-336,123" order="3" text="Use the Toolbar Functions " id="27"/>
+            <topic position="-336,123" order="3" text="${messages.getMessage("TUTORIAL.USER_THE_TOOLBAR",$noArgs,$locale)}" id="27"/>
         </topic>
     </topic>
     <relationship srcTopicId="22" destTopicId="2" lineType="3" endArrow="true" startArrow="false"/>
