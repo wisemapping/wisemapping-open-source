@@ -99,3 +99,12 @@ function stackTrace() {
         }
     };
 }(DOMParser));
+
+// Support for Windows ...
+if(!window.console){
+    console = {
+        log: function(e){
+
+        }
+    };
+}
