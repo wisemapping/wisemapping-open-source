@@ -165,7 +165,7 @@ final public class NotificationService {
             final String errorReporterEmail = mailer.getErrorReporterEmail();
             if (errorReporterEmail != null && !errorReporterEmail.isEmpty()) {
                 mailer.sendEmail(mailer.getServerSenderEmail(), errorReporterEmail, "[WiseMapping] Editor error from " + user.getEmail(), model,
-                        "editorErrorReport.vm");
+                        "errorNotification.vm");
             }
         } catch (Exception e) {
             handleException(e);
@@ -183,7 +183,24 @@ final public class NotificationService {
             final String errorReporterEmail = mailer.getErrorReporterEmail();
             if (errorReporterEmail != null && !errorReporterEmail.isEmpty()) {
                 mailer.sendEmail(mailer.getServerSenderEmail(), errorReporterEmail, "[WiseMapping] Export error from " + user.getEmail(), model,
-                        "editorErrorReport.vm");
+                        "errorNotification.vm");
+            }
+        } catch (Exception e) {
+            handleException(e);
+        }
+    }
+
+    public void reportUnexpectedError(@NotNull Throwable exception, @Nullable User user, @NotNull String userAgent) {
+        try {
+            final Map<String, Object> model = new HashMap<String, Object>();
+            model.put("user", user);
+            model.put("errorMsg", stackTraceToString(exception));
+            model.put("userAgent", userAgent);
+
+            final String errorReporterEmail = mailer.getErrorReporterEmail();
+            if (errorReporterEmail != null && !errorReporterEmail.isEmpty()) {
+                mailer.sendEmail(mailer.getServerSenderEmail(), errorReporterEmail, "[WiseMapping] Unexpected error from " + (user != null ? user.getEmail() : "anonymous"), model,
+                        "errorNotification.vm");
             }
         } catch (Exception e) {
             handleException(e);

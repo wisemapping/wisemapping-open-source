@@ -18,7 +18,10 @@
 
 package com.wisemapping.rest;
 
+import com.wisemapping.mail.NotificationService;
+import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestErrors;
+import com.wisemapping.security.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,6 +37,9 @@ public class BaseController {
     @Autowired
     private ResourceBundleMessageSource messageSource;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
@@ -46,14 +52,15 @@ public class BaseController {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public String handleServerErrors(@NotNull Exception ex) {
-        ex.printStackTrace();
+        final User user = Utils.getUser();
+        notificationService.reportUnexpectedError(ex, user, "unknown browser");
         return ex.getMessage();
     }
 
     @ExceptionHandler(ValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RestErrors handleValidationErrors(@NotNull ValidationException ex) {
-        return new RestErrors(ex.getErrors(),messageSource);
+        return new RestErrors(ex.getErrors(), messageSource);
     }
 
 

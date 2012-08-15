@@ -6,17 +6,17 @@
  obj - object to inspect
  */
 
-$defined = function(obj) {
+$defined = function (obj) {
     return (obj != undefined);
 };
 
 
-$assert = function(assert, message) {
+$assert = function (assert, message) {
     if (!$defined(assert) || !assert) {
         var stack;
         try {
             null.eval();
-        } catch(e) {
+        } catch (e) {
             stack = e;
         }
         console.log(message + "," + stack);
@@ -25,7 +25,7 @@ $assert = function(assert, message) {
     }
 };
 
-Math.sign = function(value) {
+Math.sign = function (value) {
     return (value >= 0) ? 1 : -1;
 };
 
@@ -34,7 +34,7 @@ function stackTrace() {
     var isCallstackPopulated = false;
     try {
         null.eval();
-    } catch(e) {
+    } catch (e) {
         if (e.stack) { //Firefox  and Chrome...
             result = e.stack;
             isCallstackPopulated = true;
@@ -60,7 +60,7 @@ function stackTrace() {
 /*! @source https://gist.github.com/1129031 */
 /*global document, DOMParser*/
 
-(function(DOMParser) {
+(function (DOMParser) {
     "use strict";
 
     var DOMParser_proto = DOMParser.prototype , real_parseFromString = DOMParser_proto.parseFromString;
@@ -75,7 +75,7 @@ function stackTrace() {
     } catch (ex) {
     }
 
-    DOMParser_proto.parseFromString = function(markup, type) {
+    DOMParser_proto.parseFromString = function (markup, type) {
         if (/^\s*text\/html\s*(?:;|$)/i.test(type)) {
             var
                 doc = document.implementation.createHTMLDocument("")
@@ -101,9 +101,9 @@ function stackTrace() {
 }(DOMParser));
 
 // Support for Windows ...
-if(!window.console){
+if (!window.console) {
     console = {
-        log: function(e){
+        log:function (e) {
 
         }
     };

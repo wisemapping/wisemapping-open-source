@@ -4,16 +4,23 @@
     <li>User Name: ${user.fullName}</li>
     <li>Email: ${user.email}</li>
     <li>User Agent: ${userAgent}</li>
-    <li>Mindmap Id: ${mapId}</li>
-    <li>Mindmap Title: ${mapTitle}</li>
+    #if($mapId)
+        <li>Mindmap Id: ${mapId}</li>
+    #end
+    #if($mapTitle)
+        <li>Mindmap Title: ${mapTitle}</li>
+    #end
 </ul>
+
 <pre style="border:1px dashed #a9a9a9">
     ${errorMsg}
 </pre>
 
+#if($mapXML)
 <pre style="border:1px dashed #a9a9a9">
     ${mapXML}
 </pre>
+#end
 
 </body>
 </html>
