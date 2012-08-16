@@ -28,12 +28,12 @@ import java.text.DateFormat;
 import java.util.*;
 
 public class MindMapBean {
-    private MindMap mindmap;
+    private Mindmap mindmap;
     private List<CollaboratorBean> viewers;
     private List<CollaboratorBean> collaborators;
     private Collaborator collaborator;
 
-    public MindMapBean(@NotNull final MindMap mindmap, @Nullable final Collaborator collaborator) {
+    public MindMapBean(@NotNull final Mindmap mindmap, @Nullable final Collaborator collaborator) {
         this.mindmap = mindmap;
         this.collaborator = collaborator;
         this.collaborators = filterCollaboratorBy(mindmap.getCollaborations(), CollaborationRole.EDITOR);
@@ -155,7 +155,7 @@ public class MindMapBean {
     }
 
 
-    public MindMap getDelegated() {
+    public Mindmap getDelegated() {
         return mindmap;
     }
 

@@ -22,7 +22,7 @@ import com.sun.org.apache.xerces.internal.dom.TextImpl;
 import com.wisemapping.importer.Importer;
 import com.wisemapping.importer.ImporterException;
 import com.wisemapping.importer.VersionNumber;
-import com.wisemapping.model.MindMap;
+import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.ShapeStyle;
 import com.wisemapping.util.JAXBUtils;
 import com.wisemapping.jaxb.freemind.*;
@@ -94,9 +94,9 @@ public class FreemindImporter
 
     }
 
-    public MindMap importMap(@NotNull String mapName, @NotNull String description, @NotNull InputStream input) throws ImporterException {
+    public Mindmap importMap(@NotNull String mapName, @NotNull String description, @NotNull InputStream input) throws ImporterException {
 
-        final MindMap result = new MindMap();
+        final Mindmap result = new Mindmap();
         nodesMap = new HashMap<String, TopicType>();
         relationships = new ArrayList<RelationshipType>();
         mindmapObjectFactory = new com.wisemapping.jaxb.wisemap.ObjectFactory();

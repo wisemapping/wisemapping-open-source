@@ -2,7 +2,7 @@ package com.wisemapping.rest.model;
 
 
 import com.wisemapping.model.Collaborator;
-import com.wisemapping.model.MindMap;
+import com.wisemapping.model.Mindmap;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,12 +26,12 @@ public class RestMindmapList {
     private List<RestMindmapInfo> mindmapsInfo;
 
     public RestMindmapList() {
-        this(Collections.<MindMap>emptyList(), null);
+        this(Collections.<Mindmap>emptyList(), null);
     }
 
-    public RestMindmapList(@NotNull List<MindMap> mindmaps, @NotNull Collaborator collaborator) {
+    public RestMindmapList(@NotNull List<Mindmap> mindmaps, @NotNull Collaborator collaborator) {
         this.mindmapsInfo = new ArrayList<RestMindmapInfo>();
-        for (MindMap mindMap : mindmaps) {
+        for (Mindmap mindMap : mindmaps) {
             this.mindmapsInfo.add(new RestMindmapInfo(mindMap, collaborator));
         }
     }

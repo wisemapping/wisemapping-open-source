@@ -23,9 +23,8 @@ import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.AccessAuditory;
 import com.wisemapping.model.Collaborator;
-import com.wisemapping.model.MindMap;
+import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
-import org.apache.commons.io.IOUtils;
 import org.apache.velocity.app.VelocityEngine;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.MessageSource;
@@ -33,8 +32,6 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 public class UserServiceImpl
@@ -130,7 +127,7 @@ public class UserServiceImpl
         }
 
         //create welcome map
-        final MindMap mindMap = buildWelcomeMindmap(user.getFirstname());
+        final Mindmap mindMap = buildWelcomeMindmap(user.getFirstname());
         mindmapService.addMindmap(mindMap, user);
 
 
@@ -145,13 +142,13 @@ public class UserServiceImpl
         return user;
     }
 
-    public MindMap buildWelcomeMindmap(@NotNull String firstName) {
+    public Mindmap buildWelcomeMindmap(@NotNull String firstName) {
         //To change body of created methods use File | Settings | File Templates.
         Locale locale = LocaleContextHolder.getLocale();
 
         // @TODO: Remove this once is translated
         locale = Locale.ENGLISH;
-        MindMap result = new MindMap();
+        Mindmap result = new Mindmap();
         final Map<String, Object> model = new HashMap<String, Object>();
         model.put("messages", messageSource);
         model.put("noArgs", new Object[]{});

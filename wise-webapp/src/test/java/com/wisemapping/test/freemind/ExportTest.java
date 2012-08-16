@@ -4,7 +4,7 @@ import com.wisemapping.exporter.ExportException;
 import com.wisemapping.exporter.FreemindExporter;
 import com.wisemapping.importer.ImporterException;
 
-import com.wisemapping.model.MindMap;
+import com.wisemapping.model.Mindmap;
 import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.testng.Assert;
@@ -22,7 +22,7 @@ public class ExportTest {
     public void exportImportExportTest(@NotNull final File wisemap, @NotNull final File recFile) throws ImporterException, IOException, ExportException {
 
 
-        final MindMap mindmap = load(wisemap);
+        final Mindmap mindmap = load(wisemap);
 
         final FreemindExporter freemindExporter = new FreemindExporter();
         if (recFile.exists()) {
@@ -43,9 +43,9 @@ public class ExportTest {
         }
     }
 
-    private MindMap load(@NotNull File wisemap) throws IOException {
+    private Mindmap load(@NotNull File wisemap) throws IOException {
         final byte[] recContent = FileUtils.readFileToByteArray(wisemap);
-        final MindMap result = new MindMap();
+        final Mindmap result = new Mindmap();
         result.setXml(recContent);
         return result;
     }

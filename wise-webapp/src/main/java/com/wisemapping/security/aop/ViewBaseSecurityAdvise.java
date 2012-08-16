@@ -18,11 +18,11 @@
 
 package com.wisemapping.security.aop;
 
+import com.wisemapping.model.Mindmap;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.User;
-import com.wisemapping.model.MindMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,7 +35,7 @@ public class ViewBaseSecurityAdvise
         return methodInvocation.proceed();
     }
 
-    protected boolean isAllowed(@Nullable User user, MindMap map) {
+    protected boolean isAllowed(@Nullable User user, Mindmap map) {
         return getMindmapService().hasPermissions(user, map, CollaborationRole.VIEWER);
     }
 

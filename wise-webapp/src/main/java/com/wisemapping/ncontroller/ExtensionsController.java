@@ -18,7 +18,7 @@
 
 package com.wisemapping.ncontroller;
 
-import com.wisemapping.model.MindMap;
+import com.wisemapping.model.Mindmap;
 import com.wisemapping.service.MindmapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -37,7 +37,7 @@ public class ExtensionsController {
     @RequestMapping(value = "try")
     public ModelAndView tryEditor() throws IOException {
 
-        final MindMap mindmap = mindmapService.findMindmapById(TRY_EXAMPLE_MINDMAP_ID);
+        final Mindmap mindmap = mindmapService.findMindmapById(TRY_EXAMPLE_MINDMAP_ID);
 
         ModelAndView view = new ModelAndView("mindmapEditor", "mindmap", mindmap);
         final String xmlMap = mindmap.getXmlAsJsLiteral();

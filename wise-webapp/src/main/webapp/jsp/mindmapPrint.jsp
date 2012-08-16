@@ -1,7 +1,7 @@
 <%@page pageEncoding="UTF-8" %>
 <%@include file="/jsp/init.jsp" %>
 
-<%--@elvariable id="mindmap" type="com.wisemapping.model.MindMap"--%>
+<%--@elvariable id="mindmap" type="com.wisemapping.model.Mindmap"--%>
 <%--@elvariable id="editorTryMode" type="java.lang.Boolean"--%>
 <%--@elvariable id="editorTryMode" type="java.lang.String"--%>
 <%--@elvariable id="mapXml" type="com.wisemapping.model.User"--%>

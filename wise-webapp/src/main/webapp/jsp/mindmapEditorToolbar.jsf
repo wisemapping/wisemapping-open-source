@@ -1,4 +1,4 @@
-<%--@elvariable id="mindmap" type="com.wisemapping.model.MindMap"--%>
+<%--@elvariable id="mindmap" type="com.wisemapping.model.Mindmap"--%>
 
 <div id="toolbar">
     <div id="persist" class="buttonContainer">

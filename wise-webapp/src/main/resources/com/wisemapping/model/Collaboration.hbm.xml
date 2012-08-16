@@ -16,7 +16,7 @@
         <many-to-one name="mindMap"
                      column="MINDMAP_ID"
                      not-null="true"
-                     class="com.wisemapping.model.MindMap"
+                     class="com.wisemapping.model.Mindmap"
                 />
 
         <many-to-one name="collaborator"

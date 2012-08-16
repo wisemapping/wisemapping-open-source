@@ -20,7 +20,7 @@ package com.wisemapping.exporter;
 
 
 import com.wisemapping.importer.freemind.FreemindIconConverter;
-import com.wisemapping.model.MindMap;
+import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.ShapeStyle;
 import com.wisemapping.util.JAXBUtils;
 import com.wisemapping.jaxb.freemind.*;
@@ -48,7 +48,7 @@ public class FreemindExporter
 
     private Map<String, Node> nodesMap = null;
 
-    public void export(MindMap map, OutputStream outputStream) throws ExportException {
+    public void export(Mindmap map, OutputStream outputStream) throws ExportException {
         export(map.getXml(), outputStream);
     }
 

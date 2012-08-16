@@ -1,8 +1,6 @@
 package com.wisemapping.rest.model;
 
 
-import com.wisemapping.model.Collaborator;
-import com.wisemapping.model.MindMap;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.jetbrains.annotations.NotNull;
 

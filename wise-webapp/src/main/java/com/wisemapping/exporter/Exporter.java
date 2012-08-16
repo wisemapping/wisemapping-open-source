@@ -18,11 +18,11 @@
 
 package com.wisemapping.exporter;
 
-import com.wisemapping.model.MindMap;
+import com.wisemapping.model.Mindmap;
 
 import java.io.OutputStream;
 
 public interface Exporter {
     public void export(byte[] xml, OutputStream outputStream) throws ExportException;
-    public void export(MindMap map, OutputStream outputStream) throws ExportException;
+    public void export(Mindmap map, OutputStream outputStream) throws ExportException;
 }

@@ -22,7 +22,7 @@ import com.wisemapping.importer.ImportFormat;
 import com.wisemapping.importer.Importer;
 import com.wisemapping.importer.ImporterException;
 import com.wisemapping.importer.ImporterFactory;
-import com.wisemapping.model.MindMap;
+import com.wisemapping.model.Mindmap;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.servlet.view.AbstractView;
 
@@ -51,7 +51,7 @@ public class ImportTransformationView extends AbstractView {
 
         // Convert to map ...
         final InputStream is = new ByteArrayInputStream(content.getBytes("UTF-8"));
-        final MindMap mindMap = importer.importMap("filename", "filename", is);
+        final Mindmap mindMap = importer.importMap("filename", "filename", is);
 
         // Set file name...
         final String fileName = (filename != null ? filename : "map") + "." + "xwise";

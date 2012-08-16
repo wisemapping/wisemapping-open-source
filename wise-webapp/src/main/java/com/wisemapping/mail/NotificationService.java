@@ -19,14 +19,13 @@
 package com.wisemapping.mail;
 
 import com.wisemapping.model.Collaboration;
-import com.wisemapping.model.MindMap;
+import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -43,7 +42,7 @@ final public class NotificationService {
 
     }
 
-    public void newCollaboration(@NotNull Collaboration collaboration, @NotNull MindMap mindmap, @NotNull User user, @Nullable String message) {
+    public void newCollaboration(@NotNull Collaboration collaboration, @NotNull Mindmap mindmap, @NotNull User user, @Nullable String message) {
 
         try {
             // Sent collaboration email ...
@@ -151,7 +150,7 @@ final public class NotificationService {
 //        }
     }
 
-    public void reportMindmapEditorError(@NotNull MindMap mindmap, @NotNull User user, @NotNull String userAgent, @Nullable String jsErrorMsg) {
+    public void reportMindmapEditorError(@NotNull Mindmap mindmap, @NotNull User user, @NotNull String userAgent, @Nullable String jsErrorMsg) {
 
         try {
             final Map<String, Object> model = new HashMap<String, Object>();

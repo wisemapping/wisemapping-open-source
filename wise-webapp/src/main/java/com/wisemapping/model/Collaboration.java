@@ -24,14 +24,14 @@ public class Collaboration {
 
     private long id;
     private CollaborationRole role;
-    private MindMap mindMap;
+    private Mindmap mindMap;
     private Collaborator collaborator;
     private CollaborationProperties collaborationProperties;
 
     public Collaboration() {
     }
 
-    public Collaboration(@NotNull CollaborationRole role, @NotNull Collaborator collaborator, @NotNull MindMap mindmap) {
+    public Collaboration(@NotNull CollaborationRole role, @NotNull Collaborator collaborator, @NotNull Mindmap mindmap) {
         this.role = role;
         this.mindMap = mindmap;
         this.collaborator = collaborator;
@@ -65,11 +65,11 @@ public class Collaboration {
         this.role = role;
     }
 
-    public MindMap getMindMap() {
+    public Mindmap getMindMap() {
         return mindMap;
     }
 
-    public void setMindMap(MindMap mindMap) {
+    public void setMindMap(Mindmap mindMap) {
         this.mindMap = mindMap;
     }
 

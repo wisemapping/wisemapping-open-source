@@ -48,7 +48,7 @@ public class MindmapManagerImpl
     }
 
     @Override
-    public List<MindMap> search(MindMapCriteria criteria) {
+    public List<Mindmap> search(MindMapCriteria criteria) {
         return search(criteria, -1);
     }
 
@@ -75,8 +75,8 @@ public class MindmapManagerImpl
     }
 
     @Override
-    public List<MindMap> search(MindMapCriteria criteria, int maxResult) {
-        final Criteria hibernateCriteria = getSession().createCriteria(MindMap.class);
+    public List<Mindmap> search(MindMapCriteria criteria, int maxResult) {
+        final Criteria hibernateCriteria = getSession().createCriteria(Mindmap.class);
         //always search public maps
         hibernateCriteria.add(Restrictions.like("public", Boolean.TRUE));
 
@@ -159,19 +159,19 @@ public class MindmapManagerImpl
     }
 
     @Override
-    public List<MindMap> getAllMindmaps() {
-        return getHibernateTemplate().find("from com.wisemapping.model.MindMap wisemapping");
+    public List<Mindmap> getAllMindmaps() {
+        return getHibernateTemplate().find("from com.wisemapping.model.Mindmap wisemapping");
     }
 
     @Override
-    public MindMap getMindmapById(int mindmapId) {
-        return getHibernateTemplate().get(MindMap.class, mindmapId);
+    public Mindmap getMindmapById(int mindmapId) {
+        return getHibernateTemplate().get(Mindmap.class, mindmapId);
     }
 
     @Override
-    public MindMap getMindmapByTitle(final String title, final User user) {
-        final MindMap result;
-        List<MindMap> mindMaps = getHibernateTemplate().find("from com.wisemapping.model.MindMap wisemapping where title=? and creator=?", new Object[]{title, user});
+    public Mindmap getMindmapByTitle(final String title, final User user) {
+        final Mindmap result;
+        List<Mindmap> mindMaps = getHibernateTemplate().find("from com.wisemapping.model.Mindmap wisemapping where title=? and creator=?", new Object[]{title, user});
         if (mindMaps != null && !mindMaps.isEmpty()) {
             result = mindMaps.get(0);
         } else {
@@ -181,18 +181,18 @@ public class MindmapManagerImpl
     }
 
     @Override
-    public void addMindmap(User user, MindMap mindMap) {
+    public void addMindmap(User user, Mindmap mindMap) {
         saveMindmap(mindMap);
     }
 
     @Override
-    public void saveMindmap(MindMap mindMap) {
+    public void saveMindmap(Mindmap mindMap) {
         assert mindMap != null : "Save Mindmap: Mindmap is required!";
         getSession().save(mindMap);
     }
 
     @Override
-    public void updateMindmap(@NotNull MindMap mindMap, boolean saveHistory) {
+    public void updateMindmap(@NotNull Mindmap mindMap, boolean saveHistory) {
         assert mindMap != null : "Save Mindmap: Mindmap is required!";
         getHibernateTemplate().saveOrUpdate(mindMap);
         if (saveHistory) {
@@ -201,11 +201,11 @@ public class MindmapManagerImpl
     }
 
     @Override
-    public void removeMindmap(@NotNull final MindMap mindMap) {
+    public void removeMindmap(@NotNull final Mindmap mindMap) {
         getHibernateTemplate().delete(mindMap);
     }
 
-    private void saveHistory(@NotNull final MindMap mindMap) {
+    private void saveHistory(@NotNull final Mindmap mindMap) {
         final MindMapHistory history = new MindMapHistory();
 
         history.setXml(mindMap.getXml());

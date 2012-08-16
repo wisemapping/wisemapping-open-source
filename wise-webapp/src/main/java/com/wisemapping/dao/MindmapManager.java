@@ -35,29 +35,29 @@ public interface MindmapManager {
 
     Collaboration findCollaboration(final int mindmapId, final User user);
 
-    List<MindMap> getAllMindmaps();
+    List<Mindmap> getAllMindmaps();
 
-    MindMap getMindmapById(int mindmapId);
+    Mindmap getMindmapById(int mindmapId);
 
-    MindMap getMindmapByTitle(final String name, final User user);
+    Mindmap getMindmapByTitle(final String name, final User user);
 
     void addCollaborator(Collaborator collaborator);
 
-    void addMindmap(User user, MindMap mindMap);
+    void addMindmap(User user, Mindmap mindMap);
 
-    void saveMindmap(MindMap mindMap);
+    void saveMindmap(Mindmap mindMap);
 
-    void updateMindmap(@NotNull MindMap mindMap, boolean saveHistory);
+    void updateMindmap(@NotNull Mindmap mindMap, boolean saveHistory);
 
     void removeCollaborator(@NotNull Collaborator collaborator);
 
-    void removeMindmap(MindMap mindap);
+    void removeMindmap(Mindmap mindap);
 
     void removeCollaboration(Collaboration collaboration);
 
-    public List<MindMap> search(MindMapCriteria criteria);
+    public List<Mindmap> search(MindMapCriteria criteria);
 
-    public List<MindMap> search(MindMapCriteria criteria, int maxResult);
+    public List<Mindmap> search(MindMapCriteria criteria, int maxResult);
 
     public List<MindMapHistory> getHistoryFrom(int mindmapId);
 

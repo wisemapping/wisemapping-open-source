@@ -20,6 +20,7 @@ package com.wisemapping.model;
 
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.util.ZipUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,7 +31,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-public class MindMap {
+public class Mindmap {
     private static final String UTF_8 = "UTF-8";
 
     //~ Instance fields ......................................................................................
@@ -51,7 +52,7 @@ public class MindMap {
 
     //~ Constructors .........................................................................................
 
-    public MindMap() {
+    public Mindmap() {
     }
 
     //~ Methods ..............................................................................................
@@ -173,9 +174,7 @@ public class MindMap {
             throws IOException {
         String xml = this.getXmlStr();
         if (xml != null) {
-            xml = xml.replace("'", "\\'");
-            xml = xml.replaceAll("\\r|\\n", "");
-            xml = xml.trim();
+            xml = StringEscapeUtils.escapeJavaScript(xml);
         }
         return xml;
     }
@@ -249,13 +248,13 @@ public class MindMap {
         final StringBuilder result = new StringBuilder();
         result.append("<map version=\"tango\">");
         result.append("<topic central=\"true\" text=\"");
-        result.append(title);
+        result.append(StringEscapeUtils.escapeXml(title));
         result.append("\"/></map>");
         return result.toString();
     }
 
-    public MindMap shallowClone() {
-        final MindMap result = new MindMap();
+    public Mindmap shallowClone() {
+        final Mindmap result = new Mindmap();
         result.setDescription(this.getDescription());
         result.setTitle(this.getTitle());
         result.setXml(this.getXml());

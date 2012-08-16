@@ -19,8 +19,8 @@
 package com.wisemapping.security.aop;
 
 import com.wisemapping.model.CollaborationRole;
+import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
-import com.wisemapping.model.MindMap;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -36,7 +36,7 @@ public class UpdateSecurityAdvise
         return methodInvocation.proceed();
     }
 
-    protected boolean isAllowed(@Nullable User user, @NotNull MindMap map) {
+    protected boolean isAllowed(@Nullable User user, @NotNull Mindmap map) {
         boolean result;
         if (map.getCreator() == null) {
             // This means that the map is new and  is an add operation.

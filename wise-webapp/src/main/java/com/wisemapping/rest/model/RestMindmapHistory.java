@@ -1,16 +1,10 @@
 package com.wisemapping.rest.model;
 
 
-import com.wisemapping.model.Collaboration;
-import com.wisemapping.model.Collaborator;
-import com.wisemapping.model.MindMap;
 import com.wisemapping.model.MindMapHistory;
-import com.wisemapping.security.Utils;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

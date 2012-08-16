@@ -3,7 +3,7 @@ package com.wisemapping.rest.model;
 
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Collaborator;
-import com.wisemapping.model.MindMap;
+import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
 import com.wisemapping.security.Utils;
 import org.codehaus.jackson.annotate.*;
@@ -30,7 +30,7 @@ import java.util.TimeZone;
 public class RestMindmapInfo {
 
     @JsonIgnore
-    private MindMap mindmap;
+    private Mindmap mindmap;
     private Collaborator collaborator;
     @JsonIgnore
     static private SimpleDateFormat sdf;
@@ -41,11 +41,11 @@ public class RestMindmapInfo {
     }
 
     public RestMindmapInfo() {
-        this(new MindMap(), null);
+        this(new Mindmap(), null);
 
     }
 
-    public RestMindmapInfo(@NotNull MindMap mindmap, @Nullable Collaborator collaborator) {
+    public RestMindmapInfo(@NotNull Mindmap mindmap, @Nullable Collaborator collaborator) {
         this.mindmap = mindmap;
         this.collaborator = collaborator;
     }
@@ -135,7 +135,7 @@ public class RestMindmapInfo {
     }
 
     @JsonIgnore
-    public MindMap getDelegated() {
+    public Mindmap getDelegated() {
         return this.mindmap;
     }
 

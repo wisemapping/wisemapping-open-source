@@ -21,9 +21,8 @@ package com.wisemapping.ncontroller;
 
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.CollaborationRole;
-import com.wisemapping.model.MindMap;
+import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.MindMapHistory;
-import com.wisemapping.model.User;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.view.MindMapBean;
@@ -77,7 +76,7 @@ public class MindmapController {
 
     @RequestMapping(value = "maps/{id}/export")
     public String showExportPage(@PathVariable int id, @NotNull Model model) throws IOException {
-        final MindMap mindmap = findMindmap(id);
+        final Mindmap mindmap = findMindmap(id);
         model.addAttribute("mindmap", mindmap);
         return "mindmapExport";
     }
@@ -90,7 +89,7 @@ public class MindmapController {
 
     @RequestMapping(value = "maps/{id}/share")
     public String showSharePage(@PathVariable int id, @NotNull Model model) {
-        final MindMap mindmap = findMindmap(id);
+        final Mindmap mindmap = findMindmap(id);
         model.addAttribute("mindmap", mindmap);
         return "mindmapShare";
     }
@@ -103,7 +102,7 @@ public class MindmapController {
 
     @RequestMapping(value = "maps/{id}/publish")
     public String showPublishPage(@PathVariable int id, @NotNull Model model) {
-        final MindMap mindmap = findMindmap(id);
+        final Mindmap mindmap = findMindmap(id);
         model.addAttribute("mindmap", mindmap);
         model.addAttribute("baseUrl", siteBaseUrl);
         return "mindmapPublish";
@@ -137,7 +136,7 @@ public class MindmapController {
     @RequestMapping(value = "maps/{id}/edit", method = RequestMethod.GET)
     public String showMindmapEditorPage(@PathVariable int id, @NotNull Model model) {
         final MindMapBean mindmapBean = findMindmapBean(id);
-        final MindMap mindmap = mindmapBean.getDelegated();
+        final Mindmap mindmap = mindmapBean.getDelegated();
 
         String result;
         if (mindmap.hasPermissions(Utils.getUser(), CollaborationRole.EDITOR)) {
@@ -202,8 +201,8 @@ public class MindmapController {
         return "redirect:maps/" + mapId + "/embed?zoom=" + zoom;
     }
 
-    private MindMap findMindmap(long mapId) {
-        final MindMap mindmap = mindmapService.findMindmapById((int) mapId);
+    private Mindmap findMindmap(long mapId) {
+        final Mindmap mindmap = mindmapService.findMindmapById((int) mapId);
         if (mindmap == null) {
             throw new IllegalArgumentException("Mindmap could not be found");
         }

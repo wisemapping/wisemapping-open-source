@@ -18,15 +18,15 @@
 
 package com.wisemapping.view;
 
-import com.wisemapping.model.MindMap;
+import com.wisemapping.model.Mindmap;
 
 
 public class MindMapInfoBean {
     private String title;
     private String description;
-    private MindMap mindMap;
+    private Mindmap mindMap;
 
-    public MindMapInfoBean(MindMap map) {
+    public MindMapInfoBean(Mindmap map) {
         this.title = map.getTitle();
         this.description = map.getDescription();
 
@@ -55,7 +55,7 @@ public class MindMapInfoBean {
     }
 
 
-    public MindMap getMindMap() {
+    public Mindmap getMindMap() {
         if (mindMap != null) {
             mindMap.setTitle(title);
             mindMap.setDescription(description);

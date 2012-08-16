@@ -20,7 +20,7 @@
 
 package com.wisemapping.rest;
 
-import com.wisemapping.model.MindMap;
+import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,32 +28,32 @@ import org.jetbrains.annotations.Nullable;
 public enum MindmapFilter {
     ALL("all") {
         @Override
-        public boolean accept(@NotNull MindMap mindmap, @NotNull User user) {
+        public boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
             return true;
         }
 
     },
     MY_MAPS("my_maps") {
         @Override
-        boolean accept(@NotNull MindMap mindmap, @NotNull User user) {
+        boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
             return mindmap.getCreator().equals(user);
         }
     },
     STARRED("starred") {
         @Override
-        boolean accept(@NotNull MindMap mindmap, @NotNull User user) {
+        boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
             return mindmap.isStarred(user);
         }
     },
     SHARED_WITH_ME("shared_with_me") {
         @Override
-        boolean accept(@NotNull MindMap mindmap, @NotNull User user) {
+        boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
             return !MY_MAPS.accept(mindmap, user);
         }
     },
     PUBLIC("public") {
         @Override
-        boolean accept(@NotNull MindMap mindmap, @NotNull User user) {
+        boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
             return mindmap.isPublic();
         }
     };
@@ -76,6 +76,6 @@ public enum MindmapFilter {
         return result;
     }
 
-    abstract boolean accept(@NotNull MindMap mindmap, @NotNull User user);
+    abstract boolean accept(@NotNull Mindmap mindmap, @NotNull User user);
 
 }

@@ -19,7 +19,7 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.mail.NotificationService;
-import com.wisemapping.model.MindMap;
+import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestLogItem;
 import com.wisemapping.security.Utils;
@@ -96,7 +96,7 @@ public class AccountController extends BaseController {
     @RequestMapping(method = RequestMethod.POST, value = "logger/editor", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void changePassword(@RequestBody RestLogItem item) {
-        final MindMap mindmap = mindmapService.findMindmapById(item.getMapId());
+        final Mindmap mindmap = mindmapService.findMindmapById(item.getMapId());
         final User user = Utils.getUser();
         notificationService.reportMindmapEditorError(mindmap, user, item.getUserAgent(), item.getJsErrorMsg() + "\n" + item.getJsStack());
     }

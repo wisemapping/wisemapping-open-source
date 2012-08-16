@@ -46,12 +46,12 @@ public class MindmapServiceImpl
 
     @Override
     public boolean hasPermissions(@Nullable User user, int mapId, @NotNull CollaborationRole grantedRole) {
-        final MindMap map = mindmapManager.getMindmapById(mapId);
+        final Mindmap map = mindmapManager.getMindmapById(mapId);
         return hasPermissions(user, map, grantedRole);
     }
 
     @Override
-    public boolean hasPermissions(@Nullable User user, @Nullable MindMap map, @NotNull CollaborationRole role) {
+    public boolean hasPermissions(@Nullable User user, @Nullable Mindmap map, @NotNull CollaborationRole role) {
         boolean result = false;
         if (map != null) {
             if (map.isPublic() && role == CollaborationRole.VIEWER) {
@@ -68,12 +68,12 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public MindMap getMindmapByTitle(String title, User user) {
+    public Mindmap getMindmapByTitle(String title, User user) {
         return mindmapManager.getMindmapByTitle(title, user);
     }
 
     @Override
-    public MindMap findMindmapById(int mindmapId) {
+    public Mindmap findMindmapById(int mindmapId) {
         return mindmapManager.getMindmapById(mindmapId);
     }
 
@@ -83,7 +83,7 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public void updateMindmap(@NotNull MindMap mindMap, boolean saveHistory) throws WiseMappingException {
+    public void updateMindmap(@NotNull Mindmap mindMap, boolean saveHistory) throws WiseMappingException {
         if (mindMap.getTitle() == null || mindMap.getTitle().length() == 0) {
             throw new WiseMappingException("The tile can not be empty");
         }
@@ -91,14 +91,14 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public List<MindMap> search(MindMapCriteria criteria) {
+    public List<Mindmap> search(MindMapCriteria criteria) {
         return mindmapManager.search(criteria);
     }
 
     @Override
-    public void removeCollaboration(@NotNull MindMap mindmap, @NotNull Collaboration collaboration) throws CollaborationException {
+    public void removeCollaboration(@NotNull Mindmap mindmap, @NotNull Collaboration collaboration) throws CollaborationException {
         // remove collaborator association
-        final MindMap mindMap = collaboration.getMindMap();
+        final Mindmap mindMap = collaboration.getMindMap();
         final Set<Collaboration> collaborations = mindMap.getCollaborations();
 
         if (mindMap.getCreator().getEmail().equals(collaboration.getCollaborator().getEmail())) {
@@ -111,7 +111,7 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public void removeMindmap(@NotNull MindMap mindmap, @NotNull User user) throws WiseMappingException {
+    public void removeMindmap(@NotNull Mindmap mindmap, @NotNull User user) throws WiseMappingException {
         if (mindmap.getCreator().equals(user)) {
             mindmapManager.removeMindmap(mindmap);
         } else {
@@ -123,7 +123,7 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public void addMindmap(@NotNull MindMap map, @NotNull User user) throws WiseMappingException {
+    public void addMindmap(@NotNull Mindmap map, @NotNull User user) throws WiseMappingException {
 
         final String title = map.getTitle();
 
@@ -151,7 +151,7 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public void addCollaboration(@NotNull MindMap mindmap, @NotNull String email, @NotNull CollaborationRole role, @Nullable String message)
+    public void addCollaboration(@NotNull Mindmap mindmap, @NotNull String email, @NotNull CollaborationRole role, @Nullable String message)
             throws CollaborationException {
 
         // Validate
@@ -197,7 +197,7 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public void addTags(@NotNull MindMap mindmap, String tags) {
+    public void addTags(@NotNull Mindmap mindmap, String tags) {
         mindmap.setTags(tags);
         mindmapManager.updateMindmap(mindmap, false);
         if (tags != null && tags.length() > 0) {
@@ -226,7 +226,7 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public void revertChange(@NotNull MindMap mindmap, int historyId)
+    public void revertChange(@NotNull Mindmap mindmap, int historyId)
             throws WiseMappingException {
         final MindMapHistory history = mindmapManager.getHistory(historyId);
         mindmap.setXml(history.getXml());

@@ -27,7 +27,7 @@ public class RestMindmap {
     @JsonIgnore
     private Collaborator collaborator;
     @JsonIgnore
-    private MindMap mindmap;
+    private Mindmap mindmap;
     @JsonIgnore
     static private SimpleDateFormat sdf;
     private String properties;
@@ -38,11 +38,11 @@ public class RestMindmap {
     }
 
     public RestMindmap() throws WiseMappingException {
-        this(new MindMap(), null);
+        this(new Mindmap(), null);
 
     }
 
-    public RestMindmap(@NotNull MindMap mindmap, @Nullable Collaborator collaborator) throws WiseMappingException {
+    public RestMindmap(@NotNull Mindmap mindmap, @Nullable Collaborator collaborator) throws WiseMappingException {
         this.mindmap = mindmap;
         this.collaborator = collaborator;
         if (collaborator != null) {
@@ -172,7 +172,7 @@ public class RestMindmap {
     }
 
     @JsonIgnore
-    public MindMap getDelegated() {
+    public Mindmap getDelegated() {
         return this.mindmap;
     }
 

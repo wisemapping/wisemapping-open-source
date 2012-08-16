@@ -19,14 +19,13 @@
 package com.wisemapping.security.aop;
 
 import com.wisemapping.model.Collaborator;
-import com.wisemapping.model.MindMap;
+import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
 import com.wisemapping.exceptions.AccessDeniedSecurityException;
 import com.wisemapping.exceptions.UnexpectedArgumentException;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapService;
 import org.aopalliance.intercept.MethodInvocation;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class BaseSecurityAdvice {
@@ -37,8 +36,8 @@ public abstract class BaseSecurityAdvice {
         final Object argument = methodInvocation.getArguments()[0];
         boolean isAllowed;
 
-        if (argument instanceof MindMap) {
-            isAllowed = isAllowed(user, (MindMap) argument);
+        if (argument instanceof Mindmap) {
+            isAllowed = isAllowed(user, (Mindmap) argument);
         } else if (argument instanceof Integer) {
             isAllowed = isAllowed(user, ((Integer) argument));
         } else if (argument instanceof Collaborator) {
@@ -53,7 +52,7 @@ public abstract class BaseSecurityAdvice {
         }
     }
 
-    protected abstract boolean isAllowed(@Nullable User user, MindMap map);
+    protected abstract boolean isAllowed(@Nullable User user, Mindmap map);
 
     protected abstract boolean isAllowed(@Nullable User user, int mapId);
 
