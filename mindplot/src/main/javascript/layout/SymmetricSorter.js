@@ -49,7 +49,7 @@ mindplot.layout.SymmetricSorter = new Class({
 
             var sameParent = parent == graph.getParent(node);
             if (siblings.length == 0 && nodeDirection == positionDirection && sameParent) {
-                return [node.getOrder(), node.getPosition()];
+                return [node.getOrder() + 1, node.getPosition()];
             }
         }
 
@@ -90,6 +90,12 @@ mindplot.layout.SymmetricSorter = new Class({
                 x:first.getPosition().x,
                 y:first.getPosition().y - first.getSize().height - mindplot.layout.SymmetricSorter.INTERNODE_VERTICAL_PADDING * 2
             }];
+            return result;
+        }
+
+        // if the node is moving down, substract 1 from the order
+        if (node != null && parent == graph.getParent(node) && result[1].y > node.getPosition().y) {
+            result[0] = result[0] - 1;
         }
 
         return result;
