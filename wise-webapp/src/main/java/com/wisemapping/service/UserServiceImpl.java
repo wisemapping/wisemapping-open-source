@@ -127,7 +127,7 @@ public class UserServiceImpl
         }
 
         //create welcome map
-        final Mindmap mindMap = buildWelcomeMindmap(user.getFirstname());
+        final Mindmap mindMap = buildTutorialMindmap(user.getFirstname());
         mindmapService.addMindmap(mindMap, user);
 
 
@@ -142,7 +142,7 @@ public class UserServiceImpl
         return user;
     }
 
-    public Mindmap buildWelcomeMindmap(@NotNull String firstName) {
+    public Mindmap buildTutorialMindmap(@NotNull String firstName) {
         //To change body of created methods use File | Settings | File Templates.
         Locale locale = LocaleContextHolder.getLocale();
 

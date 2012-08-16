@@ -88,7 +88,9 @@
     </bean>
 
     <bean id="localeResolver"
-          class="org.springframework.web.servlet.i18n.SessionLocaleResolver"/>
+          class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+       <property name="defaultLocale" value="en" />
+    </bean>
 
     <bean id="reCaptcha" class="net.tanesha.recaptcha.ReCaptchaImpl">
         <property name="privateKey" value="${google.recaptcha.privateKey}"/>
