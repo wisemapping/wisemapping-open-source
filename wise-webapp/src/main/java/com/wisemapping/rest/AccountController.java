@@ -25,6 +25,7 @@ import com.wisemapping.rest.model.RestLogItem;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.service.UserService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -43,6 +44,9 @@ public class AccountController extends BaseController {
 
     @Autowired
     private NotificationService notificationService;
+
+    final Logger logger = Logger.getLogger("com.wisemapping");
+
 
     @RequestMapping(method = RequestMethod.PUT, value = "account/password", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
@@ -98,6 +102,7 @@ public class AccountController extends BaseController {
     public void changePassword(@RequestBody RestLogItem item) {
         final Mindmap mindmap = mindmapService.findMindmapById(item.getMapId());
         final User user = Utils.getUser();
+        logger.error("Unexpected editor error - " + item.getJsErrorMsg());
         notificationService.reportMindmapEditorError(mindmap, user, item.getUserAgent(), item.getJsErrorMsg() + "\n" + item.getJsStack());
     }
 
