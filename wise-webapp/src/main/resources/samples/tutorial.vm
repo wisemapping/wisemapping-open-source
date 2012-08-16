@@ -5,7 +5,7 @@
                brColor="#080559">
             <icon id="sign_cancel"/>
             <topic position="295,-92" order="1" text="${messages.getMessage("TUTORIAL.ADD_NOTES",$noArgs,$locale)}" id="31">
-                <note><![CDATA[${messages.getMessage("SAMPLE_NOTE",$noArgs,$locale)}]]></note>
+                <note><![CDATA[${messages.getMessage("TUTORIAL.SAMPLE_NOTE",$noArgs,$locale)}]]></note>
             </topic>
             <topic position="321,-118" order="0" text="${messages.getMessage("TUTORIAL.ADD_LINKS_WEBPAGES",$noArgs,$locale)}" id="7" fontStyle=";;#444444;;;">
                 <link url="http://www.google.com" type="url"/>
