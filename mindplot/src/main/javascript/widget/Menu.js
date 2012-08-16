@@ -243,14 +243,18 @@ mindplot.widget.Menu = new Class({
         var undoButton = this._addButton('undoEdition', false, false, function () {
             designer.undo();
         });
-        undoButton.disable();
+        if (undoButton) {
+            undoButton.disable();
+        }
         this._registerTooltip('undoEdition', $msg('UNDO'), "meta+Z");
 
 
         var redoButton = this._addButton('redoEdition', false, false, function () {
             designer.redo();
         });
-        redoButton.disable();
+        if (redoButton) {
+            redoButton.disable();
+        }
         this._registerTooltip('redoEdition', $msg('REDO'), "meta+shift+Z");
 
         if (redoButton && undoButton) {
