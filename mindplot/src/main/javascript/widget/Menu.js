@@ -223,7 +223,8 @@ mindplot.widget.Menu = new Class({
         this._registerTooltip('export', $msg('EXPORT'));
 
         this._addButton('print', false, false, function () {
-            window.open('c/maps/' + mapId + '/print');
+            var baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf("c/maps/"));
+            window.open(baseUrl + 'c/maps/' + mapId + '/print');
         });
 
         this._registerTooltip('print', $msg('PRINT'));

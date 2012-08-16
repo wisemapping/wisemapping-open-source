@@ -1,4 +1,4 @@
-jQuery.fn.dataTableExt.oSort['es_date-asc'] = function(a, b) {
+jQuery.fn.dataTableExt.oSort['es_date-asc'] = function (a, b) {
     var esDatea = a.split('/');
     var esDateb = b.split('/');
 
@@ -8,7 +8,7 @@ jQuery.fn.dataTableExt.oSort['es_date-asc'] = function(a, b) {
     return ((x < y) ? -1 : ((x > y) ? 1 : 0));
 };
 
-jQuery.fn.dataTableExt.oSort['es_date-desc'] = function(a, b) {
+jQuery.fn.dataTableExt.oSort['es_date-desc'] = function (a, b) {
     var esDatea = a.split('/');
     var esDateb = b.split('/');
 
@@ -29,7 +29,7 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function (oSettings, sNewSource, fnCallbac
 
     this.oApi._fnServerParams(oSettings, aData);
 
-    oSettings.fnServerData(oSettings.sAjaxSource, aData, function(json) {
+    oSettings.fnServerData(oSettings.sAjaxSource, aData, function (json) {
         /* Clear the old information from the table */
         that.oApi._fnClearTable(oSettings);
 
@@ -58,44 +58,44 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function (oSettings, sNewSource, fnCallbac
     }, oSettings);
 };
 
-jQuery.fn.dataTableExt.selectAllMaps = function() {
+jQuery.fn.dataTableExt.selectAllMaps = function () {
     var total = $('.select input:checkbox[id!="selectAll"]').size();
     var selected = $('.select input:checked[id!="selectAll"]').size();
     if (selected < total) {
-        $('.select input:!checked[id!="selectAll"]').each(function() {
+        $('.select input:!checked[id!="selectAll"]').each(function () {
             $(this).prop("checked", true);
         });
     }
     else {
-        $('.select input:!checked[id!="selectAll"]').each(function() {
+        $('.select input:!checked[id!="selectAll"]').each(function () {
             $(this).prop("checked", false);
         });
     }
     updateStatusToolbar();
 };
 
-jQuery.fn.dataTableExt.getSelectedMapsIds = function() {
+jQuery.fn.dataTableExt.getSelectedMapsIds = function () {
     var selectedRows = $('#mindmapListTable').dataTableExt.getSelectedRows();
     var dataTable = $('#mindmapListTable').dataTable();
-    return  selectedRows.map(function() {
+    return  selectedRows.map(function () {
         return dataTable.fnGetData(this).id;
     });
 };
 
-jQuery.fn.dataTableExt.getSelectedRows = function(oSettings) {
+jQuery.fn.dataTableExt.getSelectedRows = function (oSettings) {
     return $('.select  input:checked[id!="selectAll"]').parent().parent();
 };
 
-jQuery.fn.dataTableExt.removeSelectedRows = function() {
+jQuery.fn.dataTableExt.removeSelectedRows = function () {
     var trs = this.getSelectedRows();
-    trs.each(function() {
+    trs.each(function () {
         $('#mindmapListTable').dataTable().fnDeleteRow(this);
     });
     updateStatusToolbar();
 };
 
 
-jQuery.fn.dialogForm = function(options) {
+jQuery.fn.dialogForm = function (options) {
 
     var containerId = this[0].id;
     var url = options.url;
@@ -113,32 +113,35 @@ jQuery.fn.dialogForm = function(options) {
     var acceptBtn = $('#' + containerId + ' .btn-accept');
     acceptBtn.button('reset');
 
-    acceptBtn.click(function() {
+    acceptBtn.click(function () {
         var formData = {};
-        $('#' + containerId + ' input').each(function(index, elem) {
+        $('#' + containerId + ' input').each(function (index, elem) {
             formData[elem.name] = elem.value;
         });
         $(acceptBtn).button('loading');
         var dialogElem = this;
         jQuery.ajax(url, {
             async:false,
-            dataType: 'json',
-            data: JSON.stringify(formData),
-            type: options.type ? options.type : 'POST',
+            dataType:'json',
+            data:JSON.stringify(formData),
+            type:options.type ? options.type : 'POST',
             contentType:"application/json; charset=utf-8",
-            success : function(data, textStatus, jqXHR) {
+            success:function (data, textStatus, jqXHR) {
                 if (options.redirect) {
                     var resourceId = jqXHR.getResponseHeader("ResourceId");
                     var redirectUrl = options.redirect;
                     redirectUrl = redirectUrl.replace("{header.resourceId}", resourceId);
-                    window.location = redirectUrl;
+
+                    // Hack: IE ignore the base href tag ...
+                    var baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf("c/maps/"));
+                    window.open(baseUrl + redirectUrl, '_self');
 
                 } else if (options.postUpdate) {
                     options.postUpdate(formData);
                 }
                 dialogElem.modal('hide');
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error:function (jqXHR, textStatus, errorThrown) {
                 if (jqXHR.status == 400) {
                     var errors = JSON.parse(jqXHR.responseText);
                     // Mark fields with errors ...
@@ -167,7 +170,7 @@ jQuery.fn.dialogForm = function(options) {
         });
     }.bind(this));
 
-    $('#' + containerId + ' .btn-cancel').click(function() {
+    $('#' + containerId + ' .btn-cancel').click(function () {
         this.modal('hide');
     }.bind(this));
 
@@ -228,11 +231,11 @@ function updateStarred(spanElem) {
 
     jQuery.ajax("service/maps/" + mapId + "/starred", {
         async:false,
-        dataType: 'json',
-        data: "" + starred,
-        type: 'PUT',
+        dataType:'json',
+        data:"" + starred,
+        type:'PUT',
         contentType:"text/plain",
-        success : function() {
+        success:function () {
             if (starred) {
                 $(spanElem).removeClass('starredOff');
                 $(spanElem).addClass('starredOn');
@@ -241,7 +244,7 @@ function updateStarred(spanElem) {
                 $(spanElem).addClass('starredOff');
             }
         },
-        error: function(jqXHR, textStatus, errorThrown) {
+        error:function (jqXHR, textStatus, errorThrown) {
             $('#messagesPanel div').text(errorThrown).parent().show();
         }
     });
@@ -252,23 +255,23 @@ function updateStarred(spanElem) {
 
 function callbackOnTableInit() {
     // Register starred events ...
-    $('#mindmapListTable .starredOff, #mindmapListTable .starredOn').click(function() {
+    $('#mindmapListTable .starredOff, #mindmapListTable .starredOn').click(function () {
         updateStarred(this);
     });
     updateStatusToolbar();
 }
 
-$(function() {
+$(function () {
     // Creation buttons actions ...
     $("#newBtn").click(
-        function() {
+        function () {
             $("#new-dialog-modal").dialogForm({
-                redirect: "/c/maps/{header.resourceId}/edit",
-                url :  "service/maps"
+                redirect:"c/maps/{header.resourceId}/edit",
+                url:"service/maps"
             });
         });
 
-    $("#duplicateBtn").click(function() {
+    $("#duplicateBtn").click(function () {
         // Map to be cloned ...
         var tableElem = $('#mindmapListTable');
         var rows = tableElem.dataTableExt.getSelectedRows();
@@ -283,13 +286,13 @@ $(function() {
 
             // Initialize dialog ...
             $("#duplicate-dialog-modal").dialogForm({
-                redirect: "/c/maps/{header.resourceId}/edit",
-                url :  "service/maps/" + mapId
+                redirect:"c/maps/{header.resourceId}/edit",
+                url:"service/maps/" + mapId
             });
         }
     });
 
-    $("#renameBtn").click(function() {
+    $("#renameBtn").click(function () {
         // Map to be cloned ...
         var tableElem = $('#mindmapListTable');
         var rows = tableElem.dataTableExt.getSelectedRows();
@@ -309,21 +312,21 @@ $(function() {
 
             // Initialize dialog ...
             $("#rename-dialog-modal").dialogForm({
-                type: 'PUT',
-                clearForm: false,
-                postUpdate: function(reqBodyData) {
+                type:'PUT',
+                clearForm:false,
+                postUpdate:function (reqBodyData) {
                     tableElem.dataTableExt.removeSelectedRows();
 
                     rowData.title = reqBodyData.title;
                     rowData.description = reqBodyData.description;
                     dataTable.fnAddData(JSON.parse(JSON.stringify(rowData)));
                 },
-                url :  "service/maps/" + mapId
+                url:"service/maps/" + mapId
             });
         }
     });
 
-    $("#deleteBtn").click(function() {
+    $("#deleteBtn").click(function () {
         var tableUI = $('#mindmapListTable');
 
         var mapIds = tableUI.dataTableExt.getSelectedMapsIds();
@@ -331,54 +334,56 @@ $(function() {
         if (mapIds.length > 0) {
             // Initialize dialog ...
             $("#delete-dialog-modal").dialogForm({
-                type: 'DELETE',
-                postUpdate: function() {
+                type:'DELETE',
+                postUpdate:function () {
                     // Remove old entry ...
                     tableUI.dataTableExt.removeSelectedRows();
                 },
-                url :  "service/maps/batch?ids=" + jQuery.makeArray(mapIds).join(',')
+                url:"service/maps/batch?ids=" + jQuery.makeArray(mapIds).join(',')
             });
         }
     });
 
-    $("#printBtn").click(function() {
+    $("#printBtn").click(function () {
         var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
         if (mapIds.length > 0) {
-            window.open('c/maps/' + mapIds[0] + '/print');
+            // Hack: IE ignore the base href tag ...
+            var baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf("c/maps/"));
+            window.open(baseUrl + 'c/maps/' + mapIds[0] + '/print');
         }
     });
 
-    $("#infoBtn").click(function() {
+    $("#infoBtn").click(function () {
         showEmbeddedDialog("c/maps/{mapId}/details", 'info-dialog-modal');
     });
 
-    $("#historyBtn").click(function() {
+    $("#historyBtn").click(function () {
         showEmbeddedDialog("c/maps/{mapId}/history", 'history-dialog-modal');
     });
 
-    $("#publishBtn").click(function() {
+    $("#publishBtn").click(function () {
         showEmbeddedDialog("c/maps/{mapId}/publish", "publish-dialog-modal");
     });
 
-    $("#exportBtn").click(function() {
+    $("#exportBtn").click(function () {
         showEmbeddedDialog("c/maps/{mapId}/export", 'export-dialog-modal');
     });
 
-    $("#importBtn").click(function() {
+    $("#importBtn").click(function () {
         showEmbeddedDialog("c/maps/import", 'import-dialog-modal', true);
     });
 
-    $("#shareBtn").click(function() {
+    $("#shareBtn").click(function () {
         showEmbeddedDialog("c/maps/{mapId}/share", 'share-dialog-modal', true);
     });
 
-    var showEmbeddedDialog = function(urlTemplate, dialogElemId, ignore) {
+    var showEmbeddedDialog = function (urlTemplate, dialogElemId, ignore) {
         var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
         if (mapIds.length > 0 || ignore) {
             var mapId = mapIds[0];
             $('#' + dialogElemId + ' .modal-body').load(urlTemplate.replace("{mapId}", mapId),
-                function() {
-                    $('#' + dialogElemId + ' .btn-accept').unbind('click').click(function() {
+                function () {
+                    $('#' + dialogElemId + ' .btn-accept').unbind('click').click(function () {
                         submitDialogForm();
                     });
                     $('#' + dialogElemId).modal();
@@ -386,7 +391,7 @@ $(function() {
         }
     };
 
-    $('#foldersContainer li').click(function(event) {
+    $('#foldersContainer li').click(function (event) {
         // Deselect previous option ...
         $('#foldersContainer li').removeClass('active');
         $('#foldersContainer i').removeClass('icon-white');
@@ -403,7 +408,7 @@ $(function() {
 });
 
 // Register time update functions ....
-setTimeout(function() {
+setTimeout(function () {
     jQuery("abbr.timeago").timeago()
 }, 50000);
 
