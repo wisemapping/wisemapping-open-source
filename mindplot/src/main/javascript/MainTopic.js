@@ -17,14 +17,14 @@
  */
 
 mindplot.MainTopic = new Class({
-    Extends: mindplot.Topic,
-    initialize : function(model, options) {
+    Extends:mindplot.Topic,
+    initialize:function (model, options) {
         this.parent(model, options);
     },
 
-    INNER_RECT_ATTRIBUTES : {stroke:'0.5 solid #009900'},
+    INNER_RECT_ATTRIBUTES:{stroke:'0.5 solid #009900'},
 
-    _buildDragShape : function() {
+    _buildDragShape:function () {
         var innerShape = this._buildShape(this.INNER_RECT_ATTRIBUTES, this.getShapeType());
         var size = this.getSize();
         innerShape.setSize(size.width, size.height);
@@ -40,7 +40,7 @@ mindplot.MainTopic = new Class({
         innerShape.setAttribute("fillColor", bgColor);
 
         //  Create group ...
-        var groupAttributes = {width: 100, height:100,coordSizeWidth:100,coordSizeHeight:100};
+        var groupAttributes = {width:100, height:100, coordSizeWidth:100, coordSizeHeight:100};
         var group = new web2d.Group(groupAttributes);
         group.appendChild(innerShape);
 
@@ -56,11 +56,11 @@ mindplot.MainTopic = new Class({
     },
 
 
-    _defaultShapeType : function() {
+    _defaultShapeType:function () {
         return mindplot.model.TopicShape.LINE;
     },
 
-    updateTopicShape : function(targetTopic, workspace) {
+    updateTopicShape:function (targetTopic, workspace) {
         // Change figure based on the connected topic ...
         var model = this.getModel();
         var shapeType = model.getShapeType();
@@ -73,7 +73,7 @@ mindplot.MainTopic = new Class({
         }
     },
 
-    disconnect : function(workspace) {
+    disconnect:function (workspace) {
         this.parent(workspace);
         var size = this.getSize();
 
@@ -88,11 +88,11 @@ mindplot.MainTopic = new Class({
         innerShape.setVisibility(true);
     },
 
-    getTopicType : function() {
+    getTopicType:function () {
         return "MainTopic";
     },
 
-    _updatePositionOnChangeSize : function(oldSize, newSize) {
+    _updatePositionOnChangeSize:function (oldSize, newSize) {
 
         var xOffset = Math.round((newSize.width - oldSize.width) / 2);
         var pos = this.getPosition();
@@ -106,7 +106,7 @@ mindplot.MainTopic = new Class({
         }
     },
 
-    workoutIncomingConnectionPoint : function(sourcePosition) {
+    workoutIncomingConnectionPoint:function (sourcePosition) {
         $assert(sourcePosition, 'sourcePoint can not be null');
         var pos = this.getPosition();
         var size = this.getSize();
@@ -131,7 +131,7 @@ mindplot.MainTopic = new Class({
 
     },
 
-    workoutOutgoingConnectionPoint : function(targetPosition) {
+    workoutOutgoingConnectionPoint:function (targetPosition) {
         $assert(targetPosition, 'targetPoint can not be null');
         var pos = this.getPosition();
         var isAtRight = mindplot.util.Shape.isAtRight(targetPosition, pos);
@@ -169,7 +169,7 @@ mindplot.MainTopic = new Class({
         return result;
     },
 
-    _getInnerPadding : function() {
+    _getInnerPadding:function () {
         var result;
         var parent = this.getModel().getParent();
         if (parent && mindplot.model.INodeModel.MAIN_TOPIC_TYPE == parent.getType()) {
@@ -181,14 +181,14 @@ mindplot.MainTopic = new Class({
         return result;
     },
 
-    isConnectedToCentralTopic : function() {
+    isConnectedToCentralTopic:function () {
         var model = this.getModel();
         var parent = model.getParent();
 
         return parent && parent.getType() === mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE;
     },
 
-    _defaultText : function() {
+    _defaultText:function () {
         var targetTopic = this.getOutgoingConnectedTopic();
         var result = "";
         if ($defined(targetTopic)) {
@@ -198,50 +198,51 @@ mindplot.MainTopic = new Class({
                 result = $msg('SUB_TOPIC');
             }
         } else {
-            result = $msg('ISOLATED_TOPIC');;
+            result = $msg('ISOLATED_TOPIC');
+            ;
         }
         return result;
     },
 
-    _defaultFontStyle : function() {
+    _defaultFontStyle:function () {
         var targetTopic = this.getOutgoingConnectedTopic();
         var result;
         if ($defined(targetTopic)) {
             if (targetTopic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
                 result = {
                     font:"Arial",
-                    size: 8,
+                    size:8,
                     style:"normal",
                     weight:"normal",
-                    color:"#525c61"
+                    color:"rgb(82,92,97)"
                 };
             } else {
                 result = {
                     font:"Arial",
-                    size: 6,
+                    size:6,
                     style:"normal",
                     weight:"normal",
-                    color:"#525c61"
+                    color:"rgb(82,92,97)"
                 };
             }
         } else {
             result = {
                 font:"Verdana",
-                size: 8,
+                size:8,
                 style:"normal",
                 weight:"normal",
-                color:"#525c61"
+                color:"rgb(82,92,97)"
             };
         }
         return result;
     },
 
-    _defaultBackgroundColor : function() {
-        return "#E0E5EF";
+    _defaultBackgroundColor:function () {
+        return "rgb(224,229,239)";
     },
 
-    _defaultBorderColor : function() {
-        return '#023BB9';
+    _defaultBorderColor:function () {
+        return 'rgb(2,59,185)';
     }
 
 });

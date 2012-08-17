@@ -17,34 +17,34 @@
  */
 
 mindplot.widget.ColorPalettePanel = new Class({
-    Extends: mindplot.widget.ToolbarPaneItem,
+    Extends:mindplot.widget.ToolbarPaneItem,
 
-    initialize : function(buttonId, model, baseUrl) {
+    initialize:function (buttonId, model, baseUrl) {
         this._baseUrl = baseUrl;
         this.parent(buttonId, model);
         $assert($defined(baseUrl), "baseUrl can not be null");
     },
 
-    _load : function() {
+    _load:function () {
 
         if (!mindplot.widget.ColorPalettePanel._panelContent) {
 
             // Load all the CSS styles ...
-            Asset.css(this._baseUrl + '/colorPalette.css', {id: 'colorPaletteStyle', title: 'colorPalette'});
+            Asset.css(this._baseUrl + '/colorPalette.css', {id:'colorPaletteStyle', title:'colorPalette'});
 
             // Load panel html fragment ...
             var result;
             var request = new Request({
-                url: this._baseUrl + '/colorPalette.html',
-                method: 'get',
-                async: false,
-                onRequest: function() {
+                url:this._baseUrl + '/colorPalette.html',
+                method:'get',
+                async:false,
+                onRequest:function () {
                     console.log("loading ...");
                 },
-                onSuccess: function(responseText) {
+                onSuccess:function (responseText) {
                     result = responseText;
                 },
-                onFailure: function() {
+                onFailure:function () {
                     result = '<div>Sorry, your request failed :(</div>';
                 }
             });
@@ -56,15 +56,15 @@ mindplot.widget.ColorPalettePanel = new Class({
     },
 
 
-    buildPanel: function() {
-        var content = new Element("div", {'class':'toolbarPanel','id': this._buttonId + 'colorPalette'});
+    buildPanel:function () {
+        var content = new Element("div", {'class':'toolbarPanel', 'id':this._buttonId + 'colorPalette'});
         content.innerHTML = this._load();
 
         // Register on toolbar elements ...
         var colorCells = content.getElements('div[class=palette-colorswatch]');
         var model = this.getModel();
-        colorCells.each(function(elem) {
-            elem.addEvent('click', function() {
+        colorCells.each(function (elem) {
+            elem.addEvent('click', function () {
                 var color = elem.getStyle("background-color");
                 model.setValue(color);
                 this.hide();
@@ -74,12 +74,12 @@ mindplot.widget.ColorPalettePanel = new Class({
         return content;
     },
 
-    _updateSelectedItem : function() {
+    _updateSelectedItem:function () {
         var panelElem = this.getPanelElem();
 
         // Clear selected cell based on the color  ...
         var tdCells = panelElem.getElements("td[class='palette-cell palette-cell-selected']");
-        tdCells.each(function(elem) {
+        tdCells.each(function (elem) {
             elem.className = 'palette-cell';
         });
 
@@ -87,9 +87,15 @@ mindplot.widget.ColorPalettePanel = new Class({
         var colorCells = panelElem.getElements('div[class=palette-colorswatch]');
         var model = this.getModel();
         var modelValue = model.getValue();
-        colorCells.each(function(elem) {
+        colorCells.each(function (elem) {
             var color = elem.getStyle("background-color");
-            if (modelValue == color) {
+            if (modelValue != null && modelValue[0] == 'r') {
+                modelValue = modelValue.rgbToHex();
+            }
+            console.log("modelValue:" + modelValue);
+            console.log("color:" + color);
+
+            if (modelValue != null && modelValue.toUpperCase() == color.toUpperCase()) {
                 elem.parentNode.className = 'palette-cell palette-cell-selected';
             }
         });

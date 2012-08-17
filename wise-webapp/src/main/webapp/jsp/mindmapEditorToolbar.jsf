@@ -6,9 +6,9 @@
             <div id="save" class="buttonOn">
                 <img src="images/save.png"/>
             </div>
-            <div id="discard" class="buttonOn">
-                <img src="images/discard.png"/>
-            </div>
+            <%--<div id="discard" class="buttonOn">--%>
+                <%--<img src="images/discard.png"/>--%>
+            <%--</div>--%>
         </c:if>
         <div id="print" class="buttonOn">
             <img src="images/print.png"/>
