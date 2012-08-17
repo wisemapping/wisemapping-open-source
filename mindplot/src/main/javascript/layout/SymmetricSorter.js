@@ -21,13 +21,26 @@ mindplot.layout.SymmetricSorter = new Class({
 
     },
 
+    /**
+     * Predict the order and position of a dragged node.
+     *
+     * @param graph The tree set
+     * @param parent The parent of the node
+     * @param node The node
+     * @param position The position of the drag
+     * @param free Free drag or not
+     * @return {*}
+     */
     predict:function (graph, parent, node, position, free) {
+
+        var self = this;
+        var rootNode = graph.getRootNode(parent);
+
         // If its a free node...
         if (free) {
             $assert($defined(position), "position cannot be null for predict in free positioning");
             $assert($defined(node), "node cannot be null for predict in free positioning");
 
-            var rootNode = graph.getRootNode(parent);
             var direction = this._getRelativeDirection(rootNode.getPosition(), parent.getPosition());
             var limitXPos = parent.getPosition().x + direction * (parent.getSize().width / 2 + node.getSize().width / 2 + mindplot.layout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING);
 
@@ -38,67 +51,81 @@ mindplot.layout.SymmetricSorter = new Class({
             return [0, {x:xPos, y:position.y}];
         }
 
-        var rootNode = graph.getRootNode(parent);
-
-        // If it is a dragged node...
-        if (node) {
-            $assert($defined(position), "position cannot be null for predict in dragging");
-            var nodeDirection = this._getRelativeDirection(rootNode.getPosition(), node.getPosition());
-            var positionDirection = this._getRelativeDirection(rootNode.getPosition(), position);
-            var siblings = graph.getSiblings(node);
-
-            var sameParent = parent == graph.getParent(node);
-            if (siblings.length == 0 && nodeDirection == positionDirection && sameParent) {
-                return [node.getOrder() + 1, node.getPosition()];
-            }
-        }
-
-        // Regular node
-        var direction = parent.getPosition().x > rootNode.getPosition().x ? 1 : -1;
-
-        // No children...
-        var children = graph.getChildren(parent).filter(function (child) {
-            return child != node;
-        });
-        if (children.length == 0) {
-            position = position || {x:parent.getPosition().x + direction, y:parent.getPosition().y};
-            var pos = {
-                x:parent.getPosition().x + direction * (parent.getSize().width + mindplot.layout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING),
+        // Its not a dragged node (it is being added)
+        if (!node) {
+            var parentDirection = self._getRelativeDirection(rootNode.getPosition(), parent.getPosition());
+            var position = {
+                x:parent.getPosition().x + parentDirection * (parent.getSize().width + mindplot.layout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING),
                 y:parent.getPosition().y
             };
-            return [0, pos];
+            return [graph.getChildren(parent).length, position];
         }
 
-        // Try to fit within ...
-        var result = null;
-        var last = children.getLast();
-        position = position || {x:last.getPosition().x + direction, y:last.getPosition().y + 1};
-        children.each(function (child, index) {
-            var cpos = child.getPosition();
-            if (position.y > cpos.y) {
-                var yOffset = child == last ?
-                    child.getSize().height + mindplot.layout.SymmetricSorter.INTERNODE_VERTICAL_PADDING * 2 :
-                    (children[index + 1].getPosition().y + children[index + 1].getSize().height / 2 - child.getPosition().y) / 2;
-                result = [child.getOrder() + 1, {x:cpos.x, y:cpos.y + yOffset}];
+        // If it is a dragged node...
+        $assert($defined(position), "position cannot be null for predict in dragging");
+        var nodeDirection = this._getRelativeDirection(rootNode.getPosition(), node.getPosition());
+        var positionDirection = this._getRelativeDirection(rootNode.getPosition(), position);
+        var siblings = graph.getSiblings(node);
+
+        // node has no siblings and its trying to reconnect to its own parent
+        var sameParent = parent == graph.getParent(node);
+        if (siblings.length == 0 && nodeDirection == positionDirection && sameParent) {
+            return [node.getOrder(), node.getPosition()];
+        }
+
+        var parentChildren = graph.getChildren(parent);
+
+        if (parentChildren.length == 0) {
+            // Fit as a child of the parent node...
+            var position = {
+                x:parent.getPosition().x + positionDirection * (parent.getSize().width + mindplot.layout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING),
+                y:parent.getPosition().y
+            };
+            return [0, position];
+        } else {
+            // Try to fit within ...
+            var result = null;
+            var last = parentChildren.getLast();
+            for (var i=0; i<parentChildren.length; i++) {
+                var parentChild = parentChildren[i];
+                var nodeAfter = (i + 1) == parentChild.length ? null : parentChildren[i+1];
+
+                // Fit at the bottom
+                if (!nodeAfter && position.y > parentChild.getPosition().y) {
+                    var order = graph.getParent(node).getId() == parent.getId() ?
+                        last.getOrder() : last.getOrder() + 1;
+                    var position = {
+                        x: parentChild.getPosition().x,
+                        y: parentChild.getPosition().y + parentChild.getSize().height + mindplot.layout.SymmetricSorter.INTERNODE_VERTICAL_PADDING * 2
+                    }
+                    return [order, position];
+                }
+
+                // Fit after this node
+                if (nodeAfter && position.y > parentChild.getPosition().y && position.y < nodeAfter.getPosition().y) {
+                    if(nodeAfter.getId() == node.getId() || parentChild.getId() == node.getId()) {
+                        return [node.getOrder(), node.getPosition()];
+                    } else {
+                        var order = position.y > node.getPosition().y ?
+                            nodeAfter.getOrder() - 1 : parentChild.getOrder() + 1;
+                        var position = {
+                            x: parentChild.getPosition().x,
+                            y: parentChild.getPosition().y + (nodeAfter.getPosition().y - parentChild.getPosition().y) / 2
+                        }
+
+                        return [order, position];
+                    }
+                }
             }
-        });
-
-        // Position wasn't below any node, so it must be inserted above
-        if (!result) {
-            var first = children[0];
-            result = [0, {
-                x:first.getPosition().x,
-                y:first.getPosition().y - first.getSize().height - mindplot.layout.SymmetricSorter.INTERNODE_VERTICAL_PADDING * 2
-            }];
-            return result;
         }
 
-        // if the node is moving down, substract 1 from the order
-        if (node != null && parent == graph.getParent(node) && result[1].y > node.getPosition().y) {
-            result[0] = result[0] - 1;
-        }
-
-        return result;
+        // Position wasn't below any node, so it must be fitted above the first
+        var first = parentChildren[0];
+        var position =  {
+            x:first.getPosition().x,
+            y:first.getPosition().y - first.getSize().height - mindplot.layout.SymmetricSorter.INTERNODE_VERTICAL_PADDING * 2
+        };
+        return [0, position];
     },
 
     insert:function (treeSet, parent, child, order) {
