@@ -17,7 +17,7 @@
  */
 
 mindplot.DragConnector = new Class({
-    initialize:function(designerModel, workspace) {
+    initialize:function (designerModel, workspace) {
         $assert(designerModel, 'designerModel can not be null');
         $assert(workspace, 'workspace can not be null');
 
@@ -26,7 +26,7 @@ mindplot.DragConnector = new Class({
         this._workspace = workspace;
     },
 
-    checkConnection : function(dragTopic) {
+    checkConnection:function (dragTopic) {
         var topics = this._designerModel.getTopics();
 
         // Must be disconnected from their current connection ?.
@@ -47,8 +47,7 @@ mindplot.DragConnector = new Class({
                 if ($defined(mainTopicToMainTopicConnection)) {
                     // I have to change the current connection to a main topic.
                     dragTopic.disconnect(this._workspace);
-                } else
-                if (Math.abs(dragXPosition - currentXPosition) > mindplot.DragConnector.CENTRAL_TO_MAINTOPIC_MAX_HORIZONTAL_DISTANCE) {
+                } else if (Math.abs(dragXPosition - currentXPosition) > mindplot.DragConnector.CENTRAL_TO_MAINTOPIC_MAX_HORIZONTAL_DISTANCE) {
                     dragTopic.disconnect(this._workspace);
                 }
             }
@@ -65,31 +64,50 @@ mindplot.DragConnector = new Class({
         }
     },
 
-    _lookUpForMainTopicToMainTopicConnection : function(dragTopic) {
+    _lookUpForMainTopicToMainTopicConnection:function (dragTopic) {
         var topics = this._designerModel.getTopics();
-        var result = null;
+
+        // Filter all the nodes that are outside the boundary ...
         var draggedNode = dragTopic.getDraggedTopic();
-        var distance = null;
+        var sourcePosition = dragTopic.getPosition();
+        topics = topics.filter(function (topic) {
+            var pos = topic.getPosition();
+            return   (sourcePosition.x - pos.x) * Math.sign(pos.x) > 0 && draggedNode != topic;
+        });
+
+        // Topics must be ordered based on the distance vertical distance to the drag topic ...
+        topics = topics.sort(function (a, b) {
+            var aPos = a.getPosition();
+            var ad = (sourcePosition.x - aPos.x) * Math.sign(aPos.x);
+
+            var bPos = b.getPosition();
+            var bd = (sourcePosition.x - bPos.x) * Math.sign(bPos.x);
+
+            return  ad > bd;
+        });
+
 
         // Check MainTopic->MainTopic connection...
+        var result = null;
+        var distance = null;
         for (var i = 0; i < topics.length; i++) {
-            var targetTopic = topics[i];
             var position = dragTopic.getPosition();
-            if (targetTopic.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE && targetTopic != draggedNode) {
-                var canBeConnected = dragTopic.canBeConnectedTo(targetTopic);
-                if (canBeConnected) {
-                    var targetPosition = targetTopic.getPosition();
-                    var fix = position.y > targetPosition.y;
-                    var gap = 0;
-                    if (targetTopic.getChildren().length > 0) {
-                        gap = Math.abs(targetPosition.y - targetTopic.getChildren()[0].getPosition().y)
-                    }
-                    var yDistance = Math.abs(position.y - fix * gap - targetPosition.y);
-                    if (distance == null || yDistance < distance) {
-                        result = targetTopic;
-                        distance = yDistance;
-                    }
+            var targetTopic = topics[i];
 
+            var canBeConnected = dragTopic.canBeConnectedTo(targetTopic);
+            if (canBeConnected) {
+                var targetPosition = targetTopic.getPosition();
+                var fix = position.y > targetPosition.y;
+                var gap = 0;
+                if (targetTopic.getChildren().length > 0) {
+                    gap = Math.abs(targetPosition.y - targetTopic.getChildren()[0].getPosition().y)
+                }
+
+                var yDistance = Math.abs(position.y - fix * gap - targetPosition.y);
+                if (distance == null || yDistance < distance) {
+                    result = targetTopic;
+                    distance = yDistance;
+                    break;
                 }
             }
         }

@@ -17,7 +17,7 @@
  */
 
 mindplot.DragTopic = new Class({
-    initialize:function(dragShape, draggedNode, layoutManger) {
+    initialize:function (dragShape, draggedNode, layoutManger) {
         $assert(dragShape, 'Rect can not be null.');
         $assert(draggedNode, 'draggedNode can not be null.');
         $assert(layoutManger, 'layoutManger can not be null.');
@@ -31,13 +31,13 @@ mindplot.DragTopic = new Class({
         this._isFreeLayoutEnabled = false;
     },
 
-    setOrder : function(order) {
+    setOrder:function (order) {
         this._order = order;
     },
 
-    setPosition : function(x, y) {
+    setPosition:function (x, y) {
         // Update drag shadow position ....
-        var position = {x:x,y:y};
+        var position = {x:x, y:y};
         if (this.isFreeLayoutOn() && this.isConnected()) {
             var _layoutManager = this._layoutManager;
             var par = this.getConnectedToTopic();
@@ -66,7 +66,7 @@ mindplot.DragTopic = new Class({
         }
     },
 
-    updateFreeLayout: function(event) {
+    updateFreeLayout:function (event) {
         var isFreeEnabled = (event.meta && Browser.Platform.mac) || (event.control && !Browser.Platform.mac);
         if (this.isFreeLayoutOn() != isFreeEnabled) {
             var dragPivot = this._getDragPivot();
@@ -75,27 +75,27 @@ mindplot.DragTopic = new Class({
         }
     },
 
-    setVisibility:function(value) {
+    setVisibility:function (value) {
         var dragPivot = this._getDragPivot();
         dragPivot.setVisibility(value);
     },
 
-    isVisible:function() {
+    isVisible:function () {
         var dragPivot = this._getDragPivot();
         return dragPivot.isVisible();
     },
 
-    getInnerShape : function() {
+    getInnerShape:function () {
         return this._elem2d;
     },
 
-    disconnect : function(workspace) {
+    disconnect:function (workspace) {
         // Clear connection line ...
         var dragPivot = this._getDragPivot();
         dragPivot.disconnect(workspace);
     },
 
-    canBeConnectedTo : function(targetTopic) {
+    canBeConnectedTo:function (targetTopic) {
         $assert(targetTopic, 'parent can not be null');
 
         var result = true;
@@ -110,7 +110,7 @@ mindplot.DragTopic = new Class({
                 var targetTopicModel = targetTopic.getModel();
                 var childTopicModel = draggedNode.getModel();
 
-                result = targetTopicModel.canBeConnected(childTopicModel, topicPosition, 18, targetTopic.getSize());
+                result = targetTopicModel.canBeConnected(childTopicModel, topicPosition, targetTopic.getSize());
             }
         } else {
             result = false;
@@ -118,7 +118,7 @@ mindplot.DragTopic = new Class({
         return result;
     },
 
-    connectTo : function(parent) {
+    connectTo:function (parent) {
         $assert(parent, 'Parent connection node can not be null.');
 
         // Where it should be connected ?
@@ -133,11 +133,11 @@ mindplot.DragTopic = new Class({
         this.setOrder(predict.order);
     },
 
-    getDraggedTopic : function() {
+    getDraggedTopic:function () {
         return  this._draggedNode;
     },
 
-    removeFromWorkspace : function(workspace) {
+    removeFromWorkspace:function (workspace) {
         // Remove drag shadow.
         workspace.removeChild(this._elem2d);
         this._isInWorkspace = false;
@@ -148,30 +148,30 @@ mindplot.DragTopic = new Class({
 
     },
 
-    isInWorkspace: function() {
+    isInWorkspace:function () {
         return this._isInWorkspace;
     },
 
-    addToWorkspace : function(workspace) {
+    addToWorkspace:function (workspace) {
         workspace.appendChild(this._elem2d);
         var dragPivot = this._getDragPivot();
         dragPivot.addToWorkspace(workspace);
         this._isInWorkspace = true;
     },
 
-    _getDragPivot : function() {
+    _getDragPivot:function () {
         return mindplot.DragTopic.__getDragPivot();
     },
 
-    getPosition:function() {
+    getPosition:function () {
         return this._position;
     },
 
-    isDragTopic : function() {
+    isDragTopic:function () {
         return true;
     },
 
-    applyChanges : function(workspace) {
+    applyChanges:function (workspace) {
         $assert(workspace, 'workspace can not be null');
 
 
@@ -197,16 +197,16 @@ mindplot.DragTopic = new Class({
         }
     },
 
-    getConnectedToTopic : function() {
+    getConnectedToTopic:function () {
         var dragPivot = this._getDragPivot();
         return dragPivot.getTargetTopic();
     },
 
-    isConnected : function() {
+    isConnected:function () {
         return this.getConnectedToTopic() != null;
     },
 
-    isFreeLayoutOn: function() {
+    isFreeLayoutOn:function () {
 //        return  this._isFreeLayoutEnabled;
         // Disable free layout ...
         return false;
@@ -214,16 +214,16 @@ mindplot.DragTopic = new Class({
 
 });
 
-mindplot.DragTopic.PIVOT_SIZE = {width:50,height:6};
+mindplot.DragTopic.PIVOT_SIZE = {width:50, height:6};
 
-mindplot.DragTopic.init = function(workspace) {
+mindplot.DragTopic.init = function (workspace) {
 
     $assert(workspace, "workspace can not be null");
     var pivot = mindplot.DragTopic.__getDragPivot();
     workspace.appendChild(pivot);
 };
 
-mindplot.DragTopic.__getDragPivot = function() {
+mindplot.DragTopic.__getDragPivot = function () {
     var result = mindplot.DragTopic._dragPivot;
     if (!$defined(result)) {
         result = new mindplot.DragPivot();

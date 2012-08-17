@@ -142,50 +142,30 @@ mindplot.model.NodeModel = new Class({
         this._parent = parent;
     },
 
-    canBeConnected:function (sourceModel, sourcePosition, targetTopicHeight, targetTopicSize) {
+    canBeConnected:function (sourceModel, sourcePosition, targetTopicSize) {
+
         $assert(sourceModel != this, 'The same node can not be parent and child if itself.');
         $assert(sourcePosition, 'childPosition can not be null.');
-        $assert(targetTopicHeight, 'childrenWidth can not be null.');
         $assert(targetTopicSize, 'targetTopicSize can not be null.');
-
-
-        // Only can be connected if the node is in the left or rigth.
-        var targetModel = this;
-        var mindmap = targetModel.getMindmap();
-        var targetPosition = targetModel.getPosition();
         var result = false;
 
-        if (sourceModel.getType() == mindplot.model.INodeModel.MAIN_TOPIC_TYPE) {
-            // Finally, check current node position ...
-            var yDistance = Math.abs(sourcePosition.y - targetPosition.y);
-            var gap = 35 + targetTopicHeight / 2;
-            if (targetModel.getChildren().length > 0) {
-                gap += Math.abs(targetPosition.y - targetModel.getChildren()[0].getPosition().y);
-            }
+        // Only can be connected if the node is in the left or right.
+        var targetModel = this;
+        var targetPosition = targetModel.getPosition();
 
-            if (yDistance <= gap) {
-                // Circular connection ?
-                if (!sourceModel._isChildNode(this)) {
-                    var toleranceDistance = (targetTopicSize.width / 2) + targetTopicHeight;
-
-                    var xDistance = sourcePosition.x - targetPosition.x;
-                    var isTargetAtRightFromCentral = targetPosition.x >= 0;
-
-                    if (isTargetAtRightFromCentral) {
-                        if (xDistance >= -targetTopicSize.width / 2 && xDistance <= mindplot.model.INodeModel.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE / 2 + (targetTopicSize.width / 2)) {
-                            result = true;
-                        }
-
-                    } else {
-                        if (xDistance <= targetTopicSize.width / 2 && Math.abs(xDistance) <= mindplot.model.INodeModel.MAIN_TOPIC_TO_MAIN_TOPIC_DISTANCE / 2 + (targetTopicSize.width / 2)) {
-                            result = true;
-                        }
-                    }
-                }
-            }
-        } else {
-            throw "No implemented yet";
+        // Finally, check current node position ...
+        var yDistance = Math.abs(sourcePosition.y - targetPosition.y);
+        var gap = 35 + targetTopicSize.height / 2;
+        if (targetModel.getChildren().length > 0) {
+            gap += Math.abs(targetPosition.y - targetModel.getChildren()[0].getPosition().y);
         }
+
+        if (yDistance <= gap) {
+            // Circular connection ?
+            var xDistance = (sourcePosition.x - targetPosition.x) * Math.sign(targetPosition.x);
+            result = xDistance > targetTopicSize.width;
+        }
+
         return result;
     },
 
