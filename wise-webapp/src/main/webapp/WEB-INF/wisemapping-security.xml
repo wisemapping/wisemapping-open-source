@@ -72,4 +72,10 @@
         <property name="adminUser" value="${admin.user}"/>
     </bean>
 
+    <beans profile="production">
+        <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+            <property name="location" value="/WEB-INF/prod.properties" />
+        </bean>
+    </beans>
+
 </beans>
