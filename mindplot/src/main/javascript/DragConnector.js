@@ -46,12 +46,18 @@ mindplot.DragConnector = new Class({
 
     _searchConnectionCandidates:function (dragTopic) {
         var topics = this._designerModel.getTopics();
+        var draggedNode = dragTopic.getDraggedTopic();
+
+        // Drag node connects to the border ...
+        var dragTopicWidth = dragTopic.getSize ? dragTopic.getSize().width : 0; // Hack...
+        var xMouseGap = dragTopic.getPosition().x > 0 ? 0 : dragTopicWidth;
+        var sPos = {x:dragTopic.getPosition().x - xMouseGap, y:dragTopic.getPosition().y};
+
 
         // Perform a initial filter to discard topics:
         //  - Exclude dragged topic
         //  - Exclude dragTopic pivot
         //  - Nodes that are collapsed
-        var draggedNode = dragTopic.getDraggedTopic();
         topics = topics.filter(function (topic) {
             return  draggedNode != topic && topic != dragTopic._draggedNode && !topic.areChildrenShrunken() && !topic.isCollapsed();
         });
@@ -59,41 +65,29 @@ mindplot.DragConnector = new Class({
         // Filter all the nodes that are outside the vertical boundary:
         //  * The node is to out of the x scope
         //  * The x distance greater the vertical tolerated distance
-        var sourcePosition = dragTopic.getPosition();
         topics = topics.filter(function (topic) {
             var tpos = topic.getPosition();
-            var distance = (sourcePosition.x - tpos.x) * Math.sign(sourcePosition.x);
-
             // Center topic has different alignment than the rest of the nodes. That's why i need to divide it by two...
-            var width = topic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE ? topic.getSize().width / 2 : topic.getSize().width;
-            return   (distance > width) && ((distance - width) < mindplot.DragConnector.MAX_VERTICAL_CONNECTION_TOLERANCE);
+            var txborder = tpos.x + (topic.getSize().width / 2) * Math.sign(sPos.x);
+            var distance = (sPos.x - txborder) * Math.sign(sPos.x);
+            return  distance > 0 && (distance < mindplot.DragConnector.MAX_VERTICAL_CONNECTION_TOLERANCE);
+
         });
 
         // Assign a priority based on the distance:
         // - Alignment with the targetNode
         // - Vertical distance
-        //
+        // - Horizontal proximity
         topics = topics.sort(function (a, b) {
             var aPos = a.getPosition();
-            var ad = (aPos.x - sourcePosition.x) * Math.sign(aPos.x);
-
             var bPos = b.getPosition();
-            var bd = ( bPos.x - sourcePosition.x) * Math.sign(bPos.x);
 
-            var av = this._isVerticallyAligned(a.getSize(), a.getPosition(), sourcePosition);
-            var bv = this._isVerticallyAligned(b.getSize(), b.getPosition(), sourcePosition);
+            var av = this._isVerticallyAligned(a.getSize(), a.getPosition(), sPos);
+            var bv = this._isVerticallyAligned(b.getSize(), b.getPosition(), sPos);
 
-            return  ((bv ? 1000 : 1) + bd) - ((av ? 1000 : 1) + ad);
+            return  ((av ? 1 : 10000) + Math.abs(aPos.x - sPos.x) + Math.abs(aPos.y - sPos.y)) - ((bv ? 1 : 10000) + Math.abs(bPos.x - sPos.x) + Math.abs(bPos.y - sPos.y));
 
         }.bind(this));
-
-//        console.log("---- out ----");
-//        topics.each(function (e) {
-//            console.log(e.getText());
-//        });
-//        console.log("---- out ----");
-
-
         return topics;
     },
 

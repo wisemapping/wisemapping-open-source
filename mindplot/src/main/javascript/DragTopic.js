@@ -49,7 +49,7 @@ mindplot.DragTopic = new Class({
         // All topic element must be positioned based on the innerShape.
         var draggedNode = this._draggedNode;
         var size = draggedNode.getSize();
-        var cx = Math.ceil(position.x - (size.width / 2));
+        var cx = position.x - (position.x > 0 ? 0 : size.width);
         var cy = Math.ceil(position.y - (size.height / 2));
         this._elem2d.setPosition(cx, cy);
 
