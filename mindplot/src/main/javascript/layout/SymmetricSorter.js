@@ -97,7 +97,7 @@ mindplot.layout.SymmetricSorter = new Class({
                     var position = {
                         x: parentChild.getPosition().x,
                         y: parentChild.getPosition().y + parentChild.getSize().height + mindplot.layout.SymmetricSorter.INTERNODE_VERTICAL_PADDING * 2
-                    }
+                    };
                     return [order, position];
                 }
 
@@ -111,7 +111,7 @@ mindplot.layout.SymmetricSorter = new Class({
                         var position = {
                             x: parentChild.getPosition().x,
                             y: parentChild.getPosition().y + (nodeAfter.getPosition().y - parentChild.getPosition().y) / 2
-                        }
+                        };
 
                         return [order, position];
                     }

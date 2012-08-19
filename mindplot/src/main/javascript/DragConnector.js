@@ -75,10 +75,10 @@ mindplot.DragConnector = new Class({
         //
         topics = topics.sort(function (a, b) {
             var aPos = a.getPosition();
-            var ad = (sourcePosition.x - aPos.x) * Math.sign(aPos.x);
+            var ad = (aPos.x - sourcePosition.x) * Math.sign(aPos.x);
 
             var bPos = b.getPosition();
-            var bd = (sourcePosition.x - bPos.x) * Math.sign(bPos.x);
+            var bd = ( bPos.x - sourcePosition.x) * Math.sign(bPos.x);
 
             var av = this._isVerticallyAligned(a.getSize(), a.getPosition(), sourcePosition);
             var bv = this._isVerticallyAligned(b.getSize(), b.getPosition(), sourcePosition);
@@ -87,11 +87,11 @@ mindplot.DragConnector = new Class({
 
         }.bind(this));
 
-        console.log("---- out ----");
-        topics.each(function (e) {
-            console.log(e.getText());
-        });
-        console.log("---- out ----");
+//        console.log("---- out ----");
+//        topics.each(function (e) {
+//            console.log(e.getText());
+//        });
+//        console.log("---- out ----");
 
 
         return topics;
