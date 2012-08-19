@@ -39,7 +39,6 @@ mindplot.widget.ColorPalettePanel = new Class({
                 method:'get',
                 async:false,
                 onRequest:function () {
-                    console.log("loading ...");
                 },
                 onSuccess:function (responseText) {
                     result = responseText;

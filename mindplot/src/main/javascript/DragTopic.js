@@ -95,29 +95,6 @@ mindplot.DragTopic = new Class({
         dragPivot.disconnect(workspace);
     },
 
-    canBeConnectedTo:function (targetTopic) {
-        $assert(targetTopic, 'parent can not be null');
-
-        var result = true;
-        if (!targetTopic.areChildrenShrunken() && !targetTopic.isCollapsed()) {
-            // Dragged node can not be connected to himself.
-            if (targetTopic == this._draggedNode) {
-                result = false;
-            } else {
-                var draggedNode = this.getDraggedTopic();
-                var topicPosition = this.getPosition();
-
-                var targetTopicModel = targetTopic.getModel();
-                var childTopicModel = draggedNode.getModel();
-
-                result = targetTopicModel.canBeConnected(childTopicModel, topicPosition, targetTopic.getSize());
-            }
-        } else {
-            result = false;
-        }
-        return result;
-    },
-
     connectTo:function (parent) {
         $assert(parent, 'Parent connection node can not be null.');
 
