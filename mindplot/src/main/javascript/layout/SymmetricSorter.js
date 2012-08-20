@@ -86,31 +86,31 @@ mindplot.layout.SymmetricSorter = new Class({
             // Try to fit within ...
             var result = null;
             var last = parentChildren.getLast();
-            for (var i=0; i<parentChildren.length; i++) {
+            for (var i = 0; i < parentChildren.length; i++) {
                 var parentChild = parentChildren[i];
-                var nodeAfter = (i + 1) == parentChild.length ? null : parentChildren[i+1];
+                var nodeAfter = (i + 1) == parentChild.length ? null : parentChildren[i + 1];
 
                 // Fit at the bottom
                 if (!nodeAfter && position.y > parentChild.getPosition().y) {
-                    var order = graph.getParent(node).getId() == parent.getId() ?
+                    var order = (graph.getParent(node)  && graph.getParent(node).getId() == parent.getId()) ?
                         last.getOrder() : last.getOrder() + 1;
                     var position = {
-                        x: parentChild.getPosition().x,
-                        y: parentChild.getPosition().y + parentChild.getSize().height + mindplot.layout.SymmetricSorter.INTERNODE_VERTICAL_PADDING * 2
+                        x:parentChild.getPosition().x,
+                        y:parentChild.getPosition().y + parentChild.getSize().height + mindplot.layout.SymmetricSorter.INTERNODE_VERTICAL_PADDING * 2
                     };
                     return [order, position];
                 }
 
                 // Fit after this node
                 if (nodeAfter && position.y > parentChild.getPosition().y && position.y < nodeAfter.getPosition().y) {
-                    if(nodeAfter.getId() == node.getId() || parentChild.getId() == node.getId()) {
+                    if (nodeAfter.getId() == node.getId() || parentChild.getId() == node.getId()) {
                         return [node.getOrder(), node.getPosition()];
                     } else {
                         var order = position.y > node.getPosition().y ?
                             nodeAfter.getOrder() - 1 : parentChild.getOrder() + 1;
                         var position = {
-                            x: parentChild.getPosition().x,
-                            y: parentChild.getPosition().y + (nodeAfter.getPosition().y - parentChild.getPosition().y) / 2
+                            x:parentChild.getPosition().x,
+                            y:parentChild.getPosition().y + (nodeAfter.getPosition().y - parentChild.getPosition().y) / 2
                         };
 
                         return [order, position];
@@ -121,7 +121,7 @@ mindplot.layout.SymmetricSorter = new Class({
 
         // Position wasn't below any node, so it must be fitted above the first
         var first = parentChildren[0];
-        var position =  {
+        var position = {
             x:first.getPosition().x,
             y:first.getPosition().y - first.getSize().height - mindplot.layout.SymmetricSorter.INTERNODE_VERTICAL_PADDING * 2
         };

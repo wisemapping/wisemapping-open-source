@@ -473,7 +473,7 @@ mindplot.Designer = new Class({
             }
 
             var topic = nodes[0];
-            if (topic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
+            if (!topic.getOutgoingConnectedTopic()) { // Central topic and isolated topics ....
                 // Central topic doesn't have siblings ...
                 this.createChildForSelectedNode();
 
