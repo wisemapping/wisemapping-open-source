@@ -70,7 +70,7 @@ mindplot.layout.BalancedSorter = new Class({
 
         // No children?
         if (children.length == 0) {
-            return [order, {x:parent.getPosition().x + direction * (parent.getSize().width + mindplot.layout.BalancedSorter.INTERNODE_HORIZONTAL_PADDING * 2), y:parent.getPosition().y}];
+            return [order, {x:parent.getPosition().x + direction * (parent.getSize().width / 2 + mindplot.layout.BalancedSorter.INTERNODE_HORIZONTAL_PADDING * 2), y:parent.getPosition().y}];
         }
 
         // Try to fit within ...
