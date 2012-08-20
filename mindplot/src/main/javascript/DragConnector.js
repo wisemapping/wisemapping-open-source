@@ -53,13 +53,12 @@ mindplot.DragConnector = new Class({
         var xMouseGap = dragTopic.getPosition().x > 0 ? 0 : dragTopicWidth;
         var sPos = {x:dragTopic.getPosition().x - xMouseGap, y:dragTopic.getPosition().y};
 
-
         // Perform a initial filter to discard topics:
         //  - Exclude dragged topic
         //  - Exclude dragTopic pivot
         //  - Nodes that are collapsed
         topics = topics.filter(function (topic) {
-            return  draggedNode != topic && topic != dragTopic._draggedNode && !topic.areChildrenShrunken() && !topic.isCollapsed();
+            return  draggedNode != topic && topic != draggedNode && !topic.areChildrenShrunken() && !topic.isCollapsed();
         });
 
         // Filter all the nodes that are outside the vertical boundary:
@@ -78,22 +77,28 @@ mindplot.DragConnector = new Class({
         // - Alignment with the targetNode
         // - Vertical distance
         // - Horizontal proximity
+        // - It's already connected.
+        var currentConnection = dragTopic.getConnectedToTopic();
         topics = topics.sort(function (a, b) {
             var aPos = a.getPosition();
             var bPos = b.getPosition();
 
-            var av = this._isVerticallyAligned(a.getSize(), a.getPosition(), sPos);
-            var bv = this._isVerticallyAligned(b.getSize(), b.getPosition(), sPos);
-
-            return  ((av ? 1 : 10000) + Math.abs(aPos.x - sPos.x) + Math.abs(aPos.y - sPos.y)) - ((bv ? 1 : 10000) + Math.abs(bPos.x - sPos.x) + Math.abs(bPos.y - sPos.y));
+            var av = this._isVerticallyAligned(a.getSize(), aPos, sPos);
+            var bv = this._isVerticallyAligned(b.getSize(), bPos, sPos);
+            return  this._proximityWeight(av, a, sPos, currentConnection) - this._proximityWeight(bv, b, sPos, currentConnection);
 
         }.bind(this));
         return topics;
     },
 
+    _proximityWeight:function (isAligned, target, sPos, currentConnection) {
+        var tPos = target.getPosition();
+        return  (isAligned ? 0 : 200    ) + Math.abs(tPos.x - sPos.x) + Math.abs(tPos.y - sPos.y) + (currentConnection == target ? 0 : 100);
+    },
+
     _isVerticallyAligned:function (targetSize, targetPosition, sourcePosition) {
 
-        return (sourcePosition.y - targetPosition.y) < targetSize.height;
+        return Math.abs(sourcePosition.y - targetPosition.y) < targetSize.height / 2;
 
     }
 
