@@ -37,6 +37,48 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.codehaus.gmaven</groupId>
+                <artifactId>gmaven-plugin</artifactId>
+                <version>1.4</version>
+
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <source>
+                                def outdir = new File(project.basedir, 'src/main/javascript');
+                                if (project.packaging != 'pom')
+                                {
+                                def dir = new File(project.basedir, 'src/main/resources/');
+
+                                dir.eachFile { file ->
+                                def matcher = file.name =~ /messages_(.+)\.properties/;
+                                def lang = matcher[0][1];
+                                def outfile = new File(outdir, "MessageBundle_${lang}.js");
+                                println "Converting ${file.name} to ${outfile.name}";
+
+                                outfile.withWriter('UTF-8') { out ->
+                                out.writeLine "mindplot.Messages.BUNDLES['${lang}'] = { ";
+                                file.eachLine('UTF-8') { line ->
+                                if( line.trim()!="" &amp;&amp; line[0]!='#' ) {
+                                  matcher = line =~ /(.+)=(.+)/;
+                                  out.writeLine("'${matcher[0][1]}' : \"${matcher[0][2]}\",");
+                                }
+                                }
+                                out.writeLine("'DUMMY' : '' ");
+                                out.writeLine "};"
+                                }
+                                }
+                                }
+                            </source>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
@@ -182,6 +224,12 @@
                                         <include>layout/GridSorter.js</include>
                                         <include>layout/OriginalLayout.js</include>
                                         <include>layout/EventBus.js</include>
+                                        <include>MessageBundle_en.js</include>
+                                        <include>MessageBundle_es.js</include>
+                                        <include>MessageBundle_fr.js</include>
+                                        <include>MessageBundle_pt_BR.js</include>
+                                        <include>MessageBundle_zh_CN.js</include>
+                                        <include>MessageBundle_zh_TW.js</include>
                                         <include>footer.js</include>
                                     </includes>
                                 </aggregation>
