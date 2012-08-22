@@ -27,10 +27,17 @@
         <!-- Place this render call where appropriate -->
         <script type="text/javascript">gapi.plusone.go();</script>
     </div>
-    <div style="width: 200px; padding: 0 40px;">
-        <p><a href="http://www.wisemapping.org"><spring:message code="COPYRIGHT"/></a></p>
+    <div style="width: 240px; padding: 0 40px;">
+        <p>
+            <a href="https://groups.google.com/d/forum/wisemapping-support"><spring:message code="SUPPORT"/></a> |
+            <a href="mailto:feedback@wisemapping.com"><spring:message code="FEEDBACK"/></a> |
+            <a href="mailto:dev@wisemapping.com"><spring:message code="CONTACT_US"/></a>
+
+            <a href="http://www.wisemapping.org/"><spring:message code="COPYRIGHT"/></a>
+        </p>
+
     </div>
-    <div style="padding: 0px 20px">
+    <div style="padding: 0 20px">
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
             <input type="hidden" name="cmd" value="_s-xclick"/>
             <input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but04.gif" name="submit"
