@@ -60,6 +60,9 @@
                         <option value="fr" <c:if test="${user.locale=='fr'}">selected="selected" </c:if>>French -
                             français
                         </option>
+                        <option value="pt_br" <c:if test="${user.locale=='pt_br'}">selected="selected" </c:if>>Portuguese
+                            (Brazil) - português (Brasil)
+                        </option>
                         <option value="zh_cn" <c:if test="${user.locale=='zh_cn'}">selected="selected" </c:if>>Chinese
                             (Simplified Han) - 中文（简体中文）
                         </option>
