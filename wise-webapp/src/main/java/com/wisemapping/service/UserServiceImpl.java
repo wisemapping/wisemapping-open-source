@@ -144,10 +144,7 @@ public class UserServiceImpl
 
     public Mindmap buildTutorialMindmap(@NotNull String firstName) {
         //To change body of created methods use File | Settings | File Templates.
-        Locale locale = LocaleContextHolder.getLocale();
-
-        // @TODO: Remove this once is translated
-        locale = Locale.ENGLISH;
+        final Locale locale = LocaleContextHolder.getLocale();
         Mindmap result = new Mindmap();
         final Map<String, Object> model = new HashMap<String, Object>();
         model.put("messages", messageSource);
