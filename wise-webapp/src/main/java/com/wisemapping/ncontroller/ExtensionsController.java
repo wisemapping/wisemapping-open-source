@@ -34,19 +34,6 @@ public class ExtensionsController {
     @Autowired
     private MindmapService mindmapService;
 
-    @RequestMapping(value = "try")
-    public ModelAndView tryEditor() throws IOException {
-
-        final Mindmap mindmap = mindmapService.findMindmapById(TRY_EXAMPLE_MINDMAP_ID);
-
-        ModelAndView view = new ModelAndView("mindmapEditor", "mindmap", mindmap);
-        final String xmlMap = mindmap.getXmlAsJsLiteral();
-        view.addObject(MAP_XML_PARAM, xmlMap);
-        view.addObject("editorTryMode", true);
-        view.addObject("showHelp", true);
-        return view;
-    }
-
     @RequestMapping(value = "privacyPolicy")
     public ModelAndView privacyPolicy() {
         return new ModelAndView("privacyPolicy");
@@ -56,8 +43,4 @@ public class ExtensionsController {
     public ModelAndView faq() {
         return new ModelAndView("faq");
     }
-
-    public static final int TRY_EXAMPLE_MINDMAP_ID = 3;
-    public static final String MAP_XML_PARAM = "mapXml";
-
 }

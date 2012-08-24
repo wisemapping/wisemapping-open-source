@@ -138,39 +138,43 @@ public class MindmapController {
         final MindMapBean mindmapBean = findMindmapBean(id);
         final Mindmap mindmap = mindmapBean.getDelegated();
 
-        String result;
-        if (mindmap.hasPermissions(Utils.getUser(), CollaborationRole.EDITOR)) {
-            model.addAttribute("mindmap", mindmapBean);
+        model.addAttribute("mindmap", mindmapBean);
 
-            // Configure default locale for the editor ...
-            final Locale locale = LocaleContextHolder.getLocale();
-            model.addAttribute("locale", locale.toString().toLowerCase());
-            model.addAttribute("principal", Utils.getUser());
-            result = "mindmapEditor";
-        } else {
-            result = "redirect:view";
-        }
-        return result;
+        // Configure default locale for the editor ...
+        final Locale locale = LocaleContextHolder.getLocale();
+        model.addAttribute("locale", locale.toString().toLowerCase());
+        model.addAttribute("principal", Utils.getUser());
+        model.addAttribute("readOnlyMode", !mindmap.hasPermissions(Utils.getUser(), CollaborationRole.EDITOR));
+
+        return "mindmapEditor";
     }
 
     @RequestMapping(value = "maps/{id}/view", method = RequestMethod.GET)
     public String showMindmapViewerPage(@PathVariable int id, @NotNull Model model) {
-        final MindMapBean mindmapBean = findMindmapBean(id);
-        model.addAttribute("mindmap", mindmapBean);
+        final String result = showMindmapEditorPage(id, model);
         model.addAttribute("readOnlyMode", true);
-        return "mindmapEditor";
+        return result;
+    }
+
+    @RequestMapping(value = "maps/{id}/try", method = RequestMethod.GET)
+    public String showMindmapTryPage(@PathVariable int id, @NotNull Model model) {
+        final String result = showMindmapEditorPage(id, model);
+        model.addAttribute("memoryPersistence", true);
+        return result;
     }
 
     @RequestMapping(value = "maps/{id}/{hid}/view", method = RequestMethod.GET)
     public String showMindmapViewerRevPage(@PathVariable int id, @PathVariable int hid, @NotNull Model model) throws WiseMappingException {
-        final MindMapBean mindmapBean = findMindmapBean(id);
 
-        final MindMapHistory mindmapHistory = mindmapService.findMindmapHistory(id, hid);
-        mindmapBean.getDelegated().setXml(mindmapHistory.getXml());
-        model.addAttribute("mindmap", mindmapBean);
+        final String result = showMindmapEditorPage(id, model);
         model.addAttribute("readOnlyMode", true);
 
-        return "mindmapEditor";
+        // Change map XML ....
+        final MindMapBean mindmapBean = (MindMapBean) model.asMap().get("mindmap");
+        final MindMapHistory mindmapHistory = mindmapService.findMindmapHistory(id, hid);
+        mindmapBean.getDelegated().setXml(mindmapHistory.getXml());
+
+        return result;
     }
 
     @RequestMapping(value = "maps/{id}/embed")

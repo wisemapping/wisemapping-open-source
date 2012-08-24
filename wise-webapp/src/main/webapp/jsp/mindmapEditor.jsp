@@ -33,7 +33,9 @@
 
             // Configure designer options ...
             var options = loadDesignerOptions();
-            options.persistenceManager = new mindplot.RESTPersistenceManager("service/maps/{id}/document","service/maps/{id}/history/latest");
+            <c:if test="${!memoryPersistence}">
+            options.persistenceManager = new mindplot.RESTPersistenceManager("service/maps/{id}/document", "service/maps/{id}/history/latest");
+            </c:if>
             var userOptions = ${mindmap.properties};
             options.zoom = userOptions.zoom;
             options.readOnly = ${!!readOnlyMode};
