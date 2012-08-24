@@ -34,8 +34,6 @@ import java.util.Locale;
 
 public class UserLocaleInterceptor extends HandlerInterceptorAdapter {
 
-    public static final String USER_LOCALE = "user.locale";
-
     public boolean preHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, Object object) throws Exception {
 
         final HttpSession session = request.getSession(false);
@@ -45,7 +43,14 @@ public class UserLocaleInterceptor extends HandlerInterceptorAdapter {
             String userLocale = user.getLocale();
             final Locale sessionLocale = (Locale) session.getAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME);
             if ((userLocale != null) && ((sessionLocale == null) || (!userLocale.equals(sessionLocale.toString())))) {
-                session.setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, new Locale(userLocale));
+                Locale locale;
+                if (userLocale.contains("_")) {
+                    final String[] spit = userLocale.split("_");
+                    locale = new Locale(spit[0], spit[1]);
+                } else {
+                    locale = new Locale(userLocale);
+                }
+                session.setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, locale);
             }
         }
         return true;
