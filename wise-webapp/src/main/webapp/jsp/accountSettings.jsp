@@ -63,10 +63,10 @@
                         <option value="pt_BR" <c:if test="${user.locale=='pt_BR'}">selected="selected" </c:if>>Portuguese
                             (Brazil) - português (Brasil)
                         </option>
-                        <option value="zh_cn" <c:if test="${user.locale=='zh_CN'}">selected="selected" </c:if>>Chinese
+                        <option value="zh_CN" <c:if test="${user.locale=='zh_CN'}">selected="selected" </c:if>>Chinese
                             (Simplified Han) - 中文（简体中文）
                         </option>
-                        <option value="zh_tw" <c:if test="${user.locale=='zh_TW'}">selected="selected" </c:if>>Chinese
+                        <option value="zh_TW" <c:if test="${user.locale=='zh_TW'}">selected="selected" </c:if>>Chinese
                             (Traditional Han) - 中文 (繁體中文)
                         </option>
                     </select>
