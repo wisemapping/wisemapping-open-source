@@ -91,8 +91,6 @@ mindplot.widget.ColorPalettePanel = new Class({
             if (modelValue != null && modelValue[0] == 'r') {
                 modelValue = modelValue.rgbToHex();
             }
-            console.log("modelValue:" + modelValue);
-            console.log("color:" + color);
 
             if (modelValue != null && modelValue.toUpperCase() == color.toUpperCase()) {
                 elem.parentNode.className = 'palette-cell palette-cell-selected';
