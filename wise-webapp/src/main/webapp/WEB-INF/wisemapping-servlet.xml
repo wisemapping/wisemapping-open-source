@@ -114,7 +114,7 @@
 
     <beans profile="heroku">
         <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-            <property name="location" value="/WEB-INF/prod.properties" />
+            <property name="location" value="/WEB-INF/heroku.properties" />
         </bean>
     </beans>
 </beans>
