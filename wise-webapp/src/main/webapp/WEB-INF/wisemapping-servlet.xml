@@ -112,7 +112,7 @@
         </property>
     </bean>
 
-    <beans profile="production">
+    <beans profile="heroku">
         <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
             <property name="location" value="/WEB-INF/prod.properties" />
         </bean>
