@@ -63,9 +63,15 @@ public class BaseController {
         return new RestErrors(ex.getErrors(), messageSource);
     }
 
-    @ExceptionHandler(com.wisemapping.exceptions.AccessDeniedSecurityException.class)
+    @ExceptionHandler(java.lang.reflect.UndeclaredThrowableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RestErrors handleSecurityErrors(@NotNull ValidationException ex) {
+        return new RestErrors(ex.getErrors(), messageSource);
+    }
+
+    @ExceptionHandler(com.wisemapping.exceptions.AccessDeniedSecurityException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public RestErrors handleSecurity2Errors(@NotNull ValidationException ex) {
         return new RestErrors(ex.getErrors(), messageSource);
     }
 
