@@ -23,6 +23,7 @@ import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.MindMapHistory;
+import com.wisemapping.model.User;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.view.MindMapBean;
@@ -143,9 +144,9 @@ public class MindmapController {
         // Configure default locale for the editor ...
         final Locale locale = LocaleContextHolder.getLocale();
         model.addAttribute("locale", locale.toString().toLowerCase());
-        model.addAttribute("principal", Utils.getUser());
-        model.addAttribute("readOnlyMode", !mindmap.hasPermissions(Utils.getUser(), CollaborationRole.EDITOR));
-
+        final User collaborator = Utils.getUser();
+        model.addAttribute("principal", collaborator);
+        model.addAttribute("readOnlyMode", !mindmap.hasPermissions(collaborator, CollaborationRole.EDITOR));
         return "mindmapEditor";
     }
 

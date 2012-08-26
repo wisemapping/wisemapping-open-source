@@ -28,6 +28,7 @@
     <sec:http pattern="/c/home" security="none"/>
 
     <sec:http pattern="/c/maps/*/embed" security="none"/>
+    <sec:http pattern="/c/maps/*/try" security="none"/>
     <sec:http pattern="/c/maps/*/public" security="none"/>
     <sec:http pattern="/c/GCFInstall" security="none"/>
 

@@ -16,7 +16,7 @@
  */
 mindplot.persistence.XMLSerializer_Beta = new Class({
 
-    toXML : function(mindmap) {
+    toXML:function (mindmap) {
         $assert(mindmap, "Can not save a null mindmap");
 
         var document = core.Utils.createDocument();
@@ -40,7 +40,7 @@ mindplot.persistence.XMLSerializer_Beta = new Class({
         return document;
     },
 
-    _topicToXML : function(document, topic) {
+    _topicToXML:function (document, topic) {
         var parentTopic = document.createElement("topic");
 
         // Set topic attributes...
@@ -139,25 +139,25 @@ mindplot.persistence.XMLSerializer_Beta = new Class({
         return parentTopic;
     },
 
-    _iconToXML : function(document, icon) {
+    _iconToXML:function (document, icon) {
         var iconDom = document.createElement("icon");
         iconDom.setAttribute('id', icon.getIconType());
         return iconDom;
     },
 
-    _linkToXML : function(document, link) {
+    _linkToXML:function (document, link) {
         var linkDom = document.createElement("link");
         linkDom.setAttribute('url', link.getUrl());
         return linkDom;
     },
 
-    _noteToXML : function(document, note) {
+    _noteToXML:function (document, note) {
         var noteDom = document.createElement("note");
         noteDom.setAttribute('text', note.getText());
         return noteDom;
     },
 
-    loadFromDom : function(dom, mapId) {
+    loadFromDom:function (dom, mapId) {
         $assert(dom, "Dom can not be null");
         $assert(mapId, "mapId can not be null");
 
@@ -183,7 +183,7 @@ mindplot.persistence.XMLSerializer_Beta = new Class({
         return mindmap;
     },
 
-    _deserializeNode : function(domElem, mindmap) {
+    _deserializeNode:function (domElem, mindmap) {
         var type = (domElem.getAttribute('central') != null) ? mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE : mindplot.model.INodeModel.MAIN_TOPIC_TYPE;
         var topic = mindmap.createNode(type);
 
@@ -274,19 +274,19 @@ mindplot.persistence.XMLSerializer_Beta = new Class({
         return topic;
     },
 
-    _deserializeIcon : function(domElem, topic) {
+    _deserializeIcon:function (domElem, topic) {
         var icon = domElem.getAttribute("id");
         icon = icon.replace("images/", "icons/legacy/");
-        return  mindplot.TopicFeature.createModel(mindplot.TopicFeature.Icon.id, topic, {id:icon});
+        return  mindplot.TopicFeature.createModel(mindplot.TopicFeature.Icon.id, {id:icon});
     },
 
-    _deserializeLink : function(domElem, topic) {
-        return  mindplot.TopicFeature.createModel(mindplot.TopicFeature.Link.id, topic, {url:domElem.getAttribute("url")});
+    _deserializeLink:function (domElem, topic) {
+        return  mindplot.TopicFeature.createModel(mindplot.TopicFeature.Link.id, {url:domElem.getAttribute("url")});
     },
 
-    _deserializeNote : function(domElem, topic) {
+    _deserializeNote:function (domElem, topic) {
         var text = domElem.getAttribute("text");
-        return  mindplot.TopicFeature.createModel(mindplot.TopicFeature.Note.id, topic, {text:text == null ? " " : text});
+        return  mindplot.TopicFeature.createModel(mindplot.TopicFeature.Note.id, {text:text == null ? " " : text});
     }});
 
 mindplot.persistence.XMLSerializer_Beta.MAP_ROOT_NODE = 'map';

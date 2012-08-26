@@ -264,10 +264,12 @@ public class Mindmap {
     }
 
     public boolean hasPermissions(@NotNull Collaborator collaborator, @NotNull CollaborationRole role) {
-        final Collaboration collaboration = this.findCollaboration(collaborator);
         boolean result = false;
-        if (collaboration != null) {
-            result = collaboration.hasPermissions(role);
+        if (collaborator != null) {
+            final Collaboration collaboration = this.findCollaboration(collaborator);
+            if (collaboration != null) {
+                result = collaboration.hasPermissions(role);
+            }
         }
         return result;
 
