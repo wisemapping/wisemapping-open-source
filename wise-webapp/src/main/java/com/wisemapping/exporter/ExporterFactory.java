@@ -137,8 +137,13 @@ public class ExporterFactory {
     private Document normalizeSvg(@NotNull String svgXml, boolean embedImg) throws XMLStreamException, ParserConfigurationException, IOException, SAXException, TransformerException {
 
         final DocumentBuilder documentBuilder = getDocumentBuilder();
-        svgXml = svgXml.replaceFirst("<svg ", "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
-        // @Todo: This must not happen...
+        if (svgXml.trim().startsWith("<svg xmlns=\"http://www.w3.org/2000/svg\"")) {
+            svgXml = svgXml.replaceFirst("<svg ", "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
+        } else {
+            svgXml = svgXml.replaceFirst("<svg ", "<svg xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
+        }
+
+        // Hacks for some legacy cases ....
         svgXml = svgXml.replaceAll("NaN,", "0");
         svgXml = svgXml.replaceAll(",NaN", "0");
 
