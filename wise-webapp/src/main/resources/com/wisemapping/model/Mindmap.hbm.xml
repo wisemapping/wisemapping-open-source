@@ -20,7 +20,7 @@
         <many-to-one name="lastEditor" column="last_editor_id" unique="false" not-null="true" lazy="proxy"/>
 
         <set name="collaborations"
-             cascade="all,delete-orphan"
+             cascade="all,delete-orphan,save-update"
              inverse="true">
             <key column="MINDMAP_ID" not-null="true"/>
             <one-to-many class="com.wisemapping.model.Collaboration"/>
