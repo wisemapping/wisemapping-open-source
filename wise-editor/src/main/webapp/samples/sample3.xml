@@ -1,0 +1,34 @@
+<map name="5327">
+    <topic central="true" text="Guia Ezeiza" shape="rounded rectagle" brColor="#1b2863">
+        <topic position="237,-50" text="Directorio" bgColor="#cfe8d4">
+            <icon id="chart_organisation"/>
+            <topic order="0" text="Empresas">
+                <topic order="0" text="Rubro"/>
+                <topic order="1" text="Nombre"/>
+            </topic>
+            <topic order="1" text="Personas">
+                <topic order="0" text="Presidentes"/>
+                <topic order="1" text="Ventas"/>
+                <topic order="2" text="Otros"/>
+            </topic>
+        </topic>
+        <topic position="152,100" text="Social" bgColor="#cfe8d4">
+            <icon id="bulb_light_on"/>
+            <topic order="0" text="Red de contactos (linkedin)"/>
+            <topic order="1" text="Preguntas y respuestas"/>
+            <topic order="2" text="Negocios"/>
+            <topic order="3" text="Compartir intereses"/>
+        </topic>
+        <topic position="-168,100" text="Noticias" bgColor="#cfe8d4">
+            <icon id="money_coins"/>
+            <topic order="0" text="Subscripcion"/>
+            <topic order="1" text="Municipales"/>
+            <topic order="2" text="De interes general"/>
+        </topic>
+        <topic position="-162,-100" text="Eventos" bgColor="#cfe8d4">
+            <icon id="thumb_thumb_up"/>
+            <topic order="0" text="De la comunidad"/>
+            <topic order="1" text="Municipales"/>
+        </topic>
+    </topic>
+</map>
