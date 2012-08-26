@@ -305,7 +305,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         }
 
         var order = domElem.getAttribute('order');
-        if ($defined(order)) {
+        if ($defined(order) && order!="NaN") { // Hack for broken maps ...
             topic.setOrder(parseInt(order));
         }
 
