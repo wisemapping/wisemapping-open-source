@@ -1,8 +1,9 @@
 <html>
 <body>
 <ul>
+    <li>Details: ${details}</li>
     <li>User Name: ${user.fullName}</li>
-    <li>Email: ${user.email}</li>
+    <li>Email: ${email}</li>
     <li>User Agent: ${userAgent}</li>
     #if($mapId)
         <li>Mindmap Id: ${mapId}</li>

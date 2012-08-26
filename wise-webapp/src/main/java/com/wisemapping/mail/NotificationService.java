@@ -150,20 +150,22 @@ final public class NotificationService {
 //        }
     }
 
-    public void reportMindmapEditorError(@NotNull Mindmap mindmap, @NotNull User user, @NotNull String userAgent, @Nullable String jsErrorMsg) {
+    public void reportMindmapEditorError(@NotNull Mindmap mindmap, @Nullable User user, @NotNull String userAgent, @Nullable String jsErrorMsg) {
 
         try {
             final Map<String, Object> model = new HashMap<String, Object>();
             model.put("user", user);
+            model.put("email", (user != null ? user.getEmail() : "'anonymous'"));
             model.put("errorMsg", jsErrorMsg);
             model.put("mapXML", mindmap.getXmlStr().replaceAll("<", "&lt;"));
             model.put("mapId", mindmap.getId());
             model.put("mapTitle", mindmap.getTitle());
             model.put("userAgent", userAgent);
+            model.put("details", "Editor");
 
             final String errorReporterEmail = mailer.getErrorReporterEmail();
             if (errorReporterEmail != null && !errorReporterEmail.isEmpty()) {
-                mailer.sendEmail(mailer.getServerSenderEmail(), errorReporterEmail, "[WiseMapping] Editor error from " + user.getEmail(), model,
+                mailer.sendEmail(mailer.getServerSenderEmail(), errorReporterEmail, "[WiseMapping] Bug from '" + (user != null ? user.getEmail() + "'" : "'anonymous'"), model,
                         "errorNotification.vm");
             }
         } catch (Exception e) {
@@ -171,17 +173,19 @@ final public class NotificationService {
         }
     }
 
-    public void reportMindmapExportError(@NotNull String exportContent, @NotNull User user, @NotNull String userAgent, @NotNull Throwable exception) {
+    public void reportMindmapExportError(@NotNull String exportContent, @Nullable User user, @Nullable String userAgent, @NotNull Throwable exception) {
         try {
             final Map<String, Object> model = new HashMap<String, Object>();
             model.put("user", user);
+            model.put("email", (user != null ? user.getEmail() : "'anonymous'"));
             model.put("errorMsg", stackTraceToString(exception));
             model.put("mapXML", exportContent.replaceAll("<", "&lt;"));
             model.put("userAgent", userAgent);
+            model.put("details", "Export");
 
             final String errorReporterEmail = mailer.getErrorReporterEmail();
             if (errorReporterEmail != null && !errorReporterEmail.isEmpty()) {
-                mailer.sendEmail(mailer.getServerSenderEmail(), errorReporterEmail, "[WiseMapping] Export error from " + user.getEmail(), model,
+                mailer.sendEmail(mailer.getServerSenderEmail(), errorReporterEmail, "[WiseMapping] Bug from '" + (user != null ? user.getEmail() + "'" : "'anonymous'"), model,
                         "errorNotification.vm");
             }
         } catch (Exception e) {
@@ -193,12 +197,14 @@ final public class NotificationService {
         try {
             final Map<String, Object> model = new HashMap<String, Object>();
             model.put("user", user);
+            model.put("email", (user != null ? user.getEmail() : "'anonymous'"));
             model.put("errorMsg", stackTraceToString(exception));
             model.put("userAgent", userAgent);
+            model.put("details", "Unexpected");
 
             final String errorReporterEmail = mailer.getErrorReporterEmail();
             if (errorReporterEmail != null && !errorReporterEmail.isEmpty()) {
-                mailer.sendEmail(mailer.getServerSenderEmail(), errorReporterEmail, "[WiseMapping] Unexpected error from " + (user != null ? user.getEmail() : "anonymous"), model,
+                mailer.sendEmail(mailer.getServerSenderEmail(), errorReporterEmail, "[WiseMapping] Bug from '" + (user != null ? user.getEmail() + "'" : "'anonymous'"), model,
                         "errorNotification.vm");
             }
         } catch (Exception e) {
