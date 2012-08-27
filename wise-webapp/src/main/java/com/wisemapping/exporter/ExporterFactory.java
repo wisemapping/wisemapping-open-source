@@ -137,7 +137,7 @@ public class ExporterFactory {
     private Document normalizeSvg(@NotNull String svgXml, boolean embedImg) throws XMLStreamException, ParserConfigurationException, IOException, SAXException, TransformerException {
 
         final DocumentBuilder documentBuilder = getDocumentBuilder();
-        if (svgXml.trim().startsWith("<svg xmlns=\"http://www.w3.org/2000/svg\"")) {
+        if (!svgXml.trim().startsWith("<svg xmlns=\"http://www.w3.org/2000/svg\"")) {
             svgXml = svgXml.replaceFirst("<svg ", "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
         } else {
             svgXml = svgXml.replaceFirst("<svg ", "<svg xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
@@ -214,8 +214,13 @@ public class ExporterFactory {
                 Element elem = (Element) node;
 
                 // Cook image href ...
-                final String imgUrl = elem.getAttribute("href");
+                String imgUrl = elem.getAttribute("href");
                 elem.removeAttribute("href");
+
+                if(imgUrl==null || imgUrl.isEmpty()){
+                    imgUrl = elem.getAttribute("xlink:href"); // Do not support namespaces ...
+                    elem.removeAttribute("xlink:href");
+                }
                 FileInputStream fis = null;
 
                 // Obtains file name ...
