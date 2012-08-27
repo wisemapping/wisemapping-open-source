@@ -161,6 +161,7 @@ public class MindmapController {
     public String showMindmapTryPage(@PathVariable int id, @NotNull Model model) {
         final String result = showMindmapEditorPage(id, model);
         model.addAttribute("memoryPersistence", true);
+        model.addAttribute("readOnlyMode", false);
         return result;
     }
 
