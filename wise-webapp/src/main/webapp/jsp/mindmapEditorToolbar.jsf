@@ -92,7 +92,7 @@
         <div id="export" class="buttonOn">
             <img src="images/export.png"/>
         </div>
-        <c:if test="${!readOnlyMode}">
+        <c:if test="${!readOnlyMode && !memoryPersistence}">
             <div id="history" class="buttonOn">
                 <img src="images/history.png"/>
             </div>
