@@ -46,7 +46,10 @@ mindplot.util.Shape =
     calculateRelationShipPointCoordinates:function (topic, controlPoint) {
         var size = topic.getSize();
         var position = topic.getPosition();
-        var m = (position.y - controlPoint.y) / (position.x - controlPoint.x);
+        var div = (position.x - controlPoint.x);
+        div = (Math.mod(div) > 0.1 ? div : 0.1);  // Prevent division by 0.
+
+        var m = (position.y - controlPoint.y) / div;
         var y, x;
         var gap = 5;
         if (controlPoint.y > position.y + (size.height / 2)) {
@@ -79,7 +82,9 @@ mindplot.util.Shape =
     calculateDefaultControlPoints:function (srcPos, tarPos) {
         var y = srcPos.y - tarPos.y;
         var x = srcPos.x - tarPos.x;
-        var m = y / (x == 0 ? 1 : x);  // Prevent division by 0.
+        var div = (Math.abs(x) > 0.1 ? x : 0.1);   // Prevent division by 0.
+
+        var m = y / div;
         var l = Math.sqrt(y * y + x * x) / 3;
         var fix = 1;
         if (srcPos.x > tarPos.x) {
