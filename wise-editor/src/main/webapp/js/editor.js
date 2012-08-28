@@ -28,6 +28,7 @@ function buildDesigner(options) {
     designer.addEvent('loadSuccess', function () {
         window.waitDialog.close.delay(1000, window.waitDialog);
         window.waitDialog = null;
+        window.mindmapLoadReady = true;
     });
 
     window.onerror = function (message, url, lineNo) {
@@ -37,6 +38,7 @@ function buildDesigner(options) {
             window.waitDialog.close.delay(1000, window.waitDialog);
             window.waitDialog = null;
         }
+
         var req = new Request({
             method:'post',
             url:"/service/logger/editor",
@@ -49,7 +51,11 @@ function buildDesigner(options) {
             userAgent:navigator.userAgent,
             mapId:options.mapId}));
 
-        errorDialog.show();
+        // Open error dialog only in case of mindmap loading errors. The rest of the error are reported but not display the dialog.
+        // Remove this in the near future.
+        if (!window.mindmapLoadReady) {
+            errorDialog.show();
+        }
     };
 
     // Configure default persistence manager ...
