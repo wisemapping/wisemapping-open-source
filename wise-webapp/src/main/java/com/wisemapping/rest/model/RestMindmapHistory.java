@@ -2,6 +2,7 @@ package com.wisemapping.rest.model;
 
 
 import com.wisemapping.model.MindMapHistory;
+import com.wisemapping.model.User;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +39,8 @@ public class RestMindmapHistory {
     public RestMindmapHistory(@NotNull MindMapHistory history) {
         this.id = history.getId();
         this.creation = history.getCreationTime();
-        this.creator = history.getEditor().getFullName();
+        final User editor = history.getEditor();
+        this.creator = editor != null ? editor.getFullName() : "";
     }
 
     public String getCreationTime() {
