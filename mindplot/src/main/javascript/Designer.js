@@ -684,7 +684,6 @@ mindplot.Designer = new Class({
             dmodel.addRelationship(result);
 
 
-
             return  result;
         },
 
@@ -827,13 +826,17 @@ mindplot.Designer = new Class({
         addLink:function () {
             var model = this.getModel();
             var topic = model.selectedTopic();
-            topic.showLinkEditor();
+            if (topic) {
+                topic.showLinkEditor();
+            }
         },
 
         addNote:function () {
             var model = this.getModel();
             var topic = model.selectedTopic();
-            topic.showNoteEditor();
+            if (topic) {
+                topic.showNoteEditor();
+            }
         },
 
         goToNode:function (node) {
