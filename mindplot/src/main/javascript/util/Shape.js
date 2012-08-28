@@ -47,7 +47,7 @@ mindplot.util.Shape =
         var size = topic.getSize();
         var position = topic.getPosition();
         var div = (position.x - controlPoint.x);
-        div = (Math.mod(div) > 0.1 ? div : 0.1);  // Prevent division by 0.
+        div = (Math.abs(div) > 0.1 ? div : 0.1);  // Prevent division by 0.
 
         var m = (position.y - controlPoint.y) / div;
         var y, x;
