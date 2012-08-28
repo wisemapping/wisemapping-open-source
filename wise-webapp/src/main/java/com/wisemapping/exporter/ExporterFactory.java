@@ -217,7 +217,7 @@ public class ExporterFactory {
                 String imgUrl = elem.getAttribute("href");
                 elem.removeAttribute("href");
 
-                if(imgUrl==null || imgUrl.isEmpty()){
+                if (imgUrl == null || imgUrl.isEmpty()) {
                     imgUrl = elem.getAttribute("xlink:href"); // Do not support namespaces ...
                     elem.removeAttribute("xlink:href");
                 }
@@ -347,7 +347,7 @@ public class ExporterFactory {
         final int initTranslate = value.indexOf("(", pos);
         final int endTranslate = value.indexOf(")", pos);
         final String transate = value.substring(initTranslate + 1, endTranslate);
-        return transate.split(",");
+        return transate.contains(",") ? transate.split(",") : transate.split(" ");
     }
 
 }
