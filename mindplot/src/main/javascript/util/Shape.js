@@ -18,13 +18,13 @@
 
 mindplot.util.Shape =
 {
-    isAtRight: function(sourcePoint, targetPoint) {
+    isAtRight:function (sourcePoint, targetPoint) {
         $assert(sourcePoint, "Source can not be null");
         $assert(targetPoint, "Target can not be null");
         return sourcePoint.x < targetPoint.x;
     },
 
-    calculateRectConnectionPoint: function(rectCenterPoint, rectSize, isAtRight) {
+    calculateRectConnectionPoint:function (rectCenterPoint, rectSize, isAtRight) {
         $assert(rectCenterPoint, 'rectCenterPoint can  not be null');
         $assert(rectSize, 'rectSize can  not be null');
         $assert($defined(isAtRight), 'isRight can  not be null');
@@ -43,11 +43,11 @@ mindplot.util.Shape =
         return result;
     },
 
-    calculateRelationShipPointCoordinates : function(topic, controlPoint) {
+    calculateRelationShipPointCoordinates:function (topic, controlPoint) {
         var size = topic.getSize();
         var position = topic.getPosition();
         var m = (position.y - controlPoint.y) / (position.x - controlPoint.x);
-        var y,x;
+        var y, x;
         var gap = 5;
         if (controlPoint.y > position.y + (size.height / 2)) {
             y = position.y + (size.height / 2) + gap;
@@ -76,10 +76,10 @@ mindplot.util.Shape =
         return new core.Point(x, y);
     },
 
-    calculateDefaultControlPoints : function(srcPos, tarPos) {
+    calculateDefaultControlPoints:function (srcPos, tarPos) {
         var y = srcPos.y - tarPos.y;
         var x = srcPos.x - tarPos.x;
-        var m = y / x;
+        var m = y / (x == 0 ? 1 : x);  // Prevent division by 0.
         var l = Math.sqrt(y * y + x * x) / 3;
         var fix = 1;
         if (srcPos.x > tarPos.x) {
@@ -91,7 +91,7 @@ mindplot.util.Shape =
         var x2 = tarPos.x + Math.sqrt(l * l / (1 + (m * m))) * fix * -1;
         var y2 = m * (x2 - tarPos.x) + tarPos.y;
 
-        return [new core.Point(-srcPos.x + x1, -srcPos.y + y1),new core.Point(-tarPos.x + x2, -tarPos.y + y2)];
+        return [new core.Point(-srcPos.x + x1, -srcPos.y + y1), new core.Point(-tarPos.x + x2, -tarPos.y + y2)];
     }
 };
 
