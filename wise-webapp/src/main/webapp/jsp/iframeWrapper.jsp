@@ -15,13 +15,14 @@
 <script type="text/javascript">
     $('submitBtn').addEvent('click', function () {
         var iframeWindow = $('dialogContentIframe').contentWindow;
-        var delay = iframeWindow.submitDialogForm();
-
-        if (MooDialog.Request.active) {
-            if (!delay) {
-                MooDialog.Request.active.close();
-            } else {
-                MooDialog.Request.active.close.delay(3000, MooDialog.Request.active);
+        if (iframeWindow) {
+            var delay = iframeWindow.submitDialogForm();
+            if (MooDialog.Request.active) {
+                if (!delay) {
+                    MooDialog.Request.active.close();
+                } else {
+                    MooDialog.Request.active.close.delay(3000, MooDialog.Request.active);
+                }
             }
         }
     });
