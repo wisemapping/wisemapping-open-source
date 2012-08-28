@@ -18,6 +18,7 @@
 
 package com.wisemapping.rest;
 
+import com.wisemapping.filter.UserAgent;
 import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestErrors;
@@ -30,12 +31,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.web.util.WebUtils;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 public class BaseController {
 
     @Qualifier("messageSource")
     @Autowired
     private ResourceBundleMessageSource messageSource;
+
+    @Autowired
+    ServletContext context;
 
     @Autowired
     private NotificationService notificationService;
@@ -51,9 +60,9 @@ public class BaseController {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
-    public String handleServerErrors(@NotNull Exception ex) {
+    public String handleServerErrors(@NotNull Exception ex, @NotNull HttpServletRequest request) {
         final User user = Utils.getUser();
-        notificationService.reportUnexpectedError(ex, user, "unknown browser");
+        notificationService.reportUnexpectedError(ex, user, request.getHeader(UserAgent.USER_AGENT_HEADER));
         return ex.getMessage();
     }
 
