@@ -79,7 +79,7 @@ mindplot.DesignerKeyboard = new Class({
 
             }.bind(this),
 
-            'ctrl+z':function () {
+            'ctrl+z':function (event) {
                 event.preventDefault(event);
                 event.stopPropagation();
                 designer.undo();
@@ -93,7 +93,7 @@ mindplot.DesignerKeyboard = new Class({
 
             }.bind(this),
 
-            'ctrl+c':function () {
+            'ctrl+c':function (event) {
                 event.preventDefault(event);
                 event.stopPropagation();
                 designer.copyToClipboard();
@@ -107,7 +107,7 @@ mindplot.DesignerKeyboard = new Class({
 
             }.bind(this),
 
-            'ctrl+v':function () {
+            'ctrl+v':function (event) {
                 event.preventDefault(event);
                 event.stopPropagation();
 
