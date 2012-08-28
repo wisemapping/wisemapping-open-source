@@ -15,7 +15,7 @@
 <script type="text/javascript">
     $('submitBtn').addEvent('click', function () {
         var iframeWindow = $('dialogContentIframe').contentWindow;
-        if (iframeWindow) {
+        if (iframeWindow && (typeof iframeWindow.submitDialogForm == 'function')) {
             var delay = iframeWindow.submitDialogForm();
             if (MooDialog.Request.active) {
                 if (!delay) {
