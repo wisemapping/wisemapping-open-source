@@ -18,32 +18,34 @@
 
 mindplot.LinkIcon = new Class({
 
-    Extends: mindplot.Icon,
-    initialize : function(topic, linkModel) {
+    Extends:mindplot.Icon,
+    initialize:function (topic, linkModel, readOnly) {
         $assert(topic, 'topic can not be null');
         $assert(linkModel, 'linkModel can not be null');
-
 
         this.parent(mindplot.LinkIcon.IMAGE_URL);
         this._linksModel = linkModel;
         this._topic = topic;
+        this._readOnly = readOnly;
 
         this._registerEvents();
     },
 
-    _registerEvents : function() {
+    _registerEvents:function () {
         this._image.setCursor('pointer');
 
-        // Add on click event to open the editor ...
-        this.addEvent('click', function(event) {
-            this._topic.showLinkEditor();
-            event.stopPropagation();
-        }.bind(this));
+        if (!this._readOnly) {
+            // Add on click event to open the editor ...
+            this.addEvent('click', function (event) {
+                this._topic.showLinkEditor();
+                event.stopPropagation();
+            }.bind(this));
+        }
 
         this._tip = new mindplot.widget.LinkIconTooltip(this);
     },
 
-    getModel : function() {
+    getModel:function () {
         return this._linksModel;
     }
 });

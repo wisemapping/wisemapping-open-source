@@ -17,51 +17,51 @@
  */
 
 mindplot.TopicFeature = {
-    Icon: {
+    Icon:{
         id:mindplot.model.IconModel.FEATURE_TYPE,
-        model: mindplot.model.IconModel,
-        icon : mindplot.ImageIcon
+        model:mindplot.model.IconModel,
+        icon:mindplot.ImageIcon
     },
 
-    Link: {
-        id: mindplot.model.LinkModel.FEATURE_TYPE,
-        model: mindplot.model.LinkModel,
-        icon : mindplot.LinkIcon
+    Link:{
+        id:mindplot.model.LinkModel.FEATURE_TYPE,
+        model:mindplot.model.LinkModel,
+        icon:mindplot.LinkIcon
     },
 
-    Note: {
-        id: mindplot.model.NoteModel.FEATURE_TYPE,
-        model: mindplot.model.NoteModel,
-        icon : mindplot.NoteIcon
+    Note:{
+        id:mindplot.model.NoteModel.FEATURE_TYPE,
+        model:mindplot.model.NoteModel,
+        icon:mindplot.NoteIcon
     },
 
-    isSupported : function(id) {
-        return mindplot.TopicFeature._featuresMetadataById.some(function(elem) {
+    isSupported:function (id) {
+        return mindplot.TopicFeature._featuresMetadataById.some(function (elem) {
             return elem.id == id;
         });
     },
 
-    createModel : function(id, attributes) {
+    createModel:function (id, attributes) {
         $assert(id, 'type can not be null');
         $assert(attributes, 'attributes can not be null');
 
-        var model = mindplot.TopicFeature._featuresMetadataById.filter(function(elem) {
+        var model = mindplot.TopicFeature._featuresMetadataById.filter(function (elem) {
             return elem.id == id;
         })[0].model;
         return new model(attributes);
     },
 
-    createIcon : function(topic, model) {
+    createIcon:function (topic, model, readOnly) {
         $assert(topic, 'topic can not be null');
         $assert(model, 'model can not be null');
 
-        var icon = mindplot.TopicFeature._featuresMetadataById.filter(function(elem) {
+        var icon = mindplot.TopicFeature._featuresMetadataById.filter(function (elem) {
             return elem.id == model.getType();
         })[0].icon;
-        return new icon(topic, model);
+        return new icon(topic, model, readOnly);
     }
 };
 
-mindplot.TopicFeature._featuresMetadataById = [mindplot.TopicFeature.Icon,mindplot.TopicFeature.Link,mindplot.TopicFeature.Note];
+mindplot.TopicFeature._featuresMetadataById = [mindplot.TopicFeature.Icon, mindplot.TopicFeature.Link, mindplot.TopicFeature.Note];
 
 

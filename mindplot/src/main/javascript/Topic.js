@@ -267,8 +267,8 @@ mindplot.Topic = new Class({
         var featuresModel = model.getFeatures();
         for (var i = 0; i < featuresModel.length; i++) {
             var featureModel = featuresModel[i];
-            var icon = mindplot.TopicFeature.createIcon(this, featureModel);
-            result.addIcon(icon, featureModel.getType() == "icon"); // @Todo: Remove hack ...
+            var icon = mindplot.TopicFeature.createIcon(this, featureModel, this.isReadOnly());
+            result.addIcon(icon, featureModel.getType() == mindplot.TopicFeature.Icon.id && !this.isReadOnly());
         }
 
         return result;
@@ -284,8 +284,8 @@ mindplot.Topic = new Class({
         var feature = model.createFeature(type, attributes);
         model.addFeature(feature);
 
-        var result = mindplot.TopicFeature.createIcon(this, feature);
-        iconGroup.addIcon(result, type == "icon"); // @Todo: Remove hack ...
+        var result = mindplot.TopicFeature.createIcon(this, feature, this.isReadOnly());
+        iconGroup.addIcon(result, type == mindplot.TopicFeature.Icon.id && !this.isReadOnly());
 
         this._adjustShapes();
         return result;
@@ -668,6 +668,7 @@ mindplot.Topic = new Class({
     },
 
     showNoteEditor:function () {
+
 
         var topicId = this.getId();
         var model = this.getModel();

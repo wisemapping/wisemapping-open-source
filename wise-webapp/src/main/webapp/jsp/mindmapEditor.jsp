@@ -12,7 +12,7 @@
 <html>
 <head>
     <base href="${baseURL}/">
-    <title><spring:message code="SITE.TITLE"/> - ${mindmap.title} </title>
+    <title><spring:message code="SITE.TITLE"/> - <c:out value="${mindmap.title}"/></title>
     <!--[if lt IE 9]>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <![endif]-->
@@ -73,14 +73,15 @@
             </c:if>
             <c:if test="${memoryPersistence}">
                 <span><a href="c/keyboard" id="keyboardShortcuts"><spring:message code="SHORTCUTS"/></a></span> |
-                <span><a href="c/user/registration" title="<spring:message code="REGISTER"/>"><spring:message code="REGISTER"/></a></span>
+                <span><a href="c/user/registration" title="<spring:message code="REGISTER"/>"><spring:message
+                        code="REGISTER"/></a></span>
             </c:if>
         </div>
         <a href="c/maps/">
             <div id="headerLogo"></div>
         </a>
 
-        <div id="headerMapTitle"><spring:message code="NAME"/>: <span>${mindmap.title}</span></div>
+        <div id="headerMapTitle"><spring:message code="NAME"/>: <span><c:out value="${mindmap.title}"/></span></div>
     </div>
     <%@ include file="/jsp/mindmapEditorToolbar.jsf" %>
 </div>
