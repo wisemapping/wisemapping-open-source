@@ -78,8 +78,8 @@
         <div id="zoomOut" class="button"></div>
 
         <div id="mapDetails">
-            <span class="title"><spring:message code="CREATOR"/>:</span><span>${mindmap.creator.fullName}</span>
-            <span class="title"><spring:message code="DESCRIPTION"/>:</span><span>${mindmap.title}</span>
+            <span class="title"><spring:message code="CREATOR"/>:</span><span><c:out value="${mindmap.creator.fullName}"/></span>
+            <span class="title"><spring:message code="DESCRIPTION"/>:</span><span><c:out value="${mindmap.title}"/></span>
         </div>
     </div>
 </div>

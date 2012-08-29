@@ -12,12 +12,12 @@
     <div class="tab-content">
         <div class="tab-pane fade active in" id="general">
             <ul class="unstyled">
-                <li><strong><spring:message code="NAME"/>:</strong> ${mindmap.title}</li>
-                <li><strong><spring:message code="DESCRIPTION"/>:</strong> ${mindmap.description}</li>
-                <li><strong><spring:message code="CREATOR"/>:</strong> ${mindmap.creator.fullName}</li>
+                <li><strong><spring:message code="NAME"/>:</strong> <c:out value="${mindmap.title}"/></li>
+                <li><strong><spring:message code="DESCRIPTION"/>:</strong> <c:out value="${mindmap.description}"/></li>
+                <li><strong><spring:message code="CREATOR"/>:</strong> <c:out value="${mindmap.creator.fullName}"/></li>
                 <li><strong><spring:message code="CREATION_TIME"/>:</strong> ${mindmap.creationTime}</li>
                 <li><strong><spring:message code="LAST_UPDATE"/>:</strong> ${mindmap.lastEditTime}</li>
-                <li><strong><spring:message code="LAST_UPDATE_BY"/>:</strong> ${mindmap.lastEditor}</li>
+                <li><strong><spring:message code="LAST_UPDATE_BY"/>:</strong> <c:out value="${mindmap.lastEditor}"/></li>
                 <li><strong> <spring:message code="STARRED"/>:</strong> ${mindmap.starred}</li>
             </ul>
         </div>

@@ -1,22 +1,3 @@
-jQuery.fn.dataTableExt.oSort['es_date-asc'] = function (a, b) {
-    var esDatea = a.split('/');
-    var esDateb = b.split('/');
-
-    var x = (esDatea[2] + esDatea[1] + esDatea[0]) * 1;
-    var y = (esDateb[2] + esDateb[1] + esDateb[0]) * 1;
-
-    return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-};
-
-jQuery.fn.dataTableExt.oSort['es_date-desc'] = function (a, b) {
-    var esDatea = a.split('/');
-    var esDateb = b.split('/');
-
-    var x = (esDatea[2] + esDatea[1] + esDatea[0]) * 1;
-    var y = (esDateb[2] + esDateb[1] + esDateb[0]) * 1;
-
-    return ((x < y) ? 1 : ((x > y) ? -1 : 0));
-};
 
 $.fn.dataTableExt.oApi.fnReloadAjax = function (oSettings, sNewSource, fnCallback, bStandingRedraw) {
     if (typeof sNewSource != 'undefined' && sNewSource != null) {

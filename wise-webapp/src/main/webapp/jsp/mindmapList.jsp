@@ -58,7 +58,7 @@
                         bUseRendered:false,
                         mDataProp:"title",
                         fnRender:function (obj) {
-                            return '<a href="c/maps/' + obj.aData.id + '/edit">' + obj.aData.title + '</a>';
+                            return $('<a href="c/maps/' + obj.aData.id + '/edit"></a>').text(obj.aData.title).html();
                         }
                     },
                     {
