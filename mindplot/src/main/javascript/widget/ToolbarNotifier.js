@@ -18,45 +18,47 @@
 
 mindplot.widget.ToolbarNotifier = new Class({
 
-    initialize : function() {
-        this._container = $('headerNotifier');
-        this._effect = new Fx.Elements(this._container, {
-            onComplete: function() {
-                this._container.setStyle('display', 'none');
+    initialize:function () {
+        var container = $('headerNotifier');
+        this._effect = new Fx.Elements(container, {
+            onComplete:function () {
+                container.setStyle('display', 'none');
             }.bind(this),
             link:'cancel',
             duration:8000,
-            transition: Fx.Transitions.Expo.easeInOut
+            transition:Fx.Transitions.Expo.easeInOut
         });
     },
 
-    logError : function(userMsg) {
+    logError:function (userMsg) {
         this.logMessage(userMsg, mindplot.widget.ToolbarNotifier.MsgKind.ERROR);
     },
 
-    hide:function() {
+    hide:function () {
 
     },
 
-    logMessage : function(msg, fade) {
+    logMessage:function (msg, fade) {
         $assert(msg, 'msg can not be null');
-        this._container.set('text', msg);
-        this._container.setStyle('display', 'block');
-        this._container.position({
-            relativeTo: $('header'),
-            position: 'upperCenter',
-            edge: 'centerTop'
+
+        var container = $('headerNotifier');
+        container.set('text', msg);
+        container.setStyle('display', 'block');
+        container.position({
+            relativeTo:$('header'),
+            position:'upperCenter',
+            edge:'centerTop'
         });
 
         if (!$defined(fade) || fade) {
             this._effect.start({
-                0: {
-                    opacity: [1,0]
+                0:{
+                    opacity:[1, 0]
                 }
             });
 
         } else {
-            this._container.setStyle('opacity', '1');
+            container.setStyle('opacity', '1');
             this._effect.pause();
         }
     }
