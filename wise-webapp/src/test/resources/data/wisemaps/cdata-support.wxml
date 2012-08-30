@@ -1,7 +1,6 @@
 <map name="71137" version="tango">
     <topic central="true" text="Observation " shape="rectagle" id="1">
-        <note>
-            <![CDATA[Always ask any questions when you make your observation to find what you are observing or trying to find out]]></note>
+        <note><![CDATA[Always ask any questions when you make your observation to find what you are observing or trying to find out]]></note>
     </topic>
     <topic position="-4,-107" text="Data Analysis" id="29">
         <note>
