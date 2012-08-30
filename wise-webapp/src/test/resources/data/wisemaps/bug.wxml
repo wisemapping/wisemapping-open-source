@@ -1,0 +1,54 @@
+<map name="71137" version="tango">
+    <topic central="true" text="Observation " shape="rectagle" id="1">
+        <note>
+            <![CDATA[Always ask any questions when you make your observation to find what you are observing or trying to find out]]></note>
+    </topic>
+    <topic position="-4,-107" text="Data Analysis" id="29">
+        <note>
+            <![CDATA[You always check your data to see if it is correct and then you check it and organize the data that you have to make sure that it is right ]]></note>
+    </topic>
+    <topic position="-143,-31" text="Organizing Data" id="30">
+        <note><![CDATA[Organize your data when you are doing an experiment ]]></note>
+    </topic>
+    <topic position="181,-42" text="Questions" id="31">
+        <note><![CDATA[Always ask your self a question when analysis the data it is a good idea to do.]]></note>
+    </topic>
+    <topic position="-6,46" text="Hypothesis" id="32">
+        <note><![CDATA[You make your hypothesis when you are making your observation.]]></note>
+    </topic>
+    <topic position="-305,-50" text="Experiment" id="33">
+        <note><![CDATA[Always analysis your data and keep it in order when you are doing an experiment.]]></note>
+    </topic>
+    <topic position="211,-151" text="Variable" id="34">
+        <note><![CDATA[A major factor that can change the outcome in an experiment.]]></note>
+    </topic>
+    <topic position="327,-64" text="Independent Variable" id="35">
+        <note><![CDATA[When you change it you the see affect or the aftermath of what happened ]]></note>
+    </topic>
+    <topic position="-304,14" text="Control Group" id="37">
+        <note><![CDATA[A test That can be compared ]]></note>
+    </topic>
+    <topic position="323,98" text="Dependent Variable" id="36">
+        <note><![CDATA[Changes the outcome of the other variables]]></note>
+    </topic>
+    <topic position="-28,141" text="Constant " id="40">
+        <note><![CDATA[Doesnt Change at all maybe once and a while but never that often]]></note>
+    </topic>
+    <relationship srcTopicId="1" destTopicId="29" lineType="3" endArrow="true" startArrow="false"/>
+    <relationship srcTopicId="29" destTopicId="30" lineType="3" endArrow="true" startArrow="false"/>
+    <relationship srcTopicId="1" destTopicId="31" lineType="3" endArrow="true" startArrow="false"/>
+    <relationship srcTopicId="1" destTopicId="32" lineType="3" endArrow="true" startArrow="false"/>
+    <relationship srcTopicId="30" destTopicId="33" lineType="3" srcCtrlPoint="-53,0" destCtrlPoint="-20,0"
+                  endArrow="true" startArrow="false"/>
+    <relationship srcTopicId="33" destTopicId="29" lineType="3" endArrow="true" startArrow="false"/>
+    <relationship srcTopicId="29" destTopicId="31" lineType="3" endArrow="true" startArrow="false"/>
+    <relationship srcTopicId="33" destTopicId="35" lineType="3" srcCtrlPoint="191,-113" destCtrlPoint="-354,-98"
+                  endArrow="true" startArrow="false"/>
+    <relationship srcTopicId="33" destTopicId="37" lineType="3" endArrow="true" startArrow="false"/>
+    <relationship srcTopicId="33" destTopicId="34" lineType="3" srcCtrlPoint="-14,-117" destCtrlPoint="-218,-20"
+                  endArrow="true" startArrow="false"/>
+    <relationship srcTopicId="35" destTopicId="36" lineType="3" endArrow="true" startArrow="false"/>
+    <relationship srcTopicId="34" destTopicId="36" lineType="3" srcCtrlPoint="66,43" destCtrlPoint="199,-215"
+                  endArrow="true" startArrow="false"/>
+    <relationship srcTopicId="33" destTopicId="40" lineType="3" endArrow="true" startArrow="false"/>
+</map>

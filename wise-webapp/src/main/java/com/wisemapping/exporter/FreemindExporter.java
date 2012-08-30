@@ -91,17 +91,24 @@ public class FreemindExporter
             List<RelationshipType> relationships = mindmapMap.getRelationship();
             for (RelationshipType relationship : relationships) {
                 Node srcNode = nodesMap.get(relationship.getSrcTopicId());
-                Arrowlink arrowlink = objectFactory.createArrowlink();
                 Node dstNode = nodesMap.get(relationship.getDestTopicId());
-                arrowlink.setDESTINATION(dstNode.getID());
-                if (relationship.isEndArrow() != null && relationship.isEndArrow())
-                    arrowlink.setENDARROW("Default");
 
-                if (relationship.isStartArrow() != null && relationship.isStartArrow())
-                    arrowlink.setSTARTARROW("Default");
 
-                List<Object> cloudOrEdge = srcNode.getArrowlinkOrCloudOrEdge();
-                cloudOrEdge.add(arrowlink);
+                // Workaround for nodes without relationship associated ...
+                if (srcNode != null && dstNode != null) {
+
+                    Arrowlink arrowlink = objectFactory.createArrowlink();
+
+                    arrowlink.setDESTINATION(dstNode.getID());
+                    if (relationship.isEndArrow() != null && relationship.isEndArrow())
+                        arrowlink.setENDARROW("Default");
+
+                    if (relationship.isStartArrow() != null && relationship.isStartArrow())
+                        arrowlink.setSTARTARROW("Default");
+
+                    List<Object> cloudOrEdge = srcNode.getArrowlinkOrCloudOrEdge();
+                    cloudOrEdge.add(arrowlink);
+                }
             }
 
             JAXBUtils.saveMap(freemindMap, outputStream);
