@@ -1,34 +1,9 @@
-<map name="5327">
-    <topic central="true" text="Guia Ezeiza" shape="rounded rectagle" brColor="#1b2863">
-        <topic position="237,-50" text="Directorio" bgColor="#cfe8d4">
-            <icon id="chart_organisation"/>
-            <topic order="0" text="Empresas">
-                <topic order="0" text="Rubro"/>
-                <topic order="1" text="Nombre"/>
-            </topic>
-            <topic order="1" text="Personas">
-                <topic order="0" text="Presidentes"/>
-                <topic order="1" text="Ventas"/>
-                <topic order="2" text="Otros"/>
-            </topic>
-        </topic>
-        <topic position="152,100" text="Social" bgColor="#cfe8d4">
-            <icon id="bulb_light_on"/>
-            <topic order="0" text="Red de contactos (linkedin)"/>
-            <topic order="1" text="Preguntas y respuestas"/>
-            <topic order="2" text="Negocios"/>
-            <topic order="3" text="Compartir intereses"/>
-        </topic>
-        <topic position="-168,100" text="Noticias" bgColor="#cfe8d4">
-            <icon id="money_coins"/>
-            <topic order="0" text="Subscripcion"/>
-            <topic order="1" text="Municipales"/>
-            <topic order="2" text="De interes general"/>
-        </topic>
-        <topic position="-162,-100" text="Eventos" bgColor="#cfe8d4">
-            <icon id="thumb_thumb_up"/>
-            <topic order="0" text="De la comunidad"/>
-            <topic order="1" text="Municipales"/>
-        </topic>
-    </topic>
+<map name="70838" version="tango">
+    <topic central="true" text="Clickview Overview" shape="elipse" id="1"/>
+    <topic position="-260,107" text="Subscription Library" shape="elipse" id="3" fontStyle=";10;#ff0000;bold;;"/>
+    <topic position="1,135" order="0" text="Clickview 24/7" shape="elipse" id="6" fontStyle=";10;#38761d;bold;;"/>
+    <topic position="179,133" order="0" text="Clickview Exchange" shape="elipse" id="9" fontStyle=";10;#741b47;bold;;"/>
+    <topic position="1,65" order="1" text="Components/Services" shape="rectagle" id="2" fontStyle=";10;#0000ff;bold;;"/>
+    <relationship srcTopicId="3" destTopicId="2" lineType="3" endArrow="true" startArrow="false"/>
+    <relationship srcTopicId="6" destTopicId="2" lineType="3" endArrow="true" startArrow="false"/>
 </map>

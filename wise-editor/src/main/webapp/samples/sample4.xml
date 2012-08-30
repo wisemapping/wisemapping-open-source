@@ -1,0 +1,10 @@
+<map name="sample3" version="tango">
+    <topic central="true" text="Clickview Overview" shape="elipse" id="1"/>
+    <topic position="-260,107" text="Subscription Library" shape="elipse" id="3" fontStyle=";10;#ff0000;bold;;"/>
+    <topic position="1,135" text="Clickview 24/7" shape="elipse" id="6" fontStyle=";10;#38761d;bold;;"/>
+    <topic position="179,133" text="Clickview Exchange" shape="elipse" id="9" fontStyle=";10;#741b47;bold;;"/>
+    <topic position="1,65" text="Components/Services" shape="rectagle" id="2" fontStyle=";10;#0000ff;bold;;"/>
+    <relationship srcTopicId="3" destTopicId="2" lineType="3" endArrow="true" startArrow="false"/>
+    <relationship srcTopicId="6" destTopicId="2" lineType="3" srcCtrlPoint="-1,-12" destCtrlPoint="-30,25"
+                  endArrow="true" startArrow="false"/>
+</map>

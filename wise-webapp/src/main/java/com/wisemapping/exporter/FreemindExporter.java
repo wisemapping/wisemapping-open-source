@@ -174,6 +174,11 @@ public class FreemindExporter
             if (textNote == null || textNote.isEmpty()) {
                 textNote = mindmapTopic.getNote().getText();
             }
+
+            // @Todo: For some reason central topic nodes with CDATA seems not to be loaded in the JAXB model.
+            // Temporally excluding and continue ..
+            textNote = (textNote != null) ? textNote : "";
+
             textNote = textNote.replaceAll("%0A", "\n");
             note.setNAME("accessories/plugins/NodeNote.properties");
             note.setText(textNote);

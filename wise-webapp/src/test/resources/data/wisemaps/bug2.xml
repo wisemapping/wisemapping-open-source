@@ -1,0 +1,49 @@
+<map name="58984" version="tango">
+    <topic central="true" text="SaberMás" id="1">
+        <topic position="271,-39" order="8" text="Utilización de medios de expresión artística, digitales y analógicos"
+               id="5"/>
+        <topic position="-181,-17" order="5" text="Precio también limitado: 100-120?" id="9"/>
+        <topic position="132,165" order="14" text="Talleres temáticos" id="2">
+            <topic position="242,57" order="0" text="Naturaleza" id="13">
+                <topic position="362,57" order="0" text="Animales, Plantas, Piedras" id="17"/>
+            </topic>
+            <topic position="245,84" order="1" text="Arqueología" id="21"/>
+            <topic position="236,138" order="3" text="Energía" id="18"/>
+            <topic position="244,192" order="5" text="Astronomía" id="16"/>
+            <topic position="245,219" order="6" text="Arquitectura" id="20"/>
+            <topic position="234,246" order="7" text="Cocina" id="11"/>
+            <topic position="234,273" order="8" text="Poesía" id="24"/>
+            <topic position="256,111" order="2" text="Culturas Antiguas" id="25">
+                <topic position="378,111" order="0" text="Egipto, Grecia, China..." id="26"/>
+            </topic>
+            <topic position="248,165" order="4" text="Paleontología" id="38"/>
+        </topic>
+        <topic position="-168,-49" order="3" text="Duración limitada: 5-6 semanas" id="6"/>
+        <topic position="-181,16" order="7" text="Niños y niñas que quieren saber más" id="7"/>
+        <topic position="-184,-81" order="1" text="Alternativa a otras actividades de ocio" id="8"/>
+        <topic position="255,-6" order="10" text="Uso de la tecnología durante todo el proceso de aprendizaje" id="23"/>
+        <topic position="336,-137" order="2"
+               text="Estructura PBL: aprendemos cuando buscamos respuestas a nuestras propias preguntas " id="3"/>
+        <topic position="238,-105" order="4" text="Trabajo basado en la experimentación y en la investigación" id="4"/>
+        <topic position="-201,48" order="9" text="De 8 a 12 años, sin separación por edades" id="10"/>
+        <topic position="-146,81" order="11" text="Máximo 10/1 por taller" id="19"/>
+        <topic position="211,-72" order="6" text="Actividades centradas en el contexto cercano" id="37"/>
+        <topic position="303,27" order="12"
+               text="Flexibilidad en el uso de las lenguas de trabajo (inglés, castellano, esukara?)" id="22"/>
+        <topic position="206,-220" order="0" text="Complementamos el trabajo de la escuela" shape="rounded rectagle"
+               id="27">
+            <note><![CDATA[Todos los contenidos de los talleres están relacionados con el currículo de la enseñanza básica.
+A diferencia de la práctica tradicional, pretendemos ahondar en el conocimiento partiendo de lo que realmente interesa al niño o niña,
+ayudándole a que encuentre respuesta a las preguntas que él o ella se plantea.
+
+Por ese motivo, SaberMás proyecta estar al lado de los niños que necesitan una motivación extra para entender la escuela y fluir en ella,
+ y también al lado de aquellos a quienes la curiosidad y las ganas de saber les lleva más allá.]]></note>
+            <topic position="477,-220" order="2" text="Cada uno va a su ritmo, y cada cual pone sus límites" id="30"/>
+            <topic position="425,-193" order="3" text="Aprendemos todos de todos" id="31"/>
+            <topic position="440,-167" order="4" text="Valoramos lo que hemos aprendido" id="33"/>
+            <topic position="468,-273" order="0" text="SaberMás trabaja con, desde y para la motivación" shape="line"
+                   id="28"/>
+            <topic position="458,-247" order="1" text="Trabajamos en equipo en nuestros proyectos " id="32"/>
+        </topic>
+    </topic>
+</map>

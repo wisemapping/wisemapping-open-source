@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<map version="0.9.0">
+    <node TEXT="Observation" ID="ID_1">
+        <hook NAME="accessories/plugins/NodeNote.properties">
+            <text></text>
+        </hook>
+    </node>
+</map>
