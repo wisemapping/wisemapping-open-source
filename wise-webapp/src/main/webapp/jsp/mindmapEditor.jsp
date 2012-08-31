@@ -88,5 +88,6 @@
 
 <div id="mindplot" onselectstart="return false;"></div>
 <script type="text/javascript" src="js/editor.js"></script>
+<jsp:include page="mindmapEditorFooter.jsf"/>
 </body>
 </html>
