@@ -213,8 +213,10 @@
         </div>
     </div>
 </div>
-<jsp:include page="footer.jsp"/>
 
+<div style="border: 1px solid #000000">
+<jsp:include page="footer.jsp"/>
+</div>
 
 <div id="dialogsContainer">
 <!-- New map dialog -->
