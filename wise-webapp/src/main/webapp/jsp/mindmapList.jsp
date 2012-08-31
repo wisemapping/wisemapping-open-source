@@ -115,22 +115,6 @@
             });
         });
     </script>
-    <c:if test="${requestScope['google.ads.enabled']}">
-        <script type="text/javascript"><!--
-        google_ad_client = "ca-pub-7564778578019285";
-        /* WiseMapping Mindmap List */
-        google_ad_slot = "4071968444";
-        google_ad_width = 120;
-        google_ad_height = 460;
-        //-->
-        </script>
-
-        <div style="position:absolute;right: 9px;top: 90px">
-            <script type="text/javascript"
-                    src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-            </script>
-        </div>
-    </c:if>
 </head>
 <body>
 <jsp:include page="header.jsp">
@@ -437,5 +421,22 @@
     </div>
 </div>
 </div>
+<c:if test="${requestScope['google.ads.enabled']}">
+    <script type="text/javascript"><!--
+    google_ad_client = "ca-pub-7564778578019285";
+    /* WiseMapping Mindmap List */
+    google_ad_slot = "4071968444";
+    google_ad_width = 120;
+    google_ad_height = 460;
+    //-->
+    </script>
+
+    <div style="position:absolute;right: 9px;top: 90px">
+        <script type="text/javascript"
+                src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+        </script>
+    </div>
+</c:if>
+
 </body>
 </html>
