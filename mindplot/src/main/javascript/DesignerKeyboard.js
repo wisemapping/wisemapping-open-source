@@ -72,6 +72,10 @@ mindplot.DesignerKeyboard = new Class({
                 designer.createChildForSelectedNode();
             }.bind(this),
 
+            '-':function () {
+                designer.createChildForSelectedNode();
+            }.bind(this),
+
             'meta+enter':function (event) {
                 event.preventDefault();
                 event.stopPropagation();
