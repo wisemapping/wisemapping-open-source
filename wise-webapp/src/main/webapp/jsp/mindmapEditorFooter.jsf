@@ -1,3 +1,5 @@
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <c:if test="${requestScope['google.analytics.enabled']}">
     <script type="text/javascript">
 
