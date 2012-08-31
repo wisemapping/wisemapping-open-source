@@ -30,7 +30,7 @@ public class NotifyingExceptionResolver extends SimpleMappingExceptionResolver {
 
     private void sendNotification(@NotNull Exception ex, @NotNull HttpServletRequest request) {
         final User user = Utils.getUser();
-        notificationService.reportUnexpectedError(ex, user, request.getHeader("User-Agent"));
+        notificationService.reportJavaException(ex, user, request);
     }
 
     public void setExclude(final Set<String> exclude) {

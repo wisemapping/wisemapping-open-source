@@ -44,7 +44,7 @@ public class TransformView extends AbstractView {
     @Autowired
     private Jaxb2Marshaller jaxbMarshaller;
 
-    public TransformView(@NotNull final String contentType,@NotNull NotificationService notificationService) {
+    public TransformView(@NotNull final String contentType, @NotNull NotificationService notificationService) {
         this.contentType = contentType;
         this.notificationService = notificationService;
         this.exportFormat = ExportFormat.fromContentType(contentType);
@@ -93,7 +93,7 @@ public class TransformView extends AbstractView {
                 factory.export(properties, null, outputStream, content);
             }
         } catch (Throwable e) {
-            notificationService.reportMindmapExportError(content, Utils.getUser(), request.getHeader("User-Agent"),e);
+            notificationService.reportJavaException(e, Utils.getUser(), content, request);
         }
     }
 
@@ -101,5 +101,6 @@ public class TransformView extends AbstractView {
     public String getContentType() {
         return contentType;
     }
+
     private static final String IMG_SIZE_PARAMETER = "imgSize";
 }

@@ -26,11 +26,14 @@ import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.service.UserService;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class AccountController extends BaseController {
@@ -99,11 +102,11 @@ public class AccountController extends BaseController {
 
     @RequestMapping(method = RequestMethod.POST, value = "logger/editor", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void changePassword(@RequestBody RestLogItem item) {
+    public void changePassword(@RequestBody RestLogItem item, @NotNull HttpServletRequest request) {
         final Mindmap mindmap = mindmapService.findMindmapById(item.getMapId());
         final User user = Utils.getUser();
         logger.error("Unexpected editor error - " + item.getJsErrorMsg());
-        notificationService.reportMindmapEditorError(mindmap, user, item.getUserAgent(), item.getJsErrorMsg() + "\n" + item.getJsStack());
+        notificationService.reportJavascriptException(mindmap, user, item.getJsErrorMsg() + "\n" + item.getJsStack(), request);
     }
 
 }

@@ -31,8 +31,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.support.RequestContextUtils;
-import org.springframework.web.util.WebUtils;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -62,7 +60,7 @@ public class BaseController {
     @ResponseBody
     public String handleServerErrors(@NotNull Exception ex, @NotNull HttpServletRequest request) {
         final User user = Utils.getUser();
-        notificationService.reportUnexpectedError(ex, user, request.getHeader(UserAgent.USER_AGENT_HEADER));
+        notificationService.reportJavaException(ex, user, request);
         return ex.getMessage();
     }
 

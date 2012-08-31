@@ -18,16 +18,20 @@
 
 package com.wisemapping.mail;
 
+import com.wisemapping.filter.UserAgent;
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -150,19 +154,30 @@ final public class NotificationService {
 //        }
     }
 
-    public void reportMindmapEditorError(@NotNull Mindmap mindmap, @Nullable User user, @NotNull String userAgent, @Nullable String jsErrorMsg) {
+    public void reportJavascriptException(@NotNull Mindmap mindmap, @Nullable User user, @Nullable String jsErrorMsg, @NotNull HttpServletRequest request) {
+
+        final Map<String, Object> model = new HashMap<String, Object>();
+        model.put("errorMsg", jsErrorMsg);
+        try {
+            model.put("mapXML", StringEscapeUtils.escapeXml(mindmap.getXmlStr()));
+        } catch (UnsupportedEncodingException e) {
+            // Ignore ...
+        }
+        model.put("mapId", mindmap.getId());
+        model.put("mapTitle", mindmap.getTitle());
+
+        sendNotification(model, user, request);
+    }
+
+    private void sendNotification(@NotNull Map<String, Object> model, @Nullable User user, @NotNull HttpServletRequest request) {
+        model.put("fullName", (user != null ? user.getFullName() : "'anonymous'"));
+        model.put("email", (user != null ? user.getEmail() : "'anonymous'"));
+        model.put("userAgent", request.getHeader(UserAgent.USER_AGENT_HEADER));
+        model.put("server", request.getScheme() + "://" + request.getServerName() + "/" + request.getServerPort());
+        model.put("requestURI", request.getRequestURI());
+        model.put("remoteAddress", request.getRemoteAddr());
 
         try {
-            final Map<String, Object> model = new HashMap<String, Object>();
-            model.put("user", user);
-            model.put("email", (user != null ? user.getEmail() : "'anonymous'"));
-            model.put("errorMsg", jsErrorMsg);
-            model.put("mapXML", mindmap.getXmlStr().replaceAll("<", "&lt;"));
-            model.put("mapId", mindmap.getId());
-            model.put("mapTitle", mindmap.getTitle());
-            model.put("userAgent", userAgent);
-            model.put("details", "Editor");
-
             final String errorReporterEmail = mailer.getErrorReporterEmail();
             if (errorReporterEmail != null && !errorReporterEmail.isEmpty()) {
                 mailer.sendEmail(mailer.getServerSenderEmail(), errorReporterEmail, "[WiseMapping] Bug from '" + (user != null ? user.getEmail() + "'" : "'anonymous'"), model,
@@ -173,43 +188,19 @@ final public class NotificationService {
         }
     }
 
-    public void reportMindmapExportError(@NotNull String exportContent, @Nullable User user, @Nullable String userAgent, @NotNull Throwable exception) {
-        try {
-            final Map<String, Object> model = new HashMap<String, Object>();
-            model.put("user", user);
-            model.put("email", (user != null ? user.getEmail() : "'anonymous'"));
-            model.put("errorMsg", stackTraceToString(exception));
-            model.put("mapXML", exportContent.replaceAll("<", "&lt;"));
-            model.put("userAgent", userAgent);
-            model.put("details", "Export");
+    public void reportJavaException(@NotNull Throwable exception, @Nullable User user, @NotNull String content, @NotNull HttpServletRequest request) {
+        final Map<String, Object> model = new HashMap<String, Object>();
+        model.put("errorMsg", stackTraceToString(exception));
+        model.put("mapXML", StringEscapeUtils.escapeXml(content));
 
-            final String errorReporterEmail = mailer.getErrorReporterEmail();
-            if (errorReporterEmail != null && !errorReporterEmail.isEmpty()) {
-                mailer.sendEmail(mailer.getServerSenderEmail(), errorReporterEmail, "[WiseMapping] Bug from '" + (user != null ? user.getEmail() + "'" : "'anonymous'"), model,
-                        "errorNotification.vm");
-            }
-        } catch (Exception e) {
-            handleException(e);
-        }
+        sendNotification(model, user, request);
     }
 
-    public void reportUnexpectedError(@NotNull Throwable exception, @Nullable User user, @NotNull String userAgent) {
-        try {
-            final Map<String, Object> model = new HashMap<String, Object>();
-            model.put("user", user);
-            model.put("email", (user != null ? user.getEmail() : "'anonymous'"));
-            model.put("errorMsg", stackTraceToString(exception));
-            model.put("userAgent", userAgent);
-            model.put("details", "Unexpected");
+    public void reportJavaException(@NotNull Throwable exception, @Nullable User user, @NotNull HttpServletRequest request) {
+        final Map<String, Object> model = new HashMap<String, Object>();
+        model.put("errorMsg", stackTraceToString(exception));
 
-            final String errorReporterEmail = mailer.getErrorReporterEmail();
-            if (errorReporterEmail != null && !errorReporterEmail.isEmpty()) {
-                mailer.sendEmail(mailer.getServerSenderEmail(), errorReporterEmail, "[WiseMapping] Bug from '" + (user != null ? user.getEmail() + "'" : "'anonymous'"), model,
-                        "errorNotification.vm");
-            }
-        } catch (Exception e) {
-            handleException(e);
-        }
+        sendNotification(model, user, request);
     }
 
     public String stackTraceToString(@NotNull Throwable e) {

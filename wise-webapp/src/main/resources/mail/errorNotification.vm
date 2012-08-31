@@ -1,10 +1,13 @@
 <html>
 <body>
 <ul>
-    <li>Details: ${details}</li>
-    <li>User Name: ${user.fullName}</li>
+    <li>User Name: ${fullName}</li>
     <li>Email: ${email}</li>
+    <li>Server: ${server}</li>
+    <li>RequestURI: ${requestURI}</li>
     <li>User Agent: ${userAgent}</li>
+    <li>remoteAddress: ${remoteAddress}</li>
+
     #if($mapId)
         <li>Mindmap Id: ${mapId}</li>
     #end
