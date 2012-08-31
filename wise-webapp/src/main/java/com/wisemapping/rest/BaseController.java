@@ -18,6 +18,7 @@
 
 package com.wisemapping.rest;
 
+import com.wisemapping.exceptions.AccessDeniedSecurityException;
 import com.wisemapping.filter.UserAgent;
 import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.User;
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.UndeclaredThrowableException;
 
 public class BaseController {
 
@@ -72,14 +74,14 @@ public class BaseController {
 
     @ExceptionHandler(java.lang.reflect.UndeclaredThrowableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public RestErrors handleSecurityErrors(@NotNull ValidationException ex) {
-        return new RestErrors(ex.getErrors(), messageSource);
+    public RestErrors handleSecurityErrors(@NotNull UndeclaredThrowableException ex) {
+        return new RestErrors(ex.getMessage());
     }
 
     @ExceptionHandler(com.wisemapping.exceptions.AccessDeniedSecurityException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public RestErrors handleSecurity2Errors(@NotNull ValidationException ex) {
-        return new RestErrors(ex.getErrors(), messageSource);
+    public RestErrors handleSecurityException(@NotNull AccessDeniedSecurityException ex) {
+        return new RestErrors(ex.getMessage());
     }
 
 }
