@@ -130,7 +130,12 @@ public class MindmapController {
     @RequestMapping(value = "maps/")
     public String showListPage(@NotNull Model model) {
         final Locale locale = LocaleContextHolder.getLocale();
-        model.addAttribute("locale", locale.toString().toLowerCase());
+        // @Todo: This should be more flexible  ...
+        String localeStr = locale.toString().toLowerCase();
+        if ("es".equals(locale.getLanguage()) || "pt".equals(locale.getLanguage())) {
+            localeStr = locale.getLanguage();
+        }
+        model.addAttribute("locale", localeStr);
         return "mindmapList";
     }
 

@@ -113,8 +113,24 @@
             $('#pPageBtn').click(function () {
                 $('#mindmapListTable_previous').click();
             });
-        });    </script>
+        });
+    </script>
+    <c:if test="${requestScope['google.ads.enabled']}">
+        <script type="text/javascript"><!--
+        google_ad_client = "ca-pub-7564778578019285";
+        /* WiseMapping Mindmap List */
+        google_ad_slot = "4071968444";
+        google_ad_width = 120;
+        google_ad_height = 460;
+        //-->
+        </script>
 
+        <div style="position:absolute;right: 9px;top: 90px">
+            <script type="text/javascript"
+                    src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+            </script>
+        </div>
+    </c:if>
 </head>
 <body>
 <jsp:include page="header.jsp">
@@ -123,7 +139,6 @@
 </jsp:include>
 
 <div style="min-height: 500px">
-
     <div id="mindmapListContainer">
         <div id="messagesPanel" class="alert alert-error alert-block fade in hide" style="margin-top: 10px">
             <strong><spring:message code="UNEXPECTED_ERROR"/></strong>
@@ -213,9 +228,8 @@
         </div>
     </div>
 </div>
-
-<div style="border: 1px solid #000000">
-<jsp:include page="footer.jsp"/>
+<div style="border-top: 1px solid #000000">
+    <jsp:include page="footer.jsp"/>
 </div>
 
 <div id="dialogsContainer">
