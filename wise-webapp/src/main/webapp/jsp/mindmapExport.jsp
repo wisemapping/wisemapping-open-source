@@ -58,18 +58,18 @@
     // No way to obtain map svg. Hide panels..
     if (window.location.pathname.indexOf('exportf') != -1) {
         $('#exportInfo').hide();
-        $('#freemind,#pdf,#svg').click('click', function(event) {
+        $('#freemind,#pdf,#svg').click('click', function (event) {
             $('#imgFormat').hide();
         });
 
-        $('#img').click('click', function(event) {
+        $('#img').click('click', function (event) {
             $('#imgFormat').show();
         });
     } else {
         $('#pdf,#svg,#img').parent().hide();
     }
 
-    function submitDialogForm() {
+    function submitDialogForm(differ) {
         // If the map is opened, use the latest model ...
         var formatType = $('#dialogMainForm input:checked').attr('value');
         var form = $('#dialogMainForm');
@@ -88,17 +88,19 @@
             form.attr('action', 'service/transform.' + formatType);
 
             // Load page SVG ...
-            var svg = window.parent.document.getElementById('workspaceContainer').innerHTML;
-            $('#svgXml').attr('value', svg);
+            var svgXml = window.parent.document.getElementById('workspaceContainer').innerHTML;
+            $('#svgXml').attr('value', svgXml);
 
         }
         $('#dialogMainForm input[name=download]').attr('value', formatType);
-        form.submit();
+        if (!differ) {
+            form.submit();
+        }
 
         // Close dialog ...
         $('#export-dialog-modal').modal('hide');
 
-        return true;
+        return {"action":form.attr('action'), "method":form.attr('method'), formatType:formatType};
     }
 
 </script>

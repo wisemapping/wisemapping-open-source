@@ -16,14 +16,18 @@
     $('submitBtn').addEvent('click', function () {
         var iframeWindow = $('dialogContentIframe').contentWindow;
         if (iframeWindow && (typeof iframeWindow.submitDialogForm == 'function')) {
-            var delay = iframeWindow.submitDialogForm();
-            if (MooDialog.Request.active) {
-                if (!delay) {
-                    MooDialog.Request.active.close();
-                } else {
-                    MooDialog.Request.active.close.delay(3000, MooDialog.Request.active);
-                }
+            var context = iframeWindow.submitDialogForm(true);
+            if (context) {
+                // This is a hack for the export function. If this is not done, the dialog is closed and the export fails.
+                var iframeForm = $('iframeExportForm');
+                iframeForm.setAttribute('method', context.method);
+                iframeForm.setAttribute('action', context.action);
+
+                $('svgXml').setAttribute('value', window.document.getElementById('workspaceContainer').innerHTML);
+                $('download').setAttribute('value', context.formatType);
+                iframeForm.submit();
             }
+            MooDialog.Request.active.close();
         }
     });
 
@@ -33,3 +37,8 @@
         }
     });
 </script>
+<form method="GET" class="form-horizontal" action="service/maps/${mindmap.id}"
+      enctype="application/x-www-form-urlencoded" id="iframeExportForm">
+    <input name="svgXml" id="svgXml" value="" type="hidden"/>
+    <input name="download" id="download" type="hidden" value="mm"/>
+</form>
