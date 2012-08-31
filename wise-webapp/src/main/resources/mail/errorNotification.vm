@@ -5,8 +5,10 @@
     <li>Email: ${email}</li>
     <li>Server: ${server}</li>
     <li>RequestURI: ${requestURI}</li>
+    <li>Method: ${method}</li>
     <li>User Agent: ${userAgent}</li>
-    <li>remoteAddress: ${remoteAddress}</li>
+    <li>Remote Address: ${remoteAddress}</li>
+
 
     #if($mapId)
         <li>Mindmap Id: ${mapId}</li>

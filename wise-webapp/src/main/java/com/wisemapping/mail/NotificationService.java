@@ -173,8 +173,9 @@ final public class NotificationService {
         model.put("fullName", (user != null ? user.getFullName() : "'anonymous'"));
         model.put("email", (user != null ? user.getEmail() : "'anonymous'"));
         model.put("userAgent", request.getHeader(UserAgent.USER_AGENT_HEADER));
-        model.put("server", request.getScheme() + "://" + request.getServerName() + "/" + request.getServerPort());
+        model.put("server", request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort());
         model.put("requestURI", request.getRequestURI());
+        model.put("method", request.getMethod());
         model.put("remoteAddress", request.getRemoteAddr());
 
         try {
