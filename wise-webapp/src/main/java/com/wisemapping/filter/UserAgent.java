@@ -83,7 +83,7 @@ public class UserAgent implements Serializable {
     }
 
     public enum Product {
-        EXPLORER, FIREFOX, CAMINO, NETSCAPE, OPERA, SAFARI, CHROME, KONQUEOR, KMELEON, MOZILLA, LYNX, ROBOT;
+        EXPLORER, FIREFOX, CAMINO, NETSCAPE, OPERA, SAFARI, CHROME, KONQUEOR, KMELEON, MOZILLA, LYNX, ROBOT, WEB_CRAWLER
     }
 
     public enum OS {
@@ -114,7 +114,11 @@ public class UserAgent implements Serializable {
 
             this.os = parseOS(productDetails);
 
-            if (userAgentHeader.contains("MSIE")) {
+            if (userAgentHeader.contains("Googlebot")) {
+                //"Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+                this.product = Product.WEB_CRAWLER;
+
+            } else if (userAgentHeader.contains("MSIE")) {
                 // Explorer Browser : http://msdn2.microsoft.com/en-us/library/ms537503.aspx
                 // Format: Mozilla/MozVer (compatible; MSIE IEVer[; Provider]; Platform[; Extension]*) [Addition]
                 // SampleTest: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0; Google Wireless Transcoder;)
@@ -322,11 +326,13 @@ public class UserAgent implements Serializable {
     public boolean isBrowserSupported() {
         // Is it a supported browser ?.
         final UserAgent.Product product = this.getProduct();
-        boolean result = product == UserAgent.Product.FIREFOX && this.isVersionGreatedOrEqualThan(10, 0);
+        boolean result = product == UserAgent.Product.FIREFOX && this.isVersionGreatedOrEqualThan(12, 0);
         result = result || product == UserAgent.Product.EXPLORER && this.isVersionGreatedOrEqualThan(7, 0) && this.getOs() == UserAgent.OS.WINDOWS;
         result = result || product == UserAgent.Product.OPERA && this.isVersionGreatedOrEqualThan(11, 0);
         result = result || product == UserAgent.Product.CHROME && this.isVersionGreatedOrEqualThan(19, 0);
         result = result || product == UserAgent.Product.SAFARI && this.isVersionGreatedOrEqualThan(5, 0);
+        result = result || product == Product.WEB_CRAWLER;
+
         return result;
     }
 
