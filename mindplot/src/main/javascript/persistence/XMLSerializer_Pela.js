@@ -170,7 +170,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
     },
 
     _noteTextToXML:function (document, elem, text) {
-        if (text.indexOf('\n') == -1) {
+        if (text.indexOf('\n') == -1 && text.indexOf("&") == -1 && text.indexOf("<") == -1 && text.indexOf("\"") == -1) {
             elem.setAttribute('text', text);
         } else {
             var textDom = document.createElement("text");
@@ -256,7 +256,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
 
         var topic = mindmap.createNode(type, id);
         var text = domElem.getAttribute('text');
-        if ($defined(text)) {
+        if ($defined(text) && text) {
             topic.setText(text);
         }
 
