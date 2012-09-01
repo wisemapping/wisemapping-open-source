@@ -23,7 +23,8 @@
                 iframeForm.setAttribute('method', context.method);
                 iframeForm.setAttribute('action', context.action);
 
-                $('svgXml').setAttribute('value', window.document.getElementById('workspaceContainer').innerHTML);
+                var svgXml = context.method == "POST" ? window.document.getElementById('workspaceContainer').innerHTML : "";
+                $('svgXml').setAttribute('value', svgXml);
                 $('download').setAttribute('value', context.formatType);
                 iframeForm.submit();
             }
