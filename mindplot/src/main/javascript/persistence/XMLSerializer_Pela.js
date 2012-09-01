@@ -170,7 +170,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
     },
 
     _noteTextToXML:function (document, elem, text) {
-        if (text.indexOf('\n') == -1 && text.indexOf("&") == -1 && text.indexOf("<") == -1 && text.indexOf("\"") == -1) {
+        if (text.indexOf('\n') == -1) {
             elem.setAttribute('text', text);
         } else {
             var textDom = document.createElement("text");
@@ -258,6 +258,31 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         var text = domElem.getAttribute('text');
         if ($defined(text) && text) {
             topic.setText(text);
+
+            var fontStyle = domElem.getAttribute('fontStyle');
+            if ($defined(fontStyle)) {
+                var font = fontStyle.split(';');
+
+                if (font[0]) {
+                    topic.setFontFamily(font[0]);
+                }
+
+                if (font[1]) {
+                    topic.setFontSize(font[1]);
+                }
+
+                if (font[2]) {
+                    topic.setFontColor(font[2]);
+                }
+
+                if (font[3]) {
+                    topic.setFontWeight(font[3]);
+                }
+
+                if (font[4]) {
+                    topic.setFontStyle(font[4]);
+                }
+            }
         }
 
         var shape = domElem.getAttribute('shape');
@@ -275,30 +300,6 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
             }
         }
 
-        var fontStyle = domElem.getAttribute('fontStyle');
-        if ($defined(fontStyle)) {
-            var font = fontStyle.split(';');
-
-            if (font[0]) {
-                topic.setFontFamily(font[0]);
-            }
-
-            if (font[1]) {
-                topic.setFontSize(font[1]);
-            }
-
-            if (font[2]) {
-                topic.setFontColor(font[2]);
-            }
-
-            if (font[3]) {
-                topic.setFontWeight(font[3]);
-            }
-
-            if (font[4]) {
-                topic.setFontStyle(font[4]);
-            }
-        }
 
         var bgColor = domElem.getAttribute('bgColor');
         if ($defined(bgColor)) {
