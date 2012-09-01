@@ -53,7 +53,7 @@
 </div>
 <c:if test="${param.onlyActionHeader!=true}">
     <div id="headerContent">
-        <a href="c/home" title="Homepage">
+        <a href="${requestScope['site.homepage']}" title="Homepage">
             <div id="headerLogo">&nbsp;</div>
         </a>
 

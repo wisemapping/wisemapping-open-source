@@ -70,7 +70,7 @@
     <div id="mindplot" onselectstart="return false;"></div>
 
     <div id="embFooter">
-        <a href="c/home" target="new">
+        <a href="${requestScope['site.homepage']}" target="new">
             <div id="footerLogo"></div>
         </a>
 

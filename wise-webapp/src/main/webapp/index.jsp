@@ -1,3 +1,3 @@
 <%
-    response.sendRedirect("c/home");
+    response.sendRedirect("c/maps/");
 %>

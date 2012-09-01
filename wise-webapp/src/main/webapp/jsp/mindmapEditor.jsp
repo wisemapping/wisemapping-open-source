@@ -77,7 +77,7 @@
                         code="REGISTER"/></a></span>
             </c:if>
         </div>
-        <a href="c/maps/">
+        <a href="${requestScope['site.homepage']}">
             <div id="headerLogo"></div>
         </a>
 

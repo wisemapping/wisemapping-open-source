@@ -47,6 +47,8 @@
                 <map>
                     <entry key="google.analytics.enabled" value="${google.analytics.enabled}"/>
                     <entry key="google.analytics.account" value="${google.analytics.account}"/>
+                    <entry key="google.ads.enabled" value="${google.ads.enabled}"/>
+                    <entry key="site.homepage" value="${site.homepage}"/>
                 </map>
             </property>
         </bean>
