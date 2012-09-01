@@ -105,8 +105,9 @@ mindplot.persistence.XMLSerializer_Beta = new Class({
         }
 
         //ICONS
+        var i;
         var icons = topic.getIcons();
-        for (var i = 0; i < icons.length; i++) {
+        for (i = 0; i < icons.length; i++) {
             var icon = icons[i];
             var iconDom = this._iconToXML(document, icon);
             parentTopic.appendChild(iconDom);
@@ -114,14 +115,14 @@ mindplot.persistence.XMLSerializer_Beta = new Class({
 
         //LINKS
         var links = topic.getLinks();
-        for (var i = 0; i < links.length; i++) {
+        for (i = 0; i < links.length; i++) {
             var link = links[i];
             var linkDom = this._linkToXML(document, link);
             parentTopic.appendChild(linkDom);
         }
 
         var notes = topic.getNotes();
-        for (var i = 0; i < notes.length; i++) {
+        for (i = 0; i < notes.length; i++) {
             var note = notes[i];
             var noteDom = this._noteToXML(document, note);
             parentTopic.appendChild(noteDom);
@@ -129,7 +130,7 @@ mindplot.persistence.XMLSerializer_Beta = new Class({
 
         //CHILDREN TOPICS
         var childTopics = topic.getChildren();
-        for (var i = 0; i < childTopics.length; i++) {
+        for (i = 0; i < childTopics.length; i++) {
             var childTopic = childTopics[i];
             var childDom = this._topicToXML(document, childTopic);
             parentTopic.appendChild(childDom);
@@ -164,7 +165,7 @@ mindplot.persistence.XMLSerializer_Beta = new Class({
         var rootElem = dom.documentElement;
 
         // Is a wisemap?.
-        $assert(rootElem.tagName == mindplot.persistence.XMLSerializer_Beta.MAP_ROOT_NODE, "This seem not to be a map document.");
+        $assert(rootElem.tagName == mindplot.persistence.XMLSerializer_Beta.MAP_ROOT_NODE, "This seem not to be a map document. Root Tag:" + rootElem.tagName);
 
         // Start the loading process ...
         var version = rootElem.getAttribute("version");
@@ -274,17 +275,17 @@ mindplot.persistence.XMLSerializer_Beta = new Class({
         return topic;
     },
 
-    _deserializeIcon:function (domElem, topic) {
+    _deserializeIcon:function (domElem) {
         var icon = domElem.getAttribute("id");
         icon = icon.replace("images/", "icons/legacy/");
         return  mindplot.TopicFeature.createModel(mindplot.TopicFeature.Icon.id, {id:icon});
     },
 
-    _deserializeLink:function (domElem, topic) {
+    _deserializeLink:function (domElem) {
         return  mindplot.TopicFeature.createModel(mindplot.TopicFeature.Link.id, {url:domElem.getAttribute("url")});
     },
 
-    _deserializeNote:function (domElem, topic) {
+    _deserializeNote:function (domElem) {
         var text = domElem.getAttribute("text");
         return  mindplot.TopicFeature.createModel(mindplot.TopicFeature.Note.id, {text:text == null ? " " : text});
     }});
