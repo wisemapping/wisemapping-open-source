@@ -60,6 +60,7 @@
 
             var _gaq = _gaq || [];
             _gaq.push(['_setAccount', '${requestScope['google.analytics.account']}']);
+            _gaq.push(['_setDomainName', 'wisemapping.com']);
             _gaq.push(['_trackPageview']);
 
             (function () {
