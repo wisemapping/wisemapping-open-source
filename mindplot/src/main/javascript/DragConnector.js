@@ -57,8 +57,13 @@ mindplot.DragConnector = new Class({
         //  - Exclude dragged topic
         //  - Exclude dragTopic pivot
         //  - Nodes that are collapsed
+        //  - It's not part of the branch dragged itself
         topics = topics.filter(function (topic) {
-            return  draggedNode != topic && topic != draggedNode && !topic.areChildrenShrunken() && !topic.isCollapsed();
+            var result = draggedNode != topic;
+            result = result && topic != draggedNode;
+            result = result && !topic.areChildrenShrunken() && !topic.isCollapsed();
+            result = result && !draggedNode.isChildTopic(topic);
+            return result;
         });
 
         // Filter all the nodes that are outside the vertical boundary:

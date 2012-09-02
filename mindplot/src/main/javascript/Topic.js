@@ -669,7 +669,6 @@ mindplot.Topic = new Class({
 
     showNoteEditor:function () {
 
-
         var topicId = this.getId();
         var model = this.getModel();
         var editorModel = {
@@ -1198,8 +1197,22 @@ mindplot.Topic = new Class({
             result = result.concat(innerChilds);
         }
         return result;
-    }
+    },
 
+    isChildTopic:function (childTopic) {
+        var result = (this.getId() == childTopic.getId());
+        if (!result) {
+            var children = this.getChildren();
+            for (var i = 0; i < children.length; i++) {
+                var parent = children[i];
+                result = parent.isChildTopic(childTopic);
+                if (result) {
+                    break;
+                }
+            }
+        }
+        return result;
+    }
 });
 
 
