@@ -16,5 +16,6 @@ WISE_BIN_FILE_PATH=./target/${WISE_BIN_FILE_NAME}
 scp ${WISE_BIN_FILE_PATH} thecrow@wisemapping.com:${SERVER_DOWNLOAD_DIR}
 
 # It's there ?
+cd target
 wget  -S http://downloads.wisemapping.org/stable/${WISE_BIN_FILE_NAME}
 #wget  -S http://downloads.wisemapping.org/stable/${WISE_SRC_FILE_NAME}

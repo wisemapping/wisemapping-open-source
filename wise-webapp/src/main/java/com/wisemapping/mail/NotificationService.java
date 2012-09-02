@@ -41,9 +41,10 @@ final public class NotificationService {
     @Autowired
     private Mailer mailer;
     private String baseUrl;
+    private NotifierFilter notificationFilter;
 
     public NotificationService() {
-
+        this.notificationFilter = new NotifierFilter();
     }
 
     public void newCollaboration(@NotNull Collaboration collaboration, @NotNull Mindmap mindmap, @NotNull User user, @Nullable String message) {
@@ -141,14 +142,14 @@ final public class NotificationService {
     }
 
     public void sendRegistrationEmail(@NotNull User user) {
-        throw new UnsupportedOperationException("Not implemented yet");
+//        throw new UnsupportedOperationException("Not implemented yet");
 //        try {
-//            final Map<String, Object> model = new HashMap<String, Object>();
-//            model.put("user", user);
-//            final String activationUrl = "http://wisemapping.com/c/activation?code=" + user.getActivationCode();
-//            model.put("emailcheck", activationUrl);
-//            mailer.sendEmail(mailer.getServerSenderEmail(), user.getEmail(), "Welcome to Wisemapping!", model,
-//                    "confirmationMail.vm");
+//            final Map<String, String> model = new HashMap<String, String>();
+//            model.put("email", user.getEmail());
+////            final String activationUrl = "http://wisemapping.com/c/activation?code=" + user.getActivationCode();
+////            model.put("emailcheck", activationUrl);
+////            mailer.sendEmail(mailer.getServerSenderEmail(), user.getEmail(), "Welcome to Wisemapping!", model,
+////                    "confirmationMail.vm");
 //        } catch (Exception e) {
 //            handleException(e);
 //        }
@@ -156,22 +157,24 @@ final public class NotificationService {
 
     public void reportJavascriptException(@NotNull Mindmap mindmap, @Nullable User user, @Nullable String jsErrorMsg, @NotNull HttpServletRequest request) {
 
-        final Map<String, Object> model = new HashMap<String, Object>();
+        final Map<String, String> model = new HashMap<String, String>();
         model.put("errorMsg", jsErrorMsg);
         try {
             model.put("mapXML", StringEscapeUtils.escapeXml(mindmap.getXmlStr()));
         } catch (UnsupportedEncodingException e) {
             // Ignore ...
         }
-        model.put("mapId", mindmap.getId());
+        model.put("mapId", Integer.toString(mindmap.getId()));
         model.put("mapTitle", mindmap.getTitle());
 
         sendNotification(model, user, request);
     }
 
-    private void sendNotification(@NotNull Map<String, Object> model, @Nullable User user, @NotNull HttpServletRequest request) {
+    private void sendNotification(@NotNull Map<String, String> model, @Nullable User user, @NotNull HttpServletRequest request) {
         model.put("fullName", (user != null ? user.getFullName() : "'anonymous'"));
-        model.put("email", (user != null ? user.getEmail() : "'anonymous'"));
+        final String userEmail = user != null ? user.getEmail() : "'anonymous'";
+
+        model.put("email", userEmail);
         model.put("userAgent", request.getHeader(UserAgent.USER_AGENT_HEADER));
         model.put("server", request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort());
         model.put("requestURI", request.getRequestURI());
@@ -181,8 +184,11 @@ final public class NotificationService {
         try {
             final String errorReporterEmail = mailer.getErrorReporterEmail();
             if (errorReporterEmail != null && !errorReporterEmail.isEmpty()) {
-                mailer.sendEmail(mailer.getServerSenderEmail(), errorReporterEmail, "[WiseMapping] Bug from '" + (user != null ? user.getEmail() + "'" : "'anonymous'"), model,
-                        "errorNotification.vm");
+
+                if (!notificationFilter.hasBeenSend(userEmail, model)) {
+                    mailer.sendEmail(mailer.getServerSenderEmail(), errorReporterEmail, "[WiseMapping] Bug from '" + (user != null ? user.getEmail() + "'" : "'anonymous'"), model,
+                            "errorNotification.vm");
+                }
             }
         } catch (Exception e) {
             handleException(e);
@@ -190,7 +196,7 @@ final public class NotificationService {
     }
 
     public void reportJavaException(@NotNull Throwable exception, @Nullable User user, @NotNull String content, @NotNull HttpServletRequest request) {
-        final Map<String, Object> model = new HashMap<String, Object>();
+        final Map<String, String> model = new HashMap<String, String>();
         model.put("errorMsg", stackTraceToString(exception));
         model.put("mapXML", StringEscapeUtils.escapeXml(content));
 
@@ -198,7 +204,7 @@ final public class NotificationService {
     }
 
     public void reportJavaException(@NotNull Throwable exception, @Nullable User user, @NotNull HttpServletRequest request) {
-        final Map<String, Object> model = new HashMap<String, Object>();
+        final Map<String, String> model = new HashMap<String, String>();
         model.put("errorMsg", stackTraceToString(exception));
 
         sendNotification(model, user, request);
