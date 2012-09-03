@@ -335,39 +335,43 @@ mindplot.DesignerKeyboard = new Class({
     },
 
     _goToBrother:function (designer, node, direction) {
-        var brothers = node.getParent().getChildren();
-        var target = node;
-        var y = node.getPosition().y;
-        var x = node.getPosition().x;
-        var dist = null;
-        for (var i = 0; i < brothers.length; i++) {
-            var sameSide = (x * brothers[i].getPosition().x) >= 0;
-            if (brothers[i] != node && sameSide) {
-                var brother = brothers[i];
-                var brotherY = brother.getPosition().y;
-                if (direction == "DOWN" && brotherY > y) {
-                    var distancia = y - brotherY;
-                    if (distancia < 0) {
-                        distancia = distancia * (-1);
+        var parent = node.getParent();
+        if (parent) {
+            var brothers = parent.getChildren();
+
+            var target = node;
+            var y = node.getPosition().y;
+            var x = node.getPosition().x;
+            var dist = null;
+            for (var i = 0; i < brothers.length; i++) {
+                var sameSide = (x * brothers[i].getPosition().x) >= 0;
+                if (brothers[i] != node && sameSide) {
+                    var brother = brothers[i];
+                    var brotherY = brother.getPosition().y;
+                    if (direction == "DOWN" && brotherY > y) {
+                        var distancia = y - brotherY;
+                        if (distancia < 0) {
+                            distancia = distancia * (-1);
+                        }
+                        if (dist == null || dist > distancia) {
+                            dist = distancia;
+                            target = brothers[i];
+                        }
                     }
-                    if (dist == null || dist > distancia) {
-                        dist = distancia;
-                        target = brothers[i];
-                    }
-                }
-                else if (direction == "UP" && brotherY < y) {
-                    var distance = y - brotherY;
-                    if (distance < 0) {
-                        distance = distance * (-1);
-                    }
-                    if (dist == null || dist > distance) {
-                        dist = distance;
-                        target = brothers[i];
+                    else if (direction == "UP" && brotherY < y) {
+                        var distance = y - brotherY;
+                        if (distance < 0) {
+                            distance = distance * (-1);
+                        }
+                        if (dist == null || dist > distance) {
+                            dist = distance;
+                            target = brothers[i];
+                        }
                     }
                 }
             }
+            this._goToNode(designer, target);
         }
-        this._goToNode(designer, target);
     },
 
 
