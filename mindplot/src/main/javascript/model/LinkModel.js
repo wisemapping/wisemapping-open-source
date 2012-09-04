@@ -17,33 +17,37 @@
  */
 
 mindplot.model.LinkModel = new Class({
-    Extends: mindplot.model.FeatureModel,
-    initialize : function(attributes) {
+    Extends:mindplot.model.FeatureModel,
+    initialize:function (attributes) {
         this.parent(mindplot.model.LinkModel.FEATURE_TYPE);
         this.setUrl(attributes.url);
     },
 
-    getUrl : function() {
+    getUrl:function () {
         return this.getAttribute('url');
     },
 
-    setUrl : function(url) {
+    setUrl:function (url) {
         $assert(url, 'url can not be null');
 
         var fixedUrl = this._fixUrl(url);
         this.setAttribute('url', fixedUrl);
 
         var type = fixedUrl.contains('mailto:') ? 'mail' : 'url';
-        this.setAttribute('type', type);
-
+        this.setAttribute('urlType', type);
     },
 
-    _fixUrl : function(url) {
+    _fixUrl:function (url) {
         var result = url;
         if (!result.contains('http://') && !result.contains('https://') && !result.contains('mailto://')) {
             result = "http://" + result;
         }
         return result;
+    },
+
+    setUrlType:function (urlType) {
+        $assert(urlType, 'urlType can not be null');
+        this.setAttribute('urlType', urlType);
     }
 });
 
