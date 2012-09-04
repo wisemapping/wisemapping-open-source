@@ -55,6 +55,10 @@ mindplot.model.FeatureModel = new Class({
         return this._id;
     },
 
+    setId : function(id) {
+        this._id = id;
+    },
+
     getType:function() {
         return this._type;
     }

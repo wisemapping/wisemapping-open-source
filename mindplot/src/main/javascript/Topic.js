@@ -274,7 +274,7 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    addFeature:function (type, attributes) {
+    addFeature:function (type, attributes, featureId) {
         var iconGroup = this.getOrBuildIconGroup();
         this.closeEditors();
 
@@ -282,7 +282,11 @@ mindplot.Topic = new Class({
 
         // Update model ...
         var feature = model.createFeature(type, attributes);
+        if ($defined(featureId)) {
+            feature.setId(featureId);
+        }
         model.addFeature(feature);
+
 
         var result = mindplot.TopicFeature.createIcon(this, feature, this.isReadOnly());
         iconGroup.addIcon(result, type == mindplot.TopicFeature.Icon.id && !this.isReadOnly());
