@@ -20,14 +20,17 @@ mindplot.widget.ToolbarNotifier = new Class({
 
     initialize:function () {
         var container = $('headerNotifier');
-        this._effect = new Fx.Elements(container, {
-            onComplete:function () {
-                container.setStyle('display', 'none');
-            }.bind(this),
-            link:'cancel',
-            duration:8000,
-            transition:Fx.Transitions.Expo.easeInOut
-        });
+        // In case of print,embedded no message is displayed ....
+        if (container) {
+            this._effect = new Fx.Elements(container, {
+                onComplete:function () {
+                    container.setStyle('display', 'none');
+                }.bind(this),
+                link:'cancel',
+                duration:8000,
+                transition:Fx.Transitions.Expo.easeInOut
+            });
+        }
     },
 
     logError:function (userMsg) {
@@ -42,24 +45,28 @@ mindplot.widget.ToolbarNotifier = new Class({
         $assert(msg, 'msg can not be null');
 
         var container = $('headerNotifier');
-        container.set('text', msg);
-        container.setStyle('display', 'block');
-        container.position({
-            relativeTo:$('header'),
-            position:'upperCenter',
-            edge:'centerTop'
-        });
 
-        if (!$defined(fade) || fade) {
-            this._effect.start({
-                0:{
-                    opacity:[1, 0]
-                }
+        // In case of print,embedded no message is displayed ....
+        if (container) {
+            container.set('text', msg);
+            container.setStyle('display', 'block');
+            container.position({
+                relativeTo:$('header'),
+                position:'upperCenter',
+                edge:'centerTop'
             });
 
-        } else {
-            container.setStyle('opacity', '1');
-            this._effect.pause();
+            if (!$defined(fade) || fade) {
+                this._effect.start({
+                    0:{
+                        opacity:[1, 0]
+                    }
+                });
+
+            } else {
+                container.setStyle('opacity', '1');
+                this._effect.pause();
+            }
         }
     }
 
