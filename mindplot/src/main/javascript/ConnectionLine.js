@@ -20,7 +20,7 @@ mindplot.ConnectionLine = new Class({
     initialize:function (sourceNode, targetNode, lineType) {
         $assert(targetNode, 'parentNode node can not be null');
         $assert(sourceNode, 'childNode node can not be null');
-        $assert(sourceNode != targetNode, 'Cilcular connection');
+        $assert(sourceNode != targetNode, 'Circular connection');
 
         this._targetTopic = targetNode;
         this._sourceTopic = sourceNode;

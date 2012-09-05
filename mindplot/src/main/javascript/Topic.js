@@ -1025,7 +1025,7 @@ mindplot.Topic = new Class({
 
     connectTo:function (targetTopic, workspace, isVisible) {
         $assert(!this._outgoingLine, 'Could not connect an already connected node');
-        $assert(targetTopic != this, 'Cilcular connection are not allowed');
+        $assert(targetTopic != this, 'Circular connection are not allowed');
         $assert(targetTopic, 'Parent Graph can not be null');
         $assert(workspace, 'Workspace can not be null');
 

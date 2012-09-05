@@ -39,13 +39,24 @@ mindplot.RelationshipPivot = new Class({
             this._workspace.enableWorkspaceEvents(false);
 
             var sourcePos = sourceTopic.getPosition();
+            var strokeColor = mindplot.Relationship.getStrokeColor();
+
             this._pivot = new web2d.CurvedLine();
             this._pivot.setStyle(web2d.CurvedLine.SIMPLE_LINE);
-            this._pivot.setDashed(2, 2);
             this._pivot.setFrom(sourcePos.x, sourcePos.y);
-            this._pivot.setTo(targetPos.x, targetPos.y);
-            this._workspace.appendChild(this._pivot);
 
+            this._pivot.setTo(targetPos.x, targetPos.y);
+            this._pivot.setStroke(2, 'solid', strokeColor);
+            this._pivot.setDashed(4, 2);
+
+            this._startArrow = new web2d.Arrow();
+            this._startArrow.setStrokeColor(strokeColor);
+            this._startArrow.setStrokeWidth(2);
+            this._startArrow.setFrom(sourcePos.x, sourcePos.y);
+
+
+            this._workspace.appendChild(this._pivot);
+            this._workspace.appendChild(this._startArrow);
 
             this._workspace.addEvent('mousemove', this._mouseMoveEvent);
             this._workspace.addEvent('click', this._onClickEvent);
@@ -74,10 +85,12 @@ mindplot.RelationshipPivot = new Class({
             }.bind(this));
 
             workspace.removeChild(this._pivot);
+            workspace.removeChild(this._startArrow);
             workspace.enableWorkspaceEvents(true);
 
             this._sourceTopic = null;
             this._pivot = null;
+            this._startArrow = null;
         }
     },
 
@@ -85,7 +98,12 @@ mindplot.RelationshipPivot = new Class({
         var screen = this._workspace.getScreenManager();
         var pos = screen.getWorkspaceMousePosition(event);
 
-        this._pivot.setTo(pos.x - 1, pos.y - 1);
+        var gapDistance = Math.sign(pos.x - this._sourceTopic.getPosition().x) * 5;
+        this._pivot.setTo(pos.x - gapDistance, pos.y);
+        var controlPoints = this._pivot.getControlPoints();
+        this._startArrow.setFrom(pos.x - gapDistance, pos.y);
+        this._startArrow.setControlPoint(controlPoints[1]);
+
         event.stopPropagation();
         return false;
     },
