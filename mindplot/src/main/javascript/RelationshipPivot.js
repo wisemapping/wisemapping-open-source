@@ -98,8 +98,11 @@ mindplot.RelationshipPivot = new Class({
         var screen = this._workspace.getScreenManager();
         var pos = screen.getWorkspaceMousePosition(event);
 
+        // Leave the arrow a couple of pixels away from the cursor.
         var gapDistance = Math.sign(pos.x - this._sourceTopic.getPosition().x) * 5;
+
         this._pivot.setTo(pos.x - gapDistance, pos.y);
+
         var controlPoints = this._pivot.getControlPoints();
         this._startArrow.setFrom(pos.x - gapDistance, pos.y);
         this._startArrow.setControlPoint(controlPoints[1]);
@@ -118,8 +121,12 @@ mindplot.RelationshipPivot = new Class({
     _connectOnFocus:function (targetTopic) {
         var sourceTopic = this._sourceTopic;
         var mindmap = this._designer.getMindmap();
-        var relModel = mindmap.createRelationship(targetTopic.getId(), sourceTopic.getId());
-        this._designer._actionDispatcher.addRelationship(relModel);
+
+        // Avoid circular connections ...
+        if (targetTopic.getId() != sourceTopic.getId()) {
+            var relModel = mindmap.createRelationship(targetTopic.getId(), sourceTopic.getId());
+            this._designer._actionDispatcher.addRelationship(relModel);
+        }
         this.dispose();
     },
 
