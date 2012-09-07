@@ -78,10 +78,14 @@ mindplot.widget.IMenu = new Class({
                 }
                 menu.setRequireChange(false);
             },
-            onError:function () {
+            onError:function (error) {
                 if (saveHistory) {
                     saveElem.setStyle('cursor', 'pointer');
-                    $notify($msg('SAVE_COULD_NOT_BE_COMPLETED'));
+                    var msg = error ? error.globalErrors : null;
+                    if (!msg) {
+                        msg = $msg('SAVE_COULD_NOT_BE_COMPLETED');
+                    }
+                    $notify(msg);
                 }
             }
         });

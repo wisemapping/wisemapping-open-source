@@ -137,10 +137,16 @@ public class UsersController {
             final String challenge = request.getParameter("recaptcha_challenge_field");
             final String uresponse = request.getParameter("recaptcha_response_field");
 
-            final String remoteAddr = request.getRemoteAddr();
-            final ReCaptchaResponse reCaptchaResponse = captchaService.checkAnswer(remoteAddr, challenge, uresponse);
-            if (!reCaptchaResponse.isValid()) {
-                bindingResult.rejectValue("captcha", Messages.CAPTCHA_ERROR);
+            if (challenge != null && uresponse != null) {
+                final String remoteAddr = request.getRemoteAddr();
+                final ReCaptchaResponse reCaptchaResponse = captchaService.checkAnswer(remoteAddr, challenge, uresponse);
+
+                if (!reCaptchaResponse.isValid()) {
+                    bindingResult.rejectValue("captcha", Messages.CAPTCHA_ERROR);
+                }
+
+            } else {
+                bindingResult.rejectValue("captcha", Messages.CAPTCHA_LOADING_ERROR);
             }
         }
         return bindingResult;

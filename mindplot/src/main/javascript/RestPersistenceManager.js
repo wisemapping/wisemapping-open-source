@@ -45,7 +45,8 @@ mindplot.RESTPersistenceManager = new Class({
                     events.onError();
                 },
                 onFailure:function (xhr) {
-                    events.onError();
+                    var responseText = xhr.responseText;
+                    events.onError(JSON.decode(responseText));
                 },
                 headers:{"Content-Type":"application/json", "Accept":"application/json"},
                 emulation:false,
@@ -60,7 +61,6 @@ mindplot.RESTPersistenceManager = new Class({
                 async:false,
                 method:'post',
                 onSuccess:function () {
-                    console.log("Revert success ....");
                 },
                 onException:function () {
                 },

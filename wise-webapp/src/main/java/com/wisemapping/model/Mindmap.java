@@ -18,6 +18,7 @@
 
 package com.wisemapping.model;
 
+import com.wisemapping.exceptions.AccessDeniedSecurityException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.util.ZipUtils;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -233,7 +234,7 @@ public class Mindmap {
 
         final Collaboration collaboration = this.findCollaboration(collaborator);
         if (collaboration == null) {
-            throw new WiseMappingException("User is not collaborator");
+            throw new AccessDeniedSecurityException("Collaborator " + collaborator.getEmail() + " could not access " + this.getId());
         }
         return collaboration.getCollaborationProperties();
     }

@@ -30,7 +30,7 @@ public class RestErrors {
     private Errors errors;
 
     @JsonIgnore
-    private List<String> globalErrors;
+    private List<String> gErrors;
 
     @JsonIgnore
     MessageSource messageSource;
@@ -43,12 +43,12 @@ public class RestErrors {
 
         this.errors = errors;
         this.messageSource = messageSource;
-        this.globalErrors = this.processGlobalErrors(errors, messageSource);
+        this.gErrors = this.processGlobalErrors(errors, messageSource);
     }
 
     public RestErrors(@NotNull String errorMsg) {
-        globalErrors = new ArrayList<String>();
-        globalErrors.add(errorMsg);
+        gErrors = new ArrayList<String>();
+        gErrors.add(errorMsg);
     }
 
     private List<String> processGlobalErrors(@NotNull Errors errors, @NotNull MessageSource messageSource) {
@@ -61,7 +61,7 @@ public class RestErrors {
     }
 
     public List<String> getGlobalErrors() {
-        return globalErrors;
+        return gErrors;
     }
 
     public void setGlobalErrors(List<String> list) {

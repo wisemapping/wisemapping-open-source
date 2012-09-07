@@ -18,11 +18,21 @@
 
 package com.wisemapping.exceptions;
 
+import org.jetbrains.annotations.NotNull;
+
 public class AccessDeniedSecurityException
-    extends Exception
+    extends ClientException
 {
-    public AccessDeniedSecurityException(String msg)
+    public static final String MSG_KEY = "ACCESS_HAS_BEEN_REVOKED";
+
+    public AccessDeniedSecurityException(@NotNull String msg)
     {
         super(msg);
+    }
+
+    @NotNull
+    @Override
+    protected String getMsgBundleKey() {
+        return MSG_KEY;
     }
 }

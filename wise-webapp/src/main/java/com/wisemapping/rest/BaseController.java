@@ -19,6 +19,7 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.AccessDeniedSecurityException;
+import com.wisemapping.exceptions.ClientException;
 import com.wisemapping.filter.UserAgent;
 import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.User;
@@ -27,6 +28,7 @@ import com.wisemapping.security.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,6 +38,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.UndeclaredThrowableException;
+import java.util.Locale;
 
 public class BaseController {
 
@@ -75,13 +78,20 @@ public class BaseController {
     @ExceptionHandler(java.lang.reflect.UndeclaredThrowableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RestErrors handleSecurityErrors(@NotNull UndeclaredThrowableException ex) {
-        return new RestErrors(ex.getMessage());
+        final Throwable cause = ex.getCause();
+        RestErrors result;
+        if (cause instanceof ClientException) {
+            result = handleClientErrors((ClientException) cause);
+        } else {
+            result = new RestErrors(ex.getMessage());
+        }
+        return result;
     }
 
-    @ExceptionHandler(com.wisemapping.exceptions.AccessDeniedSecurityException.class)
+    @ExceptionHandler(ClientException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public RestErrors handleSecurityException(@NotNull AccessDeniedSecurityException ex) {
-        return new RestErrors(ex.getMessage());
+    public RestErrors handleClientErrors(@NotNull ClientException ex) {
+        final Locale locale = LocaleContextHolder.getLocale();
+        return new RestErrors(ex.getMessage(messageSource, locale));
     }
-
 }
