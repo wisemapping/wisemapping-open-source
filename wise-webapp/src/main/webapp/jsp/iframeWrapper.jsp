@@ -28,7 +28,9 @@
                 $('download').setAttribute('value', context.formatType);
                 iframeForm.submit();
             }
-            MooDialog.Request.active.close();
+            if (MooDialog.Request.active) {
+                MooDialog.Request.active.close();
+            }
         }
     });
 
