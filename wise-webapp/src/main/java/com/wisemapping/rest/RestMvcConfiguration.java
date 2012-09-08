@@ -17,6 +17,7 @@ public class RestMvcConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void configureMessageConverters(@NotNull final List<HttpMessageConverter<?>> converters) {
         converters.add(converter());
+        configureMessageConverters(converters);
     }
 
     @Bean

@@ -23,12 +23,15 @@ public class DebugMappingJacksonHttpMessageConverter extends MappingJacksonHttpM
         } catch (org.springframework.http.converter.HttpMessageNotReadableException e) {
             throw new HttpMessageNotReadableException("Request Body:\n" + new String(bytes, "UTF-8"), e);
         }
+        catch (IOException e) {
+            throw new HttpMessageNotReadableException("Request Body:\n" + new String(bytes, "UTF-8"), e);
+        }
     }
 }
 
 class HttpMessageNotReadableException extends org.springframework.http.converter.HttpMessageNotReadableException {
 
-    public HttpMessageNotReadableException(String msg, org.springframework.http.converter.HttpMessageNotReadableException cause) {
+    public HttpMessageNotReadableException(String msg, Exception cause) {
         super(msg, cause);
     }
 }
