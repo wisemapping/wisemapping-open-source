@@ -121,7 +121,7 @@ public class UserAgent implements Serializable {
 
             this.os = parseOS(productDetails);
 
-            if (userAgentHeader.contains("Googlebot") || ) {
+            if (userAgentHeader.contains("Googlebot")  ) {
                 //"Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
                 this.product = Product.WEB_CRAWLER;
 
