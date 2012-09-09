@@ -99,6 +99,13 @@ public class UserAgent implements Serializable {
         // Format ApplicationName/ApplicationVersion ();
 
         try {
+
+            // Mediapartners-Google  -> Add sense robot
+            if(userAgentHeader.equals("Mediapartners-Google")){
+                this.product = Product.WEB_CRAWLER;
+                return;
+            }
+
             int detailStart = userAgentHeader.indexOf('(');
             int detailEnd = userAgentHeader.indexOf(')');
 
@@ -114,9 +121,8 @@ public class UserAgent implements Serializable {
 
             this.os = parseOS(productDetails);
 
-            if (userAgentHeader.contains("Googlebot") || userAgentHeader.contains("Mediapartners-Google")) {
+            if (userAgentHeader.contains("Googlebot") || ) {
                 //"Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
-                // Mediapartners-Google  -> Add sense robot
                 this.product = Product.WEB_CRAWLER;
 
             } else if (userAgentHeader.contains("MSIE")) {
