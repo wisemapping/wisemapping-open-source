@@ -336,7 +336,7 @@ public class UserAgent implements Serializable {
         boolean result = product == UserAgent.Product.FIREFOX && this.isVersionGreatedOrEqualThan(12, 0);
         result = result || product == UserAgent.Product.EXPLORER && this.isVersionGreatedOrEqualThan(7, 0) && this.getOs() == UserAgent.OS.WINDOWS;
         result = result || product == UserAgent.Product.OPERA && this.isVersionGreatedOrEqualThan(11, 0);
-        result = result || product == UserAgent.Product.CHROME && this.isVersionGreatedOrEqualThan(19, 0);
+        result = result || product == UserAgent.Product.CHROME && this.isVersionGreatedOrEqualThan(18, 0);
         result = result || product == UserAgent.Product.SAFARI && this.isVersionGreatedOrEqualThan(5, 0);
         result = result || product == Product.WEB_CRAWLER;
 
