@@ -83,7 +83,7 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="../js/editor.js"></script>
+<script type="text/javascript" src="js/editor.js"></script>
 <%@ include file="/jsp/mindmapEditorFooter.jsf" %>
 </body>
 </html>
