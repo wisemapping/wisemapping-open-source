@@ -65,7 +65,7 @@ final public class NotificationService {
             model.put("message", "message");
             model.put("ownerName", user.getFirstname());
             model.put("mapEditUrl", baseUrl + "/c/maps/" + mindmap.getId() + "/edit");
-            model.put("baseUrl", formMail);
+            model.put("baseUrl", baseUrl);
             model.put("senderMail", user.getEmail());
             model.put("message", message);
             model.put("supportEmail", mailer.getSupportEmail());
