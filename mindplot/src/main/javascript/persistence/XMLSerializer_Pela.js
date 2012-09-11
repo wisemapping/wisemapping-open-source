@@ -66,7 +66,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
 
         // Set topic attributes...
         if (topic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
-            parentTopic.setAttribute("central", true);
+            parentTopic.setAttribute('central', 'true');
         } else {
 
             var pos = topic.getPosition();
@@ -93,7 +93,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         }
 
         if (topic.areChildrenShrunken()) {
-            parentTopic.setAttribute('shrink', true);
+            parentTopic.setAttribute('shrink', 'true');
         }
 
         // Font properties ...
@@ -430,8 +430,8 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         if ($defined(destCtrlPoint) && destCtrlPoint != "") {
             model.setDestCtrlPoint(core.Point.fromString(destCtrlPoint));
         }
-        model.setEndArrow(endArrow == "true");
-        model.setStartArrow(startArrow == "true");
+        model.setEndArrow('false');
+        model.setStartArrow('true');
         return model;
     }
 });

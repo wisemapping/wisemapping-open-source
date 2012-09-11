@@ -1,0 +1,51 @@
+<map name="72597" version="tango">
+    <topic central="-1" text="NIF (NORMAS DE INFORMACIÓN FINANCIERA)" shape="rounded rectagle" id="1"
+           fontStyle=";10;#741b47;bold;;" bgColor="#d5a6bd" brColor="#e69138">
+        <icon id="object_pencil"/>
+    </topic>
+    <topic position="6,-284" text="NIF D" shape="rectagle" id="3" fontStyle="Arial;10;;bold;;" bgColor="#509dc0">
+        <note>
+            <![CDATA[Beneficios a los empleados,impuestos a la utilidad, arrendamientos y capitalización de resultado integral .]]></note>
+        <icon id="funy_glasses"/>
+        <topic position="211,-280" order="0" text=" Normas aplicables a problemas de determinación de resultados "
+               id="19"/>
+    </topic>
+    <topic position="46,221" text=" CIRCULANTES" shape="rounded rectagle" id="7" fontStyle="Arial;10;;bold;;"
+           bgColor="#509dc0">
+        <note>
+            <![CDATA[Tratamiento contable de los gastos de registro, colocación, unidades de inversión, aplicación supletoria etc.]]></note>
+        <icon id="object_phone"/>
+        <topic position="236,225" order="0" text="Adquisición temporal de acciones propias" id="22"/>
+    </topic>
+    <topic position="-143,148" text=" NIF A" shape="rectagle" id="6" fontStyle="Arial;10;;bold;;" bgColor="#509dc0">
+        <link url="http://www.youtube.com/watch?v=7YN-sOlkQp0" urlType="url"/>
+        <icon id="time_hourglass"/>
+        <topic position="-254,152" order="0" text=" Marco conceptual" id="20"/>
+    </topic>
+    <topic position="-150,-129" text=" NIF C" shape="rectagle" id="4" fontStyle="Arial;10;;bold;;" bgColor="#509dc0">
+        <link url="https://sites.google.com/site/contabilidadimcpnif/estructura-de-las-nif" urlType="url"/>
+        <icon id="funy_monkey"/>
+        <topic position="-366,-125" order="0"
+               text="Normas aplicables a conceptos específicos de los estados financieros " shape="line" id="13"/>
+    </topic>
+    <topic position="183,-153" text="NIF E" shape="rectagle" id="2" fontStyle="Arial;10;;bold;;" bgColor="#509dc0">
+        <note><![CDATA[Agricultura y donativos recibidos u otorgados con propósitos no lucrativos.]]></note>
+        <icon id="soft_penguin"/>
+        <topic position="402,-149" order="0"
+               text=" Normas aplicables alas actividades especializadas de distintos sectores" id="18"/>
+    </topic>
+    <topic position="326,127" text=" NIF B" shape="rectagle" id="5" fontStyle="Arial;10;;bold;;" bgColor="#509dc0">
+        <link url="http://www.contaduria.uady.mx/files/cuerpo-acad/caef/aief/resumen_NIF_marco_conceptual.pdf"
+              urlType="url"/>
+        <icon id="object_house"/>
+        <topic position="521,131" order="0" text=" Normas aplicables a los estados financieros en su conjunto" id="21"/>
+    </topic>
+    <relationship srcTopicId="3" destTopicId="1" lineType="3" endArrow="0" startArrow="0"/>
+    <relationship srcTopicId="4" destTopicId="1" lineType="3" endArrow="0" startArrow="0"/>
+    <relationship srcTopicId="1" destTopicId="4" lineType="3" endArrow="0" startArrow="0"/>
+    <relationship srcTopicId="7" destTopicId="1" lineType="3" endArrow="0" startArrow="0"/>
+    <relationship srcTopicId="6" destTopicId="1" lineType="3" endArrow="0" startArrow="0"/>
+    <relationship srcTopicId="5" destTopicId="1" lineType="3" endArrow="0" startArrow="0"/>
+    <relationship srcTopicId="2" destTopicId="1" lineType="3" endArrow="0" startArrow="0"/>
+    <relationship srcTopicId="1" destTopicId="2" lineType="3" endArrow="0" startArrow="0"/>
+</map>

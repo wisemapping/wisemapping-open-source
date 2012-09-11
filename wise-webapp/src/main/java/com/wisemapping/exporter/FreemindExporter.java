@@ -72,7 +72,7 @@ public class FreemindExporter
             TopicType centerTopic = null;
             if (topics.size() > 1) {
                 for (TopicType topic : topics) {
-                    if (topic.isCentral()) {
+                    if (topic.isCentral() != null && topic.isCentral()) {
                         centerTopic = topic;
                         break;
                     }
