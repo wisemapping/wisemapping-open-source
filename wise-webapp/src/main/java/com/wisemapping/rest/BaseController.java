@@ -18,9 +18,7 @@
 
 package com.wisemapping.rest;
 
-import com.wisemapping.exceptions.AccessDeniedSecurityException;
 import com.wisemapping.exceptions.ClientException;
-import com.wisemapping.filter.UserAgent;
 import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestErrors;
@@ -69,10 +67,11 @@ public class BaseController {
         return ex.getMessage();
     }
 
-    @ExceptionHandler(ValidationException.class)
+
+    @ExceptionHandler(JsonHttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public RestErrors handleValidationErrors(@NotNull ValidationException ex) {
-        return new RestErrors(ex.getErrors(), messageSource);
+    public String handleValidationErrors(@NotNull JsonHttpMessageNotReadableException ex) {
+        return "Request could not be saved. Message is not valid";
     }
 
     @ExceptionHandler(java.lang.reflect.UndeclaredThrowableException.class)

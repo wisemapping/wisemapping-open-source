@@ -333,7 +333,7 @@ public class UserAgent implements Serializable {
     public boolean isBrowserSupported() {
         // Is it a supported browser ?.
         final UserAgent.Product product = this.getProduct();
-        boolean result = product == UserAgent.Product.FIREFOX && this.isVersionGreatedOrEqualThan(12, 0);
+        boolean result = product == UserAgent.Product.FIREFOX && this.isVersionGreatedOrEqualThan(10, 0);
         result = result || product == UserAgent.Product.EXPLORER && this.isVersionGreatedOrEqualThan(7, 0) && this.getOs() == UserAgent.OS.WINDOWS;
         result = result || product == UserAgent.Product.OPERA && this.isVersionGreatedOrEqualThan(11, 0);
         result = result || product == UserAgent.Product.CHROME && this.isVersionGreatedOrEqualThan(18, 0);

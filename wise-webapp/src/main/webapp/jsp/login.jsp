@@ -4,20 +4,21 @@
 <%--@elvariable id="isHsql" type="boolean"--%>
 
 <script type="text/javascript" language="javascript">
-    $(function() {
-        $('.btn-primary').click(function() {
+    $(function () {
+        $('.btn-primary').click(function () {
             $(this).button("loading");
         });
     });
 </script>
 
-<div id="loginContent">
-    <div class="loginNews">
-        <h1><spring:message code="WHAT_IS_NEW"/>: </h1>
-        <spring:message code="WHAT_IS_NEW_DETAILS"/>
+<div id="row-fluid">
+    <div class="span1"></div>
+    <div class="span5" style="margin-top: 20px">
+        <h1><spring:message code="WELCOME_TO_WISEMAPPING"/></h1>
+        <spring:message code="WELCOME_DETAILS"/>
     </div>
-
-    <div id="login" class="fform">
+    <div class="span1"></div>
+    <div id="login" class="fform span4">
         <h1>
             <spring:message code="SIGN_IN"/>
         </h1>
@@ -54,17 +55,22 @@
     </div>
 </div>
 
-<div id="register">
-    <b><spring:message code="NOT_READY_A_USER"/></b>
-    <spring:message code="NOT_READY_A_USER_MESSAGE"/>
-    <a href="c/user/registration">
-        <spring:message code="JOIN_NOW"/>
-    </a>
+<div class="row-fluid">
+    <div id="register" class="span12">
+        <b><spring:message code="NOT_READY_A_USER"/></b>
+        <spring:message code="NOT_READY_A_USER_MESSAGE"/>
+        <a href="c/user/registration">
+            <spring:message code="JOIN_NOW"/>
+        </a>
+    </div>
 </div>
 
 <c:if test="${isHsql== 'true'}">
-    <div class="alert alert-info">
-       <span class="label label-important"><spring:message code="WARNING"/></span> <spring:message code="NO_PRODUCTION_DATABASE_CONFIGURED"/>&nbsp;<a
-            href="http://www.wisemapping.org/documentation/configu"><spring:message code="HERE"/></a>.
+    <div class="row-fluid">
+        <div class="alert alert-info span offset12">
+            <span class="label label-important"><spring:message code="WARNING"/></span> <spring:message
+                code="NO_PRODUCTION_DATABASE_CONFIGURED"/>&nbsp;<a
+                href="http://www.wisemapping.org/documentation/configu"><spring:message code="HERE"/></a>.
+        </div>
     </div>
 </c:if>

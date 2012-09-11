@@ -4,25 +4,8 @@
 @import "pageHeaders.css";
 
 
-#loginContent .loginNews {
-    float: left;
-    width: 300px;
-}
-
-div#login {
-    float: right;
-    width: 300px;
-}
-
-div#loginContent {
-    width: 100%;
-    min-height: 340px;
-}
-
 div#register {
-    position: relative;
-    margin: 10px auto;
-    width: 800px;
+    margin: 40px auto;
     text-align: center;
     white-space: nowrap;
 }
@@ -47,8 +30,6 @@ div.pageBodyContent ol li {
 
 
 div.pageBody {
-    margin: 10px auto;
-    width: 800px;
     min-height: 500px;
 }
 
@@ -122,7 +103,6 @@ div.fform {
     -khtml-border-radius: 8px;
     -webkit-border-radius: 8px;
     border-radius: 8px;
-
 }
 
 div.fform label {

@@ -3,7 +3,7 @@
 
 <!DOCTYPE HTML>
 
-<html>
+<html lang="en">
 <head>
     <base href="${baseURL}/">
     <title><spring:message code="SITE.TITLE"/> - <spring:message code="MY_WISEMAPS"/></title>
@@ -99,7 +99,7 @@
             // Re-arrange pagination actions ...
             $("#tableFooter").appendTo("#mindmapListTable_wrapper");
             $("#mindmapListTable_length").appendTo("#tableFooter");
-            $('#mindmapListTable_length select').addClass('span1');
+            $('#mindmapListTable_length select').attr("style", "width:60px;");
 
 
             $('input:checkbox[id="selectAll"]').click(function () {
@@ -122,99 +122,114 @@
     <jsp:param name="showLogout" value="true"/>
 </jsp:include>
 
-<div style="min-height: 500px">
-    <div id="mindmapListContainer">
-        <div id="messagesPanel" class="alert alert-error alert-block fade in hide" style="margin-top: 10px">
-            <strong><spring:message code="UNEXPECTED_ERROR"/></strong>
+<div class="row-fluid hide" id="messagesPanel" style="margin-top: 20px">
+    <div class="span2"></div>
+    <div class="alert alert-error alert-block fade in span8">
+        <strong><spring:message code="UNEXPECTED_ERROR"/></strong>
 
-            <p><spring:message code="UNEXPECTED_ERROR_SERVER_ERROR"/></p>
+        <p><spring:message code="UNEXPECTED_ERROR_SERVER_ERROR"/></p>
 
-            <div></div>
+        <div></div>
+    </div>
+</div>
+
+<div class="row-fluid" style="min-height: 500px">
+
+    <div class="span1"></div>
+    <div class="span2" id="foldersContainer">
+        <ul class="nav nav-list">
+            <li class="nav-header"><spring:message code="FILTERS"/></li>
+            <li data-filter="all" class="active"><a href="#"><i class="icon-inbox icon-white"></i> <spring:message
+                    code="ALL_MAPS"/></a></li>
+            <li data-filter="my_maps"><a href="#"><i class="icon-user"></i> <spring:message code="MY_MAPS"/></a>
+            </li>
+            <li data-filter="shared_with_me"><a href="#"><i class="icon-share"></i> <spring:message
+                    code="SHARED_WITH_ME"/></a></li>
+            <li data-filter="starred"><a href="#"><i class="icon-star"></i> <spring:message code="STARRED"/></a>
+            </li>
+            <li data-filter="public"><a href="#"><i class="icon-globe"></i> <spring:message code="PUBLIC_MAPS"/></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="buttonsToolbar btn-toolbar ${requestScope['google.ads.enabled']?'span7':'span8'}">
+        <div id="tableActions">
+            <div id="pageInfo"></div>
+            <div class="btn-group" id="pageButtons">
+                <button class="btn" id="pPageBtn"><strong>&lt;</strong></button>
+                <button class="btn" id="nPageBtn"><strong>&gt;</strong></button>
+            </div>
         </div>
 
-        <div id="foldersContainer">
-            <ul class="nav nav-list">
-                <li class="nav-header"><spring:message code="FILTERS"/></li>
-                <li data-filter="all" class="active"><a href="#"><i class="icon-inbox icon-white"></i> <spring:message
-                        code="ALL_MAPS"/></a></li>
-                <li data-filter="my_maps"><a href="#"><i class="icon-user"></i> <spring:message code="MY_MAPS"/></a>
+        <div class="btn-group">
+            <button id="newBtn" class="btn btn-primary"><i class="icon-file icon-white"></i> <spring:message
+                    code="NEW"/></button>
+            <button id="importBtn" class="btn btn-primary"><i class="icon-upload icon-white"></i>
+                <spring:message code="IMPORT"/>
+            </button>
+        </div>
+
+        <div class="btn-group act-multiple" id="deleteBtn" style="display:none">
+            <button class="btn btn-primary"><i class="icon-trash icon-white"></i> <spring:message
+                    code="DELETE"/></button>
+        </div>
+
+        <div id="infoBtn" class="btn-group act-single" style="display:none">
+            <button class="btn btn-primary"><i class="icon-exclamation-sign icon-white"></i> <spring:message
+                    code="INFO"/></button>
+        </div>
+
+        <div id="actionsBtn" class="btn-group act-single" style="display:none">
+            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                <i class="icon-asterisk icon-white"></i> <spring:message code="MORE"/>
+                <span class="caret"></span>
+            </button>
+
+            <ul class="dropdown-menu">
+                <li id="duplicateBtn"><a href="#" onclick="return false"><i class="icon-plus-sign"></i>
+                    <spring:message code="DUPLICATE"/></a></li>
+                <li id="renameBtn"><a href="#" onclick="return false"><i class="icon-edit"></i> <spring:message
+                        code="RENAME"/></a></li>
+                <li id="publishBtn"><a href="#" onclick="return false"><i class="icon-globe"></i>
+                    <spring:message code="PUBLISH"/></a>
                 </li>
-                <li data-filter="shared_with_me"><a href="#"><i class="icon-share"></i> <spring:message
-                        code="SHARED_WITH_ME"/></a></li>
-                <li data-filter="starred"><a href="#"><i class="icon-star"></i> <spring:message code="STARRED"/></a>
+                <li id="shareBtn"><a href="#" onclick="return false"><i class="icon-share"></i> <spring:message
+                        code="SHARE"/></a></li>
+                <li id="exportBtn"><a href="#" onclick="return false"><i class="icon-download"></i>
+                    <spring:message
+                            code="EXPORT"/></a>
                 </li>
-                <li data-filter="public"><a href="#"><i class="icon-globe"></i> <spring:message code="PUBLIC_MAPS"/></a>
+                <li id="printBtn"><a href="#" onclick="return false"><i class="icon-print"></i> <spring:message
+                        code="PRINT"/></a></li>
+                <li id="historyBtn"><a href="#" onclick="return false"><i class="icon-time"></i> <spring:message
+                        code="HISTORY"/></a>
                 </li>
             </ul>
         </div>
-
-        <div style="width: 78%;float: left;">
-            <div id="buttonsToolbar" class="btn-toolbar">
-
-                <div class="btn-group">
-                    <button id="newBtn" class="btn btn-primary"><i class="icon-file icon-white"></i> <spring:message
-                            code="NEW"/></button>
-                    <button id="importBtn" class="btn btn-primary"><i class="icon-upload icon-white"></i>
-                        <spring:message code="IMPORT"/>
-                    </button>
-                </div>
-
-                <div class="btn-group act-multiple" id="deleteBtn" style="display:none">
-                    <button class="btn btn-primary"><i class="icon-trash icon-white"></i> <spring:message
-                            code="DELETE"/></button>
-                </div>
-
-                <div id="infoBtn" class="btn-group act-single" style="display:none">
-                    <button class="btn btn-primary"><i class="icon-exclamation-sign icon-white"></i> <spring:message
-                            code="INFO"/></button>
-                </div>
-
-                <div id="actionsBtn" class="btn-group act-single" style="display:none">
-                    <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                        <i class="icon-asterisk icon-white"></i> <spring:message code="MORE"/>
-                        <span class="caret"></span>
-                    </button>
-
-                    <ul class="dropdown-menu">
-                        <li id="duplicateBtn"><a href="#" onclick="return false"><i class="icon-plus-sign"></i>
-                            <spring:message code="DUPLICATE"/></a></li>
-                        <li id="renameBtn"><a href="#" onclick="return false"><i class="icon-edit"></i> <spring:message
-                                code="RENAME"/></a></li>
-                        <li id="publishBtn"><a href="#" onclick="return false"><i class="icon-globe"></i>
-                            <spring:message code="PUBLISH"/></a>
-                        </li>
-                        <li id="shareBtn"><a href="#" onclick="return false"><i class="icon-share"></i> <spring:message
-                                code="SHARE"/></a></li>
-                        <li id="exportBtn"><a href="#" onclick="return false"><i class="icon-download"></i>
-                            <spring:message
-                                    code="EXPORT"/></a>
-                        </li>
-                        <li id="printBtn"><a href="#" onclick="return false"><i class="icon-print"></i> <spring:message
-                                code="PRINT"/></a></li>
-                        <li id="historyBtn"><a href="#" onclick="return false"><i class="icon-time"></i> <spring:message
-                                code="HISTORY"/></a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div id="tableActions" class="btn-toolbar">
-                    <div class="btn-group" id="pageButtons">
-                        <button class="btn" id="pPageBtn"><strong>&lt;</strong></button>
-                        <button class="btn" id="nPageBtn"><strong>&gt;</strong></button>
-                    </div>
-                    <div id="pageInfo"></div>
-                </div>
-            </div>
-            <div id="map-table">
-                <table class="table" id="mindmapListTable"></table>
-                <div id="tableFooter" class="form-inline"></div>
-            </div>
+        <div id="map-table">
+            <table class="table" id="mindmapListTable"></table>
+            <div id="tableFooter" class="form-inline"></div>
         </div>
     </div>
+    <div class="span1">
+        <c:if test="${requestScope['google.ads.enabled']}">
+            <script type="text/javascript"><!--
+            google_ad_client = "ca-pub-7564778578019285";
+            /* WiseMapping Mindmap List */
+            google_ad_slot = "4071968444";
+            google_ad_width = 120;
+            google_ad_height = 440;
+            //-->
+            </script>
+            <div style="margin-top:5px;">
+                <script type="text/javascript"
+                        src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+                </script>
+            </div>
+        </c:if>
+    </div>
 </div>
-<div style="border-top: 1px solid #000000">
-    <jsp:include page="footer.jsp"/>
-</div>
+<jsp:include page="footer.jsp"/>
 
 <div id="dialogsContainer">
 <!-- New map dialog -->
@@ -421,22 +436,5 @@
     </div>
 </div>
 </div>
-<c:if test="${requestScope['google.ads.enabled']}">
-    <script type="text/javascript"><!--
-    google_ad_client = "ca-pub-7564778578019285";
-    /* WiseMapping Mindmap List */
-    google_ad_slot = "4071968444";
-    google_ad_width = 120;
-    google_ad_height = 460;
-    //-->
-    </script>
-
-    <div style="position:absolute;right: 9px;top: 90px">
-        <script type="text/javascript"
-                src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-        </script>
-    </div>
-</c:if>
-
 </body>
 </html>

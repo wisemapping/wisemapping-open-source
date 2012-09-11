@@ -12,7 +12,7 @@ import java.io.InputStream;
 
 public class DebugMappingJacksonHttpMessageConverter extends MappingJacksonHttpMessageConverter {
     @Override
-    protected Object readInternal(Class<?> clazz, HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException {
+    protected Object readInternal(Class<?> clazz, HttpInputMessage inputMessage) throws IOException, JsonHttpMessageNotReadableException {
         final byte[] bytes = IOUtils.toByteArray(inputMessage.getBody());
         final ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
         final WrapHttpInputMessage wrap = new WrapHttpInputMessage(bais, inputMessage.getHeaders());
@@ -21,20 +21,14 @@ public class DebugMappingJacksonHttpMessageConverter extends MappingJacksonHttpM
             return super.readInternal(clazz, wrap);
 
         } catch (org.springframework.http.converter.HttpMessageNotReadableException e) {
-            throw new HttpMessageNotReadableException("Request Body:\n" + new String(bytes, "UTF-8"), e);
+            throw new JsonHttpMessageNotReadableException("Request Body:\n" + new String(bytes, "UTF-8"), e);
         }
         catch (IOException e) {
-            throw new HttpMessageNotReadableException("Request Body:\n" + new String(bytes, "UTF-8"), e);
+            throw new JsonHttpMessageNotReadableException("Request Body:\n" + new String(bytes, "UTF-8"), e);
         }
     }
 }
 
-class HttpMessageNotReadableException extends org.springframework.http.converter.HttpMessageNotReadableException {
-
-    public HttpMessageNotReadableException(String msg, Exception cause) {
-        super(msg, cause);
-    }
-}
 
 class WrapHttpInputMessage implements HttpInputMessage {
     private InputStream body;

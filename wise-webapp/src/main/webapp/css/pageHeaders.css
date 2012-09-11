@@ -83,7 +83,6 @@ div#headerTitle {
     margin-left: 5px;
 }
 
-
 span#headerSubTitle {
     font-weight: lighter;
     font-size: 12px;
@@ -100,30 +99,19 @@ div#headerButtons activelink a, div#headerButtons activelink a:hover {
     border-bottom: 0;
 }
 
-
 #footer {
-    width: 100%;
-    border-top: 1px solid #8e9181;
-    text-align: center;
-    font-size: 90%;
-    padding-top:5px;
-    min-height:40px;
+    border-top: 1px black solid;
+    padding-top: 15px;
 }
-#footer > div{
-    display: inline-block;
-}
-
 
 div#paypal {
     float: left;
     margin: -29px;
 }
 
-
 #headerLogo {
     cursor: pointer;
 }
-
 
 div#headerActions {
     padding-right: 8px;
@@ -135,7 +123,7 @@ div#headerActions {
 }
 
 #headerActions span {
-    border-bottom: 3px solid  #F7C931;
+    border-bottom: 3px solid #F7C931;
 }
 
 div#headerActions a:hover, div#headerActions a:active, div#headerActions a:link, div#headerActions a:visited {

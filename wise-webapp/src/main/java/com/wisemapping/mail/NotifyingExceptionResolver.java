@@ -29,7 +29,7 @@ public class NotifyingExceptionResolver extends SimpleMappingExceptionResolver {
     }
 
     private void sendNotification(@NotNull Exception ex, @NotNull HttpServletRequest request) {
-        final User user = Utils.getUser();
+        final User user = Utils.getUser(false);
         notificationService.reportJavaException(ex, user, request);
     }
 

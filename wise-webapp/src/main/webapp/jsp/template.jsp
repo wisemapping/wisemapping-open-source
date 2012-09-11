@@ -34,8 +34,9 @@
 
 <jsp:include page="header.jsp"/>
 
-<div class="pageBody">
-    <div class="pageBodyContent">
+<div class="pageBody row-fluid">
+    <div class="span2"></div>
+    <div class="pageBodyContent span8">
         <tiles:insertAttribute name="body"/>
     </div>
 </div>

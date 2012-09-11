@@ -20,6 +20,7 @@ package com.wisemapping.mail;
 
 import com.wisemapping.filter.UserAgent;
 import com.wisemapping.model.Collaboration;
+import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
 import org.apache.commons.io.IOUtils;
