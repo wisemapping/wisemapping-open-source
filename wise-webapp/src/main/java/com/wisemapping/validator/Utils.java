@@ -18,6 +18,7 @@
 
 package com.wisemapping.validator;
 
+import org.jetbrains.annotations.Nullable;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 
@@ -44,12 +45,15 @@ final public class Utils {
         }
     }
 
-    static boolean isValidateEmailAddress(final String email) {
+    static boolean isValidateEmailAddress(@Nullable final String email) {
+        boolean result = false;
+        if (email != null) {
+            //Match the given string with the emailPattern
+            final Matcher m = emailPattern.matcher(email);
 
-        //Match the given string with the emailPattern
-        final Matcher m = emailPattern.matcher(email);
-
-        //check whether match is found
-        return m.matches();
+            //check whether match is found
+            result = m.matches();
+        }
+        return result;
     }
 }
