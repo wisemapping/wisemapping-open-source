@@ -211,7 +211,7 @@
             <div id="tableFooter" class="form-inline"></div>
         </div>
     </div>
-    <div class="span1">
+    <div class="span1" style="padding-top:25px">
         <c:if test="${requestScope['google.ads.enabled']}">
             <script type="text/javascript"><!--
             google_ad_client = "ca-pub-7564778578019285";
