@@ -67,10 +67,15 @@ public class BaseController {
         return ex.getMessage();
     }
 
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public RestErrors handleValidationErrors(@NotNull ValidationException ex) {
+        return new RestErrors(ex.getErrors(), messageSource);
+    }
 
     @ExceptionHandler(JsonHttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleValidationErrors(@NotNull JsonHttpMessageNotReadableException ex) {
+    public String handleJSONErrors(@NotNull JsonHttpMessageNotReadableException ex) {
         return "Request could not be saved. Message is not valid";
     }
 
