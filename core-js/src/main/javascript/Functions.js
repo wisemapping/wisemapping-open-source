@@ -29,21 +29,30 @@ Math.sign = function (value) {
     return (value >= 0) ? 1 : -1;
 };
 
-function stackTrace() {
-    var result = "";
-    var isCallstackPopulated = false;
-    try {
-        null.eval();
-    } catch (e) {
-        if (e.stack) { //Firefox  and Chrome...
-            result = e.stack;
-            isCallstackPopulated = true;
-        }
-        else if (window.opera && e.message) { //Opera
-            result = e.message;
-            isCallstackPopulated = true;
+function stackTrace(exception) {
+
+    if (!$defined(exception)) {
+        try {
+            throw "Dummy Exception"
+        } catch (e) {
+            exception = e;
         }
     }
+    var result = "";
+    if (exception.stack) { //Firefox  and Chrome...
+        result = exception.stack;
+    }
+    else if (window.opera && exception.message) { //Opera
+        result = exception.message;
+    } else {  //IE and Safari
+        var currentFunction = arguments.callee.caller;
+        while (currentFunction) {
+            var fn = currentFunction.toString();
+            result = result + "\n" + fn;
+            currentFunction = currentFunction.caller;
+        }
+    }
+
     return result;
 }
 
