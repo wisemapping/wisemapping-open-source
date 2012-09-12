@@ -288,11 +288,11 @@ public class MindmapServiceImpl
         this.notificationService = notificationService;
     }
 
-    public void setAdminUser(String adminUser) {
+    public void setAdminUser(@NotNull String adminUser) {
         this.adminUser = adminUser;
     }
 
-    public String getAdminUser() {
+    @NotNull  public String getAdminUser() {
         return adminUser;
     }
 }

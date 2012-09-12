@@ -35,11 +35,10 @@
         <property name="mindmapManager" ref="mindmapManager"/>
         <property name="userService" ref="userService"/>
         <property name="notificationService" ref="notificationService"/>
-        <property name="adminUser" ref="${admin.user}/>
+        <property name="adminUser" value="${admin.user}"/>
     </bean>
 
-    <bean id="mindmapService"
-          class="org.springframework.aop.framework.ProxyFactoryBean">
+    <bean id="mindmapService" class="org.springframework.aop.framework.ProxyFactoryBean">
         <property name="proxyInterfaces" value="com.wisemapping.service.MindmapService"/>
         <property name="interceptorNames">
             <list>
