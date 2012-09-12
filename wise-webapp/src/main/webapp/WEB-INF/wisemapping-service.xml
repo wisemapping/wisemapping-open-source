@@ -35,6 +35,7 @@
         <property name="mindmapManager" ref="mindmapManager"/>
         <property name="userService" ref="userService"/>
         <property name="notificationService" ref="notificationService"/>
+        <property name="adminUser" ref="${admin.user}/>
     </bean>
 
     <bean id="mindmapService"

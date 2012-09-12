@@ -44,6 +44,8 @@ public class MindmapServiceImpl
     @Autowired
     private NotificationService notificationService;
 
+    private String adminUser;
+
     @Override
     public boolean hasPermissions(@Nullable User user, int mapId, @NotNull CollaborationRole grantedRole) {
         final Mindmap map = mindmapManager.getMindmapById(mapId);
@@ -54,7 +56,7 @@ public class MindmapServiceImpl
     public boolean hasPermissions(@Nullable User user, @Nullable Mindmap map, @NotNull CollaborationRole role) {
         boolean result = false;
         if (map != null) {
-            if (map.isPublic() && role == CollaborationRole.VIEWER) {
+            if ((map.isPublic() && role == CollaborationRole.VIEWER) || (isAdmin(user) && role == CollaborationRole.VIEWER)) {
                 result = true;
             } else if (user != null) {
                 final Collaboration collaboration = map.findCollaboration(user);
@@ -65,6 +67,10 @@ public class MindmapServiceImpl
             }
         }
         return result;
+    }
+
+    private boolean isAdmin(User user) {
+        return (user != null && user.getEmail().equals(adminUser));
     }
 
     @Override
@@ -219,7 +225,6 @@ public class MindmapServiceImpl
     }
 
 
-
     @Override
     public List<MindMapHistory> findMindmapHistory(int mindmapId) {
         return mindmapManager.getHistoryFrom(mindmapId);
@@ -281,5 +286,13 @@ public class MindmapServiceImpl
 
     public void setNotificationService(NotificationService notificationService) {
         this.notificationService = notificationService;
+    }
+
+    public void setAdminUser(String adminUser) {
+        this.adminUser = adminUser;
+    }
+
+    public String getAdminUser() {
+        return adminUser;
     }
 }
