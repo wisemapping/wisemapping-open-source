@@ -17,20 +17,20 @@
  */
 
 mindplot.MultilineTextEditor = new Class({
-    Extends: Events,
-    initialize:function() {
+    Extends:Events,
+    initialize:function () {
         this._topic = null;
     },
 
-    _buildEditor : function() {
+    _buildEditor:function () {
 
         var result = new Element('div');
         result.setStyles({
                 position:"absolute",
-                display: "none",
-                zIndex: "8",
+                display:"none",
+                zIndex:"8",
                 overflow:"hidden",
-                border: "0 none"
+                border:"0 none"
             }
         );
 
@@ -42,17 +42,17 @@ mindplot.MultilineTextEditor = new Class({
         );
 
         textareaElem.setStyles({
-            border: "1px gray dashed",
+            border:"1px gray dashed",
             background:"rgba(98, 135, 167, .3)",
-            outline: '0 none',
-            resize: 'none',
+            outline:'0 none',
+            resize:'none',
             overflow:"hidden"
         });
         textareaElem.inject(result);
         return result;
     },
 
-    _registerEvents : function(containerElem) {
+    _registerEvents:function (containerElem) {
         var textareaElem = this._getTextareaElem();
 
         textareaElem.addEvent('keydown', function (event) {
@@ -63,8 +63,30 @@ mindplot.MultilineTextEditor = new Class({
                 case 'enter':
                     if (event.meta || event.control) {
 
-                        // @todo: Enters must be in any place ...
-                        textareaElem.value = textareaElem.value + "\n";
+                        // Add return ...
+                        var text = textareaElem.value;
+                        var cursorPosition = text.length;
+                        if (textareaElem.selectionStart) {
+                            cursorPosition = textareaElem.selectionStart;
+                        }
+
+                        var head = text.substring(0, cursorPosition);
+                        var tail = "";
+                        if (cursorPosition < text.length) {
+                            tail = text.substring(cursorPosition, text.length);
+                        }
+                        textareaElem.value = head + "\n" + tail;
+
+                        // Position cursor ...
+                        if (textareaElem.setSelectionRange) {
+                            textareaElem.focus();
+                            textareaElem.setSelectionRange(cursorPosition + 1, cursorPosition + 1);
+                        } else if (textareaElem.createTextRange) {
+                            var range = textareaElem.createTextRange();
+                            range.moveStart('character', cursorPosition + 1);
+                            range.select();
+                        }
+
                     }
                     else {
                         this.close(true);
@@ -74,36 +96,36 @@ mindplot.MultilineTextEditor = new Class({
             event.stopPropagation();
         }.bind(this));
 
-        textareaElem.addEvent('keypress', function(event) {
+        textareaElem.addEvent('keypress', function (event) {
             event.stopPropagation();
         });
 
-        textareaElem.addEvent('keyup', function(event) {
+        textareaElem.addEvent('keyup', function (event) {
             var text = this._getTextareaElem().value;
             this.fireEvent('input', [event, text]);
             this._adjustEditorSize();
         }.bind(this));
 
         // If the user clicks on the input, all event must be ignored ...
-        containerElem.addEvent('click', function(event) {
+        containerElem.addEvent('click', function (event) {
             event.stopPropagation();
         });
-        containerElem.addEvent('dblclick', function(event) {
+        containerElem.addEvent('dblclick', function (event) {
             event.stopPropagation();
         });
-        containerElem.addEvent('mousedown', function(event) {
+        containerElem.addEvent('mousedown', function (event) {
             event.stopPropagation();
         });
     },
 
-    _adjustEditorSize : function() {
+    _adjustEditorSize:function () {
 
         if (this.isVisible()) {
             var textElem = this._getTextareaElem();
 
             var lines = textElem.value.split('\n');
             var maxLineLength = 1;
-            lines.each(function(line) {
+            lines.each(function (line) {
                 if (maxLineLength < line.length)
                     maxLineLength = line.length;
             });
@@ -112,17 +134,17 @@ mindplot.MultilineTextEditor = new Class({
             textElem.setAttribute('rows', lines.length);
 
             this._containerElem.setStyles({
-                width: (maxLineLength + 3) + 'em',
-                height: textElem.getSize().height
+                width:(maxLineLength + 3) + 'em',
+                height:textElem.getSize().height
             });
         }
     },
 
-    isVisible : function () {
+    isVisible:function () {
         return $defined(this._containerElem) && this._containerElem.getStyle('display') == 'block';
     },
 
-    _updateModel : function () {
+    _updateModel:function () {
 
         if (this._topic.getText() != this._getText()) {
             var text = this._getText();
@@ -133,7 +155,7 @@ mindplot.MultilineTextEditor = new Class({
         }
     },
 
-    show : function (topic,text) {
+    show:function (topic, text) {
 
         this._topic = topic;
         if (!this.isVisible()) {
@@ -147,7 +169,7 @@ mindplot.MultilineTextEditor = new Class({
         }
     },
 
-    _showEditor : function (defaultText) {
+    _showEditor:function (defaultText) {
 
         var topic = this._topic;
 
@@ -162,12 +184,12 @@ mindplot.MultilineTextEditor = new Class({
         this._setStyle(font);
 
         // Set editor's initial size
-        var displayFunc = function() {
+        var displayFunc = function () {
             // Position the editor and set the size...
             var textShape = this._topic.getTextShape();
             textShape.positionRelativeTo(this._containerElem, {
-                position: {x: 'left',y:'top'},
-                edge: {x: 'left', y: 'top'}
+                position:{x:'left', y:'top'},
+                edge:{x:'left', y:'top'}
             });
             this._containerElem.setStyle('display', 'block');
 
@@ -184,7 +206,7 @@ mindplot.MultilineTextEditor = new Class({
         displayFunc.delay(10);
     },
 
-    _setStyle : function (fontStyle) {
+    _setStyle:function (fontStyle) {
         var inputField = this._getTextareaElem();
         if (!$defined(fontStyle.font)) {
             fontStyle.font = "Arial";
@@ -199,31 +221,31 @@ mindplot.MultilineTextEditor = new Class({
             fontStyle.size = 12;
         }
         var style = {
-            fontSize : fontStyle.size + "px",
-            fontFamily : fontStyle.font,
-            fontStyle : fontStyle.style,
-            fontWeight : fontStyle.weight,
-            color : fontStyle.color
+            fontSize:fontStyle.size + "px",
+            fontFamily:fontStyle.font,
+            fontStyle:fontStyle.style,
+            fontWeight:fontStyle.weight,
+            color:fontStyle.color
         };
         inputField.setStyles(style);
         this._containerElem.setStyles(style);
     },
 
-    _setText : function(text) {
+    _setText:function (text) {
         var textareaElem = this._getTextareaElem();
         textareaElem.value = text;
         this._adjustEditorSize();
     },
 
-    _getText : function() {
+    _getText:function () {
         return this._getTextareaElem().value;
     },
 
-    _getTextareaElem : function() {
+    _getTextareaElem:function () {
         return this._containerElem.getElement('textarea');
     },
 
-    _positionCursor : function(textareaElem, selectText) {
+    _positionCursor:function (textareaElem, selectText) {
         textareaElem.focus();
         if (selectText) {
             // Mark text as selected ...
@@ -248,7 +270,7 @@ mindplot.MultilineTextEditor = new Class({
 
     },
 
-    close : function(update) {
+    close:function (update) {
         if (this.isVisible()) {
             // Update changes ...
             if (!$defined(update) || update) {
