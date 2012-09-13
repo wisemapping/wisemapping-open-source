@@ -70,7 +70,7 @@ public class MindmapServiceImpl
     }
 
     private boolean isAdmin(User user) {
-        return (user != null && user.getEmail().equals(adminUser));
+        return user != null && user.getEmail() != null && user.getEmail().equals(adminUser);
     }
 
     @Override
@@ -292,7 +292,8 @@ public class MindmapServiceImpl
         this.adminUser = adminUser;
     }
 
-    @NotNull  public String getAdminUser() {
+    @NotNull
+    public String getAdminUser() {
         return adminUser;
     }
 }
