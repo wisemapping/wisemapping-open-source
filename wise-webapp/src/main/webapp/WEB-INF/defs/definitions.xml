@@ -56,25 +56,23 @@
     <definition name="securityError" extends="errorTemplate">
         <put-attribute name="title" value="NO_ENOUGH_PERMISSIONS"/>
         <put-attribute name="details" value="NO_ENOUGH_PERMISSIONS_DETAILS"/>
-        <put-attribute name="logError" value="false"/>
     </definition>
 
     <definition name="forgotPasswordError" extends="errorTemplate">
         <put-attribute name="title" value="INVALID_EMAIL_ERROR"/>
         <put-attribute name="body" value="/jsp/userForgotPasswordError.jsp"/>
-        <put-attribute name="logError" value="false"/>
     </definition>
 
     <definition name="forgotPasswordSuccess" extends="errorTemplate">
         <put-attribute name="title" value="FORGOT_PASSWORD"/>
         <put-attribute name="body" value="/jsp/userForgotPasswordSuccess.jsp"/>
-        <put-attribute name="logError" value="false"/>
     </definition>
 
     <!-- Main Pages -->
     <definition name="login" extends="pageTemplate">
         <put-attribute name="title" value="LOGIN"/>
         <put-attribute name="body" value="/jsp/login.jsp"/>
+        <put-attribute name="removeSignin" value="true"/>
     </definition>
 
     <definition name="termsOfUse" extends="pageTemplate">

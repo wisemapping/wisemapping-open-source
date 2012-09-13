@@ -6,6 +6,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <tiles:importAttribute name="title" scope="request"/>
 <tiles:importAttribute name="details" scope="request"/>
+<tiles:importAttribute name="removeSignin" scope="request" ignore="true"/>
 
 <html>
 <head>
@@ -32,7 +33,9 @@
 </head>
 <body>
 
-<jsp:include page="header.jsp"/>
+<jsp:include page="header.jsp">
+    <jsp:param name="removeSignin" value="${requestScope.removeSignin}"/>
+</jsp:include>
 
 <div class="pageBody row-fluid">
     <div class="span2"></div>
@@ -44,3 +47,4 @@
 <jsp:include page="footer.jsp"/>
 </body>
 </html>
+

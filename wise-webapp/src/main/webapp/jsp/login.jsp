@@ -11,7 +11,7 @@
     });
 </script>
 
-<div id="row-fluid">
+<div id="row">
     <div class="span1"></div>
     <div class="span5" style="margin-top: 20px">
         <h1><spring:message code="WELCOME_TO_WISEMAPPING"/></h1>
@@ -55,7 +55,7 @@
     </div>
 </div>
 
-<div class="row-fluid">
+<div class="row">
     <div id="register" class="span12">
         <b><spring:message code="NOT_READY_A_USER"/></b>
         <spring:message code="NOT_READY_A_USER_MESSAGE"/>

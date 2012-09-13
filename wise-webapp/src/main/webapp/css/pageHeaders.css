@@ -102,6 +102,11 @@ div#headerButtons activelink a, div#headerButtons activelink a:hover {
 #footer {
     border-top: 1px black solid;
     padding-top: 15px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #ffffff;
 }
 
 div#paypal {

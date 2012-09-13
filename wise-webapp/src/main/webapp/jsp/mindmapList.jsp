@@ -208,8 +208,9 @@
         </div>
         <div id="map-table">
             <table class="table" id="mindmapListTable"></table>
-            <div id="tableFooter" class="form-inline"></div>
         </div>
+        <div id="tableFooter" class="form-inline"></div>
+
     </div>
     <div class="span1" style="padding-top:25px">
         <c:if test="${requestScope['google.ads.enabled']}">
