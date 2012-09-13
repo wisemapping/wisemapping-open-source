@@ -20,6 +20,7 @@ package com.wisemapping.dao;
 
 import com.wisemapping.model.*;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ public interface MindmapManager {
 
     List<Mindmap> getAllMindmaps();
 
+    @Nullable
     Mindmap getMindmapById(int mindmapId);
 
     Mindmap getMindmapByTitle(final String name, final User user);
