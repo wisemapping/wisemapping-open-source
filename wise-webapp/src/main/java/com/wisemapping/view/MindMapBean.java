@@ -127,7 +127,7 @@ public class MindMapBean {
         final String xmlAsJsLiteral = this.mindmap.getXmlAsJsLiteral();
 
         // Firefox is failing for this. Need to be reviewed ...
-        return xmlAsJsLiteral.replace(Pattern.quote("\\u0000"),"");
+        return xmlAsJsLiteral.replace("\\u0000","");
     }
 
     public String getProperties() throws WiseMappingException {
