@@ -164,8 +164,9 @@ public class MindmapManagerImpl
     }
 
     @Override
-    public Mindmap getMindmapById(int mindmapId) {
-        return getHibernateTemplate().get(Mindmap.class, mindmapId);
+    @NotNull
+    public Mindmap getMindmapById(int id) {
+        return getHibernateTemplate().get(Mindmap.class, id);
     }
 
     @Override

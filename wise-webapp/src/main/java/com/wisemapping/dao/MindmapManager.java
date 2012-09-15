@@ -38,7 +38,7 @@ public interface MindmapManager {
 
     List<Mindmap> getAllMindmaps();
 
-    @Nullable
+    @NotNull
     Mindmap getMindmapById(int mindmapId);
 
     Mindmap getMindmapByTitle(final String name, final User user);

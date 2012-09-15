@@ -3,6 +3,7 @@ package com.wisemapping.rest.model;
 
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.*;
+import com.wisemapping.util.TimeUtils;
 import org.codehaus.jackson.annotate.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,14 +29,8 @@ public class RestMindmap {
     private Collaborator collaborator;
     @JsonIgnore
     private Mindmap mindmap;
-    @JsonIgnore
-    static private SimpleDateFormat sdf;
+    @Nullable
     private String properties;
-
-    static {
-        sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-    }
 
     public RestMindmap() throws WiseMappingException {
         this(new Mindmap(), null);
@@ -46,8 +41,10 @@ public class RestMindmap {
         this.mindmap = mindmap;
         this.collaborator = collaborator;
         if (collaborator != null) {
-            final CollaborationProperties collaborationProperties = mindmap.findCollaborationProperties(collaborator);
-            this.properties = collaborationProperties.getMindmapProperties();
+            final CollaborationProperties collaborationProperties = mindmap.findCollaborationProperties(collaborator, false);
+            if (collaborationProperties != null) {
+                this.properties = collaborationProperties.getMindmapProperties();
+            }
         }
     }
 
@@ -56,7 +53,7 @@ public class RestMindmap {
         final Calendar creationTime = mindmap.getCreationTime();
         String result = null;
         if (creationTime != null) {
-            result = this.toISO8601(creationTime.getTime());
+            result = TimeUtils.toISO8601(creationTime.getTime());
         }
         return result;
     }
@@ -81,15 +78,21 @@ public class RestMindmap {
         return mindmap.getCreator().getEmail();
     }
 
-    public Collaborator getLastModifierUser() {
-        return mindmap.getLastEditor();
+    public RestCollaborator getLastModifierUser() {
+        final User lastEditor = mindmap.getLastEditor();
+
+        RestCollaborator result = null;
+        if (lastEditor != null && mindmap.hasPermissions(collaborator, CollaborationRole.EDITOR)) {
+            result = new RestCollaborator(lastEditor);
+        }
+        return result;
     }
 
     public String getLastModificationTime() {
         final Calendar date = mindmap.getLastModificationTime();
         String result = null;
         if (date != null) {
-            result = toISO8601(date.getTime());
+            result = TimeUtils.toISO8601(date.getTime());
         }
         return result;
     }
@@ -153,6 +156,7 @@ public class RestMindmap {
     public void setLastModifierUser(String lastModifierUser) {
     }
 
+    @Nullable
     public String getProperties() {
         return properties;
     }
@@ -174,13 +178,5 @@ public class RestMindmap {
     @JsonIgnore
     public Mindmap getDelegated() {
         return this.mindmap;
-    }
-
-    private String toISO8601(@Nullable Date date) {
-        String result = "";
-        if (date != null) {
-            result = sdf.format(date) + "Z";
-        }
-        return result;
     }
 }

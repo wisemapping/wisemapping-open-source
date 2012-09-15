@@ -228,15 +228,24 @@ public class Mindmap {
 
     @NotNull
     public CollaborationProperties findCollaborationProperties(@NotNull Collaborator collaborator) throws WiseMappingException {
+        return this.findCollaborationProperties(collaborator, true);
+    }
+
+    @Nullable
+    public CollaborationProperties findCollaborationProperties(@NotNull Collaborator collaborator, boolean forceCheck) throws WiseMappingException {
         if (collaborator == null) {
             throw new IllegalStateException("Collaborator can not be null");
         }
 
         final Collaboration collaboration = this.findCollaboration(collaborator);
-        if (collaboration == null) {
-            throw new AccessDeniedSecurityException("Collaborator " + collaborator.getEmail() + " could not access " + this.getId());
+        CollaborationProperties result = null;
+        if (collaboration != null) {
+            result = collaboration.getCollaborationProperties();
+        } else {
+            if (forceCheck)
+                throw new AccessDeniedSecurityException("Collaborator " + collaborator.getEmail() + " could not access " + this.getId());
         }
-        return collaboration.getCollaborationProperties();
+        return result;
     }
 
     public boolean isStarred(@NotNull Collaborator collaborator) {
@@ -264,7 +273,7 @@ public class Mindmap {
         return result;
     }
 
-    public boolean hasPermissions(@NotNull Collaborator collaborator, @NotNull CollaborationRole role) {
+    public boolean hasPermissions(@Nullable Collaborator collaborator, @NotNull CollaborationRole role) {
         boolean result = false;
         if (collaborator != null) {
             final Collaboration collaboration = this.findCollaboration(collaborator);

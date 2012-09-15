@@ -6,6 +6,7 @@ import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
 import com.wisemapping.security.Utils;
+import com.wisemapping.util.TimeUtils;
 import org.codehaus.jackson.annotate.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -32,13 +33,6 @@ public class RestMindmapInfo {
     @JsonIgnore
     private Mindmap mindmap;
     private Collaborator collaborator;
-    @JsonIgnore
-    static private SimpleDateFormat sdf;
-
-    static {
-        sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-    }
 
     public RestMindmapInfo() {
         this(new Mindmap(), null);
@@ -51,7 +45,7 @@ public class RestMindmapInfo {
     }
 
     public String getCreationTime() {
-        return this.toISO8601(mindmap.getCreationTime().getTime());
+        return TimeUtils.toISO8601(mindmap.getCreationTime().getTime());
     }
 
     public String getDescription() {
@@ -94,7 +88,7 @@ public class RestMindmapInfo {
 
     public String getLastModificationTime() {
         final Calendar calendar = mindmap.getLastModificationTime();
-        return this.toISO8601(calendar.getTime());
+        return TimeUtils.toISO8601(calendar.getTime());
     }
 
     public boolean isPublic() {
@@ -137,9 +131,5 @@ public class RestMindmapInfo {
     @JsonIgnore
     public Mindmap getDelegated() {
         return this.mindmap;
-    }
-
-    private String toISO8601(@NotNull Date date) {
-        return sdf.format(date) + "Z";
     }
 }

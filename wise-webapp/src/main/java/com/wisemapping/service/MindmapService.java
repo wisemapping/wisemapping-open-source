@@ -29,7 +29,8 @@ public interface MindmapService {
 
     static final String TAG_SEPARATOR = " ";
 
-    Mindmap findMindmapById(int mindmapId);
+    @NotNull
+    Mindmap findMindmapById(int id);
 
     Mindmap getMindmapByTitle(String title, User user);
 

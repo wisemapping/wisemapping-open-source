@@ -79,8 +79,9 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public Mindmap findMindmapById(int mindmapId) {
-        return mindmapManager.getMindmapById(mindmapId);
+    @NotNull
+    public Mindmap findMindmapById(int id) {
+        return mindmapManager.getMindmapById(id);
     }
 
     @Override
