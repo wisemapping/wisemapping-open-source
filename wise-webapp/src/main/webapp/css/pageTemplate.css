@@ -3,6 +3,9 @@
 
 @import "pageHeaders.css";
 
+html, body {
+    height: 100%;
+}
 
 div#register {
     margin: 40px auto;
@@ -30,7 +33,7 @@ div.pageBodyContent ol li {
 
 
 div.pageBody {
-    min-height: 500px;
+    min-height: 80%;
 }
 
 div.pageBodyContent {
