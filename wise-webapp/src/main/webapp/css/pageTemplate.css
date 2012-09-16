@@ -1,11 +1,6 @@
 @import "../bootstrap/css/bootstrap.min.css";
 @import "../bootstrap/css/bootstrap-responsive.min.css";
-
 @import "pageHeaders.css";
-
-html, body {
-    height: 100%;
-}
 
 div#register {
     margin: 40px auto;
@@ -18,83 +13,53 @@ div#register a {
     font-weight: bold;
 }
 
-
-div.pageBodyContent ol {
-    margin-left: 12px;
+div#pageContainer {
+    position: relative;
+    min-height: 100%;
 }
 
-div.pageBodyContent ul {
-    list-style-position: outside;
-}
-
-div.pageBodyContent ol li {
-    list-style-type: decimal;
-}
-
-
-div.pageBody {
-    min-height: 80%;
-}
-
-div.pageBodyContent {
+div.bodyContainer {
     padding-top: 30px;
+    padding-bottom: 85px; /* Height of the footer */
 }
 
-div.pageBodyContent h1 {
+div.bodyContainer h1 {
     color: #093A9D;
     font-size: 150%;
     margin-bottom: 5px;
     font-weight: bold;
 }
 
-div.pageBodyContent h2 {
+div.bodyContainer h2 {
     color: gray;
     font-size: 150%;
     border-bottom: 1px dashed #BBB4D6;
     margin: 20px 0;
 }
 
-div.pageBodyContent ul {
+div.bodyContainer ul {
     padding: 5px;
 }
 
-div.pageBodyContent li {
+div.bodyContainer li {
     list-style-type: disc;
     margin-left: 12px;
 }
 
+#footerContainer {
+    padding-top: 10px;
+    border-top: 1px black solid;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 65px; /* Height of the footer */
+    background: #ffffff;
+}
+
 /*--   End Main Page Style -- */
 
-/* Share Styles */
-#userEmails {
-    float: left;
-    width: 50%;
-    padding: 5px;
-}
-
-#userEmails textarea {
-    width: 100%;
-}
-
-#currentUsers {
-    float: left;
-    width: 40%;
-    height: 400px;
-    padding: 5px;
-    padding-left: 15px;
-    margin-left: 15px;
-    border-left: 1px dotted gray;
-}
-
-#currentUsers table {
-    width: 100%;
-}
-
-#invitation {
-    border: 1px dotted gray;
-}
-
-span.errorMsg{
+span.errorMsg {
     color: red;
 }
 

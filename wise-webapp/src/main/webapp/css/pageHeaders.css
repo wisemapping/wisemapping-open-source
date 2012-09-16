@@ -1,6 +1,13 @@
 /* HEADER STYLES */
+
+html,body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
 #header {
-    margin-top: 0px;
+    margin-top: 0;
     height: 78px;
     width: 100%;
     background: white;
@@ -99,17 +106,6 @@ div#headerButtons activelink a, div#headerButtons activelink a:hover {
     border-bottom: 0;
 }
 
-#footer {
-    border-top: 1px black solid;
-    padding-top: 15px;
-    width: 100%;
-    background: #ffffff;
-}
-
-div#paypal {
-    float: left;
-    margin: -29px;
-}
 
 #headerLogo {
     cursor: pointer;
@@ -130,17 +126,4 @@ div#headerActions {
 
 div#headerActions a:hover, div#headerActions a:active, div#headerActions a:link, div#headerActions a:visited {
     color: white;
-}
-
-div.header_languages {
-    position: absolute;
-    right: 0;
-    top: 30px;
-    width: 100px;
-    height: 20px;
-}
-
-div.header_language_flag {
-    float: left;
-    margin-right: 3px;
 }

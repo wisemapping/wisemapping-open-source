@@ -1,7 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<div id="footer">
+<div id="footerContainer" class="row">
     <div class="span1 offset3">
         <a href="https://twitter.com/share" class="twitter-share-button" data-via="wisemapping"
            data-related="wisemapping">Tweet</a>

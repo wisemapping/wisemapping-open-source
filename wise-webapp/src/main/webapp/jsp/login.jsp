@@ -11,7 +11,7 @@
     });
 </script>
 
-<div id="row">
+<div class="row">
     <div class="span1"></div>
     <div class="span5" style="margin-top: 20px">
         <h1><spring:message code="WELCOME_TO_WISEMAPPING"/></h1>
