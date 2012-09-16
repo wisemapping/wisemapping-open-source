@@ -11,26 +11,45 @@
     });
 </script>
 
-<div class="row">
-    <div class="span1"></div>
+<div class="row-fluid">
     <div class="span5" style="margin-top: 20px">
         <h1><spring:message code="WELCOME_TO_WISEMAPPING"/></h1>
         <spring:message code="WELCOME_DETAILS"/>
     </div>
-    <div class="span1"></div>
-    <div id="login" class="fform span4">
-        <h1>
-            <spring:message code="SIGN_IN"/>
-        </h1>
+    <div class="span1">
 
-        <form action="<c:url value='/c/j_spring_security_check'/>" method="POST">
-            <fieldset>
-                <label for="email"><spring:message code="EMAIL"/></label>
-                <input type='email' tabindex="1" id="email" name='j_username' required="required"/>
+    </div>
+    <div id="login" class="fform span6">
+        <h1><spring:message code="SIGN_IN"/></h1>
 
-                <label for="password"><spring:message code="PASSWORD"/></label>
-                <input type='password' tabindex="2" id="password" name='j_password' required="required"/>
+        <form action="<c:url value='/c/j_spring_security_check'/>" method="POST" class="form-horizontal">
+            <div class="control-group">
+                <label class="control-label" for="email"><spring:message code="EMAIL"/></label>
 
+                <div class="controls">
+                    <input type='email' tabindex="1" id="email" name='j_username' required="required" class="span12"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="password"><spring:message code="PASSWORD"/></label>
+
+                <div class="controls">
+                    <input type='password' tabindex="2" id="password" name='j_password' required="required"
+                           class="span12"/>
+                </div>
+            </div>
+            <div class="control-group" style="text-align: right">
+
+                <label>
+                    <button class="btn btn-primary" tabindex="4"><spring:message code="SIGN_IN"/></button>
+                    <input type="checkbox" id="rememberme" name="_spring_security_remember_me"
+                           tabindex="3"/> <spring:message code="REMEMBER_ME"/>
+                </label>
+                <div style="text-align: center">
+                    <a href="<c:url value="/c/user/resetPassword"/>"><spring:message code="FORGOT_PASSWORD"/></a>
+                </div>
+            </div>
+            <div class="control-group">
                 <c:if test="${not empty param.login_error}">
                     <c:choose>
                         <c:when test="${param.login_error == 3}">
@@ -41,17 +60,8 @@
                         </c:otherwise>
                     </c:choose>
                 </c:if>
-
-                <div class="form-inline">
-                    <button class="btn btn-primary" data-loading-text="<spring:message code="SIGN_ING"/>" tabindex="4">
-                        <spring:message code="SIGN_IN"/></button>
-                    &nbsp;&nbsp;&nbsp;
-                    <input type="checkbox" id="rememberme" name="_spring_security_remember_me" tabindex="3"/>
-                    <label for="rememberme"><spring:message code="REMEMBER_ME"/></label>
-                </div>
-            </fieldset>
+            </div>
         </form>
-        <a href="<c:url value="/c/user/resetPassword"/>"><spring:message code="FORGOT_PASSWORD"/></a>
     </div>
 </div>
 

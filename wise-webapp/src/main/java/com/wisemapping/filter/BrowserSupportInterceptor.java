@@ -41,14 +41,14 @@ public class BrowserSupportInterceptor extends HandlerInterceptorAdapter {
             final HttpSession session = request.getSession(false);
 
             // Try to loaded from the request ...
-            UserAgent userAgent = null;
+            WiseUserAgent userAgent = null;
             if (session != null) {
-                userAgent = (UserAgent) session.getAttribute(USER_AGENT);
+                userAgent = (WiseUserAgent) session.getAttribute(USER_AGENT);
             }
 
             // I could not loaded. I will create a new one...
             if (userAgent == null) {
-                userAgent = UserAgent.create(request);
+                userAgent = WiseUserAgent.create(request);
                 if (session != null) {
                     session.setAttribute(USER_AGENT, userAgent);
                 }
