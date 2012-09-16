@@ -32,7 +32,7 @@ import java.util.Set;
 
 public class BrowserSupportInterceptor extends HandlerInterceptorAdapter {
     private Set<String> exclude;
-    public static final String USER_AGENT = "wisemapping.userAgent";
+    public static final String USER_AGENT = "wisemapping.user_agent";
 
     public boolean preHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, Object object) throws Exception {
 

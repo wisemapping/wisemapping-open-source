@@ -20,12 +20,13 @@ package com.wisemapping.model;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Set;
 import java.util.HashSet;
 
 
-public class Collaborator {
+public class Collaborator  implements Serializable {
     private long id;
     private String email;
     private Calendar creationDate;

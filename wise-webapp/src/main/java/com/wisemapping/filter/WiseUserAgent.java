@@ -26,13 +26,11 @@ import java.io.Serializable;
 
 public class WiseUserAgent implements Serializable {
     public static final String USER_AGENT_HEADER = "User-Agent";
-    private UserAgent userAgent;
+    transient private UserAgent userAgent;
     private String header;
 
     private WiseUserAgent(@NotNull final String header) {
         this.header = header;
-        this.userAgent = new UserAgent(header);
-
     }
 
     public static WiseUserAgent create(@NotNull final HttpServletRequest request) {
@@ -41,6 +39,7 @@ public class WiseUserAgent implements Serializable {
 
     public boolean isBrowserSupported() {
 
+        final UserAgent userAgent = this.getUserAgent();
         final Browser browser = userAgent.getBrowser();
         final Version version = userAgent.getBrowserVersion();
         final OperatingSystem os = userAgent.getOperatingSystem();
@@ -58,7 +57,17 @@ public class WiseUserAgent implements Serializable {
         return result;
     }
 
+    @NotNull
+    synchronized
+    private UserAgent getUserAgent() {
+        if (userAgent == null) {
+            userAgent = new UserAgent(header);
+        }
+        return userAgent;
+    }
+
     public boolean needsGCF() {
+        final UserAgent userAgent = this.getUserAgent();
         final Browser browser = userAgent.getBrowser();
         final Version version = userAgent.getBrowserVersion();
         final OperatingSystem os = userAgent.getOperatingSystem();
@@ -70,4 +79,6 @@ public class WiseUserAgent implements Serializable {
     public static WiseUserAgent create(@NotNull final String userAgent) {
         return new WiseUserAgent(userAgent);
     }
+
+
 }
