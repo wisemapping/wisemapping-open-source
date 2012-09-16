@@ -18,8 +18,8 @@
 
 package com.wisemapping.filter;
 
-import com.sun.istack.internal.NotNull;
 import com.wisemapping.util.*;
+import org.jetbrains.annotations.NotNull;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
