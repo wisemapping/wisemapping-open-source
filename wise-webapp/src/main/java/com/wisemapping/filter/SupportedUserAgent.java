@@ -24,17 +24,17 @@ import org.jetbrains.annotations.NotNull;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 
-public class WiseUserAgent implements Serializable {
+public class SupportedUserAgent implements Serializable {
     public static final String USER_AGENT_HEADER = "User-Agent";
     transient private UserAgent userAgent;
     private String header;
 
-    private WiseUserAgent(@NotNull final String header) {
+    private SupportedUserAgent(@NotNull final String header) {
         this.header = header;
     }
 
-    public static WiseUserAgent create(@NotNull final HttpServletRequest request) {
-        return new WiseUserAgent(request.getHeader(USER_AGENT_HEADER));
+    public static SupportedUserAgent create(@NotNull final HttpServletRequest request) {
+        return new SupportedUserAgent(request.getHeader(USER_AGENT_HEADER));
     }
 
     public boolean isBrowserSupported() {
@@ -50,6 +50,7 @@ public class WiseUserAgent implements Serializable {
         result = result || browser == Browser.OPERA && Integer.parseInt(version.getMajorVersion()) >= 11;
         result = result || browser == Browser.CHROME && Integer.parseInt(version.getMajorVersion()) >= 18;
         result = result || browser == Browser.SAFARI5;
+        result = result || browser == Browser.SAFARI && Integer.parseInt(version.getMajorVersion()) >= 5;
         result = result || browser == Browser.MOBILE_SAFARI && Integer.parseInt(version.getMajorVersion()) >= 5;
         result = result || os.isMobileDevice() && (os == OperatingSystem.ANDROID || os == OperatingSystem.iOS4_IPHONE);
         result = result || browser.getBrowserType() == BrowserType.ROBOT;
@@ -76,8 +77,8 @@ public class WiseUserAgent implements Serializable {
         return browser == Browser.IE && Integer.parseInt(version.getMajorVersion()) >= 8 && os == OperatingSystem.WINDOWS && header.contains("chromeframe");
     }
 
-    public static WiseUserAgent create(@NotNull final String userAgent) {
-        return new WiseUserAgent(userAgent);
+    public static SupportedUserAgent create(@NotNull final String userAgent) {
+        return new SupportedUserAgent(userAgent);
     }
 
 
