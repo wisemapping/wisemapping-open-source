@@ -13,6 +13,6 @@
     CFInstall.check({
         mode: "inline",
         node:"prompt",
-        destination:"c/maps/"
+        destination:"../c/maps/"
     });
 </script>
