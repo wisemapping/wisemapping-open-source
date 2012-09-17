@@ -5,8 +5,8 @@
 
 <script type="text/javascript" language="javascript">
     $(function () {
-        $('.btn-primary').click(function () {
-            $(this).button("loading");
+        $('#loginForm').submit(function () {
+            $('.btn-primary').button("<spring:message code="SIGN_IN"/> ...");
         });
     });
 </script>
@@ -22,7 +22,7 @@
     <div id="login" class="fform span6">
         <h1><spring:message code="SIGN_IN"/></h1>
 
-        <form action="<c:url value='/c/j_spring_security_check'/>" method="POST" class="form-horizontal">
+        <form action="<c:url value='/c/j_spring_security_check'/>" method="POST" class="form-horizontal" id="loginForm">
             <div class="control-group">
                 <label class="control-label" for="email"><spring:message code="EMAIL"/></label>
 
@@ -45,6 +45,7 @@
                     <input type="checkbox" id="rememberme" name="_spring_security_remember_me"
                            tabindex="3"/> <spring:message code="REMEMBER_ME"/>
                 </label>
+
                 <div style="text-align: center">
                     <a href="<c:url value="/c/user/resetPassword"/>"><spring:message code="FORGOT_PASSWORD"/></a>
                 </div>
