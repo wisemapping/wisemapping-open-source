@@ -6,7 +6,7 @@
 <script type="text/javascript" language="javascript">
     $(function () {
         $('#loginForm').submit(function () {
-            $('.btn-primary').button("<spring:message code="SIGN_IN"/> ...");
+            $('.btn-primary').button("loading");
         });
     });
 </script>
@@ -41,7 +41,7 @@
             <div class="control-group" style="text-align: right">
 
                 <label>
-                    <button class="btn btn-primary" tabindex="4"><spring:message code="SIGN_IN"/></button>
+                    <button class="btn btn-primary" tabindex="4"  data-loading-text="<spring:message code="SIGN_ING"/>"><spring:message code="SIGN_IN"/></button>
                     <input type="checkbox" id="rememberme" name="_spring_security_remember_me"
                            tabindex="3"/> <spring:message code="REMEMBER_ME"/>
                 </label>
