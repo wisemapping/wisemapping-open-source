@@ -7,8 +7,8 @@ import org.testng.annotations.Test;
 @Test
 public class UserAgentTest {
 
-    @Test
-    public void validations() {
+
+    public void isBrowserSupported() {
 
         final SupportedUserAgent firefox15 = SupportedUserAgent.create("Mozilla/5.0 (Windows NT 6.1; rv:15.0) Gecko/20120716 Firefox/15");
         Assert.assertEquals(firefox15.isBrowserSupported(), true);
@@ -31,6 +31,9 @@ public class UserAgentTest {
         final SupportedUserAgent ie9 = SupportedUserAgent.create("Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2; .NET CLR 1.1.4322; .NET4.0C; Tablet PC 2.0)");
         Assert.assertEquals(ie9.isBrowserSupported(), true);
 
+        final SupportedUserAgent ie8 = SupportedUserAgent.create("Mozilla/5.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET CLR 1.0.3705; .NET CLR 1.1.4322)");
+        Assert.assertEquals(ie8.isBrowserSupported(), true);
+
         final SupportedUserAgent safari = SupportedUserAgent.create("Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_7; da-dk) AppleWebKit/533.21.1 (KHTML, like Gecko) Version/5.0.5 Safari/533.21.1");
         Assert.assertEquals(safari.isBrowserSupported(), true);
 
@@ -45,6 +48,20 @@ public class UserAgentTest {
 
         final SupportedUserAgent mediapartners = SupportedUserAgent.create("Mediapartners-Google/2.1");
         Assert.assertEquals(mediapartners.isBrowserSupported(), true);
+
+    }
+
+
+    public void isGCFRequired() {
+
+        final SupportedUserAgent ie10 = SupportedUserAgent.create("Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/4.0; InfoPath.2; SV1; .NET CLR 2.0.50727; WOW64)");
+        Assert.assertEquals(ie10.needsGCF(), false);
+
+        final SupportedUserAgent ie8 = SupportedUserAgent.create("Mozilla/5.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET CLR 1.0.3705; .NET CLR 1.1.4322)");
+        Assert.assertEquals(ie8.needsGCF(), true);
+
+        final SupportedUserAgent ie8WithGCF = SupportedUserAgent.create("Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; SV1) chromeframe/11.0.660.0");
+        Assert.assertEquals(ie8WithGCF.needsGCF(), false);
 
     }
 
