@@ -17,7 +17,8 @@
                 <li><strong><spring:message code="CREATOR"/>:</strong> <c:out value="${mindmap.creator.fullName}"/></li>
                 <li><strong><spring:message code="CREATION_TIME"/>:</strong> ${mindmap.creationTime}</li>
                 <li><strong><spring:message code="LAST_UPDATE"/>:</strong> ${mindmap.lastEditTime}</li>
-                <li><strong><spring:message code="LAST_UPDATE_BY"/>:</strong> <c:out value="${mindmap.lastEditor}"/></li>
+                <li><strong><spring:message code="LAST_UPDATE_BY"/>:</strong> <c:out value="${mindmap.lastEditor}"/>
+                </li>
                 <li><strong> <spring:message code="STARRED"/>:</strong> ${mindmap.starred}</li>
             </ul>
         </div>
@@ -47,11 +48,10 @@
                 <c:when test="${mindmap.public}">
                     <ul class="unstyled">
                         <p><spring:message code="ALL_VIEW_PUBLIC"/></p>
-
-                        <li><strong><spring:message code="URL"/>:</strong>
+                        <li><strong><spring:message code="DIRECT_LINK_EXPLANATION"/></strong>
                         <li><input name="url"
                                    value="${baseUrl}/c/maps/${mindmap.id}/public"
-                                   style="width:400px" readonly="readonly"/>
+                                   style="width:400px;cursor: text" readonly="readonly"/>
                         </li>
                         <li><strong><spring:message code="BLOG_SNIPPET"/></strong>
                             <pre>&lt;iframe style="border:0;width:600px;height:400px;border: 1px solid black" src="${baseUrl}/c/maps/${mindmap.id}/embed?zoom=1"&gt;&lt;/iframe&gt;</pre>

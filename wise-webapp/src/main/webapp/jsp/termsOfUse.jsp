@@ -68,7 +68,7 @@ Service at your own risk.
         content, which violates these Terms.
     </li>
 </ol>
-<h2>publishing and Shareing Content</h2>
+<h2>Publishing and Sharing Content</h2>
 
 <p>
     The user has the right to publicize or not to publicize their own contents. By publicizing the Contents, the
