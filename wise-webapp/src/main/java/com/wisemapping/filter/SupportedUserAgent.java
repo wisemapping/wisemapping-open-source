@@ -72,7 +72,6 @@ public class SupportedUserAgent implements Serializable {
         final UserAgent userAgent = this.getUserAgent();
         final Browser browser = userAgent.getBrowser();
         final Version version = userAgent.getBrowserVersion();
-        final OperatingSystem os = userAgent.getOperatingSystem();
 
         return (browser == Browser.IE8 || browser == Browser.IE && Integer.parseInt(version.getMajorVersion()) == 8) && !header.contains("chromeframe");
     }

@@ -55,9 +55,15 @@ mindplot.Designer = new Class({
 
             // Register events
             if (!this.isReadOnly()) {
-                this._registerEvents();
+                // Register mouse events ...
+                this._registerMouseEvents();
+
+                // Register keyboard events ...
+                mindplot.DesignerKeyboard.register(this);
+
                 this._dragManager = this._buildDragManager(this._workspace);
             }
+            this._registerWheelEvents();
 
             this._relPivot = new mindplot.RelationshipPivot(this._workspace, this);
 
@@ -76,6 +82,29 @@ mindplot.Designer = new Class({
             this.deselectAll();
         },
 
+        _registerWheelEvents:function () {
+            // Zoom In and Zoom Out must active event
+            $(document).addEvent('mousewheel', function (event) {
+                // Change mousewheel handling so we let the default
+                //event happen if we are outside the container.
+                var coords = screenManager.getContainer().getCoordinates();
+                var isOutsideContainer = event.client.y < coords.top ||
+                    event.client.y > coords.bottom ||
+                    event.client.x < coords.left ||
+                    event.client.x > coords.right;
+
+                if (!isOutsideContainer) {
+                    if (event.wheel > 0) {
+                        this.zoomIn(1.05);
+                    }
+                    else {
+                        this.zoomOut(1.05);
+                    }
+                    event.preventDefault();
+                }
+            }.bind(this));
+        },
+
         /**
          * Activates the keyboard events so you can enter text into forms
          */
@@ -84,13 +113,6 @@ mindplot.Designer = new Class({
         },
 
 
-        _registerEvents:function () {
-            // Register mouse events ...
-            this._registerMouseEvents();
-
-            // Register keyboard events ...
-            mindplot.DesignerKeyboard.register(this);
-        },
 
         addEvent:function (type, listener) {
             if (type == mindplot.TopicEvent.EDIT || type == mindplot.TopicEvent.CLICK) {
@@ -133,27 +155,6 @@ mindplot.Designer = new Class({
                     var centralTopic = this.getModel().getCentralTopic();
                     var model = this._createChildModel(centralTopic, mousePos);
                     this._actionDispatcher.addTopics([model], [centralTopic.getId()]);
-                }
-            }.bind(this));
-
-
-            $(document).addEvent('mousewheel', function (event) {
-                // Change mousewheel handling so we let the default
-                //event happen if we are outside the container.
-                var coords = screenManager.getContainer().getCoordinates();
-                var isOutsideContainer = event.client.y < coords.top ||
-                    event.client.y > coords.bottom ||
-                    event.client.x < coords.left ||
-                    event.client.x > coords.right;
-
-                if (!isOutsideContainer) {
-                    if (event.wheel > 0) {
-                        this.zoomIn(1.05);
-                    }
-                    else {
-                        this.zoomOut(1.05);
-                    }
-                    event.preventDefault();
                 }
             }.bind(this));
 

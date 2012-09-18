@@ -1,4 +1,3 @@
-
 $.fn.dataTableExt.oApi.fnReloadAjax = function (oSettings, sNewSource, fnCallback, bStandingRedraw) {
     if (typeof sNewSource != 'undefined' && sNewSource != null) {
         oSettings.sAjaxSource = sNewSource;
@@ -180,7 +179,9 @@ function updateStatusToolbar() {
 
             // Can be executed by the owner ?
             var rowData = tableElem.dataTable().fnGetData(selectedRows[0]);
-            if (rowData.role != 'owner') {
+            if ('owner' == rowData.role) {
+                $(".buttonsToolbar").find('#publishBtn').show().end().find('#shareBtn').show().end().find('#renameBtn').show();
+            } else {
                 $(".buttonsToolbar").find('#publishBtn').hide().end().find('#shareBtn').hide().end().find('#renameBtn').hide();
             }
         } else {
