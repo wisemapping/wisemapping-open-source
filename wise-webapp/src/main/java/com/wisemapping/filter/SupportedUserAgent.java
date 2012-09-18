@@ -44,14 +44,15 @@ public class SupportedUserAgent implements Serializable {
         final Version version = userAgent.getBrowserVersion();
         final OperatingSystem os = userAgent.getOperatingSystem();
 
-        boolean result = browser == Browser.FIREFOX && Integer.parseInt(version.getMajorVersion()) >= 10;
+        final String majorVersion = version.getMajorVersion();
+        boolean result = browser == Browser.FIREFOX && Integer.parseInt(majorVersion) >= 10;
         result = result || browser == Browser.IE8 || browser == Browser.IE9;
-        result = result || browser == Browser.IE && Integer.parseInt(version.getMajorVersion()) >= 8;
-        result = result || browser == Browser.OPERA && Integer.parseInt(version.getMajorVersion()) >= 11;
-        result = result || browser == Browser.CHROME && Integer.parseInt(version.getMajorVersion()) >= 18;
+        result = result || browser == Browser.IE && Integer.parseInt(majorVersion) >= 8;
+        result = result || browser == Browser.OPERA && Integer.parseInt(majorVersion) >= 11;
+        result = result || browser == Browser.CHROME && Integer.parseInt(majorVersion) >= 18;
         result = result || browser == Browser.SAFARI5;
-        result = result || browser == Browser.SAFARI && Integer.parseInt(version.getMajorVersion()) >= 5;
-        result = result || browser == Browser.MOBILE_SAFARI && Integer.parseInt(version.getMajorVersion()) >= 5;
+        result = result || browser == Browser.SAFARI && Integer.parseInt(majorVersion) >= 5;
+        result = result || browser == Browser.MOBILE_SAFARI;
         result = result || os.isMobileDevice() && (os == OperatingSystem.ANDROID || os == OperatingSystem.iOS4_IPHONE);
         result = result || browser.getBrowserType() == BrowserType.ROBOT;
 
