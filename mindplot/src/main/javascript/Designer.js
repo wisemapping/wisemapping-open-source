@@ -83,6 +83,9 @@ mindplot.Designer = new Class({
         },
 
         _registerWheelEvents:function () {
+            var workspace = this._workspace;
+            var screenManager = workspace.getScreenManager();
+
             // Zoom In and Zoom Out must active event
             $(document).addEvent('mousewheel', function (event) {
                 // Change mousewheel handling so we let the default
