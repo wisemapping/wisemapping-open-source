@@ -41,17 +41,17 @@ public class SupportedUserAgent implements Serializable {
 
         final UserAgent userAgent = this.getUserAgent();
         final Browser browser = userAgent.getBrowser();
-        final Version version = userAgent.getBrowserVersion();
         final OperatingSystem os = userAgent.getOperatingSystem();
+        final Version version = userAgent.getBrowserVersion();
+        final int majorVersion = version != null ? Integer.parseInt(version.getMajorVersion()) : -1;
 
-        final String majorVersion = version.getMajorVersion();
-        boolean result = browser == Browser.FIREFOX && Integer.parseInt(majorVersion) >= 10;
+        boolean result = browser == Browser.FIREFOX && majorVersion >= 10;
         result = result || browser == Browser.IE8 || browser == Browser.IE9;
-        result = result || browser == Browser.IE && Integer.parseInt(majorVersion) >= 8;
-        result = result || browser == Browser.OPERA && Integer.parseInt(majorVersion) >= 11;
-        result = result || browser == Browser.CHROME && Integer.parseInt(majorVersion) >= 18;
+        result = result || browser == Browser.IE && majorVersion >= 8;
+        result = result || browser == Browser.OPERA && majorVersion >= 11;
+        result = result || browser == Browser.CHROME && majorVersion >= 18;
         result = result || browser == Browser.SAFARI5;
-        result = result || browser == Browser.SAFARI && Integer.parseInt(majorVersion) >= 5;
+        result = result || browser == Browser.SAFARI && majorVersion >= 5;
         result = result || browser == Browser.MOBILE_SAFARI;
         result = result || os.isMobileDevice() && (os == OperatingSystem.ANDROID || os == OperatingSystem.iOS4_IPHONE);
         result = result || browser.getBrowserType() == BrowserType.ROBOT;
