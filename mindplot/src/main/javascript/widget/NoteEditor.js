@@ -24,7 +24,7 @@ mindplot.widget.NoteEditor = new Class({
         this.parent({
             closeButton:true,
             destroyOnClose:true,
-            title:'Note',
+            title:$msg('NOTE'),
             onInitialize:function (wrapper) {
                 wrapper.setStyle('opacity', 0);
                 this.fx = new Fx.Morph(wrapper, {
@@ -68,7 +68,7 @@ mindplot.widget.NoteEditor = new Class({
 
         // Add textarea ...
         var textArea = new Element('textarea',
-            {placeholder:'Write your note here ...',
+            {placeholder:$msg('WRITE_YOUR_TEXT_HERE'),
                 required:true,
                 autofocus:'autofocus'
             });
@@ -85,7 +85,7 @@ mindplot.widget.NoteEditor = new Class({
         form.addEvent('submit', function (event) {
             event.preventDefault();
             event.stopPropagation();
-            if (textArea.value ) {
+            if (textArea.value) {
                 model.setValue(textArea.value);
             }
             this.close();
@@ -96,13 +96,13 @@ mindplot.widget.NoteEditor = new Class({
         var buttonContainer = new Element('div').setStyles({paddingTop:5, textAlign:'right'});
 
         // Create accept button ...
-        var okButton = new Element('input', {type:'submit', value:'Accept', 'class':'btn-primary'});
+        var okButton = new Element('input', {type:'submit', value:$msg('ACCEPT'), 'class':'btn-primary'});
         okButton.addClass('button');
         okButton.inject(buttonContainer);
 
         // Create remove button ...
         if ($defined(model.getValue())) {
-            var rmButton = new Element('input', {type:'button', value:'Remove', 'class':'btn-primary'});
+            var rmButton = new Element('input', {type:'button', value:$msg('REMOVE'), 'class':'btn-primary'});
             rmButton.setStyle('margin', '5px');
             rmButton.addClass('button');
             rmButton.inject(buttonContainer);
@@ -114,7 +114,7 @@ mindplot.widget.NoteEditor = new Class({
         }
 
         // Create cancel button ...
-        var cButton = new Element('input', {type:'button', value:'Cancel', 'class':'btn-secondary'});
+        var cButton = new Element('input', {type:'button', value:$msg('CANCEL'), 'class':'btn-secondary'});
         cButton.setStyle('margin', '5px');
         cButton.addClass('button');
         cButton.inject(buttonContainer);

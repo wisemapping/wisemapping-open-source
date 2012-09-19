@@ -24,7 +24,7 @@ mindplot.widget.LinkEditor = new Class({
         this.parent({
             closeButton:true,
             destroyOnClose:true,
-            title:'Link',
+            title:$msg('LINK'),
             onInitialize:function (wrapper) {
                 wrapper.setStyle('opacity', 0);
                 this.fx = new Fx.Morph(wrapper, {
@@ -102,13 +102,13 @@ mindplot.widget.LinkEditor = new Class({
         var buttonContainer = new Element('div').setStyles({paddingTop:5, textAlign:'center'});
 
         // Create accept button ...
-        var okButton = new Element('input', {type:'submit', value:'Accept', 'class':'btn-primary'});
+        var okButton = new Element('input', {type:'submit', value:$msg('ACCEPT'), 'class':'btn-primary'});
         okButton.addClass('button');
         okButton.inject(buttonContainer);
 
         // Create remove button ...
         if ($defined(model.getValue())) {
-            var rmButton = new Element('input', {type:'button', value:'Remove', 'class':'btn-primary'});
+            var rmButton = new Element('input', {type:'button', value:$msg('REMOVE'), 'class':'btn-primary'});
             rmButton.setStyle('margin', '5px');
             rmButton.addClass('button');
             rmButton.inject(buttonContainer);
@@ -121,7 +121,7 @@ mindplot.widget.LinkEditor = new Class({
         }
 
         // Create cancel button ...
-        var cButton = new Element('input', {type:'button', value:'Cancel', 'class':'btn-secondary'});
+        var cButton = new Element('input', {type:'button', value:$msg('CANCEL'), 'class':'btn-secondary'});
         cButton.setStyle('margin', '5px');
         cButton.addClass('button');
         cButton.inject(buttonContainer);
