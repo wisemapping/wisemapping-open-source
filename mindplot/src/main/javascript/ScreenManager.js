@@ -43,14 +43,16 @@ mindplot.ScreenManager = new Class({
         if (event == 'click')
             this._clickEvents.push(listener);
         else
-            $(this._divContainer).addEvent(event, listener);
+           this._divContainer.addEvent(event, listener);
     },
 
     removeEvent : function(event, listener) {
-        if (event == 'click')
+        if (event == 'click') {
             this._clickEvents.remove(listener);
-        else
-            $(this._divContainer).removeEvent(event, listener);
+        }
+        else{
+            this._divContainer.removeEvent(event, listener);
+        }
     },
 
     fireEvent : function(type, event) {
@@ -60,7 +62,7 @@ mindplot.ScreenManager = new Class({
             });
         }
         else {
-            $(this._divContainer).fireEvent(type, event);
+            this._divContainer.fireEvent(type, event);
         }
     },
 
