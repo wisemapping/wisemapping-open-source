@@ -109,7 +109,7 @@ public class MindmapServiceImpl
         final Set<Collaboration> collaborations = mindMap.getCollaborations();
 
         if (mindMap.getCreator().getEmail().equals(collaboration.getCollaborator().getEmail())) {
-            throw new CollaborationException("User is the creator and must have ownership permissions");
+            throw new CollaborationException("User is the creator and must have ownership permissions.Creator Email:" + mindMap.getCreator().getEmail() + ",Collaborator:" + collaboration.getCollaborator().getEmail());
         }
 
         // When you delete an object from hibernate you have to delete it from *all* collections it exists in...
