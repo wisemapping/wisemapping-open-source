@@ -2,12 +2,13 @@
 <%@include file="/jsp/init.jsp" %>
 
 <h2>
-    Your temporal password has been sent
+    <spring:message code="TEMPORAL_PASSWORD_SENT"/>
 </h2>
 
 <p>
-    We've sent you an email that will allow you to reset your password quickly and easily. Please check your email now.
+    <spring:message code="TEMPORAL_PASSWORD_SENT_DETAILS"/>
 </p>
 
-<p>If you have any problem receiving the email, contact us to  <a
-        href="mailto:support@wisemapping.com">support@wisemapping.com </a></p>
+<p>
+    <spring:message code="TEMPORAL_PASSWORD_SENT_SUPPORT"/>
+</p>
