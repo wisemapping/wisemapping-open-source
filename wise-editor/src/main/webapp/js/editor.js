@@ -46,7 +46,7 @@ function buildDesigner(options) {
             emulation:false,
             urlEncoded:false
         }).post(JSON.encode({
-            jsErrorMsg:"message: " + message + ", line:" + lineNo + ", :" + url,
+            jsErrorMsg:"message: '" + message + "', line:'" + lineNo + "', :" + url,
             jsStack:window.errorStack,
             userAgent:navigator.userAgent,
             mapId:options.mapId}));

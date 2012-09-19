@@ -47,7 +47,7 @@ mindplot.LocalStorageManager = new Class({
 
                 // If I could not load it from a file, hard code one.
                 if (xml == null) {
-                    throw "Map could not be loaded";
+                    throw new Error("Map could not be loaded");
                 }
 
             }

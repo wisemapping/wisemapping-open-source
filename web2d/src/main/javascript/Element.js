@@ -20,7 +20,7 @@ web2d.Element = new Class({
     initialize : function(peer, attributes) {
         this._peer = peer;
         if (peer == null) {
-            throw "Element peer can not be null";
+            throw new Error("Element peer can not be null");
         }
 
         if ($defined(attributes)) {
@@ -53,7 +53,7 @@ web2d.Element = new Class({
         for (var key in batchExecute) {
             var func = this[key];
             if (!$defined(func)) {
-                throw "Could not find function: " + key;
+                throw new Error("Could not find function: " + key);
             }
             func.apply(this, batchExecute[key]);
         }
@@ -114,7 +114,7 @@ web2d.Element = new Class({
      * Returns element type name.
      */
     getType : function() {
-        throw "Not implemeneted yet. This method must be implemented by all the inherited objects.";
+        throw new Error("Not implemeneted yet. This method must be implemented by all the inherited objects.");
     },
 
     /**
@@ -146,7 +146,7 @@ web2d.Element = new Class({
      */
     setStroke : function(width, style, color, opacity) {
         if (style != null && style != undefined && style != 'dash' && style != 'dot' && style != 'solid' && style != 'longdash' && style != "dashdot") {
-            throw "Unsupported stroke style: '" + style + "'";
+            throw new Error("Unsupported stroke style: '" + style + "'");
         }
         this._peer.setStroke(width, style, color, opacity);
     },

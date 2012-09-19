@@ -15,7 +15,7 @@ $assert = function (assert, message) {
     if (!$defined(assert) || !assert) {
         var stack;
         try {
-            null.eval();
+            throw Error("Unexpected Exception");
         } catch (e) {
             stack = e;
         }
@@ -33,7 +33,7 @@ function stackTrace(exception) {
 
     if (!$defined(exception)) {
         try {
-            throw "Dummy Exception"
+            throw Error("Unexpected Exception");
         } catch (e) {
             exception = e;
         }
@@ -45,6 +45,8 @@ function stackTrace(exception) {
     else if (window.opera && exception.message) { //Opera
         result = exception.message;
     } else {  //IE and Safari
+        result = exception.sourceURL + ': ' + exception.line + "\n\n";
+
         var currentFunction = arguments.callee.caller;
         while (currentFunction) {
             var fn = currentFunction.toString();
