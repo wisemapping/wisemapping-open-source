@@ -132,7 +132,7 @@ function addCollaboration(email, role, changeType) {
 
         // Register change role event  ...
         var rowElem = $("#collabsTable tr:last");
-        $(rowElem.find(".dropdown-menu a").click(function () {
+        $(rowElem.find(".dropdown-menu a").click(function (event) {
             reportError(null);
             var role = onClickShare(this);
             rowElem.attr('data-role', role);
@@ -175,7 +175,7 @@ $(function () {
                 return a.role <= b.role;
             });
 
-            // Add all the colums in the table ...
+            // Add all the columns in the table ...
             for (var i = 0; i < collabs.length; i++) {
                 var collab = collabs[i];
                 addCollaboration(collab.email, collab.role);
