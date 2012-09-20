@@ -64,7 +64,7 @@ mindplot.MainTopic = new Class({
         // Change figure based on the connected topic ...
         var model = this.getModel();
         var shapeType = model.getShapeType();
-        if (targetTopic.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
+        if (!targetTopic.isCentralTopic()) {
             if (!$defined(shapeType)) {
                 // Get the real shape type ...
                 shapeType = this.getShapeType();
@@ -168,7 +168,7 @@ mindplot.MainTopic = new Class({
     _getInnerPadding:function () {
         var result;
         var parent = this.getModel().getParent();
-        if (parent && mindplot.model.INodeModel.MAIN_TOPIC_TYPE == parent.getType()) {
+        if (parent && !parent.isCentralTopic()) {
             result = 3;
         }
         else {
@@ -181,7 +181,7 @@ mindplot.MainTopic = new Class({
         var targetTopic = this.getOutgoingConnectedTopic();
         var result = "";
         if ($defined(targetTopic)) {
-            if (targetTopic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
+            if (targetTopic.isCentralTopic()) {
                 result = $msg('MAIN_TOPIC');
             } else {
                 result = $msg('SUB_TOPIC');
@@ -196,7 +196,7 @@ mindplot.MainTopic = new Class({
         var targetTopic = this.getOutgoingConnectedTopic();
         var result;
         if ($defined(targetTopic)) {
-            if (targetTopic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
+            if (targetTopic.isCentralTopic()) {
                 result = {
                     font:"Arial",
                     size:8,

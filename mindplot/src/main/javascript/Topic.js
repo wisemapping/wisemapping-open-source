@@ -29,7 +29,7 @@ mindplot.Topic = new Class({
 
         // Position a topic ....
         var pos = model.getPosition();
-        if (pos != null && model.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
+        if (pos != null && this.isCentralTopic()) {
             this.setPosition(pos);
         }
 
@@ -134,7 +134,7 @@ mindplot.Topic = new Class({
             this._setBorderColor(brColor, false);
 
             // Define the pointer ...
-            if (this.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE && !this.isReadOnly()) {
+            if (!this.isCentralTopic() && !this.isReadOnly()) {
                 this._innerShape.setCursor('move');
             } else {
                 this._innerShape.setCursor('default');
@@ -340,7 +340,7 @@ mindplot.Topic = new Class({
 
         if (!readOnly) {
             // Propagate mouse events ...
-            if (this.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
+            if (!this.isCentralTopic()) {
                 result.setCursor('move');
             } else {
                 result.setCursor('default');
@@ -829,7 +829,7 @@ mindplot.Topic = new Class({
     setBranchVisibility:function (value) {
         var current = this;
         var parent = this;
-        while (parent != null && parent.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
+        while (parent != null && !parent.isCentralTopic()) {
             current = parent;
             parent = current.getParent();
         }
@@ -1111,7 +1111,7 @@ mindplot.Topic = new Class({
         var elem = this.get2DElement();
         workspace.appendChild(elem);
         if (!this.isInWorkspace()) {
-            if (this.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
+            if (!this.isCentralTopic()) {
                 mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeAdded, this.getModel());
             }
 
