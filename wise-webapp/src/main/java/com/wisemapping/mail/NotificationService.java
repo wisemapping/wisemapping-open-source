@@ -82,7 +82,7 @@ final public class NotificationService {
         final String messageTitle = "Your new password has been generated";
         final String messageBody =
                 "<p>Someone, most likely you, requested a new password for your WiseMapping account. </p>\n" +
-                        "<p><strong>Here is your new password: : " + temporalPassword + "</strong></p>\n" +
+                        "<p><strong>Here is your new password: " + temporalPassword + "</strong></p>\n" +
                         "<p>You can login clicking <a href=\"" + this.baseUrl + "/c/login\">here</a>. We strongly encourage you to change the password as soon as possible.</p>";
 
         sendTemplateMail(user, mailSubject, messageTitle, messageBody);
