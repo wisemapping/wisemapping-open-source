@@ -40,19 +40,10 @@ mindplot.CentralTopic = new Class({
         return 11;
     },
 
-    getTopicType:function () {
-        return mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE;
-    },
-
     setCursor:function (type) {
         type = (type == 'move') ? 'default' : type;
         this.parent(type);
     },
-
-    isConnectedToCentralTopic:function () {
-        return false;
-    },
-
 
     _defaultShapeType:function () {
         return  mindplot.model.TopicShape.ROUNDED_RECT;

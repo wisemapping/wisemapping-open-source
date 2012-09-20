@@ -116,7 +116,6 @@ mindplot.Designer = new Class({
         },
 
 
-
         addEvent:function (type, listener) {
             if (type == mindplot.TopicEvent.EDIT || type == mindplot.TopicEvent.CLICK) {
                 var editor = mindplot.TopicEventDispatcher.getInstance();
@@ -160,6 +159,48 @@ mindplot.Designer = new Class({
                     this._actionDispatcher.addTopics([model], [centralTopic.getId()]);
                 }
             }.bind(this));
+
+            // Register mouse drag and drop event ...
+            function noopHandler(evt) {
+                evt.stopPropagation();
+                evt.preventDefault();
+            }
+
+            // Enable drag events ...
+            Element.NativeEvents.dragenter = 2;
+            Element.NativeEvents.dragexit = 2;
+            Element.NativeEvents.dragover = 2;
+            Element.NativeEvents.drop = 2;
+
+            screenManager.addEvent('dragenter', noopHandler);
+            screenManager.addEvent('dragexit', noopHandler);
+            screenManager.addEvent('dragover', noopHandler);
+            screenManager.addEvent('drop', function (evt) {
+                evt.stopPropagation();
+                evt.preventDefault();
+//
+                var files = evt.event.dataTransfer.files;
+                console.log(event);
+
+                var count = files.length;
+
+                // Only call the handler if 1 or more files was dropped.
+                if (count > 0) {
+
+                    var model = this.getMindmap().createNode();
+                    model.setImageSize(80, 43);
+                    model.setMetadata("{'media':'video,'url':'http://www.youtube.com/watch?v=P3FrXftyuzw&feature=g-vrec&context=G2b4ab69RVAAAAAAAAAA'}");
+                    model.setImageUrl("images/logo-small.png");
+                    model.setShapeType(mindplot.model.TopicShape.IMAGE);
+
+                    var position = screenManager.getWorkspaceMousePosition(evt);
+                    model.setPosition(position.x, position.y);
+                    model.setPosition(100, 100);
+
+                    this._actionDispatcher.addTopics([model]);
+                }
+            }.bind(this));
+
 
         },
 
@@ -362,7 +403,7 @@ mindplot.Designer = new Class({
 
             // Exclude central topic ..
             topics = topics.filter(function (topic) {
-                return topic.getTopicType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE
+                return !topic.isCentralTopic();
             });
 
             this._clipboard = topics.map(function (topic) {
@@ -692,7 +733,7 @@ mindplot.Designer = new Class({
         },
 
         _removeTopic:function (node) {
-            if (node.getTopicType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
+            if (!node.isCentralTopic()) {
                 var parent = node._parent;
                 node.disconnect(this._workspace);
 
@@ -722,14 +763,14 @@ mindplot.Designer = new Class({
                 // If there are more than one node selected,
                 $notify($msg('ENTITIES_COULD_NOT_BE_DELETED'));
                 return;
-            } else if (topics.length == 1 && topics[0].getTopicType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
+            } else if (topics.length == 1 && topics[0].isCentralTopic()) {
                 $notify($msg('CENTRAL_TOPIC_CAN_NOT_BE_DELETED'));
                 return;
             }
 
             // If the central topic has been selected, I must filter ir
             var topicIds = topics.filter(function (topic) {
-                return topic.getTopicType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE
+                return !topic.isCentralTopic();
             }).map(function (topic) {
                     return topic.getId()
                 });

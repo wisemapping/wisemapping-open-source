@@ -88,10 +88,6 @@ mindplot.MainTopic = new Class({
         innerShape.setVisibility(true);
     },
 
-    getTopicType:function () {
-        return "MainTopic";
-    },
-
     _updatePositionOnChangeSize:function (oldSize, newSize) {
 
         var xOffset = Math.round((newSize.width - oldSize.width) / 2);
@@ -181,13 +177,6 @@ mindplot.MainTopic = new Class({
         return result;
     },
 
-    isConnectedToCentralTopic:function () {
-        var model = this.getModel();
-        var parent = model.getParent();
-
-        return parent && parent.getType() === mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE;
-    },
-
     _defaultText:function () {
         var targetTopic = this.getOutgoingConnectedTopic();
         var result = "";
@@ -199,7 +188,6 @@ mindplot.MainTopic = new Class({
             }
         } else {
             result = $msg('ISOLATED_TOPIC');
-            ;
         }
         return result;
     },

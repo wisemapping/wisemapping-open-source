@@ -228,7 +228,7 @@ mindplot.DesignerKeyboard = new Class({
             'right':function () {
                 var node = model.selectedTopic();
                 if (node) {
-                    if (node.getTopicType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
+                    if (node.isCentralTopic()) {
                         this._goToSideChild(designer, node, 'RIGHT');
                     }
                     else {
@@ -248,7 +248,7 @@ mindplot.DesignerKeyboard = new Class({
             'left':function () {
                 var node = model.selectedTopic();
                 if (node) {
-                    if (node.getTopicType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
+                    if (node.isCentralTopic()) {
                         this._goToSideChild(designer, node, 'LEFT');
                     }
                     else {
@@ -268,7 +268,7 @@ mindplot.DesignerKeyboard = new Class({
             'up':function () {
                 var node = model.selectedTopic();
                 if (node) {
-                    if (node.getTopicType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
+                    if (!node.isCentralTopic()) {
                         this._goToBrother(designer, node, 'UP');
                     }
                 } else {
@@ -280,7 +280,7 @@ mindplot.DesignerKeyboard = new Class({
             'down':function () {
                 var node = model.selectedTopic();
                 if (node) {
-                    if (node.getTopicType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
+                    if (!node.isCentralTopic()) {
                         this._goToBrother(designer, node, 'DOWN');
                     }
                 } else {

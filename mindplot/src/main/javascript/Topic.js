@@ -1216,7 +1216,13 @@ mindplot.Topic = new Class({
             }
         }
         return result;
+    },
+
+    isCentralTopic:function () {
+        return this.getModel().getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE;
     }
+
+
 });
 
 
