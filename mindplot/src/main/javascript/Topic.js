@@ -107,7 +107,7 @@ mindplot.Topic = new Class({
         var model = this.getModel();
         var result = model.getShapeType();
         if (!$defined(result)) {
-            result = this._defaultShapeType();
+            result = mindplot.TopicStyle.defaultShapeType(this);
         }
         return result;
     },
@@ -259,7 +259,7 @@ mindplot.Topic = new Class({
     _buildIconGroup:function () {
         var textHeight = this.getTextShape().getFontHeight();
         var result = new mindplot.IconGroup(this.getId(), textHeight);
-        var padding = this._getInnerPadding();
+        var padding = mindplot.TopicStyle.getInnerPadding(this);
         result.setPosition(padding, padding);
 
         // Load topic features ...
@@ -350,10 +350,6 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    _getInnerPadding:function () {
-        throw "this must be implemented";
-    },
-
     setFontFamily:function (value, updateModel) {
         var textShape = this.getTextShape();
         textShape.setFontFamily(value);
@@ -401,7 +397,7 @@ mindplot.Topic = new Class({
         var model = this.getModel();
         var result = model.getFontWeight();
         if (!$defined(result)) {
-            var font = this._defaultFontStyle();
+            var font = mindplot.TopicStyle.defaultFontStyle(this);
             result = font.weight;
         }
         return result;
@@ -411,7 +407,7 @@ mindplot.Topic = new Class({
         var model = this.getModel();
         var result = model.getFontFamily();
         if (!$defined(result)) {
-            var font = this._defaultFontStyle();
+            var font = mindplot.TopicStyle.defaultFontStyle(this);
             result = font.font;
         }
         return result;
@@ -421,7 +417,7 @@ mindplot.Topic = new Class({
         var model = this.getModel();
         var result = model.getFontColor();
         if (!$defined(result)) {
-            var font = this._defaultFontStyle();
+            var font = mindplot.TopicStyle.defaultFontStyle(this);
             result = font.color;
         }
         return result;
@@ -431,7 +427,7 @@ mindplot.Topic = new Class({
         var model = this.getModel();
         var result = model.getFontStyle();
         if (!$defined(result)) {
-            var font = this._defaultFontStyle();
+            var font = mindplot.TopicStyle.defaultFontStyle(this);
             result = font.style;
         }
         return result;
@@ -441,7 +437,7 @@ mindplot.Topic = new Class({
         var model = this.getModel();
         var result = model.getFontSize();
         if (!$defined(result)) {
-            var font = this._defaultFontStyle();
+            var font = mindplot.TopicStyle.defaultFontStyle(this);
             result = font.size;
         }
         return result;
@@ -458,7 +454,7 @@ mindplot.Topic = new Class({
 
     _setText:function (text, updateModel) {
         var textShape = this.getTextShape();
-        textShape.setText(text == null ? this._defaultText() : text);
+        textShape.setText(text == null ? mindplot.TopicStyle.defaultText(this) : text);
 
         if ($defined(updateModel) && updateModel) {
             var model = this.getModel();
@@ -480,7 +476,7 @@ mindplot.Topic = new Class({
         var model = this.getModel();
         var result = model.getText();
         if (!$defined(result)) {
-            result = this._defaultText();
+            result = mindplot.TopicStyle.defaultText(this);
         }
         return result;
     },
@@ -508,7 +504,7 @@ mindplot.Topic = new Class({
         var model = this.getModel();
         var result = model.getBackgroundColor();
         if (!$defined(result)) {
-            result = this._defaultBackgroundColor();
+            result = mindplot.TopicStyle.defaultBackgroundColor(this);
         }
         return result;
     },
@@ -536,7 +532,7 @@ mindplot.Topic = new Class({
         var model = this.getModel();
         var result = model.getBorderColor();
         if (!$defined(result)) {
-            result = this._defaultBorderColor();
+            result = mindplot.TopicStyle.defaultBorderColor(this);
         }
         return result;
     },
@@ -1154,7 +1150,7 @@ mindplot.Topic = new Class({
                 var textHeight = textShape.getHeight();
                 textHeight = textHeight != 0 ? textHeight : 20;
 
-                var topicPadding = this._getInnerPadding();
+                var topicPadding = mindplot.TopicStyle.getInnerPadding(this);
 
                 // Adjust the icon size to the size of the text ...
                 var iconGroup = this.getOrBuildIconGroup();
