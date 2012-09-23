@@ -32,17 +32,23 @@ function buildDesigner(options) {
     });
 
     window.onerror = function (message, url, lineNo) {
-        if(message==="Script error." && lineNo==0){
-            // Log error message ...
+
+        // Ignore errors ...
+        if (message === "Script error." && lineNo == 0) {
             // http://stackoverflow.com/questions/5913978/cryptic-script-error-reported-in-javascript-in-chrome-and-firefox
             return;
         }
 
-
-        if (window.waitDialog) {
-            window.waitDialog.close.delay(1000, window.waitDialog);
-            window.waitDialog = null;
+        // Trasform error ...
+        var errorMsg = message;
+        if (typeof(message) === 'object' && message.srcElement && message.target) {
+            if (message.srcElement == '[object HTMLScriptElement]' && message.target == '[object HTMLScriptElement]') {
+                errorMsg = 'Error loading script';
+            } else {
+                errorMsg = 'Event Error - target:' + message.target + ' srcElement:' + message.srcElement;
+            }
         }
+        errorMsg = errorMsg.toString();
 
         new Request({
             method:'post',
@@ -51,10 +57,17 @@ function buildDesigner(options) {
             emulation:false,
             urlEncoded:false
         }).post(JSON.encode({
-            jsErrorMsg:"message: '" + message + "', line:'" + lineNo + "', :" + url,
+            jsErrorMsg:"Message: '" + errorMsg + "', line:'" + lineNo + "', :" + url,
             jsStack:window.errorStack,
             userAgent:navigator.userAgent,
             mapId:options.mapId}));
+
+
+        // Close loading dialog ...
+        if (window.waitDialog) {
+            window.waitDialog.close.delay(1000, window.waitDialog);
+            window.waitDialog = null;
+        }
 
         // Open error dialog only in case of mindmap loading errors. The rest of the error are reported but not display the dialog.
         // Remove this in the near future.
