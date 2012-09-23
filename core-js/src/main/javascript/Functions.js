@@ -13,15 +13,9 @@ $defined = function (obj) {
 
 $assert = function (assert, message) {
     if (!$defined(assert) || !assert) {
-        var stack;
-        try {
-            throw Error("Unexpected Exception");
-        } catch (e) {
-            stack = e;
-        }
-        console.log(message + "," + stack);
-        window.errorStack = stackTrace();
-        throw message;
+        logStackTrace();
+        console.log(message);
+        throw new Error(message);
     }
 };
 
@@ -29,7 +23,7 @@ Math.sign = function (value) {
     return (value >= 0) ? 1 : -1;
 };
 
-function stackTrace(exception) {
+function logStackTrace(exception) {
 
     if (!$defined(exception)) {
         try {
@@ -54,7 +48,7 @@ function stackTrace(exception) {
             currentFunction = currentFunction.caller;
         }
     }
-
+    window.errorStack = result;
     return result;
 }
 
