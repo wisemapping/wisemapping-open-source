@@ -55,7 +55,7 @@ core.Utils.createDocument = function () {
     } else if (window.document.implementation && window.document.implementation.createDocument) {
         doc = window.document.implementation.createDocument("", "", null);
     }
-    $asser(doc, "Parser could not be instantiated");
+    $assert(doc, "Parser could not be instantiated");
 
     return doc;
 };
