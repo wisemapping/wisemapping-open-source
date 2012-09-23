@@ -15,18 +15,23 @@
             }
         }(document, "script", "twitter-wjs");</script>
     </div>
+
     <div class="span1">
-        <script type="text/javascript" src="https://apis.google.com/js/plusone.js">
-            {
-                parsetags: 'explicit'
-            }
+
+        <!-- Place this tag where you want the +1 button to render. -->
+        <div class="g-plusone" data-href="http://www.wisemapping.com"></div>
+
+        <!-- Place this tag after the last +1 button tag. -->
+        <script type="text/javascript">
+            (function () {
+                var po = document.createElement('script');
+                po.type = 'text/javascript';
+                po.async = true;
+                po.src = 'https://apis.google.com/js/plusone.js';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(po, s);
+            })();
         </script>
-
-        <!-- Place this tag where you want the +1 button to render -->
-        <g:plusone></g:plusone>
-
-        <!-- Place this render call where appropriate -->
-        <script type="text/javascript">gapi.plusone.go();</script>
     </div>
     <div class="span4">
         <p style="text-align: center;">
