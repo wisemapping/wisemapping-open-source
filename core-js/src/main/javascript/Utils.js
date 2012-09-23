@@ -1,4 +1,4 @@
- /*
+/*
  *    Copyright [2011] [wisemapping]
  *
  *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
@@ -21,7 +21,7 @@ core.Utils = {
 };
 
 
-core.Utils.innerXML = function(/*Node*/node) {
+core.Utils.innerXML = function (node) {
     //	summary:
     //		Implementation of MS's innerXML function.
     if ($defined(node.innerXML)) {
@@ -36,29 +36,26 @@ core.Utils.innerXML = function(/*Node*/node) {
     }
 };
 
-core.Utils.createDocument = function() {
-    //	summary:
-    //		cross-browser implementation of creating an XML document object.
+/**
+ * Cross-browser implementation of creating an XML document object.
+ */
+core.Utils.createDocument = function () {
     var doc = null;
-    var _document = window.document;
     if ($defined(window.ActiveXObject)) {
-        var prefixes = [ "MSXML2", "Microsoft", "MSXML", "MSXML3" ];
-        for (var i = 0; i < prefixes.length; i++) {
+        //http://blogs.msdn.com/b/xmlteam/archive/2006/10/23/using-the-right-version-of-msxml-in-internet-explorer.aspx
+        var progIDs = [ 'Msxml2.DOMDocument.6.0', 'Msxml2.DOMDocument.3.0'];
+        for (var i = 0; i < progIDs.length; i++) {
             try {
-                doc = new ActiveXObject(prefixes[i] + ".XMLDOM");
-            } catch(e) { /* squelch */
-            }
-
-
-            if ($defined(doc)) {
+                doc = new ActiveXObject(progIDs[i]);
                 break;
             }
+            catch (ex) {
+            }
         }
-    } else if ((_document.implementation) &&
-        (_document.implementation.createDocument)) {
-        doc = _document.implementation.createDocument("", "", null);
+    } else if (window.document.implementation && window.document.implementation.createDocument) {
+        doc = window.document.implementation.createDocument("", "", null);
     }
+    $asser(doc, "Parser could not be instantiated");
 
     return doc;
-    //	DOMDocument
 };

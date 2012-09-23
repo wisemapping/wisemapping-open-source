@@ -17,70 +17,70 @@
  */
 
 mindplot.widget.LinkIconTooltip = new Class({
-    Extends: mindplot.widget.FloatingTip,
+    Extends:mindplot.widget.FloatingTip,
 
-    initialize : function(linkIcon) {
+    initialize:function (linkIcon) {
         $assert(linkIcon, "linkIcon can not be null");
         this.parent(linkIcon.getImage()._peer._native, {
             // Content can also be a function of the target element!
-            content: this._buildContent.pass(linkIcon, this),
-            html: true,
-            position: 'bottom',
-            arrowOffset : 10,
-            center: true,
-            arrowSize: 15,
-            offset : {x:10,y:20},
-            className: 'linkTip'
+            content:this._buildContent.pass(linkIcon, this),
+            html:true,
+            position:'bottom',
+            arrowOffset:10,
+            center:true,
+            arrowSize:15,
+            offset:{x:10, y:20},
+            className:'linkTip'
         });
     },
 
-    _buildContent : function(linkIcon) {
+    _buildContent:function (linkIcon) {
         var result = new Element('div');
         result.setStyles({
             padding:'5px',
             width:'100%'
         });
 
-        var title = new Element('div', {text:'Link'});
+        var title = new Element('div', {text:$msg('LINK')});
         title.setStyles({
             'font-weight':'bold',
             color:'black',
             'padding-bottom':'5px',
-            width: '100px'
+            width:'100px'
         });
         title.inject(result);
 
-        var text = new Element('div', {text: "URL: " + linkIcon.getModel().getUrl()});
+        var text = new Element('div', {text:"URL: " + linkIcon.getModel().getUrl()});
         text.setStyles({
-                'white-space': 'pre-wrap',
-                'word-wrap': 'break-word'
+                'white-space':'pre-wrap',
+                'word-wrap':'break-word'
             }
         );
         text.inject(result);
 
         var imgContainer = new Element('div');
         imgContainer.setStyles({
-            width: '100%',
-            textAlign: 'right',
+            width:'100%',
+            textAlign:'right',
             'padding-bottom':'5px',
-            'padding-top': '5px'
+            'padding-top':'5px'
         });
 
         var img = new Element('img', {
-                src: 'http://open.thumbshots.org/image.pxf?url=' + linkIcon.getModel().getUrl(),
-                img : linkIcon.getModel().getUrl(),
-                alt : linkIcon.getModel().getUrl()
+                src:'http://open.thumbshots.org/image.pxf?url=' + linkIcon.getModel().getUrl(),
+                img:linkIcon.getModel().getUrl(),
+                alt:linkIcon.getModel().getUrl()
             }
         );
         img.setStyles({
-                padding: '5px'
+                padding:'5px'
             }
         );
 
         var link = new Element('a', {
-            href : linkIcon.getModel().getUrl(),
-            alt : 'Open in new window ...',
-            target : '_blank'
+            href:linkIcon.getModel().getUrl(),
+            alt:'Open in new window ...',
+            target:'_blank'
 
         });
         img.inject(link);

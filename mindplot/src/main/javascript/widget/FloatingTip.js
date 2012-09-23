@@ -17,37 +17,37 @@
  */
 
 mindplot.widget.FloatingTip = new Class({
-    Implements: [Options, Events],
+    Implements:[Options, Events],
 
-    options: {
-        position: 'top',
-        center: true,
-        content: 'title',
-        html: false,
-        balloon: true,
-        arrowSize: 6,
-        arrowOffset: 6,
-        distance: 7,
-        motion: 40,
-        motionOnShow: true,
-        motionOnHide: true,
-        showOn: 'mouseenter',
-        hideOn: 'mouseleave',
-        showDelay: 500,
-        hideDelay: 250,
-        className: 'floating-tip',
-        offset: {x: 0, y: 0},
-        preventHideOnOver: true,
-        fx: { 'duration': 'short' }
+    options:{
+        position:'top',
+        center:true,
+        content:'title',
+        html:false,
+        balloon:true,
+        arrowSize:6,
+        arrowOffset:6,
+        distance:7,
+        motion:40,
+        motionOnShow:true,
+        motionOnHide:true,
+        showOn:'mouseenter',
+        hideOn:'mouseleave',
+        showDelay:500,
+        hideDelay:250,
+        className:'floating-tip',
+        offset:{x:0, y:0},
+        preventHideOnOver:true,
+        fx:{ 'duration':'short' }
     },
 
-    initialize: function(element, options) {
+    initialize:function (element, options) {
         this.setOptions(options);
-        this.boundShow = function() {
+        this.boundShow = function () {
             this.show(element);
         }.bind(this);
 
-        this.boundHide = function() {
+        this.boundHide = function () {
             this.hide(element);
         }.bind(this);
 
@@ -56,7 +56,7 @@ mindplot.widget.FloatingTip = new Class({
         this.attach(element);
     },
 
-    attach: function(element) {
+    attach:function (element) {
         if (element.retrieve('hasEvents') !== null) {
             return;
         }
@@ -65,11 +65,13 @@ mindplot.widget.FloatingTip = new Class({
         element.store('hasEvents', true);
     },
 
-    show: function(element) {
+    show:function (element) {
         var old = element.retrieve('floatingtip');
-        if (old) if (old.getStyle('opacity') == 1) {
-            clearTimeout(old.retrieve('timeout'));
-            return this;
+        if (old){
+            if (old.getStyle('opacity') == 1) {
+                clearTimeout(old.retrieve('timeout'));
+                return this;
+            }
         }
         var tip = this._create(element);
         if (tip == null)
@@ -87,7 +89,7 @@ mindplot.widget.FloatingTip = new Class({
         return this;
     },
 
-    hide: function(element) {
+    hide:function (element) {
         var tip = element.retrieve('floatingtip');
         if (!tip) {
             if (this.options.position == 'inside') {
@@ -96,7 +98,8 @@ mindplot.widget.FloatingTip = new Class({
                     tip = element.retrieve('floatingtip');
                 } catch (x) {
                 }
-                if (!tip) return this;
+                if (!tip)
+                    return this;
             } else {
                 return this;
             }
@@ -106,7 +109,7 @@ mindplot.widget.FloatingTip = new Class({
         return this;
     },
 
-    _create: function(elem) {
+    _create:function (elem) {
 
         var o = this.options;
         var oc = o.content;
@@ -114,13 +117,14 @@ mindplot.widget.FloatingTip = new Class({
 
         if (oc == 'title') {
             oc = 'floatingtitle';
-            if (!elem.get('floatingtitle')) elem.setProperty('floatingtitle', elem.get('title'));
+            if (!elem.get('floatingtitle'))
+                elem.setProperty('floatingtitle', elem.get('title'));
             elem.set('title', '');
         }
 
         var cnt = (typeof(oc) == 'string' ? elem.get(oc) : oc(elem));
         var cwr = new Element('div').addClass(o.className).setStyle('margin', 0);
-        var tip = new Element('div').addClass(o.className + '-wrapper').setStyles({ 'margin': 0, 'padding': 0, 'z-index': cwr.getStyle('z-index') }).adopt(cwr);
+        var tip = new Element('div').addClass(o.className + '-wrapper').setStyles({ 'margin':0, 'padding':0, 'z-index':cwr.getStyle('z-index') }).adopt(cwr);
 
         if (cnt) {
             if (o.html)
@@ -132,12 +136,12 @@ mindplot.widget.FloatingTip = new Class({
         }
 
         var body = document.id(document.body);
-        tip.setStyles({ 'position': 'absolute', 'opacity': 0, 'top': 0, 'left': 0 }).inject(body);
+        tip.setStyles({ 'position':'absolute', 'opacity':0, 'top':0, 'left':0 }).inject(body);
 
         if (o.balloon && !Browser.ie6) {
 
-            var trg = new Element('div').addClass(o.className + '-triangle').setStyles({ 'margin': 0, 'padding': 0 });
-            var trgSt = { 'border-color': cwr.getStyle('background-color'), 'border-width': o.arrowSize, 'border-style': 'solid','width': 0, 'height': 0 };
+            var trg = new Element('div').addClass(o.className + '-triangle').setStyles({ 'margin':0, 'padding':0 });
+            var trgSt = { 'border-color':cwr.getStyle('background-color'), 'border-width':o.arrowSize, 'border-style':'solid', 'width':0, 'height':0 };
 
             switch (opos) {
                 case 'inside':
@@ -191,12 +195,12 @@ mindplot.widget.FloatingTip = new Class({
         trgC.height = !$defined(trgC.height) ? 0 : trgC.height;
         trgC.width = !$defined(trgC.width) ? 0 : trgC.width;
 
-        var pos = { x: trgC.left + o.offset.x, y: trgC.top + o.offset.y };
+        var pos = { x:trgC.left + o.offset.x, y:trgC.top + o.offset.y };
 
         if (opos == 'inside') {
-            tip.setStyles({ 'width': tip.getStyle('width'), 'height': tip.getStyle('height') });
+            tip.setStyles({ 'width':tip.getStyle('width'), 'height':tip.getStyle('height') });
             elem.setStyle('position', 'relative').adopt(tip);
-            pos = { x: o.offset.x, y: o.offset.y };
+            pos = { x:o.offset.x, y:o.offset.y };
         } else {
             switch (opos) {
                 case 'top':
@@ -232,19 +236,19 @@ mindplot.widget.FloatingTip = new Class({
         }
 
         tip.set('morph', o.fx).store('position', pos);
-        tip.setStyles({ 'top': pos.y, 'left': pos.x });
+        tip.setStyles({ 'top':pos.y, 'left':pos.x });
 
         return tip;
 
     },
 
-    _animate: function(tip, d) {
+    _animate:function (tip, d) {
 
         clearTimeout(tip.retrieve('timeout'));
-        tip.store('timeout', (function(t) {
+        tip.store('timeout', (function (t) {
 
             var o = this.options, din = (d == 'in');
-            var m = { 'opacity': din ? 1 : 0 };
+            var m = { 'opacity':din ? 1 : 0 };
 
             if ((o.motionOnShow && din) || (o.motionOnHide && !din)) {
                 var pos = t.retrieve('position');
@@ -267,7 +271,7 @@ mindplot.widget.FloatingTip = new Class({
             }
 
             t.morph(m);
-            if (!din) t.get('morph').chain(function() {
+            if (!din) t.get('morph').chain(function () {
                 this.dispose();
             }.bind(t));
 

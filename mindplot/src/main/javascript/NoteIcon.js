@@ -47,7 +47,7 @@ mindplot.NoteIcon = new Class({
                 var result = new Element('div');
                 result.setStyles({padding:'5px'});
 
-                var title = new Element('div', {text:'Note'});
+                var title = new Element('div', {text:$msg('NOTE')});
                 title.setStyles({
                     'font-weight':'bold',
                     color:'black',
