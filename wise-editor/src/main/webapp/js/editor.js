@@ -32,14 +32,19 @@ function buildDesigner(options) {
     });
 
     window.onerror = function (message, url, lineNo) {
-        // Log error message ...
+        if(message==="Script error." && lineNo==0){
+            // Log error message ...
+            // http://stackoverflow.com/questions/5913978/cryptic-script-error-reported-in-javascript-in-chrome-and-firefox
+            return;
+        }
+
 
         if (window.waitDialog) {
             window.waitDialog.close.delay(1000, window.waitDialog);
             window.waitDialog = null;
         }
 
-        var req = new Request({
+        new Request({
             method:'post',
             url:"/service/logger/editor",
             headers:{"Content-Type":"application/json", "Accept":"application/json"},
