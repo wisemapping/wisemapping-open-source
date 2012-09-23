@@ -162,17 +162,19 @@ mindplot.persistence.XMLSerializer_Beta = new Class({
         $assert(dom, "Dom can not be null");
         $assert(mapId, "mapId can not be null");
 
-        var rootElem = dom.documentElement;
+        // Is a valid object ?
+        var documentElement = dom.documentElement;
+        $assert(documentElement.nodeName != "parsererror", "Error while parsing: '" + documentElement.childNodes[0].nodeValue);
 
         // Is a wisemap?.
-        $assert(rootElem.tagName == mindplot.persistence.XMLSerializer_Beta.MAP_ROOT_NODE, "This seem not to be a map document. Root Tag: '" + rootElem.tagName + "DocumentElement:'" + rootElem);
+        $assert(documentElement.tagName == mindplot.persistence.XMLSerializer_Beta.MAP_ROOT_NODE, "This seem not to be a map document. Root Tag: '" + documentElement.tagName);
 
         // Start the loading process ...
-        var version = rootElem.getAttribute("version");
+        var version = documentElement.getAttribute("version");
         version = !$defined(version) ? mindplot.persistence.ModelCodeName.BETA : version;
         var mindmap = new mindplot.model.Mindmap(mapId, version);
 
-        var children = rootElem.childNodes;
+        var children = documentElement.childNodes;
         for (var i = 0; i < children.length; i++) {
             var child = children[i];
             if (child.nodeType == 1) {
