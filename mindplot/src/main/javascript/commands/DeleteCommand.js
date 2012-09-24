@@ -134,15 +134,13 @@ mindplot.commands.DeleteCommand = new Class({
 
     _collectInDepthRelationships:function (topic) {
         var result = [];
+        result.append(topic.getRelationships());
+
         var children = topic.getChildren();
-        if (children.length > 0) {
-            var rels = children.map(function (topic) {
-                return this._collectInDepthRelationships(topic);
-            }, this);
-            result.append(rels.flatten());
-        } else {
-            result.append(topic.getRelationships());
-        }
+        var rels = children.map(function (topic) {
+            return this._collectInDepthRelationships(topic);
+        }, this);
+        result.append(rels.flatten());
         return result;
     }
 
