@@ -84,6 +84,6 @@
     </div>
 </div>
 <script type="text/javascript" src="js/editor.js"></script>
-<%@ include file="/jsp/mindmapEditorFooter.jsf" %>
+<%@ include file="/jsp/googleAnalytics.jsf" %>
 </body>
 </html>
