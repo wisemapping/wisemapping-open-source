@@ -84,7 +84,7 @@ mindplot.layout.RootedTreeSet = new Class({
             }
         }
         validate = !$defined(validate) ? true : validate;
-        $assert(validate ? result : true, 'node could not be found id:' + id);
+        $assert(validate ? result : true, 'node could not be found id:' + id + "\n,RootedTreeSet" + this.dump());
         return result;
 
     },
