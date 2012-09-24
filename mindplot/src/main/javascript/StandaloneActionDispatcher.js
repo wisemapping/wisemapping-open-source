@@ -242,9 +242,12 @@ mindplot.CommandContext = new Class({
         }
 
         var designerTopics = this._designer.getModel().getTopics();
-        return  designerTopics.filter(function (topic) {
+        var result = designerTopics.filter(function (topic) {
             return topicsIds.contains(topic.getId());
         });
+
+        $assert(result.length == topicsIds.length, "Could not find topic. Result:" + result + ", Filtered:" + topicsIds + ", Current Topics: " + designerTopics);
+        return result;
     },
 
     deleteTopic:function (topic) {
