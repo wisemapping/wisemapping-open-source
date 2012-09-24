@@ -76,20 +76,30 @@ mindplot.commands.DeleteCommand = new Class({
 
     undoExecute:function (commandContext) {
 
-        var parent = commandContext.findTopics(this._parentTopicIds);
+        // Add all the topics ...
+        this._deletedTopicModels.each(function (model) {
+            commandContext.createTopic(model);
+        }, this);
+
+        // Do they need to be connected ?
         this._deletedTopicModels.each(function (model, index) {
-            var topic = commandContext.createTopic(model);
+            var topicModel = this._deletedTopicModels[index];
+            var topics = commandContext.findTopics(topicModel.getId());
 
-            // Was the topic connected?
-            var parentTopic = parent[index];
-            if (parentTopic != null) {
-                commandContext.connect(topic, parentTopic);
-                topic.setOnFocus(true);
+            var parentId = this._parentTopicIds[index];
+            if (parentId) {
+                var parentTopics = commandContext.findTopics(parentId);
+                commandContext.connect(topics[0], parentTopics[0]);
             }
-
         }, this);
 
 
+        // Focus on last recovered topic ..
+        var firstTopic = this._deletedTopicModels[0];
+        var topic = commandContext.findTopics(firstTopic.getId())[0];
+        topic.setOnFocus(true);
+
+        // Add rebuild relationships ...
         this._deletedRelModel.each(function (model) {
             commandContext.addRelationship(model);
         }.bind(this));
