@@ -16,19 +16,37 @@
  *   limitations under the License.
  */
 mindplot.persistence.Beta2PelaMigrator = new Class({
-    initialize : function(betaSerializer) {
+    initialize:function (betaSerializer) {
         this._betaSerializer = betaSerializer;
         this._pelaSerializer = new mindplot.persistence.XMLSerializer_Pela();
     },
 
-    toXML : function(mindmap) {
+    toXML:function (mindmap) {
         return this._pelaSerializer.toXML(mindmap);
     },
 
-    loadFromDom : function(dom, mapId) {
+    loadFromDom:function (dom, mapId) {
         $assert($defined(mapId), "mapId can not be null");
         var mindmap = this._betaSerializer.loadFromDom(dom, mapId);
         mindmap.setVersion(mindplot.persistence.ModelCodeName.PELA);
+
+        // Beta does not set position on second level nodes ...
+        var branches = mindmap.getBranches();
+        branches.each(function (model) {
+            this._fixPosition(model);
+        }.bind(this));
+
         return mindmap;
+    },
+
+    _fixPosition:function (parentModel) {
+        var parentPos = parentModel.getPosition();
+        var isRight = parentPos.x > 0;
+        parentModel.getChildren().each(function (child) {
+            if (!child.getPosition()) {
+                child.setPosition(parentPos.x + (50 * isRight ? 1 : -1), parentPos.y);
+            }
+            this._fixPosition(child);
+        }.bind(this));
     }
 });
