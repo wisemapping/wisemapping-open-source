@@ -80,7 +80,7 @@ mindplot.IconGroup = new Class({
         }, this);
 
         if (result == null) {
-            throw new Error("Icon can no be found:" + iconModel);
+            throw new Error("Icon can no be found:" + iconModel.getId() + ", Icons:" + this._icons);
         }
 
         return result;

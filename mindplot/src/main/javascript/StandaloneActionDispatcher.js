@@ -246,7 +246,12 @@ mindplot.CommandContext = new Class({
             return topicsIds.contains(topic.getId());
         });
 
-        $assert(result.length == topicsIds.length, "Could not find topic. Result:" + result + ", Filtered:" + topicsIds + ", Current Topics: " + designerTopics);
+        if (result.length != topicsIds.length) {
+            var ids = designerTopics.map(function (topic) {
+                return topic.getId();
+            });
+            $assert(result.length == topicsIds.length, "Could not find topic. Result:" + result + ", Filter Criteria:" + topicsIds + ", Current Topics: " + ids);
+        }
         return result;
     },
 
