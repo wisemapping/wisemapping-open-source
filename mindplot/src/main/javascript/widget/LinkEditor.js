@@ -65,6 +65,7 @@ mindplot.widget.LinkEditor = new Class({
 
     _buildPanel:function (model) {
         var result = new Element('div');
+        result.setStyle("padding-top", "15px");
         var form = new Element('form', {'action':'none', 'id':'linkFormId'});
 
         // Add combo ...
@@ -84,8 +85,23 @@ mindplot.widget.LinkEditor = new Class({
         if (model.getValue() != null)
             input.value = model.getValue();
 
-        input.setStyles({'width':'70%'});
+        input.setStyles({
+            width:'55%',
+            margin:"0px 10px"
+
+        });
         input.inject(form);
+
+        // Open Button
+        var openButton = new Element('input', {
+            type:"button",
+            value:$msg('OPEN_LINK')
+        });
+        openButton.inject(form);
+        openButton.addEvent('click',function(){
+            window.open(input.value,"_blank", "status=1,width=700,height=450,resize=1");
+        });
+
 
         // Register submit event ...
         form.addEvent('submit', function (event) {
