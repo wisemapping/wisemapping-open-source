@@ -34,7 +34,6 @@ mindplot.commands.DeleteCommand = new Class({
         // If a parent has been selected for deletion, the children must be excluded from the delete ...
         var topics = this._filterChildren(this._topicIds, commandContext);
 
-
         if (topics.length > 0) {
             topics.each(function (topic) {
                 var model = topic.getModel();
@@ -93,16 +92,18 @@ mindplot.commands.DeleteCommand = new Class({
             }
         }, this);
 
-
-        // Focus on last recovered topic ..
-        var firstTopic = this._deletedTopicModels[0];
-        var topic = commandContext.findTopics(firstTopic.getId())[0];
-        topic.setOnFocus(true);
-
         // Add rebuild relationships ...
         this._deletedRelModel.each(function (model) {
             commandContext.addRelationship(model);
         }.bind(this));
+
+
+        // Focus on last recovered topic ..
+        if (this._deletedTopicModels.length > 0) {
+            var firstTopic = this._deletedTopicModels[0];
+            var topic = commandContext.findTopics(firstTopic.getId())[0];
+            topic.setOnFocus(true);
+        }
 
         this._deletedTopicModels = [];
         this._parentTopicIds = [];
