@@ -65,20 +65,23 @@
 
 
 <script type="text/javascript">
-    $('#userSettingsBtn').click(
-            function (event) {
-                $('#settings-dialog-modal .modal-body').load("c/account/settings",
-                        function () {
-                            $('#settings-dialog-modal .btn-cancel').unbind('click').click(function () {
-                                $('#settings-dialog-modal').modal("hide");
-                                window.location.reload();
-                            });
-                        }
-                );
-                $('#settings-dialog-modal').modal();
-                event.preventDefault();
+    var userSettingsLink = $('#userSettingsBtn');
+    if (userSettingsLink) {
+        userSettingsLink.click(
+                function (event) {
+                    $('#settings-dialog-modal .modal-body').load("c/account/settings",
+                            function () {
+                                $('#settings-dialog-modal .btn-cancel').unbind('click').click(function () {
+                                    $('#settings-dialog-modal').modal("hide");
+                                    window.location.reload();
+                                });
+                            }
+                    );
+                    $('#settings-dialog-modal').modal();
+                    event.preventDefault();
 
-            });
+                });
+    }
 
 </script>
 
