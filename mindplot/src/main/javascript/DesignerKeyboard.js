@@ -72,7 +72,11 @@ mindplot.DesignerKeyboard = new Class({
                 designer.createChildForSelectedNode();
             }.bind(this),
 
-            '-':function () {
+            'tab':function () {
+                designer.createChildForSelectedNode();
+            }.bind(this),
+
+            '-':function () { // "-" is a insert on several Browsers. Don't ask why ...
                 designer.createChildForSelectedNode();
             }.bind(this),
 

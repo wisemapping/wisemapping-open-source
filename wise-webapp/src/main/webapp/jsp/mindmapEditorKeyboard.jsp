@@ -53,8 +53,8 @@
         </tr>
         <tr>
             <td><spring:message code="CREATE_CHILD_TOPIC"/></td>
-            <td>Insert</td>
-            <td>⌘ + Enter</td>
+            <td>Insert / Tab</td>
+            <td>⌘ + Enter / Tab</td>
         </tr>
         <tr>
             <td><spring:message code="DELETE_TOPIC"/></td>
