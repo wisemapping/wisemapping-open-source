@@ -20,6 +20,7 @@ mindplot.MultilineTextEditor = new Class({
     Extends:Events,
     initialize:function () {
         this._topic = null;
+        this._timeoutId = -1;
     },
 
     _buildEditor:function () {
@@ -203,7 +204,7 @@ mindplot.MultilineTextEditor = new Class({
 
         }.bind(this);
 
-        displayFunc.delay(10);
+        this._timeoutId = displayFunc.delay(10);
     },
 
     _setStyle:function (fontStyle) {
@@ -273,6 +274,8 @@ mindplot.MultilineTextEditor = new Class({
     close:function (update) {
         if (this.isVisible()) {
             // Update changes ...
+            clearTimeout(this._timeoutId);
+
             if (!$defined(update) || update) {
                 this._updateModel();
             }
@@ -284,6 +287,7 @@ mindplot.MultilineTextEditor = new Class({
             this._containerElem.dispose();
             this._containerElem = null;
             this._topic = null;
+            this._timeoutId = -1;
         }
     }
 });
