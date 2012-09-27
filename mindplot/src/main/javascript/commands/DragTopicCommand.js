@@ -18,22 +18,21 @@
 
 mindplot.commands.DragTopicCommand = new Class({
     Extends:mindplot.Command,
-    initialize:function (topicIds, position, order, parentTopic) {
-        $assert(topicIds, "topicIds must be defined");
+    initialize:function (topicId, position, order, parentTopic) {
+        $assert(topicId, "topicId must be defined");
 
-        this._topicsIds = topicIds;
+        this._topicsId = topicId;
         if ($defined(parentTopic))
             this._parentId = parentTopic.getId();
 
         this.parent();
         this._position = position;
         this._order = order;
-        this._id = mindplot.Command._nextUUID();
     },
 
     execute:function (commandContext) {
 
-        var topic = commandContext.findTopics([this._topicsIds])[0];
+        var topic = commandContext.findTopics(this._topicsId)[0];
 
         // Save old position ...
         var origParentTopic = topic.getOutgoingConnectedTopic();
@@ -60,7 +59,7 @@ mindplot.commands.DragTopicCommand = new Class({
         if (origParentTopic != this._parentId) {
 
             if ($defined(this._parentId)) {
-                var parentTopic = commandContext.findTopics([this._parentId])[0];
+                var parentTopic = commandContext.findTopics(this._parentId)[0];
                 commandContext.connect(topic, parentTopic);
             }
 
