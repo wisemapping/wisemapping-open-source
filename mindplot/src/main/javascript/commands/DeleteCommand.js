@@ -81,8 +81,7 @@ mindplot.commands.DeleteCommand = new Class({
         }, this);
 
         // Do they need to be connected ?
-        this._deletedTopicModels.each(function (model, index) {
-            var topicModel = this._deletedTopicModels[index];
+        this._deletedTopicModels.each(function (topicModel, index) {
             var topics = commandContext.findTopics(topicModel.getId());
 
             var parentId = this._parentTopicIds[index];

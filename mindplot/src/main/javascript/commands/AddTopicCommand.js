@@ -32,7 +32,7 @@ mindplot.commands.AddTopicCommand = new Class({
         this._models.each(function (model, index) {
 
             // Add a new topic ...
-            var topic = commandContext.createTopic(model, false);
+            var topic = commandContext.createTopic(model);
 
             // Connect to topic ...
             if (this._parentsIds) {

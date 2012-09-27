@@ -556,7 +556,7 @@ mindplot.Designer = new Class({
             for (var i = 0; i < branches.length; i++) {
                 // NodeModel -> NodeGraph ...
                 var nodeModel = branches[i];
-                var nodeGraph = this._nodeModelToNodeGraph(nodeModel, false);
+                var nodeGraph = this._nodeModelToNodeGraph(nodeModel);
 
                 // Update shrink render state...
                 nodeGraph.setBranchVisibility(true);
@@ -594,7 +594,7 @@ mindplot.Designer = new Class({
             return this._options.readOnly;
         },
 
-        _nodeModelToNodeGraph:function (nodeModel, isVisible) {
+        _nodeModelToNodeGraph:function (nodeModel) {
             $assert(nodeModel, "Node model can not be null");
             var children = nodeModel.getChildren().slice();
             children = children.sort(function (a, b) {
@@ -603,15 +603,11 @@ mindplot.Designer = new Class({
 
             var nodeGraph = this._buildNodeGraph(nodeModel, this.isReadOnly());
 
-            if (isVisible) {
-                nodeGraph.setVisibility(isVisible);
-            }
-
             this._workspace.appendChild(nodeGraph);
             for (var i = 0; i < children.length; i++) {
                 var child = children[i];
                 if ($defined(child))
-                    this._nodeModelToNodeGraph(child, false);
+                    this._nodeModelToNodeGraph(child);
             }
 
             return nodeGraph;
