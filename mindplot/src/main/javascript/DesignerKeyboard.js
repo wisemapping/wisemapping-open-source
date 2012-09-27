@@ -60,20 +60,29 @@ mindplot.DesignerKeyboard = new Class({
                 }
             }.bind(this),
 
-            'delete':function () {
+            'delete':function (event) {
                 designer.deleteSelectedEntities();
+
+                event.preventDefault();
+                event.stopPropagation();
             }.bind(this),
 
             'enter':function () {
                 designer.createSiblingForSelectedNode();
             }.bind(this),
 
-            'insert':function () {
+            'insert':function (event) {
                 designer.createChildForSelectedNode();
+
+                event.preventDefault();
+                event.stopPropagation();
             }.bind(this),
 
-            'tab':function () {
+            'tab':function (event) {
                 designer.createChildForSelectedNode();
+
+                event.preventDefault();
+                event.stopPropagation();
             }.bind(this),
 
             '-':function () { // "-" is a insert on several Browsers. Don't ask why ...
