@@ -96,6 +96,11 @@ mindplot.commands.DeleteCommand = new Class({
             commandContext.addRelationship(model);
         }.bind(this));
 
+        // Finally display the topics ...
+        this._deletedTopicModels.each(function (topicModel) {
+            var topics = commandContext.findTopics(topicModel.getId());
+            topics[0].setBranchVisibility(true);
+        }, this);
 
         // Focus on last recovered topic ..
         if (this._deletedTopicModels.length > 0) {

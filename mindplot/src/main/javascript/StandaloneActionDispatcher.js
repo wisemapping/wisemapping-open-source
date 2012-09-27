@@ -269,8 +269,8 @@ mindplot.CommandContext = new Class({
         return mindmap.createNode(mindplot.NodeModel.MAIN_TOPIC_TYPE);
     },
 
-    connect:function (childTopic, parentTopic, isVisible) {
-        childTopic.connectTo(parentTopic, this._designer._workspace, isVisible);
+    connect:function (childTopic, parentTopic) {
+        childTopic.connectTo(parentTopic, this._designer._workspace);
     },
 
     disconnect:function (topic) {

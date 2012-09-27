@@ -116,7 +116,6 @@ mindplot.Designer = new Class({
         },
 
 
-
         addEvent:function (type, listener) {
             if (type == mindplot.TopicEvent.EDIT || type == mindplot.TopicEvent.CLICK) {
                 var editor = mindplot.TopicEventDispatcher.getInstance();
@@ -207,12 +206,8 @@ mindplot.Designer = new Class({
 
 
         _buildNodeGraph:function (model, readOnly) {
-            var workspace = this._workspace;
-
             // Create node graph ...
             var topic = mindplot.NodeGraph.create(model, {readOnly:readOnly});
-
-            // Append it to the workspace ...
             this.getModel().addTopic(topic);
 
             // Add Topic events ...
@@ -248,7 +243,7 @@ mindplot.Designer = new Class({
                     }
                 }
                 $assert(targetTopic, "Could not find a topic to connect");
-                topic.connectTo(targetTopic, workspace);
+                topic.connectTo(targetTopic, this._workspace);
             }
 
             topic.addEvent('ontblur', function () {
@@ -602,6 +597,7 @@ mindplot.Designer = new Class({
             });
 
             var nodeGraph = this._buildNodeGraph(nodeModel, this.isReadOnly());
+            nodeGraph.setVisibility(false);
 
             this._workspace.appendChild(nodeGraph);
             for (var i = 0; i < children.length; i++) {

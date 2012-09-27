@@ -1023,7 +1023,7 @@ mindplot.Topic = new Class({
         model.setOrder(value);
     },
 
-    connectTo:function (targetTopic, workspace, isVisible) {
+    connectTo:function (targetTopic, workspace) {
         $assert(!this._outgoingLine, 'Could not connect an already connected node');
         $assert(targetTopic != this, 'Circular connection are not allowed');
         $assert(targetTopic, 'Parent Graph can not be null');
@@ -1040,9 +1040,8 @@ mindplot.Topic = new Class({
 
         // Create a connection line ...
         var outgoingLine = new mindplot.ConnectionLine(this, targetTopic);
-        if ($defined(isVisible)) {
-            outgoingLine.setVisibility(isVisible);
-        }
+        outgoingLine.setVisibility(this.isVisible());
+
         this._outgoingLine = outgoingLine;
         workspace.appendChild(outgoingLine);
 
@@ -1074,7 +1073,6 @@ mindplot.Topic = new Class({
         if (this.isInWorkspace()) {
             mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeConnectEvent, {parentNode:targetTopic.getModel(), childNode:this.getModel()});
         }
-
     },
 
     appendChild:function (child) {
