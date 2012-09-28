@@ -43,14 +43,14 @@ mindplot.commands.AddTopicCommand = new Class({
                 }
             }
 
-            // Finally, focus ...
+            // Select just created node ...
             var designer = commandContext._designer;
-            var fade = new mindplot.util.FadeEffect([topic, topic.getOutgoingLine()], true);
-            fade.addEvent('complete', function () {
-                designer.onObjectFocusEvent(topic);
-                topic.setOnFocus(true);
-            });
-            fade.start();
+            designer.onObjectFocusEvent(topic);
+            topic.setOnFocus(true);
+
+            // Render node ...
+            topic.setVisibility(true);
+
         }.bind(this));
     },
 

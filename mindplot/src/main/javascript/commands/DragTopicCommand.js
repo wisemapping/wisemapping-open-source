@@ -33,6 +33,7 @@ mindplot.commands.DragTopicCommand = new Class({
     execute:function (commandContext) {
 
         var topic = commandContext.findTopics(this._topicsId)[0];
+        topic.setVisibility(false);
 
         // Save old position ...
         var origParentTopic = topic.getOutgoingConnectedTopic();
@@ -69,6 +70,7 @@ mindplot.commands.DragTopicCommand = new Class({
                 this._parentId = origParentTopic.getId();
             }
         }
+        topic.setVisibility(true);
 
         // Store for undo ...
         this._order = origOrder;

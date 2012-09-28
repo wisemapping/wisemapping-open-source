@@ -634,7 +634,6 @@ mindplot.Topic = new Class({
         var elements = this._flatten2DElements(this);
         var fade = new mindplot.util.FadeEffect(elements, !value);
         fade.addEvent('complete', function () {
-
         });
         fade.start();
         mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeShrinkEvent, model);
@@ -840,7 +839,14 @@ mindplot.Topic = new Class({
         // Hide all children...
         this._setChildrenVisibility(value);
 
+        // If there there are connection to the node, topic must be hidden.
         this._setRelationshipLinesVisibility(value);
+
+        // If it's connected, the connection must be rendered.
+        var outgoingLine = this.getOutgoingLine();
+        if (outgoingLine) {
+            outgoingLine.setVisibility(value);
+        }
     },
 
     moveToBack:function () {
@@ -1037,7 +1043,7 @@ mindplot.Topic = new Class({
 
         // Create a connection line ...
         var outgoingLine = new mindplot.ConnectionLine(this, targetTopic);
-        outgoingLine.setVisibility(true); // @Todo: This must be false. Check remove of all nodes and redo.
+        outgoingLine.setVisibility(false);
 
         this._outgoingLine = outgoingLine;
         workspace.appendChild(outgoingLine);
