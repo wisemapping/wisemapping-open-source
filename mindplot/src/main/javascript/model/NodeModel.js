@@ -32,8 +32,8 @@ mindplot.model.NodeModel = new Class({
         this._feature = [];
     },
 
-    createFeature:function (type, attributes) {
-        return mindplot.TopicFeature.createModel(type, attributes);
+    createFeature:function (type, attributes, featureId) {
+        return mindplot.TopicFeature.createModel(type, attributes, featureId);
     },
 
     addFeature:function (feature) {
