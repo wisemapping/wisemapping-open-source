@@ -47,7 +47,9 @@ mindplot.model.NodeModel = new Class({
 
     removeFeature:function (feature) {
         $assert(feature, 'feature can not be null');
-        this._feature.erase(feature);
+        this._feature = this._feature.filter(function (f) {
+            return feature.getId() != f.getId();
+        });
     },
 
     findFeatureByType:function (type) {

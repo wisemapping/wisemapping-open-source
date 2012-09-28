@@ -17,58 +17,61 @@
  */
 
 mindplot.model.FeatureModel = new Class({
-    initialize:function(type) {
-        $assert(type, 'type can not be null');
+    Static:{
+        _nextUUID:function () {
+            if (!$defined(mindplot.model.FeatureModel._uuid)) {
+                mindplot.model.FeatureModel._uuid = 0;
+            }
 
-        this._id = mindplot.model.FeatureModel._nextUUID();
+            mindplot.model.FeatureModel._uuid = mindplot.model.FeatureModel._uuid + 1;
+            console.log(mindplot.model.FeatureModel._uuid);
+            return mindplot.model.FeatureModel._uuid;
+        }
+    },
+
+    initialize:function (type, id) {
+        $assert(type, 'type can not be null');
+        this._id = $defined(id) ? this._id : mindplot.model.FeatureModel._nextUUID();
+
         this._type = type;
         this._attributes = {};
 
         // Create type method ...
-        this['is' + type.camelCase() + 'Model'] = function() {
+        this['is' + type.camelCase() + 'Model'] = function () {
             return true;
         };
     },
 
-    getAttributes : function() {
+    getAttributes:function () {
         return Object.clone(this._attributes);
     },
 
-    setAttributes : function(attributes) {
+    setAttributes:function (attributes) {
         for (key in attributes) {
             this["set" + key.capitalize()](attributes[key]);
         }
     },
 
-    setAttribute : function(key, value) {
+    setAttribute:function (key, value) {
         $assert(key, 'key id can not be null');
         this._attributes[key] = value;
     },
 
-    getAttribute : function(key) {
+    getAttribute:function (key) {
         $assert(key, 'key id can not be null');
 
         return this._attributes[key];
     },
 
-    getId : function() {
+    getId:function () {
         return this._id;
     },
 
-    setId : function(id) {
+    setId:function (id) {
         this._id = id;
     },
 
-    getType:function() {
+    getType:function () {
         return this._type;
     }
 });
-
-mindplot.model.FeatureModel._nextUUID = function() {
-    if (!$defined(this._uuid)) {
-        this._uuid = 0;
-    }
-
-    this._uuid = this._uuid + 1;
-    return this._uuid;
-};

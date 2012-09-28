@@ -1040,7 +1040,7 @@ mindplot.Topic = new Class({
 
         // Create a connection line ...
         var outgoingLine = new mindplot.ConnectionLine(this, targetTopic);
-        outgoingLine.setVisibility(this.isVisible());
+        outgoingLine.setVisibility(true); // @Todo: This must be false. Check remove of all nodes and redo.
 
         this._outgoingLine = outgoingLine;
         workspace.appendChild(outgoingLine);
