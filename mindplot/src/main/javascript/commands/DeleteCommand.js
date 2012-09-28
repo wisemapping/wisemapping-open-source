@@ -36,6 +36,9 @@ mindplot.commands.DeleteCommand = new Class({
 
         if (topics.length > 0) {
             topics.each(function (topic) {
+                // In case that it's editing text node, force close without update ...
+                topic.closeEditors();
+
                 var model = topic.getModel();
 
                 // Delete relationships
