@@ -24,7 +24,6 @@ mindplot.model.FeatureModel = new Class({
             }
 
             mindplot.model.FeatureModel._uuid = mindplot.model.FeatureModel._uuid + 1;
-            console.log(mindplot.model.FeatureModel._uuid);
             return mindplot.model.FeatureModel._uuid;
         }
     },

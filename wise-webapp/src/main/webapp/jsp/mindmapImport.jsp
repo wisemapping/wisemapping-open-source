@@ -15,14 +15,14 @@
             <div class="control-group">
                 <label for="title" class="control-label"><spring:message code="NAME"/>: </label>
                 <input type="text" id="title" name="title" required="required"
-                       placeholder="Name of the new map to create"
-                       class="control"/>
+                       placeholder="<spring:message code="MAP_NAME_HINT"/>"
+                       class="control" maxlength="255"/>
             </div>
             <div class="control-group">
 
                 <label for="description" class="control-label"><spring:message code="DESCRIPTION"/>: </label>
                 <textarea type="text" name="description" id="description"
-                          placeholder="Some description for your map" class="control"></textarea>
+                          placeholder="<spring:message code="MAP_DESCRIPTION_HINT"/>" class="control" maxlength="255"></textarea>
             </div>
 
         </fieldset>
