@@ -281,10 +281,7 @@ mindplot.Topic = new Class({
         var model = this.getModel();
 
         // Update model ...
-        var feature = model.createFeature(type, attributes);
-        if ($defined(featureId)) {
-            feature.setId(featureId);
-        }
+        var feature = model.createFeature(type, attributes,featureId);
         model.addFeature(feature);
 
 

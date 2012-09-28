@@ -17,17 +17,17 @@
  */
 
 mindplot.model.IconModel = new Class({
-    Extends: mindplot.model.FeatureModel,
-    initialize:function(attributes) {
-        this.parent(mindplot.model.IconModel.FEATURE_TYPE);
+    Extends:mindplot.model.FeatureModel,
+    initialize:function (attributes, id) {
+        this.parent(mindplot.model.IconModel.FEATURE_TYPE, id);
         this.setIconType(attributes.id);
     },
 
-    getIconType : function() {
+    getIconType:function () {
         return this.getAttribute('id');
     },
 
-    setIconType : function(iconType) {
+    setIconType:function (iconType) {
         $assert(iconType, 'iconType id can not be null');
         this.setAttribute('id', iconType);
     }

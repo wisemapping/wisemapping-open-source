@@ -30,7 +30,6 @@ mindplot.commands.RemoveFeatureFromTopicCommand = new Class({
 
     execute:function (commandContext) {
         var topic = commandContext.findTopics(this._topicId)[0];
-
         var feature = topic.findFeatureById(this._featureId);
         topic.removeFeature(feature);
         this._oldFeature = feature;
@@ -38,7 +37,6 @@ mindplot.commands.RemoveFeatureFromTopicCommand = new Class({
 
     undoExecute:function (commandContext) {
         var topic = commandContext.findTopics(this._topicId)[0];
-
         var feature = this._oldFeature;
         topic.addFeature(feature.getType(), feature.getAttributes(), this._featureId);
         this._oldFeature = null;
