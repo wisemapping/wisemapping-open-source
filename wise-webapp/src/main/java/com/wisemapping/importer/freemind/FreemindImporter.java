@@ -150,10 +150,7 @@ public class FreemindImporter
             addRelationships(mindmapMap);
 
             JAXBUtils.saveMap(mindmapMap, baos);
-
             wiseXml = new String(baos.toByteArray(), UTF_8_CHARSET);
-
-
             result.setXmlStr(wiseXml);
             result.setTitle(mapName);
             result.setDescription(description);
@@ -625,10 +622,16 @@ public class FreemindImporter
     String getShapeFormFromNode(@NotNull Node node) {
         String result = node.getSTYLE();
         // In freemind a node without style is a line
-        if ("bubble".equals(result)) {
+        if ("bubble".equals(result))
+        {
             result = ShapeStyle.ROUNDED_RECTANGLE.getStyle();
         } else {
-            result = ShapeStyle.LINE.getStyle();
+             if(node.getBACKGROUNDCOLOR()!=null){
+                 // This the node has background color defined. It's better to change the default shape.
+                 result = ShapeStyle.RECTANGLE.getStyle();
+             } else {
+                result = ShapeStyle.LINE.getStyle();
+             }
         }
         return result;
     }

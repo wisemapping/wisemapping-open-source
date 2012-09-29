@@ -9,7 +9,8 @@ BASE_DIR=`pwd`
 TARGET_DIR=$BASE_DIR/target
 JETTY_DIR=$TARGET_DIR/wisemapping-$WISE_VERSION
 WISE_WEBAPP_DIR=$JETTY_DIR/webapps/wisemapping
-JETTY_DIST_DIR=jetty-distribution-8.1.4.v20120524
+JETTY_VERSION=8.1.5.v20120716
+JETTY_DIST_DIR=jetty-distribution-${JETTY_VERSION}
 JETTY_ZIP=${JETTY_DIST_DIR}.zip
 
 # Clean ...
@@ -24,7 +25,7 @@ mvn -o -f $BASE_DIR/../pom.xml package -Dmaven.test.skip=true
 if [ ! -f ./target/${JETTY_ZIP}  ]
 then	
 	echo "Download Jetty"
-	wget http://download.eclipse.org/jetty/8.1.4.v20120524/dist/jetty-distribution-8.1.4.v20120524.zip -P $TARGET_DIR 
+	wget http://download.eclipse.org/jetty/${JETTY_VERSION}/dist/${JETTY_ZIP} -P $TARGET_DIR 
 fi
 
 echo "Unzip Jetty ...:"  
