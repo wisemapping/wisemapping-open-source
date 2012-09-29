@@ -18,8 +18,8 @@
 
 mindplot.model.IconModel = new Class({
     Extends:mindplot.model.FeatureModel,
-    initialize:function (attributes, id) {
-        this.parent(mindplot.model.IconModel.FEATURE_TYPE, id);
+    initialize:function (attributes) {
+        this.parent(mindplot.model.IconModel.FEATURE_TYPE);
         this.setIconType(attributes.id);
     },
 

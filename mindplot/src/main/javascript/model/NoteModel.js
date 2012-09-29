@@ -18,8 +18,8 @@
 
 mindplot.model.NoteModel = new Class({
     Extends:mindplot.model.FeatureModel,
-    initialize:function (attributes, id) {
-        this.parent(mindplot.model.NoteModel.FEATURE_TYPE, id);
+    initialize:function (attributes) {
+        this.parent(mindplot.model.NoteModel.FEATURE_TYPE);
         var noteText = attributes.text ? attributes.text : " ";
         this.setText(noteText);
     },

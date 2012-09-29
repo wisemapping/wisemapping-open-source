@@ -18,7 +18,7 @@
 
 mindplot.commands.AddFeatureToTopicCommand = new Class({
     Extends:mindplot.Command,
-    initialize: function(topicId, featureType, attributes) {
+    initialize:function (topicId, featureType, attributes) {
 
         $assert($defined(topicId), 'topicId can not be null');
         $assert(featureType, 'featureType can not be null');
@@ -28,15 +28,21 @@ mindplot.commands.AddFeatureToTopicCommand = new Class({
         this._topicId = topicId;
         this._featureType = featureType;
         this._attributes = attributes;
+        this._featureModel = null;
     },
 
-    execute: function(commandContext) {
+    execute:function (commandContext) {
         var topic = commandContext.findTopics(this._topicId)[0];
-        var icon = topic.addFeature(this._featureType, this._attributes);
-        this._featureModel = icon.getModel();
+
+        // Feature must be created only one time.
+        if (!this._featureModel) {
+            var model = topic.getModel();
+            this._featureModel = model.createFeature(this._featureType, this._attributes);
+        }
+        topic.addFeature(this._featureModel);
     },
 
-    undoExecute: function(commandContext) {
+    undoExecute:function (commandContext) {
         var topic = commandContext.findTopics(this._topicId)[0];
         topic.removeFeature(this._featureModel);
     }

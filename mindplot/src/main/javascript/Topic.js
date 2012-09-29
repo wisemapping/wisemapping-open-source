@@ -274,19 +274,16 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    addFeature:function (type, attributes, featureId) {
+    addFeature:function (featureModel) {
         var iconGroup = this.getOrBuildIconGroup();
         this.closeEditors();
 
-        var model = this.getModel();
-
         // Update model ...
-        var feature = model.createFeature(type, attributes, featureId);
-        model.addFeature(feature);
+        var model = this.getModel();
+        model.addFeature(featureModel);
 
-
-        var result = mindplot.TopicFeature.createIcon(this, feature, this.isReadOnly());
-        iconGroup.addIcon(result, type == mindplot.TopicFeature.Icon.id && !this.isReadOnly());
+        var result = mindplot.TopicFeature.createIcon(this, featureModel, this.isReadOnly());
+        iconGroup.addIcon(result, featureModel.getType() == mindplot.TopicFeature.Icon.id && !this.isReadOnly());
 
         this._adjustShapes();
         return result;

@@ -32,8 +32,8 @@ mindplot.model.NodeModel = new Class({
         this._feature = [];
     },
 
-    createFeature:function (type, attributes, featureId) {
-        return mindplot.TopicFeature.createModel(type, attributes, featureId);
+    createFeature:function (type, attributes) {
+        return mindplot.TopicFeature.createModel(type, attributes);
     },
 
     addFeature:function (feature) {
@@ -47,9 +47,12 @@ mindplot.model.NodeModel = new Class({
 
     removeFeature:function (feature) {
         $assert(feature, 'feature can not be null');
+        var size = this._feature.length;
         this._feature = this._feature.filter(function (f) {
             return feature.getId() != f.getId();
         });
+        $assert(size - 1 == this._feature.length, 'Could not be removed ...');
+
     },
 
     findFeatureByType:function (type) {
@@ -61,9 +64,11 @@ mindplot.model.NodeModel = new Class({
 
     findFeatureById:function (id) {
         $assert($defined(id), 'id can not be null');
-        return this._feature.filter(function (feature) {
+        var result = this._feature.filter(function (feature) {
             return feature.getId() == id;
-        })[0];
+        });
+        $assert(result.length == 1, "Feature could not be found:" + id);
+        return result[0]
     },
 
     getPropertiesKeys:function () {

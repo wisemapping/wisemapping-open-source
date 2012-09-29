@@ -28,9 +28,9 @@ mindplot.model.FeatureModel = new Class({
         }
     },
 
-    initialize:function (type, id) {
+    initialize:function (type) {
         $assert(type, 'type can not be null');
-        this._id = $defined(id) ? id : mindplot.model.FeatureModel._nextUUID();
+        this._id = mindplot.model.FeatureModel._nextUUID();
 
         this._type = type;
         this._attributes = {};
