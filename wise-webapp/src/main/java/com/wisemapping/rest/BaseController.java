@@ -69,7 +69,7 @@ public class BaseController {
     }
 
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(ImportUnexpectedException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public String handleImportErrors(@NotNull ImportUnexpectedException ex, @NotNull HttpServletRequest request) {
