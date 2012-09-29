@@ -19,6 +19,7 @@
 package com.wisemapping.rest;
 
 
+import com.wisemapping.exceptions.ImportUnexpectedException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.importer.ImportFormat;
 import com.wisemapping.importer.Importer;
@@ -401,6 +402,8 @@ public class MindmapController extends BaseController {
         } catch (ImporterException e) {
             // @Todo: This should be an illegal argument exception. Review the all the other cases.
             throw buildValidationException("xml", "The selected file does not seems to be a valid Freemind or WiseMapping file. Contact support in case the problem persists.");
+        } catch (Throwable e) {
+            throw new ImportUnexpectedException(e, freemindXml);
         }
 
         // Save new map ...

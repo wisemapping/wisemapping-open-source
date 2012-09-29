@@ -18,17 +18,24 @@
 
 package com.wisemapping.exceptions;
 
-public class WiseMappingException
-    extends Exception
-{
-    public WiseMappingException(String str)
-    {
-        super(str);
+import org.jetbrains.annotations.NotNull;
+
+public class ImportUnexpectedException
+        extends WiseMappingException {
+    private byte[] freemindXml;
+
+
+    public ImportUnexpectedException(@NotNull Throwable e, @NotNull byte[] map) {
+        super("Unexpected expected error importing freemind. Please, try latter.", e);
+        this.freemindXml = map;
     }
-    public WiseMappingException(String str,Throwable e)
-    {
+
+    public ImportUnexpectedException(String str, Exception e) {
         super(str);
         initCause(e);
     }
 
+    public byte[] getFreemindXml() {
+        return freemindXml;
+    }
 }
