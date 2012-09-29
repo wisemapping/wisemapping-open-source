@@ -18,7 +18,6 @@
 
 package com.wisemapping.importer.freemind;
 
-import com.sun.org.apache.xerces.internal.dom.TextImpl;
 import com.wisemapping.importer.Importer;
 import com.wisemapping.importer.ImporterException;
 import com.wisemapping.importer.VersionNumber;
@@ -33,12 +32,20 @@ import com.wisemapping.jaxb.wisemap.TopicType;
 import com.wisemapping.jaxb.wisemap.Link;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.*;
+import org.jsoup.nodes.Document;
 import org.w3c.dom.*;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.JAXBException;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.InputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.math.BigInteger;
@@ -150,8 +157,9 @@ public class FreemindImporter
             throw new ImporterException(e);
         } catch (IOException e) {
             throw new ImporterException(e);
+        } catch (TransformerException e) {
+            throw new ImporterException(e);
         }
-
         return result;
     }
 
@@ -214,7 +222,7 @@ public class FreemindImporter
         }
     }
 
-    private void convertChildNodes(@NotNull Node freeParent, @NotNull TopicType wiseParent, final int depth) {
+    private void convertChildNodes(@NotNull Node freeParent, @NotNull TopicType wiseParent, final int depth) throws TransformerException {
         final List<Object> freeChilden = freeParent.getArrowlinkOrCloudOrEdge();
         TopicType currentWiseTopic = wiseParent;
 
@@ -290,10 +298,10 @@ public class FreemindImporter
                 final String type = content.getTYPE();
 
                 if (type.equals("NODE")) {
-                    String text = getText(content);
+                    String text = html2text(content);
                     currentWiseTopic.setText(text);
                 } else {
-                    String text = getRichContent(content);
+                    String text = html2text(content);
                     final com.wisemapping.jaxb.wisemap.Note mindmapNote = new com.wisemapping.jaxb.wisemap.Note();
                     text = text != null ? text : EMPTY_NOTE;
                     mindmapNote.setText(text);
@@ -480,61 +488,26 @@ public class FreemindImporter
 //        }
 //        return result;
 //    }
-    private String getRichContent(Richcontent content) {
-        String result = null;
-        List<Element> elementList = content.getHtml().getAny();
-
-        Element body = null;
-        for (Element elem : elementList) {
-            if (elem.getNodeName().equals("body")) {
-                body = elem;
-                break;
-            }
-        }
-        if (body != null) {
-            result = body.getTextContent();
-        }
-        return result;
-    }
-
     @NotNull
-    private String getText(Richcontent content) {
-        String result = "";
-        List<Element> elementList = content.getHtml().getAny();
+    private String html2text(@NotNull Richcontent content) throws TransformerException {
+        final Element html = (Element) content.getHtml();
 
-        Element body = null;
-        for (Element elem : elementList) {
-            if (elem.getNodeName().equals("body")) {
-                body = elem;
-                break;
-            }
-        }
-        if (body != null) {
-            String textNode = buildTextFromChildren(body);
-            if (textNode != null)
-                result = textNode.trim();
+        // Convert any to HTML piece ...
+        TransformerFactory transFactory = TransformerFactory.newInstance();
+        Transformer transformer = transFactory.newTransformer();
+        StringWriter buffer = new StringWriter();
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        transformer.transform(new DOMSource(html), new StreamResult(buffer));
 
-        }
-        return result;
+        // Keep return lines in place ...
+        final Document document = Jsoup.parse(buffer.toString());
+        document.select("br").append("\\n");
+        document.select("p").prepend("\\n");
+        document.select("div").prepend("\\n");
+        return document.text().replaceAll("\\\\n", "\n").trim();
+
     }
 
-    private String buildTextFromChildren(org.w3c.dom.Node body) {
-        StringBuilder text = new StringBuilder();
-        NodeList childNodes = body.getChildNodes();
-        for (int i = 0; i < childNodes.getLength(); i++) {
-            org.w3c.dom.Node child = childNodes.item(i);
-            if (child instanceof TextImpl) {
-                text.append(" ");
-                text.append(child.getTextContent());
-            } else {
-                String textElem = buildTextFromChildren(child);
-                if (textElem != null && !textElem.equals("")) {
-                    text.append(textElem);
-                }
-            }
-        }
-        return text.toString();
-    }
 
     private void convertNodeProperties(@NotNull com.wisemapping.jaxb.freemind.Node freeNode, @NotNull com.wisemapping.jaxb.wisemap.TopicType wiseTopic) {
         final String text = freeNode.getTEXT();

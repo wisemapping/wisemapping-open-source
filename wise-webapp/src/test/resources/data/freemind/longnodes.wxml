@@ -3,7 +3,11 @@
     <topic id="0" central="true" position="0,0" shape="rounded rectagle">
         <text><![CDATA[I have HTML In Nodes]]></text>
         <topic id="1" position="200,0" order="0" shape="line">
-            <text><![CDATA[]]></text>
+            <text><![CDATA[Here is somefonts  
+ 
+ Add color changes ... 
+ Add some bullets: Different Bullets 
+ And all aligned !!!!s]]></text>
         </topic>
     </topic>
 </map>

@@ -295,8 +295,13 @@
             <version>0.0.7</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <!-- jsoup HTML parser library @ http://jsoup.org/ -->
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.7.1</version>
+        </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
