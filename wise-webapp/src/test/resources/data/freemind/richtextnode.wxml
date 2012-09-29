@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="tango" name="basic">
     <topic id="0" central="true" position="0,0" bgColor="#99ffff"
-        fontStyle="Arial;16;#ff3300;bold;;" shape="rounded rectagle">
+        fontStyle="Arial;10;#ff3300;bold;;" shape="rounded rectagle">
         <text><![CDATA[120924 Programme]]></text>
         <note>
             <text><![CDATA[]]></text>
         </note>
         <topic id="1" position="200,0" order="0" brColor="#808080"
-            bgColor="#ffff33" fontStyle="Arial;14;#0000cc;bold;;" shape="rounded rectagle">
+            bgColor="#ffff33" fontStyle="Arial;8;#0000cc;bold;;" shape="rounded rectagle">
             <text><![CDATA[bilan mi-parcours
 du plan d'actions]]></text>
             <topic id="2" position="290,-75" order="0"
-                fontStyle="Arial;12;#006600;bold;;" shape="line">
+                fontStyle="Arial;8;#006600;bold;;" shape="line">
                 <text><![CDATA[modalités]]></text>
                 <topic id="3" position="380,-125" order="0" shape="line">
                     <text><![CDATA[cf. mi-parcours 201109]]></text>
                 </topic>
                 <topic id="4" position="380,-100" order="1"
-                    fontStyle="Arial;12;;;;" shape="line">
+                    fontStyle="Arial;8;;;;" shape="line">
                     <text><![CDATA[à partir des plans d'actions]]></text>
                 </topic>
                 <topic id="5" position="380,-75" order="2"
-                    fontStyle="Arial;12;;;;" shape="line">
+                    fontStyle="Arial;8;;;;" shape="line">
                     <text><![CDATA[donner la parole aux référents prévus, en demandant des exemples]]></text>
                 </topic>
                 <topic id="6" position="380,-50" order="3"
-                    fontStyle="Arial;12;;;;" shape="line">
+                    fontStyle="Arial;8;;;;" shape="line">
                     <text><![CDATA[faire compléter par les autres participants]]></text>
                 </topic>
             </topic>
             <topic id="7" position="290,-50" order="1" brColor="#808080"
-                bgColor="#99ffff" fontStyle="Arial;12;#0000cc;bold;;" shape="rounded rectagle">
+                bgColor="#99ffff" fontStyle="Arial;8;#0000cc;bold;;" shape="rounded rectagle">
                 <text><![CDATA[1) Adapter et améliorer 
  notre offre de services 
  selon l'évolution des besoins]]></text>
@@ -64,7 +64,7 @@ du plan d'actions]]></text>
                 </topic>
                 <topic shrink="true" id="15" position="380,-150"
                     order="1" bgColor="#66ff00"
-                    fontStyle="Arial;12;#006600;bold;;" shape="line">
+                    fontStyle="Arial;8;#006600;bold;;" shape="line">
                     <text><![CDATA[1.1. .Renforcer et structurer 
  le service "accueil et orientation"]]></text>
                     <topic id="16" position="470,-175" order="0" shape="line">
@@ -72,8 +72,7 @@ du plan d'actions]]></text>
                     </topic>
                 </topic>
                 <topic id="17" position="380,-125" order="2"
-                    bgColor="#ffff00"
-                    fontStyle="Arial;12;#006600;bold;;" shape="line">
+                    bgColor="#ffff00" fontStyle="Arial;8;#006600;bold;;" shape="line">
                     <text><![CDATA[1.2. Adapter l'offre Halte-Garderie 
  aux besoins des familles]]></text>
                     <topic id="18" position="470,-150" order="0" shape="line">
@@ -81,8 +80,7 @@ du plan d'actions]]></text>
                     </topic>
                 </topic>
                 <topic id="19" position="380,-100" order="3"
-                    bgColor="#66ff00"
-                    fontStyle="Arial;12;#006600;bold;;" shape="line">
+                    bgColor="#66ff00" fontStyle="Arial;8;#006600;bold;;" shape="line">
                     <text><![CDATA[1.3. Renforcer et structurer les services 
  de soutien à la parentalité]]></text>
                     <topic id="20" position="470,-125" order="0" shape="line">
@@ -90,8 +88,7 @@ du plan d'actions]]></text>
                     </topic>
                 </topic>
                 <topic id="21" position="380,-75" order="4"
-                    bgColor="#ffff00"
-                    fontStyle="Arial;12;#006600;bold;;" shape="line">
+                    bgColor="#ffff00" fontStyle="Arial;8;#006600;bold;;" shape="line">
                     <text><![CDATA[1.4 Améliorer la qualité des 
  projets pédagogiques des ALSH]]></text>
                     <topic id="22" position="470,-100" order="0" shape="line">
@@ -99,8 +96,7 @@ du plan d'actions]]></text>
                     </topic>
                 </topic>
                 <topic id="23" position="380,-50" order="5"
-                    bgColor="#ffcc00"
-                    fontStyle="Arial;12;#006600;bold;;" shape="line">
+                    bgColor="#ffcc00" fontStyle="Arial;8;#006600;bold;;" shape="line">
                     <text><![CDATA[1.5 Renforcer et améliorer les 
  activités de loisirs existantes]]></text>
                     <topic id="24" position="470,-75" order="0" shape="line">
@@ -108,8 +104,7 @@ du plan d'actions]]></text>
                     </topic>
                 </topic>
                 <topic id="25" position="380,-25" order="6"
-                    bgColor="#66ff00"
-                    fontStyle="Arial;12;#006600;bold;;" shape="line">
+                    bgColor="#66ff00" fontStyle="Arial;8;#006600;bold;;" shape="line">
                     <text><![CDATA[1.6 Renforcer et améliorer les ateliers   
  visant à  rompre l'isolement lié à la langue, 
  la pauvreté, la pression de la consommation]]></text>
@@ -120,12 +115,11 @@ du plan d'actions]]></text>
             </topic>
             <topic id="27" position="290,-25" order="2"
                 brColor="#808080" bgColor="#99ffff"
-                fontStyle="Arial;14;#0000cc;bold;;" shape="rounded rectagle">
+                fontStyle="Arial;8;#0000cc;bold;;" shape="rounded rectagle">
                 <text><![CDATA[2) Consolider nos moyens d'action : 
  locaux, organisation, communication interne]]></text>
                 <topic id="28" position="380,-100" order="0"
-                    bgColor="#ffff00"
-                    fontStyle="Arial;12;#006600;bold;;" shape="line">
+                    bgColor="#ffff00" fontStyle="Arial;8;#006600;bold;;" shape="line">
                     <text><![CDATA[2.1 Formaliser notre offre de services 
  et les modèles économiques correspondants]]></text>
                     <topic id="29" position="470,-150" order="0" shape="line">
@@ -133,8 +127,7 @@ du plan d'actions]]></text>
                     </topic>
                 </topic>
                 <topic id="30" position="380,-75" order="1"
-                    bgColor="#ffcc00"
-                    fontStyle="Arial;12;#006600;bold;;" shape="line">
+                    bgColor="#ffcc00" fontStyle="Arial;8;#006600;bold;;" shape="line">
                     <text><![CDATA[2.2 Formaliser le "qui fait quoi" 
  en lien avec notre offre de service]]></text>
                     <topic id="31" position="470,-125" order="0" shape="line">
@@ -142,8 +135,7 @@ du plan d'actions]]></text>
                     </topic>
                 </topic>
                 <topic id="32" position="380,-50" order="2"
-                    bgColor="#66ff00"
-                    fontStyle="Arial;12;#006600;bold;;" shape="line">
+                    bgColor="#66ff00" fontStyle="Arial;8;#006600;bold;;" shape="line">
                     <text><![CDATA[2.3. Elaborer un projet immobilier de proximité 
  réalisable au  centre ville]]></text>
                     <topic id="33" position="470,-100" order="0" shape="line">
@@ -152,13 +144,13 @@ du plan d'actions]]></text>
                 </topic>
             </topic>
             <topic id="34" position="290,0" order="3" brColor="#808080"
-                bgColor="#99ffff" fontStyle="Arial;14;#0000cc;bold;;" shape="rounded rectagle">
+                bgColor="#99ffff" fontStyle="Arial;8;#0000cc;bold;;" shape="rounded rectagle">
                 <text><![CDATA[3) Renforcer nos 
  partenariats et 
  notre notoriété]]></text>
                 <topic id="35" position="380,-75" order="0"
                     brColor="#808080" bgColor="#ffff00"
-                    fontStyle="Arial;12;#006600;bold;;" shape="line">
+                    fontStyle="Arial;8;#006600;bold;;" shape="line">
                     <text><![CDATA[3.1 Organiser pour chaque segment de notre offre 
  l'identification et la rencontre des partenaires concernés]]></text>
                     <topic id="36" position="470,-125" order="0" shape="line">
@@ -167,7 +159,7 @@ du plan d'actions]]></text>
                 </topic>
                 <topic id="37" position="380,-50" order="1"
                     brColor="#808080" bgColor="#ffcc00"
-                    fontStyle="Arial;12;#006600;bold;;" shape="line">
+                    fontStyle="Arial;8;#006600;bold;;" shape="line">
                     <text><![CDATA[3.2 Formaliser et contractualiser les partenariats 
  émergeants autour d'actions communes]]></text>
                     <topic id="38" position="470,-100" order="0" shape="line">
@@ -175,8 +167,7 @@ du plan d'actions]]></text>
                     </topic>
                 </topic>
                 <topic id="39" position="380,-25" order="2"
-                    bgColor="#ff6666"
-                    fontStyle="Arial;12;#006600;bold;;" shape="line">
+                    bgColor="#ff6666" fontStyle="Arial;8;#006600;bold;;" shape="line">
                     <text><![CDATA[3.3 développer la vie associative]]></text>
                     <topic id="40" position="470,-50" order="0" shape="line">
                         <text><![CDATA[Pdt + Agnès]]></text>
@@ -184,7 +175,7 @@ du plan d'actions]]></text>
                 </topic>
                 <topic id="41" position="380,0" order="3"
                     brColor="#808080" bgColor="#ff6666"
-                    fontStyle="Arial;12;#006600;bold;;" shape="line">
+                    fontStyle="Arial;8;#006600;bold;;" shape="line">
                     <text><![CDATA[3.4 définir et faire vivre un plan de communication 
  à partir de notre segmentation de l'offre]]></text>
                     <topic id="42" position="470,-50" order="0" shape="line">

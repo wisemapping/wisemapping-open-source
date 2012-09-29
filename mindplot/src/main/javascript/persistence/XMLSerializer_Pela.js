@@ -255,33 +255,35 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         }
 
         var topic = mindmap.createNode(type, id);
+
+        // Set text property is it;s defined...
         var text = domElem.getAttribute('text');
         if ($defined(text) && text) {
             topic.setText(text);
+        }
 
-            var fontStyle = domElem.getAttribute('fontStyle');
-            if ($defined(fontStyle)) {
-                var font = fontStyle.split(';');
+        var fontStyle = domElem.getAttribute('fontStyle');
+        if ($defined(fontStyle) && fontStyle) {
+            var font = fontStyle.split(';');
 
-                if (font[0]) {
-                    topic.setFontFamily(font[0]);
-                }
+            if (font[0]) {
+                topic.setFontFamily(font[0]);
+            }
 
-                if (font[1]) {
-                    topic.setFontSize(font[1]);
-                }
+            if (font[1]) {
+                topic.setFontSize(font[1]);
+            }
 
-                if (font[2]) {
-                    topic.setFontColor(font[2]);
-                }
+            if (font[2]) {
+                topic.setFontColor(font[2]);
+            }
 
-                if (font[3]) {
-                    topic.setFontWeight(font[3]);
-                }
+            if (font[3]) {
+                topic.setFontWeight(font[3]);
+            }
 
-                if (font[4]) {
-                    topic.setFontStyle(font[4]);
-                }
+            if (font[4]) {
+                topic.setFontStyle(font[4]);
             }
         }
 

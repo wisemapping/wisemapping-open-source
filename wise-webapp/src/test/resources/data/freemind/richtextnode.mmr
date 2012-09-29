@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <map version="0.9.0">
     <node TEXT="120924 Programme" ID="ID_0" COLOR="#ff3300" BACKGROUND_COLOR="#99ffff">
-        <font SIZE="16" NAME="Arial" BOLD="true"/>
+        <font SIZE="10" NAME="Arial" BOLD="true"/>
         <hook NAME="accessories/plugins/NodeNote.properties">
             <text></text>
         </hook>
         <node TEXT="bilan mi-parcours&#xA;du plan d'actions" STYLE="bubble" POSITION="right" ID="ID_1" COLOR="#0000cc" BACKGROUND_COLOR="#ffff33">
-            <font SIZE="14" NAME="Arial" BOLD="true"/>
+            <font SIZE="8" NAME="Arial" BOLD="true"/>
             <edge COLOR="#808080"/>
             <node TEXT="modalités" POSITION="right" ID="ID_2" COLOR="#006600">
-                <font SIZE="12" NAME="Arial" BOLD="true"/>
+                <font SIZE="8" NAME="Arial" BOLD="true"/>
                 <node TEXT="cf. mi-parcours 201109" POSITION="right" ID="ID_3"/>
                 <node TEXT="à partir des plans d'actions" POSITION="right" ID="ID_4">
-                    <font SIZE="12" NAME="Arial"/>
+                    <font SIZE="8" NAME="Arial"/>
                 </node>
                 <node TEXT="donner la parole aux référents prévus, en demandant des exemples" POSITION="right" ID="ID_5">
-                    <font SIZE="12" NAME="Arial"/>
+                    <font SIZE="8" NAME="Arial"/>
                 </node>
                 <node TEXT="faire compléter par les autres participants" POSITION="right" ID="ID_6">
-                    <font SIZE="12" NAME="Arial"/>
+                    <font SIZE="8" NAME="Arial"/>
                 </node>
             </node>
             <node TEXT="1) Adapter et améliorer &#xA; notre offre de services &#xA; selon l'évolution des besoins" STYLE="bubble" POSITION="right" ID="ID_7" COLOR="#0000cc" BACKGROUND_COLOR="#99ffff">
-                <font SIZE="12" NAME="Arial" BOLD="true"/>
+                <font SIZE="8" NAME="Arial" BOLD="true"/>
                 <edge COLOR="#808080"/>
                 <node TEXT="couleurs = état d'avancement en septembre 2011, &#xA;à mettre à jour selon avancement 2012" POSITION="right" ID="ID_8" BACKGROUND_COLOR="#99ffff">
                     <node TEXT="Bleu 0%" POSITION="right" ID="ID_9" BACKGROUND_COLOR="#0099ff"/>
@@ -34,65 +34,65 @@
                     </node>
                 </node>
                 <node TEXT="1.1. .Renforcer et structurer &#xA; le service &quot;accueil et orientation&quot;" POSITION="right" ID="ID_15" FOLDED="true" COLOR="#006600" BACKGROUND_COLOR="#66ff00">
-                    <font SIZE="12" NAME="Arial" BOLD="true"/>
+                    <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <node TEXT="Sophie" POSITION="right" ID="ID_16"/>
                 </node>
                 <node TEXT="1.2. Adapter l'offre Halte-Garderie &#xA; aux besoins des familles" POSITION="right" ID="ID_17" COLOR="#006600" BACKGROUND_COLOR="#ffff00">
-                    <font SIZE="12" NAME="Arial" BOLD="true"/>
+                    <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <node TEXT="Martine D et Christine" POSITION="right" ID="ID_18"/>
                 </node>
                 <node TEXT="1.3. Renforcer et structurer les services &#xA; de soutien à la parentalité" POSITION="right" ID="ID_19" COLOR="#006600" BACKGROUND_COLOR="#66ff00">
-                    <font SIZE="12" NAME="Arial" BOLD="true"/>
+                    <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <node TEXT="Nathalie" POSITION="right" ID="ID_20"/>
                 </node>
                 <node TEXT="1.4 Améliorer la qualité des &#xA; projets pédagogiques des ALSH" POSITION="right" ID="ID_21" COLOR="#006600" BACKGROUND_COLOR="#ffff00">
-                    <font SIZE="12" NAME="Arial" BOLD="true"/>
+                    <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <node TEXT="Josiane" POSITION="right" ID="ID_22"/>
                 </node>
                 <node TEXT="1.5 Renforcer et améliorer les &#xA; activités de loisirs existantes" POSITION="right" ID="ID_23" COLOR="#006600" BACKGROUND_COLOR="#ffcc00">
-                    <font SIZE="12" NAME="Arial" BOLD="true"/>
+                    <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <node TEXT="Agnès" POSITION="right" ID="ID_24"/>
                 </node>
                 <node TEXT="1.6 Renforcer et améliorer les ateliers   &#xA; visant à  rompre l'isolement lié à la langue, &#xA; la pauvreté, la pression de la consommation" POSITION="right" ID="ID_25" COLOR="#006600" BACKGROUND_COLOR="#66ff00">
-                    <font SIZE="12" NAME="Arial" BOLD="true"/>
+                    <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <node TEXT="Nathalie" POSITION="right" ID="ID_26"/>
                 </node>
             </node>
             <node TEXT="2) Consolider nos moyens d'action : &#xA; locaux, organisation, communication interne" STYLE="bubble" POSITION="right" ID="ID_27" COLOR="#0000cc" BACKGROUND_COLOR="#99ffff">
-                <font SIZE="14" NAME="Arial" BOLD="true"/>
+                <font SIZE="8" NAME="Arial" BOLD="true"/>
                 <edge COLOR="#808080"/>
                 <node TEXT="2.1 Formaliser notre offre de services &#xA; et les modèles économiques correspondants" POSITION="right" ID="ID_28" COLOR="#006600" BACKGROUND_COLOR="#ffff00">
-                    <font SIZE="12" NAME="Arial" BOLD="true"/>
+                    <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <node TEXT="Agnès" POSITION="right" ID="ID_29"/>
                 </node>
                 <node TEXT="2.2 Formaliser le &quot;qui fait quoi&quot; &#xA; en lien avec notre offre de service" POSITION="right" ID="ID_30" COLOR="#006600" BACKGROUND_COLOR="#ffcc00">
-                    <font SIZE="12" NAME="Arial" BOLD="true"/>
+                    <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <node TEXT="Martine G" POSITION="right" ID="ID_31"/>
                 </node>
                 <node TEXT="2.3. Elaborer un projet immobilier de proximité &#xA; réalisable au  centre ville" POSITION="right" ID="ID_32" COLOR="#006600" BACKGROUND_COLOR="#66ff00">
-                    <font SIZE="12" NAME="Arial" BOLD="true"/>
+                    <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <node TEXT="JMDW" POSITION="right" ID="ID_33"/>
                 </node>
             </node>
             <node TEXT="3) Renforcer nos &#xA; partenariats et &#xA; notre notoriété" STYLE="bubble" POSITION="right" ID="ID_34" COLOR="#0000cc" BACKGROUND_COLOR="#99ffff">
-                <font SIZE="14" NAME="Arial" BOLD="true"/>
+                <font SIZE="8" NAME="Arial" BOLD="true"/>
                 <edge COLOR="#808080"/>
                 <node TEXT="3.1 Organiser pour chaque segment de notre offre &#xA; l'identification et la rencontre des partenaires concernés" POSITION="right" ID="ID_35" COLOR="#006600" BACKGROUND_COLOR="#ffff00">
-                    <font SIZE="12" NAME="Arial" BOLD="true"/>
+                    <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <edge COLOR="#808080"/>
                     <node TEXT="Martine P" POSITION="right" ID="ID_36"/>
                 </node>
                 <node TEXT="3.2 Formaliser et contractualiser les partenariats &#xA; émergeants autour d'actions communes" POSITION="right" ID="ID_37" COLOR="#006600" BACKGROUND_COLOR="#ffcc00">
-                    <font SIZE="12" NAME="Arial" BOLD="true"/>
+                    <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <edge COLOR="#808080"/>
                     <node TEXT="Pdt + Agnès" POSITION="right" ID="ID_38"/>
                 </node>
                 <node TEXT="3.3 développer la vie associative" POSITION="right" ID="ID_39" COLOR="#006600" BACKGROUND_COLOR="#ff6666">
-                    <font SIZE="12" NAME="Arial" BOLD="true"/>
+                    <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <node TEXT="Pdt + Agnès" POSITION="right" ID="ID_40"/>
                 </node>
                 <node TEXT="3.4 définir et faire vivre un plan de communication &#xA; à partir de notre segmentation de l'offre" POSITION="right" ID="ID_41" COLOR="#006600" BACKGROUND_COLOR="#ff6666">
-                    <font SIZE="12" NAME="Arial" BOLD="true"/>
+                    <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <edge COLOR="#808080"/>
                     <node TEXT="Pdt + Agnès" POSITION="right" ID="ID_42"/>
                 </node>

@@ -58,6 +58,7 @@ public class FreemindImporter
     public static final int ROOT_LEVEL_TOPIC_HEIGHT = SECOND_LEVEL_TOPIC_HEIGHT;
     public static final int CENTRAL_TO_TOPIC_DISTANCE = 200;
     public static final int TOPIC_TO_TOPIC_DISTANCE = 90;
+    public static final String NODE_TYPE = "NODE";
     private com.wisemapping.jaxb.wisemap.ObjectFactory mindmapObjectFactory;
     private static final String POSITION_LEFT = "left";
     private static final String BOLD = "bold";
@@ -72,6 +73,10 @@ public class FreemindImporter
 
 
     private int currentId;
+    private static final int FONT_SIZE_HUGE = 15;
+    private static final int FONT_SIZE_LARGE = 10;
+    public static final int FONT_SIZE_NORMAL = 8;
+    private static final int FONT_SIZE_SMALL = 6;
 
     public static void main(String argv[]) {
 
@@ -297,7 +302,7 @@ public class FreemindImporter
                 final Richcontent content = (Richcontent) element;
                 final String type = content.getTYPE();
 
-                if (type.equals("NODE")) {
+                if (type.equals(NODE_TYPE)) {
                     String text = html2text(content);
                     currentWiseTopic.setText(text);
                 } else {
@@ -513,12 +518,15 @@ public class FreemindImporter
         final String text = freeNode.getTEXT();
         wiseTopic.setText(text);
 
+        // Background color ...
         final String bgcolor = freeNode.getBACKGROUNDCOLOR();
         wiseTopic.setBgColor(bgcolor);
+
 
         final String shape = getShapeFormFromNode(freeNode);
         wiseTopic.setShape(shape);
 
+        // Check for styles ...
         final String fontStyle = generateFontStyle(freeNode, null);
         if (fontStyle != null) {
             wiseTopic.setFontStyle(fontStyle);
@@ -540,9 +548,9 @@ public class FreemindImporter
 
     }
 
-    private
+
     @Nullable
-    String generateFontStyle(@NotNull Node node, @Nullable Font font) {
+    private String generateFontStyle(@NotNull Node node, @Nullable Font font) {
         /*
         * MindmapFont format : fontName ; size ; color ; bold; italic;
         * eg: Verdana;10;#ffffff;bold;italic;
@@ -556,10 +564,24 @@ public class FreemindImporter
         }
         fontStyle.append(";");
 
-        // Size ...
+        // Freemind size goes from 10 to 28
+        // WiseMapping:
+        //  6 Small
+        //  8 Normal
+        // 10 Large
+        // 15 Huge
         if (font != null) {
-            final BigInteger bigInteger = (font.getSIZE() == null || font.getSIZE().intValue() < 8) ? BigInteger.valueOf(8) : font.getSIZE();
-            fontStyle.append(bigInteger);
+            final int fontSize = ((font.getSIZE() == null || font.getSIZE().intValue() < 8) ? BigInteger.valueOf(FONT_SIZE_NORMAL) : font.getSIZE()).intValue();
+            int wiseFontSize = FONT_SIZE_SMALL;
+            if (fontSize >= 24) {
+                wiseFontSize = FONT_SIZE_HUGE;
+            } else if (fontSize >= 16) {
+                wiseFontSize = FONT_SIZE_LARGE;
+            }else  if (fontSize >= 12) {
+                wiseFontSize = FONT_SIZE_NORMAL;
+            }
+            fontStyle.append(wiseFontSize);
+
         }
         fontStyle.append(";");
 
