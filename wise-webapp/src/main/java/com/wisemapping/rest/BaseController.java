@@ -24,6 +24,7 @@ import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestErrors;
 import com.wisemapping.security.Utils;
+import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -40,6 +41,8 @@ import java.lang.reflect.UndeclaredThrowableException;
 import java.util.Locale;
 
 public class BaseController {
+
+    final protected static Logger logger = Logger.getLogger("com.wisemapping.rest");
 
     @Qualifier("messageSource")
     @Autowired

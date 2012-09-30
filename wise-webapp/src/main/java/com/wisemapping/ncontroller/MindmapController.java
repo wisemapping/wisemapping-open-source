@@ -19,12 +19,15 @@
 package com.wisemapping.ncontroller;
 
 
+import com.wisemapping.exceptions.AccessDeniedSecurityException;
+import com.wisemapping.exceptions.LockException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.MindMapHistory;
 import com.wisemapping.model.User;
 import com.wisemapping.security.Utils;
+import com.wisemapping.service.LockManager;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.view.MindMapBean;
 import org.jetbrains.annotations.NotNull;
@@ -140,33 +143,47 @@ public class MindmapController {
     }
 
     @RequestMapping(value = "maps/{id}/edit", method = RequestMethod.GET)
-    public String showMindmapEditorPage(@PathVariable int id, @NotNull Model model) {
+    public String showMindmapEditorPage(@PathVariable int id, @NotNull Model model) throws WiseMappingException {
+        return showEditorPage(id, model, true);
+    }
+
+    private String showEditorPage(int id, @NotNull final Model model, boolean requiresLock) throws AccessDeniedSecurityException, LockException {
         final MindMapBean mindmapBean = findMindmapBean(id);
         final Mindmap mindmap = mindmapBean.getDelegated();
+        final User collaborator = Utils.getUser();
+        final Locale locale = LocaleContextHolder.getLocale();
 
+        // Is the mindmap locked ?.
+        boolean readOnlyMode = !requiresLock || !mindmap.hasPermissions(collaborator, CollaborationRole.EDITOR);
+        if (!readOnlyMode) {
+            final LockManager lockManager = this.mindmapService.getLockManager();
+            if (lockManager.isLocked(mindmap) && !lockManager.isLockedBy(mindmap, collaborator)) {
+                readOnlyMode = true;
+                model.addAttribute("lockedBy", lockManager.getLockInfo(mindmap));
+            } else {
+                lockManager.lock(mindmap, collaborator);
+            }
+        }
+
+        // Set render attributes ...
         model.addAttribute("mindmap", mindmapBean);
 
         // Configure default locale for the editor ...
-        final Locale locale = LocaleContextHolder.getLocale();
         model.addAttribute("locale", locale.toString().toLowerCase());
-        final User collaborator = Utils.getUser();
         model.addAttribute("principal", collaborator);
-        model.addAttribute("readOnlyMode", !mindmap.hasPermissions(collaborator, CollaborationRole.EDITOR));
+        model.addAttribute("readOnlyMode", readOnlyMode);
         return "mindmapEditor";
     }
 
     @RequestMapping(value = "maps/{id}/view", method = RequestMethod.GET)
-    public String showMindmapViewerPage(@PathVariable int id, @NotNull Model model) {
-        final String result = showMindmapEditorPage(id, model);
-        model.addAttribute("readOnlyMode", true);
-        return result;
+    public String showMindmapViewerPage(@PathVariable int id, @NotNull Model model) throws LockException, AccessDeniedSecurityException {
+        return showEditorPage(id, model, false);
     }
 
     @RequestMapping(value = "maps/{id}/try", method = RequestMethod.GET)
-    public String showMindmapTryPage(@PathVariable int id, @NotNull Model model) {
-        final String result = showMindmapEditorPage(id, model);
+    public String showMindmapTryPage(@PathVariable int id, @NotNull Model model) throws LockException, AccessDeniedSecurityException {
+        final String result = showEditorPage(id, model, false);
         model.addAttribute("memoryPersistence", true);
-        model.addAttribute("readOnlyMode", false);
         return result;
     }
 
@@ -213,11 +230,7 @@ public class MindmapController {
     }
 
     private Mindmap findMindmap(long mapId) {
-        final Mindmap mindmap = mindmapService.findMindmapById((int) mapId);
-        if (mindmap == null) {
-            throw new IllegalArgumentException("Mindmap could not be found");
-        }
-        return mindmap;
+        return mindmapService.findMindmapById((int) mapId);
     }
 
     private MindMapBean findMindmapBean(long mapId) {

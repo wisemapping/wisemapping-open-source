@@ -31,7 +31,7 @@ mindplot.PersistenceManager = new Class({
 
     },
 
-    save:function (mindmap, editorProperties, saveHistory, events) {
+    save:function (mindmap, editorProperties, saveHistory, events, sync) {
         $assert(mindmap, "mindmap can not be null");
         $assert(editorProperties, "editorProperties can not be null");
 
@@ -44,7 +44,7 @@ mindplot.PersistenceManager = new Class({
 
         var pref = JSON.encode(editorProperties);
         try {
-            this.saveMapXml(mapId, mapXml, pref, saveHistory, events);
+            this.saveMapXml(mapId, mapXml, pref, saveHistory, events,sync);
         } catch (e) {
             console.log(e);
             events.onError();
@@ -58,15 +58,19 @@ mindplot.PersistenceManager = new Class({
     },
 
     discardChanges:function (mapId) {
-        throw "Method must be implemented";
+        throw new Error("Method must be implemented");
     },
 
     loadMapDom:function (mapId) {
-        throw "Method must be implemented";
+        throw new Error("Method must be implemented");
     },
 
-    saveMapXml:function (mapId, mapXml, pref, saveHistory, events) {
-        throw "Method must be implemented";
+    saveMapXml:function (mapId, mapXml, pref, saveHistory, events,sync) {
+        throw new Error("Method must be implemented");
+    },
+
+    unlockMap:function (mindmap) {
+        throw new Error("Method must be implemented");
     }
 });
 

@@ -18,28 +18,28 @@
 
 mindplot.LocalStorageManager = new Class({
         Extends:mindplot.PersistenceManager,
-        initialize: function() {
+        initialize:function () {
             this.parent();
         },
 
-        saveMapXml : function(mapId, mapXml, pref, saveHistory, events) {
+        saveMapXml:function (mapId, mapXml, pref, saveHistory, events) {
             localStorage.setItem(mapId + "-xml", mapXml);
             events.onSuccess();
         },
 
-        discardChanges : function(mapId) {
+        discardChanges:function (mapId) {
             localStorage.removeItem(mapId + "-xml");
         },
 
-        loadMapDom : function(mapId) {
+        loadMapDom:function (mapId) {
             var xml = localStorage.getItem(mapId + "-xml");
             if (xml == null) {
                 // Let's try to open one from the local directory ...
                 var xmlRequest = new Request({
-                    url: 'samples/' + mapId + '.xml',
-                    method: 'get',
-                    async: false,
-                    onSuccess: function(responseText) {
+                    url:'samples/' + mapId + '.xml',
+                    method:'get',
+                    async:false,
+                    onSuccess:function (responseText) {
                         xml = responseText;
                     }
                 });
@@ -54,6 +54,10 @@ mindplot.LocalStorageManager = new Class({
 
             var parser = new DOMParser();
             return  parser.parseFromString(xml, "text/xml");
+        },
+
+        unlockMap:function (mindmap) {
+            // Ignore, no implementation required ...
         }
     }
 );

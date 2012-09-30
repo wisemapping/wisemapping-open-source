@@ -45,6 +45,11 @@ public class MindmapServiceImpl
     private NotificationService notificationService;
 
     private String adminUser;
+    final private LockManager lockManager;
+
+    public MindmapServiceImpl() {
+        this.lockManager = new LockManagerImpl();
+    }
 
     @Override
     public boolean hasPermissions(@Nullable User user, int mapId, @NotNull CollaborationRole grantedRole) {
@@ -94,6 +99,11 @@ public class MindmapServiceImpl
         if (mindMap.getTitle() == null || mindMap.getTitle().length() == 0) {
             throw new WiseMappingException("The tile can not be empty");
         }
+
+        // Update edition timeout ...
+        final LockManager lockManager = this.getLockManager();
+        lockManager.updateExpirationTimeout(mindMap, Utils.getUser());
+
         mindmapManager.updateMindmap(mindMap, saveHistory);
     }
 
@@ -262,6 +272,12 @@ public class MindmapServiceImpl
             throw new WiseMappingException("No enough permissions for this operation.");
         }
         mindmapManager.updateCollaboration(collaboration);
+    }
+
+    @Override
+    @NotNull
+    public LockManager getLockManager() {
+        return this.lockManager;
     }
 
     private Collaboration getCollaborationBy(String email, Set<Collaboration> collaborations) {
