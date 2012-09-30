@@ -138,10 +138,6 @@ public class Mindmap {
         return lastModificationTime;
     }
 
-    public Date getLastModificationDate() {
-        return new Date();
-    }
-
     public void setLastModificationTime(Calendar lastModificationTime) {
         this.lastModificationTime = lastModificationTime;
     }

@@ -325,10 +325,12 @@ mindplot.widget.Menu = new Class({
 
             if (!readOnly) {
                 // To prevent the user from leaving the page with changes ...
-                $(window).addEvent('beforeunload', function () {
+                Element.NativeEvents.unload = 2;
+                $(window).addEvent('unload', function () {
                     if (this.isSaveRequired()) {
-                        this.save(saveElem, designer, false);
+                        this.save(saveElem, designer, false, true);
                     }
+                    this.unlockMap(designer);
                 }.bind(this));
 
                 // Autosave on a fixed period of time ...
@@ -343,27 +345,9 @@ mindplot.widget.Menu = new Class({
         var discardElem = $('discard');
         if (discardElem) {
             this._addButton('discard', false, false, function () {
-                this.discardChanges();
+                this.discardChanges(designer);
             }.bind(this));
             this._registerTooltip('discard', $msg('DISCARD_CHANGES'));
-        }
-
-        var tagElem = $('tagIt');
-        if (tagElem) {
-            this._addButton('tagIt', false, false, function () {
-                var reqDialog = new MooDialog.Request('c/tags?mapId=' + mapId, null,
-                    {'class':'modalDialog tagItModalDialog',
-                        closeButton:true,
-                        destroyOnClose:true,
-                        title:'Tags'
-                    });
-                reqDialog.setRequestOptions({
-                    onRequest:function () {
-                        reqDialog.setContent($msg('LOADING'));
-                    }
-                });
-            });
-            this._registerTooltip('tagIt', "Tag");
         }
 
         var shareElem = $('shareIt');

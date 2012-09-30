@@ -22,7 +22,6 @@ import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
 import com.wisemapping.exceptions.AccessDeniedSecurityException;
-import com.wisemapping.exceptions.UnexpectedArgumentException;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapService;
 import org.aopalliance.intercept.MethodInvocation;
@@ -31,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 public abstract class BaseSecurityAdvice {
     private MindmapService mindmapService = null;
 
-    public void checkRole(MethodInvocation methodInvocation) throws UnexpectedArgumentException, AccessDeniedSecurityException {
+    public void checkRole(MethodInvocation methodInvocation) throws AccessDeniedSecurityException {
         final User user = Utils.getUser();
         final Object argument = methodInvocation.getArguments()[0];
         boolean isAllowed;
@@ -44,7 +43,7 @@ public abstract class BaseSecurityAdvice {
             // Read operation find on the user are allowed ...
             isAllowed = user.equals(argument);
         } else {
-            throw new UnexpectedArgumentException("Argument " + argument);
+            throw new IllegalArgumentException("Argument " + argument);
         }
 
         if (!isAllowed) {

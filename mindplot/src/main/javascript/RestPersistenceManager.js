@@ -18,15 +18,17 @@
 
 mindplot.RESTPersistenceManager = new Class({
         Extends:mindplot.PersistenceManager,
-        initialize:function (saveUrl, revertUrl) {
+        initialize:function (saveUrl, revertUrl, lockUrl) {
             this.parent();
             $assert(saveUrl, "saveUrl can not be null");
             $assert(revertUrl, "revertUrl can not be null");
             this.saveUrl = saveUrl;
             this.revertUrl = revertUrl;
+            this.lockUrl = lockUrl;
+            this.timestamp = null;
         },
 
-        saveMapXml:function (mapId, mapXml, pref, saveHistory, events) {
+        saveMapXml:function (mapId, mapXml, pref, saveHistory, events, sync) {
 
             var data = {
                 id:mapId,
@@ -34,12 +36,17 @@ mindplot.RESTPersistenceManager = new Class({
                 properties:pref
             };
 
+            var persistence = this;
+            var query = "minor=" + !saveHistory;
+            query = query + (this.timestamp ? "&timestamp=" + this.timestamp : "");
+
             var request = new Request({
-                url:this.saveUrl.replace("{id}", mapId) + "?minor=" + !saveHistory,
+                url:this.saveUrl.replace("{id}", mapId) + "?" + query,
                 method:'put',
+                async:!sync,
                 onSuccess:function (responseText, responseXML) {
                     events.onSuccess();
-
+                    persistence.timestamp = responseText;
                 },
                 onException:function (headerName, value) {
                     events.onError();
@@ -81,8 +88,27 @@ mindplot.RESTPersistenceManager = new Class({
                 urlEncoded:false
             });
             request.post();
-        }
+        },
 
+        unlockMap:function (mindmap) {
+            var mapId = mindmap.getId();
+            var request = new Request({
+                url:this.lockUrl.replace("{id}", mapId),
+                async:false,
+                method:'put',
+                onSuccess:function () {
+
+                },
+                onException:function () {
+                },
+                onFailure:function () {
+                },
+                headers:{"Content-Type":"text/plain"},
+                emulation:false,
+                urlEncoded:false
+            });
+            request.put("false");
+        }
     }
 );
 

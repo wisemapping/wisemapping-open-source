@@ -62,4 +62,6 @@ public interface MindmapService {
     MindMapHistory findMindmapHistory(int id, int hid) throws WiseMappingException;
 
     void updateCollaboration(@NotNull Collaborator collaborator, @NotNull Collaboration collaboration) throws WiseMappingException;
+
+    LockManager getLockManager();
 }

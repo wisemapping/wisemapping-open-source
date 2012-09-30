@@ -20,6 +20,7 @@ package com.wisemapping.rest;
 
 
 import com.wisemapping.exceptions.ImportUnexpectedException;
+import com.wisemapping.exceptions.MindmapOutdatedException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.importer.ImportFormat;
 import com.wisemapping.importer.Importer;
@@ -29,8 +30,10 @@ import com.wisemapping.model.*;
 import com.wisemapping.rest.model.*;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.CollaborationException;
+import com.wisemapping.service.LockManager;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.validator.MapInfoValidator;
+import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -49,6 +52,7 @@ import java.util.*;
 
 @Controller
 public class MindmapController extends BaseController {
+
     public static final String LATEST_HISTORY_REVISION = "latest";
     @Qualifier("mindmapService")
     @Autowired
@@ -136,8 +140,8 @@ public class MindmapController extends BaseController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/document", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateDocument(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor) throws WiseMappingException, IOException {
+    @ResponseBody
+    public long updateDocument(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor, @RequestParam(required = false) Long timestamp) throws WiseMappingException, IOException {
 
         final Mindmap mindmap = mindmapService.findMindmapById(id);
         final User user = Utils.getUser();
@@ -146,6 +150,11 @@ public class MindmapController extends BaseController {
         final String properties = restMindmap.getProperties();
         if (properties == null) {
             throw new IllegalArgumentException("Map properties can not be null");
+        }
+
+        // Check that there we are not overwriting an already existing map ...
+        if (timestamp != null && mindmap.getLastModificationTime().getTimeInMillis() > timestamp) {
+            throw new MindmapOutdatedException("Mindmap timestamp out of sync. Client timestamp: " + timestamp + ", DB Timestamp:" + timestamp);
         }
 
         // Update collaboration properties ...
@@ -160,7 +169,11 @@ public class MindmapController extends BaseController {
         mindmap.setXmlStr(xml);
 
         // Update map ...
+        logger.debug("Mindmap save completed:" + restMindmap.getXml());
         saveMindmap(minor, mindmap, user);
+
+        // Return last update timestamp ...
+        return mindmap.getLastModificationTime().getTimeInMillis();
     }
 
     /**
@@ -317,6 +330,14 @@ public class MindmapController extends BaseController {
 
     }
 
+    @RequestMapping(method = RequestMethod.DELETE, value = "/maps/{id}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void updateMap(@PathVariable int id) throws IOException, WiseMappingException {
+        final User user = Utils.getUser();
+        final Mindmap mindmap = mindmapService.findMindmapById(id);
+        mindmapService.removeMindmap(mindmap, user);
+    }
+
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/starred", consumes = {"text/plain"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateStarredState(@RequestBody String value, @PathVariable int id) throws WiseMappingException {
@@ -334,12 +355,13 @@ public class MindmapController extends BaseController {
         mindmapService.updateCollaboration(user, collaboration);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/maps/{id}")
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/lock", consumes = {"text/plain"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateMap(@PathVariable int id) throws IOException, WiseMappingException {
+    public void updateMapLock(@RequestBody String value, @PathVariable int id) throws IOException, WiseMappingException {
         final User user = Utils.getUser();
+        final LockManager lockManager = mindmapService.getLockManager();
         final Mindmap mindmap = mindmapService.findMindmapById(id);
-        mindmapService.removeMindmap(mindmap, user);
+        lockManager.updateLock(Boolean.parseBoolean(value), mindmap, user);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/maps/batch")

@@ -40,7 +40,7 @@ mindplot.widget.IMenu = new Class({
         });
     },
 
-    discardChanges:function () {
+    discardChanges:function (designer) {
         // Avoid autosave before leaving the page ....
         this.setRequireChange(false);
 
@@ -49,12 +49,21 @@ mindplot.widget.IMenu = new Class({
         var mindmap = designer.getMindmap();
         persistenceManager.discardChanges(mindmap.getId());
 
+        // Unlock map ...
+        this.unlockMap(designer);
+
         // Reload the page ...
         window.location.reload();
 
     },
 
-    save:function (saveElem, designer, saveHistory) {
+    unlockMap:function (designer) {
+        var mindmap = designer.getMindmap();
+        var persistenceManager = mindplot.PersistenceManager.getInstance();
+        persistenceManager.unlockMap(mindmap);
+    },
+
+    save:function (saveElem, designer, saveHistory, sync) {
         // Load map content ...
         var mindmap = designer.getMindmap();
         var mindmapProp = designer.getMindmapProperties();
@@ -88,7 +97,8 @@ mindplot.widget.IMenu = new Class({
                     $notify(msg);
                 }
             }
-        });
+        }, sync);
+
     },
 
     isSaveRequired:function () {
