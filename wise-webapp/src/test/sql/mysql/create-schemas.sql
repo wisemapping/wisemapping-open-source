@@ -21,7 +21,7 @@ CREATE TABLE MINDMAP (
 id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
 title varchar(255) CHARACTER SET utf8 NOT NULL,
 description varchar(255) CHARACTER SET utf8 NOT NULL,
-xml blob NOT NULL,
+xml mediumblob NOT NULL,
 public BOOL not null default 0,
 creation_date datetime,
 edition_date datetime,
@@ -34,7 +34,7 @@ FOREIGN KEY(creator_id) REFERENCES USER(colaborator_id) ON DELETE CASCADE ON UPD
 
 CREATE TABLE MINDMAP_HISTORY
 (id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-xml blob NOT NULL,
+xml mediumblob NOT NULL,
 mindmap_id INTEGER NOT NULL,
 creation_date datetime,
 editor_id INTEGER NOT NULL,
