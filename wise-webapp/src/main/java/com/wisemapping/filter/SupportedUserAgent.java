@@ -48,7 +48,7 @@ public class SupportedUserAgent implements Serializable {
         boolean result = browser == Browser.FIREFOX && majorVersion >= 10;
         result = result || browser == Browser.IE8 || browser == Browser.IE9;
         result = result || browser == Browser.IE && majorVersion >= 8;
-        result = result || browser == Browser.OPERA && majorVersion >= 11;
+        result = result || browser == Browser.OPERA10 && majorVersion >= 11;
         result = result || browser == Browser.CHROME && majorVersion >= 18;
         result = result || browser == Browser.SAFARI5;
         result = result || browser == Browser.SAFARI && majorVersion >= 5;
