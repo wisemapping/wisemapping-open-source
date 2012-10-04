@@ -15,15 +15,11 @@
 *   See the License for the specific language governing permissions and
 *   limitations under the License.
 */
+package com.wisemapping.exceptions;
 
-package com.wisemapping.service;
-
-import com.wisemapping.exceptions.WiseMappingException;
-
-public class InvalidUserEmailException  extends WiseMappingException
-{
-    public InvalidUserEmailException(String msg)
-    {
-        super(msg);
-    }
+public enum Severity {
+    INFO,
+    WARNING,
+    SEVERE,
+    FATAL
 }

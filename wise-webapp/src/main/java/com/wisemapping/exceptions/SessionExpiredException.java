@@ -1,5 +1,5 @@
 /*
-*    Copyright [2011] [wisemapping]
+*    Copyright [2012] [wisemapping]
 *
 *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
 *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -20,15 +20,17 @@ package com.wisemapping.exceptions;
 
 import com.wisemapping.model.Collaborator;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class SessionExpiredException
-    extends ClientException
-{
+        extends ClientException {
     public static final String MSG_KEY = "MINDMAP_TIMESTAMP_OUTDATED";
+    @Nullable
+    private Collaborator lastUpdater;
 
-    public SessionExpiredException(@NotNull String msg,@NotNull Collaborator newEditor)
-    {
-        super(msg);
+    public SessionExpiredException(@Nullable Collaborator lastUpdater) {
+        super("Map has been updated by " + (lastUpdater != null ? lastUpdater.getEmail() : ""), Severity.FATAL);
+        this.lastUpdater = lastUpdater;
     }
 
     @NotNull

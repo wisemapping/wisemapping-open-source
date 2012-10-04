@@ -6,8 +6,11 @@ import org.springframework.context.MessageSource;
 import java.util.Locale;
 
 abstract public class ClientException extends WiseMappingException {
-    public ClientException(@NotNull String message) {
+    private Severity severity;
+
+    public ClientException(@NotNull String message, @NotNull Severity severity) {
         super(message);
+        this.severity = severity;
     }
 
     protected abstract
@@ -16,5 +19,9 @@ abstract public class ClientException extends WiseMappingException {
 
     public String getMessage(@NotNull final MessageSource messageSource, final @NotNull Locale locale) {
         return messageSource.getMessage(this.getMsgBundleKey(), null, locale);
+    }
+
+    public Severity getSeverity() {
+        return this.severity;
     }
 }
