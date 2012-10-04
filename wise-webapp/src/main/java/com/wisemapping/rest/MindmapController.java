@@ -1,5 +1,5 @@
 /*
-*    Copyright [2011] [wisemapping]
+*    Copyright [2012] [wisemapping]
 *
 *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
 *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -151,7 +151,7 @@ public class MindmapController extends BaseController {
         }
 
         // Could the map be updated ?
-        checkUpdate(mindmap, user, session, timestamp);
+        verifyLock(mindmap, user, session, timestamp);
 
         // Update collaboration properties ...
         final CollaborationProperties collaborationProperties = mindmap.findCollaborationProperties(user);
@@ -174,30 +174,32 @@ public class MindmapController extends BaseController {
         return lockInfo.getTimestamp();
     }
 
-    private void checkUpdate(@NotNull Mindmap mindmap, @NotNull User user, long session, long timestamp) throws WiseMappingException {
-        // The lock was lost, reclaim as the ownership of it.
-        final LockManager lockManager = mindmapService.getLockManager();
-        final boolean lockLost = lockManager.isLocked(mindmap);
-        if (!lockLost) {
-            lockManager.lock(mindmap, user, session);
-        }
+    private void verifyLock(@NotNull Mindmap mindmap, @NotNull User user, long session, long timestamp) throws WiseMappingException {
+        throw new SessionExpiredException(user);
 
-        final LockInfo lockInfo = lockManager.getLockInfo(mindmap);
-        if (lockInfo.getCollaborator().equals(user)) {
-            final boolean outdated = mindmap.getLastModificationTime().getTimeInMillis() > timestamp;
-            if (lockInfo.getSession() == session) {
-                // Timestamp might not be returned to the client. This try to cover this case, ignoring the client timestamp check.
-                final User lastEditor = mindmap.getLastEditor();
-                if (outdated && (lockInfo.getPreviousTimestamp() != timestamp || lastEditor == null || !lastEditor.equals(user))) {
-                    throw new MultipleSessionsOpenException("The map has been updated and not by you. Session lost.");
-                }
-            } else if (outdated) {
-                throw new MultipleSessionsOpenException("The map has been updated and not by you. Session lost.");
-            }
-        } else {
-            throw new SessionExpiredException("You have lost the edition session", lockInfo.getCollaborator());
-
-        }
+//        // The lock was lost, reclaim as the ownership of it.
+//        final LockManager lockManager = mindmapService.getLockManager();
+//        final boolean lockLost = lockManager.isLocked(mindmap);
+//        if (!lockLost) {
+//            lockManager.lock(mindmap, user, session);
+//        }
+//
+//        final LockInfo lockInfo = lockManager.getLockInfo(mindmap);
+//        if (lockInfo.getCollaborator().equals(user)) {
+//            final boolean outdated = mindmap.getLastModificationTime().getTimeInMillis() > timestamp;
+//            if (lockInfo.getSession() == session) {
+//                // Timestamp might not be returned to the client. This try to cover this case, ignoring the client timestamp check.
+//                final User lastEditor = mindmap.getLastEditor();
+//                if (outdated && (lockInfo.getPreviousTimestamp() != timestamp || lastEditor == null || !lastEditor.equals(user))) {
+//                    throw new SessionExpiredException(lastEditor);
+//                }
+//            } else if (outdated) {
+//                throw new MultipleSessionsOpenException("The map has been updated and not by you. Session lost.");
+//            }
+//        } else {
+//            throw new SessionExpiredException(lockInfo.getCollaborator());
+//
+//        }
     }
 
     /**

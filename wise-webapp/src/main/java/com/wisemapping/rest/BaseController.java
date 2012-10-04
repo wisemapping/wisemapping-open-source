@@ -1,5 +1,5 @@
 /*
-*    Copyright [2011] [wisemapping]
+*    Copyright [2012] [wisemapping]
 *
 *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
 *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -20,6 +20,7 @@ package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.ClientException;
 import com.wisemapping.exceptions.ImportUnexpectedException;
+import com.wisemapping.exceptions.Severity;
 import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestErrors;
@@ -59,7 +60,7 @@ public class BaseController {
     @ResponseBody
     public RestErrors handleClientErrors(@NotNull IllegalArgumentException ex) {
         ex.printStackTrace();
-        return new RestErrors(ex.getMessage());
+        return new RestErrors(ex.getMessage(), Severity.SEVERE);
     }
 
     @ExceptionHandler(Exception.class)
@@ -101,7 +102,7 @@ public class BaseController {
         if (cause instanceof ClientException) {
             result = handleClientErrors((ClientException) cause);
         } else {
-            result = new RestErrors(ex.getMessage());
+            result = new RestErrors(ex.getMessage(), Severity.INFO);
         }
         return result;
     }
@@ -110,6 +111,6 @@ public class BaseController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RestErrors handleClientErrors(@NotNull ClientException ex) {
         final Locale locale = LocaleContextHolder.getLocale();
-        return new RestErrors(ex.getMessage(messageSource, locale));
+        return new RestErrors(ex.getMessage(messageSource, locale),ex.getSeverity());
     }
 }

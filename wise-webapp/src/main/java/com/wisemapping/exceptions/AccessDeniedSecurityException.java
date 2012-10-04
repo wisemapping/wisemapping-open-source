@@ -1,5 +1,5 @@
 /*
-*    Copyright [2011] [wisemapping]
+*    Copyright [2012] [wisemapping]
 *
 *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
 *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -27,7 +27,7 @@ public class AccessDeniedSecurityException
 
     public AccessDeniedSecurityException(@NotNull String msg)
     {
-        super(msg);
+        super(msg,Severity.FATAL);
     }
 
     @NotNull
