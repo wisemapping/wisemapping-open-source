@@ -19,6 +19,7 @@
 package com.wisemapping.service;
 
 import com.wisemapping.model.Collaborator;
+import com.wisemapping.model.Mindmap;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
@@ -26,11 +27,15 @@ import java.util.Calendar;
 public class LockInfo {
     final private Collaborator collaborator;
     private Calendar timeout;
-    private static int EXPIRATION_MIN = 25;
+    private long session;
+    private static int EXPIRATION_MIN = 30;
+    private long timestamp = -1;
+    private long previousTimestamp;
 
-    public LockInfo(@NotNull Collaborator collaborator) {
+    public LockInfo(@NotNull Collaborator collaborator, @NotNull Mindmap mindmap, long session) {
         this.collaborator = collaborator;
         this.updateTimeout();
+        this.updateTimestamp(mindmap);
     }
 
     public Collaborator getCollaborator() {
@@ -38,7 +43,7 @@ public class LockInfo {
     }
 
     public boolean isExpired() {
-      return timeout.before(Calendar.getInstance());
+        return timeout.before(Calendar.getInstance());
     }
 
     public void updateTimeout() {
@@ -46,5 +51,26 @@ public class LockInfo {
         calendar.add(Calendar.MINUTE, EXPIRATION_MIN);
         this.timeout = calendar;
 
+    }
+
+    public long getSession() {
+        return session;
+    }
+
+    public void setSession(long session) {
+        this.session = session;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public long getPreviousTimestamp() {
+        return previousTimestamp;
+    }
+
+    public void updateTimestamp(@NotNull Mindmap mindmap) {
+        this.previousTimestamp = this.timestamp;
+        this.timestamp = mindmap.getLastModificationTime().getTimeInMillis();
     }
 }

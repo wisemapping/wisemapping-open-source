@@ -19,9 +19,7 @@
 package com.wisemapping.rest;
 
 
-import com.wisemapping.exceptions.ImportUnexpectedException;
-import com.wisemapping.exceptions.MindmapOutdatedException;
-import com.wisemapping.exceptions.WiseMappingException;
+import com.wisemapping.exceptions.*;
 import com.wisemapping.importer.ImportFormat;
 import com.wisemapping.importer.Importer;
 import com.wisemapping.importer.ImporterException;
@@ -30,10 +28,10 @@ import com.wisemapping.model.*;
 import com.wisemapping.rest.model.*;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.CollaborationException;
+import com.wisemapping.service.LockInfo;
 import com.wisemapping.service.LockManager;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.validator.MapInfoValidator;
-import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -141,7 +139,7 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/document", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseBody
-    public long updateDocument(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor, @RequestParam(required = false) Long timestamp) throws WiseMappingException, IOException {
+    public long updateDocument(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor, @RequestParam(required = false) Long timestamp, @RequestParam(required = false) Long session) throws WiseMappingException, IOException {
 
         final Mindmap mindmap = mindmapService.findMindmapById(id);
         final User user = Utils.getUser();
@@ -152,10 +150,8 @@ public class MindmapController extends BaseController {
             throw new IllegalArgumentException("Map properties can not be null");
         }
 
-        // Check that there we are not overwriting an already existing map ...
-        if (timestamp != null && mindmap.getLastModificationTime().getTimeInMillis() > timestamp) {
-            throw new MindmapOutdatedException("Mindmap timestamp out of sync. Client timestamp: " + timestamp + ", DB Timestamp:" + timestamp);
-        }
+        // Could the map be updated ?
+        checkUpdate(mindmap, user, session, timestamp);
 
         // Update collaboration properties ...
         final CollaborationProperties collaborationProperties = mindmap.findCollaborationProperties(user);
@@ -172,8 +168,36 @@ public class MindmapController extends BaseController {
         logger.debug("Mindmap save completed:" + restMindmap.getXml());
         saveMindmap(minor, mindmap, user);
 
-        // Return last update timestamp ...
-        return mindmap.getLastModificationTime().getTimeInMillis();
+        // Update edition timeout ...
+        final LockManager lockManager = mindmapService.getLockManager();
+        final LockInfo lockInfo = lockManager.updateExpirationTimeout(mindmap, user, session);
+        return lockInfo.getTimestamp();
+    }
+
+    private void checkUpdate(@NotNull Mindmap mindmap, @NotNull User user, long session, long timestamp) throws WiseMappingException {
+        // The lock was lost, reclaim as the ownership of it.
+        final LockManager lockManager = mindmapService.getLockManager();
+        final boolean lockLost = lockManager.isLocked(mindmap);
+        if (!lockLost) {
+            lockManager.lock(mindmap, user, session);
+        }
+
+        final LockInfo lockInfo = lockManager.getLockInfo(mindmap);
+        if (lockInfo.getCollaborator().equals(user)) {
+            final boolean outdated = mindmap.getLastModificationTime().getTimeInMillis() > timestamp;
+            if (lockInfo.getSession() == session) {
+                // Timestamp might not be returned to the client. This try to cover this case, ignoring the client timestamp check.
+                final User lastEditor = mindmap.getLastEditor();
+                if (outdated && (lockInfo.getPreviousTimestamp() != timestamp || lastEditor == null || !lastEditor.equals(user))) {
+                    throw new MultipleSessionsOpenException("The map has been updated and not by you. Session lost.");
+                }
+            } else if (outdated) {
+                throw new MultipleSessionsOpenException("The map has been updated and not by you. Session lost.");
+            }
+        } else {
+            throw new SessionExpiredException("You have lost the edition session", lockInfo.getCollaborator());
+
+        }
     }
 
     /**
@@ -361,7 +385,13 @@ public class MindmapController extends BaseController {
         final User user = Utils.getUser();
         final LockManager lockManager = mindmapService.getLockManager();
         final Mindmap mindmap = mindmapService.findMindmapById(id);
-        lockManager.updateLock(Boolean.parseBoolean(value), mindmap, user);
+
+        final boolean lock = Boolean.parseBoolean(value);
+        if (!lock) {
+            lockManager.unlock(mindmap, user);
+        } else {
+            throw new UnsupportedOperationException("REST lock must be implemented.");
+        }
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/maps/batch")

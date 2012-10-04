@@ -18,14 +18,15 @@
 
 package com.wisemapping.exceptions;
 
+import com.wisemapping.model.Collaborator;
 import org.jetbrains.annotations.NotNull;
 
-public class MindmapOutdatedException
+public class SessionExpiredException
     extends ClientException
 {
     public static final String MSG_KEY = "MINDMAP_TIMESTAMP_OUTDATED";
 
-    public MindmapOutdatedException(@NotNull String msg)
+    public SessionExpiredException(@NotNull String msg,@NotNull Collaborator newEditor)
     {
         super(msg);
     }

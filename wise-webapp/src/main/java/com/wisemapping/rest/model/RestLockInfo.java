@@ -24,14 +24,23 @@ import java.util.Set;
         getterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY,
         isGetterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RestMindmapLock {
+public class RestLockInfo {
 
     @NotNull
-    private Collaborator user;
-    @Nullable
-    private LockInfo lockInfo;
+    final private Collaborator user;
 
-    public RestMindmapLock(@Nullable LockInfo lockInfo, @NotNull Collaborator collaborator) {
+    @Nullable
+    final private LockInfo lockInfo;
+
+    // This is required only for compliance with the JAXB serializer.
+    public RestLockInfo(){
+
+        this.lockInfo = null;
+        //noinspection ConstantConditions
+        this.user = null;
+    }
+
+    public RestLockInfo(@Nullable LockInfo lockInfo, @NotNull Collaborator collaborator) {
 
         this.lockInfo = lockInfo;
         this.user = collaborator;
@@ -52,4 +61,13 @@ public class RestMindmapLock {
     public void setLockedByMe(boolean lockedForMe) {
         // Ignore ...
     }
+
+    public long getTimestamp() {
+        return lockInfo != null ? lockInfo.getTimestamp() : -1;
+    }
+
+    public void setTimestamp(long value) {
+        //
+    }
+
 }

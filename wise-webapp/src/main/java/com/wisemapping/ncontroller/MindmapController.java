@@ -27,6 +27,7 @@ import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.MindMapHistory;
 import com.wisemapping.model.User;
 import com.wisemapping.security.Utils;
+import com.wisemapping.service.LockInfo;
 import com.wisemapping.service.LockManager;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.view.MindMapBean;
@@ -147,7 +148,7 @@ public class MindmapController {
         return showEditorPage(id, model, true);
     }
 
-    private String showEditorPage(int id, @NotNull final Model model, boolean requiresLock) throws AccessDeniedSecurityException, LockException {
+    private String showEditorPage(int id, @NotNull final Model model, boolean requiresLock) throws WiseMappingException {
         final MindMapBean mindmapBean = findMindmapBean(id);
         final Mindmap mindmap = mindmapBean.getDelegated();
         final User collaborator = Utils.getUser();
@@ -159,10 +160,13 @@ public class MindmapController {
             final LockManager lockManager = this.mindmapService.getLockManager();
             if (lockManager.isLocked(mindmap) && !lockManager.isLockedBy(mindmap, collaborator)) {
                 readOnlyMode = true;
-                model.addAttribute("lockedBy", lockManager.getLockInfo(mindmap));
             } else {
-                lockManager.lock(mindmap, collaborator);
+                final long session = lockManager.generateSession();
+                final LockInfo lock = lockManager.lock(mindmap, collaborator, session);
+                model.addAttribute("lockTimestamp", lock.getTimestamp());
+                model.addAttribute("lockSession", session);
             }
+            model.addAttribute("lockInfo", lockManager.getLockInfo(mindmap));
         }
 
         // Set render attributes ...
@@ -176,12 +180,12 @@ public class MindmapController {
     }
 
     @RequestMapping(value = "maps/{id}/view", method = RequestMethod.GET)
-    public String showMindmapViewerPage(@PathVariable int id, @NotNull Model model) throws LockException, AccessDeniedSecurityException {
+    public String showMindmapViewerPage(@PathVariable int id, @NotNull Model model) throws WiseMappingException {
         return showEditorPage(id, model, false);
     }
 
     @RequestMapping(value = "maps/{id}/try", method = RequestMethod.GET)
-    public String showMindmapTryPage(@PathVariable int id, @NotNull Model model) throws LockException, AccessDeniedSecurityException {
+    public String showMindmapTryPage(@PathVariable int id, @NotNull Model model) throws WiseMappingException {
         final String result = showEditorPage(id, model, false);
         model.addAttribute("memoryPersistence", true);
         return result;

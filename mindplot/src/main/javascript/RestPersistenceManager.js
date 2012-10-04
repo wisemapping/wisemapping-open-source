@@ -18,14 +18,19 @@
 
 mindplot.RESTPersistenceManager = new Class({
         Extends:mindplot.PersistenceManager,
-        initialize:function (saveUrl, revertUrl, lockUrl) {
+        initialize:function (options) {
             this.parent();
-            $assert(saveUrl, "saveUrl can not be null");
-            $assert(revertUrl, "revertUrl can not be null");
-            this.saveUrl = saveUrl;
-            this.revertUrl = revertUrl;
-            this.lockUrl = lockUrl;
-            this.timestamp = null;
+            $assert(options.saveUrl, "saveUrl can not be null");
+            $assert(options.revertUrl, "revertUrl can not be null");
+            $assert(options.lockUrl, "lockUrl can not be null");
+            $assert(options.session, "session can not be null");
+            $assert(options.timestamp, "timestamp can not be null");
+
+            this.saveUrl = options.saveUrl;
+            this.revertUrl = options.revertUrl;
+            this.lockUrl = options.lockUrl;
+            this.timestamp = options.timestamp;
+            this.session = options.session;
         },
 
         saveMapXml:function (mapId, mapXml, pref, saveHistory, events, sync) {
@@ -39,6 +44,7 @@ mindplot.RESTPersistenceManager = new Class({
             var persistence = this;
             var query = "minor=" + !saveHistory;
             query = query + (this.timestamp ? "&timestamp=" + this.timestamp : "");
+            query = query + (this.session ? "&session=" + this.session : "");
 
             var request = new Request({
                 url:this.saveUrl.replace("{id}", mapId) + "?" + query,

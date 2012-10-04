@@ -32,6 +32,7 @@
                 <value>com.wisemapping.rest.model.RestCollaboration</value>
                 <value>com.wisemapping.rest.model.RestCollaborationList</value>
                 <value>com.wisemapping.rest.model.RestLogItem</value>
+                <value>com.wisemapping.rest.model.RestLockInfo</value>
             </list>
         </property>
     </bean>
