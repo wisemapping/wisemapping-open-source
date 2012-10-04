@@ -24,7 +24,6 @@ import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.User;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,6 +35,15 @@ import java.util.concurrent.ConcurrentHashMap;
 * En caso que no sea posible grabar por que se perdio el lock, usar mensaje de error para explicar el por que...
 * Mensaje  modal explicando que el mapa esta siendo editado, por eso no es posible edilarlo....
 * Internacionalizacion de los mensaje ...
+* Logout limpiar las sessiones ...
+*
+* Casos:
+*  - Usuario pierde el lock:
+*      - Y grabo con la misma sessions y el timestap ok.
+*      - Y grabo con la misma session y el timestap esta mal
+ *     - Y grabo con distinta sessions
+ *     -
+*  - Usuario pierde el lock, pero intenta grabar camio
 */
 
 class LockManagerImpl implements LockManager {
@@ -43,30 +51,6 @@ class LockManagerImpl implements LockManager {
     final Map<Integer, LockInfo> lockInfoByMapId;
     final static Timer expirationTimer = new Timer();
     final private static Logger logger = Logger.getLogger("com.wisemapping.service.LockManager");
-
-    public LockManagerImpl() {
-        lockInfoByMapId = new ConcurrentHashMap<Integer, LockInfo>();
-        expirationTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-
-                logger.debug("Lock expiration scheduler started. Current locks:" + lockInfoByMapId.keySet());
-
-                final List<Integer> toRemove = new ArrayList<Integer>();
-                final Set<Integer> mapIds = lockInfoByMapId.keySet();
-                for (Integer mapId : mapIds) {
-                    final LockInfo lockInfo = lockInfoByMapId.get(mapId);
-                    if (lockInfo.isExpired()) {
-                        toRemove.add(mapId);
-                    }
-                }
-
-                for (Integer mapId : toRemove) {
-                    unlock(mapId);
-                }
-            }
-        }, ONE_MINUTE_MILLISECONDS, ONE_MINUTE_MILLISECONDS);
-    }
 
     @Override
     public boolean isLocked(@NotNull Mindmap mindmap) {
@@ -79,18 +63,21 @@ class LockManagerImpl implements LockManager {
     }
 
     @Override
-    public void updateExpirationTimeout(@NotNull Mindmap mindmap, @NotNull Collaborator user) {
-        if (this.isLocked(mindmap)) {
-            final LockInfo lockInfo = this.getLockInfo(mindmap);
-            if (!lockInfo.getCollaborator().equals(user)) {
-                throw new IllegalStateException("Could not update map lock timeout if you are not the locking user. User:" + lockInfo.getCollaborator() + ", " + user);
-            }
-            lockInfo.updateTimeout();
-            logger.debug("Timeout updated for:" + mindmap.getId());
-
-        }else {
+    public LockInfo updateExpirationTimeout(@NotNull Mindmap mindmap, @NotNull Collaborator user, long session) {
+        if (!this.isLocked(mindmap)) {
             throw new IllegalStateException("Lock lost for map. No update possible.");
         }
+
+        final LockInfo result = this.getLockInfo(mindmap);
+        if (!result.getCollaborator().equals(user)) {
+            throw new IllegalStateException("Could not update map lock timeout if you are not the locking user. User:" + result.getCollaborator() + ", " + user);
+        }
+
+        result.updateTimeout();
+        result.setSession(session);
+        result.updateTimestamp(mindmap);
+        logger.debug("Timeout updated for:" + mindmap.getId());
+        return result;
     }
 
     @Override
@@ -122,7 +109,8 @@ class LockManagerImpl implements LockManager {
     }
 
     @Override
-    public void lock(@NotNull Mindmap mindmap, @NotNull Collaborator user) throws AccessDeniedSecurityException, LockException {
+    @NotNull
+    public LockInfo lock(@NotNull Mindmap mindmap, @NotNull Collaborator user, long session) throws WiseMappingException {
         if (isLocked(mindmap) && !isLockedBy(mindmap, user)) {
             throw new LockException("Invalid lock, this should not happen");
         }
@@ -131,24 +119,46 @@ class LockManagerImpl implements LockManager {
             throw new AccessDeniedSecurityException("Invalid lock, this should not happen");
         }
 
-        final LockInfo lockInfo = lockInfoByMapId.get(mindmap.getId());
-        if (lockInfo != null) {
+        LockInfo result = lockInfoByMapId.get(mindmap.getId());
+        if (result != null) {
             // Update timeout only...
             logger.debug("Update timestamp:" + mindmap.getId());
-            updateExpirationTimeout(mindmap, user);
+            updateExpirationTimeout(mindmap, user, session);
         } else {
             logger.debug("Lock map id:" + mindmap.getId());
-            lockInfoByMapId.put(mindmap.getId(), new LockInfo(user));
+            result = new LockInfo(user, mindmap, session);
+            lockInfoByMapId.put(mindmap.getId(), result);
         }
-
+        return result;
     }
 
     @Override
-    public void updateLock(boolean lock, @NotNull Mindmap mindmap, @NotNull User user) throws WiseMappingException {
-        if (lock) {
-            this.lock(mindmap, user);
-        } else {
-            this.unlock(mindmap, user);
-        }
+    public long generateSession() {
+        return System.nanoTime();
     }
+
+    public LockManagerImpl() {
+        lockInfoByMapId = new ConcurrentHashMap<Integer, LockInfo>();
+        expirationTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                logger.debug("Lock expiration scheduler started. Current locks:" + lockInfoByMapId.keySet());
+
+                final List<Integer> toRemove = new ArrayList<Integer>();
+                final Set<Integer> mapIds = lockInfoByMapId.keySet();
+                for (Integer mapId : mapIds) {
+                    final LockInfo lockInfo = lockInfoByMapId.get(mapId);
+                    if (lockInfo.isExpired()) {
+                        toRemove.add(mapId);
+                    }
+                }
+
+                for (Integer mapId : toRemove) {
+                    unlock(mapId);
+                }
+            }
+        }, ONE_MINUTE_MILLISECONDS, ONE_MINUTE_MILLISECONDS);
+    }
+
 }

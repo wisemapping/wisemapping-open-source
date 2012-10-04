@@ -100,10 +100,6 @@ public class MindmapServiceImpl
             throw new WiseMappingException("The tile can not be empty");
         }
 
-        // Update edition timeout ...
-        final LockManager lockManager = this.getLockManager();
-        lockManager.updateExpirationTimeout(mindMap, Utils.getUser());
-
         mindmapManager.updateMindmap(mindMap, saveHistory);
     }
 

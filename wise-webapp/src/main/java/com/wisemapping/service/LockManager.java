@@ -19,6 +19,7 @@
 package com.wisemapping.service;
 
 import com.wisemapping.exceptions.AccessDeniedSecurityException;
+import com.wisemapping.exceptions.ClientException;
 import com.wisemapping.exceptions.LockException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.Collaborator;
@@ -31,13 +32,13 @@ public interface LockManager {
 
     LockInfo getLockInfo(@NotNull Mindmap mindmap);
 
-    void updateExpirationTimeout(@NotNull Mindmap mindmap, @NotNull Collaborator user);
+    LockInfo updateExpirationTimeout(@NotNull Mindmap mindmap, @NotNull Collaborator user,long session);
 
     void unlock(@NotNull Mindmap mindmap, @NotNull Collaborator user) throws LockException, AccessDeniedSecurityException;
 
     boolean isLockedBy(@NotNull Mindmap mindmap, @NotNull Collaborator collaborator);
 
-    void lock(@NotNull Mindmap mindmap, @NotNull Collaborator user) throws AccessDeniedSecurityException, LockException;
+    LockInfo lock(@NotNull Mindmap mindmap, @NotNull Collaborator user, long session) throws WiseMappingException;
 
-    void updateLock(boolean value, Mindmap mindmap, User user) throws WiseMappingException;
+    long generateSession();
 }
