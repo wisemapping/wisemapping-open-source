@@ -72,8 +72,6 @@ mindplot.widget.IMenu = new Class({
         if (saveHistory) {
             $notify($msg('SAVING'));
             saveElem.setStyle('cursor', 'wait');
-        } else {
-            console.log("Saving without history ...");
         }
 
         // Call persistence manager for saving ...
@@ -87,14 +85,16 @@ mindplot.widget.IMenu = new Class({
                 }
                 menu.setRequireChange(false);
             },
+
             onError:function (error) {
                 if (saveHistory) {
                     saveElem.setStyle('cursor', 'pointer');
-                    var msg = error ? error.globalErrors : null;
-                    if (!msg) {
-                        msg = $msg('SAVE_COULD_NOT_BE_COMPLETED');
+
+                    if (error.severity == "INFO") {
+                        $notify(error.message);
+                    } else {
+                        $notifyModal(error.message);
                     }
-                    $notify(msg);
                 }
             }
         }, sync);
