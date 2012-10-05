@@ -351,7 +351,7 @@ public class FreemindImporter
      * 3 -> 2
      * 4 -> 4
      */
-    private int calcFirstLevelOrder(@NotNull List<Object> freeChilden, @Nullable Node freeChild) {
+    private int calcFirstLevelOrder(@NotNull List<Object> freeChilden, @NotNull Node freeChild) {
         final List<Node> nodes = new ArrayList<Node>();
         int result;
 
@@ -361,7 +361,7 @@ public class FreemindImporter
                 Node node = (Node) child;
 
                 final String side = node.getPOSITION();
-                if (freeChild.getPOSITION().equals(side)) {
+                if (side == freeChild.getPOSITION() || freeChild.getPOSITION().equals(side)) {
                     nodes.add(node);
                 }
             }
@@ -408,8 +408,7 @@ public class FreemindImporter
         if (depth == 1) {
 
             final String side = freeChild.getPOSITION();
-            assert side != null : "This should not happen";
-            x = x * (POSITION_LEFT.equals(side) ? -1 : 1);
+            x = x * (side!=null && POSITION_LEFT.equals(side) ? -1 : 1);
         } else {
             final Coord coord = Coord.parse(wiseParent.getPosition());
             x = x * (coord.isOnLeftSide() ? -1 : 1);
@@ -574,7 +573,7 @@ public class FreemindImporter
                 wiseFontSize = FONT_SIZE_HUGE;
             } else if (fontSize >= 16) {
                 wiseFontSize = FONT_SIZE_LARGE;
-            }else  if (fontSize >= 12) {
+            } else if (fontSize >= 12) {
                 wiseFontSize = FONT_SIZE_NORMAL;
             }
             fontStyle.append(wiseFontSize);
@@ -622,16 +621,15 @@ public class FreemindImporter
     String getShapeFormFromNode(@NotNull Node node) {
         String result = node.getSTYLE();
         // In freemind a node without style is a line
-        if ("bubble".equals(result))
-        {
+        if ("bubble".equals(result)) {
             result = ShapeStyle.ROUNDED_RECTANGLE.getStyle();
         } else {
-             if(node.getBACKGROUNDCOLOR()!=null){
-                 // This the node has background color defined. It's better to change the default shape.
-                 result = ShapeStyle.RECTANGLE.getStyle();
-             } else {
+            if (node.getBACKGROUNDCOLOR() != null) {
+                // This the node has background color defined. It's better to change the default shape.
+                result = ShapeStyle.RECTANGLE.getStyle();
+            } else {
                 result = ShapeStyle.LINE.getStyle();
-             }
+            }
         }
         return result;
     }
