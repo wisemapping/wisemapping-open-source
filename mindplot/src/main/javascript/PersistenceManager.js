@@ -44,10 +44,10 @@ mindplot.PersistenceManager = new Class({
 
         var pref = JSON.encode(editorProperties);
         try {
-            this.saveMapXml(mapId, mapXml, pref, saveHistory, events,sync);
+            this.saveMapXml(mapId, mapXml, pref, saveHistory, events, sync);
         } catch (e) {
             console.log(e);
-            events.onError();
+            events.onError(this._buildError());
         }
     },
 
@@ -65,7 +65,7 @@ mindplot.PersistenceManager = new Class({
         throw new Error("Method must be implemented");
     },
 
-    saveMapXml:function (mapId, mapXml, pref, saveHistory, events,sync) {
+    saveMapXml:function (mapId, mapXml, pref, saveHistory, events, sync) {
         throw new Error("Method must be implemented");
     },
 

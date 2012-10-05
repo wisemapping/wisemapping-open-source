@@ -195,6 +195,7 @@
                                         <include>collaboration/CollaborationManager.js</include>
                                         <include>collaboration/framework/AbstractCollaborativeFramework.js</include>
                                         <include>collaboration/framework/AbstractCollaborativeModelFactory.js</include>
+                                        <include>widget/ModalDialogNotifier.js</include>
                                         <include>widget/ToolbarNotifier.js</include>
                                         <include>widget/ToolbarItem.js</include>
                                         <include>widget/ToolbarPaneItem.js</include>

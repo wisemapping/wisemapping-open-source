@@ -55,7 +55,7 @@ mindplot.RESTPersistenceManager = new Class({
                     persistence.timestamp = responseText;
                 },
                 onException:function (headerName, value) {
-                    events.onError();
+                    events.onError(persistence._buildError());
                 },
                 onFailure:function (xhr) {
                     var responseText = xhr.responseText;
@@ -65,11 +65,12 @@ mindplot.RESTPersistenceManager = new Class({
                     if (contentType != null && contentType.indexOf("application/json") != -1) {
                         try {
                             error = JSON.decode(responseText);
+                            events.onError(persistence._buildError(error));
                         } catch (e) {
-                            throw "Unexpected error saving. Error response is not json object:" + responseText;
+                            events.onError(persistence._buildError());
+                            throw new Error("Unexpected error saving. Error response is not json object:" + responseText);
                         }
                     }
-                    events.onError(error);
                 },
                 headers:{"Content-Type":"application/json", "Accept":"application/json"},
                 emulation:false,
@@ -114,6 +115,20 @@ mindplot.RESTPersistenceManager = new Class({
                 urlEncoded:false
             });
             request.put("false");
+        },
+
+        _buildError:function (jsonSeverResponse) {
+            var message = jsonSeverResponse ? jsonSeverResponse.globalErrors[0] : null;
+            var severity = jsonSeverResponse ? jsonSeverResponse.globalSeverity : null;
+
+            if (!message) {
+                message = $msg('SAVE_COULD_NOT_BE_COMPLETED');
+            }
+
+            if (!severity) {
+                severity = "INFO";
+            }
+            return {severity:severity, message:message};
         }
     }
 );

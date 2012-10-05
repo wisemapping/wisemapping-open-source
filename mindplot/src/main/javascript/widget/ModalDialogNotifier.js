@@ -16,68 +16,87 @@
  *   limitations under the License.
  */
 
-mindplot.widget.ToolbarNotifier = new Class({
-
+mindplot.widget.ModalDialogNotifier = new Class({
+    Extends:MooDialog,
     initialize:function () {
-        var container = $('headerNotifier');
-        // In case of print,embedded no message is displayed ....
-        if (container) {
-            this._effect = new Fx.Elements(container, {
-                onComplete:function () {
-                    container.setStyle('display', 'none');
-                }.bind(this),
-                link:'cancel',
-                duration:8000,
-                transition:Fx.Transitions.Expo.easeInOut
-            });
-        }
+        this.parent({
+                closeButton:false,
+                destroyOnClose:true,
+                autoOpen:true,
+                useEscKey:false,
+                title:"",
+                onInitialize:function (wrapper) {
+                    wrapper.setStyle('opacity', 0);
+                    this.wrapper.setStyle('display', 'none');
+                    this.fx = new Fx.Morph(wrapper, {
+                        duration:100,
+                        transition:Fx.Transitions.Bounce.easeOut
+                    });
+                },
+
+                onBeforeOpen:function () {
+                    var panel = this._buildPanel();
+                    this.setContent(panel);
+
+                    this.overlay = new Overlay(this.options.inject, {
+                        duration:this.options.duration
+                    });
+                    if (this.options.closeOnOverlayClick)
+                        this.overlay.addEvent('click', this.close.bind(this));
+                    this.overlay.open();
+                    this.fx.start({
+                        'margin-top':[-200, -100],
+                        opacity:[0, 1]
+                    }).chain(function () {
+                        this.fireEvent('show');
+                        this.wrapper.setStyle('display', 'block');
+                    }.bind(this));
+                },
+
+                onBeforeClose:function () {
+                    this.fx.start({
+                        'margin-top':[-100, 0],
+                        opacity:0,
+                        duration:200
+                    }).chain(function () {
+                        this.wrapper.setStyle('display', 'none');
+                        this.fireEvent('hide');
+
+                    }.bind(this));
+                }}
+        );
+        this.message = null;
     },
 
-    logError:function (userMsg) {
-        this.logMessage(userMsg, mindplot.widget.ToolbarNotifier.MsgKind.ERROR);
+    show:function (message, title) {
+        $assert(message, "message can not be null");
+        this._messsage = message;
+        this.options.title.setText($defined(title) ? title : "Outch!!. An unexpected error has occurred");
+        this.open();
     },
 
-    hide:function () {
-
+    destroy:function () {
+        this.parent();
+        this.overlay.destroy();
     },
 
-    logMessage:function (msg, fade) {
-        $assert(msg, 'msg can not be null');
+    _buildPanel:function () {
+        var result = new Element('div');
+        result.setStyles({
+            'text-align':'center',
+            width:'400px'
+        });
+        var p = new Element('p', {'text':this._messsage});
+        p.inject(result);
 
-        var container = $('headerNotifier');
+        var img = new Element('img', {'src':'images/alert-sign.png'});
+        img.inject(result);
 
-        // In case of print,embedded no message is displayed ....
-        if (container) {
-            container.set('text', msg);
-            container.setStyle('display', 'block');
-            container.position({
-                relativeTo:$('header'),
-                position:'upperCenter',
-                edge:'centerTop'
-            });
-
-            if (!$defined(fade) || fade) {
-                this._effect.start({
-                    0:{
-                        opacity:[1, 0]
-                    }
-                });
-
-            } else {
-                container.setStyle('opacity', '1');
-                this._effect.pause();
-            }
-        }
+        return result;
     }
-
 });
 
-mindplot.widget.ToolbarNotifier.MsgKind = {
-    INFO:1,
-    WARNING:2,
-    ERROR:3,
-    FATAL:4
-};
 
-var toolbarNotifier = new mindplot.widget.ToolbarNotifier();
-$notify = toolbarNotifier.logMessage.bind(toolbarNotifier);
+var dialogNotifier = new mindplot.widget.ModalDialogNotifier();
+$notifyModal = dialogNotifier.show.bind(dialogNotifier);
+
