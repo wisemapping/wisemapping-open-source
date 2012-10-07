@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <map version="0.9.0">
     <node TEXT="Numerosity" ID="ID_0">
         <node TEXT="Approximate Representations" POSITION="left" ID="ID_1">
@@ -7,40 +6,40 @@
                     <node TEXT="Posterior Parietal Cortex (PPC)" POSITION="left" ID="ID_4">
                         <node TEXT="Intraparietal Sulcus (IPS)" POSITION="left" ID="ID_5">
                             <node TEXT="Neurons code for numerosity" POSITION="left" ID="ID_6">
-<node TEXT="Concept of Mental Number Line" POSITION="left" ID="ID_7">
-    <node TEXT="Logarithmic Compression" POSITION="left" ID="ID_8">
-        <node TEXT="Dehaine &amp; Changeux, 1993" POSITION="left" ID="ID_9"/>
-        <node TEXT="Nieder &amp; Miller, 2003" POSITION="left" ID="ID_10"/>
-    </node>
-    <node TEXT="Linear Scale with proportional increasing Std. Dev of Noise" POSITION="left" ID="ID_11">
-        <node TEXT="aallistel &amp; Gelman, 2000" POSITION="left" ID="ID_12"/>
-    </node>
-</node>
-<node TEXT="Nieder et al 2002" POSITION="left" ID="ID_13"/>
-<node TEXT="Sawamura et al, 2002" POSITION="left" ID="ID_14"/>
-<node TEXT="Nieder &amp; Miller, 2003" POSITION="left" ID="ID_15">
-    <arrowlink ENDARROW="Default" DESTINATION="ID_32"/>
-</node>
+                                <node TEXT="Concept of Mental Number Line" POSITION="left" ID="ID_7">
+                                    <node TEXT="Logarithmic Compression" POSITION="left" ID="ID_8">
+                                        <node TEXT="Dehaine &amp; Changeux, 1993" POSITION="left" ID="ID_9"/>
+                                        <node TEXT="Nieder &amp; Miller, 2003" POSITION="left" ID="ID_10"/>
+                                    </node>
+                                    <node TEXT="Linear Scale with proportional increasing Std. Dev of Noise" POSITION="left" ID="ID_11">
+                                        <node TEXT="aallistel &amp; Gelman, 2000" POSITION="left" ID="ID_12"/>
+                                    </node>
+                                </node>
+                                <node TEXT="Nieder et al 2002" POSITION="left" ID="ID_13"/>
+                                <node TEXT="Sawamura et al, 2002" POSITION="left" ID="ID_14"/>
+                                <node TEXT="Nieder &amp; Miller, 2003" POSITION="left" ID="ID_15">
+                                    <arrowlink ENDARROW="Default" DESTINATION="ID_32"/>
+                                </node>
                             </node>
                             <node TEXT="lateral Intraparietal (LIP)" POSITION="left" ID="ID_16">
-<node TEXT="LIP neurons code for number with an accumulator-like coding scheme" POSITION="left" ID="ID_17">
-    <node TEXT="Roitman et al, 2007" POSITION="left" ID="ID_18"/>
-</node>
+                                <node TEXT="LIP neurons code for number with an accumulator-like coding scheme" POSITION="left" ID="ID_17">
+                                    <node TEXT="Roitman et al, 2007" POSITION="left" ID="ID_18"/>
+                                </node>
                             </node>
                             <node TEXT="Ventral Intraparietal (VIP)" POSITION="left" ID="ID_19">
-<node TEXT="Tudusciuc &amp; Nieder, 2007" POSITION="left" ID="ID_20"/>
-<node TEXT="Abstract and likely to encode for auditory and visual numerosity" POSITION="left" ID="ID_21"/>
-<node TEXT="Likely fed by LIP numerosity accumulator codes" POSITION="left" ID="ID_22"/>
+                                <node TEXT="Tudusciuc &amp; Nieder, 2007" POSITION="left" ID="ID_20"/>
+                                <node TEXT="Abstract and likely to encode for auditory and visual numerosity" POSITION="left" ID="ID_21"/>
+                                <node TEXT="Likely fed by LIP numerosity accumulator codes" POSITION="left" ID="ID_22"/>
                             </node>
                             <node TEXT="Horizontal Segment of the Intraparietal Sulcus (hIPS)" POSITION="left" ID="ID_23">
-<node TEXT="Core system for representing numerical quantity" POSITION="left" ID="ID_24">
-    <node TEXT="Dahaene et all, 2003" POSITION="left" ID="ID_25"/>
-    <node TEXT="Piazza et al, 2004" POSITION="left" ID="ID_26"/>
-    <node TEXT="Piazza et al, 2006" POSITION="left" ID="ID_27"/>
-    <node TEXT="Cantlon et al, 2006" POSITION="left" ID="ID_28"/>
-    <node TEXT="Cappelletti et al, 2007" POSITION="left" ID="ID_29"/>
-    <node TEXT="Dormal et al, 2008" POSITION="left" ID="ID_30"/>
-</node>
+                                <node TEXT="Core system for representing numerical quantity" POSITION="left" ID="ID_24">
+                                    <node TEXT="Dahaene et all, 2003" POSITION="left" ID="ID_25"/>
+                                    <node TEXT="Piazza et al, 2004" POSITION="left" ID="ID_26"/>
+                                    <node TEXT="Piazza et al, 2006" POSITION="left" ID="ID_27"/>
+                                    <node TEXT="Cantlon et al, 2006" POSITION="left" ID="ID_28"/>
+                                    <node TEXT="Cappelletti et al, 2007" POSITION="left" ID="ID_29"/>
+                                    <node TEXT="Dormal et al, 2008" POSITION="left" ID="ID_30"/>
+                                </node>
                             </node>
                         </node>
                     </node>

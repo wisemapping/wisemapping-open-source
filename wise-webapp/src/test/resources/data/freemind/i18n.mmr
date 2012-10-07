@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <map version="0.9.0">
     <node TEXT="i18n" ID="ID_0">
-        <node TEXT="Este es un é con acento" POSITION="right" ID="ID_1"/>
-        <node TEXT="Este es una ñ" POSITION="left" ID="ID_2"/>
-        <node TEXT="這是一個樣本 Japanise。" POSITION="right" ID="ID_3"/>
+        <node TEXT="Este es un &#233; con acento" POSITION="right" ID="ID_1"/>
+        <node TEXT="Este es una &#241;" POSITION="left" ID="ID_2"/>
+        <node TEXT="&#36889;&#26159;&#19968;&#20491;&#27171;&#26412; Japanise&#12290;" POSITION="right" ID="ID_3"/>
     </node>
 </map>

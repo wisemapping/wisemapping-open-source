@@ -1,6 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <map version="0.9.0">
     <node TEXT="I have HTML In Nodes" ID="ID_0">
-        <node TEXT="Here is somefonts  &#xA; &#xA; Add color changes ... &#xA; Add some bullets: Different Bullets &#xA; And all aligned !!!!s" POSITION="right" ID="ID_1"/>
+        <node TEXT="Here is somefonts&#160; 
+ 
+ Add color changes ... 
+ Add some bullets: Different Bullets 
+ And all aligned !!!!s" POSITION="right" ID="ID_1"/>
     </node>
 </map>

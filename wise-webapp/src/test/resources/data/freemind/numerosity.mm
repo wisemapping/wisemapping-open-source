@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <map version="0.9.0">
     <node TEXT="Numerosity" ID="ID_1">
         <node TEXT="Approximate Representations" POSITION="left" ID="ID_47">

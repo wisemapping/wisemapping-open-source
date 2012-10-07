@@ -1,64 +1,63 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <map version="0.9.0">
     <node TEXT="Baugruppe :: Systemanforderungen" ID="ID_0">
-        <node TEXT="[1] Motor …" POSITION="right" ID="ID_1">
-            <node TEXT="[27] Isolationssystem …" POSITION="right" ID="ID_2"/>
-            <node TEXT="8[2] …" POSITION="right" ID="ID_3"/>
-            <node TEXT="[170] Multiumrichterbetrieb …" POSITION="right" ID="ID_4"/>
-            <node TEXT="[22] Thermistor …" POSITION="right" ID="ID_5"/>
-            <node TEXT="[2] Stecker …" POSITION="right" ID="ID_6">
-                <node TEXT="[169] …" POSITION="right" ID="ID_7"/>
-                <node TEXT="[5] Kabel …" POSITION="right" ID="ID_8"/>
-                <node TEXT="8[31] Strombuchse …" POSITION="right" ID="ID_9">
-                    <node TEXT="8[2] Stecker …" POSITION="right" ID="ID_10"/>
-                    <node TEXT="8[173] Stecker …" POSITION="right" ID="ID_11"/>
+        <node TEXT="[1] Motor &#8230;" POSITION="right" ID="ID_1">
+            <node TEXT="[27] Isolationssystem &#8230;" POSITION="right" ID="ID_2"/>
+            <node TEXT="8[2] &#8230;" POSITION="right" ID="ID_3"/>
+            <node TEXT="[170] Multiumrichterbetrieb &#8230;" POSITION="right" ID="ID_4"/>
+            <node TEXT="[22] Thermistor &#8230;" POSITION="right" ID="ID_5"/>
+            <node TEXT="[2] Stecker &#8230;" POSITION="right" ID="ID_6">
+                <node TEXT="[169] &#8230;" POSITION="right" ID="ID_7"/>
+                <node TEXT="[5] Kabel &#8230;" POSITION="right" ID="ID_8"/>
+                <node TEXT="8[31] Strombuchse &#8230;" POSITION="right" ID="ID_9">
+                    <node TEXT="8[2] Stecker &#8230;" POSITION="right" ID="ID_10"/>
+                    <node TEXT="8[173] Stecker &#8230;" POSITION="right" ID="ID_11"/>
                 </node>
             </node>
-            <node TEXT="8[173] Stecker …" POSITION="right" ID="ID_12">
-                <node TEXT="8[2] Stecker …" POSITION="right" ID="ID_13"/>
+            <node TEXT="8[173] Stecker &#8230;" POSITION="right" ID="ID_12">
+                <node TEXT="8[2] Stecker &#8230;" POSITION="right" ID="ID_13"/>
             </node>
-            <node TEXT="8[1] …" POSITION="right" ID="ID_14"/>
-            <node TEXT="8[5] …" POSITION="right" ID="ID_15"/>
+            <node TEXT="8[1] &#8230;" POSITION="right" ID="ID_14"/>
+            <node TEXT="8[5] &#8230;" POSITION="right" ID="ID_15"/>
         </node>
-        <node TEXT="[185] Motor …" POSITION="right" ID="ID_16"/>
+        <node TEXT="[185] Motor &#8230;" POSITION="right" ID="ID_16"/>
         <node TEXT="3 Umrichter" POSITION="right" ID="ID_17">
-            <node TEXT="[31] Strombuchse …" POSITION="right" ID="ID_18"/>
-            <node TEXT="8[2] Stecker …" POSITION="right" ID="ID_19">
-                <node TEXT="8[31] Strombuchse …" POSITION="right" ID="ID_20"/>
-                <node TEXT="8[173] Stecker …" POSITION="right" ID="ID_21"/>
+            <node TEXT="[31] Strombuchse &#8230;" POSITION="right" ID="ID_18"/>
+            <node TEXT="8[2] Stecker &#8230;" POSITION="right" ID="ID_19">
+                <node TEXT="8[31] Strombuchse &#8230;" POSITION="right" ID="ID_20"/>
+                <node TEXT="8[173] Stecker &#8230;" POSITION="right" ID="ID_21"/>
             </node>
-            <node TEXT="8[173] Stecker …" POSITION="right" ID="ID_22">
-                <node TEXT="8[2] Stecker …" POSITION="right" ID="ID_23"/>
+            <node TEXT="8[173] Stecker &#8230;" POSITION="right" ID="ID_22">
+                <node TEXT="8[2] Stecker &#8230;" POSITION="right" ID="ID_23"/>
             </node>
-            <node TEXT="[4] max. Außenleiterspannung …" POSITION="right" ID="ID_24"/>
+            <node TEXT="[4] max. Au&#223;enleiterspannung &#8230;" POSITION="right" ID="ID_24"/>
             <node TEXT="[13]" POSITION="right" ID="ID_25">
                 <node TEXT="[14]" POSITION="right" ID="ID_26">
-                    <node TEXT="[15] …" POSITION="right" ID="ID_27"/>
-                    <node TEXT="[16] …" POSITION="right" ID="ID_28"/>
-                    <node TEXT="[17] …" POSITION="right" ID="ID_29"/>
+                    <node TEXT="[15] &#8230;" POSITION="right" ID="ID_27"/>
+                    <node TEXT="[16] &#8230;" POSITION="right" ID="ID_28"/>
+                    <node TEXT="[17] &#8230;" POSITION="right" ID="ID_29"/>
                 </node>
                 <node TEXT="[18]" POSITION="right" ID="ID_30">
-                    <node TEXT="[19] …" POSITION="right" ID="ID_31"/>
-                    <node TEXT="[20] …" POSITION="right" ID="ID_32"/>
-                    <node TEXT="[21] …" POSITION="right" ID="ID_33"/>
+                    <node TEXT="[19] &#8230;" POSITION="right" ID="ID_31"/>
+                    <node TEXT="[20] &#8230;" POSITION="right" ID="ID_32"/>
+                    <node TEXT="[21] &#8230;" POSITION="right" ID="ID_33"/>
                 </node>
             </node>
             <node TEXT="3.3 Steuerung" POSITION="right" ID="ID_34"/>
         </node>
         <node TEXT="4 Bremse" POSITION="right" ID="ID_35">
-            <node TEXT="[172] Bremsansteuerung …" POSITION="right" ID="ID_36"/>
-            <node TEXT="[173] Stecker …" POSITION="right" ID="ID_37">
-                <node TEXT="[175] Kabel …" POSITION="right" ID="ID_38"/>
-                <node TEXT="8[2] Stecker …" POSITION="right" ID="ID_39">
-                    <node TEXT="8[31] Strombuchse …" POSITION="right" ID="ID_40"/>
-                    <node TEXT="8[173] Stecker …" POSITION="right" ID="ID_41"/>
+            <node TEXT="[172] Bremsansteuerung &#8230;" POSITION="right" ID="ID_36"/>
+            <node TEXT="[173] Stecker &#8230;" POSITION="right" ID="ID_37">
+                <node TEXT="[175] Kabel &#8230;" POSITION="right" ID="ID_38"/>
+                <node TEXT="8[2] Stecker &#8230;" POSITION="right" ID="ID_39">
+                    <node TEXT="8[31] Strombuchse &#8230;" POSITION="right" ID="ID_40"/>
+                    <node TEXT="8[173] Stecker &#8230;" POSITION="right" ID="ID_41"/>
                 </node>
             </node>
-            <node TEXT="[178] Bremslufthebel …" POSITION="right" ID="ID_42"/>
-            <node TEXT="[179] Reaktionszeit …" POSITION="right" ID="ID_43"/>
-            <node TEXT="[180] Bremsmoment …" POSITION="right" ID="ID_44"/>
-            <node TEXT="[181] Notbetriebsart …" POSITION="right" ID="ID_45"/>
-            <node TEXT="[182] Bremsüberwachung …" POSITION="right" ID="ID_46"/>
+            <node TEXT="[178] Bremslufthebel &#8230;" POSITION="right" ID="ID_42"/>
+            <node TEXT="[179] Reaktionszeit &#8230;" POSITION="right" ID="ID_43"/>
+            <node TEXT="[180] Bremsmoment &#8230;" POSITION="right" ID="ID_44"/>
+            <node TEXT="[181] Notbetriebsart &#8230;" POSITION="right" ID="ID_45"/>
+            <node TEXT="[182] Brems&#252;berwachung &#8230;" POSITION="right" ID="ID_46"/>
         </node>
     </node>
 </map>
