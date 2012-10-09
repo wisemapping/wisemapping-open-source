@@ -126,7 +126,7 @@ public class ExporterFactory {
             }
             case FREEMIND: {
                 final FreemindExporter exporter = new FreemindExporter();
-                exporter.export(xml.getBytes(), output);
+                exporter.export(xml.getBytes("UTF-8"), output);
                 break;
             }
             default:

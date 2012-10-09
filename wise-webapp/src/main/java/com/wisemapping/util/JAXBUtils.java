@@ -26,9 +26,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,12 +34,12 @@ public class JAXBUtils {
 
     private final static Map<String, JAXBContext> context = new HashMap<String, JAXBContext>();
 
-    public static Object getMapObject(@NotNull InputStream stream, @NotNull final String pakage) throws JAXBException {
+    public static Object getMapObject(@NotNull InputStream is, @NotNull final String pakage) throws JAXBException, UnsupportedEncodingException {
 
         final JAXBContext context = getInstance(pakage);
         final Unmarshaller unmarshaller = context.createUnmarshaller();
-
-        return unmarshaller.unmarshal(stream);
+        final Reader reader = new InputStreamReader(is, "UTF-8");
+        return unmarshaller.unmarshal(reader);
     }
 
     private static JAXBContext getInstance(@NotNull String pakage) throws JAXBException {
@@ -78,6 +76,8 @@ public class JAXBUtils {
         final JAXBContext context = getInstance("com.wisemapping.jaxb.freemind");
         final Marshaller marshaller = context.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        marshaller.setProperty(Marshaller.JAXB_ENCODING, "ASCII");
+        marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
         marshaller.marshal(map, out);
     }
 }

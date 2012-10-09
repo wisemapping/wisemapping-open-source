@@ -1,8 +1,24 @@
 <map version="0.9.0">
     <node TEXT="120924 Programme" ID="ID_0" COLOR="#ff3300" BACKGROUND_COLOR="#99ffff">
         <font SIZE="10" NAME="Arial" BOLD="true"/>
-        <node TEXT="bilan mi-parcours
-du plan d'actions" STYLE="bubble" POSITION="right" ID="ID_1" COLOR="#0000cc" BACKGROUND_COLOR="#ffff33">
+        <richcontent TYPE="NOTE">
+            <html>
+                <head/>
+                <body>
+                    <p/>
+                </body>
+            </html>
+        </richcontent>
+        <node STYLE="bubble" POSITION="right" ID="ID_1" COLOR="#0000cc" BACKGROUND_COLOR="#ffff33">
+            <richcontent TYPE="NODE">
+                <html>
+                    <head/>
+                    <body>
+                        <p>bilan mi-parcours</p>
+                        <p>du plan d'actions</p>
+                    </body>
+                </html>
+            </richcontent>
             <font SIZE="8" NAME="Arial" BOLD="true"/>
             <edge COLOR="#808080"/>
             <node TEXT="modalit&#233;s" POSITION="right" ID="ID_2" COLOR="#006600">
@@ -18,13 +34,29 @@ du plan d'actions" STYLE="bubble" POSITION="right" ID="ID_1" COLOR="#0000cc" BAC
                     <font SIZE="8" NAME="Arial"/>
                 </node>
             </node>
-            <node TEXT="1) Adapter et am&#233;liorer 
- notre offre de services 
- selon l'&#233;volution des besoins" STYLE="bubble" POSITION="right" ID="ID_7" COLOR="#0000cc" BACKGROUND_COLOR="#99ffff">
+            <node STYLE="bubble" POSITION="right" ID="ID_7" COLOR="#0000cc" BACKGROUND_COLOR="#99ffff">
+                <richcontent TYPE="NODE">
+                    <html>
+                        <head/>
+                        <body>
+                            <p>1) Adapter et am&#233;liorer </p>
+                            <p> notre offre de services </p>
+                            <p> selon l'&#233;volution des besoins</p>
+                        </body>
+                    </html>
+                </richcontent>
                 <font SIZE="8" NAME="Arial" BOLD="true"/>
                 <edge COLOR="#808080"/>
-                <node TEXT="couleurs = &#233;tat d'avancement en septembre 2011, 
-&#224; mettre &#224; jour selon avancement 2012" STYLE="rectagle" POSITION="right" ID="ID_8" BACKGROUND_COLOR="#99ffff">
+                <node STYLE="rectagle" POSITION="right" ID="ID_8" BACKGROUND_COLOR="#99ffff">
+                    <richcontent TYPE="NODE">
+                        <html>
+                            <head/>
+                            <body>
+                                <p>couleurs = &#233;tat d'avancement en septembre 2011, </p>
+                                <p>&#224; mettre &#224; jour selon avancement 2012</p>
+                            </body>
+                        </html>
+                    </richcontent>
                     <node TEXT="Bleu 0%" STYLE="rectagle" POSITION="right" ID="ID_9" BACKGROUND_COLOR="#0099ff"/>
                     <node TEXT="Rouge 25%" STYLE="rectagle" POSITION="right" ID="ID_10" BACKGROUND_COLOR="#ff9999"/>
                     <node TEXT="Orange 50%" STYLE="rectagle" POSITION="right" ID="ID_11" BACKGROUND_COLOR="#ffcc00"/>
@@ -33,71 +65,175 @@ du plan d'actions" STYLE="bubble" POSITION="right" ID="ID_1" COLOR="#0000cc" BAC
                         <node TEXT="100 %" POSITION="right" ID="ID_14"/>
                     </node>
                 </node>
-                <node TEXT="1.1. .Renforcer et structurer 
- le service &quot;accueil et orientation&quot;" STYLE="rectagle" POSITION="right" ID="ID_15" FOLDED="true" COLOR="#006600" BACKGROUND_COLOR="#66ff00">
+                <node STYLE="rectagle" POSITION="right" ID="ID_15" FOLDED="true" COLOR="#006600" BACKGROUND_COLOR="#66ff00">
+                    <richcontent TYPE="NODE">
+                        <html>
+                            <head/>
+                            <body>
+                                <p>1.1. .Renforcer et structurer </p>
+                                <p> le service "accueil et orientation"</p>
+                            </body>
+                        </html>
+                    </richcontent>
                     <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <node TEXT="Sophie" POSITION="right" ID="ID_16"/>
                 </node>
-                <node TEXT="1.2. Adapter l'offre Halte-Garderie 
- aux besoins des familles" STYLE="rectagle" POSITION="right" ID="ID_17" COLOR="#006600" BACKGROUND_COLOR="#ffff00">
+                <node STYLE="rectagle" POSITION="right" ID="ID_17" COLOR="#006600" BACKGROUND_COLOR="#ffff00">
+                    <richcontent TYPE="NODE">
+                        <html>
+                            <head/>
+                            <body>
+                                <p>1.2. Adapter l'offre Halte-Garderie </p>
+                                <p> aux besoins des familles</p>
+                            </body>
+                        </html>
+                    </richcontent>
                     <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <node TEXT="Martine D et Christine" POSITION="right" ID="ID_18"/>
                 </node>
-                <node TEXT="1.3. Renforcer et structurer les services 
- de soutien &#224; la parentalit&#233;" STYLE="rectagle" POSITION="right" ID="ID_19" COLOR="#006600" BACKGROUND_COLOR="#66ff00">
+                <node STYLE="rectagle" POSITION="right" ID="ID_19" COLOR="#006600" BACKGROUND_COLOR="#66ff00">
+                    <richcontent TYPE="NODE">
+                        <html>
+                            <head/>
+                            <body>
+                                <p>1.3. Renforcer et structurer les services </p>
+                                <p> de soutien &#224; la parentalit&#233;</p>
+                            </body>
+                        </html>
+                    </richcontent>
                     <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <node TEXT="Nathalie" POSITION="right" ID="ID_20"/>
                 </node>
-                <node TEXT="1.4 Am&#233;liorer la qualit&#233; des 
- projets p&#233;dagogiques des ALSH" STYLE="rectagle" POSITION="right" ID="ID_21" COLOR="#006600" BACKGROUND_COLOR="#ffff00">
+                <node STYLE="rectagle" POSITION="right" ID="ID_21" COLOR="#006600" BACKGROUND_COLOR="#ffff00">
+                    <richcontent TYPE="NODE">
+                        <html>
+                            <head/>
+                            <body>
+                                <p>1.4 Am&#233;liorer la qualit&#233; des </p>
+                                <p> projets p&#233;dagogiques des ALSH</p>
+                            </body>
+                        </html>
+                    </richcontent>
                     <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <node TEXT="Josiane" POSITION="right" ID="ID_22"/>
                 </node>
-                <node TEXT="1.5 Renforcer et am&#233;liorer les 
- activit&#233;s de loisirs existantes" STYLE="rectagle" POSITION="right" ID="ID_23" COLOR="#006600" BACKGROUND_COLOR="#ffcc00">
+                <node STYLE="rectagle" POSITION="right" ID="ID_23" COLOR="#006600" BACKGROUND_COLOR="#ffcc00">
+                    <richcontent TYPE="NODE">
+                        <html>
+                            <head/>
+                            <body>
+                                <p>1.5 Renforcer et am&#233;liorer les </p>
+                                <p> activit&#233;s de loisirs existantes</p>
+                            </body>
+                        </html>
+                    </richcontent>
                     <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <node TEXT="Agn&#232;s" POSITION="right" ID="ID_24"/>
                 </node>
-                <node TEXT="1.6 Renforcer et am&#233;liorer les ateliers&#160;&#160; 
- visant &#224;&#160;&#160;rompre l'isolement li&#233; &#224; la langue, 
- la pauvret&#233;, la pression de la consommation" STYLE="rectagle" POSITION="right" ID="ID_25" COLOR="#006600" BACKGROUND_COLOR="#66ff00">
+                <node STYLE="rectagle" POSITION="right" ID="ID_25" COLOR="#006600" BACKGROUND_COLOR="#66ff00">
+                    <richcontent TYPE="NODE">
+                        <html>
+                            <head/>
+                            <body>
+                                <p>1.6 Renforcer et am&#233;liorer les ateliers&#160;&#160; </p>
+                                <p> visant &#224;&#160;&#160;rompre l'isolement li&#233; &#224; la langue, </p>
+                                <p> la pauvret&#233;, la pression de la consommation</p>
+                            </body>
+                        </html>
+                    </richcontent>
                     <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <node TEXT="Nathalie" POSITION="right" ID="ID_26"/>
                 </node>
             </node>
-            <node TEXT="2) Consolider nos moyens d'action : 
- locaux, organisation, communication interne" STYLE="bubble" POSITION="right" ID="ID_27" COLOR="#0000cc" BACKGROUND_COLOR="#99ffff">
+            <node STYLE="bubble" POSITION="right" ID="ID_27" COLOR="#0000cc" BACKGROUND_COLOR="#99ffff">
+                <richcontent TYPE="NODE">
+                    <html>
+                        <head/>
+                        <body>
+                            <p>2) Consolider nos moyens d'action : </p>
+                            <p> locaux, organisation, communication interne</p>
+                        </body>
+                    </html>
+                </richcontent>
                 <font SIZE="8" NAME="Arial" BOLD="true"/>
                 <edge COLOR="#808080"/>
-                <node TEXT="2.1 Formaliser notre offre de services 
- et les mod&#232;les &#233;conomiques correspondants" STYLE="rectagle" POSITION="right" ID="ID_28" COLOR="#006600" BACKGROUND_COLOR="#ffff00">
+                <node STYLE="rectagle" POSITION="right" ID="ID_28" COLOR="#006600" BACKGROUND_COLOR="#ffff00">
+                    <richcontent TYPE="NODE">
+                        <html>
+                            <head/>
+                            <body>
+                                <p>2.1 Formaliser notre offre de services </p>
+                                <p> et les mod&#232;les &#233;conomiques correspondants</p>
+                            </body>
+                        </html>
+                    </richcontent>
                     <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <node TEXT="Agn&#232;s" POSITION="right" ID="ID_29"/>
                 </node>
-                <node TEXT="2.2 Formaliser le &quot;qui fait quoi&quot; 
- en lien avec notre offre de service" STYLE="rectagle" POSITION="right" ID="ID_30" COLOR="#006600" BACKGROUND_COLOR="#ffcc00">
+                <node STYLE="rectagle" POSITION="right" ID="ID_30" COLOR="#006600" BACKGROUND_COLOR="#ffcc00">
+                    <richcontent TYPE="NODE">
+                        <html>
+                            <head/>
+                            <body>
+                                <p>2.2 Formaliser le "qui fait quoi" </p>
+                                <p> en lien avec notre offre de service</p>
+                            </body>
+                        </html>
+                    </richcontent>
                     <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <node TEXT="Martine G" POSITION="right" ID="ID_31"/>
                 </node>
-                <node TEXT="2.3. Elaborer un projet immobilier de proximit&#233; 
- r&#233;alisable au&#160;&#160;centre ville" STYLE="rectagle" POSITION="right" ID="ID_32" COLOR="#006600" BACKGROUND_COLOR="#66ff00">
+                <node STYLE="rectagle" POSITION="right" ID="ID_32" COLOR="#006600" BACKGROUND_COLOR="#66ff00">
+                    <richcontent TYPE="NODE">
+                        <html>
+                            <head/>
+                            <body>
+                                <p>2.3. Elaborer un projet immobilier de proximit&#233; </p>
+                                <p> r&#233;alisable au&#160;&#160;centre ville</p>
+                            </body>
+                        </html>
+                    </richcontent>
                     <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <node TEXT="JMDW" POSITION="right" ID="ID_33"/>
                 </node>
             </node>
-            <node TEXT="3) Renforcer nos 
- partenariats et 
- notre notori&#233;t&#233;" STYLE="bubble" POSITION="right" ID="ID_34" COLOR="#0000cc" BACKGROUND_COLOR="#99ffff">
+            <node STYLE="bubble" POSITION="right" ID="ID_34" COLOR="#0000cc" BACKGROUND_COLOR="#99ffff">
+                <richcontent TYPE="NODE">
+                    <html>
+                        <head/>
+                        <body>
+                            <p>3) Renforcer nos </p>
+                            <p> partenariats et </p>
+                            <p> notre notori&#233;t&#233;</p>
+                        </body>
+                    </html>
+                </richcontent>
                 <font SIZE="8" NAME="Arial" BOLD="true"/>
                 <edge COLOR="#808080"/>
-                <node TEXT="3.1 Organiser pour chaque segment de notre offre 
- l'identification et la rencontre des partenaires concern&#233;s" STYLE="rectagle" POSITION="right" ID="ID_35" COLOR="#006600" BACKGROUND_COLOR="#ffff00">
+                <node STYLE="rectagle" POSITION="right" ID="ID_35" COLOR="#006600" BACKGROUND_COLOR="#ffff00">
+                    <richcontent TYPE="NODE">
+                        <html>
+                            <head/>
+                            <body>
+                                <p>3.1 Organiser pour chaque segment de notre offre </p>
+                                <p> l'identification et la rencontre des partenaires concern&#233;s</p>
+                            </body>
+                        </html>
+                    </richcontent>
                     <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <edge COLOR="#808080"/>
                     <node TEXT="Martine P" POSITION="right" ID="ID_36"/>
                 </node>
-                <node TEXT="3.2 Formaliser et contractualiser les partenariats 
- &#233;mergeants autour d'actions communes" STYLE="rectagle" POSITION="right" ID="ID_37" COLOR="#006600" BACKGROUND_COLOR="#ffcc00">
+                <node STYLE="rectagle" POSITION="right" ID="ID_37" COLOR="#006600" BACKGROUND_COLOR="#ffcc00">
+                    <richcontent TYPE="NODE">
+                        <html>
+                            <head/>
+                            <body>
+                                <p>3.2 Formaliser et contractualiser les partenariats </p>
+                                <p> &#233;mergeants autour d'actions communes</p>
+                            </body>
+                        </html>
+                    </richcontent>
                     <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <edge COLOR="#808080"/>
                     <node TEXT="Pdt + Agn&#232;s" POSITION="right" ID="ID_38"/>
@@ -106,8 +242,16 @@ du plan d'actions" STYLE="bubble" POSITION="right" ID="ID_1" COLOR="#0000cc" BAC
                     <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <node TEXT="Pdt + Agn&#232;s" POSITION="right" ID="ID_40"/>
                 </node>
-                <node TEXT="3.4 d&#233;finir et faire vivre un plan de communication 
- &#224; partir de notre segmentation de l'offre" STYLE="rectagle" POSITION="right" ID="ID_41" COLOR="#006600" BACKGROUND_COLOR="#ff6666">
+                <node STYLE="rectagle" POSITION="right" ID="ID_41" COLOR="#006600" BACKGROUND_COLOR="#ff6666">
+                    <richcontent TYPE="NODE">
+                        <html>
+                            <head/>
+                            <body>
+                                <p>3.4 d&#233;finir et faire vivre un plan de communication </p>
+                                <p> &#224; partir de notre segmentation de l'offre</p>
+                            </body>
+                        </html>
+                    </richcontent>
                     <font SIZE="8" NAME="Arial" BOLD="true"/>
                     <edge COLOR="#808080"/>
                     <node TEXT="Pdt + Agn&#232;s" POSITION="right" ID="ID_42"/>

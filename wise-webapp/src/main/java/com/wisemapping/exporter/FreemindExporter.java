@@ -20,6 +20,7 @@ package com.wisemapping.exporter;
 
 
 import com.wisemapping.importer.freemind.FreemindIconConverter;
+import com.wisemapping.jaxb.wisemap.Note;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.ShapeStyle;
 import com.wisemapping.util.JAXBUtils;
@@ -28,10 +29,17 @@ import com.wisemapping.jaxb.wisemap.RelationshipType;
 import com.wisemapping.jaxb.wisemap.TopicType;
 import com.wisemapping.jaxb.wisemap.Icon;
 import org.jetbrains.annotations.NotNull;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +53,6 @@ public class FreemindExporter
     private static final String POSITION_RIGHT = "right";
     private com.wisemapping.jaxb.freemind.ObjectFactory objectFactory;
     private static final String EMPTY_FONT_STYLE = ";;;;;";
-
     private Map<String, Node> nodesMap = null;
 
     public void export(Mindmap map, OutputStream outputStream) throws ExportException {
@@ -64,7 +71,6 @@ public class FreemindExporter
 
             final com.wisemapping.jaxb.freemind.Map freemindMap = objectFactory.createMap();
             freemindMap.setVersion(FREE_MIND_VERSION);
-
 
             final List<TopicType> topics = mindmapMap.getTopic();
 
@@ -88,7 +94,8 @@ public class FreemindExporter
                 setTopicPropertiesToNode(main, centerTopic, true);
                 addNodeFromTopic(centerTopic, main);
             }
-            List<RelationshipType> relationships = mindmapMap.getRelationship();
+
+            final List<RelationshipType> relationships = mindmapMap.getRelationship();
             for (RelationshipType relationship : relationships) {
                 Node srcNode = nodesMap.get(relationship.getSrcTopicId());
                 Node dstNode = nodesMap.get(relationship.getDestTopicId());
@@ -114,37 +121,57 @@ public class FreemindExporter
             JAXBUtils.saveMap(freemindMap, outputStream);
         } catch (JAXBException e) {
             throw new ExportException(e);
+        } catch (UnsupportedEncodingException e) {
+            throw new ExportException(e);
+        } catch (SAXException e) {
+            throw new ExportException(e);
+        } catch (ParserConfigurationException e) {
+            throw new ExportException(e);
+        } catch (IOException e) {
+            throw new ExportException(e);
         }
     }
 
-    private void addNodeFromTopic(@NotNull final TopicType mainTopic, @NotNull final Node destNode) {
+    private void addNodeFromTopic(@NotNull final TopicType mainTopic, @NotNull final Node destNode) throws IOException, SAXException, ParserConfigurationException {
         final List<TopicType> currentTopic = mainTopic.getTopic();
 
         for (TopicType topicType : currentTopic) {
             final Node newNode = objectFactory.createNode();
             nodesMap.put(topicType.getId(), newNode);
+
             setTopicPropertiesToNode(newNode, topicType, false);
             destNode.getArrowlinkOrCloudOrEdge().add(newNode);
+
             addNodeFromTopic(topicType, newNode);
+
             final String position = topicType.getPosition();
             if (position != null) {
                 String xPos = position.split(",")[0];
                 int x = Integer.valueOf(xPos);
                 newNode.setPOSITION((x < 0 ? POSITION_LEFT : POSITION_RIGHT));
+            } else {
+                newNode.setPOSITION(POSITION_LEFT);
             }
         }
     }
 
-    private void setTopicPropertiesToNode(@NotNull com.wisemapping.jaxb.freemind.Node freemindNode, @NotNull com.wisemapping.jaxb.wisemap.TopicType mindmapTopic, boolean isRoot) {
+    private void setTopicPropertiesToNode(@NotNull com.wisemapping.jaxb.freemind.Node freemindNode, @NotNull com.wisemapping.jaxb.wisemap.TopicType mindmapTopic, boolean isRoot) throws IOException, SAXException, ParserConfigurationException {
         freemindNode.setID("ID_" + mindmapTopic.getId());
 
         String text = mindmapTopic.getTextAttr();
         if (text == null || text.isEmpty()) {
             text = mindmapTopic.getText();
         }
-        freemindNode.setTEXT(text);
-        freemindNode.setBACKGROUNDCOLOR(mindmapTopic.getBgColor());
 
+        // Formated text have a different representation ....
+        if (!text.contains("\n")) {
+            freemindNode.setTEXT(text);
+        } else {
+            final Richcontent richcontent = buildRichContent(text, "NODE");
+            freemindNode.getArrowlinkOrCloudOrEdge().add(richcontent);
+        }
+
+        freemindNode.setBACKGROUNDCOLOR(mindmapTopic.getBgColor());
         final String shape = mindmapTopic.getShape();
         if (shape != null && !shape.isEmpty()) {
             if (isRoot && !ShapeStyle.ROUNDED_RECTANGLE.getStyle().endsWith(shape) || !isRoot && !ShapeStyle.LINE.getStyle().endsWith(shape)) {
@@ -155,34 +182,49 @@ public class FreemindExporter
                 }
                 freemindNode.setSTYLE(style);
             }
-            addIconNode(freemindNode, mindmapTopic);
-            addLinkNode(freemindNode, mindmapTopic);
-            addFontNode(freemindNode, mindmapTopic);
-            addEdgeNode(freemindNode, mindmapTopic);
-            addNote(freemindNode, mindmapTopic);
-
-            Boolean shrink = mindmapTopic.isShrink();
-            if (shrink != null && shrink)
-                freemindNode.setFOLDED(String.valueOf(shrink));
         }
+
+        addIconNode(freemindNode, mindmapTopic);
+        addLinkNode(freemindNode, mindmapTopic);
+        addFontNode(freemindNode, mindmapTopic);
+        addEdgeNode(freemindNode, mindmapTopic);
+        addNote(freemindNode, mindmapTopic);
+
+        Boolean shrink = mindmapTopic.isShrink();
+        if (shrink != null && shrink)
+            freemindNode.setFOLDED(String.valueOf(shrink));
+
     }
 
-    private void addNote(com.wisemapping.jaxb.freemind.Node freemindNode, com.wisemapping.jaxb.wisemap.TopicType mindmapTopic) {
-        if (mindmapTopic.getNote() != null) {
-            final Hook note = new Hook();
-            String textNote = mindmapTopic.getNote().getTextAttr();
-            if (textNote == null || textNote.isEmpty()) {
-                textNote = mindmapTopic.getNote().getText();
+    private Richcontent buildRichContent(final String text, final String type) throws ParserConfigurationException, SAXException, IOException {
+        final Richcontent richcontent = objectFactory.createRichcontent();
+        richcontent.setTYPE(type);
+
+        final StringBuilder htmlContent = new StringBuilder("<html><head></head><body>");
+        for (String line : text.split("\n")) {
+            htmlContent.append("<p>").append(line).append("</p>");
+        }
+        htmlContent.append("</body></html>");
+
+        DocumentBuilder db = getInstanceBuilder();
+        Document document = db.parse(new ByteArrayInputStream(htmlContent.toString().getBytes()));
+        richcontent.setHtml(document.getDocumentElement());
+        return richcontent;
+    }
+
+    private DocumentBuilder getInstanceBuilder() throws ParserConfigurationException {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        return dbf.newDocumentBuilder();
+    }
+
+    private void addNote(com.wisemapping.jaxb.freemind.Node fnode, com.wisemapping.jaxb.wisemap.TopicType mindmapTopic) throws IOException, SAXException, ParserConfigurationException {
+        final Note note = mindmapTopic.getNote();
+        if (note != null) {
+            final String noteStr = note.getText() != null ? note.getText() : note.getTextAttr();
+            if (noteStr != null) {
+                final Richcontent richcontent = buildRichContent(noteStr, "NOTE");
+                fnode.getArrowlinkOrCloudOrEdge().add(richcontent);
             }
-
-            // @Todo: For some reason central topic nodes with CDATA seems not to be loaded in the JAXB model.
-            // Temporally excluding and continue ..
-            textNote = (textNote != null) ? textNote : "";
-
-            textNote = textNote.replaceAll("%0A", "\n");
-            note.setNAME("accessories/plugins/NodeNote.properties");
-            note.setText(textNote);
-            freemindNode.getArrowlinkOrCloudOrEdge().add(note);
         }
     }
 

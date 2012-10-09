@@ -16,25 +16,26 @@ import java.io.*;
 @Test
 public class ExportTest {
     private static final String DATA_DIR_PATH = "src/test/resources/data/wisemaps/";
-    private static final String UTF_8 = "UTF-8";
+    private static final String ENC_UTF_8 = "UTF-8";
+    private static final String ENC_LATIN1 = "iso-8859-1";
+
 
     @Test(dataProvider = "Data-Provider-Function")
     public void exportImportExportTest(@NotNull final File wisemap, @NotNull final File recFile) throws ImporterException, IOException, ExportException {
-
 
         final Mindmap mindmap = load(wisemap);
 
         final FreemindExporter freemindExporter = new FreemindExporter();
         if (recFile.exists()) {
             // Compare rec and file ...
-            final String recContent = FileUtils.readFileToString(recFile, "UTF-8");
+            final String recContent = FileUtils.readFileToString(recFile, ENC_UTF_8);
 
             // Export mile content ...
             final ByteArrayOutputStream bos = new ByteArrayOutputStream();
             freemindExporter.export(mindmap, bos);
-            final String exportContent = new String(bos.toByteArray(), UTF_8);
+            final String exportContent = new String(bos.toByteArray(), ENC_LATIN1);
 
-            Assert.assertEquals(recContent, exportContent);
+            Assert.assertEquals(exportContent, recContent);
 
         } else {
             final OutputStream fos = new FileOutputStream(recFile);
@@ -71,6 +72,4 @@ public class ExportTest {
 
         return result;
     }
-
-
 }
