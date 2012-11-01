@@ -119,6 +119,12 @@ public class FreemindImporter
 
             final String version = freemindMap.getVersion();
             if (version != null) {
+
+                // Is freemind mindmap ?
+                if (version.charAt(0) != '0') {
+                    throw new ImporterException("Mindmap is not a FreeMind document. Document type info " + version);
+                }
+
                 final VersionNumber mapVersion = new VersionNumber(version);
                 if (SUPPORTED_FREEMIND_VERSION.isGreaterThan(mapVersion)) {
                     throw new ImporterException("FreeMind version " + mapVersion.getVersion() + " is not supported.");
@@ -408,7 +414,7 @@ public class FreemindImporter
         if (depth == 1) {
 
             final String side = freeChild.getPOSITION();
-            x = x * (side!=null && POSITION_LEFT.equals(side) ? -1 : 1);
+            x = x * (side != null && POSITION_LEFT.equals(side) ? -1 : 1);
         } else {
             final Coord coord = Coord.parse(wiseParent.getPosition());
             x = x * (coord.isOnLeftSide() ? -1 : 1);

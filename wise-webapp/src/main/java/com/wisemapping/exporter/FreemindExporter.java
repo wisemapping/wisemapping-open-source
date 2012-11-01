@@ -207,7 +207,8 @@ public class FreemindExporter
         htmlContent.append("</body></html>");
 
         DocumentBuilder db = getInstanceBuilder();
-        Document document = db.parse(new ByteArrayInputStream(htmlContent.toString().getBytes()));
+        byte[] bytes = htmlContent.toString().getBytes("UTF-8");
+        Document document = db.parse(new ByteArrayInputStream(bytes), "UTF-8");
         richcontent.setHtml(document.getDocumentElement());
         return richcontent;
     }
