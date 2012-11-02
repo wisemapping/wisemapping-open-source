@@ -52,9 +52,6 @@ public class UsersController {
     @Autowired
     private UserService userService;
 
-    @Value("${registration.email.enabled}")
-    boolean emailConfirmEnabled;
-
     @Autowired
     private ReCaptcha captchaService;
 
@@ -111,11 +108,13 @@ public class UsersController {
             user.setFirstname(userBean.getFirstname());
             user.setLastname(userBean.getLastname());
             user.setPassword(userBean.getPassword());
-            userService.createUser(user, emailConfirmEnabled);
+
+            boolean confirmRegistrationByEmail = false;
+            userService.createUser(user, confirmRegistrationByEmail);
 
             // Forward to the success view ...
             result = new ModelAndView("userRegistrationSuccess");
-            result.addObject("confirmByEmail", emailConfirmEnabled);
+            result.addObject("confirmByEmail", confirmRegistrationByEmail);
         }
         return result;
     }
