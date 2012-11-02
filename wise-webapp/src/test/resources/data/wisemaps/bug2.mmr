@@ -1,0 +1,38 @@
+<map version="0.9.0">
+    <node TEXT="SaberM&#225;s" ID="ID_1">
+        <node TEXT="Utilizaci&#243;n de medios de expresi&#243;n art&#237;stica, digitales y anal&#243;gicos" POSITION="right" ID="ID_5"/>
+        <node TEXT="Precio tambi&#233;n limitado: 100-120?" POSITION="left" ID="ID_9"/>
+        <node TEXT="Talleres tem&#225;ticos" POSITION="right" ID="ID_2">
+            <node TEXT="Naturaleza" POSITION="right" ID="ID_13">
+                <node TEXT="Animales, Plantas, Piedras" POSITION="right" ID="ID_17"/>
+            </node>
+            <node TEXT="Arqueolog&#237;a" POSITION="right" ID="ID_21"/>
+            <node TEXT="Energ&#237;a" POSITION="right" ID="ID_18"/>
+            <node TEXT="Astronom&#237;a" POSITION="right" ID="ID_16"/>
+            <node TEXT="Arquitectura" POSITION="right" ID="ID_20"/>
+            <node TEXT="Cocina" POSITION="right" ID="ID_11"/>
+            <node TEXT="Poes&#237;a" POSITION="right" ID="ID_24"/>
+            <node TEXT="Culturas Antiguas" POSITION="right" ID="ID_25">
+                <node TEXT="Egipto, Grecia, China..." POSITION="right" ID="ID_26"/>
+            </node>
+            <node TEXT="Paleontolog&#237;a" POSITION="right" ID="ID_38"/>
+        </node>
+        <node TEXT="Duraci&#243;n limitada: 5-6 semanas" POSITION="left" ID="ID_6"/>
+        <node TEXT="Ni&#241;os y ni&#241;as que quieren saber m&#225;s" POSITION="left" ID="ID_7"/>
+        <node TEXT="Alternativa a otras actividades de ocio" POSITION="left" ID="ID_8"/>
+        <node TEXT="Uso de la tecnolog&#237;a durante todo el proceso de aprendizaje" POSITION="right" ID="ID_23"/>
+        <node TEXT="Estructura PBL: aprendemos cuando buscamos respuestas a nuestras propias preguntas " POSITION="right" ID="ID_3"/>
+        <node TEXT="Trabajo basado en la experimentaci&#243;n y en la investigaci&#243;n" POSITION="right" ID="ID_4"/>
+        <node TEXT="De 8 a 12 a&#241;os, sin separaci&#243;n por edades" POSITION="left" ID="ID_10"/>
+        <node TEXT="M&#225;ximo 10/1 por taller" POSITION="left" ID="ID_19"/>
+        <node TEXT="Actividades centradas en el contexto cercano" POSITION="right" ID="ID_37"/>
+        <node TEXT="Flexibilidad en el uso de las lenguas de trabajo (ingl&#233;s, castellano, esukara?)" POSITION="right" ID="ID_22"/>
+        <node TEXT="Complementamos el trabajo de la escuela" STYLE="bubble" POSITION="right" ID="ID_27">
+            <node TEXT="Cada uno va a su ritmo, y cada cual pone sus l&#237;mites" POSITION="right" ID="ID_30"/>
+            <node TEXT="Aprendemos todos de todos" POSITION="right" ID="ID_31"/>
+            <node TEXT="Valoramos lo que hemos aprendido" POSITION="right" ID="ID_33"/>
+            <node TEXT="SaberM&#225;s trabaja con, desde y para la motivaci&#243;n" POSITION="right" ID="ID_28"/>
+            <node TEXT="Trabajamos en equipo en nuestros proyectos " POSITION="right" ID="ID_32"/>
+        </node>
+    </node>
+</map>
