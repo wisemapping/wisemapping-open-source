@@ -1,11 +1,25 @@
 REST Services
 ---------------
 
-Obtaining user information by email:
+Introduction
+-------------
 
-curl "http://localhost:8080/service/admin/users/email/{user.email}.json" --get --basic -u "admin@wisemapping.org:admin"
+All WiseMapping services are exposed as REST services. Those services are the same used by the WiseMapping when you are using it.
+In the following section, all supported services are listed. The following variables should be replaced:
+
+- host.name: Host name where WiseMapping is deployed. Default Value: localhost
+- host.post: Post number where WiseMapping is deployed. Default Value: 8080
+- context.path: Context Path name where the application is deployed. Default Value:  wisemapping
+
+Supported Operations
+----------------------
+
+Obtaining user information by email:
+ * Template Path: /service/admin/users/email/{user.email}.json
+ * Example: curl "http://{host.name}:{host.port}/{context.path}/service/admin/users/email/{user.email}.json" --get --basic -u "admin@wisemapping.org:admin"
 
 Deleting a based on the user id:
-curl "http://localhost:8080/service/admin/users/{userId}" --request delete --basic -u "admin@wisemapping.org:admin"
+ * Template Path: /service/admin/users/{userId}
+ * curl "http://{host.name}:{host.port}/{context.path}/service/admin/users/{userId}" --request delete --basic -u "admin@wisemapping.org:admin"
 
 
