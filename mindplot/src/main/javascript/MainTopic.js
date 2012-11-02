@@ -55,16 +55,11 @@ mindplot.MainTopic = new Class({
         return group;
     },
 
-
-    _defaultShapeType:function () {
-        return mindplot.model.TopicShape.LINE;
-    },
-
     updateTopicShape:function (targetTopic, workspace) {
         // Change figure based on the connected topic ...
         var model = this.getModel();
         var shapeType = model.getShapeType();
-        if (targetTopic.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
+        if (!targetTopic.isCentralTopic()) {
             if (!$defined(shapeType)) {
                 // Get the real shape type ...
                 shapeType = this.getShapeType();
@@ -86,10 +81,6 @@ mindplot.MainTopic = new Class({
         }
         var innerShape = this.getInnerShape();
         innerShape.setVisibility(true);
-    },
-
-    getTopicType:function () {
-        return "MainTopic";
     },
 
     _updatePositionOnChangeSize:function (oldSize, newSize) {
@@ -167,82 +158,6 @@ mindplot.MainTopic = new Class({
             result = mindplot.util.Shape.calculateRectConnectionPoint(pos, size, isAtRight, true);
         }
         return result;
-    },
-
-    _getInnerPadding:function () {
-        var result;
-        var parent = this.getModel().getParent();
-        if (parent && mindplot.model.INodeModel.MAIN_TOPIC_TYPE == parent.getType()) {
-            result = 3;
-        }
-        else {
-            result = 4;
-        }
-        return result;
-    },
-
-    isConnectedToCentralTopic:function () {
-        var model = this.getModel();
-        var parent = model.getParent();
-
-        return parent && parent.getType() === mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE;
-    },
-
-    _defaultText:function () {
-        var targetTopic = this.getOutgoingConnectedTopic();
-        var result = "";
-        if ($defined(targetTopic)) {
-            if (targetTopic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
-                result = $msg('MAIN_TOPIC');
-            } else {
-                result = $msg('SUB_TOPIC');
-            }
-        } else {
-            result = $msg('ISOLATED_TOPIC');
-            ;
-        }
-        return result;
-    },
-
-    _defaultFontStyle:function () {
-        var targetTopic = this.getOutgoingConnectedTopic();
-        var result;
-        if ($defined(targetTopic)) {
-            if (targetTopic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
-                result = {
-                    font:"Arial",
-                    size:8,
-                    style:"normal",
-                    weight:"normal",
-                    color:"rgb(82,92,97)"
-                };
-            } else {
-                result = {
-                    font:"Arial",
-                    size:6,
-                    style:"normal",
-                    weight:"normal",
-                    color:"rgb(82,92,97)"
-                };
-            }
-        } else {
-            result = {
-                font:"Verdana",
-                size:8,
-                style:"normal",
-                weight:"normal",
-                color:"rgb(82,92,97)"
-            };
-        }
-        return result;
-    },
-
-    _defaultBackgroundColor:function () {
-        return "rgb(224,229,239)";
-    },
-
-    _defaultBorderColor:function () {
-        return 'rgb(2,59,185)';
     }
 
 });
