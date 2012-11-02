@@ -5,11 +5,11 @@
                 <html>
                     <head/>
                     <body>
-                        <p>Here is somefonts&#160; </p>
-                        <p> </p>
-                        <p> Add color changes ... </p>
-                        <p> Add some bullets: Different Bullets </p>
-                        <p> And all aligned !!!!s</p>
+                        <p>Here is somefonts&#160;</p>
+                        <p/>
+                        <p>Add color changes ...</p>
+                        <p>Add some bullets: Different Bullets</p>
+                        <p>And all aligned !!!!s</p>
                     </body>
                 </html>
             </richcontent>

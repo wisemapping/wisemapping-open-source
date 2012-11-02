@@ -202,7 +202,7 @@ public class FreemindExporter
 
         final StringBuilder htmlContent = new StringBuilder("<html><head></head><body>");
         for (String line : text.split("\n")) {
-            htmlContent.append("<p>").append(line).append("</p>");
+            htmlContent.append("<p>").append(line.trim()).append("</p>");
         }
         htmlContent.append("</body></html>");
 
