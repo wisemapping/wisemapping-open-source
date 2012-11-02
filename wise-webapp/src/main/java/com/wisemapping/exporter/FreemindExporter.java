@@ -165,11 +165,13 @@ public class FreemindExporter
         }
 
         // Formated text have a different representation ....
-        if (!text.contains("\n")) {
-            freemindNode.setTEXT(text);
-        } else {
-            final Richcontent richcontent = buildRichContent(text, "NODE");
-            freemindNode.getArrowlinkOrCloudOrEdge().add(richcontent);
+        if (text != null) {
+            if (!text.contains("\n")) {
+                freemindNode.setTEXT(text);
+            } else {
+                final Richcontent richcontent = buildRichContent(text, "NODE");
+                freemindNode.getArrowlinkOrCloudOrEdge().add(richcontent);
+            }
         }
 
         freemindNode.setBACKGROUNDCOLOR(mindmapTopic.getBgColor());
