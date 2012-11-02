@@ -84,7 +84,7 @@ public class TransformView extends AbstractView {
             // Write the conversion content ...
             final ServletOutputStream outputStream = response.getOutputStream();
             if (exportFormat == ExportFormat.FREEMIND) {
-                response.setCharacterEncoding("iso-8859-1");
+                response.setCharacterEncoding("ASCII");
                 factory.export(properties, content, outputStream, null);
             } else if (exportFormat == ExportFormat.WISEMAPPING) {
                 response.setCharacterEncoding("UTF-8");

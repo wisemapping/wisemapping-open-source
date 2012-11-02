@@ -28,6 +28,7 @@ import com.wisemapping.jaxb.freemind.*;
 import com.wisemapping.jaxb.wisemap.RelationshipType;
 import com.wisemapping.jaxb.wisemap.TopicType;
 import com.wisemapping.jaxb.wisemap.Icon;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -202,6 +203,7 @@ public class FreemindExporter
 
         final StringBuilder htmlContent = new StringBuilder("<html><head></head><body>");
         for (String line : text.split("\n")) {
+            line = StringEscapeUtils.escapeXml(line);
             htmlContent.append("<p>").append(line).append("</p>");
         }
         htmlContent.append("</body></html>");
