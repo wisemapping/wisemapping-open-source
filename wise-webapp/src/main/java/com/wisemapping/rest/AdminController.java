@@ -18,6 +18,7 @@
 
 package com.wisemapping.rest;
 
+import com.wisemapping.exceptions.ClientException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestUser;

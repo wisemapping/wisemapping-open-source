@@ -55,7 +55,7 @@ public class BaseController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public RestErrors handleClientErrors(@NotNull IllegalArgumentException ex) {
-        ex.printStackTrace();
+        System.err.println(ex.getMessage());
         return new RestErrors(ex.getMessage());
     }
 
