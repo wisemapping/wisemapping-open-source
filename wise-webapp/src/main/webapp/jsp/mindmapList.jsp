@@ -5,7 +5,7 @@
 
 <html lang="en">
 <head>
-    <base href="${baseURL}/">
+    <base href="${requestScope['site.baseurl']}/">
     <title><spring:message code="SITE.TITLE"/> - <spring:message code="MY_WISEMAPS"/></title>
     <!--[if lt IE 9]>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">

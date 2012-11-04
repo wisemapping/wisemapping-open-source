@@ -16,7 +16,7 @@
 
 <html>
 <head>
-    <base href="${baseURL}/">
+    <base href="${requestScope['site.baseurl']}/">
     <!--[if lt IE 9]>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <![endif]-->

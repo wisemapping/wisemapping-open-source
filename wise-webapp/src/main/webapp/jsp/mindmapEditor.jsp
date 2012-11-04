@@ -11,7 +11,7 @@
 <%--@elvariable id="mapXml" type="com.wisemapping.model.User"--%>
 <html>
 <head>
-    <base href="${baseURL}/">
+    <base href="${requestScope['site.baseurl']}/">
     <title><spring:message code="SITE.TITLE"/> - <c:out value="${mindmap.title}"/></title>
     <!--[if lt IE 9]>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">

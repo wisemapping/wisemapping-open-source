@@ -18,29 +18,51 @@
 
 package com.wisemapping.filter;
 
-import com.wisemapping.exceptions.GoogleChromeFrameRequiredException;
-import com.wisemapping.exceptions.UnsupportedBrowserException;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.MutablePropertySources;
+import org.springframework.core.env.PropertySource;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
+import java.util.regex.Pattern;
+
 
 public class RequestPropertiesInterceptor extends HandlerInterceptorAdapter {
-    private Map<String, String> attributes;
+    @Value("${google.analytics.enabled}")
+    private Boolean analyticsEnabled;
+
+    @Value("${google.analytics.account}")
+    private String analyticsAccount;
+
+    @Value("${google.ads.enabled}")
+    private Boolean adsEnabled;
+
+    @Value("${site.homepage}")
+    private String siteHomepage;
+
+    @Autowired
+    Environment env;
 
     public boolean preHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, Object object) throws Exception {
-        for (String key : attributes.keySet()) {
-            request.setAttribute(key, attributes.get(key));
-        }
-        return true;
-    }
 
-    public void setAttributes(Map<String, String> attributes) {
-        this.attributes = attributes;
+        request.setAttribute("google.analytics.enabled", analyticsEnabled);
+        request.setAttribute("google.analytics.account", analyticsAccount);
+        request.setAttribute("google.ads.enabled", adsEnabled);
+        request.setAttribute("site.homepage", siteHomepage);
+
+        final String baseUrl;
+        if (env.containsProperty("site.baseurl")) {
+            baseUrl = env.getProperty("site.baseurl");
+        } else {
+            baseUrl = request.getRequestURL().toString().replace(request.getRequestURI(), request.getContextPath());
+        }
+        request.setAttribute("site.baseurl", baseUrl);
+        return true;
     }
 }
