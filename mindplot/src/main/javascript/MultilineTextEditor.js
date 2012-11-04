@@ -157,6 +157,10 @@ mindplot.MultilineTextEditor = new Class({
     },
 
     show:function (topic, text) {
+        // Close a previous node editor if it's opened ...
+        if (this._topic) {
+            this.close(false);
+        }
 
         this._topic = topic;
         if (!this.isVisible()) {
@@ -272,7 +276,7 @@ mindplot.MultilineTextEditor = new Class({
     },
 
     close:function (update) {
-        if (this.isVisible()) {
+        if (this.isVisible() && this._topic) {
             // Update changes ...
             clearTimeout(this._timeoutId);
 
@@ -286,9 +290,9 @@ mindplot.MultilineTextEditor = new Class({
             // Remove it form the screen ...
             this._containerElem.dispose();
             this._containerElem = null;
-            this._topic = null;
             this._timeoutId = -1;
         }
+        this._topic = null;
     }
 });
 

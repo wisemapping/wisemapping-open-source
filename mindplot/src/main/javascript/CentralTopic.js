@@ -36,28 +36,10 @@ mindplot.CentralTopic = new Class({
         return this.getPosition();
     },
 
-    _getInnerPadding:function () {
-        return 11;
-    },
-
-    getTopicType:function () {
-        return mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE;
-    },
-
     setCursor:function (type) {
         type = (type == 'move') ? 'default' : type;
         this.parent(type);
     },
-
-    isConnectedToCentralTopic:function () {
-        return false;
-    },
-
-
-    _defaultShapeType:function () {
-        return  mindplot.model.TopicShape.ROUNDED_RECT;
-    },
-
 
     updateTopicShape:function () {
 
@@ -68,28 +50,6 @@ mindplot.CentralTopic = new Class({
         // Center main topic ...
         var zeroPoint = new core.Point(0, 0);
         this.setPosition(zeroPoint);
-    },
-
-    _defaultText:function () {
-        return $msg('CENTRAL_TOPIC');
-    },
-
-    _defaultBackgroundColor:function () {
-        return "rgb(80,157,192)";
-    },
-
-    _defaultBorderColor:function () {
-        return "rgb(57,113,177)";
-    },
-
-    _defaultFontStyle:function () {
-        return {
-            font:"Verdana",
-            size:10,
-            style:"normal",
-            weight:"bold",
-            color:"#ffffff"
-        };
     },
 
     getShrinkConnector:function () {

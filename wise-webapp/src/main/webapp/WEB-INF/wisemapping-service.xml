@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
-<beans>
-    <bean id="mailer" class="com.wisemapping.mail.Mailer" singleton="true">
+    <bean id="mailer" class="com.wisemapping.mail.Mailer" scope ="singleton">
         <constructor-arg index="0" value="${mail.serverSendEmail}"/>
         <constructor-arg index="1" value="${mail.supportEmail}"/>
         <constructor-arg index="2" value="${mail.errorReporterEmail}"/>
@@ -74,7 +76,7 @@
         </property>
     </bean>
 
-    <bean id="notificationService" class="com.wisemapping.mail.NotificationService" singleton="true">
+    <bean id="notificationService" class="com.wisemapping.mail.NotificationService"  scope ="singleton">
         <property name="baseUrl" value="${site.baseurl}"/>
         <property name="mailer" ref="mailer"/>
     </bean>

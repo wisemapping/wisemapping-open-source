@@ -1,5 +1,5 @@
 /*
-*    Copyright [2012] [wisemapping]
+*    Copyright [2011] [wisemapping]
 *
 *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
 *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -28,6 +28,7 @@ import com.wisemapping.jaxb.freemind.*;
 import com.wisemapping.jaxb.wisemap.RelationshipType;
 import com.wisemapping.jaxb.wisemap.TopicType;
 import com.wisemapping.jaxb.wisemap.Icon;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -164,11 +165,13 @@ public class FreemindExporter
         }
 
         // Formated text have a different representation ....
-        if (!text.contains("\n")) {
-            freemindNode.setTEXT(text);
-        } else {
-            final Richcontent richcontent = buildRichContent(text, "NODE");
-            freemindNode.getArrowlinkOrCloudOrEdge().add(richcontent);
+        if (text != null) {
+            if (!text.contains("\n")) {
+                freemindNode.setTEXT(text);
+            } else {
+                final Richcontent richcontent = buildRichContent(text, "NODE");
+                freemindNode.getArrowlinkOrCloudOrEdge().add(richcontent);
+            }
         }
 
         freemindNode.setBACKGROUNDCOLOR(mindmapTopic.getBgColor());
@@ -202,7 +205,8 @@ public class FreemindExporter
 
         final StringBuilder htmlContent = new StringBuilder("<html><head></head><body>");
         for (String line : text.split("\n")) {
-            htmlContent.append("<p>").append(line.trim()).append("</p>");
+            line = StringEscapeUtils.escapeXml(line);
+            htmlContent.append("<p>").append(line).append("</p>");
         }
         htmlContent.append("</body></html>");
 

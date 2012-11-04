@@ -1,5 +1,5 @@
 /*
-*    Copyright [2012] [wisemapping]
+*    Copyright [2011] [wisemapping]
 *
 *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
 *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -25,7 +25,6 @@ import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestErrors;
 import com.wisemapping.security.Utils;
-import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -43,8 +42,6 @@ import java.util.Locale;
 
 public class BaseController {
 
-    final protected static Logger logger = Logger.getLogger("com.wisemapping.rest");
-
     @Qualifier("messageSource")
     @Autowired
     private ResourceBundleMessageSource messageSource;
@@ -59,8 +56,8 @@ public class BaseController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public RestErrors handleClientErrors(@NotNull IllegalArgumentException ex) {
-        ex.printStackTrace();
-        return new RestErrors(ex.getMessage(), Severity.SEVERE);
+        System.err.println(ex.getMessage());
+        return new RestErrors(ex.getMessage(),Severity.WARNING);
     }
 
     @ExceptionHandler(Exception.class)

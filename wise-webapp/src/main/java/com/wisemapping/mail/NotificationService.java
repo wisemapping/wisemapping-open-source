@@ -123,7 +123,8 @@ final public class NotificationService {
 
     private void handleException(Exception e) {
         System.err.println("An expected error has occurred trying to send an email notification. Usually, the main reason for this is that the SMTP server properties has not been configured properly. Edit the WEB-INF/app.properties file and verify the SMTP server configuration properties.");
-        e.printStackTrace();
+        System.err.println("Cause:" + e.getMessage());
+
     }
 
     public void setBaseUrl(String baseUrl) {

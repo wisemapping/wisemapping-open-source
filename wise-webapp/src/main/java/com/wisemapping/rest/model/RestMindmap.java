@@ -52,7 +52,6 @@ public class RestMindmap {
 
     public RestMindmap() throws WiseMappingException {
         this(new Mindmap(), null);
-
     }
 
     public RestMindmap(@NotNull Mindmap mindmap, @Nullable Collaborator collaborator) throws WiseMappingException {

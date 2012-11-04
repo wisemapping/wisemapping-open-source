@@ -357,7 +357,7 @@ public class FreemindImporter
      * 3 -> 2
      * 4 -> 4
      */
-    private int calcFirstLevelOrder(@NotNull List<Object> freeChilden, @NotNull Node freeChild) {
+    private int calcFirstLevelOrder(@NotNull List<Object> freeChilden, @Nullable Node freeChild) {
         final List<Node> nodes = new ArrayList<Node>();
         int result;
 
