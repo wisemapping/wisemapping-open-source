@@ -43,7 +43,7 @@ mkdir $WISE_WEBAPP_DIR
 unzip $BASE_DIR/../wise-webapp/target/wisemapping.war -d $WISE_WEBAPP_DIR >/dev/null
 
 # DB Configuration ...
-sed 's/target\/db\/wisemapping/webapps\/wisemapping\/WEB-INF\/database\/wisemapping/' $WISE_WEBAPP_DIR/WEB-INF/app.properties > $WISE_WEBAPP_DIR/WEB-INF/app.properties2
+sed 's/\${database.base.url}\/db\/wisemapping/webapps\/wisemapping\/WEB-INF\/database\/wisemapping/' $WISE_WEBAPP_DIR/WEB-INF/app.properties > $WISE_WEBAPP_DIR/WEB-INF/app.properties2
 mv $WISE_WEBAPP_DIR/WEB-INF/app.properties2 $WISE_WEBAPP_DIR/WEB-INF/app.properties
 
 

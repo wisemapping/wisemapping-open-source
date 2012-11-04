@@ -14,11 +14,9 @@
     <context:component-scan base-package="com.wisemapping.ncontroller"/>
     <context:annotation-config/>
     <mvc:annotation-driven/>
-
-    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="/WEB-INF/app.properties"/>
-    </bean>
-
+    <context:property-placeholder
+            location="/WEB-INF/app.properties"
+    />
 
     <!-- Interceptors Registration -->
     <mvc:interceptors>
@@ -114,8 +112,8 @@
     </bean>
 
     <beans profile="heroku">
-        <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-            <property name="location" value="/WEB-INF/heroku.properties" />
-        </bean>
+        <context:property-placeholder
+                location="/WEB-INF/heroku.properties"
+                />
     </beans>
 </beans>

@@ -311,12 +311,8 @@
 
                 <configuration>
                     <driver>org.hsqldb.jdbc.JDBCDriver</driver>
-                    <url>jdbc:hsqldb:file:${project.basedir}/target/db/wisemapping</url>
+                    <url>jdbc:hsqldb:file:${project.build.directory}/db/wisemapping</url>
                     <username>sa</username>
-                    <!--all executions are ignored if -Dmaven.test.skipDB=true
-                     Use this flag if you want to reuse an already created HSQL database instance
-                    -->
-                    <skip>${maven.test.skipDB}</skip>
                 </configuration>
 
                 <dependencies>
@@ -494,6 +490,10 @@
                             <name>org.mortbay.util.FileResource.checkAliases</name>
                             <value>false</value>
                         </systemProperty>
+                        <systemProperty>
+                            <name>database.base.url</name>
+                            <value>${project.build.directory}</value>
+                        </systemProperty>
                     </systemProperties>
                     <!--<scanIntervalSeconds>10</scanIntervalSeconds>-->
                 </configuration>
@@ -502,7 +502,7 @@
                         <id>start-jetty</id>
                         <phase>pre-integration-test</phase>
                         <goals>
-                            <goal>run-war</goal>
+                            <goal>run</goal>
                         </goals>
                         <configuration>
                             <scanIntervalSeconds>0</scanIntervalSeconds>
