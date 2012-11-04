@@ -165,7 +165,6 @@ public class MindmapController extends BaseController {
         mindmap.setXmlStr(xml);
 
         // Update map ...
-        logger.debug("Mindmap save completed:" + restMindmap.getXml());
         saveMindmap(minor, mindmap, user);
 
         // Update edition timeout ...
