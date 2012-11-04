@@ -167,39 +167,40 @@ mindplot.Designer = new Class({
             }
 
             // Enable drag events ...
-            Element.NativeEvents.dragenter = 2;
-            Element.NativeEvents.dragexit = 2;
-            Element.NativeEvents.dragover = 2;
-            Element.NativeEvents.drop = 2;
-
-            screenManager.addEvent('dragenter', noopHandler);
-            screenManager.addEvent('dragexit', noopHandler);
-            screenManager.addEvent('dragover', noopHandler);
-            screenManager.addEvent('drop', function (evt) {
-                evt.stopPropagation();
-                evt.preventDefault();
+            // @Todo: Images support on progress ...
+//            Element.NativeEvents.dragenter = 2;
+//            Element.NativeEvents.dragexit = 2;
+//            Element.NativeEvents.dragover = 2;
+//            Element.NativeEvents.drop = 2;
 //
-                var files = evt.event.dataTransfer.files;
-                console.log(event);
-
-                var count = files.length;
-
-                // Only call the handler if 1 or more files was dropped.
-                if (count > 0) {
-
-                    var model = this.getMindmap().createNode();
-                    model.setImageSize(80, 43);
-                    model.setMetadata("{'media':'video,'url':'http://www.youtube.com/watch?v=P3FrXftyuzw&feature=g-vrec&context=G2b4ab69RVAAAAAAAAAA'}");
-                    model.setImageUrl("images/logo-small.png");
-                    model.setShapeType(mindplot.model.TopicShape.IMAGE);
-
-                    var position = screenManager.getWorkspaceMousePosition(evt);
-                    model.setPosition(position.x, position.y);
-                    model.setPosition(100, 100);
-
-                    this._actionDispatcher.addTopics([model]);
-                }
-            }.bind(this));
+//            screenManager.addEvent('dragenter', noopHandler);
+//            screenManager.addEvent('dragexit', noopHandler);
+//            screenManager.addEvent('dragover', noopHandler);
+//            screenManager.addEvent('drop', function (evt) {
+//                evt.stopPropagation();
+//                evt.preventDefault();
+////
+//                var files = evt.event.dataTransfer.files;
+//                console.log(event);
+//
+//                var count = files.length;
+//
+//                // Only call the handler if 1 or more files was dropped.
+//                if (count > 0) {
+//
+//                    var model = this.getMindmap().createNode();
+//                    model.setImageSize(80, 43);
+//                    model.setMetadata("{'media':'video,'url':'http://www.youtube.com/watch?v=P3FrXftyuzw&feature=g-vrec&context=G2b4ab69RVAAAAAAAAAA'}");
+//                    model.setImageUrl("images/logo-small.png");
+//                    model.setShapeType(mindplot.model.TopicShape.IMAGE);
+//
+//                    var position = screenManager.getWorkspaceMousePosition(evt);
+//                    model.setPosition(position.x, position.y);
+//                    model.setPosition(100, 100);
+//
+//                    this._actionDispatcher.addTopics([model]);
+//                }
+//            }.bind(this));
 
 
         },
