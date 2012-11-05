@@ -83,7 +83,7 @@ mindplot.StandaloneActionDispatcher = new Class({
             topic.setText(value);
             return result;
         };
-        command.commandType =  "changeTextToTopic";
+        commandFunc.commandType =  "changeTextToTopic";
 
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicsIds, text);
         this.execute(command);
