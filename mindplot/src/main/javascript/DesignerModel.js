@@ -83,6 +83,7 @@ mindplot.DesignerModel = new Class({
 
     addTopic:function (topic) {
         $assert(topic, "topic can not be null");
+        $assert(typeof  topic.getId() == "number", "id is not a number:" + topic.getId());
         this._topics.push(topic);
     },
 
