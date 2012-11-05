@@ -39,7 +39,7 @@ function buildDesigner(options) {
             return;
         }
 
-        // Trasform error ...
+        // Transform error ...
         var errorMsg = message;
         if (typeof(message) === 'object' && message.srcElement && message.target) {
             if (message.srcElement == '[object HTMLScriptElement]' && message.target == '[object HTMLScriptElement]') {
@@ -57,7 +57,7 @@ function buildDesigner(options) {
             emulation:false,
             urlEncoded:false
         }).post(JSON.encode({
-            jsErrorMsg:"Message: '" + errorMsg + "', line:'" + lineNo + "', :" + url,
+            jsErrorMsg:"Message: '" + errorMsg + "', line:'" + lineNo + "', url: :" + url,
             jsStack:window.errorStack,
             userAgent:navigator.userAgent,
             mapId:options.mapId}));

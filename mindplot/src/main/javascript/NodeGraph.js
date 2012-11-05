@@ -38,6 +38,7 @@ mindplot.NodeGraph = new Class({
     },
 
     setId : function(id) {
+        $assert(typeof  topic.getId() == "number", "id is not a number:" + id);
         this.getModel().setId(id);
     },
 

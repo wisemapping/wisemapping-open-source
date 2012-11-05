@@ -32,19 +32,27 @@ mindplot.commands.GenericFunctionCommand = new Class({
     execute:function (commandContext) {
         if (!this.applied) {
 
-            // @Todo: Debug hack. Remove
-            var topics;
+            var topics = null;
             try {
                 topics = commandContext.findTopics(this._topicsId);
             } catch (e) {
-                throw new Error(e + "," + this._commandFunc + "," + this._commandFunc.desc);
+                if (this._commandFunc.commandType != "changeTextToTopic") {
+                    // Workaround: For some reason, there is a combination of events that involves
+                    // making some modification and firing out of focus event. This is causing
+                    // that a remove node try to be removed.  In some other life, I will come with the solution.
+                    // Almost aways occurs with IE9. I could be related with some change of order in sets o something similar.
+                    throw  e;
+                }
             }
 
-            topics.each(function (topic) {
-                var oldValue = this._commandFunc(topic, this._value);
-                this._oldValues.push(oldValue);
-            }.bind(this));
+            if (topics != null) {
+                topics.each(function (topic) {
+                    var oldValue = this._commandFunc(topic, this._value);
+                    this._oldValues.push(oldValue);
+                }.bind(this));
+            }
             this.applied = true;
+
         } else {
             throw "Command can not be applied two times in a row.";
         }

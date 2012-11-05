@@ -11,8 +11,6 @@
           http://www.springframework.org/schema/context
           http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:property-placeholder location="/WEB-INF/app.properties"/>
-
     <bean id="encoder"
           class="com.wisemapping.security.CustomPasswordEncoder"/>
 
@@ -72,9 +70,4 @@
         <property name="userService" ref="userService"/>
         <property name="adminUser" value="${admin.user}"/>
     </bean>
-
-    <beans profile="heroku">
-        <context:property-placeholder location="/WEB-INF/heroku.properties"/>
-    </beans>
-
 </beans>

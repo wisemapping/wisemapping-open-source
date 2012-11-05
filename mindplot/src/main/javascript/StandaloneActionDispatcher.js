@@ -54,7 +54,6 @@ mindplot.StandaloneActionDispatcher = new Class({
         };
 
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicId, position);
-        command.desc = "move topic";
         this.execute(command);
     },
 
@@ -72,7 +71,6 @@ mindplot.StandaloneActionDispatcher = new Class({
             return result;
         };
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicsIds);
-        command.desc = "changeFontStyleToTopic";
         this.execute(command);
 
     },
@@ -85,9 +83,9 @@ mindplot.StandaloneActionDispatcher = new Class({
             topic.setText(value);
             return result;
         };
+        commandFunc.commandType =  "changeTextToTopic";
 
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicsIds, text);
-        command.desc = "changeTextToTopic";
         this.execute(command);
     },
 
@@ -105,8 +103,6 @@ mindplot.StandaloneActionDispatcher = new Class({
         };
 
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicIds, fontFamily);
-        command.desc = "changeFontFamilyToTopic";
-
         this.execute(command);
     },
 
@@ -122,7 +118,6 @@ mindplot.StandaloneActionDispatcher = new Class({
 
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicsIds, color);
         command.discardDuplicated = "fontColorCommandId";
-        command.desc = "changeFontColorToTopic";
         this.execute(command);
     },
 
@@ -138,8 +133,6 @@ mindplot.StandaloneActionDispatcher = new Class({
 
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicsIds, color);
         command.discardDuplicated = "backColor";
-        command.desc = "changeBackgroundColorToTopic";
-
         this.execute(command);
     },
 
@@ -155,8 +148,6 @@ mindplot.StandaloneActionDispatcher = new Class({
 
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicsIds, color);
         command.discardDuplicated = "borderColorCommandId";
-        command.desc = "changeBorderColorToTopic";
-
         this.execute(command);
     },
 
@@ -173,8 +164,6 @@ mindplot.StandaloneActionDispatcher = new Class({
         };
 
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicsIds, size);
-        command.desc = "changeFontSizeToTopic";
-
         this.execute(command);
     },
 
@@ -189,8 +178,6 @@ mindplot.StandaloneActionDispatcher = new Class({
         };
 
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicsIds, shapeType);
-        command.desc = "changeShapeTypeToTopic";
-
         this.execute(command);
     },
 
@@ -207,8 +194,6 @@ mindplot.StandaloneActionDispatcher = new Class({
         };
 
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicsIds);
-        command.desc = "changeFontWeightToTopic";
-
         this.execute(command);
     },
 
@@ -221,8 +206,6 @@ mindplot.StandaloneActionDispatcher = new Class({
         };
 
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicsIds, collapse);
-        command.desc = "shrinkBranch";
-
         this.execute(command, false);
     },
 
@@ -268,7 +251,7 @@ mindplot.CommandContext = new Class({
             var ids = designerTopics.map(function (topic) {
                 return topic.getId();
             });
-            $assert(result.length == topicsIds.length, "Could not find topic. Result:" + result + ", Filter Criteria:" + topicsIds + ", Current Topics: " + ids);
+            $assert(result.length == topicsIds.length, "Could not find topic. Result:" + result + ", Filter Criteria:" + topicsIds + ", Current Topics: [" + ids + "]");
         }
         return result;
     },

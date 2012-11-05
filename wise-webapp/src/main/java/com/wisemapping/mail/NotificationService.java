@@ -27,6 +27,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.PrintWriter;
@@ -37,11 +38,13 @@ import java.util.Map;
 
 final public class NotificationService {
 
-
+    public static final String DEFAULT_WISE_URL = "http://localhost:8080/wisemapping";
     @Autowired
     private Mailer mailer;
-    private String baseUrl;
+
     private NotifierFilter notificationFilter;
+
+    private String baseUrl;
 
     public NotificationService() {
         this.notificationFilter = new NotifierFilter();
@@ -64,8 +67,8 @@ final public class NotificationService {
             model.put("mindmap", mindmap);
             model.put("message", "message");
             model.put("ownerName", user.getFirstname());
-            model.put("mapEditUrl", baseUrl + "/c/maps/" + mindmap.getId() + "/edit");
-            model.put("baseUrl", baseUrl);
+            model.put("mapEditUrl", getBaseUrl() + "/c/maps/" + mindmap.getId() + "/edit");
+            model.put("baseUrl", getBaseUrl());
             model.put("senderMail", user.getEmail());
             model.put("message", message);
             model.put("supportEmail", mailer.getSupportEmail());
@@ -83,7 +86,7 @@ final public class NotificationService {
         final String messageBody =
                 "<p>Someone, most likely you, requested a new password for your WiseMapping account. </p>\n" +
                         "<p><strong>Here is your new password: " + temporalPassword + "</strong></p>\n" +
-                        "<p>You can login clicking <a href=\"" + this.baseUrl + "/c/login\">here</a>. We strongly encourage you to change the password as soon as possible.</p>";
+                        "<p>You can login clicking <a href=\"" + getBaseUrl() + "/c/login\">here</a>. We strongly encourage you to change the password as soon as possible.</p>";
 
         sendTemplateMail(user, mailSubject, messageTitle, messageBody);
     }
@@ -112,7 +115,7 @@ final public class NotificationService {
             model.put("firstName", user.getFirstname());
             model.put("messageTitle", messageTitle);
             model.put("messageBody", messageBody);
-            model.put("baseUrl", this.baseUrl);
+            model.put("baseUrl", getBaseUrl());
             model.put("supportEmail", mailer.getSupportEmail());
 
             mailer.sendEmail(mailer.getServerSenderEmail(), user.getEmail(), mailSubject, model, "baseLayout.vm");
@@ -125,10 +128,6 @@ final public class NotificationService {
         System.err.println("An expected error has occurred trying to send an email notification. Usually, the main reason for this is that the SMTP server properties has not been configured properly. Edit the WEB-INF/app.properties file and verify the SMTP server configuration properties.");
         System.err.println("Cause:" + e.getMessage());
 
-    }
-
-    public void setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
     }
 
     public void setMailer(Mailer mailer) {
@@ -227,6 +226,17 @@ final public class NotificationService {
         return retValue;
     }
 
+    public String getBaseUrl() {
+        if ("${site.baseurl}".equals(baseUrl)) {
+            baseUrl = DEFAULT_WISE_URL;
+            System.err.println("Warning: site.baseurl has not being configured. Mail site references could be not properly sent. Using :" + baseUrl);
+        }
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
 }
 
 

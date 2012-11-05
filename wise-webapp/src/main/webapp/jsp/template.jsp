@@ -10,7 +10,7 @@
 
 <html>
 <head>
-    <base href="${baseURL}/">
+    <base href="${requestScope['site.baseurl']}/">
     <title>
         <spring:message code="SITE.TITLE"/>-
         <c:choose>

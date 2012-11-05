@@ -14,9 +14,7 @@
     <context:component-scan base-package="com.wisemapping.ncontroller"/>
     <context:annotation-config/>
     <mvc:annotation-driven/>
-    <context:property-placeholder
-            location="/WEB-INF/app.properties"
-    />
+    <context:property-placeholder location="/WEB-INF/app.properties" ignore-unresolvable="true"/>
 
     <!-- Interceptors Registration -->
     <mvc:interceptors>
@@ -38,18 +36,8 @@
                 </set>
             </property>
         </bean>
-        <bean id="userLocaleInterceptor" class="com.wisemapping.filter.UserLocaleInterceptor">
-        </bean>
-        <bean id="requestInterceptor" class="com.wisemapping.filter.RequestPropertiesInterceptor">
-            <property name="attributes">
-                <map>
-                    <entry key="google.analytics.enabled" value="${google.analytics.enabled}"/>
-                    <entry key="google.analytics.account" value="${google.analytics.account}"/>
-                    <entry key="google.ads.enabled" value="${google.ads.enabled}"/>
-                    <entry key="site.homepage" value="${site.homepage}"/>
-                </map>
-            </property>
-        </bean>
+        <bean id="userLocaleInterceptor" class="com.wisemapping.filter.UserLocaleInterceptor"/>
+        <bean id="requestInterceptor" class="com.wisemapping.filter.RequestPropertiesInterceptor"/>
     </mvc:interceptors>
 
 
@@ -110,10 +98,4 @@
             </list>
         </property>
     </bean>
-
-    <beans profile="heroku">
-        <context:property-placeholder
-                location="/WEB-INF/heroku.properties"
-                />
-    </beans>
 </beans>

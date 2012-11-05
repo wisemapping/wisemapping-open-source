@@ -1,6 +1,5 @@
 #!/bin/bash
 
-set -x
 set -e	
 set -u
 
@@ -46,7 +45,6 @@ unzip $BASE_DIR/../wise-webapp/target/wisemapping.war -d $WISE_WEBAPP_DIR >/dev/
 sed 's/\${database.base.url}\/db\/wisemapping/webapps\/wisemapping\/WEB-INF\/database\/wisemapping/' $WISE_WEBAPP_DIR/WEB-INF/app.properties > $WISE_WEBAPP_DIR/WEB-INF/app.properties2
 mv $WISE_WEBAPP_DIR/WEB-INF/app.properties2 $WISE_WEBAPP_DIR/WEB-INF/app.properties
 
-
 mkdir $WISE_WEBAPP_DIR/WEB-INF/database
 cp -r $BASE_DIR/../wise-webapp/target/db/* $WISE_WEBAPP_DIR/WEB-INF/database/
 cp $BASE_DIR/wisemapping.xml $JETTY_DIR/contexts/
@@ -54,6 +52,7 @@ cp $BASE_DIR/wisemapping.xml $JETTY_DIR/contexts/
 
 # Distribute scripts
 cp -r $BASE_DIR/../wise-webapp/src/test/sql $TARGET_DIR/wisemapping-$WISE_VERSION/config
+cp ./start.sh ${JETTY_DIR}/
 
 # Store version
 echo $1 > $WISE_WEBAPP_DIR/version
