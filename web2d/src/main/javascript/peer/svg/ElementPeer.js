@@ -17,7 +17,7 @@
  */
 
 web2d.peer.svg.ElementPeer = new Class({
-    initialize :function(svgElement) {
+    initialize:function (svgElement) {
         this._native = svgElement;
         if (!this._native.addEvent) {
             // Hack bug: https://bugzilla.mozilla.org/show_bug.cgi?id=740811
@@ -26,16 +26,16 @@ web2d.peer.svg.ElementPeer = new Class({
             }
         }
 
-        this._size = {width:1,height:1};
+        this._size = {width:1, height:1};
         this._changeListeners = {};
         // http://support.adobe.com/devsup/devsup.nsf/docs/50493.htm
     },
 
-    setChildren : function(children) {
+    setChildren:function (children) {
         this._children = children;
     },
 
-    getChildren : function() {
+    getChildren:function () {
         var result = this._children;
         if (!$defined(result)) {
             result = [];
@@ -44,15 +44,15 @@ web2d.peer.svg.ElementPeer = new Class({
         return result;
     },
 
-    getParent : function() {
+    getParent:function () {
         return this._parent;
     },
 
-    setParent : function(parent) {
+    setParent:function (parent) {
         this._parent = parent;
     },
 
-    appendChild : function(elementPeer) {
+    appendChild:function (elementPeer) {
         // Store parent and child relationship.
         elementPeer.setParent(this);
         var children = this.getChildren();
@@ -66,20 +66,17 @@ web2d.peer.svg.ElementPeer = new Class({
     },
 
 
-    removeChild : function(elementPeer) {
+    removeChild:function (elementPeer) {
         // Store parent and child relationship.
         elementPeer.setParent(null);
         var children = this.getChildren();
 
         // Remove from children array ...
-        var length = children.length;
+        var oldLength = children.length;
 
         children.erase(elementPeer);
+        $assert(children.length < oldLength, "element could not be removed:" + elementPeer);
 
-        var newLength = children.length;
-        if (newLength >= length) {
-            throw "Could not remove the element.";
-        }
         // Append element as a child.
         this._native.removeChild(elementPeer._native);
     },
@@ -88,23 +85,23 @@ web2d.peer.svg.ElementPeer = new Class({
      * http://www.w3.org/TR/DOM-Level-3-Events/events.html
      * http://developer.mozilla.org/en/docs/addEvent
      */
-    addEvent : function(type, listener) {
+    addEvent:function (type, listener) {
         this._native.addEvent(type, listener);
     },
 
-    fireEvent : function(type, event) {
+    fireEvent:function (type, event) {
         this._native.fireEvent(type, event);
     },
 
-    cloneEvents : function(from) {
+    cloneEvents:function (from) {
         this._native.cloneEvents(from);
     },
 
-    removeEvent : function(type, listener) {
+    removeEvent:function (type, listener) {
         this._native.removeEvent(type, listener);
     },
 
-    setSize : function(width, height) {
+    setSize:function (width, height) {
         if ($defined(width) && this._size.width != parseInt(width)) {
             this._size.width = parseInt(width);
             this._native.setAttribute('width', parseInt(width));
@@ -118,11 +115,11 @@ web2d.peer.svg.ElementPeer = new Class({
         web2d.peer.utils.EventUtils.broadcastChangeEvent(this, "strokeStyle");
     },
 
-    getSize : function() {
-        return {width:this._size.width,height:this._size.height};
+    getSize:function () {
+        return {width:this._size.width, height:this._size.height};
     },
 
-    setFill : function(color, opacity) {
+    setFill:function (color, opacity) {
         if ($defined(color)) {
             this._native.setAttribute('fill', color);
         }
@@ -131,22 +128,22 @@ web2d.peer.svg.ElementPeer = new Class({
         }
     },
 
-    getFill : function() {
+    getFill:function () {
         var color = this._native.getAttribute('fill');
         var opacity = this._native.getAttribute('fill-opacity');
         return {color:color, opacity:Number(opacity)};
     },
 
-    getStroke : function() {
+    getStroke:function () {
         var vmlStroke = this._native;
         var color = vmlStroke.getAttribute('stroke');
         var dashstyle = this._stokeStyle;
         var opacity = vmlStroke.getAttribute('stroke-opacity');
         var width = vmlStroke.getAttribute('stroke-width');
-        return {color: color, style: dashstyle, opacity: opacity, width: width};
+        return {color:color, style:dashstyle, opacity:opacity, width:width};
     },
 
-    setStroke : function(width, style, color, opacity) {
+    setStroke:function (width, style, color, opacity) {
         if ($defined(width)) {
             this._native.setAttribute('stroke-width', width + "px");
         }
@@ -182,16 +179,16 @@ web2d.peer.svg.ElementPeer = new Class({
     /*
      * style='visibility: visible'
      */
-    setVisibility : function(isVisible) {
+    setVisibility:function (isVisible) {
         this._native.setAttribute('visibility', (isVisible) ? 'visible' : 'hidden');
     },
 
-    isVisible : function() {
+    isVisible:function () {
         var visibility = this._native.getAttribute('visibility');
         return !(visibility == 'hidden');
     },
 
-    updateStrokeStyle : function() {
+    updateStrokeStyle:function () {
         var strokeStyle = this._stokeStyle;
         if (this.getParent()) {
             if (strokeStyle && strokeStyle != 'solid') {
@@ -200,7 +197,7 @@ web2d.peer.svg.ElementPeer = new Class({
         }
     },
 
-    attachChangeEventListener : function(type, listener) {
+    attachChangeEventListener:function (type, listener) {
         var listeners = this.getChangeEventListeners(type);
         if (!$defined(listener)) {
             throw "Listener can not be null";
@@ -208,7 +205,7 @@ web2d.peer.svg.ElementPeer = new Class({
         listeners.push(listener);
     },
 
-    getChangeEventListeners : function(type) {
+    getChangeEventListeners:function (type) {
         var listeners = this._changeListeners[type];
         if (!$defined(listeners)) {
             listeners = [];
@@ -217,7 +214,7 @@ web2d.peer.svg.ElementPeer = new Class({
         return listeners;
     },
 
-    positionRelativeTo : function(elem, options) {
+    positionRelativeTo:function (elem, options) {
         options = !$defined(options) ? {} : options;
         options['relativeTo'] = $(this._native);
         elem.position(options);
@@ -227,18 +224,18 @@ web2d.peer.svg.ElementPeer = new Class({
     /**
      * Move element to the front
      */
-    moveToFront : function() {
+    moveToFront:function () {
         this._native.parentNode.appendChild(this._native);
     },
 
     /**
      * Move element to the back
      */
-    moveToBack : function() {
+    moveToBack:function () {
         this._native.parentNode.insertBefore(this._native, this._native.parentNode.firstChild);
     },
 
-    setCursor : function(type) {
+    setCursor:function (type) {
         this._native.style.cursor = type;
     }
 });
@@ -246,5 +243,5 @@ web2d.peer.svg.ElementPeer = new Class({
 
 web2d.peer.svg.ElementPeer.prototype.svgNamespace = 'http://www.w3.org/2000/svg';
 web2d.peer.svg.ElementPeer.prototype.linkNamespace = 'http://www.w3.org/1999/xlink';
-web2d.peer.svg.ElementPeer.prototype.__stokeStyleToStrokDasharray = {solid:[],dot:[1,3],dash:[4,3],longdash:[10,2],dashdot:[5,3,1,3]};
+web2d.peer.svg.ElementPeer.prototype.__stokeStyleToStrokDasharray = {solid:[], dot:[1, 3], dash:[4, 3], longdash:[10, 2], dashdot:[5, 3, 1, 3]};
 
