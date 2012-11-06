@@ -24,7 +24,6 @@ mindplot.LocalStorageManager = new Class({
 
         saveMapXml:function (mapId, mapXml, pref, saveHistory, events) {
             localStorage.setItem(mapId + "-xml", mapXml);
-            events.onError({message:"It's not possible to save your changes because your mindmap has been modified by '%s'. Refresh the page and try again.", severity:"FATAL"});
         },
 
         discardChanges:function (mapId) {

@@ -72,7 +72,7 @@ function buildDesigner(options) {
         // Open error dialog only in case of mindmap loading errors. The rest of the error are reported but not display the dialog.
         // Remove this in the near future.
         if (!window.mindmapLoadReady) {
-            errorDialog.show();
+            $notifyModal($msg('UNEXPECTED_ERROR_LOADING'));
         }
     };
 
@@ -210,88 +210,9 @@ editor.WaitDialog = new Class({
 
 });
 
-
-editor.FatalErrorDialog = new Class({
-    Extends:MooDialog,
-    initialize:function () {
-        this.parent({
-                closeButton:false,
-                destroyOnClose:true,
-                autoOpen:true,
-                useEscKey:false,
-                title:'Outch!!. An unexpected error has occurred',
-                onInitialize:function (wrapper) {
-                    wrapper.setStyle('opacity', 0);
-                    this.wrapper.setStyle('display', 'none');
-                    this.fx = new Fx.Morph(wrapper, {
-                        duration:100,
-                        transition:Fx.Transitions.Bounce.easeOut
-                    });
-                },
-
-                onBeforeOpen:function () {
-                    var panel = this._buildPanel();
-                    this.setContent(panel);
-
-                    this.overlay = new Overlay(this.options.inject, {
-                        duration:this.options.duration
-                    });
-                    if (this.options.closeOnOverlayClick)
-                        this.overlay.addEvent('click', this.close.bind(this));
-                    this.overlay.open();
-                    this.fx.start({
-                        'margin-top':[-200, -100],
-                        opacity:[0, 1]
-                    }).chain(function () {
-                        this.fireEvent('show');
-                        this.wrapper.setStyle('display', 'block');
-                    }.bind(this));
-                },
-
-                onBeforeClose:function () {
-                    this.fx.start({
-                        'margin-top':[-100, 0],
-                        opacity:0,
-                        duration:200
-                    }).chain(function () {
-                        this.wrapper.setStyle('display', 'none');
-                        this.fireEvent('hide');
-
-                    }.bind(this));
-                }}
-        );
-    },
-
-    destroy:function () {
-        this.parent();
-        this.overlay.destroy();
-    },
-
-    _buildPanel:function () {
-        var result = new Element('div');
-        result.setStyles({
-            'text-align':'center',
-            width:'400px'
-        });
-        var p = new Element('p', {'text':$msg('UNEXPECTED_ERROR_LOADING')});
-        p.inject(result);
-
-        var img = new Element('img', {'src':'images/alert-sign.png'});
-        img.inject(result);
-
-        return result;
-    },
-
-    show:function () {
-        this.open();
-    }
-
-});
-
 // Show loading dialog ...
 waitDialog = new editor.WaitDialog();
 waitDialog.show();
-errorDialog = new editor.FatalErrorDialog();
 
 // Loading libraries ...
 Asset.javascript("js/mindplot-min.js");

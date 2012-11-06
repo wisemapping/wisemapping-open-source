@@ -21,9 +21,10 @@ mindplot.widget.ModalDialogNotifier = new Class({
     initialize:function () {
         this.parent({
                 closeButton:false,
-                destroyOnClose:true,
+                destroyOnClose:false,
                 autoOpen:true,
                 useEscKey:false,
+                closeOnOverlayClick:false,
                 title:"",
                 onInitialize:function (wrapper) {
                     wrapper.setStyle('opacity', 0);
@@ -71,7 +72,7 @@ mindplot.widget.ModalDialogNotifier = new Class({
     show:function (message, title) {
         $assert(message, "message can not be null");
         this._messsage = message;
-        this.options.title.setText($defined(title) ? title : "Outch!!. An unexpected error has occurred");
+        this.options.title = $defined(title) ? title : "Outch!!. An unexpected error has occurred";
         this.open();
     },
 
