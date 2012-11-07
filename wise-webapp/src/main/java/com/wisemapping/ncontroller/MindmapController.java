@@ -160,6 +160,7 @@ public class MindmapController {
             final LockManager lockManager = this.mindmapService.getLockManager();
             if (lockManager.isLocked(mindmap) && !lockManager.isLockedBy(mindmap, collaborator)) {
                 readOnlyMode = true;
+                model.addAttribute("mindmapLocked",true);
             } else {
                 final long session = lockManager.generateSession();
                 final LockInfo lock = lockManager.lock(mindmap, collaborator, session);

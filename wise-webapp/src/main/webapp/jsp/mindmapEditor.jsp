@@ -66,7 +66,12 @@
                 logStackTrace(e);
                 throw e;
             }
+
+            <c:if test="${mindmapLocked}">
+            $notify("<spring:message code="MINDMAP_LOCKED" arguments="${lockInfo.collaborator.email}"/>", false);
+            </c:if>
         });
+
     </script>
     <%@ include file="/jsp/googleAnalytics.jsf" %>
 </head>
@@ -102,5 +107,12 @@
 
 <div id="mindplot" onselectstart="return false;"></div>
 <script type="text/javascript" src="js/editor.js"></script>
+<%--<div style="position: absolute;height: 200px; right: 20px;top:100px;width: 200px;padding: 10px; border-style: dotted; background-color: #dfcf3c">--%>
+<%--<p>--%>
+<%--This mindmap is being edited by pepep. Your will be able to see the content but not to modify it.--%>
+<%--</p>--%>
+<%--</div>--%>
+
+
 </body>
 </html>

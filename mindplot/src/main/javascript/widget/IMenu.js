@@ -90,7 +90,7 @@ mindplot.widget.IMenu = new Class({
                 if (saveHistory) {
                     saveElem.setStyle('cursor', 'pointer');
 
-                    if (error.severity == "INFO") {
+                    if (error.severity != "FATAL") {
                         $notify(error.message);
                     } else {
                         $notifyModal(error.message);
