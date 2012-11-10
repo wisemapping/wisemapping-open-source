@@ -11,7 +11,7 @@
 
 <html>
 <head>
-    <base href="{requestScope['site.baseurl']}/">
+    <base href="${requestScope['site.baseurl']}/">
     <title><spring:message code="SITE.TITLE"/> - ${mindmap.title} </title>
 
     <!--[if lt IE 9]>
