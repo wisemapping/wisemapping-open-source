@@ -16,11 +16,9 @@
 *   limitations under the License.
 */
 
-package com.wisemapping.ncontroller;
+package com.wisemapping.webmvc;
 
 
-import com.wisemapping.exceptions.AccessDeniedSecurityException;
-import com.wisemapping.exceptions.LockException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.Mindmap;

@@ -48,7 +48,7 @@
         description = description == undefined ? "" : description;
 
         // Save status on click ...
-        jQuery.ajax("service/maps?title=" + encodeURI(title) + "&description=" + encodeURI(description),
+        jQuery.ajax("c/restful/maps?title=" + encodeURI(title) + "&description=" + encodeURI(description),
                 {
                     async:false,
                     data:fileContent,

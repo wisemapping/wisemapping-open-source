@@ -164,7 +164,7 @@ var removeCollab = function (email) {
 };
 
 $(function () {
-    jQuery.ajax("service/maps/${mindmap.id}/collabs", {
+    jQuery.ajax("c/restful/maps/${mindmap.id}/collabs", {
         async:false,
         dataType:'json',
         type:'GET',
@@ -284,7 +284,7 @@ var submitDialogForm = function () {
     });
     collabs['message'] = $("#collabMessage").val();
 
-    jQuery.ajax("service/maps/${mindmap.id}/collabs", {
+    jQuery.ajax("c/restful/maps/${mindmap.id}/collabs", {
         async:false,
         dataType:'json',
         type:'PUT',

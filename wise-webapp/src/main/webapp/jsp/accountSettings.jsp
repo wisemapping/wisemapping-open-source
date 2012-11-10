@@ -116,7 +116,7 @@
             $('#changePasswordMsg').removeClass('alert-info').addClass('alert-error').show();
             $('#changePasswordMsg').text('<spring:message code="PASSWORD_MISSMATCH"/>');
         } else {
-            postChange("service/account/password", inputVal, 'changePasswordMsg', '<spring:message code="CHANGE_PASSWORD_SUCCESS"/>');
+            postChange("c/restful/account/password", inputVal, 'changePasswordMsg', '<spring:message code="CHANGE_PASSWORD_SUCCESS"/>');
         }
         event.preventDefault();
     });
@@ -125,15 +125,15 @@
 
         var fistname = $('#changeUserForm #firstname').val();
         var lastname = $('#changeUserForm #lastname').val();
-        postChange("service/account/firstname", fistname, 'changeInfoMsg', '<spring:message code="INFO_UPDATE_SUCCESS"/>');
-        postChange("service/account/lastname", lastname, 'changeInfoMsg', '<spring:message code="INFO_UPDATE_SUCCESS"/>');
+        postChange("c/restful/account/firstname", fistname, 'changeInfoMsg', '<spring:message code="INFO_UPDATE_SUCCESS"/>');
+        postChange("c/restful/account/lastname", lastname, 'changeInfoMsg', '<spring:message code="INFO_UPDATE_SUCCESS"/>');
         event.preventDefault();
     });
 
     $('#languageForm').submit(function (event) {
 
         var locale = $('#languageForm option:selected').val();
-        postChange("service/account/locale", locale, 'languageMsg', '<spring:message code="INFO_UPDATE_SUCCESS"/>');
+        postChange("c/restful/account/locale", locale, 'languageMsg', '<spring:message code="INFO_UPDATE_SUCCESS"/>');
         event.preventDefault();
     });
 </script>

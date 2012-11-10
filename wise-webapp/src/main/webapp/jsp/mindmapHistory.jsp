@@ -26,7 +26,7 @@
 
 <script type="text/javascript">
     var tableElem = $('#historyTable');
-    jQuery.ajax("service/maps/${mindmapId}/history", {
+    jQuery.ajax("c/restful/maps/${mindmapId}/history", {
         async:false,
         dataType:'json',
         type:'GET',
@@ -54,7 +54,7 @@
             });
             tableElem.find('tr a.revert').each(function () {
                 $(this).click(function (event) {
-                    var url = "service/maps/${mindmapId}/history/" + $(this).closest("tr").attr("data-history-id");
+                    var url = "c/restful/maps/${mindmapId}/history/" + $(this).closest("tr").attr("data-history-id");
                     jQuery.post(url, function (data) {
                         window.parent.location = "c/maps/${mindmapId}/edit";
                     });

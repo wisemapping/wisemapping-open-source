@@ -6,7 +6,7 @@
 </p>
 
 <div>
-    <form method="GET" class="form-horizontal" action="service/maps/${mindmap.id}"
+    <form method="GET" class="form-horizontal" action="c/restful/maps/${mindmap.id}"
           enctype="application/x-www-form-urlencoded" id="dialogMainForm">
         <input name="svgXml" id="svgXml" value="" type="hidden"/>
         <input name="download" type="hidden" value="mm"/>
@@ -75,7 +75,7 @@
         var form = $('#dialogMainForm');
 
         // Restore default ..
-        form.attr('action', 'service/maps/${mindmap.id}.' + formatType);
+        form.attr('action', 'c/restful/maps/${mindmap.id}.' + formatType);
 
         if (formatType == 'image' || formatType == 'svg' || formatType == 'pdf') {
 
@@ -85,7 +85,7 @@
             }
             // Change to transform url ...
             form.attr('method', "POST");
-            form.attr('action', 'service/transform.' + formatType);
+            form.attr('action', 'c/restful/transform.' + formatType);
 
             // Load page SVG ...
             var svgXml = window.parent.document.getElementById('workspaceContainer').innerHTML;

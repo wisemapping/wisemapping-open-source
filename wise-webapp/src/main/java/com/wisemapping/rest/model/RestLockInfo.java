@@ -20,10 +20,8 @@ package com.wisemapping.rest.model;
 
 
 import com.wisemapping.model.Collaborator;
-import com.wisemapping.model.User;
 import com.wisemapping.service.LockInfo;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -31,9 +29,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Set;
 
 @XmlRootElement(name = "lock")
 @XmlAccessorType(XmlAccessType.PROPERTY)
@@ -73,7 +68,7 @@ public class RestLockInfo {
     }
 
     public boolean isLockedByMe() {
-        return isLocked() && lockInfo != null && lockInfo.getCollaborator().equals(user);
+        return isLocked() && lockInfo != null && lockInfo.getUser().equals(user);
     }
 
     public void setLockedByMe(boolean lockedForMe) {

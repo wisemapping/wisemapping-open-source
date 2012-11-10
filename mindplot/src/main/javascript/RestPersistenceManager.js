@@ -50,14 +50,20 @@ mindplot.RESTPersistenceManager = new Class({
                 url:this.saveUrl.replace("{id}", mapId) + "?" + query,
                 method:'put',
                 async:!sync,
+
                 onSuccess:function (responseText, responseXML) {
                     events.onSuccess();
                     persistence.timestamp = responseText;
                 },
+
                 onException:function (headerName, value) {
+                    console.log("onException....");
+
                     events.onError(persistence._buildError());
                 },
+
                 onFailure:function (xhr) {
+                    console.log("onFailure....");
                     var responseText = xhr.responseText;
                     var error = null;
 
@@ -70,8 +76,16 @@ mindplot.RESTPersistenceManager = new Class({
                             events.onError(persistence._buildError());
                             throw new Error("Unexpected error saving. Error response is not json object:" + responseText);
                         }
+                    } else {
+                        var msg = {severity:"ERROR", message:$msg('SAVE_COULD_NOT_BE_COMPLETED')};
+                        if (this.status == 405) {
+                            msg = {severity:"ERROR", message:$msg('SESSION_EXPIRED')};
+                        }
+                        events.onError(msg);
                     }
+
                 },
+
                 headers:{"Content-Type":"application/json", "Accept":"application/json"},
                 emulation:false,
                 urlEncoded:false

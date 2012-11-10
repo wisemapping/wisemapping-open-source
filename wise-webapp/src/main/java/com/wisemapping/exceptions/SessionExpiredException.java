@@ -18,17 +18,15 @@
 
 package com.wisemapping.exceptions;
 
-import com.wisemapping.model.Collaborator;
+import com.wisemapping.model.User;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class SessionExpiredException
         extends ClientException {
     public static final String MSG_KEY = "MINDMAP_TIMESTAMP_OUTDATED";
-    @Nullable
-    private Collaborator lastUpdater;
+    private User lastUpdater;
 
-    public SessionExpiredException(@Nullable Collaborator lastUpdater) {
+    public SessionExpiredException(@NotNull User lastUpdater) {
         super("Map has been updated by " + (lastUpdater != null ? lastUpdater.getEmail() : ""), Severity.FATAL);
         this.lastUpdater = lastUpdater;
     }
@@ -37,5 +35,10 @@ public class SessionExpiredException
     @Override
     protected String getMsgBundleKey() {
         return MSG_KEY;
+    }
+
+    @Override
+    protected Object[] getMsgBundleArgs() {
+        return new String[]{lastUpdater.getFullName() + "<" + lastUpdater.getEmail() + ">"};
     }
 }

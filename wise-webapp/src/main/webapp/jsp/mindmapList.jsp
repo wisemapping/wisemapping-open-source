@@ -33,7 +33,7 @@
         $(function () {
             $('#mindmapListTable').dataTable({
                 bProcessing:true,
-                sAjaxSource:"service/maps/",
+                sAjaxSource:"c/restful/maps/",
                 sAjaxDataProp:'mindmapsInfo',
                 fnInitComplete:function () {
                     $('#mindmapListTable tbody').change(updateStatusToolbar);

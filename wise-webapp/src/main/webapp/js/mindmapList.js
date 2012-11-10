@@ -212,7 +212,7 @@ function updateStarred(spanElem) {
         $(spanElem).addClass('starredOff');
     }
 
-    jQuery.ajax("service/maps/" + mapId + "/starred", {
+    jQuery.ajax("c/restful/maps/" + mapId + "/starred", {
         async:false,
         dataType:'json',
         data:"" + starred,
@@ -250,7 +250,7 @@ $(function () {
         function () {
             $("#new-dialog-modal").dialogForm({
                 redirect:"c/maps/{header.resourceId}/edit",
-                url:"service/maps"
+                url:"c/restful/maps"
             });
         });
 
@@ -270,7 +270,7 @@ $(function () {
             // Initialize dialog ...
             $("#duplicate-dialog-modal").dialogForm({
                 redirect:"c/maps/{header.resourceId}/edit",
-                url:"service/maps/" + mapId
+                url:"c/restful/maps/" + mapId
             });
         }
     });
@@ -304,7 +304,7 @@ $(function () {
                     rowData.description = reqBodyData.description;
                     dataTable.fnAddData(JSON.parse(JSON.stringify(rowData)));
                 },
-                url:"service/maps/" + mapId
+                url:"c/restful/maps/" + mapId
             });
         }
     });
@@ -322,7 +322,7 @@ $(function () {
                     // Remove old entry ...
                     tableUI.dataTableExt.removeSelectedRows();
                 },
-                url:"service/maps/batch?ids=" + jQuery.makeArray(mapIds).join(',')
+                url:"c/restful/maps/batch?ids=" + jQuery.makeArray(mapIds).join(',')
             });
         }
     });
@@ -385,7 +385,7 @@ $(function () {
         $('#foldersContainer .active i').addClass('icon-white');
 
         // Reload the table data ...
-        dataTable.fnReloadAjax("service/maps/?q=" + $(this).attr('data-filter'), callbackOnTableInit, true);
+        dataTable.fnReloadAjax("c/restful/maps/?q=" + $(this).attr('data-filter'), callbackOnTableInit, true);
         event.preventDefault();
     });
 });

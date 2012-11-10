@@ -16,7 +16,7 @@
 *   limitations under the License.
 */
 
-package com.wisemapping.ncontroller;
+package com.wisemapping.webmvc;
 
 
 import com.wisemapping.validator.Messages;

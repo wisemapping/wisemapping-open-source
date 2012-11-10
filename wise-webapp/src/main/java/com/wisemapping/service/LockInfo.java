@@ -18,28 +18,28 @@
 
 package com.wisemapping.service;
 
-import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.Mindmap;
+import com.wisemapping.model.User;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
 
 public class LockInfo {
-    final private Collaborator collaborator;
+    final private User user;
     private Calendar timeout;
     private long session;
     private static int EXPIRATION_MIN = 30;
     private long timestamp = -1;
     private long previousTimestamp;
 
-    public LockInfo(@NotNull Collaborator collaborator, @NotNull Mindmap mindmap, long session) {
-        this.collaborator = collaborator;
+    public LockInfo(@NotNull User user, @NotNull Mindmap mindmap, long session) {
+        this.user = user;
         this.updateTimeout();
         this.updateTimestamp(mindmap);
     }
 
-    public Collaborator getCollaborator() {
-        return collaborator;
+    public User getUser() {
+        return user;
     }
 
     public boolean isExpired() {

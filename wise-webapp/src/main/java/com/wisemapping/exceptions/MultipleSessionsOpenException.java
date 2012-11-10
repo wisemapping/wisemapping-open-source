@@ -35,4 +35,9 @@ public class MultipleSessionsOpenException
     protected String getMsgBundleKey() {
         return MSG_KEY;
     }
+
+    @Override
+    protected Object[] getMsgBundleArgs() {
+        return new String[]{"you"};
+    }
 }

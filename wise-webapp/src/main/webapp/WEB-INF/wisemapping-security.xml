@@ -2,14 +2,11 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:sec="http://www.springframework.org/schema/security"
-       xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
           http://www.springframework.org/schema/security
-          http://www.springframework.org/schema/security/spring-security-3.1.xsd
-          http://www.springframework.org/schema/context
-          http://www.springframework.org/schema/context/spring-context.xsd">
+          http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
     <bean id="encoder"
           class="com.wisemapping.security.CustomPasswordEncoder"/>
@@ -39,17 +36,19 @@
     <sec:http pattern="/c/try" security="none"/>
 
 
-    <sec:http use-expressions="true" create-session="never" pattern="/service/**">
+    <sec:http use-expressions="true" create-session="stateless" pattern="/service/**">
         <sec:intercept-url pattern="/service/admin/users/**" access="isAuthenticated() and hasRole('ROLE_ADMIN')"/>
         <sec:intercept-url pattern="/service/**" access="isAuthenticated() and hasRole('ROLE_USER')"/>
         <sec:http-basic/>
     </sec:http>
 
     <sec:http use-expressions="true" access-denied-page="/c/login">
+        <sec:intercept-url pattern="/c/restful/admin/users/**" access="isAuthenticated() and hasRole('ROLE_ADMIN')"/>
         <sec:intercept-url pattern="/c/**/*" access="isAuthenticated() and hasRole('ROLE_USER')"/>
+
         <sec:form-login login-page="/c/login"
-                        default-target-url='/c/maps/'
-                        always-use-default-target='false'
+                        authentication-success-handler-ref="authenticationSuccessHandler"
+                        always-use-default-target="false"
                         authentication-failure-url="/c/login?login_error=2"
                         login-processing-url="/c/j_spring_security_check"/>
         <sec:remember-me key="wisemapping-hashed-key"/>
@@ -67,7 +66,13 @@
     </bean>
 
     <bean id="userDetailsService" class="com.wisemapping.security.UserDetailsService">
+        <!--suppress SpringModelInspection -->
         <property name="userService" ref="userService"/>
         <property name="adminUser" value="${admin.user}"/>
+    </bean>
+
+    <bean id="authenticationSuccessHandler" class="com.wisemapping.security.AuthenticationSuccessHandler">
+        <property name="defaultTargetUrl" value="/c/maps/"/>
+        <property name="alwaysUseDefaultTargetUrl" value="false"/>
     </bean>
 </beans>

@@ -9,6 +9,7 @@
 <%--@elvariable id="editorTryMode" type="java.lang.Boolean"--%>
 <%--@elvariable id="editorTryMode" type="java.lang.String"--%>
 <%--@elvariable id="mapXml" type="com.wisemapping.model.User"--%>
+<%--@elvariable id="lockInfo" type="com.wisemapping.service.LockInfo"--%>
 <html>
 <head>
     <base href="${requestScope['site.baseurl']}/">
@@ -37,13 +38,14 @@
             <c:if test="${!memoryPersistence && !readOnlyMode}">
                 options.persistenceManager = new mindplot.RESTPersistenceManager(
                         {
-                            saveUrl:"service/maps/{id}/document",
-                            revertUrl:"service/maps/{id}/history/latest",
-                            lockUrl:"service/maps/{id}/lock",
+                            saveUrl:"c/restful/maps/{id}/document",
+                            revertUrl:"c/restful/maps/{id}/history/latest",
+                            lockUrl:"c/restful/maps/{id}/lock",
                             timestamp: ${lockTimestamp},
                             session: ${lockSession}
                         }
                 );
+
             </c:if>
                 var userOptions = ${mindmap.properties};
                 options.zoom = userOptions.zoom;
@@ -68,7 +70,7 @@
             }
 
             <c:if test="${mindmapLocked}">
-            $notify("<spring:message code="MINDMAP_LOCKED" arguments="${lockInfo.collaborator.email}"/>", false);
+            $notify("<spring:message code="MINDMAP_LOCKED" arguments="${lockInfo.user.fullName},${lockInfo.user.email}"/>", false);
             </c:if>
         });
 

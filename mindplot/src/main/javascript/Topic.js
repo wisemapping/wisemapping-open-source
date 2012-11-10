@@ -629,6 +629,7 @@ mindplot.Topic = new Class({
         fade.addEvent('complete', function () {
         });
         fade.start();
+
         mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeShrinkEvent, model);
 
     },

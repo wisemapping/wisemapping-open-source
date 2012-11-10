@@ -22,8 +22,8 @@ import com.wisemapping.exceptions.AccessDeniedSecurityException;
 import com.wisemapping.exceptions.LockException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.CollaborationRole;
-import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.Mindmap;
+import com.wisemapping.model.User;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
@@ -63,25 +63,25 @@ class LockManagerImpl implements LockManager {
     }
 
     @Override
-    public LockInfo updateExpirationTimeout(@NotNull Mindmap mindmap, @NotNull Collaborator user, long session) {
+    public LockInfo updateExpirationTimeout(@NotNull Mindmap mindmap, @NotNull User user, long session) {
         if (!this.isLocked(mindmap)) {
             throw new IllegalStateException("Lock lost for map. No update possible.");
         }
 
         final LockInfo result = this.getLockInfo(mindmap);
-        if (!result.getCollaborator().equals(user)) {
-            throw new IllegalStateException("Could not update map lock timeout if you are not the locking user. User:" + result.getCollaborator() + ", " + user);
+        if (!result.getUser().equals(user)) {
+            throw new IllegalStateException("Could not update map lock timeout if you are not the locking user. User:" + result.getUser() + ", " + user);
         }
 
         result.updateTimeout();
         result.setSession(session);
         result.updateTimestamp(mindmap);
-        logger.debug("Timeout updated for:" + mindmap.getId());
+//        logger.debug("Timeout updated for:" + mindmap.getId());
         return result;
     }
 
     @Override
-    public void unlock(@NotNull Mindmap mindmap, @NotNull Collaborator user) throws LockException, AccessDeniedSecurityException {
+    public void unlock(@NotNull Mindmap mindmap, @NotNull User user) throws LockException, AccessDeniedSecurityException {
         if (isLocked(mindmap) && !isLockedBy(mindmap, user)) {
             throw new LockException("Lock can be only revoked by the locker.");
         }
@@ -99,10 +99,10 @@ class LockManagerImpl implements LockManager {
     }
 
     @Override
-    public boolean isLockedBy(@NotNull Mindmap mindmap, @NotNull Collaborator collaborator) {
+    public boolean isLockedBy(@NotNull Mindmap mindmap, @NotNull User collaborator) {
         boolean result = false;
         final LockInfo lockInfo = this.getLockInfo(mindmap);
-        if (lockInfo != null && lockInfo.getCollaborator().equals(collaborator)) {
+        if (lockInfo != null && lockInfo.getUser().equals(collaborator)) {
             result = true;
         }
         return result;
@@ -110,7 +110,7 @@ class LockManagerImpl implements LockManager {
 
     @Override
     @NotNull
-    public LockInfo lock(@NotNull Mindmap mindmap, @NotNull Collaborator user, long session) throws WiseMappingException {
+    public LockInfo lock(@NotNull Mindmap mindmap, @NotNull User user, long session) throws WiseMappingException {
         if (isLocked(mindmap) && !isLockedBy(mindmap, user)) {
             throw new LockException("Invalid lock, this should not happen");
         }

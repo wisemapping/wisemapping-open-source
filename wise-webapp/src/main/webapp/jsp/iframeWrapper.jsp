@@ -40,7 +40,7 @@
         }
     });
 </script>
-<form method="GET" class="form-horizontal" action="service/maps/${mindmap.id}"
+<form method="GET" class="form-horizontal" action="c/restful/maps/${mindmap.id}"
       enctype="application/x-www-form-urlencoded" id="iframeExportForm">
     <input name="svgXml" id="svgXml" value="" type="hidden"/>
     <input name="download" id="download" type="hidden" value="mm"/>

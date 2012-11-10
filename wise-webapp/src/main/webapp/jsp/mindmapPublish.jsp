@@ -105,7 +105,7 @@ solid black" src="${baseUrl}/c/maps/${mindmap.id}/embed?zoom=1"&gt; &lt;/iframe&
 
     // Save status on click ...
     $('#dialogMainForm').submit(function (event) {
-        jQuery.ajax("service/maps/${mindmap.id}/publish", {
+        jQuery.ajax("c/restful/maps/${mindmap.id}/publish", {
             async:false,
             dataType:'json',
             data:$('#dialogMainForm #enablePublicView')[0].checked ? 'true' : 'false',

@@ -18,7 +18,11 @@ abstract public class ClientException extends WiseMappingException {
     String getMsgBundleKey();
 
     public String getMessage(@NotNull final MessageSource messageSource, final @NotNull Locale locale) {
-        return messageSource.getMessage(this.getMsgBundleKey(), null, locale);
+        return messageSource.getMessage(this.getMsgBundleKey(), this.getMsgBundleArgs(), locale);
+    }
+
+    protected  Object[] getMsgBundleArgs(){
+         return null;
     }
 
     public Severity getSeverity() {
