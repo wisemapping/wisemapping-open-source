@@ -187,6 +187,7 @@ public class MindmapController {
     public String showMindmapTryPage(@PathVariable int id, @NotNull Model model) throws WiseMappingException {
         final String result = showEditorPage(id, model, false);
         model.addAttribute("memoryPersistence", true);
+        model.addAttribute("readOnlyMode", false);
         return result;
     }
 
