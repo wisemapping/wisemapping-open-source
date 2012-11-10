@@ -314,7 +314,12 @@ mindplot.DesignerKeyboard = new Class({
 
         var regex = /^(?:shift|control|ctrl|alt|meta)$/;
         var modifiers = ['shift', 'control', 'alt', 'meta'];
+
         var excludes = ['esc', 'capslock', 'tab', 'f1', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10', 'f11', 'f12', 'backspace', 'down', 'up', 'left', 'right', 'control'];
+        if (!Browser.Platform.mac) {
+            // This is to avoid enter on edition mode in the node when alt+tab is pressed.
+            excludes.push("alt");
+        }
 
         $(document).addEvent('keydown', function (event) {
 

@@ -19,18 +19,11 @@
 package com.wisemapping.filter;
 
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.MutablePropertySources;
-import org.springframework.core.env.PropertySource;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
-import java.util.regex.Pattern;
 
 
 public class RequestPropertiesInterceptor extends HandlerInterceptorAdapter {
@@ -46,8 +39,9 @@ public class RequestPropertiesInterceptor extends HandlerInterceptorAdapter {
     @Value("${site.homepage}")
     private String siteHomepage;
 
-    @Autowired
-    Environment env;
+    @Value("${site.baseurl}")
+    private String siteUrl;
+
 
     public boolean preHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, Object object) throws Exception {
 
@@ -56,13 +50,11 @@ public class RequestPropertiesInterceptor extends HandlerInterceptorAdapter {
         request.setAttribute("google.ads.enabled", adsEnabled);
         request.setAttribute("site.homepage", siteHomepage);
 
-        final String baseUrl;
-        if (env.containsProperty("site.baseurl")) {
-            baseUrl = env.getProperty("site.baseurl");
-        } else {
-            baseUrl = request.getRequestURL().toString().replace(request.getRequestURI(), request.getContextPath());
+        // If the property could not be resolved, try to infer one from the request...
+        if ("${site.baseurl}".equals(siteUrl)) {
+            siteUrl = request.getRequestURL().toString().replace(request.getRequestURI(), request.getContextPath());
         }
-        request.setAttribute("site.baseurl", baseUrl);
+        request.setAttribute("site.baseurl", siteUrl);
         return true;
     }
 }

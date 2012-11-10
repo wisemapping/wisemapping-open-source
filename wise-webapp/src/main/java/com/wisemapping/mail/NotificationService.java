@@ -27,7 +27,6 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.PrintWriter;
