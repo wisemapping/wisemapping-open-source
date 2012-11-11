@@ -63,20 +63,20 @@ public class BaseController {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
-    public String handleServerErrors(@NotNull Exception ex, @NotNull HttpServletRequest request) {
+    public RestErrors handleServerErrors(@NotNull Exception ex, @NotNull HttpServletRequest request) {
         final User user = Utils.getUser();
         notificationService.reportJavaException(ex, user, request);
-        return ex.getMessage();
+        return new RestErrors(ex.getMessage(),Severity.SEVERE);
     }
 
 
     @ExceptionHandler(ImportUnexpectedException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
-    public String handleImportErrors(@NotNull ImportUnexpectedException ex, @NotNull HttpServletRequest request) {
+    public RestErrors handleImportErrors(@NotNull ImportUnexpectedException ex, @NotNull HttpServletRequest request) {
         final User user = Utils.getUser();
         notificationService.reportJavaException(ex, user, new String(ex.getFreemindXml()), request);
-        return ex.getMessage();
+        return new RestErrors(ex.getMessage(),Severity.SEVERE);
     }
 
     @ExceptionHandler(ValidationException.class)
@@ -87,8 +87,8 @@ public class BaseController {
 
     @ExceptionHandler(JsonHttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleJSONErrors(@NotNull JsonHttpMessageNotReadableException ex) {
-        return "Request could not be saved. Message is not valid";
+    public RestErrors handleJSONErrors(@NotNull JsonHttpMessageNotReadableException ex) {
+        return new RestErrors("Communication error",Severity.SEVERE);
     }
 
     @ExceptionHandler(java.lang.reflect.UndeclaredThrowableException.class)

@@ -65,7 +65,7 @@ mindplot.RESTPersistenceManager = new Class({
                 onFailure:function (xhr) {
 
                     var responseText = xhr.responseText;
-                    var userMsg = {severity:"ERROR", message:$msg('SAVE_COULD_NOT_BE_COMPLETED')};
+                    var userMsg = {severity:"SEVERE", message:$msg('SAVE_COULD_NOT_BE_COMPLETED')};
 
                     var contentType = this.getHeader("Content-Type");
                     if (contentType != null && contentType.indexOf("application/json") != -1) {
@@ -80,7 +80,7 @@ mindplot.RESTPersistenceManager = new Class({
 
                     } else {
                         if (this.status == 405) {
-                            userMsg = {severity:"ERROR", message:$msg('SESSION_EXPIRED')};
+                            userMsg = {severity:"SEVERE", message:$msg('SESSION_EXPIRED')};
                         }
                     }
                     events.onError(userMsg);
