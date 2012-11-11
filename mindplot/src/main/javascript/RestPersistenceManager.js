@@ -63,27 +63,30 @@ mindplot.RESTPersistenceManager = new Class({
                 },
 
                 onFailure:function (xhr) {
-                    console.log("onFailure....");
+
                     var responseText = xhr.responseText;
-                    var error = null;
+                    var userMsg = {severity:"ERROR", message:$msg('SAVE_COULD_NOT_BE_COMPLETED')};
 
                     var contentType = this.getHeader("Content-Type");
                     if (contentType != null && contentType.indexOf("application/json") != -1) {
+                        var serverMsg = null;
                         try {
-                            error = JSON.decode(responseText);
-                            events.onError(persistence._buildError(error));
+                            serverMsg = JSON.decode(responseText);
+                            serverMsg = serverMsg.globalSeverity ? serverMsg : null;
                         } catch (e) {
-                            events.onError(persistence._buildError());
-                            throw new Error("Unexpected error saving. Error response is not json object:" + responseText);
+                            // Message could not be decoded ...
                         }
-                    } else {
-                        var msg = {severity:"ERROR", message:$msg('SAVE_COULD_NOT_BE_COMPLETED')};
-                        if (this.status == 405) {
-                            msg = {severity:"ERROR", message:$msg('SESSION_EXPIRED')};
-                        }
-                        events.onError(msg);
-                    }
+                        userMsg = persistence._buildError(serverMsg);
 
+                    } else {
+                        if (this.status == 405) {
+                            userMsg = {severity:"ERROR", message:$msg('SESSION_EXPIRED')};
+                        }
+                    }
+                    events.onError(userMsg);
+
+                    // Only for debug. Remove.
+                    throw new Error("responseText:" + responseText + ",status:" + this.status);
                 },
 
                 headers:{"Content-Type":"application/json", "Accept":"application/json"},
