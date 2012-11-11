@@ -52,7 +52,7 @@ function buildDesigner(options) {
 
         new Request({
             method:'post',
-            url:"/service/logger/editor",
+            url:"/c/restful/logger/editor",
             headers:{"Content-Type":"application/json", "Accept":"application/json"},
             emulation:false,
             urlEncoded:false
