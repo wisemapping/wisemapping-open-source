@@ -627,7 +627,18 @@ mindplot.Topic = new Class({
         var elements = this._flatten2DElements(this);
         var fade = new mindplot.util.FadeEffect(elements, !value);
         fade.addEvent('complete', function () {
-        });
+            // Set focus on the parent node ...
+            if (value) {
+                this.setOnFocus(true);
+            }
+
+            // Set focus in false for all the children ...
+            elements.forEach(function (elem) {
+                if (elem.setOnFocus) {
+                    elem.setOnFocus(false);
+                }
+            });
+        }.bind(this));
         fade.start();
 
         mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeShrinkEvent, model);
@@ -1192,8 +1203,10 @@ mindplot.Topic = new Class({
             var relationships = child.getRelationships();
             result = result.concat(relationships);
 
-            var innerChilds = this._flatten2DElements(child);
-            result = result.concat(innerChilds);
+            if(!child.areChildrenShrunken()){
+                var innerChilds = this._flatten2DElements(child);
+                result = result.concat(innerChilds);
+            }
         }
         return result;
     },
