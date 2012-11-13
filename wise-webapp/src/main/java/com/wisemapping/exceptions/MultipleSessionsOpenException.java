@@ -23,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 public class MultipleSessionsOpenException
     extends ClientException
 {
-    public static final String MSG_KEY = "MINDMAP_TIMESTAMP_OUTDATED";
+    public static final String MSG_KEY = "MINDMAP_OUTDATED_BY_YOU";
 
     public MultipleSessionsOpenException(@NotNull String msg)
     {
@@ -34,10 +34,5 @@ public class MultipleSessionsOpenException
     @Override
     protected String getMsgBundleKey() {
         return MSG_KEY;
-    }
-
-    @Override
-    protected Object[] getMsgBundleArgs() {
-        return new String[]{"you"};
     }
 }

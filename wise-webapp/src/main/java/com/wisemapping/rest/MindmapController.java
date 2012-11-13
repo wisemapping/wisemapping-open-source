@@ -192,7 +192,7 @@ public class MindmapController extends BaseController {
                     throw new SessionExpiredException(lastEditor);
                 }
             } else if (outdated) {
-                throw new MultipleSessionsOpenException("The map has been updated and not by you. Session lost.");
+                throw new MultipleSessionsOpenException("Sessions:" + session + ":" + lockInfo.getSession() + "Timestamp: " + timestamp + ": " + lockInfo.getTimestamp());
             }
         } else {
             throw new SessionExpiredException(lockInfo.getUser());

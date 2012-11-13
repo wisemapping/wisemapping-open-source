@@ -20,10 +20,10 @@ package com.wisemapping.model;
 
 import org.jetbrains.annotations.Nullable;
 
-import javax.servlet.http.HttpSessionBindingEvent;
-import javax.servlet.http.HttpSessionBindingListener;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 public class User
         extends Collaborator
@@ -107,8 +107,10 @@ public class User
     }
 
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || !User.class.getClass().isInstance(o))
+            return false;
 
         final User user = (User) o;
 
