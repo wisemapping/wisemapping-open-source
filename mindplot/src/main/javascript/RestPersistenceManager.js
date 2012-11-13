@@ -46,54 +46,71 @@ mindplot.RESTPersistenceManager = new Class({
             query = query + (this.timestamp ? "&timestamp=" + this.timestamp : "");
             query = query + (this.session ? "&session=" + this.session : "");
 
-            var request = new Request({
-                url:this.saveUrl.replace("{id}", mapId) + "?" + query,
-                method:'put',
-                async:!sync,
+            if (!persistence.onSave) {
 
-                onSuccess:function (responseText, responseXML) {
-                    events.onSuccess();
-                    persistence.timestamp = responseText;
-                },
+                // Mark save in process and fire a event unlocking the save ...
+                persistence.onSave = true;
+                persistence.clearTimeout = setTimeout(function () {
+                    persistence.clearTimeout = null;
+                    persistence.onSave = false;
+                }, 10000);
 
-                onException:function (headerName, value) {
-                    console.log("onException....");
+                var request = new Request({
+                    url:this.saveUrl.replace("{id}", mapId) + "?" + query,
+                    method:'put',
+                    async:!sync,
 
-                    events.onError(persistence._buildError());
-                },
+                    onSuccess:function (responseText, responseXML) {
+                        persistence.timestamp = responseText;
+                        events.onSuccess();
+                    },
 
-                onFailure:function (xhr) {
+                    onException:function (headerName, value) {
+                        events.onError(persistence._buildError());
+                    },
 
-                    var responseText = xhr.responseText;
-                    var userMsg = {severity:"SEVERE", message:$msg('SAVE_COULD_NOT_BE_COMPLETED')};
-
-                    var contentType = this.getHeader("Content-Type");
-                    if (contentType != null && contentType.indexOf("application/json") != -1) {
-                        var serverMsg = null;
-                        try {
-                            serverMsg = JSON.decode(responseText);
-                            serverMsg = serverMsg.globalSeverity ? serverMsg : null;
-                        } catch (e) {
-                            // Message could not be decoded ...
+                    onComplete:function () {
+                        // Clear event timeout ...
+                        if (persistence.clearTimeout) {
+                            clearTimeout(persistence.clearTimeout);
                         }
-                        userMsg = persistence._buildError(serverMsg);
+                        persistence.onSave = false;
+                    },
 
-                    } else {
-                        if (this.status == 405) {
-                            userMsg = {severity:"SEVERE", message:$msg('SESSION_EXPIRED')};
+                    onFailure:function (xhr) {
+
+                        var responseText = xhr.responseText;
+                        var userMsg = {severity:"SEVERE", message:$msg('SAVE_COULD_NOT_BE_COMPLETED')};
+
+                        var contentType = this.getHeader("Content-Type");
+                        if (contentType != null && contentType.indexOf("application/json") != -1) {
+                            var serverMsg = null;
+                            try {
+                                serverMsg = JSON.decode(responseText);
+                                serverMsg = serverMsg.globalSeverity ? serverMsg : null;
+                            } catch (e) {
+                                // Message could not be decoded ...
+                            }
+                            userMsg = persistence._buildError(serverMsg);
+
+                        } else {
+                            if (this.status == 405) {
+                                userMsg = {severity:"SEVERE", message:$msg('SESSION_EXPIRED')};
+                            }
                         }
-                    }
-                    events.onError(userMsg);
+                        events.onError(userMsg);
 
-                    // Only for debug. Remove.
-                    throw new Error("responseText:" + responseText + ",status:" + this.status);
-                },
+                        // @Todo: Only for debug. Remove.
+                        persistence.onSave = false;
+                        throw new Error("responseText:" + responseText + ",status:" + this.status);
+                    },
 
-                headers:{"Content-Type":"application/json", "Accept":"application/json"},
-                emulation:false,
-                urlEncoded:false
-            });
-            request.put(JSON.encode(data));
+                    headers:{"Content-Type":"application/json", "Accept":"application/json"},
+                    emulation:false,
+                    urlEncoded:false
+                });
+                request.put(JSON.encode(data));
+            }
         },
 
         discardChanges:function (mapId) {
