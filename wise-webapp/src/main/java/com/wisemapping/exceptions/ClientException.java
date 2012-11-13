@@ -28,4 +28,8 @@ abstract public class ClientException extends WiseMappingException {
     public Severity getSeverity() {
         return this.severity;
     }
+
+    public String getTechInfo() {
+        return getMessage();
+    }
 }

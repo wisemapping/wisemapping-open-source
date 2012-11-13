@@ -23,6 +23,7 @@ import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.validation.Errors;
@@ -56,6 +57,10 @@ public class RestErrors {
     @JsonIgnore
     Severity gSeverity;
 
+    @Nullable
+    @JsonIgnore
+    private String _debugInfo;
+
     public RestErrors() {
 
     }
@@ -64,27 +69,29 @@ public class RestErrors {
 
         this.errors = errors;
         this.messageSource = messageSource;
-        this.gErrors = this.processGlobalErrors(errors, messageSource);
+        this.gErrors = this.processGlobalErrors(errors);
         this.gSeverity = Severity.WARNING;
     }
 
     public RestErrors(@NotNull String errorMsg, @NotNull Severity severity) {
-        gErrors = new ArrayList<String>();
-        gErrors.add(errorMsg);
+
+        this(errorMsg, severity, null);
+    }
+
+    public RestErrors(@NotNull String errorMsg, @NotNull Severity severity, @Nullable String debugInfo) {
+        this._debugInfo = debugInfo;
+        this.gErrors = new ArrayList<String>();
+        this.gErrors.add(errorMsg);
         this.gSeverity = severity;
     }
 
-    private List<String> processGlobalErrors(@NotNull Errors errors, @NotNull MessageSource messageSource) {
+    private List<String> processGlobalErrors(@NotNull Errors errors) {
         final List<String> result = new ArrayList<String>();
         final List<ObjectError> globalErrors = errors.getGlobalErrors();
         for (ObjectError globalError : globalErrors) {
             result.add(globalError.getObjectName());
         }
         return result;
-    }
-
-    public List<String> getGlobalErrors() {
-        return gErrors;
     }
 
     public void setGlobalErrors(List<String> list) {
@@ -111,7 +118,23 @@ public class RestErrors {
         // Implemented only for XML serialization contract ...
     }
 
+    public void setDebugInfo(@Nullable String debugInfo) {
+        // Implemented only for XML serialization contract ...
+    }
+
+
+    @Nullable
     public String getGlobalSeverity() {
         return this.gSeverity.toString();
     }
+
+    @Nullable
+    public String getDebugInfo() {
+        return _debugInfo;
+    }
+
+    public List<String> getGlobalErrors() {
+        return gErrors;
+    }
+
 }

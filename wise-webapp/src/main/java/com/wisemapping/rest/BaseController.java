@@ -108,6 +108,6 @@ public class BaseController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RestErrors handleClientErrors(@NotNull ClientException ex) {
         final Locale locale = LocaleContextHolder.getLocale();
-        return new RestErrors(ex.getMessage(messageSource, locale),ex.getSeverity());
+        return new RestErrors(ex.getMessage(messageSource, locale),ex.getSeverity(),ex.getTechInfo());
     }
 }

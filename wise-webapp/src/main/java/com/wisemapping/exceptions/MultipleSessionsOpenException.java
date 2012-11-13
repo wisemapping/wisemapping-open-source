@@ -25,9 +25,9 @@ public class MultipleSessionsOpenException
 {
     public static final String MSG_KEY = "MINDMAP_OUTDATED_BY_YOU";
 
-    public MultipleSessionsOpenException(@NotNull String msg)
+    public MultipleSessionsOpenException(@NotNull String techInfo)
     {
-        super(msg,Severity.INFO);
+        super(techInfo,Severity.INFO);
     }
 
     @NotNull
