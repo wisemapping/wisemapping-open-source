@@ -238,6 +238,35 @@ mindplot.DesignerKeyboard = new Class({
                 designer.selectAll();
             },
 
+            'meta+=':function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                designer.zoomIn();
+            },
+
+            'meta+-':function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                designer.zoomOut();
+            },
+
+            'ctrl++':function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                designer.zoomIn();
+            },
+
+            'ctrl+-':function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                designer.zoomOut();
+            },
+
+
             'right':function (event) {
                 var node = model.selectedTopic();
                 if (node) {
