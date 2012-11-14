@@ -63,7 +63,7 @@ class LockManagerImpl implements LockManager {
     }
 
     @Override
-    public LockInfo updateExpirationTimeout(@NotNull Mindmap mindmap, @NotNull User user, long session) {
+    public LockInfo updateExpirationTimeout(@NotNull Mindmap mindmap, @NotNull User user) {
         if (!this.isLocked(mindmap)) {
             throw new IllegalStateException("Lock lost for map. No update possible.");
         }
@@ -74,9 +74,8 @@ class LockManagerImpl implements LockManager {
         }
 
         result.updateTimeout();
-        result.setSession(session);
         result.updateTimestamp(mindmap);
-//        logger.debug("Timeout updated for:" + mindmap.getId());
+        logger.debug("Timeout updated for:" + mindmap.getId());
         return result;
     }
 
@@ -108,6 +107,13 @@ class LockManagerImpl implements LockManager {
         return result;
     }
 
+
+    @Override
+    @NotNull
+    public LockInfo lock(@NotNull Mindmap mindmap, @NotNull User user) throws WiseMappingException {
+        return this.lock(mindmap, user, System.nanoTime());
+    }
+
     @Override
     @NotNull
     public LockInfo lock(@NotNull Mindmap mindmap, @NotNull User user, long session) throws WiseMappingException {
@@ -123,18 +129,14 @@ class LockManagerImpl implements LockManager {
         if (result != null) {
             // Update timeout only...
             logger.debug("Update timestamp:" + mindmap.getId());
-            updateExpirationTimeout(mindmap, user, session);
+            updateExpirationTimeout(mindmap, user);
+            result.setSession(session);
         } else {
             logger.debug("Lock map id:" + mindmap.getId());
             result = new LockInfo(user, mindmap, session);
             lockInfoByMapId.put(mindmap.getId(), result);
         }
         return result;
-    }
-
-    @Override
-    public long generateSession() {
-        return System.nanoTime();
     }
 
     public LockManagerImpl() {

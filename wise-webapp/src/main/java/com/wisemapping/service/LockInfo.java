@@ -36,6 +36,7 @@ public class LockInfo {
         this.user = user;
         this.updateTimeout();
         this.updateTimestamp(mindmap);
+        this.session = session;
     }
 
     public User getUser() {

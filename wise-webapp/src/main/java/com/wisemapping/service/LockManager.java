@@ -30,13 +30,15 @@ public interface LockManager {
 
     LockInfo getLockInfo(@NotNull Mindmap mindmap);
 
-    LockInfo updateExpirationTimeout(@NotNull Mindmap mindmap, @NotNull User user,long session);
+    LockInfo updateExpirationTimeout(@NotNull Mindmap mindmap, @NotNull User user);
 
     void unlock(@NotNull Mindmap mindmap, @NotNull User user) throws LockException, AccessDeniedSecurityException;
 
     boolean isLockedBy(@NotNull Mindmap mindmap, @NotNull User collaborator);
 
+    @NotNull
     LockInfo lock(@NotNull Mindmap mindmap, @NotNull User user, long session) throws WiseMappingException;
 
-    long generateSession();
+    @NotNull
+    LockInfo lock(@NotNull Mindmap mindmap, @NotNull User user) throws WiseMappingException;
 }

@@ -46,6 +46,7 @@ import java.util.Locale;
 public class MindmapController {
 
 
+    public static final String LOCK_SESSION_ATTRIBUTE = "lockSession";
     @Qualifier("mindmapService")
     @Autowired
     private MindmapService mindmapService;
@@ -160,10 +161,9 @@ public class MindmapController {
                 readOnlyMode = true;
                 model.addAttribute("mindmapLocked",true);
             } else {
-                final long session = lockManager.generateSession();
-                final LockInfo lock = lockManager.lock(mindmap, collaborator, session);
+                final LockInfo lock = lockManager.lock(mindmap, collaborator);
                 model.addAttribute("lockTimestamp", lock.getTimestamp());
-                model.addAttribute("lockSession", session);
+                model.addAttribute(LOCK_SESSION_ATTRIBUTE, lock.getSession());
             }
             model.addAttribute("lockInfo", lockManager.getLockInfo(mindmap));
         }

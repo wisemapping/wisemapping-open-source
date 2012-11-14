@@ -43,8 +43,8 @@ mindplot.RESTPersistenceManager = new Class({
 
             var persistence = this;
             var query = "minor=" + !saveHistory;
-            query = query + (this.timestamp ? "&timestamp=" + this.timestamp : "");
-            query = query + (this.session ? "&session=" + this.session : "");
+            query = query + "&timestamp=" + this.timestamp;
+            query = query + "&session=" + this.session;
 
             if (!persistence.onSave) {
 

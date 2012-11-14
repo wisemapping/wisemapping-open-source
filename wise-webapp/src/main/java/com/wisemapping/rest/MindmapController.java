@@ -169,7 +169,7 @@ public class MindmapController extends BaseController {
 
         // Update edition timeout ...
         final LockManager lockManager = mindmapService.getLockManager();
-        final LockInfo lockInfo = lockManager.updateExpirationTimeout(mindmap, user, session);
+        final LockInfo lockInfo = lockManager.updateExpirationTimeout(mindmap, user);
         return lockInfo.getTimestamp();
     }
 
@@ -192,11 +192,10 @@ public class MindmapController extends BaseController {
                     throw new SessionExpiredException(lastEditor);
                 }
             } else if (outdated) {
-                throw new MultipleSessionsOpenException("Sessions:" + session + ":" + lockInfo.getSession() + "Timestamp: " + timestamp + ": " + lockInfo.getTimestamp());
+                throw new MultipleSessionsOpenException("Sessions:" + session + ":" + lockInfo.getSession() + ",Timestamp: " + timestamp + ": " + lockInfo.getTimestamp());
             }
         } else {
             throw new SessionExpiredException(lockInfo.getUser());
-
         }
     }
 
