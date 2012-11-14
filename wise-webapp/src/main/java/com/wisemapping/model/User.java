@@ -106,30 +106,6 @@ public class User
         this.allowSendEmail = allowSendEmail;
     }
 
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || !User.class.getClass().isInstance(o))
-            return false;
-
-        final User user = (User) o;
-
-        final String email = getEmail();
-        if (email != null ? !email.equals(user.getEmail()) : user.getEmail() != null) return false;
-        if (firstname != null ? !firstname.equals(user.firstname) : user.firstname != null) return false;
-        return !(lastname != null ? !lastname.equals(user.lastname) : user.lastname != null);
-    }
-
-
-    public int hashCode() {
-        int result;
-        result = (firstname != null ? firstname.hashCode() : 0);
-        result = 29 * result + (lastname != null ? lastname.hashCode() : 0);
-        result = 29 * result + (password != null ? password.hashCode() : 0);
-        result = 29 * result + (getEmail() != null ? getEmail().hashCode() : 0);
-        return result;
-    }
-
     @Nullable
     public String getLocale() {
         return locale;

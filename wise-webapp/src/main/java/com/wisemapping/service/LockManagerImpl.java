@@ -130,7 +130,7 @@ class LockManagerImpl implements LockManager {
             // Update timeout only...
             logger.debug("Update timestamp:" + mindmap.getId());
             updateExpirationTimeout(mindmap, user);
-            result.setSession(session);
+           // result.setSession(session);
         } else {
             logger.debug("Lock map id:" + mindmap.getId());
             result = new LockInfo(user, mindmap, session);
