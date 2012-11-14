@@ -159,10 +159,10 @@ public class MindmapController {
             final LockManager lockManager = this.mindmapService.getLockManager();
             if (lockManager.isLocked(mindmap) && !lockManager.isLockedBy(mindmap, collaborator)) {
                 readOnlyMode = true;
-                model.addAttribute("mindmapLocked",true);
+                model.addAttribute("mindmapLocked", true);
             } else {
                 final LockInfo lock = lockManager.lock(mindmap, collaborator);
-                model.addAttribute("lockTimestamp", lock.getTimestamp());
+                model.addAttribute("lockTimestamp", mindmap.getLastModificationTime().getTimeInMillis());
                 model.addAttribute(LOCK_SESSION_ATTRIBUTE, lockManager.generateSession());
             }
             model.addAttribute("lockInfo", lockManager.getLockInfo(mindmap));
