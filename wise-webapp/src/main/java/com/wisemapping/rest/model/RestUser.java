@@ -23,7 +23,6 @@ import com.wisemapping.model.User;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -125,7 +124,7 @@ public class RestUser {
         }
 
         RestUser restUser = (RestUser) o;
-        return this.getDelegated().equals(restUser.getDelegated());
+        return this.getDelegated().equalCollab(restUser.getDelegated());
     }
 
     @Override

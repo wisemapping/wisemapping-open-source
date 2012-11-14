@@ -19,37 +19,36 @@
 package com.wisemapping.model;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 
-public class Collaborator  implements Serializable {
+public class Collaborator implements Serializable {
     private long id;
     private String email;
     private Calendar creationDate;
     private Set<Collaboration> collaborations = new HashSet<Collaboration>();
 
-    public Collaborator() {}
+    public Collaborator() {
+    }
 
-     public Collaborator(Set<Collaboration> collaborations) {
+    public Collaborator(Set<Collaboration> collaborations) {
         this.collaborations = collaborations;
     }
 
-    public void setCollaborations(Set<Collaboration> collaborations)
-    {
+    public void setCollaborations(Set<Collaboration> collaborations) {
         this.collaborations = collaborations;
     }
 
-    public void addCollaboration(@NotNull Collaboration collaboration)
-    {
-       collaborations.add(collaboration);
+    public void addCollaboration(@NotNull Collaboration collaboration) {
+        collaborations.add(collaboration);
     }
 
-    public Set<Collaboration> getCollaborations()
-    {
+    public Set<Collaboration> getCollaborations() {
         return collaborations;
     }
 
@@ -96,4 +95,17 @@ public class Collaborator  implements Serializable {
         result = 31 * result + (email != null ? email.hashCode() : 0);
         return result;
     }
+
+
+    public boolean equalCollab(@Nullable Collaborator that) {
+        if (this == that) return true;
+        if (that == null) return false;
+
+        if (id != that.id) return false;
+        if (email != null ? !email.equals(that.email) : that.email != null) return false;
+
+        return true;
+
+    }
+
 }

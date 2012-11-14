@@ -183,7 +183,7 @@ public class MindmapController extends BaseController {
         }
 
         final LockInfo lockInfo = lockManager.getLockInfo(mindmap);
-        if (lockInfo.getUser().equals(user)) {
+        if (lockInfo.getUser().equalCollab(user)) {
             final boolean outdated = mindmap.getLastModificationTime().getTimeInMillis() > timestamp;
             if (lockInfo.getSession() == session) {
                 // Timestamp might not be returned to the client. This try to cover this case, ignoring the client timestamp check.

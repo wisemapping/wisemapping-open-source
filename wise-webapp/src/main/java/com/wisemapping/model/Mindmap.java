@@ -28,7 +28,6 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -111,7 +110,14 @@ public class Mindmap {
 
     @Nullable
     public Collaboration findCollaboration(@NotNull Collaborator collaborator) {
-        return this.findCollaboration(collaborator.getEmail());
+        Collaboration result = null;
+        for (Collaboration collaboration : collaborations) {
+            if (collaboration.getCollaborator().equalCollab(collaborator)) {
+                result = collaboration;
+                break;
+            }
+        }
+        return result;
     }
 
     @Nullable

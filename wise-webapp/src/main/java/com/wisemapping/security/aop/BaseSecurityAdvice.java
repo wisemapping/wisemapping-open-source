@@ -41,7 +41,7 @@ public abstract class BaseSecurityAdvice {
             isAllowed = isAllowed(user, ((Integer) argument));
         } else if (argument instanceof Collaborator) {
             // Read operation find on the user are allowed ...
-            isAllowed = user.equals(argument);
+            isAllowed = user.equalCollab((Collaborator) argument);
         } else {
             throw new IllegalArgumentException("Argument " + argument);
         }

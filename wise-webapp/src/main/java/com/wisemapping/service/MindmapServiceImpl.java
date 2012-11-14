@@ -114,7 +114,8 @@ public class MindmapServiceImpl
         final Mindmap mindMap = collaboration.getMindMap();
         final Set<Collaboration> collaborations = mindMap.getCollaborations();
 
-        if (mindMap.getCreator().getEmail().equals(collaboration.getCollaborator().getEmail())) {
+        final User creator = mindMap.getCreator();
+        if (creator.equalCollab(collaboration.getCollaborator())) {
             throw new CollaborationException("User is the creator and must have ownership permissions.Creator Email:" + mindMap.getCreator().getEmail() + ",Collaborator:" + collaboration.getCollaborator().getEmail());
         }
 
@@ -125,7 +126,7 @@ public class MindmapServiceImpl
 
     @Override
     public void removeMindmap(@NotNull Mindmap mindmap, @NotNull User user) throws WiseMappingException {
-        if (mindmap.getCreator().equals(user)) {
+        if (mindmap.getCreator().equalCollab(user)) {
             mindmapManager.removeMindmap(mindmap);
         } else {
             final Collaboration collaboration = mindmap.findCollaboration(user);
@@ -264,7 +265,7 @@ public class MindmapServiceImpl
 
     @Override
     public void updateCollaboration(@NotNull Collaborator collaborator, @NotNull Collaboration collaboration) throws WiseMappingException {
-        if (collaborator.equals(collaboration.getCollaborator())) {
+        if (collaborator.equalCollab(collaboration.getCollaborator())) {
             throw new WiseMappingException("No enough permissions for this operation.");
         }
         mindmapManager.updateCollaboration(collaboration);
@@ -276,7 +277,7 @@ public class MindmapServiceImpl
         return this.lockManager;
     }
 
-    private Collaboration getCollaborationBy(String email, Set<Collaboration> collaborations) {
+    private Collaboration getCollaborationBy(@NotNull final String email, @NotNull final Set<Collaboration> collaborations) {
         Collaboration collaboration = null;
 
         for (Collaboration user : collaborations) {
