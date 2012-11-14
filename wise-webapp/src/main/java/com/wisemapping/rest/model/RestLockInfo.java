@@ -68,7 +68,7 @@ public class RestLockInfo {
     }
 
     public boolean isLockedByMe() {
-        return isLocked() && lockInfo != null && lockInfo.getUser().equals(user);
+        return isLocked() && lockInfo != null && lockInfo.getUser().identityEquality(user);
     }
 
     public void setLockedByMe(boolean lockedForMe) {

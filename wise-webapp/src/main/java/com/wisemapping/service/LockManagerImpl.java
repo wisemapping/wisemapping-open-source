@@ -69,7 +69,7 @@ class LockManagerImpl implements LockManager {
         }
 
         final LockInfo result = this.getLockInfo(mindmap);
-        if (!result.getUser().equals(user)) {
+        if (!result.getUser().identityEquality(user)) {
             throw new IllegalStateException("Could not update map lock timeout if you are not the locking user. User:" + result.getUser() + ", " + user);
         }
 
