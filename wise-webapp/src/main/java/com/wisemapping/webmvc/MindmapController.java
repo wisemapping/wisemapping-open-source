@@ -163,7 +163,7 @@ public class MindmapController {
             } else {
                 final LockInfo lock = lockManager.lock(mindmap, collaborator);
                 model.addAttribute("lockTimestamp", lock.getTimestamp());
-                model.addAttribute(LOCK_SESSION_ATTRIBUTE, lock.getSession());
+                model.addAttribute(LOCK_SESSION_ATTRIBUTE, lockManager.generateSession());
             }
             model.addAttribute("lockInfo", lockManager.getLockInfo(mindmap));
         }

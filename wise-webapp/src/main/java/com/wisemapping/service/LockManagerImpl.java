@@ -115,6 +115,11 @@ class LockManagerImpl implements LockManager {
     }
 
     @Override
+    public long generateSession() {
+        return System.nanoTime();
+    }
+
+    @Override
     @NotNull
     public LockInfo lock(@NotNull Mindmap mindmap, @NotNull User user, long session) throws WiseMappingException {
         if (isLocked(mindmap) && !isLockedBy(mindmap, user)) {

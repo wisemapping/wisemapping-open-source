@@ -41,4 +41,6 @@ public interface LockManager {
 
     @NotNull
     LockInfo lock(@NotNull Mindmap mindmap, @NotNull User user) throws WiseMappingException;
+
+    long generateSession();
 }
