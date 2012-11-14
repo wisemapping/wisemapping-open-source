@@ -124,7 +124,7 @@ public class RestUser {
         }
 
         RestUser restUser = (RestUser) o;
-        return this.getDelegated().equalCollab(restUser.getDelegated());
+        return this.getDelegated().identityEquality(restUser.getDelegated());
     }
 
     @Override

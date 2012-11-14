@@ -112,7 +112,7 @@ public class Mindmap {
     public Collaboration findCollaboration(@NotNull Collaborator collaborator) {
         Collaboration result = null;
         for (Collaboration collaboration : collaborations) {
-            if (collaboration.getCollaborator().equalCollab(collaborator)) {
+            if (collaboration.getCollaborator().identityEquality(collaborator)) {
                 result = collaboration;
                 break;
             }

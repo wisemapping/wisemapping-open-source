@@ -97,7 +97,7 @@ public class Collaborator implements Serializable {
     }
 
 
-    public boolean equalCollab(@Nullable Collaborator that) {
+    public boolean identityEquality(@Nullable Collaborator that) {
         if (this == that) return true;
         if (that == null) return false;
 

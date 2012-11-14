@@ -101,7 +101,7 @@ class LockManagerImpl implements LockManager {
     public boolean isLockedBy(@NotNull Mindmap mindmap, @NotNull User collaborator) {
         boolean result = false;
         final LockInfo lockInfo = this.getLockInfo(mindmap);
-        if (lockInfo != null && lockInfo.getUser().equalCollab(collaborator)) {
+        if (lockInfo != null && lockInfo.getUser().identityEquality(collaborator)) {
             result = true;
         }
         return result;
