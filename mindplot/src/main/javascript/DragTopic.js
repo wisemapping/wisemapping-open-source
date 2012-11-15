@@ -115,14 +115,16 @@ mindplot.DragTopic = new Class({
     },
 
     removeFromWorkspace:function (workspace) {
-        // Remove drag shadow.
-        workspace.removeChild(this._elem2d);
-        this._isInWorkspace = false;
+        if (this._isInWorkspace) {
+            // Remove drag shadow.
+            workspace.removeChild(this._elem2d);
 
-        // Remove pivot shape. To improve performace it will not be removed. Only the visibility will be changed.
-        var dragPivot = this._getDragPivot();
-        dragPivot.setVisibility(false);
+            // Remove pivot shape. To improve performance it will not be removed. Only the visibility will be changed.
+            var dragPivot = this._getDragPivot();
+            dragPivot.setVisibility(false);
 
+            this._isInWorkspace = false;
+        }
     },
 
     isInWorkspace:function () {
@@ -130,10 +132,12 @@ mindplot.DragTopic = new Class({
     },
 
     addToWorkspace:function (workspace) {
-        workspace.appendChild(this._elem2d);
-        var dragPivot = this._getDragPivot();
-        dragPivot.addToWorkspace(workspace);
-        this._isInWorkspace = true;
+        if (!this._isInWorkspace) {
+            workspace.appendChild(this._elem2d);
+            var dragPivot = this._getDragPivot();
+            dragPivot.addToWorkspace(workspace);
+            this._isInWorkspace = true;
+        }
     },
 
     _getDragPivot:function () {
