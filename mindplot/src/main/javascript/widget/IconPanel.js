@@ -29,7 +29,7 @@ mindplot.widget.IconPanel = new Class({
 
     buildPanel:function () {
         var content = new Element('div', {'class':'toolbarPanel', 'id':'IconsPanel'});
-        content.setStyles({width:253, height:210, padding:5});
+        content.setStyles({width:253, height:230, padding:5});
         content.addEvent("click", function (event) {
             event.stopPropagation()
         });

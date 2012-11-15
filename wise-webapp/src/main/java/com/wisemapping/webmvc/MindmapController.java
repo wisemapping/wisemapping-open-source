@@ -21,11 +21,10 @@ package com.wisemapping.webmvc;
 
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.CollaborationRole;
-import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.MindMapHistory;
+import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
 import com.wisemapping.security.Utils;
-import com.wisemapping.service.LockInfo;
 import com.wisemapping.service.LockManager;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.view.MindMapBean;
@@ -36,7 +35,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
@@ -161,7 +163,6 @@ public class MindmapController {
                 readOnlyMode = true;
                 model.addAttribute("mindmapLocked", true);
             } else {
-                final LockInfo lock = lockManager.lock(mindmap, collaborator);
                 model.addAttribute("lockTimestamp", mindmap.getLastModificationTime().getTimeInMillis());
                 model.addAttribute(LOCK_SESSION_ATTRIBUTE, lockManager.generateSession());
             }
