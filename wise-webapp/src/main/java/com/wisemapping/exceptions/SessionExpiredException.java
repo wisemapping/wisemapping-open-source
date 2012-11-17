@@ -26,8 +26,8 @@ public class SessionExpiredException
     public static final String MSG_KEY = "MINDMAP_TIMESTAMP_OUTDATED";
     private User lastUpdater;
 
-    public SessionExpiredException(@NotNull User lastUpdater) {
-        super("Map has been updated by " + (lastUpdater != null ? lastUpdater.getEmail() : ""), Severity.FATAL);
+    public SessionExpiredException(@NotNull String debugInfo, @NotNull User lastUpdater) {
+        super(debugInfo, Severity.FATAL);
         this.lastUpdater = lastUpdater;
     }
 

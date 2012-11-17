@@ -188,15 +188,15 @@ public class MindmapController extends BaseController {
             if (lockInfo.getSession() == session) {
                 // Timestamp might not be returned to the client. This try to cover this case, ignoring the client timestamp check.
                 final User lastEditor = mindmap.getLastEditor();
-                //  lockInfo.getPreviousTimestamp() == timestamp : In case the timestap is not returned. Give a second chance.
-                if (outdated && (lockInfo.getPreviousTimestamp() != timestamp || lastEditor == null || !lastEditor.identityEquality(user))) {
-                    throw new SessionExpiredException(lastEditor);
+                boolean editedBySameUser = lastEditor == null || user.identityEquality(lastEditor);
+                if (outdated && !editedBySameUser) {
+                    throw new SessionExpiredException("Map has been updated by " + (lastEditor.getEmail()) + ",Timestamp:" + timestamp + "," + mindmap.getLastModificationTime().getTimeInMillis(), lastEditor);
                 }
             } else if (outdated) {
                 throw new MultipleSessionsOpenException("Sessions:" + session + ":" + lockInfo.getSession() + ",Timestamp: " + timestamp + ": " + lockInfo.getTimestamp());
             }
         } else {
-            throw new SessionExpiredException(lockInfo.getUser());
+            throw new SessionExpiredException("Different Users.", lockInfo.getUser());
         }
     }
 
