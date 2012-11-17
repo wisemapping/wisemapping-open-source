@@ -888,7 +888,12 @@ mindplot.Topic = new Class({
 
     _setRelationshipLinesVisibility:function (value) {
         this._relationships.each(function (relationship) {
-            relationship.setVisibility(value);
+            var sourceTopic = relationship.getSourceTopic();
+            var targetTopic = relationship.getTargetTopic();
+
+            var targetParent = targetTopic.getModel().getParent();
+            var sourceParent = sourceTopic.getModel().getParent();
+            relationship.setVisibility(value && (targetParent == null || !targetParent.areChildrenShrunken()) && (sourceParent == null || !sourceParent.areChildrenShrunken()));
         });
     },
 
@@ -1203,7 +1208,7 @@ mindplot.Topic = new Class({
             var relationships = child.getRelationships();
             result = result.concat(relationships);
 
-            if(!child.areChildrenShrunken()){
+            if (!child.areChildrenShrunken()) {
                 var innerChilds = this._flatten2DElements(child);
                 result = result.concat(innerChilds);
             }
