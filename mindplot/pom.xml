@@ -228,6 +228,7 @@
                                         <include>layout/EventBus.js</include>
                                         <include>MessageBundle_en.js</include>
                                         <include>MessageBundle_es.js</include>
+                                        <include>MessageBundle_de.js</include>
                                         <include>MessageBundle_fr.js</include>
                                         <include>MessageBundle_pt_BR.js</include>
                                         <include>MessageBundle_zh_CN.js</include>
