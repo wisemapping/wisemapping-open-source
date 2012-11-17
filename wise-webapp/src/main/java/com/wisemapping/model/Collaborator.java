@@ -83,14 +83,17 @@ public class Collaborator implements Serializable {
 
         Collaborator that = (Collaborator) o;
 
-        if (id != that.id) return false;
-        if (email != null ? !email.equals(that.email) : that.email != null) return false;
+        if (id != that.getId()) return false;
+        if (email != null ? !email.equals(that.getEmail()) : that.getEmail() != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
+        long id = this.getId();
+        String email = this.getEmail();
+
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (email != null ? email.hashCode() : 0);
         return result;
