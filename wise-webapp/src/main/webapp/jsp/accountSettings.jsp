@@ -60,6 +60,9 @@
                         <option value="fr" <c:if test="${user.locale=='fr'}">selected="selected" </c:if>>French -
                             français
                         </option>
+                        <option value="de" <c:if test="${user.locale=='de'}">selected="selected" </c:if>>German -
+                            Deutsch
+                        </option>
                         <option value="it" <c:if test="${user.locale=='it'}">selected="selected" </c:if>>Italian -
                             italiano
                         </option>
