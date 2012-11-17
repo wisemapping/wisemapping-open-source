@@ -110,7 +110,7 @@
 <div id="mindplot" onselectstart="return false;"></div>
 <script type="text/javascript" src="js/editor.js"></script>
 
-<c:if test="${requestScope['google.ads.enabled']}">
+<c:if test="${requestScope['google.ads.enabled'] && !memoryPersistence && !readOnlyMode}">
 <div style="position: absolute;;width:468px;height: 60px;background: #fdf5e6;z-index: 100;right: 10px; bottom: 10px">
     <script type="text/javascript"><!--
     google_ad_client = "ca-pub-7564778578019285";
@@ -125,7 +125,7 @@
                 src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
         </script>
     </div>
-</c:if>
+    </c:if>
 </div>
 </body>
 </html>
