@@ -190,10 +190,10 @@ public class MindmapController extends BaseController {
                 final User lastEditor = mindmap.getLastEditor();
                 boolean editedBySameUser = lastEditor == null || user.identityEquality(lastEditor);
                 if (outdated && !editedBySameUser) {
-                    throw new SessionExpiredException("Map has been updated by " + (lastEditor.getEmail()) + ",Timestamp:" + timestamp + "," + mindmap.getLastModificationTime().getTimeInMillis(), lastEditor);
+                    throw new SessionExpiredException("Map has been updated by " + (lastEditor.getEmail()) + ",Timestamp:" + timestamp + "," + mindmap.getLastModificationTime().getTimeInMillis() + ", User:" + lastEditor.getId() + ":" + user.getId(), lastEditor);
                 }
             } else if (outdated) {
-                throw new MultipleSessionsOpenException("Sessions:" + session + ":" + lockInfo.getSession() + ",Timestamp: " + timestamp + ": " + lockInfo.getTimestamp());
+                throw new MultipleSessionsOpenException("Sessions:" + session + ":" + lockInfo.getSession() + ",Timestamp: " + timestamp + ": " + lockInfo.getTimestamp() + ",User:");
             }
         } else {
             throw new SessionExpiredException("Different Users.", lockInfo.getUser());
