@@ -697,6 +697,9 @@ mindplot.Designer = new Class({
 
             var targetTopicId = model.getToNode();
             var targetTopic = dmodel.findTopicById(targetTopicId);
+            $assert(targetTopic, "targetTopic could not be found:" + targetTopicId + dmodel.getTopics().forEach(function (e) {
+                return e.getId()
+            }));
 
             // Build relationship line ....
             var result = new mindplot.Relationship(sourceTopic, targetTopic, model);

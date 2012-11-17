@@ -93,7 +93,7 @@ mindplot.model.RelationshipModel = new Class({
         this._startArrow = startArrow;
     },
 
-    clone:function (model) {
+    clone:function () {
         var result = new mindplot.model.RelationshipModel(this._sourceTargetId, this._targetTopicId);
         result._id = this._id;
         result._lineType = this._lineType;
