@@ -109,12 +109,23 @@
 
 <div id="mindplot" onselectstart="return false;"></div>
 <script type="text/javascript" src="js/editor.js"></script>
-<%--<div style="position: absolute;height: 200px; right: 20px;top:100px;width: 200px;padding: 10px; border-style: dotted; background-color: #dfcf3c">--%>
-<%--<p>--%>
-<%--This mindmap is being edited by pepep. Your will be able to see the content but not to modify it.--%>
-<%--</p>--%>
-<%--</div>--%>
 
-
+<c:if test="${requestScope['google.ads.enabled']}">
+<div style="position: absolute;;width:468px;height: 60px;background: #fdf5e6;z-index: 100;right: 10px; bottom: 10px">
+    <script type="text/javascript"><!--
+    google_ad_client = "ca-pub-7564778578019285";
+    /* Wisemapping Editor Banner */
+    google_ad_slot = "6147489273";
+    google_ad_width = 468;
+    google_ad_height = 60;
+    //-->
+    </script>
+    <div>
+        <script type="text/javascript"
+                src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+        </script>
+    </div>
+</c:if>
+</div>
 </body>
 </html>

@@ -41,7 +41,8 @@
             <div class="control-group" style="text-align: right">
 
                 <label>
-                    <button class="btn btn-primary" tabindex="4"  data-loading-text="<spring:message code="SIGN_ING"/>"><spring:message code="SIGN_IN"/></button>
+                    <button class="btn btn-primary" tabindex="4" data-loading-text="<spring:message code="SIGN_ING"/>">
+                        <spring:message code="SIGN_IN"/></button>
                     <input type="checkbox" id="rememberme" name="_spring_security_remember_me"
                            tabindex="3"/> <spring:message code="REMEMBER_ME"/>
                 </label>
@@ -84,4 +85,20 @@
                 href="http://www.wisemapping.org/documentation/configu"><spring:message code="HERE"/></a>.
         </div>
     </div>
+</c:if>
+<c:if test="${requestScope['google.ads.enabled']}">
+
+<div class="row" style="text-align: center">
+        <script type="text/javascript"><!--
+        google_ad_client = "ca-pub-7564778578019285";
+        /* WiseMapping Login */
+        google_ad_slot = "2192653431";
+        google_ad_width = 728;
+        google_ad_height = 90;
+        //-->
+        </script>
+        <script type="text/javascript"
+                src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+        </script>
+</div>
 </c:if>
