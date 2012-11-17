@@ -46,15 +46,16 @@ mindplot.util.Shape =
     calculateRelationShipPointCoordinates:function (topic, controlPoint) {
         var size = topic.getSize();
         var position = topic.getPosition();
-        var div = (position.x - controlPoint.x);
-        div = (Math.abs(div) > 0.1 ? div : 0.1);  // Prevent division by 0.
+        var m;
+        var yGap = position.y - controlPoint.y;
+        var xGap = position.x - controlPoint.x;
+        var disable = Math.abs(yGap) < 5 || Math.abs(xGap) < 5 || Math.abs(yGap - xGap) < 5;
 
-        var m = (position.y - controlPoint.y) / div;
         var y, x;
         var gap = 5;
         if (controlPoint.y > position.y + (size.height / 2)) {
             y = position.y + (size.height / 2) + gap;
-            x = position.x - ((position.y - y) / m);
+            x = !disable ? position.x - ((position.y - y) / (yGap / xGap)) : position.x;
             if (x > position.x + (size.width / 2)) {
                 x = position.x + (size.width / 2);
             } else if (x < position.x - (size.width / 2)) {
@@ -62,7 +63,7 @@ mindplot.util.Shape =
             }
         } else if (controlPoint.y < position.y - (size.height / 2)) {
             y = position.y - (size.height / 2) - gap;
-            x = position.x - ((position.y - y) / m);
+            x = !disable ? position.x - ((position.y - y) / (yGap / xGap)) : position.x;
             if (x > position.x + (size.width / 2)) {
                 x = position.x + (size.width / 2);
             } else if (x < position.x - (size.width / 2)) {
@@ -70,10 +71,10 @@ mindplot.util.Shape =
             }
         } else if (controlPoint.x < (position.x - size.width / 2)) {
             x = position.x - (size.width / 2) - gap;
-            y = position.y - (m * (position.x - x));
+            y = !disable ? position.y - ((yGap / xGap) * (position.x - x)) : position.y;
         } else {
             x = position.x + (size.width / 2) + gap;
-            y = position.y - (m * (position.x - x));
+            y = !disable ? position.y - ((yGap / xGap) * (position.x - x)) : position.y;
         }
 
         return new core.Point(x, y);

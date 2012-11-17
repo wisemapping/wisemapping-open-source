@@ -149,7 +149,18 @@ mindplot.commands.DeleteCommand = new Class({
             return this._collectInDepthRelationships(topic);
         }, this);
         result.append(rels.flatten());
-        return result;
+
+        // Filter for unique ...
+        result = result.sort(function (a, b) {
+            return a.getModel().getId() - b.getModel().getId();
+        });
+        var ret = [result[0]];
+        for (var i = 1; i < result.length; i++) { // start loop at 1 as element 0 can never be a duplicate
+            if (result[i - 1] !== result[i]) {
+                ret.push(result[i]);
+            }
+        }
+        return ret;
     }
 
 });

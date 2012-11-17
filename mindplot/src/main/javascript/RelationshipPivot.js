@@ -43,7 +43,9 @@ mindplot.RelationshipPivot = new Class({
 
             this._pivot = new web2d.CurvedLine();
             this._pivot.setStyle(web2d.CurvedLine.SIMPLE_LINE);
-            this._pivot.setFrom(sourcePos.x, sourcePos.y);
+
+            var fromPos = this._calculateFromPosition(sourcePos);
+            this._pivot.setFrom(fromPos.x, fromPos.y);
 
             this._pivot.setTo(targetPos.x, targetPos.y);
             this._pivot.setStroke(2, 'solid', strokeColor);
@@ -53,7 +55,6 @@ mindplot.RelationshipPivot = new Class({
             this._startArrow.setStrokeColor(strokeColor);
             this._startArrow.setStrokeWidth(2);
             this._startArrow.setFrom(sourcePos.x, sourcePos.y);
-
 
             this._workspace.appendChild(this._pivot);
             this._workspace.appendChild(this._startArrow);
@@ -102,12 +103,7 @@ mindplot.RelationshipPivot = new Class({
         var sourcePosition = this._sourceTopic.getPosition();
         var gapDistance = Math.sign(pos.x - sourcePosition.x) * 5;
 
-        // Calculate origin position ...
-        var controPoint = mindplot.util.Shape.calculateDefaultControlPoints(sourcePosition, pos);
-        var spoint = new core.Point();
-        spoint.x = parseInt(controPoint[0].x) + parseInt(sourcePosition.x);
-        spoint.y = parseInt(controPoint[0].y) + parseInt(sourcePosition.y);
-        var sPos = mindplot.util.Shape.calculateRelationShipPointCoordinates(this._sourceTopic, spoint);
+        var sPos = this._calculateFromPosition(pos);
         this._pivot.setFrom(sPos.x, sPos.y);
 
         // Update target position ...
@@ -126,6 +122,21 @@ mindplot.RelationshipPivot = new Class({
         // The user clicks on a desktop on in other element that is not a node.
         this.dispose();
         event.stopPropagation();
+    },
+
+    _calculateFromPosition:function (toPosition) {
+
+        // Calculate origin position ...
+        var sourcePosition = this._sourceTopic.getPosition();
+        if (this._sourceTopic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
+            sourcePosition = mindplot.util.Shape.workoutIncomingConnectionPoint(this._sourceTopic, toPosition);
+        }
+        var controlPoint = mindplot.util.Shape.calculateDefaultControlPoints(sourcePosition, toPosition);
+
+        var spoint = new core.Point();
+        spoint.x = parseInt(controlPoint[0].x) + parseInt(sourcePosition.x);
+        spoint.y = parseInt(controlPoint[0].y) + parseInt(sourcePosition.y);
+        return  mindplot.util.Shape.calculateRelationShipPointCoordinates(this._sourceTopic, spoint);
     },
 
     _connectOnFocus:function (targetTopic) {
