@@ -111,7 +111,7 @@
 <script type="text/javascript" src="js/editor.js"></script>
 
 <c:if test="${requestScope['google.ads.enabled'] && !memoryPersistence && !readOnlyMode}">
-    <div style="position: absolute;width:470px;height: 62px;z-index: 100;right: 10px; bottom: 10px">
+    <div style="position: fixed;width:470px;height: 62px;z-index: 100;right: 10px; bottom: 10px">
         <script type="text/javascript"><!--
         google_ad_client = "ca-pub-7564778578019285";
         /* Wisemapping Editor Banner */
