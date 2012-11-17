@@ -83,14 +83,19 @@ mindplot.Relationship = new Class({
 
         var targetTopic = this._targetTopic;
         var targetPosition = targetTopic.getPosition();
+        if (targetTopic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
+            targetPosition = mindplot.util.Shape.workoutIncomingConnectionPoint(targetTopic, sourcePosition);
+        }
 
         var sPos, tPos;
         this._line2d.setStroke(2);
         var ctrlPoints = this._line2d.getControlPoints();
         if (!this._line2d.isDestControlPointCustom() && !this._line2d.isSrcControlPointCustom()) {
+
             var defaultPoints = mindplot.util.Shape.calculateDefaultControlPoints(sourcePosition, targetPosition);
             ctrlPoints[0].x = defaultPoints[0].x;
             ctrlPoints[0].y = defaultPoints[0].y;
+
             ctrlPoints[1].x = defaultPoints[1].x;
             ctrlPoints[1].y = defaultPoints[1].y;
         }
@@ -101,6 +106,7 @@ mindplot.Relationship = new Class({
         var tpoint = new core.Point();
         tpoint.x = parseInt(ctrlPoints[1].x) + parseInt(targetPosition.x);
         tpoint.y = parseInt(ctrlPoints[1].y) + parseInt(targetPosition.y);
+
         sPos = mindplot.util.Shape.calculateRelationShipPointCoordinates(sourceTopic, spoint);
         tPos = mindplot.util.Shape.calculateRelationShipPointCoordinates(targetTopic, tpoint);
 

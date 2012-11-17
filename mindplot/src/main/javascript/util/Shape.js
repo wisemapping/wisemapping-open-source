@@ -97,6 +97,31 @@ mindplot.util.Shape =
         var y2 = m * (x2 - tarPos.x) + tarPos.y;
 
         return [new core.Point(-srcPos.x + x1, -srcPos.y + y1), new core.Point(-tarPos.x + x2, -tarPos.y + y2)];
+    },
+
+    workoutIncomingConnectionPoint:function (targetNode, sourcePosition) {
+        $assert(sourcePosition, 'sourcePoint can not be null');
+        var pos = targetNode.getPosition();
+        var size = targetNode.getSize();
+
+        var isAtRight = mindplot.util.Shape.isAtRight(sourcePosition, pos);
+        var result = mindplot.util.Shape.calculateRectConnectionPoint(pos, size, isAtRight);
+        if (targetNode.getShapeType() == mindplot.model.TopicShape.LINE) {
+            result.y = result.y + (targetNode.getSize().height / 2);
+        }
+
+        // Move a little the position...
+        var offset = mindplot.Topic.CONNECTOR_WIDTH / 2;
+        if (!isAtRight) {
+            result.x = result.x + offset;
+        } else {
+            result.x = result.x - offset;
+        }
+
+        result.x = Math.ceil(result.x);
+        result.y = Math.ceil(result.y);
+        return result;
+
     }
 };
 

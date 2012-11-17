@@ -29,16 +29,12 @@ mindplot.ConnectionLine = new Class({
         var ctrlPoints = this._getCtrlPoints(sourceNode, targetNode);
         if (targetNode.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
             line = this._createLine(lineType, mindplot.ConnectionLine.CURVED);
-            if (line.getType() == "CurvedLine") {
-                line.setSrcControlPoint(ctrlPoints[0]);
-                line.setDestControlPoint(ctrlPoints[1]);
-            }
+            line.setSrcControlPoint(ctrlPoints[0]);
+            line.setDestControlPoint(ctrlPoints[1]);
         } else {
             line = this._createLine(lineType, mindplot.ConnectionLine.SIMPLE_CURVED);
-            if (line.getType() == "CurvedLine") {
-                line.setSrcControlPoint(ctrlPoints[0]);
-                line.setDestControlPoint(ctrlPoints[1]);
-            }
+            line.setSrcControlPoint(ctrlPoints[0]);
+            line.setDestControlPoint(ctrlPoints[1]);
         }
         // Set line styles ...
         var strokeColor = mindplot.ConnectionLine.getStrokeColor();

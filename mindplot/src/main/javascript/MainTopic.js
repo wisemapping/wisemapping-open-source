@@ -98,28 +98,7 @@ mindplot.MainTopic = new Class({
     },
 
     workoutIncomingConnectionPoint:function (sourcePosition) {
-        $assert(sourcePosition, 'sourcePoint can not be null');
-        var pos = this.getPosition();
-        var size = this.getSize();
-
-        var isAtRight = mindplot.util.Shape.isAtRight(sourcePosition, pos);
-        var result = mindplot.util.Shape.calculateRectConnectionPoint(pos, size, isAtRight);
-        if (this.getShapeType() == mindplot.model.TopicShape.LINE) {
-            result.y = result.y + (this.getSize().height / 2);
-        }
-
-        // Move a little the position...
-        var offset = mindplot.Topic.CONNECTOR_WIDTH / 2;
-        if (this.getPosition().x > 0) {
-            result.x = result.x + offset;
-        } else {
-            result.x = result.x - offset;
-        }
-
-        result.x = Math.ceil(result.x);
-        result.y = Math.ceil(result.y);
-        return result;
-
+        return mindplot.util.Shape.workoutIncomingConnectionPoint(this, sourcePosition);
     },
 
     workoutOutgoingConnectionPoint:function (targetPosition) {
