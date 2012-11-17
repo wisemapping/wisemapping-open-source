@@ -156,7 +156,7 @@ mindplot.commands.DeleteCommand = new Class({
         });
         var ret = [result[0]];
         for (var i = 1; i < result.length; i++) { // start loop at 1 as element 0 can never be a duplicate
-            if (result[i - 1] !== result[i]) {
+            if (result[i - 1] !== result[i] && result[i] != null) {
                 ret.push(result[i]);
             }
         }
