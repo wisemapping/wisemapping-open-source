@@ -101,8 +101,8 @@ public class Collaborator implements Serializable {
         if (this == that) return true;
         if (that == null) return false;
 
-        if (id != that.id) return false;
-        if (email != null ? !email.equals(that.email) : that.email != null) return false;
+        if (id != that.getId()) return false;
+        if (email != null ? !email.equals(that.getEmail()) : that.getEmail() != null) return false;
 
         return true;
 
