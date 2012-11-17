@@ -99,8 +99,18 @@ mindplot.RelationshipPivot = new Class({
         var pos = screen.getWorkspaceMousePosition(event);
 
         // Leave the arrow a couple of pixels away from the cursor.
-        var gapDistance = Math.sign(pos.x - this._sourceTopic.getPosition().x) * 5;
+        var sourcePosition = this._sourceTopic.getPosition();
+        var gapDistance = Math.sign(pos.x - sourcePosition.x) * 5;
 
+        // Calculate origin position ...
+        var controPoint = mindplot.util.Shape.calculateDefaultControlPoints(sourcePosition, pos);
+        var spoint = new core.Point();
+        spoint.x = parseInt(controPoint[0].x) + parseInt(sourcePosition.x);
+        spoint.y = parseInt(controPoint[0].y) + parseInt(sourcePosition.y);
+        var sPos = mindplot.util.Shape.calculateRelationShipPointCoordinates(this._sourceTopic, spoint);
+        this._pivot.setFrom(sPos.x, sPos.y);
+
+        // Update target position ...
         this._pivot.setTo(pos.x - gapDistance, pos.y);
 
         var controlPoints = this._pivot.getControlPoints();
