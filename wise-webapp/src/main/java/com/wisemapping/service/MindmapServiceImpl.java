@@ -28,7 +28,9 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Set;
 
 
 public class MindmapServiceImpl
@@ -265,7 +267,7 @@ public class MindmapServiceImpl
 
     @Override
     public void updateCollaboration(@NotNull Collaborator collaborator, @NotNull Collaboration collaboration) throws WiseMappingException {
-        if (collaborator.identityEquality(collaboration.getCollaborator())) {
+        if (!collaborator.identityEquality(collaboration.getCollaborator())) {
             throw new WiseMappingException("No enough permissions for this operation.");
         }
         mindmapManager.updateCollaboration(collaboration);
