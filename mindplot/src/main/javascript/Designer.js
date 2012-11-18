@@ -752,7 +752,16 @@ mindplot.Designer = new Class({
             }
         },
 
+        _resetEdition:function () {
+            var screenManager = this._workspace.getScreenManager();
+            screenManager.fireEvent("update");
+            screenManager.fireEvent("mouseup");
+            this._relPivot.dispose();
+        },
+
         deleteSelectedEntities:function () {
+            // Is there some action in progress ?.
+            this._resetEdition();
 
             var topics = this.getModel().filterSelectedTopics();
             var relation = this.getModel().filterSelectedRelationships();
