@@ -130,7 +130,7 @@ public class MindmapController extends BaseController {
             if (mindmapHistory.size() > 0) {
                 final MindMapHistory mindMapHistory = mindmapHistory.get(0);
                 mindmap.setXml(mindMapHistory.getXml());
-                saveMindmap(true, mindmap, user);
+                saveMindmapDocument(true, mindmap, user);
             }
         } else {
             mindmapService.revertChange(mindmap, Integer.parseInt(hid));
@@ -165,7 +165,7 @@ public class MindmapController extends BaseController {
         mindmap.setXmlStr(xml);
 
         // Update map ...
-        saveMindmap(minor, mindmap, user);
+        saveMindmapDocument(minor, mindmap, user);
 
         // Update edition timeout ...
         final LockManager lockManager = mindmapService.getLockManager();
@@ -243,7 +243,7 @@ public class MindmapController extends BaseController {
         }
 
         // Update map ...
-        saveMindmap(minor, mindmap, user);
+        saveMindmapDocument(minor, mindmap, user);
     }
 
 
@@ -263,7 +263,7 @@ public class MindmapController extends BaseController {
         // Update map ...
         final Mindmap mindmap = mindmapService.findMindmapById(id);
         mindmap.setTitle(title);
-        saveMindmap(true, mindMap, user);
+        mindmapService.updateMindmap(mindMap, !true);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/collabs", consumes = {"application/json", "application/xml"}, produces = {"application/json", "text/html", "application/xml"})
@@ -334,7 +334,7 @@ public class MindmapController extends BaseController {
         // Update map ...
         final Mindmap mindmap = mindmapService.findMindmapById(id);
         mindmap.setDescription(description);
-        saveMindmap(true, mindMap, user);
+        mindmapService.updateMindmap(mindMap, !true);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/publish", consumes = {"text/plain"}, produces = {"application/json", "text/html", "application/xml"})
@@ -350,13 +350,13 @@ public class MindmapController extends BaseController {
 
         // Update map status ...
         mindMap.setPublic(Boolean.parseBoolean(value));
-        saveMindmap(true, mindMap, user);
+        mindmapService.updateMindmap(mindMap, !true);
 
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/maps/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateMap(@PathVariable int id) throws IOException, WiseMappingException {
+    public void deleteMapById(@PathVariable int id) throws IOException, WiseMappingException {
         final User user = Utils.getUser();
         final Mindmap mindmap = mindmapService.findMindmapById(id);
         mindmapService.removeMindmap(mindmap, user);
@@ -489,7 +489,7 @@ public class MindmapController extends BaseController {
         response.setHeader("ResourceId", Integer.toString(clonedMap.getId()));
     }
 
-    private void saveMindmap(boolean minor, @NotNull final Mindmap mindMap, @NotNull final User user) throws WiseMappingException {
+    private void saveMindmapDocument(boolean minor, @NotNull final Mindmap mindMap, @NotNull final User user) throws WiseMappingException {
         final Calendar now = Calendar.getInstance();
         mindMap.setLastModificationTime(now);
         mindMap.setLastEditor(user);
