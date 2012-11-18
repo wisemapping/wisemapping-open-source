@@ -697,7 +697,7 @@ mindplot.Designer = new Class({
 
             var targetTopicId = model.getToNode();
             var targetTopic = dmodel.findTopicById(targetTopicId);
-            $assert(targetTopic, "targetTopic could not be found:" + targetTopicId + dmodel.getTopics().forEach(function (e) {
+            $assert(targetTopic, "targetTopic could not be found:" + targetTopicId + dmodel.getTopics().map(function (e) {
                 return e.getId()
             }));
 
