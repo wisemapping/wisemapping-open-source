@@ -87,8 +87,7 @@
     </div>
 </c:if>
 <c:if test="${requestScope['google.ads.enabled']}">
-
-<div class="row" style="text-align: center">
+    <div class="row" style="text-align: center">
         <script type="text/javascript"><!--
         google_ad_client = "ca-pub-7564778578019285";
         /* WiseMapping Login */
@@ -100,5 +99,5 @@
         <script type="text/javascript"
                 src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
         </script>
-</div>
+    </div>
 </c:if>

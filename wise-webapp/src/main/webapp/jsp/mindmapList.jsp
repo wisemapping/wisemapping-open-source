@@ -219,7 +219,7 @@
             /* WiseMapping Mindmap List */
             google_ad_slot = "4071968444";
             google_ad_width = 120;
-            google_ad_height = 440;
+            google_ad_height = 600;
             //-->
             </script>
             <div style="margin-top:5px;">
