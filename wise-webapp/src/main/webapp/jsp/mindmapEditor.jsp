@@ -109,21 +109,5 @@
 
 <div id="mindplot" onselectstart="return false;"></div>
 <script type="text/javascript" src="js/editor.js"></script>
-
-<c:if test="${requestScope['google.ads.enabled'] && !memoryPersistence && !readOnlyMode}">
-    <div style="position: fixed;width:236px;height: 62px;z-index: 100;right: 10px; bottom: 10px">
-        <script type="text/javascript"><!--
-        google_ad_client = "ca-pub-7564778578019285";
-        /* WiseMapping Editor XSmal */
-        google_ad_slot = "9298402202";
-        google_ad_width = 234;
-        google_ad_height = 60;
-        //-->
-        </script>
-        <script type="text/javascript"
-                src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-        </script>
-    </div>
-</c:if>
 </body>
 </html>
