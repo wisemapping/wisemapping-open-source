@@ -48,10 +48,10 @@
                 <c:if test="${requestScope['google.ads.enabled']}">
                     <script type="text/javascript"><!--
                     google_ad_client = "ca-pub-7564778578019285";
-                    /* WiseMapping - Tempalte Pages */
-                    google_ad_slot = "2303942831";
-                    google_ad_width = 728;
-                    google_ad_height = 90;
+                    /* WiseMapping Page Template */
+                    google_ad_slot = "2051548516";
+                    google_ad_width = 120;
+                    google_ad_height = 600;
                     //-->
                     </script>
                     <script type="text/javascript"
