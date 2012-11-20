@@ -42,22 +42,22 @@
         <div class="row-fluid">
             <div class="span2"></div>
             <div class="pageBodyContent span8">
-                <c:if test="${requestScope['google.ads.enabled']}">
-                    <div class="row" style="text-align: center;margin-bottom: 15px;">
-                        <script type="text/javascript"><!--
-                        google_ad_client = "ca-pub-7564778578019285";
-                        /* WiseMapping Login */
-                        google_ad_slot = "2192653431";
-                        google_ad_width = 728;
-                        google_ad_height = 90;
-                        //-->
-                        </script>
-                        <script type="text/javascript"
-                                src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-                        </script>
-                    </div>
-                </c:if>
                 <tiles:insertAttribute name="body"/>
+            </div>
+            <div class="span1" style="padding-top:0px">
+                <c:if test="${requestScope['google.ads.enabled']}">
+                    <script type="text/javascript"><!--
+                    google_ad_client = "ca-pub-7564778578019285";
+                    /* WiseMapping - Tempalte Pages */
+                    google_ad_slot = "2303942831";
+                    google_ad_width = 728;
+                    google_ad_height = 90;
+                    //-->
+                    </script>
+                    <script type="text/javascript"
+                            src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+                    </script>
+                </c:if>
             </div>
         </div>
     </div>
