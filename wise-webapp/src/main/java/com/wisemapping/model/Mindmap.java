@@ -82,14 +82,14 @@ public class Mindmap {
             throws IOException {
         byte[] result = this.xml;
         if (result != null) {
-            result = ZipUtils.stringToZip(new String(result, UTF_8));
+            result = ZipUtils.bytesToZip(result);
         }
         return result;
     }
 
     public void setZippedXml(byte[] xml)
             throws IOException {
-        this.xml = ZipUtils.zipToString(xml).getBytes(UTF_8);
+        this.xml = ZipUtils.zipToBytes(xml);
     }
 
     public Set<Collaboration> getCollaborations() {

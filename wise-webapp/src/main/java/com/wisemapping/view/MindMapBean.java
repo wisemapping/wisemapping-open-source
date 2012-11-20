@@ -26,8 +26,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.text.DateFormat;
-import java.util.*;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class MindMapBean {
     private Mindmap mindmap;
@@ -124,10 +125,7 @@ public class MindMapBean {
     }
 
     public String getXmlAsJsLiteral() throws IOException {
-        final String xmlAsJsLiteral = this.mindmap.getXmlAsJsLiteral();
-
-        // Firefox is failing for this. Need to be reviewed ...
-        return xmlAsJsLiteral.replace("\\u0000","");
+        return this.mindmap.getXmlAsJsLiteral();
     }
 
     public String getProperties() throws WiseMappingException {

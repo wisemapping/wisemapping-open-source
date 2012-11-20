@@ -18,67 +18,46 @@
 
 package com.wisemapping.util;
 
-import java.io.IOException;
+
+import org.apache.commons.io.IOUtils;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.nio.charset.Charset;
+import java.io.IOException;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
-import java.util.zip.ZipEntry;
 
 public class ZipUtils {
 
-    public static String zipToString(byte[] zip) throws IOException {
+    public static byte[] zipToBytes(byte[] zip) throws IOException {
 
-        String result = null;
-        if (zip != null)
-        {
+        byte[] result = null;
+        if (zip != null) {
             final ByteArrayInputStream in = new ByteArrayInputStream(zip);
             final ZipInputStream zipIn = new ZipInputStream(in);
             zipIn.getNextEntry();
-
-            byte[] buffer = new byte[512];
-
-            int len;
-            StringBuilder sb_result = new StringBuilder();
-
-            while ((len = zipIn.read(buffer)) > 0) {
-
-
-
-                sb_result.append(new String(buffer, 0, len, Charset.forName("UTF-8")));
-            }
+            result = IOUtils.toByteArray(zipIn);
 
             zipIn.closeEntry();
             zipIn.close();
-            result = sb_result.toString();
         }
 
         return result;
     }
 
-    public static  byte[] stringToZip(String content) throws IOException {
+    public static byte[] bytesToZip(@NotNull final byte[] content) throws IOException {
         ZipOutputStream zip = null;
-        ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
-
-        
-        ByteArrayInputStream in = new ByteArrayInputStream(content.getBytes("UTF-8"));
+        final ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
         try {
             zip = new ZipOutputStream(byteArray);
-
             ZipEntry zEntry = new ZipEntry("content");
             zip.putNextEntry(zEntry);
-            int bytesRead;
-            byte[] buffer = new byte[8192];
-            while ((bytesRead = in.read(buffer, 0, 8192)) != -1) {
-                zip.write(buffer, 0, bytesRead);
-            }
+            IOUtils.write(content, zip);
             zip.closeEntry();
-        }        
-        finally
-        {
-            if (zip != null)
-            {
+        } finally {
+            if (zip != null) {
                 zip.flush();
                 zip.close();
             }
