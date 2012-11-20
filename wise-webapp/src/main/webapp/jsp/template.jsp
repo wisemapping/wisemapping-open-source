@@ -44,21 +44,34 @@
             <div class="pageBodyContent span8">
                 <tiles:insertAttribute name="body"/>
             </div>
-            <div class="span1" style="padding-top:0px">
-                <c:if test="${requestScope['google.ads.enabled']}">
-                    <script type="text/javascript"><!--
-                    google_ad_client = "ca-pub-7564778578019285";
-                    /* WiseMapping Page Template */
-                    google_ad_slot = "2051548516";
-                    google_ad_width = 120;
-                    google_ad_height = 600;
-                    //-->
-                    </script>
-                    <script type="text/javascript"
-                            src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-                    </script>
-                </c:if>
+            <div class="row" style="text-align: center">
+                <script type="text/javascript"><!--
+                google_ad_client = "ca-pub-7564778578019285";
+                /* WiseMapping Login */
+                google_ad_slot = "2192653431";
+                google_ad_width = 728;
+                google_ad_height = 90;
+                //-->
+                </script>
+                <script type="text/javascript"
+                        src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+                </script>
             </div>
+            <%--<div class="span1" style="padding-top:0px">--%>
+                <%--<c:if test="${requestScope['google.ads.enabled']}">--%>
+                    <%--<script type="text/javascript"><!----%>
+                    <%--google_ad_client = "ca-pub-7564778578019285";--%>
+                    <%--/* WiseMapping Page Template */--%>
+                    <%--google_ad_slot = "2051548516";--%>
+                    <%--google_ad_width = 120;--%>
+                    <%--google_ad_height = 600;--%>
+                    <%--//-->--%>
+                    <%--</script>--%>
+                    <%--<script type="text/javascript"--%>
+                            <%--src="http://pagead2.googlesyndication.com/pagead/show_ads.js">--%>
+                    <%--</script>--%>
+                <%--</c:if>--%>
+            <%--</div>--%>
         </div>
     </div>
 
