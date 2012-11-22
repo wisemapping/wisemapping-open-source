@@ -101,10 +101,9 @@ mindplot.RESTPersistenceManager = new Class({
                         events.onError(userMsg);
                         persistence.onSave = false;
 
-                        // @Todo: Only for debug. Remove ...
-                        if (this.status != 0) {
-                            throw new Error("responseText:" + responseText + ",status:" + this.status);
-                        }
+//                        if (this.status != 0) {
+//                            throw new Error("responseText:" + responseText + ",status:" + this.status);
+//                        }
                     },
 
                     headers:{"Content-Type":"application/json", "Accept":"application/json"},
