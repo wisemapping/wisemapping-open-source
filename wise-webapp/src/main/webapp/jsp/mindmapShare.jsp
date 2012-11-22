@@ -239,13 +239,11 @@ $("#addBtn").click(function (event) {
 });
 
 // Register change event  ...
-$("#shareRole a").click(function () {
+$("#shareRole a").click(function (event) {
     var role = onClickShare(this);
     $(this).parent().attr('data-role', role);
 
-    event.stopPropagation();
     event.preventDefault();
-    return false;
 });
 
 function isValidEmailAddress(emailAddress) {
