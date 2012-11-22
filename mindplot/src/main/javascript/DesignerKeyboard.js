@@ -252,7 +252,7 @@ mindplot.DesignerKeyboard = new Class({
                 designer.zoomOut();
             },
 
-            'ctrl++':function (event) {
+            'ctrl+=':function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
