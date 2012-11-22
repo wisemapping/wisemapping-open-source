@@ -243,7 +243,9 @@ $("#shareRole a").click(function () {
     var role = onClickShare(this);
     $(this).parent().attr('data-role', role);
 
+    event.stopPropagation();
     event.preventDefault();
+    return false;
 });
 
 function isValidEmailAddress(emailAddress) {
