@@ -11,7 +11,7 @@
         </id>
         <property name="loginDate" column="login_Date"/>
         <many-to-one name="user"
-                     column="USER_ID"
+                     column="user_id"
                      not-null="true"
                      class="com.wisemapping.model.User"
                 />

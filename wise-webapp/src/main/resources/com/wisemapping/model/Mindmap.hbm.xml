@@ -22,7 +22,7 @@
         <set name="collaborations"
              cascade="all,delete-orphan,save-update"
              inverse="true">
-            <key column="MINDMAP_ID" not-null="true"/>
+            <key column="mindmap_id" not-null="true"/>
             <one-to-many class="com.wisemapping.model.Collaboration"/>
         </set>
     </class>

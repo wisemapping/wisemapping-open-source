@@ -15,12 +15,12 @@
         <set name="collaborations"
              cascade="all, delete-orphan"
              inverse="true">
-            <key column="COLABORATOR_ID" not-null="true"/>
+            <key column="colaborator_id" not-null="true"/>
             <one-to-many class="com.wisemapping.model.Collaboration"/>
         </set>
 
         <joined-subclass name="com.wisemapping.model.User" table="USER">
-            <key column="COLABORATOR_ID"/>
+            <key column="colaborator_id"/>
             <property name="firstname"/>
             <property name="lastname"/>
             <property name="password"/>

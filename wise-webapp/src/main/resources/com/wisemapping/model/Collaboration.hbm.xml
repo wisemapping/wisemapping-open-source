@@ -10,17 +10,17 @@
             <generator class="increment"/>
         </id>
 
-        <property name="roleId" column="ROLE_ID" unique="true" not-null="true"/>
+        <property name="roleId" column="role_id" unique="true" not-null="true"/>
 
         <!-- Read-only association property -->
         <many-to-one name="mindMap"
-                     column="MINDMAP_ID"
+                     column="mindmap_id"
                      not-null="true"
                      class="com.wisemapping.model.Mindmap"
                 />
 
         <many-to-one name="collaborator"
-                     column="COLABORATOR_ID"
+                     column="colaborator_id"
                      not-null="true"
                      class="com.wisemapping.model.Collaborator"
                 />
