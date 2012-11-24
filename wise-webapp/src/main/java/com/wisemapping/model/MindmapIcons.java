@@ -77,6 +77,7 @@ public class MindmapIcons {
     public static final MindmapIcon TAG_RED = new MindmapIcon(IconFamily.TAG, "red");
     public static final MindmapIcon TAG_PINK = new MindmapIcon(IconFamily.TAG, "pink");
     public static final MindmapIcon TAG_YELLOW = new MindmapIcon(IconFamily.TAG, "yellow");
+    public static final MindmapIcon TAG_PURPLE = new MindmapIcon(IconFamily.TAG, "purple");
 
     public static final MindmapIcon NUMBER_1 = new MindmapIcon(IconFamily.NUMBER, "1");
     public static final MindmapIcon NUMBER_2 = new MindmapIcon(IconFamily.NUMBER, "2");
