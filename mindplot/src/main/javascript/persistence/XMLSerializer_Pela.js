@@ -92,7 +92,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
 
         }
 
-        if (topic.areChildrenShrunken()) {
+        if (topic.areChildrenShrunken() && topic.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
             parentTopic.setAttribute('shrink', 'true');
         }
 

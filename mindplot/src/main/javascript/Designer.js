@@ -440,8 +440,9 @@ mindplot.Designer = new Class({
             }
             // Execute event ...
             var topic = nodes[0];
-            this._actionDispatcher.shrinkBranch([topic.getId()], !topic.areChildrenShrunken());
-
+            if (topic.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
+                this._actionDispatcher.shrinkBranch([topic.getId()], !topic.areChildrenShrunken());
+            }
         },
 
         createChildForSelectedNode:function () {

@@ -598,7 +598,7 @@ mindplot.Topic = new Class({
 
     areChildrenShrunken:function () {
         var model = this.getModel();
-        return model.areChildrenShrunken();
+        return model.areChildrenShrunken() && !this.isCentralTopic();
     },
 
     isCollapsed:function () {
