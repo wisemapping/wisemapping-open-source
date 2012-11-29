@@ -125,10 +125,7 @@ public class MindMapBean {
     }
 
     public String getXmlAsJsLiteral() throws IOException {
-        final String result = this.mindmap.getXmlAsJsLiteral();
-
-        // Firefox is failing for this. Need to be reviewed ...
-        return result.replace("\\u0000", "");
+        return this.mindmap.getXmlAsJsLiteral();
     }
 
     public String getProperties() throws WiseMappingException {

@@ -177,7 +177,10 @@ public class Mindmap {
             throws IOException {
         String xml = this.getXmlStr();
         if (xml != null) {
-            xml = StringEscapeUtils.escapeJavaScript(xml);
+            xml = xml.replace("'", "\\'");
+            xml = xml.replace("\n", "\\n");
+            xml = xml.replace("\r", "");
+            xml = xml.trim();
         }
         return xml;
     }
