@@ -319,7 +319,8 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         }
 
         var isShrink = domElem.getAttribute('shrink');
-        if ($defined(isShrink)) {
+        // Hack: Some production maps has been stored with the central topic collapsed. This is a bug.
+        if ($defined(isShrink) && type!=mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
             topic.setChildrenShrunken(isShrink);
         }
 
