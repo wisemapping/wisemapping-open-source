@@ -1,44 +1,44 @@
 <map version="0.9.0">
-    <node TEXT="Shapes" ID="ID_0">
-        <node TEXT="Node Styles" POSITION="right" ID="ID_1">
-            <node TEXT="Fork" POSITION="right" ID="ID_2">
+    <node ID="ID_0" TEXT="Shapes">
+        <node ID="ID_1" POSITION="right" TEXT="Node Styles">
+            <node ID="ID_2" POSITION="right" TEXT="Fork">
                 <edge COLOR="#808080"/>
             </node>
-            <node TEXT="Bubble" STYLE="bubble" POSITION="right" ID="ID_3">
+            <node ID="ID_3" POSITION="right" STYLE="bubble" TEXT="Bubble">
                 <edge COLOR="#808080"/>
             </node>
-            <node TEXT="As parent" POSITION="right" ID="ID_4">
+            <node ID="ID_4" POSITION="right" TEXT="As parent">
                 <edge COLOR="#808080"/>
             </node>
-            <node TEXT="Combined" POSITION="right" ID="ID_5">
-                <edge COLOR="#808080"/>
-            </node>
-        </node>
-        <node TEXT="Node Background Color" STYLE="rectagle" POSITION="left" ID="ID_6" BACKGROUND_COLOR="#f20707">
-            <node TEXT="Fork" STYLE="rectagle" POSITION="left" ID="ID_7" BACKGROUND_COLOR="#0000cc">
-                <edge COLOR="#808080"/>
-            </node>
-            <node TEXT="Bubble" STYLE="bubble" POSITION="left" ID="ID_8" BACKGROUND_COLOR="#ccffcc">
-                <edge COLOR="#808080"/>
-            </node>
-            <node TEXT="As parent" STYLE="rectagle" POSITION="left" ID="ID_9" BACKGROUND_COLOR="#00ffff">
-                <edge COLOR="#808080"/>
-            </node>
-            <node TEXT="Combined" STYLE="rectagle" POSITION="left" ID="ID_10" BACKGROUND_COLOR="#990099">
+            <node ID="ID_5" POSITION="right" TEXT="Combined">
                 <edge COLOR="#808080"/>
             </node>
         </node>
-        <node TEXT="Node Text Color" STYLE="rectagle" POSITION="left" ID="ID_11" BACKGROUND_COLOR="#f20707">
-            <node TEXT="Fork" STYLE="rectagle" POSITION="left" ID="ID_12" COLOR="#ffff00" BACKGROUND_COLOR="#0000cc">
+        <node BACKGROUND_COLOR="#f20707" ID="ID_6" POSITION="left" STYLE="rectagle" TEXT="Node Background Color">
+            <node BACKGROUND_COLOR="#0000cc" ID="ID_7" POSITION="left" STYLE="rectagle" TEXT="Fork">
                 <edge COLOR="#808080"/>
             </node>
-            <node TEXT="Bubble" STYLE="bubble" POSITION="left" ID="ID_13" COLOR="#ff6666" BACKGROUND_COLOR="#ccffcc">
+            <node BACKGROUND_COLOR="#ccffcc" ID="ID_8" POSITION="left" STYLE="bubble" TEXT="Bubble">
                 <edge COLOR="#808080"/>
             </node>
-            <node TEXT="As parent" STYLE="rectagle" POSITION="left" ID="ID_14" COLOR="#009999" BACKGROUND_COLOR="#00ffff">
+            <node BACKGROUND_COLOR="#00ffff" ID="ID_9" POSITION="left" STYLE="rectagle" TEXT="As parent">
                 <edge COLOR="#808080"/>
             </node>
-            <node TEXT="Combined" STYLE="rectagle" POSITION="left" ID="ID_15" COLOR="#009999" BACKGROUND_COLOR="#990099">
+            <node BACKGROUND_COLOR="#990099" ID="ID_10" POSITION="left" STYLE="rectagle" TEXT="Combined">
+                <edge COLOR="#808080"/>
+            </node>
+        </node>
+        <node BACKGROUND_COLOR="#f20707" ID="ID_11" POSITION="left" STYLE="rectagle" TEXT="Node Text Color">
+            <node BACKGROUND_COLOR="#0000cc" COLOR="#ffff00" ID="ID_12" POSITION="left" STYLE="rectagle" TEXT="Fork">
+                <edge COLOR="#808080"/>
+            </node>
+            <node BACKGROUND_COLOR="#ccffcc" COLOR="#ff6666" ID="ID_13" POSITION="left" STYLE="bubble" TEXT="Bubble">
+                <edge COLOR="#808080"/>
+            </node>
+            <node BACKGROUND_COLOR="#00ffff" COLOR="#009999" ID="ID_14" POSITION="left" STYLE="rectagle" TEXT="As parent">
+                <edge COLOR="#808080"/>
+            </node>
+            <node BACKGROUND_COLOR="#990099" COLOR="#009999" ID="ID_15" POSITION="left" STYLE="rectagle" TEXT="Combined">
                 <edge COLOR="#808080"/>
             </node>
         </node>

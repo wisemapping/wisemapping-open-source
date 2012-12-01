@@ -78,7 +78,7 @@ The following code is an example of how to add attach to the div dragImageNode t
         designer.addDraggedNode(event, node);
     });
 
-In the example, a new node is created with text "Node Text !!!!" and a note and a link associated to it when the user drop the node. Something to pay attention is the node.setMetadata("{}"), this attributes will be persisted during the serialization. Here you can store all the data you need. 
+In the example, a new node is created with text "Node Text !!!!" and a note and a link associated to it when the user drop the node. Something to pay attention is the node.setMetadata("{}"), this delegated will be persisted during the serialization. Here you can store all the data you need.
 
 2) Support for dragging Images:  Similar to the point 1,drag support is registered to the div dragImageNode.
 

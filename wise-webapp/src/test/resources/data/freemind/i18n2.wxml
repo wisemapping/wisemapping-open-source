@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="tango" name="basic">
-    <topic id="0" central="true" position="0,0" shape="rounded rectagle">
+<map name="basic" version="tango">
+    <topic central="true" id="0" position="0,0" shape="rounded rectagle">
         <text><![CDATA[أَبْجَدِيَّة عَرَبِيَّة]]></text>
-        <topic id="1" position="200,0" order="0" shape="line">
+        <topic id="1" order="0" position="200,0" shape="line">
             <text><![CDATA[أَبْجَدِيَّة عَرَبِ]]></text>
             <note>
                 <text><![CDATA[This is a not in languange أَبْجَدِيَّة عَرَبِ]]></text>
             </note>
         </topic>
-        <topic id="2" position="-200,0" order="0" shape="line">
+        <topic id="2" order="0" position="-200,0" shape="line">
             <text><![CDATA[Long text node: 
  أَبْجَدِيَّة عَرَب]]></text>
         </topic>

@@ -1,9 +1,9 @@
 <map version="0.9.0">
-    <node TEXT="Node Links" LINK="http://www.google.com" ID="ID_0">
+    <node ID="ID_0" LINK="http://www.google.com" TEXT="Node Links">
         <icon BUILTIN="closed"/>
-        <node TEXT="Link Topic" POSITION="right" LINK="http://www.bing.com" ID="ID_1" FOLDED="true">
+        <node FOLDED="true" ID="ID_1" LINK="http://www.bing.com" POSITION="right" TEXT="Link Topic">
             <icon BUILTIN="info"/>
-            <node TEXT="Link Topic Topic" POSITION="right" LINK="http://bing.com" ID="ID_2">
+            <node ID="ID_2" LINK="http://bing.com" POSITION="right" TEXT="Link Topic Topic">
                 <icon BUILTIN="messagebox_warning"/>
             </node>
         </node>

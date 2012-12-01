@@ -1,195 +1,195 @@
 <map version="0.9.0">
-    <node TEXT="This is the root node" ID="ID_0">
-        <node TEXT="Simbols" POSITION="right" ID="ID_1">
-            <node TEXT="Warning" POSITION="right" ID="ID_2">
+    <node ID="ID_0" TEXT="This is the root node">
+        <node ID="ID_1" POSITION="right" TEXT="Simbols">
+            <node ID="ID_2" POSITION="right" TEXT="Warning">
                 <icon BUILTIN="messagebox_warning"/>
             </node>
-            <node TEXT="No Ok" POSITION="right" ID="ID_3">
+            <node ID="ID_3" POSITION="right" TEXT="No Ok">
                 <icon BUILTIN="button_cancel"/>
             </node>
-            <node TEXT="Ok" POSITION="right" ID="ID_4">
+            <node ID="ID_4" POSITION="right" TEXT="Ok">
                 <icon BUILTIN="button_ok"/>
             </node>
-            <node TEXT="Info" POSITION="right" ID="ID_5">
+            <node ID="ID_5" POSITION="right" TEXT="Info">
                 <icon BUILTIN="info"/>
             </node>
-            <node TEXT="No Entry" POSITION="right" ID="ID_6">
+            <node ID="ID_6" POSITION="right" TEXT="No Entry">
                 <icon BUILTIN="closed"/>
             </node>
-            <node TEXT="Stop" POSITION="right" ID="ID_7">
+            <node ID="ID_7" POSITION="right" TEXT="Stop">
                 <icon BUILTIN="stop-sign"/>
             </node>
-            <node TEXT="Lamp" POSITION="right" ID="ID_8">
+            <node ID="ID_8" POSITION="right" TEXT="Lamp">
                 <icon BUILTIN="idea"/>
             </node>
-            <node TEXT="! Simbol" POSITION="right" ID="ID_9"/>
-            <node TEXT="Question Mark" POSITION="right" ID="ID_10">
+            <node ID="ID_9" POSITION="right" TEXT="! Simbol"/>
+            <node ID="ID_10" POSITION="right" TEXT="Question Mark">
                 <icon BUILTIN="help"/>
             </node>
         </node>
-        <node TEXT="Numbers" POSITION="left" ID="ID_11" FOLDED="true">
-            <node TEXT="1" POSITION="left" ID="ID_12">
+        <node FOLDED="true" ID="ID_11" POSITION="left" TEXT="Numbers">
+            <node ID="ID_12" POSITION="left" TEXT="1">
                 <icon BUILTIN="full-1"/>
             </node>
-            <node TEXT="2" POSITION="left" ID="ID_13">
+            <node ID="ID_13" POSITION="left" TEXT="2">
                 <icon BUILTIN="full-2"/>
             </node>
-            <node TEXT="3" POSITION="left" ID="ID_14">
+            <node ID="ID_14" POSITION="left" TEXT="3">
                 <icon BUILTIN="full-3"/>
             </node>
-            <node TEXT="4" POSITION="left" ID="ID_15">
+            <node ID="ID_15" POSITION="left" TEXT="4">
                 <icon BUILTIN="full-4"/>
             </node>
-            <node TEXT="5" POSITION="left" ID="ID_16">
+            <node ID="ID_16" POSITION="left" TEXT="5">
                 <icon BUILTIN="full-5"/>
             </node>
-            <node TEXT="6" POSITION="left" ID="ID_17">
+            <node ID="ID_17" POSITION="left" TEXT="6">
                 <icon BUILTIN="full-6"/>
             </node>
-            <node TEXT="7" POSITION="left" ID="ID_18"/>
-            <node TEXT="8" POSITION="left" ID="ID_19"/>
-            <node TEXT="9" POSITION="left" ID="ID_20"/>
-            <node TEXT="0" POSITION="left" ID="ID_21">
+            <node ID="ID_18" POSITION="left" TEXT="7"/>
+            <node ID="ID_19" POSITION="left" TEXT="8"/>
+            <node ID="ID_20" POSITION="left" TEXT="9"/>
+            <node ID="ID_21" POSITION="left" TEXT="0">
                 <icon BUILTIN="full-0"/>
             </node>
         </node>
-        <node TEXT="Trafic" POSITION="right" ID="ID_22">
-            <node TEXT="Read" POSITION="right" ID="ID_23"/>
-            <node TEXT="Green" POSITION="right" ID="ID_24"/>
-            <node TEXT="Yellow" POSITION="right" ID="ID_25"/>
+        <node ID="ID_22" POSITION="right" TEXT="Trafic">
+            <node ID="ID_23" POSITION="right" TEXT="Read"/>
+            <node ID="ID_24" POSITION="right" TEXT="Green"/>
+            <node ID="ID_25" POSITION="right" TEXT="Yellow"/>
         </node>
-        <node TEXT="Arrow" POSITION="left" ID="ID_26" FOLDED="true">
-            <node TEXT="Back" POSITION="left" ID="ID_27">
+        <node FOLDED="true" ID="ID_26" POSITION="left" TEXT="Arrow">
+            <node ID="ID_27" POSITION="left" TEXT="Back">
                 <icon BUILTIN="back"/>
             </node>
-            <node TEXT="Forward" POSITION="left" ID="ID_28">
+            <node ID="ID_28" POSITION="left" TEXT="Forward">
                 <icon BUILTIN="forward"/>
             </node>
-            <node TEXT="Up" POSITION="left" ID="ID_29">
+            <node ID="ID_29" POSITION="left" TEXT="Up">
                 <icon BUILTIN="up"/>
             </node>
-            <node TEXT="Down" POSITION="left" ID="ID_30">
+            <node ID="ID_30" POSITION="left" TEXT="Down">
                 <icon BUILTIN="down"/>
             </node>
         </node>
-        <node TEXT="Smiles" POSITION="right" ID="ID_31" FOLDED="true">
-            <node TEXT="Smile" POSITION="right" ID="ID_32">
+        <node FOLDED="true" ID="ID_31" POSITION="right" TEXT="Smiles">
+            <node ID="ID_32" POSITION="right" TEXT="Smile">
                 <icon BUILTIN="ksmiletris"/>
             </node>
-            <node TEXT="No Mind" POSITION="right" ID="ID_33">
+            <node ID="ID_33" POSITION="right" TEXT="No Mind">
                 <icon BUILTIN="smiley-neutral"/>
             </node>
-            <node TEXT="Surprise" POSITION="right" ID="ID_34">
+            <node ID="ID_34" POSITION="right" TEXT="Surprise">
                 <icon BUILTIN="smiley-oh"/>
             </node>
-            <node TEXT="Sad" POSITION="right" ID="ID_35"/>
-            <node TEXT="Angry" POSITION="right" ID="ID_36"/>
+            <node ID="ID_35" POSITION="right" TEXT="Sad"/>
+            <node ID="ID_36" POSITION="right" TEXT="Angry"/>
         </node>
-        <node TEXT="People" POSITION="left" ID="ID_37" FOLDED="true">
-            <node TEXT="Family" POSITION="left" ID="ID_38"/>
-            <node TEXT="Female1" POSITION="left" ID="ID_39">
+        <node FOLDED="true" ID="ID_37" POSITION="left" TEXT="People">
+            <node ID="ID_38" POSITION="left" TEXT="Family"/>
+            <node ID="ID_39" POSITION="left" TEXT="Female1">
                 <icon BUILTIN="female1"/>
             </node>
-            <node TEXT="Female2" POSITION="left" ID="ID_40">
+            <node ID="ID_40" POSITION="left" TEXT="Female2">
                 <icon BUILTIN="female2"/>
             </node>
-            <node TEXT="Male1" POSITION="left" ID="ID_41">
+            <node ID="ID_41" POSITION="left" TEXT="Male1">
                 <icon BUILTIN="male1"/>
             </node>
-            <node TEXT="Male2" POSITION="left" ID="ID_42">
+            <node ID="ID_42" POSITION="left" TEXT="Male2">
                 <icon BUILTIN="male2"/>
             </node>
-            <node TEXT="Females" POSITION="left" ID="ID_43"/>
-            <node TEXT="Group" POSITION="left" ID="ID_44">
+            <node ID="ID_43" POSITION="left" TEXT="Females"/>
+            <node ID="ID_44" POSITION="left" TEXT="Group">
                 <icon BUILTIN="group"/>
             </node>
         </node>
-        <node TEXT="Flags" POSITION="right" ID="ID_45" FOLDED="true">
-            <node TEXT="Black" POSITION="right" ID="ID_46"/>
-            <node TEXT="Blue" POSITION="right" ID="ID_47">
+        <node FOLDED="true" ID="ID_45" POSITION="right" TEXT="Flags">
+            <node ID="ID_46" POSITION="right" TEXT="Black"/>
+            <node ID="ID_47" POSITION="right" TEXT="Blue">
                 <icon BUILTIN="flag-blue"/>
             </node>
-            <node TEXT="Green" POSITION="right" ID="ID_48">
+            <node ID="ID_48" POSITION="right" TEXT="Green">
                 <icon BUILTIN="flag-green"/>
             </node>
-            <node TEXT="Orange" POSITION="right" ID="ID_49">
+            <node ID="ID_49" POSITION="right" TEXT="Orange">
                 <icon BUILTIN="flag-orange"/>
             </node>
-            <node TEXT="Pink" POSITION="right" ID="ID_50">
+            <node ID="ID_50" POSITION="right" TEXT="Pink">
                 <icon BUILTIN="flag-pink"/>
             </node>
-            <node TEXT="Red" POSITION="right" ID="ID_51"/>
-            <node TEXT="Yellow" POSITION="right" ID="ID_52">
+            <node ID="ID_51" POSITION="right" TEXT="Red"/>
+            <node ID="ID_52" POSITION="right" TEXT="Yellow">
                 <icon BUILTIN="flag-yellow"/>
             </node>
         </node>
-        <node TEXT="Time" POSITION="left" ID="ID_53" FOLDED="true">
-            <node TEXT="Calendar" POSITION="left" ID="ID_54">
+        <node FOLDED="true" ID="ID_53" POSITION="left" TEXT="Time">
+            <node ID="ID_54" POSITION="left" TEXT="Calendar">
                 <icon BUILTIN="calendar"/>
             </node>
-            <node TEXT="Digial Clock" POSITION="left" ID="ID_55">
+            <node ID="ID_55" POSITION="left" TEXT="Digial Clock">
                 <icon BUILTIN="clock"/>
             </node>
-            <node TEXT="Hourglass" POSITION="left" ID="ID_56">
+            <node ID="ID_56" POSITION="left" TEXT="Hourglass">
                 <icon BUILTIN="hourglass"/>
             </node>
         </node>
-        <node TEXT="Suff" POSITION="right" ID="ID_57">
-            <node TEXT="Broken" POSITION="right" ID="ID_58"/>
-            <node TEXT="WiseIcon" POSITION="right" ID="ID_59"/>
-            <node TEXT="ICQ/Flower" POSITION="right" ID="ID_60">
+        <node ID="ID_57" POSITION="right" TEXT="Suff">
+            <node ID="ID_58" POSITION="right" TEXT="Broken"/>
+            <node ID="ID_59" POSITION="right" TEXT="WiseIcon"/>
+            <node ID="ID_60" POSITION="right" TEXT="ICQ/Flower">
                 <icon BUILTIN="licq"/>
             </node>
-            <node TEXT="Linux/Pinguin" POSITION="right" ID="ID_61">
+            <node ID="ID_61" POSITION="right" TEXT="Linux/Pinguin">
                 <icon BUILTIN="penguin"/>
             </node>
-            <node TEXT="Star" POSITION="right" ID="ID_62">
+            <node ID="ID_62" POSITION="right" TEXT="Star">
                 <icon BUILTIN="bookmark"/>
             </node>
-            <node TEXT="Reminder" POSITION="right" ID="ID_63">
+            <node ID="ID_63" POSITION="right" TEXT="Reminder">
                 <icon BUILTIN="bell"/>
             </node>
-            <node TEXT="Zoom" POSITION="right" ID="ID_64">
+            <node ID="ID_64" POSITION="right" TEXT="Zoom">
                 <icon BUILTIN="xmag"/>
             </node>
-            <node TEXT="Magic" POSITION="right" ID="ID_65">
+            <node ID="ID_65" POSITION="right" TEXT="Magic">
                 <icon BUILTIN="wizard"/>
             </node>
-            <node TEXT="Music" POSITION="right" ID="ID_66">
+            <node ID="ID_66" POSITION="right" TEXT="Music">
                 <icon BUILTIN="knotify"/>
             </node>
-            <node TEXT="Pen" POSITION="right" ID="ID_67">
+            <node ID="ID_67" POSITION="right" TEXT="Pen">
                 <icon BUILTIN="pencil"/>
             </node>
-            <node TEXT="Key" POSITION="right" ID="ID_68">
+            <node ID="ID_68" POSITION="right" TEXT="Key">
                 <icon BUILTIN="password"/>
             </node>
-            <node TEXT="House" POSITION="right" ID="ID_69">
+            <node ID="ID_69" POSITION="right" TEXT="House">
                 <icon BUILTIN="gohome"/>
             </node>
-            <node TEXT="Phone" POSITION="right" ID="ID_70">
+            <node ID="ID_70" POSITION="right" TEXT="Phone">
                 <icon BUILTIN="kaddressbook"/>
             </node>
-            <node TEXT="Do not Forget" POSITION="right" ID="ID_71"/>
-            <node TEXT="Bomb" POSITION="right" ID="ID_72">
+            <node ID="ID_71" POSITION="right" TEXT="Do not Forget"/>
+            <node ID="ID_72" POSITION="right" TEXT="Bomb">
                 <icon BUILTIN="clanbomber"/>
             </node>
-            <node TEXT="Clip" POSITION="right" ID="ID_73">
+            <node ID="ID_73" POSITION="right" TEXT="Clip">
                 <icon BUILTIN="attach"/>
             </node>
         </node>
-        <node TEXT="Mail" POSITION="left" ID="ID_74">
-            <node TEXT="Envelop" POSITION="left" ID="ID_75">
+        <node ID="ID_74" POSITION="left" TEXT="Mail">
+            <node ID="ID_75" POSITION="left" TEXT="Envelop">
                 <icon BUILTIN="Mail"/>
             </node>
-            <node TEXT="E-Mail" POSITION="left" ID="ID_76"/>
-            <node TEXT="List" POSITION="left" ID="ID_77">
+            <node ID="ID_76" POSITION="left" TEXT="E-Mail"/>
+            <node ID="ID_77" POSITION="left" TEXT="List">
                 <icon BUILTIN="list"/>
             </node>
-            <node TEXT="Refine" POSITION="left" ID="ID_78">
+            <node ID="ID_78" POSITION="left" TEXT="Refine">
                 <icon BUILTIN="edit"/>
             </node>
-            <node TEXT="Mailbox" POSITION="left" ID="ID_79">
+            <node ID="ID_79" POSITION="left" TEXT="Mailbox">
                 <icon BUILTIN="korn"/>
             </node>
         </node>

@@ -1,184 +1,196 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="tango" name="basic">
-    <topic id="0" central="true" position="0,0" bgColor="#99ffff"
-        fontStyle="Arial;10;#ff3300;bold;;" shape="rounded rectagle">
+<map name="basic" version="tango">
+    <topic bgColor="#99ffff" central="true"
+        fontStyle="Arial;10;#ff3300;bold;;" id="0" position="0,0" shape="rounded rectagle">
         <text><![CDATA[120924 Programme]]></text>
         <note>
             <text><![CDATA[]]></text>
         </note>
-        <topic id="1" position="200,0" order="0" brColor="#808080"
-            bgColor="#ffff33" fontStyle="Arial;8;#0000cc;bold;;" shape="rounded rectagle">
+        <topic bgColor="#ffff33" brColor="#808080"
+            fontStyle="Arial;8;#0000cc;bold;;" id="1" order="0"
+            position="200,0" shape="rounded rectagle">
             <text><![CDATA[bilan mi-parcours
 du plan d'actions]]></text>
-            <topic id="2" position="290,-75" order="0"
-                fontStyle="Arial;8;#006600;bold;;" shape="line">
+            <topic fontStyle="Arial;8;#006600;bold;;" id="2" order="0"
+                position="290,-75" shape="line">
                 <text><![CDATA[modalités]]></text>
-                <topic id="3" position="380,-125" order="0" shape="line">
+                <topic id="3" order="0" position="380,-125" shape="line">
                     <text><![CDATA[cf. mi-parcours 201109]]></text>
                 </topic>
-                <topic id="4" position="380,-100" order="1"
-                    fontStyle="Arial;8;;;;" shape="line">
+                <topic fontStyle="Arial;8;;;;" id="4" order="1"
+                    position="380,-100" shape="line">
                     <text><![CDATA[à partir des plans d'actions]]></text>
                 </topic>
-                <topic id="5" position="380,-75" order="2"
-                    fontStyle="Arial;8;;;;" shape="line">
+                <topic fontStyle="Arial;8;;;;" id="5" order="2"
+                    position="380,-75" shape="line">
                     <text><![CDATA[donner la parole aux référents prévus, en demandant des exemples]]></text>
                 </topic>
-                <topic id="6" position="380,-50" order="3"
-                    fontStyle="Arial;8;;;;" shape="line">
+                <topic fontStyle="Arial;8;;;;" id="6" order="3"
+                    position="380,-50" shape="line">
                     <text><![CDATA[faire compléter par les autres participants]]></text>
                 </topic>
             </topic>
-            <topic id="7" position="290,-50" order="1" brColor="#808080"
-                bgColor="#99ffff" fontStyle="Arial;8;#0000cc;bold;;" shape="rounded rectagle">
+            <topic bgColor="#99ffff" brColor="#808080"
+                fontStyle="Arial;8;#0000cc;bold;;" id="7" order="1"
+                position="290,-50" shape="rounded rectagle">
                 <text><![CDATA[1) Adapter et améliorer 
  notre offre de services 
  selon l'évolution des besoins]]></text>
-                <topic id="8" position="380,-175" order="0"
-                    bgColor="#99ffff" shape="rectagle">
+                <topic bgColor="#99ffff" id="8" order="0"
+                    position="380,-175" shape="rectagle">
                     <text><![CDATA[couleurs = état d'avancement en septembre 2011, 
 à mettre à jour selon avancement 2012]]></text>
-                    <topic id="9" position="470,-225" order="0"
-                        bgColor="#0099ff" shape="rectagle">
+                    <topic bgColor="#0099ff" id="9" order="0"
+                        position="470,-225" shape="rectagle">
                         <text><![CDATA[Bleu 0%]]></text>
                     </topic>
-                    <topic id="10" position="470,-200" order="1"
-                        bgColor="#ff9999" shape="rectagle">
+                    <topic bgColor="#ff9999" id="10" order="1"
+                        position="470,-200" shape="rectagle">
                         <text><![CDATA[Rouge 25%]]></text>
                     </topic>
-                    <topic id="11" position="470,-175" order="2"
-                        bgColor="#ffcc00" shape="rectagle">
+                    <topic bgColor="#ffcc00" id="11" order="2"
+                        position="470,-175" shape="rectagle">
                         <text><![CDATA[Orange 50%]]></text>
                     </topic>
-                    <topic id="12" position="470,-150" order="3"
-                        bgColor="#ffff00" shape="rectagle">
+                    <topic bgColor="#ffff00" id="12" order="3"
+                        position="470,-150" shape="rectagle">
                         <text><![CDATA[Jaune 75%]]></text>
                     </topic>
-                    <topic id="13" position="470,-125" order="4"
-                        bgColor="#66ff00" shape="rectagle">
+                    <topic bgColor="#66ff00" id="13" order="4"
+                        position="470,-125" shape="rectagle">
                         <text><![CDATA[Vert]]></text>
-                        <topic id="14" position="560,-125" order="0" shape="line">
+                        <topic id="14" order="0" position="560,-125" shape="line">
                             <text><![CDATA[100 %]]></text>
                         </topic>
                     </topic>
                 </topic>
-                <topic shrink="true" id="15" position="380,-150"
-                    order="1" bgColor="#66ff00"
-                    fontStyle="Arial;8;#006600;bold;;" shape="rectagle">
+                <topic bgColor="#66ff00"
+                    fontStyle="Arial;8;#006600;bold;;" id="15" order="1"
+                    position="380,-150" shape="rectagle" shrink="true">
                     <text><![CDATA[1.1. .Renforcer et structurer 
  le service "accueil et orientation"]]></text>
-                    <topic id="16" position="470,-175" order="0" shape="line">
+                    <topic id="16" order="0" position="470,-175" shape="line">
                         <text><![CDATA[Sophie]]></text>
                     </topic>
                 </topic>
-                <topic id="17" position="380,-125" order="2"
-                    bgColor="#ffff00" fontStyle="Arial;8;#006600;bold;;" shape="rectagle">
+                <topic bgColor="#ffff00"
+                    fontStyle="Arial;8;#006600;bold;;" id="17" order="2"
+                    position="380,-125" shape="rectagle">
                     <text><![CDATA[1.2. Adapter l'offre Halte-Garderie 
  aux besoins des familles]]></text>
-                    <topic id="18" position="470,-150" order="0" shape="line">
+                    <topic id="18" order="0" position="470,-150" shape="line">
                         <text><![CDATA[Martine D et Christine]]></text>
                     </topic>
                 </topic>
-                <topic id="19" position="380,-100" order="3"
-                    bgColor="#66ff00" fontStyle="Arial;8;#006600;bold;;" shape="rectagle">
+                <topic bgColor="#66ff00"
+                    fontStyle="Arial;8;#006600;bold;;" id="19" order="3"
+                    position="380,-100" shape="rectagle">
                     <text><![CDATA[1.3. Renforcer et structurer les services 
  de soutien à la parentalité]]></text>
-                    <topic id="20" position="470,-125" order="0" shape="line">
+                    <topic id="20" order="0" position="470,-125" shape="line">
                         <text><![CDATA[Nathalie]]></text>
                     </topic>
                 </topic>
-                <topic id="21" position="380,-75" order="4"
-                    bgColor="#ffff00" fontStyle="Arial;8;#006600;bold;;" shape="rectagle">
+                <topic bgColor="#ffff00"
+                    fontStyle="Arial;8;#006600;bold;;" id="21" order="4"
+                    position="380,-75" shape="rectagle">
                     <text><![CDATA[1.4 Améliorer la qualité des 
  projets pédagogiques des ALSH]]></text>
-                    <topic id="22" position="470,-100" order="0" shape="line">
+                    <topic id="22" order="0" position="470,-100" shape="line">
                         <text><![CDATA[Josiane]]></text>
                     </topic>
                 </topic>
-                <topic id="23" position="380,-50" order="5"
-                    bgColor="#ffcc00" fontStyle="Arial;8;#006600;bold;;" shape="rectagle">
+                <topic bgColor="#ffcc00"
+                    fontStyle="Arial;8;#006600;bold;;" id="23" order="5"
+                    position="380,-50" shape="rectagle">
                     <text><![CDATA[1.5 Renforcer et améliorer les 
  activités de loisirs existantes]]></text>
-                    <topic id="24" position="470,-75" order="0" shape="line">
+                    <topic id="24" order="0" position="470,-75" shape="line">
                         <text><![CDATA[Agnès]]></text>
                     </topic>
                 </topic>
-                <topic id="25" position="380,-25" order="6"
-                    bgColor="#66ff00" fontStyle="Arial;8;#006600;bold;;" shape="rectagle">
+                <topic bgColor="#66ff00"
+                    fontStyle="Arial;8;#006600;bold;;" id="25" order="6"
+                    position="380,-25" shape="rectagle">
                     <text><![CDATA[1.6 Renforcer et améliorer les ateliers   
  visant à  rompre l'isolement lié à la langue, 
  la pauvreté, la pression de la consommation]]></text>
-                    <topic id="26" position="470,-50" order="0" shape="line">
+                    <topic id="26" order="0" position="470,-50" shape="line">
                         <text><![CDATA[Nathalie]]></text>
                     </topic>
                 </topic>
             </topic>
-            <topic id="27" position="290,-25" order="2"
-                brColor="#808080" bgColor="#99ffff"
-                fontStyle="Arial;8;#0000cc;bold;;" shape="rounded rectagle">
+            <topic bgColor="#99ffff" brColor="#808080"
+                fontStyle="Arial;8;#0000cc;bold;;" id="27" order="2"
+                position="290,-25" shape="rounded rectagle">
                 <text><![CDATA[2) Consolider nos moyens d'action : 
  locaux, organisation, communication interne]]></text>
-                <topic id="28" position="380,-100" order="0"
-                    bgColor="#ffff00" fontStyle="Arial;8;#006600;bold;;" shape="rectagle">
+                <topic bgColor="#ffff00"
+                    fontStyle="Arial;8;#006600;bold;;" id="28" order="0"
+                    position="380,-100" shape="rectagle">
                     <text><![CDATA[2.1 Formaliser notre offre de services 
  et les modèles économiques correspondants]]></text>
-                    <topic id="29" position="470,-150" order="0" shape="line">
+                    <topic id="29" order="0" position="470,-150" shape="line">
                         <text><![CDATA[Agnès]]></text>
                     </topic>
                 </topic>
-                <topic id="30" position="380,-75" order="1"
-                    bgColor="#ffcc00" fontStyle="Arial;8;#006600;bold;;" shape="rectagle">
+                <topic bgColor="#ffcc00"
+                    fontStyle="Arial;8;#006600;bold;;" id="30" order="1"
+                    position="380,-75" shape="rectagle">
                     <text><![CDATA[2.2 Formaliser le "qui fait quoi" 
  en lien avec notre offre de service]]></text>
-                    <topic id="31" position="470,-125" order="0" shape="line">
+                    <topic id="31" order="0" position="470,-125" shape="line">
                         <text><![CDATA[Martine G]]></text>
                     </topic>
                 </topic>
-                <topic id="32" position="380,-50" order="2"
-                    bgColor="#66ff00" fontStyle="Arial;8;#006600;bold;;" shape="rectagle">
+                <topic bgColor="#66ff00"
+                    fontStyle="Arial;8;#006600;bold;;" id="32" order="2"
+                    position="380,-50" shape="rectagle">
                     <text><![CDATA[2.3. Elaborer un projet immobilier de proximité 
  réalisable au  centre ville]]></text>
-                    <topic id="33" position="470,-100" order="0" shape="line">
+                    <topic id="33" order="0" position="470,-100" shape="line">
                         <text><![CDATA[JMDW]]></text>
                     </topic>
                 </topic>
             </topic>
-            <topic id="34" position="290,0" order="3" brColor="#808080"
-                bgColor="#99ffff" fontStyle="Arial;8;#0000cc;bold;;" shape="rounded rectagle">
+            <topic bgColor="#99ffff" brColor="#808080"
+                fontStyle="Arial;8;#0000cc;bold;;" id="34" order="3"
+                position="290,0" shape="rounded rectagle">
                 <text><![CDATA[3) Renforcer nos 
  partenariats et 
  notre notoriété]]></text>
-                <topic id="35" position="380,-75" order="0"
-                    brColor="#808080" bgColor="#ffff00"
-                    fontStyle="Arial;8;#006600;bold;;" shape="rectagle">
+                <topic bgColor="#ffff00" brColor="#808080"
+                    fontStyle="Arial;8;#006600;bold;;" id="35" order="0"
+                    position="380,-75" shape="rectagle">
                     <text><![CDATA[3.1 Organiser pour chaque segment de notre offre 
  l'identification et la rencontre des partenaires concernés]]></text>
-                    <topic id="36" position="470,-125" order="0" shape="line">
+                    <topic id="36" order="0" position="470,-125" shape="line">
                         <text><![CDATA[Martine P]]></text>
                     </topic>
                 </topic>
-                <topic id="37" position="380,-50" order="1"
-                    brColor="#808080" bgColor="#ffcc00"
-                    fontStyle="Arial;8;#006600;bold;;" shape="rectagle">
+                <topic bgColor="#ffcc00" brColor="#808080"
+                    fontStyle="Arial;8;#006600;bold;;" id="37" order="1"
+                    position="380,-50" shape="rectagle">
                     <text><![CDATA[3.2 Formaliser et contractualiser les partenariats 
  émergeants autour d'actions communes]]></text>
-                    <topic id="38" position="470,-100" order="0" shape="line">
+                    <topic id="38" order="0" position="470,-100" shape="line">
                         <text><![CDATA[Pdt + Agnès]]></text>
                     </topic>
                 </topic>
-                <topic id="39" position="380,-25" order="2"
-                    bgColor="#ff6666" fontStyle="Arial;8;#006600;bold;;" shape="rectagle">
+                <topic bgColor="#ff6666"
+                    fontStyle="Arial;8;#006600;bold;;" id="39" order="2"
+                    position="380,-25" shape="rectagle">
                     <text><![CDATA[3.3 développer la vie associative]]></text>
-                    <topic id="40" position="470,-50" order="0" shape="line">
+                    <topic id="40" order="0" position="470,-50" shape="line">
                         <text><![CDATA[Pdt + Agnès]]></text>
                     </topic>
                 </topic>
-                <topic id="41" position="380,0" order="3"
-                    brColor="#808080" bgColor="#ff6666"
-                    fontStyle="Arial;8;#006600;bold;;" shape="rectagle">
+                <topic bgColor="#ff6666" brColor="#808080"
+                    fontStyle="Arial;8;#006600;bold;;" id="41" order="3"
+                    position="380,0" shape="rectagle">
                     <text><![CDATA[3.4 définir et faire vivre un plan de communication 
  à partir de notre segmentation de l'offre]]></text>
-                    <topic id="42" position="470,-50" order="0" shape="line">
+                    <topic id="42" order="0" position="470,-50" shape="line">
                         <text><![CDATA[Pdt + Agnès]]></text>
                     </topic>
                 </topic>

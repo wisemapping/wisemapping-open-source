@@ -1,260 +1,260 @@
 <map version="0.9.0">
-    <node TEXT="corona" ID="ID_null">
-        <node TEXT="Modelo in world" POSITION="left" ID="ID_null">
-            <node TEXT="International market protected Modelo from unstable peso" POSITION="left" ID="ID_null"/>
-            <node TEXT="Fifth largest distributor in world" POSITION="left" ID="ID_null">
-                <node TEXT="Can they sustain that trend" POSITION="left" ID="ID_null"/>
-                <node TEXT="in 12 years" POSITION="left" ID="ID_null"/>
+    <node ID="ID_null" TEXT="corona">
+        <node ID="ID_null" POSITION="left" TEXT="Modelo in world">
+            <node ID="ID_null" POSITION="left" TEXT="International market protected Modelo from unstable peso"/>
+            <node ID="ID_null" POSITION="left" TEXT="Fifth largest distributor in world">
+                <node ID="ID_null" POSITION="left" TEXT="Can they sustain that trend"/>
+                <node ID="ID_null" POSITION="left" TEXT="in 12 years"/>
             </node>
-            <node TEXT="One of top 10 breweries in world" POSITION="left" ID="ID_null"/>
+            <node ID="ID_null" POSITION="left" TEXT="One of top 10 breweries in world"/>
         </node>
-        <node TEXT="Carloz Fernandez CEO" POSITION="left" ID="ID_null">
-            <node TEXT="CEO Since 1997" POSITION="left" ID="ID_null">
-                <node TEXT="29 years old" POSITION="left" ID="ID_null">
-                    <node TEXT="working there since 13" POSITION="left" ID="ID_null"/>
+        <node ID="ID_null" POSITION="left" TEXT="Carloz Fernandez CEO">
+            <node ID="ID_null" POSITION="left" TEXT="CEO Since 1997">
+                <node ID="ID_null" POSITION="left" TEXT="29 years old">
+                    <node ID="ID_null" POSITION="left" TEXT="working there since 13"/>
                 </node>
             </node>
-            <node TEXT="vision: top five brewers" POSITION="left" ID="ID_null">
-                <node TEXT="International Business model" POSITION="left" ID="ID_null">
-                    <node TEXT="experienced local distributors" POSITION="left" ID="ID_null"/>
-                    <node TEXT="Growing international demand" POSITION="left" ID="ID_null"/>
-                    <node TEXT="Capitalize on NAFTA" POSITION="left" ID="ID_null"/>
+            <node ID="ID_null" POSITION="left" TEXT="vision: top five brewers">
+                <node ID="ID_null" POSITION="left" TEXT="International Business model">
+                    <node ID="ID_null" POSITION="left" TEXT="experienced local distributors"/>
+                    <node ID="ID_null" POSITION="left" TEXT="Growing international demand"/>
+                    <node ID="ID_null" POSITION="left" TEXT="Capitalize on NAFTA"/>
                 </node>
-                <node TEXT="top 10 beer producers in world" POSITION="left" ID="ID_null">
-                    <node TEXT="7.8 % sales growth compounded over ten years" POSITION="left" ID="ID_null"/>
-                    <node TEXT="2005" POSITION="left" ID="ID_null">
-                        <node TEXT="12.3 % exports" POSITION="left" ID="ID_null"/>
-                        <node TEXT="4% increase domestically" POSITION="left" ID="ID_null"/>
-                        <node TEXT="export sales 30%" POSITION="left" ID="ID_null"/>
+                <node ID="ID_null" POSITION="left" TEXT="top 10 beer producers in world">
+                    <node ID="ID_null" POSITION="left" TEXT="7.8 % sales growth compounded over ten years"/>
+                    <node ID="ID_null" POSITION="left" TEXT="2005">
+                        <node ID="ID_null" POSITION="left" TEXT="12.3 % exports"/>
+                        <node ID="ID_null" POSITION="left" TEXT="4% increase domestically"/>
+                        <node ID="ID_null" POSITION="left" TEXT="export sales 30%"/>
                     </node>
-                    <node TEXT="Corona Extra" POSITION="left" ID="ID_null">
-                        <node TEXT="worlds fourth best selling beer" POSITION="left" ID="ID_null"/>
-                        <node TEXT="56% shar of domestic market" POSITION="left" ID="ID_null"/>
-                        <node TEXT="Since 1997 #1 import in US" POSITION="left" ID="ID_null">
-                            <node TEXT="outsold competitor by 50%" POSITION="left" ID="ID_null"/>
+                    <node ID="ID_null" POSITION="left" TEXT="Corona Extra">
+                        <node ID="ID_null" POSITION="left" TEXT="worlds fourth best selling beer"/>
+                        <node ID="ID_null" POSITION="left" TEXT="56% shar of domestic market"/>
+                        <node ID="ID_null" POSITION="left" TEXT="Since 1997 #1 import in US">
+                            <node ID="ID_null" POSITION="left" TEXT="outsold competitor by 50%"/>
                         </node>
                     </node>
                 </node>
             </node>
-            <node TEXT="Expanding production " POSITION="left" ID="ID_null">
-                <node TEXT="renovate facility in Zacatecas" POSITION="left" ID="ID_null"/>
-                <node TEXT="300 million investment" POSITION="left" ID="ID_null"/>
+            <node ID="ID_null" POSITION="left" TEXT="Expanding production ">
+                <node ID="ID_null" POSITION="left" TEXT="renovate facility in Zacatecas"/>
+                <node ID="ID_null" POSITION="left" TEXT="300 million investment"/>
             </node>
         </node>
-        <node TEXT="US Beer Market" POSITION="left" ID="ID_null">
-            <node TEXT="2nd largest nest to China" POSITION="left" ID="ID_null"/>
-            <node TEXT="Consumption six times higher per cap" POSITION="left" ID="ID_null"/>
-            <node TEXT="Groth expectations reduced" POSITION="left" ID="ID_null"/>
-            <node TEXT="80% of market" POSITION="left" ID="ID_null">
-                <node TEXT="AB" POSITION="left" ID="ID_null">
-                    <node TEXT="75% of industry profits" POSITION="left" ID="ID_null"/>
+        <node ID="ID_null" POSITION="left" TEXT="US Beer Market">
+            <node ID="ID_null" POSITION="left" TEXT="2nd largest nest to China"/>
+            <node ID="ID_null" POSITION="left" TEXT="Consumption six times higher per cap"/>
+            <node ID="ID_null" POSITION="left" TEXT="Groth expectations reduced"/>
+            <node ID="ID_null" POSITION="left" TEXT="80% of market">
+                <node ID="ID_null" POSITION="left" TEXT="AB">
+                    <node ID="ID_null" POSITION="left" TEXT="75% of industry profits"/>
                 </node>
-                <node TEXT="adolf coors" POSITION="left" ID="ID_null"/>
-                <node TEXT="Miller" POSITION="left" ID="ID_null"/>
+                <node ID="ID_null" POSITION="left" TEXT="adolf coors"/>
+                <node ID="ID_null" POSITION="left" TEXT="Miller"/>
             </node>
-            <node TEXT="dense network of regional craft brewing" POSITION="left" ID="ID_null"/>
-            <node TEXT="volume main driver" POSITION="left" ID="ID_null"/>
+            <node ID="ID_null" POSITION="left" TEXT="dense network of regional craft brewing"/>
+            <node ID="ID_null" POSITION="left" TEXT="volume main driver"/>
         </node>
-        <node TEXT="Modelo in Mexico" POSITION="left" ID="ID_null">
-            <node TEXT="History to 1970" POSITION="left" ID="ID_null">
-                <node TEXT="formed in 1922" POSITION="left" ID="ID_null">
-                    <node TEXT="Pablo Diez Fernandez, Braulio Irare, Marin Oyamburr" POSITION="left" ID="ID_null"/>
-                    <node TEXT="Iriarte died in 1932" POSITION="left" ID="ID_null"/>
-                    <node TEXT="Diez sole owner 1936" POSITION="left" ID="ID_null"/>
-                    <node TEXT="Fernandez Family Sole owner since 1936" POSITION="left" ID="ID_null"/>
+        <node ID="ID_null" POSITION="left" TEXT="Modelo in Mexico">
+            <node ID="ID_null" POSITION="left" TEXT="History to 1970">
+                <node ID="ID_null" POSITION="left" TEXT="formed in 1922">
+                    <node ID="ID_null" POSITION="left" TEXT="Pablo Diez Fernandez, Braulio Irare, Marin Oyamburr"/>
+                    <node ID="ID_null" POSITION="left" TEXT="Iriarte died in 1932"/>
+                    <node ID="ID_null" POSITION="left" TEXT="Diez sole owner 1936"/>
+                    <node ID="ID_null" POSITION="left" TEXT="Fernandez Family Sole owner since 1936"/>
                 </node>
-                <node TEXT="focus on Mexico City" POSITION="left" ID="ID_null"/>
-                <node TEXT="Modelo 1st Brand" POSITION="left" ID="ID_null"/>
-                <node TEXT="Corona 2nd Brand" POSITION="left" ID="ID_null">
-                    <node TEXT="Clear Glass Customers preference" POSITION="left" ID="ID_null"/>
+                <node ID="ID_null" POSITION="left" TEXT="focus on Mexico City"/>
+                <node ID="ID_null" POSITION="left" TEXT="Modelo 1st Brand"/>
+                <node ID="ID_null" POSITION="left" TEXT="Corona 2nd Brand">
+                    <node ID="ID_null" POSITION="left" TEXT="Clear Glass Customers preference"/>
                 </node>
-                <node TEXT="1940s period of strong growth " POSITION="left" ID="ID_null">
-                    <node TEXT="concentrate domesti&#172;cally " POSITION="left" ID="ID_null"/>
-                    <node TEXT="improve distribution methods and produc&#172;tion facilities " POSITION="left" ID="ID_null">
-                        <node TEXT="distribution: direct with profit sharing" POSITION="left" ID="ID_null"/>
+                <node ID="ID_null" POSITION="left" TEXT="1940s period of strong growth ">
+                    <node ID="ID_null" POSITION="left" TEXT="concentrate domesti&#172;cally "/>
+                    <node ID="ID_null" POSITION="left" TEXT="improve distribution methods and produc&#172;tion facilities ">
+                        <node ID="ID_null" POSITION="left" TEXT="distribution: direct with profit sharing"/>
                     </node>
                 </node>
-                <node TEXT="bought the brands and assets of the Toluca y Mexico Brewery" POSITION="left" ID="ID_null">
-                    <node TEXT="1935" POSITION="left" ID="ID_null"/>
-                    <node TEXT="country's oldest brand of beer" POSITION="left" ID="ID_null"/>
+                <node ID="ID_null" POSITION="left" TEXT="bought the brands and assets of the Toluca y Mexico Brewery">
+                    <node ID="ID_null" POSITION="left" TEXT="1935"/>
+                    <node ID="ID_null" POSITION="left" TEXT="country's oldest brand of beer"/>
                 </node>
             </node>
-            <node TEXT="1971, Antonino Fernandez was appointed CEO" POSITION="left" ID="ID_null">
-                <node TEXT="Mexican Stock exchange in 1994" POSITION="left" ID="ID_null"/>
-                <node TEXT="Anheuser-Busch 17.7 % of the equity" POSITION="left" ID="ID_null">
-                    <node TEXT="The 50.2 % represented 43.9%  voting" POSITION="left" ID="ID_null"/>
+            <node ID="ID_null" POSITION="left" TEXT="1971, Antonino Fernandez was appointed CEO">
+                <node ID="ID_null" POSITION="left" TEXT="Mexican Stock exchange in 1994"/>
+                <node ID="ID_null" POSITION="left" TEXT="Anheuser-Busch 17.7 % of the equity">
+                    <node ID="ID_null" POSITION="left" TEXT="The 50.2 % represented 43.9%  voting"/>
                 </node>
             </node>
-            <node TEXT="Largest Beer producer and distrubutor in Mexico" POSITION="left" ID="ID_null">
-                <node TEXT="corona 56% share" POSITION="left" ID="ID_null"/>
+            <node ID="ID_null" POSITION="left" TEXT="Largest Beer producer and distrubutor in Mexico">
+                <node ID="ID_null" POSITION="left" TEXT="corona 56% share"/>
             </node>
         </node>
-        <node TEXT="Modelo in US" POSITION="right" ID="ID_null">
-            <node TEXT="History" POSITION="left" ID="ID_null">
-                <node TEXT="1979" POSITION="left" ID="ID_null"/>
-                <node TEXT="Amalgamated Distillery Products Inc. (" POSITION="left" ID="ID_null">
-                    <node TEXT="later renamed Barton Beers Ltd." POSITION="left" ID="ID_null"/>
+        <node ID="ID_null" POSITION="right" TEXT="Modelo in US">
+            <node ID="ID_null" POSITION="left" TEXT="History">
+                <node ID="ID_null" POSITION="left" TEXT="1979"/>
+                <node ID="ID_null" POSITION="left" TEXT="Amalgamated Distillery Products Inc. (">
+                    <node ID="ID_null" POSITION="left" TEXT="later renamed Barton Beers Ltd."/>
                 </node>
-                <node TEXT="gained popularity in southern states" POSITION="left" ID="ID_null"/>
-                <node TEXT="rapid growth 1980s" POSITION="left" ID="ID_null">
-                    <node TEXT="second most popular imported beer" POSITION="left" ID="ID_null"/>
+                <node ID="ID_null" POSITION="left" TEXT="gained popularity in southern states"/>
+                <node ID="ID_null" POSITION="left" TEXT="rapid growth 1980s">
+                    <node ID="ID_null" POSITION="left" TEXT="second most popular imported beer"/>
                 </node>
-                <node TEXT="1991" POSITION="left" ID="ID_null">
-                    <node TEXT="doubling of federal excise tax on beer" POSITION="left" ID="ID_null">
-                        <node TEXT="sales decrease of 15 percent" POSITION="left" ID="ID_null"/>
-                        <node TEXT="distributor absorb the tax 92" POSITION="left" ID="ID_null"/>
+                <node ID="ID_null" POSITION="left" TEXT="1991">
+                    <node ID="ID_null" POSITION="left" TEXT="doubling of federal excise tax on beer">
+                        <node ID="ID_null" POSITION="left" TEXT="sales decrease of 15 percent"/>
+                        <node ID="ID_null" POSITION="left" TEXT="distributor absorb the tax 92"/>
                     </node>
-                    <node TEXT="distributors took the loss" POSITION="left" ID="ID_null"/>
+                    <node ID="ID_null" POSITION="left" TEXT="distributors took the loss"/>
                 </node>
             </node>
-            <node TEXT="2007 5 beers to us" POSITION="left" ID="ID_null">
-                <node TEXT="3 of top 8 beers in US" POSITION="left" ID="ID_null"/>
-                <node TEXT="Heineken" POSITION="left" ID="ID_null">
-                    <node TEXT="Main Import Comptitor" POSITION="left" ID="ID_null"/>
+            <node ID="ID_null" POSITION="left" TEXT="2007 5 beers to us">
+                <node ID="ID_null" POSITION="left" TEXT="3 of top 8 beers in US"/>
+                <node ID="ID_null" POSITION="left" TEXT="Heineken">
+                    <node ID="ID_null" POSITION="left" TEXT="Main Import Comptitor"/>
                 </node>
-                <node TEXT="131 million cases" POSITION="left" ID="ID_null"/>
+                <node ID="ID_null" POSITION="left" TEXT="131 million cases"/>
             </node>
-            <node TEXT="Marketing" POSITION="left" ID="ID_null">
-                <node TEXT="surfing mythology" POSITION="left" ID="ID_null"/>
-                <node TEXT="not selling premium quality" POSITION="left" ID="ID_null"/>
-                <node TEXT="not testosterone driven" POSITION="left" ID="ID_null"/>
-                <node TEXT="found new following" POSITION="left" ID="ID_null"/>
-                <node TEXT="beer for non beer drinkers" POSITION="left" ID="ID_null"/>
-                <node TEXT="dependable second choise" POSITION="left" ID="ID_null"/>
-                <node TEXT="Fun in the sun" POSITION="left" ID="ID_null">
-                    <node TEXT="Barton Beer's idea" POSITION="left" ID="ID_null"/>
-                    <node TEXT="escape" POSITION="left" ID="ID_null"/>
-                    <node TEXT="relaxation" POSITION="left" ID="ID_null"/>
+            <node ID="ID_null" POSITION="left" TEXT="Marketing">
+                <node ID="ID_null" POSITION="left" TEXT="surfing mythology"/>
+                <node ID="ID_null" POSITION="left" TEXT="not selling premium quality"/>
+                <node ID="ID_null" POSITION="left" TEXT="not testosterone driven"/>
+                <node ID="ID_null" POSITION="left" TEXT="found new following"/>
+                <node ID="ID_null" POSITION="left" TEXT="beer for non beer drinkers"/>
+                <node ID="ID_null" POSITION="left" TEXT="dependable second choise"/>
+                <node ID="ID_null" POSITION="left" TEXT="Fun in the sun">
+                    <node ID="ID_null" POSITION="left" TEXT="Barton Beer's idea"/>
+                    <node ID="ID_null" POSITION="left" TEXT="escape"/>
+                    <node ID="ID_null" POSITION="left" TEXT="relaxation"/>
                 </node>
-                <node TEXT="1996ad budget" POSITION="left" ID="ID_null">
-                    <node TEXT="Corona 5.1 mil" POSITION="left" ID="ID_null"/>
-                    <node TEXT="Heiniken 15 mil" POSITION="left" ID="ID_null"/>
-                    <node TEXT="an bsch 192 mil" POSITION="left" ID="ID_null"/>
+                <node ID="ID_null" POSITION="left" TEXT="1996ad budget">
+                    <node ID="ID_null" POSITION="left" TEXT="Corona 5.1 mil"/>
+                    <node ID="ID_null" POSITION="left" TEXT="Heiniken 15 mil"/>
+                    <node ID="ID_null" POSITION="left" TEXT="an bsch 192 mil"/>
                 </node>
             </node>
-            <node TEXT="Us dist contracts" POSITION="left" ID="ID_null">
-                <node TEXT="importer/distributors" POSITION="left" ID="ID_null">
-                    <node TEXT="Local Companies" POSITION="left" ID="ID_null"/>
-                    <node TEXT="Autonomous" POSITION="left" ID="ID_null"/>
-                    <node TEXT="competitive relationship" POSITION="left" ID="ID_null"/>
-                    <node TEXT="transportation" POSITION="left" ID="ID_null"/>
-                    <node TEXT="insurance" POSITION="left" ID="ID_null"/>
-                    <node TEXT="pricing" POSITION="left" ID="ID_null"/>
-                    <node TEXT="customs" POSITION="left" ID="ID_null"/>
-                    <node TEXT="advertixing" POSITION="left" ID="ID_null"/>
+            <node ID="ID_null" POSITION="left" TEXT="Us dist contracts">
+                <node ID="ID_null" POSITION="left" TEXT="importer/distributors">
+                    <node ID="ID_null" POSITION="left" TEXT="Local Companies"/>
+                    <node ID="ID_null" POSITION="left" TEXT="Autonomous"/>
+                    <node ID="ID_null" POSITION="left" TEXT="competitive relationship"/>
+                    <node ID="ID_null" POSITION="left" TEXT="transportation"/>
+                    <node ID="ID_null" POSITION="left" TEXT="insurance"/>
+                    <node ID="ID_null" POSITION="left" TEXT="pricing"/>
+                    <node ID="ID_null" POSITION="left" TEXT="customs"/>
+                    <node ID="ID_null" POSITION="left" TEXT="advertixing"/>
                 </node>
-                <node TEXT="procermex inc" POSITION="left" ID="ID_null">
-                    <node TEXT="Modelo us subsidiary" POSITION="left" ID="ID_null"/>
-                    <node TEXT="Support" POSITION="left" ID="ID_null"/>
-                    <node TEXT="Supervise" POSITION="left" ID="ID_null"/>
-                    <node TEXT="Coordinate" POSITION="left" ID="ID_null"/>
+                <node ID="ID_null" POSITION="left" TEXT="procermex inc">
+                    <node ID="ID_null" POSITION="left" TEXT="Modelo us subsidiary"/>
+                    <node ID="ID_null" POSITION="left" TEXT="Support"/>
+                    <node ID="ID_null" POSITION="left" TEXT="Supervise"/>
+                    <node ID="ID_null" POSITION="left" TEXT="Coordinate"/>
                 </node>
-                <node TEXT="Modelo had final say on brand image" POSITION="left" ID="ID_null"/>
-                <node TEXT="production in Mexico" POSITION="left" ID="ID_null"/>
-                <node TEXT="Chicago based Barton Beers 1st" POSITION="left" ID="ID_null">
-                    <node TEXT="largest importer in 25 western states" POSITION="left" ID="ID_null"/>
+                <node ID="ID_null" POSITION="left" TEXT="Modelo had final say on brand image"/>
+                <node ID="ID_null" POSITION="left" TEXT="production in Mexico"/>
+                <node ID="ID_null" POSITION="left" TEXT="Chicago based Barton Beers 1st">
+                    <node ID="ID_null" POSITION="left" TEXT="largest importer in 25 western states"/>
                 </node>
-                <node TEXT="Gambrinus" POSITION="left" ID="ID_null">
-                    <node TEXT="1986" POSITION="left" ID="ID_null"/>
-                    <node TEXT="eastern dist" POSITION="left" ID="ID_null"/>
+                <node ID="ID_null" POSITION="left" TEXT="Gambrinus">
+                    <node ID="ID_null" POSITION="left" TEXT="1986"/>
+                    <node ID="ID_null" POSITION="left" TEXT="eastern dist"/>
                 </node>
             </node>
         </node>
-        <node TEXT="The Beer market" POSITION="right" ID="ID_null">
-            <node TEXT="traditionally a clustered market" POSITION="left" ID="ID_null"/>
-            <node TEXT="many local breweries" POSITION="left" ID="ID_null"/>
-            <node TEXT="no means of transport" POSITION="left" ID="ID_null"/>
-            <node TEXT="colsolition happened in 1800s" POSITION="left" ID="ID_null"/>
-            <node TEXT="different countries had different tastes" POSITION="left" ID="ID_null"/>
-            <node TEXT="90s national leaders expanded abroad" POSITION="left" ID="ID_null"/>
-            <node TEXT="startup costs high" POSITION="left" ID="ID_null">
-                <node TEXT="industry supported conectration" POSITION="left" ID="ID_null"/>
+        <node ID="ID_null" POSITION="right" TEXT="The Beer market">
+            <node ID="ID_null" POSITION="left" TEXT="traditionally a clustered market"/>
+            <node ID="ID_null" POSITION="left" TEXT="many local breweries"/>
+            <node ID="ID_null" POSITION="left" TEXT="no means of transport"/>
+            <node ID="ID_null" POSITION="left" TEXT="colsolition happened in 1800s"/>
+            <node ID="ID_null" POSITION="left" TEXT="different countries had different tastes"/>
+            <node ID="ID_null" POSITION="left" TEXT="90s national leaders expanded abroad"/>
+            <node ID="ID_null" POSITION="left" TEXT="startup costs high">
+                <node ID="ID_null" POSITION="left" TEXT="industry supported conectration"/>
             </node>
-            <node TEXT="Interbrew" POSITION="left" ID="ID_null">
-                <node TEXT="Belgian" POSITION="left" ID="ID_null"/>
-                <node TEXT="aquired breweries in 20 countries" POSITION="left" ID="ID_null"/>
-                <node TEXT="sales in 110 countries" POSITION="left" ID="ID_null"/>
-                <node TEXT="local managers controlling brands" POSITION="left" ID="ID_null"/>
-                <node TEXT="flagship brand: Stella Artois" POSITION="left" ID="ID_null"/>
+            <node ID="ID_null" POSITION="left" TEXT="Interbrew">
+                <node ID="ID_null" POSITION="left" TEXT="Belgian"/>
+                <node ID="ID_null" POSITION="left" TEXT="aquired breweries in 20 countries"/>
+                <node ID="ID_null" POSITION="left" TEXT="sales in 110 countries"/>
+                <node ID="ID_null" POSITION="left" TEXT="local managers controlling brands"/>
+                <node ID="ID_null" POSITION="left" TEXT="flagship brand: Stella Artois"/>
             </node>
-            <node TEXT="2004 merger" POSITION="left" ID="ID_null">
-                <node TEXT="#1 Interbrew" POSITION="left" ID="ID_null"/>
-                <node TEXT="#5 Am Bev - Brazil" POSITION="left" ID="ID_null"/>
-                <node TEXT="largest merge" POSITION="left" ID="ID_null">
-                    <node TEXT="worth 12.8 billion" POSITION="left" ID="ID_null"/>
+            <node ID="ID_null" POSITION="left" TEXT="2004 merger">
+                <node ID="ID_null" POSITION="left" TEXT="#1 Interbrew"/>
+                <node ID="ID_null" POSITION="left" TEXT="#5 Am Bev - Brazil"/>
+                <node ID="ID_null" POSITION="left" TEXT="largest merge">
+                    <node ID="ID_null" POSITION="left" TEXT="worth 12.8 billion"/>
                 </node>
             </node>
-            <node TEXT="2007" POSITION="left" ID="ID_null">
-                <node TEXT="inbev" POSITION="left" ID="ID_null"/>
-                <node TEXT="SAP Miller" POSITION="left" ID="ID_null"/>
-                <node TEXT="Heineken" POSITION="left" ID="ID_null">
-                    <node TEXT="produces beer domestically" POSITION="left" ID="ID_null">
-                        <node TEXT="parent of local distributors" POSITION="left" ID="ID_null">
-                            <node TEXT="marketing" POSITION="left" ID="ID_null"/>
-                            <node TEXT="importing" POSITION="left" ID="ID_null">
-                                <node TEXT="import taxes passed on to consumer" POSITION="left" ID="ID_null"/>
+            <node ID="ID_null" POSITION="left" TEXT="2007">
+                <node ID="ID_null" POSITION="left" TEXT="inbev"/>
+                <node ID="ID_null" POSITION="left" TEXT="SAP Miller"/>
+                <node ID="ID_null" POSITION="left" TEXT="Heineken">
+                    <node ID="ID_null" POSITION="left" TEXT="produces beer domestically">
+                        <node ID="ID_null" POSITION="left" TEXT="parent of local distributors">
+                            <node ID="ID_null" POSITION="left" TEXT="marketing"/>
+                            <node ID="ID_null" POSITION="left" TEXT="importing">
+                                <node ID="ID_null" POSITION="left" TEXT="import taxes passed on to consumer"/>
                             </node>
-                            <node TEXT="distribution" POSITION="left" ID="ID_null"/>
+                            <node ID="ID_null" POSITION="left" TEXT="distribution"/>
                         </node>
                     </node>
-                    <node TEXT="marketing" POSITION="left" ID="ID_null">
-                        <node TEXT="premium beer" POSITION="left" ID="ID_null"/>
-                        <node TEXT="premium brand" POSITION="left" ID="ID_null"/>
-                        <node TEXT="no mythology" POSITION="left" ID="ID_null"/>
-                        <node TEXT="superior taste" POSITION="left" ID="ID_null"/>
-                        <node TEXT="2006 aggressive marketing campaign" POSITION="left" ID="ID_null">
-                            <node TEXT="Heineken Premium Light" POSITION="left" ID="ID_null"/>
+                    <node ID="ID_null" POSITION="left" TEXT="marketing">
+                        <node ID="ID_null" POSITION="left" TEXT="premium beer"/>
+                        <node ID="ID_null" POSITION="left" TEXT="premium brand"/>
+                        <node ID="ID_null" POSITION="left" TEXT="no mythology"/>
+                        <node ID="ID_null" POSITION="left" TEXT="superior taste"/>
+                        <node ID="ID_null" POSITION="left" TEXT="2006 aggressive marketing campaign">
+                            <node ID="ID_null" POSITION="left" TEXT="Heineken Premium Light"/>
                         </node>
                     </node>
-                    <node TEXT="reputation of top selling beer in world" POSITION="left" ID="ID_null"/>
-                    <node TEXT="Dutch" POSITION="left" ID="ID_null"/>
+                    <node ID="ID_null" POSITION="left" TEXT="reputation of top selling beer in world"/>
+                    <node ID="ID_null" POSITION="left" TEXT="Dutch"/>
                 </node>
-                <node TEXT="Anh Bush" POSITION="left" ID="ID_null">
-                    <node TEXT="produces in foreign markets" POSITION="left" ID="ID_null"/>
+                <node ID="ID_null" POSITION="left" TEXT="Anh Bush">
+                    <node ID="ID_null" POSITION="left" TEXT="produces in foreign markets"/>
                 </node>
             </node>
-            <node TEXT="Beer Marketing" POSITION="left" ID="ID_null">
-                <node TEXT="People drink marketing" POSITION="left" ID="ID_null"/>
+            <node ID="ID_null" POSITION="left" TEXT="Beer Marketing">
+                <node ID="ID_null" POSITION="left" TEXT="People drink marketing"/>
             </node>
-            <node TEXT="Future" POSITION="left" ID="ID_null">
-                <node TEXT="domestic and foreign threats" POSITION="left" ID="ID_null"/>
-                <node TEXT="other merger talks" POSITION="left" ID="ID_null"/>
-                <node TEXT="Inbev in talks with Anh Bush" POSITION="left" ID="ID_null">
-                    <node TEXT="Two biggest companies will create huge company" POSITION="left" ID="ID_null"/>
+            <node ID="ID_null" POSITION="left" TEXT="Future">
+                <node ID="ID_null" POSITION="left" TEXT="domestic and foreign threats"/>
+                <node ID="ID_null" POSITION="left" TEXT="other merger talks"/>
+                <node ID="ID_null" POSITION="left" TEXT="Inbev in talks with Anh Bush">
+                    <node ID="ID_null" POSITION="left" TEXT="Two biggest companies will create huge company"/>
                 </node>
-                <node TEXT="Sales were decreasing due to competitive media budgets" POSITION="left" ID="ID_null"/>
+                <node ID="ID_null" POSITION="left" TEXT="Sales were decreasing due to competitive media budgets"/>
             </node>
         </node>
-        <node TEXT="Mexico Industry" POSITION="right" ID="ID_null">
-            <node TEXT="has most trade agreements in world" POSITION="left" ID="ID_null"/>
-            <node TEXT="one of the largest domestic beer markets" POSITION="left" ID="ID_null"/>
-            <node TEXT="imported beer only 1% sales" POSITION="left" ID="ID_null">
-                <node TEXT="half were anh bcsh dist by modelo" POSITION="left" ID="ID_null"/>
+        <node ID="ID_null" POSITION="right" TEXT="Mexico Industry">
+            <node ID="ID_null" POSITION="left" TEXT="has most trade agreements in world"/>
+            <node ID="ID_null" POSITION="left" TEXT="one of the largest domestic beer markets"/>
+            <node ID="ID_null" POSITION="left" TEXT="imported beer only 1% sales">
+                <node ID="ID_null" POSITION="left" TEXT="half were anh bcsh dist by modelo"/>
             </node>
-            <node TEXT="modelo" POSITION="left" ID="ID_null">
-                <node TEXT="NAFTA S.A. An Bucsh" POSITION="left" ID="ID_null"/>
-                <node TEXT="62.8% of market" POSITION="left" ID="ID_null"/>
+            <node ID="ID_null" POSITION="left" TEXT="modelo">
+                <node ID="ID_null" POSITION="left" TEXT="NAFTA S.A. An Bucsh"/>
+                <node ID="ID_null" POSITION="left" TEXT="62.8% of market"/>
             </node>
-            <node TEXT="FEMSA" POSITION="left" ID="ID_null">
-                <node TEXT="domestic market" POSITION="left" ID="ID_null">
-                    <node TEXT="37% of domestic market" POSITION="left" ID="ID_null"/>
-                    <node TEXT="production and distribution in Mexico: peso not a threat" POSITION="left" ID="ID_null"/>
-                    <node TEXT="Owns Oxxo C" POSITION="left" ID="ID_null">
-                        <node TEXT="CA largest chain of conv stores" POSITION="left" ID="ID_null"/>
+            <node ID="ID_null" POSITION="left" TEXT="FEMSA">
+                <node ID="ID_null" POSITION="left" TEXT="domestic market">
+                    <node ID="ID_null" POSITION="left" TEXT="37% of domestic market"/>
+                    <node ID="ID_null" POSITION="left" TEXT="production and distribution in Mexico: peso not a threat"/>
+                    <node ID="ID_null" POSITION="left" TEXT="Owns Oxxo C">
+                        <node ID="ID_null" POSITION="left" TEXT="CA largest chain of conv stores"/>
                     </node>
-                    <node TEXT="leads domestic premium beer market" POSITION="left" ID="ID_null"/>
-                    <node TEXT="997 to 2004 taking domestic market share" POSITION="left" ID="ID_null"/>
-                    <node TEXT="NAFTA SACoca cola" POSITION="left" ID="ID_null">
-                        <node TEXT="Exclusive distributor" POSITION="left" ID="ID_null"/>
+                    <node ID="ID_null" POSITION="left" TEXT="leads domestic premium beer market"/>
+                    <node ID="ID_null" POSITION="left" TEXT="997 to 2004 taking domestic market share"/>
+                    <node ID="ID_null" POSITION="left" TEXT="NAFTA SACoca cola">
+                        <node ID="ID_null" POSITION="left" TEXT="Exclusive distributor"/>
                     </node>
                 </node>
-                <node TEXT="foriegn market" POSITION="left" ID="ID_null">
-                    <node TEXT="Partnership Heiniken" POSITION="left" ID="ID_null">
-                        <node TEXT="Distribution in US" POSITION="left" ID="ID_null"/>
+                <node ID="ID_null" POSITION="left" TEXT="foriegn market">
+                    <node ID="ID_null" POSITION="left" TEXT="Partnership Heiniken">
+                        <node ID="ID_null" POSITION="left" TEXT="Distribution in US"/>
                     </node>
-                    <node TEXT="90s entry to us market failed" POSITION="left" ID="ID_null"/>
-                    <node TEXT="Recently partnered with Heiniken for US market" POSITION="left" ID="ID_null">
-                        <node TEXT="2005 18.7% growth" POSITION="left" ID="ID_null"/>
+                    <node ID="ID_null" POSITION="left" TEXT="90s entry to us market failed"/>
+                    <node ID="ID_null" POSITION="left" TEXT="Recently partnered with Heiniken for US market">
+                        <node ID="ID_null" POSITION="left" TEXT="2005 18.7% growth"/>
                     </node>
                 </node>
             </node>

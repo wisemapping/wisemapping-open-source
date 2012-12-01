@@ -1,112 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="tango" name="basic">
-    <topic id="0" central="true" position="0,0" shape="rounded rectagle">
+<map name="basic" version="tango">
+    <topic central="true" id="0" position="0,0" shape="rounded rectagle">
         <text><![CDATA[Numerosity]]></text>
-        <topic id="1" position="-200,0" order="0" shape="line">
+        <topic id="1" order="0" position="-200,0" shape="line">
             <text><![CDATA[Approximate Representations]]></text>
-            <topic id="2" position="-290,-25" order="0" shape="line">
+            <topic id="2" order="0" position="-290,-25" shape="line">
                 <text><![CDATA[Brain Regions]]></text>
-                <topic id="3" position="-380,-50" order="0" shape="line">
+                <topic id="3" order="0" position="-380,-50" shape="line">
                     <text><![CDATA[Parietal Cortex]]></text>
-                    <topic id="4" position="-470,-50" order="0" shape="line">
+                    <topic id="4" order="0" position="-470,-50" shape="line">
                         <text><![CDATA[Posterior Parietal Cortex (PPC)]]></text>
-                        <topic id="5" position="-560,-50" order="0" shape="line">
+                        <topic id="5" order="0" position="-560,-50" shape="line">
                             <text><![CDATA[Intraparietal Sulcus (IPS)]]></text>
-                            <topic id="6" position="-650,-100" order="0" shape="line">
+                            <topic id="6" order="0" position="-650,-100" shape="line">
                                 <text><![CDATA[Neurons code for numerosity]]></text>
-                                <topic id="7" position="-740,-150"
-                                    order="0" shape="line">
+                                <topic id="7" order="0"
+                                    position="-740,-150" shape="line">
                                     <text><![CDATA[Concept of Mental Number Line]]></text>
-                                    <topic id="8" position="-830,-175"
-                                    order="0" shape="line">
+                                    <topic id="8" order="0"
+                                    position="-830,-175" shape="line">
                                     <text><![CDATA[Logarithmic Compression]]></text>
-                                    <topic id="9"
-                                    position="-920,-200"
-                                    order="0" shape="line">
+                                    <topic id="9" order="0"
+                                    position="-920,-200" shape="line">
                                     <text><![CDATA[Dehaine & Changeux, 1993]]></text>
                                     </topic>
-                                    <topic id="10"
-                                    position="-920,-175"
-                                    order="1" shape="line">
+                                    <topic id="10" order="1"
+                                    position="-920,-175" shape="line">
                                     <text><![CDATA[Nieder & Miller, 2003]]></text>
                                     </topic>
                                     </topic>
-                                    <topic id="11" position="-830,-150"
-                                    order="1" shape="line">
+                                    <topic id="11" order="1"
+                                    position="-830,-150" shape="line">
                                     <text><![CDATA[Linear Scale with proportional increasing Std. Dev of Noise]]></text>
-                                    <topic id="12"
-                                    position="-920,-150"
-                                    order="0" shape="line">
+                                    <topic id="12" order="0"
+                                    position="-920,-150" shape="line">
                                     <text><![CDATA[aallistel & Gelman, 2000]]></text>
                                     </topic>
                                     </topic>
                                 </topic>
-                                <topic id="13" position="-740,-125"
-                                    order="1" shape="line">
+                                <topic id="13" order="1"
+                                    position="-740,-125" shape="line">
                                     <text><![CDATA[Nieder et al 2002]]></text>
                                 </topic>
-                                <topic id="14" position="-740,-100"
-                                    order="2" shape="line">
+                                <topic id="14" order="2"
+                                    position="-740,-100" shape="line">
                                     <text><![CDATA[Sawamura et al, 2002]]></text>
                                 </topic>
-                                <topic id="15" position="-740,-75"
-                                    order="3" shape="line">
+                                <topic id="15" order="3"
+                                    position="-740,-75" shape="line">
                                     <text><![CDATA[Nieder & Miller, 2003]]></text>
                                 </topic>
                             </topic>
-                            <topic id="16" position="-650,-75" order="1" shape="line">
+                            <topic id="16" order="1" position="-650,-75" shape="line">
                                 <text><![CDATA[lateral Intraparietal (LIP)]]></text>
-                                <topic id="17" position="-740,-75"
-                                    order="0" shape="line">
+                                <topic id="17" order="0"
+                                    position="-740,-75" shape="line">
                                     <text><![CDATA[LIP neurons code for number with an accumulator-like coding scheme]]></text>
-                                    <topic id="18" position="-830,-75"
-                                    order="0" shape="line">
+                                    <topic id="18" order="0"
+                                    position="-830,-75" shape="line">
                                     <text><![CDATA[Roitman et al, 2007]]></text>
                                     </topic>
                                 </topic>
                             </topic>
-                            <topic id="19" position="-650,-50" order="2" shape="line">
+                            <topic id="19" order="2" position="-650,-50" shape="line">
                                 <text><![CDATA[Ventral Intraparietal (VIP)]]></text>
-                                <topic id="20" position="-740,-75"
-                                    order="0" shape="line">
+                                <topic id="20" order="0"
+                                    position="-740,-75" shape="line">
                                     <text><![CDATA[Tudusciuc & Nieder, 2007]]></text>
                                 </topic>
-                                <topic id="21" position="-740,-50"
-                                    order="1" shape="line">
+                                <topic id="21" order="1"
+                                    position="-740,-50" shape="line">
                                     <text><![CDATA[Abstract and likely to encode for auditory and visual numerosity]]></text>
                                 </topic>
-                                <topic id="22" position="-740,-25"
-                                    order="2" shape="line">
+                                <topic id="22" order="2"
+                                    position="-740,-25" shape="line">
                                     <text><![CDATA[Likely fed by LIP numerosity accumulator codes]]></text>
                                 </topic>
                             </topic>
-                            <topic id="23" position="-650,-25" order="3" shape="line">
+                            <topic id="23" order="3" position="-650,-25" shape="line">
                                 <text><![CDATA[Horizontal Segment of the Intraparietal Sulcus (hIPS)]]></text>
-                                <topic id="24" position="-740,-25"
-                                    order="0" shape="line">
+                                <topic id="24" order="0"
+                                    position="-740,-25" shape="line">
                                     <text><![CDATA[Core system for representing numerical quantity]]></text>
-                                    <topic id="25" position="-830,-100"
-                                    order="0" shape="line">
+                                    <topic id="25" order="0"
+                                    position="-830,-100" shape="line">
                                     <text><![CDATA[Dahaene et all, 2003]]></text>
                                     </topic>
-                                    <topic id="26" position="-830,-75"
-                                    order="1" shape="line">
+                                    <topic id="26" order="1"
+                                    position="-830,-75" shape="line">
                                     <text><![CDATA[Piazza et al, 2004]]></text>
                                     </topic>
-                                    <topic id="27" position="-830,-50"
-                                    order="2" shape="line">
+                                    <topic id="27" order="2"
+                                    position="-830,-50" shape="line">
                                     <text><![CDATA[Piazza et al, 2006]]></text>
                                     </topic>
-                                    <topic id="28" position="-830,-25"
-                                    order="3" shape="line">
+                                    <topic id="28" order="3"
+                                    position="-830,-25" shape="line">
                                     <text><![CDATA[Cantlon et al, 2006]]></text>
                                     </topic>
-                                    <topic id="29" position="-830,0"
-                                    order="4" shape="line">
+                                    <topic id="29" order="4"
+                                    position="-830,0" shape="line">
                                     <text><![CDATA[Cappelletti et al, 2007]]></text>
                                     </topic>
-                                    <topic id="30" position="-830,25"
-                                    order="5" shape="line">
+                                    <topic id="30" order="5"
+                                    position="-830,25" shape="line">
                                     <text><![CDATA[Dormal et al, 2008]]></text>
                                     </topic>
                                 </topic>
@@ -114,84 +111,83 @@
                         </topic>
                     </topic>
                 </topic>
-                <topic id="31" position="-380,-25" order="1" shape="line">
+                <topic id="31" order="1" position="-380,-25" shape="line">
                     <text><![CDATA[Prefrontal Cortex (PFC)]]></text>
-                    <topic id="32" position="-470,-25" order="0" shape="line">
+                    <topic id="32" order="0" position="-470,-25" shape="line">
                         <text><![CDATA[Codes and maintains numerosity information from intraparietal sulcus]]></text>
                     </topic>
                 </topic>
             </topic>
-            <topic id="33" position="-290,0" order="1" shape="line">
+            <topic id="33" order="1" position="-290,0" shape="line">
                 <text><![CDATA[Computational Models]]></text>
-                <topic id="34" position="-380,-25" order="0" shape="line">
+                <topic id="34" order="0" position="-380,-25" shape="line">
                     <text><![CDATA[Grossberg & Repin, 2003]]></text>
                 </topic>
-                <topic id="35" position="-380,0" order="1" shape="line">
+                <topic id="35" order="1" position="-380,0" shape="line">
                     <text><![CDATA[Verguts & Fias, 2005]]></text>
                 </topic>
-                <topic id="36" position="-380,25" order="2" shape="line">
+                <topic id="36" order="2" position="-380,25" shape="line">
                     <text><![CDATA[Dehaene & Changeux, 1993]]></text>
                 </topic>
             </topic>
         </topic>
-        <topic id="37" position="200,0" order="0" shape="line">
+        <topic id="37" order="0" position="200,0" shape="line">
             <text><![CDATA[Exact Representations (Subitizing)]]></text>
-            <topic id="38" position="290,0" order="0" shape="line">
+            <topic id="38" order="0" position="290,0" shape="line">
                 <text><![CDATA[Parallel Visual Presentation with Pop-out]]></text>
-                <topic id="39" position="380,-25" order="0" shape="line">
+                <topic id="39" order="0" position="380,-25" shape="line">
                     <text><![CDATA[Trick & Pylyshyn, 1993]]></text>
                 </topic>
-                <topic id="40" position="380,0" order="1" shape="line">
+                <topic id="40" order="1" position="380,0" shape="line">
                     <text><![CDATA[Posterior Parietal Map of a limited number of salient locations in the visual field]]></text>
-                    <topic id="41" position="470,-25" order="0" shape="line">
+                    <topic id="41" order="0" position="470,-25" shape="line">
                         <text><![CDATA[Piazza & Izard, 2009]]></text>
                     </topic>
-                    <topic id="42" position="470,0" order="1" shape="line">
+                    <topic id="42" order="1" position="470,0" shape="line">
                         <text><![CDATA[Gottlieb, 2007]]></text>
                     </topic>
                 </topic>
             </topic>
         </topic>
-        <topic id="43" position="200,100" order="4" shape="line">
+        <topic id="43" order="4" position="200,100" shape="line">
             <text><![CDATA[Exact Representations (Counting)]]></text>
-            <topic id="44" position="290,75" order="0" shape="line">
+            <topic id="44" order="0" position="290,75" shape="line">
                 <text><![CDATA[Serial Scanning]]></text>
-                <topic id="45" position="380,75" order="0" shape="line">
+                <topic id="45" order="0" position="380,75" shape="line">
                     <text><![CDATA[Attentional Deployment]]></text>
-                    <topic id="46" position="470,75" order="0" shape="line">
+                    <topic id="46" order="0" position="470,75" shape="line">
                         <text><![CDATA[Dorsal Stream (posterior parietal & lateral premotor cortices)]]></text>
-                        <topic id="47" position="560,50" order="0" shape="line">
+                        <topic id="47" order="0" position="560,50" shape="line">
                             <text><![CDATA[Butterworth, 2000]]></text>
                         </topic>
-                        <topic id="48" position="560,75" order="1" shape="line">
+                        <topic id="48" order="1" position="560,75" shape="line">
                             <text><![CDATA[Piazza et al, 2003]]></text>
                         </topic>
-                        <topic id="49" position="560,100" order="2" shape="line">
+                        <topic id="49" order="2" position="560,100" shape="line">
                             <text><![CDATA[Piazza et al, 2006]]></text>
                         </topic>
                     </topic>
                 </topic>
             </topic>
-            <topic id="50" position="290,100" order="1" shape="line">
+            <topic id="50" order="1" position="290,100" shape="line">
                 <text><![CDATA[Working Memory]]></text>
-                <topic id="51" position="380,75" order="0" shape="line">
+                <topic id="51" order="0" position="380,75" shape="line">
                     <text><![CDATA[Subvocalization component of the verbal system]]></text>
-                    <topic id="52" position="470,50" order="0" shape="line">
+                    <topic id="52" order="0" position="470,50" shape="line">
                         <text><![CDATA[Logie & Baddeley, 1987]]></text>
                     </topic>
-                    <topic id="53" position="470,75" order="1" shape="line">
+                    <topic id="53" order="1" position="470,75" shape="line">
                         <text><![CDATA[Hinton et al, 2004]]></text>
                     </topic>
                 </topic>
-                <topic id="54" position="380,100" order="1" shape="line">
+                <topic id="54" order="1" position="380,100" shape="line">
                     <text><![CDATA[Visio-spatial rehearsal loop in deaf children]]></text>
-                    <topic id="55" position="470,100" order="0" shape="line">
+                    <topic id="55" order="0" position="470,100" shape="line">
                         <text><![CDATA[Leybaert & Van Cutsem, 2002]]></text>
                     </topic>
                 </topic>
             </topic>
         </topic>
     </topic>
-    <relationship endArrow="true" lineType="3" destTopicId="32"
-        srcTopicId="15" id="56"/>
+    <relationship destTopicId="32" endArrow="true" id="56" lineType="3" srcTopicId="15"/>
 </map>

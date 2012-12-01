@@ -1,266 +1,266 @@
 <map version="0.9.0">
-    <node TEXT="As&#237; que quieres recorrer Medell&#237;n..." ID="ID_1" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_1" TEXT="As&#237; que quieres recorrer Medell&#237;n...">
         <font SIZE="15"/>
         <edge COLOR="#ffffff"/>
-        <node TEXT="Y ERES UN TURISTA" STYLE="bubble" POSITION="right" ID="ID_134" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_134" POSITION="right" STYLE="bubble" TEXT="Y ERES UN TURISTA">
             <font BOLD="true"/>
             <edge COLOR="#000000"/>
         </node>
-        <node TEXT="Y ERES UN RESIDENTE" STYLE="bubble" POSITION="left" ID="ID_4" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_4" POSITION="left" STYLE="bubble" TEXT="Y ERES UN RESIDENTE">
             <font BOLD="true"/>
             <edge COLOR="#000000"/>
-            <node TEXT="Divertirte" STYLE="bubble" POSITION="left" ID="ID_6" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_6" POSITION="left" STYLE="bubble" TEXT="Divertirte">
                 <edge COLOR="#000000"/>
-                <node TEXT="Te gusta la rumba" POSITION="left" ID="ID_136">
-                    <node TEXT="S&#237;" STYLE="bubble" POSITION="left" ID="ID_137" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                <node ID="ID_136" POSITION="left" TEXT="Te gusta la rumba">
+                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_137" POSITION="left" STYLE="bubble" TEXT="S&#237;">
                         <edge COLOR="#000000"/>
-                        <node TEXT="Para bailar" POSITION="left" ID="ID_216">
-                            <node TEXT="Mango's" STYLE="bubble" POSITION="left" ID="ID_224" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                        <node ID="ID_216" POSITION="left" TEXT="Para bailar">
+                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_224" POSITION="left" STYLE="bubble" TEXT="Mango's">
                                 <edge COLOR="#000000"/>
                             </node>
-                            <node TEXT="Kukaramakara" STYLE="bubble" POSITION="left" ID="ID_226" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_226" POSITION="left" STYLE="bubble" TEXT="Kukaramakara">
                                 <edge COLOR="#000000"/>
                             </node>
-                            <node TEXT="El Pub" STYLE="bubble" POSITION="left" ID="ID_235" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_235" POSITION="left" STYLE="bubble" TEXT="El Pub">
                                 <edge COLOR="#000000"/>
                             </node>
-                            <node TEXT="B Lounge" STYLE="bubble" POSITION="left" ID="ID_233" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_233" POSITION="left" STYLE="bubble" TEXT="B Lounge">
                                 <edge COLOR="#000000"/>
                             </node>
-                            <node TEXT="Mamma Juana" STYLE="bubble" POSITION="left" ID="ID_234" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
-                                <edge COLOR="#000000"/>
-                            </node>
-                        </node>
-                        <node TEXT="Para o&#237;r m&#250;sica" POSITION="left" ID="ID_217">
-                            <node TEXT="Palmah&#237;a" STYLE="bubble" POSITION="left" ID="ID_225" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
-                                <edge COLOR="#000000"/>
-                            </node>
-                            <node TEXT="El Deck" STYLE="bubble" POSITION="left" ID="ID_236" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
-                                <edge COLOR="#000000"/>
-                            </node>
-                            <node TEXT="Hard Rock Caf&#233;" STYLE="bubble" POSITION="left" ID="ID_232" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_234" POSITION="left" STYLE="bubble" TEXT="Mamma Juana">
                                 <edge COLOR="#000000"/>
                             </node>
                         </node>
-                        <node TEXT="&#191;Y para tocar m&#250;sica?" POSITION="left" ID="ID_222">
-                            <node TEXT="Red de Escuelas de M&#250;sica" STYLE="bubble" POSITION="left" ID="ID_223" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                        <node ID="ID_217" POSITION="left" TEXT="Para o&#237;r m&#250;sica">
+                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_225" POSITION="left" STYLE="bubble" TEXT="Palmah&#237;a">
+                                <edge COLOR="#000000"/>
+                            </node>
+                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_236" POSITION="left" STYLE="bubble" TEXT="El Deck">
+                                <edge COLOR="#000000"/>
+                            </node>
+                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_232" POSITION="left" STYLE="bubble" TEXT="Hard Rock Caf&#233;">
+                                <edge COLOR="#000000"/>
+                            </node>
+                        </node>
+                        <node ID="ID_222" POSITION="left" TEXT="&#191;Y para tocar m&#250;sica?">
+                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_223" POSITION="left" STYLE="bubble" TEXT="Red de Escuelas de M&#250;sica">
                                 <edge COLOR="#000000"/>
                             </node>
                         </node>
                     </node>
-                    <node TEXT="No" STYLE="bubble" POSITION="left" ID="ID_173" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_173" POSITION="left" STYLE="bubble" TEXT="No">
                         <edge COLOR="#000000"/>
-                        <node TEXT="Hacer deporte s&#237;" STYLE="bubble" POSITION="left" ID="ID_174" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_174" POSITION="left" STYLE="bubble" TEXT="Hacer deporte s&#237;">
                             <edge COLOR="#000000"/>
-                            <node TEXT="Al aire libre" POSITION="left" ID="ID_208">
-                                <node TEXT="Los domingos y festivos en la ciclov&#237;a" STYLE="bubble" POSITION="left" ID="ID_213" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                            <node ID="ID_208" POSITION="left" TEXT="Al aire libre">
+                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_213" POSITION="left" STYLE="bubble" TEXT="Los domingos y festivos en la ciclov&#237;a">
                                     <edge COLOR="#000000"/>
                                 </node>
-                                <node TEXT="En caminatas por los parques" STYLE="bubble" POSITION="left" ID="ID_214" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_214" POSITION="left" STYLE="bubble" TEXT="En caminatas por los parques">
                                     <edge COLOR="#000000"/>
                                 </node>
                             </node>
-                            <node TEXT="En un centro" POSITION="left" ID="ID_209">
-                                <node TEXT="Estadio Atanasio Girardot" STYLE="bubble" POSITION="left" ID="ID_212" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                            <node ID="ID_209" POSITION="left" TEXT="En un centro">
+                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_212" POSITION="left" STYLE="bubble" TEXT="Estadio Atanasio Girardot">
                                     <edge COLOR="#000000"/>
                                 </node>
-                                <node TEXT="Unidad Deportiva Atanasio Girardot" STYLE="bubble" POSITION="left" ID="ID_215" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_215" POSITION="left" STYLE="bubble" TEXT="Unidad Deportiva Atanasio Girardot">
                                     <edge COLOR="#000000"/>
                                 </node>
-                                <node TEXT="Unidades Deportivas INDER" STYLE="bubble" POSITION="left" ID="ID_211" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_211" POSITION="left" STYLE="bubble" TEXT="Unidades Deportivas INDER">
                                     <edge COLOR="#000000"/>
                                 </node>
-                                <node TEXT="Polideportivo UPB" STYLE="bubble" POSITION="left" ID="ID_210" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_210" POSITION="left" STYLE="bubble" TEXT="Polideportivo UPB">
                                     <edge COLOR="#000000"/>
                                 </node>
                             </node>
                         </node>
-                        <node TEXT="Algo m&#225;s calmado" STYLE="bubble" POSITION="left" ID="ID_138" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_138" POSITION="left" STYLE="bubble" TEXT="Algo m&#225;s calmado">
                             <edge COLOR="#000000"/>
-                            <node TEXT="&#191;Salir de compras?" POSITION="left" ID="ID_139">
-                                <node TEXT="S&#237;" STYLE="bubble" POSITION="left" ID="ID_141" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                            <node ID="ID_139" POSITION="left" TEXT="&#191;Salir de compras?">
+                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_141" POSITION="left" STYLE="bubble" TEXT="S&#237;">
                                     <edge COLOR="#000000"/>
-                                    <node TEXT="&#191;Traes dinero en el bolsillo?" POSITION="left" ID="ID_143">
-                                        <node TEXT="No" STYLE="bubble" POSITION="left" ID="ID_145" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node ID="ID_143" POSITION="left" TEXT="&#191;Traes dinero en el bolsillo?">
+                                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_145" POSITION="left" STYLE="bubble" TEXT="No">
                                             <edge COLOR="#000000"/>
-                                            <node TEXT="&#191;D&#243;nde sacar dinero?" POSITION="left" ID="ID_146">
-                                                <node TEXT="En Cajeros Autom&#225;ticos" STYLE="bubble" POSITION="left" ID="ID_147" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node ID="ID_146" POSITION="left" TEXT="&#191;D&#243;nde sacar dinero?">
+                                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_147" POSITION="left" STYLE="bubble" TEXT="En Cajeros Autom&#225;ticos">
                                                     <edge COLOR="#000000"/>
                                                 </node>
-                                                <node TEXT="En un Banco" STYLE="bubble" POSITION="left" ID="ID_148" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_148" POSITION="left" STYLE="bubble" TEXT="En un Banco">
                                                     <edge COLOR="#000000"/>
-                                                    <node TEXT="Bancolombia" STYLE="bubble" POSITION="left" ID="ID_149" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_149" POSITION="left" STYLE="bubble" TEXT="Bancolombia">
                                                         <edge COLOR="#000000"/>
                                                     </node>
-                                                    <node TEXT="Banco Santander" STYLE="bubble" POSITION="left" ID="ID_150" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_150" POSITION="left" STYLE="bubble" TEXT="Banco Santander">
                                                         <edge COLOR="#000000"/>
                                                     </node>
-                                                    <node TEXT="Banco BBVA" STYLE="bubble" POSITION="left" ID="ID_151" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_151" POSITION="left" STYLE="bubble" TEXT="Banco BBVA">
                                                         <edge COLOR="#000000"/>
                                                     </node>
-                                                    <node TEXT="Banco Caja Social" STYLE="bubble" POSITION="left" ID="ID_152" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_152" POSITION="left" STYLE="bubble" TEXT="Banco Caja Social">
                                                         <edge COLOR="#000000"/>
                                                     </node>
-                                                    <node TEXT="Banco AV Villas" STYLE="bubble" POSITION="left" ID="ID_153" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_153" POSITION="left" STYLE="bubble" TEXT="Banco AV Villas">
                                                         <edge COLOR="#000000"/>
                                                     </node>
-                                                    <node TEXT="Banco de Bogot&#225;" STYLE="bubble" POSITION="left" ID="ID_154" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_154" POSITION="left" STYLE="bubble" TEXT="Banco de Bogot&#225;">
                                                         <edge COLOR="#000000"/>
                                                     </node>
-                                                    <node TEXT="Banco Popular" STYLE="bubble" POSITION="left" ID="ID_155" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_155" POSITION="left" STYLE="bubble" TEXT="Banco Popular">
                                                         <edge COLOR="#000000"/>
                                                     </node>
-                                                    <node TEXT="Davivienda" STYLE="bubble" POSITION="left" ID="ID_156" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_156" POSITION="left" STYLE="bubble" TEXT="Davivienda">
                                                         <edge COLOR="#000000"/>
                                                     </node>
-                                                    <node TEXT="Otros" STYLE="bubble" POSITION="left" ID="ID_157" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_157" POSITION="left" STYLE="bubble" TEXT="Otros">
                                                         <edge COLOR="#000000"/>
                                                     </node>
                                                 </node>
                                             </node>
                                         </node>
-                                        <node TEXT="S&#237;" STYLE="bubble" POSITION="left" ID="ID_144" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_144" POSITION="left" STYLE="bubble" TEXT="S&#237;">
                                             <edge COLOR="#000000"/>
-                                            <node TEXT="En mediana cantidad" POSITION="left" ID="ID_158">
-                                                <node TEXT="Centro de la Moda (Itagu&#237;)" STYLE="bubble" POSITION="left" ID="ID_160" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node ID="ID_158" POSITION="left" TEXT="En mediana cantidad">
+                                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_160" POSITION="left" STYLE="bubble" TEXT="Centro de la Moda (Itagu&#237;)">
                                                     <edge COLOR="#000000"/>
                                                 </node>
-                                                <node TEXT="Centro Comercial Boulevar El Hueco" STYLE="bubble" POSITION="left" ID="ID_161" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_161" POSITION="left" STYLE="bubble" TEXT="Centro Comercial Boulevar El Hueco">
                                                     <edge COLOR="#000000"/>
                                                 </node>
-                                                <node TEXT="Centro Comercial Jap&#243;n" STYLE="bubble" POSITION="left" ID="ID_162" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_162" POSITION="left" STYLE="bubble" TEXT="Centro Comercial Jap&#243;n">
                                                     <edge COLOR="#000000"/>
                                                 </node>
-                                                <node TEXT="Centro Comercial Hollywood" STYLE="bubble" POSITION="left" ID="ID_163" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_163" POSITION="left" STYLE="bubble" TEXT="Centro Comercial Hollywood">
                                                     <edge COLOR="#000000"/>
                                                 </node>
-                                                <node TEXT="Centro Comercial Palacio Nacional" STYLE="bubble" POSITION="left" ID="ID_167" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_167" POSITION="left" STYLE="bubble" TEXT="Centro Comercial Palacio Nacional">
                                                     <edge COLOR="#000000"/>
                                                 </node>
                                             </node>
-                                            <node TEXT="En gran cantidad" POSITION="left" ID="ID_159">
-                                                <node TEXT="Centro Comercial Punto Clave" STYLE="bubble" POSITION="left" ID="ID_164" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node ID="ID_159" POSITION="left" TEXT="En gran cantidad">
+                                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_164" POSITION="left" STYLE="bubble" TEXT="Centro Comercial Punto Clave">
                                                     <edge COLOR="#000000"/>
                                                 </node>
-                                                <node TEXT="Centro Comercial El Tesoro" STYLE="bubble" POSITION="left" ID="ID_165" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_165" POSITION="left" STYLE="bubble" TEXT="Centro Comercial El Tesoro">
                                                     <edge COLOR="#000000"/>
                                                 </node>
-                                                <node TEXT="Centro Comercial Santaf&#233;" STYLE="bubble" POSITION="left" ID="ID_166" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_166" POSITION="left" STYLE="bubble" TEXT="Centro Comercial Santaf&#233;">
                                                     <edge COLOR="#000000"/>
                                                 </node>
-                                                <node TEXT="Centro Comercial Monterrey" STYLE="bubble" POSITION="left" ID="ID_168" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_168" POSITION="left" STYLE="bubble" TEXT="Centro Comercial Monterrey">
                                                     <edge COLOR="#000000"/>
                                                 </node>
-                                                <node TEXT="Centro Comercial San Diego" STYLE="bubble" POSITION="left" ID="ID_169" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_169" POSITION="left" STYLE="bubble" TEXT="Centro Comercial San Diego">
                                                     <edge COLOR="#000000"/>
                                                 </node>
-                                                <node TEXT="Centro Comercial Oviedo" STYLE="bubble" POSITION="left" ID="ID_170" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_170" POSITION="left" STYLE="bubble" TEXT="Centro Comercial Oviedo">
                                                     <edge COLOR="#000000"/>
                                                 </node>
-                                                <node TEXT="Centro Comercial Unicentro" STYLE="bubble" POSITION="left" ID="ID_171" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_171" POSITION="left" STYLE="bubble" TEXT="Centro Comercial Unicentro">
                                                     <edge COLOR="#000000"/>
                                                 </node>
-                                                <node TEXT="Centro Comercial Mayorca" STYLE="bubble" POSITION="left" ID="ID_172" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_172" POSITION="left" STYLE="bubble" TEXT="Centro Comercial Mayorca">
                                                     <edge COLOR="#000000"/>
                                                 </node>
                                             </node>
                                         </node>
                                     </node>
                                 </node>
-                                <node TEXT="No" STYLE="bubble" POSITION="left" ID="ID_142" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_142" POSITION="left" STYLE="bubble" TEXT="No">
                                     <edge COLOR="#000000"/>
-                                    <node TEXT="&#191;Ir a comer algo?" POSITION="left" ID="ID_175">
-                                        <node TEXT="Un caf&#233; o algo as&#237;" STYLE="bubble" POSITION="left" ID="ID_176" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node ID="ID_175" POSITION="left" TEXT="&#191;Ir a comer algo?">
+                                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_176" POSITION="left" STYLE="bubble" TEXT="Un caf&#233; o algo as&#237;">
                                             <edge COLOR="#000000"/>
-                                            <node TEXT="Versalles" STYLE="bubble" POSITION="left" ID="ID_178" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_178" POSITION="left" STYLE="bubble" TEXT="Versalles">
                                                 <edge COLOR="#000000"/>
                                             </node>
-                                            <node TEXT="El Astor" STYLE="bubble" POSITION="left" ID="ID_179" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_179" POSITION="left" STYLE="bubble" TEXT="El Astor">
                                                 <edge COLOR="#000000"/>
                                             </node>
                                         </node>
-                                        <node TEXT="Un buen almuerzo" STYLE="bubble" POSITION="left" ID="ID_177" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_177" POSITION="left" STYLE="bubble" TEXT="Un buen almuerzo">
                                             <edge COLOR="#000000"/>
-                                            <node TEXT="San Carb&#243;n" STYLE="bubble" POSITION="left" ID="ID_180" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_180" POSITION="left" STYLE="bubble" TEXT="San Carb&#243;n">
                                                 <edge COLOR="#000000"/>
                                             </node>
-                                            <node TEXT="Hatoviejo" STYLE="bubble" POSITION="left" ID="ID_181" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_181" POSITION="left" STYLE="bubble" TEXT="Hatoviejo">
                                                 <edge COLOR="#000000"/>
                                             </node>
-                                            <node TEXT="Triada" STYLE="bubble" POSITION="left" ID="ID_182" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_182" POSITION="left" STYLE="bubble" TEXT="Triada">
                                                 <edge COLOR="#000000"/>
                                             </node>
-                                            <node TEXT="Il Forno" STYLE="bubble" POSITION="left" ID="ID_183" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_183" POSITION="left" STYLE="bubble" TEXT="Il Forno">
                                                 <edge COLOR="#000000"/>
                                             </node>
-                                            <node TEXT="Mondongo's" STYLE="bubble" POSITION="left" ID="ID_227" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_227" POSITION="left" STYLE="bubble" TEXT="Mondongo's">
                                                 <edge COLOR="#000000"/>
                                             </node>
                                         </node>
                                     </node>
                                 </node>
                             </node>
-                            <node TEXT="&#191;Algo educativo y divertido?" POSITION="left" ID="ID_140">
-                                <node TEXT="&#191;Parques?" POSITION="left" ID="ID_184">
-                                    <node TEXT="Educativos" STYLE="bubble" POSITION="left" ID="ID_186" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                            <node ID="ID_140" POSITION="left" TEXT="&#191;Algo educativo y divertido?">
+                                <node ID="ID_184" POSITION="left" TEXT="&#191;Parques?">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_186" POSITION="left" STYLE="bubble" TEXT="Educativos">
                                         <edge COLOR="#000000"/>
-                                        <node TEXT="Parque Explora" STYLE="bubble" POSITION="left" ID="ID_188" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_188" POSITION="left" STYLE="bubble" TEXT="Parque Explora">
                                             <edge COLOR="#000000"/>
                                         </node>
-                                        <node TEXT="Museo Interactivo EPM" STYLE="bubble" POSITION="left" ID="ID_194" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_194" POSITION="left" STYLE="bubble" TEXT="Museo Interactivo EPM">
                                             <edge COLOR="#000000"/>
                                         </node>
-                                        <node TEXT="Conocer m&#225;s centros educativos" POSITION="left" ID="ID_189">
-                                            <node TEXT="Universidad de Antioquia" STYLE="bubble" POSITION="left" ID="ID_198" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node ID="ID_189" POSITION="left" TEXT="Conocer m&#225;s centros educativos">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_198" POSITION="left" STYLE="bubble" TEXT="Universidad de Antioquia">
                                                 <edge COLOR="#000000"/>
                                             </node>
-                                            <node TEXT="Universidad Nacional" STYLE="bubble" POSITION="left" ID="ID_199" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_199" POSITION="left" STYLE="bubble" TEXT="Universidad Nacional">
                                                 <edge COLOR="#000000"/>
                                             </node>
-                                            <node TEXT="Universidad de Medell&#237;n" STYLE="bubble" POSITION="left" ID="ID_200" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_200" POSITION="left" STYLE="bubble" TEXT="Universidad de Medell&#237;n">
                                                 <edge COLOR="#000000"/>
                                             </node>
-                                            <node TEXT="Universidad EAFIT" STYLE="bubble" POSITION="left" ID="ID_201" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_201" POSITION="left" STYLE="bubble" TEXT="Universidad EAFIT">
                                                 <edge COLOR="#000000"/>
                                             </node>
-                                            <node TEXT="Universidad Pontificia Bolivariana" STYLE="bubble" POSITION="left" ID="ID_202" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_202" POSITION="left" STYLE="bubble" TEXT="Universidad Pontificia Bolivariana">
                                                 <edge COLOR="#000000"/>
                                             </node>
-                                            <node TEXT="Fundaci&#243;n Universitaria Luis Amig&#243;" STYLE="bubble" POSITION="left" ID="ID_203" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_203" POSITION="left" STYLE="bubble" TEXT="Fundaci&#243;n Universitaria Luis Amig&#243;">
                                                 <edge COLOR="#000000"/>
                                             </node>
-                                            <node TEXT="Universidad Santo Tom&#225;s" STYLE="bubble" POSITION="left" ID="ID_204" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_204" POSITION="left" STYLE="bubble" TEXT="Universidad Santo Tom&#225;s">
                                                 <edge COLOR="#000000"/>
                                             </node>
-                                            <node TEXT="Universidad CES" STYLE="bubble" POSITION="left" ID="ID_205" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_205" POSITION="left" STYLE="bubble" TEXT="Universidad CES">
                                                 <edge COLOR="#000000"/>
                                             </node>
                                         </node>
                                     </node>
-                                    <node TEXT="Divertidos" STYLE="bubble" POSITION="left" ID="ID_187" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_187" POSITION="left" STYLE="bubble" TEXT="Divertidos">
                                         <edge COLOR="#000000"/>
-                                        <node TEXT="Parque de Las Aguas" STYLE="bubble" POSITION="left" ID="ID_195" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_195" POSITION="left" STYLE="bubble" TEXT="Parque de Las Aguas">
                                             <edge COLOR="#000000"/>
                                         </node>
-                                        <node TEXT="Parque Norte" STYLE="bubble" POSITION="left" ID="ID_196" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_196" POSITION="left" STYLE="bubble" TEXT="Parque Norte">
                                             <edge COLOR="#000000"/>
                                         </node>
-                                        <node TEXT="Aeroparque Juan Pablo II" STYLE="bubble" POSITION="left" ID="ID_197" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_197" POSITION="left" STYLE="bubble" TEXT="Aeroparque Juan Pablo II">
                                             <edge COLOR="#000000"/>
                                         </node>
                                     </node>
                                 </node>
-                                <node TEXT="&#191;Otros centros?" POSITION="left" ID="ID_185">
-                                    <node TEXT="El Planetario de Medell&#237;n" STYLE="bubble" POSITION="left" ID="ID_190" COLOR="#f2f2f2" BACKGROUND_COLOR="#000000">
+                                <node ID="ID_185" POSITION="left" TEXT="&#191;Otros centros?">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#f2f2f2" ID="ID_190" POSITION="left" STYLE="bubble" TEXT="El Planetario de Medell&#237;n">
                                         <edge COLOR="#000000"/>
                                     </node>
-                                    <node TEXT="La Plaza de Toros La Macarena" STYLE="bubble" POSITION="left" ID="ID_191" COLOR="#f2f2f2" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#f2f2f2" ID="ID_191" POSITION="left" STYLE="bubble" TEXT="La Plaza de Toros La Macarena">
                                         <edge COLOR="#000000"/>
                                     </node>
-                                    <node TEXT="Jard&#237;n Bot&#225;nico Joaqu&#237;n Antonio Uribe" STYLE="bubble" POSITION="left" ID="ID_192" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_192" POSITION="left" STYLE="bubble" TEXT="Jard&#237;n Bot&#225;nico Joaqu&#237;n Antonio Uribe">
                                         <edge COLOR="#000000"/>
                                     </node>
-                                    <node TEXT="Zool&#243;gico de Santa Fe" STYLE="bubble" POSITION="left" ID="ID_193" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_193" POSITION="left" STYLE="bubble" TEXT="Zool&#243;gico de Santa Fe">
                                         <edge COLOR="#000000"/>
                                     </node>
                                 </node>
@@ -269,157 +269,157 @@
                     </node>
                 </node>
             </node>
-            <node TEXT="Conocer m&#225;s de tu ciudad" STYLE="bubble" POSITION="left" ID="ID_5" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_5" POSITION="left" STYLE="bubble" TEXT="Conocer m&#225;s de tu ciudad">
                 <edge COLOR="#000000"/>
-                <node TEXT="De la historia" STYLE="bubble" POSITION="left" ID="ID_7" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_7" POSITION="left" STYLE="bubble" TEXT="De la historia">
                     <edge COLOR="#000000"/>
-                    <node TEXT="De una manera divertida" STYLE="bubble" POSITION="left" ID="ID_10" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_10" POSITION="left" STYLE="bubble" TEXT="De una manera divertida">
                         <edge COLOR="#000000"/>
-                        <node TEXT="&#191;Te gustan los teatros?" POSITION="left" ID="ID_12">
-                            <node TEXT="S&#237;" STYLE="bubble" POSITION="left" ID="ID_14" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                        <node ID="ID_12" POSITION="left" TEXT="&#191;Te gustan los teatros?">
+                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_14" POSITION="left" STYLE="bubble" TEXT="S&#237;">
                                 <edge COLOR="#000000"/>
-                                <node TEXT="&#191;Los Cl&#225;sicos?" POSITION="left" ID="ID_15">
-                                    <node TEXT="S&#237;" STYLE="bubble" POSITION="left" ID="ID_16" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                <node ID="ID_15" POSITION="left" TEXT="&#191;Los Cl&#225;sicos?">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_16" POSITION="left" STYLE="bubble" TEXT="S&#237;">
                                         <edge COLOR="#000000"/>
-                                        <node TEXT="Entonces puedes visitar" POSITION="left" ID="ID_21">
-                                            <node TEXT="Teatro Pablo Tob&#243;n Uribe" STYLE="bubble" POSITION="left" ID="ID_19" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node ID="ID_21" POSITION="left" TEXT="Entonces puedes visitar">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_19" POSITION="left" STYLE="bubble" TEXT="Teatro Pablo Tob&#243;n Uribe">
                                                 <edge COLOR="#000000"/>
                                             </node>
-                                            <node TEXT="Teatro Lido" STYLE="bubble" POSITION="left" ID="ID_18" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_18" POSITION="left" STYLE="bubble" TEXT="Teatro Lido">
                                                 <edge COLOR="#000000"/>
                                             </node>
-                                            <node TEXT="Teatro Metropolitano" STYLE="bubble" POSITION="left" ID="ID_20" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_20" POSITION="left" STYLE="bubble" TEXT="Teatro Metropolitano">
                                                 <font ITALIC="true"/>
                                                 <edge COLOR="#000000"/>
                                             </node>
-                                            <node TEXT="Teatro Porfirio Barba Jacob" STYLE="bubble" POSITION="left" ID="ID_22" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_22" POSITION="left" STYLE="bubble" TEXT="Teatro Porfirio Barba Jacob">
                                                 <edge COLOR="#000000"/>
                                             </node>
                                         </node>
                                     </node>
-                                    <node TEXT="No" STYLE="bubble" POSITION="left" ID="ID_17" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_17" POSITION="left" STYLE="bubble" TEXT="No">
                                         <edge COLOR="#000000"/>
-                                        <node TEXT="Seguro te gustar&#225;n estos" POSITION="left" ID="ID_23">
-                                            <node TEXT="El Peque&#65533;&#65533;o Teatro" STYLE="bubble" POSITION="left" ID="ID_24" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node ID="ID_23" POSITION="left" TEXT="Seguro te gustar&#225;n estos">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_24" POSITION="left" STYLE="bubble" TEXT="El Peque&#65533;&#65533;o Teatro">
                                                 <edge COLOR="#000000"/>
                                             </node>
-                                            <node TEXT="Teatro de Mu&#241;ecos La Fanfarria" STYLE="bubble" POSITION="left" ID="ID_25" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_25" POSITION="left" STYLE="bubble" TEXT="Teatro de Mu&#241;ecos La Fanfarria">
                                                 <edge COLOR="#000000"/>
                                             </node>
-                                            <node TEXT="Teatro El &#193;guila Descalza" STYLE="bubble" POSITION="left" ID="ID_26" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_26" POSITION="left" STYLE="bubble" TEXT="Teatro El &#193;guila Descalza">
                                                 <edge COLOR="#000000"/>
                                             </node>
-                                            <node TEXT="Teatro Manicomio De Mu&#65533;&#65533;ecos" STYLE="bubble" POSITION="left" ID="ID_27" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_27" POSITION="left" STYLE="bubble" TEXT="Teatro Manicomio De Mu&#65533;&#65533;ecos">
                                                 <edge COLOR="#000000"/>
                                             </node>
-                                            <node TEXT="Teatro Matacandelas" STYLE="bubble" POSITION="left" ID="ID_28" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_28" POSITION="left" STYLE="bubble" TEXT="Teatro Matacandelas">
                                                 <edge COLOR="#000000"/>
                                             </node>
-                                            <node TEXT="Teatro Universidad de Medell&#237;n" STYLE="bubble" POSITION="left" ID="ID_29" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_29" POSITION="left" STYLE="bubble" TEXT="Teatro Universidad de Medell&#237;n">
                                                 <edge COLOR="#000000"/>
                                             </node>
-                                            <node TEXT="Teatro Caja Negra" STYLE="bubble" POSITION="left" ID="ID_30" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_30" POSITION="left" STYLE="bubble" TEXT="Teatro Caja Negra">
                                                 <edge COLOR="#000000"/>
                                             </node>
                                         </node>
                                     </node>
                                 </node>
                             </node>
-                            <node TEXT="No" STYLE="bubble" POSITION="left" ID="ID_13" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_13" POSITION="left" STYLE="bubble" TEXT="No">
                                 <edge COLOR="#000000"/>
-                                <node TEXT="&#191;Qu&#233; tal los museos?" POSITION="left" ID="ID_31">
-                                    <node TEXT="Est&#225;n bien" STYLE="bubble" POSITION="left" ID="ID_33" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                <node ID="ID_31" POSITION="left" TEXT="&#191;Qu&#233; tal los museos?">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_33" POSITION="left" STYLE="bubble" TEXT="Est&#225;n bien">
                                         <edge COLOR="#000000"/>
-                                        <node TEXT="&#191;De los antiguos?" POSITION="left" ID="ID_34">
-                                            <node TEXT="S&#237;" STYLE="bubble" POSITION="left" ID="ID_35" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node ID="ID_34" POSITION="left" TEXT="&#191;De los antiguos?">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_35" POSITION="left" STYLE="bubble" TEXT="S&#237;">
                                                 <edge COLOR="#000000"/>
-                                                <node TEXT="Museo de Antioquia" STYLE="bubble" POSITION="left" ID="ID_37" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_37" POSITION="left" STYLE="bubble" TEXT="Museo de Antioquia">
                                                     <edge COLOR="#000000"/>
                                                 </node>
-                                                <node TEXT="Museo Cementerio San Pedro" STYLE="bubble" POSITION="left" ID="ID_38" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_38" POSITION="left" STYLE="bubble" TEXT="Museo Cementerio San Pedro">
                                                     <edge COLOR="#000000"/>
                                                 </node>
-                                                <node TEXT="Museo El Castillo" STYLE="bubble" POSITION="left" ID="ID_41" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_41" POSITION="left" STYLE="bubble" TEXT="Museo El Castillo">
                                                     <edge COLOR="#000000"/>
                                                 </node>
                                             </node>
-                                            <node TEXT="Algo m&#225;s nuevo, mejor" STYLE="bubble" POSITION="left" ID="ID_36" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_36" POSITION="left" STYLE="bubble" TEXT="Algo m&#225;s nuevo, mejor">
                                                 <edge COLOR="#000000"/>
-                                                <node TEXT="Museo de Arte Moderno (MAMM)" STYLE="bubble" POSITION="left" ID="ID_39" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_39" POSITION="left" STYLE="bubble" TEXT="Museo de Arte Moderno (MAMM)">
                                                     <edge COLOR="#000000"/>
                                                 </node>
-                                                <node TEXT="Museo Universitario Universidad de Antioquia (MUUA)" STYLE="bubble" POSITION="left" ID="ID_40" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_40" POSITION="left" STYLE="bubble" TEXT="Museo Universitario Universidad de Antioquia (MUUA)">
                                                     <edge COLOR="#000000"/>
                                                 </node>
-                                                <node TEXT="Casa Museo Maestro Pedro Nel G&#243;mez" STYLE="bubble" POSITION="left" ID="ID_42" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_42" POSITION="left" STYLE="bubble" TEXT="Casa Museo Maestro Pedro Nel G&#243;mez">
                                                     <edge COLOR="#000000"/>
                                                 </node>
-                                                <node TEXT="Casa Museo Gardeliana " STYLE="bubble" POSITION="left" ID="ID_43" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_43" POSITION="left" STYLE="bubble" TEXT="Casa Museo Gardeliana ">
                                                     <edge COLOR="#000000"/>
                                                 </node>
                                             </node>
                                         </node>
                                     </node>
-                                    <node TEXT="No te gustan" STYLE="bubble" POSITION="left" ID="ID_32" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_32" POSITION="left" STYLE="bubble" TEXT="No te gustan">
                                         <edge COLOR="#000000"/>
                                     </node>
                                 </node>
                             </node>
                         </node>
                     </node>
-                    <node TEXT="De la historia que est&#225; en los libros" STYLE="bubble" POSITION="left" ID="ID_11" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_11" POSITION="left" STYLE="bubble" TEXT="De la historia que est&#225; en los libros">
                         <edge COLOR="#000000"/>
-                        <node TEXT="&#191;Quieres ir a una biblioteca?" POSITION="left" ID="ID_44">
-                            <node TEXT="S&#237;" STYLE="bubble" POSITION="left" ID="ID_45" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                        <node ID="ID_44" POSITION="left" TEXT="&#191;Quieres ir a una biblioteca?">
+                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_45" POSITION="left" STYLE="bubble" TEXT="S&#237;">
                                 <edge COLOR="#000000"/>
-                                <node TEXT="De las tradicionales" STYLE="bubble" POSITION="left" ID="ID_47" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_47" POSITION="left" STYLE="bubble" TEXT="De las tradicionales">
                                     <edge COLOR="#000000"/>
-                                    <node TEXT="Biblioteca P&#250;blica Piloto" STYLE="bubble" POSITION="left" ID="ID_49" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_49" POSITION="left" STYLE="bubble" TEXT="Biblioteca P&#250;blica Piloto">
                                         <edge COLOR="#000000"/>
                                     </node>
-                                    <node TEXT="Biblioteca EPM" STYLE="bubble" POSITION="left" ID="ID_50" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_50" POSITION="left" STYLE="bubble" TEXT="Biblioteca EPM">
                                         <edge COLOR="#000000"/>
                                     </node>
                                 </node>
-                                <node TEXT="Parques biblioteca" STYLE="bubble" POSITION="left" ID="ID_48" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_48" POSITION="left" STYLE="bubble" TEXT="Parques biblioteca">
                                     <edge COLOR="#000000"/>
-                                    <node TEXT="Espa&#241;a" STYLE="bubble" POSITION="left" ID="ID_52" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_52" POSITION="left" STYLE="bubble" TEXT="Espa&#241;a">
                                         <edge COLOR="#000000"/>
                                     </node>
-                                    <node TEXT="San Javier" STYLE="bubble" POSITION="left" ID="ID_51" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_51" POSITION="left" STYLE="bubble" TEXT="San Javier">
                                         <edge COLOR="#000000"/>
                                     </node>
-                                    <node TEXT="La Quintana" STYLE="bubble" POSITION="left" ID="ID_55" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_55" POSITION="left" STYLE="bubble" TEXT="La Quintana">
                                         <edge COLOR="#000000"/>
                                     </node>
-                                    <node TEXT="La Ladera" STYLE="bubble" POSITION="left" ID="ID_53" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_53" POSITION="left" STYLE="bubble" TEXT="La Ladera">
                                         <edge COLOR="#000000"/>
                                     </node>
-                                    <node TEXT="Bel&#233;n" STYLE="bubble" POSITION="left" ID="ID_54" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_54" POSITION="left" STYLE="bubble" TEXT="Bel&#233;n">
                                         <edge COLOR="#000000"/>
                                     </node>
                                 </node>
                             </node>
-                            <node TEXT="No" STYLE="bubble" POSITION="left" ID="ID_46" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_46" POSITION="left" STYLE="bubble" TEXT="No">
                                 <edge COLOR="#000000"/>
-                                <node TEXT="&#191;Algo m&#225;s de mapas?" POSITION="left" ID="ID_65">
-                                    <node TEXT="S&#237;, de historia de verdad" STYLE="bubble" POSITION="left" ID="ID_66" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                <node ID="ID_65" POSITION="left" TEXT="&#191;Algo m&#225;s de mapas?">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_66" POSITION="left" STYLE="bubble" TEXT="S&#237;, de historia de verdad">
                                         <edge COLOR="#000000"/>
-                                        <node TEXT="Archivo Hist&#243;rico de Medell&#237;n" STYLE="bubble" POSITION="left" ID="ID_68" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_68" POSITION="left" STYLE="bubble" TEXT="Archivo Hist&#243;rico de Medell&#237;n">
                                             <edge COLOR="#000000"/>
                                         </node>
-                                        <node TEXT="Academia de Historia de Antioquia" STYLE="bubble" POSITION="left" ID="ID_69" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_69" POSITION="left" STYLE="bubble" TEXT="Academia de Historia de Antioquia">
                                             <edge COLOR="#000000"/>
                                         </node>
                                     </node>
-                                    <node TEXT="No" STYLE="bubble" POSITION="left" ID="ID_67" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_67" POSITION="left" STYLE="bubble" TEXT="No">
                                         <edge COLOR="#000000"/>
-                                        <node TEXT="&#191;Mejor a un parque?" POSITION="left" ID="ID_61">
-                                            <node TEXT="S&#237;" STYLE="bubble" POSITION="left" ID="ID_62" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node ID="ID_61" POSITION="left" TEXT="&#191;Mejor a un parque?">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_62" POSITION="left" STYLE="bubble" TEXT="S&#237;">
                                                 <edge COLOR="#000000"/>
-                                                <arrowlink ENDARROW="Default" DESTINATION="ID_76"/>
+                                                <arrowlink DESTINATION="ID_76" ENDARROW="Default"/>
                                             </node>
-                                            <node TEXT="Tampoco" STYLE="bubble" POSITION="left" ID="ID_63" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_63" POSITION="left" STYLE="bubble" TEXT="Tampoco">
                                                 <edge COLOR="#000000"/>
                                             </node>
                                         </node>
@@ -429,92 +429,92 @@
                         </node>
                     </node>
                 </node>
-                <node TEXT="De la geograf&#237;a" STYLE="bubble" POSITION="left" ID="ID_9" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_9" POSITION="left" STYLE="bubble" TEXT="De la geograf&#237;a">
                     <edge COLOR="#000000"/>
-                    <node TEXT="Parques naturales" STYLE="bubble" POSITION="left" ID="ID_70" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_70" POSITION="left" STYLE="bubble" TEXT="Parques naturales">
                         <edge COLOR="#000000"/>
-                        <node TEXT="Parque ecol&#243;gico Piedras Blancas" STYLE="bubble" POSITION="left" ID="ID_72" COLOR="#f5f5f5" BACKGROUND_COLOR="#000000">
+                        <node BACKGROUND_COLOR="#000000" COLOR="#f5f5f5" ID="ID_72" POSITION="left" STYLE="bubble" TEXT="Parque ecol&#243;gico Piedras Blancas">
                             <edge COLOR="#000000"/>
                         </node>
-                        <node TEXT="Ecoparque Cerro El Volador" STYLE="bubble" POSITION="left" ID="ID_73" COLOR="#f5f5f5" BACKGROUND_COLOR="#000000">
+                        <node BACKGROUND_COLOR="#000000" COLOR="#f5f5f5" ID="ID_73" POSITION="left" STYLE="bubble" TEXT="Ecoparque Cerro El Volador">
                             <edge COLOR="#000000"/>
                         </node>
-                        <node TEXT="Parque Ecol&#243;gico Cerro Nutibara" STYLE="bubble" POSITION="left" ID="ID_74" COLOR="#f5f5f5" BACKGROUND_COLOR="#000000">
+                        <node BACKGROUND_COLOR="#000000" COLOR="#f5f5f5" ID="ID_74" POSITION="left" STYLE="bubble" TEXT="Parque Ecol&#243;gico Cerro Nutibara">
                             <edge COLOR="#000000"/>
                         </node>
-                        <node TEXT="Parque Ecotur&#237;stico Arv&#237;" STYLE="bubble" POSITION="left" ID="ID_75" COLOR="#f5f5f5" BACKGROUND_COLOR="#000000">
+                        <node BACKGROUND_COLOR="#000000" COLOR="#f5f5f5" ID="ID_75" POSITION="left" STYLE="bubble" TEXT="Parque Ecotur&#237;stico Arv&#237;">
                             <edge COLOR="#000000"/>
                         </node>
                     </node>
-                    <node TEXT="Parques urbanos" STYLE="bubble" POSITION="left" ID="ID_71" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_71" POSITION="left" STYLE="bubble" TEXT="Parques urbanos">
                         <edge COLOR="#000000"/>
-                        <node TEXT="&#191;De los tradicionales?" POSITION="left" ID="ID_76">
-                            <node TEXT="S&#237;" STYLE="bubble" POSITION="left" ID="ID_79" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                        <node ID="ID_76" POSITION="left" TEXT="&#191;De los tradicionales?">
+                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_79" POSITION="left" STYLE="bubble" TEXT="S&#237;">
                                 <edge COLOR="#000000"/>
-                                <node TEXT="Plazas" STYLE="bubble" POSITION="left" ID="ID_77" COLOR="#f7f7f7" BACKGROUND_COLOR="#000000">
+                                <node BACKGROUND_COLOR="#000000" COLOR="#f7f7f7" ID="ID_77" POSITION="left" STYLE="bubble" TEXT="Plazas">
                                     <edge COLOR="#000000"/>
-                                    <node TEXT="Plaza de San Antonio" STYLE="bubble" POSITION="left" ID="ID_81" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_81" POSITION="left" STYLE="bubble" TEXT="Plaza de San Antonio">
                                         <edge COLOR="#000000"/>
                                     </node>
-                                    <node TEXT="Plaza Botero" STYLE="bubble" POSITION="left" ID="ID_82" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_82" POSITION="left" STYLE="bubble" TEXT="Plaza Botero">
                                         <edge COLOR="#000000"/>
                                     </node>
-                                    <node TEXT="Plaza Cisneros" STYLE="bubble" POSITION="left" ID="ID_83" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_83" POSITION="left" STYLE="bubble" TEXT="Plaza Cisneros">
                                         <edge COLOR="#000000"/>
                                     </node>
-                                    <node TEXT="Plazuela San Ignacio" STYLE="bubble" POSITION="left" ID="ID_85" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_85" POSITION="left" STYLE="bubble" TEXT="Plazuela San Ignacio">
                                         <edge COLOR="#000000"/>
                                     </node>
-                                    <node TEXT="Plaza de la Libertad" STYLE="bubble" POSITION="left" ID="ID_84" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_84" POSITION="left" STYLE="bubble" TEXT="Plaza de la Libertad">
                                         <edge COLOR="#000000"/>
                                     </node>
-                                    <node TEXT="Plazuela Nutibara" STYLE="bubble" POSITION="left" ID="ID_86" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_86" POSITION="left" STYLE="bubble" TEXT="Plazuela Nutibara">
                                         <edge COLOR="#000000"/>
                                     </node>
-                                    <node TEXT="Plazuela de la Veracruz" STYLE="bubble" POSITION="left" ID="ID_87" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_87" POSITION="left" STYLE="bubble" TEXT="Plazuela de la Veracruz">
                                         <edge COLOR="#000000"/>
                                     </node>
                                 </node>
-                                <node TEXT="Parques" STYLE="bubble" POSITION="left" ID="ID_78" COLOR="#f7f7f7" BACKGROUND_COLOR="#000000">
+                                <node BACKGROUND_COLOR="#000000" COLOR="#f7f7f7" ID="ID_78" POSITION="left" STYLE="bubble" TEXT="Parques">
                                     <edge COLOR="#000000"/>
-                                    <node TEXT="Parque de Bol&#237;var" STYLE="bubble" POSITION="left" ID="ID_88" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_88" POSITION="left" STYLE="bubble" TEXT="Parque de Bol&#237;var">
                                         <edge COLOR="#000000"/>
                                     </node>
-                                    <node TEXT="Parque de Berr&#237;o" STYLE="bubble" POSITION="left" ID="ID_89" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_89" POSITION="left" STYLE="bubble" TEXT="Parque de Berr&#237;o">
                                         <edge COLOR="#000000"/>
                                     </node>
-                                    <node TEXT="Parque de Boston" STYLE="bubble" POSITION="left" ID="ID_90" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_90" POSITION="left" STYLE="bubble" TEXT="Parque de Boston">
                                         <edge COLOR="#000000"/>
                                     </node>
-                                    <node TEXT="Parque del Poblado" STYLE="bubble" POSITION="left" ID="ID_91" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_91" POSITION="left" STYLE="bubble" TEXT="Parque del Poblado">
                                         <edge COLOR="#000000"/>
                                     </node>
-                                    <node TEXT="Parque de Bel&#233;n" STYLE="bubble" POSITION="left" ID="ID_92" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_92" POSITION="left" STYLE="bubble" TEXT="Parque de Bel&#233;n">
                                         <edge COLOR="#000000"/>
                                     </node>
-                                    <node TEXT="Parque del Periodista" STYLE="bubble" POSITION="left" ID="ID_93" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_93" POSITION="left" STYLE="bubble" TEXT="Parque del Periodista">
                                         <edge COLOR="#000000"/>
                                     </node>
                                 </node>
                             </node>
-                            <node TEXT="No, algo distinto" STYLE="bubble" POSITION="left" ID="ID_80" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_80" POSITION="left" STYLE="bubble" TEXT="No, algo distinto">
                                 <edge COLOR="#000000"/>
-                                <node TEXT="Parque Lleras" STYLE="bubble" POSITION="left" ID="ID_94" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_94" POSITION="left" STYLE="bubble" TEXT="Parque Lleras">
                                     <edge COLOR="#000000"/>
                                 </node>
-                                <node TEXT="Parque de los Pies Descalzos" STYLE="bubble" POSITION="left" ID="ID_95" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_95" POSITION="left" STYLE="bubble" TEXT="Parque de los Pies Descalzos">
                                     <edge COLOR="#000000"/>
                                 </node>
-                                <node TEXT="Parque Lineal La Presidenta" STYLE="bubble" POSITION="left" ID="ID_96" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_96" POSITION="left" STYLE="bubble" TEXT="Parque Lineal La Presidenta">
                                     <edge COLOR="#000000"/>
                                 </node>
-                                <node TEXT="Parque de Los Deseos" STYLE="bubble" POSITION="left" ID="ID_97" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_97" POSITION="left" STYLE="bubble" TEXT="Parque de Los Deseos">
                                     <edge COLOR="#000000"/>
                                 </node>
-                                <node TEXT="Parque de La Bailarina" STYLE="bubble" POSITION="left" ID="ID_98" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_98" POSITION="left" STYLE="bubble" TEXT="Parque de La Bailarina">
                                     <edge COLOR="#000000"/>
                                 </node>
-                                <node TEXT="Parque Juanes de La Paz" STYLE="bubble" POSITION="left" ID="ID_99" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_99" POSITION="left" STYLE="bubble" TEXT="Parque Juanes de La Paz">
                                     <edge COLOR="#000000"/>
                                 </node>
                             </node>
@@ -522,68 +522,68 @@
                     </node>
                 </node>
             </node>
-            <node TEXT="Otra informaci&#243;n" STYLE="bubble" POSITION="left" ID="ID_8" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_8" POSITION="left" STYLE="bubble" TEXT="Otra informaci&#243;n">
                 <edge COLOR="#000000"/>
-                <node TEXT="&#191;Una emergencia?" POSITION="left" ID="ID_102">
-                    <node TEXT="S&#237;" POSITION="left" ID="ID_105">
-                        <node TEXT="&#191;Tienes tel&#233;fono?" POSITION="left" ID="ID_107">
-                            <node TEXT="S&#237;" STYLE="bubble" POSITION="left" ID="ID_108" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                <node ID="ID_102" POSITION="left" TEXT="&#191;Una emergencia?">
+                    <node ID="ID_105" POSITION="left" TEXT="S&#237;">
+                        <node ID="ID_107" POSITION="left" TEXT="&#191;Tienes tel&#233;fono?">
+                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_108" POSITION="left" STYLE="bubble" TEXT="S&#237;">
                                 <edge COLOR="#000000"/>
-                                <node TEXT="Polic&#237;a: Llama al 112" STYLE="bubble" POSITION="left" ID="ID_117" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_117" POSITION="left" STYLE="bubble" TEXT="Polic&#237;a: Llama al 112">
                                     <edge COLOR="#000000"/>
                                 </node>
-                                <node TEXT="Seguridad: Llama al 123" STYLE="bubble" POSITION="left" ID="ID_119" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_119" POSITION="left" STYLE="bubble" TEXT="Seguridad: Llama al 123">
                                     <edge COLOR="#000000"/>
                                 </node>
-                                <node TEXT="Salud: Llama al 125" STYLE="bubble" POSITION="left" ID="ID_118" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_118" POSITION="left" STYLE="bubble" TEXT="Salud: Llama al 125">
                                     <edge COLOR="#000000"/>
                                 </node>
-                                <node TEXT="Informaci&#243;n: " STYLE="bubble" POSITION="left" ID="ID_120" COLOR="#fcfcfc" BACKGROUND_COLOR="#ff0000">
+                                <node BACKGROUND_COLOR="#ff0000" COLOR="#fcfcfc" ID="ID_120" POSITION="left" STYLE="bubble" TEXT="Informaci&#243;n: ">
                                     <edge COLOR="#000000"/>
                                 </node>
                             </node>
-                            <node TEXT="No, es mejor ir" STYLE="bubble" POSITION="left" ID="ID_109" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_109" POSITION="left" STYLE="bubble" TEXT="No, es mejor ir">
                                 <edge COLOR="#000000"/>
-                                <node TEXT="&#191;Alg&#250;n punto de Salud?" POSITION="left" ID="ID_100">
-                                    <node TEXT="Hospitales" STYLE="bubble" POSITION="left" ID="ID_101" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                <node ID="ID_100" POSITION="left" TEXT="&#191;Alg&#250;n punto de Salud?">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_101" POSITION="left" STYLE="bubble" TEXT="Hospitales">
                                         <edge COLOR="#000000"/>
-                                        <node TEXT="Hospital Universitario San Vicente de Pa&#250;l" STYLE="bubble" POSITION="left" ID="ID_121" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_121" POSITION="left" STYLE="bubble" TEXT="Hospital Universitario San Vicente de Pa&#250;l">
                                             <edge COLOR="#000000"/>
                                         </node>
-                                        <node TEXT="Hospital Pablo Tob&#243;n Uribe" STYLE="bubble" POSITION="left" ID="ID_122" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_122" POSITION="left" STYLE="bubble" TEXT="Hospital Pablo Tob&#243;n Uribe">
                                             <edge COLOR="#000000"/>
                                         </node>
-                                        <node TEXT="Hospital General de Medell&#237;n" STYLE="bubble" POSITION="left" ID="ID_123" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_123" POSITION="left" STYLE="bubble" TEXT="Hospital General de Medell&#237;n">
                                             <edge COLOR="#000000"/>
                                         </node>
                                     </node>
-                                    <node TEXT="Cl&#237;nicas" STYLE="bubble" POSITION="left" ID="ID_104" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_104" POSITION="left" STYLE="bubble" TEXT="Cl&#237;nicas">
                                         <edge COLOR="#000000"/>
-                                        <node TEXT="Cl&#237;nica Soma" STYLE="bubble" POSITION="left" ID="ID_124" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_124" POSITION="left" STYLE="bubble" TEXT="Cl&#237;nica Soma">
                                             <edge COLOR="#000000"/>
                                         </node>
-                                        <node TEXT="Cl&#237;nica Medell&#237;n" STYLE="bubble" POSITION="left" ID="ID_125" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_125" POSITION="left" STYLE="bubble" TEXT="Cl&#237;nica Medell&#237;n">
                                             <edge COLOR="#000000"/>
                                         </node>
-                                        <node TEXT="Cl&#237;nica CES" STYLE="bubble" POSITION="left" ID="ID_126" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_126" POSITION="left" STYLE="bubble" TEXT="Cl&#237;nica CES">
                                             <edge COLOR="#000000"/>
                                         </node>
-                                        <node TEXT="Cl&#237;nica Las Am&#233;ricas" STYLE="bubble" POSITION="left" ID="ID_127" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_127" POSITION="left" STYLE="bubble" TEXT="Cl&#237;nica Las Am&#233;ricas">
                                             <edge COLOR="#000000"/>
                                         </node>
-                                        <node TEXT="Cl&#237;nica Cardiovascular" STYLE="bubble" POSITION="left" ID="ID_131" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_131" POSITION="left" STYLE="bubble" TEXT="Cl&#237;nica Cardiovascular">
                                             <edge COLOR="#000000"/>
                                         </node>
-                                        <node TEXT="Cl&#237;nica Las Vegas" STYLE="bubble" POSITION="left" ID="ID_128" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_128" POSITION="left" STYLE="bubble" TEXT="Cl&#237;nica Las Vegas">
                                             <edge COLOR="#000000"/>
                                         </node>
-                                        <node TEXT="Cl&#237;nica El Rosario" STYLE="bubble" POSITION="left" ID="ID_129" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_129" POSITION="left" STYLE="bubble" TEXT="Cl&#237;nica El Rosario">
                                             <edge COLOR="#000000"/>
                                         </node>
-                                        <node TEXT="Cl&#237;nica El Prado" STYLE="bubble" POSITION="left" ID="ID_130" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_130" POSITION="left" STYLE="bubble" TEXT="Cl&#237;nica El Prado">
                                             <edge COLOR="#000000"/>
                                         </node>
-                                        <node TEXT="Cl&#237;nica El Sagrado Coraz&#243;n" STYLE="bubble" POSITION="left" ID="ID_132" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_132" POSITION="left" STYLE="bubble" TEXT="Cl&#237;nica El Sagrado Coraz&#243;n">
                                             <edge COLOR="#000000"/>
                                         </node>
                                     </node>
@@ -591,26 +591,26 @@
                             </node>
                         </node>
                     </node>
-                    <node TEXT="No" POSITION="left" ID="ID_106">
-                        <node TEXT="&#191;Est&#225;s perdido?" POSITION="left" ID="ID_103">
-                            <node TEXT="Un poco" STYLE="bubble" POSITION="left" ID="ID_110" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                    <node ID="ID_106" POSITION="left" TEXT="No">
+                        <node ID="ID_103" POSITION="left" TEXT="&#191;Est&#225;s perdido?">
+                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_110" POSITION="left" STYLE="bubble" TEXT="Un poco">
                                 <edge COLOR="#000000"/>
-                                <node TEXT="Puedes utilizar" POSITION="left" ID="ID_112">
-                                    <node TEXT="Un bus" STYLE="bubble" POSITION="left" ID="ID_113" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                <node ID="ID_112" POSITION="left" TEXT="Puedes utilizar">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_113" POSITION="left" STYLE="bubble" TEXT="Un bus">
                                         <edge COLOR="#000000"/>
                                     </node>
-                                    <node TEXT="El Metro" STYLE="bubble" POSITION="left" ID="ID_114" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_114" POSITION="left" STYLE="bubble" TEXT="El Metro">
                                         <edge COLOR="#000000"/>
-                                        <node TEXT="Metro Cable" STYLE="bubble" POSITION="left" ID="ID_116" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                        <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_116" POSITION="left" STYLE="bubble" TEXT="Metro Cable">
                                             <edge COLOR="#000000"/>
                                         </node>
                                     </node>
-                                    <node TEXT="El Metropl&#250;s" STYLE="bubble" POSITION="left" ID="ID_115" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                                    <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_115" POSITION="left" STYLE="bubble" TEXT="El Metropl&#250;s">
                                         <edge COLOR="#000000"/>
                                     </node>
                                 </node>
                             </node>
-                            <node TEXT="No" STYLE="bubble" POSITION="left" ID="ID_111" COLOR="#ffffff" BACKGROUND_COLOR="#000000">
+                            <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_111" POSITION="left" STYLE="bubble" TEXT="No">
                                 <edge COLOR="#000000"/>
                             </node>
                         </node>

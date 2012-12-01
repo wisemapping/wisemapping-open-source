@@ -1,23 +1,23 @@
 <map version="0.9.0">
-    <node TEXT="Welcome To WiseMapping" ID="ID_1" COLOR="#dfcfe6" BACKGROUND_COLOR="#0a0a08">
-        <node TEXT="Try it Now!" POSITION="right" ID="ID_11" COLOR="#ffffff" BACKGROUND_COLOR="#250be3">
+    <node BACKGROUND_COLOR="#0a0a08" COLOR="#dfcfe6" ID="ID_1" TEXT="Welcome To WiseMapping">
+        <node BACKGROUND_COLOR="#250be3" COLOR="#ffffff" ID="ID_11" POSITION="right" TEXT="Try it Now!">
             <edge COLOR="#080559"/>
-            <node TEXT="Double Click" POSITION="right" ID="ID_12" COLOR="#001be6">
+            <node COLOR="#001be6" ID="ID_12" POSITION="right" TEXT="Double Click">
                 <font ITALIC="true"/>
             </node>
-            <node TEXT=" INS to insert" POSITION="right" ID="ID_13" COLOR="#001be6">
+            <node COLOR="#001be6" ID="ID_13" POSITION="right" TEXT=" INS to insert">
                 <font ITALIC="true"/>
             </node>
-            <node TEXT="Drag map to move" POSITION="right" ID="ID_14" COLOR="#001be6">
+            <node COLOR="#001be6" ID="ID_14" POSITION="right" TEXT="Drag map to move">
                 <font ITALIC="true"/>
             </node>
         </node>
-        <node TEXT="Productivity" POSITION="left" ID="ID_2" COLOR="#104f11" BACKGROUND_COLOR="#d9b518">
+        <node BACKGROUND_COLOR="#d9b518" COLOR="#104f11" ID="ID_2" POSITION="left" TEXT="Productivity">
             <icon BUILTIN="bar"/>
-            <node TEXT="Share your ideas" POSITION="left" ID="ID_3">
+            <node ID="ID_3" POSITION="left" TEXT="Share your ideas">
                 <icon BUILTIN="idea"/>
             </node>
-            <node POSITION="left" ID="ID_4">
+            <node ID="ID_4" POSITION="left">
                 <richcontent TYPE="NODE">
                     <html>
                         <head/>
@@ -30,33 +30,33 @@
                     </html>
                 </richcontent>
             </node>
-            <node TEXT="Visual " POSITION="left" ID="ID_5"/>
+            <node ID="ID_5" POSITION="left" TEXT="Visual "/>
         </node>
-        <node TEXT="Mind Mapping" POSITION="right" ID="ID_6" COLOR="#602378" BACKGROUND_COLOR="#edabff">
-            <node TEXT="Share with Collegues" POSITION="right" ID="ID_7"/>
-            <node TEXT="Online" POSITION="right" ID="ID_8"/>
-            <node TEXT="Anyplace, Anytime" POSITION="right" ID="ID_9"/>
-            <node TEXT="Free!!!" POSITION="right" ID="ID_10"/>
+        <node BACKGROUND_COLOR="#edabff" COLOR="#602378" ID="ID_6" POSITION="right" TEXT="Mind Mapping">
+            <node ID="ID_7" POSITION="right" TEXT="Share with Collegues"/>
+            <node ID="ID_8" POSITION="right" TEXT="Online"/>
+            <node ID="ID_9" POSITION="right" TEXT="Anyplace, Anytime"/>
+            <node ID="ID_10" POSITION="right" TEXT="Free!!!"/>
         </node>
-        <node TEXT="Web 2.0 Tool" POSITION="left" ID="ID_22" COLOR="#0c1d6b" BACKGROUND_COLOR="#add1f7">
-            <node TEXT="Collaborate" POSITION="left" ID="ID_23"/>
-            <node TEXT="No plugin required" POSITION="left" ID="ID_24">
+        <node BACKGROUND_COLOR="#add1f7" COLOR="#0c1d6b" ID="ID_22" POSITION="left" TEXT="Web 2.0 Tool">
+            <node ID="ID_23" POSITION="left" TEXT="Collaborate"/>
+            <node ID="ID_24" POSITION="left" TEXT="No plugin required">
                 <icon BUILTIN="disconnect"/>
             </node>
-            <node TEXT="Share" POSITION="left" ID="ID_25"/>
-            <node TEXT="Easy to use" POSITION="left" ID="ID_26"/>
+            <node ID="ID_25" POSITION="left" TEXT="Share"/>
+            <node ID="ID_26" POSITION="left" TEXT="Easy to use"/>
         </node>
-        <node TEXT="Features" POSITION="right" ID="ID_15">
-            <node TEXT="Links to Sites" POSITION="right" LINK="http://www.digg.com" ID="ID_16">
+        <node ID="ID_15" POSITION="right" TEXT="Features">
+            <node ID="ID_16" LINK="http://www.digg.com" POSITION="right" TEXT="Links to Sites">
                 <font SIZE="6"/>
             </node>
-            <node TEXT="Fonts" POSITION="right" ID="ID_17"/>
-            <node TEXT="Topic Color" POSITION="right" ID="ID_18"/>
-            <node TEXT="Topic Shapes" POSITION="right" ID="ID_19"/>
-            <node TEXT="Icons" POSITION="right" ID="ID_20">
+            <node ID="ID_17" POSITION="right" TEXT="Fonts"/>
+            <node ID="ID_18" POSITION="right" TEXT="Topic Color"/>
+            <node ID="ID_19" POSITION="right" TEXT="Topic Shapes"/>
+            <node ID="ID_20" POSITION="right" TEXT="Icons">
                 <icon BUILTIN="rainbow"/>
             </node>
-            <node TEXT="History Changes" POSITION="right" ID="ID_21">
+            <node ID="ID_21" POSITION="right" TEXT="History Changes">
                 <icon BUILTIN="turn_left"/>
             </node>
         </node>

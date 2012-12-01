@@ -1,25 +1,25 @@
 <map version="0.9.0">
-    <node TEXT="Indicator needs" ID="ID_1">
+    <node ID="ID_1" TEXT="Indicator needs">
         <font SIZE="15"/>
-        <node TEXT="Which new measures" STYLE="bubble" POSITION="right" ID="ID_5">
+        <node ID="ID_5" POSITION="right" STYLE="bubble" TEXT="Which new measures">
             <font SIZE="10"/>
-            <node TEXT="Landscape of measures" STYLE="bubble" POSITION="right" ID="ID_56" BACKGROUND_COLOR="#feffff">
-                <node TEXT="Diversity index of innovation support instruments in the region" POSITION="right" ID="ID_45"/>
-                <node TEXT="Existing investments in measures" POSITION="right" ID="ID_57"/>
+            <node BACKGROUND_COLOR="#feffff" ID="ID_56" POSITION="right" STYLE="bubble" TEXT="Landscape of measures">
+                <node ID="ID_45" POSITION="right" TEXT="Diversity index of innovation support instruments in the region"/>
+                <node ID="ID_57" POSITION="right" TEXT="Existing investments in measures"/>
             </node>
-            <node TEXT="What other regions do differently" STYLE="bubble" POSITION="right" ID="ID_38" BACKGROUND_COLOR="#feffff">
-                <node TEXT="Balance of measure index" POSITION="right" ID="ID_46"/>
-                <node TEXT="Profile comparison with other regions" POSITION="right" ID="ID_77"/>
-                <node TEXT="Number of specific types of measures per capita" POSITION="right" ID="ID_112"/>
+            <node BACKGROUND_COLOR="#feffff" ID="ID_38" POSITION="right" STYLE="bubble" TEXT="What other regions do differently">
+                <node ID="ID_46" POSITION="right" TEXT="Balance of measure index"/>
+                <node ID="ID_77" POSITION="right" TEXT="Profile comparison with other regions"/>
+                <node ID="ID_112" POSITION="right" TEXT="Number of specific types of measures per capita"/>
             </node>
         </node>
-        <node TEXT="How to design &amp; implement measures" STYLE="bubble" POSITION="left" ID="ID_6">
+        <node ID="ID_6" POSITION="left" STYLE="bubble" TEXT="How to design &amp; implement measures">
             <font SIZE="10"/>
-            <node TEXT="Good practices" STYLE="bubble" POSITION="left" ID="ID_41" BACKGROUND_COLOR="#feffff"/>
-            <node TEXT="Diagnostics" STYLE="bubble" POSITION="left" ID="ID_80" BACKGROUND_COLOR="#feffff">
-                <node TEXT="Internal business innovation factors" POSITION="left" ID="ID_81"/>
-                <node TEXT="Return on investment to innovation" POSITION="left" ID="ID_359">
-                    <node POSITION="left" ID="ID_360">
+            <node BACKGROUND_COLOR="#feffff" ID="ID_41" POSITION="left" STYLE="bubble" TEXT="Good practices"/>
+            <node BACKGROUND_COLOR="#feffff" ID="ID_80" POSITION="left" STYLE="bubble" TEXT="Diagnostics">
+                <node ID="ID_81" POSITION="left" TEXT="Internal business innovation factors"/>
+                <node ID="ID_359" POSITION="left" TEXT="Return on investment to innovation">
+                    <node ID="ID_360" POSITION="left">
                         <richcontent TYPE="NODE">
                             <html>
                                 <head/>
@@ -31,7 +31,7 @@
                         </richcontent>
                         <icon BUILTIN="messagebox_warning"/>
                     </node>
-                    <node POSITION="left" ID="ID_361">
+                    <node ID="ID_361" POSITION="left">
                         <richcontent TYPE="NODE">
                             <html>
                                 <head/>
@@ -42,7 +42,7 @@
                             </html>
                         </richcontent>
                     </node>
-                    <node POSITION="left" ID="ID_362">
+                    <node ID="ID_362" POSITION="left">
                         <richcontent TYPE="NODE">
                             <html>
                                 <head/>
@@ -54,7 +54,7 @@
                         </richcontent>
                         <icon BUILTIN="messagebox_warning"/>
                     </node>
-                    <node POSITION="left" ID="ID_363">
+                    <node ID="ID_363" POSITION="left">
                         <richcontent TYPE="NODE">
                             <html>
                                 <head/>
@@ -66,13 +66,13 @@
                         </richcontent>
                         <icon BUILTIN="messagebox_warning"/>
                     </node>
-                    <node TEXT="Increase in the number of innovative companies with in-house R&amp;D" POSITION="left" ID="ID_364">
+                    <node ID="ID_364" POSITION="left" TEXT="Increase in the number of innovative companies with in-house R&amp;D">
                         <icon BUILTIN="messagebox_warning"/>
                     </node>
-                    <node TEXT="Increase in th number of innovative companies without in-house R&amp;D" POSITION="left" ID="ID_365">
+                    <node ID="ID_365" POSITION="left" TEXT="Increase in th number of innovative companies without in-house R&amp;D">
                         <icon BUILTIN="messagebox_warning"/>
                     </node>
-                    <node POSITION="left" ID="ID_366">
+                    <node ID="ID_366" POSITION="left">
                         <richcontent TYPE="NODE">
                             <html>
                                 <head/>
@@ -84,7 +84,7 @@
                         </richcontent>
                         <icon BUILTIN="messagebox_warning"/>
                     </node>
-                    <node POSITION="left" ID="ID_367">
+                    <node ID="ID_367" POSITION="left">
                         <richcontent TYPE="NODE">
                             <html>
                                 <head/>
@@ -96,7 +96,7 @@
                         </richcontent>
                         <icon BUILTIN="messagebox_warning"/>
                     </node>
-                    <node POSITION="left" ID="ID_368">
+                    <node ID="ID_368" POSITION="left">
                         <richcontent TYPE="NODE">
                             <html>
                                 <head/>
@@ -108,75 +108,75 @@
                         </richcontent>
                         <icon BUILTIN="messagebox_warning"/>
                     </node>
-                    <node TEXT="Number of international patents" POSITION="left" ID="ID_369">
+                    <node ID="ID_369" POSITION="left" TEXT="Number of international patents">
                         <icon BUILTIN="messagebox_warning"/>
                     </node>
-                    <node TEXT="Start-up activity (as a percentage of start-up activity in the whole Federation)" POSITION="left" ID="ID_370"/>
-                    <node TEXT="Number of innovative companies to the number of students " POSITION="left" ID="ID_393">
+                    <node ID="ID_370" POSITION="left" TEXT="Start-up activity (as a percentage of start-up activity in the whole Federation)"/>
+                    <node ID="ID_393" POSITION="left" TEXT="Number of innovative companies to the number of students ">
                         <icon BUILTIN="messagebox_warning"/>
                     </node>
-                    <node TEXT="Number of innovative companies to the number of researchers  " POSITION="left" ID="ID_394">
+                    <node ID="ID_394" POSITION="left" TEXT="Number of innovative companies to the number of researchers  ">
                         <icon BUILTIN="messagebox_warning"/>
                     </node>
-                    <node TEXT="Volume of license agreements to the volume of R&amp;D support from the regional budget " POSITION="left" ID="ID_400">
+                    <node ID="ID_400" POSITION="left" TEXT="Volume of license agreements to the volume of R&amp;D support from the regional budget ">
                         <icon BUILTIN="messagebox_warning"/>
                     </node>
                 </node>
             </node>
         </node>
-        <node TEXT="How much effort: where &amp; how" STYLE="bubble" POSITION="right" ID="ID_2">
+        <node ID="ID_2" POSITION="right" STYLE="bubble" TEXT="How much effort: where &amp; how">
             <font SIZE="10"/>
-            <node TEXT="The bottom-line" STYLE="bubble" POSITION="right" ID="ID_3" BACKGROUND_COLOR="#feffff">
-                <node TEXT="Wages" POSITION="right" ID="ID_15">
-                    <node TEXT="Dynamics of real wages" POSITION="right" ID="ID_12"/>
-                    <node TEXT="Average wage (compare to the Fed)" POSITION="right" ID="ID_14"/>
+            <node BACKGROUND_COLOR="#feffff" ID="ID_3" POSITION="right" STYLE="bubble" TEXT="The bottom-line">
+                <node ID="ID_15" POSITION="right" TEXT="Wages">
+                    <node ID="ID_12" POSITION="right" TEXT="Dynamics of real wages"/>
+                    <node ID="ID_14" POSITION="right" TEXT="Average wage (compare to the Fed)"/>
                 </node>
-                <node TEXT="Productivity" POSITION="right" ID="ID_86">
-                    <node TEXT="Labor productivity" POSITION="right" ID="ID_190">
+                <node ID="ID_86" POSITION="right" TEXT="Productivity">
+                    <node ID="ID_190" POSITION="right" TEXT="Labor productivity">
                         <icon BUILTIN="messagebox_warning"/>
                     </node>
-                    <node TEXT="Labor productivity growth rate" POSITION="right" ID="ID_191"/>
+                    <node ID="ID_191" POSITION="right" TEXT="Labor productivity growth rate"/>
                 </node>
-                <node TEXT="Jobs" POSITION="right" ID="ID_87">
-                    <node TEXT="Share of high-productive jobs" POSITION="right" ID="ID_13">
+                <node ID="ID_87" POSITION="right" TEXT="Jobs">
+                    <node ID="ID_13" POSITION="right" TEXT="Share of high-productive jobs">
                         <icon BUILTIN="messagebox_warning"/>
                     </node>
-                    <node TEXT="Share of creative industries jobs" POSITION="right" ID="ID_88"/>
-                    <node TEXT="Uneployment rate of university graduates" POSITION="right" ID="ID_336">
+                    <node ID="ID_88" POSITION="right" TEXT="Share of creative industries jobs"/>
+                    <node ID="ID_336" POSITION="right" TEXT="Uneployment rate of university graduates">
                         <icon BUILTIN="messagebox_warning"/>
                     </node>
                 </node>
-                <node TEXT="Income" POSITION="right" ID="ID_89">
-                    <node TEXT="GRP per capita and its growth rate" POSITION="right" ID="ID_11"/>
+                <node ID="ID_89" POSITION="right" TEXT="Income">
+                    <node ID="ID_11" POSITION="right" TEXT="GRP per capita and its growth rate"/>
                 </node>
             </node>
-            <node TEXT="Influencing  factors" STYLE="bubble" POSITION="right" ID="ID_8" BACKGROUND_COLOR="#feffff">
-                <node TEXT="Economy" POSITION="right" ID="ID_55">
-                    <node TEXT="Economic structure" POSITION="right" ID="ID_166"/>
-                    <node TEXT="Volume of manufacturing production per capita " POSITION="right" ID="ID_395"/>
-                    <node TEXT="Manufacturing value added per capita (non-natural resource-based)" POSITION="right" ID="ID_396"/>
+            <node BACKGROUND_COLOR="#feffff" ID="ID_8" POSITION="right" STYLE="bubble" TEXT="Influencing  factors">
+                <node ID="ID_55" POSITION="right" TEXT="Economy">
+                    <node ID="ID_166" POSITION="right" TEXT="Economic structure"/>
+                    <node ID="ID_395" POSITION="right" TEXT="Volume of manufacturing production per capita "/>
+                    <node ID="ID_396" POSITION="right" TEXT="Manufacturing value added per capita (non-natural resource-based)"/>
                 </node>
-                <node TEXT="The enabling environment" POSITION="right" ID="ID_9">
-                    <node TEXT="Ease of doing business" POSITION="right" ID="ID_16">
-                        <node TEXT="Level of administrative barriers (number and cost of administrative procedures) " POSITION="right" ID="ID_412">
+                <node ID="ID_9" POSITION="right" TEXT="The enabling environment">
+                    <node ID="ID_16" POSITION="right" TEXT="Ease of doing business">
+                        <node ID="ID_412" POSITION="right" TEXT="Level of administrative barriers (number and cost of administrative procedures) ">
                             <icon BUILTIN="messagebox_warning"/>
                         </node>
                     </node>
-                    <node TEXT="Competition index" POSITION="right" ID="ID_18"/>
-                    <node TEXT="Workforce" POSITION="right" ID="ID_120">
-                        <node TEXT="Quality of education" POSITION="right" ID="ID_19">
-                            <node TEXT="Inrease in the number of International students" POSITION="right" ID="ID_337">
+                    <node ID="ID_18" POSITION="right" TEXT="Competition index"/>
+                    <node ID="ID_120" POSITION="right" TEXT="Workforce">
+                        <node ID="ID_19" POSITION="right" TEXT="Quality of education">
+                            <node ID="ID_337" POSITION="right" TEXT="Inrease in the number of International students">
                                 <icon BUILTIN="messagebox_warning"/>
                             </node>
                         </node>
-                        <node TEXT="Quantity of education" POSITION="right" ID="ID_121">
-                            <node TEXT="Participation in life-long learning" POSITION="right" ID="ID_122">
+                        <node ID="ID_121" POSITION="right" TEXT="Quantity of education">
+                            <node ID="ID_122" POSITION="right" TEXT="Participation in life-long learning">
                                 <icon BUILTIN="messagebox_warning"/>
                             </node>
-                            <node TEXT="Increase in literarecy " POSITION="right" ID="ID_333">
+                            <node ID="ID_333" POSITION="right" TEXT="Increase in literarecy ">
                                 <icon BUILTIN="messagebox_warning"/>
                             </node>
-                            <node POSITION="right" ID="ID_188">
+                            <node ID="ID_188" POSITION="right">
                                 <richcontent TYPE="NODE">
                                     <html>
                                         <head/>
@@ -187,7 +187,7 @@
                                     </html>
                                 </richcontent>
                             </node>
-                            <node POSITION="right" ID="ID_276">
+                            <node ID="ID_276" POSITION="right">
                                 <richcontent TYPE="NODE">
                                     <html>
                                         <head/>
@@ -198,65 +198,65 @@
                                     </html>
                                 </richcontent>
                             </node>
-                            <node TEXT="Increase in University students" POSITION="right" ID="ID_332">
+                            <node ID="ID_332" POSITION="right" TEXT="Increase in University students">
                                 <icon BUILTIN="messagebox_warning"/>
                             </node>
-                            <node TEXT="Government expenditure on General University Funding" POSITION="right" ID="ID_351"/>
-                            <node TEXT="Access to training, information, and consulting support " POSITION="right" ID="ID_409">
-                                <icon BUILTIN="messagebox_warning"/>
-                            </node>
-                        </node>
-                        <node TEXT="Science &amp; engineering workforce" POSITION="right" ID="ID_285">
-                            <node TEXT="Availability of scientists and engineers" POSITION="right" ID="ID_147"/>
-                            <node TEXT="Amount of researches per 10 thousands population" POSITION="right" ID="ID_189">
-                                <icon BUILTIN="messagebox_warning"/>
-                            </node>
-                            <node TEXT="Average wage of researches per average wage in the region" POSITION="right" ID="ID_284"/>
-                            <node TEXT="Share of researchers in the total number of employees in the region" POSITION="right" ID="ID_286"/>
-                        </node>
-                    </node>
-                    <node TEXT="Government" POSITION="right" ID="ID_132">
-                        <node TEXT="Total expenditure of general government as a percentage of GDP" POSITION="right" ID="ID_134"/>
-                        <node TEXT="Government expenditure on Economic Development" POSITION="right" ID="ID_352"/>
-                    </node>
-                    <node TEXT="Access to finance" POSITION="right" ID="ID_342">
-                        <node TEXT="Deals" POSITION="right" ID="ID_387">
-                            <node TEXT="Venture capital investments for start-ups as a percentage of GDP" POSITION="right" ID="ID_345"/>
-                            <node TEXT="Amounts of business angel, pre-seed, seed and venture financing" POSITION="right" ID="ID_344"/>
-                            <node TEXT="Amount of public co-funding of business R&amp;D" POSITION="right" ID="ID_348"/>
-                            <node TEXT="Number of startups received venture financing " POSITION="right" ID="ID_385"/>
-                            <node TEXT="Number of companies received equity investments " POSITION="right" ID="ID_386">
+                            <node ID="ID_351" POSITION="right" TEXT="Government expenditure on General University Funding"/>
+                            <node ID="ID_409" POSITION="right" TEXT="Access to training, information, and consulting support ">
                                 <icon BUILTIN="messagebox_warning"/>
                             </node>
                         </node>
-                        <node TEXT="Available" POSITION="right" ID="ID_388">
-                            <node TEXT="Amount of matching grants available in the region for business R&amp;D" POSITION="right" ID="ID_347"/>
-                            <node TEXT="Number of Business Angels" POSITION="right" ID="ID_346"/>
+                        <node ID="ID_285" POSITION="right" TEXT="Science &amp; engineering workforce">
+                            <node ID="ID_147" POSITION="right" TEXT="Availability of scientists and engineers"/>
+                            <node ID="ID_189" POSITION="right" TEXT="Amount of researches per 10 thousands population">
+                                <icon BUILTIN="messagebox_warning"/>
+                            </node>
+                            <node ID="ID_284" POSITION="right" TEXT="Average wage of researches per average wage in the region"/>
+                            <node ID="ID_286" POSITION="right" TEXT="Share of researchers in the total number of employees in the region"/>
                         </node>
                     </node>
-                    <node TEXT="ICT" POSITION="right" ID="ID_135">
-                        <node TEXT="ICT use" POSITION="right" ID="ID_17"/>
-                        <node TEXT="Broadband penetration " POSITION="right" ID="ID_136"/>
-                        <node TEXT="Internet penetration" POSITION="right" ID="ID_334"/>
-                        <node TEXT="Computer literacy " POSITION="right" ID="ID_335"/>
+                    <node ID="ID_132" POSITION="right" TEXT="Government">
+                        <node ID="ID_134" POSITION="right" TEXT="Total expenditure of general government as a percentage of GDP"/>
+                        <node ID="ID_352" POSITION="right" TEXT="Government expenditure on Economic Development"/>
                     </node>
-                    <arrowlink STARTARROW="Default" DESTINATION="ID_76"/>
+                    <node ID="ID_342" POSITION="right" TEXT="Access to finance">
+                        <node ID="ID_387" POSITION="right" TEXT="Deals">
+                            <node ID="ID_345" POSITION="right" TEXT="Venture capital investments for start-ups as a percentage of GDP"/>
+                            <node ID="ID_344" POSITION="right" TEXT="Amounts of business angel, pre-seed, seed and venture financing"/>
+                            <node ID="ID_348" POSITION="right" TEXT="Amount of public co-funding of business R&amp;D"/>
+                            <node ID="ID_385" POSITION="right" TEXT="Number of startups received venture financing "/>
+                            <node ID="ID_386" POSITION="right" TEXT="Number of companies received equity investments ">
+                                <icon BUILTIN="messagebox_warning"/>
+                            </node>
+                        </node>
+                        <node ID="ID_388" POSITION="right" TEXT="Available">
+                            <node ID="ID_347" POSITION="right" TEXT="Amount of matching grants available in the region for business R&amp;D"/>
+                            <node ID="ID_346" POSITION="right" TEXT="Number of Business Angels"/>
+                        </node>
+                    </node>
+                    <node ID="ID_135" POSITION="right" TEXT="ICT">
+                        <node ID="ID_17" POSITION="right" TEXT="ICT use"/>
+                        <node ID="ID_136" POSITION="right" TEXT="Broadband penetration "/>
+                        <node ID="ID_334" POSITION="right" TEXT="Internet penetration"/>
+                        <node ID="ID_335" POSITION="right" TEXT="Computer literacy "/>
+                    </node>
+                    <arrowlink DESTINATION="ID_76" STARTARROW="Default"/>
                 </node>
-                <node TEXT="Behavior of innovation actors" POSITION="right" ID="ID_10">
-                    <node TEXT="Access to markets" POSITION="right" ID="ID_167">
-                        <node TEXT="FDI" POSITION="right" ID="ID_97">
-                            <node TEXT="foreign JVs" POSITION="right" ID="ID_96"/>
-                            <node TEXT="Inflow of foreign direct investments in high-technology industries" POSITION="right" ID="ID_157"/>
-                            <node TEXT="Foreign direct investment jobs" POSITION="right" ID="ID_158"/>
-                            <node TEXT="FDI as a share of regional non natural resource-based GRP " POSITION="right" ID="ID_159"/>
-                            <node TEXT="Number of foreign subsidiaries operating in the region" POSITION="right" ID="ID_160"/>
-                            <node TEXT="Share of foreign controlled enterprises" POSITION="right" ID="ID_161"/>
+                <node ID="ID_10" POSITION="right" TEXT="Behavior of innovation actors">
+                    <node ID="ID_167" POSITION="right" TEXT="Access to markets">
+                        <node ID="ID_97" POSITION="right" TEXT="FDI">
+                            <node ID="ID_96" POSITION="right" TEXT="foreign JVs"/>
+                            <node ID="ID_157" POSITION="right" TEXT="Inflow of foreign direct investments in high-technology industries"/>
+                            <node ID="ID_158" POSITION="right" TEXT="Foreign direct investment jobs"/>
+                            <node ID="ID_159" POSITION="right" TEXT="FDI as a share of regional non natural resource-based GRP "/>
+                            <node ID="ID_160" POSITION="right" TEXT="Number of foreign subsidiaries operating in the region"/>
+                            <node ID="ID_161" POSITION="right" TEXT="Share of foreign controlled enterprises"/>
                         </node>
-                        <node TEXT="Exports" POSITION="right" ID="ID_168">
-                            <node TEXT="Export intensity in manufacturing and services" POSITION="right" ID="ID_169">
+                        <node ID="ID_168" POSITION="right" TEXT="Exports">
+                            <node ID="ID_169" POSITION="right" TEXT="Export intensity in manufacturing and services">
                                 <icon BUILTIN="messagebox_warning"/>
                             </node>
-                            <node POSITION="right" ID="ID_375">
+                            <node ID="ID_375" POSITION="right">
                                 <richcontent TYPE="NODE">
                                     <html>
                                         <head/>
@@ -268,7 +268,7 @@
                                 </richcontent>
                                 <icon BUILTIN="messagebox_warning"/>
                             </node>
-                            <node POSITION="right" ID="ID_377">
+                            <node ID="ID_377" POSITION="right">
                                 <richcontent TYPE="NODE">
                                     <html>
                                         <head/>
@@ -281,18 +281,18 @@
                                 <icon BUILTIN="messagebox_warning"/>
                             </node>
                         </node>
-                        <node TEXT="Share of high-technology products in government procurements" POSITION="right" ID="ID_338"/>
+                        <node ID="ID_338" POSITION="right" TEXT="Share of high-technology products in government procurements"/>
                     </node>
-                    <node TEXT="Entrepreneurship culture" POSITION="right" ID="ID_34">
-                        <node TEXT="Fear of failure rate" POSITION="right" ID="ID_150"/>
-                        <node TEXT="Entrepreneurship as desirable career choice" POSITION="right" ID="ID_151"/>
-                        <node TEXT="High Status Successful Entrepreneurship" POSITION="right" ID="ID_152"/>
+                    <node ID="ID_34" POSITION="right" TEXT="Entrepreneurship culture">
+                        <node ID="ID_150" POSITION="right" TEXT="Fear of failure rate"/>
+                        <node ID="ID_151" POSITION="right" TEXT="Entrepreneurship as desirable career choice"/>
+                        <node ID="ID_152" POSITION="right" TEXT="High Status Successful Entrepreneurship"/>
                     </node>
-                    <node TEXT="Collaboration &amp; partnerships" POSITION="right" ID="ID_54">
-                        <node TEXT="Number of business contracts with foreign partners for R&amp;D collaboration" POSITION="right" ID="ID_163"/>
-                        <node TEXT="Share of R&amp;D financed from foreign sources" POSITION="right" ID="ID_164"/>
-                        <node TEXT="Firms collaborating on innovation with organizations in other countries" POSITION="right" ID="ID_165"/>
-                        <node POSITION="right" ID="ID_173">
+                    <node ID="ID_54" POSITION="right" TEXT="Collaboration &amp; partnerships">
+                        <node ID="ID_163" POSITION="right" TEXT="Number of business contracts with foreign partners for R&amp;D collaboration"/>
+                        <node ID="ID_164" POSITION="right" TEXT="Share of R&amp;D financed from foreign sources"/>
+                        <node ID="ID_165" POSITION="right" TEXT="Firms collaborating on innovation with organizations in other countries"/>
+                        <node ID="ID_173" POSITION="right">
                             <richcontent TYPE="NODE">
                                 <html>
                                     <head/>
@@ -303,7 +303,7 @@
                                 </html>
                             </richcontent>
                         </node>
-                        <node POSITION="right" ID="ID_174">
+                        <node ID="ID_174" POSITION="right">
                             <richcontent TYPE="NODE">
                                 <html>
                                     <head/>
@@ -314,11 +314,11 @@
                                 </html>
                             </richcontent>
                         </node>
-                        <node TEXT="science and industry links" POSITION="right" ID="ID_358"/>
+                        <node ID="ID_358" POSITION="right" TEXT="science and industry links"/>
                     </node>
-                    <node TEXT="Technology absorption" POSITION="right" ID="ID_115">
-                        <node TEXT="Local supplier quality" POSITION="right" ID="ID_116"/>
-                        <node POSITION="right" ID="ID_127">
+                    <node ID="ID_115" POSITION="right" TEXT="Technology absorption">
+                        <node ID="ID_116" POSITION="right" TEXT="Local supplier quality"/>
+                        <node ID="ID_127" POSITION="right">
                             <richcontent TYPE="NODE">
                                 <html>
                                     <head/>
@@ -329,10 +329,10 @@
                                 </html>
                             </richcontent>
                         </node>
-                        <node TEXT="Number of purchased new technologies" POSITION="right" ID="ID_129">
+                        <node ID="ID_129" POSITION="right" TEXT="Number of purchased new technologies">
                             <icon BUILTIN="messagebox_warning"/>
                         </node>
-                        <node POSITION="right" ID="ID_354">
+                        <node ID="ID_354" POSITION="right">
                             <richcontent TYPE="NODE">
                                 <html>
                                     <head/>
@@ -343,9 +343,9 @@
                                 </html>
                             </richcontent>
                         </node>
-                        <node TEXT="Machinery and equipment" POSITION="right" ID="ID_355"/>
-                        <node TEXT="Software and databases" POSITION="right" ID="ID_356"/>
-                        <node POSITION="right" ID="ID_373">
+                        <node ID="ID_355" POSITION="right" TEXT="Machinery and equipment"/>
+                        <node ID="ID_356" POSITION="right" TEXT="Software and databases"/>
+                        <node ID="ID_373" POSITION="right">
                             <richcontent TYPE="NODE">
                                 <html>
                                     <head/>
@@ -357,36 +357,36 @@
                             </richcontent>
                             <icon BUILTIN="messagebox_warning"/>
                         </node>
-                        <node TEXT="Share of wastes in the total volume of production (by sector)" POSITION="right" ID="ID_374">
+                        <node ID="ID_374" POSITION="right" TEXT="Share of wastes in the total volume of production (by sector)">
                             <icon BUILTIN="messagebox_warning"/>
                         </node>
                     </node>
-                    <node TEXT="Innovation activities in firms" POSITION="right" ID="ID_123">
-                        <node TEXT="Share of innovative companies" POSITION="right" ID="ID_35"/>
-                        <node TEXT="Business R&amp;D expenditures per GRP" POSITION="right" ID="ID_128"/>
-                        <node TEXT="Factors hampering innovation" POSITION="right" ID="ID_145"/>
-                        <node TEXT="Expenditure on innovation by firm size" POSITION="right" ID="ID_350"/>
-                        <node TEXT="R&amp;D and other intellectl property products" POSITION="right" ID="ID_357"/>
-                        <node TEXT="Growth of the number of innovative companies " POSITION="right" ID="ID_390"/>
-                        <node TEXT="Outpus" POSITION="right" ID="ID_398">
-                            <node TEXT="Volume of new to Russian market production per GRP" POSITION="right" ID="ID_124"/>
-                            <node TEXT="Volume of new to world market production per total production" POSITION="right" ID="ID_376">
+                    <node ID="ID_123" POSITION="right" TEXT="Innovation activities in firms">
+                        <node ID="ID_35" POSITION="right" TEXT="Share of innovative companies"/>
+                        <node ID="ID_128" POSITION="right" TEXT="Business R&amp;D expenditures per GRP"/>
+                        <node ID="ID_145" POSITION="right" TEXT="Factors hampering innovation"/>
+                        <node ID="ID_350" POSITION="right" TEXT="Expenditure on innovation by firm size"/>
+                        <node ID="ID_357" POSITION="right" TEXT="R&amp;D and other intellectl property products"/>
+                        <node ID="ID_390" POSITION="right" TEXT="Growth of the number of innovative companies "/>
+                        <node ID="ID_398" POSITION="right" TEXT="Outpus">
+                            <node ID="ID_124" POSITION="right" TEXT="Volume of new to Russian market production per GRP"/>
+                            <node ID="ID_376" POSITION="right" TEXT="Volume of new to world market production per total production">
                                 <icon BUILTIN="messagebox_warning"/>
                             </node>
-                            <node TEXT="Growth of the volume of production of innovative companies " POSITION="right" ID="ID_389"/>
-                            <node TEXT="Volume of innovation production per capita " POSITION="right" ID="ID_397">
+                            <node ID="ID_389" POSITION="right" TEXT="Growth of the volume of production of innovative companies "/>
+                            <node ID="ID_397" POSITION="right" TEXT="Volume of innovation production per capita ">
                                 <icon BUILTIN="messagebox_warning"/>
                             </node>
                         </node>
                     </node>
-                    <node TEXT="Entrepreneurial activities" POSITION="right" ID="ID_148">
-                        <node TEXT="New business density" POSITION="right" ID="ID_117"/>
-                        <node TEXT="Volume of newly registered corporations " POSITION="right" ID="ID_119"/>
-                        <node TEXT="Share of gazelle companies in the total number of businesses" POSITION="right" ID="ID_170"/>
+                    <node ID="ID_148" POSITION="right" TEXT="Entrepreneurial activities">
+                        <node ID="ID_117" POSITION="right" TEXT="New business density"/>
+                        <node ID="ID_119" POSITION="right" TEXT="Volume of newly registered corporations "/>
+                        <node ID="ID_170" POSITION="right" TEXT="Share of gazelle companies in the total number of businesses"/>
                     </node>
-                    <node TEXT="R&amp;D production" POSITION="right" ID="ID_277">
-                        <node TEXT="Outputs" POSITION="right" ID="ID_280">
-                            <node POSITION="right" ID="ID_279">
+                    <node ID="ID_277" POSITION="right" TEXT="R&amp;D production">
+                        <node ID="ID_280" POSITION="right" TEXT="Outputs">
+                            <node ID="ID_279" POSITION="right">
                                 <richcontent TYPE="NODE">
                                     <html>
                                         <head/>
@@ -397,9 +397,9 @@
                                     </html>
                                 </richcontent>
                             </node>
-                            <node TEXT="Amount of PCT-applications per 1 mln. population" POSITION="right" ID="ID_278"/>
-                            <node TEXT="Number of domestic patent applications per R&amp;D expenditures" POSITION="right" ID="ID_281"/>
-                            <node POSITION="right" ID="ID_282">
+                            <node ID="ID_278" POSITION="right" TEXT="Amount of PCT-applications per 1 mln. population"/>
+                            <node ID="ID_281" POSITION="right" TEXT="Number of domestic patent applications per R&amp;D expenditures"/>
+                            <node ID="ID_282" POSITION="right">
                                 <richcontent TYPE="NODE">
                                     <html>
                                         <head/>
@@ -411,15 +411,15 @@
                                 </richcontent>
                                 <icon BUILTIN="messagebox_warning"/>
                             </node>
-                            <node TEXT="Publication activity of regional scientists and researches" POSITION="right" ID="ID_283"/>
+                            <node ID="ID_283" POSITION="right" TEXT="Publication activity of regional scientists and researches"/>
                         </node>
-                        <node TEXT="Inputs" POSITION="right" ID="ID_340">
-                            <node TEXT="Regional and local budget expenditures on R&amp;D" POSITION="right" ID="ID_341"/>
-                            <node TEXT="Government R&amp;D expenditure " POSITION="right" ID="ID_349"/>
+                        <node ID="ID_340" POSITION="right" TEXT="Inputs">
+                            <node ID="ID_341" POSITION="right" TEXT="Regional and local budget expenditures on R&amp;D"/>
+                            <node ID="ID_349" POSITION="right" TEXT="Government R&amp;D expenditure "/>
                         </node>
                     </node>
-                    <node TEXT="Public sector innovation" POSITION="right" ID="ID_415">
-                        <node POSITION="right" ID="ID_416">
+                    <node ID="ID_415" POSITION="right" TEXT="Public sector innovation">
+                        <node ID="ID_416" POSITION="right">
                             <richcontent TYPE="NODE">
                                 <html>
                                     <head/>
@@ -430,8 +430,8 @@
                                 </html>
                             </richcontent>
                         </node>
-                        <node TEXT="E-government index" POSITION="right" ID="ID_418"/>
-                        <node POSITION="right" ID="ID_419">
+                        <node ID="ID_418" POSITION="right" TEXT="E-government index"/>
+                        <node ID="ID_419" POSITION="right">
                             <richcontent TYPE="NODE">
                                 <html>
                                     <head/>
@@ -444,10 +444,10 @@
                         </node>
                     </node>
                 </node>
-                <node TEXT="Supporting organizations" POSITION="right" ID="ID_113">
-                    <node TEXT="Research institutions" POSITION="right" ID="ID_51">
-                        <node TEXT="Collaboration" POSITION="right" ID="ID_171">
-                            <node POSITION="right" ID="ID_172">
+                <node ID="ID_113" POSITION="right" TEXT="Supporting organizations">
+                    <node ID="ID_51" POSITION="right" TEXT="Research institutions">
+                        <node ID="ID_171" POSITION="right" TEXT="Collaboration">
+                            <node ID="ID_172" POSITION="right">
                                 <richcontent TYPE="NODE">
                                     <html>
                                         <head/>
@@ -460,16 +460,16 @@
                                 <icon BUILTIN="messagebox_warning"/>
                             </node>
                         </node>
-                        <node TEXT="Resources" POSITION="right" ID="ID_184">
-                            <node TEXT="R&amp;D expenditures per 1 researcher" POSITION="right" ID="ID_137"/>
-                            <node TEXT="Average wage of researches per average wage in the region" POSITION="right" ID="ID_146"/>
-                            <node TEXT="High education expenditure on R&amp;D" POSITION="right" ID="ID_353"/>
+                        <node ID="ID_184" POSITION="right" TEXT="Resources">
+                            <node ID="ID_137" POSITION="right" TEXT="R&amp;D expenditures per 1 researcher"/>
+                            <node ID="ID_146" POSITION="right" TEXT="Average wage of researches per average wage in the region"/>
+                            <node ID="ID_353" POSITION="right" TEXT="High education expenditure on R&amp;D"/>
                         </node>
-                        <node TEXT="Scientific outputs" POSITION="right" ID="ID_185">
-                            <node TEXT="Publications" POSITION="right" ID="ID_306">
-                                <node TEXT="Impact of publications in the ISI database (h-index)" POSITION="right" ID="ID_304"/>
-                                <node TEXT="Number of publications in international journals per worker per year" POSITION="right" ID="ID_186"/>
-                                <node POSITION="right" ID="ID_303">
+                        <node ID="ID_185" POSITION="right" TEXT="Scientific outputs">
+                            <node ID="ID_306" POSITION="right" TEXT="Publications">
+                                <node ID="ID_304" POSITION="right" TEXT="Impact of publications in the ISI database (h-index)"/>
+                                <node ID="ID_186" POSITION="right" TEXT="Number of publications in international journals per worker per year"/>
+                                <node ID="ID_303" POSITION="right">
                                     <richcontent TYPE="NODE">
                                         <html>
                                             <head/>
@@ -481,14 +481,14 @@
                                     </richcontent>
                                 </node>
                             </node>
-                            <node TEXT="Number of foreign patents granted per staff" POSITION="right" ID="ID_187"/>
+                            <node ID="ID_187" POSITION="right" TEXT="Number of foreign patents granted per staff"/>
                         </node>
-                        <node TEXT="Supportive measures" POSITION="right" ID="ID_312">
-                            <node TEXT="Diversity index of university entrepreneurship support measures" POSITION="right" ID="ID_313"/>
+                        <node ID="ID_312" POSITION="right" TEXT="Supportive measures">
+                            <node ID="ID_313" POSITION="right" TEXT="Diversity index of university entrepreneurship support measures"/>
                         </node>
-                        <node TEXT="Commercialization" POSITION="right" ID="ID_299">
-                            <node TEXT="Licensing" POSITION="right" ID="ID_308">
-                                <node POSITION="right" ID="ID_298">
+                        <node ID="ID_299" POSITION="right" TEXT="Commercialization">
+                            <node ID="ID_308" POSITION="right" TEXT="Licensing">
+                                <node ID="ID_298" POSITION="right">
                                     <richcontent TYPE="NODE">
                                         <html>
                                             <head/>
@@ -500,8 +500,8 @@
                                     </richcontent>
                                 </node>
                             </node>
-                            <node TEXT="Spin-offs" POSITION="right" ID="ID_309">
-                                <node POSITION="right" ID="ID_300">
+                            <node ID="ID_309" POSITION="right" TEXT="Spin-offs">
+                                <node ID="ID_300" POSITION="right">
                                     <richcontent TYPE="NODE">
                                         <html>
                                             <head/>
@@ -513,9 +513,9 @@
                                     </richcontent>
                                 </node>
                             </node>
-                            <node TEXT="Industry contracts" POSITION="right" ID="ID_310">
-                                <node TEXT="Industry revenue per staff " POSITION="right" ID="ID_297"/>
-                                <node POSITION="right" ID="ID_305">
+                            <node ID="ID_310" POSITION="right" TEXT="Industry contracts">
+                                <node ID="ID_297" POSITION="right" TEXT="Industry revenue per staff "/>
+                                <node ID="ID_305" POSITION="right">
                                     <richcontent TYPE="NODE">
                                         <html>
                                             <head/>
@@ -527,8 +527,8 @@
                                         </html>
                                     </richcontent>
                                 </node>
-                                <node TEXT="Share of industry income from foreign companies" POSITION="right" ID="ID_307"/>
-                                <node POSITION="right" ID="ID_90">
+                                <node ID="ID_307" POSITION="right" TEXT="Share of industry income from foreign companies"/>
+                                <node ID="ID_90" POSITION="right">
                                     <richcontent TYPE="NODE">
                                         <html>
                                             <head/>
@@ -539,38 +539,38 @@
                                         </html>
                                     </richcontent>
                                 </node>
-                                <node TEXT="Difficulties faced by research organization in collaborating with SMEs" POSITION="right" ID="ID_311"/>
+                                <node ID="ID_311" POSITION="right" TEXT="Difficulties faced by research organization in collaborating with SMEs"/>
                             </node>
                         </node>
                     </node>
-                    <node TEXT="Private market" POSITION="right" ID="ID_153">
-                        <node TEXT="Number of innovation &amp; IP services organizations" POSITION="right" ID="ID_154"/>
-                        <node TEXT="Number of private innovation infrastructure organizations " POSITION="right" ID="ID_155"/>
-                        <node TEXT="Access to certification and licensing for specific activities " POSITION="right" ID="ID_410"/>
-                        <node TEXT="Access to suppliers of equipment, production and engineering services " POSITION="right" ID="ID_411"/>
+                    <node ID="ID_153" POSITION="right" TEXT="Private market">
+                        <node ID="ID_154" POSITION="right" TEXT="Number of innovation &amp; IP services organizations"/>
+                        <node ID="ID_155" POSITION="right" TEXT="Number of private innovation infrastructure organizations "/>
+                        <node ID="ID_410" POSITION="right" TEXT="Access to certification and licensing for specific activities "/>
+                        <node ID="ID_411" POSITION="right" TEXT="Access to suppliers of equipment, production and engineering services "/>
                     </node>
-                    <node TEXT="Innovation infrastructure" POSITION="right" ID="ID_114">
-                        <node TEXT="Investments" POSITION="right" ID="ID_327">
-                            <node TEXT="Public investment in innovation infrastructure" POSITION="right" ID="ID_315"/>
-                            <node TEXT="Increase of government investment in innovation infrastructure" POSITION="right" ID="ID_328"/>
-                            <node TEXT=" Number of Development institution projects performed in the region" POSITION="right" ID="ID_339"/>
-                            <node TEXT="Volume of seed investments by the regional budget " POSITION="right" ID="ID_391"/>
-                            <node TEXT="Volume of venture financing from the regional budget " POSITION="right" ID="ID_392"/>
+                    <node ID="ID_114" POSITION="right" TEXT="Innovation infrastructure">
+                        <node ID="ID_327" POSITION="right" TEXT="Investments">
+                            <node ID="ID_315" POSITION="right" TEXT="Public investment in innovation infrastructure"/>
+                            <node ID="ID_328" POSITION="right" TEXT="Increase of government investment in innovation infrastructure"/>
+                            <node ID="ID_339" POSITION="right" TEXT=" Number of Development institution projects performed in the region"/>
+                            <node ID="ID_391" POSITION="right" TEXT="Volume of seed investments by the regional budget "/>
+                            <node ID="ID_392" POSITION="right" TEXT="Volume of venture financing from the regional budget "/>
                         </node>
-                        <node TEXT="Volume of state support per one company " POSITION="right" ID="ID_413"/>
+                        <node ID="ID_413" POSITION="right" TEXT="Volume of state support per one company "/>
                     </node>
                 </node>
             </node>
         </node>
-        <node TEXT="What to do about existing measures" STYLE="bubble" POSITION="left" ID="ID_4">
+        <node ID="ID_4" POSITION="left" STYLE="bubble" TEXT="What to do about existing measures">
             <font SIZE="10"/>
-            <node TEXT="Demand for measure" STYLE="bubble" POSITION="left" ID="ID_42" BACKGROUND_COLOR="#feffff">
-                <node TEXT="Quality of beneficiaries" POSITION="left" ID="ID_50">
-                    <node TEXT="Growth rates of employment in supported innovative firms" POSITION="left" ID="ID_292"/>
-                    <node TEXT="Growth rates of employment in supported innovative firms" POSITION="left" ID="ID_293"/>
-                    <node TEXT="Role of IP for tenants/clients" POSITION="left" ID="ID_323"/>
-                    <node TEXT="Share of tenants with innovation activities" POSITION="left" ID="ID_326"/>
-                    <node POSITION="left" ID="ID_329">
+            <node BACKGROUND_COLOR="#feffff" ID="ID_42" POSITION="left" STYLE="bubble" TEXT="Demand for measure">
+                <node ID="ID_50" POSITION="left" TEXT="Quality of beneficiaries">
+                    <node ID="ID_292" POSITION="left" TEXT="Growth rates of employment in supported innovative firms"/>
+                    <node ID="ID_293" POSITION="left" TEXT="Growth rates of employment in supported innovative firms"/>
+                    <node ID="ID_323" POSITION="left" TEXT="Role of IP for tenants/clients"/>
+                    <node ID="ID_326" POSITION="left" TEXT="Share of tenants with innovation activities"/>
+                    <node ID="ID_329" POSITION="left">
                         <richcontent TYPE="NODE">
                             <html>
                                 <head/>
@@ -582,7 +582,7 @@
                             </html>
                         </richcontent>
                     </node>
-                    <node POSITION="left" ID="ID_330">
+                    <node ID="ID_330" POSITION="left">
                         <richcontent TYPE="NODE">
                             <html>
                                 <head/>
@@ -594,15 +594,15 @@
                         </richcontent>
                     </node>
                 </node>
-                <node TEXT="Number of beneficiaries" POSITION="left" ID="ID_78">
-                    <node TEXT="Number of projects conducted by companies in cooperation with innovation infrastructure" POSITION="left" ID="ID_383"/>
-                    <node TEXT="Scope and intensity of use of services offered to firms" POSITION="left" ID="ID_325"/>
-                    <node TEXT="Number of companies supported by the infrastructure (training, information, consultations, etc.)" POSITION="left" ID="ID_384"/>
-                    <node TEXT="Increase in the number of business applying for public support programmes (regional, federal, international) " POSITION="left" ID="ID_401"/>
+                <node ID="ID_78" POSITION="left" TEXT="Number of beneficiaries">
+                    <node ID="ID_383" POSITION="left" TEXT="Number of projects conducted by companies in cooperation with innovation infrastructure"/>
+                    <node ID="ID_325" POSITION="left" TEXT="Scope and intensity of use of services offered to firms"/>
+                    <node ID="ID_384" POSITION="left" TEXT="Number of companies supported by the infrastructure (training, information, consultations, etc.)"/>
+                    <node ID="ID_401" POSITION="left" TEXT="Increase in the number of business applying for public support programmes (regional, federal, international) "/>
                 </node>
-                <node TEXT="Degree of access" POSITION="left" ID="ID_182">
-                    <node TEXT="Level of awareness" POSITION="left" ID="ID_52">
-                        <node POSITION="left" ID="ID_181">
+                <node ID="ID_182" POSITION="left" TEXT="Degree of access">
+                    <node ID="ID_52" POSITION="left" TEXT="Level of awareness">
+                        <node ID="ID_181" POSITION="left">
                             <richcontent TYPE="NODE">
                                 <html>
                                     <head/>
@@ -614,8 +614,8 @@
                             </richcontent>
                         </node>
                     </node>
-                    <node TEXT="Transparency" POSITION="left" ID="ID_53">
-                        <node POSITION="left" ID="ID_175">
+                    <node ID="ID_53" POSITION="left" TEXT="Transparency">
+                        <node ID="ID_175" POSITION="left">
                             <richcontent TYPE="NODE">
                                 <html>
                                     <head/>
@@ -628,7 +628,7 @@
                             <icon BUILTIN="messagebox_warning"/>
                         </node>
                     </node>
-                    <node POSITION="left" ID="ID_183">
+                    <node ID="ID_183" POSITION="left">
                         <richcontent TYPE="NODE">
                             <html>
                                 <head/>
@@ -641,53 +641,53 @@
                         <icon BUILTIN="messagebox_warning"/>
                     </node>
                 </node>
-                <node TEXT="Number of applicants" POSITION="left" ID="ID_176">
-                    <node TEXT="Increase in the number of business applying for public support programmes" POSITION="left" ID="ID_177"/>
-                    <node TEXT="Number of companies that know about a particular program" POSITION="left" ID="ID_178"/>
-                    <node TEXT="Increase in the number of start-ups applying to receive VC investments" POSITION="left" ID="ID_179"/>
-                    <node TEXT="Increase in the number of start-ups applying for a place in the incubators" POSITION="left" ID="ID_180"/>
+                <node ID="ID_176" POSITION="left" TEXT="Number of applicants">
+                    <node ID="ID_177" POSITION="left" TEXT="Increase in the number of business applying for public support programmes"/>
+                    <node ID="ID_178" POSITION="left" TEXT="Number of companies that know about a particular program"/>
+                    <node ID="ID_179" POSITION="left" TEXT="Increase in the number of start-ups applying to receive VC investments"/>
+                    <node ID="ID_180" POSITION="left" TEXT="Increase in the number of start-ups applying for a place in the incubators"/>
                 </node>
             </node>
-            <node TEXT="Inputs of measures" STYLE="bubble" POSITION="left" ID="ID_109" BACKGROUND_COLOR="#feffff">
-                <node TEXT="Qualified staff" POSITION="left" ID="ID_110"/>
-                <node TEXT="Budget per beneficiary" POSITION="left" ID="ID_111"/>
+            <node BACKGROUND_COLOR="#feffff" ID="ID_109" POSITION="left" STYLE="bubble" TEXT="Inputs of measures">
+                <node ID="ID_110" POSITION="left" TEXT="Qualified staff"/>
+                <node ID="ID_111" POSITION="left" TEXT="Budget per beneficiary"/>
             </node>
-            <node TEXT="Performance of measure" STYLE="bubble" POSITION="left" ID="ID_48" BACKGROUND_COLOR="#feffff">
-                <node TEXT="Implementation of measure" POSITION="left" ID="ID_47" BACKGROUND_COLOR="#feffff">
-                    <node TEXT="Target vs. actual KPIs" POSITION="left" ID="ID_106"/>
-                    <node TEXT="Intermediate outputs per budget" POSITION="left" ID="ID_287"/>
-                    <node TEXT="Qualification of staff" POSITION="left" ID="ID_372">
+            <node BACKGROUND_COLOR="#feffff" ID="ID_48" POSITION="left" STYLE="bubble" TEXT="Performance of measure">
+                <node BACKGROUND_COLOR="#feffff" ID="ID_47" POSITION="left" TEXT="Implementation of measure">
+                    <node ID="ID_106" POSITION="left" TEXT="Target vs. actual KPIs"/>
+                    <node ID="ID_287" POSITION="left" TEXT="Intermediate outputs per budget"/>
+                    <node ID="ID_372" POSITION="left" TEXT="Qualification of staff">
                         <icon BUILTIN="messagebox_warning"/>
                     </node>
                 </node>
-                <node TEXT="Output of measure" POSITION="left" ID="ID_58">
-                    <node TEXT="Opinion surveys" POSITION="left" ID="ID_101">
-                        <node TEXT="Opinions of beneficiaries" POSITION="left" ID="ID_102"/>
+                <node ID="ID_58" POSITION="left" TEXT="Output of measure">
+                    <node ID="ID_101" POSITION="left" TEXT="Opinion surveys">
+                        <node ID="ID_102" POSITION="left" TEXT="Opinions of beneficiaries"/>
                     </node>
-                    <node TEXT="Hard metrics" POSITION="left" ID="ID_103">
-                        <node TEXT="Output per headcount (e.g. staff, researchers)" POSITION="left" ID="ID_289"/>
-                        <node TEXT="Productivity analysis" POSITION="left" ID="ID_288"/>
+                    <node ID="ID_103" POSITION="left" TEXT="Hard metrics">
+                        <node ID="ID_289" POSITION="left" TEXT="Output per headcount (e.g. staff, researchers)"/>
+                        <node ID="ID_288" POSITION="left" TEXT="Productivity analysis"/>
                     </node>
                 </node>
             </node>
-            <node TEXT="Impact of measure" STYLE="bubble" POSITION="left" ID="ID_49" BACKGROUND_COLOR="#feffff">
-                <node TEXT="Opinion surveys" POSITION="left" ID="ID_79">
-                    <node TEXT="Perception of support impact (opinion polls)" POSITION="left" ID="ID_294"/>
-                    <node TEXT="Perception of the activity of regional government by the regional companies " POSITION="left" ID="ID_404"/>
+            <node BACKGROUND_COLOR="#feffff" ID="ID_49" POSITION="left" STYLE="bubble" TEXT="Impact of measure">
+                <node ID="ID_79" POSITION="left" TEXT="Opinion surveys">
+                    <node ID="ID_294" POSITION="left" TEXT="Perception of support impact (opinion polls)"/>
+                    <node ID="ID_404" POSITION="left" TEXT="Perception of the activity of regional government by the regional companies "/>
                 </node>
-                <node TEXT="Hard metrics" POSITION="left" ID="ID_104">
-                    <node TEXT="Increase in number of small innovation enterprises " POSITION="left" ID="ID_331"/>
-                    <node TEXT="Growth of the total volume of salary in the supported companies (excluding inflation) " POSITION="left" ID="ID_402">
+                <node ID="ID_104" POSITION="left" TEXT="Hard metrics">
+                    <node ID="ID_331" POSITION="left" TEXT="Increase in number of small innovation enterprises "/>
+                    <node ID="ID_402" POSITION="left" TEXT="Growth of the total volume of salary in the supported companies (excluding inflation) ">
                         <icon BUILTIN="messagebox_warning"/>
                     </node>
-                    <node TEXT="Growth of the volume of regional taxes paid by the supported companies " POSITION="left" ID="ID_403">
+                    <node ID="ID_403" POSITION="left" TEXT="Growth of the volume of regional taxes paid by the supported companies ">
                         <icon BUILTIN="messagebox_warning"/>
                     </node>
-                    <node TEXT="Growth of the volume of export at the supported companies " POSITION="left" ID="ID_405"/>
-                    <node TEXT="Number of new products/projects at the companies that received support " POSITION="left" ID="ID_406"/>
+                    <node ID="ID_405" POSITION="left" TEXT="Growth of the volume of export at the supported companies "/>
+                    <node ID="ID_406" POSITION="left" TEXT="Number of new products/projects at the companies that received support "/>
                 </node>
-                <node TEXT="Impact assessment " POSITION="left" ID="ID_290"/>
-                <node POSITION="left" ID="ID_291">
+                <node ID="ID_290" POSITION="left" TEXT="Impact assessment "/>
+                <node ID="ID_291" POSITION="left">
                     <richcontent TYPE="NODE">
                         <html>
                             <head/>
@@ -699,7 +699,7 @@
                     </richcontent>
                     <icon BUILTIN="messagebox_warning"/>
                 </node>
-                <node POSITION="left" ID="ID_296">
+                <node ID="ID_296" POSITION="left">
                     <richcontent TYPE="NODE">
                         <html>
                             <head/>
@@ -712,20 +712,20 @@
                     <icon BUILTIN="messagebox_warning"/>
                 </node>
             </node>
-            <arrowlink STARTARROW="Default" DESTINATION="ID_114"/>
+            <arrowlink DESTINATION="ID_114" STARTARROW="Default"/>
         </node>
-        <node TEXT="What investments in innovative projects" STYLE="bubble" POSITION="right" ID="ID_7">
+        <node ID="ID_7" POSITION="right" STYLE="bubble" TEXT="What investments in innovative projects">
             <font SIZE="10"/>
-            <node TEXT="Competitive niches" STYLE="bubble" POSITION="right" ID="ID_61" BACKGROUND_COLOR="#feffff">
-                <node TEXT="Clusters behavior" POSITION="right" ID="ID_59">
-                    <node TEXT="Cluster EU star rating" POSITION="right" ID="ID_60"/>
-                    <node TEXT="Share of value added of cluster enterprises in GRP" POSITION="right" ID="ID_318"/>
-                    <node TEXT="Share of cluster products in the relevant world market segment " POSITION="right" ID="ID_320">
+            <node BACKGROUND_COLOR="#feffff" ID="ID_61" POSITION="right" STYLE="bubble" TEXT="Competitive niches">
+                <node ID="ID_59" POSITION="right" TEXT="Clusters behavior">
+                    <node ID="ID_60" POSITION="right" TEXT="Cluster EU star rating"/>
+                    <node ID="ID_318" POSITION="right" TEXT="Share of value added of cluster enterprises in GRP"/>
+                    <node ID="ID_320" POSITION="right" TEXT="Share of cluster products in the relevant world market segment ">
                         <icon BUILTIN="messagebox_warning"/>
                     </node>
-                    <node TEXT="Share of export in cluster total volume of sales" POSITION="right" ID="ID_321"/>
-                    <node TEXT="Growth of the volume of production in the cluster companies" POSITION="right" ID="ID_379"/>
-                    <node POSITION="right" ID="ID_380">
+                    <node ID="ID_321" POSITION="right" TEXT="Share of export in cluster total volume of sales"/>
+                    <node ID="ID_379" POSITION="right" TEXT="Growth of the volume of production in the cluster companies"/>
+                    <node ID="ID_380" POSITION="right">
                         <richcontent TYPE="NODE">
                             <html>
                                 <head/>
@@ -736,31 +736,31 @@
                             </html>
                         </richcontent>
                     </node>
-                    <node TEXT="Growth of the volume of innovation production in the cluster" POSITION="right" ID="ID_381"/>
-                    <node TEXT="Share of export in cluster total volume of sales (by zones: US, EU, CIS, other countries) " POSITION="right" ID="ID_407"/>
-                    <node TEXT="Internal behavior" POSITION="right" ID="ID_408">
-                        <node TEXT="Median wage in the cluster" POSITION="right" ID="ID_319"/>
-                        <node TEXT="Growth of the volume of R&amp;D in the cluster" POSITION="right" ID="ID_382"/>
-                        <node TEXT="Cluster collaboration" POSITION="right" ID="ID_108"/>
+                    <node ID="ID_381" POSITION="right" TEXT="Growth of the volume of innovation production in the cluster"/>
+                    <node ID="ID_407" POSITION="right" TEXT="Share of export in cluster total volume of sales (by zones: US, EU, CIS, other countries) "/>
+                    <node ID="ID_408" POSITION="right" TEXT="Internal behavior">
+                        <node ID="ID_319" POSITION="right" TEXT="Median wage in the cluster"/>
+                        <node ID="ID_382" POSITION="right" TEXT="Growth of the volume of R&amp;D in the cluster"/>
+                        <node ID="ID_108" POSITION="right" TEXT="Cluster collaboration"/>
                     </node>
                 </node>
-                <node TEXT="R&amp;D" POSITION="right" ID="ID_66">
-                    <node TEXT="Patent map" POSITION="right" ID="ID_65"/>
-                    <node TEXT="Publications map" POSITION="right" ID="ID_371"/>
+                <node ID="ID_66" POSITION="right" TEXT="R&amp;D">
+                    <node ID="ID_65" POSITION="right" TEXT="Patent map"/>
+                    <node ID="ID_371" POSITION="right" TEXT="Publications map"/>
                 </node>
-                <node TEXT="Industry" POSITION="right" ID="ID_67">
-                    <node TEXT="FDI map" POSITION="right" ID="ID_63"/>
-                    <node TEXT="Gazelle map" POSITION="right" ID="ID_62"/>
-                    <node TEXT="Business R&amp;D expenditures as a share of revenues by sector" POSITION="right" ID="ID_131"/>
-                    <node TEXT="Share of regional products in the world market" POSITION="right" ID="ID_378"/>
-                    <node TEXT="Expenditure on innovation by firm size, by sector " POSITION="right" ID="ID_414"/>
+                <node ID="ID_67" POSITION="right" TEXT="Industry">
+                    <node ID="ID_63" POSITION="right" TEXT="FDI map"/>
+                    <node ID="ID_62" POSITION="right" TEXT="Gazelle map"/>
+                    <node ID="ID_131" POSITION="right" TEXT="Business R&amp;D expenditures as a share of revenues by sector"/>
+                    <node ID="ID_378" POSITION="right" TEXT="Share of regional products in the world market"/>
+                    <node ID="ID_414" POSITION="right" TEXT="Expenditure on innovation by firm size, by sector "/>
                 </node>
-                <node TEXT="Entrepreneurship" POSITION="right" ID="ID_72">
-                    <node TEXT="Startup map" POSITION="right" ID="ID_73"/>
-                    <node TEXT="Venture investment map" POSITION="right" ID="ID_74"/>
-                    <node TEXT="Attractiveness to public competitive funding" POSITION="right" ID="ID_317">
-                        <node TEXT="Fed and regional seed fund investments" POSITION="right" ID="ID_316"/>
-                        <node POSITION="right" ID="ID_314">
+                <node ID="ID_72" POSITION="right" TEXT="Entrepreneurship">
+                    <node ID="ID_73" POSITION="right" TEXT="Startup map"/>
+                    <node ID="ID_74" POSITION="right" TEXT="Venture investment map"/>
+                    <node ID="ID_317" POSITION="right" TEXT="Attractiveness to public competitive funding">
+                        <node ID="ID_316" POSITION="right" TEXT="Fed and regional seed fund investments"/>
+                        <node ID="ID_314" POSITION="right">
                             <richcontent TYPE="NODE">
                                 <html>
                                     <head/>
@@ -774,17 +774,17 @@
                     </node>
                 </node>
             </node>
-            <node TEXT="Competitiveness support factors" STYLE="bubble" POSITION="right" ID="ID_64" BACKGROUND_COLOR="#ffffff">
-                <node TEXT="Private investment in innovation" POSITION="right" ID="ID_68"/>
+            <node BACKGROUND_COLOR="#ffffff" ID="ID_64" POSITION="right" STYLE="bubble" TEXT="Competitiveness support factors">
+                <node ID="ID_68" POSITION="right" TEXT="Private investment in innovation"/>
             </node>
         </node>
-        <node TEXT="How to improve image" STYLE="bubble" POSITION="left" ID="ID_69" BACKGROUND_COLOR="#e0e5ef">
+        <node BACKGROUND_COLOR="#e0e5ef" ID="ID_69" POSITION="left" STYLE="bubble" TEXT="How to improve image">
             <font SIZE="10"/>
-            <node TEXT="Rankings" STYLE="bubble" POSITION="left" ID="ID_75" BACKGROUND_COLOR="#feffff">
-                <node TEXT="macro indicators" POSITION="left" ID="ID_70"/>
-                <node TEXT="meso-indicators" POSITION="left" ID="ID_71"/>
+            <node BACKGROUND_COLOR="#feffff" ID="ID_75" POSITION="left" STYLE="bubble" TEXT="Rankings">
+                <node ID="ID_70" POSITION="left" TEXT="macro indicators"/>
+                <node ID="ID_71" POSITION="left" TEXT="meso-indicators"/>
             </node>
-            <node TEXT="Innovation investment climate" STYLE="bubble" POSITION="left" ID="ID_76" BACKGROUND_COLOR="#feffff"/>
+            <node BACKGROUND_COLOR="#feffff" ID="ID_76" POSITION="left" STYLE="bubble" TEXT="Innovation investment climate"/>
         </node>
     </node>
 </map>

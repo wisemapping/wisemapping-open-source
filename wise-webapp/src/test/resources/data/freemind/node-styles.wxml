@@ -1,61 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="tango" name="basic">
-    <topic id="0" central="true" position="0,0" shape="rounded rectagle">
+<map name="basic" version="tango">
+    <topic central="true" id="0" position="0,0" shape="rounded rectagle">
         <text><![CDATA[Shapes]]></text>
-        <topic id="1" position="200,0" order="0" shape="line">
+        <topic id="1" order="0" position="200,0" shape="line">
             <text><![CDATA[Node Styles]]></text>
-            <topic id="2" position="290,-50" order="0" brColor="#808080" shape="line">
+            <topic brColor="#808080" id="2" order="0" position="290,-50" shape="line">
                 <text><![CDATA[Fork]]></text>
             </topic>
-            <topic id="3" position="290,-25" order="1" brColor="#808080" shape="rounded rectagle">
+            <topic brColor="#808080" id="3" order="1" position="290,-25" shape="rounded rectagle">
                 <text><![CDATA[Bubble]]></text>
             </topic>
-            <topic id="4" position="290,0" order="2" brColor="#808080" shape="line">
+            <topic brColor="#808080" id="4" order="2" position="290,0" shape="line">
                 <text><![CDATA[As parent]]></text>
             </topic>
-            <topic id="5" position="290,25" order="3" brColor="#808080" shape="line">
+            <topic brColor="#808080" id="5" order="3" position="290,25" shape="line">
                 <text><![CDATA[Combined]]></text>
             </topic>
         </topic>
-        <topic id="6" position="-200,0" order="0" bgColor="#f20707" shape="rectagle">
+        <topic bgColor="#f20707" id="6" order="0" position="-200,0" shape="rectagle">
             <text><![CDATA[Node Background Color]]></text>
-            <topic id="7" position="-290,-50" order="0"
-                brColor="#808080" bgColor="#0000cc" shape="rectagle">
+            <topic bgColor="#0000cc" brColor="#808080" id="7" order="0"
+                position="-290,-50" shape="rectagle">
                 <text><![CDATA[Fork]]></text>
             </topic>
-            <topic id="8" position="-290,-25" order="1"
-                brColor="#808080" bgColor="#ccffcc" shape="rounded rectagle">
+            <topic bgColor="#ccffcc" brColor="#808080" id="8" order="1"
+                position="-290,-25" shape="rounded rectagle">
                 <text><![CDATA[Bubble]]></text>
             </topic>
-            <topic id="9" position="-290,0" order="2" brColor="#808080"
-                bgColor="#00ffff" shape="rectagle">
+            <topic bgColor="#00ffff" brColor="#808080" id="9" order="2"
+                position="-290,0" shape="rectagle">
                 <text><![CDATA[As parent]]></text>
             </topic>
-            <topic id="10" position="-290,25" order="3"
-                brColor="#808080" bgColor="#990099" shape="rectagle">
+            <topic bgColor="#990099" brColor="#808080" id="10" order="3"
+                position="-290,25" shape="rectagle">
                 <text><![CDATA[Combined]]></text>
             </topic>
         </topic>
-        <topic id="11" position="-200,100" order="4" bgColor="#f20707" shape="rectagle">
+        <topic bgColor="#f20707" id="11" order="4" position="-200,100" shape="rectagle">
             <text><![CDATA[Node Text Color]]></text>
-            <topic id="12" position="-290,50" order="0"
-                brColor="#808080" bgColor="#0000cc"
-                fontStyle=";;#ffff00;;;" shape="rectagle">
+            <topic bgColor="#0000cc" brColor="#808080"
+                fontStyle=";;#ffff00;;;" id="12" order="0"
+                position="-290,50" shape="rectagle">
                 <text><![CDATA[Fork]]></text>
             </topic>
-            <topic id="13" position="-290,75" order="1"
-                brColor="#808080" bgColor="#ccffcc"
-                fontStyle=";;#ff6666;;;" shape="rounded rectagle">
+            <topic bgColor="#ccffcc" brColor="#808080"
+                fontStyle=";;#ff6666;;;" id="13" order="1"
+                position="-290,75" shape="rounded rectagle">
                 <text><![CDATA[Bubble]]></text>
             </topic>
-            <topic id="14" position="-290,100" order="2"
-                brColor="#808080" bgColor="#00ffff"
-                fontStyle=";;#009999;;;" shape="rectagle">
+            <topic bgColor="#00ffff" brColor="#808080"
+                fontStyle=";;#009999;;;" id="14" order="2"
+                position="-290,100" shape="rectagle">
                 <text><![CDATA[As parent]]></text>
             </topic>
-            <topic id="15" position="-290,125" order="3"
-                brColor="#808080" bgColor="#990099"
-                fontStyle=";;#009999;;;" shape="rectagle">
+            <topic bgColor="#990099" brColor="#808080"
+                fontStyle=";;#009999;;;" id="15" order="3"
+                position="-290,125" shape="rectagle">
                 <text><![CDATA[Combined]]></text>
             </topic>
         </topic>

@@ -1,142 +1,142 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="tango" name="basic">
-    <topic id="0" central="true" position="0,0" shape="rounded rectagle">
+<map name="basic" version="tango">
+    <topic central="true" id="0" position="0,0" shape="rounded rectagle">
         <text><![CDATA[Baugruppe :: Systemanforderungen]]></text>
-        <topic id="1" position="200,-100" order="3" shape="line">
+        <topic id="1" order="3" position="200,-100" shape="line">
             <text><![CDATA[[1] Motor …]]></text>
-            <topic id="2" position="290,-200" order="0" shape="line">
+            <topic id="2" order="0" position="290,-200" shape="line">
                 <text><![CDATA[[27] Isolationssystem …]]></text>
             </topic>
-            <topic id="3" position="290,-175" order="1" shape="line">
+            <topic id="3" order="1" position="290,-175" shape="line">
                 <text><![CDATA[8[2] …]]></text>
             </topic>
-            <topic id="4" position="290,-150" order="2" shape="line">
+            <topic id="4" order="2" position="290,-150" shape="line">
                 <text><![CDATA[[170] Multiumrichterbetrieb …]]></text>
             </topic>
-            <topic id="5" position="290,-125" order="3" shape="line">
+            <topic id="5" order="3" position="290,-125" shape="line">
                 <text><![CDATA[[22] Thermistor …]]></text>
             </topic>
-            <topic id="6" position="290,-100" order="4" shape="line">
+            <topic id="6" order="4" position="290,-100" shape="line">
                 <text><![CDATA[[2] Stecker …]]></text>
-                <topic id="7" position="380,-125" order="0" shape="line">
+                <topic id="7" order="0" position="380,-125" shape="line">
                     <text><![CDATA[[169] …]]></text>
                 </topic>
-                <topic id="8" position="380,-100" order="1" shape="line">
+                <topic id="8" order="1" position="380,-100" shape="line">
                     <text><![CDATA[[5] Kabel …]]></text>
                 </topic>
-                <topic id="9" position="380,-75" order="2" shape="line">
+                <topic id="9" order="2" position="380,-75" shape="line">
                     <text><![CDATA[8[31] Strombuchse …]]></text>
-                    <topic id="10" position="470,-100" order="0" shape="line">
+                    <topic id="10" order="0" position="470,-100" shape="line">
                         <text><![CDATA[8[2] Stecker …]]></text>
                     </topic>
-                    <topic id="11" position="470,-75" order="1" shape="line">
+                    <topic id="11" order="1" position="470,-75" shape="line">
                         <text><![CDATA[8[173] Stecker …]]></text>
                     </topic>
                 </topic>
             </topic>
-            <topic id="12" position="290,-75" order="5" shape="line">
+            <topic id="12" order="5" position="290,-75" shape="line">
                 <text><![CDATA[8[173] Stecker …]]></text>
-                <topic id="13" position="380,-75" order="0" shape="line">
+                <topic id="13" order="0" position="380,-75" shape="line">
                     <text><![CDATA[8[2] Stecker …]]></text>
                 </topic>
             </topic>
-            <topic id="14" position="290,-50" order="6" shape="line">
+            <topic id="14" order="6" position="290,-50" shape="line">
                 <text><![CDATA[8[1] …]]></text>
             </topic>
-            <topic id="15" position="290,-25" order="7" shape="line">
+            <topic id="15" order="7" position="290,-25" shape="line">
                 <text><![CDATA[8[5] …]]></text>
             </topic>
         </topic>
-        <topic id="16" position="200,0" order="0" shape="line">
+        <topic id="16" order="0" position="200,0" shape="line">
             <text><![CDATA[[185] Motor …]]></text>
         </topic>
-        <topic id="17" position="200,100" order="4" shape="line">
+        <topic id="17" order="4" position="200,100" shape="line">
             <text><![CDATA[3 Umrichter]]></text>
-            <topic id="18" position="290,25" order="0" shape="line">
+            <topic id="18" order="0" position="290,25" shape="line">
                 <text><![CDATA[[31] Strombuchse …]]></text>
             </topic>
-            <topic id="19" position="290,50" order="1" shape="line">
+            <topic id="19" order="1" position="290,50" shape="line">
                 <text><![CDATA[8[2] Stecker …]]></text>
-                <topic id="20" position="380,25" order="0" shape="line">
+                <topic id="20" order="0" position="380,25" shape="line">
                     <text><![CDATA[8[31] Strombuchse …]]></text>
                 </topic>
-                <topic id="21" position="380,50" order="1" shape="line">
+                <topic id="21" order="1" position="380,50" shape="line">
                     <text><![CDATA[8[173] Stecker …]]></text>
                 </topic>
             </topic>
-            <topic id="22" position="290,75" order="2" shape="line">
+            <topic id="22" order="2" position="290,75" shape="line">
                 <text><![CDATA[8[173] Stecker …]]></text>
-                <topic id="23" position="380,75" order="0" shape="line">
+                <topic id="23" order="0" position="380,75" shape="line">
                     <text><![CDATA[8[2] Stecker …]]></text>
                 </topic>
             </topic>
-            <topic id="24" position="290,100" order="3" shape="line">
+            <topic id="24" order="3" position="290,100" shape="line">
                 <text><![CDATA[[4] max. Außenleiterspannung …]]></text>
             </topic>
-            <topic id="25" position="290,125" order="4" shape="line">
+            <topic id="25" order="4" position="290,125" shape="line">
                 <text><![CDATA[[13]]]></text>
-                <topic id="26" position="380,100" order="0" shape="line">
+                <topic id="26" order="0" position="380,100" shape="line">
                     <text><![CDATA[[14]]]></text>
-                    <topic id="27" position="470,75" order="0" shape="line">
+                    <topic id="27" order="0" position="470,75" shape="line">
                         <text><![CDATA[[15] …]]></text>
                     </topic>
-                    <topic id="28" position="470,100" order="1" shape="line">
+                    <topic id="28" order="1" position="470,100" shape="line">
                         <text><![CDATA[[16] …]]></text>
                     </topic>
-                    <topic id="29" position="470,125" order="2" shape="line">
+                    <topic id="29" order="2" position="470,125" shape="line">
                         <text><![CDATA[[17] …]]></text>
                     </topic>
                 </topic>
-                <topic id="30" position="380,125" order="1" shape="line">
+                <topic id="30" order="1" position="380,125" shape="line">
                     <text><![CDATA[[18]]]></text>
-                    <topic id="31" position="470,100" order="0" shape="line">
+                    <topic id="31" order="0" position="470,100" shape="line">
                         <text><![CDATA[[19] …]]></text>
                     </topic>
-                    <topic id="32" position="470,125" order="1" shape="line">
+                    <topic id="32" order="1" position="470,125" shape="line">
                         <text><![CDATA[[20] …]]></text>
                     </topic>
-                    <topic id="33" position="470,150" order="2" shape="line">
+                    <topic id="33" order="2" position="470,150" shape="line">
                         <text><![CDATA[[21] …]]></text>
                     </topic>
                 </topic>
             </topic>
-            <topic id="34" position="290,150" order="5" shape="line">
+            <topic id="34" order="5" position="290,150" shape="line">
                 <text><![CDATA[3.3 Steuerung]]></text>
             </topic>
         </topic>
-        <topic id="35" position="200,200" order="8" shape="line">
+        <topic id="35" order="8" position="200,200" shape="line">
             <text><![CDATA[4 Bremse]]></text>
-            <topic id="36" position="290,125" order="0" shape="line">
+            <topic id="36" order="0" position="290,125" shape="line">
                 <text><![CDATA[[172] Bremsansteuerung …]]></text>
             </topic>
-            <topic id="37" position="290,150" order="1" shape="line">
+            <topic id="37" order="1" position="290,150" shape="line">
                 <text><![CDATA[[173] Stecker …]]></text>
-                <topic id="38" position="380,125" order="0" shape="line">
+                <topic id="38" order="0" position="380,125" shape="line">
                     <text><![CDATA[[175] Kabel …]]></text>
                 </topic>
-                <topic id="39" position="380,150" order="1" shape="line">
+                <topic id="39" order="1" position="380,150" shape="line">
                     <text><![CDATA[8[2] Stecker …]]></text>
-                    <topic id="40" position="470,125" order="0" shape="line">
+                    <topic id="40" order="0" position="470,125" shape="line">
                         <text><![CDATA[8[31] Strombuchse …]]></text>
                     </topic>
-                    <topic id="41" position="470,150" order="1" shape="line">
+                    <topic id="41" order="1" position="470,150" shape="line">
                         <text><![CDATA[8[173] Stecker …]]></text>
                     </topic>
                 </topic>
             </topic>
-            <topic id="42" position="290,175" order="2" shape="line">
+            <topic id="42" order="2" position="290,175" shape="line">
                 <text><![CDATA[[178] Bremslufthebel …]]></text>
             </topic>
-            <topic id="43" position="290,200" order="3" shape="line">
+            <topic id="43" order="3" position="290,200" shape="line">
                 <text><![CDATA[[179] Reaktionszeit …]]></text>
             </topic>
-            <topic id="44" position="290,225" order="4" shape="line">
+            <topic id="44" order="4" position="290,225" shape="line">
                 <text><![CDATA[[180] Bremsmoment …]]></text>
             </topic>
-            <topic id="45" position="290,250" order="5" shape="line">
+            <topic id="45" order="5" position="290,250" shape="line">
                 <text><![CDATA[[181] Notbetriebsart …]]></text>
             </topic>
-            <topic id="46" position="290,275" order="6" shape="line">
+            <topic id="46" order="6" position="290,275" shape="line">
                 <text><![CDATA[[182] Bremsüberwachung …]]></text>
             </topic>
         </topic>
