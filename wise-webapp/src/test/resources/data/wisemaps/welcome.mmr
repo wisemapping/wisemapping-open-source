@@ -39,7 +39,16 @@
             <node ID="ID_10" POSITION="right" TEXT="Free!!!"/>
         </node>
         <node BACKGROUND_COLOR="#add1f7" COLOR="#0c1d6b" ID="ID_22" POSITION="left" TEXT="Web 2.0 Tool">
-            <node ID="ID_23" POSITION="left" TEXT="Collaborate"/>
+            <node ID="ID_23" POSITION="left" TEXT="Collaborate">
+                <richcontent TYPE="NOTE">
+                    <html>
+                        <head/>
+                        <body>
+                            <p>This is a multiline note with some spanish char "&#241;"</p>
+                        </body>
+                    </html>
+                </richcontent>
+            </node>
             <node ID="ID_24" POSITION="left" TEXT="No plugin required">
                 <icon BUILTIN="disconnect"/>
             </node>

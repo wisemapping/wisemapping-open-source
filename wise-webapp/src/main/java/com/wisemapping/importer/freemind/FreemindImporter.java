@@ -298,7 +298,7 @@ public class FreemindImporter
                 if (textNote == null) // It is not a note is a BlinkingNodeHook or AutomaticLayout Hook
                 {
                     textNote = EMPTY_NOTE;
-                    mindmapNote.setText(textNote);
+                    mindmapNote.setValue(textNote);
                     currentWiseTopic.setNote(mindmapNote);
                 }
             } else if (element instanceof Richcontent) {
@@ -312,7 +312,7 @@ public class FreemindImporter
                     String text = html2text(content);
                     final com.wisemapping.jaxb.wisemap.Note mindmapNote = new com.wisemapping.jaxb.wisemap.Note();
                     text = text != null ? text : EMPTY_NOTE;
-                    mindmapNote.setText(text);
+                    mindmapNote.setValue(text);
                     currentWiseTopic.setNote(mindmapNote);
 
                 }

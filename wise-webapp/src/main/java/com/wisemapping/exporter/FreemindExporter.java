@@ -225,7 +225,7 @@ public class FreemindExporter
     private void addNote(com.wisemapping.jaxb.freemind.Node fnode, com.wisemapping.jaxb.wisemap.TopicType mindmapTopic) throws IOException, SAXException, ParserConfigurationException {
         final Note note = mindmapTopic.getNote();
         if (note != null) {
-            final String noteStr = note.getText() != null ? note.getText() : note.getTextAttr();
+            final String noteStr = note.getValue() != null ? note.getValue() : note.getTextAttr();
             if (noteStr != null) {
                 final Richcontent richcontent = buildRichContent(noteStr, "NOTE");
                 fnode.getArrowlinkOrCloudOrEdge().add(richcontent);

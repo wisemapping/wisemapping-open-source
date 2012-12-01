@@ -72,6 +72,15 @@
                         </body>
                     </html>
                 </richcontent>
+                <richcontent TYPE="NOTE">
+                    <html>
+                        <head/>
+                        <body>
+                            <p/>
+                            <p>Isso significa que estudos de caracter&#237;stica de hist&#243;ria de vida compensam? Ver nos m&amp;m.</p>
+                        </body>
+                    </html>
+                </richcontent>
             </node>
             <node ID="ID_15" POSITION="left">
                 <richcontent TYPE="NODE">
@@ -81,6 +90,15 @@
                             <p>We suggest that, in these studies,</p>
                             <p>the investment in complete sampling may be worthwhile</p>
                             <p>for at least some traits.</p>
+                        </body>
+                    </html>
+                </richcontent>
+                <richcontent TYPE="NOTE">
+                    <html>
+                        <head/>
+                        <body>
+                            <p/>
+                            <p>Falar que isso corrobora nossa sugest&#227;o de utilizar poucas medidas, mas que elas sejam confi&#225;veis.</p>
                         </body>
                     </html>
                 </richcontent>

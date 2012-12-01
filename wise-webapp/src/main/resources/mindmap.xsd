@@ -48,10 +48,11 @@
     </xsd:complexType>
 
     <xsd:complexType name="note">
-        <xsd:sequence>
-            <xsd:element minOccurs='0' maxOccurs='1' type="xsd:string" name="text"/>
-        </xsd:sequence>
-        <xsd:attribute name="text" type="xsd:string"/>
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="text" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
     </xsd:complexType>
 
     <xsd:element name="relationship" type="relationshipType"/>

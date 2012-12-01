@@ -2,15 +2,11 @@
 <map name="basic" version="tango">
     <topic central="true" id="0" position="0,0" shape="rounded rectagle">
         <text><![CDATA[Notes Support]]></text>
-        <note>
-            <text><![CDATA[This is a HTML node. List of values List of values 2 
- This is bold]]></text>
-        </note>
+        <note><![CDATA[This is a HTML node. List of values List of values 2 
+ This is bold]]></note>
         <topic id="1" order="0" position="200,0" shape="line">
             <text><![CDATA[Child Node]]></text>
-            <note>
-                <text><![CDATA[This is a simple note]]></text>
-            </note>
+            <note><![CDATA[This is a simple note]]></note>
         </topic>
     </topic>
 </map>

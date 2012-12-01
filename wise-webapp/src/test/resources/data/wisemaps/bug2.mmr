@@ -28,6 +28,19 @@
         <node ID="ID_37" POSITION="right" TEXT="Actividades centradas en el contexto cercano"/>
         <node ID="ID_22" POSITION="right" TEXT="Flexibilidad en el uso de las lenguas de trabajo (ingl&#233;s, castellano, esukara?)"/>
         <node ID="ID_27" POSITION="right" STYLE="bubble" TEXT="Complementamos el trabajo de la escuela">
+            <richcontent TYPE="NOTE">
+                <html>
+                    <head/>
+                    <body>
+                        <p>Todos los contenidos de los talleres est&#225;n relacionados con el curr&#237;culo de la ense&#241;anza b&#225;sica.</p>
+                        <p>A diferencia de la pr&#225;ctica tradicional, pretendemos ahondar en el conocimiento partiendo de lo que realmente interesa al ni&#241;o o ni&#241;a,</p>
+                        <p>ayud&#225;ndole a que encuentre respuesta a las preguntas que &#233;l o ella se plantea.</p>
+                        <p/>
+                        <p>Por ese motivo, SaberM&#225;s proyecta estar al lado de los ni&#241;os que necesitan una motivaci&#243;n extra para entender la escuela y fluir en ella,</p>
+                        <p>y tambi&#233;n al lado de aquellos a quienes la curiosidad y las ganas de saber les lleva m&#225;s all&#225;.</p>
+                    </body>
+                </html>
+            </richcontent>
             <node ID="ID_30" POSITION="right" TEXT="Cada uno va a su ritmo, y cada cual pone sus l&#237;mites"/>
             <node ID="ID_31" POSITION="right" TEXT="Aprendemos todos de todos"/>
             <node ID="ID_33" POSITION="right" TEXT="Valoramos lo que hemos aprendido"/>

@@ -43,7 +43,7 @@ public class JaxbCDATAMarshaller {
         // When processing xml that doesn't use namespaces, simply omit the
         // namespace prefix as shown in the third CDataElement below.
         of.setCDataElements(
-                new String[]{"^text"});   //
+                new String[]{"^text","^note"});   //
 
         // set any other options you'd like
 //        of.setPreserveSpace(true);

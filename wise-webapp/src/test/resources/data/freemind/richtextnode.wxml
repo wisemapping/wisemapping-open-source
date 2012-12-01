@@ -3,9 +3,7 @@
     <topic bgColor="#99ffff" central="true"
         fontStyle="Arial;10;#ff3300;bold;;" id="0" position="0,0" shape="rounded rectagle">
         <text><![CDATA[120924 Programme]]></text>
-        <note>
-            <text><![CDATA[]]></text>
-        </note>
+        <note><![CDATA[]]></note>
         <topic bgColor="#ffff33" brColor="#808080"
             fontStyle="Arial;8;#0000cc;bold;;" id="1" order="0"
             position="200,0" shape="rounded rectagle">

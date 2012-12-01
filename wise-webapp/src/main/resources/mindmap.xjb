@@ -8,7 +8,7 @@
     <jxb:bindings node="/xsd:schema/xsd:complexType[@name='topicType']/xsd:attribute[@name='text']" schemaLocation="mindmap.xsd">
         <jxb:property name="textAttr"/>
     </jxb:bindings>
-    <jxb:bindings node="/xsd:schema/xsd:complexType[@name='note']/xsd:attribute[@name='text']" schemaLocation="mindmap.xsd">
+    <jxb:bindings node="/xsd:schema/xsd:complexType[@name='note']/xsd:simpleContent/xsd:extension/xsd:attribute[@name='text']" schemaLocation="mindmap.xsd">
         <jxb:property name="textAttr"/>
     </jxb:bindings>
 </jxb:bindings> 
