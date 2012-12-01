@@ -45,6 +45,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
+import java.util.regex.Pattern;
 
 public class ExporterFactory {
     private static final String GROUP_NODE_NAME = "g";
@@ -146,6 +147,9 @@ public class ExporterFactory {
         // Hacks for some legacy cases ....
         svgXml = svgXml.replaceAll("NaN,", "0");
         svgXml = svgXml.replaceAll(",NaN", "0");
+
+        // Bratik do not manage nbsp properly.
+        svgXml = svgXml.replaceAll(Pattern.quote("&nbsp;")," ");
 
         Document document;
         try {

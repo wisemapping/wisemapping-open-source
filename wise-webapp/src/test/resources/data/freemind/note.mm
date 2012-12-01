@@ -21,8 +21,7 @@
       <i><b>This is bold </b></i>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <node CREATED="1354384204994" ID="ID_1523964881" MODIFIED="1354384740867" POSITION="right" TEXT="Child Node">
 <richcontent TYPE="NOTE"><html>
   <head>
@@ -33,8 +32,7 @@
       This is a simple note
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 </map>

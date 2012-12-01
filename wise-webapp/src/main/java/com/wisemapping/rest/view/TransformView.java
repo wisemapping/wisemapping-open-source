@@ -59,14 +59,8 @@ public class TransformView extends AbstractView {
         // Build format properties ...
         final ExportProperties properties = ExportProperties.create(exportFormat);
         if (properties instanceof ExportProperties.ImageProperties) {
-            final String sizeStr = request.getParameter(IMG_SIZE_PARAMETER);
             final ExportProperties.ImageProperties imageProperties = (ExportProperties.ImageProperties) properties;
-            if (sizeStr != null) {
-                final ExportProperties.ImageProperties.Size size = ExportProperties.ImageProperties.Size.valueOf(sizeStr);
-                imageProperties.setSize(size);
-            } else {
-                imageProperties.setSize(ExportProperties.ImageProperties.Size.MEDIUM);
-            }
+            imageProperties.setSize(ExportProperties.ImageProperties.Size.LARGE);
         }
 
         // Set format content type...
@@ -103,6 +97,4 @@ public class TransformView extends AbstractView {
     public String getContentType() {
         return contentType;
     }
-
-    private static final String IMG_SIZE_PARAMETER = "imgSize";
 }
