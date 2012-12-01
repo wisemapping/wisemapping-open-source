@@ -24,10 +24,15 @@ public class ExportTest {
     private static final String DATA_DIR_PATH = "src/test/resources/data/svg/";
 
     @Test(dataProvider = "Data-Provider-Function")
-    public void exportSvgTest(@NotNull final File svgFile, @NotNull final File pngFile) throws ImporterException, IOException, ExportException, TransformerException, XMLStreamException, JAXBException, SAXException, TranscoderException, ParserConfigurationException {
+    public void exportSvgTest(@NotNull final File svgFile, @NotNull final File pngFile, @NotNull final File pdfFile) throws ImporterException, IOException, ExportException, TransformerException, XMLStreamException, JAXBException, SAXException, TranscoderException, ParserConfigurationException {
 
         String svgXml = FileUtils.readFileToString(svgFile, "UTF-8");
 
+        exportPng(svgFile, pngFile, svgXml);
+        exportPdf(svgFile, pdfFile, svgXml);
+    }
+
+    private void exportPng(File svgFile, File pngFile, String svgXml) throws ParserConfigurationException, TranscoderException, IOException, SAXException, XMLStreamException, TransformerException, JAXBException, ExportException {
         final ExportFormat format = ExportFormat.PNG;
         final ExportProperties properties = ExportProperties.create(format);
         final ExportProperties.ImageProperties imageProperties = (ExportProperties.ImageProperties) properties;
@@ -47,6 +52,24 @@ public class ExportTest {
         }
     }
 
+    private void exportPdf(File svgFile, File pdfFile, String svgXml) throws ParserConfigurationException, TranscoderException, IOException, SAXException, XMLStreamException, TransformerException, JAXBException, ExportException {
+        final ExportFormat format = ExportFormat.PDF;
+        final ExportProperties properties = ExportProperties.create(format);
+
+        String baseUrl = svgFile.getParentFile().getAbsolutePath() + "/../../../../../../wise-editor/src/main/webapp";
+        ExporterFactory factory = new ExporterFactory(new File(baseUrl));
+        // Write content ...
+        if (pdfFile.exists()) {
+            // Export mile content ...
+            final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            factory.export(properties, null, bos, svgXml);
+        } else {
+            OutputStream outputStream = new FileOutputStream(pdfFile, false);
+            factory.export(properties, null, outputStream, svgXml);
+            outputStream.close();
+        }
+    }
+
     //This function will provide the parameter data
     @DataProvider(name = "Data-Provider-Function")
     public Object[][] parameterIntTestProvider() {
@@ -59,11 +82,11 @@ public class ExportTest {
             }
         });
 
-        final Object[][] result = new Object[svgFile.length][2];
+        final Object[][] result = new Object[svgFile.length][3];
         for (int i = 0; i < svgFile.length; i++) {
             File freeMindFile = svgFile[i];
             final String name = freeMindFile.getName();
-            result[i] = new Object[]{freeMindFile, new File(DATA_DIR_PATH, name.substring(0, name.lastIndexOf(".")) + ".png")};
+            result[i] = new Object[]{freeMindFile, new File(DATA_DIR_PATH, name.substring(0, name.lastIndexOf(".")) + ".png"),new File(DATA_DIR_PATH, name.substring(0, name.lastIndexOf(".")) + ".pdf")};
         }
 
         return result;

@@ -11,6 +11,17 @@
 <html>
 <head>
     <base href="${requestScope['site.baseurl']}/">
+
+    <meta name="author" content="WiseMapping">
+    <meta name="publisher" content="WiseMapping Open Source">
+    <meta name="keywords" content="mindmap,mind map,mind maps,mindmaps,ideas,brainstorming,organize,thoughts,structure,collaboration,free,fast,simple,online,tool,knowledge,share,sharing,publish">
+	<meta name="description" content="WiseMapping is a free, fast and simple online mind mapping editor for individuals and business. Sign up to start organizing and sharing your ideas and thoughts.">
+    <meta property="og:title" content="WiseMapping" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://www.wisemapping.com" />
+    <meta property="og:image" content="http://www.wisemapping.com/images/logo.png" />
+    <meta property="og:site_name" content="WiseMapping.com" />
+
     <title>
         <spring:message code="SITE.TITLE"/>-
         <c:choose>
