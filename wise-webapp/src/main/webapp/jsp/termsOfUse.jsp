@@ -85,6 +85,7 @@ Service at your own risk.
 <p>
     Mind Maps® is a registered trade-mark of The Buzan Organisation, Ltd. in the UK and the USA.<br/>
     WiseMapping uses the FamFam Silk Icon library licensed under the Creative Commons Attribution 2.5 license.<br/>
+    WiseMapping Tutorial video was created by Matt Smith from <a href="http://www.college-student-answers.com/">college-student-answers.com</a>. Matt Smith granted permissions for free distribution and reproduction of this video.
 </p>
 
 <h2>Termination</h2>
