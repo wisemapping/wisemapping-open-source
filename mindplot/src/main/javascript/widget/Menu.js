@@ -432,6 +432,20 @@ mindplot.widget.Menu = new Class({
             });
         }
 
+
+        var videoElem = $("videoElem");
+        if (videoElem) {
+            var width = 900;
+            var height = 500;
+            var left = (screen.width / 2) - (width / 2);
+            var top = (screen.height / 2) - (height / 2);
+
+            videoElem.addEvent('click', function (event) {
+                window.open("https://www.youtube.com/tv?vq=medium#/watch?v=rKxZwNKs9cE", "_blank", 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=no, width=' + width + ', height=' + height + ', top=' + top + ', left=' + left);
+                event.preventDefault();
+            });
+        }
+
     },
 
     _registerEvents:function (designer) {
