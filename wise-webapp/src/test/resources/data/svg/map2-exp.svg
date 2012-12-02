@@ -1,0 +1,1590 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" focusable="true" height="2382.0" id="workspace" preserveAspectRatio="xMinYMin" viewBox="-1131.0 -1134.0 2173.0 2382.0" width="2173.0">
+    <polyline fill="none" points="645.0, 85.0 760.0, 84.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="531.0, 23.0 541.0, 23.0 541.0, 80.0 546.0, 85.0 644.0, 85.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="531.0, 23.0 541.0, 23.0 541.0, 53.0 546.0, 58.0 738.5, 58.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="531.0, 23.0 541.0, 23.0 541.0, 29.0 546.0, 34.0 718.0, 34.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="621.5, 7.0 780.5, 6.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="531.0, 23.0 541.0, 23.0 541.0, 12.0 546.0, 7.0 620.5, 7.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="531.0, 23.0 541.0, 23.0 541.0, -15.0 546.0, -20.0 790.5, -20.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="531.0, 23.0 541.0, 23.0 541.0, -39.0 546.0, -44.0 666.5, -44.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="427.5, 67.0 437.5, 67.0 437.5, 28.0 442.5, 23.0 530.0, 23.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="753.5, 175.0 868.5, 174.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="523.0, 149.0 533.0, 149.0 533.0, 170.0 538.0, 175.0 752.5, 175.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="523.0, 149.0 676.0, 148.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="641.5, 121.0 744.5, 120.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="523.0, 149.0 533.0, 149.0 533.0, 126.0 538.0, 121.0 640.5, 121.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="427.5, 67.0 437.5, 67.0 437.5, 144.0 442.5, 149.0 522.0, 149.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="365.5, 0.0 375.5, 0.0 375.5, 62.0 380.5, 67.0 426.5, 67.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="431.0, -89.0 441.0, -89.0 441.0, -83.0 446.0, -78.0 536.0, -78.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="431.0, -89.0 441.0, -89.0 441.0, -97.0 446.0, -102.0 550.0, -102.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="365.5, 0.0 375.5, 0.0 375.5, -84.0 380.5, -89.0 430.0, -89.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="517.5, -131.0 692.0, -132.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="365.5, 0.0 375.5, 0.0 375.5, -126.0 380.5, -131.0 516.5, -131.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="365.5, 0.0 375.5, 0.0 375.5, -153.0 380.5, -158.0 568.0, -158.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="365.5, 0.0 375.5, 0.0 375.5, -177.0 380.5, -182.0 546.5, -182.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <rect fill="#CC0033" fill-opacity="0.4" height="22" stroke="#FF9933" stroke-opacity="0.4" stroke-width="1px" visibility="hidden" width="49" x="381" y="46"/>
+    <polyline fill="none" fill-opacity="0.4" stroke="#CC0033" stroke-opacity="0.4" stroke-width="1px" visibility="hidden"/>
+    <line fill-opacity="0.4" stroke="#CC0033" stroke-opacity="0.4" stroke-width="1px" visibility="hidden" x1="259.6600000000001" y1="0"/>
+    <line stroke="#495879" stroke-width="1px" visibility="visible" x1="0" x2="259.5" y1="0" y2="0"/>
+    <line stroke="#495879" stroke-width="1px" visibility="visible" x1="0" x2="203.5" y1="0" y2="-650"/>
+    <polyline fill="none" points="377.0, -276.0 387.0, -276.0 387.0, -243.0 392.0, -238.0 644.0, -238.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="527.5, -265.0 764.0, -266.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="377.0, -276.0 387.0, -276.0 387.0, -270.0 392.0, -265.0 526.5, -265.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="377.0, -276.0 387.0, -276.0 387.0, -287.0 392.0, -292.0 486.5, -292.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="377.0, -276.0 387.0, -276.0 387.0, -311.0 392.0, -316.0 528.0, -316.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="315.5, -650.0 325.5, -650.0 325.5, -281.0 330.5, -276.0 376.0, -276.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="411.5, -345.0 548.0, -346.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="315.5, -650.0 325.5, -650.0 325.5, -350.0 330.5, -345.0 410.5, -345.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="443.5, -379.0 590.5, -380.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="371.0, -528.0 381.0, -528.0 381.0, -384.0 386.0, -379.0 442.5, -379.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="445.0, -520.0 455.0, -520.0 455.0, -415.0 460.0, -410.0 502.5, -410.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="445.0, -520.0 455.0, -520.0 455.0, -439.0 460.0, -434.0 632.0, -434.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="709.0, -465.0 842.5, -466.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="521.5, -500.0 531.5, -500.0 531.5, -470.0 536.5, -465.0 708.0, -465.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="521.5, -500.0 531.5, -500.0 531.5, -497.0 536.5, -492.0 610.5, -492.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="521.5, -500.0 531.5, -500.0 531.5, -511.0 536.5, -516.0 612.0, -516.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="521.5, -500.0 531.5, -500.0 531.5, -535.0 536.5, -540.0 618.0, -540.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="445.0, -520.0 455.0, -520.0 455.0, -505.0 460.0, -500.0 520.5, -500.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="731.5, -600.0 741.5, -600.0 741.5, -579.0 746.5, -574.0 810.0, -574.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="805.0, -601.0 988.0, -602.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="731.5, -600.0 804.0, -601.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="731.5, -600.0 741.5, -600.0 741.5, -623.0 746.5, -628.0 806.5, -628.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="591.0, -599.0 730.5, -600.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="445.0, -520.0 455.0, -520.0 455.0, -594.0 460.0, -599.0 590.0, -599.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="371.0, -528.0 381.0, -528.0 381.0, -525.0 386.0, -520.0 444.0, -520.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="371.0, -528.0 381.0, -528.0 381.0, -653.0 386.0, -658.0 444.5, -658.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="371.0, -528.0 381.0, -528.0 381.0, -677.0 386.0, -682.0 428.0, -682.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="315.5, -650.0 325.5, -650.0 325.5, -533.0 330.5, -528.0 370.0, -528.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="495.0, -715.0 600.0, -716.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="403.0, -738.0 413.0, -738.0 413.0, -720.0 418.0, -715.0 494.0, -715.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="403.0, -738.0 413.0, -738.0 413.0, -737.0 418.0, -742.0 514.5, -742.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="403.0, -738.0 413.0, -738.0 413.0, -761.0 418.0, -766.0 492.0, -766.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="315.5, -650.0 325.5, -650.0 325.5, -733.0 330.5, -738.0 402.0, -738.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="389.5, -843.0 399.5, -843.0 399.5, -801.0 404.5, -796.0 534.5, -796.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="389.5, -843.0 399.5, -843.0 399.5, -825.0 404.5, -820.0 558.5, -820.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="389.5, -843.0 510.5, -844.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="389.5, -843.0 399.5, -843.0 399.5, -863.0 404.5, -868.0 558.0, -868.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="389.5, -843.0 399.5, -843.0 399.5, -887.0 404.5, -892.0 452.5, -892.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="315.5, -650.0 325.5, -650.0 325.5, -838.0 330.5, -843.0 388.5, -843.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="421.5, -921.0 582.5, -922.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="315.5, -650.0 325.5, -650.0 325.5, -916.0 330.5, -921.0 420.5, -921.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="315.5, -650.0 325.5, -650.0 325.5, -943.0 330.5, -948.0 504.5, -948.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="315.5, -650.0 325.5, -650.0 325.5, -967.0 330.5, -972.0 504.5, -972.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="315.5, -650.0 325.5, -650.0 325.5, -991.0 330.5, -996.0 468.5, -996.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="315.5, -650.0 325.5, -650.0 325.5, -1015.0 330.5, -1020.0 440.0, -1020.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="315.5, -650.0 325.5, -650.0 325.5, -1039.0 330.5, -1044.0 436.0, -1044.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="315.5, -650.0 325.5, -650.0 325.5, -1063.0 330.5, -1068.0 476.0, -1068.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <line stroke="#495879" stroke-width="1px" visibility="visible" x1="0" x2="135" y1="0" y2="700"/>
+    <polyline fill="none" points="404.5, 1181.0 414.5, 1181.0 414.5, 1187.0 419.5, 1192.0 485.5, 1192.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="404.5, 1181.0 414.5, 1181.0 414.5, 1173.0 419.5, 1168.0 459.0, 1168.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="326.0, 993.0 336.0, 993.0 336.0, 1176.0 341.0, 1181.0 403.5, 1181.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="490.0, 1139.0 673.5, 1138.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="326.0, 993.0 336.0, 993.0 336.0, 1134.0 341.0, 1139.0 489.0, 1139.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="326.0, 993.0 336.0, 993.0 336.0, 1107.0 341.0, 1112.0 443.5, 1112.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="326.0, 993.0 336.0, 993.0 336.0, 1083.0 341.0, 1088.0 511.5, 1088.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="418.5, 1025.0 428.5, 1025.0 428.5, 1055.0 433.5, 1060.0 497.0, 1060.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="418.5, 1025.0 428.5, 1025.0 428.5, 1031.0 433.5, 1036.0 491.5, 1036.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="418.5, 1025.0 428.5, 1025.0 428.5, 1017.0 433.5, 1012.0 483.5, 1012.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="418.5, 1025.0 428.5, 1025.0 428.5, 993.0 433.5, 988.0 537.0, 988.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="326.0, 993.0 336.0, 993.0 336.0, 1020.0 341.0, 1025.0 417.5, 1025.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="444.0, 875.0 454.0, 875.0 454.0, 953.0 459.0, 958.0 523.5, 958.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="444.0, 875.0 454.0, 875.0 454.0, 929.0 459.0, 934.0 511.5, 934.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="444.0, 875.0 454.0, 875.0 454.0, 905.0 459.0, 910.0 505.0, 910.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="444.0, 875.0 454.0, 875.0 454.0, 881.0 459.0, 886.0 517.0, 886.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="444.0, 875.0 454.0, 875.0 454.0, 867.0 459.0, 862.0 535.0, 862.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="444.0, 875.0 454.0, 875.0 454.0, 843.0 459.0, 838.0 575.0, 838.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="444.0, 875.0 454.0, 875.0 454.0, 819.0 459.0, 814.0 529.0, 814.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="444.0, 875.0 454.0, 875.0 454.0, 795.0 459.0, 790.0 547.0, 790.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="326.0, 993.0 336.0, 993.0 336.0, 880.0 341.0, 875.0 443.0, 875.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="224.0, 700.0 234.0, 700.0 234.0, 988.0 239.0, 993.0 325.0, 993.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="396.5, 731.0 406.5, 731.0 406.5, 749.0 411.5, 754.0 495.0, 754.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="396.5, 731.0 493.5, 730.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="396.5, 731.0 406.5, 731.0 406.5, 711.0 411.5, 706.0 491.0, 706.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="300.0, 621.0 310.0, 621.0 310.0, 726.0 315.0, 731.0 395.5, 731.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="394.0, 653.0 404.0, 653.0 404.0, 671.0 409.0, 676.0 469.0, 676.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="394.0, 653.0 457.0, 652.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="394.0, 653.0 404.0, 653.0 404.0, 633.0 409.0, 628.0 501.5, 628.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="300.0, 621.0 310.0, 621.0 310.0, 648.0 315.0, 653.0 393.0, 653.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="300.0, 621.0 310.0, 621.0 310.0, 607.0 315.0, 602.0 441.0, 602.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="300.0, 621.0 310.0, 621.0 310.0, 583.0 315.0, 578.0 441.0, 578.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="300.0, 621.0 310.0, 621.0 310.0, 559.0 315.0, 554.0 417.0, 554.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="300.0, 621.0 310.0, 621.0 310.0, 535.0 315.0, 530.0 429.0, 530.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="300.0, 621.0 310.0, 621.0 310.0, 511.0 315.0, 506.0 445.0, 506.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="300.0, 621.0 310.0, 621.0 310.0, 487.0 315.0, 482.0 407.5, 482.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="224.0, 700.0 234.0, 700.0 234.0, 626.0 239.0, 621.0 299.0, 621.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="336.0, 426.0 346.0, 426.0 346.0, 447.0 351.0, 452.0 439.5, 452.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="410.0, 425.0 537.0, 424.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="336.0, 426.0 409.0, 425.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="336.0, 426.0 346.0, 426.0 346.0, 403.0 351.0, 398.0 459.5, 398.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="224.0, 700.0 234.0, 700.0 234.0, 431.0 239.0, 426.0 335.0, 426.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="344.0, 338.0 354.0, 338.0 354.0, 359.0 359.0, 364.0 477.5, 364.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="534.0, 325.0 544.0, 325.0 544.0, 331.0 549.0, 336.0 683.5, 336.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="534.0, 325.0 544.0, 325.0 544.0, 317.0 549.0, 312.0 685.0, 312.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="344.0, 338.0 354.0, 338.0 354.0, 330.0 359.0, 325.0 533.0, 325.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="288.0, 285.0 298.0, 285.0 298.0, 333.0 303.0, 338.0 343.0, 338.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="402.0, 281.0 581.0, 280.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="288.0, 285.0 298.0, 285.0 298.0, 286.0 303.0, 281.0 401.0, 281.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="288.0, 285.0 298.0, 285.0 298.0, 259.0 303.0, 254.0 467.5, 254.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="478.5, 227.0 641.5, 226.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="288.0, 285.0 298.0, 285.0 298.0, 232.0 303.0, 227.0 477.5, 227.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="288.0, 285.0 298.0, 285.0 298.0, 205.0 303.0, 200.0 343.0, 200.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="224.0, 700.0 234.0, 700.0 234.0, 290.0 239.0, 285.0 287.0, 285.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-611.5, 279.0 -720.0, 278.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-383.5, 100.0 -393.5, 100.0 -393.5, 274.0 -398.5, 279.0 -610.5, 279.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-795.0, 245.0 -986.5, 244.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-607.0, 234.0 -617.0, 234.0 -617.0, 240.0 -622.0, 245.0 -794.0, 245.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-607.0, 234.0 -617.0, 234.0 -617.0, 223.0 -622.0, 218.0 -774.5, 218.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-383.5, 100.0 -393.5, 100.0 -393.5, 229.0 -398.5, 234.0 -606.0, 234.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-767.5, 173.0 -777.5, 173.0 -777.5, 179.0 -782.5, 184.0 -922.5, 184.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-767.5, 173.0 -777.5, 173.0 -777.5, 165.0 -782.5, 160.0 -822.0, 160.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-481.0, 54.0 -491.0, 54.0 -491.0, 168.0 -496.0, 173.0 -766.5, 173.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-897.5, 127.0 -1080.5, 126.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-639.0, 116.0 -649.0, 116.0 -649.0, 122.0 -654.0, 127.0 -896.5, 127.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-639.0, 116.0 -649.0, 116.0 -649.0, 105.0 -654.0, 100.0 -780.5, 100.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-481.0, 54.0 -491.0, 54.0 -491.0, 111.0 -496.0, 116.0 -638.0, 116.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-589.5, 71.0 -760.5, 70.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-481.0, 54.0 -491.0, 54.0 -491.0, 66.0 -496.0, 71.0 -588.5, 71.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-481.0, 54.0 -491.0, 54.0 -491.0, 49.0 -496.0, 44.0 -586.0, 44.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-481.0, 54.0 -491.0, 54.0 -491.0, 25.0 -496.0, 20.0 -600.0, 20.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-579.0, -43.0 -589.0, -43.0 -589.0, -13.0 -594.0, -8.0 -780.0, -8.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-579.0, -43.0 -589.0, -43.0 -589.0, -37.0 -594.0, -32.0 -700.5, -32.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-579.0, -43.0 -589.0, -43.0 -589.0, -51.0 -594.0, -56.0 -690.5, -56.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-579.0, -43.0 -589.0, -43.0 -589.0, -75.0 -594.0, -80.0 -826.5, -80.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-481.0, 54.0 -491.0, 54.0 -491.0, -38.0 -496.0, -43.0 -578.0, -43.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-383.5, 100.0 -393.5, 100.0 -393.5, 59.0 -398.5, 54.0 -480.0, 54.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <line stroke="#495879" stroke-width="1px" visibility="visible" x1="0" x2="-271.5" y1="0" y2="100"/>
+    <polyline fill="none" points="-456.0, 450.0 -466.0, 450.0 -466.0, 534.0 -471.0, 539.0 -569.5, 539.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-456.0, 450.0 -466.0, 450.0 -466.0, 510.0 -471.0, 515.0 -653.0, 515.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-554.0, 461.0 -564.0, 461.0 -564.0, 482.0 -569.0, 487.0 -609.5, 487.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-554.0, 461.0 -633.0, 463.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-600.0, 436.0 -727.5, 435.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-554.0, 461.0 -564.0, 461.0 -564.0, 441.0 -569.0, 436.0 -599.0, 436.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-456.0, 450.0 -466.0, 450.0 -466.0, 456.0 -471.0, 461.0 -553.0, 461.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-456.0, 450.0 -466.0, 450.0 -466.0, 412.0 -471.0, 407.0 -601.5, 407.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-456.0, 450.0 -466.0, 450.0 -466.0, 388.0 -471.0, 383.0 -643.5, 383.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-456.0, 450.0 -466.0, 450.0 -466.0, 364.0 -471.0, 359.0 -593.0, 359.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <line stroke="#495879" stroke-width="1px" visibility="visible" x1="0" x2="-351" y1="0" y2="450"/>
+    <polyline fill="none" points="-493.5, -195.0 -503.5, -195.0 -503.5, -189.0 -508.5, -184.0 -620.0, -184.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-493.5, -195.0 -503.5, -195.0 -503.5, -203.0 -508.5, -208.0 -646.0, -208.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-371.5, -350.0 -381.5, -350.0 -381.5, -200.0 -386.5, -195.0 -492.5, -195.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-899.0, -249.0 -1044.0, -250.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-751.5, -272.0 -761.5, -272.0 -761.5, -254.0 -766.5, -249.0 -898.0, -249.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-751.5, -272.0 -761.5, -272.0 -761.5, -271.0 -766.5, -276.0 -906.5, -276.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-751.5, -272.0 -761.5, -272.0 -761.5, -295.0 -766.5, -300.0 -908.0, -300.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-663.0, -322.0 -673.0, -322.0 -673.0, -277.0 -678.0, -272.0 -750.5, -272.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-719.0, -353.0 -729.0, -353.0 -729.0, -335.0 -734.0, -330.0 -824.5, -330.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-719.0, -353.0 -856.5, -354.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-719.0, -353.0 -729.0, -353.0 -729.0, -373.0 -734.0, -378.0 -816.5, -378.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-663.0, -322.0 -673.0, -322.0 -673.0, -348.0 -678.0, -353.0 -718.0, -353.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-663.0, -322.0 -673.0, -322.0 -673.0, -399.0 -678.0, -404.0 -894.0, -404.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-503.0, -360.0 -513.0, -360.0 -513.0, -327.0 -518.0, -322.0 -662.0, -322.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-655.0, -457.0 -665.0, -457.0 -665.0, -439.0 -670.0, -434.0 -770.5, -434.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-655.0, -457.0 -812.0, -458.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-655.0, -457.0 -665.0, -457.0 -665.0, -477.0 -670.0, -482.0 -806.5, -482.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-503.0, -360.0 -513.0, -360.0 -513.0, -452.0 -518.0, -457.0 -654.0, -457.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-371.5, -350.0 -381.5, -350.0 -381.5, -355.0 -386.5, -360.0 -502.0, -360.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-557.0, -517.0 -684.0, -518.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-471.0, -516.0 -556.0, -517.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-371.5, -350.0 -381.5, -350.0 -381.5, -511.0 -386.5, -516.0 -470.0, -516.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <line stroke="#495879" stroke-width="1px" visibility="visible" x1="0" x2="-229.5" y1="0" y2="-350"/>
+    <polyline fill="none" points="-266.5, -100.0 -276.5, -100.0 -276.5, -67.0 -281.5, -62.0 -433.5, -62.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-428.0, -101.0 -438.0, -101.0 -438.0, -95.0 -443.0, -90.0 -507.5, -90.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-428.0, -101.0 -438.0, -101.0 -438.0, -109.0 -443.0, -114.0 -573.5, -114.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-266.5, -100.0 -427.0, -101.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <polyline fill="none" points="-266.5, -100.0 -276.5, -100.0 -276.5, -135.0 -281.5, -140.0 -537.5, -140.0" stroke="#495879" stroke-opacity="1" stroke-width="1px" visibility="visible"/>
+    <line stroke="#495879" stroke-width="1px" visibility="visible" x1="0" x2="-162.5" y1="0" y2="-100"/>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-538,-156) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="257" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="254" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">International market
+            protected Modelo from unstable peso
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-574,-130) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="131" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="128" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Can they sustain that trend
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-508,-106) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="65" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="62" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">in 12 years
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-427,-117) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="146" x="-2" y="-3"/>
+        <ellipse cx="-3" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="143" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Fifth largest distributor in
+            world
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-434,-78) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="153" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="150" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">One of top 10 breweries in
+            world
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-266,-110) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="27" rx="4.05" ry="4.05" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="109" x="-2" y="-3"/>
+        <rect fill="#E0E5EF" height="21" rx="3.15" ry="3.15" stroke="#023BB9" stroke-width="0.5px" style="cursor: move; " width="105" x="0" y="0"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="10.75" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="8" y="12">Modelo in world
+        </text>
+        <ellipse cx="-3" cy="10.5" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-684,-534) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="112" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="109" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">working there since 13
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-556,-533) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="70" x="-2" y="-3"/>
+        <ellipse cx="-3" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="67" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">29 years old
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-470,-532) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="84" x="-2" y="-3"/>
+        <ellipse cx="-3" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="81" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">CEO Since 1997
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-807,-498) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="137" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="134" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">experienced local
+            distributors
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-812,-474) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="142" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="139" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Growing international demand
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-771,-450) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="101" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="98" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Capitalize on NAFTA
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-654,-473) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="136" x="-2" y="-3"/>
+        <ellipse cx="-3" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="133" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">International Business model
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-894,-420) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="216" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="213" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">7.8 % sales growth compounded
+            over ten years
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-817,-394) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="83" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="80" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">12.3 % exports
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-857,-370) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="123" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="120" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">4% increase domestically
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-825,-346) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="91" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="88" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">export sales 30%
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-718,-369) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="40" x="-2" y="-3"/>
+        <ellipse cx="-3" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="37" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">2005
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-908,-316) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="142" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="139" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">worlds fourth best selling
+            beer
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-907,-292) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="141" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="138" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">56% shar of domestic market
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-1044,-266) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="130" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="127" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">outsold competitor by 50%
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-898,-265) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="132" x="-2" y="-3"/>
+        <ellipse cx="-3" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="129" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Since 1997 #1 import in US
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-751,-288) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="73" x="-2" y="-3"/>
+        <ellipse cx="-3" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="70" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Corona Extra
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-662,-338) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="144" x="-2" y="-3"/>
+        <ellipse cx="-3" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="141" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">top 10 beer producers in
+            world
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-502,-376) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="116" x="-2" y="-3"/>
+        <ellipse cx="-3" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="113" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">vision: top five brewers
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-646,-224) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="138" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="135" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">renovate facility in
+            Zacatecas
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-620,-200) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="112" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="109" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">300 million investment
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-493,-211) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="107" x="-2" y="-3"/>
+        <ellipse cx="-3" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="104" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Expanding production
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-371,-360) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="27" rx="4.05" ry="4.05" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="147" x="-2" y="-3"/>
+        <rect fill="#E0E5EF" height="21" rx="3.15" ry="3.15" stroke="#023BB9" stroke-width="0.5px" style="cursor: move; " width="143" x="0" y="0"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="10.75" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="8" y="12">Carloz Fernandez CEO
+        </text>
+        <ellipse cx="-3" cy="10.5" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-593,343) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="122" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="119" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">2nd largest nest to China
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-644,367) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="173" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="170" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Consumption six times higher
+            per cap
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-602,391) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="131" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="128" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Groth expectations reduced
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-728,419) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="113" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="110" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">75% of industry profits
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-599,420) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="30" x="-2" y="-3"/>
+        <ellipse cx="-3" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="27" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">AB
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-633,447) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="64" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="61" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">adolf coors
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-610,471) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="41" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="38" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Miller
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-553,445) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="82" x="-2" y="-3"/>
+        <ellipse cx="-3" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="79" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">80% of market
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-653,499) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="182" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="179" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">dense network of regional
+            craft brewing
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-570,523) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="99" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="96" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">volume main driver
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-455,440) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="27" rx="4.05" ry="4.05" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="110" x="-2" y="-3"/>
+        <rect fill="#E0E5EF" height="21" rx="3.15" ry="3.15" stroke="#023BB9" stroke-width="0.5px" style="cursor: move; " width="106" x="0" y="0"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="10.75" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="8" y="12">US Beer Market
+        </text>
+        <ellipse cx="-3" cy="10.5" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-827,-96) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="233" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="230" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Pablo Diez Fernandez, Braulio
+            Irare, Marin Oyamburr
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-691,-72) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="97" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="94" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Iriarte died in 1932
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-701,-48) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="107" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="104" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Diez sole owner 1936
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-780,-24) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="186" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="183" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Fernandez Family Sole owner
+            since 1936
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-578,-59) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="82" x="-2" y="-3"/>
+        <ellipse cx="-3" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="79" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">formed in 1922
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-600,4) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="104" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="101" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">focus on Mexico City
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-586,28) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="90" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="87" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Modelo 1st Brand
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-761,54) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="157" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="154" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Clear Glass Customers
+            preference
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-589,55) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="93" x="-2" y="-3"/>
+        <ellipse cx="-3" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="90" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Corona 2nd Brand
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-781,84) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="127" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="124" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">concentrate domesti¬cally
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-1081,110) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="169" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="166" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">distribution: direct with
+            profit sharing
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-897,111) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="243" x="-2" y="-3"/>
+        <ellipse cx="-3" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="240" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">improve distribution methods
+            and produc¬tion facilities
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-638,100) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="142" x="-2" y="-3"/>
+        <ellipse cx="-3" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="139" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">1940s period of strong growth
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-822,144) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="40" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="37" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">1935
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-923,168) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="141" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="138" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">country's oldest brand of
+            beer
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-767,157) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="271" x="-2" y="-3"/>
+        <ellipse cx="-3" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="268" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">bought the brands and assets
+            of the Toluca y Mexico Brewery
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-480,38) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="82" x="-2" y="-3"/>
+        <ellipse cx="-3" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="79" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">History to 1970
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-775,202) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="153" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="150" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Mexican Stock exchange in
+            1994
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-987,228) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="177" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="174" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">The 50.2 % represented 43.9%
+            voting
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-794,229) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="172" x="-2" y="-3"/>
+        <ellipse cx="-3" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="169" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Anheuser-Busch 17.7 % of the
+            equity
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-606,218) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="208" x="-2" y="-3"/>
+        <ellipse cx="-3" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="205" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">1971, Antonino Fernandez was
+            appointed CEO
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-720,262) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="94" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="91" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">corona 56% share
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-611,263) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="213" x="-2" y="-3"/>
+        <ellipse cx="-3" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="210" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Largest Beer producer and
+            distrubutor in Mexico
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-383,90) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="27" rx="4.05" ry="4.05" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="117" x="-2" y="-3"/>
+        <rect fill="#E0E5EF" height="21" rx="3.15" ry="3.15" stroke="#023BB9" stroke-width="0.5px" style="cursor: move; " width="113" x="0" y="0"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="10.75" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="8" y="12">Modelo in Mexico
+        </text>
+        <ellipse cx="-3" cy="10.5" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(307,184) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="40" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="37" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">1979
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(497,210) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="149" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="146" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">later renamed Barton Beers
+            Ltd.
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(307,211) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="175" x="-2" y="-3"/>
+        <ellipse cx="174" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="172" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Amalgamated Distillery
+            Products Inc. (
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(307,238) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="165" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="162" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">gained popularity in southern
+            states
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(421,264) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="164" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="161" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">second most popular imported
+            beer
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(307,265) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="98" x="-2" y="-3"/>
+        <ellipse cx="97" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="95" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">rapid growth 1980s
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(553,296) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="136" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="133" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">sales decrease of 15 percent
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(553,320) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="135" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="132" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">distributor absorb the tax 92
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(363,309) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="174" x="-2" y="-3"/>
+        <ellipse cx="173" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="171" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">doubling of federal excise
+            tax on beer
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(363,348) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="119" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="116" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">distributors took the loss
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(307,322) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="40" x="-2" y="-3"/>
+        <ellipse cx="39" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="37" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">1991
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(243,269) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="48" x="-2" y="-3"/>
+        <ellipse cx="47" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="45" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">History
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(355,382) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="109" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="106" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">3 of top 8 beers in US
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(429,408) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="112" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="109" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Main Import Comptitor
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(355,409) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="58" x="-2" y="-3"/>
+        <ellipse cx="57" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="55" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Heineken
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(355,436) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="89" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="86" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">131 million cases
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(243,410) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="96" x="-2" y="-3"/>
+        <ellipse cx="95" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="93" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">2007 5 beers to us
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(319,466) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="93" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="90" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">surfing mythology
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(319,490) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="130" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="127" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">not selling premium quality
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(319,514) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="114" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="111" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">not testosterone driven
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(319,538) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="102" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="99" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">found new following
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(319,562) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="126" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="123" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">beer for non beer drinkers
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(319,586) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="126" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="123" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">dependable second choise
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(413,612) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="93" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="90" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Barton Beer's idea
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(413,636) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="48" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="45" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">escape
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(413,660) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="60" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="57" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">relaxation
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(319,637) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="78" x="-2" y="-3"/>
+        <ellipse cx="77" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="75" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Fun in the sun
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(416,690) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="80" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="77" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Corona 5.1 mil
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(415,714) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="83" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="80" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Heiniken 15 mil
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(416,738) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="84" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="81" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">an bsch 192 mil
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(319,715) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="81" x="-2" y="-3"/>
+        <ellipse cx="80" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="78" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">1996ad budget
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(243,605) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="60" x="-2" y="-3"/>
+        <ellipse cx="59" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="57" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Marketing
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(463,774) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="88" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="85" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Local Companies
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(463,798) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="70" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="67" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Autonomous
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(463,822) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="116" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="113" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">competitive relationship
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(463,846) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="76" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="73" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">transportation
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(463,870) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="58" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="55" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">insurance
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(463,894) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="46" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="43" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">pricing
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(463,918) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="53" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="50" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">customs
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(463,942) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="65" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="62" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">advertixing
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(345,859) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="102" x="-2" y="-3"/>
+        <ellipse cx="101" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="99" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">importer/distributors
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(438,972) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="104" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="101" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Modelo us subsidiary
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(437,996) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="51" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="48" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Support
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(437,1020) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="59" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="56" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Supervise
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(438,1044) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="64" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="61" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Coordinate
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(345,1009) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="77" x="-2" y="-3"/>
+        <ellipse cx="76" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="74" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">procermex inc
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(345,1072) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="171" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="168" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Modelo had final say on brand
+            image
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(345,1096) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="103" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="100" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">production in Mexico
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(509,1122) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="169" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="166" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">largest importer in 25
+            western states
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(345,1123) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="148" x="-2" y="-3"/>
+        <ellipse cx="147" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="145" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Chicago based Barton Beers
+            1st
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(424,1152) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="40" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="37" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">1986
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(423,1176) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="67" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="64" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">eastern dist
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(345,1165) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="63" x="-2" y="-3"/>
+        <ellipse cx="62" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="60" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Gambrinus
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(243,977) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="86" x="-2" y="-3"/>
+        <ellipse cx="85" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="83" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Us dist contracts
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(133,690) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="27" rx="4.05" ry="4.05" stroke="#77555a" stroke-opacity="0" stroke-width="1px" style="cursor: move; " width="94" x="-2" y="-3"/>
+        <ellipse cx="93" cy="10.5" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <rect fill="#E0E5EF" height="21" rx="3.15" ry="3.15" stroke="#023BB9" stroke-width="0.5px" style="cursor: move; " width="90" x="0" y="0"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="10.75" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="8" y="12">Modelo in US
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(335,-1084) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="146" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="143" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">traditionally a clustered
+            market
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(335,-1060) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="106" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="103" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">many local breweries
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(335,-1036) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="110" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="107" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">no means of transport
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(334,-1012) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="139" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="136" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">colsolition happened in 1800s
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(334,-988) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="175" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="172" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">different countries had
+            different tastes
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(334,-964) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="175" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="172" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">90s national leaders expanded
+            abroad
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(440,-938) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="147" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="144" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">industry supported
+            conectration
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(334,-937) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="91" x="-2" y="-3"/>
+        <ellipse cx="90" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="88" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">startup costs high
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(408,-908) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="49" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="46" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Belgian
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(409,-884) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="154" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="151" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">aquired breweries in 20
+            countries
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(408,-860) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="107" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="104" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">sales in 110 countries
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(408,-836) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="155" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="152" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">local managers controlling
+            brands
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(408,-812) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="131" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="128" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">flagship brand: Stella Artois
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(334,-859) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="59" x="-2" y="-3"/>
+        <ellipse cx="58" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="56" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Interbrew
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(422,-782) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="74" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="71" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">#1 Interbrew
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(422,-758) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="97" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="94" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">#5 Am Bev - Brazil
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(514,-732) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="90" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="87" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">worth 12.8 billion
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(422,-731) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="76" x="-2" y="-3"/>
+        <ellipse cx="75" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="73" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">largest merge
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(335,-754) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="72" x="-2" y="-3"/>
+        <ellipse cx="71" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="69" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">2004 merger
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(390,-698) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="42" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="39" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">inbev
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(390,-674) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="59" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="56" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">SAP Miller
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(750,-644) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="61" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="58" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">marketing
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(824,-618) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="168" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="165" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">import taxes passed on to
+            consumer
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(751,-617) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="58" x="-2" y="-3"/>
+        <ellipse cx="57" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="55" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">importing
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(751,-590) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="64" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="61" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">distribution
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(610,-616) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="125" x="-2" y="-3"/>
+        <ellipse cx="124" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="122" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">parent of local distributors
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(464,-615) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="130" x="-2" y="-3"/>
+        <ellipse cx="129" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="127" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">produces beer domestically
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(541,-556) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="82" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="79" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">premium brand
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(541,-532) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="76" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="73" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">no mythology
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(540,-508) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="75" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="72" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">superior taste
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(728,-482) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="119" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="116" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Heineken Premium Light
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(541,-481) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="172" x="-2" y="-3"/>
+        <ellipse cx="171" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="169" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">2006 aggressive marketing
+            campaign
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(464,-516) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="61" x="-2" y="-3"/>
+        <ellipse cx="60" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="58" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">marketing
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(464,-450) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="172" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="169" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">reputation of top selling
+            beer in world
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(464,-426) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="43" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="40" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Dutch
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(390,-536) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="58" x="-2" y="-3"/>
+        <ellipse cx="57" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="55" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Heineken
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(462,-396) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="133" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="130" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">produces in foreign markets
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(390,-395) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="57" x="-2" y="-3"/>
+        <ellipse cx="56" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="54" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Anh Bush
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(335,-544) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="40" x="-2" y="-3"/>
+        <ellipse cx="39" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="37" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">2007
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(431,-362) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="122" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="119" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">"People drink marketing"
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(334,-361) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="81" x="-2" y="-3"/>
+        <ellipse cx="80" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="78" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Beer Marketing
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(396,-332) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="136" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="133" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">domestic and foreign threats
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(396,-308) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="95" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="92" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">other merger talks
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(547,-282) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="222" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="219" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Two biggest companies will
+            create huge company
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(396,-281) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="135" x="-2" y="-3"/>
+        <ellipse cx="134" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="132" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Inbev in talks with Anh Bush
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(396,-254) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="252" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="249" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Sales were decreasing due to
+            competitive media budgets
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(335,-292) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="46" x="-2" y="-3"/>
+        <ellipse cx="45" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="43" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Future
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(202,-660) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="27" rx="4.05" ry="4.05" stroke="#77555a" stroke-opacity="0" stroke-width="1px" style="cursor: move; " width="117" x="-2" y="-3"/>
+        <ellipse cx="116" cy="10.5" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <rect fill="#E0E5EF" height="21" rx="3.15" ry="3.15" stroke="#023BB9" stroke-width="0.5px" style="cursor: move; " width="113" x="0" y="0"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="10.75" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="8" y="12">The Beer market
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(-45,-17) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="40" rx="6" ry="6" stroke="#77555a" stroke-opacity="0" stroke-width="1px" style="cursor: default; " width="94" x="-2" y="-3"/>
+        <rect fill="#f7f7f7" height="34" rx="5.1" ry="5.1" stroke="#023BB9" stroke-width="0.5px" style="cursor: default; " width="90" x="0" y="0"/>
+        <text fill="#023BB9" focusable="true" font-family="verdana" font-size="13.4375" font-style="normal" font-weight="bold" style="cursor: default; " visibility="visible" x="18" y="19">corona
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(384,-198) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="167" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="164" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">has most trade agreements in
+            world
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(385,-174) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="188" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="185" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">one of the largest domestic
+            beer markets
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(537,-148) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="160" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="157" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">half were anh bcsh dist by
+            modelo
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(384,-147) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="137" x="-2" y="-3"/>
+        <ellipse cx="136" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="134" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">imported beer only 1% sales
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(450,-118) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="104" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="101" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">NAFTA S.A. An Bucsh
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(450,-94) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="90" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="87" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">62.8% of market
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(385,-105) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="50" x="-2" y="-3"/>
+        <ellipse cx="49" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="47" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">modelo
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(550,-60) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="121" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="118" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">37% of domestic market
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(550,-36) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="245" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="242" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">production and distribution
+            in Mexico: peso not a threat
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(640,-10) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="145" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="142" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">CA largest chain of conv
+            stores
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(550,-9) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="75" x="-2" y="-3"/>
+        <ellipse cx="74" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="72" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Owns Oxxo C
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(550,18) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="172" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="169" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">leads domestic premium beer
+            market
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(550,42) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="193" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="190" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">997 to 2004 taking domestic
+            market share
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(664,68) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="100" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="97" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Exclusive distributor
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(550,69) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="98" x="-2" y="-3"/>
+        <ellipse cx="97" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="95" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">NAFTA SACoca cola
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(446,7) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#c7d8ff" fill-opacity="1" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="1" stroke-width="1px" style="cursor: move; " width="88" x="-2" y="-3"/>
+        <ellipse cx="87" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="85" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">domestic market
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(660,104) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="89" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="86" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Distribution in US
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(542,105) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="103" x="-2" y="-3"/>
+        <ellipse cx="102" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="100" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Partnership Heiniken
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(542,132) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="138" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="135" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">90s entry to us market failed
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(772,158) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="101" x="-2" y="-3"/>
+        <ellipse cx="3" cy="3" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="hidden" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="98" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">2005 18.7% growth
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(542,159) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="215" x="-2" y="-3"/>
+        <ellipse cx="214" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="212" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">Recently partnered with
+            Heiniken for US market
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(447,133) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="80" x="-2" y="-3"/>
+        <ellipse cx="79" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="77" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">foriegn market
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(384,51) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="22" rx="3.3" ry="3.3" stroke="#77555a" stroke-opacity="0" stroke-width="1px" width="47" x="-2" y="-3"/>
+        <ellipse cx="46" cy="16" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <line stroke="#495879" stroke-width="1px" style="cursor: move; " visibility="hidden" x1="-1" x2="44" y1="16" y2="16"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="8.0625" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="6" y="9">FEMSA
+        </text>
+    </g>
+    <g focusable="true" height="100" preserveAspectRatio="none" transform="translate(258,-10) scale(1,1)" visibility="visible" width="100">
+        <rect fill="#dbe2e6" fill-opacity="0" height="27" rx="4.05" ry="4.05" stroke="#77555a" stroke-opacity="0" stroke-width="1px" style="cursor: move; " width="111" x="-2" y="-3"/>
+        <ellipse cx="110" cy="10.5" fill="#E0E5EF" height="6" rx="3" ry="3" stroke="#023BB9" stroke-width="1px" style="cursor: default; " visibility="visible" width="6"/>
+        <rect fill="#E0E5EF" height="21" rx="3.15" ry="3.15" stroke="#023BB9" stroke-width="0.5px" style="cursor: move; " width="107" x="0" y="0"/>
+        <text fill="#525c61" focusable="true" font-family="verdana" font-size="10.75" font-style="normal" font-weight="normal" style="cursor: move; " visibility="visible" x="8" y="12">Mexico Industry
+        </text>
+    </g>
+    <rect fill="#CC0033" fill-opacity="0.4" height="10" stroke="#FF9933" stroke-opacity="0.4" stroke-width="1px" visibility="hidden" width="50" x="446" y="6"/>
+</svg>

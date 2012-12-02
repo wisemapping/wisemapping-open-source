@@ -18,6 +18,9 @@
 
 package com.wisemapping.exporter;
 
+import org.apache.batik.parser.AWTTransformProducer;
+import org.apache.batik.parser.ParseException;
+import org.apache.batik.parser.TransformListParser;
 import org.apache.batik.transcoder.Transcoder;
 import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderInput;
@@ -34,23 +37,23 @@ import org.xml.sax.SAXException;
 import sun.misc.BASE64Encoder;
 
 import javax.servlet.ServletContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.*;
+import java.awt.geom.AffineTransform;
 import java.io.*;
 import java.util.regex.Pattern;
 
 public class ExporterFactory {
     private static final String GROUP_NODE_NAME = "g";
-    private static final String RECT_NODE_NAME = "rect";
     private static final String IMAGE_NODE_NAME = "image";
+    public static final int MARGING = 50;
     private File baseImgDir;
 
     public ExporterFactory(@NotNull final ServletContext servletContext) throws ParserConfigurationException {
@@ -61,7 +64,7 @@ public class ExporterFactory {
         this.baseImgDir = baseImgDir;
     }
 
-    public void export(@NotNull ExportProperties properties, @Nullable String xml, @NotNull OutputStream output, @Nullable String mapSvg) throws TranscoderException, IOException, ParserConfigurationException, SAXException, XMLStreamException, TransformerException, JAXBException, ExportException {
+    public void export(@NotNull ExportProperties properties, @Nullable String xml, @NotNull OutputStream output, @Nullable String mapSvg) throws ExportException, IOException, TranscoderException {
         final ExportFormat format = properties.getFormat();
 
         switch (format) {
@@ -74,8 +77,7 @@ public class ExporterFactory {
                 transcoder.addTranscodingHint(ImageTranscoder.KEY_WIDTH, size.getWidth());
 
                 // Create the transcoder input.
-                final Document document = normalizeSvg(mapSvg, false);
-                final String svgString = domToString(document);
+                final String svgString = normalizeSvg(mapSvg, false);
                 final TranscoderInput input = new TranscoderInput(new CharArrayReader(svgString.toCharArray()));
 
                 TranscoderOutput trascoderOutput = new TranscoderOutput(output);
@@ -95,8 +97,7 @@ public class ExporterFactory {
                 transcoder.addTranscodingHint(ImageTranscoder.KEY_WIDTH, size.getWidth());
 
                 // Create the transcoder input.
-                final Document document = normalizeSvg(mapSvg, false);
-                final String svgString = domToString(document);
+                final String svgString = normalizeSvg(mapSvg, false);
                 final TranscoderInput input = new TranscoderInput(new CharArrayReader(svgString.toCharArray()));
 
                 TranscoderOutput trascoderOutput = new TranscoderOutput(output);
@@ -110,10 +111,8 @@ public class ExporterFactory {
                 final Transcoder transcoder = new PDFTranscoder();
 
                 // Create the transcoder input.
-                final Document document = normalizeSvg(mapSvg, false);
-                final String svgString = domToString(document);
+                final String svgString = normalizeSvg(mapSvg, false);
                 final TranscoderInput input = new TranscoderInput(new CharArrayReader(svgString.toCharArray()));
-
                 TranscoderOutput trascoderOutput = new TranscoderOutput(output);
 
                 // Save the image.
@@ -121,8 +120,8 @@ public class ExporterFactory {
                 break;
             }
             case SVG: {
-                final Document dom = normalizeSvg(mapSvg, true);
-                output.write(domToString(dom).getBytes("UTF-8"));
+                final String svgString = normalizeSvg(mapSvg, true);
+                output.write(svgString.getBytes("UTF-8"));
                 break;
             }
             case FREEMIND: {
@@ -135,50 +134,56 @@ public class ExporterFactory {
         }
     }
 
-    private Document normalizeSvg(@NotNull String svgXml, boolean embedImg) throws XMLStreamException, ParserConfigurationException, IOException, SAXException, TransformerException {
+    private String normalizeSvg(@NotNull String svgXml, boolean embedImg) throws ExportException {
 
-        final DocumentBuilder documentBuilder = getDocumentBuilder();
-        if (!svgXml.trim().startsWith("<svg xmlns=\"http://www.w3.org/2000/svg\"")) {
-            svgXml = svgXml.replaceFirst("<svg ", "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
-        } else {
-            svgXml = svgXml.replaceFirst("<svg ", "<svg xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
-        }
-
-        // Hacks for some legacy cases ....
-        svgXml = svgXml.replaceAll("NaN,", "0");
-        svgXml = svgXml.replaceAll(",NaN", "0");
-
-        // Bratik do not manage nbsp properly.
-        svgXml = svgXml.replaceAll(Pattern.quote("&nbsp;")," ");
-
-        Document document;
         try {
-            final Reader in = new CharArrayReader(svgXml.toCharArray());
-            final InputSource is = new InputSource(in);
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            final DocumentBuilder documentBuilder = factory.newDocumentBuilder();
 
-            document = documentBuilder.parse(is);
+            if (!svgXml.trim().startsWith("<svg xmlns=\"http://www.w3.org/2000/svg\"")) {
+                svgXml = svgXml.replaceFirst("<svg ", "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
+            } else {
+                svgXml = svgXml.replaceFirst("<svg ", "<svg xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
+            }
+
+            // Hacks for some legacy cases ....
+            svgXml = svgXml.replaceAll("NaN,", "0");
+            svgXml = svgXml.replaceAll(",NaN", "0");
+
+            // Bratik do not manage nbsp properly.
+            svgXml = svgXml.replaceAll(Pattern.quote("&nbsp;"), " ");
+
+            Document document;
+            try {
+                final Reader in = new CharArrayReader(svgXml.toCharArray());
+                final InputSource is = new InputSource(in);
+
+                document = documentBuilder.parse(is);
+            } catch (SAXException e) {
+                // It must be a corrupted SVG format. Try to hack it and try again ...
+                svgXml = svgXml.replaceAll("<image([^>]+)>", "<image$1/>");
+
+                final Reader in = new CharArrayReader(svgXml.toCharArray());
+                final InputSource is = new InputSource(in);
+                document = documentBuilder.parse(is);
+            }
+
+            resizeSVG(document);
+
+            final Node child = document.getFirstChild();
+            inlineImages(document, (Element) child);
+
+            return domToString(document);
+        } catch (ParserConfigurationException e) {
+            throw new ExportException(e);
+        } catch (IOException e) {
+            throw new ExportException(e);
         } catch (SAXException e) {
-            // It must be a corrupted SVG format. Try to hack it and try again ...
-            svgXml = svgXml.replaceAll("<image([^>]+)>", "<image$1/>");
-
-            final Reader in = new CharArrayReader(svgXml.toCharArray());
-            final InputSource is = new InputSource(in);
-            document = documentBuilder.parse(is);
+            throw new ExportException(e);
+        } catch (TransformerException e) {
+            throw new ExportException(e);
         }
 
-
-        fitSvg(document);
-
-        final Node child = document.getFirstChild();
-        fixImageTagHref(document, (Element) child);
-
-        return document;
-
-    }
-
-    private static DocumentBuilder getDocumentBuilder() throws ParserConfigurationException {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        return factory.newDocumentBuilder();
     }
 
     private static String domToString(@NotNull Document document) throws TransformerException {
@@ -202,7 +207,7 @@ public class ExporterFactory {
         return result.toString();
     }
 
-    private void fixImageTagHref(@NotNull Document document, @NotNull Element element) {
+    private void inlineImages(@NotNull Document document, @NotNull Element element) {
 
         final NodeList list = element.getChildNodes();
 
@@ -211,7 +216,7 @@ public class ExporterFactory {
             // find all groups
             if (GROUP_NODE_NAME.equals(node.getNodeName())) {
                 // Must continue looking ....
-                fixImageTagHref(document, (Element) node);
+                inlineImages(document, (Element) node);
 
             } else if (IMAGE_NODE_NAME.equals(node.getNodeName())) {
 
@@ -281,68 +286,72 @@ public class ExporterFactory {
         }
     }
 
-    private static void fitSvg(Document document) {
-        // viewBox size
-        int mapWidth = 1024;
-        int mapHeight = 768;
-        // some browser return width and heigth with precision
-        float currentMaxWidth = 0;
-        float currentMaxHeight = 0;
+    private static void resizeSVG(@NotNull Document document) throws ExportException {
 
-        final Element svgNode = (Element) document.getFirstChild();
-        final NodeList list = svgNode.getChildNodes();
+        try {
+            XPathFactory xPathfactory = XPathFactory.newInstance();
+            XPath xpath = xPathfactory.newXPath();
+            XPathExpression expr = xpath.compile("/svg/g/rect");
 
-        for (int i = 0; i < list.getLength(); i++) {
-            final Node node = list.item(i);
-            // find all groups
-            if (GROUP_NODE_NAME.equals(node.getNodeName())) {
-                final NamedNodeMap groupAttributes = node.getAttributes();
+            NodeList nl = (NodeList) expr.evaluate(document, XPathConstants.NODESET);
+            final int length = nl.getLength();
+            double maxX = 0, minX = 0, minY = 0, maxY = 0;
 
-                final String[] transformUnit = getTransformUnit(groupAttributes);
 
-                int groupPositionX = Integer.parseInt(transformUnit[0].trim());
-                int groupPositionY = 0;
-                if (transformUnit.length > 1) {
-                    groupPositionY = Integer.parseInt(transformUnit[1].trim());
+            for (int i = 0; i < length; i++) {
+                final Element rectElem = (Element) nl.item(i);
+                final Element gElem = (Element) rectElem.getParentNode();
+
+
+                final TransformListParser p = new TransformListParser();
+                final AWTTransformProducer tp = new AWTTransformProducer();
+                p.setTransformListHandler(tp);
+                p.parse(gElem.getAttribute("transform"));
+                final AffineTransform transform = tp.getAffineTransform();
+
+                double yPos = transform.getTranslateY();
+                if (yPos > 0) {
+                    yPos += Double.parseDouble(rectElem.getAttribute("height"));
+                }
+                maxY = maxY < yPos ? yPos : maxY;
+                minY = minY > yPos ? yPos : minY;
+
+                double xPos = transform.getTranslateX();
+                if (xPos > 0) {
+                    xPos += Double.parseDouble(rectElem.getAttribute("width"));
                 }
 
-                int signumX = Integer.signum(groupPositionX);
-                int signumY = Integer.signum(groupPositionY);
-
-                final NodeList groupChildren = node.getChildNodes();
-                for (int idx = 0; idx < groupChildren.getLength(); idx++) {
-                    final Node rectNode = groupChildren.item(idx);
-                    float curentHeight = 0;
-                    float curentWidth = 0;
-
-                    // If has a rect use the rect to calcular the real width of the topic
-                    if (RECT_NODE_NAME.equals(rectNode.getNodeName())) {
-                        final NamedNodeMap rectAttributes = rectNode.getAttributes();
-
-                        final Node attributeHeight = rectAttributes.getNamedItem("height");
-                        final Node attributeWidth = rectAttributes.getNamedItem("width");
-
-                        curentHeight = Float.valueOf(attributeHeight.getNodeValue());
-                        curentWidth = Float.valueOf(attributeWidth.getNodeValue());
-                    }
-
-                    float newMaxWidth = groupPositionX + (curentWidth * signumX);
-                    if (Math.abs(currentMaxWidth) < Math.abs(newMaxWidth)) {
-                        currentMaxWidth = newMaxWidth;
-                    }
-
-                    float newMaxHeight = groupPositionY + curentHeight * signumY;
-                    if (Math.abs(currentMaxHeight) < Math.abs(newMaxHeight)) {
-                        currentMaxHeight = newMaxHeight;
-                    }
-                }
+                maxX = maxX < xPos ? xPos : maxX;
+                minX = minX > xPos ? xPos : minX;
             }
-        }
 
-        svgNode.setAttribute("viewBox", -Math.abs(currentMaxWidth) + " " + -Math.abs(currentMaxHeight) + " " + Math.abs(currentMaxWidth * 2) + " " + Math.abs(currentMaxHeight * 2));
-        svgNode.setAttribute("width", Float.toString(mapWidth / 2));
-        svgNode.setAttribute("height", Float.toString(mapHeight / 2));
-        svgNode.setAttribute("preserveAspectRatio", "xMinYMin");
+            // Add some extra margin ...
+            maxX += MARGING;
+            minX += -MARGING;
+
+            maxY += MARGING;
+            minY += -MARGING;
+
+            // Calculate dimentions ...
+            final double width = maxX + Math.abs(minX);
+            final double height = maxY + Math.abs(minY);
+
+            // Finally, update centers ...
+            final Element svgNode = (Element) document.getFirstChild();
+
+            svgNode.setAttribute("viewBox", minX + " " + minY + " " + width + " " + height);
+            svgNode.setAttribute("width", Double.toString(width));
+            svgNode.setAttribute("height", Double.toString(height));
+            svgNode.setAttribute("preserveAspectRatio", "xMinYMin");
+        } catch (XPathExpressionException e) {
+            throw new ExportException(e);
+        } catch (ParseException e) {
+            throw new ExportException(e);
+        } catch (NumberFormatException e) {
+            throw new ExportException(e);
+        } catch (DOMException e) {
+            throw new ExportException(e);
+        }
     }
 
     private static String[] getTransformUnit(NamedNodeMap groupAttributes) {
