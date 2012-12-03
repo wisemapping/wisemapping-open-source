@@ -191,7 +191,7 @@ mindplot.MultilineTextEditor = new Class({
         // Set editor's initial size
         var displayFunc = function () {
             // Position the editor and set the size...
-            var textShape = this._topic.getTextShape();
+            var textShape = topic.getTextShape();
             textShape.positionRelativeTo(this._containerElem, {
                 position:{x:'left', y:'top'},
                 edge:{x:'left', y:'top'}
