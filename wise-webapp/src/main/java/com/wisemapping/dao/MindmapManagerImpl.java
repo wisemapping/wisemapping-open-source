@@ -203,6 +203,13 @@ public class MindmapManagerImpl
 
     @Override
     public void removeMindmap(@NotNull final Mindmap mindMap) {
+        // Delete history first ...
+        final Criteria hibernateCriteria = getSession().createCriteria(MindMapHistory.class);
+        hibernateCriteria.add(Restrictions.eq("mindmapId", mindMap.getId()));
+        List list = hibernateCriteria.list();
+        getHibernateTemplate().deleteAll(list);
+
+        // Delete mindmap ....
         getHibernateTemplate().delete(mindMap);
     }
 
