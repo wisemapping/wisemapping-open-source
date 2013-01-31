@@ -38,6 +38,13 @@
         </bean>
         <bean id="userLocaleInterceptor" class="com.wisemapping.filter.UserLocaleInterceptor"/>
         <bean id="requestInterceptor" class="com.wisemapping.filter.RequestPropertiesInterceptor"/>
+
+        <bean id="webContentInterceptor" class="org.springframework.web.servlet.mvc.WebContentInterceptor">
+            <property name="cacheSeconds" value="0"/>
+            <property name="useExpiresHeader" value="true"/>
+            <property name="useCacheControlHeader" value="true"/>
+            <property name="useCacheControlNoStore" value="true"/>
+        </bean>
     </mvc:interceptors>
 
 
