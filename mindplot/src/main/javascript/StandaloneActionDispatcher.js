@@ -270,6 +270,11 @@ mindplot.CommandContext = new Class({
         return mindmap.createNode(mindplot.NodeModel.MAIN_TOPIC_TYPE);
     },
 
+    addTopic:function (topic) {
+        var mindmap = this._designer.getMindmap();
+        return mindmap.addBranch(topic.getModel());
+    },
+
     connect:function (childTopic, parentTopic) {
         childTopic.connectTo(parentTopic, this._designer._workspace);
     },

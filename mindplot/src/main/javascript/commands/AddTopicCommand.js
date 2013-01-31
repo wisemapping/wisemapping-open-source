@@ -41,6 +41,8 @@ mindplot.commands.AddTopicCommand = new Class({
                     var parentTopic = commandContext.findTopics(parentId)[0];
                     commandContext.connect(topic, parentTopic);
                 }
+            }else {
+                commandContext.addTopic(topic);
             }
 
             // Select just created node ...
