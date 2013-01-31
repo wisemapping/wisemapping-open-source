@@ -173,6 +173,7 @@ public class Mindmap {
         this.title = title;
     }
 
+    @NotNull
     public String getXmlAsJsLiteral()
             throws IOException {
         String xml = this.getXmlStr();
@@ -180,6 +181,13 @@ public class Mindmap {
             xml = xml.replace("'", "\\'");
             xml = xml.replace("\n", "\\n");
             xml = xml.replace("\r", "");
+
+            xml = xml.replace("\\b", "\\\\b");
+            xml = xml.replace("\\t", "\\\\t");
+            xml = xml.replace("\\r", "\\\\r");
+            xml = xml.replace("\\n", "\\\\n");
+
+
             xml = xml.trim();
         }
         return xml;
