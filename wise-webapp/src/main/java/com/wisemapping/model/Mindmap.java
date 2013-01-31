@@ -185,8 +185,6 @@ public class Mindmap {
             xml = xml.replace("\\b", "\\\\b");
             xml = xml.replace("\\t", "\\\\t");
             xml = xml.replace("\\r", "\\\\r");
-            xml = xml.replace("\\n", "\\\\n");
-
 
             xml = xml.trim();
         }
