@@ -173,6 +173,15 @@ public class MindmapController extends BaseController {
         return lockInfo.getTimestamp();
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}/document/xml",consumes = {"text/plain"}, produces = {"application/xml"})
+    @ResponseBody
+    public String retrieveDocument(@PathVariable int id, @NotNull HttpServletResponse response) throws WiseMappingException, IOException {
+        response.setCharacterEncoding("UTF-8");
+        final Mindmap mindmap = mindmapService.findMindmapById(id);
+        return mindmap.getXmlStr();
+    }
+
+
     private void verifyLock(@NotNull Mindmap mindmap, @NotNull User user, long session, long timestamp) throws WiseMappingException {
 
         // The lock was lost, reclaim as the ownership of it.

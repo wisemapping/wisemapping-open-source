@@ -31,14 +31,13 @@
         $(document).addEvent('loadcomplete', function (resource) {
             try {
                 var mapId = '${mindmap.id}';
-                var mapXml = '${mindmap.xmlAsJsLiteral}';
-
                 // Configure designer options ...
                 var options = loadDesignerOptions();
+
             <c:if test="${!memoryPersistence && !readOnlyMode}">
                 options.persistenceManager = new mindplot.RESTPersistenceManager(
                         {
-                            saveUrl:"c/restful/maps/{id}/document",
+                            documentUrl:"c/restful/maps/{id}/document",
                             revertUrl:"c/restful/maps/{id}/history/latest",
                             lockUrl:"c/restful/maps/{id}/lock",
                             timestamp: ${lockTimestamp},
@@ -58,12 +57,11 @@
                 // Build designer ...
                 var designer = buildDesigner(options);
 
-                // Load map from XML ...
-                var parser = new DOMParser();
-                var domDocument = parser.parseFromString(mapXml, "text/xml");
-
-                var mindmap = mindplot.PersistenceManager.loadFromDom(mapId, domDocument);
+                // Load map from XML file persisted on disk...
+                var persistence = mindplot.PersistenceManager.getInstance();
+                var mindmap = mindmap = persistence.load(mapId);
                 designer.loadMap(mindmap);
+
             } catch (e) {
                 logStackTrace(e);
                 throw e;

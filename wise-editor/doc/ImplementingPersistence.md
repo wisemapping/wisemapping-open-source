@@ -30,6 +30,7 @@ function createStorageManager(mindplot) {
         },
 
         loadMapDom : function(mapId) {
+                var xml;
                 var xmlRequest = new Request({
                     url: this.backendUrl  + mapId,
                     method: 'get',

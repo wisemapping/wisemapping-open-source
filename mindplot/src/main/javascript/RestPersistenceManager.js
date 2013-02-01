@@ -20,13 +20,13 @@ mindplot.RESTPersistenceManager = new Class({
         Extends:mindplot.PersistenceManager,
         initialize:function (options) {
             this.parent();
-            $assert(options.saveUrl, "saveUrl can not be null");
+            $assert(options.documentUrl, "documentUrl can not be null");
             $assert(options.revertUrl, "revertUrl can not be null");
             $assert(options.lockUrl, "lockUrl can not be null");
             $assert(options.session, "session can not be null");
             $assert(options.timestamp, "timestamp can not be null");
 
-            this.saveUrl = options.saveUrl;
+            this.documentUrl = options.documentUrl;
             this.revertUrl = options.revertUrl;
             this.lockUrl = options.lockUrl;
             this.timestamp = options.timestamp;
@@ -56,7 +56,7 @@ mindplot.RESTPersistenceManager = new Class({
                 }, 10000);
 
                 var request = new Request({
-                    url:this.saveUrl.replace("{id}", mapId) + "?" + query,
+                    url:this.documentUrl.replace("{id}", mapId) + "?" + query,
                     method:'put',
                     async:!sync,
 
@@ -100,10 +100,6 @@ mindplot.RESTPersistenceManager = new Class({
                         }
                         events.onError(userMsg);
                         persistence.onSave = false;
-
-//                        if (this.status != 0) {
-//                            throw new Error("responseText:" + responseText + ",status:" + this.status);
-//                        }
                     },
 
                     headers:{"Content-Type":"application/json", "Accept":"application/json"},
@@ -164,6 +160,29 @@ mindplot.RESTPersistenceManager = new Class({
                 severity = "INFO";
             }
             return {severity:severity, message:message};
+        },
+
+        loadMapDom:function (mapId) {
+            // Let's try to open one from the local directory ...
+            var xml;
+            var xmlRequest = new Request({
+                url:this.documentUrl.replace("{id}", mapId) + "/xml",
+                method:'get',
+                async:false,
+                headers:{"Content-Type":"text/plain","Accept":"application/xml"},
+                onSuccess:function (responseText) {
+                    xml = responseText;
+                }
+            });
+            xmlRequest.send();
+
+            // If I could not load it from a file, hard code one.
+            if (xml == null) {
+                throw new Error("Map could not be loaded");
+            }
+
+            var parser = new DOMParser();
+            return  parser.parseFromString(xml, "text/xml");
         }
     }
 );
