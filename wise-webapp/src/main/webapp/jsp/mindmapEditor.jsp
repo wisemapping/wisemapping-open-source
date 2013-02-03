@@ -39,8 +39,8 @@
                             documentUrl:"c/restful/maps/{id}/document",
                             revertUrl:"c/restful/maps/{id}/history/latest",
                             lockUrl:"c/restful/maps/{id}/lock",
-                            timestamp: ${lockTimestamp},
-                            session: ${lockSession}
+                            timestamp: "${lockTimestamp}?${lockTimestamp}:0",
+                            session: "${lockSession}?${lockSession}:0"
                         }
                 );
 
