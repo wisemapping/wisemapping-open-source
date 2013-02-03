@@ -33,7 +33,7 @@
                 // Configure designer options ...
                 var options = loadDesignerOptions();
 
-            <c:if test="${!memoryPersistence && !readOnlyMode}">
+            <c:if test="${!memoryPersistence}">
                 options.persistenceManager = new mindplot.RESTPersistenceManager(
                         {
                             documentUrl:"c/restful/maps/{id}/document",
