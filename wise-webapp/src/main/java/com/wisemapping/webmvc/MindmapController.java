@@ -41,6 +41,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Locale;
 
@@ -53,20 +54,16 @@ public class MindmapController {
     @Autowired
     private MindmapService mindmapService;
 
-    @Value("${site.baseurl}")
-    String siteBaseUrl;
-
-
     @RequestMapping(value = "maps/import")
     public String showImportPage() {
         return "mindmapImport";
     }
 
     @RequestMapping(value = "maps/{id}/details")
-    public String showDetails(@PathVariable int id, @NotNull Model model) {
+    public String showDetails(@PathVariable int id, @NotNull Model model,@NotNull HttpServletRequest request) {
         final MindMapBean mindmap = findMindmapBean(id);
         model.addAttribute("mindmap", mindmap);
-        model.addAttribute("baseUrl", siteBaseUrl);
+        model.addAttribute("baseUrl", request.getAttribute("site.baseurl"));
         return "mindmapDetail";
     }
 
@@ -107,16 +104,16 @@ public class MindmapController {
     }
 
     @RequestMapping(value = "maps/{id}/publish")
-    public String showPublishPage(@PathVariable int id, @NotNull Model model) {
+    public String showPublishPage(@PathVariable int id, @NotNull Model model,@NotNull HttpServletRequest request) {
         final Mindmap mindmap = findMindmap(id);
         model.addAttribute("mindmap", mindmap);
-        model.addAttribute("baseUrl", siteBaseUrl);
+        model.addAttribute("baseUrl", request.getAttribute("site.baseurl"));
         return "mindmapPublish";
     }
 
     @RequestMapping(value = "maps/{id}/publishf")
-    public String showPublishPageFull(@PathVariable int id, @NotNull Model model) {
-        showPublishPage(id, model);
+    public String showPublishPageFull(@PathVariable int id, @NotNull Model model,@NotNull HttpServletRequest request) {
+        showPublishPage(id, model,request);
         return "mindmapPublishFull";
     }
 
