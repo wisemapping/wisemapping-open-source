@@ -87,7 +87,7 @@ function buildDesigner(options) {
         }
 
     } else {
-        persistence = new mindplot.LocalStorageManager();
+        persistence = new mindplot.LocalStorageManager("samples/{id}.xml");
     }
     mindplot.PersistenceManager.init(persistence);
 

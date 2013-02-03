@@ -6,7 +6,6 @@
 <%--@elvariable id="mindmap" type="com.wisemapping.model.Mindmap"--%>
 <%--@elvariable id="editorTryMode" type="java.lang.Boolean"--%>
 <%--@elvariable id="editorTryMode" type="java.lang.String"--%>
-<%--@elvariable id="mapXml" type="com.wisemapping.model.User"--%>
 
 
 <html>
@@ -27,7 +26,7 @@
 
     <script type="text/javascript">
         var mapId = '${mindmap.id}';
-        var mapXml = '${mindmap.xmlAsJsLiteral}';
+
         $(document).addEvent('loadcomplete', function (resource) {
 
             // Configure designer options ...
@@ -45,14 +44,15 @@
             // Print is read only ...
             options.readOnly = true;
 
+            // Configure persistence ...
+            options.persistenceManager = new mindplot.LocalStorageManager("c/restful/maps/{id}/document/xml");
+
             // Build designer ...
             var designer = buildDesigner(options);
 
-            // Load map from XML ...
-            var parser = new DOMParser();
-            var domDocument = parser.parseFromString(mapXml, "text/xml");
-
-            var mindmap = mindplot.PersistenceManager.loadFromDom(mapId, domDocument);
+            // Load map ...
+            var persistence = mindplot.PersistenceManager.getInstance();
+            var mindmap = mindmap = persistence.load(mapId);
             designer.loadMap(mindmap);
 
             $('zoomIn').addEvent('click', function () {

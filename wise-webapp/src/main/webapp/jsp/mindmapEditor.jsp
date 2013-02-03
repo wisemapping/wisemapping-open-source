@@ -33,18 +33,21 @@
                 // Configure designer options ...
                 var options = loadDesignerOptions();
 
-            <c:if test="${!memoryPersistence}">
+            <c:if test="${!memoryPersistence && !readOnlyMode}">
                 options.persistenceManager = new mindplot.RESTPersistenceManager(
                         {
                             documentUrl:"c/restful/maps/{id}/document",
                             revertUrl:"c/restful/maps/{id}/history/latest",
                             lockUrl:"c/restful/maps/{id}/lock",
-                            timestamp: "${lockTimestamp}?${lockTimestamp}:0",
-                            session: "${lockSession}?${lockSession}:0"
+                            timestamp: "${lockTimestamp}",
+                            session: "${lockSession}"
                         }
                 );
-
             </c:if>
+            <c:if test="${memoryPersistence || readOnlyMode}">
+                    options.persistenceManager = new mindplot.LocalStorageManager("c/restful/maps/{id}/document/xml");
+            </c:if>
+
                 var userOptions = ${mindmap.properties};
                 options.zoom = userOptions.zoom;
                 options.readOnly = ${!!readOnlyMode};
