@@ -99,7 +99,7 @@ mindplot.widget.LinkEditor = new Class({
         });
         openButton.inject(form);
         openButton.addEvent('click',function(){
-            window.open(input.value,"_blank", "status=1,width=700,height=450,resize=1");
+            window.open(input.value,"_blank", "status=1,width=700,height=450,resizable=1");
         });
 
 

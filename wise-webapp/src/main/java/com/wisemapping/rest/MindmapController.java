@@ -173,7 +173,7 @@ public class MindmapController extends BaseController {
         return lockInfo.getTimestamp();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}/document/xml",consumes = {"text/plain"}, produces = {"application/xml"})
+    @RequestMapping(method = RequestMethod.GET, value = { "/maps/{id}/document/xml","/maps/{id}/document/xml-pub"},consumes = {"text/plain"}, produces = {"application/xml"})
     @ResponseBody
     public byte[] retrieveDocument(@PathVariable int id, @NotNull HttpServletResponse response) throws WiseMappingException, IOException {
         // I should not return byte, but there is some encoding issue here. Further research needed.

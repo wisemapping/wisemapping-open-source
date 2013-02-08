@@ -2,17 +2,14 @@
 
 <div id="toolbar">
     <div id="persist" class="buttonContainer">
-        <c:if test="${!readOnlyMode}">
+        <c:if test="${!readOnlyMode && !memoryPersistence}">
             <div id="save" class="buttonOn">
                 <img src="images/save.png"/>
             </div>
-            <%--<div id="discard" class="buttonOn">--%>
-            <%--<img src="images/discard.png"/>--%>
-            <%--</div>--%>
+            <div id="print" class="buttonOn">
+                <img src="images/print.png"/>
+            </div>
         </c:if>
-        <div id="print" class="buttonOn">
-            <img src="images/print.png"/>
-        </div>
     </div>
     <c:if test="${!readOnlyMode}">
         <div id="edit" class="buttonContainer">

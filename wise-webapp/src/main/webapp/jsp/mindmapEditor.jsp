@@ -45,7 +45,7 @@
                 );
             </c:if>
             <c:if test="${memoryPersistence || readOnlyMode}">
-                    options.persistenceManager = new mindplot.LocalStorageManager("c/restful/maps/{id}/document/xml");
+                    options.persistenceManager = new mindplot.LocalStorageManager("c/restful/maps/{id}/document/xml${principal!=null?'':'-pub'}");
             </c:if>
 
                 var userOptions = ${mindmap.properties};
