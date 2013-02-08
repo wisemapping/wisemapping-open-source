@@ -2,10 +2,12 @@
 
 <div id="toolbar">
     <div id="persist" class="buttonContainer">
-        <c:if test="${!readOnlyMode && !memoryPersistence}">
+        <c:if test="${!readOnlyMode}">
             <div id="save" class="buttonOn">
                 <img src="images/save.png"/>
             </div>
+        </c:if>
+        <c:if test="${!memoryPersistence}">
             <div id="print" class="buttonOn">
                 <img src="images/print.png"/>
             </div>
