@@ -14,6 +14,17 @@
 
     <context:component-scan base-package="com.wisemapping.rest"/>
     <context:annotation-config/>
+
+    <!-- Interceptors Registration -->
+    <mvc:interceptors>
+        <bean id="webContentInterceptor" class="org.springframework.web.servlet.mvc.WebContentInterceptor">
+            <property name="cacheSeconds" value="0"/>
+            <property name="useExpiresHeader" value="true"/>
+            <property name="useCacheControlHeader" value="true"/>
+            <property name="useCacheControlNoStore" value="true"/>
+        </bean>
+    </mvc:interceptors>
+
     <mvc:annotation-driven>
         <mvc:message-converters>
             <bean class="com.wisemapping.rest.DebugMappingJacksonHttpMessageConverter"/>
