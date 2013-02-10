@@ -122,8 +122,8 @@ public class MindmapServiceImpl
         }
 
         // When you delete an object from hibernate you have to delete it from *all* collections it exists in...
-        mindmapManager.removeCollaboration(collaboration);
         collaborations.remove(collaboration);
+        mindmapManager.removeCollaboration(collaboration);
     }
 
     @Override
