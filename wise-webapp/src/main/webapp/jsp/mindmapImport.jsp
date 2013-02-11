@@ -106,7 +106,7 @@
         });
 
         // Read in the image file as a data URL.
-        reader.readAsBinaryString(file);
+        reader.readAsText(file);
     });
 
     // Hook for interaction with the main parent window ...
