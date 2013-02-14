@@ -57,11 +57,9 @@ public class MindmapManagerImpl
         final Criteria hibernateCriteria = getSession().createCriteria(MindMapHistory.class);
         hibernateCriteria.add(Restrictions.eq("mindmapId", mindmapId));
         hibernateCriteria.addOrder(Order.desc("creationTime"));
-        // Mientras no haya paginacion solo los 10 primeros
         // This line throws errors in some environments, so getting all history and taking firsts 10 records
-        // hibernateCriteria.setMaxResults(10);
-        List list = hibernateCriteria.list();
-        return list.subList(0, (10 < list.size() ? 10 : list.size()));
+        hibernateCriteria.setMaxResults(30);
+        return  hibernateCriteria.list();
     }
 
     @Override
