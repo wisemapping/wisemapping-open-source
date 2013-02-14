@@ -18,8 +18,10 @@
 
 package com.wisemapping.model;
 
+import com.wisemapping.util.ZipUtils;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
 import java.util.Calendar;
 
 public class MindMapHistory {
@@ -71,7 +73,7 @@ public class MindMapHistory {
         return xml;
     }
 
-    public void setXml(byte[] xml) {
-        this.xml = xml;
+    public byte[] getUnzipXml() throws IOException {
+        return ZipUtils.zipToBytes(xml);
     }
 }

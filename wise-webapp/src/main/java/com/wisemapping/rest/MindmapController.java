@@ -120,7 +120,7 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(value = "maps/{id}/history/{hid}", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateRevertMindmap(@PathVariable int id, @PathVariable String hid) throws WiseMappingException {
+    public void updateRevertMindmap(@PathVariable int id, @PathVariable String hid) throws WiseMappingException, IOException {
         final Mindmap mindmap = mindmapService.findMindmapById(id);
         final User user = Utils.getUser();
 
@@ -129,7 +129,7 @@ public class MindmapController extends BaseController {
             List<MindMapHistory> mindmapHistory = mindmapService.findMindmapHistory(id);
             if (mindmapHistory.size() > 0) {
                 final MindMapHistory mindMapHistory = mindmapHistory.get(0);
-                mindmap.setXml(mindMapHistory.getXml());
+                mindmap.setZippedXml(mindMapHistory.getXml());
                 saveMindmapDocument(true, mindmap, user);
             }
         } else {
@@ -188,7 +188,7 @@ public class MindmapController extends BaseController {
         // I should not return byte, but there is some encoding issue here. Further research needed.
         response.setCharacterEncoding("UTF-8");
         final MindMapHistory mindmapHistory = mindmapService.findMindmapHistory(id, hid);
-        return mindmapHistory.getXml();
+        return mindmapHistory.getUnzipXml();
     }
 
 
