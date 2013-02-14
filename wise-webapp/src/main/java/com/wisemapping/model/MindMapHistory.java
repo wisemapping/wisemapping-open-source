@@ -73,6 +73,10 @@ public class MindMapHistory {
         return xml;
     }
 
+    public void setXml(byte[] value) {
+        xml = value;
+    }
+
     public byte[] getUnzipXml() throws IOException {
         return ZipUtils.zipToBytes(xml);
     }
