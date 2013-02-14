@@ -194,12 +194,7 @@ public class MindmapController {
 
         final String result = showMindmapEditorPage(id, model);
         model.addAttribute("readOnlyMode", true);
-
-        // Change map XML ....
-        final MindMapBean mindmapBean = (MindMapBean) model.asMap().get("mindmap");
-        final MindMapHistory mindmapHistory = mindmapService.findMindmapHistory(id, hid);
-        mindmapBean.getDelegated().setXml(mindmapHistory.getXml());
-
+        model.addAttribute("hid",hid);
         return result;
     }
 

@@ -182,6 +182,15 @@ public class MindmapController extends BaseController {
         return mindmap.getXmlStr().getBytes("UTF-8");
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = { "/maps/{id}/{hid}/document/xml"},consumes = {"text/plain"}, produces = {"application/xml"})
+    @ResponseBody
+    public byte[] retrieveDocument(@PathVariable int id, @PathVariable int hid,@NotNull HttpServletResponse response) throws WiseMappingException, IOException {
+        // I should not return byte, but there is some encoding issue here. Further research needed.
+        response.setCharacterEncoding("UTF-8");
+        final MindMapHistory mindmapHistory = mindmapService.findMindmapHistory(id, hid);
+        return mindmapHistory.getXml();
+    }
+
 
     private void verifyLock(@NotNull Mindmap mindmap, @NotNull User user, long session, long timestamp) throws WiseMappingException {
 
