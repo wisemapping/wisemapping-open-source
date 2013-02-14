@@ -23,6 +23,7 @@ import com.wisemapping.exceptions.WiseMappingException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface MindmapService {
@@ -57,7 +58,7 @@ public interface MindmapService {
 
     boolean hasPermissions(@Nullable User user, int mapId, CollaborationRole allowedRole);
 
-    void revertChange(@NotNull Mindmap map, int historyId) throws WiseMappingException;
+    void revertChange(@NotNull Mindmap map, int historyId) throws WiseMappingException, IOException;
 
     MindMapHistory findMindmapHistory(int id, int hid) throws WiseMappingException;
 

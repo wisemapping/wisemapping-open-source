@@ -28,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
@@ -242,9 +243,9 @@ public class MindmapServiceImpl
 
     @Override
     public void revertChange(@NotNull Mindmap mindmap, int historyId)
-            throws WiseMappingException {
+            throws WiseMappingException, IOException {
         final MindMapHistory history = mindmapManager.getHistory(historyId);
-        mindmap.setXml(history.getXml());
+        mindmap.setZippedXml(history.getXml());
         updateMindmap(mindmap, true);
     }
 
