@@ -194,7 +194,7 @@ public class MindmapController {
 
         final String result = showMindmapEditorPage(id, model);
         model.addAttribute("readOnlyMode", true);
-        model.addAttribute("hid",hid);
+        model.addAttribute("hid",String.valueOf(hid));
         return result;
     }
 
