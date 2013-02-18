@@ -28,6 +28,7 @@
       - The application context is then available via
       - WebApplicationContextUtils.getWebApplicationContext(servletContext).
     -->
+
     <listener>
         <listener-class>com.wisemapping.service.HibernateAppListener</listener-class>
     </listener>

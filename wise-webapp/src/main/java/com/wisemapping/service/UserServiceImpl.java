@@ -107,7 +107,7 @@ public class UserServiceImpl
         userManager.auditLogin(accessAuditory);
     }
 
-    public User createUser(@NotNull User user, boolean emailConfirmEnabled) throws WiseMappingException {
+    public User createUser(@NotNull User user, boolean emailConfirmEnabled, boolean welcomeEmail) throws WiseMappingException {
         final UUID uuid = UUID.randomUUID();
         user.setCreationDate(Calendar.getInstance());
         user.setActivationCode(uuid.getLeastSignificantBits());
@@ -120,6 +120,7 @@ public class UserServiceImpl
         }
 
         Collaborator col = userManager.getCollaboratorBy(user.getEmail());
+
         if (col != null) {
             userManager.createUser(user, col);
         } else {
@@ -134,7 +135,7 @@ public class UserServiceImpl
         // Send registration email.
         if (emailConfirmEnabled) {
             notificationService.sendRegistrationEmail(user);
-        } else {
+        } else if (welcomeEmail) {
             // Send a welcome email ..
             notificationService.newAccountCreated(user);
         }
@@ -204,5 +205,11 @@ public class UserServiceImpl
 
     public void setVelocityEngine(VelocityEngine velocityEngine) {
         this.velocityEngine = velocityEngine;
+    }
+
+    @Override
+    public User getCasUserBy(String uid) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:sec="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+          http://www.springframework.org/schema/security
+          http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+
+    <sec:authentication-manager>
+        <sec:authentication-provider ref="ldapAuthProvider"/>
+    </sec:authentication-manager>
+
+    <!-- ================================================== -->
+    <!-- LDAP Connection settings -->
+    <!-- ================================================== -->
+
+    <bean id="contextSource" class="org.springframework.ldap.core.support.LdapContextSource">
+        <property name="url" value="${security.ldap.server}"/>
+        <property name="userDn" value="${security.ldap.server.user}"/>
+        <property name="password" value="${security.ldap.server.password}"/>
+        <property name="base" value="${security.ldap.basedn}"/>
+    </bean>
+
+    <!-- ================================================== -->
+    <!-- Authentication and Authorization Handlers          -->
+    <!-- ================================================== -->
+    <bean id="ldapAuthProvider"
+          class="org.springframework.security.ldap.authentication.LdapAuthenticationProvider">
+        <constructor-arg>
+            <bean class="org.springframework.security.ldap.authentication.BindAuthenticator">
+                <constructor-arg ref="contextSource"/>
+                <property name="userSearch" ref="ldapUserSearch"/>
+            </bean>
+        </constructor-arg>
+        <property name="userDetailsContextMapper" ref="userDetailsContextMapper"/>
+    </bean>
+
+    <bean id="userDetailsContextMapper" class="com.wisemapping.security.ldap.LdapUserDetailsContextMapper">
+        <property name="userService" ref="userService"/>
+    </bean>
+
+    <bean id="ldapUserSearch"
+          class="org.springframework.security.ldap.search.FilterBasedLdapUserSearch">
+        <constructor-arg index="0" value="ou=${security.ldap.subDn}"/>
+        <constructor-arg index="1" value="(${security.ldap.auth.attribute}={0})"/>
+        <constructor-arg index="2" ref="contextSource"/>
+        <property name="searchSubtree" value="true"/>
+    </bean>
+
+</beans>

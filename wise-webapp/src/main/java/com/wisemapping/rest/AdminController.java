@@ -85,7 +85,7 @@ public class AdminController extends BaseController {
         }
 
         // Finally create the user ...
-        userService.createUser(delegated, false);
+        userService.createUser(delegated, false,true);
         response.setHeader("Location", "/service/admin/users/" + user.getId());
     }
 

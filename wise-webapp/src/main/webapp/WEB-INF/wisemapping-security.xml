@@ -56,18 +56,10 @@
         <sec:logout logout-url="/c/logout" invalidate-session="true" logout-success-url="/c/login"/>
     </sec:http>
 
-    <sec:authentication-manager alias="authenticationManager">
-        <sec:authentication-provider ref="dbAuthenticationProvider"/>
-        <sec:authentication-provider user-service-ref="userDetailsService"/>
-    </sec:authentication-manager>
-
-    <bean id="dbAuthenticationProvider" class="com.wisemapping.security.AuthenticationProvider">
-        <property name="userDetailsService" ref="userDetailsService"/>
-        <property name="encoder" ref="encoder"/>
-    </bean>
+    <!--<import resource="wisemapping-security-db.xml"/>-->
+    <import resource="wisemapping-security-ldap.xml"/>
 
     <bean id="userDetailsService" class="com.wisemapping.security.UserDetailsService">
-        <!--suppress SpringModelInspection -->
         <property name="userService" ref="userService"/>
         <property name="adminUser" value="${admin.user}"/>
     </bean>
@@ -76,4 +68,5 @@
         <property name="defaultTargetUrl" value="/c/maps/"/>
         <property name="alwaysUseDefaultTargetUrl" value="false"/>
     </bean>
+
 </beans>

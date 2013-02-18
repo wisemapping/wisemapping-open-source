@@ -110,7 +110,7 @@ public class UsersController {
             user.setPassword(userBean.getPassword());
 
             boolean confirmRegistrationByEmail = false;
-            userService.createUser(user, confirmRegistrationByEmail);
+            userService.createUser(user, confirmRegistrationByEmail,true);
 
             // Forward to the success view ...
             result = new ModelAndView("userRegistrationSuccess");

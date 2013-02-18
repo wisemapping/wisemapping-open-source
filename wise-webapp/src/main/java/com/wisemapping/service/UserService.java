@@ -26,7 +26,7 @@ public interface UserService {
 
     public void activateAccount(long code) throws InvalidActivationCodeException;
 
-    public User createUser(@NotNull User user, boolean emailConfirmEnabled) throws WiseMappingException;
+    public User createUser(@NotNull User user, boolean emailConfirmEnabled,boolean welcomeEmail) throws WiseMappingException;
 
     public void changePassword(@NotNull User user);
 
@@ -41,4 +41,6 @@ public interface UserService {
     public void deleteUser(@NotNull User user);
 
     public void auditLogin(@NotNull User user);
+    
+    public User getCasUserBy(String uid);
 }

@@ -27,10 +27,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
-    private com.wisemapping.model.User user;
+	private com.wisemapping.model.User user;
     private boolean isAdmin;
 
-    public UserDetails(@NotNull final com.wisemapping.model.User user, boolean isAdmin) {
+    public  UserDetails(@NotNull final com.wisemapping.model.User user, boolean isAdmin) {
         this.user = user;
         this.isAdmin = isAdmin;
     }
