@@ -22,6 +22,11 @@
         </param-value>
     </context-param>
 
+    <context-param>
+        <param-name>contextInitializerClasses</param-name>
+        <param-value>com.wisemapping.webmvc.ApplicationContextInitializer</param-value>
+    </context-param>
+
 
     <!--
       - Loads the root application context of this web app at startup.
