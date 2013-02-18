@@ -8,6 +8,8 @@
           http://www.springframework.org/schema/security
           http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
+    <bean id="encoder" class="com.wisemapping.security.CustomPasswordEncoder"/>
+
     <sec:authentication-manager alias="authenticationManager">
         <sec:authentication-provider ref="dbAuthenticationProvider"/>
         <sec:authentication-provider user-service-ref="userDetailsService"/>

@@ -3,13 +3,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:sec="http://www.springframework.org/schema/security"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+          http://www.springframework.org/schema/context
+		  http://www.springframework.org/schema/context/spring-context-3.1.xsd
           http://www.springframework.org/schema/security
           http://www.springframework.org/schema/security/spring-security-3.1.xsd">
-
-    <bean id="encoder"
-          class="com.wisemapping.security.CustomPasswordEncoder"/>
 
     <sec:http pattern="/css/**" security="none"/>
     <sec:http pattern="/js/**" security="none"/>
@@ -56,8 +56,9 @@
         <sec:logout logout-url="/c/logout" invalidate-session="true" logout-success-url="/c/login"/>
     </sec:http>
 
-    <!--<import resource="wisemapping-security-db.xml"/>-->
-    <import resource="wisemapping-security-ldap.xml"/>
+    <!--<import resource="wisemapping-security-${security.type}.xml"/>-->
+    <import resource="wisemapping-security-db.xml"/>
+    <!--<import resource="wisemapping-security-ldap.xml"/>-->
 
     <bean id="userDetailsService" class="com.wisemapping.security.UserDetailsService">
         <property name="userService" ref="userService"/>
