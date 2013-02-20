@@ -34,7 +34,7 @@ mindplot.LocalStorageManager = new Class({
 
         loadMapDom:function (mapId) {
             var xml = localStorage.getItem(mapId + "-xml");
-            if (xml == null || forceLoad) {
+            if (xml == null || this.forceLoad) {
                 var xmlRequest = new Request({
                     url:this.documentUrl.replace("{id}", mapId),
                     headers:{"Content-Type":"text/plain","Accept":"application/xml"},
