@@ -77,7 +77,7 @@
             options.readOnly = true;
 
             // Configure loader ...
-            options.persistenceManager = new mindplot.LocalStorageManager("c/restful/maps/{id}/document/xml${principal!=null?'':'-pub'}");
+            options.persistenceManager = new mindplot.LocalStorageManager("c/restful/maps/{id}/document/xml${principal!=null?'':'-pub'}",true);
 
             // Build designer ...
             var designer = buildDesigner(options);

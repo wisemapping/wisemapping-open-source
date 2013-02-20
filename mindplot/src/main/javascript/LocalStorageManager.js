@@ -18,9 +18,10 @@
 
 mindplot.LocalStorageManager = new Class({
         Extends:mindplot.PersistenceManager,
-        initialize:function (documentUrl) {
+        initialize:function (documentUrl,forceLoad) {
             this.parent();
             this.documentUrl = documentUrl;
+            this.forceLoad = forceLoad;
         },
 
         saveMapXml:function (mapId, mapXml, pref, saveHistory, events) {
@@ -33,7 +34,7 @@ mindplot.LocalStorageManager = new Class({
 
         loadMapDom:function (mapId) {
             var xml = localStorage.getItem(mapId + "-xml");
-            if (xml == null) {
+            if (xml == null || forceLoad) {
                 var xmlRequest = new Request({
                     url:this.documentUrl.replace("{id}", mapId),
                     headers:{"Content-Type":"text/plain","Accept":"application/xml"},
