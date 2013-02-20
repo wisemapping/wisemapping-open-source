@@ -69,13 +69,16 @@
 
 <div class="row">
     <div id="register" class="span12">
+<c:if test="${requestScope['security.type']=='db'}">
         <b><spring:message code="NOT_READY_A_USER"/></b>
         <spring:message code="NOT_READY_A_USER_MESSAGE"/>
         <a href="c/user/registration">
             <spring:message code="JOIN_NOW"/>
         </a>
+</c:if>
     </div>
 </div>
+
 
 <c:if test="${isHsql== 'true'}">
     <div class="row-fluid">

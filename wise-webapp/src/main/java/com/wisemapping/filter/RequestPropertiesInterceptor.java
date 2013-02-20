@@ -42,6 +42,8 @@ public class RequestPropertiesInterceptor extends HandlerInterceptorAdapter {
     @Value("${site.baseurl}")
     private String siteUrl;
 
+    @Value("${security.type}")
+    private String securityType;
 
     public boolean preHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, Object object) throws Exception {
 
@@ -49,6 +51,8 @@ public class RequestPropertiesInterceptor extends HandlerInterceptorAdapter {
         request.setAttribute("google.analytics.account", analyticsAccount);
         request.setAttribute("google.ads.enabled", adsEnabled);
         request.setAttribute("site.homepage", siteHomepage);
+        request.setAttribute("security.type", securityType);
+
 
         // If the property could not be resolved, try to infer one from the request...
         if ("${site.baseurl}".equals(siteUrl)) {
