@@ -78,6 +78,9 @@
                         <option value="zh_TW" <c:if test="${user.locale=='zh_TW'}">selected="selected" </c:if>>Chinese
                             (Traditional Han) - 中文 (繁體中文)
                         </option>
+                        <option value="ca" <c:if test="${user.locale=='ca'}">selected="selected" </c:if>>Catalan -
+                            català
+                        </option>
                     </select>
                     <br/>
                     <input type="submit" id="changeLanguageBtn" class="btn btn-primary"

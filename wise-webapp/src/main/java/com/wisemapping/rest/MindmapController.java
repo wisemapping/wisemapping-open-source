@@ -158,10 +158,17 @@ public class MindmapController extends BaseController {
         collaborationProperties.setMindmapProperties(properties);
 
         // Validate content ...
-        final String xml = restMindmap.getXml();
+        String xml = restMindmap.getXml();
         if (xml == null) {
             throw new IllegalArgumentException("Map xml can not be null");
         }
+
+        // Check that what we received a valid mindmap...
+        xml = xml.trim();
+        if (!xml.startsWith("<map") || !xml.endsWith("</map>")) {
+            throw new IllegalArgumentException("Map seems not to be a valid mindmap:"+xml);
+        }
+
         mindmap.setXmlStr(xml);
 
         // Update map ...
