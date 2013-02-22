@@ -25,3 +25,10 @@ Deleting a based on the user id:
 Changing Password:
 Template Path: /service/admin/users/{userId}/password
  * curl "http://{host.name}:{host.port}/{context.path}/service/admin/users/{userId}/password" --request put --basic -u "admin@wisemapping.org:admin" -H "Content-Type:text/plain" --data "<new_password>"
+
+Creating a new user:
+ * Template Path: /service/admin/users/
+ * Method: Post
+ * curl "http://{host.name}:{host.port}/{context.path}/service/admin/users/"  --request post --basic -u "admin@wisemapping.org:admin" -H "Content-Type:text/json" --data "{email:"some email", lastname:"last name",fistname="my first name",password:"password"}"
+
+
