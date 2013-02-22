@@ -233,6 +233,7 @@
                                         <include>MessageBundle_pt_BR.js</include>
                                         <include>MessageBundle_zh_CN.js</include>
                                         <include>MessageBundle_zh_TW.js</include>
+                                        <include>MessageBundle_ca.js</include>
                                         <include>footer.js</include>
                                     </includes>
                                 </aggregation>
