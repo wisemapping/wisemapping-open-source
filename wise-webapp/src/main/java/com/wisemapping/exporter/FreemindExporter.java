@@ -290,9 +290,11 @@ public class FreemindExporter
                 // Font size
                 if (idx < countParts && part[idx].length() != 0) {
                     final String size = part[idx];
-                    int freeSize = Integer.parseInt(size);
-                    font.setSIZE(BigInteger.valueOf(wiseToFreeFontSize.get(freeSize)));
-                    updated = true;
+                    if (size != null && !size.isEmpty()) {
+                        int freeSize = Integer.parseInt(size);
+                        font.setSIZE(BigInteger.valueOf(wiseToFreeFontSize.get(freeSize)));
+                        updated = true;
+                    }
                 }
                 idx++;
 
@@ -327,12 +329,13 @@ public class FreemindExporter
     //  8 Normal
     // 10 Large
     // 15 Huge
-    static private  Map<Integer,Integer> wiseToFreeFontSize = new HashMap<Integer,Integer>();
+    static private Map<Integer, Integer> wiseToFreeFontSize = new HashMap<Integer, Integer>();
+
     static {
-        wiseToFreeFontSize.put(6,10);
-        wiseToFreeFontSize.put(8,12);
-        wiseToFreeFontSize.put(10,18);
-        wiseToFreeFontSize.put(15,24);
+        wiseToFreeFontSize.put(6, 10);
+        wiseToFreeFontSize.put(8, 12);
+        wiseToFreeFontSize.put(10, 18);
+        wiseToFreeFontSize.put(15, 24);
     }
 
 
