@@ -301,6 +301,7 @@ public class FreemindExporter
                 // Font Color
                 if (idx < countParts && part[idx].length() != 0) {
                     freemindNode.setCOLOR(part[idx]);
+                    updated = true;
                 }
                 idx++;
 
