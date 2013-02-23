@@ -132,7 +132,9 @@ public class TransformerController extends BaseController {
 
         }
         // IE does not support spaces in the name... As usual ...
-        result.getModelMap().put("filename", filename.replaceAll(" ","_"));
+        if(filename!=null){
+            result.getModelMap().put("filename", filename.replaceAll(" ","_"));
+        }
         return result;
     }
 }
