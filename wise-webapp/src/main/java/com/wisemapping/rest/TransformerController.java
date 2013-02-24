@@ -131,7 +131,10 @@ public class TransformerController extends BaseController {
                 throw new IllegalArgumentException("Unsupported export format");
 
         }
-        result.getModelMap().put("filename", filename);
+        // IE does not support spaces in the name... As usual ...
+        if(filename!=null){
+            result.getModelMap().put("filename", filename.replaceAll(" ","_"));
+        }
         return result;
     }
 }

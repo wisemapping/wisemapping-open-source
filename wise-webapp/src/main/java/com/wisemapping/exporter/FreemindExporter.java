@@ -289,15 +289,19 @@ public class FreemindExporter
 
                 // Font size
                 if (idx < countParts && part[idx].length() != 0) {
-                    String size = part[idx];
-                    font.setSIZE(new BigInteger(size));
-                    updated = true;
+                    final String size = part[idx];
+                    if (size != null && !size.isEmpty()) {
+                        int freeSize = Integer.parseInt(size);
+                        font.setSIZE(BigInteger.valueOf(wiseToFreeFontSize.get(freeSize)));
+                        updated = true;
+                    }
                 }
                 idx++;
 
                 // Font Color
                 if (idx < countParts && part[idx].length() != 0) {
                     freemindNode.setCOLOR(part[idx]);
+                    updated = true;
                 }
                 idx++;
 
@@ -319,4 +323,21 @@ public class FreemindExporter
             }
         }
     }
+
+    // Freemind size goes from 10 to 28
+    // WiseMapping:
+    //  6 Small
+    //  8 Normal
+    // 10 Large
+    // 15 Huge
+    static private Map<Integer, Integer> wiseToFreeFontSize = new HashMap<Integer, Integer>();
+
+    static {
+        wiseToFreeFontSize.put(6, 10);
+        wiseToFreeFontSize.put(8, 12);
+        wiseToFreeFontSize.put(10, 18);
+        wiseToFreeFontSize.put(15, 24);
+    }
+
+
 }
