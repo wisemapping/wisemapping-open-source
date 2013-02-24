@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 public class ImportTransformationView extends AbstractView {
@@ -53,13 +54,30 @@ public class ImportTransformationView extends AbstractView {
         final InputStream is = new ByteArrayInputStream(content.getBytes("UTF-8"));
         final Mindmap mindMap = importer.importMap("filename", "filename", is);
 
-        // Set file name...
+        // Set file name...:http://stackoverflow.com/questions/5325322/java-servlet-download-filename-special-characters/13359949#13359949
         final String fileName = (filename != null ? filename : "map") + "." + "xwise";
-        response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+        setContentDisposition(request, response, fileName);
 
         // Write the conversion content ...
         final ServletOutputStream outputStream = response.getOutputStream();
         outputStream.print(mindMap.getXmlStr());
+    }
+
+    private void setContentDisposition(HttpServletRequest request, HttpServletResponse response, String fileName) {
+        final String userAgent = request.getHeader("user-agent");
+        String disposition = fileName;
+        boolean isInternetExplorer = (userAgent.contains("MSIE"));
+        try {
+            byte[] fileNameBytes = fileName.getBytes((isInternetExplorer) ? ("windows-1250") : ("utf-8"));
+            String dispositionFileName = "";
+            for (byte b : fileNameBytes) {
+                dispositionFileName += (char) (b & 0xff);
+            }
+            disposition = "attachment; filename=\"" + dispositionFileName + "\"";
+        } catch (UnsupportedEncodingException ence) {
+            // ... handle exception ...
+        }
+        response.setHeader("Content-disposition", disposition);
     }
 
     @Override

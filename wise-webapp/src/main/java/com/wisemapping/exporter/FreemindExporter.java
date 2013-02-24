@@ -267,7 +267,6 @@ public class FreemindExporter
     /*
      * MindmapFont format : fontName ; size ; color ; bold; italic;
      * eg: Verdana;10;#ffffff;bold;italic;
-     *
      */
     private void addFontNode(@NotNull com.wisemapping.jaxb.freemind.Node freemindNode, com.wisemapping.jaxb.wisemap.TopicType mindmapTopic) {
         final String fontStyle = mindmapTopic.getFontStyle();

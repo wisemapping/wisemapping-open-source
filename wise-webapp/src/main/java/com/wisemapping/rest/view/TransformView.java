@@ -33,6 +33,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.stream.StreamResult;
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 public class TransformView extends AbstractView {
@@ -67,9 +68,9 @@ public class TransformView extends AbstractView {
         final String contentType = exportFormat.getContentType();
         response.setContentType(contentType);
 
-        // Set file name...
+        // Set file name...:http://stackoverflow.com/questions/5325322/java-servlet-download-filename-special-characters/13359949#13359949
         final String fileName = (filename != null ? filename : "map") + "." + exportFormat.getFileExtension();
-        response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+        setContentDisposition(request, response, fileName);
 
         // Change image link URL.
         final ServletContext servletContext = request.getSession().getServletContext();
@@ -91,6 +92,24 @@ public class TransformView extends AbstractView {
         } catch (Throwable e) {
             notificationService.reportJavaException(e, Utils.getUser(), content, request);
         }
+    }
+
+    private void setContentDisposition(HttpServletRequest request, HttpServletResponse response, String fileName) {
+        final String userAgent = request.getHeader("user-agent");
+        boolean isInternetExplorer = (userAgent.contains("MSIE"));
+
+        String disposition = fileName;
+        try {
+            byte[] fileNameBytes = fileName.getBytes((isInternetExplorer) ? ("windows-1250") : ("utf-8"));
+            String dispositionFileName = "";
+            for (byte b : fileNameBytes) {
+                dispositionFileName += (char) (b & 0xff);
+            }
+            disposition = "attachment; filename=\"" + dispositionFileName + "\"";
+        } catch (UnsupportedEncodingException ence) {
+            // ... handle exception ...
+        }
+        response.setHeader("Content-disposition", disposition);
     }
 
     @Override
