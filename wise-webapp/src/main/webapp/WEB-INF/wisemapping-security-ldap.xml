@@ -39,6 +39,8 @@
 
     <bean id="userDetailsContextMapper" class="com.wisemapping.security.ldap.LdapUserDetailsContextMapper">
         <property name="userService" ref="userService"/>
+        <property name="ldapAttributeFirstName" value="${security.ldap.firstName.attribute}"/>
+        <property name="ldapAttributeLastName" value="${security.ldap.lastName.attribute}"/>
     </bean>
 
     <bean id="ldapUserSearch"

@@ -19,6 +19,8 @@ public class LdapUserDetailsContextMapper implements UserDetailsContextMapper {
 
     private UserService userService;
     private String adminUser;
+    private String ldapAttributeFirstName;
+    private String ldapAttributeLastName;
 
 
     public UserService getUserService() {
@@ -51,10 +53,10 @@ public class LdapUserDetailsContextMapper implements UserDetailsContextMapper {
             user = new User();
             user.setEmail(email);
 
-            final String firstName = userData.getStringAttribute("givenName");
+            final String firstName = userData.getStringAttribute(ldapAttributeFirstName);
             user.setFirstname(firstName);
 
-            final String lastName = userData.getStringAttribute("sn");
+            final String lastName = userData.getStringAttribute(ldapAttributeLastName);
             user.setLastname(lastName);
 
             user.setPassword(email);
@@ -62,12 +64,28 @@ public class LdapUserDetailsContextMapper implements UserDetailsContextMapper {
             user.setActivationDate(now);
 
             try {
-                userService.createUser(user, false,false);
+                userService.createUser(user, false, false);
             } catch (WiseMappingException e) {
                 throw new IllegalStateException(e);
             }
         }
         return new UserDetails(user, isAdmin(email));
+    }
+
+    public String getLdapAttributeLastName() {
+        return ldapAttributeLastName;
+    }
+
+    public void setLdapAttributeLastName(String ldapAttributLastName) {
+        this.ldapAttributeLastName = ldapAttributLastName;
+    }
+
+    public String getLdapAttrbutFirstName() {
+        return ldapAttributeFirstName;
+    }
+
+    public void setLdapAttributeFirstName(String ldapAttributeFirstName) {
+        this.ldapAttributeFirstName = ldapAttributeFirstName;
     }
 
     @Override
