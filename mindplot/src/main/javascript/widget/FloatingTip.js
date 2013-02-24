@@ -66,7 +66,7 @@ mindplot.widget.FloatingTip = new Class({
     },
 
     show:function (element) {
-        var old = element.retrieve('floatingtip');
+        var old = $(element).retrieve('floatingtip');
         if (old){
             if (old.getStyle('opacity') == 1) {
                 clearTimeout(old.retrieve('timeout'));
