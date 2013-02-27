@@ -167,7 +167,7 @@ mindplot.persistence.XMLSerializer_Beta = new Class({
         $assert(documentElement.nodeName != "parsererror", "Error while parsing: '" + documentElement.childNodes[0].nodeValue);
 
         // Is a wisemap?.
-        $assert(documentElement.tagName == mindplot.persistence.XMLSerializer_Beta.MAP_ROOT_NODE, "This seem not to be a map document. Root Tag: '" + documentElement.tagName + ",HTML:"+dom.innerHTML);
+        $assert(documentElement.tagName == mindplot.persistence.XMLSerializer_Beta.MAP_ROOT_NODE, "This seem not to be a map document. Root Tag: '" + documentElement.tagName + ",',HTML:" +dom.innerHTML + ",XML:"+ core.Utils.innerXML(dom));
 
         // Start the loading process ...
         var version = documentElement.getAttribute("version");
