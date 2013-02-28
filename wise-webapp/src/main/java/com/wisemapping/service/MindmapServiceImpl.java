@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
@@ -100,7 +101,19 @@ public class MindmapServiceImpl
     @Override
     public void updateMindmap(@NotNull Mindmap mindMap, boolean saveHistory) throws WiseMappingException {
         if (mindMap.getTitle() == null || mindMap.getTitle().length() == 0) {
-            throw new WiseMappingException("The tile can not be empty");
+            throw new WiseMappingException("The title can not be empty");
+        }
+
+        // Check that what we received a valid mindmap...
+        final String xml;
+        try {
+            xml = mindMap.getXmlStr().trim();
+        } catch (UnsupportedEncodingException e) {
+            throw new WiseMappingException("Could not be decoded.",e);
+        }
+
+        if (!xml.startsWith("<map") || !xml.endsWith("</map>")) {
+            throw new WiseMappingException("Map seems not to be a valid mindmap:"+xml);
         }
 
         mindmapManager.updateMindmap(mindMap, saveHistory);
