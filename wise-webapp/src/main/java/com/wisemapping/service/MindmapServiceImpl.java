@@ -113,7 +113,7 @@ public class MindmapServiceImpl
         }
 
         if (!xml.startsWith("<map") || !xml.endsWith("</map>")) {
-            throw new WiseMappingException("Map seems not to be a valid mindmap:"+xml);
+            throw new WiseMappingException("Map seems not to be a valid mindmap: '"+xml +"'");
         }
 
         mindmapManager.updateMindmap(mindMap, saveHistory);
