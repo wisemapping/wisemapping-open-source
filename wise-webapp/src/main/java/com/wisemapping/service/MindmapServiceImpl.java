@@ -112,7 +112,7 @@ public class MindmapServiceImpl
             throw new WiseMappingException("Could not be decoded.",e);
         }
 
-        if (!xml.startsWith("<map") || !xml.endsWith("</map>")) {
+        if (!xml.endsWith("</map>")) {
             throw new WiseMappingException("Map seems not to be a valid mindmap: '"+xml +"'");
         }
 
