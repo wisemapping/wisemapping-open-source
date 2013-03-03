@@ -470,10 +470,52 @@ mindplot.Designer = new Class({
 
         },
 
+        _copyNodeProps: function(sourceModel,targetModel){
+
+            // I don't copy the font size if the target is the source is the central topic.
+            if(sourceModel.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE)
+            {
+                var fontSize = sourceModel.getFontSize();
+                if(fontSize){
+                    targetModel.setFontSize(fontSize)
+                }
+            }
+
+            var fontFamily = sourceModel.getFontFamily();
+            if(fontFamily){
+                targetModel.setFontFamily(fontFamily)
+            }
+
+            var fontColor = sourceModel.getFontColor();
+            if(fontColor){
+                targetModel.setFontColor(fontColor)
+            }
+
+            var fontWeight = sourceModel.getFontWeight();
+            if(fontWeight){
+                targetModel.setFontWeight(fontWeight)
+            }
+
+            var fontStyle = sourceModel.getFontStyle();
+            if(fontStyle){
+                targetModel.setFontStyle(fontStyle)
+            }
+
+            var shape = sourceModel.getShapeType();
+            if(shape){
+                targetModel.setShapeType(shape)
+            }
+
+            var borderColor = sourceModel.getBorderColor();
+            if(borderColor){
+                targetModel.setBorderColor(borderColor)
+            }
+        },
+
         _createChildModel:function (topic, mousePos) {
             // Create a new node ...
-            var model = topic.getModel();
-            var mindmap = model.getMindmap();
+            var parentModel = topic.getModel();
+            var mindmap = parentModel.getMindmap();
             var childModel = mindmap.createNode();
 
             // Create a new node ...
@@ -483,6 +525,8 @@ mindplot.Designer = new Class({
 
             var position = result.position;
             childModel.setPosition(position.x, position.y);
+
+            this._copyNodeProps(parentModel,childModel);
 
             return childModel;
         },
@@ -548,8 +592,11 @@ mindplot.Designer = new Class({
                 // Create a new node ...
                 var order = topic.getOrder() + 1;
                 result.setOrder(order);
-                result.setPosition(10, 10);  // Set a dummy pisition ...
+                result.setPosition(10, 10);  // Set a dummy position ...
             }
+
+            this._copyNodeProps(model,result);
+
             return result;
         },
 
