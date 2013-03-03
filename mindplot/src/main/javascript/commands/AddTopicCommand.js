@@ -57,12 +57,20 @@ mindplot.commands.AddTopicCommand = new Class({
     },
 
     undoExecute:function (commandContext) {
-        // Finally, delete the topic from the workspace ...
+        // Delete disconnected the nodes. Create a copy of the topics ...
+        var clonedModel = [];
+        this._models.each(function (model) {
+           clonedModel.push(model.clone());
+        });
+
+        // Finally, remove the nodes ...
         this._models.each(function (model) {
 
             var topicId = model.getId();
             var topic = commandContext.findTopics(topicId)[0];
             commandContext.deleteTopic(topic);
         }.bind(this));
+
+        this._models = clonedModel;
     }
 });
