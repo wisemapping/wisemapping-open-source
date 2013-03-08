@@ -102,7 +102,7 @@ mindplot.RESTPersistenceManager = new Class({
                         persistence.onSave = false;
                     },
 
-                    headers:{"Content-Type":"application/json", "Accept":"application/json"},
+                    headers:{"Content-Type":"application/json; charset=utf-8", "Accept":"application/json"},
                     emulation:false,
                     urlEncoded:false
                 });
@@ -121,7 +121,7 @@ mindplot.RESTPersistenceManager = new Class({
                 },
                 onFailure:function () {
                 },
-                headers:{"Content-Type":"application/json", "Accept":"application/json"},
+                headers:{"Content-Type":"application/json; charset=utf-8", "Accept":"application/json"},
                 emulation:false,
                 urlEncoded:false
             });

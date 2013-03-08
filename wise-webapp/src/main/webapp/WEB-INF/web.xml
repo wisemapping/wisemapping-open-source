@@ -5,7 +5,17 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4">
 
+    <filter>
+        <filter-name>charsetFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+
     <distributable/>
+
     <context-param>
         <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
         <param-value>messages</param-value>
@@ -37,15 +47,6 @@
     <listener>
         <listener-class>com.wisemapping.service.HibernateAppListener</listener-class>
     </listener>
-
-    <filter>
-        <filter-name>charsetFilter</filter-name>
-        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-        <init-param>
-            <param-name>encoding</param-name>
-            <param-value>UTF-8</param-value>
-        </init-param>
-    </filter>
 
     <filter>
         <filter-name>hibernate</filter-name>

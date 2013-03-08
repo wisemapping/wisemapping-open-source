@@ -1,6 +1,6 @@
 <%@ page import="com.wisemapping.security.Utils" %>
 <%@ page import="com.wisemapping.model.User" %>
-<%@page pageEncoding="UTF-8" %>
+<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <%@ include file="/jsp/init.jsp" %>
 
 <!DOCTYPE HTML>
@@ -11,6 +11,7 @@
 <%--@elvariable id="lockInfo" type="com.wisemapping.service.LockInfo"--%>
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <base href="${requestScope['site.baseurl']}/">
     <title><spring:message code="SITE.TITLE"/> - <c:out value="${mindmap.title}"/></title>
     <!--[if lt IE 9]>
