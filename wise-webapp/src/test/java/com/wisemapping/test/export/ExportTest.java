@@ -4,19 +4,13 @@ import com.wisemapping.exporter.ExportException;
 import com.wisemapping.exporter.ExportFormat;
 import com.wisemapping.exporter.ExportProperties;
 import com.wisemapping.exporter.ExporterFactory;
-import com.wisemapping.importer.ImporterException;
-
 import org.apache.batik.transcoder.TranscoderException;
 import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import org.xml.sax.SAXException;
 
-import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.transform.TransformerException;
 import java.io.*;
 
 @Test
@@ -98,7 +92,7 @@ public class ExportTest {
         final File[] svgFile = dataDir.listFiles(new FilenameFilter() {
 
             public boolean accept(File dir, String name) {
-                return name.endsWith(".svg");
+                return name.endsWith(".svg") &&  !name.contains( "-exp.svg");
             }
         });
 
