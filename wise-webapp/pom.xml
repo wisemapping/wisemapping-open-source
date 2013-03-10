@@ -84,6 +84,12 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-openid</artifactId>
+            <version>${org.springframework.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
             <version>${org.springframework.version}</version>
@@ -343,50 +349,19 @@
                 <executions>
                     <execution>
                         <id>drop-schemas</id>
-                        <phase>test</phase>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>execute</goal>
                         </goals>
                         <configuration>
                             <onError>continue</onError>
-                            <orderFile>ascending</orderFile>
+                            <orderFile>descending</orderFile>
                             <fileset>
                                 <basedir>${project.basedir}</basedir>
                                 <includes>
-                                    <include>src/test/sql/hsql/drop-schemas.sql</include>
-                                </includes>
-                            </fileset>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>create-schema</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>execute</goal>
-                        </goals>
-                        <configuration>
-                            <orderFile>ascending</orderFile>
-                            <fileset>
-                                <basedir>${project.basedir}</basedir>
-                                <includes>
-                                    <include>src/test/sql/hsql/create-schemas.sql</include>
-                                </includes>
-                            </fileset>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>create-data</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>execute</goal>
-                        </goals>
-                        <configuration>
-                            <orderFile>ascending</orderFile>
-                            <fileset>
-                                <basedir>${project.basedir}</basedir>
-                                <includes>
-                                    <include>src/test/sql/hsql/test-data.sql</include>
+                                    <include>config/database/hsql/drop-schemas.sql</include>
+                                    <include>config/database/hsql/create-schemas.sql</include>
+                                    <include>config/database/hsql/test-data.sql</include>
                                 </includes>
                             </fileset>
                         </configuration>
@@ -410,8 +385,6 @@
                     </includes>
                 </configuration>
             </plugin>
-
-
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.1.1</version>

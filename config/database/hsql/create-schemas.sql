@@ -13,6 +13,7 @@ activation_code BIGINT NOT NULL,
 activation_date DATE,
 allow_send_email CHAR(1) NOT NULL,
 locale varchar(5),
+auth_schema INTEGER NOT NULL,
 FOREIGN KEY(colaborator_id) REFERENCES COLLABORATOR(id)
 );
 
@@ -70,4 +71,3 @@ login_date date
 );
 
 COMMIT;
-SHUTDOWN;
