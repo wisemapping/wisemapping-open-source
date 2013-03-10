@@ -64,7 +64,7 @@ public class LdapUserDetailsContextMapper implements UserDetailsContextMapper {
             user.setActivationDate(now);
 
             try {
-                userService.createUser(user, false, false);
+                user = userService.createUser(user, false, false);
             } catch (WiseMappingException e) {
                 throw new IllegalStateException(e);
             }
