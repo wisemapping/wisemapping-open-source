@@ -19,6 +19,7 @@
 package com.wisemapping.security;
 
 
+import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.User;
 import com.wisemapping.service.UserService;
 import org.jetbrains.annotations.NotNull;
@@ -26,22 +27,77 @@ import org.jetbrains.annotations.Nullable;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.openid.OpenIDAttribute;
+import org.springframework.security.openid.OpenIDAuthenticationToken;
+
+import java.util.Calendar;
+import java.util.List;
 
 
 public class UserDetailsService
-        implements org.springframework.security.core.userdetails.UserDetailsService {
+        implements org.springframework.security.core.userdetails.UserDetailsService, org.springframework.security.core.userdetails.AuthenticationUserDetailsService<OpenIDAuthenticationToken> {
     private UserService userService;
     private String adminUser;
 
     @Override
     public UserDetails loadUserByUsername(@NotNull String email) throws UsernameNotFoundException, DataAccessException {
         final User user = userService.getUserBy(email);
-       
+
         if (user != null) {
             return new UserDetails(user, isAdmin(email));
         } else {
             throw new UsernameNotFoundException(email);
         }
+    }
+
+    @Override
+    @NotNull
+    public UserDetails loadUserDetails(@NotNull OpenIDAuthenticationToken token) throws UsernameNotFoundException {
+
+        final User tUser = buildUserFromToken(token);
+        final User dbUser = userService.getUserBy(tUser.getEmail());
+
+        final User result;
+        if (dbUser != null) {
+            result = dbUser;
+        } else {
+            try {
+                result = userService.createUser(tUser, false, false);
+            } catch (WiseMappingException e) {
+                throw new IllegalStateException(e);
+            }
+
+        }
+        return new UserDetails(result, isAdmin(result.getEmail()));
+    }
+
+    @NotNull
+    private User buildUserFromToken(@NotNull OpenIDAuthenticationToken token) {
+        final User result = new User();
+
+        final List<OpenIDAttribute> attributes = token.getAttributes();
+        for (OpenIDAttribute attribute : attributes) {
+            if (attribute.getName().equals("email")) {
+                final String email = attribute.getValues().get(0);
+                result.setEmail(email);
+            }
+
+            if (attribute.getName().equals("firstname")) {
+                final String firstName = attribute.getValues().get(0);
+                result.setFirstname(firstName);
+
+            }
+
+            if (attribute.getName().equals("lastname")) {
+                final String lastName = attribute.getValues().get(0);
+                result.setLastname(lastName);
+            }
+            result.setPassword("");
+        }
+
+        final Calendar now = Calendar.getInstance();
+        result.setActivationDate(now);
+        return result;
     }
 
     private boolean isAdmin(@Nullable String email) {
@@ -63,4 +119,5 @@ public class UserDetailsService
     public void setAdminUser(String adminUser) {
         this.adminUser = adminUser;
     }
+
 }

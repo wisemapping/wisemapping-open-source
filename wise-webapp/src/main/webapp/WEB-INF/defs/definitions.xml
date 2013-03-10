@@ -75,6 +75,12 @@
         <put-attribute name="removeSignin" value="true"/>
     </definition>
 
+    <definition name="openidlogin" extends="pageTemplate">
+        <put-attribute name="title" value="LOGIN"/>
+        <put-attribute name="body" value="/jsp/openidlogin.jsp"/>
+        <put-attribute name="removeSignin" value="true"/>
+    </definition>
+
     <definition name="termsOfUse" extends="pageTemplate">
         <put-attribute name="title" value="TERM_OF_USE"/>
         <put-attribute name="body" value="/jsp/termsOfUse.jsp"/>

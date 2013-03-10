@@ -36,6 +36,7 @@ public class User
     private Calendar activationDate;
     private Set<String> tags = new HashSet<String>();
     private boolean allowSendEmail = false;
+    private int schema;
     private String locale;
 
 
@@ -113,5 +114,13 @@ public class User
 
     public void setLocale(@Nullable String locale) {
         this.locale = locale;
+    }
+
+    public int getAutheticationCode() {
+        return this.schema;
+    }
+
+    public void setAuthenticationCode(int code) {
+        this.schema = code;
     }
 }
