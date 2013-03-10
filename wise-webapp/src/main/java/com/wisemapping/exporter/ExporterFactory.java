@@ -140,9 +140,7 @@ public class ExporterFactory {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             final DocumentBuilder documentBuilder = factory.newDocumentBuilder();
 
-            if (!svgXml.trim().startsWith("<svg xmlns=\"http://www.w3.org/2000/svg\"")) {
-                svgXml = svgXml.replaceFirst("<svg ", "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
-            } else {
+            if (!svgXml.contains("xmlns:xlink=\"http://www.w3.org/1999/xlink\"")) {
                 svgXml = svgXml.replaceFirst("<svg ", "<svg xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
             }
 
@@ -222,30 +220,32 @@ public class ExporterFactory {
 
                 Element elem = (Element) node;
 
-                // Cook image href ...
+                // If the image is a external URL, embeed it...
                 String imgUrl = elem.getAttribute("href");
-                elem.removeAttribute("href");
+                if (!imgUrl.startsWith("image/png;base64") ||!imgUrl.startsWith("data:image/png;base64") ) {
+                    elem.removeAttribute("href");
 
-                if (imgUrl == null || imgUrl.isEmpty()) {
-                    imgUrl = elem.getAttribute("xlink:href"); // Do not support namespaces ...
-                    elem.removeAttribute("xlink:href");
-                }
-                FileInputStream fis = null;
+                    if (imgUrl == null || imgUrl.isEmpty()) {
+                        imgUrl = elem.getAttribute("xlink:href"); // Do not support namespaces ...
+                        elem.removeAttribute("xlink:href");
+                    }
+                    FileInputStream fis = null;
 
-                // Obtains file name ...
-                try {
-                    final File iconFile = iconFile(imgUrl);
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    fis = new FileInputStream(iconFile);
-                    BASE64Encoder encoder = new BASE64Encoder();
-                    encoder.encode(fis, bos);
+                    // Obtains file name ...
+                    try {
+                        final File iconFile = iconFile(imgUrl);
+                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                        fis = new FileInputStream(iconFile);
+                        BASE64Encoder encoder = new BASE64Encoder();
+                        encoder.encode(fis, bos);
 
-                    elem.setAttribute("xlink:href", "data:image/png;base64," + bos.toString("8859_1"));
-                    elem.appendChild(document.createTextNode(" "));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    close(fis);
+                        elem.setAttribute("xlink:href", "data:image/png;base64," + bos.toString("8859_1"));
+                        elem.appendChild(document.createTextNode(" "));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        close(fis);
+                    }
                 }
             }
         }
