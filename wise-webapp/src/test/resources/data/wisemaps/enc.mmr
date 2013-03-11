@@ -105,6 +105,7 @@
             </node>
         </node>
         <node BACKGROUND_COLOR="#cccccc" COLOR="#000000" ID="ID_17" POSITION="right" STYLE="rectagle" TEXT="Chazdon 2010. Biotropica. 42(1): 31&#8211;40">
+            <font/>
             <edge COLOR="#cccccc"/>
             <node ID="ID_22" POSITION="right">
                 <richcontent TYPE="NODE">
@@ -279,6 +280,7 @@
             </node>
         </node>
         <node BACKGROUND_COLOR="#cccccc" COLOR="#000000" ID="ID_2" POSITION="left" STYLE="rectagle" TEXT="Poorter 1999. Functional Ecology. 13:396-410">
+            <font/>
             <edge COLOR="#cccccc"/>
             <node ID="ID_3" POSITION="left" TEXT="Esp&#233;cies pioneiras crescem mais r&#225;pido do que as n&#227;o pioneiras">
                 <node ID="ID_4" POSITION="left" TEXT="Toler&#226;ncia a sombra est&#225; relacionada com persist&#234;ncia e n&#227;o com crescimento"/>

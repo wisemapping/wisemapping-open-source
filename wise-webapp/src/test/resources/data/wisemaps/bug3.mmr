@@ -1,8 +1,8 @@
 <map version="0.9.0">
     <node ID="ID_1" TEXT="Indicator needs">
-        <font SIZE="15"/>
+        <font SIZE="24"/>
         <node ID="ID_5" POSITION="right" STYLE="bubble" TEXT="Which new measures">
-            <font SIZE="10"/>
+            <font SIZE="18"/>
             <richcontent TYPE="NOTE">
                 <html>
                     <head/>
@@ -31,7 +31,7 @@
             </node>
         </node>
         <node ID="ID_6" POSITION="left" STYLE="bubble" TEXT="How to design &amp; implement measures">
-            <font SIZE="10"/>
+            <font SIZE="18"/>
             <richcontent TYPE="NOTE">
                 <html>
                     <head/>
@@ -150,7 +150,7 @@
             </node>
         </node>
         <node ID="ID_2" POSITION="right" STYLE="bubble" TEXT="How much effort: where &amp; how">
-            <font SIZE="10"/>
+            <font SIZE="18"/>
             <richcontent TYPE="NOTE">
                 <html>
                     <head/>
@@ -780,7 +780,7 @@
             </node>
         </node>
         <node ID="ID_4" POSITION="left" STYLE="bubble" TEXT="What to do about existing measures">
-            <font SIZE="10"/>
+            <font SIZE="18"/>
             <richcontent TYPE="NOTE">
                 <html>
                     <head/>
@@ -959,7 +959,7 @@
             <arrowlink DESTINATION="ID_114" STARTARROW="Default"/>
         </node>
         <node ID="ID_7" POSITION="right" STYLE="bubble" TEXT="What investments in innovative projects">
-            <font SIZE="10"/>
+            <font SIZE="18"/>
             <richcontent TYPE="NOTE">
                 <html>
                     <head/>
@@ -1031,7 +1031,7 @@
             </node>
         </node>
         <node BACKGROUND_COLOR="#e0e5ef" ID="ID_69" POSITION="left" STYLE="bubble" TEXT="How to improve image">
-            <font SIZE="10"/>
+            <font SIZE="18"/>
             <node BACKGROUND_COLOR="#feffff" ID="ID_75" POSITION="left" STYLE="bubble" TEXT="Rankings">
                 <node ID="ID_70" POSITION="left" TEXT="macro indicators"/>
                 <node ID="ID_71" POSITION="left" TEXT="meso-indicators"/>
