@@ -1,6 +1,6 @@
 <map version="0.9.0">
     <node BACKGROUND_COLOR="#99ffff" COLOR="#ff3300" ID="ID_0" TEXT="120924 Programme">
-        <font BOLD="true" NAME="Arial" SIZE="10"/>
+        <font BOLD="true" NAME="Arial" SIZE="18"/>
         <richcontent TYPE="NOTE">
             <html>
                 <head/>
@@ -19,19 +19,19 @@
                     </body>
                 </html>
             </richcontent>
-            <font BOLD="true" NAME="Arial" SIZE="8"/>
+            <font BOLD="true" NAME="Arial" SIZE="12"/>
             <edge COLOR="#808080"/>
             <node COLOR="#006600" ID="ID_2" POSITION="right" TEXT="modalit&#233;s">
-                <font BOLD="true" NAME="Arial" SIZE="8"/>
+                <font BOLD="true" NAME="Arial" SIZE="12"/>
                 <node ID="ID_3" POSITION="right" TEXT="cf. mi-parcours 201109"/>
                 <node ID="ID_4" POSITION="right" TEXT="&#224; partir des plans d'actions">
-                    <font NAME="Arial" SIZE="8"/>
+                    <font NAME="Arial" SIZE="12"/>
                 </node>
                 <node ID="ID_5" POSITION="right" TEXT="donner la parole aux r&#233;f&#233;rents pr&#233;vus, en demandant des exemples">
-                    <font NAME="Arial" SIZE="8"/>
+                    <font NAME="Arial" SIZE="12"/>
                 </node>
                 <node ID="ID_6" POSITION="right" TEXT="faire compl&#233;ter par les autres participants">
-                    <font NAME="Arial" SIZE="8"/>
+                    <font NAME="Arial" SIZE="12"/>
                 </node>
             </node>
             <node BACKGROUND_COLOR="#99ffff" COLOR="#0000cc" ID="ID_7" POSITION="right" STYLE="bubble">
@@ -45,7 +45,7 @@
                         </body>
                     </html>
                 </richcontent>
-                <font BOLD="true" NAME="Arial" SIZE="8"/>
+                <font BOLD="true" NAME="Arial" SIZE="12"/>
                 <edge COLOR="#808080"/>
                 <node BACKGROUND_COLOR="#99ffff" ID="ID_8" POSITION="right" STYLE="rectagle">
                     <richcontent TYPE="NODE">
@@ -75,7 +75,7 @@
                             </body>
                         </html>
                     </richcontent>
-                    <font BOLD="true" NAME="Arial" SIZE="8"/>
+                    <font BOLD="true" NAME="Arial" SIZE="12"/>
                     <node ID="ID_16" POSITION="right" TEXT="Sophie"/>
                 </node>
                 <node BACKGROUND_COLOR="#ffff00" COLOR="#006600" ID="ID_17" POSITION="right" STYLE="rectagle">
@@ -88,7 +88,7 @@
                             </body>
                         </html>
                     </richcontent>
-                    <font BOLD="true" NAME="Arial" SIZE="8"/>
+                    <font BOLD="true" NAME="Arial" SIZE="12"/>
                     <node ID="ID_18" POSITION="right" TEXT="Martine D et Christine"/>
                 </node>
                 <node BACKGROUND_COLOR="#66ff00" COLOR="#006600" ID="ID_19" POSITION="right" STYLE="rectagle">
@@ -101,7 +101,7 @@
                             </body>
                         </html>
                     </richcontent>
-                    <font BOLD="true" NAME="Arial" SIZE="8"/>
+                    <font BOLD="true" NAME="Arial" SIZE="12"/>
                     <node ID="ID_20" POSITION="right" TEXT="Nathalie"/>
                 </node>
                 <node BACKGROUND_COLOR="#ffff00" COLOR="#006600" ID="ID_21" POSITION="right" STYLE="rectagle">
@@ -114,7 +114,7 @@
                             </body>
                         </html>
                     </richcontent>
-                    <font BOLD="true" NAME="Arial" SIZE="8"/>
+                    <font BOLD="true" NAME="Arial" SIZE="12"/>
                     <node ID="ID_22" POSITION="right" TEXT="Josiane"/>
                 </node>
                 <node BACKGROUND_COLOR="#ffcc00" COLOR="#006600" ID="ID_23" POSITION="right" STYLE="rectagle">
@@ -127,7 +127,7 @@
                             </body>
                         </html>
                     </richcontent>
-                    <font BOLD="true" NAME="Arial" SIZE="8"/>
+                    <font BOLD="true" NAME="Arial" SIZE="12"/>
                     <node ID="ID_24" POSITION="right" TEXT="Agn&#232;s"/>
                 </node>
                 <node BACKGROUND_COLOR="#66ff00" COLOR="#006600" ID="ID_25" POSITION="right" STYLE="rectagle">
@@ -141,7 +141,7 @@
                             </body>
                         </html>
                     </richcontent>
-                    <font BOLD="true" NAME="Arial" SIZE="8"/>
+                    <font BOLD="true" NAME="Arial" SIZE="12"/>
                     <node ID="ID_26" POSITION="right" TEXT="Nathalie"/>
                 </node>
             </node>
@@ -155,7 +155,7 @@
                         </body>
                     </html>
                 </richcontent>
-                <font BOLD="true" NAME="Arial" SIZE="8"/>
+                <font BOLD="true" NAME="Arial" SIZE="12"/>
                 <edge COLOR="#808080"/>
                 <node BACKGROUND_COLOR="#ffff00" COLOR="#006600" ID="ID_28" POSITION="right" STYLE="rectagle">
                     <richcontent TYPE="NODE">
@@ -167,7 +167,7 @@
                             </body>
                         </html>
                     </richcontent>
-                    <font BOLD="true" NAME="Arial" SIZE="8"/>
+                    <font BOLD="true" NAME="Arial" SIZE="12"/>
                     <node ID="ID_29" POSITION="right" TEXT="Agn&#232;s"/>
                 </node>
                 <node BACKGROUND_COLOR="#ffcc00" COLOR="#006600" ID="ID_30" POSITION="right" STYLE="rectagle">
@@ -180,7 +180,7 @@
                             </body>
                         </html>
                     </richcontent>
-                    <font BOLD="true" NAME="Arial" SIZE="8"/>
+                    <font BOLD="true" NAME="Arial" SIZE="12"/>
                     <node ID="ID_31" POSITION="right" TEXT="Martine G"/>
                 </node>
                 <node BACKGROUND_COLOR="#66ff00" COLOR="#006600" ID="ID_32" POSITION="right" STYLE="rectagle">
@@ -193,7 +193,7 @@
                             </body>
                         </html>
                     </richcontent>
-                    <font BOLD="true" NAME="Arial" SIZE="8"/>
+                    <font BOLD="true" NAME="Arial" SIZE="12"/>
                     <node ID="ID_33" POSITION="right" TEXT="JMDW"/>
                 </node>
             </node>
@@ -208,7 +208,7 @@
                         </body>
                     </html>
                 </richcontent>
-                <font BOLD="true" NAME="Arial" SIZE="8"/>
+                <font BOLD="true" NAME="Arial" SIZE="12"/>
                 <edge COLOR="#808080"/>
                 <node BACKGROUND_COLOR="#ffff00" COLOR="#006600" ID="ID_35" POSITION="right" STYLE="rectagle">
                     <richcontent TYPE="NODE">
@@ -220,7 +220,7 @@
                             </body>
                         </html>
                     </richcontent>
-                    <font BOLD="true" NAME="Arial" SIZE="8"/>
+                    <font BOLD="true" NAME="Arial" SIZE="12"/>
                     <edge COLOR="#808080"/>
                     <node ID="ID_36" POSITION="right" TEXT="Martine P"/>
                 </node>
@@ -234,12 +234,12 @@
                             </body>
                         </html>
                     </richcontent>
-                    <font BOLD="true" NAME="Arial" SIZE="8"/>
+                    <font BOLD="true" NAME="Arial" SIZE="12"/>
                     <edge COLOR="#808080"/>
                     <node ID="ID_38" POSITION="right" TEXT="Pdt + Agn&#232;s"/>
                 </node>
                 <node BACKGROUND_COLOR="#ff6666" COLOR="#006600" ID="ID_39" POSITION="right" STYLE="rectagle" TEXT="3.3 d&#233;velopper la vie associative">
-                    <font BOLD="true" NAME="Arial" SIZE="8"/>
+                    <font BOLD="true" NAME="Arial" SIZE="12"/>
                     <node ID="ID_40" POSITION="right" TEXT="Pdt + Agn&#232;s"/>
                 </node>
                 <node BACKGROUND_COLOR="#ff6666" COLOR="#006600" ID="ID_41" POSITION="right" STYLE="rectagle">
@@ -252,7 +252,7 @@
                             </body>
                         </html>
                     </richcontent>
-                    <font BOLD="true" NAME="Arial" SIZE="8"/>
+                    <font BOLD="true" NAME="Arial" SIZE="12"/>
                     <edge COLOR="#808080"/>
                     <node ID="ID_42" POSITION="right" TEXT="Pdt + Agn&#232;s"/>
                 </node>
