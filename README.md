@@ -46,11 +46,9 @@ Start by creating the .zip file:
 
 To test the javascript frontend you then do:
 
-    unzip target/wisemapping-3.0-SNAPSHOT-editor.zip
-    cd target/wisemapping-3.0-SNAPSHOT-editor
-    ruby -rwebrick -e 'WEBrick::HTTPServer.new(:Port=>8000,:DocumentRoot=>".").start' 
+    ruby -rwebrick -e 'WEBrick::HTTPServer.new(:Port=>8000,:DocumentRoot=>".").start'
 
-Now open a browser using the URL http://localhost:8000/
+Now open a browser using the URL http://localhost:8000/wise-editor/src/main/webapp/
 
 ### Attaching drag and drop events.
 
