@@ -361,7 +361,7 @@
                                 <includes>
                                     <include>config/database/hsql/drop-schemas.sql</include>
                                     <include>config/database/hsql/create-schemas.sql</include>
-                                    <include>config/database/hsql/test-data.sql</include>
+                                    <include>config/database/hsql/atest-data.sql</include>
                                 </includes>
                             </fileset>
                         </configuration>
