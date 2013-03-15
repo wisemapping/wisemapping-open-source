@@ -149,6 +149,8 @@ mindplot.MultilineTextEditor = new Class({
 
         if (this._topic.getText() != this._getText()) {
             var text = this._getText();
+            // Do not send windows return chars ...
+            text = text.replace("\r","");
             var topicId = this._topic.getId();
 
             var actionDispatcher = mindplot.ActionDispatcher.getInstance();
