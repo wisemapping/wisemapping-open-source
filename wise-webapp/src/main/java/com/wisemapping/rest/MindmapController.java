@@ -179,7 +179,10 @@ public class MindmapController extends BaseController {
         // I should not return byte, but there is some encoding issue here. Further research needed.
         response.setCharacterEncoding("UTF-8");
         final Mindmap mindmap = mindmapService.findMindmapById(id);
-        return mindmap.getXmlStr().getBytes("UTF-8");
+
+        String xmlStr = mindmap.getXmlStr();
+        xmlStr = xmlStr.replace('\r',' '); // This is a temporal hack. Remove in 2014 ... :)
+        return xmlStr.getBytes("UTF-8");
     }
 
     @RequestMapping(method = RequestMethod.GET, value = { "/maps/{id}/{hid}/document/xml"},consumes = {"text/plain"}, produces = {"application/xml"})
