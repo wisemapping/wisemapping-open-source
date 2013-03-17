@@ -18,7 +18,7 @@
 
 mindplot.persistence.XMLSerializer_Pela = new Class({
 
-    toXML:function (mindmap) {
+    toXML: function (mindmap) {
         $assert(mindmap, "Can not save a null mindmap");
 
         var document = core.Utils.createDocument();
@@ -27,7 +27,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         var mapElem = document.createElement("map");
         var name = mindmap.getId();
         if ($defined(name)) {
-            mapElem.setAttribute('name', name);
+            mapElem.setAttribute('name', this.rmXmlInv(name));
         }
         var version = mindmap.getVersion();
         if ($defined(version)) {
@@ -61,7 +61,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         return document;
     },
 
-    _topicToXML:function (document, topic) {
+    _topicToXML: function (document, topic) {
         var parentTopic = document.createElement("topic");
 
         // Set topic attributes...
@@ -150,9 +150,9 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
                 var value = attributes[key];
                 if (key == 'text') {
                     var cdata = document.createCDATASection(value);
-                    featureDom.appendChild(cdata);
+                    featureDom.appendChild(this.rmXmlInv(cdata));
                 } else {
-                    featureDom.setAttribute(key, value);
+                    featureDom.setAttribute(key, this.rmXmlInv(value));
                 }
             }
             parentTopic.appendChild(featureDom);
@@ -169,18 +169,18 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         return parentTopic;
     },
 
-    _noteTextToXML:function (document, elem, text) {
+    _noteTextToXML: function (document, elem, text) {
         if (text.indexOf('\n') == -1) {
-            elem.setAttribute('text', text);
+            elem.setAttribute('text', this.rmXmlInv(text));
         } else {
             var textDom = document.createElement("text");
-            var cdata = document.createCDATASection(text);
+            var cdata = document.createCDATASection(this.rmXmlInv(text));
             textDom.appendChild(cdata);
             elem.appendChild(textDom);
         }
     },
 
-    _relationshipToXML:function (document, relationship) {
+    _relationshipToXML: function (document, relationship) {
         var result = document.createElement("relationship");
         result.setAttribute("srcTopicId", relationship.getFromNode());
         result.setAttribute("destTopicId", relationship.getToNode());
@@ -203,7 +203,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         return result;
     },
 
-    loadFromDom:function (dom, mapId) {
+    loadFromDom: function (dom, mapId) {
         $assert(dom, "dom can not be null");
         $assert(mapId, "mapId can not be null");
 
@@ -239,7 +239,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         return mindmap;
     },
 
-    _deserializeNode:function (domElem, mindmap) {
+    _deserializeNode: function (domElem, mindmap) {
         var type = (domElem.getAttribute('central') != null) ? mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE : mindplot.model.INodeModel.MAIN_TOPIC_TYPE;
 
         // Load attributes...
@@ -320,7 +320,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
 
         var isShrink = domElem.getAttribute('shrink');
         // Hack: Some production maps has been stored with the central topic collapsed. This is a bug.
-        if ($defined(isShrink) && type!=mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
+        if ($defined(isShrink) && type != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
             topic.setChildrenShrunken(isShrink);
         }
 
@@ -373,7 +373,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         return topic;
     },
 
-    _deserializeTextAttr:function (domElem) {
+    _deserializeTextAttr: function (domElem) {
         var value = domElem.getAttribute("text");
         if (!$defined(value)) {
             var children = domElem.childNodes;
@@ -396,7 +396,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         return value;
     },
 
-    _deserializeNodeText:function (domElem) {
+    _deserializeNodeText: function (domElem) {
         var children = domElem.childNodes;
         var value = null;
         for (var i = 0; i < children.length; i++) {
@@ -408,7 +408,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         return value;
     },
 
-    _deserializeRelationship:function (domElement, mindmap) {
+    _deserializeRelationship: function (domElement, mindmap) {
         var srcId = domElement.getAttribute("srcTopicId");
         var destId = domElement.getAttribute("destTopicId");
         var lineType = domElement.getAttribute("lineType");
@@ -436,6 +436,36 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         model.setEndArrow('false');
         model.setStartArrow('true');
         return model;
+    }
+    /*
+     * This method ensures that the output String has only
+     * valid XML unicode characters as specified by the
+     * XML 1.0 standard. For reference, please see
+     * <a href="http://www.w3.org/TR/2000/REC-xml-20001006#NT-Char">the
+     * standard</a>. This method will return an empty
+     * String if the input is null or empty.
+     *
+     * @param in The String whose non-valid characters we want to remove.
+     * @return The in String, stripped of non-valid characters.
+     */,
+    rmXmlInv: function (str) {
+
+        if (str == null || str == undefined)
+            return null;
+
+        var result = "";
+        for (var i=0;i<str.length;i++){
+            var c = str.charCodeAt(i);
+            if ((c == 0x9) || (c == 0xA) || (c == 0xD)
+                || ((c >= 0x20) && (c <= 0xD7FF))
+                || ((c >= 0xE000) && (c <= 0xFFFD))
+                || ((c >= 0x10000) && (c <= 0x10FFFF))) {
+                result = result + str.charAt(i);
+            }
+
+        }
+        return result;
+
     }
 });
 

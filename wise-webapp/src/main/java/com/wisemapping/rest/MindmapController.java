@@ -181,7 +181,6 @@ public class MindmapController extends BaseController {
         final Mindmap mindmap = mindmapService.findMindmapById(id);
 
         String xmlStr = mindmap.getXmlStr();
-        xmlStr = xmlStr.replace('\r',' '); // This is a temporal hack. Remove in 2014 ... :)
         return xmlStr.getBytes("UTF-8");
     }
 
