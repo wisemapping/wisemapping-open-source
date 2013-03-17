@@ -45,4 +45,16 @@ public class LoginController {
         return result;
     }
 
+    @RequestMapping(value = "loginOpenId", method = RequestMethod.GET)
+    protected ModelAndView showLoginOpenIdPage() {
+        final User user = Utils.getUser(false);
+        ModelAndView result;
+        if (user != null) {
+            result = new ModelAndView("forward:/c/maps/");
+        } else {
+            result = new ModelAndView("loginOpenId");
+        }
+        return result;
+    }
+
 }

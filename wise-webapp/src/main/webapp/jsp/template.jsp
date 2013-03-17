@@ -14,13 +14,15 @@
 
     <meta name="author" content="WiseMapping">
     <meta name="publisher" content="WiseMapping Open Source">
-    <meta name="keywords" content="mindmap,mind map,mind maps,mindmaps,ideas,brainstorming,organize,thoughts,structure,collaboration,free,fast,simple,online,tool,knowledge,share,sharing,publish">
-	<meta name="description" content="WiseMapping is a free, fast and simple online mind mapping editor for individuals and business. Sign up to start organizing and sharing your ideas and thoughts.">
-    <meta property="og:title" content="WiseMapping" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="http://www.wisemapping.com" />
-    <meta property="og:image" content="http://www.wisemapping.com/images/logo.png" />
-    <meta property="og:site_name" content="WiseMapping.com" />
+    <meta name="keywords"
+          content="mindmap,mind map,mind maps,mindmaps,ideas,brainstorming,organize,thoughts,structure,collaboration,free,fast,simple,online,tool,knowledge,share,sharing,publish">
+    <meta name="description"
+          content="WiseMapping is a free, fast and simple online mind mapping editor for individuals and business. Sign up to start organizing and sharing your ideas and thoughts.">
+    <meta property="og:title" content="WiseMapping"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="http://www.wisemapping.com"/>
+    <meta property="og:image" content="http://www.wisemapping.com/images/logo.png"/>
+    <meta property="og:site_name" content="WiseMapping.com"/>
 
     <title>
         <spring:message code="SITE.TITLE"/>-
@@ -38,9 +40,20 @@
     <link rel="icon" href="images/favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
 
-    <script type="text/javascript" language="javascript" src="js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap.js"></script>
     <script src="js/less.js" type="text/javascript"></script>
+
+    <!-- Simple OpenID Selector -->
+    <link type="text/css" rel="stylesheet" href="css/openid.css"/>
+    <script type="text/javascript" language="javascript" src="js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" language="javascript" src="js/openid-jquery.js"></script>
+    <script type="text/javascript" language="javascript" src="js/openid-en.js"></script>
+    <!-- /Simple OpenID Selector -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            openid.init('openid_identifier');
+        });
+    </script>
 </head>
 <body>
 

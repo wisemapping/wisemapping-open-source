@@ -49,6 +49,7 @@
                     <a href="<c:url value="/c/user/resetPassword"/>"><spring:message code="FORGOT_PASSWORD"/></a>
                 </div>
             </div>
+
             <div class="control-group">
                 <c:if test="${not empty param.login_error}">
                     <c:choose>

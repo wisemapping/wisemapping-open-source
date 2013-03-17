@@ -21,7 +21,6 @@ package com.wisemapping.webmvc;
 
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.CollaborationRole;
-import com.wisemapping.model.MindMapHistory;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
 import com.wisemapping.security.Utils;
