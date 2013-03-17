@@ -149,8 +149,8 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
             for (var key in attributes) {
                 var value = attributes[key];
                 if (key == 'text') {
-                    var cdata = document.createCDATASection(value);
-                    featureDom.appendChild(this.rmXmlInv(cdata));
+                    var cdata = document.createCDATASection(this.rmXmlInv(value));
+                    featureDom.appendChild(cdata);
                 } else {
                     featureDom.setAttribute(key, this.rmXmlInv(value));
                 }
