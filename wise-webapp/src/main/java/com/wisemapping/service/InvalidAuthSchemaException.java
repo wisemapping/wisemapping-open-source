@@ -18,29 +18,12 @@
 
 package com.wisemapping.service;
 
-import com.wisemapping.model.User;
 import com.wisemapping.exceptions.WiseMappingException;
-import org.jetbrains.annotations.NotNull;
 
-public interface UserService {
-
-    public void activateAccount(long code) throws InvalidActivationCodeException;
-
-    public User createUser(@NotNull User user, boolean emailConfirmEnabled,boolean welcomeEmail) throws WiseMappingException;
-
-    public void changePassword(@NotNull User user);
-
-    public User getUserBy(String email);
-
-    public User getUserBy(long id);
-
-    public void updateUser(User user);
-
-    public void resetPassword(@NotNull String email) throws InvalidUserEmailException, InvalidAuthSchemaException;
-
-    public void deleteUser(@NotNull User user);
-
-    public void auditLogin(@NotNull User user);
-    
-    public User getCasUserBy(String uid);
+public class InvalidAuthSchemaException extends WiseMappingException
+{
+    public InvalidAuthSchemaException(String msg)
+    {
+        super(msg);
+    }
 }

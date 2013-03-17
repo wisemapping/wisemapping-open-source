@@ -18,6 +18,7 @@
 
 package com.wisemapping.model;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
@@ -36,9 +37,8 @@ public class User
     private Calendar activationDate;
     private Set<String> tags = new HashSet<String>();
     private boolean allowSendEmail = false;
-    private int schema;
     private String locale;
-
+    private AuthenticationSchema authenticationSchema;
 
     public User() {
     }
@@ -116,11 +116,25 @@ public class User
         this.locale = locale;
     }
 
-    public int getAutheticationCode() {
-        return this.schema;
+    public char getAutheticationCode() {
+        return this.authenticationSchema != null ? this.authenticationSchema.getCode() : null;
     }
 
-    public void setAuthenticationCode(int code) {
-        this.schema = code;
+    public void setAutheticationCode(char code) {
+        this.authenticationSchema = AuthenticationSchema.valueOf(code);
     }
+
+    public AuthenticationSchema getAuthenticationSchema() {
+        return authenticationSchema;
+    }
+
+    public void setAuthenticationSchema(@NotNull AuthenticationSchema authenticationSchema) {
+        this.authenticationSchema = authenticationSchema;
+    }
+
+    public boolean isDatabaseSchema(){
+        return this.authenticationSchema==AuthenticationSchema.DATABASE;
+    }
+
+
 }

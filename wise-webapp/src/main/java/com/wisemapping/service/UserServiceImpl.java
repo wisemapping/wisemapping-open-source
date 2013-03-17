@@ -19,12 +19,10 @@
 package com.wisemapping.service;
 
 import com.wisemapping.dao.UserManager;
+import com.wisemapping.exceptions.ClientException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.mail.NotificationService;
-import com.wisemapping.model.AccessAuditory;
-import com.wisemapping.model.Collaborator;
-import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.User;
+import com.wisemapping.model.*;
 import org.apache.velocity.app.VelocityEngine;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.MessageSource;
@@ -59,9 +57,14 @@ public class UserServiceImpl
 
     @Override
     public void resetPassword(@NotNull String email)
-            throws InvalidUserEmailException {
+            throws InvalidUserEmailException, InvalidAuthSchemaException {
         final User user = userManager.getUserBy(email);
         if (user != null) {
+
+            if (user.getAuthenticationSchema() != AuthenticationSchema.DATABASE) {
+                throw new InvalidAuthSchemaException("Could not change password for " + user.getAuthenticationSchema().getCode());
+            }
+
             // Generate a random password ...
             final String password = randomstring(8, 10);
             user.setPassword(password);
@@ -107,6 +110,7 @@ public class UserServiceImpl
         userManager.auditLogin(accessAuditory);
     }
 
+    @NotNull
     public User createUser(@NotNull User user, boolean emailConfirmEnabled, boolean welcomeEmail) throws WiseMappingException {
         final UUID uuid = UUID.randomUUID();
         user.setCreationDate(Calendar.getInstance());

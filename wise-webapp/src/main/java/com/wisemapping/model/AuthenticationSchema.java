@@ -1,17 +1,33 @@
 package com.wisemapping.model;
 
-public enum  AuthenticationSchema
-{
-    DATABASE(0),
-    LDAP(1),
-    OPENID(2);
-    private final int schemaCode;
+public enum AuthenticationSchema {
+    DATABASE('D'),
+    LDAP('L'),
+    OPENID('O');
+    private final char schemaCode;
 
-    AuthenticationSchema(int schemaCode) {
+    AuthenticationSchema(char schemaCode) {
         this.schemaCode = schemaCode;
     }
 
-    public int getSchemaCode() {
+    public char getCode() {
         return schemaCode;
+    }
+
+    public static AuthenticationSchema valueOf(char code) {
+        AuthenticationSchema result = null;
+        AuthenticationSchema[] values = AuthenticationSchema.values();
+        for (AuthenticationSchema value : values) {
+            if (value.getCode() == code) {
+                result = value;
+                break;
+            }
+        }
+
+        if (result == null) {
+            throw new IllegalStateException("Could not find auth with code:" + code);
+        }
+
+        return result;
     }
 }

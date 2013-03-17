@@ -20,6 +20,7 @@ package com.wisemapping.security;
 
 
 import com.wisemapping.exceptions.WiseMappingException;
+import com.wisemapping.model.AuthenticationSchema;
 import com.wisemapping.model.User;
 import com.wisemapping.service.UserService;
 import org.jetbrains.annotations.NotNull;
@@ -62,6 +63,7 @@ public class UserDetailsService
             result = dbUser;
         } else {
             try {
+                tUser.setAuthenticationSchema(AuthenticationSchema.OPENID);
                 result = userService.createUser(tUser, false, false);
             } catch (WiseMappingException e) {
                 throw new IllegalStateException(e);

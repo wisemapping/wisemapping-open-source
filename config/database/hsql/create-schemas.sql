@@ -6,6 +6,7 @@ creation_date date);
 CREATE TABLE USER (
 id INTEGER NOT NULL IDENTITY,
 colaborator_id INTEGER NOT NULL,
+auth_schema CHAR(1) NOT NULL,
 firstname varchar(255)  NOT NULL,
 lastname varchar(255)  NOT NULL,
 password varchar(255)  NOT NULL,

@@ -19,6 +19,8 @@
 package com.wisemapping.webmvc;
 
 
+import com.wisemapping.model.AuthenticationSchema;
+import com.wisemapping.service.InvalidAuthSchemaException;
 import com.wisemapping.validator.Messages;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.User;
@@ -72,9 +74,8 @@ public class UsersController {
             userService.resetPassword(email);
             result = new ModelAndView("forgotPasswordSuccess");
 
-        } catch (InvalidUserEmailException e) {
+        } catch (InvalidUserEmailException|InvalidAuthSchemaException e) {
             result = new ModelAndView("forgotPasswordError");
-
         }
         return result;
     }
@@ -110,6 +111,7 @@ public class UsersController {
             user.setPassword(userBean.getPassword());
 
             boolean confirmRegistrationByEmail = false;
+            user.setAuthenticationSchema(AuthenticationSchema.DATABASE);
             userService.createUser(user, confirmRegistrationByEmail,true);
 
             // Forward to the success view ...

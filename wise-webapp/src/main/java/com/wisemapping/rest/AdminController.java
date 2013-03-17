@@ -18,8 +18,8 @@
 
 package com.wisemapping.rest;
 
-import com.wisemapping.exceptions.ClientException;
 import com.wisemapping.exceptions.WiseMappingException;
+import com.wisemapping.model.AuthenticationSchema;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.service.UserService;
@@ -85,13 +85,14 @@ public class AdminController extends BaseController {
         }
 
         // Finally create the user ...
-        userService.createUser(delegated, false,true);
+        delegated.setAuthenticationSchema(AuthenticationSchema.DATABASE);
+        userService.createUser(delegated, false, true);
         response.setHeader("Location", "/service/admin/users/" + user.getId());
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "admin/users/{id}/password", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void changePassword(@RequestBody String password, @PathVariable long id) throws  WiseMappingException {
+    public void changePassword(@RequestBody String password, @PathVariable long id) throws WiseMappingException {
         if (password == null) {
             throw new IllegalArgumentException("Password can not be null");
         }
@@ -104,7 +105,7 @@ public class AdminController extends BaseController {
         userService.changePassword(user);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE,value = "admin/users/{id}")
+    @RequestMapping(method = RequestMethod.DELETE, value = "admin/users/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void getUserByEmail(@PathVariable long id) throws WiseMappingException {
         final User user = userService.getUserBy(id);

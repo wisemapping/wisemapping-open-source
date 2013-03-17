@@ -3,15 +3,15 @@
 
 <div>
     <ul class="nav nav-tabs">
-<c:if test="${requestScope['security.type']=='db'}">
-        <li class="active"><a href="#changeUserPanel" data-toggle="pill"><spring:message code="GENERAL"/></a></li>
-        <li><a href="#changePasswordPanel" data-toggle="pill"><spring:message code="SECURITY"/></a></li>
-</c:if>
+        <c:if test="${principal.databaseSchema}">
+            <li class="active"><a href="#changeUserPanel" data-toggle="pill"><spring:message code="GENERAL"/></a></li>
+            <li><a href="#changePasswordPanel" data-toggle="pill"><spring:message code="SECURITY"/></a></li>
+        </c:if>
         <li><a href="#languagePanel" data-toggle="pill"><spring:message code="LANGUAGE"/></a></li>
     </ul>
 
     <div class="tab-content">
-        <div class="tab-pane fade active in" id="changeUserPanel">
+        <div class="tab-pane fade ${principal.databaseSchema?'active in':''}" id="changeUserPanel">
             <div id="changeInfoMsg" class="alert">
             </div>
             <form action="#" method="POST" id="changeUserForm">
@@ -48,7 +48,7 @@
                 </fieldset>
             </form>
         </div>
-        <div class="tab-pane fade" id="languagePanel">
+        <div class="tab-pane fade ${principal.databaseSchema?'':'active in'}" id="languagePanel">
             <div id="languageMsg" class="alert">
             </div>
             <form action="#" method="POST" id="languageForm">
@@ -99,16 +99,16 @@
     function postChange(url, postBody, msgContainerId, successMsg) {
         // Change success message ...
         jQuery.ajax(url, {
-            async:false,
-            dataType:'json',
-            data:postBody,
-            type:'PUT',
-            contentType:"text/plain; charset=utf-8",
-            success:function (data, textStatus, jqXHR) {
+            async: false,
+            dataType: 'json',
+            data: postBody,
+            type: 'PUT',
+            contentType: "text/plain; charset=utf-8",
+            success: function (data, textStatus, jqXHR) {
                 $('#' + msgContainerId).removeClass('alert-error').addClass('alert-info').show();
                 $('#' + msgContainerId).text(successMsg);
             },
-            error:function (jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
                 $('#' + msgContainerId).removeClass('alert-info').addClass('alert-error').show();
                 $('#' + msgContainerId).text(textStatus);
             }
