@@ -74,7 +74,10 @@ public class UsersController {
             userService.resetPassword(email);
             result = new ModelAndView("forgotPasswordSuccess");
 
-        } catch (InvalidUserEmailException|InvalidAuthSchemaException e) {
+        } catch (InvalidUserEmailException e) {
+            result = new ModelAndView("forgotPasswordError");
+        }
+        catch (InvalidAuthSchemaException e) {
             result = new ModelAndView("forgotPasswordError");
         }
         return result;
