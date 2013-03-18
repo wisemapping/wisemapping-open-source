@@ -19,7 +19,7 @@
 package com.wisemapping.webmvc;
 
 
-import com.wisemapping.model.AuthenticationSchema;
+import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.service.InvalidAuthSchemaException;
 import com.wisemapping.validator.Messages;
 import com.wisemapping.exceptions.WiseMappingException;
@@ -111,7 +111,7 @@ public class UsersController {
             user.setPassword(userBean.getPassword());
 
             boolean confirmRegistrationByEmail = false;
-            user.setAuthenticationSchema(AuthenticationSchema.DATABASE);
+            user.setAuthenticationType(AuthenticationType.DATABASE);
             userService.createUser(user, confirmRegistrationByEmail,true);
 
             // Forward to the success view ...

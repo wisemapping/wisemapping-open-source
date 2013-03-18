@@ -19,7 +19,6 @@
 package com.wisemapping.service;
 
 import com.wisemapping.dao.UserManager;
-import com.wisemapping.exceptions.ClientException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.*;
@@ -61,8 +60,8 @@ public class UserServiceImpl
         final User user = userManager.getUserBy(email);
         if (user != null) {
 
-            if (user.getAuthenticationSchema() != AuthenticationSchema.DATABASE) {
-                throw new InvalidAuthSchemaException("Could not change password for " + user.getAuthenticationSchema().getCode());
+            if (user.getAuthenticationType() != AuthenticationType.DATABASE) {
+                throw new InvalidAuthSchemaException("Could not change password for " + user.getAuthenticationType().getCode());
             }
 
             // Generate a random password ...

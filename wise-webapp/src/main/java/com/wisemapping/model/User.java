@@ -38,7 +38,10 @@ public class User
     private Set<String> tags = new HashSet<String>();
     private boolean allowSendEmail = false;
     private String locale;
-    private AuthenticationSchema authenticationSchema;
+    private AuthenticationType authenticationType;
+
+
+    private String authenticatorUri;
 
     public User() {
     }
@@ -116,24 +119,32 @@ public class User
         this.locale = locale;
     }
 
-    public char getAutheticationCode() {
-        return this.authenticationSchema != null ? this.authenticationSchema.getCode() : null;
+    public char getAutheticationTypeCode() {
+        return this.authenticationType != null ? this.authenticationType.getCode() : null;
     }
 
-    public void setAutheticationCode(char code) {
-        this.authenticationSchema = AuthenticationSchema.valueOf(code);
+    public void setAutheticationTypeCode(char code) {
+        this.authenticationType = AuthenticationType.valueOf(code);
     }
 
-    public AuthenticationSchema getAuthenticationSchema() {
-        return authenticationSchema;
+    public AuthenticationType getAuthenticationType() {
+        return authenticationType;
     }
 
-    public void setAuthenticationSchema(@NotNull AuthenticationSchema authenticationSchema) {
-        this.authenticationSchema = authenticationSchema;
+    public void setAuthenticationType(@NotNull AuthenticationType authenticationType) {
+        this.authenticationType = authenticationType;
     }
 
     public boolean isDatabaseSchema(){
-        return this.authenticationSchema==AuthenticationSchema.DATABASE;
+        return this.authenticationType == AuthenticationType.DATABASE;
+    }
+
+    public String getAuthenticatorUri() {
+        return authenticatorUri;
+    }
+
+    public void setAuthenticatorUri(String authenticatorUri) {
+        this.authenticatorUri = authenticatorUri;
     }
 
 

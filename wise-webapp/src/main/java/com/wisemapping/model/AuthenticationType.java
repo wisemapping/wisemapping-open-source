@@ -1,12 +1,15 @@
 package com.wisemapping.model;
 
-public enum AuthenticationSchema {
+
+import org.jetbrains.annotations.NotNull;
+
+public enum AuthenticationType {
     DATABASE('D'),
     LDAP('L'),
     OPENID('O');
     private final char schemaCode;
 
-    AuthenticationSchema(char schemaCode) {
+    AuthenticationType(char schemaCode) {
         this.schemaCode = schemaCode;
     }
 
@@ -14,10 +17,11 @@ public enum AuthenticationSchema {
         return schemaCode;
     }
 
-    public static AuthenticationSchema valueOf(char code) {
-        AuthenticationSchema result = null;
-        AuthenticationSchema[] values = AuthenticationSchema.values();
-        for (AuthenticationSchema value : values) {
+    @NotNull
+    public static AuthenticationType valueOf(char code) {
+        AuthenticationType result = null;
+        AuthenticationType[] values = AuthenticationType.values();
+        for (AuthenticationType value : values) {
             if (value.getCode() == code) {
                 result = value;
                 break;

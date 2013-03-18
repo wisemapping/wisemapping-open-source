@@ -27,7 +27,8 @@
             <property name="activationDate" column="activation_date"/>
             <property name="activationCode" column="activation_code"/>
             <property name="allowSendEmail" column="allow_send_email"/>
-            <property name="autheticationCode" column="auth_schema"/>
+            <property name="autheticationTypeCode" column="authentication_type"/>
+            <property name="authenticatorUri" column="authenticator_uri"/>
 
             <property name="locale"/>
             <set name="tags" table="TAG">

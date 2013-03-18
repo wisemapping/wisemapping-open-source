@@ -75,6 +75,10 @@
                 <spring:message code="JOIN_NOW"/>
             </a>
         </c:if>
+        <p>
+        Do you already have an account on <b>GMail, Yahoo, AOL or other OpenId site</b> ?. Sign in in with it <a href="/c/loginopenid"><b>here</b></a>.
+
+        </p>
     </div>
 </div>
 

@@ -2,7 +2,7 @@ package com.wisemapping.security.ldap;
 
 
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.model.AuthenticationSchema;
+import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.model.User;
 import com.wisemapping.security.UserDetails;
 import com.wisemapping.service.UserService;
@@ -65,7 +65,7 @@ public class LdapUserDetailsContextMapper implements UserDetailsContextMapper {
             user.setActivationDate(now);
 
             try {
-                user.setAuthenticationSchema(AuthenticationSchema.LDAP);
+                user.setAuthenticationType(AuthenticationType.LDAP);
                 user = userService.createUser(user, false, false);
             } catch (WiseMappingException e) {
                 throw new IllegalStateException(e);

@@ -75,7 +75,7 @@
         <put-attribute name="removeSignin" value="true"/>
     </definition>
 
-    <definition name="loginOpenId" extends="pageTemplate">
+    <definition name="loginopenid" extends="pageTemplate">
         <put-attribute name="title" value="LOGIN"/>
         <put-attribute name="body" value="/jsp/loginOpenId.jsp"/>
         <put-attribute name="removeSignin" value="true"/>

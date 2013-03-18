@@ -2,6 +2,17 @@
 <%@ include file="/jsp/init.jsp" %>
 
 <%--@elvariable id="isHsql" type="boolean"--%>
+<!-- Simple OpenID Selector -->
+<link type="text/css" rel="stylesheet" href="css/openid.css"/>
+<script type="text/javascript" language="javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" language="javascript" src="js/openid-jquery.js"></script>
+<script type="text/javascript" language="javascript" src="js/openid-en.js"></script>
+<!-- /Simple OpenID Selector -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        openid.init('openid_identifier');
+    });
+</script>
 
 <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" language="javascript">
@@ -11,7 +22,7 @@
         });
     });
 </script>
-<div class="row-fluid">
+<div class="row-fluid" style="padding: 10px 0px">
     <h1><spring:message code="OPEN_ID_LOGIN"/></h1>
     <spring:message code="LOGING_OPENID_DETAILS"/>
 </div>
@@ -38,4 +49,8 @@
         </form>
         <!-- /Simple OpenID Selector -->
     </div>
+    <div class="span4" style="background-color: #FFEFC6;padding: 10px">
+        <spring:message code="WHY_OPENID"/>
+     </div>
 </div>
+

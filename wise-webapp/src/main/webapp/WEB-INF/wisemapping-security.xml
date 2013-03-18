@@ -15,7 +15,7 @@
     <sec:http pattern="/favicon.ico" security="none"/>
 
     <sec:http pattern="/c/login" security="none"/>
-    <sec:http pattern="/c/loginOpenId" security="none"/>
+    <sec:http pattern="/c/loginopenid" security="none"/>
     <sec:http pattern="/c/user/registration" security="none"/>
     <sec:http pattern="/c/user/resetpassword" security="none"/>
     <sec:http pattern="/c/home" security="none"/>
@@ -59,6 +59,11 @@
                 <sec:openid-attribute name="email" type="http://axschema.org/contact/email" required="true" count="1"/>
                 <sec:openid-attribute name="firstname" type="http://axschema.org/namePerson/first" required="true"/>
                 <sec:openid-attribute name="lastname" type="http://axschema.org/namePerson/last" required="true"/>
+            </sec:attribute-exchange>
+
+            <sec:attribute-exchange identifier-match=".*yahoo.com.*">
+                <sec:openid-attribute name="email" type="http://axschema.org/contact/email" required="true"/>
+                <sec:openid-attribute name="fullname" type="http://axschema.org/namePerson" required="true"/>
             </sec:attribute-exchange>
 
             <sec:attribute-exchange identifier-match=".*yahoo.com.*">

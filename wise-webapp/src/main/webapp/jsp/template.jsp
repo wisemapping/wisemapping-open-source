@@ -42,18 +42,6 @@
 
     <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap.js"></script>
     <script src="js/less.js" type="text/javascript"></script>
-
-    <!-- Simple OpenID Selector -->
-    <link type="text/css" rel="stylesheet" href="css/openid.css"/>
-    <script type="text/javascript" language="javascript" src="js/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" language="javascript" src="js/openid-jquery.js"></script>
-    <script type="text/javascript" language="javascript" src="js/openid-en.js"></script>
-    <!-- /Simple OpenID Selector -->
-    <script type="text/javascript">
-        $(document).ready(function() {
-            openid.init('openid_identifier');
-        });
-    </script>
 </head>
 <body>
 

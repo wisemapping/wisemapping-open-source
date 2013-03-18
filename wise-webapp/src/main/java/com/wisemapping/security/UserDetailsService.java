@@ -20,7 +20,7 @@ package com.wisemapping.security;
 
 
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.model.AuthenticationSchema;
+import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.model.User;
 import com.wisemapping.service.UserService;
 import org.jetbrains.annotations.NotNull;
@@ -60,10 +60,15 @@ public class UserDetailsService
 
         final User result;
         if (dbUser != null) {
+            if (!token.getIdentityUrl().equals(dbUser.getAuthenticatorUri())) {
+                throw new IllegalStateException("Identity url for this user can not change:" + token.getIdentityUrl());
+            }
             result = dbUser;
         } else {
             try {
-                tUser.setAuthenticationSchema(AuthenticationSchema.OPENID);
+                tUser.setAuthenticationType(AuthenticationType.OPENID);
+                tUser.setAuthenticatorUri(token.getIdentityUrl());
+
                 result = userService.createUser(tUser, false, false);
             } catch (WiseMappingException e) {
                 throw new IllegalStateException(e);

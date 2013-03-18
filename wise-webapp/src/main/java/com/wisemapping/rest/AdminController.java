@@ -19,7 +19,7 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.model.AuthenticationSchema;
+import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.service.UserService;
@@ -85,7 +85,7 @@ public class AdminController extends BaseController {
         }
 
         // Finally create the user ...
-        delegated.setAuthenticationSchema(AuthenticationSchema.DATABASE);
+        delegated.setAuthenticationType(AuthenticationType.DATABASE);
         userService.createUser(delegated, false, true);
         response.setHeader("Location", "/service/admin/users/" + user.getId());
     }
