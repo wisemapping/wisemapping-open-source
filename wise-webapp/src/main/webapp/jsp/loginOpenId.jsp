@@ -23,7 +23,7 @@
     });
 </script>
 <div class="row-fluid" style="padding: 10px 0px">
-    <h1><spring:message code="OPEN_ID_LOGIN"/></h1>
+    <h1><spring:message code="OPENID_LOGIN"/></h1>
     <spring:message code="LOGING_OPENID_DETAILS"/>
 </div>
 <div class="row-fluid">
