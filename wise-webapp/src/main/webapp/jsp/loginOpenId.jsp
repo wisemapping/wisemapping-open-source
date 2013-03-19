@@ -42,8 +42,7 @@
                 <noscript>
                     <p>OpenID is service that allows you to log-on to many different websites using a single indentity.
                         Find out <a href="http://openid.net/what/">more about OpenID</a> and <a
-                                href="http://openid.net/get/">how
-                            to get an OpenID enabled account</a>.</p>
+                                href="http://openid.net/get/">how to get an OpenID enabled account</a>.</p>
                 </noscript>
             </fieldset>
         </form>
