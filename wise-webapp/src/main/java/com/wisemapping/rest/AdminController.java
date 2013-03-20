@@ -105,7 +105,7 @@ public class AdminController extends BaseController {
         userService.changePassword(user);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "admin/users/{id}")
+    @RequestMapping(method = RequestMethod.DELETE, value = "admin/users/{id}",consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void getUserByEmail(@PathVariable long id) throws WiseMappingException {
         final User user = userService.getUserBy(id);

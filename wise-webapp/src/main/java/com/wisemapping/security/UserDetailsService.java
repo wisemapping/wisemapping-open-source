@@ -61,7 +61,7 @@ public class UserDetailsService
         final User result;
         if (dbUser != null) {
             if (!token.getIdentityUrl().equals(dbUser.getAuthenticatorUri())) {
-                throw new IllegalStateException("Identity url for this user can not change:" + token.getIdentityUrl());
+                throw new UsernameNotFoundException("Identity url for this user can not change:" + token.getIdentityUrl());
             }
             result = dbUser;
         } else {
