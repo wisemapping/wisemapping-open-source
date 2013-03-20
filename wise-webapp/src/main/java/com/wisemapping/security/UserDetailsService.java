@@ -102,7 +102,7 @@ public class UserDetailsService
                 lastName = attribute.getValues().get(0);
             }
 
-            if (attribute.getName().equals("fullName")) {
+            if (attribute.getName().equals("fullname")) {
                 fullName = attribute.getValues().get(0);
             }
 
