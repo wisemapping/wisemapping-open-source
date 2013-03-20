@@ -61,7 +61,7 @@ public class UserDetailsService
         final User result;
         if (dbUser != null) {
             if (!token.getIdentityUrl().equals(dbUser.getAuthenticatorUri())) {
-                throw new UsernameNotFoundException("Identity url for this user can not change:" + token.getIdentityUrl());
+                throw new IllegalStateException("Identity url for this user can not change:" + token.getIdentityUrl());
             }
             result = dbUser;
         } else {
@@ -82,25 +82,40 @@ public class UserDetailsService
     private User buildUserFromToken(@NotNull OpenIDAuthenticationToken token) {
         final User result = new User();
 
+        String lastName = null;
+        String firstName = null;
+        String email = null;
+        String fullName = null;
+
         final List<OpenIDAttribute> attributes = token.getAttributes();
         for (OpenIDAttribute attribute : attributes) {
             if (attribute.getName().equals("email")) {
-                final String email = attribute.getValues().get(0);
-                result.setEmail(email);
+                email = attribute.getValues().get(0);
             }
 
             if (attribute.getName().equals("firstname")) {
-                final String firstName = attribute.getValues().get(0);
-                result.setFirstname(firstName);
+                firstName = attribute.getValues().get(0);
 
             }
 
             if (attribute.getName().equals("lastname")) {
-                final String lastName = attribute.getValues().get(0);
-                result.setLastname(lastName);
+                lastName = attribute.getValues().get(0);
             }
-            result.setPassword("");
+
+            if (attribute.getName().equals("fullName")) {
+                fullName = attribute.getValues().get(0);
+            }
+
         }
+        if (lastName == null || firstName == null) {
+            result.setFirstname(fullName);
+            result.setLastname("");
+        } else {
+            result.setLastname(lastName);
+            result.setFirstname(firstName);
+        }
+        result.setEmail(email);
+        result.setPassword("");
 
         final Calendar now = Calendar.getInstance();
         result.setActivationDate(now);
