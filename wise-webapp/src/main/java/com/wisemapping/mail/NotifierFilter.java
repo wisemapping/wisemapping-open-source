@@ -19,9 +19,11 @@ public class NotifierFilter {
 
         final StringBuilder buff = new StringBuilder();
         for (String key : model.keySet()) {
-            buff.append(key);
-            buff.append("=");
-            buff.append(model.get(key));
+            if (!key.equals("mapXML")) {
+                buff.append(key);
+                buff.append("=");
+                buff.append(model.get(key));
+            }
         }
 
         final String digest = DigestUtils.md5DigestAsHex(buff.toString().getBytes());

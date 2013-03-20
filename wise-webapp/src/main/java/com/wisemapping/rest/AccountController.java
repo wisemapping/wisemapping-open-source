@@ -102,7 +102,7 @@ public class AccountController extends BaseController {
 
     @RequestMapping(method = RequestMethod.POST, value = "logger/editor", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void changePassword(@RequestBody RestLogItem item, @NotNull HttpServletRequest request) {
+    public void logError(@RequestBody RestLogItem item, @NotNull HttpServletRequest request) {
         final Mindmap mindmap = mindmapService.findMindmapById(item.getMapId());
         final User user = Utils.getUser();
         logger.error("Unexpected editor error - " + item.getJsErrorMsg());
