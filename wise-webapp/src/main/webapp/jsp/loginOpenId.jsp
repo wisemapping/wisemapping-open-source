@@ -9,7 +9,7 @@
 <script type="text/javascript" language="javascript" src="js/openid-en.js"></script>
 <!-- /Simple OpenID Selector -->
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
         openid.init('openid_identifier');
     });
 </script>
@@ -50,6 +50,7 @@
     </div>
     <div class="span4" style="background-color: #FFEFC6;padding: 10px">
         <spring:message code="WHY_OPENID"/>
-     </div>
+    </div>
 </div>
+</br></br>
 

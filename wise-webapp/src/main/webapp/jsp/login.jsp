@@ -77,7 +77,7 @@
         </c:if>
         <c:if test="${requestScope['security.openid.enabled']}">
             <p>
-                <spring:message code="LOGIN_USING_OPENID"/><a href="/c/loginopenid"><b><spring:message code="HERE"/></b></a>.
+                <spring:message code="LOGIN_USING_OPENID"/> <a href="/c/loginopenid"><b><spring:message code="HERE"/></b></a>.
             </p>
         </c:if>
     </div>
