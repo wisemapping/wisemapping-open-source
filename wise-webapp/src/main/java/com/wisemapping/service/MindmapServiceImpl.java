@@ -65,7 +65,7 @@ public class MindmapServiceImpl
     public boolean hasPermissions(@Nullable User user, @Nullable Mindmap map, @NotNull CollaborationRole role) {
         boolean result = false;
         if (map != null) {
-            if ((map.isPublic() && role == CollaborationRole.VIEWER) || (isAdmin(user) && role == CollaborationRole.VIEWER)) {
+            if ((map.isPublic() && role == CollaborationRole.VIEWER) || isAdmin(user)) {
                 result = true;
             } else if (user != null) {
                 final Collaboration collaboration = map.findCollaboration(user);
@@ -109,11 +109,11 @@ public class MindmapServiceImpl
         try {
             xml = mindMap.getXmlStr().trim();
         } catch (UnsupportedEncodingException e) {
-            throw new WiseMappingException("Could not be decoded.",e);
+            throw new WiseMappingException("Could not be decoded.", e);
         }
 
         if (!xml.endsWith("</map>")) {
-            throw new WiseMappingException("Map seems not to be a valid mindmap: '"+xml +"'");
+            throw new WiseMappingException("Map seems not to be a valid mindmap: '" + xml + "'");
         }
 
         mindmapManager.updateMindmap(mindMap, saveHistory);
@@ -142,7 +142,7 @@ public class MindmapServiceImpl
 
     @Override
     public void removeMindmap(@NotNull Mindmap mindmap, @NotNull User user) throws WiseMappingException {
-        if (mindmap.getCreator().identityEquality(user)) {
+        if (mindmap.getCreator().identityEquality(user) || isAdmin(user)) {
             mindmapManager.removeMindmap(mindmap);
         } else {
             final Collaboration collaboration = mindmap.findCollaboration(user);
