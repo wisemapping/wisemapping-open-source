@@ -43,6 +43,7 @@
 
     <sec:http use-expressions="true" access-denied-page="/c/login">
         <sec:intercept-url pattern="/c/restful/admin/users/**" access="isAuthenticated() and hasRole('ROLE_ADMIN')"/>
+        <sec:intercept-url pattern="/c/restful/admin/database/**" access="isAuthenticated() and hasRole('ROLE_ADMIN')"/>
         <sec:intercept-url pattern="/c/**/*" access="isAuthenticated() and hasRole('ROLE_USER')"/>
 
         <sec:form-login login-page="/c/login"
