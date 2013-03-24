@@ -78,7 +78,7 @@ public class MindmapServiceImpl
         return result;
     }
 
-    private boolean isAdmin(User user) {
+    public boolean isAdmin(@Nullable User user) {
         return user != null && user.getEmail() != null && user.getEmail().equals(adminUser);
     }
 

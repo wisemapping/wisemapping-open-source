@@ -135,8 +135,7 @@ public class AdminController extends BaseController {
 
         for (int i = 0; i < muid; i++) {
             System.out.println("Looking for user:" + i);
-            User user = user = userService.getUserBy(i);
-
+            final User user  = userService.getUserBy(i);
             if (user != null) {
                 // Do not process admin accounts ...
                 if (user.getEmail().contains("wisemapping")) {

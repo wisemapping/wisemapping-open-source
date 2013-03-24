@@ -24,6 +24,7 @@ import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.*;
 import org.apache.velocity.app.VelocityEngine;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.velocity.VelocityEngineUtils;
@@ -181,6 +182,7 @@ public class UserServiceImpl
     }
 
     @Override
+    @Nullable
     public User getUserBy(long id) {
         return userManager.getUserBy(id);
     }

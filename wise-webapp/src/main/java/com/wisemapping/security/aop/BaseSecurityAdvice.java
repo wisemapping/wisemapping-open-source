@@ -24,6 +24,7 @@ import com.wisemapping.model.User;
 import com.wisemapping.exceptions.AccessDeniedSecurityException;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapService;
+import com.wisemapping.service.MindmapServiceImpl;
 import org.aopalliance.intercept.MethodInvocation;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,7 +42,7 @@ public abstract class BaseSecurityAdvice {
             isAllowed = isAllowed(user, ((Integer) argument));
         } else if (argument instanceof Collaborator) {
             // Read operation find on the user are allowed ...
-            isAllowed = user.identityEquality((Collaborator) argument);
+            isAllowed = user.identityEquality((Collaborator) argument) || ((MindmapServiceImpl) mindmapService).isAdmin(user);
         } else {
             throw new IllegalArgumentException("Argument " + argument);
         }
