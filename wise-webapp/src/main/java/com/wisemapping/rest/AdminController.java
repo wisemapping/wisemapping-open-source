@@ -23,7 +23,6 @@ import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
-import com.wisemapping.rest.model.RestMindmapList;
 import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.service.UserService;
@@ -34,12 +33,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import sun.util.resources.CalendarData_th;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -133,9 +130,9 @@ public class AdminController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "admin/database/purge")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void purgeDB(@RequestParam(required = true) int max) throws UnsupportedEncodingException, WiseMappingException {
+    public void purgeDB(@RequestParam(required = true) Integer muid, @RequestParam(required = true) Boolean apply) throws UnsupportedEncodingException, WiseMappingException {
 
-        for (int i = 0; i < max; i++) {
+        for (int i = 0; i < muid; i++) {
             User user;
             try {
                 user = userService.getUserBy(i);
@@ -160,7 +157,10 @@ public class AdminController extends BaseController {
                     // The use has only two maps... When they have been modified ..
                     if (mindmap.getLastModificationTime().before(yearAgo) && !mindmap.isPublic()) {
                         if (isWelcomeMap(mindmap) || isSimpleMap(mindmap)) {
-                            mindmapService.removeMindmap(mindmap, user);
+                            System.out.println("Purged map id:" + mindmap.getId() + ", userId:" + user.getId());
+                            if (apply) {
+                                mindmapService.removeMindmap(mindmap, user);
+                            }
                         }
                     }
                 }
