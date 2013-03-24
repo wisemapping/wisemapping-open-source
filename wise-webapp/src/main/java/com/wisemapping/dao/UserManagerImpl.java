@@ -22,7 +22,9 @@ import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.User;
 import com.wisemapping.model.AccessAuditory;
+import org.hibernate.ObjectNotFoundException;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 //import org.acegisecurity.providers.encoding.PasswordEncoder;
@@ -69,8 +71,15 @@ public class UserManagerImpl
         return cola;
     }
 
+    @Nullable
     public User getUserBy(long id) {
-        return getHibernateTemplate().get(User.class, id);
+        User user = null;
+        try{
+            user = getHibernateTemplate().get(User.class, id);
+        } catch (ObjectNotFoundException e){
+            // Ignore ...
+        }
+        return user;
     }
 
     @Override
