@@ -135,36 +135,43 @@ public class AdminController extends BaseController {
 
         for (int i = minUid; i < maxUid; i++) {
             System.out.println("Looking for user:" + i);
-            final User user = userService.getUserBy(i);
-            if (user != null) {
-                // Do not process admin accounts ...
-                if (user.getEmail().contains("wisemapping")) {
-                    continue;
-                }
+            try {
+                final User user = userService.getUserBy(i);
+                if (user != null) {
+                    // Do not process admin accounts ...
+                    if (user.getEmail().contains("wisemapping")) {
+                        continue;
+                    }
 
-                // Iterate over the list of maps ...
-                final List<Collaboration> collaborations = mindmapService.findCollaborations(user);
-                for (Collaboration collaboration : collaborations) {
-                    final Mindmap mindmap = collaboration.getMindMap();
-                    if (MindmapFilter.MY_MAPS.accept(mindmap, user)) {
+                    // Iterate over the list of maps ...
+                    final List<Collaboration> collaborations = mindmapService.findCollaborations(user);
+                    for (Collaboration collaboration : collaborations) {
+                        final Mindmap mindmap = collaboration.getMindMap();
+                        if (MindmapFilter.MY_MAPS.accept(mindmap, user)) {
 
-                        final Calendar yearAgo = Calendar.getInstance();
-                        yearAgo.add(Calendar.MONTH, -18);
-                        // The use has only two maps... When they have been modified ..
-                        System.out.println("Checking map id:" + mindmap.getId());
-                        if (mindmap.getLastModificationTime().before(yearAgo) && !mindmap.isPublic()) {
-                            System.out.println("Old map. Is simple ?:" + mindmap.getId());
+                            final Calendar yearAgo = Calendar.getInstance();
+                            yearAgo.add(Calendar.MONTH, -18);
+                            // The use has only two maps... When they have been modified ..
+                            System.out.println("Checking map id:" + mindmap.getId());
+                            if (mindmap.getLastModificationTime().before(yearAgo) && !mindmap.isPublic()) {
+                                System.out.println("Old map. Is simple ?:" + mindmap.getId());
 
-                            if (isWelcomeMap(mindmap) || isSimpleMap(mindmap)) {
-                                System.out.println("Purged map id:" + mindmap.getId() + ", userId:" + user.getId());
-                                if (apply) {
-                                    mindmapService.removeMindmap(mindmap, user);
+                                if (isWelcomeMap(mindmap) || isSimpleMap(mindmap)) {
+                                    System.out.println("Purged map id:" + mindmap.getId() + ", userId:" + user.getId());
+                                    if (apply) {
+                                        mindmapService.removeMindmap(mindmap, user);
+                                    }
                                 }
                             }
                         }
                     }
                 }
-
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (WiseMappingException e) {
+                e.printStackTrace();
+            } catch (RuntimeException e) {
+                e.printStackTrace();
             }
         }
 
