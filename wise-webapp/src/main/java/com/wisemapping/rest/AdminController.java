@@ -128,8 +128,8 @@ public class AdminController extends BaseController {
         userService.deleteUser(user);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "admin/database/purge")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @RequestMapping(method = RequestMethod.GET, value = "admin/database/purge")
     public void purgeDB(@RequestParam(required = true) Integer muid, @RequestParam(required = true) Boolean apply) throws UnsupportedEncodingException, WiseMappingException {
 
         for (int i = 0; i < muid; i++) {
