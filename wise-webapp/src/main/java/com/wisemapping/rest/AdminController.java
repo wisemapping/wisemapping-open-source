@@ -134,6 +134,9 @@ public class AdminController extends BaseController {
     public void purgeDB(@RequestParam(required = true) Integer minUid, @RequestParam(required = true) Integer maxUid, @RequestParam(required = true) Boolean apply) throws WiseMappingException, UnsupportedEncodingException {
 
         for (int i = minUid; i < maxUid; i++) {
+
+            try {
+
             System.out.println("Looking for user:" + i);
             final User user = userService.getUserBy(i);
             if (user != null) {
@@ -141,8 +144,6 @@ public class AdminController extends BaseController {
                 if (user.getEmail().contains("wisemapping")) {
                     continue;
                 }
-
-                try {
                     // Iterate over the list of maps ...
                     final List<Collaboration> collaborations = mindmapService.findCollaborations(user);
                     for (Collaboration collaboration : collaborations) {
@@ -165,13 +166,13 @@ public class AdminController extends BaseController {
                             }
                         }
                     }
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                } catch (WiseMappingException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                } catch (RuntimeException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
+            }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (WiseMappingException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (RuntimeException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         }
 
