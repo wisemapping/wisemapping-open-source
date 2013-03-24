@@ -131,40 +131,44 @@ public class AdminController extends BaseController {
 
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @RequestMapping(method = RequestMethod.GET, value = "admin/database/purge")
-    public void purgeDB(@RequestParam(required = true) Integer muid, @RequestParam(required = true) Boolean apply) throws UnsupportedEncodingException, WiseMappingException {
+    public void purgeDB(@RequestParam(required = true) Integer muid, @RequestParam(required = true) Boolean apply) {
 
         for (int i = 0; i < muid; i++) {
-            System.out.println("looking for user:" + i);
-            User user;
-            try {
-                user = userService.getUserBy(i);
-            } catch (DataAccessException e) {
-                // User does not exit's continue ...
-                continue;
-            }
+            System.out.println("Looking for user:" + i);
+            User user = user = userService.getUserBy(i);
 
-            // Do not process admin accounts ...
-            if (user.getEmail().contains("wisemapping")) {
-                continue;
-            }
+            if (user != null) {
+                // Do not process admin accounts ...
+                if (user.getEmail().contains("wisemapping")) {
+                    continue;
+                }
 
-            // Iterate over the list of maps ...
-            final List<Collaboration> collaborations = mindmapService.findCollaborations(user);
-            for (Collaboration collaboration : collaborations) {
-                final Mindmap mindmap = collaboration.getMindMap();
-                if (MindmapFilter.MY_MAPS.accept(mindmap, user)) {
+                try {
+                    // Iterate over the list of maps ...
+                    final List<Collaboration> collaborations = mindmapService.findCollaborations(user);
+                    for (Collaboration collaboration : collaborations) {
+                        final Mindmap mindmap = collaboration.getMindMap();
+                        if (MindmapFilter.MY_MAPS.accept(mindmap, user)) {
 
-                    final Calendar yearAgo = Calendar.getInstance();
-                    yearAgo.add(Calendar.MONTH, -18);
-                    // The use has only two maps... When they have been modified ..
-                    if (mindmap.getLastModificationTime().before(yearAgo) && !mindmap.isPublic()) {
-                        if (isWelcomeMap(mindmap) || isSimpleMap(mindmap)) {
-                            System.out.println("Purged map id:" + mindmap.getId() + ", userId:" + user.getId());
-                            if (apply) {
-                                mindmapService.removeMindmap(mindmap, user);
+                            final Calendar yearAgo = Calendar.getInstance();
+                            yearAgo.add(Calendar.MONTH, -18);
+                            // The use has only two maps... When they have been modified ..
+                            if (mindmap.getLastModificationTime().before(yearAgo) && !mindmap.isPublic()) {
+                                if (isWelcomeMap(mindmap) || isSimpleMap(mindmap)) {
+                                    System.out.println("Purged map id:" + mindmap.getId() + ", userId:" + user.getId());
+                                    if (apply) {
+                                        mindmapService.removeMindmap(mindmap, user);
+                                    }
+                                }
                             }
                         }
                     }
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                } catch (WiseMappingException e) {
+                    e.printStackTrace();
+                } catch (RuntimeException e) {
+                    e.printStackTrace();
                 }
             }
         }
