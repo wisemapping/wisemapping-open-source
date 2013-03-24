@@ -174,7 +174,8 @@ public class AdminController extends BaseController {
     private boolean isWelcomeMap(@NotNull Mindmap mindmap) throws UnsupportedEncodingException {
         // Is welcome map ?
         final String xmlStr = mindmap.getXmlStr();
-        return xmlStr.contains("Welcome To") && xmlStr.contains("My Wisemaps");
+        boolean oldWelcomeMap = xmlStr.contains("Welcome to WiseMapping") && xmlStr.contains("My Wisemaps");
+        return oldWelcomeMap;
     }
 
     public boolean isSimpleMap(@NotNull Mindmap mindmap) throws UnsupportedEncodingException {
