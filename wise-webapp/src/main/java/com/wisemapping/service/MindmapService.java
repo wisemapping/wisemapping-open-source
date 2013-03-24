@@ -65,4 +65,6 @@ public interface MindmapService {
     void updateCollaboration(@NotNull Collaborator collaborator, @NotNull Collaboration collaboration) throws WiseMappingException;
 
     LockManager getLockManager();
+
+    boolean isAdmin(@Nullable User user);
 }
