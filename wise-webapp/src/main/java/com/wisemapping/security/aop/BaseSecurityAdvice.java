@@ -37,9 +37,9 @@ public abstract class BaseSecurityAdvice {
         boolean isAllowed;
 
         if (argument instanceof Mindmap) {
-            isAllowed = isAllowed(user, (Mindmap) argument);
+            isAllowed = isAllowed(user, (Mindmap) argument) || mindmapService.isAdmin(user);
         } else if (argument instanceof Integer) {
-            isAllowed = isAllowed(user, ((Integer) argument));
+            isAllowed = isAllowed(user, ((Integer) argument)) || mindmapService.isAdmin(user);
         } else if (argument instanceof Collaborator) {
             // Read operation find on the user are allowed ...
             isAllowed = user.identityEquality((Collaborator) argument) || mindmapService.isAdmin(user);
