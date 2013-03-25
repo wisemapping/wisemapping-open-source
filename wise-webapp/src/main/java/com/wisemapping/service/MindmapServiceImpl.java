@@ -83,6 +83,11 @@ public class MindmapServiceImpl
     }
 
     @Override
+    public void removeHistory(int mapId) {
+        mindmapManager.removeHistory(mapId);
+    }
+
+    @Override
     public Mindmap getMindmapByTitle(String title, User user) {
         return mindmapManager.getMindmapByTitle(title, user);
     }

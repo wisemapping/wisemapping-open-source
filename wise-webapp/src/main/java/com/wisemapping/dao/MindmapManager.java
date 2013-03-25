@@ -66,4 +66,6 @@ public interface MindmapManager {
     public MindMapHistory getHistory(int historyId);
 
     void updateCollaboration(@NotNull Collaboration collaboration);
+
+    void removeHistory(int mapId);
 }

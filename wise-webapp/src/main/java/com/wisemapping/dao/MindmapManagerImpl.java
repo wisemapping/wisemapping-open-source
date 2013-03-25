@@ -57,9 +57,10 @@ public class MindmapManagerImpl
         final Criteria hibernateCriteria = getSession().createCriteria(MindMapHistory.class);
         hibernateCriteria.add(Restrictions.eq("mindmapId", mindmapId));
         hibernateCriteria.addOrder(Order.desc("creationTime"));
+
         // This line throws errors in some environments, so getting all history and taking firsts 10 records
         hibernateCriteria.setMaxResults(30);
-        return  hibernateCriteria.list();
+        return hibernateCriteria.list();
     }
 
     @Override
@@ -70,6 +71,26 @@ public class MindmapManagerImpl
     @Override
     public void updateCollaboration(@NotNull Collaboration collaboration) {
         getHibernateTemplate().save(collaboration);
+    }
+
+    /**
+     * Purge history map ....
+     * @param mapId
+     */
+    @Override
+    public void removeHistory(int mapId) {
+        final Criteria hibernateCriteria = getSession().createCriteria(MindMapHistory.class);
+        hibernateCriteria.add(Restrictions.eq("mindmapId", mapId));
+        hibernateCriteria.addOrder(Order.desc("creationTime"));
+
+        final List<MindMapHistory> historyList = hibernateCriteria.list();
+        int i = 0;
+        for (MindMapHistory history : historyList) {
+            if (i > 20) {
+               getHibernateTemplate().delete(history);
+            }
+            i++;
+        }
     }
 
     @Override

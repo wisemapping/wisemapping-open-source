@@ -137,13 +137,13 @@ public class AdminController extends BaseController {
 
             try {
 
-            System.out.println("Looking for user:" + i);
-            final User user = userService.getUserBy(i);
-            if (user != null) {
-                // Do not process admin accounts ...
-                if (user.getEmail().contains("wisemapping")) {
-                    continue;
-                }
+                System.out.println("Looking for user:" + i);
+                final User user = userService.getUserBy(i);
+                if (user != null) {
+                    // Do not process admin accounts ...
+                    if (user.getEmail().contains("wisemapping")) {
+                        continue;
+                    }
                     // Iterate over the list of maps ...
                     final List<Collaboration> collaborations = mindmapService.findCollaborations(user);
                     for (Collaboration collaboration : collaborations) {
@@ -151,11 +151,12 @@ public class AdminController extends BaseController {
                         if (MindmapFilter.MY_MAPS.accept(mindmap, user)) {
 
                             final Calendar yearAgo = Calendar.getInstance();
-                            yearAgo.add(Calendar.MONTH, -8);
+                            yearAgo.add(Calendar.MONTH, -4);
+
                             // The use has only two maps... When they have been modified ..
                             System.out.println("Checking map id:" + mindmap.getId());
                             if (mindmap.getLastModificationTime().before(yearAgo) && !mindmap.isPublic()) {
-                                System.out.println("Old map. Is simple ?:" + mindmap.getId());
+                                System.out.println("Old map months map:" + mindmap.getId());
 
                                 if (isWelcomeMap(mindmap) || isSimpleMap(mindmap)) {
                                     System.out.println("Purged map id:" + mindmap.getId() + ", userId:" + user.getId());
@@ -164,9 +165,12 @@ public class AdminController extends BaseController {
                                     }
                                 }
                             }
+
+                            // Purge history ...
+                            mindmapService.removeHistory(mindmap.getId());
                         }
                     }
-            }
+                }
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             } catch (WiseMappingException e) {

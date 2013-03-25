@@ -67,4 +67,6 @@ public interface MindmapService {
     LockManager getLockManager();
 
     boolean isAdmin(@Nullable User user);
+
+    void removeHistory(int mapId);
 }
