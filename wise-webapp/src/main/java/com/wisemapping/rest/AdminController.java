@@ -179,9 +179,15 @@ public class AdminController extends BaseController {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         }
-
-
     }
+
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @RequestMapping(method = RequestMethod.GET, value = "admin/database/purge/history")
+    public void purgeHistory(@RequestParam(required = true) Integer mapId) throws WiseMappingException, UnsupportedEncodingException {
+
+        mindmapService.removeHistory(mapId);
+    }
+
 
     private boolean isWelcomeMap(@NotNull Mindmap mindmap) throws UnsupportedEncodingException {
         // Is welcome map ?
