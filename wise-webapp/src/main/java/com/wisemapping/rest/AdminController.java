@@ -29,7 +29,6 @@ import com.wisemapping.service.UserService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -167,7 +166,7 @@ public class AdminController extends BaseController {
                             }
 
                             // Purge history ...
-                            mindmapService.removeHistory(mindmap.getId());
+                            mindmapService.purgeHistory(mindmap.getId());
                         }
                     }
                 }
@@ -185,7 +184,7 @@ public class AdminController extends BaseController {
     @RequestMapping(method = RequestMethod.GET, value = "admin/database/purge/history")
     public void purgeHistory(@RequestParam(required = true) Integer mapId) throws WiseMappingException, UnsupportedEncodingException {
 
-        mindmapService.removeHistory(mapId);
+        mindmapService.purgeHistory(mapId);
     }
 
 

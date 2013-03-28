@@ -83,8 +83,8 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public void removeHistory(int mapId) {
-        mindmapManager.removeHistory(mapId);
+    public void purgeHistory(int mapId) {
+        mindmapManager.purgeHistory(mapId);
     }
 
     @Override

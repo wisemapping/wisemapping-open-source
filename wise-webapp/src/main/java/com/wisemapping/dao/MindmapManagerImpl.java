@@ -73,23 +73,25 @@ public class MindmapManagerImpl
         getHibernateTemplate().save(collaboration);
     }
 
-    /**
-     * Purge history map ....
-     * @param mapId
-     */
     @Override
-    public void removeHistory(int mapId) {
+    public void purgeHistory(int mapId) {
         final Criteria hibernateCriteria = getSession().createCriteria(MindMapHistory.class);
         hibernateCriteria.add(Restrictions.eq("mindmapId", mapId));
         hibernateCriteria.addOrder(Order.desc("creationTime"));
 
         final List<MindMapHistory> historyList = hibernateCriteria.list();
-        int i = 0;
-        for (MindMapHistory history : historyList) {
-            if (i > 20) {
-               getHibernateTemplate().delete(history);
+
+        final Mindmap mindmapById = this.getMindmapById(mapId);
+        final Calendar yearAgo = Calendar.getInstance();
+        yearAgo.add(Calendar.MONTH, -12);
+
+        // If the map has not been modified in the last months, it means that I don't need to keep all the history ...
+        int max = mindmapById.getLastModificationTime().before(yearAgo) ? 10 : 25;
+
+        if (historyList.size() > max) {
+            for (int i = max; i < historyList.size(); i++) {
+                getHibernateTemplate().delete(historyList.get(i));
             }
-            i++;
         }
     }
 

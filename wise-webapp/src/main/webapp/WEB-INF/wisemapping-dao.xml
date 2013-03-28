@@ -53,7 +53,7 @@
         <property name="dataSource" ref="wiseDataSource"/>
     </bean>
 
-    <!-- Hibernate Template Defintion -->
+    <!-- Hibernate Template Definition -->
     <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
         <property name="sessionFactory" ref="mindmapSessionFactory"/>
         <property name="jdbcExceptionTranslator" ref="jdbcExceptionTranslator"/>
