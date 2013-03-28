@@ -11,16 +11,19 @@
         <input name="svgXml" id="svgXml" value="" type="hidden"/>
         <input name="download" type="hidden" value="mm"/>
         <fieldset>
+
             <label for="freemind">
                 <input type="radio" id="freemind" name="exportFormat" value="mm" checked="checked"/>
                 <strong><spring:message code="FREEMIND_EXPORT_FORMAT"/></strong><br/>
                 <spring:message code="FREEMIND_EXPORT_FORMAT_DETAILS"/>
             </label>
+
             <label for="wisemapping">
                 <input type="radio" id="wisemapping" name="exportFormat" value="wxml"/>
                 <strong><spring:message code="WISEMAPPING_EXPORT_FORMAT"/></strong><br/>
                 <spring:message code="WISEMAPPING_EXPORT_FORMAT_DETAILS"/>
             </label>
+
             <label for="svg">
                 <input type="radio" id="svg" name="exportFormat" value="svg"/>
                 <strong><spring:message code="SVG_EXPORT_FORMAT"/></strong><br/>
@@ -43,6 +46,25 @@
                     <option value='jpg'>JPEG</option>
                 </select>
             </label>
+
+            <label for="txt">
+                <input type="radio" name="exportFormat" value="txt" id="txt"/>
+                <strong><spring:message code="TXT_EXPORT_FORMAT"/></strong><br/>
+                <spring:message code="TXT_EXPORT_FORMAT_DETAILS"/>
+            </label>
+
+            <label for="xls">
+                <input type="radio" name="exportFormat" value="xls" id="xls"/>
+                <strong><spring:message code="XLS_EXPORT_FORMAT"/></strong><br/>
+                <spring:message code="XLS_EXPORT_FORMAT_DETAILS"/>
+            </label>
+
+            <label for="odt">
+                <input type="radio" name="exportFormat" value="odt" id="odt"/>
+                <strong><spring:message code="OPEN_OFFICE_EXPORT_FORMAT"/></strong><br/>
+                <spring:message code="OPEN_OFFICE_EXPORT_FORMAT_DETAILS"/>
+            </label>
+
         </fieldset>
     </form>
 </div>
@@ -58,13 +80,14 @@
     // No way to obtain map svg. Hide panels..
     if (window.location.pathname.indexOf('exportf') != -1) {
         $('#exportInfo').hide();
-        $('#freemind,#pdf,#svg').click('click', function (event) {
+        $('#freemind,#pdf,#svg,#odt,#txt,#xls').click('click', function (event) {
             $('#imgFormat').hide();
         });
 
         $('#img').click('click', function (event) {
             $('#imgFormat').show();
         });
+        $('#exportInfo').hide();
     } else {
         $('#pdf,#svg,#img').parent().hide();
     }
@@ -92,6 +115,7 @@
             $('#svgXml').attr('value', svgXml);
 
         }
+
         $('#dialogMainForm input[name=download]').attr('value', formatType);
         if (!differ) {
             form.submit();

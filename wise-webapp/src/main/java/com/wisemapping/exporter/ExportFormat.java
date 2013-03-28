@@ -26,8 +26,11 @@ public enum ExportFormat {
     PNG("image/png", "png"),
     PDF("application/pdf", "pdf"),
     FREEMIND("application/freemind", "mm"),
+    TEXT("text/plain", "txt"),
+    MICROSOFT_EXCEL("application/vnd.ms-excel", "xls"),
+    MICROSOFT_WORD("application/msword", "doc"),
+    OPEN_OFFICE_WRITER("application/vnd.oasis.opendocument.text", "odt"),
     WISEMAPPING("application/wisemapping+xml", "wxml");
-
 
     private String contentType;
     private String fileExtension;

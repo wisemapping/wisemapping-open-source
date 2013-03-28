@@ -19,10 +19,11 @@
 package com.wisemapping.exporter;
 
 import com.wisemapping.model.Mindmap;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.OutputStream;
 
 public interface Exporter {
-    public void export(byte[] xml, OutputStream outputStream) throws ExportException;
+    public void export(@NotNull byte[] xml, @NotNull OutputStream outputStream) throws ExportException;
     public void export(Mindmap map, OutputStream outputStream) throws ExportException;
 }

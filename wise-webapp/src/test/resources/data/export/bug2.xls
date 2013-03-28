@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?mso-application progid="Excel.Sheet"?><Workbook xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:duss="urn:schemas-microsoft-com:office:dummyspreadsheet" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns="urn:schemas-microsoft-com:office:spreadsheet">
+<Styles>
+<Style ss:ID="s16" ss:Name="attribute_cell">
+<Borders>
+<Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+<Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+<Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+<Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+</Borders>
+</Style>
+<Style ss:ID="s17" ss:Name="attribute_header">
+<Borders>
+<Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+<Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+<Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+<Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+</Borders>
+<Font ss:Bold="1"/>
+</Style>
+</Styles>
+<Worksheet ss:Name="FreeMind Sheet">
+<Table>
+<Row>
+<Cell ss:Index="1">
+<Data ss:Type="String">SaberMás</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Utilización de medios de expresión artística, digitales y analógicos</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Precio también limitado: 100-120?</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Talleres temáticos</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Naturaleza</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Animales, Plantas, Piedras</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Arqueología</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Energía</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Astronomía</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Arquitectura</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Cocina</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Poesía</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Culturas Antiguas</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Egipto, Grecia, China...</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Paleontología</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Duración limitada: 5-6 semanas</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Niños y niñas que quieren saber más</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Alternativa a otras actividades de ocio</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Uso de la tecnología durante todo el proceso de aprendizaje</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Estructura PBL: aprendemos cuando buscamos respuestas a nuestras propias preguntas </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Trabajo basado en la experimentación y en la investigación</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">De 8 a 12 años, sin separación por edades</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Máximo 10/1 por taller</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Actividades centradas en el contexto cercano</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Flexibilidad en el uso de las lenguas de trabajo (inglés, castellano, esukara?)</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Complementamos el trabajo de la escuela</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>Todos los contenidos de los talleres están relacionados con el currículo de la enseñanza básica.</p>
+<p>A diferencia de la práctica tradicional, pretendemos ahondar en el conocimiento partiendo de lo que realmente interesa al niño o niña,</p>
+<p>ayudándole a que encuentre respuesta a las preguntas que él o ella se plantea.</p>
+<p/>
+<p>Por ese motivo, SaberMás proyecta estar al lado de los niños que necesitan una motivación extra para entender la escuela y fluir en ella,</p>
+<p>y también al lado de aquellos a quienes la curiosidad y las ganas de saber les lleva más allá.</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Cada uno va a su ritmo, y cada cual pone sus límites</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Aprendemos todos de todos</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Valoramos lo que hemos aprendido</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">SaberMás trabaja con, desde y para la motivación</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Trabajamos en equipo en nuestros proyectos </Data>
+</Cell>
+</Row>
+</Table>
+</Worksheet>
+</Workbook>

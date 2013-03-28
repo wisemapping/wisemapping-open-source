@@ -1,4 +1,4 @@
-package com.wisemapping.test.freemind;
+package com.wisemapping.test.importer;
 
 import com.wisemapping.exporter.ExportException;
 import com.wisemapping.exporter.FreemindExporter;
@@ -16,13 +16,13 @@ import org.testng.annotations.Test;
 import java.io.*;
 
 @Test
-public class ImportExportTest {
+public class FreemindImportExportTest {
     private static final String DATA_DIR_PATH = "src/test/resources/data/freemind/";
     private static final String UTF_8 = "UTF-8";
     final private Importer importer;
     final private FreemindExporter exporter;
 
-    public ImportExportTest() throws ImporterException {
+    public FreemindImportExportTest() throws ImporterException {
         ImporterFactory exporterFactory = ImporterFactory.getInstance();
         importer = exporterFactory.getImporter(ImportFormat.FREEMIND);
         exporter = new FreemindExporter();

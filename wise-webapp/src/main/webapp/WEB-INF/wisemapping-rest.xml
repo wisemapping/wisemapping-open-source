@@ -61,6 +61,9 @@
                 <entry key="jpg" value="image/jpeg"/>
                 <entry key="svg" value="image/svg+xml"/>
                 <entry key="wxml" value="application/wisemapping+xml"/>
+                <entry key="txt" value="text/plain"/>
+                <entry key="xls" value="application/vnd.ms-excel"/>
+                <entry key="otd" value="application/vnd.oasis.opendocument.text"/>
             </map>
         </property>
         <property name="viewResolvers">
@@ -107,6 +110,23 @@
 
     <bean id="transformViewSvg" class="com.wisemapping.rest.view.TransformView">
         <constructor-arg value="image/svg+xml"/>
+        <constructor-arg ref="notificationService"/>
+    </bean>
+
+    <bean id="transformViewXls" class="com.wisemapping.rest.view.TransformView">
+        <constructor-arg value="application/vnd.ms-excel"/>
+        <constructor-arg ref="notificationService"/>
+    </bean>
+
+
+    <bean id="transformViewOdt" class="com.wisemapping.rest.view.TransformView">
+        <constructor-arg value="application/vnd.oasis.opendocument.text"/>
+        <constructor-arg ref="notificationService"/>
+    </bean>
+
+
+    <bean id="transformViewTxt" class="com.wisemapping.rest.view.TransformView">
+        <constructor-arg value="text/plain"/>
         <constructor-arg ref="notificationService"/>
     </bean>
 

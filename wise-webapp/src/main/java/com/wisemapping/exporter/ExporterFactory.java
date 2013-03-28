@@ -124,6 +124,21 @@ public class ExporterFactory {
                 output.write(svgString.getBytes("UTF-8"));
                 break;
             }
+            case TEXT: {
+                final Exporter exporter =  XSLTExporter.create(XSLTExporter.Type.TEXT);
+                exporter.export(xml.getBytes("UTF-8"), output);
+                break;
+            }
+            case OPEN_OFFICE_WRITER: {
+                final Exporter exporter =  XSLTExporter.create(XSLTExporter.Type.OPEN_OFFICE);
+                exporter.export(xml.getBytes("UTF-8"), output);
+                break;
+            }
+            case MICROSOFT_EXCEL: {
+                final Exporter exporter =  XSLTExporter.create(XSLTExporter.Type.MICROSOFT_EXCEL);
+                exporter.export(xml.getBytes("UTF-8"), output);
+                break;
+            }
             case FREEMIND: {
                 final FreemindExporter exporter = new FreemindExporter();
                 exporter.export(xml.getBytes("UTF-8"), output);

@@ -14,7 +14,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 
 @Test
-public class ExportTest {
+public class ExportSVGBasedTest {
     private static final String DATA_DIR_PATH = "src/test/resources/data/svg/";
 
     @Test(dataProvider = "Data-Provider-Function")

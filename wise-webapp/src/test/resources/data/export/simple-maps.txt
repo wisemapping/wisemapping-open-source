@@ -1,0 +1,802 @@
+WiseMapping Export
+
+
+    1 Así que quieres recorrer Medellín...
+        
+        
+        1.1 Y ERES UN TURISTA
+            
+            
+        
+        1.2 Y ERES UN RESIDENTE
+            
+            
+            1.2.1 Divertirte
+                
+                
+                1.2.1.1 Te gusta la rumba
+                    1.2.1.1.1 Sí
+                        
+                        
+                        1.2.1.1.1.1 Para bailar
+                            1.2.1.1.1.1.1 Mango's
+                                
+                                
+                            
+                            1.2.1.1.1.1.2 Kukaramakara
+                                
+                                
+                            
+                            1.2.1.1.1.1.3 El Pub
+                                
+                                
+                            
+                            1.2.1.1.1.1.4 B Lounge
+                                
+                                
+                            
+                            1.2.1.1.1.1.5 Mamma Juana
+                                
+                                
+                            
+                        
+                        1.2.1.1.1.2 Para oír música
+                            1.2.1.1.1.2.1 Palmahía
+                                
+                                
+                            
+                            1.2.1.1.1.2.2 El Deck
+                                
+                                
+                            
+                            1.2.1.1.1.2.3 Hard Rock Café
+                                
+                                
+                            
+                        
+                        1.2.1.1.1.3 ¿Y para tocar música?
+                            1.2.1.1.1.3.1 Red de Escuelas de Música
+                                
+                                
+                            
+                        
+                    
+                    1.2.1.1.2 No
+                        
+                        
+                        1.2.1.1.2.1 Hacer deporte sí
+                            
+                            
+                            1.2.1.1.2.1.1 Al aire libre
+                                1.2.1.1.2.1.1.1 Los domingos y festivos en la ciclovía
+                                    
+                                    
+                                
+                                1.2.1.1.2.1.1.2 En caminatas por los parques
+                                    
+                                    
+                                
+                            
+                            1.2.1.1.2.1.2 En un centro
+                                1.2.1.1.2.1.2.1 Estadio Atanasio Girardot
+                                    
+                                    
+                                
+                                1.2.1.1.2.1.2.2 Unidad Deportiva Atanasio Girardot
+                                    
+                                    
+                                
+                                1.2.1.1.2.1.2.3 Unidades Deportivas INDER
+                                    
+                                    
+                                
+                                1.2.1.1.2.1.2.4 Polideportivo UPB
+                                    
+                                    
+                                
+                            
+                        
+                        1.2.1.1.2.2 Algo más calmado
+                            
+                            
+                            1.2.1.1.2.2.1 ¿Salir de compras?
+                                1.2.1.1.2.2.1.1 Sí
+                                    
+                                    
+                                    1.2.1.1.2.2.1.1.1 ¿Traes dinero en el bolsillo?
+                                        1.2.1.1.2.2.1.1.1.1 No
+                                            
+                                            
+                                            1.2.1.1.2.2.1.1.1.1.1 ¿Dónde sacar dinero?
+                                                1.2.1.1.2.2.1.1.1.1.1.1 En Cajeros Automáticos
+                                                    
+                                                    
+                                                
+                                                1.2.1.1.2.2.1.1.1.1.1.2 En un Banco
+                                                    
+                                                    
+                                                    1.2.1.1.2.2.1.1.1.1.1.2.1 Bancolombia
+                                                        
+                                                        
+                                                    
+                                                    1.2.1.1.2.2.1.1.1.1.1.2.2 Banco Santander
+                                                        
+                                                        
+                                                    
+                                                    1.2.1.1.2.2.1.1.1.1.1.2.3 Banco BBVA
+                                                        
+                                                        
+                                                    
+                                                    1.2.1.1.2.2.1.1.1.1.1.2.4 Banco Caja Social
+                                                        
+                                                        
+                                                    
+                                                    1.2.1.1.2.2.1.1.1.1.1.2.5 Banco AV Villas
+                                                        
+                                                        
+                                                    
+                                                    1.2.1.1.2.2.1.1.1.1.1.2.6 Banco de Bogotá
+                                                        
+                                                        
+                                                    
+                                                    1.2.1.1.2.2.1.1.1.1.1.2.7 Banco Popular
+                                                        
+                                                        
+                                                    
+                                                    1.2.1.1.2.2.1.1.1.1.1.2.8 Davivienda
+                                                        
+                                                        
+                                                    
+                                                    1.2.1.1.2.2.1.1.1.1.1.2.9 Otros
+                                                        
+                                                        
+                                                    
+                                                
+                                            
+                                        
+                                        1.2.1.1.2.2.1.1.1.2 Sí
+                                            
+                                            
+                                            1.2.1.1.2.2.1.1.1.2.1 En mediana cantidad
+                                                1.2.1.1.2.2.1.1.1.2.1.1 Centro de la Moda (Itaguí)
+                                                    
+                                                    
+                                                
+                                                1.2.1.1.2.2.1.1.1.2.1.2 Centro Comercial Boulevar El Hueco
+                                                    
+                                                    
+                                                
+                                                1.2.1.1.2.2.1.1.1.2.1.3 Centro Comercial Japón
+                                                    
+                                                    
+                                                
+                                                1.2.1.1.2.2.1.1.1.2.1.4 Centro Comercial Hollywood
+                                                    
+                                                    
+                                                
+                                                1.2.1.1.2.2.1.1.1.2.1.5 Centro Comercial Palacio Nacional
+                                                    
+                                                    
+                                                
+                                            
+                                            1.2.1.1.2.2.1.1.1.2.2 En gran cantidad
+                                                1.2.1.1.2.2.1.1.1.2.2.1 Centro Comercial Punto Clave
+                                                    
+                                                    
+                                                
+                                                1.2.1.1.2.2.1.1.1.2.2.2 Centro Comercial El Tesoro
+                                                    
+                                                    
+                                                
+                                                1.2.1.1.2.2.1.1.1.2.2.3 Centro Comercial Santafé
+                                                    
+                                                    
+                                                
+                                                1.2.1.1.2.2.1.1.1.2.2.4 Centro Comercial Monterrey
+                                                    
+                                                    
+                                                
+                                                1.2.1.1.2.2.1.1.1.2.2.5 Centro Comercial San Diego
+                                                    
+                                                    
+                                                
+                                                1.2.1.1.2.2.1.1.1.2.2.6 Centro Comercial Oviedo
+                                                    
+                                                    
+                                                
+                                                1.2.1.1.2.2.1.1.1.2.2.7 Centro Comercial Unicentro
+                                                    
+                                                    
+                                                
+                                                1.2.1.1.2.2.1.1.1.2.2.8 Centro Comercial Mayorca
+                                                    
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                
+                                1.2.1.1.2.2.1.2 No
+                                    
+                                    
+                                    1.2.1.1.2.2.1.2.1 ¿Ir a comer algo?
+                                        1.2.1.1.2.2.1.2.1.1 Un café o algo así
+                                            
+                                            
+                                            1.2.1.1.2.2.1.2.1.1.1 Versalles
+                                                
+                                                
+                                            
+                                            1.2.1.1.2.2.1.2.1.1.2 El Astor
+                                                
+                                                
+                                            
+                                        
+                                        1.2.1.1.2.2.1.2.1.2 Un buen almuerzo
+                                            
+                                            
+                                            1.2.1.1.2.2.1.2.1.2.1 San Carbón
+                                                
+                                                
+                                            
+                                            1.2.1.1.2.2.1.2.1.2.2 Hatoviejo
+                                                
+                                                
+                                            
+                                            1.2.1.1.2.2.1.2.1.2.3 Triada
+                                                
+                                                
+                                            
+                                            1.2.1.1.2.2.1.2.1.2.4 Il Forno
+                                                
+                                                
+                                            
+                                            1.2.1.1.2.2.1.2.1.2.5 Mondongo's
+                                                
+                                                
+                                            
+                                        
+                                    
+                                
+                            
+                            1.2.1.1.2.2.2 ¿Algo educativo y divertido?
+                                1.2.1.1.2.2.2.1 ¿Parques?
+                                    1.2.1.1.2.2.2.1.1 Educativos
+                                        
+                                        
+                                        1.2.1.1.2.2.2.1.1.1 Parque Explora
+                                            
+                                            
+                                        
+                                        1.2.1.1.2.2.2.1.1.2 Museo Interactivo EPM
+                                            
+                                            
+                                        
+                                        1.2.1.1.2.2.2.1.1.3 Conocer más centros educativos
+                                            1.2.1.1.2.2.2.1.1.3.1 Universidad de Antioquia
+                                                
+                                                
+                                            
+                                            1.2.1.1.2.2.2.1.1.3.2 Universidad Nacional
+                                                
+                                                
+                                            
+                                            1.2.1.1.2.2.2.1.1.3.3 Universidad de Medellín
+                                                
+                                                
+                                            
+                                            1.2.1.1.2.2.2.1.1.3.4 Universidad EAFIT
+                                                
+                                                
+                                            
+                                            1.2.1.1.2.2.2.1.1.3.5 Universidad Pontificia Bolivariana
+                                                
+                                                
+                                            
+                                            1.2.1.1.2.2.2.1.1.3.6 Fundación Universitaria Luis Amigó
+                                                
+                                                
+                                            
+                                            1.2.1.1.2.2.2.1.1.3.7 Universidad Santo Tomás
+                                                
+                                                
+                                            
+                                            1.2.1.1.2.2.2.1.1.3.8 Universidad CES
+                                                
+                                                
+                                            
+                                        
+                                    
+                                    1.2.1.1.2.2.2.1.2 Divertidos
+                                        
+                                        
+                                        1.2.1.1.2.2.2.1.2.1 Parque de Las Aguas
+                                            
+                                            
+                                        
+                                        1.2.1.1.2.2.2.1.2.2 Parque Norte
+                                            
+                                            
+                                        
+                                        1.2.1.1.2.2.2.1.2.3 Aeroparque Juan Pablo II
+                                            
+                                            
+                                        
+                                    
+                                
+                                1.2.1.1.2.2.2.2 ¿Otros centros?
+                                    1.2.1.1.2.2.2.2.1 El Planetario de Medellín
+                                        
+                                        
+                                    
+                                    1.2.1.1.2.2.2.2.2 La Plaza de Toros La Macarena
+                                        
+                                        
+                                    
+                                    1.2.1.1.2.2.2.2.3 Jardín Botánico Joaquín Antonio Uribe
+                                        
+                                        
+                                    
+                                    1.2.1.1.2.2.2.2.4 Zoológico de Santa Fe
+                                        
+                                        
+                                    
+                                
+                            
+                        
+                    
+                
+            
+            1.2.2 Conocer más de tu ciudad
+                
+                
+                1.2.2.1 De la historia
+                    
+                    
+                    1.2.2.1.1 De una manera divertida
+                        
+                        
+                        1.2.2.1.1.1 ¿Te gustan los teatros?
+                            1.2.2.1.1.1.1 Sí
+                                
+                                
+                                1.2.2.1.1.1.1.1 ¿Los Clásicos?
+                                    1.2.2.1.1.1.1.1.1 Sí
+                                        
+                                        
+                                        1.2.2.1.1.1.1.1.1.1 Entonces puedes visitar
+                                            1.2.2.1.1.1.1.1.1.1.1 Teatro Pablo Tobón Uribe
+                                                
+                                                
+                                            
+                                            1.2.2.1.1.1.1.1.1.1.2 Teatro Lido
+                                                
+                                                
+                                            
+                                            1.2.2.1.1.1.1.1.1.1.3 Teatro Metropolitano
+                                                
+                                                
+                                            
+                                            1.2.2.1.1.1.1.1.1.1.4 Teatro Porfirio Barba Jacob
+                                                
+                                                
+                                            
+                                        
+                                    
+                                    1.2.2.1.1.1.1.1.2 No
+                                        
+                                        
+                                        1.2.2.1.1.1.1.1.2.1 Seguro te gustarán estos
+                                            1.2.2.1.1.1.1.1.2.1.1 El Peque��o Teatro
+                                                
+                                                
+                                            
+                                            1.2.2.1.1.1.1.1.2.1.2 Teatro de Muñecos La Fanfarria
+                                                
+                                                
+                                            
+                                            1.2.2.1.1.1.1.1.2.1.3 Teatro El Águila Descalza
+                                                
+                                                
+                                            
+                                            1.2.2.1.1.1.1.1.2.1.4 Teatro Manicomio De Mu��ecos
+                                                
+                                                
+                                            
+                                            1.2.2.1.1.1.1.1.2.1.5 Teatro Matacandelas
+                                                
+                                                
+                                            
+                                            1.2.2.1.1.1.1.1.2.1.6 Teatro Universidad de Medellín
+                                                
+                                                
+                                            
+                                            1.2.2.1.1.1.1.1.2.1.7 Teatro Caja Negra
+                                                
+                                                
+                                            
+                                        
+                                    
+                                
+                            
+                            1.2.2.1.1.1.2 No
+                                
+                                
+                                1.2.2.1.1.1.2.1 ¿Qué tal los museos?
+                                    1.2.2.1.1.1.2.1.1 Están bien
+                                        
+                                        
+                                        1.2.2.1.1.1.2.1.1.1 ¿De los antiguos?
+                                            1.2.2.1.1.1.2.1.1.1.1 Sí
+                                                
+                                                
+                                                1.2.2.1.1.1.2.1.1.1.1.1 Museo de Antioquia
+                                                    
+                                                    
+                                                
+                                                1.2.2.1.1.1.2.1.1.1.1.2 Museo Cementerio San Pedro
+                                                    
+                                                    
+                                                
+                                                1.2.2.1.1.1.2.1.1.1.1.3 Museo El Castillo
+                                                    
+                                                    
+                                                
+                                            
+                                            1.2.2.1.1.1.2.1.1.1.2 Algo más nuevo, mejor
+                                                
+                                                
+                                                1.2.2.1.1.1.2.1.1.1.2.1 Museo de Arte Moderno (MAMM)
+                                                    
+                                                    
+                                                
+                                                1.2.2.1.1.1.2.1.1.1.2.2 Museo Universitario Universidad de Antioquia (MUUA)
+                                                    
+                                                    
+                                                
+                                                1.2.2.1.1.1.2.1.1.1.2.3 Casa Museo Maestro Pedro Nel Gómez
+                                                    
+                                                    
+                                                
+                                                1.2.2.1.1.1.2.1.1.1.2.4 Casa Museo Gardeliana 
+                                                    
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                    1.2.2.1.1.1.2.1.2 No te gustan
+                                        
+                                        
+                                    
+                                
+                            
+                        
+                    
+                    1.2.2.1.2 De la historia que está en los libros
+                        
+                        
+                        1.2.2.1.2.1 ¿Quieres ir a una biblioteca?
+                            1.2.2.1.2.1.1 Sí
+                                
+                                
+                                1.2.2.1.2.1.1.1 De las tradicionales
+                                    
+                                    
+                                    1.2.2.1.2.1.1.1.1 Biblioteca Pública Piloto
+                                        
+                                        
+                                    
+                                    1.2.2.1.2.1.1.1.2 Biblioteca EPM
+                                        
+                                        
+                                    
+                                
+                                1.2.2.1.2.1.1.2 Parques biblioteca
+                                    
+                                    
+                                    1.2.2.1.2.1.1.2.1 España
+                                        
+                                        
+                                    
+                                    1.2.2.1.2.1.1.2.2 San Javier
+                                        
+                                        
+                                    
+                                    1.2.2.1.2.1.1.2.3 La Quintana
+                                        
+                                        
+                                    
+                                    1.2.2.1.2.1.1.2.4 La Ladera
+                                        
+                                        
+                                    
+                                    1.2.2.1.2.1.1.2.5 Belén
+                                        
+                                        
+                                    
+                                
+                            
+                            1.2.2.1.2.1.2 No
+                                
+                                
+                                1.2.2.1.2.1.2.1 ¿Algo más de mapas?
+                                    1.2.2.1.2.1.2.1.1 Sí, de historia de verdad
+                                        
+                                        
+                                        1.2.2.1.2.1.2.1.1.1 Archivo Histórico de Medellín
+                                            
+                                            
+                                        
+                                        1.2.2.1.2.1.2.1.1.2 Academia de Historia de Antioquia
+                                            
+                                            
+                                        
+                                    
+                                    1.2.2.1.2.1.2.1.2 No
+                                        
+                                        
+                                        1.2.2.1.2.1.2.1.2.1 ¿Mejor a un parque?
+                                            1.2.2.1.2.1.2.1.2.1.1 Sí (see:¿De los tradicionales?)
+                                                
+                                                
+                                                
+                                            
+                                            1.2.2.1.2.1.2.1.2.1.2 Tampoco
+                                                
+                                                
+                                            
+                                        
+                                    
+                                
+                            
+                        
+                    
+                
+                1.2.2.2 De la geografía
+                    
+                    
+                    1.2.2.2.1 Parques naturales
+                        
+                        
+                        1.2.2.2.1.1 Parque ecológico Piedras Blancas
+                            
+                            
+                        
+                        1.2.2.2.1.2 Ecoparque Cerro El Volador
+                            
+                            
+                        
+                        1.2.2.2.1.3 Parque Ecológico Cerro Nutibara
+                            
+                            
+                        
+                        1.2.2.2.1.4 Parque Ecoturístico Arví
+                            
+                            
+                        
+                    
+                    1.2.2.2.2 Parques urbanos
+                        
+                        
+                        1.2.2.2.2.1 ¿De los tradicionales?
+                            1.2.2.2.2.1.1 Sí
+                                
+                                
+                                1.2.2.2.2.1.1.1 Plazas
+                                    
+                                    
+                                    1.2.2.2.2.1.1.1.1 Plaza de San Antonio
+                                        
+                                        
+                                    
+                                    1.2.2.2.2.1.1.1.2 Plaza Botero
+                                        
+                                        
+                                    
+                                    1.2.2.2.2.1.1.1.3 Plaza Cisneros
+                                        
+                                        
+                                    
+                                    1.2.2.2.2.1.1.1.4 Plazuela San Ignacio
+                                        
+                                        
+                                    
+                                    1.2.2.2.2.1.1.1.5 Plaza de la Libertad
+                                        
+                                        
+                                    
+                                    1.2.2.2.2.1.1.1.6 Plazuela Nutibara
+                                        
+                                        
+                                    
+                                    1.2.2.2.2.1.1.1.7 Plazuela de la Veracruz
+                                        
+                                        
+                                    
+                                
+                                1.2.2.2.2.1.1.2 Parques
+                                    
+                                    
+                                    1.2.2.2.2.1.1.2.1 Parque de Bolívar
+                                        
+                                        
+                                    
+                                    1.2.2.2.2.1.1.2.2 Parque de Berrío
+                                        
+                                        
+                                    
+                                    1.2.2.2.2.1.1.2.3 Parque de Boston
+                                        
+                                        
+                                    
+                                    1.2.2.2.2.1.1.2.4 Parque del Poblado
+                                        
+                                        
+                                    
+                                    1.2.2.2.2.1.1.2.5 Parque de Belén
+                                        
+                                        
+                                    
+                                    1.2.2.2.2.1.1.2.6 Parque del Periodista
+                                        
+                                        
+                                    
+                                
+                            
+                            1.2.2.2.2.1.2 No, algo distinto
+                                
+                                
+                                1.2.2.2.2.1.2.1 Parque Lleras
+                                    
+                                    
+                                
+                                1.2.2.2.2.1.2.2 Parque de los Pies Descalzos
+                                    
+                                    
+                                
+                                1.2.2.2.2.1.2.3 Parque Lineal La Presidenta
+                                    
+                                    
+                                
+                                1.2.2.2.2.1.2.4 Parque de Los Deseos
+                                    
+                                    
+                                
+                                1.2.2.2.2.1.2.5 Parque de La Bailarina
+                                    
+                                    
+                                
+                                1.2.2.2.2.1.2.6 Parque Juanes de La Paz
+                                    
+                                    
+                                
+                            
+                        
+                    
+                
+            
+            1.2.3 Otra información
+                
+                
+                1.2.3.1 ¿Una emergencia?
+                    1.2.3.1.1 Sí
+                        1.2.3.1.1.1 ¿Tienes teléfono?
+                            1.2.3.1.1.1.1 Sí
+                                
+                                
+                                1.2.3.1.1.1.1.1 Policía: Llama al 112
+                                    
+                                    
+                                
+                                1.2.3.1.1.1.1.2 Seguridad: Llama al 123
+                                    
+                                    
+                                
+                                1.2.3.1.1.1.1.3 Salud: Llama al 125
+                                    
+                                    
+                                
+                                1.2.3.1.1.1.1.4 Información: 
+                                    
+                                    
+                                
+                            
+                            1.2.3.1.1.1.2 No, es mejor ir
+                                
+                                
+                                1.2.3.1.1.1.2.1 ¿Algún punto de Salud?
+                                    1.2.3.1.1.1.2.1.1 Hospitales
+                                        
+                                        
+                                        1.2.3.1.1.1.2.1.1.1 Hospital Universitario San Vicente de Paúl
+                                            
+                                            
+                                        
+                                        1.2.3.1.1.1.2.1.1.2 Hospital Pablo Tobón Uribe
+                                            
+                                            
+                                        
+                                        1.2.3.1.1.1.2.1.1.3 Hospital General de Medellín
+                                            
+                                            
+                                        
+                                    
+                                    1.2.3.1.1.1.2.1.2 Clínicas
+                                        
+                                        
+                                        1.2.3.1.1.1.2.1.2.1 Clínica Soma
+                                            
+                                            
+                                        
+                                        1.2.3.1.1.1.2.1.2.2 Clínica Medellín
+                                            
+                                            
+                                        
+                                        1.2.3.1.1.1.2.1.2.3 Clínica CES
+                                            
+                                            
+                                        
+                                        1.2.3.1.1.1.2.1.2.4 Clínica Las Américas
+                                            
+                                            
+                                        
+                                        1.2.3.1.1.1.2.1.2.5 Clínica Cardiovascular
+                                            
+                                            
+                                        
+                                        1.2.3.1.1.1.2.1.2.6 Clínica Las Vegas
+                                            
+                                            
+                                        
+                                        1.2.3.1.1.1.2.1.2.7 Clínica El Rosario
+                                            
+                                            
+                                        
+                                        1.2.3.1.1.1.2.1.2.8 Clínica El Prado
+                                            
+                                            
+                                        
+                                        1.2.3.1.1.1.2.1.2.9 Clínica El Sagrado Corazón
+                                            
+                                            
+                                        
+                                    
+                                
+                            
+                        
+                    
+                    1.2.3.1.2 No
+                        1.2.3.1.2.1 ¿Estás perdido?
+                            1.2.3.1.2.1.1 Un poco
+                                
+                                
+                                1.2.3.1.2.1.1.1 Puedes utilizar
+                                    1.2.3.1.2.1.1.1.1 Un bus
+                                        
+                                        
+                                    
+                                    1.2.3.1.2.1.1.1.2 El Metro
+                                        
+                                        
+                                        1.2.3.1.2.1.1.1.2.1 Metro Cable
+                                            
+                                            
+                                        
+                                    
+                                    1.2.3.1.2.1.1.1.3 El Metroplús
+                                        
+                                        
+                                    
+                                
+                            
+                            1.2.3.1.2.1.2 No
+                                
+                                
+                            
+                        
+                    
+                
+            
+        
+    

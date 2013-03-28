@@ -1,4 +1,4 @@
-package com.wisemapping.test.freemind;
+package com.wisemapping.test.export;
 
 import com.wisemapping.exporter.ExportException;
 import com.wisemapping.exporter.FreemindExporter;
@@ -14,8 +14,8 @@ import org.testng.annotations.Test;
 import java.io.*;
 
 @Test
-public class ExportTest {
-    private static final String DATA_DIR_PATH = "src/test/resources/data/wisemaps/";
+public class ExportFreemindTest {
+    private static final String DATA_DIR_PATH = "src/test/resources/data/export/";
     private static final String ENC_UTF_8 = "UTF-8";
     private static final String ENC_LATIN1 = "iso-8859-1";
 

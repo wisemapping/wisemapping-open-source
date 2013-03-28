@@ -1,0 +1,101 @@
+WiseMapping Export
+
+
+    1 California
+        1.1 Northern California
+            1.1.1 Oakland/Berkeley
+            1.1.2 San Mateo
+            1.1.3 Other North
+            1.1.4 San Francisco
+            1.1.5 Santa Clara
+            1.1.6 Marin/Napa/Solano
+        
+        1.2 Hawaii
+        1.3 Southern California
+            1.3.1 Los Angeles
+            1.3.2 Anaheim/Santa Ana
+            1.3.3 Ventura
+            1.3.4 Other South
+        
+        1.4 Policy Bodies
+            1.4.1 Advocacy
+                1.4.1.1 AAO
+                1.4.1.2 ASCRS
+                1.4.1.3 EBAA
+            
+            1.4.2 Military
+            1.4.3 United Network for Organ Sharing
+            1.4.4 Kaiser Hospital System
+            1.4.5 University of California System
+            1.4.6 CMS
+                1.4.6.1 Medicare Part A
+                1.4.6.2 Medicare Part B
+            
+        
+        1.5 Corneal Tissue OPS
+            1.5.1 Transplant Bank International (see:OneLegacyCalifornia Transplant Donor Network)
+                1.5.1.1 Orange County Eye and Transplant Bank
+                1.5.1.2 Northern California Transplant Bank
+                    1.5.1.2.1 In 2010, 2,500 referrals forwarded to OneLegacy
+                
+                1.5.1.3 Doheny Eye and Tissue Transplant Bank
+                
+                
+            
+            1.5.2 OneLegacy
+                1.5.2.1 In 2010, 11,828 referrals
+            
+            1.5.3 San Diego Eye Bank
+                1.5.3.1 In 2010, 2,555 referrals
+            
+            1.5.4 California Transplant Donor Network
+            1.5.5 California Transplant Services
+                1.5.5.1 In 2010, 0 referrals
+            
+            1.5.6 Lifesharing
+            1.5.7 DCI Donor Services
+                1.5.7.1 Sierra Eye and Tissue Donor Services
+                    1.5.7.1.1 In 2010, 2.023 referrals
+                
+            
+            1.5.8 SightLife
+        
+        1.6 Tools
+            1.6.1 Darthmouth Atlas of Health
+            1.6.2 HealthLandscape
+        
+        1.7 QE Medicare
+        1.8 CMS Data
+        1.9 Ambulatory Payment Classification
+            1.9.1 CPT's which don't allow V2785
+                1.9.1.1 Ocular Reconstruction Transplant
+                    1.9.1.1.1 65780 (amniotic membrane tranplant
+                    1.9.1.1.2 65781 (limbal stem cell allograft)
+                    1.9.1.1.3 65782 (limbal conjunctiva autograft)
+                
+                1.9.1.2 Endothelial keratoplasty
+                    1.9.1.2.1 65756
+                
+                1.9.1.3 Epikeratoplasty
+                    1.9.1.3.1 65767
+                
+            
+            1.9.2 Anterior lamellar keratoplasty
+                1.9.2.1 65710
+            
+            1.9.3 Processing, preserving, and transporting corneal tissue
+                1.9.3.1 V2785
+                1.9.3.2 Laser incision in recepient
+                    1.9.3.2.1 0290T
+                
+            
+            1.9.4 Laser incision in donor
+                1.9.4.1 0289T
+            
+            1.9.5 Penetrating keratoplasty
+                1.9.5.1 65730 (in other)
+                1.9.5.2 65755 (in pseudoaphakia)
+                1.9.5.3 65750 (in aphakia)
+            
+        
+    

@@ -1,0 +1,1043 @@
+WiseMapping Export
+
+
+    1 Indicator needs
+        
+        1.1 Which new measures
+            
+            
+                
+                    
+                    
+                        Identifying new measures or investments that should be implemented.
+                    
+                
+            
+            1.1.1 Landscape of measures
+                1.1.1.1 Diversity index of innovation support instruments in the region
+                    
+                        
+                            
+                            
+                                Number of different innovations policy instruments existing  in the region as a share of a total number representing a full typology of instruments
+                            
+                        
+                    
+                
+                1.1.1.2 Existing investments in measures
+            
+            1.1.2 What other regions do differently
+                1.1.2.1 Balance of measure index
+                1.1.2.2 Profile comparison with other regions
+                1.1.2.3 Number of specific types of measures per capita
+            
+        
+        1.2 How to design & implement measures
+            
+            
+                
+                    
+                    
+                        Understanding how to design the details of a particular measure and how to implement them.
+                    
+                
+            
+            1.2.1 Good practices
+            1.2.2 Diagnostics
+                1.2.2.1 Internal business innovation factors
+                1.2.2.2 Return on investment to innovation
+                    1.2.2.2.1 
+                        
+                            
+                                
+                                
+                                    Firm's turnover from (new to firm)
+                                    product innovation (as a pecentage of total turnover)
+                                
+                            
+                        
+                        
+                    
+                    1.2.2.2.2 
+                        
+                            
+                                
+                                
+                                    Increase in the probability to innovate linked to ICT use
+                                    (in product innovation, process innovation, organisational innovaton, marketing innovation)
+                                
+                            
+                        
+                    
+                    1.2.2.2.3 
+                        
+                            
+                                
+                                
+                                    Scientific articles by type of collaboration (per capita)
+                                    (international co-authoriship, domestic co-authoriship, single author)
+                                
+                            
+                        
+                        
+                    
+                    1.2.2.2.4 
+                        
+                            
+                                
+                                
+                                    Increase in a share of expenditures on technological
+                                    innovations in the total amount of regional firms’ expenditures, %
+                                
+                            
+                        
+                        
+                    
+                    1.2.2.2.5 Increase in the number of innovative companies with in-house R&D
+                        
+                    
+                    1.2.2.2.6 Increase in th number of innovative companies without in-house R&D
+                        
+                    
+                    1.2.2.2.7 
+                        
+                            
+                                
+                                
+                                    Increase in th number of firms with
+                                    international/national collaboration on innovation
+                                
+                            
+                        
+                        
+                    
+                    1.2.2.2.8 
+                        
+                            
+                                
+                                
+                                    Highly cited scientific articles (as a percentage of
+                                    highly cited scientific article in the whole Federation)
+                                
+                            
+                        
+                        
+                    
+                    1.2.2.2.9 
+                        
+                            
+                                
+                                
+                                    Patents filed by public research organisations
+                                    (as a percentafe of patent application filed under PCT)
+                                
+                            
+                        
+                        
+                    
+                    1.2.2.2.10 Number of international patents
+                        
+                    
+                    1.2.2.2.11 Start-up activity (as a percentage of start-up activity in the whole Federation)
+                    1.2.2.2.12 Number of innovative companies to the number of students 
+                        
+                    
+                    1.2.2.2.13 Number of innovative companies to the number of researchers  
+                        
+                    
+                    1.2.2.2.14 Volume of license agreements to the volume of R&D support from the regional budget 
+                        
+                    
+                
+            
+        
+        1.3 How much effort: where & how
+            
+            
+                
+                    
+                    
+                        Understanding the level of effort the region needs to take to compete on innovation and where to put this effort
+                    
+                
+            
+            1.3.1 The bottom-line
+                
+                    
+                        
+                        
+                            This is what policy makers care about in the end
+                        
+                    
+                
+                1.3.1.1 Wages
+                    1.3.1.1.1 Dynamics of real wages
+                    1.3.1.1.2 Average wage (compare to the Fed)
+                
+                1.3.1.2 Productivity
+                    1.3.1.2.1 Labor productivity
+                        
+                    
+                    1.3.1.2.2 Labor productivity growth rate
+                
+                1.3.1.3 Jobs
+                    1.3.1.3.1 Share of high-productive jobs
+                        
+                    
+                    1.3.1.3.2 Share of creative industries jobs
+                    1.3.1.3.3 Uneployment rate of university graduates
+                        
+                    
+                
+                1.3.1.4 Income
+                    1.3.1.4.1 GRP per capita and its growth rate
+                
+            
+            1.3.2 Influencing  factors
+                1.3.2.1 Economy
+                    1.3.2.1.1 Economic structure
+                    1.3.2.1.2 Volume of manufacturing production per capita 
+                    1.3.2.1.3 Manufacturing value added per capita (non-natural resource-based)
+                
+                1.3.2.2 The enabling environment (see:Innovation investment climate)
+                    1.3.2.2.1 Ease of doing business
+                        
+                            
+                                
+                                
+                                    WB
+                                
+                            
+                        
+                        1.3.2.2.1.1 Level of administrative barriers (number and cost of administrative procedures) 
+                            
+                        
+                    
+                    1.3.2.2.2 Competition index
+                        
+                            
+                                
+                                
+                                    GCR
+                                
+                            
+                        
+                    
+                    1.3.2.2.3 Workforce
+                        1.3.2.2.3.1 Quality of education
+                            
+                                
+                                    
+                                    
+                                        GCR
+                                    
+                                
+                            
+                            1.3.2.2.3.1.1 Inrease in the number of International students
+                                
+                            
+                        
+                        1.3.2.2.3.2 Quantity of education
+                            1.3.2.2.3.2.1 Participation in life-long learning
+                                
+                                
+                                    
+                                        
+                                        
+                                            per 100 population aged 25-64
+                                        
+                                    
+                                
+                            
+                            1.3.2.2.3.2.2 Increase in literarecy 
+                                
+                            
+                            1.3.2.2.3.2.3 
+                                
+                                    
+                                        
+                                        
+                                            Amount of university and colleague
+                                            students per 10 thousands population
+                                        
+                                    
+                                
+                            
+                            1.3.2.2.3.2.4 
+                                
+                                    
+                                        
+                                        
+                                            Share of employees with higher education in
+                                            the total amount of population at the working age
+                                        
+                                    
+                                
+                            
+                            1.3.2.2.3.2.5 Increase in University students
+                                
+                            
+                            1.3.2.2.3.2.6 Government expenditure on General University Funding
+                            1.3.2.2.3.2.7 Access to training, information, and consulting support 
+                                
+                            
+                        
+                        1.3.2.2.3.3 Science & engineering workforce
+                            1.3.2.2.3.3.1 Availability of scientists and engineers
+                                
+                                    
+                                        
+                                        
+                                            GCR
+                                        
+                                    
+                                
+                            
+                            1.3.2.2.3.3.2 Amount of researches per 10 thousands population
+                                
+                            
+                            1.3.2.2.3.3.3 Average wage of researches per average wage in the region
+                            1.3.2.2.3.3.4 Share of researchers in the total number of employees in the region
+                        
+                    
+                    1.3.2.2.4 Government
+                        1.3.2.2.4.1 Total expenditure of general government as a percentage of GDP
+                        1.3.2.2.4.2 Government expenditure on Economic Development
+                    
+                    1.3.2.2.5 Access to finance
+                        1.3.2.2.5.1 Deals
+                            1.3.2.2.5.1.1 Venture capital investments for start-ups as a percentage of GDP
+                            1.3.2.2.5.1.2 Amounts of business angel, pre-seed, seed and venture financing
+                            1.3.2.2.5.1.3 Amount of public co-funding of business R&D
+                            1.3.2.2.5.1.4 Number of startups received venture financing 
+                            1.3.2.2.5.1.5 Number of companies received equity investments 
+                                
+                            
+                        
+                        1.3.2.2.5.2 Available
+                            1.3.2.2.5.2.1 Amount of matching grants available in the region for business R&D
+                            1.3.2.2.5.2.2 Number of Business Angels
+                        
+                    
+                    1.3.2.2.6 ICT
+                        1.3.2.2.6.1 ICT use
+                            
+                                
+                                    
+                                    
+                                        GCR
+                                    
+                                
+                            
+                        
+                        1.3.2.2.6.2 Broadband penetration 
+                        1.3.2.2.6.3 Internet penetration
+                        1.3.2.2.6.4 Computer literacy 
+                    
+                    
+                
+                1.3.2.3 Behavior of innovation actors
+                    1.3.2.3.1 Access to markets
+                        1.3.2.3.1.1 FDI
+                            1.3.2.3.1.1.1 foreign JVs
+                            1.3.2.3.1.1.2 Inflow of foreign direct investments in high-technology industries
+                            1.3.2.3.1.1.3 Foreign direct investment jobs
+                                
+                                    
+                                        
+                                        
+                                            : the percentage of the workforce employed by foreign companies [%].
+                                        
+                                    
+                                
+                            
+                            1.3.2.3.1.1.4 FDI as a share of regional non natural resource-based GRP 
+                            1.3.2.3.1.1.5 Number of foreign subsidiaries operating in the region
+                            1.3.2.3.1.1.6 Share of foreign controlled enterprises
+                        
+                        1.3.2.3.1.2 Exports
+                            1.3.2.3.1.2.1 Export intensity in manufacturing and services
+                                
+                                
+                                    
+                                        
+                                        
+                                            : exports as a share of total output in manufacturing and services [%].
+                                        
+                                    
+                                
+                            
+                            1.3.2.3.1.2.2 
+                                
+                                    
+                                        
+                                        
+                                            Share of high-technology export in the total volume
+                                            of production of goods, works and services
+                                        
+                                    
+                                
+                                
+                            
+                            1.3.2.3.1.2.3 
+                                
+                                    
+                                        
+                                        
+                                            Share of innovation production/serivces that goes for export,
+                                            by zones (EU, US, CIS, other countries
+                                        
+                                    
+                                
+                                
+                            
+                        
+                        1.3.2.3.1.3 Share of high-technology products in government procurements
+                    
+                    1.3.2.3.2 Entrepreneurship culture
+                        1.3.2.3.2.1 Fear of failure rate
+                            
+                                
+                                    
+                                    
+                                        GEM
+                                    
+                                
+                            
+                        
+                        1.3.2.3.2.2 Entrepreneurship as desirable career choice
+                            
+                                
+                                    
+                                    
+                                        GEM
+                                    
+                                
+                            
+                        
+                        1.3.2.3.2.3 High Status Successful Entrepreneurship
+                            
+                                
+                                    
+                                    
+                                        GEM
+                                    
+                                
+                            
+                        
+                    
+                    1.3.2.3.3 Collaboration & partnerships
+                        1.3.2.3.3.1 Number of business contracts with foreign partners for R&D collaboration
+                        1.3.2.3.3.2 Share of R&D financed from foreign sources
+                            
+                                
+                                    
+                                    
+                                        UNESCO
+                                    
+                                
+                            
+                        
+                        1.3.2.3.3.3 Firms collaborating on innovation with organizations in other countries
+                            
+                                
+                                    
+                                    
+                                        CIS
+                                    
+                                
+                            
+                        
+                        1.3.2.3.3.4 
+                            
+                                
+                                    
+                                    
+                                        Share of Innovative companies collaborating
+                                        with research institutions on innovation
+                                    
+                                
+                            
+                        
+                        1.3.2.3.3.5 
+                            
+                                
+                                    
+                                    
+                                        Number of joint projects conducted by the local comapnies
+                                        and local consulting/intermediary agencies
+                                    
+                                
+                            
+                        
+                        1.3.2.3.3.6 science and industry links
+                    
+                    1.3.2.3.4 Technology absorption
+                        1.3.2.3.4.1 Local supplier quality
+                            
+                                
+                                    
+                                    
+                                        GCR
+                                    
+                                
+                            
+                        
+                        1.3.2.3.4.2 
+                            
+                                
+                                    
+                                    
+                                        Share of expenditures on technological innovations
+                                        in the amount of sales
+                                    
+                                
+                            
+                        
+                        1.3.2.3.4.3 Number of purchased new technologies
+                            
+                        
+                        1.3.2.3.4.4 
+                            
+                                
+                                    
+                                    
+                                        Investments in ICT by asset (IT equipment,
+                                        communication equipment, software)
+                                    
+                                
+                            
+                        
+                        1.3.2.3.4.5 Machinery and equipment
+                        1.3.2.3.4.6 Software and databases
+                        1.3.2.3.4.7 
+                            
+                                
+                                    
+                                    
+                                        Level of energy efficiency of the regional economy
+                                        (can be measured by sectors and for the whole region)
+                                    
+                                
+                            
+                            
+                        
+                        1.3.2.3.4.8 Share of wastes in the total volume of production (by sector)
+                            
+                        
+                    
+                    1.3.2.3.5 Innovation activities in firms
+                        1.3.2.3.5.1 Share of innovative companies
+                        1.3.2.3.5.2 Business R&D expenditures per GRP
+                        1.3.2.3.5.3 Factors hampering innovation
+                            
+                                
+                                    
+                                    
+                                        CIS, BEEPS
+                                    
+                                
+                            
+                        
+                        1.3.2.3.5.4 Expenditure on innovation by firm size
+                        1.3.2.3.5.5 R&D and other intellectl property products
+                        1.3.2.3.5.6 Growth of the number of innovative companies 
+                        1.3.2.3.5.7 Outpus
+                            1.3.2.3.5.7.1 Volume of new to Russian market production per GRP
+                            1.3.2.3.5.7.2 Volume of new to world market production per total production
+                                
+                            
+                            1.3.2.3.5.7.3 Growth of the volume of production of innovative companies 
+                            1.3.2.3.5.7.4 Volume of innovation production per capita 
+                                
+                            
+                        
+                    
+                    1.3.2.3.6 Entrepreneurial activities
+                        1.3.2.3.6.1 New business density
+                            
+                                
+                                    
+                                    
+                                        Number of new organizations per thousand working age population (WBI)
+                                    
+                                
+                            
+                        
+                        1.3.2.3.6.2 Volume of newly registered corporations 
+                            
+                                
+                                    
+                                    
+                                        (as a percentage of all registered corporations)
+                                    
+                                
+                            
+                        
+                        1.3.2.3.6.3 Share of gazelle companies in the total number of businesses
+                    
+                    1.3.2.3.7 R&D production
+                        1.3.2.3.7.1 Outputs
+                            1.3.2.3.7.1.1 
+                                
+                                    
+                                        
+                                        
+                                            Amount of domestically protected intellectual
+                                            property per 1 mln. population
+                                        
+                                    
+                                
+                            
+                            1.3.2.3.7.1.2 Amount of PCT-applications per 1 mln. population
+                            1.3.2.3.7.1.3 Number of domestic patent applications per R&D expenditures
+                            1.3.2.3.7.1.4 
+                                
+                                    
+                                        
+                                        
+                                            Number of intellectual property exploited by regional
+                                            enterprises per 1 mln. population
+                                        
+                                    
+                                
+                                
+                            
+                            1.3.2.3.7.1.5 Publication activity of regional scientists and researches
+                        
+                        1.3.2.3.7.2 Inputs
+                            1.3.2.3.7.2.1 Regional and local budget expenditures on R&D
+                            1.3.2.3.7.2.2 Government R&D expenditure 
+                        
+                    
+                    1.3.2.3.8 Public sector innovation
+                        1.3.2.3.8.1 
+                            
+                                
+                                    
+                                    
+                                        Number of advanced ICT introduced in the budgetary organizations
+                                        (regional power, municipal bodies, social and educational organizations)
+                                    
+                                
+                            
+                        
+                        1.3.2.3.8.2 E-government index
+                        1.3.2.3.8.3 
+                            
+                                
+                                    
+                                    
+                                        Number of management innovations introduced in the budgetary organizations
+                                        (regional power, municipal bodies, social and educational organizations)
+                                    
+                                
+                            
+                        
+                    
+                
+                1.3.2.4 Supporting organizations
+                    1.3.2.4.1 Research institutions
+                        1.3.2.4.1.1 Collaboration
+                            1.3.2.4.1.1.1 
+                                
+                                    
+                                        
+                                        
+                                            Number of interactions between universities
+                                            and large companies  by university size
+                                        
+                                    
+                                
+                                
+                            
+                        
+                        1.3.2.4.1.2 Resources
+                            1.3.2.4.1.2.1 R&D expenditures per 1 researcher
+                            1.3.2.4.1.2.2 Average wage of researches per average wage in the region
+                            1.3.2.4.1.2.3 High education expenditure on R&D
+                        
+                        1.3.2.4.1.3 Scientific outputs
+                            1.3.2.4.1.3.1 Publications
+                                1.3.2.4.1.3.1.1 Impact of publications in the ISI database (h-index)
+                                1.3.2.4.1.3.1.2 Number of publications in international journals per worker per year
+                                1.3.2.4.1.3.1.3 
+                                    
+                                        
+                                            
+                                            
+                                                Publications: Academic articles in international peer-reviewed
+                                                journals per 1,000 researchers [articles/1,000 researchers].
+                                            
+                                        
+                                    
+                                
+                            
+                            1.3.2.4.1.3.2 Number of foreign patents granted per staff
+                        
+                        1.3.2.4.1.4 Supportive measures
+                            1.3.2.4.1.4.1 Diversity index of university entrepreneurship support measures
+                                
+                                    
+                                        
+                                        
+                                            Number of measures offered by the unversity within a preset range (NCET2 survey)
+                                        
+                                    
+                                
+                            
+                        
+                        1.3.2.4.1.5 Commercialization
+                            1.3.2.4.1.5.1 Licensing
+                                1.3.2.4.1.5.1.1 
+                                    
+                                        
+                                            
+                                            
+                                                Academic licenses: Number of licenses
+                                                per 1,000 researchers.[licenses/researcher]
+                                            
+                                        
+                                    
+                                
+                            
+                            1.3.2.4.1.5.2 Spin-offs
+                                1.3.2.4.1.5.2.1 
+                                    
+                                        
+                                            
+                                            
+                                                Number of spin-offs with external private financing
+                                                as a share of the institution's R&D budget
+                                            
+                                        
+                                    
+                                
+                            
+                            1.3.2.4.1.5.3 Industry contracts
+                                1.3.2.4.1.5.3.1 Industry revenue per staff 
+                                1.3.2.4.1.5.3.2 
+                                    
+                                        
+                                            
+                                            
+                                                Foreign contracts: Number of contracts with foreign industria
+                                                l companies at scientific and educational organizations
+                                                per 1,000 researchers [contracts/researchers]
+                                            
+                                        
+                                    
+                                
+                                1.3.2.4.1.5.3.3 Share of industry income from foreign companies
+                                1.3.2.4.1.5.3.4 
+                                    
+                                        
+                                            
+                                            
+                                                Revenue raised from industry R&D as a fraction
+                                                of total institutional budget (up to a cap)
+                                            
+                                        
+                                    
+                                
+                                1.3.2.4.1.5.3.5 Difficulties faced by research organization in collaborating with SMEs
+                            
+                        
+                    
+                    1.3.2.4.2 Private market
+                        1.3.2.4.2.1 Number of innovation & IP services organizations
+                            
+                                
+                                    
+                                    
+                                        (design firms, IP consultants, etc.)
+                                    
+                                
+                            
+                        
+                        1.3.2.4.2.2 Number of private innovation infrastructure organizations 
+                            
+                                
+                                    
+                                    
+                                        (e.g. accelerators, incubators)
+                                    
+                                
+                            
+                        
+                        1.3.2.4.2.3 Access to certification and licensing for specific activities 
+                        1.3.2.4.2.4 Access to suppliers of equipment, production and engineering services 
+                    
+                    1.3.2.4.3 Innovation infrastructure
+                        1.3.2.4.3.1 Investments
+                            1.3.2.4.3.1.1 Public investment in innovation infrastructure
+                            1.3.2.4.3.1.2 Increase of government investment in innovation infrastructure
+                            1.3.2.4.3.1.3  Number of Development institution projects performed in the region
+                            1.3.2.4.3.1.4 Volume of seed investments by the regional budget 
+                            1.3.2.4.3.1.5 Volume of venture financing from the regional budget 
+                        
+                        1.3.2.4.3.2 Volume of state support per one company 
+                    
+                
+            
+        
+        1.4 What to do about existing measures (see:Innovation infrastructure)
+            
+            
+                
+                    
+                    
+                        Understanding which measures should be strengthened, dropped or improved, and how.
+                    
+                
+            
+            1.4.1 Demand for measure
+                1.4.1.1 Quality of beneficiaries
+                    1.4.1.1.1 Growth rates of employment in supported innovative firms
+                    1.4.1.1.2 Growth rates of employment in supported innovative firms
+                    1.4.1.1.3 Role of IP for tenants/clients
+                        
+                            
+                                
+                                
+                                    WIPO SURVEY OF INTELLECTUAL PROPERTY SERVICES OF
+                                    EUROPEAN TECHNOLOGY INCUBATORS
+                                
+                            
+                        
+                    
+                    1.4.1.1.4 Share of tenants with innovation activities
+                    1.4.1.1.5 
+                        
+                            
+                                
+                                
+                                    Gazelle tenant: Share of tenants with
+                                    annual revenue growth of more than 20%
+                                    for each of the past four years or since formation [%]
+                                
+                            
+                        
+                    
+                    1.4.1.1.6 
+                        
+                            
+                                
+                                
+                                    Globalization of tenants: Median share of tenant
+                                    revenues obtained from exports [%]
+                                
+                            
+                        
+                    
+                
+                1.4.1.2 Number of beneficiaries
+                    1.4.1.2.1 Number of projects conducted by companies in cooperation with innovation infrastructure
+                    1.4.1.2.2 Scope and intensity of use of services offered to firms
+                    1.4.1.2.3 Number of companies supported by the infrastructure (training, information, consultations, etc.)
+                    1.4.1.2.4 Increase in the number of business applying for public support programmes (regional, federal, international) 
+                
+                1.4.1.3 Degree of access
+                    1.4.1.3.1 Level of awareness
+                        1.4.1.3.1.1 
+                            
+                                
+                                    
+                                    
+                                        Perception (opinion poll) of business managers
+                                        regarding public support programmes
+                                    
+                                
+                            
+                        
+                    
+                    1.4.1.3.2 Transparency
+                        1.4.1.3.2.1 
+                            
+                                
+                                    
+                                    
+                                        Perception of business managers in terms
+                                        of level of transparency of support measures in the region
+                                    
+                                
+                            
+                            
+                        
+                    
+                    1.4.1.3.3 
+                        
+                            
+                                
+                                
+                                    Description by regional business managers of the way the
+                                    select and apply for regional and federal support schemes
+                                
+                            
+                        
+                        
+                    
+                
+                1.4.1.4 Number of applicants
+                    1.4.1.4.1 Increase in the number of business applying for public support programmes
+                    1.4.1.4.2 Number of companies that know about a particular program
+                    1.4.1.4.3 Increase in the number of start-ups applying to receive VC investments
+                    1.4.1.4.4 Increase in the number of start-ups applying for a place in the incubators
+                
+            
+            1.4.2 Inputs of measures
+                1.4.2.1 Qualified staff
+                    
+                        
+                            
+                            
+                                JL: not sure how this would be measured
+                            
+                        
+                    
+                
+                1.4.2.2 Budget per beneficiary
+            
+            1.4.3 Performance of measure
+                1.4.3.1 Implementation of measure
+                    1.4.3.1.1 Target vs. actual KPIs
+                    1.4.3.1.2 Intermediate outputs per budget
+                    1.4.3.1.3 Qualification of staff
+                        
+                    
+                
+                1.4.3.2 Output of measure
+                    1.4.3.2.1 Opinion surveys
+                        1.4.3.2.1.1 Opinions of beneficiaries
+                    
+                    1.4.3.2.2 Hard metrics
+                        1.4.3.2.2.1 Output per headcount (e.g. staff, researchers)
+                        1.4.3.2.2.2 Productivity analysis
+                    
+                
+            
+            1.4.4 Impact of measure
+                1.4.4.1 Opinion surveys
+                    1.4.4.1.1 Perception of support impact (opinion polls)
+                    1.4.4.1.2 Perception of the activity of regional government by the regional companies 
+                
+                1.4.4.2 Hard metrics
+                    1.4.4.2.1 Increase in number of small innovation enterprises 
+                    1.4.4.2.2 Growth of the total volume of salary in the supported companies (excluding inflation) 
+                        
+                    
+                    1.4.4.2.3 Growth of the volume of regional taxes paid by the supported companies 
+                        
+                    
+                    1.4.4.2.4 Growth of the volume of export at the supported companies 
+                    1.4.4.2.5 Number of new products/projects at the companies that received support 
+                
+                1.4.4.3 Impact assessment 
+                1.4.4.4 
+                    
+                        
+                            
+                            
+                                Average leverage of 1rub (there would be
+                                several programs with different leverage)
+                            
+                        
+                    
+                    
+                
+                1.4.4.5 
+                    
+                        
+                            
+                            
+                                Volume of attracted money per one ruble
+                                of regional budget expenditures on innovation projects
+                            
+                        
+                    
+                    
+                
+            
+            
+        
+        1.5 What investments in innovative projects
+            
+            
+                
+                    
+                    
+                        Understanding what investments should be made in innovative projects.
+                    
+                
+            
+            1.5.1 Competitive niches
+                1.5.1.1 Clusters behavior
+                    1.5.1.1.1 Cluster EU star rating
+                    1.5.1.1.2 Share of value added of cluster enterprises in GRP
+                    1.5.1.1.3 Share of cluster products in the relevant world market segment 
+                        
+                    
+                    1.5.1.1.4 Share of export in cluster total volume of sales
+                    1.5.1.1.5 Growth of the volume of production in the cluster companies
+                    1.5.1.1.6 
+                        
+                            
+                                
+                                
+                                    Growth of the volume of production in the cluster companies
+                                    to the volume of state support for the cluster
+                                
+                            
+                        
+                    
+                    1.5.1.1.7 Growth of the volume of innovation production in the cluster
+                    1.5.1.1.8 Share of export in cluster total volume of sales (by zones: US, EU, CIS, other countries) 
+                    1.5.1.1.9 Internal behavior
+                        1.5.1.1.9.1 Median wage in the cluster
+                        1.5.1.1.9.2 Growth of the volume of R&D in the cluster
+                        1.5.1.1.9.3 Cluster collaboration
+                    
+                
+                1.5.1.2 R&D
+                    1.5.1.2.1 Patent map
+                    1.5.1.2.2 Publications map
+                
+                1.5.1.3 Industry
+                    1.5.1.3.1 FDI map
+                    1.5.1.3.2 Gazelle map
+                    1.5.1.3.3 Business R&D expenditures as a share of revenues by sector
+                    1.5.1.3.4 Share of regional products in the world market
+                    1.5.1.3.5 Expenditure on innovation by firm size, by sector 
+                
+                1.5.1.4 Entrepreneurship
+                    1.5.1.4.1 Startup map
+                    1.5.1.4.2 Venture investment map
+                    1.5.1.4.3 Attractiveness to public competitive funding
+                        1.5.1.4.3.1 Fed and regional seed fund investments
+                        1.5.1.4.3.2 
+                            
+                                
+                                    
+                                    
+                                        FASIE projects: Number of projects supported
+                                        by the FASIE per 1,000 workers [awards/worker]
+                                    
+                                
+                            
+                        
+                    
+                
+            
+            1.5.2 Competitiveness support factors
+                1.5.2.1 Private investment in innovation
+            
+        
+        1.6 How to improve image
+            
+            1.6.1 Rankings
+                1.6.1.1 macro indicators
+                1.6.1.2 meso-indicators
+            
+            1.6.2 Innovation investment climate
+        
+    
