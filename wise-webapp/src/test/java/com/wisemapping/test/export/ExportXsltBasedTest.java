@@ -74,7 +74,7 @@ public class ExportXsltBasedTest {
             result[pos++] = new Object[]{XSLTExporter.Type.LATEX, freeMindFile, new File(DATA_DIR_PATH, fileName + ".latex")};
             result[pos++] = new Object[]{XSLTExporter.Type.MICROSOFT_EXCEL, freeMindFile, new File(DATA_DIR_PATH, fileName + "." + ExportFormat.MICROSOFT_EXCEL.getFileExtension())};
             result[pos++] = new Object[]{XSLTExporter.Type.OPEN_OFFICE, freeMindFile, new File(DATA_DIR_PATH, fileName + "." + ExportFormat.OPEN_OFFICE_WRITER.getFileExtension())};
-            result[pos++] = new Object[]{XSLTExporter.Type.MINDJET, freeMindFile, new File(DATA_DIR_PATH, fileName + "." + ExportFormat.MIND_MANAGER.getFileExtension())};
+            result[pos++] = new Object[]{XSLTExporter.Type.MINDJET, freeMindFile, new File(DATA_DIR_PATH, fileName + "." + ExportFormat.MINDJET.getFileExtension())};
 
         }
 

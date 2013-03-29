@@ -86,7 +86,7 @@ public class TransformView extends AbstractView {
                 final Object mindmap = viewMap.get("mindmap");
                 final StreamResult result = new StreamResult(outputStream);
                 jaxbMarshaller.marshal(mindmap, result);
-            } else if (exportFormat == ExportFormat.MICROSOFT_EXCEL || exportFormat == ExportFormat.TEXT || exportFormat == ExportFormat.OPEN_OFFICE_WRITER || exportFormat == ExportFormat.MIND_MANAGER) {
+            } else if (exportFormat == ExportFormat.MICROSOFT_EXCEL || exportFormat == ExportFormat.TEXT || exportFormat == ExportFormat.OPEN_OFFICE_WRITER || exportFormat == ExportFormat.MINDJET) {
                 response.setCharacterEncoding("UTF-8");
                 factory.export(properties, content, outputStream, null);
             } else {

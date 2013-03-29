@@ -145,7 +145,7 @@ public class ExporterFactory {
                 exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
                 break;
             }
-            case MIND_MANAGER: {
+            case MINDJET: {
                 final Exporter exporter =  XSLTExporter.create(XSLTExporter.Type.MINDJET);
                 exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
                 break;
