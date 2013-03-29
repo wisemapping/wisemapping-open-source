@@ -11,7 +11,7 @@
         </id>
 
         <property name="mindmapId" column="mindmap_id"/>
-        <property name="getZippedXml" column="xml"/>
+        <property name="zippedXml" column="xml"/>
         <property name="creationTime" column="creation_date"/>
         <many-to-one name="editor" column="editor_id" unique="false" not-null="false" lazy="proxy"/>
     </class>
