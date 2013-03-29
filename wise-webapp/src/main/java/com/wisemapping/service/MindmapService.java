@@ -68,5 +68,5 @@ public interface MindmapService {
 
     boolean isAdmin(@Nullable User user);
 
-    void purgeHistory(int mapId);
+    void purgeHistory(int mapId) throws IOException;
 }

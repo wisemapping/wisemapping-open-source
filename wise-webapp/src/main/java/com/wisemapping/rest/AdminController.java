@@ -19,10 +19,7 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.model.AuthenticationType;
-import com.wisemapping.model.Collaboration;
-import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.User;
+import com.wisemapping.model.*;
 import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.service.UserService;
@@ -176,13 +173,15 @@ public class AdminController extends BaseController {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             } catch (RuntimeException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (IOException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         }
     }
 
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @RequestMapping(method = RequestMethod.GET, value = "admin/database/purge/history")
-    public void purgeHistory(@RequestParam(required = true) Integer mapId) throws WiseMappingException, UnsupportedEncodingException {
+    public void purgeHistory(@RequestParam(required = true) Integer mapId) throws WiseMappingException, IOException {
 
         mindmapService.purgeHistory(mapId);
     }

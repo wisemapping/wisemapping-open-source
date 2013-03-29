@@ -20,8 +20,8 @@ package com.wisemapping.dao;
 
 import com.wisemapping.model.*;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface MindmapManager {
@@ -67,5 +67,5 @@ public interface MindmapManager {
 
     void updateCollaboration(@NotNull Collaboration collaboration);
 
-    void purgeHistory(int mapId);
+    void purgeHistory(int mapId) throws IOException;
 }

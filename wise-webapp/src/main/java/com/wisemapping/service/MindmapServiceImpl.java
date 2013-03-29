@@ -83,7 +83,7 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public void purgeHistory(int mapId) {
+    public void purgeHistory(int mapId) throws IOException {
         mindmapManager.purgeHistory(mapId);
     }
 

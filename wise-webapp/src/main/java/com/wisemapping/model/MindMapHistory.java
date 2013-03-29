@@ -19,6 +19,7 @@
 package com.wisemapping.model;
 
 import com.wisemapping.util.ZipUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -52,6 +53,7 @@ public class MindMapHistory {
         this.mindmapId = id;
     }
 
+    @NotNull
     public Calendar getCreationTime() {
         return creationTime;
     }

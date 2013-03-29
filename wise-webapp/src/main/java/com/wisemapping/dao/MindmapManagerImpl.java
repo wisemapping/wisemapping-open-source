@@ -19,6 +19,7 @@
 package com.wisemapping.dao;
 
 import com.wisemapping.model.*;
+import com.wisemapping.util.ZipUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.hibernate.criterion.Restrictions;
@@ -75,7 +76,7 @@ public class MindmapManagerImpl
     }
 
     @Override
-    public void purgeHistory(int mapId) {
+    public void purgeHistory(int mapId) throws IOException {
         final Criteria hibernateCriteria = getSession().createCriteria(MindMapHistory.class);
         hibernateCriteria.add(Restrictions.eq("mindmapId", mapId));
         hibernateCriteria.addOrder(Order.desc("creationTime"));
@@ -88,6 +89,14 @@ public class MindmapManagerImpl
 
         // If the map has not been modified in the last months, it means that I don't need to keep all the history ...
         int max = mindmapById.getLastModificationTime().before(yearAgo) ? 10 : 25;
+
+        for (MindMapHistory history : historyList) {
+            byte[] zippedXml = history.getZippedXml();
+            if(new String(zippedXml).startsWith("<map")){
+                history.setZippedXml(ZipUtils.bytesToZip(zippedXml));
+                getHibernateTemplate().update(history);
+            }
+        }
 
         if (historyList.size() > max) {
             for (int i = max; i < historyList.size(); i++) {
