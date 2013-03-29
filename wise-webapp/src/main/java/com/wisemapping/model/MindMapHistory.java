@@ -78,6 +78,6 @@ public class MindMapHistory {
     }
 
     public byte[] getUnzipXml() throws IOException {
-        return ZipUtils.zipToBytes(xml);
+        return ZipUtils.zipToBytes(getXml());
     }
 }
