@@ -19,6 +19,7 @@
 package com.wisemapping.webmvc;
 
 
+import com.wisemapping.exceptions.AccessDeniedSecurityException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.Mindmap;
@@ -28,9 +29,9 @@ import com.wisemapping.service.LockManager;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.view.MindMapBean;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,7 +48,6 @@ import java.util.Locale;
 @Controller
 public class MindmapController {
 
-
     public static final String LOCK_SESSION_ATTRIBUTE = "lockSession";
     @Qualifier("mindmapService")
     @Autowired
@@ -59,7 +59,7 @@ public class MindmapController {
     }
 
     @RequestMapping(value = "maps/{id}/details")
-    public String showDetails(@PathVariable int id, @NotNull Model model,@NotNull HttpServletRequest request) {
+    public String showDetails(@PathVariable int id, @NotNull Model model,@NotNull HttpServletRequest request) throws AccessDeniedSecurityException {
         final MindMapBean mindmap = findMindmapBean(id);
         model.addAttribute("mindmap", mindmap);
         model.addAttribute("baseUrl", request.getAttribute("site.baseurl"));
@@ -67,7 +67,7 @@ public class MindmapController {
     }
 
     @RequestMapping(value = "maps/{id}/print")
-    public String showPrintPage(@PathVariable int id, @NotNull Model model) {
+    public String showPrintPage(@PathVariable int id, @NotNull Model model) throws AccessDeniedSecurityException {
         final MindMapBean mindmap = findMindmapBean(id);
         model.addAttribute("principal", Utils.getUser());
         model.addAttribute("mindmap", mindmap);
@@ -77,33 +77,33 @@ public class MindmapController {
     }
 
     @RequestMapping(value = "maps/{id}/export")
-    public String showExportPage(@PathVariable int id, @NotNull Model model) throws IOException {
+    public String showExportPage(@PathVariable int id, @NotNull Model model) throws IOException, AccessDeniedSecurityException {
         final Mindmap mindmap = findMindmap(id);
         model.addAttribute("mindmap", mindmap);
         return "mindmapExport";
     }
 
     @RequestMapping(value = "maps/{id}/exportf")
-    public String showExportPageFull(@PathVariable int id, @NotNull Model model) throws IOException {
+    public String showExportPageFull(@PathVariable int id, @NotNull Model model) throws IOException, AccessDeniedSecurityException {
         showExportPage(id, model);
         return "mindmapExportFull";
     }
 
     @RequestMapping(value = "maps/{id}/share")
-    public String showSharePage(@PathVariable int id, @NotNull Model model) {
+    public String showSharePage(@PathVariable int id, @NotNull Model model) throws AccessDeniedSecurityException {
         final Mindmap mindmap = findMindmap(id);
         model.addAttribute("mindmap", mindmap);
         return "mindmapShare";
     }
 
     @RequestMapping(value = "maps/{id}/sharef")
-    public String showSharePageFull(@PathVariable int id, @NotNull Model model) {
+    public String showSharePageFull(@PathVariable int id, @NotNull Model model) throws AccessDeniedSecurityException {
         showSharePage(id, model);
         return "mindmapShareFull";
     }
 
     @RequestMapping(value = "maps/{id}/publish")
-    public String showPublishPage(@PathVariable int id, @NotNull Model model,@NotNull HttpServletRequest request) {
+    public String showPublishPage(@PathVariable int id, @NotNull Model model,@NotNull HttpServletRequest request) throws AccessDeniedSecurityException {
         final Mindmap mindmap = findMindmap(id);
         model.addAttribute("mindmap", mindmap);
         model.addAttribute("baseUrl", request.getAttribute("site.baseurl"));
@@ -111,7 +111,7 @@ public class MindmapController {
     }
 
     @RequestMapping(value = "maps/{id}/publishf")
-    public String showPublishPageFull(@PathVariable int id, @NotNull Model model,@NotNull HttpServletRequest request) {
+    public String showPublishPageFull(@PathVariable int id, @NotNull Model model,@NotNull HttpServletRequest request) throws AccessDeniedSecurityException {
         showPublishPage(id, model,request);
         return "mindmapPublishFull";
     }
@@ -198,7 +198,7 @@ public class MindmapController {
     }
 
     @RequestMapping(value = "maps/{id}/embed")
-    public ModelAndView showEmbeddedPage(@PathVariable int id, @RequestParam(required = false) Float zoom) {
+    public ModelAndView showEmbeddedPage(@PathVariable int id, @RequestParam(required = false) Float zoom) throws AccessDeniedSecurityException {
         ModelAndView view;
         final MindMapBean mindmap = findMindmapBean(id);
         view = new ModelAndView("mindmapEmbedded", "mindmap", mindmap);
@@ -225,11 +225,19 @@ public class MindmapController {
         return "redirect:maps/" + mapId + "/embed?zoom=" + zoom;
     }
 
-    private Mindmap findMindmap(long mapId) {
-        return mindmapService.findMindmapById((int) mapId);
+    @NotNull
+    private Mindmap findMindmap(long mapId) throws AccessDeniedSecurityException {
+        final Mindmap result = mindmapService.findMindmapById((int) mapId);
+        if(result==null){
+            throw new AccessDeniedSecurityException("Map could not be found " + mapId);
+        }
+        return result;
+
     }
 
-    private MindMapBean findMindmapBean(long mapId) {
-        return new MindMapBean(findMindmap(mapId), Utils.getUser());
+    @NotNull
+    private MindMapBean findMindmapBean(long mapId) throws AccessDeniedSecurityException {
+        final Mindmap mindmap = findMindmap(mapId);
+        return new MindMapBean(mindmap, Utils.getUser());
     }
 }
