@@ -172,7 +172,7 @@ public class MindmapController extends BaseController {
             List<MindMapHistory> mindmapHistory = mindmapService.findMindmapHistory(id);
             if (mindmapHistory.size() > 0) {
                 final MindMapHistory mindMapHistory = mindmapHistory.get(0);
-                mindmap.setZippedXml(mindMapHistory.getXml());
+                mindmap.setZippedXml(mindMapHistory.getZippedXml());
                 saveMindmapDocument(true, mindmap, user);
             }
         } else {

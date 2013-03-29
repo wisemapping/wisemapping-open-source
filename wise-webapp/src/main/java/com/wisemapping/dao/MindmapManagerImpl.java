@@ -27,6 +27,7 @@ import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Order;
 import org.hibernate.Criteria;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Calendar;
 
@@ -234,10 +235,10 @@ public class MindmapManagerImpl
         getHibernateTemplate().delete(mindMap);
     }
 
-    private void saveHistory(@NotNull final Mindmap mindMap) {
+    private void saveHistory(@NotNull final Mindmap mindMap) throws IOException {
         final MindMapHistory history = new MindMapHistory();
 
-        history.setXml(mindMap.getXml());
+        history.setZippedXml(mindMap.getZippedXml());
         history.setCreationTime(Calendar.getInstance());
         history.setEditor(mindMap.getLastEditor());
         history.setMindmapId(mindMap.getId());

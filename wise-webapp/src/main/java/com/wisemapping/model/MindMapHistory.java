@@ -29,7 +29,7 @@ public class MindMapHistory {
     private int id;
     private Calendar creationTime;
     private User editor;
-    private byte[] xml;
+    private byte[] zippedXml;
     private int mindmapId;
 
     public MindMapHistory() {
@@ -69,15 +69,15 @@ public class MindMapHistory {
         this.editor = editor;
     }
 
-    public byte[] getXml() {
-        return xml;
+    public byte[] getZippedXml() {
+        return zippedXml;
     }
 
-    public void setXml(byte[] value) {
-        xml = value;
+    public void setZippedXml(byte[] value) {
+        zippedXml = value;
     }
 
     public byte[] getUnzipXml() throws IOException {
-        return ZipUtils.zipToBytes(getXml());
+        return ZipUtils.zipToBytes(getZippedXml());
     }
 }

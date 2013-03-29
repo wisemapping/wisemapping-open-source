@@ -263,7 +263,7 @@ public class MindmapServiceImpl
     public void revertChange(@NotNull Mindmap mindmap, int historyId)
             throws WiseMappingException, IOException {
         final MindMapHistory history = mindmapManager.getHistory(historyId);
-        mindmap.setZippedXml(history.getXml());
+        mindmap.setZippedXml(history.getZippedXml());
         updateMindmap(mindmap, true);
     }
 
