@@ -78,11 +78,14 @@ public class Mindmap {
         return result;
     }
 
-    public byte[] getZippedXml()
-            throws IOException {
+    public byte[] getZippedXml(){
         byte[] result = this.xml;
         if (result != null) {
-            result = ZipUtils.bytesToZip(result);
+            try {
+                result = ZipUtils.bytesToZip(result);
+            } catch (IOException e) {
+                throw new IllegalStateException(e);
+            }
         }
         return result;
     }

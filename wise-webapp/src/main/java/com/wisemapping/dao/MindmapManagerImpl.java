@@ -235,7 +235,7 @@ public class MindmapManagerImpl
         getHibernateTemplate().delete(mindMap);
     }
 
-    private void saveHistory(@NotNull final Mindmap mindMap) throws IOException {
+    private void saveHistory(@NotNull final Mindmap mindMap)  {
         final MindMapHistory history = new MindMapHistory();
 
         history.setZippedXml(mindMap.getZippedXml());
