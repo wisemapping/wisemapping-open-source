@@ -1,0 +1,29 @@
+<map name="8007">
+    <topic central="true" text="Prospace" bgColor="#f2981b" brColor="#cc5627">
+        <link url="prospace.com"/>
+        <note text="Prospace.com%0A%0A%0AShow%20them%20the%20value%20and%20sell%20them%20a%20product%20that%20is%20much%20lower%20than%20the%20preceived%20value.%0A%0AIdentify%20the%20pain%20in%20the%20industry.%20%0A%0ATrying%20to%20get%20a%20job%20is%20a%20pain.%20%20You%20need%20a%20high%20level%20of%20confidence%20to%20market%20yourself.%20%20Prospace%0Areinforces%20that%20confidence%20by%20allowing%20users%20to%20build%20a%20esteem-building%20portfolio%20on%20oneself.%20%20Getting%20a%0Ajob%20takes%20time.%20%0A%0ACareer%20Centers%20need%20to%20bring%20value%20to%20their%20audience.%20%0A%0A%0A%0AShow%20them%20a%20service%20that%20would%20solve%20that%20pain.%20%20%20First%0Abring%20awareness%20to%20that%20pain.%20%20How%20will%20you%20bring%20awareness%20to%20that%20pain%3F%20%20%20Bring%20awareness%20%0Aof%20a%20service%20that%20would%20solve%20that%20pain%20at%20a%20cost%20that%20can%20fit%20reasonable%20in%20their%20budget.%0A%0A%0A%0A%0A%20How%20are%20competitors%20solving%20that%20pain%20now%3F%20%20%20How%20is%20the%20compeition%0Amaking%20them%20aware%20of%20the%20pain.%20%20%20What%20is%20the%20value%20and%20price%20competitors%20bringing%20to%20their%20customers.%0A%0AWhat%20are%20the%20fears%20of%20the%20competition%3F%20%20What%20do%20they%20think%20they%20need%20to%20do%20in%20the%20next%20five%20years%20to%20%0Astay%20ahead%3F%0A"/>
+        <topic position="-314,-150" text="Newspapers">
+            <topic order="0" text="College Newspapers"/>
+        </topic>
+        <topic position="-203,-300" text="Third Party ">
+            <topic order="0" text="Thumbshot" shape="rectagle">
+                <link url="thumbshots.org"/>
+            </topic>
+        </topic>
+        <topic position="312,0" text="Partnerships">
+            <topic order="0" text="Websites">
+                <topic order="0" text="Business Networks">
+                    <topic order="0" text="Xing"/>
+                    <topic order="1" text="konnects.com"/>
+                </topic>
+            </topic>
+        </topic>
+        <topic position="-209,0" text="Career Counseling">
+            <topic order="0" text="Fraternity"/>
+            <topic order="1" text="Professional Associations"/>
+        </topic>
+        <topic position="-178,50" text="White-Label">
+            <topic order="0" text="http://www.harrisconnect.com/"/>
+        </topic>
+    </topic>
+</map>

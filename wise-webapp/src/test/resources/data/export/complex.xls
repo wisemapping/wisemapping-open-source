@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?mso-application progid="Excel.Sheet"?><Workbook xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:duss="urn:schemas-microsoft-com:office:dummyspreadsheet" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns="urn:schemas-microsoft-com:office:spreadsheet">
+<Styles>
+<Style ss:ID="s16" ss:Name="attribute_cell">
+<Borders>
+<Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+<Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+<Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+<Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+</Borders>
+</Style>
+<Style ss:ID="s17" ss:Name="attribute_header">
+<Borders>
+<Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+<Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+<Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+<Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+</Borders>
+<Font ss:Bold="1"/>
+</Style>
+</Styles>
+<Worksheet ss:Name="FreeMind Sheet">
+<Table>
+<Row>
+<Cell ss:Index="1">
+<Data ss:Type="String">PPM Plan</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Business Development </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Backlog Management</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Freeform IT</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Client Project Management</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Governance &amp; Executive</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Finance</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Administration</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Human Resources</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p/>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Freeform Hosting</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Community Outreach</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">R&amp;D</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Goals</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Formulize</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Probono</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String"/>
+</Cell>
+</Row>
+</Table>
+</Worksheet>
+</Workbook>

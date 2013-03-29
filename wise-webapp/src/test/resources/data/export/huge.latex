@@ -1,0 +1,291 @@
+
+	\chapter{I Care}\label{ID_null}
+	\section{veiligheid}\label{ID_null}
+	\subsection{verkeer}\label{ID_null}
+	\subsubsection{filevorming}\label{ID_null}\begin{itemize}
+			\item \label{ID_null}preventie\par
+		\item \label{ID_null}Omleiding zoeken\par
+		
+			\end{itemize}
+			
+	\subsubsection{Openbaar vervoer}\label{ID_null}
+	\subsubsection{Openbare fietsen}\label{ID_null}\begin{itemize}
+			\item \label{ID_null}Trackingsysteem, # fietsen op 1 plaats\par
+		\item \label{ID_null}Fiets bestellen in grote steden\par
+		
+			\end{itemize}
+			
+	\subsubsection{ongevallen}\label{ID_null}\begin{itemize}
+			\item \label{ID_null}preventie\par
+		\begin{itemize}
+			\item \label{ID_null}roekeloos rijgedrag opsporen\par
+		via sensoren aan boord versnelling, manouvres, snelheid,... registreren\par
+		\item \label{ID_null}bestraffen van chauffeurs?\par
+		
+			\end{itemize}
+			\item \label{ID_null}oorzaak\par
+		\begin{itemize}
+			\item \label{ID_null}nagaan van de oorzaak\par
+		\item \label{ID_null}Automatisch opbellen van hulpdiensten\par
+		\item \label{ID_null}opsporen van vluchtmisdrijf\par
+		
+			\end{itemize}
+			\item \label{ID_null}info over de staat van het wegdek\par
+		\begin{itemize}
+			\item \label{ID_null}wegenwerken\par
+		\item \label{ID_null}waarschuwingen\par
+		\item \label{ID_null}aanpassing van max. snelheid\par
+		
+			\end{itemize}
+			
+			\end{itemize}
+			
+	\subsection{criminaliteit}\label{ID_null}
+	\subsubsection{drugs}\label{ID_null}opsporen\par
+		\begin{itemize}
+			\item \label{ID_null}individuele tests\par
+		\item \label{ID_null}testen per woonregio (via afvoerstelsels)\par
+		
+			\end{itemize}
+			
+	\subsubsection{wapenhandel}\label{ID_null}opsporen\par
+		
+	\subsubsection{diefstal}\label{ID_null}tracking via gps\par
+		
+	\subsubsection{Aantal ongevallen/criminele feiten registreren}\label{ID_null}\begin{itemize}
+			\item \label{ID_null}Mapping van probleemsituaties\par
+		\item \label{ID_null}Meer controle\par
+		\item \label{ID_null}Terugkoppeling naar politie/verkeersdienst\par
+		
+			\end{itemize}
+			
+	\section{De markt}\label{ID_null}
+	\subsection{kleding}\label{ID_null}
+	\subsubsection{informatiebronnen per merk}\label{ID_null}slimme kledij\par
+		
+	\subsubsection{kwaliteitsinfo bij aankoop}\label{ID_null}\begin{itemize}
+			\item \label{ID_null}info uit cloud\par
+		\item \label{ID_null}reviews\par
+		
+			\end{itemize}
+			
+	\subsubsection{monitoring}\label{ID_null}
+	\subsubsection{stijlen}\label{ID_null}begeleiding bij het winkelen naar gelijkaardige kleding\par
+		
+	\subsection{voeding}\label{ID_null}
+	\subsubsection{zie bij handelingen --&gt;winkelen}\label{ID_null}
+	\subsection{electronica}\label{ID_null}
+	\subsubsection{eigendomsverificatie}\label{ID_null}\begin{itemize}
+			\item \label{ID_null}GPS tracking\par
+		\item \label{ID_null}koop-verkoop\par
+		\item \label{ID_null}afdanking (sluikstorten)\par
+		
+			\end{itemize}
+			
+	\subsubsection{monitoring}\label{ID_null}\begin{itemize}
+			\item \label{ID_null}kwaliteit\par
+		\begin{itemize}
+			\item \label{ID_null}rechtstreekse link naar producent bij falen\par
+		\item \label{ID_null}reparatieservice\par
+		
+			\end{itemize}
+			\item \label{ID_null}levensloop\par
+		gebruikscycli\par
+		\item \label{ID_null}productie verloop\par
+		\begin{itemize}
+			\item \label{ID_null}door wie\par
+		\item \label{ID_null}wat/wanneer\par
+		\item \label{ID_null}testfasen\par
+		
+			\end{itemize}
+			
+			\end{itemize}
+			
+	\subsection{medicijnen}\label{ID_null}
+	\subsubsection{kwaliteit}\label{ID_null}
+	\subsubsection{werking}\label{ID_null}
+	\subsubsection{neveneffecten}\label{ID_null}
+	\subsubsection{alternatieven}\label{ID_null}
+	\subsection{inrichting (woning)}\label{ID_null}
+	\subsubsection{monitoring}\label{ID_null}\begin{itemize}
+			\item \label{ID_null}kwaliteit\par
+		\item \label{ID_null}eigendomsverificatie\par
+		
+			\end{itemize}
+			
+	\subsubsection{advies}\label{ID_null}kleuren en stijlen\par
+		
+	\subsection{energie}\label{ID_null}
+	\subsubsection{automatische lichten}\label{ID_null}
+	\subsubsection{kamer herkent gebruiker}\label{ID_null}
+	\subsection{diensten}\label{ID_null}
+	\subsection{hygiëne}\label{ID_null}
+	\section{handelingen}\label{ID_null}
+	\subsection{winkelen}\label{ID_null}
+	\subsubsection{winkelhulp}\label{ID_null}\begin{itemize}
+			\item \label{ID_null}productinfo\par
+		\begin{itemize}
+			\item \label{ID_null}allergie\par
+		\begin{itemize}
+			\item \label{ID_null}Gezondheidscontrole\par
+		\item \label{ID_null}Sensor voor vers fruit en vlees\par
+		\item \label{ID_null}Salmonella sensor\par
+		
+			\end{itemize}
+			\item \label{ID_null}prijs\par
+		\item \label{ID_null}kwaliteit\par
+		\begin{itemize}
+			\item \label{ID_null}via cloud\par
+		\item \label{ID_null}databases v. reviews\par
+		\item \label{ID_null}bio\par
+		\item \label{ID_null}voedingstoffen\par
+		
+			\end{itemize}
+			\item \label{ID_null}diëet checker\par
+		\item \label{ID_null}alternatieve producten\par
+		
+			\end{itemize}
+			\item \label{ID_null}digitale portemonnee\par
+		\item \label{ID_null}bestellingen op afstand\par
+		\item \label{ID_null}recepten generator\par
+		\item \label{ID_null}boodschappenlijst\par
+		\begin{itemize}
+			\item \label{ID_null}dichtste bij bovenaan\par
+		\item \label{ID_null}alternatieven indien uitverkocht\par
+		
+			\end{itemize}
+			
+			\end{itemize}
+			
+	\section{milieu}\label{ID_null}
+	\subsection{bosbouw}\label{ID_null}
+	\subsubsection{ziektes bij bomen}\label{ID_null}
+	\subsubsection{parasieten}\label{ID_null}
+	\subsubsection{bodemvervuiling}\label{ID_null}onderzoek\par
+		
+	\subsection{mag ik dit door mijn gootsteen kappen}\label{ID_null}
+	\subsection{pollutie}\label{ID_null}
+	\subsection{afval}\label{ID_null}
+	\subsubsection{verwerking}\label{ID_null}
+	\subsubsection{riolen}\label{ID_null}
+	\subsubsection{cradle 2 cradle}\label{ID_null}
+	\subsubsection{}\label{ID_null}
+	\subsection{dioxines}\label{ID_null}
+	\subsection{eco systemen}\label{ID_null}
+	\subsubsection{diversiteit}\label{ID_null}
+	\subsection{waterreserves}\label{ID_null}
+	\subsubsection{reserves}\label{ID_null}
+	\subsubsection{vervuiling}\label{ID_null}
+	\subsection{alternatieve energie}\label{ID_null}
+	\subsubsection{wind}\label{ID_null}
+	\subsubsection{zon}\label{ID_null}
+	\subsubsection{kernenergie}\label{ID_null}
+	\section{industrie}\label{ID_null}
+	\section{cultuur}\label{ID_null}
+	\subsection{festival}\label{ID_null}
+	\section{bouw}\label{ID_null}
+	\subsection{opvolging zoals plannen zijn getekend}\label{ID_null}
+	\subsubsection{isolatie}\label{ID_null}warmtemetingen\par
+		
+	\subsubsection{juistheid van materialen}\label{ID_null}
+	\subsubsection{nameten}\label{ID_null}
+	\section{aandoeningen en situaties}\label{ID_null}
+	\subsection{zwangerschap}\label{ID_null}
+	\subsubsection{baby monitoren}\label{ID_null}
+	\subsubsection{info over voeding}\label{ID_null}\begin{itemize}
+			\item \label{ID_null}wat is gezond\par
+		\item \label{ID_null}via cloud info over voeding\par
+		
+			\end{itemize}
+			
+	\subsubsection{geboortetimer}\label{ID_null}
+	\subsection{dementen}\label{ID_null}
+	\subsubsection{wegloopdetectie}\label{ID_null}
+	\subsubsection{wassen}\label{ID_null}
+	\subsubsection{eten}\label{ID_null}
+	\section{sport}\label{ID_null}
+	\subsection{opvolging van de sporter}\label{ID_null}
+	\subsubsection{hartslag}\label{ID_null}
+	\subsubsection{bloeddruk}\label{ID_null}
+	\subsubsection{energieverbruik}\label{ID_null}
+	\subsubsection{cadans}\label{ID_null}
+	\subsubsection{gps}\label{ID_null}
+	\section{ziektes}\label{ID_null}
+	\subsection{verschillende ziektes}\label{ID_null}
+	\subsubsection{feedback van de lichaamsconditie}\label{ID_null}\begin{itemize}
+			\item \label{ID_null}aan de patiënt\par
+		waarschuwingen\par
+		\item \label{ID_null}link\par
+		\begin{itemize}
+			\item \label{ID_null}naar ziekenhuis\par
+		\item \label{ID_null}naar hulpdiensten\par
+		\item \label{ID_null}naar behandelend arts\par
+		
+			\end{itemize}
+			\item \label{ID_null}aan dokter\par
+		\begin{itemize}
+			\item \label{ID_null}contacteert patient indien nodig\par
+		\item \label{ID_null}volledig overzicht\par
+		\item \label{ID_null}op afstand consulatie\par
+		
+			\end{itemize}
+			
+			\end{itemize}
+			
+	\subsubsection{MS}\label{ID_null}bevorderen van communicatie tijdens de aftakeling\par
+		\begin{itemize}
+			\item \label{ID_null}naar de dokters toe\par
+		\item \label{ID_null}naar familie en vrienden toe\par
+		
+			\end{itemize}
+			
+	\subsubsection{mucoviscidose}\label{ID_null}\begin{itemize}
+			\item \label{ID_null}longcapaciteit meten\par
+		\item \label{ID_null}alert voor donor\par
+		
+			\end{itemize}
+			
+	\subsubsection{aids}\label{ID_null}vergroten van de database aan info\par
+		
+	\subsubsection{diabetes}\label{ID_null}suikerspiegel meten\par
+		\begin{itemize}
+			\item \label{ID_null}alert indien te laag\par
+		\item \label{ID_null}automatische inspuiting\par
+		
+			\end{itemize}
+			
+	\subsubsection{epilepsie}\label{ID_null}aanval voorspellen??\par
+		
+	\subsubsection{astma}\label{ID_null}detectie van luchtkwaliteit\par
+		in kaart brengen van\par
+		\begin{itemize}
+			\item \label{ID_null}vervuiling\par
+		\item \label{ID_null}pollen\par
+		\item \label{ID_null}allergie veroorzakende deeltjes\par
+		
+			\end{itemize}
+			
+	\subsubsection{anorexia}\label{ID_null}\begin{itemize}
+			\item \label{ID_null}nagaan of ze eten\par
+		\item \label{ID_null}eten ze voldoende\par
+		
+			\end{itemize}
+			
+	\subsection{thuisverzorging}\label{ID_null}
+	\subsubsection{meting van de symptomen}\label{ID_null}\begin{itemize}
+			\item \label{ID_null}toevoeging van eigen waarneming\par
+		\item \label{ID_null}objectieve metingen\par
+		
+			\end{itemize}
+			
+	\subsubsection{link naar dokter}\label{ID_null}
+	\subsubsection{link naar ziekenhuis}\label{ID_null}
+	\subsection{stress}\label{ID_null}
+	\subsubsection{afreageren}\label{ID_null}
+	\subsubsection{monitoring}\label{ID_null}in welke afdeling een probleem\par
+		\begin{itemize}
+			\item \label{ID_null}aan welke factoren ligt dat\par
+		\item \label{ID_null}aanpak\par
+		
+			\end{itemize}
+			

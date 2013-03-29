@@ -1,0 +1,1669 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?mso-application progid="Excel.Sheet"?><Workbook xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:duss="urn:schemas-microsoft-com:office:dummyspreadsheet" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns="urn:schemas-microsoft-com:office:spreadsheet">
+<Styles>
+<Style ss:ID="s16" ss:Name="attribute_cell">
+<Borders>
+<Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+<Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+<Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+<Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+</Borders>
+</Style>
+<Style ss:ID="s17" ss:Name="attribute_header">
+<Borders>
+<Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+<Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+<Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+<Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+</Borders>
+<Font ss:Bold="1"/>
+</Style>
+</Styles>
+<Worksheet ss:Name="FreeMind Sheet">
+<Table>
+<Row>
+<Cell ss:Index="1">
+<Data ss:Type="String">Indicator needs</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Which new measures</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>Identifying new measures or investments that should be implemented.</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Landscape of measures</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Diversity index of innovation support instruments in the region</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>Number of different innovations policy instruments existing  in the region as a share of a total number representing a full typology of instruments</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Existing investments in measures</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">What other regions do differently</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Balance of measure index</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Profile comparison with other regions</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Number of specific types of measures per capita</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">How to design &amp; implement measures</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>Understanding how to design the details of a particular measure and how to implement them.</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Good practices</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Diagnostics</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Internal business innovation factors</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Return on investment to innovation</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Firm's turnover from (new to firm)</p>
+<p>product innovation (as a pecentage of total turnover)</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Increase in the probability to innovate linked to ICT use</p>
+<p>(in product innovation, process innovation, organisational innovaton, marketing innovation)</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Scientific articles by type of collaboration (per capita)</p>
+<p>(international co-authoriship, domestic co-authoriship, single author)</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Increase in a share of expenditures on technological</p>
+<p>innovations in the total amount of regional firms’ expenditures, %</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Increase in the number of innovative companies with in-house R&amp;D</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Increase in th number of innovative companies without in-house R&amp;D</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Increase in th number of firms with</p>
+<p>international/national collaboration on innovation</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Highly cited scientific articles (as a percentage of</p>
+<p>highly cited scientific article in the whole Federation)</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Patents filed by public research organisations</p>
+<p>(as a percentafe of patent application filed under PCT)</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Number of international patents</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Start-up activity (as a percentage of start-up activity in the whole Federation)</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Number of innovative companies to the number of students </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Number of innovative companies to the number of researchers  </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Volume of license agreements to the volume of R&amp;D support from the regional budget </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">How much effort: where &amp; how</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>Understanding the level of effort the region needs to take to compete on innovation and where to put this effort</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">The bottom-line</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>This is what policy makers care about in the end</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Wages</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Dynamics of real wages</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Average wage (compare to the Fed)</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Productivity</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Labor productivity</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Labor productivity growth rate</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Jobs</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Share of high-productive jobs</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Share of creative industries jobs</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Uneployment rate of university graduates</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Income</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">GRP per capita and its growth rate</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Influencing  factors</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Economy</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Economic structure</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Volume of manufacturing production per capita </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Manufacturing value added per capita (non-natural resource-based)</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">The enabling environment</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Ease of doing business</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>WB</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Level of administrative barriers (number and cost of administrative procedures) </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Competition index</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>GCR</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Workforce</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Quality of education</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>GCR</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Inrease in the number of International students</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Quantity of education</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Participation in life-long learning</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>per 100 population aged 25-64</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Increase in literarecy </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Amount of university and colleague</p>
+<p>students per 10 thousands population</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Share of employees with higher education in</p>
+<p>the total amount of population at the working age</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Increase in University students</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Government expenditure on General University Funding</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Access to training, information, and consulting support </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Science &amp; engineering workforce</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Availability of scientists and engineers</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>GCR</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Amount of researches per 10 thousands population</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Average wage of researches per average wage in the region</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Share of researchers in the total number of employees in the region</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Government</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Total expenditure of general government as a percentage of GDP</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Government expenditure on Economic Development</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Access to finance</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Deals</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Venture capital investments for start-ups as a percentage of GDP</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Amounts of business angel, pre-seed, seed and venture financing</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Amount of public co-funding of business R&amp;D</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Number of startups received venture financing </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Number of companies received equity investments </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Available</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Amount of matching grants available in the region for business R&amp;D</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Number of Business Angels</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">ICT</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">ICT use</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>GCR</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Broadband penetration </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Internet penetration</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Computer literacy </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Behavior of innovation actors</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Access to markets</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">FDI</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">foreign JVs</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Inflow of foreign direct investments in high-technology industries</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Foreign direct investment jobs</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>: the percentage of the workforce employed by foreign companies [%].</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">FDI as a share of regional non natural resource-based GRP </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Number of foreign subsidiaries operating in the region</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Share of foreign controlled enterprises</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Exports</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Export intensity in manufacturing and services</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>: exports as a share of total output in manufacturing and services [%].</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Share of high-technology export in the total volume</p>
+<p>of production of goods, works and services</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Share of innovation production/serivces that goes for export,</p>
+<p>by zones (EU, US, CIS, other countries</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Share of high-technology products in government procurements</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Entrepreneurship culture</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Fear of failure rate</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>GEM</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Entrepreneurship as desirable career choice</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>GEM</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">High Status Successful Entrepreneurship</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>GEM</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Collaboration &amp; partnerships</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Number of business contracts with foreign partners for R&amp;D collaboration</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Share of R&amp;D financed from foreign sources</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>UNESCO</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Firms collaborating on innovation with organizations in other countries</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>CIS</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Share of Innovative companies collaborating</p>
+<p>with research institutions on innovation</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Number of joint projects conducted by the local comapnies</p>
+<p>and local consulting/intermediary agencies</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">science and industry links</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Technology absorption</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Local supplier quality</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>GCR</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Share of expenditures on technological innovations</p>
+<p>in the amount of sales</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Number of purchased new technologies</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Investments in ICT by asset (IT equipment,</p>
+<p>communication equipment, software)</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Machinery and equipment</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Software and databases</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Level of energy efficiency of the regional economy</p>
+<p>(can be measured by sectors and for the whole region)</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Share of wastes in the total volume of production (by sector)</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Innovation activities in firms</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Share of innovative companies</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Business R&amp;D expenditures per GRP</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Factors hampering innovation</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>CIS, BEEPS</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Expenditure on innovation by firm size</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">R&amp;D and other intellectl property products</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Growth of the number of innovative companies </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Outpus</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Volume of new to Russian market production per GRP</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Volume of new to world market production per total production</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Growth of the volume of production of innovative companies </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Volume of innovation production per capita </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Entrepreneurial activities</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">New business density</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>Number of new organizations per thousand working age population (WBI)</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Volume of newly registered corporations </Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>(as a percentage of all registered corporations)</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Share of gazelle companies in the total number of businesses</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">R&amp;D production</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Outputs</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Amount of domestically protected intellectual</p>
+<p>property per 1 mln. population</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Amount of PCT-applications per 1 mln. population</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Number of domestic patent applications per R&amp;D expenditures</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Number of intellectual property exploited by regional</p>
+<p>enterprises per 1 mln. population</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Publication activity of regional scientists and researches</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Inputs</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Regional and local budget expenditures on R&amp;D</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Government R&amp;D expenditure </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Public sector innovation</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Number of advanced ICT introduced in the budgetary organizations</p>
+<p>(regional power, municipal bodies, social and educational organizations)</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">E-government index</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Number of management innovations introduced in the budgetary organizations</p>
+<p>(regional power, municipal bodies, social and educational organizations)</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Supporting organizations</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Research institutions</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Collaboration</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Number of interactions between universities</p>
+<p>and large companies  by university size</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Resources</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">R&amp;D expenditures per 1 researcher</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Average wage of researches per average wage in the region</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">High education expenditure on R&amp;D</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Scientific outputs</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Publications</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="8">
+<Data ss:Type="String">Impact of publications in the ISI database (h-index)</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="8">
+<Data ss:Type="String">Number of publications in international journals per worker per year</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="8">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Publications: Academic articles in international peer-reviewed</p>
+<p>journals per 1,000 researchers [articles/1,000 researchers].</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Number of foreign patents granted per staff</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Supportive measures</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Diversity index of university entrepreneurship support measures</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>Number of measures offered by the unversity within a preset range (NCET2 survey)</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Commercialization</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Licensing</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="8">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Academic licenses: Number of licenses</p>
+<p>per 1,000 researchers.[licenses/researcher]</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Spin-offs</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="8">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Number of spin-offs with external private financing</p>
+<p>as a share of the institution's R&amp;D budget</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Industry contracts</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="8">
+<Data ss:Type="String">Industry revenue per staff </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="8">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Foreign contracts: Number of contracts with foreign industria</p>
+<p>l companies at scientific and educational organizations</p>
+<p>per 1,000 researchers [contracts/researchers]</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="8">
+<Data ss:Type="String">Share of industry income from foreign companies</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="8">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Revenue raised from industry R&amp;D as a fraction</p>
+<p>of total institutional budget (up to a cap)</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="8">
+<Data ss:Type="String">Difficulties faced by research organization in collaborating with SMEs</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Private market</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Number of innovation &amp; IP services organizations</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>(design firms, IP consultants, etc.)</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Number of private innovation infrastructure organizations </Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>(e.g. accelerators, incubators)</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Access to certification and licensing for specific activities </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Access to suppliers of equipment, production and engineering services </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Innovation infrastructure</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Investments</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Public investment in innovation infrastructure</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Increase of government investment in innovation infrastructure</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String"> Number of Development institution projects performed in the region</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Volume of seed investments by the regional budget </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Volume of venture financing from the regional budget </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Volume of state support per one company </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">What to do about existing measures</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>Understanding which measures should be strengthened, dropped or improved, and how.</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Demand for measure</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Quality of beneficiaries</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Growth rates of employment in supported innovative firms</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Growth rates of employment in supported innovative firms</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Role of IP for tenants/clients</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>WIPO SURVEY OF INTELLECTUAL PROPERTY SERVICES OF</p>
+<p>EUROPEAN TECHNOLOGY INCUBATORS</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Share of tenants with innovation activities</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Gazelle tenant: Share of tenants with</p>
+<p>annual revenue growth of more than 20%</p>
+<p>for each of the past four years or since formation [%]</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Globalization of tenants: Median share of tenant</p>
+<p>revenues obtained from exports [%]</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Number of beneficiaries</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Number of projects conducted by companies in cooperation with innovation infrastructure</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Scope and intensity of use of services offered to firms</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Number of companies supported by the infrastructure (training, information, consultations, etc.)</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Increase in the number of business applying for public support programmes (regional, federal, international) </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Degree of access</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Level of awareness</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Perception (opinion poll) of business managers</p>
+<p>regarding public support programmes</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Transparency</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Perception of business managers in terms</p>
+<p>of level of transparency of support measures in the region</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Description by regional business managers of the way the</p>
+<p>select and apply for regional and federal support schemes</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Number of applicants</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Increase in the number of business applying for public support programmes</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Number of companies that know about a particular program</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Increase in the number of start-ups applying to receive VC investments</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Increase in the number of start-ups applying for a place in the incubators</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Inputs of measures</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Qualified staff</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>JL: not sure how this would be measured</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Budget per beneficiary</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Performance of measure</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Implementation of measure</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Target vs. actual KPIs</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Intermediate outputs per budget</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Qualification of staff</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Output of measure</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Opinion surveys</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Opinions of beneficiaries</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Hard metrics</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Output per headcount (e.g. staff, researchers)</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Productivity analysis</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Impact of measure</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Opinion surveys</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Perception of support impact (opinion polls)</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Perception of the activity of regional government by the regional companies </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Hard metrics</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Increase in number of small innovation enterprises </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Growth of the total volume of salary in the supported companies (excluding inflation) </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Growth of the volume of regional taxes paid by the supported companies </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Growth of the volume of export at the supported companies </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Number of new products/projects at the companies that received support </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Impact assessment </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Average leverage of 1rub (there would be</p>
+<p>several programs with different leverage)</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Volume of attracted money per one ruble</p>
+<p>of regional budget expenditures on innovation projects</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">What investments in innovative projects</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p>Understanding what investments should be made in innovative projects.</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Competitive niches</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Clusters behavior</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Cluster EU star rating</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Share of value added of cluster enterprises in GRP</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Share of cluster products in the relevant world market segment </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Share of export in cluster total volume of sales</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Growth of the volume of production in the cluster companies</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Growth of the volume of production in the cluster companies</p>
+<p>to the volume of state support for the cluster</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Growth of the volume of innovation production in the cluster</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Share of export in cluster total volume of sales (by zones: US, EU, CIS, other countries) </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Internal behavior</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Median wage in the cluster</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Growth of the volume of R&amp;D in the cluster</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Cluster collaboration</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">R&amp;D</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Patent map</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Publications map</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Industry</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">FDI map</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Gazelle map</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Business R&amp;D expenditures as a share of revenues by sector</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Share of regional products in the world market</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Expenditure on innovation by firm size, by sector </Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Entrepreneurship</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Startup map</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Venture investment map</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Attractiveness to public competitive funding</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Fed and regional seed fund investments</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>FASIE projects: Number of projects supported</p>
+<p>by the FASIE per 1,000 workers [awards/worker]</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Competitiveness support factors</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Private investment in innovation</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">How to improve image</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Rankings</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">macro indicators</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">meso-indicators</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Innovation investment climate</Data>
+</Cell>
+</Row>
+</Table>
+</Worksheet>
+</Workbook>

@@ -1,0 +1,1076 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?mso-application progid="Excel.Sheet"?><Workbook xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:duss="urn:schemas-microsoft-com:office:dummyspreadsheet" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns="urn:schemas-microsoft-com:office:spreadsheet">
+<Styles>
+<Style ss:ID="s16" ss:Name="attribute_cell">
+<Borders>
+<Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+<Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+<Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+<Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+</Borders>
+</Style>
+<Style ss:ID="s17" ss:Name="attribute_header">
+<Borders>
+<Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+<Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+<Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+<Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+</Borders>
+<Font ss:Bold="1"/>
+</Style>
+</Styles>
+<Worksheet ss:Name="FreeMind Sheet">
+<Table>
+<Row>
+<Cell ss:Index="1">
+<Data ss:Type="String">I Care</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">veiligheid</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">verkeer</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p/>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">filevorming</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">preventie</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p/>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Omleiding zoeken</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Openbaar vervoer</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Openbare fietsen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Trackingsysteem, # fietsen op 1 plaats</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Fiets bestellen in grote steden</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">ongevallen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">preventie</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">roekeloos rijgedrag opsporen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">via sensoren aan boord versnelling, manouvres, snelheid,... registreren</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">bestraffen van chauffeurs?</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">oorzaak</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">nagaan van de oorzaak</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">Automatisch opbellen van hulpdiensten</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">opsporen van vluchtmisdrijf</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">info over de staat van het wegdek</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">wegenwerken</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">waarschuwingen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">aanpassing van max. snelheid</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">criminaliteit</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p/>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">drugs</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">opsporen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">individuele tests</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">testen per woonregio (via afvoerstelsels)</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">wapenhandel</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">opsporen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">diefstal</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">tracking via gps</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">Aantal ongevallen/criminele feiten registreren</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Mapping van probleemsituaties</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Meer controle</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">Terugkoppeling naar politie/verkeersdienst</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">De markt</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p/>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">kleding</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">informatiebronnen per merk</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">slimme kledij</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">kwaliteitsinfo bij aankoop</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">info uit cloud</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">reviews</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">monitoring</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p/>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">stijlen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">begeleiding bij het winkelen naar gelijkaardige kleding</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">voeding</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">zie bij handelingen --&gt;winkelen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">electronica</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">eigendomsverificatie</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">GPS tracking</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">koop-verkoop</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">afdanking (sluikstorten)</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">monitoring</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">kwaliteit</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">rechtstreekse link naar producent bij falen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">reparatieservice</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">levensloop</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">gebruikscycli</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">productie verloop</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">door wie</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">wat/wanneer</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">testfasen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">medicijnen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">kwaliteit</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">werking</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">neveneffecten</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">alternatieven</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">inrichting (woning)</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">monitoring</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">kwaliteit</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">eigendomsverificatie</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">advies</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">kleuren en stijlen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">energie</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">automatische lichten</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">kamer herkent gebruiker</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">diensten</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">hygiëne</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">handelingen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">winkelen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">winkelhulp</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">productinfo</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">allergie</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Gezondheidscontrole</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Sensor voor vers fruit en vlees</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">Salmonella sensor</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">prijs</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">kwaliteit</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">via cloud</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">databases v. reviews</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">bio</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">voedingstoffen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">diëet checker</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">alternatieve producten</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">digitale portemonnee</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">bestellingen op afstand</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">recepten generator</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p/>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">boodschappenlijst</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">dichtste bij bovenaan</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">alternatieven indien uitverkocht</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">milieu</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">bosbouw</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">ziektes bij bomen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">parasieten</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">bodemvervuiling</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">onderzoek</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">mag ik dit door mijn gootsteen kappen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">pollutie</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">afval</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">verwerking</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">riolen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">cradle 2 cradle</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String"/>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">dioxines</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">eco systemen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">diversiteit</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">waterreserves</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">reserves</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">vervuiling</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">alternatieve energie</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">wind</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">zon</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">kernenergie</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">industrie</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">cultuur</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">festival</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">bouw</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p/>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">opvolging zoals plannen zijn getekend</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">isolatie</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">warmtemetingen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">juistheid van materialen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">nameten</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">aandoeningen en situaties</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">zwangerschap</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">baby monitoren</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">info over voeding</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">wat is gezond</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">via cloud info over voeding</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p/>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">geboortetimer</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p/>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">dementen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">wegloopdetectie</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">wassen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">eten</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">sport</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">opvolging van de sporter</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">hartslag</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">bloeddruk</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">energieverbruik</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">cadans</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">gps</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">ziektes</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">verschillende ziektes</Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p/>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">feedback van de lichaamsconditie</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">aan de patiënt</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">waarschuwingen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">link</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">naar ziekenhuis</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">naar hulpdiensten</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">naar behandelend arts</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">aan dokter</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">contacteert patient indien nodig</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">volledig overzicht</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">op afstand consulatie</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">MS</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">bevorderen van communicatie tijdens de aftakeling</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">naar de dokters toe</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">naar familie en vrienden toe</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">mucoviscidose</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">longcapaciteit meten</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">alert voor donor</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">aids</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">vergroten van de database aan info</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">diabetes</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">suikerspiegel meten</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">alert indien te laag</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">automatische inspuiting</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">epilepsie</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">aanval voorspellen??</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">astma</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">detectie van luchtkwaliteit</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">in kaart brengen van</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">vervuiling</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">pollen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="7">
+<Data ss:Type="String">allergie veroorzakende deeltjes</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">anorexia</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">nagaan of ze eten</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">eten ze voldoende</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">thuisverzorging</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">meting van de symptomen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">toevoeging van eigen waarneming</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">objectieve metingen</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">link naar dokter</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">link naar ziekenhuis</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">stress</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">afreageren</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">monitoring</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="5">
+<Data ss:Type="String">in welke afdeling een probleem</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">aan welke factoren ligt dat</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="6">
+<Data ss:Type="String">aanpak</Data>
+</Cell>
+</Row>
+</Table>
+</Worksheet>
+</Workbook>
