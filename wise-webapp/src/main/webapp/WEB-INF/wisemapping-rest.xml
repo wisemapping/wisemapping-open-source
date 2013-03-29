@@ -64,6 +64,7 @@
                 <entry key="txt" value="text/plain"/>
                 <entry key="xls" value="application/vnd.ms-excel"/>
                 <entry key="otd" value="application/vnd.oasis.opendocument.text"/>
+                <entry key="mmap" value="application/vnd.mindjet.mindmanager"/>
             </map>
         </property>
         <property name="viewResolvers">
@@ -127,6 +128,11 @@
 
     <bean id="transformViewTxt" class="com.wisemapping.rest.view.TransformView">
         <constructor-arg value="text/plain"/>
+        <constructor-arg ref="notificationService"/>
+    </bean>
+
+    <bean id="transformViewMMap" class="com.wisemapping.rest.view.TransformView">
+        <constructor-arg value="application/vnd.mindjet.mindmanager"/>
         <constructor-arg ref="notificationService"/>
     </bean>
 

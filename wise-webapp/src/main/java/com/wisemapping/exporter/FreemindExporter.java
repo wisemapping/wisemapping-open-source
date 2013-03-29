@@ -291,8 +291,11 @@ public class FreemindExporter
                     final String size = part[idx];
                     if (size != null && !size.isEmpty()) {
                         int freeSize = Integer.parseInt(size);
-                        font.setSIZE(BigInteger.valueOf(wiseToFreeFontSize.get(freeSize)));
-                        updated = true;
+                        Integer fsize = wiseToFreeFontSize.get(freeSize);
+                        if(fsize!=null){
+                            font.setSIZE(BigInteger.valueOf(fsize));
+                            updated = true;
+                        }
                     }
                 }
                 idx++;

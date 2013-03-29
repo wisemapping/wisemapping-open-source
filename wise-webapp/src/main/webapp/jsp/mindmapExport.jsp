@@ -18,6 +18,12 @@
                 <spring:message code="FREEMIND_EXPORT_FORMAT_DETAILS"/>
             </label>
 
+            <label for="mmap">
+                <input type="radio" name="exportFormat" value="mmap" id="mmap"/>
+                <strong><spring:message code="MINDJET_EXPORT_FORMAT"/></strong><br/>
+                <spring:message code="MINDJET_EXPORT_FORMAT_DETAILS"/>
+            </label>
+
             <label for="wisemapping">
                 <input type="radio" id="wisemapping" name="exportFormat" value="wxml"/>
                 <strong><spring:message code="WISEMAPPING_EXPORT_FORMAT"/></strong><br/>
@@ -65,6 +71,7 @@
                 <spring:message code="OPEN_OFFICE_EXPORT_FORMAT_DETAILS"/>
             </label>
 
+
         </fieldset>
     </form>
 </div>
@@ -80,7 +87,7 @@
     // No way to obtain map svg. Hide panels..
     if (window.location.pathname.indexOf('exportf') != -1) {
         $('#exportInfo').hide();
-        $('#freemind,#pdf,#svg,#odt,#txt,#xls').click('click', function (event) {
+        $('#freemind,#pdf,#svg,#odt,#txt,#xls,#mmap').click('click', function (event) {
             $('#imgFormat').hide();
         });
 

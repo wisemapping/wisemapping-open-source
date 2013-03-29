@@ -32,7 +32,7 @@ final public class Utils {
     }
 
     @SuppressWarnings({"ConstantConditions"})
-    @NotNull
+    @Nullable
     public static User getUser() {
         return getUser(false);
     }

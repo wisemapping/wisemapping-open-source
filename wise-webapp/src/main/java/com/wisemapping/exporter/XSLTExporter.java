@@ -55,11 +55,6 @@ public class XSLTExporter implements Exporter {
     }
 
     @NotNull
-    public static Exporter createTextExporter() {
-        return create(Type.TEXT);
-    }
-
-    @NotNull
     public static Exporter create(@NotNull Type type) {
         return new XSLTExporter(type);
     }
@@ -70,6 +65,7 @@ public class XSLTExporter implements Exporter {
         CSV("mm2csv.xsl"),
         LATEX("mm2latex.xsl"),
         MICROSOFT_EXCEL("mm2xls_utf8.xsl"),
+        MINDJET("mm2mj.xsl"),
         OPEN_OFFICE("mm2oowriter.xsl");
 
         public String getXsltName() {

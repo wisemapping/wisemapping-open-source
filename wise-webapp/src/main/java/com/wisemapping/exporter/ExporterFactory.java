@@ -54,6 +54,7 @@ public class ExporterFactory {
     private static final String GROUP_NODE_NAME = "g";
     private static final String IMAGE_NODE_NAME = "image";
     public static final int MARGING = 50;
+    public static final String UTF_8_CHARSET_NAME = "UTF-8";
     private File baseImgDir;
 
     public ExporterFactory(@NotNull final ServletContext servletContext) throws ParserConfigurationException {
@@ -121,27 +122,32 @@ public class ExporterFactory {
             }
             case SVG: {
                 final String svgString = normalizeSvg(mapSvg, true);
-                output.write(svgString.getBytes("UTF-8"));
+                output.write(svgString.getBytes(UTF_8_CHARSET_NAME));
                 break;
             }
             case TEXT: {
                 final Exporter exporter =  XSLTExporter.create(XSLTExporter.Type.TEXT);
-                exporter.export(xml.getBytes("UTF-8"), output);
+                exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
                 break;
             }
             case OPEN_OFFICE_WRITER: {
                 final Exporter exporter =  XSLTExporter.create(XSLTExporter.Type.OPEN_OFFICE);
-                exporter.export(xml.getBytes("UTF-8"), output);
+                exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
                 break;
             }
             case MICROSOFT_EXCEL: {
                 final Exporter exporter =  XSLTExporter.create(XSLTExporter.Type.MICROSOFT_EXCEL);
-                exporter.export(xml.getBytes("UTF-8"), output);
+                exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
                 break;
             }
             case FREEMIND: {
                 final FreemindExporter exporter = new FreemindExporter();
-                exporter.export(xml.getBytes("UTF-8"), output);
+                exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
+                break;
+            }
+            case MIND_MANAGER: {
+                final Exporter exporter =  XSLTExporter.create(XSLTExporter.Type.MINDJET);
+                exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
                 break;
             }
             default:

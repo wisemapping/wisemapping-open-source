@@ -30,7 +30,9 @@ public enum ExportFormat {
     MICROSOFT_EXCEL("application/vnd.ms-excel", "xls"),
     MICROSOFT_WORD("application/msword", "doc"),
     OPEN_OFFICE_WRITER("application/vnd.oasis.opendocument.text", "odt"),
+    MIND_MANAGER("application/vnd.mindjet.mindmanager", "mmap"),
     WISEMAPPING("application/wisemapping+xml", "wxml");
+
 
     private String contentType;
     private String fileExtension;

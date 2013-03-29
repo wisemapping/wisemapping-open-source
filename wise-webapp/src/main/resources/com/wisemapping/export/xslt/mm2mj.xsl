@@ -23,18 +23,18 @@
 -->
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
-    xmlns:ap="http://schemas.mindjet.com/MindManager/Application/2003"
-    xmlns:cor="http://schemas.mindjet.com/MindManager/Core/2003"
-    xmlns:pri="http://schemas.mindjet.com/MindManager/Primitive/2003"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://schemas.mindjet.com/MindManager/Application/2003 http://schemas.mindjet.com/MindManager/Application/2003 http://schemas.mindjet.com/MindManager/Core/2003 http://schemas.mindjet.com/MindManager/Core/2003 http://schemas.mindjet.com/MindManager/Delta/2003 http://schemas.mindjet.com/MindManager/Delta/2003 http://schemas.mindjet.com/MindManager/Primitive/2003 http://schemas.mindjet.com/MindManager/Primitive/2003">
+                xmlns:ap="http://schemas.mindjet.com/MindManager/Application/2003"
+                xmlns:cor="http://schemas.mindjet.com/MindManager/Core/2003"
+                xmlns:pri="http://schemas.mindjet.com/MindManager/Primitive/2003"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://schemas.mindjet.com/MindManager/Application/2003 http://schemas.mindjet.com/MindManager/Application/2003 http://schemas.mindjet.com/MindManager/Core/2003 http://schemas.mindjet.com/MindManager/Core/2003 http://schemas.mindjet.com/MindManager/Delta/2003 http://schemas.mindjet.com/MindManager/Delta/2003 http://schemas.mindjet.com/MindManager/Primitive/2003 http://schemas.mindjet.com/MindManager/Primitive/2003">
     <xsl:template match="map">
         <xsl:element name="ap:Map">
             <xsl:element name="ap:OneTopic">
                 <xsl:apply-templates select="node"/>
             </xsl:element>
             <xsl:element name="ap:Relationships">
-                <xsl:apply-templates select="descendant-or-self::arrowlink"> </xsl:apply-templates>
+                <xsl:apply-templates select="descendant-or-self::arrowlink"></xsl:apply-templates>
             </xsl:element>
         </xsl:element>
     </xsl:template>
@@ -43,8 +43,8 @@
         <xsl:element name="ap:Topic">
             <xsl:attribute name="OId">
                 <xsl:value-of
-                    select="concat(substring-after(@ID, '_'), substring('rW54nezC90m8NYAi2fjQvw==', string-length(substring-after(@ID, '_'))+1))"
-                />
+                        select="concat(substring-after(@ID, '_'), substring('rW54nezC90m8NYAi2fjQvw==', string-length(substring-after(@ID, '_'))+1))"
+                        />
             </xsl:attribute>
             <xsl:if test="node">
                 <xsl:element name="ap:SubTopics">
@@ -73,7 +73,7 @@
                 <xsl:element name="ap:Color">
                     <xsl:attribute name="FillColor">
                         <xsl:value-of select="concat('ff', substring-after(@BACKGROUND_COLOR, '#'))"
-                        />
+                                />
                     </xsl:attribute>
                 </xsl:element>
             </xsl:if>
@@ -82,7 +82,8 @@
                 <xsl:element name="ap:SubTopicShape">
                     <xsl:if test="@STYLE = 'bubble'">
                         <xsl:attribute name="SubTopicShape"
-                            >urn:mindjet:RoundedRectangle</xsl:attribute>
+                                >urn:mindjet:RoundedRectangle
+                        </xsl:attribute>
                     </xsl:if>
                     <xsl:if test="@STYLE = 'fork'">
                         <xsl:attribute name="SubTopicShape">urn:mindjet:Line</xsl:attribute>
@@ -94,7 +95,8 @@
                 <xsl:element name="ap:SubTopicShape">
                     <xsl:if test="parent::map">
                         <xsl:attribute name="SubTopicShape"
-                            >urn:mindjet:RoundedRectangle</xsl:attribute>
+                                >urn:mindjet:RoundedRectangle
+                        </xsl:attribute>
                     </xsl:if>
                     <xsl:if test="not(parent::map)">
                         <xsl:attribute name="SubTopicShape">urn:mindjet:Line</xsl:attribute>
@@ -102,7 +104,8 @@
                     <xsl:for-each select="ancestor::node">
                         <xsl:if test="@STYLE = 'bubble'">
                             <xsl:attribute name="SubTopicShape"
-                                >urn:mindjet:RoundedRectangle</xsl:attribute>
+                                    >urn:mindjet:RoundedRectangle
+                            </xsl:attribute>
                         </xsl:if>
                         <xsl:if test="@STYLE = 'fork'">
                             <xsl:attribute name="SubTopicShape">urn:mindjet:Line</xsl:attribute>
@@ -115,17 +118,20 @@
                 <xsl:element name="ap:SubTopicsShape">
                     <xsl:if test="contains(child::edge/@STYLE, 'bezier')">
                         <xsl:attribute name="SubTopicsConnectionStyle"
-                            >urn:mindjet:Curve</xsl:attribute>
+                                >urn:mindjet:Curve
+                        </xsl:attribute>
                     </xsl:if>
                     <xsl:if test="contains(child::edge/@STYLE, 'linear')">
                         <xsl:attribute name="SubTopicsConnectionStyle"
-                            >urn:mindjet:Straight</xsl:attribute>
+                                >urn:mindjet:Straight
+                        </xsl:attribute>
                     </xsl:if>
                     <xsl:if test="parent::map">
                         <xsl:attribute name="SubTopicsAlignment">urn:mindjet:Center</xsl:attribute>
                         <xsl:attribute name="SubTopicsGrowth">urn:mindjet:Horizontal</xsl:attribute>
                         <xsl:attribute name="SubTopicsGrowthDirection"
-                            >urn:mindjet:AutomaticHorizontal</xsl:attribute>
+                                >urn:mindjet:AutomaticHorizontal
+                        </xsl:attribute>
                         <xsl:attribute name="VerticalDistanceBetweenSiblings">150</xsl:attribute>
                     </xsl:if>
                 </xsl:element>
@@ -172,7 +178,7 @@
             <xsl:element name="ap:Image">
                 <xsl:element name="ap:ImageData">
                     <xsl:attribute name="ImageType">urn:mindjet:PngImage</xsl:attribute>
-                    <xsl:attribute name="CustomImageType"> </xsl:attribute>
+                    <xsl:attribute name="CustomImageType"></xsl:attribute>
                     <xsl:element name="cor:Uri">
                         <xsl:attribute name="xsi:nil">false</xsl:attribute>
                         <xsl:text>mmarch://bin/</xsl:text>
@@ -184,37 +190,37 @@
     </xsl:template>
 
     <xsl:template match="arrowlink">
-            <xsl:element name="ap:Relationship">
-                <xsl:element name="ap:ConnectionGroup">
-                    <xsl:attribute name="Index">0</xsl:attribute>
-                    <xsl:element name="ap:Connection">
-                        <xsl:element name="ap:ObjectReference">
-                            <xsl:attribute name="OIdRef">
-                                <xsl:value-of
+        <xsl:element name="ap:Relationship">
+            <xsl:element name="ap:ConnectionGroup">
+                <xsl:attribute name="Index">0</xsl:attribute>
+                <xsl:element name="ap:Connection">
+                    <xsl:element name="ap:ObjectReference">
+                        <xsl:attribute name="OIdRef">
+                            <xsl:value-of
                                     select="concat(substring-after(parent::node/@ID, '_'), substring('rW54nezC90m8NYAi2fjQvw==', string-length(substring-after(parent::node/@ID, '_'))+1))"
-                                />
-                            </xsl:attribute>
-                        </xsl:element>
+                                    />
+                        </xsl:attribute>
                     </xsl:element>
-                </xsl:element>
-                <xsl:element name="ap:ConnectionGroup">
-                    <xsl:attribute name="Index">1</xsl:attribute>
-                    <xsl:element name="ap:Connection">
-                        <xsl:element name="ap:ObjectReference">
-                            <xsl:attribute name="OIdRef">
-                                <xsl:value-of
-                                    select="concat(substring-after(@DESTINATION, '_'), substring('rW54nezC90m8NYAi2fjQvw==', string-length(substring-after(@DESTINATION, '_'))+1))"
-                                />
-                            </xsl:attribute>
-                        </xsl:element>
-                    </xsl:element>
-                </xsl:element>
-                <xsl:element name="ap:AutoRoute">
-                    <xsl:attribute name="AutoRouting">true</xsl:attribute>
                 </xsl:element>
             </xsl:element>
+            <xsl:element name="ap:ConnectionGroup">
+                <xsl:attribute name="Index">1</xsl:attribute>
+                <xsl:element name="ap:Connection">
+                    <xsl:element name="ap:ObjectReference">
+                        <xsl:attribute name="OIdRef">
+                            <xsl:value-of
+                                    select="concat(substring-after(@DESTINATION, '_'), substring('rW54nezC90m8NYAi2fjQvw==', string-length(substring-after(@DESTINATION, '_'))+1))"
+                                    />
+                        </xsl:attribute>
+                    </xsl:element>
+                </xsl:element>
+            </xsl:element>
+            <xsl:element name="ap:AutoRoute">
+                <xsl:attribute name="AutoRouting">true</xsl:attribute>
+            </xsl:element>
+        </xsl:element>
     </xsl:template>
-  
+
     <xsl:template match="cloud">
         <xsl:element name="ap:OneBoundary">
             <xsl:element name="ap:Boundary">
@@ -240,7 +246,8 @@
             <xsl:if test="contains(@BUILTIN, 'full-')">
                 <xsl:element name="ap:Task">
                     <xsl:attribute name="TaskPriority">urn:mindjet:Prio<xsl:value-of
-                            select="substring-after(@BUILTIN, 'full-')"/></xsl:attribute>
+                            select="substring-after(@BUILTIN, 'full-')"/>
+                    </xsl:attribute>
                 </xsl:element>
             </xsl:if>
         </xsl:if>

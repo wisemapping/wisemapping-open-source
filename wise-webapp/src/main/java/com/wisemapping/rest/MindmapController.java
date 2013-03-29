@@ -99,6 +99,17 @@ public class MindmapController extends BaseController {
         return new ModelAndView("transformViewTxt", values);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/vnd.mindjet.mindmanager"}, params = {"download=mmap"})
+    @ResponseBody
+    public ModelAndView retrieveDocumentAsMindJet(@PathVariable int id) throws IOException {
+        final Mindmap mindMap = mindmapService.findMindmapById(id);
+        final Map<String, Object> values = new HashMap<String, Object>();
+        values.put("content", mindMap.getXmlStr());
+        values.put("filename", mindMap.getTitle());
+        return new ModelAndView("transformViewMMap", values);
+    }
+
+
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/vnd.ms-excel"}, params = {"download=xls"})
     @ResponseBody
     public ModelAndView retrieveDocumentAsExcel(@PathVariable int id) throws IOException {

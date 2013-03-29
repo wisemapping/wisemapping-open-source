@@ -61,12 +61,12 @@ public class ExportXsltBasedTest {
             }
         });
 
-        final Object[][] result = new Object[freeMindFiles.length * 6][2];
+        final Object[][] result = new Object[freeMindFiles.length * 7][2];
         for (int i = 0; i < freeMindFiles.length; i++) {
             File freeMindFile = freeMindFiles[i];
             final String name = freeMindFile.getName();
 
-            int pos = i * 6;
+            int pos = i * 7;
             final String fileName = name.substring(0, name.lastIndexOf("."));
             result[pos++] = new Object[]{XSLTExporter.Type.TEXT, freeMindFile, new File(DATA_DIR_PATH, fileName + "." + ExportFormat.TEXT.getFileExtension())};
             result[pos++] = new Object[]{XSLTExporter.Type.CSV, freeMindFile, new File(DATA_DIR_PATH, fileName + ".csv")};
@@ -74,6 +74,8 @@ public class ExportXsltBasedTest {
             result[pos++] = new Object[]{XSLTExporter.Type.LATEX, freeMindFile, new File(DATA_DIR_PATH, fileName + ".latex")};
             result[pos++] = new Object[]{XSLTExporter.Type.MICROSOFT_EXCEL, freeMindFile, new File(DATA_DIR_PATH, fileName + "." + ExportFormat.MICROSOFT_EXCEL.getFileExtension())};
             result[pos++] = new Object[]{XSLTExporter.Type.OPEN_OFFICE, freeMindFile, new File(DATA_DIR_PATH, fileName + "." + ExportFormat.OPEN_OFFICE_WRITER.getFileExtension())};
+            result[pos++] = new Object[]{XSLTExporter.Type.MINDJET, freeMindFile, new File(DATA_DIR_PATH, fileName + "." + ExportFormat.MIND_MANAGER.getFileExtension())};
+
         }
 
         return result;

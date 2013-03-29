@@ -67,7 +67,7 @@ public class ExportFreemindTest {
         for (int i = 0; i < freeMindFiles.length; i++) {
             File freeMindFile = freeMindFiles[i];
             final String name = freeMindFile.getName();
-            result[i] = new Object[]{freeMindFile, new File(DATA_DIR_PATH, name.substring(0, name.lastIndexOf(".")) + ".mmr")};
+            result[i] = new Object[]{freeMindFile, new File(DATA_DIR_PATH, name.substring(0, name.lastIndexOf(".")) + ".mm")};
         }
 
         return result;
