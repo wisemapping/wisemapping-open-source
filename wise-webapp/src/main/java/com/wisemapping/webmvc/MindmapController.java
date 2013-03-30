@@ -20,6 +20,7 @@ package com.wisemapping.webmvc;
 
 
 import com.wisemapping.exceptions.AccessDeniedSecurityException;
+import com.wisemapping.exceptions.MapCouldNotFoundException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.Mindmap;
@@ -29,7 +30,6 @@ import com.wisemapping.service.LockManager;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.view.MindMapBean;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -59,7 +59,7 @@ public class MindmapController {
     }
 
     @RequestMapping(value = "maps/{id}/details")
-    public String showDetails(@PathVariable int id, @NotNull Model model,@NotNull HttpServletRequest request) throws AccessDeniedSecurityException {
+    public String showDetails(@PathVariable int id, @NotNull Model model, @NotNull HttpServletRequest request) throws MapCouldNotFoundException {
         final MindMapBean mindmap = findMindmapBean(id);
         model.addAttribute("mindmap", mindmap);
         model.addAttribute("baseUrl", request.getAttribute("site.baseurl"));
@@ -67,7 +67,7 @@ public class MindmapController {
     }
 
     @RequestMapping(value = "maps/{id}/print")
-    public String showPrintPage(@PathVariable int id, @NotNull Model model) throws AccessDeniedSecurityException {
+    public String showPrintPage(@PathVariable int id, @NotNull Model model) throws MapCouldNotFoundException {
         final MindMapBean mindmap = findMindmapBean(id);
         model.addAttribute("principal", Utils.getUser());
         model.addAttribute("mindmap", mindmap);
@@ -77,33 +77,33 @@ public class MindmapController {
     }
 
     @RequestMapping(value = "maps/{id}/export")
-    public String showExportPage(@PathVariable int id, @NotNull Model model) throws IOException, AccessDeniedSecurityException {
+    public String showExportPage(@PathVariable int id, @NotNull Model model) throws IOException, MapCouldNotFoundException {
         final Mindmap mindmap = findMindmap(id);
         model.addAttribute("mindmap", mindmap);
         return "mindmapExport";
     }
 
     @RequestMapping(value = "maps/{id}/exportf")
-    public String showExportPageFull(@PathVariable int id, @NotNull Model model) throws IOException, AccessDeniedSecurityException {
+    public String showExportPageFull(@PathVariable int id, @NotNull Model model) throws IOException, MapCouldNotFoundException {
         showExportPage(id, model);
         return "mindmapExportFull";
     }
 
     @RequestMapping(value = "maps/{id}/share")
-    public String showSharePage(@PathVariable int id, @NotNull Model model) throws AccessDeniedSecurityException {
+    public String showSharePage(@PathVariable int id, @NotNull Model model) throws MapCouldNotFoundException {
         final Mindmap mindmap = findMindmap(id);
         model.addAttribute("mindmap", mindmap);
         return "mindmapShare";
     }
 
     @RequestMapping(value = "maps/{id}/sharef")
-    public String showSharePageFull(@PathVariable int id, @NotNull Model model) throws AccessDeniedSecurityException {
+    public String showSharePageFull(@PathVariable int id, @NotNull Model model) throws MapCouldNotFoundException {
         showSharePage(id, model);
         return "mindmapShareFull";
     }
 
     @RequestMapping(value = "maps/{id}/publish")
-    public String showPublishPage(@PathVariable int id, @NotNull Model model,@NotNull HttpServletRequest request) throws AccessDeniedSecurityException {
+    public String showPublishPage(@PathVariable int id, @NotNull Model model, @NotNull HttpServletRequest request) throws MapCouldNotFoundException {
         final Mindmap mindmap = findMindmap(id);
         model.addAttribute("mindmap", mindmap);
         model.addAttribute("baseUrl", request.getAttribute("site.baseurl"));
@@ -111,8 +111,8 @@ public class MindmapController {
     }
 
     @RequestMapping(value = "maps/{id}/publishf")
-    public String showPublishPageFull(@PathVariable int id, @NotNull Model model,@NotNull HttpServletRequest request) throws AccessDeniedSecurityException {
-        showPublishPage(id, model,request);
+    public String showPublishPageFull(@PathVariable int id, @NotNull Model model, @NotNull HttpServletRequest request) throws MapCouldNotFoundException {
+        showPublishPage(id, model, request);
         return "mindmapPublishFull";
     }
 
@@ -193,12 +193,12 @@ public class MindmapController {
 
         final String result = showMindmapEditorPage(id, model);
         model.addAttribute("readOnlyMode", true);
-        model.addAttribute("hid",String.valueOf(hid));
+        model.addAttribute("hid", String.valueOf(hid));
         return result;
     }
 
     @RequestMapping(value = "maps/{id}/embed")
-    public ModelAndView showEmbeddedPage(@PathVariable int id, @RequestParam(required = false) Float zoom) throws AccessDeniedSecurityException {
+    public ModelAndView showEmbeddedPage(@PathVariable int id, @RequestParam(required = false) Float zoom) throws MapCouldNotFoundException {
         ModelAndView view;
         final MindMapBean mindmap = findMindmapBean(id);
         view = new ModelAndView("mindmapEmbedded", "mindmap", mindmap);
@@ -226,17 +226,17 @@ public class MindmapController {
     }
 
     @NotNull
-    private Mindmap findMindmap(long mapId) throws AccessDeniedSecurityException {
+    private Mindmap findMindmap(long mapId) throws MapCouldNotFoundException {
         final Mindmap result = mindmapService.findMindmapById((int) mapId);
-        if(result==null){
-            throw new AccessDeniedSecurityException("Map could not be found " + mapId);
+        if (result == null) {
+            throw new MapCouldNotFoundException("Map could not be found " + mapId);
         }
         return result;
 
     }
 
     @NotNull
-    private MindMapBean findMindmapBean(long mapId) throws AccessDeniedSecurityException {
+    private MindMapBean findMindmapBean(long mapId) throws MapCouldNotFoundException {
         final Mindmap mindmap = findMindmap(mapId);
         return new MindMapBean(mindmap, Utils.getUser());
     }

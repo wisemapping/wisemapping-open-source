@@ -154,12 +154,12 @@ final public class NotificationService {
 //        }
     }
 
-    public void reportJavascriptException(@NotNull Mindmap mindmap, @Nullable User user, @Nullable String jsErrorMsg, @NotNull HttpServletRequest request) {
+    public void reportJavascriptException(@Nullable Mindmap mindmap, @Nullable User user, @Nullable String jsErrorMsg, @NotNull HttpServletRequest request) {
 
         final Map<String, String> model = new HashMap<String, String>();
         model.put("errorMsg", jsErrorMsg);
         try {
-            model.put("mapXML", StringEscapeUtils.escapeXml(mindmap.getXmlStr()));
+            model.put("mapXML", StringEscapeUtils.escapeXml(mindmap == null ? "map not found" : mindmap.getXmlStr()));
         } catch (UnsupportedEncodingException e) {
             // Ignore ...
         }

@@ -58,7 +58,7 @@ public class AccountController extends BaseController {
             throw new IllegalArgumentException("Password can not be null");
         }
 
-        final User user = Utils.getUser();
+        final User user = Utils.getUser(true);
         user.setPassword(password);
         userService.changePassword(user);
     }
@@ -95,7 +95,7 @@ public class AccountController extends BaseController {
 
         }
 
-        final User user = Utils.getUser();
+        final User user = Utils.getUser(true);
         user.setLocale(language);
         userService.updateUser(user);
     }

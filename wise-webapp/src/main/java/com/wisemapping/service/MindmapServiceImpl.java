@@ -93,7 +93,7 @@ public class MindmapServiceImpl
     }
 
     @Override
-    @NotNull
+    @Nullable
     public Mindmap findMindmapById(int id) {
         return mindmapManager.getMindmapById(id);
     }

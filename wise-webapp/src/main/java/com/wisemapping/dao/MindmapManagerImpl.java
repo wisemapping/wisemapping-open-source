@@ -21,6 +21,7 @@ package com.wisemapping.dao;
 import com.wisemapping.model.*;
 import com.wisemapping.util.ZipUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.SimpleExpression;
@@ -195,7 +196,7 @@ public class MindmapManagerImpl
     }
 
     @Override
-    @NotNull
+    @Nullable
     public Mindmap getMindmapById(int id) {
         return getHibernateTemplate().get(Mindmap.class, id);
     }
