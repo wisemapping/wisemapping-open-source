@@ -60,16 +60,6 @@ public class BaseController {
         return new RestErrors(ex.getMessage(),Severity.WARNING);
     }
 
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ResponseBody
-    public RestErrors handleServerErrors(@NotNull Exception ex, @NotNull HttpServletRequest request) {
-        final User user = Utils.getUser();
-        notificationService.reportJavaException(ex, user, request);
-        return new RestErrors(ex.getMessage(),Severity.SEVERE);
-    }
-
-
     @ExceptionHandler(ImportUnexpectedException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
@@ -110,4 +100,16 @@ public class BaseController {
         final Locale locale = LocaleContextHolder.getLocale();
         return new RestErrors(ex.getMessage(messageSource, locale),ex.getSeverity(),ex.getTechInfo());
     }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public RestErrors handleServerErrors(@NotNull Exception ex, @NotNull HttpServletRequest request) {
+        final User user = Utils.getUser(false);
+        notificationService.reportJavaException(ex, user, request);
+        ex.printStackTrace();
+        return new RestErrors(ex.getMessage(),Severity.SEVERE);
+    }
+
+
 }

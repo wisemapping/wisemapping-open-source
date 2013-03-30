@@ -19,7 +19,6 @@
 package com.wisemapping.webmvc;
 
 
-import com.wisemapping.exceptions.AccessDeniedSecurityException;
 import com.wisemapping.exceptions.MapCouldNotFoundException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.CollaborationRole;
