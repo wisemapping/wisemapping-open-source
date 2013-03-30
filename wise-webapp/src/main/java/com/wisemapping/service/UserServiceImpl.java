@@ -158,14 +158,9 @@ public class UserServiceImpl
 
         final String mapXml = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "/samples/tutorial.vm", model);
 
-        try {
-            result.setXmlStr(mapXml);
-            result.setTitle(messageSource.getMessage("WELCOME", null, locale) + " " + firstName);
-            result.setDescription("");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        result.setXmlStr(mapXml);
+        result.setTitle(messageSource.getMessage("WELCOME", null, locale) + " " + firstName);
+        result.setDescription("");
 
         return result;
     }

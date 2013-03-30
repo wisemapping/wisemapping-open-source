@@ -84,24 +84,26 @@ public class MindmapManagerImpl
 
         final List<MindMapHistory> historyList = hibernateCriteria.list();
 
-        final Mindmap mindmapById = this.getMindmapById(mapId);
-        final Calendar yearAgo = Calendar.getInstance();
-        yearAgo.add(Calendar.MONTH, -12);
+        final Mindmap mindmap = this.getMindmapById(mapId);
+        if (mindmap != null) {
+            final Calendar yearAgo = Calendar.getInstance();
+            yearAgo.add(Calendar.MONTH, -12);
 
-        // If the map has not been modified in the last months, it means that I don't need to keep all the history ...
-        int max = mindmapById.getLastModificationTime().before(yearAgo) ? 10 : 25;
+            // If the map has not been modified in the last months, it means that I don't need to keep all the history ...
+            int max = mindmap.getLastModificationTime().before(yearAgo) ? 10 : 25;
 
-        for (MindMapHistory history : historyList) {
-            byte[] zippedXml = history.getZippedXml();
-            if(new String(zippedXml).startsWith("<map")){
-                history.setZippedXml(ZipUtils.bytesToZip(zippedXml));
-                getHibernateTemplate().update(history);
+            for (MindMapHistory history : historyList) {
+                byte[] zippedXml = history.getZippedXml();
+                if (new String(zippedXml).startsWith("<map")) {
+                    history.setZippedXml(ZipUtils.bytesToZip(zippedXml));
+                    getHibernateTemplate().update(history);
+                }
             }
-        }
 
-        if (historyList.size() > max) {
-            for (int i = max; i < historyList.size(); i++) {
-                getHibernateTemplate().delete(historyList.get(i));
+            if (historyList.size() > max) {
+                for (int i = max; i < historyList.size(); i++) {
+                    getHibernateTemplate().delete(historyList.get(i));
+                }
             }
         }
     }
@@ -245,7 +247,7 @@ public class MindmapManagerImpl
         getHibernateTemplate().delete(mindMap);
     }
 
-    private void saveHistory(@NotNull final Mindmap mindMap)  {
+    private void saveHistory(@NotNull final Mindmap mindMap) {
         final MindMapHistory history = new MindMapHistory();
 
         history.setZippedXml(mindMap.getZippedXml());

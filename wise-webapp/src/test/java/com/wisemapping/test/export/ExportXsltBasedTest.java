@@ -45,7 +45,7 @@ public class ExportXsltBasedTest {
     private Mindmap load(@NotNull File wisemap) throws IOException {
         final byte[] recContent = FileUtils.readFileToByteArray(wisemap);
         final Mindmap result = new Mindmap();
-        result.setXml(recContent);
+        result.setUnzipXml(recContent);
         return result;
     }
 

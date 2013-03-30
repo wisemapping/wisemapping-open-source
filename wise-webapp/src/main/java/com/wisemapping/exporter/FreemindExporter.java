@@ -57,7 +57,7 @@ public class FreemindExporter
     private Map<String, Node> nodesMap = null;
 
     public void export(Mindmap map, OutputStream outputStream) throws ExportException {
-        export(map.getXml(), outputStream);
+        export(map.getUnzipXml(), outputStream);
     }
 
     public void export(byte[] xml, @NotNull OutputStream outputStream) throws ExportException {

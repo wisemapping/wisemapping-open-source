@@ -48,7 +48,7 @@ public class Mindmap {
     private User creator;
     private String tags;
     private String title;
-    private byte[] xml;
+    private byte[] zippedXml;
 
     //~ Constructors .........................................................................................
 
@@ -57,32 +57,30 @@ public class Mindmap {
 
     //~ Methods ..............................................................................................
 
-    public void setXml(byte[] xml) {
-        this.xml = xml;
-    }
-
-    public void setXmlStr(@NotNull String xml)
-            throws IOException {
-        this.xml = xml.getBytes(UTF_8);
-    }
-
-    public byte[] getXml() {
-        return xml;
-    }
-
-    public String getXmlStr() throws UnsupportedEncodingException {
-        String result = null;
-        if (this.xml != null) {
-            result = new String(this.xml, UTF_8);
+    public void setUnzipXml(@NotNull byte[] value) {
+        try {
+            final byte[] zip = ZipUtils.bytesToZip(value);
+            this.setZippedXml(zip);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
         }
-        return result;
     }
 
-    public byte[] getZippedXml(){
-        byte[] result = this.xml;
-        if (result != null) {
+    public void setXmlStr(@NotNull String xml) {
+        try {
+            this.setUnzipXml(xml.getBytes(UTF_8));
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @NotNull
+    public byte[] getUnzipXml() {
+        byte[] result = new byte[]{};
+        if (zippedXml != null) {
             try {
-                result = ZipUtils.bytesToZip(result);
+                final byte[] zip = this.getZippedXml();
+                result = ZipUtils.zipToBytes(zip);
             } catch (IOException e) {
                 throw new IllegalStateException(e);
             }
@@ -90,9 +88,18 @@ public class Mindmap {
         return result;
     }
 
-    public void setZippedXml(byte[] xml)
-            throws IOException {
-        this.xml = ZipUtils.zipToBytes(xml);
+    @NotNull
+    public String getXmlStr() throws UnsupportedEncodingException {
+        return new String(this.getUnzipXml(), UTF_8);
+    }
+
+    @NotNull
+    public byte[] getZippedXml() {
+        return zippedXml;
+    }
+
+    public void setZippedXml(@NotNull byte[] value) {
+        this.zippedXml = value;
     }
 
     public Set<Collaboration> getCollaborations() {
@@ -143,6 +150,7 @@ public class Mindmap {
         this.isPublic = isPublic;
     }
 
+    @NotNull
     public Calendar getLastModificationTime() {
         return lastModificationTime;
     }
@@ -282,7 +290,7 @@ public class Mindmap {
         final Mindmap result = new Mindmap();
         result.setDescription(this.getDescription());
         result.setTitle(this.getTitle());
-        result.setXml(this.getXml());
+        result.setUnzipXml(this.getUnzipXml());
         result.setTags(this.getTags());
 
         return result;
