@@ -216,7 +216,7 @@ public class MindmapController extends BaseController {
         return lockInfo.getTimestamp();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = { "/maps/{id}/document/xml","/maps/{id}/document/xml-pub"},consumes = {"text/plain"}, produces = {"application/xml"})
+    @RequestMapping(method = RequestMethod.GET, value = {"/maps/{id}/document/xml", "/maps/{id}/document/xml-pub"}, consumes = {"text/plain"}, produces = {"application/xml"})
     @ResponseBody
     public byte[] retrieveDocument(@PathVariable int id, @NotNull HttpServletResponse response) throws WiseMappingException, IOException {
         // I should not return byte, but there is some encoding issue here. Further research needed.
@@ -227,9 +227,9 @@ public class MindmapController extends BaseController {
         return xmlStr.getBytes("UTF-8");
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = { "/maps/{id}/{hid}/document/xml"},consumes = {"text/plain"}, produces = {"application/xml"})
+    @RequestMapping(method = RequestMethod.GET, value = {"/maps/{id}/{hid}/document/xml"}, consumes = {"text/plain"}, produces = {"application/xml"})
     @ResponseBody
-    public byte[] retrieveDocument(@PathVariable int id, @PathVariable int hid,@NotNull HttpServletResponse response) throws WiseMappingException, IOException {
+    public byte[] retrieveDocument(@PathVariable int id, @PathVariable int hid, @NotNull HttpServletResponse response) throws WiseMappingException, IOException {
         // I should not return byte, but there is some encoding issue here. Further research needed.
         response.setCharacterEncoding("UTF-8");
         final MindMapHistory mindmapHistory = mindmapService.findMindmapHistory(id, hid);
@@ -275,7 +275,7 @@ public class MindmapController extends BaseController {
         final User user = Utils.getUser();
 
         final String xml = restMindmap.getXml();
-        if (xml != null) {
+        if (xml != null && !xml.isEmpty()) {
             mindmap.setXmlStr(xml);
         }
 
@@ -313,7 +313,7 @@ public class MindmapController extends BaseController {
     @NotNull
     private Mindmap findMindmapById(int id) throws MapCouldNotFoundException {
         Mindmap result = mindmapService.findMindmapById(id);
-        if(result==null){
+        if (result == null) {
             throw new MapCouldNotFoundException("Map could not be found. Id:" + id);
         }
         return result;
