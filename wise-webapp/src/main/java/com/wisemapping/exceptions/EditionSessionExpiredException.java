@@ -23,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 public class EditionSessionExpiredException
     extends ClientException
 {
-    public static final String MSG_KEY = "MINDMAP_TIMESTAMP_OUTDATED";
+    private static final String MSG_KEY = "MINDMAP_TIMESTAMP_OUTDATED";
 
     public EditionSessionExpiredException(@NotNull String msg)
     {

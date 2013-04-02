@@ -20,9 +20,11 @@ package com.wisemapping.exceptions;
 
 import org.jetbrains.annotations.NotNull;
 
+
 public class LockException
     extends ClientException
 {
+    private static final String MSG_KEY = "MINDMAP_IS_LOCKED";
     public LockException(@NotNull String message) {
         super(message,Severity.INFO);
     }
@@ -30,6 +32,6 @@ public class LockException
     @NotNull
     @Override
     protected String getMsgBundleKey() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return MSG_KEY;
     }
 }

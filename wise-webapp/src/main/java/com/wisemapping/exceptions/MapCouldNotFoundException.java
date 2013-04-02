@@ -23,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 public class MapCouldNotFoundException
     extends ClientException
 {
-    public static final String MSG_KEY = "MAP_CAN_NOT_BE_FOUND";
+    private static final String MSG_KEY = "MAP_CAN_NOT_BE_FOUND";
 
     public MapCouldNotFoundException(@NotNull String msg)
     {
