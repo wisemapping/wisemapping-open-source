@@ -49,6 +49,8 @@ public class UserAgentTest {
         final SupportedUserAgent mediapartners = SupportedUserAgent.create("Mediapartners-Google/2.1");
         Assert.assertEquals(mediapartners.isBrowserSupported(), true);
 
+        final SupportedUserAgent firefox20 = SupportedUserAgent.create("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:20.0) Gecko/20121215 Firefox/20.0 AppEngine-Google; (+http://code.google.com/appengine; appid: slubuntuk)");
+        Assert.assertEquals(firefox20.isBrowserSupported(), true);
     }
 
 

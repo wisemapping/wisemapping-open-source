@@ -46,6 +46,7 @@ public class SupportedUserAgent implements Serializable {
         final int majorVersion = version != null ? Integer.parseInt(version.getMajorVersion()) : -1;
 
         boolean result = browser == Browser.FIREFOX && majorVersion >= 10;
+        result = result || browser == Browser.FIREFOX2 && majorVersion >= 17;
         result = result || browser == Browser.IE8 || browser == Browser.IE9;
         result = result || browser == Browser.IE && majorVersion >= 8;
         result = result || browser == Browser.OPERA10 && majorVersion >= 11;

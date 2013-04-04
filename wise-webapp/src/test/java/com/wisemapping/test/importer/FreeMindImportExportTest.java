@@ -16,13 +16,13 @@ import org.testng.annotations.Test;
 import java.io.*;
 
 @Test
-public class FreemindImportExportTest {
+public class FreeMindImportExportTest {
     private static final String DATA_DIR_PATH = "src/test/resources/data/freemind/";
     private static final String UTF_8 = "UTF-8";
     final private Importer importer;
     final private FreemindExporter exporter;
 
-    public FreemindImportExportTest() throws ImporterException {
+    public FreeMindImportExportTest() throws ImporterException {
         ImporterFactory exporterFactory = ImporterFactory.getInstance();
         importer = exporterFactory.getImporter(ImportFormat.FREEMIND);
         exporter = new FreemindExporter();
