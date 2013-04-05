@@ -1,368 +1,210 @@
-
-    1 I Care
-        
-        1.1 veiligheid
-            1.1.1 verkeer
-                
-                    
-                        
-                        
-                            
-                        
-                    
-                
-                1.1.1.1 filevorming
-                    1.1.1.1.1 preventie
-                        
-                            
-                                
-                                
-                                    
-                                
-                            
-                        
-                    
-                    1.1.1.1.2 Omleiding zoeken
-                
-                1.1.1.2 Openbaar vervoer
-                1.1.1.3 Openbare fietsen
-                    1.1.1.3.1 Trackingsysteem, # fietsen op 1 plaats
-                    1.1.1.3.2 Fiets bestellen in grote steden
-                
-                1.1.1.4 ongevallen
-                    1.1.1.4.1 preventie
-                        1.1.1.4.1.1 roekeloos rijgedrag opsporen
-                            1.1.1.4.1.1.1 via sensoren aan boord versnelling, manouvres, snelheid,... registreren
-                        
-                        1.1.1.4.1.2 bestraffen van chauffeurs?
-                    
-                    1.1.1.4.2 oorzaak
-                        1.1.1.4.2.1 nagaan van de oorzaak
-                        1.1.1.4.2.2 Automatisch opbellen van hulpdiensten
-                        1.1.1.4.2.3 opsporen van vluchtmisdrijf
-                    
-                    1.1.1.4.3 info over de staat van het wegdek
-                        1.1.1.4.3.1 wegenwerken
-                        1.1.1.4.3.2 waarschuwingen
-                        1.1.1.4.3.3 aanpassing van max. snelheid
-                    
-                
-            
-            1.1.2 criminaliteit
-                
-                    
-                        
-                        
-                            
-                        
-                    
-                
-                1.1.2.1 drugs
-                    1.1.2.1.1 opsporen
-                        1.1.2.1.1.1 individuele tests
-                        1.1.2.1.1.2 testen per woonregio (via afvoerstelsels)
-                    
-                
-                1.1.2.2 wapenhandel
-                    1.1.2.2.1 opsporen
-                
-                1.1.2.3 diefstal
-                    1.1.2.3.1 tracking via gps
-                
-                1.1.2.4 Aantal ongevallen/criminele feiten registreren
-                    1.1.2.4.1 Mapping van probleemsituaties
-                    1.1.2.4.2 Meer controle
-                    1.1.2.4.3 Terugkoppeling naar politie/verkeersdienst
-                
-            
-        
-        1.2 De markt
-            
-                
-                    
-                    
-                        
-                    
-                
-            
-            1.2.1 kleding
-                1.2.1.1 informatiebronnen per merk
-                    1.2.1.1.1 slimme kledij
-                
-                1.2.1.2 kwaliteitsinfo bij aankoop
-                    1.2.1.2.1 info uit cloud
-                    1.2.1.2.2 reviews
-                
-                1.2.1.3 monitoring
-                    
-                        
-                            
-                            
-                                
-                            
-                        
-                    
-                
-                1.2.1.4 stijlen
-                    1.2.1.4.1 begeleiding bij het winkelen naar gelijkaardige kleding
-                
-            
-            1.2.2 voeding
-                1.2.2.1 zie bij handelingen -->winkelen
-            
-            1.2.3 electronica
-                1.2.3.1 eigendomsverificatie
-                    1.2.3.1.1 GPS tracking
-                    1.2.3.1.2 koop-verkoop
-                    1.2.3.1.3 afdanking (sluikstorten)
-                
-                1.2.3.2 monitoring
-                    1.2.3.2.1 kwaliteit
-                        1.2.3.2.1.1 rechtstreekse link naar producent bij falen
-                        1.2.3.2.1.2 reparatieservice
-                    
-                    1.2.3.2.2 levensloop
-                        1.2.3.2.2.1 gebruikscycli
-                    
-                    1.2.3.2.3 productie verloop
-                        1.2.3.2.3.1 door wie
-                        1.2.3.2.3.2 wat/wanneer
-                        1.2.3.2.3.3 testfasen
-                    
-                
-            
-            1.2.4 medicijnen
-                1.2.4.1 kwaliteit
-                1.2.4.2 werking
-                1.2.4.3 neveneffecten
-                1.2.4.4 alternatieven
-            
-            1.2.5 inrichting (woning)
-                1.2.5.1 monitoring
-                    1.2.5.1.1 kwaliteit
-                    1.2.5.1.2 eigendomsverificatie
-                
-                1.2.5.2 advies
-                    1.2.5.2.1 kleuren en stijlen
-                
-            
-            1.2.6 energie
-                1.2.6.1 automatische lichten
-                1.2.6.2 kamer herkent gebruiker
-            
-            1.2.7 diensten
-            1.2.8 hygiëne
-        
-        1.3 handelingen
-            1.3.1 winkelen
-                
-                1.3.1.1 winkelhulp
-                    1.3.1.1.1 productinfo
-                        1.3.1.1.1.1 allergie
-                            1.3.1.1.1.1.1 Gezondheidscontrole
-                            1.3.1.1.1.1.2 Sensor voor vers fruit en vlees
-                            1.3.1.1.1.1.3 Salmonella sensor
-                        
-                        1.3.1.1.1.2 prijs
-                        1.3.1.1.1.3 kwaliteit
-                            1.3.1.1.1.3.1 via cloud
-                            1.3.1.1.1.3.2 databases v. reviews
-                            1.3.1.1.1.3.3 bio
-                            1.3.1.1.1.3.4 voedingstoffen
-                        
-                        1.3.1.1.1.4 diëet checker
-                        1.3.1.1.1.5 alternatieve producten
-                    
-                    1.3.1.1.2 digitale portemonnee
-                    1.3.1.1.3 bestellingen op afstand
-                    1.3.1.1.4 recepten generator
-                        
-                            
-                                
-                                
-                                    
-                                
-                            
-                        
-                    
-                    1.3.1.1.5 boodschappenlijst
-                        1.3.1.1.5.1 dichtste bij bovenaan
-                        1.3.1.1.5.2 alternatieven indien uitverkocht
-                    
-                
-            
-        
-        1.4 milieu
-            1.4.1 bosbouw
-                1.4.1.1 ziektes bij bomen
-                1.4.1.2 parasieten
-                1.4.1.3 bodemvervuiling
-                    1.4.1.3.1 onderzoek
-                
-            
-            1.4.2 mag ik dit door mijn gootsteen kappen
-            1.4.3 pollutie
-            1.4.4 afval
-                1.4.4.1 verwerking
-                1.4.4.2 riolen
-                1.4.4.3 cradle 2 cradle
-                1.4.4.4 
-            
-            1.4.5 dioxines
-            1.4.6 eco systemen
-                1.4.6.1 diversiteit
-            
-            1.4.7 waterreserves
-                1.4.7.1 reserves
-                1.4.7.2 vervuiling
-            
-            1.4.8 alternatieve energie
-                1.4.8.1 wind
-                1.4.8.2 zon
-                1.4.8.3 kernenergie
-            
-        
-        1.5 industrie
-        1.6 cultuur
-            1.6.1 festival
-        
-        1.7 bouw
-            
-                
-                    
-                    
-                        
-                    
-                
-            
-            1.7.1 opvolging zoals plannen zijn getekend
-                1.7.1.1 isolatie
-                    1.7.1.1.1 warmtemetingen
-                
-                1.7.1.2 juistheid van materialen
-                1.7.1.3 nameten
-            
-        
-        1.8 aandoeningen en situaties
-            1.8.1 zwangerschap
-                
-                1.8.1.1 baby monitoren
-                1.8.1.2 info over voeding
-                    1.8.1.2.1 wat is gezond
-                    1.8.1.2.2 via cloud info over voeding
-                        
-                            
-                                
-                                
-                                    
-                                
-                            
-                        
-                    
-                
-                1.8.1.3 geboortetimer
-                    
-                        
-                            
-                            
-                                
-                            
-                        
-                    
-                
-            
-            1.8.2 dementen
-                1.8.2.1 wegloopdetectie
-                1.8.2.2 wassen
-                1.8.2.3 eten
-            
-        
-        1.9 sport
-            1.9.1 opvolging van de sporter
-                1.9.1.1 hartslag
-                1.9.1.2 bloeddruk
-                1.9.1.3 energieverbruik
-                1.9.1.4 cadans
-                1.9.1.5 gps
-            
-        
-        1.10 ziektes
-            1.10.1 verschillende ziektes
-                
-                    
-                        
-                        
-                            
-                        
-                    
-                
-                1.10.1.1 feedback van de lichaamsconditie
-                    1.10.1.1.1 aan de patiënt
-                        1.10.1.1.1.1 waarschuwingen
-                    
-                    1.10.1.1.2 link
-                        1.10.1.1.2.1 naar ziekenhuis
-                        1.10.1.1.2.2 naar hulpdiensten
-                        1.10.1.1.2.3 naar behandelend arts
-                    
-                    1.10.1.1.3 aan dokter
-                        1.10.1.1.3.1 contacteert patient indien nodig
-                        1.10.1.1.3.2 volledig overzicht
-                        1.10.1.1.3.3 op afstand consulatie
-                    
-                
-                1.10.1.2 MS
-                    1.10.1.2.1 bevorderen van communicatie tijdens de aftakeling
-                        1.10.1.2.1.1 naar de dokters toe
-                        1.10.1.2.1.2 naar familie en vrienden toe
-                    
-                
-                1.10.1.3 mucoviscidose
-                    1.10.1.3.1 longcapaciteit meten
-                    1.10.1.3.2 alert voor donor
-                
-                1.10.1.4 aids
-                    1.10.1.4.1 vergroten van de database aan info
-                
-                1.10.1.5 diabetes
-                    1.10.1.5.1 suikerspiegel meten
-                        1.10.1.5.1.1 alert indien te laag
-                        1.10.1.5.1.2 automatische inspuiting
-                    
-                
-                1.10.1.6 epilepsie
-                    1.10.1.6.1 aanval voorspellen??
-                
-                1.10.1.7 astma
-                    1.10.1.7.1 detectie van luchtkwaliteit
-                        1.10.1.7.1.1 in kaart brengen van
-                            1.10.1.7.1.1.1 vervuiling
-                            1.10.1.7.1.1.2 pollen
-                            1.10.1.7.1.1.3 allergie veroorzakende deeltjes
-                        
-                    
-                
-                1.10.1.8 anorexia
-                    1.10.1.8.1 nagaan of ze eten
-                    1.10.1.8.2 eten ze voldoende
-                
-            
-            1.10.2 thuisverzorging
-                1.10.2.1 meting van de symptomen
-                    1.10.2.1.1 toevoeging van eigen waarneming
-                    1.10.2.1.2 objectieve metingen
-                
-                1.10.2.2 link naar dokter
-                1.10.2.3 link naar ziekenhuis
-            
-            1.10.3 stress
-                1.10.3.1 afreageren
-                1.10.3.2 monitoring
-                    1.10.3.2.1 in welke afdeling een probleem
-                        1.10.3.2.1.1 aan welke factoren ligt dat
-                        1.10.3.2.1.2 aanpak
-                    
-                
-            
-        
-    
+1 I Care
+	1.1 veiligheid
+		1.1.1 verkeer
+			* Note: 
+			1.1.1.1 filevorming
+				1.1.1.1.1 preventie
+					* Note: 
+				1.1.1.1.2 Omleiding zoeken
+			1.1.1.2 Openbaar vervoer
+			1.1.1.3 Openbare fietsen
+				1.1.1.3.1 Trackingsysteem, # fietsen op 1 plaats
+				1.1.1.3.2 Fiets bestellen in grote steden
+			1.1.1.4 ongevallen
+				1.1.1.4.1 preventie
+					1.1.1.4.1.1 roekeloos rijgedrag opsporen
+						1.1.1.4.1.1.1 via sensoren aan boord versnelling, manouvres, snelheid,... registreren
+					1.1.1.4.1.2 bestraffen van chauffeurs?
+				1.1.1.4.2 oorzaak
+					1.1.1.4.2.1 nagaan van de oorzaak
+					1.1.1.4.2.2 Automatisch opbellen van hulpdiensten
+					1.1.1.4.2.3 opsporen van vluchtmisdrijf
+				1.1.1.4.3 info over de staat van het wegdek
+					1.1.1.4.3.1 wegenwerken
+					1.1.1.4.3.2 waarschuwingen
+					1.1.1.4.3.3 aanpassing van max. snelheid
+		1.1.2 criminaliteit
+			* Note: 
+			1.1.2.1 drugs
+				1.1.2.1.1 opsporen
+					1.1.2.1.1.1 individuele tests
+					1.1.2.1.1.2 testen per woonregio (via afvoerstelsels)
+			1.1.2.2 wapenhandel
+				1.1.2.2.1 opsporen
+			1.1.2.3 diefstal
+				1.1.2.3.1 tracking via gps
+			1.1.2.4 Aantal ongevallen/criminele feiten registreren
+				1.1.2.4.1 Mapping van probleemsituaties
+				1.1.2.4.2 Meer controle
+				1.1.2.4.3 Terugkoppeling naar politie/verkeersdienst
+	1.2 De markt
+		* Note: 
+		1.2.1 kleding
+			1.2.1.1 informatiebronnen per merk
+				1.2.1.1.1 slimme kledij
+			1.2.1.2 kwaliteitsinfo bij aankoop
+				1.2.1.2.1 info uit cloud
+				1.2.1.2.2 reviews
+			1.2.1.3 monitoring
+				* Note: 
+			1.2.1.4 stijlen
+				1.2.1.4.1 begeleiding bij het winkelen naar gelijkaardige kleding
+		1.2.2 voeding
+			1.2.2.1 zie bij handelingen -->winkelen
+		1.2.3 electronica
+			1.2.3.1 eigendomsverificatie
+				1.2.3.1.1 GPS tracking
+				1.2.3.1.2 koop-verkoop
+				1.2.3.1.3 afdanking (sluikstorten)
+			1.2.3.2 monitoring
+				1.2.3.2.1 kwaliteit
+					1.2.3.2.1.1 rechtstreekse link naar producent bij falen
+					1.2.3.2.1.2 reparatieservice
+				1.2.3.2.2 levensloop
+					1.2.3.2.2.1 gebruikscycli
+				1.2.3.2.3 productie verloop
+					1.2.3.2.3.1 door wie
+					1.2.3.2.3.2 wat/wanneer
+					1.2.3.2.3.3 testfasen
+		1.2.4 medicijnen
+			1.2.4.1 kwaliteit
+			1.2.4.2 werking
+			1.2.4.3 neveneffecten
+			1.2.4.4 alternatieven
+		1.2.5 inrichting (woning)
+			1.2.5.1 monitoring
+				1.2.5.1.1 kwaliteit
+				1.2.5.1.2 eigendomsverificatie
+			1.2.5.2 advies
+				1.2.5.2.1 kleuren en stijlen
+		1.2.6 energie
+			1.2.6.1 automatische lichten
+			1.2.6.2 kamer herkent gebruiker
+		1.2.7 diensten
+		1.2.8 hygiëne
+	1.3 handelingen
+		1.3.1 winkelen
+			1.3.1.1 winkelhulp
+				1.3.1.1.1 productinfo
+					1.3.1.1.1.1 allergie
+						1.3.1.1.1.1.1 Gezondheidscontrole
+						1.3.1.1.1.1.2 Sensor voor vers fruit en vlees
+						1.3.1.1.1.1.3 Salmonella sensor
+					1.3.1.1.1.2 prijs
+					1.3.1.1.1.3 kwaliteit
+						1.3.1.1.1.3.1 via cloud
+						1.3.1.1.1.3.2 databases v. reviews
+						1.3.1.1.1.3.3 bio
+						1.3.1.1.1.3.4 voedingstoffen
+					1.3.1.1.1.4 diëet checker
+					1.3.1.1.1.5 alternatieve producten
+				1.3.1.1.2 digitale portemonnee
+				1.3.1.1.3 bestellingen op afstand
+				1.3.1.1.4 recepten generator
+					* Note: 
+				1.3.1.1.5 boodschappenlijst
+					1.3.1.1.5.1 dichtste bij bovenaan
+					1.3.1.1.5.2 alternatieven indien uitverkocht
+	1.4 milieu
+		1.4.1 bosbouw
+			1.4.1.1 ziektes bij bomen
+			1.4.1.2 parasieten
+			1.4.1.3 bodemvervuiling
+				1.4.1.3.1 onderzoek
+		1.4.2 mag ik dit door mijn gootsteen kappen
+		1.4.3 pollutie
+		1.4.4 afval
+			1.4.4.1 verwerking
+			1.4.4.2 riolen
+			1.4.4.3 cradle 2 cradle
+			1.4.4.4 
+		1.4.5 dioxines
+		1.4.6 eco systemen
+			1.4.6.1 diversiteit
+		1.4.7 waterreserves
+			1.4.7.1 reserves
+			1.4.7.2 vervuiling
+		1.4.8 alternatieve energie
+			1.4.8.1 wind
+			1.4.8.2 zon
+			1.4.8.3 kernenergie
+	1.5 industrie
+	1.6 cultuur
+		1.6.1 festival
+	1.7 bouw
+		* Note: 
+		1.7.1 opvolging zoals plannen zijn getekend
+			1.7.1.1 isolatie
+				1.7.1.1.1 warmtemetingen
+			1.7.1.2 juistheid van materialen
+			1.7.1.3 nameten
+	1.8 aandoeningen en situaties
+		1.8.1 zwangerschap
+			1.8.1.1 baby monitoren
+			1.8.1.2 info over voeding
+				1.8.1.2.1 wat is gezond
+				1.8.1.2.2 via cloud info over voeding
+					* Note: 
+			1.8.1.3 geboortetimer
+				* Note: 
+		1.8.2 dementen
+			1.8.2.1 wegloopdetectie
+			1.8.2.2 wassen
+			1.8.2.3 eten
+	1.9 sport
+		1.9.1 opvolging van de sporter
+			1.9.1.1 hartslag
+			1.9.1.2 bloeddruk
+			1.9.1.3 energieverbruik
+			1.9.1.4 cadans
+			1.9.1.5 gps
+	1.10 ziektes
+		1.10.1 verschillende ziektes
+			* Note: 
+			1.10.1.1 feedback van de lichaamsconditie
+				1.10.1.1.1 aan de patiënt
+					1.10.1.1.1.1 waarschuwingen
+				1.10.1.1.2 link
+					1.10.1.1.2.1 naar ziekenhuis
+					1.10.1.1.2.2 naar hulpdiensten
+					1.10.1.1.2.3 naar behandelend arts
+				1.10.1.1.3 aan dokter
+					1.10.1.1.3.1 contacteert patient indien nodig
+					1.10.1.1.3.2 volledig overzicht
+					1.10.1.1.3.3 op afstand consulatie
+			1.10.1.2 MS
+				1.10.1.2.1 bevorderen van communicatie tijdens de aftakeling
+					1.10.1.2.1.1 naar de dokters toe
+					1.10.1.2.1.2 naar familie en vrienden toe
+			1.10.1.3 mucoviscidose
+				1.10.1.3.1 longcapaciteit meten
+				1.10.1.3.2 alert voor donor
+			1.10.1.4 aids
+				1.10.1.4.1 vergroten van de database aan info
+			1.10.1.5 diabetes
+				1.10.1.5.1 suikerspiegel meten
+					1.10.1.5.1.1 alert indien te laag
+					1.10.1.5.1.2 automatische inspuiting
+			1.10.1.6 epilepsie
+				1.10.1.6.1 aanval voorspellen??
+			1.10.1.7 astma
+				1.10.1.7.1 detectie van luchtkwaliteit
+					1.10.1.7.1.1 in kaart brengen van
+						1.10.1.7.1.1.1 vervuiling
+						1.10.1.7.1.1.2 pollen
+						1.10.1.7.1.1.3 allergie veroorzakende deeltjes
+			1.10.1.8 anorexia
+				1.10.1.8.1 nagaan of ze eten
+				1.10.1.8.2 eten ze voldoende
+		1.10.2 thuisverzorging
+			1.10.2.1 meting van de symptomen
+				1.10.2.1.1 toevoeging van eigen waarneming
+				1.10.2.1.2 objectieve metingen
+			1.10.2.2 link naar dokter
+			1.10.2.3 link naar ziekenhuis
+		1.10.3 stress
+			1.10.3.1 afreageren
+			1.10.3.2 monitoring
+				1.10.3.2.1 in welke afdeling een probleem
+					1.10.3.2.1.1 aan welke factoren ligt dat
+					1.10.3.2.1.2 aanpak

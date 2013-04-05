@@ -1,181 +1,25 @@
-
-    1 La computadora
-        
-        
-        1.1 
-            
-                
-                    
-                    
-                        Hardware
-                        (componentes físicos)
-                    
-                
-            
-            
-            
-            1.1.1 
-                
-                    
-                        
-                        
-                            Entrada de datos
-                        
-                    
-                
-                
-                
-                1.1.1.1 
-                    
-                        
-                            
-                            
-                                Ratón, Teclado, Joystick,
-                                Cámara digital, Micrófono, Escáner.
-                            
-                        
-                    
-                    
-                    
-                
-            
-            1.1.2 Salida de datos
-                
-                
-                1.1.2.1 
-                    
-                        
-                            
-                            
-                                Monitor, Impresora, Bocinas, Plóter.
-                            
-                        
-                    
-                    
-                    
-                
-            
-            1.1.3 Almacenamiento
-                
-                
-                1.1.3.1 
-                    
-                        
-                            
-                            
-                                Disquete, Disco compacto, DVD,
-                                BD, Disco duro, Memoria flash.
-                            
-                        
-                    
-                    
-                    
-                
-            
-        
-        1.2 
-            
-                
-                    
-                    
-                        Software
-                        (Programas y datos con los que funciona la computadora)
-                    
-                
-            
-            
-            
-            1.2.1 
-                
-                    
-                        
-                        
-                            Software de Sistema:Permite el entendimiento
-                            entre el usuario y la maquina.
-                        
-                    
-                
-                
-                
-                1.2.1.1 Microsoft Windows
-                    
-                    
-                
-                1.2.1.2 GNU/LINUX
-                    
-                    
-                
-                1.2.1.3 MAC 
-                    
-                    
-                
-            
-            1.2.2 
-                
-                    
-                        
-                        
-                            Software de Aplicación: Permite hacer hojas de
-                            calculo navegar en internet, base de datos, etc.
-                        
-                    
-                
-                
-                
-                1.2.2.1 Office
-                    
-                    
-                
-                1.2.2.2 Libre Office
-                    
-                    
-                
-                1.2.2.3 Navegadores
-                    
-                    
-                
-                1.2.2.4 Msn
-                    
-                    
-                
-            
-            1.2.3 
-                
-                    
-                        
-                        
-                            Software de Desarrollo
-                        
-                    
-                
-                
-                
-            
-        
-        1.3 Tipos de computadora
-            
-            1.3.1 Computadora personal de escritorio o Desktop
-                
-            
-            1.3.2 
-                
-                    
-                        
-                        
-                            PDA
-                        
-                    
-                
-                
-            
-            1.3.3 Laptop
-                
-            
-            1.3.4 Servidor
-                
-            
-            1.3.5 Tablet PC
-                
-            
-        
-    
+1 La computadora
+	1.1 
+		1.1.1 
+			1.1.1.1 
+		1.1.2 Salida de datos
+			1.1.2.1 
+		1.1.3 Almacenamiento
+			1.1.3.1 
+	1.2 
+		1.2.1 
+			1.2.1.1 Microsoft Windows
+			1.2.1.2 GNU/LINUX
+			1.2.1.3 MAC 
+		1.2.2 
+			1.2.2.1 Office
+			1.2.2.2 Libre Office
+			1.2.2.3 Navegadores
+			1.2.2.4 Msn
+		1.2.3 
+	1.3 Tipos de computadora
+		1.3.1 Computadora personal de escritorio o Desktop
+		1.3.2 
+		1.3.3 Laptop
+		1.3.4 Servidor
+		1.3.5 Tablet PC

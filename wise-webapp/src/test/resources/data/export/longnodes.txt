@@ -1,17 +1,2 @@
-
-    1 I have HTML In Nodes
-        1.1 
-            
-                
-                    
-                    
-                        Here is somefonts 
-                        
-                        Add color changes ...
-                        Add some bullets: Different Bullets
-                        And all aligned !!!!s
-                    
-                
-            
-        
-    
+1 I have HTML In Nodes
+	1.1 

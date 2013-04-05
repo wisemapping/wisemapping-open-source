@@ -1,11 +1,2 @@
-
-    1 Observation
-        
-            
-                
-                
-                    Always ask
-                
-            
-        
-    
+1 Observation
+	* Note: Always ask
