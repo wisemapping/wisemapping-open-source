@@ -80,6 +80,17 @@ class LockManagerImpl implements LockManager {
     }
 
     @Override
+    public void unlockAll(@NotNull final User user) throws LockException, AccessDeniedSecurityException {
+        final Set<Integer> mapIds = lockInfoByMapId.keySet();
+        for (final Integer mapId : mapIds) {
+            final LockInfo lockInfo = lockInfoByMapId.get(mapId);
+            if (lockInfo.getUser().identityEquality(user)) {
+                unlock(mapId);
+            }
+        }
+    }
+
+    @Override
     public void unlock(@NotNull Mindmap mindmap, @NotNull User user) throws LockException, AccessDeniedSecurityException {
         if (isLocked(mindmap) && !isLockedBy(mindmap, user)) {
             throw new LockException("Lock can be only revoked by the locker.");
@@ -93,6 +104,8 @@ class LockManagerImpl implements LockManager {
     }
 
     private void unlock(int mapId) {
+        System.out.println("Unlocking:"+mapId);
+
         logger.debug("Unlock map id:" + mapId);
         lockInfoByMapId.remove(mapId);
     }
@@ -107,12 +120,6 @@ class LockManagerImpl implements LockManager {
         return result;
     }
 
-
-    @Override
-    @NotNull
-    public LockInfo lock(@NotNull Mindmap mindmap, @NotNull User user) throws WiseMappingException {
-        return this.lock(mindmap, user, System.nanoTime());
-    }
 
     @Override
     public long generateSession() {
@@ -135,7 +142,7 @@ class LockManagerImpl implements LockManager {
             // Update timeout only...
             logger.debug("Update timestamp:" + mindmap.getId());
             updateExpirationTimeout(mindmap, user);
-           // result.setSession(session);
+            // result.setSession(session);
         } else {
             logger.debug("Lock map id:" + mindmap.getId());
             result = new LockInfo(user, mindmap, session);

@@ -34,13 +34,12 @@ public interface LockManager {
 
     void unlock(@NotNull Mindmap mindmap, @NotNull User user) throws LockException, AccessDeniedSecurityException;
 
+    void unlockAll(@NotNull User user) throws LockException, AccessDeniedSecurityException;
+
     boolean isLockedBy(@NotNull Mindmap mindmap, @NotNull User collaborator);
 
     @NotNull
     LockInfo lock(@NotNull Mindmap mindmap, @NotNull User user, long session) throws WiseMappingException;
-
-    @NotNull
-    LockInfo lock(@NotNull Mindmap mindmap, @NotNull User user) throws WiseMappingException;
 
     long generateSession();
 }
