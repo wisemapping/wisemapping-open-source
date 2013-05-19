@@ -7,7 +7,7 @@ CREATE TABLE COLLABORATOR (
 CREATE TABLE "user" (
   id                  SERIAL       NOT NULL PRIMARY KEY,
   authentication_type TEXT         NOT NULL,
-  authenticator_uri   VARCHAR(255) NOT NULL,
+  authenticator_uri   VARCHAR(255),
   colaborator_id      INTEGER      NOT NULL,
   firstname           VARCHAR(255) NOT NULL,
   lastname            VARCHAR(255) NOT NULL,
