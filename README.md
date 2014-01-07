@@ -1,4 +1,5 @@
-# WiseMapping - Web Based Mindmapping Tool
+# WiseMapping  Open Source
+# Web Based Mindmapping Tool
 
 ## Project Information
 
@@ -9,6 +10,7 @@ The goal of this project is to provide a high quality product that can be deploy
 ### Prerequisites
 
 The following products must be installed:
+
 * Java Development Kit 7 or higher (http://java.sun.com/javase/downloads/index.jsp)
 * Maven 2.2.1 or higher (http://maven.apache.org/)
 
