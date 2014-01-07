@@ -1,4 +1,4 @@
-# WiseMapping: a Web based mindmapping application
+# WiseMapping - Web Based Mindmapping Tool
 
 ## Project Information
 
@@ -9,16 +9,17 @@ The goal of this project is to provide a high quality product that can be deploy
 ### Prerequisites
 
 The following products must be installed:
-    * Java Development Kit 7 or higher (http://java.sun.com/javase/downloads/index.jsp)
-    * Maven 2.2.1 or higher (http://maven.apache.org/)
+* Java Development Kit 7 or higher (http://java.sun.com/javase/downloads/index.jsp)
+* Maven 2.2.1 or higher (http://maven.apache.org/)
 
 ### Compiling
 
 WiseMapping uses Maven as packaging and project management. The project is composed of 4 maven sub-modules:
-    * core-js: Utilities JavaScript libraries
-    * web2d: JavaScript 2D SVG abstraction library used by the mind map editor
-    * mindplot: JavaScript mind map designer core
-    * wise-webapp: J2EE web application 
+
+* core-js: Utilities JavaScript libraries
+* web2d: JavaScript 2D SVG abstraction library used by the mind map editor
+* mindplot: JavaScript mind map designer core
+* wise-webapp: J2EE web application 
 
 Full compilation of the project can be done executing within <project-dir>:
 
@@ -113,11 +114,8 @@ The  node.setShapeType(mindplot.model.TopicShape.IMAGE) defines a image node. Th
 
    * Pablo Luna
    * Paulo Veiga
-   * Ignacio Manzano
-   * Nicolas Damonte
 
 ## License
 
 The source code is Licensed under the WiseMapping Open License, Version 1.0 (the “License”);
-
 You may obtain a copy of the License at: http://www.wisemapping.org/license
