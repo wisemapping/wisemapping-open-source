@@ -117,18 +117,11 @@ public class AdminController extends BaseController {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "admin/users/{id}", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteUserByEmail(@PathVariable long id) throws WiseMappingException {
+    public void getUserByEmail(@PathVariable long id) throws WiseMappingException {
         final User user = userService.getUserBy(id);
         if (user == null) {
             throw new IllegalArgumentException("User '" + id + "' could not be found");
         }
-
-        final List<Collaboration> collaborations = mindmapService.findCollaborations(user);
-        for (Collaboration collaboration : collaborations) {
-            final Mindmap mindmap = collaboration.getMindMap();
-            mindmapService.removeMindmap(mindmap,user);
-        }
-
         userService.deleteUser(user);
     }
 
