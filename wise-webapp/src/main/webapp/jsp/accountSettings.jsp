@@ -88,18 +88,6 @@
                 </fieldset>
             </form>
         </div>
-        <div class="tab-pane fade" id="deleteAccountPanel">
-            <div id="deleteAccountMsg" class="alert">
-            </div>
-            <form action="#" method="POST" id="deleteAccountForm">
-                <fieldset>
-                    <label for="accountMarkedForDelete"><strong><spring:message code="NEW_PASSWORD"/>:</strong></label>
-                    <input type="checkbox" name="confirmAccountDelete" id="confirmAccountDelete" required="required"/>
-                    <input type="submit" id="deleteAccountBtn" class="btn btn-primary"
-                           value="<spring:message code="DELETE__ACCOUNT"/>"/>
-                </fieldset>
-            </form>
-        </div>
     </div>
 </div>
 
@@ -107,7 +95,6 @@
     $('#changePasswordMsg').hide();
     $('#changeInfoMsg').hide();
     $('#languageMsg').hide();
-    $('#deleteAccountMsg').hide();
 
     function postChange(url, postBody, msgContainerId, successMsg) {
         // Change success message ...
@@ -157,14 +144,4 @@
         postChange("c/restful/account/locale", locale, 'languageMsg', "<spring:message code="INFO_UPDATE_SUCCESS"/>");
         event.preventDefault();
     });
-
-    $('#deleteAccountForm').submit(function (event) {
-
-        var locale = $('#deleteAccountForm option:selected').val();
-
-        postChange("c/restful/account/locale", locale, 'languageMsg', "<spring:message code="INFO_UPDATE_SUCCESS"/>");
-        event.preventDefault();
-    });
-
-
 </script>
