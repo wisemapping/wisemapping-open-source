@@ -18,7 +18,9 @@
 
 package com.wisemapping.rest;
 
+import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.mail.NotificationService;
+import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestLogItem;
@@ -31,9 +33,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class AccountController extends BaseController {
@@ -99,6 +105,21 @@ public class AccountController extends BaseController {
         user.setLocale(language);
         userService.updateUser(user);
     }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "account", consumes = {"text/plain"})
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleleteUser() throws WiseMappingException
+
+    {
+        final User user = Utils.getUser(true);
+        final List<Collaboration> collaborations = mindmapService.findCollaborations(user);
+        for (Collaboration collaboration : collaborations) {
+            final Mindmap mindmap = collaboration.getMindMap();
+            mindmapService.removeMindmap(mindmap,user);
+        }
+        userService.deleteUser(user);
+    }
+
 
     @RequestMapping(method = RequestMethod.POST, value = "logger/editor", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
