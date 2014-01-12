@@ -156,16 +156,20 @@ web2d.peer.svg.TextPeer = new Class({
         var computedWidth;
         // Firefox hack for this issue:http://stackoverflow.com/questions/6390065/doing-ajax-updates-in-svg-breaks-getbbox-is-there-a-workaround
         try {
+
             computedWidth = this._native.getBBox().width;
             // Chrome bug is producing this error, oly during page loading. Remove the hack if it works. The issue seems to be
-            // caused when the element is hidden.
+            // caused when the element is hidden. I don't know why, but it works ...
             if(computedWidth==0){
-                computedWidth = getBoundingClientRect().width - 35;
+                var bbox = this._native.getBBox();
+                computedWidth = bbox.width;
             }
 
         } catch(e) {
             computedWidth = 10;
+
         }
+        console.log("Final result:"+computedWidth);
 
         var width = parseInt(computedWidth);
         width = width + this._font.getWidthMargin();
