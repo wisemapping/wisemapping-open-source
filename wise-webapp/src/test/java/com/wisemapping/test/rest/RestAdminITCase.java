@@ -107,11 +107,11 @@ public class RestAdminITCase {
 
         // Check that the user has been created ...
         ResponseEntity<RestUser> result = findUser(requestHeaders, templateRest, location);
-        assertEquals(result.getBody(), restUser, "Returned object object seems not be the same.");
+        assertEquals(result.getBody().getEmail(), restUser.getEmail(), "Returned object object seems not be the same.");
 
         // Find by email and check ...
         result = findUserByEmail(requestHeaders, templateRest, restUser.getEmail());
-        assertEquals(result.getBody(), restUser, "Returned object object seems not be the same.");
+        assertEquals(result.getBody().getEmail(), restUser.getEmail(), "Returned object object seems not be the same.");
 
         return restUser.getEmail();
     }
@@ -144,10 +144,10 @@ public class RestAdminITCase {
         List<MediaType> acceptableMediaTypes = new ArrayList<MediaType>();
         acceptableMediaTypes.add(mediaType);
 
-        final HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.setAccept(acceptableMediaTypes);
-        requestHeaders.setContentType(mediaType);
-        return requestHeaders;
+        final HttpHeaders result = new HttpHeaders();
+        result.setAccept(acceptableMediaTypes);
+        result.setContentType(mediaType);
+        return result;
     }
 
     private RestTemplate createTemplate() {
