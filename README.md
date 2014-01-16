@@ -37,6 +37,8 @@ This will start the application on the URL: [http://localhost:8080/wise-webapp/]
 User: test@wisemapping.org
 Password: test
 
+
+
 ## Authors
 
    * Pablo Luna
