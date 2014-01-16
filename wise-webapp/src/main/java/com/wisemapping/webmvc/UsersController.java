@@ -78,7 +78,7 @@ public class UsersController {
             result = new ModelAndView("forgotPasswordError");
         }
         catch (InvalidAuthSchemaException e) {
-            result = new ModelAndView("forgotPasswordError");
+            result = new ModelAndView("userForgotPasswordOpenId");
         }
         return result;
     }
