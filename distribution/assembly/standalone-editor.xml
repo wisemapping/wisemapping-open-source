@@ -6,16 +6,12 @@
         <format>zip</format>
     </formats>
     <files>
-           <file>
+        <file>
             <source>core-js/target/classes/core.js</source>
             <outputDirectory>/js</outputDirectory>
         </file>
         <file>
             <source>mindplot/target/classes/mindplot-min.js</source>
-            <outputDirectory>/js</outputDirectory>
-        </file>
-        <file>
-            <source>mindplot/target/classes/mindplot.js</source>
             <outputDirectory>/js</outputDirectory>
         </file>
     </files>
