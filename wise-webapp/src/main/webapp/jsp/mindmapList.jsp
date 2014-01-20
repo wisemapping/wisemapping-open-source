@@ -162,9 +162,29 @@
         </div>
 
         <div class="btn-group">
-            <button id="newBtn" class="btn btn-primary"><i class="icon-file icon-white"></i> <spring:message
-                    code="NEW"/></button>
-            <button id="importBtn" class="btn btn-primary"><i class="icon-upload icon-white"></i>
+            <button id="newBtn" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                <i class="icon-plus icon-white"></i>
+                <spring:message code="NEW"/>
+                <span class="caret"></span>
+            </button>
+
+            <ul class="dropdown-menu">
+                <li id="newMapBtn">
+                    <a href="#" onclick="return false">
+                        <i class="icon-file"></i>
+                        <spring:message code="NEW_MAP"/>
+                    </a>
+                </li>
+                <li id="newFolderBtn">
+                    <a href="#" onclick="return false">
+                        <i class="icon-folder-open"></i>
+                        <spring:message code="NEW_FOLDER"/>
+                    </a>
+                </li>
+            </ul>
+
+            <button id="importBtn" class="btn btn-primary">
+                <i class="icon-upload icon-white"></i>
                 <spring:message code="IMPORT"/>
             </button>
         </div>

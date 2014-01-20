@@ -246,13 +246,20 @@ function callbackOnTableInit() {
 
 $(function () {
     // Creation buttons actions ...
-    $("#newBtn").click(
+    $("#newMapBtn").click(
         function () {
             $("#new-dialog-modal").dialogForm({
                 redirect:"c/maps/{header.resourceId}/edit",
                 url:"c/restful/maps"
             });
         });
+
+    //Eze todo hoy esta creando un dialog de mapa
+    $("#newFolderBtn").click(
+        function() {
+            window.alert('falta crear el dialog de folder')
+        }
+    );
 
     $("#duplicateBtn").click(function () {
         // Map to be cloned ...
