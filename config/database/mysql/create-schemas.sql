@@ -28,6 +28,19 @@ CREATE TABLE USER (
 )
   CHARACTER SET utf8;
 
+CREATE TABLE DIRECTORY (
+  id             INTEGER           NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  name           VARCHAR(255)
+                 CHARACTER SET utf8 NOT NULL,
+  description    VARCHAR(255)
+                 CHARACTER SET utf8 NOT NULL,
+  creator_id     INTEGER            NOT NULL,
+  FOREIGN KEY (creator_id) REFERENCES USER (colaborator_id)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
+)
+  CHARACTER SET utf8;
+
 CREATE TABLE MINDMAP (
   id             INTEGER            NOT NULL PRIMARY KEY AUTO_INCREMENT,
   title          VARCHAR(255)
@@ -42,7 +55,9 @@ CREATE TABLE MINDMAP (
   tags           VARCHAR(1014)
                  CHARACTER SET utf8,
   last_editor_id INTEGER            NOT NULL,
-  FOREIGN KEY (creator_id) REFERENCES USER (colaborator_id)
+  directory_id   INTEGER            NOT NULL,
+  FOREIGN KEY (creator_id) REFERENCES USER (colaborator_id),
+  FOREIGN KEY (directory_id) REFERENCES DIRECTORY (id)
     ON DELETE CASCADE
     ON UPDATE NO ACTION
 )
