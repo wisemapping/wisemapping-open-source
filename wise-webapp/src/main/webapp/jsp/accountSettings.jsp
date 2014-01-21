@@ -8,6 +8,7 @@
             <li><a href="#changePasswordPanel" data-toggle="pill"><spring:message code="SECURITY"/></a></li>
         </c:if>
         <li><a href="#languagePanel" data-toggle="pill"><spring:message code="LANGUAGE"/></a></li>
+        <li><a href="#deleteAccountPanel" data-toggle="pill"><spring:message code="DELETE__ACCOUNT"/></a></li>
     </ul>
 
     <div class="tab-content">
@@ -93,8 +94,7 @@
             </div>
             <form action="#" method="POST" id="deleteAccountForm">
                 <fieldset>
-                    <label for="accountMarkedForDelete"><strong><spring:message code="NEW_PASSWORD"/>:</strong></label>
-                    <input type="checkbox" name="confirmAccountDelete" id="confirmAccountDelete" required="required"/>
+                    <input type="checkbox" name="confirmAccountDelete" id="accountMarkedForDelete" required="required"/>
                     <input type="submit" id="deleteAccountBtn" class="btn btn-primary"
                            value="<spring:message code="DELETE__ACCOUNT"/>"/>
                 </fieldset>
@@ -162,7 +162,7 @@
 
         var locale = $('#deleteAccountForm option:selected').val();
 
-        postChange("c/restful/account/locale", locale, 'languageMsg', "<spring:message code="INFO_UPDATE_SUCCESS"/>");
+        postChange("c/restful/account/locale", locale, 'deleteAccountMsg', "<spring:message code="INFO_UPDATE_SUCCESS"/>");
         event.preventDefault();
     });
 
