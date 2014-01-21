@@ -252,12 +252,15 @@ $(function () {
                 redirect:"c/maps/{header.resourceId}/edit",
                 url:"c/restful/maps"
             });
-        });
+        }
+    );
 
-    //Eze todo hoy esta creando un dialog de mapa
     $("#newFolderBtn").click(
-        function() {
-            window.alert('falta crear el dialog de folder')
+        function () {
+            $("#new-folder-dialog-modal").dialogForm({
+                //redirect:"c/maps/{header.resourceId}/edit",
+                //url:"c/restful/maps"
+            });
         }
     );
 
@@ -395,6 +398,16 @@ $(function () {
         dataTable.fnReloadAjax("c/restful/maps/?q=" + $(this).attr('data-filter'), callbackOnTableInit, true);
         event.preventDefault();
     });
+
+    $("#parentLblCheckbox").click(
+        function () {
+            if ($(this).is(":checked")) {
+                $("#dropdownLabel").prop("disabled", false);
+            } else {
+                $("#dropdownLabel").prop("disabled", true);
+            }
+        }
+    )
 });
 
 // Register time update functions ....

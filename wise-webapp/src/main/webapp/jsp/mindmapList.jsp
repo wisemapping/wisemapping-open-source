@@ -177,8 +177,8 @@
                 </li>
                 <li id="newFolderBtn">
                     <a href="#" onclick="return false">
-                        <i class="icon-folder-open"></i>
-                        <spring:message code="NEW_FOLDER"/>
+                        <i class="icon-tag"></i>
+                        <spring:message code="NEW_LABEL"/>
                     </a>
                 </li>
             </ul>
@@ -273,6 +273,43 @@
                     <input class="control" name="description" id="newDec" type="text"
                            placeholder="<spring:message code="MAP_DESCRIPTION_HINT"/>" maxlength="255"/>
                 </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message
+                code="SAVING"/>"><spring:message
+                code="CREATE"/></button>
+        <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
+    </div>
+</div>
+
+<!-- New label dialog -->
+<div id="new-folder-dialog-modal" title="<spring:message code="ADD_NEW_LABEL"/>" class="modal fade">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">x</button>
+        <h3><spring:message code="NEW_LABEL_MSG"/></h3>
+    </div>
+    <div class="modal-body">
+        <div class="errorMessage"></div>
+        <form class="form-horizontal">
+            <fieldset>
+                <div class="control-group">
+                    <label class="control-label" for="newLabelTitle"><spring:message code="NAME"/>: </label>
+                    <input class="control" name="title" id="newLabelTitle" type="text" required="required"
+                           placeholder="<spring:message code="LABEL_NAME_HINT"/>" autofocus="autofocus" maxlength="255"/>
+                </div>
+                <div class="control-label">
+                    <input id="parentLblCheckbox" type="checkbox">
+                    <label for="parentLblCheckbox" style="display: inline-block"><spring:message code="PARENT_LABEL"/>:</label>
+                </div>
+                <select id="dropdownLabel" class="control" disabled autofocus="autofocus">
+                    <option id="defaultOption" value="empty"><spring:message code="SELECT_LABEL"/></option>
+                    <option value="1">Dummy Label</option>
+                    <option value="2">-> Child</option>
+                    <option value="3">-> Child2</option>
+                    <option value="4">Dummy</option>
+                </select>
             </fieldset>
         </form>
     </div>
