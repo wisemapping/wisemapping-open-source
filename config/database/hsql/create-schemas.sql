@@ -28,18 +28,9 @@ CREATE TABLE MINDMAP (
   edition_date   DATETIME,
   creator_id     INTEGER       NOT NULL,
   tags           VARCHAR(1014),
-  last_editor_id INTEGER       NOT NULL,
-  directory_id   INTEGER       NOT NULL,
+  last_editor_id INTEGER       NOT NULL
 --FOREIGN KEY(creator_id) REFERENCES USER(colaborator_id)
 );
-
-CREATE TABLE DIRECTORY (
-  id             INTEGER           NOT NULL IDENTITY,
-  name           VARCHAR(255)  NOT NULL,
-  description    VARCHAR(255)  NOT NULL,
-  creator_id     INTEGER            NOT NULL,
---FOREIGN KEY (creator_id) REFERENCES USER (colaborator_id)
-)
 
 CREATE TABLE MINDMAP_HISTORY
 (id            INTEGER       NOT NULL IDENTITY,

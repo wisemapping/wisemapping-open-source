@@ -30,17 +30,8 @@ CREATE TABLE MINDMAP (
   edition_date   TIMESTAMP,
   creator_id     INTEGER      NOT NULL,
   tags           VARCHAR(1014),
-  last_editor_id INTEGER      NOT NULL,
-  directory_id   INTEGER      NOT NULL--,
+  last_editor_id INTEGER      NOT NULL --,
 --FOREIGN KEY(creator_id) REFERENCES "USER"(colaborator_id) ON DELETE CASCADE ON UPDATE NO ACTION
-);
-
-CREATE TABLE DIRECTORY (
-  id             SERIAL       NOT NULL PRIMARY KEY,
-  title          VARCHAR(255) NOT NULL,
-  description    VARCHAR(255) NOT NULL,
-  creator_id     INTEGER      NOT NULL,
-  --FOREIGN KEY(creator_id) REFERENCES "USER"(colaborator_id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
 
 
