@@ -90,8 +90,7 @@
             </form>
         </div>
         <div class="tab-pane fade" id="deleteAccountPanel">
-            <div id="deleteAccountMsg" class="alert">
-            </div>
+            <div id="deleteAccountMsg" class="alert alert-error" style="display: block;"><spring:message code="WARNING_DELETE_USER"/></div>
             <form action="#" method="POST" id="deleteAccountForm">
                 <fieldset>
                     <input type="checkbox" name="confirmAccountDelete" id="accountMarkedForDelete" required="required"/>
@@ -107,7 +106,6 @@
     $('#changePasswordMsg').hide();
     $('#changeInfoMsg').hide();
     $('#languageMsg').hide();
-    $('#deleteAccountMsg').hide();
 
     function postChange(url, postBody, msgContainerId, successMsg) {
         // Change success message ...
