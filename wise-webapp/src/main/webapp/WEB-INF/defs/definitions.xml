@@ -63,6 +63,11 @@
         <put-attribute name="body" value="/jsp/userForgotPasswordError.jsp"/>
     </definition>
 
+    <definition name="userForgotPasswordOpenId" extends="errorTemplate">
+        <put-attribute name="title" value="OPENID_ACCOUNT_PASSWORD"/>
+        <put-attribute name="body" value="/jsp/userForgotPasswordOpenId.jsp"/>
+    </definition>
+
     <definition name="forgotPasswordSuccess" extends="errorTemplate">
         <put-attribute name="title" value="FORGOT_PASSWORD"/>
         <put-attribute name="body" value="/jsp/userForgotPasswordSuccess.jsp"/>
