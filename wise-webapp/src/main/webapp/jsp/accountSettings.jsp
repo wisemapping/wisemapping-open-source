@@ -159,8 +159,21 @@
     $('#deleteAccountForm').submit(function (event) {
 
         var locale = $('#deleteAccountForm option:selected').val();
-
-        postChange("c/restful/account/locale", locale, 'deleteAccountMsg', "<spring:message code="INFO_UPDATE_SUCCESS"/>");
+//FIXME: este metodo hay que unificarlo con postChange, con callbacks o eventos para los success and error y pasandole el type
+        jQuery.ajax("c/restful/account", {
+            async: false,
+            dataType: 'json',
+            data: locale,
+            type: 'DELETE',
+            contentType: "text/plain; charset=utf-8",
+            success: function (data, textStatus, jqXHR) {
+                window.location.href = "/c/logout"
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $('#' + 'deleteAccountMsg').removeClass('alert-info').addClass('alert-error').show();
+                $('#' + 'deleteAccountMsg').text(textStatus);
+            }
+        });
         event.preventDefault();
     });
 
