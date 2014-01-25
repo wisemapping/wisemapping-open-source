@@ -111,7 +111,7 @@ public class AccountController extends BaseController {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "account")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleleteUser() throws WiseMappingException
+    public void deleteUser() throws WiseMappingException
 
     {
         final User user = Utils.getUser(true);
