@@ -2,13 +2,17 @@ package com.wisemapping.test.rest;
 
 
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.rest.model.RestMindmapInfo;
 import com.wisemapping.rest.model.RestMindmap;
+import com.wisemapping.rest.model.RestMindmapInfo;
 import com.wisemapping.rest.model.RestMindmapList;
 import com.wisemapping.rest.model.RestUser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.web.client.HttpClientErrorException;
@@ -28,7 +32,7 @@ import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
 
 @Test
-public class RestMindmapTCase {
+public class RestMindmapITCase {
 
     private String userEmail = "admin@wisemapping.com";
     private static final String HOST_PORT = "http://localhost:8080";
@@ -132,7 +136,7 @@ public class RestMindmapTCase {
             template.postForLocation(BASE_REST_URL + "/maps", createUserEntity);
         } catch (HttpClientErrorException cause) {
             final String responseBodyAsString = cause.getResponseBodyAsString();
-            assert(responseBodyAsString.contains("Map name already exists."));
+            assert (responseBodyAsString.contains("You have already a map"));
             return;
         }
         fail("Wrong response");
