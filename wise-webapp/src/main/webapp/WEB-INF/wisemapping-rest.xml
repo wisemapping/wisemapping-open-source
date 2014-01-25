@@ -66,11 +66,6 @@
                 <entry key="mmap" value="application/vnd.mindjet.mindmanager"/>
             </map>
         </property>
-        <property name="viewResolvers">
-            <list>
-                <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
-            </list>
-        </property>
         <property name="defaultViews">
             <list>
                 <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
