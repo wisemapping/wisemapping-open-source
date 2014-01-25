@@ -18,7 +18,6 @@
 
 package com.wisemapping.rest;
 
-import com.mangofactory.swagger.annotations.ApiModel;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.model.Collaboration;
@@ -146,7 +145,7 @@ public class AdminController extends BaseController {
             mindmapService.removeMindmap(mindmap,user);
         }
 
-        userService.deleteUser(user);
+        userService.removeUser(user);
     }
 
     @ApiOperation("Note: Administration permissions required.")
