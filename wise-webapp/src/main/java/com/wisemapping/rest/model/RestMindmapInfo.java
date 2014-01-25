@@ -61,6 +61,10 @@ public class RestMindmapInfo {
         this.collaborator = collaborator;
     }
 
+    public void setCreationTime(String value){
+        // Ignore
+    }
+
     public String getCreationTime() {
         final Calendar creationTime = mindmap.getCreationTime();
         return creationTime != null ? TimeUtils.toISO8601(creationTime.getTime()) : null;
@@ -115,7 +119,7 @@ public class RestMindmapInfo {
         return collaboration != null ? collaboration.getRole().getLabel() : "none";
     }
 
-    public void setRole() {
+    public void setRole(String value) {
         // Do nothing ...
     }
 
@@ -143,7 +147,7 @@ public class RestMindmapInfo {
         return mindmap.isStarred(collaborator);
     }
 
-    public void setStarred(int value) {
+    public void setStarred(boolean value) {
 
     }
 

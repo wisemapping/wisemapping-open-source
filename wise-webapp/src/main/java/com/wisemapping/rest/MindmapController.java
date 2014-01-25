@@ -204,7 +204,7 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/document", consumes = {"application/xml", "application/json"}, produces = {"application/json", "application/xml"})
     @ResponseBody
-    public long updateDocument(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor, @RequestParam(required = false) Long timestamp, @RequestParam(required = false) Long session) throws WiseMappingException, IOException {
+    public Long updateDocument(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor, @RequestParam(required = false) Long timestamp, @RequestParam(required = false) Long session) throws WiseMappingException, IOException {
 
         final Mindmap mindmap = findMindmapById(id);
         final User user = Utils.getUser();
@@ -255,6 +255,22 @@ public class MindmapController extends BaseController {
         String xmlStr = mindmap.getXmlStr();
         return xmlStr.getBytes("UTF-8");
     }
+
+    @ApiIgnore
+    @RequestMapping(method = RequestMethod.PUT, value = {"/maps/{id}/document/xml"}, consumes = {"text/plain"})
+    @ResponseBody
+    public void updateDocument(@PathVariable int id, @RequestBody String xmlDoc) throws WiseMappingException, IOException {
+
+        final Mindmap mindmap = findMindmapById(id);
+        final User user = Utils.getUser();
+        if (xmlDoc != null && !xmlDoc.isEmpty()) {
+            mindmap.setXmlStr(xmlDoc);
+        }
+
+        mindmap.setXmlStr(xmlDoc);
+        saveMindmapDocument(false,mindmap,user);
+    }
+
 
     @RequestMapping(method = RequestMethod.GET, value = {"/maps/{id}/{hid}/document/xml"}, consumes = {"text/plain"}, produces = {"application/xml"})
     @ResponseBody
@@ -562,7 +578,7 @@ public class MindmapController extends BaseController {
         createMap(new RestMindmap(mindMap, null), response, title, description);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/maps/{id}", consumes = {"application/xml", "application/json"})
+    @RequestMapping(method = RequestMethod.POST, value = "/maps/{id}", consumes = {"application/xml", "application/json"},produces = {"application/xml", "application/json","text/plain"})
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createDuplicate(@RequestBody RestMindmapInfo restMindmap, @PathVariable int id, @NotNull HttpServletResponse response) throws IOException, WiseMappingException {
         // Validate ...
