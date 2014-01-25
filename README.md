@@ -58,12 +58,12 @@ Now open a browser using the URL http://localhost:8000/wise-editor/src/main/weba
 
 ### Individual Controbutors
 
-    * Ezequiel Bergamaschi
+   * Ezequiel Bergamaschi
 
 ### Past Individual Contributors
 
-    * Ignacio Manzano
-    * Nicolas Damonte
+   * Ignacio Manzano
+   * Nicolas Damonte
    
 ## License
 
