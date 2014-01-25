@@ -20,18 +20,23 @@ package com.wisemapping.rest.model;
 
 
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.model.*;
+import com.wisemapping.model.CollaborationProperties;
+import com.wisemapping.model.CollaborationRole;
+import com.wisemapping.model.Collaborator;
+import com.wisemapping.model.Mindmap;
+import com.wisemapping.model.User;
 import com.wisemapping.util.TimeUtils;
-import org.codehaus.jackson.annotate.*;
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
 
 @XmlRootElement(name = "map")
 @XmlAccessorType(XmlAccessType.PROPERTY)
@@ -65,6 +70,9 @@ public class RestMindmap {
         }
     }
 
+    public void setCreationTime(final String creationTime){
+        // Ignore
+    }
 
     public String getCreationTime() {
         final Calendar creationTime = mindmap.getCreationTime();
@@ -79,21 +87,42 @@ public class RestMindmap {
         return mindmap.getDescription();
     }
 
+    public void setDescription(String description) {
+        mindmap.setDescription(description);
+    }
+
     public String getTags() {
         return mindmap.getTags();
+    }
+
+    public void setTags(String tags) {
+        mindmap.setTags(tags);
     }
 
     public String getTitle() {
         return mindmap.getTitle();
     }
 
+    public void setTitle(String title) {
+        mindmap.setTitle(title);
+    }
+
     public int getId() {
         return mindmap.getId();
     }
 
-    public String getCreator() {
-        return mindmap.getCreator().getEmail();
+    public void setId(int id) {
+        mindmap.setId(id);
     }
+
+    public String getCreator() {
+        final User creator = mindmap.getCreator();
+        return creator != null ? creator.getEmail() : null;
+    }
+
+    public void setCreator(String creatorUser) {
+    }
+
 
     public RestCollaborator getLastModifierUser() {
         final User lastEditor = mindmap.getLastEditor();
@@ -105,6 +134,9 @@ public class RestMindmap {
         return result;
     }
 
+    public void setLastModifierUser(RestUser lastModifierUser) {
+    }
+
     public String getLastModificationTime() {
         final Calendar date = mindmap.getLastModificationTime();
         String result = null;
@@ -114,10 +146,12 @@ public class RestMindmap {
         return result;
     }
 
+    public void setLastModificationTime(final String value) {
+    }
+
     public boolean isPublic() {
         return mindmap.isPublic();
     }
-
 
     public void setPublic(boolean value) {
         // return mindmap.isPublic();
@@ -127,31 +161,10 @@ public class RestMindmap {
         return mindmap.getXmlStr();
     }
 
-
     public void setXml(@Nullable String xml) throws IOException {
 
         if (xml != null)
             mindmap.setXmlStr(xml);
-    }
-
-    public void setId(int id) {
-        mindmap.setId(id);
-    }
-
-    public void setTitle(String title) {
-        mindmap.setTitle(title);
-    }
-
-    public void setTags(String tags) {
-        mindmap.setTags(tags);
-    }
-
-    public void setDescription(String description) {
-        mindmap.setDescription(description);
-    }
-
-    public void setOwner(String owner) {
-
     }
 
     public String getOwner() {
@@ -159,23 +172,17 @@ public class RestMindmap {
         return owner != null ? owner.getEmail() : null;
     }
 
-    public void setCreator(String creatorUser) {
-    }
+    public void setOwner(String owner) {
 
-
-    public void setProperties(@Nullable String properties) {
-        this.properties = properties;
-    }
-
-    public void setLastModificationTime(final String value) {
-    }
-
-    public void setLastModifierUser(String lastModifierUser) {
     }
 
     @Nullable
     public String getProperties() {
         return properties;
+    }
+
+    public void setProperties(@Nullable String properties) {
+        this.properties = properties;
     }
 
     public boolean getStarred() {

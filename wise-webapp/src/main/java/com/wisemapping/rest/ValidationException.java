@@ -27,7 +27,7 @@ public class ValidationException extends WiseMappingException{
     private Errors errors;
 
     public ValidationException(@NotNull Errors errors) {
-        super("Validation Exceptions");
+        super("Validation Exceptions:"+errors);
         this.errors = errors;
     }
 
