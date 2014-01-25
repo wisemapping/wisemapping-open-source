@@ -120,7 +120,8 @@ public class User
     }
 
     public char getAutheticationTypeCode() {
-        return this.authenticationType != null ? this.authenticationType.getCode() : null;
+        // Default authentication is database ....
+        return this.authenticationType != null ? this.authenticationType.getCode() : AuthenticationType.DATABASE.getCode();
     }
 
     public void setAutheticationTypeCode(char code) {

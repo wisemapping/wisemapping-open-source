@@ -77,7 +77,7 @@ import java.util.Map;
 import java.util.Set;
 
 
-@Api(value="mindmap",description = "User Mindmap Objects.")
+@Api(value = "mindmap", description = "User Mindmap Objects.")
 @Controller
 public class MindmapController extends BaseController {
 
@@ -116,7 +116,6 @@ public class MindmapController extends BaseController {
         return new ModelAndView("transformViewFreemind", values);
     }
 
-
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"text/plain"}, params = {"download=txt"})
     @ResponseBody
     public ModelAndView retrieveDocumentAsText(@PathVariable int id) throws IOException, MapCouldNotFoundException {
@@ -136,7 +135,6 @@ public class MindmapController extends BaseController {
         values.put("filename", mindMap.getTitle());
         return new ModelAndView("transformViewMMap", values);
     }
-
 
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/vnd.ms-excel"}, params = {"download=xls"})
     @ResponseBody
@@ -158,8 +156,7 @@ public class MindmapController extends BaseController {
         return new ModelAndView("transformViewOdt", values);
     }
 
-
-    @RequestMapping(method = RequestMethod.GET, value = "/maps/", produces = {"application/json",  "application/xml"})
+    @RequestMapping(method = RequestMethod.GET, value = "/maps/", produces = {"application/json", "application/xml"})
     public RestMindmapList retrieveList(@RequestParam(required = false) String q) throws IOException {
         final User user = Utils.getUser();
 
@@ -176,8 +173,7 @@ public class MindmapController extends BaseController {
         return new RestMindmapList(mindmaps, user);
     }
 
-
-    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}/history", produces = {"application/json",  "application/xml"})
+    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}/history", produces = {"application/json", "application/xml"})
     public RestMindmapHistoryList retrieveHistory(@PathVariable int id) throws IOException {
         final List<MindMapHistory> histories = mindmapService.findMindmapHistory(id);
         final RestMindmapHistoryList result = new RestMindmapHistoryList();
@@ -186,7 +182,6 @@ public class MindmapController extends BaseController {
         }
         return result;
     }
-
 
     @RequestMapping(value = "maps/{id}/history/{hid}", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
@@ -207,7 +202,7 @@ public class MindmapController extends BaseController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/document", consumes = {"application/xml", "application/json"}, produces = {"application/json",  "application/xml"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/document", consumes = {"application/xml", "application/json"}, produces = {"application/json", "application/xml"})
     @ResponseBody
     public long updateDocument(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor, @RequestParam(required = false) Long timestamp, @RequestParam(required = false) Long session) throws WiseMappingException, IOException {
 
@@ -221,7 +216,9 @@ public class MindmapController extends BaseController {
         }
 
         // Could the map be updated ?
-        verifyLock(mindmap, user, session, timestamp);
+        if (session != null) {
+            verifyLock(mindmap, user, session, timestamp);
+        }
 
         // Update collaboration properties ...
         final CollaborationProperties collaborationProperties = mindmap.findCollaborationProperties(user);
@@ -239,8 +236,12 @@ public class MindmapController extends BaseController {
 
         // Update edition timeout ...
         final LockManager lockManager = mindmapService.getLockManager();
-        final LockInfo lockInfo = lockManager.updateExpirationTimeout(mindmap, user);
-        return lockInfo.getTimestamp();
+        long result = -1;
+        if (session != null) {
+            final LockInfo lockInfo = lockManager.updateExpirationTimeout(mindmap, user);
+            result = lockInfo.getTimestamp();
+        }
+        return result;
     }
 
     @ApiIgnore
@@ -263,7 +264,6 @@ public class MindmapController extends BaseController {
         final MindMapHistory mindmapHistory = mindmapService.findMindmapHistory(id, hid);
         return mindmapHistory.getUnzipXml();
     }
-
 
     private void verifyLock(@NotNull Mindmap mindmap, @NotNull User user, long session, long timestamp) throws WiseMappingException {
 
@@ -295,7 +295,7 @@ public class MindmapController extends BaseController {
     /**
      * The intention of this method is the update of several properties at once ...
      */
-    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}", consumes = {"application/xml", "application/json"}, produces = {"application/json",  "application/xml"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}", consumes = {"application/xml", "application/json"}, produces = {"application/json", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateProperties(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor) throws IOException, WiseMappingException {
 
@@ -347,8 +347,7 @@ public class MindmapController extends BaseController {
         return result;
     }
 
-
-    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/title", consumes = {"text/plain"}, produces = {"application/json",  "application/xml"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/title", consumes = {"text/plain"}, produces = {"application/json", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateTitle(@RequestBody String title, @PathVariable int id) throws WiseMappingException {
 
@@ -367,7 +366,7 @@ public class MindmapController extends BaseController {
         mindmapService.updateMindmap(mindMap, !true);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/collabs", consumes = {"application/json", "application/xml"}, produces = {"application/json",  "application/xml"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/collabs", consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateCollabs(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws CollaborationException, MapCouldNotFoundException {
         final Mindmap mindMap = findMindmapById(id);
@@ -407,8 +406,7 @@ public class MindmapController extends BaseController {
         }
     }
 
-
-    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}/collabs", produces = {"application/json",  "application/xml"})
+    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}/collabs", produces = {"application/json", "application/xml"})
     public RestCollaborationList retrieveList(@PathVariable int id) throws MapCouldNotFoundException {
         final Mindmap mindMap = findMindmapById(id);
 
@@ -424,8 +422,7 @@ public class MindmapController extends BaseController {
         return result;
     }
 
-
-    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/description", consumes = {"text/plain"}, produces = {"application/json",  "application/xml"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/description", consumes = {"text/plain"}, produces = {"application/json", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateDescription(@RequestBody String description, @PathVariable int id) throws WiseMappingException {
 
@@ -438,7 +435,7 @@ public class MindmapController extends BaseController {
         mindmapService.updateMindmap(mindMap, !true);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/publish", consumes = {"text/plain"}, produces = {"application/json",  "application/xml"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/publish", consumes = {"text/plain"}, produces = {"application/json", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updatePublishState(@RequestBody String value, @PathVariable int id) throws WiseMappingException {
 
@@ -463,9 +460,9 @@ public class MindmapController extends BaseController {
         mindmapService.removeMindmap(mindmap, user);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/starred", consumes = {"text/plain"}, produces = {"application/json",  "application/xml"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/starred", consumes = {"text/plain"}, produces = {"application/json", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateStarredState(@RequestBody @ApiParam(defaultValue = "false",allowableValues = "true,false") String value, @PathVariable int id) throws WiseMappingException {
+    public void updateStarredState(@RequestBody @ApiParam(defaultValue = "false", allowableValues = "true,false") String value, @PathVariable int id) throws WiseMappingException {
 
         final Mindmap mindmap = findMindmapById(id);
         final User user = Utils.getUser();
@@ -481,7 +478,7 @@ public class MindmapController extends BaseController {
     }
 
     @ApiIgnore
-    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/lock", consumes = {"text/plain"}, produces = {"application/json",  "application/xml"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/lock", consumes = {"text/plain"}, produces = {"application/json", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateMapLock(@RequestBody String value, @PathVariable int id) throws IOException, WiseMappingException {
         final User user = Utils.getUser();
