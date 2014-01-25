@@ -52,7 +52,6 @@
         <property name="defaultContentType" value="application/json"/>
         <property name="mediaTypes">
             <map>
-                <entry key="html" value="text/html"/>
                 <entry key="xml" value="application/xml"/>
                 <entry key="json" value="application/json"/>
                 <entry key="freemind" value="application/freemind"/>
@@ -70,11 +69,6 @@
         <property name="viewResolvers">
             <list>
                 <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
-                <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-                    <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-                    <property name="prefix" value="/WEB-INF/jsp-rest/"/>
-                    <property name="suffix" value=".jsp"/>
-                </bean>
             </list>
         </property>
         <property name="defaultViews">
@@ -149,4 +143,9 @@
         </property>
     </bean>
 
+    <!-- Configuration Bean -->
+    <context:property-placeholder location="/WEB-INF/app.properties" ignore-unresolvable="true"/>
+    <bean id="documentationConfig" class="com.mangofactory.swagger.configuration.DocumentationConfig"/>
+    <!-- Custom extensibility module (bean) Has override methods to customize the document generation-->
+    <!--<bean id="extensibilityModule" class="com.mangofactory.swagger.springmvc.example.config.ExampleExtensibilityModule" />-->
 </beans>

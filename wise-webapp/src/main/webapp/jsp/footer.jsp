@@ -55,7 +55,7 @@
     </div>
     <div class="span1">
         <a href="https://www.w3.org/html/logo/">
-            <img src="/images/badge/html5-badge-h-graphics.png" width="66" height="32"
+            <img src="images/html5-badge-h-graphics.png" width="66" height="32"
                  alt="HTML5 Powered with Graphics, 3D &amp; Effects"
                  title="HTML5 Powered with Graphics, 3D &amp; Effects">
         </a>

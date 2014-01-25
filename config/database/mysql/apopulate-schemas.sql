@@ -4,7 +4,7 @@ INSERT INTO USER (colaborator_id, firstname, lastname, password, activation_code
 
 INSERT INTO COLLABORATOR (id, email, creation_date) VALUES (2, 'admin@wisemapping.org', CURRENT_DATE());
 INSERT INTO USER (colaborator_id, firstname, lastname, password, activation_code, activation_date, allow_send_email,authentication_type)
-  VALUES (2, 'Admin', 'User', 'admin', 1237, CURRENT_DATE(), 1, 'D');
+  VALUES (2, 'Admin', 'User', 'admin', 1237, CURRENT_DATE(), 1,'D');
 
 INSERT INTO COLLABORATOR (id, email, creation_date) VALUES (3, 'homer@wisemapping.org', CURRENT_DATE());
 INSERT INTO USER (colaborator_id, firstname, lastname, password, activation_code, activation_date, allow_send_email,authentication_type)
