@@ -21,11 +21,8 @@ package com.wisemapping.security;
 import com.wisemapping.model.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-
-import javax.servlet.http.HttpServletRequest;
 
 final public class Utils {
     private Utils() {
@@ -37,7 +34,7 @@ final public class Utils {
         return getUser(false);
     }
 
-    @Nullable
+    @NotNull
     public static User getUser(boolean forceCheck) {
         User result = null;
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();

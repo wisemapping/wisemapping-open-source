@@ -45,6 +45,6 @@ public interface UserManager {
 
     public User createUser(User user, Collaborator col);
 
-    public void deleteUser(User user);
+    public void removeUser(@NotNull User user);
 
 }

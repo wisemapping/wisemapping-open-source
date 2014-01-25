@@ -110,9 +110,8 @@ public class UserManagerImpl
     }
 
     @Override
-    public void deleteUser(@NotNull final User user) {
+    public void removeUser(@NotNull final User user) {
         getHibernateTemplate().delete(user);
-        getHibernateTemplate().flush();
     }
 
     public void auditLogin(@NotNull AccessAuditory accessAuditory) {

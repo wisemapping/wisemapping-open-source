@@ -102,8 +102,10 @@ public class UserServiceImpl
     }
 
     @Override
-    public void deleteUser(@NotNull User user) {
-        userManager.deleteUser(user);
+    public void removeUser(@NotNull  User user) {
+        // Force object reload before removing....
+        final User userBy = userManager.getUserBy(user.getEmail());
+        userManager.removeUser(userBy);
     }
 
     @Override

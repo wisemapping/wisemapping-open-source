@@ -38,7 +38,7 @@ public interface UserService {
 
     public void resetPassword(@NotNull String email) throws InvalidUserEmailException, InvalidAuthSchemaException;
 
-    public void deleteUser(@NotNull User user);
+    public void removeUser(@NotNull User user);
 
     public void auditLogin(@NotNull User user);
     

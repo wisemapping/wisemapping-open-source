@@ -79,7 +79,7 @@ public class AccountController extends BaseController {
             throw new IllegalArgumentException("Firstname can not be null");
         }
 
-        final User user = Utils.getUser();
+        final User user = Utils.getUser(true);
         user.setFirstname(firstname);
         userService.updateUser(user);
     }
@@ -91,7 +91,7 @@ public class AccountController extends BaseController {
             throw new IllegalArgumentException("lastname can not be null");
 
         }
-        final User user = Utils.getUser();
+        final User user = Utils.getUser(true);
         user.setLastname(lastname);
         userService.updateUser(user);
     }
@@ -109,7 +109,7 @@ public class AccountController extends BaseController {
         userService.updateUser(user);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "account", consumes = {"text/plain"})
+    @RequestMapping(method = RequestMethod.DELETE, value = "account")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleleteUser() throws WiseMappingException
 
@@ -120,7 +120,7 @@ public class AccountController extends BaseController {
             final Mindmap mindmap = collaboration.getMindMap();
             mindmapService.removeMindmap(mindmap,user);
         }
-        userService.deleteUser(user);
+        userService.removeUser(user);
     }
 
 
