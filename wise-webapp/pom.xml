@@ -459,6 +459,20 @@
             </plugin>
 
             <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <configuration>
+                    <path>/wisemapping</path>
+                    <warFile>${project.build.directory}/wisemapping.war</warFile>
+                    <mode>war</mode>
+                    <update>true</update>
+                    <systemProperties>
+                        <database.base.url>${project.build.directory}</database.base.url>
+                    </systemProperties>
+                </configuration>
+            </plugin>
+
+            <plugin>
                 <groupId>org.mortbay.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>8.1.14.v20131031</version>
