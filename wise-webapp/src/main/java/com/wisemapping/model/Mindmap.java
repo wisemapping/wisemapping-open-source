@@ -229,9 +229,6 @@ public class Mindmap {
     }
 
     public void setCreator(@NotNull User creator) {
-        if (creator == null) {
-            throw new IllegalArgumentException("Owner can not be null");
-        }
         this.creator = creator;
     }
 
