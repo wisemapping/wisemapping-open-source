@@ -13,5 +13,9 @@
         <bean id="mindmapManager" class="com.wisemapping.dao.MindmapManagerImpl">
             <property name="hibernateTemplate" ref="hibernateTemplate"/>
         </bean>
+
+        <bean id="labelManager" class="com.wisemapping.dao.LabelManagerImpl">
+            <property name="hibernateTemplate" ref="hibernateTemplate"/>
+        </bean>
     </beans>
 </beans>

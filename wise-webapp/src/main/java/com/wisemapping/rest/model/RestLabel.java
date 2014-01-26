@@ -1,0 +1,59 @@
+package com.wisemapping.rest.model;
+
+import com.wisemapping.model.Label;
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.jetbrains.annotations.NotNull;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import static org.codehaus.jackson.annotate.JsonAutoDetect.Visibility.NONE;
+import static org.codehaus.jackson.annotate.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
+@XmlRootElement(name = "label")
+@XmlAccessorType(XmlAccessType.PROPERTY)
+@JsonAutoDetect(
+        fieldVisibility = NONE,
+        setterVisibility = PUBLIC_ONLY,
+        isGetterVisibility = NONE,
+        getterVisibility = PUBLIC_ONLY
+)
+public class RestLabel {
+
+    @JsonIgnore
+    private Label label;
+
+    public RestLabel() {
+        this(new Label());
+    }
+
+
+    public RestLabel(@NotNull final Label label) {
+        this.label = label;
+    }
+
+    public String getTitle() {
+        return this.label.getTitle();
+    }
+
+    public int getId() {
+        return label.getId();
+    }
+
+    public String getCreator() {
+        return this.label.getCreator().getEmail();
+    }
+
+    public void setId(int id) {
+        label.setId(id);
+    }
+
+    public void setTitle(String title) {
+        label.setTitle(title);
+    }
+
+    @JsonIgnore
+    public Label getDelegated() {
+        return label;
+    }
+}
