@@ -3,7 +3,10 @@ package com.wisemapping.rest.model;
 import com.wisemapping.model.Label;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -18,6 +21,7 @@ import static org.codehaus.jackson.annotate.JsonAutoDetect.Visibility.PUBLIC_ONL
         isGetterVisibility = NONE,
         getterVisibility = PUBLIC_ONLY
 )
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RestLabel {
 
     @JsonIgnore
@@ -30,6 +34,15 @@ public class RestLabel {
 
     public RestLabel(@NotNull final Label label) {
         this.label = label;
+    }
+
+    public void setParent(@NotNull final Label parent) {
+        this.label.setParent(parent);
+    }
+
+    @Nullable
+    public Label getParent() {
+        return this.label.getParent();
     }
 
     public String getTitle() {

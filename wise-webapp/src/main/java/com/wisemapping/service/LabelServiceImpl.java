@@ -6,6 +6,8 @@ import com.wisemapping.model.Label;
 import com.wisemapping.model.User;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class LabelServiceImpl implements LabelService {
 
     private LabelManager labelManager;
@@ -19,6 +21,12 @@ public class LabelServiceImpl implements LabelService {
 
         label.setCreator(user);
         labelManager.addLabel(label);
+    }
+
+    @NotNull
+    @Override
+    public List<Label> getAll(@NotNull final User user) {
+        return labelManager.getAllLabels(user);
     }
 
 }

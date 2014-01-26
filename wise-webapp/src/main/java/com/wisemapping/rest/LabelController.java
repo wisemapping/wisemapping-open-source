@@ -4,6 +4,7 @@ import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.Label;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestLabel;
+import com.wisemapping.rest.model.RestLabelList;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.LabelService;
 import com.wisemapping.validator.LabelValidator;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class LabelController extends BaseController {
@@ -44,7 +47,6 @@ public class LabelController extends BaseController {
         final BindingResult result = new BeanPropertyBindingResult(restLabel, "");
         new LabelValidator().validate(label, result);
         if (result.hasErrors()) {
-
             throw new ValidationException(result);
         }
 
@@ -55,6 +57,14 @@ public class LabelController extends BaseController {
 
         // Return the new created map ...
         response.setHeader("ResourceId", Integer.toString(label.getId()));
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/labels", produces = {"application/json"})
+    public RestLabelList retrieveList() {
+        final User user = Utils.getUser();
+        assert user != null;
+        final List<Label> all = labelService.getAll(user);
+        return new RestLabelList(all);
     }
 
 }
