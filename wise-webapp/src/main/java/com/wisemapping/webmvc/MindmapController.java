@@ -151,19 +151,18 @@ public class MindmapController {
         final Locale locale = LocaleContextHolder.getLocale();
 
         // Is the mindmap locked ?.
+        boolean isLocked = false;
         boolean readOnlyMode = !requiresLock || !mindmap.hasPermissions(collaborator, CollaborationRole.EDITOR);
         if (!readOnlyMode) {
             final LockManager lockManager = this.mindmapService.getLockManager();
             if (lockManager.isLocked(mindmap) && !lockManager.isLockedBy(mindmap, collaborator)) {
                 readOnlyMode = true;
-                model.addAttribute("mindmapLocked", true);
             } else {
                 model.addAttribute("lockTimestamp", mindmap.getLastModificationTime().getTimeInMillis());
                 model.addAttribute(LOCK_SESSION_ATTRIBUTE, lockManager.generateSession());
             }
             model.addAttribute("lockInfo", lockManager.getLockInfo(mindmap));
         }
-
         // Set render attributes ...
         model.addAttribute("mindmap", mindmapBean);
 
@@ -171,6 +170,9 @@ public class MindmapController {
         model.addAttribute("locale", locale.toString().toLowerCase());
         model.addAttribute("principal", collaborator);
         model.addAttribute("readOnlyMode", readOnlyMode);
+        model.addAttribute("memoryPersistence", false);
+        model.addAttribute("mindmapLocked", isLocked);
+
         return "mindmapEditor";
     }
 

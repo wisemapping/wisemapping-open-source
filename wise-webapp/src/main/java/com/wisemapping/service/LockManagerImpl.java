@@ -104,8 +104,6 @@ class LockManagerImpl implements LockManager {
     }
 
     private void unlock(int mapId) {
-        System.out.println("Unlocking:"+mapId);
-
         logger.debug("Unlock map id:" + mapId);
         lockInfoByMapId.remove(mapId);
     }
