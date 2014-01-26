@@ -8,12 +8,12 @@ public class LabelManagerImpl extends HibernateDaoSupport
         implements LabelManager {
 
     @Override
-    public void addLabel(Label label) {
+    public void addLabel(@NotNull final Label label) {
         saveLabel(label);
     }
 
     @Override
-    public void saveLabel(@NotNull Label label) {
+    public void saveLabel(@NotNull final Label label) {
         getSession().save(label);
     }
 }
