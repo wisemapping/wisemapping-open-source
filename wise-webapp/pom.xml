@@ -417,7 +417,7 @@
                             <srcFiles>
                                 <srcFile>config/database/mysql/create-database.sql</srcFile>
                                 <srcFile>config/database/mysql/create-schemas.sql</srcFile>
-                                <srcFile>config/database/mysql/test-data.sql</srcFile>
+                                <srcFile>config/database/mysql/apopulate-schemas.sql</srcFile>
                             </srcFiles>
                         </configuration>
                     </plugin>
