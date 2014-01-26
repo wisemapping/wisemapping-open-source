@@ -313,13 +313,12 @@
     <div class="modal-body">
         <div class="errorMessage"></div>
         <form class="form-horizontal">
-            <fieldset>
                 <div class="control-group">
-                    <label class="control-label" for="newLabelTitle"><spring:message code="NAME"/>: </label>
+                    <label class="control-label" for="newLabelTitle"><spring:message code="NAME"/>:</label>
                     <input class="control" name="title" id="newLabelTitle" type="text" required="required"
                            placeholder="<spring:message code="LABEL_NAME_HINT"/>" autofocus="autofocus" maxlength="255"/>
                 </div>
-                <div class="control-label">
+                <!--div class="control-label">
                     <input id="parentLblCheckbox" type="checkbox">
                     <label for="parentLblCheckbox" style="display: inline-block"><spring:message code="PARENT_LABEL"/>:</label>
                 </div>
@@ -329,8 +328,8 @@
                     <option value="2">-> Child</option>
                     <option value="3">-> Child2</option>
                     <option value="4">Dummy</option>
-                </select>
-            </fieldset>
+                </select-->
+
         </form>
     </div>
     <div class="modal-footer">

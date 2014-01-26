@@ -258,8 +258,14 @@ $(function () {
     $("#newFolderBtn").click(
         function () {
             $("#new-folder-dialog-modal").dialogForm({
-                //redirect:"c/maps/{header.resourceId}/edit",
-                //url:"c/restful/maps"
+                url:"c/restful/labels",
+                postUpdate: function (data) {
+                    $("#foldersContainer").find("ul").append(
+                        $("<li data-filter=\""  + data.title  + "\">").append(
+                            "<a href=\"#\"> <i class=\"icon-tag\"></i>" + data.title + "</a>"
+                        )
+                    )
+                }
             });
         }
     );
