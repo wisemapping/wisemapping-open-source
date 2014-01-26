@@ -1,19 +1,35 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<div id="footerContainer">
+    <script type="text/javascript" src="https://wisemapping.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e/en_US-f1g0rh-1988229788/6211/26/1.4.5/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=a47981d6"></script>
+    <script type="text/javascript" src="https://wisemapping.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e/en_US-f1g0rh-1988229788/6211/26/1.4.5/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=703b9822"></script>
 
-<div id="footerContainer" class="row">
-    <div class="span1 offset3">
-        <a href="https://twitter.com/share" class="twitter-share-button" data-via="wisemapping"
-           data-related="wisemapping">Tweet</a>
-        <script>!function (d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (!d.getElementById(id)) {
-                js = d.createElement(s);
-                js.id = id;
-                js.src = "//platform.twitter.com/widgets.js";
-                fjs.parentNode.insertBefore(js, fjs);
+    <script type="text/javascript">
+     window.ATL_JQ_PAGE_PROPS = $.extend(window.ATL_JQ_PAGE_PROPS, {
+        "a47981d6": {
+            triggerFunction:  function(showCollectorDialog) {
+                //Requries that jQuery is available!
+                jQuery("#feedbackBtn").click(function(e) {
+                    e.preventDefault();
+                    showCollectorDialog();
+                });
+             }
+        },
+        "703b9822":{
+            triggerFunction: function(showCollectorDialog) {
+                //Requries that jQuery is available!
+                jQuery("#reportIssueBtn").click(function(e) {
+                    e.preventDefault();
+                    showCollectorDialog();
+                });
             }
-        }(document, "script", "twitter-wjs");</script>
+        }
+     });
+    </script>
+
+    <div class="span1 offset3">
+        <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.wisemapping.com" data-text="Check out this site" data-via="wisemapping" data-related="wisemapping">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </div>
 
     <div class="span1">
@@ -35,10 +51,10 @@
     </div>
     <div class="span4">
         <p style="text-align: center;">
-            <a href="https://groups.google.com/d/forum/wisemapping-support"><spring:message code="SUPPORT"/></a> |
-            <a href="mailto:feedback@wisemapping.com"><spring:message code="FEEDBACK"/></a> |
-            <a href="mailto:dev@wisemapping.com"><spring:message code="CONTACT_US"/></a> |
-            <a href="http://www.wisemapping.org/license"><spring:message code="LICENSE"/></a><br/>
+            <a href="" id="feedbackBtn"><spring:message code="FEEDBACK"/></a> |
+            <a href="" id="reportIssueBtn"><spring:message code="REPORT_BUG"/></a> |
+            <a href="mailto:team@wisemapping.com"><spring:message code="CONTACT_US"/></a> |
+            <a href="https://wisemapping.atlassian.net/wiki/display/WS/License  "><spring:message code="LICENSE"/></a><br/>
             <a href="http://www.wisemapping.org/"><spring:message code="COPYRIGHT"/></a>
         </p>
 
