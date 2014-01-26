@@ -1,3 +1,7 @@
+#
+# Command: mysql -u root -p < create_schemas.sql
+#
+
 USE wisemapping;
 
 CREATE TABLE COLLABORATOR (

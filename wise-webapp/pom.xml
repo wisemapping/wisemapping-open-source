@@ -417,7 +417,7 @@
                             <srcFiles>
                                 <srcFile>config/database/mysql/create-database.sql</srcFile>
                                 <srcFile>config/database/mysql/create-schemas.sql</srcFile>
-                                <srcFile>config/database/mysql/test-data.sql</srcFile>
+                                <srcFile>config/database/mysql/apopulate-schemas.sql</srcFile>
                             </srcFiles>
                         </configuration>
                     </plugin>
@@ -507,12 +507,38 @@
                     </webResources>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
-
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.6.4.201312101107</version>
+                <executions>
+                    <!--
+                       Prepares the property pointing to the JaCoCo runtime agent which
+                       is passed as VM argument when Maven the Surefire plugin is executed.
+                   -->
+                    <execution>
+                        <id>pre-unit-test</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <!--
+                       Ensures that the code coverage report for unit tests is created after
+                       unit tests have been run.
+                   -->
+                    <execution>
+                        <id>post-unit-test</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>

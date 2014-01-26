@@ -1,3 +1,6 @@
+#
+# Command: mysql -u root -p < create_database.sql
+#
 DROP DATABASE IF EXISTS wisemapping;
 
 CREATE DATABASE IF NOT EXISTS wisemapping
