@@ -190,6 +190,23 @@ function updateStatusToolbar() {
     }
 }
 
+function fetchLabels() {
+    jQuery.ajax("c/restful/labels/", {
+        async:false,
+        dataType:'json',
+        type:'GET',
+        success:function (data) {
+            var labels = data.labels;
+            for (var i = 0; i < labels.length; i++) {
+                createLabelItem(labels[i])
+            }
+        },
+        error:function (jqXHR, textStatus, errorThrown) {
+            $('#messagesPanel div').text(errorThrown).parent().show();
+        }
+    });
+}
+
 
 // Update toolbar events ...
 function updateStarred(spanElem) {
@@ -244,6 +261,14 @@ function callbackOnTableInit() {
     updateStatusToolbar();
 }
 
+function createLabelItem(data) {
+    $("#foldersContainer").find("ul").append(
+        $("<li data-filter=\""  + data.title  + "\">").append(
+            "<a href=\"#\"> <i class=\"icon-tag\"></i>" + data.title + "</a>"
+        )
+    )
+}
+
 $(function () {
     // Creation buttons actions ...
     $("#newMapBtn").click(
@@ -257,15 +282,10 @@ $(function () {
 
     $("#newFolderBtn").click(
         function () {
+            fetchLabels()
             $("#new-folder-dialog-modal").dialogForm({
                 url:"c/restful/labels",
-                postUpdate: function (data) {
-                    $("#foldersContainer").find("ul").append(
-                        $("<li data-filter=\""  + data.title  + "\">").append(
-                            "<a href=\"#\"> <i class=\"icon-tag\"></i>" + data.title + "</a>"
-                        )
-                    )
-                }
+                postUpdate: createLabelItem
             });
         }
     );
@@ -413,7 +433,9 @@ $(function () {
                 $("#dropdownLabel").prop("disabled", true);
             }
         }
-    )
+    );
+
+    $(document).ready(fetchLabels())
 });
 
 // Register time update functions ....
