@@ -93,7 +93,7 @@ jQuery.fn.dialogForm = function (options) {
     var acceptBtn = $('#' + containerId + ' .btn-accept');
     acceptBtn.button('reset');
 
-    acceptBtn.click(function () {
+    acceptBtn.one('click', function () {
         var formData = {};
         $('#' + containerId + ' input').each(function (index, elem) {
             formData[elem.name] = elem.value;
