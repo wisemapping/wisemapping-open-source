@@ -19,6 +19,21 @@ CREATE TABLE "user" (
   FOREIGN KEY (colaborator_id) REFERENCES COLLABORATOR (id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
 
+CREATE TABLE LABEL (
+  id              INTEGER            NOT NULL PRIMARY KEY,
+  title           VARCHAR(255),
+  creator_id      INTEGER            NOT NULL,
+  parent_label_id INTEGER
+  --FOREIGN KEY (creator_id) REFERENCES USER (colaborator_id)
+);
+
+CREATE TABLE R_LABEL_MINDMAP (
+  mindmap_id       INTEGER            NOT NULL,
+  label_id         INTEGER            NOT NULL,
+  PRIMARY KEY (mindmap_id, label_id),
+  FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id),
+  FOREIGN KEY (label_id) REFERENCES LABEL (id)
+);
 
 CREATE TABLE MINDMAP (
   id             SERIAL       NOT NULL PRIMARY KEY,

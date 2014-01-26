@@ -32,6 +32,22 @@ CREATE TABLE MINDMAP (
 --FOREIGN KEY(creator_id) REFERENCES USER(colaborator_id)
 );
 
+CREATE TABLE LABEL (
+  id              INTEGER            NOT NULL PRIMARY KEY IDENTITY,
+  title           VARCHAR(255),
+  creator_id      INTEGER            NOT NULL,
+  parent_label_id INTEGER
+  --FOREIGN KEY (creator_id) REFERENCES USER (colaborator_id)
+);
+
+CREATE TABLE R_LABEL_MINDMAP (
+  mindmap_id       INTEGER            NOT NULL,
+  label_id         INTEGER            NOT NULL,
+  PRIMARY KEY (mindmap_id, label_id),
+  FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id),
+  FOREIGN KEY (label_id) REFERENCES LABEL (id)
+);
+
 CREATE TABLE MINDMAP_HISTORY
 (id            INTEGER       NOT NULL IDENTITY,
  xml           LONGVARBINARY NOT NULL,
