@@ -18,37 +18,20 @@
 
 package com.wisemapping.rest;
 
-import com.mangofactory.swagger.annotations.ApiIgnore;
-import com.wisemapping.exceptions.ImportUnexpectedException;
-import com.wisemapping.exceptions.MapCouldNotFoundException;
-import com.wisemapping.exceptions.MultipleSessionsOpenException;
-import com.wisemapping.exceptions.SessionExpiredException;
-import com.wisemapping.exceptions.WiseMappingException;
+
+import com.wisemapping.exceptions.*;
 import com.wisemapping.importer.ImportFormat;
 import com.wisemapping.importer.Importer;
 import com.wisemapping.importer.ImporterException;
 import com.wisemapping.importer.ImporterFactory;
-import com.wisemapping.model.Collaboration;
-import com.wisemapping.model.CollaborationProperties;
-import com.wisemapping.model.CollaborationRole;
-import com.wisemapping.model.MindMapHistory;
-import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.User;
-import com.wisemapping.rest.model.RestCollaboration;
-import com.wisemapping.rest.model.RestCollaborationList;
-import com.wisemapping.rest.model.RestMindmap;
-import com.wisemapping.rest.model.RestMindmapHistory;
-import com.wisemapping.rest.model.RestMindmapHistoryList;
-import com.wisemapping.rest.model.RestMindmapInfo;
-import com.wisemapping.rest.model.RestMindmapList;
+import com.wisemapping.model.*;
+import com.wisemapping.rest.model.*;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.CollaborationException;
 import com.wisemapping.service.LockInfo;
 import com.wisemapping.service.LockManager;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.validator.MapInfoValidator;
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiParam;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -56,28 +39,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
-@Api(value="mindmap",description = "User Mindmap Objects.")
 @Controller
 public class MindmapController extends BaseController {
 
@@ -88,10 +58,12 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/json", "application/xml", "text/html"})
     @ResponseBody
-    public RestMindmap retrieve(@PathVariable int id) throws WiseMappingException {
+    public ModelAndView retrieve(@PathVariable int id) throws WiseMappingException {
         final User user = Utils.getUser();
         final Mindmap mindMap = findMindmapById(id);
-        return new RestMindmap(mindMap, user);
+        final RestMindmap map = new RestMindmap(mindMap, user);
+
+        return new ModelAndView("mapView", "map", map);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/wisemapping+xml"}, params = {"download=wxml"})
@@ -159,8 +131,8 @@ public class MindmapController extends BaseController {
     }
 
 
-    @RequestMapping(method = RequestMethod.GET, value = "/maps/", produces = {"application/json",  "application/xml"})
-    public RestMindmapList retrieveList(@RequestParam(required = false) String q) throws IOException {
+    @RequestMapping(method = RequestMethod.GET, value = "/maps/", produces = {"application/json", "text/html", "application/xml"})
+    public ModelAndView retrieveList(@RequestParam(required = false) String q) throws IOException {
         final User user = Utils.getUser();
 
         final MindmapFilter filter = MindmapFilter.parse(q);
@@ -173,18 +145,19 @@ public class MindmapController extends BaseController {
                 mindmaps.add(mindmap);
             }
         }
-        return new RestMindmapList(mindmaps, user);
+        final RestMindmapList restMindmapList = new RestMindmapList(mindmaps, user);
+        return new ModelAndView("mapsView", "list", restMindmapList);
     }
 
 
-    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}/history", produces = {"application/json",  "application/xml"})
-    public RestMindmapHistoryList retrieveHistory(@PathVariable int id) throws IOException {
+    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}/history", produces = {"application/json", "text/html", "application/xml"})
+    public ModelAndView retrieveHistory(@PathVariable int id) throws IOException {
         final List<MindMapHistory> histories = mindmapService.findMindmapHistory(id);
         final RestMindmapHistoryList result = new RestMindmapHistoryList();
         for (MindMapHistory history : histories) {
             result.addHistory(new RestMindmapHistory(history));
         }
-        return result;
+        return new ModelAndView("historyView", "list", result);
     }
 
 
@@ -207,7 +180,7 @@ public class MindmapController extends BaseController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/document", consumes = {"application/xml", "application/json"}, produces = {"application/json",  "application/xml"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/document", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseBody
     public long updateDocument(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor, @RequestParam(required = false) Long timestamp, @RequestParam(required = false) Long session) throws WiseMappingException, IOException {
 
@@ -243,7 +216,6 @@ public class MindmapController extends BaseController {
         return lockInfo.getTimestamp();
     }
 
-    @ApiIgnore
     @RequestMapping(method = RequestMethod.GET, value = {"/maps/{id}/document/xml", "/maps/{id}/document/xml-pub"}, consumes = {"text/plain"}, produces = {"application/xml"})
     @ResponseBody
     public byte[] retrieveDocument(@PathVariable int id, @NotNull HttpServletResponse response) throws WiseMappingException, IOException {
@@ -295,9 +267,9 @@ public class MindmapController extends BaseController {
     /**
      * The intention of this method is the update of several properties at once ...
      */
-    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}", consumes = {"application/xml", "application/json"}, produces = {"application/json",  "application/xml"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateProperties(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor) throws IOException, WiseMappingException {
+    public void update(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor) throws IOException, WiseMappingException {
 
         final Mindmap mindmap = findMindmapById(id);
         final User user = Utils.getUser();
@@ -348,7 +320,7 @@ public class MindmapController extends BaseController {
     }
 
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/title", consumes = {"text/plain"}, produces = {"application/json",  "application/xml"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/title", consumes = {"text/plain"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateTitle(@RequestBody String title, @PathVariable int id) throws WiseMappingException {
 
@@ -367,7 +339,7 @@ public class MindmapController extends BaseController {
         mindmapService.updateMindmap(mindMap, !true);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/collabs", consumes = {"application/json", "application/xml"}, produces = {"application/json",  "application/xml"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/collabs", consumes = {"application/json", "application/xml"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateCollabs(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws CollaborationException, MapCouldNotFoundException {
         final Mindmap mindMap = findMindmapById(id);
@@ -408,8 +380,8 @@ public class MindmapController extends BaseController {
     }
 
 
-    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}/collabs", produces = {"application/json",  "application/xml"})
-    public RestCollaborationList retrieveList(@PathVariable int id) throws MapCouldNotFoundException {
+    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}/collabs", produces = {"application/json", "text/html", "application/xml"})
+    public ModelAndView retrieveList(@PathVariable int id) throws MapCouldNotFoundException {
         final Mindmap mindMap = findMindmapById(id);
 
         final Set<Collaboration> collaborations = mindMap.getCollaborations();
@@ -418,14 +390,14 @@ public class MindmapController extends BaseController {
             collabs.add(new RestCollaboration(collaboration));
         }
 
-        final RestCollaborationList result = new RestCollaborationList();
-        result.setCollaborations(collabs);
+        final RestCollaborationList restCollaborationList = new RestCollaborationList();
+        restCollaborationList.setCollaborations(collabs);
 
-        return result;
+        return new ModelAndView("collabsView", "list", restCollaborationList);
     }
 
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/description", consumes = {"text/plain"}, produces = {"application/json",  "application/xml"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/description", consumes = {"text/plain"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateDescription(@RequestBody String description, @PathVariable int id) throws WiseMappingException {
 
@@ -438,7 +410,7 @@ public class MindmapController extends BaseController {
         mindmapService.updateMindmap(mindMap, !true);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/publish", consumes = {"text/plain"}, produces = {"application/json",  "application/xml"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/publish", consumes = {"text/plain"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updatePublishState(@RequestBody String value, @PathVariable int id) throws WiseMappingException {
 
@@ -463,9 +435,9 @@ public class MindmapController extends BaseController {
         mindmapService.removeMindmap(mindmap, user);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/starred", consumes = {"text/plain"}, produces = {"application/json",  "application/xml"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/starred", consumes = {"text/plain"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateStarredState(@RequestBody @ApiParam(defaultValue = "false",allowableValues = "true,false") String value, @PathVariable int id) throws WiseMappingException {
+    public void updateStarredState(@RequestBody String value, @PathVariable int id) throws WiseMappingException {
 
         final Mindmap mindmap = findMindmapById(id);
         final User user = Utils.getUser();
@@ -480,8 +452,7 @@ public class MindmapController extends BaseController {
         mindmapService.updateCollaboration(user, collaboration);
     }
 
-    @ApiIgnore
-    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/lock", consumes = {"text/plain"}, produces = {"application/json",  "application/xml"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/lock", consumes = {"text/plain"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateMapLock(@RequestBody String value, @PathVariable int id) throws IOException, WiseMappingException {
         final User user = Utils.getUser();
@@ -496,7 +467,6 @@ public class MindmapController extends BaseController {
         }
     }
 
-    @ApiIgnore
     @RequestMapping(method = RequestMethod.DELETE, value = "/maps/batch")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void batchDelete(@RequestParam(required = true) String ids) throws IOException, WiseMappingException {

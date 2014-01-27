@@ -18,7 +18,6 @@
 
 package com.wisemapping.rest;
 
-import com.mangofactory.swagger.annotations.ApiIgnore;
 import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
@@ -26,21 +25,16 @@ import com.wisemapping.rest.model.RestLogItem;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.service.UserService;
-import com.wordnik.swagger.annotations.Api;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Api(value="UserApi",description = "Account Account Related Objects.")
 @Controller
 public class AccountController extends BaseController {
     @Qualifier("userService")
@@ -106,7 +100,6 @@ public class AccountController extends BaseController {
         userService.updateUser(user);
     }
 
-    @ApiIgnore
     @RequestMapping(method = RequestMethod.POST, value = "logger/editor", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void logError(@RequestBody RestLogItem item, @NotNull HttpServletRequest request) {
