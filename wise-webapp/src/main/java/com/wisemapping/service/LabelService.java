@@ -12,4 +12,5 @@ public interface LabelService {
     void addLabel(@NotNull final Label label, @NotNull final User user) throws WiseMappingException;
 
     @NotNull List<Label> getAll(@NotNull final User user);
+    public Label getLabelByTitle(@NotNull String title, @NotNull final User user);
 }

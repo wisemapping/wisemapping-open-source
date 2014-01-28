@@ -29,4 +29,9 @@ public class LabelServiceImpl implements LabelService {
         return labelManager.getAllLabels(user);
     }
 
+    @Nullable
+    @Override
+    public Label getLabelByTitle(@NotNull String title, @NotNull final User user) {
+        return labelManager.getLabelByTitle(title, user);
+    }
 }

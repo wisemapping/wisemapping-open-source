@@ -14,4 +14,6 @@ public interface LabelManager {
 
     @NotNull
     List<Label> getAllLabels(@NotNull final User user);
+    @Nullable
+    Label getLabelByTitle(@NotNull final String title, @NotNull final User user);
 }
