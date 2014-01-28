@@ -282,7 +282,6 @@ $(function () {
 
     $("#newFolderBtn").click(
         function () {
-            fetchLabels()
             $("#new-folder-dialog-modal").dialogForm({
                 url:"c/restful/labels",
                 postUpdate: createLabelItem
