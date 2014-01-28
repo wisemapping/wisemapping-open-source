@@ -220,6 +220,11 @@
                     code="DELETE"/></button>
         </div>
 
+        <div class="btn-group act-multiple" id="linkBtn" style="display:none">
+            <button class="btn btn-primary"><i class="icon-tag icon-white"></i> <spring:message
+                    code="ADD_LABEL"/></button>
+        </div>
+
         <div id="infoBtn" class="btn-group act-single" style="display:none">
             <button class="btn btn-primary"><i class="icon-exclamation-sign icon-white"></i> <spring:message
                     code="INFO"/></button>
@@ -343,6 +348,31 @@
                     <option value="4">Dummy</option>
                 </select-->
             </fieldset>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message
+                code="SAVING"/>"><spring:message
+                code="CREATE"/></button>
+        <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
+    </div>
+</div>
+
+<!-- Add label dialog -->
+<div id="add-label-dialog-modal" title="<spring:message code="ADD_LABEL"/>" class="modal fade">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">x</button>
+        <h3><spring:message code="NEW_LABEL_MSG"/></h3>
+    </div>
+    <div class="modal-body">
+        <div class="errorMessage"></div>
+        <form class="form-horizontal">
+            <div class="control-group">
+                <label class="control-label" for="labelList"><spring:message code="CHOOSE_LABEL"/>:</label>
+                <select id="labelList" class="control" autofocus="autofocus" required="required">
+                    <option id="defaultOption" value="empty"><spring:message code="SELECT_LABEL"/></option>
+                </select>
+            </div>
         </form>
     </div>
     <div class="modal-footer">

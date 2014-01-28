@@ -18,6 +18,22 @@ $(function () {
         }
     );
 
+    $("#linkBtn").click(
+        function () {
+            fetchLabels({
+                postUpdate: function(data) {
+                    $.each(data.labels, function(index, value) {
+                        $("#labelList").append($('<option></option>').val(index).html(value.title));
+                    })
+                }
+            });
+            $("#add-label-dialog-modal").dialogForm({
+                //url:"c/restful/labels",
+                //postUpdate: createLabelItem
+            });
+        }
+    );
+
     $("#duplicateBtn").click(function () {
         // Map to be cloned ...
         var tableElem = $('#mindmapListTable');
