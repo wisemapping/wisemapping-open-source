@@ -13,15 +13,14 @@ function createLabelItem(data) {
 
 }
 
-function fetchLabels() {
+function fetchLabels(options) {
     jQuery.ajax("c/restful/labels/", {
         async:false,
         dataType:'json',
         type:'GET',
         success:function (data) {
-            var labels = data.labels;
-            for (var i = 0; i < labels.length; i++) {
-                createLabelItem(labels[i])
+            if (options.postUpdate) {
+                options.postUpdate(data)
             }
         },
         error:function (jqXHR, textStatus, errorThrown) {

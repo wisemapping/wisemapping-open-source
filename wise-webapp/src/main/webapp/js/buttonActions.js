@@ -163,5 +163,12 @@ $(function () {
         }
     );
 
-    $(document).ready(fetchLabels())
+    $(document).ready(fetchLabels({
+        postUpdate: function(data) {
+            var labels = data.labels;
+            for (var i = 0; i < labels.length; i++) {
+                createLabelItem(labels[i])
+            }
+        }
+    }))
 });
