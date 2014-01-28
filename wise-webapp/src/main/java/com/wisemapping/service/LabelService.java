@@ -4,6 +4,7 @@ import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.Label;
 import com.wisemapping.model.User;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -12,5 +13,9 @@ public interface LabelService {
     void addLabel(@NotNull final Label label, @NotNull final User user) throws WiseMappingException;
 
     @NotNull List<Label> getAll(@NotNull final User user);
+
+    @Nullable
+    Label getLabelById(int id);
+
     public Label getLabelByTitle(@NotNull String title, @NotNull final User user);
 }

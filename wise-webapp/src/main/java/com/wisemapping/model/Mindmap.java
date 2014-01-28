@@ -44,6 +44,7 @@ public class Mindmap {
     private User lastEditor;
 
     private Set<Collaboration> collaborations = new HashSet<Collaboration>();
+    private Set<Label> labels = new HashSet<Label>();
 
     private User creator;
     private String tags;
@@ -116,6 +117,18 @@ public class Mindmap {
 
     public void removedCollaboration(@NotNull Collaboration collaboration) {
         collaborations.add(collaboration);
+    }
+
+    @NotNull public Set<Label> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(@NotNull final Set<Label> labels) {
+        this.labels = labels;
+    }
+
+    public void addLabel(@NotNull final Label label) {
+        this.labels.add(label);
     }
 
     @Nullable

@@ -3,6 +3,7 @@ package com.wisemapping.dao;
 import com.wisemapping.model.Label;
 import com.wisemapping.model.User;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.util.List;
@@ -25,6 +26,13 @@ public class LabelManagerImpl extends HibernateDaoSupport
     public List<Label> getAllLabels(@NotNull final User user) {
         return getHibernateTemplate().find("from com.wisemapping.model.Label wisemapping where creator_id=?", user.getId());
     }
+
+    @Nullable
+    @Override
+    public Label getLabelById(int id) {
+        return getHibernateTemplate().get(Label.class, id);
+    }
+
     @Nullable
     @Override
     public Label getLabelByTitle(@NotNull String title, @NotNull final User user) {
@@ -35,4 +43,6 @@ public class LabelManagerImpl extends HibernateDaoSupport
         }
         return result;
     }
+
+
 }

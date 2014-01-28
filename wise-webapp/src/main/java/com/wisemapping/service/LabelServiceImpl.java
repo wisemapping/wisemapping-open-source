@@ -5,6 +5,7 @@ import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.Label;
 import com.wisemapping.model.User;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -27,6 +28,11 @@ public class LabelServiceImpl implements LabelService {
     @Override
     public List<Label> getAll(@NotNull final User user) {
         return labelManager.getAllLabels(user);
+    }
+
+    @Override @Nullable
+    public Label getLabelById(int id) {
+        return labelManager.getLabelById(id);
     }
 
     @Nullable
