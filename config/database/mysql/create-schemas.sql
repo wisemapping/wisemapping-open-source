@@ -54,10 +54,11 @@ CREATE TABLE MINDMAP (
 
 CREATE TABLE LABEL (
   id              INTEGER            NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  title           VARCHAR(255)
+  title           VARCHAR(30)
                   CHARACTER SET utf8 NOT NULL,
   creator_id      INTEGER            NOT NULL,
   parent_label_id INTEGER,
+  color           VARCHAR(7)         NOT NULL,
   FOREIGN KEY (creator_id) REFERENCES USER (colaborator_id),
   FOREIGN KEY (parent_label_id) REFERENCES LABEL (id)
     ON DELETE CASCADE

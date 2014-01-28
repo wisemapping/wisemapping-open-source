@@ -23,7 +23,8 @@ CREATE TABLE LABEL (
   id              INTEGER            NOT NULL PRIMARY KEY,
   title           VARCHAR(255),
   creator_id      INTEGER            NOT NULL,
-  parent_label_id INTEGER
+  parent_label_id INTEGER,
+  color           VARCHAR(7)         NOT NULL
   --FOREIGN KEY (creator_id) REFERENCES USER (colaborator_id)
 );
 

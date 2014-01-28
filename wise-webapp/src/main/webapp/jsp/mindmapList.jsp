@@ -18,6 +18,8 @@
 
     <script type="text/javascript" language="javascript" src="js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap-colorpicker.js"></script>
+
     <script src="js/less.js" type="text/javascript"></script>
 
     <!--jQuery DataTables-->
@@ -89,6 +91,8 @@
                 },
                 bStateSave:true
             });
+
+            $('#colorGroup').colorpicker();
 
             // Customize search action ...
             $('#mindmapListTable_filter').appendTo("#tableActions");
@@ -313,10 +317,17 @@
     <div class="modal-body">
         <div class="errorMessage"></div>
         <form class="form-horizontal">
+            <fieldset>
                 <div class="control-group">
                     <label class="control-label" for="newLabelTitle"><spring:message code="NAME"/>:</label>
                     <input class="control" name="title" id="newLabelTitle" type="text" required="required"
-                           placeholder="<spring:message code="LABEL_NAME_HINT"/>" autofocus="autofocus" maxlength="255"/>
+                           placeholder="<spring:message code="LABEL_NAME_HINT"/>" autofocus="autofocus" maxlength="30"/>
+                </div>
+                <div id="colorGroup" class="input-group">
+                    <label class="control-label" for="colorChooser"><spring:message code="CHOOSE_COLOR"/>:</label>
+                    <input class="form-control" name="color" id="colorChooser" type="text" style="width: 70px" required="required"/>
+                    <!--hack, maybe there is a compatibility problem with bootstrap-->
+                    <span class="input-group-addon" style="display: inline-block; position: relative; top: 5px"><i></i></span>
                 </div>
                 <!--div class="control-label">
                     <input id="parentLblCheckbox" type="checkbox">
@@ -329,7 +340,7 @@
                     <option value="3">-> Child2</option>
                     <option value="4">Dummy</option>
                 </select-->
-
+            </fieldset>
         </form>
     </div>
     <div class="modal-footer">

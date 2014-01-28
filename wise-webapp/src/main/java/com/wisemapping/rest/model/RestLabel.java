@@ -65,6 +65,14 @@ public class RestLabel {
         label.setTitle(title);
     }
 
+    public void setColor(@NotNull final String color) {
+        label.setColor(color);
+    }
+
+    @NotNull public String getColor() {
+        return label.getColor();
+    }
+
     @JsonIgnore
     public Label getDelegated() {
         return label;

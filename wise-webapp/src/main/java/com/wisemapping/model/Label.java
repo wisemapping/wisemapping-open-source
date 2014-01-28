@@ -11,6 +11,7 @@ public class Label {
     @NotNull private String title;
     @NotNull private User creator;
     @Nullable private Label parent;
+    @NotNull private String color;
 
     public void setParent(@Nullable Label parent) {
         this.parent = parent;
@@ -45,5 +46,14 @@ public class Label {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @NotNull
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(@NotNull String color) {
+        this.color = color;
     }
 }
