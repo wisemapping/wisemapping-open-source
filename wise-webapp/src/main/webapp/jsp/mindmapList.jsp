@@ -368,10 +368,8 @@
         <div class="errorMessage"></div>
         <form class="form-horizontal">
             <div class="control-group">
-                <label class="control-label" for="labelList"><spring:message code="CHOOSE_LABEL"/>:</label>
-                <select id="labelList" class="control" autofocus="autofocus" required="required">
-                    <option id="defaultOption" value="empty"><spring:message code="SELECT_LABEL"/></option>
-                </select>
+                <label class="control-label" for="labelId"><spring:message code="CHOOSE_LABEL"/>:</label>
+                <select id="labelId" class="control" autofocus="autofocus" required="required"></select>
             </div>
         </form>
     </div>
