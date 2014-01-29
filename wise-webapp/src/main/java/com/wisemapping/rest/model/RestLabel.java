@@ -53,9 +53,6 @@ public class RestLabel {
         return label.getId();
     }
 
-    public String getCreator() {
-        return this.label.getCreator().getEmail();
-    }
 
     public void setId(int id) {
         label.setId(id);
