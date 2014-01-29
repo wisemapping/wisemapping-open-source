@@ -62,7 +62,7 @@
                         bUseRendered:false,
                         mDataProp:"title",
                         fnRender:function (obj) {
-                            return '<span class="icon-file icon-blue"></span>' + '<a href="c/maps/' + obj.aData.id + '/edit">' + $('<span></span>').text(obj.aData.title).html() + '</a>';
+                            return '<span class="icon-file icon-blue"></span>' + '<a href="c/maps/' + obj.aData.id + '/edit">' + $('<span></span>').text(obj.aData.title).html() + labelTagsAsHtml(obj.aData.labels) + '</a>';
                         }
                     },
                     {

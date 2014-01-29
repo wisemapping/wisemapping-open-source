@@ -1,7 +1,4 @@
 function createLabelItem(data) {
-    if (data.color == "") {
-        data.color = "#000000";
-    }
     $("#foldersContainer").find("ul").append(
         $("<li data-filter=\""  + data.title  + "\">").append(
             "<a href=\"#\"> <i class=\"icon-tag\"></i>" +
@@ -10,7 +7,15 @@ function createLabelItem(data) {
             "</a>"
         )
     )
+}
 
+function labelTagsAsHtml(labels) {
+    var result = "";
+    for (var i = 0; i<labels.length; i++) {
+        var label = labels[i];
+        result+= "<div class='labelTag' style='background-color:" + label.color + "'>"+ label.title + "</div>"
+    }
+    return result;
 }
 
 function fetchLabels(options) {
