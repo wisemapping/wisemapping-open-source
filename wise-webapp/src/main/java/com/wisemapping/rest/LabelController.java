@@ -76,9 +76,10 @@ public class LabelController extends BaseController {
         return new RestLabelList(all);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/labels/{id}/maps", consumes = {"text/plain"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/labels/maps", consumes = {"application/json"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void linkToMindMaps(@PathVariable int id, @RequestBody String ids) throws WiseMappingException {
+    public void linkToMindMaps(@RequestBody RestLabel restLabel, @RequestParam(required = true) String ids) throws WiseMappingException {
+        int id = restLabel.getId();
         final Label label = labelService.getLabelById(id);
         if (label == null) {
             throw new LabelCouldNotFoundException("Label could not be found. Id: " + id);

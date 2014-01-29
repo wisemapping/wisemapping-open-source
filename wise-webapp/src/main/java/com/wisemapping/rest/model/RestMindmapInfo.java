@@ -21,6 +21,7 @@ package com.wisemapping.rest.model;
 
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Collaborator;
+import com.wisemapping.model.Label;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
 import com.wisemapping.security.Utils;
@@ -35,6 +36,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 @XmlRootElement(name = "map")
 @XmlAccessorType(XmlAccessType.PROPERTY)
@@ -93,6 +96,13 @@ public class RestMindmapInfo {
     public void setTitle(String title) {
         mindmap.setTitle(title);
     }
+     public Set<RestLabel> getLabels() {
+         final Set<RestLabel> result = new HashSet<>();
+         for (Label label : mindmap.getLabels()) {
+             result.add(new RestLabel(label));
+         }
+         return result;
+     }
 
     public int getId() {
         return mindmap.getId();

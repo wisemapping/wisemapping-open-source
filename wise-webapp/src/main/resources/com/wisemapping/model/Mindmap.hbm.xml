@@ -28,7 +28,7 @@
 
         <set name = "labels"
              table="R_LABEL_MINDMAP"
-             cascade="all,delete-orphan,save-update">
+             cascade="all">
             <key column="mindmap_id" not-null="true"/>
             <many-to-many column="label_id" class="com.wisemapping.model.Label"/>
         </set>
