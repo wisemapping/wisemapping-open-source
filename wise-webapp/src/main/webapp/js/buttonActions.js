@@ -22,15 +22,32 @@ $(function () {
         function () {
             fetchLabels({
                 postUpdate: function(data) {
+                    var labelList = $("#labelId");
+
+                    //clear dropdown...
+                    labelList.find("option").remove();
+
+                    if (data.labels.length == 0) {
+                        window.alert('no hay labels, como resolvemos esto?');
+                        return;
+                    }
+                    //append items to dropdown
                     $.each(data.labels, function(index, value) {
-                        $("#labelList").append($('<option></option>').val(index).html(value.title));
-                    })
+                        labelList.append($('<option></option>').val(value.id).html(value.title));
+                    });
+
+                    var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
+
+                    $("#add-label-dialog-modal").dialogForm({
+                        type:'PUT',
+                        url:"c/restful/labels/maps?ids=" + jQuery.makeArray(mapIds).join(','),
+                        postUpdate: function(data) {
+
+                        }
+                    });
                 }
             });
-            $("#add-label-dialog-modal").dialogForm({
-                //url:"c/restful/labels",
-                //postUpdate: createLabelItem
-            });
+
         }
     );
 
