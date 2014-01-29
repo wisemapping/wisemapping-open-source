@@ -317,4 +317,13 @@ public class Mindmap {
         return result;
 
     }
+
+    public boolean hasLabel(@NotNull final String name) {
+        for (Label label : this.labels) {
+            if (label.getTitle().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
