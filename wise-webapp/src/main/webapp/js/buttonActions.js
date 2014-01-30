@@ -183,7 +183,7 @@ $(function () {
     };
 
     //live method is deprecated?
-    $('#foldersContainer li').live('click', function (event) {
+    $(document).on('click', '#foldersContainer li', function (event) {
         // Deselect previous option ...
         $('#foldersContainer li').removeClass('active');
         $('#foldersContainer i').removeClass('icon-white');
