@@ -31,7 +31,6 @@ public class RestLabel {
         this(new Label());
     }
 
-
     public RestLabel(@NotNull final Label label) {
         this.label = label;
     }
@@ -52,7 +51,6 @@ public class RestLabel {
     public int getId() {
         return label.getId();
     }
-
 
     public void setId(int id) {
         label.setId(id);
