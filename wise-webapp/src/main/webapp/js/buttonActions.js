@@ -18,38 +18,49 @@ $(function () {
         }
     );
 
-    $("#linkBtn").click(
-        function () {
-            fetchLabels({
-                postUpdate: function(data) {
-                    var labelList = $("#labelId");
+    $("#linkBtn").click( function () {
+        var labels;
+        fetchLabels({
+            postUpdate: function(data) {
+                labels = data.labels;
+            }
+        });
 
-                    //clear dropdown...
-                    labelList.find("option").remove();
+        if (labels) {
+            var labelList = $("#labelId");
 
-                    if (data.labels.length == 0) {
-                        window.alert('no hay labels, como resolvemos esto?');
-                        return;
-                    }
-                    //append items to dropdown
-                    $.each(data.labels, function(index, value) {
-                        labelList.append($('<option></option>').val(value.id).html(value.title));
-                    });
+            //clear dropdown...
+            labelList.find("option").remove();
 
-                    var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
-
-                    $("#add-label-dialog-modal").dialogForm({
-                        type:'PUT',
-                        url:"c/restful/labels/maps?ids=" + jQuery.makeArray(mapIds).join(','),
-                        postUpdate: function(data) {
-
-                        }
-                    });
-                }
+            if (labels.length == 0) {
+                window.alert('no hay labels, como resolvemos esto?');
+                return;
+            }
+            //append items to dropdown
+            $.each(labels, function(index, value) {
+                labelList.append($('<option></option>').val(value.id).html(value.title).attr('color', value.color));
             });
 
+            var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
+
+            $("#add-label-dialog-modal").dialogForm({
+                type:'PUT',
+                url:"c/restful/labels/maps?ids=" + jQuery.makeArray(mapIds).join(','),
+                postUpdate: function() {
+                    //tag selected mindmaps...
+                    var rows = $('#mindmapListTable').dataTableExt.getSelectedRows();
+                    for (var i = 0; i < rows.length; i++) {
+                        $(rows[i]).find('.mindmapName').append(
+                            labelTagsAsHtml([{
+                                title: $(':selected', labelList).text(),
+                                color: $(':selected', labelList).attr('color')
+                            }])
+                        )
+                    }
+                }
+            });
         }
-    );
+    });
 
     $("#duplicateBtn").click(function () {
         // Map to be cloned ...
