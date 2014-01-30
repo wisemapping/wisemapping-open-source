@@ -107,75 +107,115 @@
     $('#changeInfoMsg').hide();
     $('#languageMsg').hide();
 
-    function postChange(url, postBody, msgContainerId, successMsg) {
+    function postChange(url, postBody, onSuccess, onError, type) {
         // Change success message ...
         jQuery.ajax(url, {
             async: false,
             dataType: 'json',
             data: postBody,
-            type: 'PUT',
+            type: type ? type : 'PUT',
             contentType: "text/plain; charset=utf-8",
             success: function (data, textStatus, jqXHR) {
-                $('#' + msgContainerId).removeClass('alert-error').addClass('alert-info').show();
-                $('#' + msgContainerId).text(successMsg);
+                onSuccess()
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                $('#' + msgContainerId).removeClass('alert-info').addClass('alert-error').show();
-                $('#' + msgContainerId).text(textStatus);
+                onError(textStatus)
             }
         });
     }
 
     $('#changePasswordForm').submit(function (event) {
-
         var inputVal = $('#changePasswordForm #password').val();
         var rinputVal = $('#changePasswordForm #repassword').val();
+        var changePasswordMsg = $('#changePasswordMsg');
         if (inputVal != rinputVal) {
             // Password mismatch message ...
-            $('#changePasswordMsg').removeClass('alert-info').addClass('alert-error').show();
-            $('#changePasswordMsg').text('<spring:message code="PASSWORD_MISSMATCH"/>');
+            changePasswordMsg.removeClass('alert-info').addClass('alert-error').show();
+            changePasswordMsg.text('<spring:message code="PASSWORD_MISSMATCH"/>');
         } else {
-            postChange("c/restful/account/password", inputVal, 'changePasswordMsg', "<spring:message code="CHANGE_PASSWORD_SUCCESS"/>");
+            postChange(
+                    "c/restful/account/password",
+                    inputVal,
+                    function() {
+                        changePasswordMsg.removeClass('alert-error').addClass('alert-info').show();
+                        changePasswordMsg.text('<spring:message code="CHANGE_PASSWORD_SUCCESS"/>');
+                    },
+                    function(textStatus) {
+                        changePasswordMsg.removeClass('alert-info').addClass('alert-error').show();
+                        changePasswordMsg.text(textStatus);
+                    }
+            );
         }
         event.preventDefault();
     });
 
     $('#changeUserForm').submit(function (event) {
-
-        var fistname = $('#changeUserForm #firstname').val();
+        var firstname = $('#changeUserForm #firstname').val();
         var lastname = $('#changeUserForm #lastname').val();
-        postChange("c/restful/account/firstname", fistname, 'changeInfoMsg', "<spring:message code="INFO_UPDATE_SUCCESS"/>");
-        postChange("c/restful/account/lastname", lastname, 'changeInfoMsg', "<spring:message code="INFO_UPDATE_SUCCESS"/>");
+        var changeInfoMsg = $('#changeInfoMsg');
+        postChange(
+                "c/restful/account/firstname",
+                firstname,
+                function() {
+                    var changeInfoMsg = $('#changeInfoMsg');
+                    changeInfoMsg.removeClass('alert-error').addClass('alert-info').show();
+                    changeInfoMsg.text('<spring:message code="INFO_UPDATE_SUCCESS"/>');
+                },
+                function(textStatus) {
+                    changeInfoMsg.removeClass('alert-info').addClass('alert-error').show();
+                    changeInfoMsg.text(textStatus);
+                }
+        );
+        postChange(
+                "c/restful/account/lastname",
+                lastname,
+                function() {
+                    changeInfoMsg.removeClass('alert-error').addClass('alert-info').show();
+                    changeInfoMsg.text('<spring:message code="INFO_UPDATE_SUCCESS"/>');
+                },
+                function(textStatus) {
+                    changeInfoMsg.removeClass('alert-info').addClass('alert-error').show();
+                    changeInfoMsg.text(textStatus);
+                }
+        );
         event.preventDefault();
     });
 
     $('#languageForm').submit(function (event) {
 
         var locale = $('#languageForm option:selected').val();
-        postChange("c/restful/account/locale", locale, 'languageMsg', "<spring:message code="INFO_UPDATE_SUCCESS"/>");
+        var languageMsg = $('#languageMsg');
+        postChange(
+                "c/restful/account/locale",
+                locale,
+                function() {
+                    languageMsg.removeClass('alert-error').addClass('alert-info').show();
+                    languageMsg.text('<spring:message code="INFO_UPDATE_SUCCESS"/>');
+                },
+                function(textStatus) {
+                    languageMsg.removeClass('alert-info').addClass('alert-error').show();
+                    languageMsg.text(textStatus);
+                }
+        );
         event.preventDefault();
     });
 
     $('#deleteAccountForm').submit(function (event) {
-
         var locale = $('#deleteAccountForm option:selected').val();
-//FIXME: este metodo hay que unificarlo con postChange, con callbacks o eventos para los success and error y pasandole el type
-        jQuery.ajax("c/restful/account", {
-            async: false,
-            dataType: 'json',
-            data: locale,
-            type: 'DELETE',
-            contentType: "text/plain; charset=utf-8",
-            success: function (data, textStatus, jqXHR) {
-                window.location.href = "/c/logout"
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                $('#' + 'deleteAccountMsg').removeClass('alert-info').addClass('alert-error').show();
-                $('#' + 'deleteAccountMsg').text(textStatus);
-            }
-        });
+        postChange(
+                "c/restful/account",
+                locale,
+                function() {
+                    window.location.href = "/c/logout"
+                },
+                function(textStatus) {
+                    var deleteAccountMsg = $('#deleteAccountMsg');
+                    deleteAccountMsg.removeClass('alert-info').addClass('alert-error').show();
+                    deleteAccountMsg.text(textStatus);
+                },
+                'DELETE'
+        )
         event.preventDefault();
     });
-
 
 </script>
