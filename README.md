@@ -59,6 +59,7 @@ Now open a browser using the URL http://localhost:8000/wise-editor/src/main/weba
 ### Individual Controbutors
 
    * Ezequiel Bergamaschi
+   * Claudio Barril <claudiobarril@gmail.com>
 
 ### Past Individual Contributors
 
