@@ -58,11 +58,11 @@
                     },
                     {
                         sTitle:"<spring:message code="NAME"/>",
-                        sWidth:"270px",
+                        sWidth:"430px",
                         bUseRendered:false,
                         mDataProp:"title",
                         fnRender:function (obj) {
-                            return '<span class="icon-file icon-blue"></span>' + '<a class="mindmapName" href="c/maps/' + obj.aData.id + '/edit">' + $('<span></span>').text(obj.aData.title).html() + labelTagsAsHtml(obj.aData.labels) + '</a>';
+                            return '<a class="mindmapName" href="c/maps/' + obj.aData.id + '/edit">' + $('<span></span>').text(obj.aData.title).html() + '</a>' + labelTagsAsHtml(obj.aData.labels);
                         }
                     },
                     {
