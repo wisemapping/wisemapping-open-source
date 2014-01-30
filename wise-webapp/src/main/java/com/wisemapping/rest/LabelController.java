@@ -93,4 +93,16 @@ public class LabelController extends BaseController {
             mindmapService.updateMindmap(mindmap, false);
         }
     }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/labels/{id}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteMapById(@PathVariable int id) throws WiseMappingException {
+        final User user = Utils.getUser();
+        final Label label = labelService.getLabelById(id);
+        if (label == null) {
+            throw new LabelCouldNotFoundException("Label could not be found. Id: " + id);
+        }
+        assert user != null;
+        labelService.removeLabel(label, user);
+    }
 }

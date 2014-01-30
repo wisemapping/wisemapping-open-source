@@ -18,4 +18,6 @@ public interface LabelService {
     Label getLabelById(int id);
 
     public Label getLabelByTitle(@NotNull String title, @NotNull final User user);
+
+    void removeLabel(@NotNull final Label label, @NotNull final User user) throws WiseMappingException;
 }

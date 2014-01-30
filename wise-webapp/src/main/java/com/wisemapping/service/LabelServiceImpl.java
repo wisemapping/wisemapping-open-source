@@ -40,4 +40,14 @@ public class LabelServiceImpl implements LabelService {
     public Label getLabelByTitle(@NotNull String title, @NotNull final User user) {
         return labelManager.getLabelByTitle(title, user);
     }
+
+    @Override
+    public void removeLabel(@NotNull Label label, @NotNull User user) throws WiseMappingException {
+        if (label.getCreator().equals(user)) {
+            labelManager.removeLabel(label);
+        } else {
+            throw new WiseMappingException("User: "+ user.getFullName()  + "has no ownership on label " + label.getTitle());
+
+        }
+    }
 }

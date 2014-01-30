@@ -44,5 +44,10 @@ public class LabelManagerImpl extends HibernateDaoSupport
         return result;
     }
 
+    @Override
+    public void removeLabel(@NotNull Label label) {
+        getHibernateTemplate().delete(label);
+    }
+
 
 }
