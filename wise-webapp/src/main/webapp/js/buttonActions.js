@@ -228,14 +228,17 @@ $(function () {
         })
     });
 
-    $(document).ready(fetchLabels({
-        postUpdate: function(data) {
-            var labels = data.labels;
-            for (var i = 0; i < labels.length; i++) {
-                createLabelItem(labels[i], null)
+    $(document).ready(function() {
+        // add labels to filter list...
+        fetchLabels({
+            postUpdate: function(data) {
+                var labels = data.labels;
+                for (var i = 0; i < labels.length; i++) {
+                    createLabelItem(labels[i], null)
+                }
             }
-        }
-    }))
+        });
+    })
 });
 
 function reloadTable() {
