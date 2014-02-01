@@ -115,8 +115,8 @@ jQuery.fn.dialogForm = function (options) {
             type:options.type ? options.type : 'POST',
             contentType:"application/json; charset=utf-8",
             success:function (data, textStatus, jqXHR) {
+                var resourceId = jqXHR.getResponseHeader("ResourceId");
                 if (options.redirect) {
-                    var resourceId = jqXHR.getResponseHeader("ResourceId");
                     var redirectUrl = options.redirect;
                     redirectUrl = redirectUrl.replace("{header.resourceId}", resourceId);
 
@@ -125,7 +125,7 @@ jQuery.fn.dialogForm = function (options) {
                     window.open(baseUrl + redirectUrl, '_self');
 
                 } else if (options.postUpdate) {
-                    options.postUpdate(formData);
+                    options.postUpdate(formData, resourceId);
                 }
                 dialogElem.modal('hide');
             },

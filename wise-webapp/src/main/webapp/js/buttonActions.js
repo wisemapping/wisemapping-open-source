@@ -182,7 +182,6 @@ $(function () {
         }
     };
 
-    //live method is deprecated?
     $(document).on('click', '#foldersContainer li', function (event) {
         // Deselect previous option ...
         $('#foldersContainer li').removeClass('active');
@@ -208,12 +207,37 @@ $(function () {
         }
     );
 
+    $(document).on('click', "#deleteLabelBtn", function() {
+        var me = $(this);
+        $("#delete-label-dialog-modal").dialogForm({
+            url: "c/restful/labels/" + me.attr('labelid'),
+            type: 'DELETE',
+            postUpdate: function() {
+                var dataTable = $('#mindmapListTable').dataTable();
+                //remove the selected tag...
+                $("#foldersContainer li.active").remove();
+                //find the second li... (all)
+                $("#foldersContainer li:nth-child(2)").addClass("active");
+                dataTable.fnReloadAjax("c/restful/maps/?q=all", callbackOnTableInit, true);
+                event.preventDefault();
+
+            }
+        })
+    });
+
     $(document).ready(fetchLabels({
         postUpdate: function(data) {
             var labels = data.labels;
             for (var i = 0; i < labels.length; i++) {
-                createLabelItem(labels[i])
+                createLabelItem(labels[i], null)
             }
         }
     }))
 });
+
+function reloadTable() {
+    // Reload the table data ...
+    var dataTable = $('#mindmapListTable').dataTable();
+    dataTable.fnReloadAjax("c/restful/maps/?q=" + $(this).attr('data-filter'), callbackOnTableInit, true);
+    event.preventDefault();
+}
