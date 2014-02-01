@@ -462,6 +462,25 @@
     </div>
 </div>
 
+<!-- Delete label dialog -->
+<div id="delete-label-dialog-modal" class="modal fade">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">x</button>
+        <h3><spring:message code="DELETE"/></h3>
+    </div>
+    <div class="modal-body">
+        <div class="alert alert-block">
+            <h4 class="alert-heading"><spring:message code="WARNING"/>!</h4><spring:message code="DELETE_LABELS_WARNING"/>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message
+                code="SAVING"/> ..."><spring:message
+                code="DELETE"/></button>
+        <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
+    </div>
+</div>
+
 <!-- Info map dialog -->
 <div id="info-dialog-modal" class="modal fade">
     <div class="modal-header">
