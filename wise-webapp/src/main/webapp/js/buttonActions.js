@@ -1,6 +1,6 @@
 $(function () {
     // Creation buttons actions ...
-    $("#newMapBtn").click(
+    $("#newBtn").click(
         function () {
             $("#new-dialog-modal").dialogForm({
                 redirect:"c/maps/{header.resourceId}/edit",
@@ -9,7 +9,7 @@ $(function () {
         }
     );
 
-    $("#newFolderBtn").click(
+    $(document).on('click', '#createLabelBtn',
         function () {
             $("#new-folder-dialog-modal").dialogForm({
                 url:"c/restful/labels",
@@ -18,7 +18,7 @@ $(function () {
         }
     );
 
-    $("#linkBtn").click( function () {
+    $("#addLabelButton").click( function () {
         var labels;
         fetchLabels({
             postUpdate: function(data) {
@@ -27,19 +27,25 @@ $(function () {
         });
 
         if (labels) {
-            var labelList = $("#labelId");
+            var labelList = $("#labelList");
 
+            var defaultValue = labelList.find("li[id=\"createLabelBtn\"]");
             //clear dropdown...
-            labelList.find("option").remove();
-
-            if (labels.length == 0) {
-                window.alert('no hay labels, como resolvemos esto?');
-                return;
-            }
+            labelList.find('li').remove();
             //append items to dropdown
             $.each(labels, function(index, value) {
-                labelList.append($('<option></option>').val(value.id).html(value.title).attr('color', value.color));
+                labelList.append(
+                    $('<li></li>')
+                        .append('<a href="#" onclick="return false">' +
+                                    '<i class="icon-tag"></i>' +
+                                    '<span style="margin-left: 5px">'+ value.title +
+                                    '</span>' +
+                                '</a>'));
             });
+
+            //add the defaultValue
+            labelList.append('<li><div style="height: 1px; background-color: #d5d3d4"></div></li>')
+            labelList.append(defaultValue);
 
             var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
 
