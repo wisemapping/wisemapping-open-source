@@ -27,31 +27,31 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class MindmapFilter {
 
-    public static MindmapFilter ALL = new MindmapFilter("all") {
+    public static final MindmapFilter ALL = new MindmapFilter("all") {
         @Override
         boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
             return true;
         }
     };
-    public static MindmapFilter MY_MAPS = new MindmapFilter("my_maps") {
+    public static final MindmapFilter MY_MAPS = new MindmapFilter("my_maps") {
         @Override
         boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
             return mindmap.getCreator().identityEquality(user);
         }
     };
-    public static MindmapFilter STARRED = new MindmapFilter("starred") {
+    public static final MindmapFilter STARRED = new MindmapFilter("starred") {
         @Override
         boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
             return mindmap.isStarred(user);
         }
     };
-    public static MindmapFilter SHARED_WITH_ME = new MindmapFilter("shared_with_me") {
+    public static final MindmapFilter SHARED_WITH_ME = new MindmapFilter("shared_with_me") {
         @Override
         boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
             return !MY_MAPS.accept(mindmap, user);
         }
     };
-    public static MindmapFilter PUBLIC = new MindmapFilter("public") {
+    public static final MindmapFilter PUBLIC = new MindmapFilter("public") {
         @Override
         boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
             return mindmap.isPublic();
@@ -66,13 +66,14 @@ public abstract class MindmapFilter {
     }
 
     static public MindmapFilter parse(@Nullable final String valueStr) {
-        MindmapFilter result = valueStr == null ? ALL : null;
+        MindmapFilter result = null;
         for (MindmapFilter value : MindmapFilter.values) {
             if (value.id.equals(valueStr)) {
                 result = value;
                 break;
             }
         }
+        // valueStr is not a default filter
         if (result == null) {
             assert valueStr != null;
             result = new LabelFilter(valueStr);
