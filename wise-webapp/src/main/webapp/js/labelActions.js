@@ -3,9 +3,9 @@ function createLabelItem(data, id) {
     $("#foldersContainer").find("ul").append(
         $("<li data-filter=\""  + data.title  + "\">").append(
             "<a href=\"#\"> " +
-                "<i class=\"icon-tag\"></i>" +
+                "<i class=\"icon-tag labelIcon\"></i>" +
                 "<div class='labelColor' style='background: " +  data.color + "'></div>" +
-                "<div class='labelName'>" + data.title + "</div>" +
+                "<div class='labelName labelNameList'>" + data.title + "</div>" +
                 "<button id='deleteLabelBtn' class='close closeLabel' labelid=\""+ labelId +"\">x</button>" +
             "</a>"
         )
