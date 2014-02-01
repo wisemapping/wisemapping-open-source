@@ -50,12 +50,15 @@ $(function () {
                     //tag selected mindmaps...
                     var rows = $('#mindmapListTable').dataTableExt.getSelectedRows();
                     for (var i = 0; i < rows.length; i++) {
-                        $(rows[i]).find('.mindmapName').append(
-                            labelTagsAsHtml([{
-                                title: $(':selected', labelList).text(),
-                                color: $(':selected', labelList).attr('color')
-                            }])
-                        )
+                        var labelName = $(':selected', labelList).text();
+                        if ($(rows[i]).find('\'.labelTag:contains("' + labelName + '")\'').length == 0) {
+                            $(rows[i]).find('.mindmapName').append(
+                                labelTagsAsHtml([{
+                                    title: labelName,
+                                    color: $(':selected', labelList).attr('color')
+                                }])
+                            )
+                        }
                     }
                 }
             });
