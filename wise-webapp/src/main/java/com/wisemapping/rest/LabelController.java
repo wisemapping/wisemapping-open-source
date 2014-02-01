@@ -50,21 +50,12 @@ public class LabelController extends BaseController {
             restLabel.setTitle(title);
         }
 
-        final Label label = restLabel.getDelegated();
-
         // Validate ...
-        final BindingResult result = new BeanPropertyBindingResult(restLabel, "");
-        new LabelValidator(labelService).validate(label, result);
-        if (result.hasErrors()) {
-            throw new ValidationException(result);
-        }
+        validate(restLabel);
 
-        // Add new label ...
-        final User user = Utils.getUser();
-        assert user != null;
-        labelService.addLabel(label, user);
+        final Label label = createLabel(restLabel);
 
-        // Return the new created map ...
+        // Return the new created label ...
         response.setHeader("ResourceId", Integer.toString(label.getId()));
     }
 
@@ -104,5 +95,22 @@ public class LabelController extends BaseController {
         }
         assert user != null;
         labelService.removeLabel(label, user);
+    }
+
+    @NotNull private Label createLabel(@NotNull final RestLabel restLabel) throws WiseMappingException {
+        final Label label = restLabel.getDelegated();
+        // Add new label ...
+        final User user = Utils.getUser();
+        assert user != null;
+        labelService.addLabel(label, user);
+        return label;
+    }
+
+    private void validate(@NotNull final RestLabel restLabel) throws ValidationException {
+        final BindingResult result = new BeanPropertyBindingResult(restLabel, "");
+        new LabelValidator(labelService).validate(restLabel.getDelegated(), result);
+        if (result.hasErrors()) {
+            throw new ValidationException(result);
+        }
     }
 }
