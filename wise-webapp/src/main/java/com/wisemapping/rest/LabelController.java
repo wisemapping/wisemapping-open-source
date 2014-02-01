@@ -96,7 +96,7 @@ public class LabelController extends BaseController {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/labels/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteMapById(@PathVariable int id) throws WiseMappingException {
+    public void deleteLabelById(@PathVariable int id) throws WiseMappingException {
         final User user = Utils.getUser();
         final Label label = labelService.getLabelById(id);
         if (label == null) {
