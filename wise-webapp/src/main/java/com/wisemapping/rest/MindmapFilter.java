@@ -67,16 +67,19 @@ public abstract class MindmapFilter {
 
     static public MindmapFilter parse(@Nullable final String valueStr) {
         MindmapFilter result = null;
-        for (MindmapFilter value : MindmapFilter.values) {
-            if (value.id.equals(valueStr)) {
-                result = value;
-                break;
+        if (valueStr != null) {
+            for (MindmapFilter value : MindmapFilter.values) {
+                if (value.id.equals(valueStr)) {
+                    result = value;
+                    break;
+                }
             }
-        }
-        // valueStr is not a default filter
-        if (result == null) {
-            assert valueStr != null;
-            result = new LabelFilter(valueStr);
+            // valueStr is not a default filter
+            if (result == null) {
+                result = new LabelFilter(valueStr);
+            }
+        } else {
+            result = ALL;
         }
         return result;
     }
