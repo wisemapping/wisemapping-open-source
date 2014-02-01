@@ -93,7 +93,7 @@ jQuery.fn.dialogForm = function (options) {
     var acceptBtn = $('#' + containerId + ' .btn-accept');
     acceptBtn.button('reset');
 
-    acceptBtn.one('click', function () {
+    acceptBtn.click( function (event) {
         var formData = {};
         $('#' + containerId + ' input').each(function (index, elem) {
             formData[elem.name] = elem.value;
@@ -150,6 +150,7 @@ jQuery.fn.dialogForm = function (options) {
 
             }
         });
+        event.stopImmediatePropagation();
     }.bind(this));
 
     $('#' + containerId + ' .btn-cancel').click(function () {
