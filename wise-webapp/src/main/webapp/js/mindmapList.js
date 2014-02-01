@@ -99,13 +99,6 @@ jQuery.fn.dialogForm = function (options) {
             formData[elem.name] = elem.value;
         });
 
-        //No me gusta, revisar only support one select in the form
-        var dropdown = $('#' + containerId + ' option:selected');
-        if (dropdown.val()) {
-            formData['id'] = dropdown.val();
-            formData['title'] = dropdown.html();
-        }
-
         $(acceptBtn).button('loading');
         var dialogElem = this;
         jQuery.ajax(url, {
