@@ -150,7 +150,6 @@ jQuery.fn.dialogForm = function (options) {
 
             }
         });
-        event.stopImmediatePropagation();
     }.bind(this));
 
     $('#' + containerId + ' .btn-cancel').click(function () {
