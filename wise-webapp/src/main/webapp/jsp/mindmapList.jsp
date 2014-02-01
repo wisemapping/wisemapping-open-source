@@ -195,8 +195,8 @@
             </button>
         </div>
 
-        <div id="addLabelButton" class="btn-group act-multiple" style="display:none">
-            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+        <div class="btn-group act-multiple" style="display:none">
+            <button id='addLabelButton' class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                 <i class="icon-tag icon-white"></i>
                 <spring:message code="ADD_LABEL"/>
                 <span class="caret"></span>

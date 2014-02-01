@@ -11,9 +11,13 @@ $(function () {
 
     $(document).on('click', '#createLabelBtn',
         function () {
+            var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
             $("#new-folder-dialog-modal").dialogForm({
-                url:"c/restful/labels",
-                postUpdate: createLabelItem
+                url:"c/restful/labels/maps?ids=" + jQuery.makeArray(mapIds).join(','),
+                postUpdate: function(data, id) {
+                    createLabelItem(data, id);
+                    tagMindmaps(data.title, data.color);
+                }
             });
         }
     );
@@ -35,39 +39,38 @@ $(function () {
             //append items to dropdown
             $.each(labels, function(index, value) {
                 labelList.append(
-                    $('<li></li>')
+                    //aca jay codigo repetido
+                    $('<li class="chooseLabel"></li>').attr('value', value.id).attr('color', value.color)
                         .append('<a href="#" onclick="return false">' +
-                                    '<i class="icon-tag"></i>' +
-                                    '<span style="margin-left: 5px">'+ value.title +
-                                    '</span>' +
-                                '</a>'));
+                            "<div class='labelColor' style='background: " +  value.color + "'></div>" +
+                            "<div class='labelName'>" + value.title + "</div>" +
+
+                            '</a>'));
             });
 
             //add the defaultValue
-            labelList.append('<li><div style="height: 1px; background-color: #d5d3d4"></div></li>')
+            labelList.append('<li><div class="listSeparator"></div></li>')
             labelList.append(defaultValue);
 
             var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
 
-            $("#add-label-dialog-modal").dialogForm({
-                type:'PUT',
-                url:"c/restful/labels/maps?ids=" + jQuery.makeArray(mapIds).join(','),
-                postUpdate: function() {
-                    //tag selected mindmaps...
-                    var rows = $('#mindmapListTable').dataTableExt.getSelectedRows();
-                    for (var i = 0; i < rows.length; i++) {
-                        var labelName = $(':selected', labelList).text();
-                        if ($(rows[i]).find('\'.labelTag:contains("' + labelName + '")\'').length == 0) {
-                            $(rows[i]).find('.mindmapName').append(
-                                labelTagsAsHtml([{
-                                    title: labelName,
-                                    color: $(':selected', labelList).attr('color')
-                                }])
-                            )
-                        }
+            $(document).one('click', '.chooseLabel',
+                function () {
+                    var labelId = $(this).attr('value');
+                    var labelName = $(this).text();
+                    var labelColor = $(this).attr('color');
+
+                    jQuery.ajax("c/restful/labels/maps?ids=" + jQuery.makeArray(mapIds).join(','), {
+                        type:'POST',
+                        dataType: "json",
+                        contentType:"application/json; charset=utf-8",
+                        data: JSON.stringify({id: labelId}),
+                        success: function() {
+                            tagMindmaps(labelName, labelColor);
                     }
+                    });
                 }
-            });
+            );
         }
     });
 
@@ -246,10 +249,3 @@ $(function () {
         });
     })
 });
-
-function reloadTable() {
-    // Reload the table data ...
-    var dataTable = $('#mindmapListTable').dataTable();
-    dataTable.fnReloadAjax("c/restful/maps/?q=" + $(this).attr('data-filter'), callbackOnTableInit, true);
-    event.preventDefault();
-}

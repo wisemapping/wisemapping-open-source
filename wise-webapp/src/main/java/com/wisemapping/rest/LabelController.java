@@ -67,13 +67,17 @@ public class LabelController extends BaseController {
         return new RestLabelList(all);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/labels/maps", consumes = {"application/json"})
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void linkToMindMaps(@RequestBody RestLabel restLabel, @RequestParam(required = true) String ids) throws WiseMappingException {
+    @RequestMapping(method = RequestMethod.POST, value = "/labels/maps", consumes = {"application/json"})
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    public void linkToMindMaps(@RequestBody RestLabel restLabel, @RequestParam(required = true) String ids, @NotNull HttpServletResponse response) throws WiseMappingException {
         int id = restLabel.getId();
-        final Label label = labelService.getLabelById(id);
+        Label label = labelService.getLabelById(id);
         if (label == null) {
-            throw new LabelCouldNotFoundException("Label could not be found. Id: " + id);
+            // create label..
+            validate(restLabel);
+            createLabel(restLabel);
+            label = restLabel.getDelegated();
+            response.setHeader("ResourceId", Integer.toString(label.getId()));
         }
         for (String mindmapId : ids.split(",")) {
             final Mindmap mindmap = mindmapService.findMindmapById(Integer.parseInt(mindmapId));
