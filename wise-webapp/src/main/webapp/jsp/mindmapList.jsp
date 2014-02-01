@@ -188,32 +188,31 @@
         </div>
 
         <div class="btn-group">
-            <button id="newBtn" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                <i class="icon-plus icon-white"></i>
-                <spring:message code="NEW"/>
-                <span class="caret"></span>
-            </button>
-
-            <ul class="dropdown-menu">
-                <li id="newMapBtn">
-                    <a href="#" onclick="return false">
-                        <i class="icon-file"></i>
-                        <spring:message code="NEW_MAP"/>
-                    </a>
-                </li>
-                <li id="newFolderBtn">
-                    <a href="#" onclick="return false">
-                        <i class="icon-tag"></i>
-                        <spring:message code="NEW_LABEL"/>
-                    </a>
-                </li>
-            </ul>
-
-            <button id="importBtn" class="btn btn-primary">
-                <i class="icon-upload icon-white"></i>
+            <button id="newBtn" class="btn btn-primary"><i class="icon-file icon-white"></i> <spring:message
+                    code="NEW"/></button>
+            <button id="importBtn" class="btn btn-primary"><i class="icon-upload icon-white"></i>
                 <spring:message code="IMPORT"/>
             </button>
         </div>
+
+        <div id="addLabelButton" class="btn-group act-multiple" style="display:none">
+            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                <i class="icon-tag icon-white"></i>
+                <spring:message code="ADD_LABEL"/>
+                <span class="caret"></span>
+            </button>
+
+            <ul id="labelList" class="dropdown-menu">
+                <li id="createLabelBtn">
+                    <a href="#" onclick="return false">
+                        <!--i class="icon-tag"></i-->
+                        <spring:message code="CREATE_NEW_LABEL"/>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+
 
         <div class="btn-group act-multiple" id="deleteBtn" style="display:none">
             <button class="btn btn-primary"><i class="icon-trash icon-white"></i> <spring:message
