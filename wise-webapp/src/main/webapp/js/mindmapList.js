@@ -98,6 +98,53 @@ jQuery.fn.dialogForm = function (options) {
         $('#' + containerId + ' input').each(function (index, elem) {
             formData[elem.name] = elem.value;
         });
+
+        // Success actions ...
+        var onSuccess = function (jqXHR, textStatus,data) {
+              if (options.redirect) {
+                  var resourceId = jqXHR.getResponseHeader("ResourceId");
+                  var redirectUrl = options.redirect;
+                  redirectUrl = redirectUrl.replace("{header.resourceId}", resourceId);
+
+                  // Hack: IE ignore the base href tag ...
+                  var baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf("c/maps/"));
+                  window.open(baseUrl + redirectUrl, '_self');
+
+              } else if (options.postUpdate) {
+                  options.postUpdate(formData);
+              }
+              dialogElem.modal('hide');
+        };
+
+        // On error message
+        var onFailure = function(jqXHR,textStatus, data){
+          var errors = JSON.parse(jqXHR.responseText);
+           // Mark fields with errors ...
+          var fieldErrors = errors.fieldErrors;
+          if (fieldErrors) {
+               for (var fieldName in fieldErrors) {
+                // Mark the field with errors ...
+                   var message = fieldErrors[fieldName];
+                   var inputField = $("#" + containerId + " input[name='" + fieldName + "']");
+
+                   $("#" + containerId).find(".errorMessage").text(message).addClass("alert alert-error");
+                   inputField.parent().addClass('error');
+               }
+           }
+           var acceptBtn = $('#' + containerId + ' .btn-accept');
+           acceptBtn.button('reset');
+         };
+
+         var onError = function (jqXHR, textStatus, errorThrown) {
+             console.log(errorThrown);
+             console.log(jqXHR);
+             dialogElem.modal('hide');
+             $('#messagesPanel div div').text(errorThrown);
+             $('#messagesPanel').show()
+             var acceptBtn = $('#' + containerId + ' .btn-accept');
+             acceptBtn.button('reset');
+        };
+
         $(acceptBtn).button('loading');
         var dialogElem = this;
         jQuery.ajax(url, {
@@ -106,47 +153,14 @@ jQuery.fn.dialogForm = function (options) {
             data:JSON.stringify(formData),
             type:options.type ? options.type : 'POST',
             contentType:"application/json; charset=utf-8",
-            success:function (data, textStatus, jqXHR) {
-                if (options.redirect) {
-                    var resourceId = jqXHR.getResponseHeader("ResourceId");
-                    var redirectUrl = options.redirect;
-                    redirectUrl = redirectUrl.replace("{header.resourceId}", resourceId);
-
-                    // Hack: IE ignore the base href tag ...
-                    var baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf("c/maps/"));
-                    window.open(baseUrl + redirectUrl, '_self');
-
-                } else if (options.postUpdate) {
-                    options.postUpdate(formData);
-                }
-                dialogElem.modal('hide');
-            },
-            error:function (jqXHR, textStatus, errorThrown) {
-                if (jqXHR.status == 400) {
-                    var errors = JSON.parse(jqXHR.responseText);
-                    // Mark fields with errors ...
-                    var fieldErrors = errors.fieldErrors;
-                    if (fieldErrors) {
-                        for (var fieldName in fieldErrors) {
-                            // Mark the field with errors ...
-                            var message = fieldErrors[fieldName];
-                            var inputField = $("#" + containerId + " input[name='" + fieldName + "']");
-
-                            $("#" + containerId).find(".errorMessage").text(message).addClass("alert alert-error");
-                            inputField.parent().addClass('error');
-                        }
-                    }
-
-                } else {
-                    console.log(errorThrown);
-                    console.log(jqXHR);
-                    dialogElem.modal('hide');
-                    $('#messagesPanel div div').text(errorThrown);
-                    $('#messagesPanel').show()
-                }
-                var acceptBtn = $('#' + containerId + ' .btn-accept');
-                acceptBtn.button('reset');
-
+            statusCode:{
+                200: onSuccess,
+                201: onSuccess,
+                204: onSuccess,
+                400: onFailure,
+                444: onError,
+                500: onError,
+                501: onError
             }
         });
     }.bind(this));
