@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="com.wisemapping.model.LabelMindmap" table="R_LABEL_MINDMAP">
+        <composite-id>
+            <key-property name="mindmapId" type="int" column="mindmap_id"/>
+            <key-property name="labelId" type="int" column="label_id" />
+        </composite-id>
+    </class>
+
+</hibernate-mapping>

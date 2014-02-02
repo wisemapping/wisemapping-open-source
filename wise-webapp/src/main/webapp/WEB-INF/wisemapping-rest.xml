@@ -45,6 +45,7 @@
                 <value>com.wisemapping.rest.model.RestLogItem</value>
                 <value>com.wisemapping.rest.model.RestLockInfo</value>
                 <value>com.wisemapping.rest.model.RestLabel</value>
+                <value>com.wisemapping.rest.model.RestLabelMindmap</value>
             </list>
         </property>
     </bean>
