@@ -103,7 +103,7 @@ jQuery.fn.dialogForm = function (options) {
         var dialogElem = this;
         jQuery.ajax(url, {
             async:false,
-            dataType:'json',
+            //dataType:'json', comentado momentaneamente, problema con jquery 2.1.0
             data:JSON.stringify(formData),
             type:options.type ? options.type : 'POST',
             contentType:"application/json; charset=utf-8",
