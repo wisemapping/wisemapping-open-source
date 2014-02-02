@@ -22,12 +22,12 @@ function labelTagsAsHtml(labels) {
             "<table class='tableTag'>" +
                 "<tbody><tr>" +
                     "<td style='cursor: default; background-color:"+ labelColor +"'>" +
-                        "<div style='font-size: 11px'>" +
+                        "<div class='labelTag' >" +
                             label.title +
                         '</div>' +
                     "</td>" +
                     "<td style='cursor: pointer;background-color:"+ labelColor +"'>" +
-                        "<span style='font-size: 12px' title='remove'>x</span>"+
+                        "<span style='left: -2px;top: -1px;position: relative;font-size: 11px' title='remove'>x</span>"+
                     "</td>" +
                 "</tr></tbody>" +
             "</table>"
@@ -55,7 +55,7 @@ function tagMindmaps(labelName, labelColor) {
     //tag selected mindmaps...
     var rows = $('#mindmapListTable').dataTableExt.getSelectedRows();
     for (var i = 0; i < rows.length; i++) {
-        if ($(rows[i]).find('\'.labelTag:contains("' + labelName + '")\'').length == 0) {
+        if ($(rows[i]).find(".labelTag:contains('" + labelName + "')").length == 0) {
             $(rows[i]).find('.mindmapName').append(
                 labelTagsAsHtml([{
                     title: labelName,
