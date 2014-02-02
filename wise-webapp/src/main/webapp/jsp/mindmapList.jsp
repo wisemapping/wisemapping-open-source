@@ -326,7 +326,7 @@
                 </div>
                 <div id="colorGroup" class="input-group">
                     <label class="control-label" for="colorChooser"><spring:message code="CHOOSE_COLOR"/>:</label>
-                    <input class="form-control" name="color" id="colorChooser" type="text" style="width: 70px" required="required"/>
+                    <input class="form-control" name="color" id="colorChooser" type="text" style="width: 70px" required="required" value="#000000"/>
                     <!--hack, maybe there is a compatibility problem with bootstrap-->
                     <span class="input-group-addon" style="display: inline-block; position: relative; top: 5px"><i></i></span>
                 </div>

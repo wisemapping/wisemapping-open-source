@@ -16,17 +16,15 @@ function labelTagsAsHtml(labels) {
     var result = "";
     for (var i = 0; i<labels.length; i++) {
         var label = labels[i];
-        //FIXME: remover el hack del black cuando se fixee el modal dialog
-        var labelColor = label.color || "black";
         result +=
             "<table class='tableTag'>" +
                 "<tbody><tr>" +
-                    "<td style='cursor: default; background-color:"+ labelColor +"'>" +
+                    "<td style='cursor: default; background-color:"+ label.color +"'>" +
                         "<div class='labelTag' >" +
                             label.title +
                         '</div>' +
                     "</td>" +
-                    "<td style='cursor: pointer;background-color:"+ labelColor +"'>" +
+                    "<td style='cursor: pointer;background-color:"+ label.color +"'>" +
                         "<span style='left: -2px;top: -1px;position: relative;font-size: 11px' title='remove'>x</span>"+
                     "</td>" +
                 "</tr></tbody>" +
