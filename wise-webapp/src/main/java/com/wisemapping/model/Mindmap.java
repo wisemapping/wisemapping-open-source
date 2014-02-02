@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class Mindmap {
@@ -44,7 +45,7 @@ public class Mindmap {
     private User lastEditor;
 
     private Set<Collaboration> collaborations = new HashSet<Collaboration>();
-    private Set<Label> labels = new HashSet<Label>();
+    private Set<Label> labels = new LinkedHashSet<>();
 
     private User creator;
     private String tags;

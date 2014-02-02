@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @XmlRootElement(name = "map")
@@ -97,7 +98,7 @@ public class RestMindmapInfo {
         mindmap.setTitle(title);
     }
      public Set<RestLabel> getLabels() {
-         final Set<RestLabel> result = new HashSet<>();
+         final Set<RestLabel> result = new LinkedHashSet<>();
          for (Label label : mindmap.getLabels()) {
              result.add(new RestLabel(label));
          }
