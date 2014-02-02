@@ -62,7 +62,7 @@
                         bUseRendered:false,
                         mDataProp:"title",
                         fnRender:function (obj) {
-                            return '<a class="mindmapName" href="c/maps/' + obj.aData.id + '/edit">' + $('<span></span>').text(obj.aData.title).html() + '</a>' + labelTagsAsHtml(obj.aData.labels);
+                            return '<a class="mindmapName" value="'+ obj.aData.id +'" href="c/maps/' + obj.aData.id + '/edit">' + $('<span></span>').text(obj.aData.title).html() + '</a>' + labelTagsAsHtml(obj.aData.labels);
                         }
                     },
                     {

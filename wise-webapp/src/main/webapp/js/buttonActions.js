@@ -20,7 +20,7 @@ $(function () {
                 url: url,
                 postUpdate: function(data, id) {
                     createLabelItem(data, id);
-                    tagMindmaps(data.title, data.color);
+                    tagMindmaps(data.id || id, data.title, data.color);
                 }
             });
         }
@@ -66,11 +66,11 @@ $(function () {
                     if (mapIds.length > 0) {
                         jQuery.ajax("c/restful/labels/maps?ids=" + jQuery.makeArray(mapIds).join(','), {
                             type:'POST',
-                            dataType: "json",
+                            //dataType: "json",
                             contentType:"application/json; charset=utf-8",
                             data: JSON.stringify({id: labelId}),
                             success: function() {
-                                tagMindmaps(labelName, labelColor);
+                                tagMindmaps(labelId, labelName, labelColor);
                             }
                         });
                     }
@@ -241,6 +241,24 @@ $(function () {
 
             }
         })
+    });
+
+    $(document).on('click', ".closeTag", function() {
+        var me = $(this);
+        var data = {
+            mindmapId: me.parents("td").find("a").attr("value"),
+            labelId: me.attr("value")
+        };
+        jQuery.ajax("c/restful/labels/maps", {
+            async:false,
+            //dataType:'json', comentado momentaneamente, problema con jquery 2.1.0
+            data:JSON.stringify(data),
+            type:'DELETE',
+            contentType:"application/json; charset=utf-8",
+            success: function() {
+                me.closest("table").remove();
+            }
+        });
     });
 
     $(document).ready(function() {
