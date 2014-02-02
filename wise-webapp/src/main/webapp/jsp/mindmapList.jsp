@@ -195,10 +195,10 @@
             </button>
         </div>
 
-        <div class="btn-group act-multiple" style="display:none">
+        <div class="btn-group">
             <button id='addLabelButton' class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                <i class="icon-tag icon-white"></i>
-                <spring:message code="ADD_LABEL"/>
+                <i class="icon-plus icon-white"></i>
+                    <spring:message code="LABEL"/>
                 <span class="caret"></span>
             </button>
 
@@ -206,7 +206,7 @@
                 <li id="createLabelBtn">
                     <a href="#" onclick="return false">
                         <!--i class="icon-tag"></i-->
-                        <spring:message code="CREATE_NEW_LABEL"/>
+                        <spring:message code="CREATE"/>
                     </a>
                 </li>
             </ul>

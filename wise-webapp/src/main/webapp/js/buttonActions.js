@@ -12,8 +12,12 @@ $(function () {
     $(document).on('click', '#createLabelBtn',
         function () {
             var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
+            var url = mapIds.length == 0
+                ? "c/restful/labels"
+                : "c/restful/labels/maps?ids=" + jQuery.makeArray(mapIds).join(',');
+
             $("#new-folder-dialog-modal").dialogForm({
-                url:"c/restful/labels/maps?ids=" + jQuery.makeArray(mapIds).join(','),
+                url: url,
                 postUpdate: function(data, id) {
                     createLabelItem(data, id);
                     tagMindmaps(data.title, data.color);
@@ -59,16 +63,17 @@ $(function () {
                     var labelId = $(this).attr('value');
                     var labelName = $(this).text();
                     var labelColor = $(this).attr('color');
-
-                    jQuery.ajax("c/restful/labels/maps?ids=" + jQuery.makeArray(mapIds).join(','), {
-                        type:'POST',
-                        dataType: "json",
-                        contentType:"application/json; charset=utf-8",
-                        data: JSON.stringify({id: labelId}),
-                        success: function() {
-                            tagMindmaps(labelName, labelColor);
+                    if (mapIds.length > 0) {
+                        jQuery.ajax("c/restful/labels/maps?ids=" + jQuery.makeArray(mapIds).join(','), {
+                            type:'POST',
+                            dataType: "json",
+                            contentType:"application/json; charset=utf-8",
+                            data: JSON.stringify({id: labelId}),
+                            success: function() {
+                                tagMindmaps(labelName, labelColor);
+                            }
+                        });
                     }
-                    });
                 }
             );
         }
