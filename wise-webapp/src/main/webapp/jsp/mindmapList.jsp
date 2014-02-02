@@ -121,6 +121,12 @@
             $('#pPageBtn').click(function () {
                 $('#mindmapListTable_previous').click();
             });
+
+            //setting max heigth to ul filters...
+            var maxHeight = $(".row-fluid:not(:hidden)").height() - $("#footerContainer").height()*2 - 20;
+            $("#foldersContainer ul").css('overflow', 'auto');
+            $("#foldersContainer ul").height(maxHeight);
+
         });
     </script>
 </head>
