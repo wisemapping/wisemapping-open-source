@@ -209,6 +209,7 @@ $(function () {
         $(this).addClass('active');
         $('#foldersContainer .active i').addClass('icon-white');
 
+        $('input:checkbox').prop('checked', false);
         // Reload the table data ...
         dataTable.fnReloadAjax("c/restful/maps/?q=" + $(this).attr('data-filter'), callbackOnTableInit, true);
         event.preventDefault();

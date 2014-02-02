@@ -39,18 +39,8 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function (oSettings, sNewSource, fnCallbac
 };
 
 jQuery.fn.dataTableExt.selectAllMaps = function () {
-    var total = $('.select input:checkbox[id!="selectAll"]').size();
-    var selected = $('.select input:checked[id!="selectAll"]').size();
-    if (selected < total) {
-        $('.select input:!checked[id!="selectAll"]').each(function () {
-            $(this).prop("checked", true);
-        });
-    }
-    else {
-        $('.select input:!checked[id!="selectAll"]').each(function () {
-            $(this).prop("checked", false);
-        });
-    }
+    var bool = $("input:checkbox[id='selectAll']").prop('checked');
+    $("input:checkbox[id!='selectAll']").prop('checked', bool);
     updateStatusToolbar();
 };
 

@@ -108,9 +108,11 @@
             $('#mindmapListTable_length select').attr("style", "width:60px;");
 
 
-            $('input:checkbox[id="selectAll"]').click(function () {
-                $("#mindmapListTable").dataTableExt.selectAllMaps();
-            });
+            $('input:checkbox[id="selectAll"]').click(
+                    function () {
+                        $("#mindmapListTable").dataTableExt.selectAllMaps();
+                    }
+            );
 
             // Hack for changing the pagination buttons ...
             $('#nPageBtn').click(function () {
