@@ -207,8 +207,6 @@ $(function () {
                 //find the second li... (all)
                 $("#foldersContainer li:nth-child(2)").addClass("active");
                 dataTable.fnReloadAjax("c/restful/maps/?q=all", callbackOnTableInit, true);
-                event.preventDefault();
-
             }
         })
     });
