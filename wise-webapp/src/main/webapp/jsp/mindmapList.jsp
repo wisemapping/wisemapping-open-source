@@ -205,7 +205,7 @@
 
         <div class="btn-group">
             <button id='addLabelButton' class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                <i class="icon-plus icon-white"></i>
+                <i class="icon-tag icon-white"></i>
                     <spring:message code="LABEL"/>
                 <span class="caret"></span>
             </button>
@@ -213,7 +213,7 @@
             <ul id="labelList" class="dropdown-menu">
                 <li id="createLabelBtn">
                     <a href="#" onclick="return false">
-                        <!--i class="icon-tag"></i-->
+                        <i class="icon-plus"></i>
                         <spring:message code="CREATE"/>
                     </a>
                 </li>
@@ -333,7 +333,7 @@
                            placeholder="<spring:message code="LABEL_NAME_HINT"/>" autofocus="autofocus" maxlength="30"/>
                 </div>
                 <div id="colorGroup" class="input-group">
-                    <label class="control-label" for="colorChooser"><spring:message code="CHOOSE_COLOR"/>:</label>
+                    <label class="control-label" for="colorChooser"><spring:message code="COLOR"/>:</label>
                     <input class="form-control" name="color" id="colorChooser" type="text" style="width: 70px" required="required" value="#000000"/>
                     <!--hack, maybe there is a compatibility problem with bootstrap-->
                     <span class="input-group-addon" style="display: inline-block; position: relative; top: 5px"><i></i></span>
