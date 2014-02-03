@@ -334,9 +334,9 @@
                 </div>
                 <div id="colorGroup" class="input-group">
                     <label class="control-label" for="colorChooser"><spring:message code="COLOR"/>:</label>
-                    <input class="form-control" name="color" id="colorChooser" type="text" style="width: 70px" required="required" value="#000000"/>
+                    <input class="form-control" name="color" id="colorChooser" type="text" style="display:none; width: 70px" required="required" value="#000000"/>
                     <!--hack, maybe there is a compatibility problem with bootstrap-->
-                    <span class="input-group-addon" style="display: inline-block; position: relative; top: 5px"><i></i></span>
+                    <span class="input-group-addon" style="display: inline-block; position: relative; top: 5px; left: 5px"><i style="width: 43px;height: 18px;"></i></span>
                 </div>
             </fieldset>
         </form>
