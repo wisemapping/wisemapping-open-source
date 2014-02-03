@@ -76,14 +76,14 @@ jQuery.fn.dialogForm = function (options) {
 
     // Clear form values ...
     if (options.clearForm == undefined || options.clearForm) {
-        $("#" + containerId).find('input').attr('value', '');
+        $("#" + containerId).find('input[name!="color"]').val('');
     }
 
     // Clear button "Saving..." state ...
     var acceptBtn = $('#' + containerId + ' .btn-accept');
     acceptBtn.button('reset');
 
-    acceptBtn.click( function (event) {
+    acceptBtn.unbind('click').click( function (event) {
         var formData = {};
         $('#' + containerId + ' input').each(function (index, elem) {
             formData[elem.name] = elem.value;
