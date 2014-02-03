@@ -65,3 +65,27 @@ function tagMindmaps(id, labelName, labelColor) {
         }
     }
 }
+
+function prepareLabelList(labels) {
+    var labelList = $("#labelList");
+    var defaultValue = labelList.find("li[id=\"createLabelBtn\"]");
+
+    //clear dropdown...
+    labelList.find('li').remove();
+
+    //append items to dropdown
+    $.each(labels, function(index, value) {
+        labelList.append(
+            $('<li class="chooseLabel"></li>').attr('value', value.id).attr('color', value.color)
+                .append(
+                    '<a href="#" onclick="return false">' +
+                        "<div class='labelColor' style='background: " +  value.color + "'></div>" +
+                        "<div class='labelName'>" + value.title + "</div>" +
+                    '</a>')
+        );
+    });
+
+    //add the defaultValue
+    labelList.append('<li><div class="listSeparator"></div></li>')
+    labelList.append(defaultValue);
+}

@@ -35,35 +35,15 @@ $(function () {
         });
 
         if (labels) {
-            var labelList = $("#labelList");
-
-            var defaultValue = labelList.find("li[id=\"createLabelBtn\"]");
-            //clear dropdown...
-            labelList.find('li').remove();
-            //append items to dropdown
-            $.each(labels, function(index, value) {
-                labelList.append(
-                    //aca jay codigo repetido
-                    $('<li class="chooseLabel"></li>').attr('value', value.id).attr('color', value.color)
-                        .append('<a href="#" onclick="return false">' +
-                            "<div class='labelColor' style='background: " +  value.color + "'></div>" +
-                            "<div class='labelName'>" + value.title + "</div>" +
-
-                            '</a>'));
-            });
-
-            //add the defaultValue
-            labelList.append('<li><div class="listSeparator"></div></li>')
-            labelList.append(defaultValue);
-
-            var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
+            prepareLabelList(labels);
 
             $(document).one('click', '.chooseLabel',
                 function () {
-                    var labelId = $(this).attr('value');
-                    var labelName = $(this).text();
-                    var labelColor = $(this).attr('color');
+                    var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
                     if (mapIds.length > 0) {
+                        var labelId = $(this).attr('value');
+                        var labelName = $(this).text();
+                        var labelColor = $(this).attr('color');
                         jQuery.ajax("c/restful/labels/maps?ids=" + jQuery.makeArray(mapIds).join(','), {
                             type:'POST',
                             //dataType: "json",
@@ -214,16 +194,6 @@ $(function () {
         dataTable.fnReloadAjax("c/restful/maps/?q=" + $(this).attr('data-filter'), callbackOnTableInit, true);
         event.preventDefault();
     });
-
-    $("#parentLblCheckbox").click(
-        function () {
-            if ($(this).is(":checked")) {
-                $("#dropdownLabel").prop("disabled", false);
-            } else {
-                $("#dropdownLabel").prop("disabled", true);
-            }
-        }
-    );
 
     $(document).on('click', "#deleteLabelBtn", function() {
         var me = $(this);
