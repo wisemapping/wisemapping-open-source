@@ -338,17 +338,6 @@
                     <!--hack, maybe there is a compatibility problem with bootstrap-->
                     <span class="input-group-addon" style="display: inline-block; position: relative; top: 5px"><i></i></span>
                 </div>
-                <!--div class="control-label">
-                    <input id="parentLblCheckbox" type="checkbox">
-                    <label for="parentLblCheckbox" style="display: inline-block"><spring:message code="PARENT_LABEL"/>:</label>
-                </div>
-                <select id="dropdownLabel" class="control" disabled autofocus="autofocus">
-                    <option id="defaultOption" value="empty"><spring:message code="SELECT_LABEL"/></option>
-                    <option value="1">Dummy Label</option>
-                    <option value="2">-> Child</option>
-                    <option value="3">-> Child2</option>
-                    <option value="4">Dummy</option>
-                </select-->
             </fieldset>
         </form>
     </div>
