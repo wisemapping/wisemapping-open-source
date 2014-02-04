@@ -1,3 +1,8 @@
+// Hack for bootstrap issue with IE10. https://github.com/twbs/bootstrap/issues/3672
+if ($.browser.msie && $.browser.version > 9) {
+    $('.modal').removeClass('fade');
+}
+
 $.fn.dataTableExt.oApi.fnReloadAjax = function (oSettings, sNewSource, fnCallback, bStandingRedraw) {
     if (typeof sNewSource != 'undefined' && sNewSource != null) {
         oSettings.sAjaxSource = sNewSource;
@@ -100,60 +105,60 @@ jQuery.fn.dialogForm = function (options) {
         });
 
         // Success actions ...
-        var onSuccess = function (jqXHR, textStatus,data) {
-              if (options.redirect) {
-                  var resourceId = jqXHR.getResponseHeader("ResourceId");
-                  var redirectUrl = options.redirect;
-                  redirectUrl = redirectUrl.replace("{header.resourceId}", resourceId);
+        var onSuccess = function (jqXHR, textStatus, data) {
+            if (options.redirect) {
+                var resourceId = jqXHR.getResponseHeader("ResourceId");
+                var redirectUrl = options.redirect;
+                redirectUrl = redirectUrl.replace("{header.resourceId}", resourceId);
 
-                  // Hack: IE ignore the base href tag ...
-                  var baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf("c/maps/"));
-                  window.open(baseUrl + redirectUrl, '_self');
+                // Hack: IE ignore the base href tag ...
+                var baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf("c/maps/"));
+                window.open(baseUrl + redirectUrl, '_self');
 
-              } else if (options.postUpdate) {
-                  options.postUpdate(formData);
-              }
-              dialogElem.modal('hide');
+            } else if (options.postUpdate) {
+                options.postUpdate(formData);
+            }
+            dialogElem.modal('hide');
         };
 
         // On error message
-        var onFailure = function(jqXHR,textStatus, data){
-          var errors = JSON.parse(jqXHR.responseText);
-           // Mark fields with errors ...
-          var fieldErrors = errors.fieldErrors;
-          if (fieldErrors) {
-               for (var fieldName in fieldErrors) {
-                // Mark the field with errors ...
-                   var message = fieldErrors[fieldName];
-                   var inputField = $("#" + containerId + " input[name='" + fieldName + "']");
+        var onFailure = function (jqXHR, textStatus, data) {
+            var errors = JSON.parse(jqXHR.responseText);
+            // Mark fields with errors ...
+            var fieldErrors = errors.fieldErrors;
+            if (fieldErrors) {
+                for (var fieldName in fieldErrors) {
+                    // Mark the field with errors ...
+                    var message = fieldErrors[fieldName];
+                    var inputField = $("#" + containerId + " input[name='" + fieldName + "']");
 
-                   $("#" + containerId).find(".errorMessage").text(message).addClass("alert alert-error");
-                   inputField.parent().addClass('error');
-               }
-           }
-           var acceptBtn = $('#' + containerId + ' .btn-accept');
-           acceptBtn.button('reset');
-         };
+                    $("#" + containerId).find(".errorMessage").text(message).addClass("alert alert-error");
+                    inputField.parent().addClass('error');
+                }
+            }
+            var acceptBtn = $('#' + containerId + ' .btn-accept');
+            acceptBtn.button('reset');
+        };
 
-         var onError = function (jqXHR, textStatus, errorThrown) {
-             console.log(errorThrown);
-             console.log(jqXHR);
-             dialogElem.modal('hide');
-             $('#messagesPanel div div').text(errorThrown);
-             $('#messagesPanel').show()
-             var acceptBtn = $('#' + containerId + ' .btn-accept');
-             acceptBtn.button('reset');
+        var onError = function (jqXHR, textStatus, errorThrown) {
+            console.log(errorThrown);
+            console.log(jqXHR);
+            dialogElem.modal('hide');
+            $('#messagesPanel div div').text(errorThrown);
+            $('#messagesPanel').show()
+            var acceptBtn = $('#' + containerId + ' .btn-accept');
+            acceptBtn.button('reset');
         };
 
         $(acceptBtn).button('loading');
         var dialogElem = this;
         jQuery.ajax(url, {
-            async:false,
-            dataType:'json',
-            data:JSON.stringify(formData),
-            type:options.type ? options.type : 'POST',
-            contentType:"application/json; charset=utf-8",
-            statusCode:{
+            async: false,
+            dataType: 'json',
+            data: JSON.stringify(formData),
+            type: options.type ? options.type : 'POST',
+            contentType: "application/json; charset=utf-8",
+            statusCode: {
                 200: onSuccess,
                 201: onSuccess,
                 204: onSuccess,
@@ -227,12 +232,12 @@ function updateStarred(spanElem) {
     }
 
     jQuery.ajax("c/restful/maps/" + mapId + "/starred", {
-        async:false,
-        dataType:'json',
-        data:"" + starred,
-        type:'PUT',
-        contentType:"text/plain",
-        success:function () {
+        async: false,
+        dataType: 'json',
+        data: "" + starred,
+        type: 'PUT',
+        contentType: "text/plain",
+        success: function () {
             if (starred) {
                 $(spanElem).removeClass('starredOff');
                 $(spanElem).addClass('starredOn');
@@ -241,7 +246,7 @@ function updateStarred(spanElem) {
                 $(spanElem).addClass('starredOff');
             }
         },
-        error:function (jqXHR, textStatus, errorThrown) {
+        error: function (jqXHR, textStatus, errorThrown) {
             $('#messagesPanel div').text(errorThrown).parent().show();
         }
     });
@@ -263,8 +268,8 @@ $(function () {
     $("#newBtn").click(
         function () {
             $("#new-dialog-modal").dialogForm({
-                redirect:"c/maps/{header.resourceId}/edit",
-                url:"c/restful/maps"
+                redirect: "c/maps/{header.resourceId}/edit",
+                url: "c/restful/maps"
             });
         });
 
@@ -283,8 +288,8 @@ $(function () {
 
             // Initialize dialog ...
             $("#duplicate-dialog-modal").dialogForm({
-                redirect:"c/maps/{header.resourceId}/edit",
-                url:"c/restful/maps/" + mapId
+                redirect: "c/maps/{header.resourceId}/edit",
+                url: "c/restful/maps/" + mapId
             });
         }
     });
@@ -309,16 +314,16 @@ $(function () {
 
             // Initialize dialog ...
             $("#rename-dialog-modal").dialogForm({
-                type:'PUT',
-                clearForm:false,
-                postUpdate:function (reqBodyData) {
+                type: 'PUT',
+                clearForm: false,
+                postUpdate: function (reqBodyData) {
                     tableElem.dataTableExt.removeSelectedRows();
 
                     rowData.title = reqBodyData.title;
                     rowData.description = reqBodyData.description;
                     dataTable.fnAddData(JSON.parse(JSON.stringify(rowData)));
                 },
-                url:"c/restful/maps/" + mapId
+                url: "c/restful/maps/" + mapId
             });
         }
     });
@@ -331,12 +336,12 @@ $(function () {
         if (mapIds.length > 0) {
             // Initialize dialog ...
             $("#delete-dialog-modal").dialogForm({
-                type:'DELETE',
-                postUpdate:function () {
+                type: 'DELETE',
+                postUpdate: function () {
                     // Remove old entry ...
                     tableUI.dataTableExt.removeSelectedRows();
                 },
-                url:"c/restful/maps/batch?ids=" + jQuery.makeArray(mapIds).join(',')
+                url: "c/restful/maps/batch?ids=" + jQuery.makeArray(mapIds).join(',')
             });
         }
     });
