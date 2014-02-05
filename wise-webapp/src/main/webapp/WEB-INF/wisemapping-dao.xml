@@ -34,7 +34,6 @@
                 <value>com/wisemapping/model/AccessAuditory.hbm.xml</value>
                 <value>com/wisemapping/model/MindMapHistory.hbm.xml</value>
                 <value>com/wisemapping/model/Label.hbm.xml</value>
-                <value>com/wisemapping/model/LabelMindmap.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">
