@@ -31,11 +31,13 @@ import com.wisemapping.importer.ImporterFactory;
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.CollaborationProperties;
 import com.wisemapping.model.CollaborationRole;
+import com.wisemapping.model.Label;
 import com.wisemapping.model.MindMapHistory;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestCollaboration;
 import com.wisemapping.rest.model.RestCollaborationList;
+import com.wisemapping.rest.model.RestLabel;
 import com.wisemapping.rest.model.RestMindmap;
 import com.wisemapping.rest.model.RestMindmapHistory;
 import com.wisemapping.rest.model.RestMindmapHistoryList;
@@ -617,4 +619,32 @@ public class MindmapController extends BaseController {
         result.rejectValue(fieldName, "error.not-specified", null, message);
         return new ValidationException(result);
     }
+    @RequestMapping(method = RequestMethod.DELETE, value = "/labels/maps/{id}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void removeLabel(@RequestBody RestLabel restLabel, @PathVariable int id) throws WiseMappingException {
+        final Mindmap mindmap = findMindmapById(id);
+        final User currentUser = Utils.getUser();
+        final Label delegated = restLabel.getDelegated();
+        assert currentUser != null;
+        delegated.setCreator(currentUser);
+        mindmapService.removeLabel(mindmap, delegated);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/labels/maps", consumes = {"application/json"})
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    public void addLabel(@RequestBody RestLabel restLabel, @RequestParam(required = true) String ids) throws WiseMappingException {
+        int labelId = restLabel.getId();
+        for (String id : ids.split(",")) {
+            final int mindmapId = Integer.parseInt(id);
+            final Mindmap mindmap = findMindmapById(mindmapId);
+            final Label label = mindmap.findLabel(labelId);
+            if (label == null) {
+                final Label delegated = restLabel.getDelegated();
+                delegated.setCreator(Utils.getUser());
+                mindmapService.addLabel(mindmap, delegated);
+            }
+        }
+    }
+
+
 }

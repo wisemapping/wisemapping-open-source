@@ -56,4 +56,24 @@ public class Label {
     public void setColor(@NotNull String color) {
         this.color = color;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Label)) return false;
+
+        Label label = (Label) o;
+
+        return id == label.id && creator.getId() == label.creator.getId()
+                &&  !(parent != null ? !parent.equals(label.parent) : label.parent != null);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + title.hashCode();
+        result = 31 * result + creator.hashCode();
+        result = 31 * result + (parent != null ? parent.hashCode() : 0);
+        return result;
+    }
 }

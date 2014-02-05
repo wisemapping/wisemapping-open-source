@@ -88,6 +88,18 @@ public class MindmapServiceImpl
     }
 
     @Override
+    public void addLabel(@NotNull Mindmap mindmap, @NotNull final Label label) {
+        mindmap.addLabel(label);
+        mindmapManager.saveMindmap(mindmap);
+    }
+
+    @Override
+    public void removeLabel(@NotNull Mindmap mindmap, @NotNull Label label) {
+        mindmap.removeLabel(label);
+        mindmapManager.saveMindmap(mindmap);
+    }
+
+    @Override
     public Mindmap getMindmapByTitle(String title, User user) {
         return mindmapManager.getMindmapByTitle(title, user);
     }

@@ -318,7 +318,7 @@ public class Mindmap {
         return result;
 
     }
-
+    //creo que no se usa mas
     public boolean hasLabel(@NotNull final String name) {
         for (Label label : this.labels) {
             if (label.getTitle().equals(name)) {
@@ -326,5 +326,20 @@ public class Mindmap {
             }
         }
         return false;
+    }
+
+    @Nullable public Label findLabel(int labelId) {
+        Label result = null;
+        for (Label label : this.labels) {
+            if (label.getId() == labelId) {
+                result = label;
+                break;
+            }
+        }
+        return result;
+    }
+
+    public void removeLabel(@NotNull final Label label) {
+        this.labels.remove(label);
     }
 }

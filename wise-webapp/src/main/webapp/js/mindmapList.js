@@ -257,15 +257,13 @@ $(function () {
     $(document).on('click', '#createLabelBtn',
         function () {
             var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
-            var url = mapIds.length == 0
-                ? "c/restful/labels"
-                : "c/restful/labels/maps?ids=" + jQuery.makeArray(mapIds).join(',');
-
             $("#new-folder-dialog-modal").dialogForm({
-                url: url,
+                url: "c/restful/labels",
                 postUpdate: function(data, id) {
                     createLabelItem(data, id);
-                    tagMindmaps(data.id || id, data.title, data.color);
+                    if (mapIds.length > 0) {
+                        linkLabelToMindmap(mapIds, {id: id, title: data.title, color: data.color});
+                    }
                 }
             });
         }
@@ -281,7 +279,6 @@ $(function () {
 
         if (labels) {
             prepareLabelList(labels);
-
             $(document).one('click', '.chooseLabel',
                 function () {
                     var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
@@ -289,15 +286,7 @@ $(function () {
                         var labelId = $(this).attr('value');
                         var labelName = $(this).text();
                         var labelColor = $(this).attr('color');
-                        jQuery.ajax("c/restful/labels/maps?ids=" + jQuery.makeArray(mapIds).join(','), {
-                            type:'POST',
-                            //dataType: "json",
-                            contentType:"application/json; charset=utf-8",
-                            data: JSON.stringify({id: labelId}),
-                            success: function() {
-                                tagMindmaps(labelId, labelName, labelColor);
-                            }
-                        });
+                        linkLabelToMindmap(mapIds, {id: labelId, title: labelName, color: labelColor});
                     }
                 }
             );
@@ -458,11 +447,13 @@ $(function () {
 
     $(document).on('click', ".closeTag", function() {
         var me = $(this);
+        var mindmapId = me.parents("td").find("a").attr("value");
         var data = {
-            mindmapId: me.parents("td").find("a").attr("value"),
-            labelId: me.attr("value")
+            id: me.attr("value"),
+            title: me.attr("name"),
+            color: me.css('background-color')
         };
-        jQuery.ajax("c/restful/labels/maps", {
+        jQuery.ajax("c/restful/labels/maps/" + mindmapId, {
             async:false,
             //dataType:'json', comentado momentaneamente, problema con jquery 2.1.0
             data:JSON.stringify(data),
@@ -510,13 +501,13 @@ function labelTagsAsHtml(labels) {
             "<table class='tableTag'>" +
                 "<tbody><tr>" +
                 "<td style='cursor: default; background-color:"+ label.color +"'>" +
-                "<div class='labelTag' >" +
-                label.title +
-                '</div>' +
+                    "<div class='labelTag' >" +
+                        label.title +
+                    '</div>' +
                 "</td>" +
                 //"<td style='padding: 0; background-color: #d8d4d4'></td>" +
-                "<td class='closeTag' style='background-color:" + label.color +"' value='" + label.id + "'    >" +
-                "<span style='top: -1px;position: relative;font-size: 11px' title='delete label'>x</span>"+
+                "<td class='closeTag' style='background-color:" + label.color +"' name='" + label.title +"'value='" + label.id + "'    >" +
+                    "<span style='top: -1px;position: relative;font-size: 11px' title='delete label'>x</span>"+
                 "</td>" +
                 "</tr></tbody>" +
                 "</table>"
@@ -578,4 +569,20 @@ function prepareLabelList(labels) {
     //add the defaultValue
     labelList.append('<li><div class="listSeparator"></div></li>')
     labelList.append(defaultValue);
+}
+
+function linkLabelToMindmap(mapIds, label) {
+    jQuery.ajax("c/restful/labels/maps?ids=" + jQuery.makeArray(mapIds).join(','), {
+        type: 'POST',
+        //dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({
+            id: label.id,
+            title: label.title,
+            color: label.color
+        }),
+        success: function () {
+            tagMindmaps(label.id, label.title, label.color);
+        }
+    });
 }

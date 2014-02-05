@@ -7,6 +7,13 @@ public class LabelMindmap implements Serializable{
     private int mindmapId;
     private int labelId;
 
+    public LabelMindmap(int labelId, int mindmapId) {
+        this.mindmapId = mindmapId;
+        this.labelId = labelId;
+    }
+
+    public LabelMindmap() {}
+
     public int getMindmapId() {
         return mindmapId;
     }
