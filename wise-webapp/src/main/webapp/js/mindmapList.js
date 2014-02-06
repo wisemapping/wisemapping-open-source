@@ -585,6 +585,9 @@ function prepareLabelList(labels) {
 }
 
 function linkLabelToMindmap(mapIds, label) {
+    var onSuccess = function () {
+        tagMindmaps(label.id, label.title, label.color);
+    };
     jQuery.ajax("c/restful/labels/maps?ids=" + jQuery.makeArray(mapIds).join(','), {
         type: 'POST',
         dataType: "json",
@@ -594,8 +597,8 @@ function linkLabelToMindmap(mapIds, label) {
             title: label.title,
             color: label.color
         }),
-        success: function () {
-            tagMindmaps(label.id, label.title, label.color);
+        statusCode: {
+            200: onSuccess
         }
     });
 }

@@ -631,7 +631,7 @@ public class MindmapController extends BaseController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/labels/maps", consumes = {"application/json"})
-    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    @ResponseStatus(value = HttpStatus.OK)
     public void addLabel(@RequestBody RestLabel restLabel, @RequestParam(required = true) String ids) throws WiseMappingException {
         int labelId = restLabel.getId();
         for (String id : ids.split(",")) {
