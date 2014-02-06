@@ -468,7 +468,7 @@ $(function () {
         };
         jQuery.ajax("c/restful/labels/maps/" + mindmapId, {
             async:false,
-            //dataType:'json', comentado momentaneamente, problema con jquery 2.1.0
+            dataType:'json',
             data:JSON.stringify(data),
             type:'DELETE',
             contentType:"application/json; charset=utf-8",
@@ -587,7 +587,7 @@ function prepareLabelList(labels) {
 function linkLabelToMindmap(mapIds, label) {
     jQuery.ajax("c/restful/labels/maps?ids=" + jQuery.makeArray(mapIds).join(','), {
         type: 'POST',
-        //dataType: "json",
+        dataType: "json",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify({
             id: label.id,
