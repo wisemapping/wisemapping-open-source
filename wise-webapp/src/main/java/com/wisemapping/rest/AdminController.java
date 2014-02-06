@@ -18,7 +18,6 @@
 
 package com.wisemapping.rest;
 
-import com.mangofactory.swagger.annotations.ApiModel;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.model.Collaboration;
@@ -56,6 +55,7 @@ public class AdminController extends BaseController {
     @Qualifier("userService")
     @Autowired
     private UserService userService;
+
     @Qualifier("mindmapService")
     @Autowired
     private MindmapService mindmapService;
@@ -133,12 +133,19 @@ public class AdminController extends BaseController {
     @ApiOperation("Note: Administration permissions required.")
     @RequestMapping(method = RequestMethod.DELETE, value = "admin/users/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void getUserByEmail(@PathVariable @ApiParam(required = true, allowableValues = "range[1," + Long.MAX_VALUE + "]") long id) throws WiseMappingException {
+    public void deleteUserByEmail(@PathVariable long id) throws WiseMappingException {
         final User user = userService.getUserBy(id);
         if (user == null) {
             throw new IllegalArgumentException("User '" + id + "' could not be found");
         }
-        userService.deleteUser(user);
+
+        final List<Collaboration> collaborations = mindmapService.findCollaborations(user);
+        for (Collaboration collaboration : collaborations) {
+            final Mindmap mindmap = collaboration.getMindMap();
+            mindmapService.removeMindmap(mindmap,user);
+        }
+
+        userService.removeUser(user);
     }
 
     @ApiOperation("Note: Administration permissions required.")

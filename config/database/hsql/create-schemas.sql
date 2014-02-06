@@ -5,8 +5,7 @@ CREATE TABLE COLLABORATOR (
 );
 
 CREATE TABLE USER (
-  id                  INTEGER      NOT NULL IDENTITY,
-  colaborator_id      INTEGER      NOT NULL,
+  colaborator_id      INTEGER      NOT NULL IDENTITY,
   authentication_type CHAR(1)      NOT NULL,
   authenticator_uri   VARCHAR(255) NULL,
   firstname           VARCHAR(255) NOT NULL,
@@ -87,7 +86,10 @@ CREATE TABLE TAG (
 CREATE TABLE ACCESS_AUDITORY (
   id         INTEGER NOT NULL IDENTITY,
   user_id    INTEGER NOT NULL,
-  login_date DATE
+  login_date DATE,
+  FOREIGN KEY (user_id) REFERENCES USER (colaborator_id)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
 );
 
 COMMIT;

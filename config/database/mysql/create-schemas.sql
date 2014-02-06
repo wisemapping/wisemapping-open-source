@@ -13,8 +13,7 @@ CREATE TABLE COLLABORATOR (
   CHARACTER SET utf8;
 
 CREATE TABLE USER (
-  id               INTEGER            NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  colaborator_id   INTEGER            NOT NULL,
+  colaborator_id   INTEGER            NOT NULL PRIMARY KEY,
   authentication_type CHAR(1)
                       CHARACTER SET utf8 NOT NULL,
   authenticator_uri   VARCHAR(255)
@@ -127,7 +126,10 @@ CREATE TABLE TAG (
 CREATE TABLE ACCESS_AUDITORY (
   id         INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
   login_date DATE,
-  user_id    INTEGER NOT NULL
+  user_id    INTEGER NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES USER (colaborator_id)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
 )
   CHARACTER SET utf8;
 

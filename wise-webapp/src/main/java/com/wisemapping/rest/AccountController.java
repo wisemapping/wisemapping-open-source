@@ -19,7 +19,9 @@
 package com.wisemapping.rest;
 
 import com.mangofactory.swagger.annotations.ApiIgnore;
+import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.mail.NotificationService;
+import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestLogItem;
@@ -39,6 +41,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Api(value="UserApi",description = "Account Account Related Objects.")
 @Controller
@@ -76,7 +79,7 @@ public class AccountController extends BaseController {
             throw new IllegalArgumentException("Firstname can not be null");
         }
 
-        final User user = Utils.getUser();
+        final User user = Utils.getUser(true);
         user.setFirstname(firstname);
         userService.updateUser(user);
     }
@@ -88,7 +91,7 @@ public class AccountController extends BaseController {
             throw new IllegalArgumentException("lastname can not be null");
 
         }
-        final User user = Utils.getUser();
+        final User user = Utils.getUser(true);
         user.setLastname(lastname);
         userService.updateUser(user);
     }
@@ -105,6 +108,21 @@ public class AccountController extends BaseController {
         user.setLocale(language);
         userService.updateUser(user);
     }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "account")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteUser() throws WiseMappingException
+
+    {
+        final User user = Utils.getUser(true);
+        final List<Collaboration> collaborations = mindmapService.findCollaborations(user);
+        for (Collaboration collaboration : collaborations) {
+            final Mindmap mindmap = collaboration.getMindMap();
+            mindmapService.removeMindmap(mindmap,user);
+        }
+        userService.removeUser(user);
+    }
+
 
     @ApiIgnore
     @RequestMapping(method = RequestMethod.POST, value = "logger/editor", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})

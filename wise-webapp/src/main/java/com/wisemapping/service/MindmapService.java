@@ -46,8 +46,6 @@ public interface MindmapService {
 
     void removeCollaboration(@NotNull Mindmap mindmap, @NotNull Collaboration collaboration) throws CollaborationException;
 
-    void addTags(@NotNull Mindmap mindmap, String tags);
-
     void removeMindmap(@NotNull final Mindmap mindmap, @NotNull final User user) throws WiseMappingException;
 
     List<Mindmap> search(MindMapCriteria criteria);

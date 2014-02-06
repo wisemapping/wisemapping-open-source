@@ -21,7 +21,11 @@ package com.wisemapping.service;
 import com.wisemapping.dao.UserManager;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.mail.NotificationService;
-import com.wisemapping.model.*;
+import com.wisemapping.model.AccessAuditory;
+import com.wisemapping.model.AuthenticationType;
+import com.wisemapping.model.Collaborator;
+import com.wisemapping.model.Mindmap;
+import com.wisemapping.model.User;
 import org.apache.velocity.app.VelocityEngine;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,8 +33,11 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 
 public class UserServiceImpl
         implements UserService {
@@ -95,8 +102,10 @@ public class UserServiceImpl
     }
 
     @Override
-    public void deleteUser(@NotNull User user) {
-        userManager.deleteUser(user);
+    public void removeUser(@NotNull  User user) {
+        // Force object reload before removing....
+        final User userBy = userManager.getUserBy(user.getEmail());
+        userManager.removeUser(userBy);
     }
 
     @Override
