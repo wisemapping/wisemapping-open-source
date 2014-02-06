@@ -1,5 +1,8 @@
 /*--------------------------------------------- Common actions --------------------------------------------------**/
-
+// Hack for bootstrap issue with IE10. https://github.com/twbs/bootstrap/issues/3672
+/*if ($.browser.msie && $.browser.version > 9) {
+    $('.modal').removeClass('fade');
+}*/
 $.fn.dataTableExt.oApi.fnReloadAjax = function (oSettings, sNewSource, fnCallback, bStandingRedraw) {
     if (typeof sNewSource != 'undefined' && sNewSource != null) {
         oSettings.sAjaxSource = sNewSource;
@@ -93,7 +96,7 @@ jQuery.fn.dialogForm = function (options) {
 
         // Success actions ...
         var onSuccess = function (jqXHR, textStatus, data) {
-            var resourceId = jqXHR.getResponseHeader("ResourceId");
+            var resourceId = jqXHR ? jqXHR.getResponseHeader("ResourceId") : undefined;
             if (options.redirect) {
                 var redirectUrl = options.redirect;
                 redirectUrl = redirectUrl.replace("{header.resourceId}", resourceId);
@@ -292,7 +295,7 @@ $(function () {
 
         if (labels) {
             prepareLabelList(labels);
-            $(document).one('click', '.chooseLabel',
+            $('.chooseLabel').one('click' ,
                 function () {
                     var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
                     if (mapIds.length > 0) {
