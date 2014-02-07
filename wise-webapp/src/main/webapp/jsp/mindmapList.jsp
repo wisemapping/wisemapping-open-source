@@ -124,7 +124,8 @@
 
             //setting max heigth to ul filters...
             var maxHeight = $(".row-fluid:not(:hidden)").height() - $("#footerContainer").height()*2 - 20;
-            $("#foldersContainer ul").css('overflow', 'auto');
+            $("#foldersContainer ul").css('overflow-y', 'scrollbar');
+            $("#foldersContainer ul").css('overflow-x', 'hidden');
             $("#foldersContainer ul").height(maxHeight);
 
         });

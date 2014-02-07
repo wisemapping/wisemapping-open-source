@@ -15,6 +15,28 @@
 @base-color: #111;
 
 /* ----------------------------- General -------------------------------- */
+.nav-list{
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  margin-top: -20px;
+}
+.nav-list a {
+  border: 1px solid rgb(213, 207, 207);
+  border-radius: 16px;
+  margin-top: 4px;
+}
+.nav-list li{
+  position: relative;
+  width: 90%;
+}
+.nav-header {
+  border: 1px solid rgb(213, 207, 207);
+  border-radius: 16px;
+  background-color: #eee;
+}
+.active {
+  position: relative;
+  left: 8px;
+}
 
 #mindmapListContainer {
     background: #FFFFFF;
@@ -184,6 +206,10 @@ table.tableTag td {
 /* ---------------------------- Scrollbar for list filter --------------------------------- */
 ::-webkit-scrollbar {
   width: 8px;
+  direction:rtl;
+  text-align: left;
+  position: relative;
+  left: 10px;
 }
 ::-webkit-scrollbar-track {
   border-radius: 10px;
