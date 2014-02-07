@@ -476,7 +476,11 @@ $(function () {
             type:'DELETE',
             contentType:"application/json; charset=utf-8",
             success: function() {
-                me.closest("table").remove();
+                var tag = me.closest("table");
+                $(tag).fadeOut('fast', function () {
+                    $(this).remove();
+                });
+
             }
         });
     });
@@ -547,18 +551,15 @@ function fetchLabels(options) {
     });
 }
 
-function tagMindmaps(id, labelName, labelColor) {
+function tagMindmaps(label) {
     //tag selected mindmaps...
     var rows = $('#mindmapListTable').dataTableExt.getSelectedRows();
     for (var i = 0; i < rows.length; i++) {
-        if ($(rows[i]).find(".labelTag:contains('" + labelName + "')").length == 0) {
-            $(rows[i]).find('.mindmapName').parent().append(
-                labelTagsAsHtml([{
-                    id: id,
-                    title: labelName,
-                    color: labelColor
-                }])
-            )
+        var row = $(rows[i]);
+        if (row.find(".labelTag:contains('" + label.title + "')").length == 0) {
+            var tag = $(labelTagsAsHtml([label]));
+            tag.hide().appendTo(row.find('.mindmapName').parent());
+            tag.fadeIn('fast');
         }
     }
 }
@@ -589,7 +590,7 @@ function prepareLabelList(labels) {
 
 function linkLabelToMindmap(mapIds, label) {
     var onSuccess = function () {
-        tagMindmaps(label.id, label.title, label.color);
+        tagMindmaps(label);
     };
     jQuery.ajax("c/restful/labels/maps?ids=" + jQuery.makeArray(mapIds).join(','), {
         type: 'POST',
