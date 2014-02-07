@@ -430,6 +430,8 @@ $(function () {
     };
 
     $(document).on('click', '#foldersContainer li', function (event) {
+        $('#foldersContainer .active').animate({left: '-=8px'}, 'fast');
+
         // Deselect previous option ...
         $('#foldersContainer li').removeClass('active');
         $('#foldersContainer i').removeClass('icon-white');
@@ -606,3 +608,15 @@ function linkLabelToMindmap(mapIds, label) {
         }
     });
 }
+
+//animations...
+$(document).on('mouseenter', '#foldersContainer li[class!="nav-header"]', function (event) {
+    if ($(this).attr('class') != 'active') {
+        $(this).animate({left: '+=8px'}, 'fast');
+    }
+});
+
+$(document).on('mouseleave', '#foldersContainer li[class!="active"][class!="nav-header"]', function (event) {
+    $(this).animate({left: '-=8px'}, 'fast');
+});
+
