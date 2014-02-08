@@ -471,6 +471,8 @@ $(function () {
                 $("#foldersContainer li.active").remove();
                 //find the second li... (all)
                 $("#foldersContainer li:nth-child(2)").addClass("active");
+                $('#foldersContainer .active i').addClass('icon-white');
+                $("#foldersContainer li:nth-child(2)").animate({left: '+=8px'}, 'fast');
                 dataTable.fnReloadAjax("c/restful/maps/?q=all", callbackOnTableInit, true);
             }
         })
