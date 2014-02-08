@@ -502,6 +502,7 @@ $(function () {
 
     $(document).ready(function() {
         // add labels to filter list...
+        $("#foldersContainer li").fadeIn('fast');
         fetchLabels({
             postUpdate: function(data) {
                 var labels = data.labels;
@@ -516,16 +517,17 @@ $(function () {
 /*--------------------------------------------- Label actions --------------------------------------------------**/
 function createLabelItem(data, id) {
     var labelId = data.id || id;
-    $("#foldersContainer").find("ul").append(
-        $("<li data-filter=\""  + data.title  + "\">").append(
-            "<a href=\"#\"> " +
-                "<i class=\"icon-tag labelIcon\"></i>" +
-                "<div class='labelColor' style='background: " +  data.color + "'></div>" +
-                "<div class='labelName labelNameList'>" + data.title + "</div>" +
-                "<button id='deleteLabelBtn' class='close closeLabel' labelid=\""+ labelId +"\">x</button>" +
-                "</a>"
-        )
-    )
+    var labelItem = $("<li data-filter=\""  + data.title  + "\">");
+    labelItem.append(
+        "<a href=\"#\"> " +
+            "<i class=\"icon-tag labelIcon\"></i>" +
+            "<div class='labelColor' style='background: " +  data.color + "'></div>" +
+            "<div class='labelName labelNameList'>" + data.title + "</div>" +
+            "<button id='deleteLabelBtn' class='close closeLabel' labelid=\""+ labelId +"\">x</button>" +
+        "</a>"
+    );
+    labelItem.hide().appendTo($("#foldersContainer").find("ul"));
+    labelItem.fadeIn('fast');
 }
 
 function labelTagsAsHtml(labels) {

@@ -154,31 +154,31 @@
     <div class="span2" id="foldersContainer">
         <ul class="nav nav-list">
             <li class="nav-header"><spring:message code="FILTERS"/></li>
-            <li data-filter="all" class="active">
+            <li data-filter="all" class="active" style="display:none">
                 <a href="#">
                     <i class="icon-inbox icon-white"></i>
                         <spring:message code="ALL_MAPS"/>
                 </a>
             </li>
-            <li data-filter="my_maps">
+            <li data-filter="my_maps" style="display:none">
                 <a href="#">
                     <i class="icon-user"></i>
                         <spring:message code="MY_MAPS"/>
                 </a>
             </li>
-            <li data-filter="shared_with_me">
+            <li data-filter="shared_with_me" style="display:none">
                 <a href="#">
                     <i class="icon-share"></i>
                     <spring:message code="SHARED_WITH_ME"/>
                 </a>
             </li>
-            <li data-filter="starred">
+            <li data-filter="starred" style="display:none">
                 <a href="#">
                     <i class="icon-star"></i>
                     <spring:message code="STARRED"/>
                 </a>
             </li>
-            <li data-filter="public">
+            <li data-filter="public" style="display:none">
                 <a href="#">
                     <i class="icon-globe"></i>
                     <spring:message code="PUBLIC_MAPS"/>
