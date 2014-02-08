@@ -164,7 +164,18 @@ jQuery.fn.dialogForm = function (options) {
         this.modal('hide');
     }.bind(this));
 
+    // Register enter input to submit...
+    $("input").keypress(function(event) {
+        if (event.which == 13) {
+            event.preventDefault();
+            acceptBtn.trigger('click');
+        }
+    });
+
     // Open the modal dialog ...
+    this.on('shown', function() {
+        $('#' + containerId + ' input:first').focus();
+    });
     this.modal();
 
 };
