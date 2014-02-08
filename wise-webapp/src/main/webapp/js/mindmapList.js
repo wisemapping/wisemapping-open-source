@@ -430,7 +430,9 @@ $(function () {
     };
 
     $(document).on('click', '#foldersContainer li', function (event) {
-        $('#foldersContainer .active').animate({left: '-=8px'}, 'fast');
+        if (!$(this).is($('#foldersContainer .active'))) {
+            $('#foldersContainer .active').animate({left: '-=8px'}, 'fast');
+        }
 
         // Deselect previous option ...
         $('#foldersContainer li').removeClass('active');
