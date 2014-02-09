@@ -39,7 +39,7 @@ public class LabelController extends BaseController {
     private LabelService labelService;
 
 
-    @RequestMapping(method = RequestMethod.POST, value = "/labels", consumes = {"application/json"})
+    @RequestMapping(method = RequestMethod.POST, value = "/labels", consumes = {"application/json", "application/xml"})
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createLabel(@RequestBody RestLabel restLabel, @NotNull HttpServletResponse response, @RequestParam(required = false) String title) throws WiseMappingException {
         // Overwrite title if it was specified by parameter.
@@ -56,7 +56,7 @@ public class LabelController extends BaseController {
         response.setHeader("ResourceId", Integer.toString(label.getId()));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/labels", produces = {"application/json"})
+    @RequestMapping(method = RequestMethod.GET, value = "/labels", produces = {"application/json", "application/xml"})
     public RestLabelList retrieveList() {
         final User user = Utils.getUser();
         assert user != null;
