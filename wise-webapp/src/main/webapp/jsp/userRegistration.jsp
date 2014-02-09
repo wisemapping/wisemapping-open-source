@@ -44,7 +44,7 @@
            </div>
         </div>
         <div class="form-group">
-            <div class="col-sm-12">
+            <div class="col-sm-10 col-sm-offset-2">
                 <c:if test="${requestScope.captchaEnabled}">
                     ${requestScope.captchaHtml}
                 <p>
@@ -62,13 +62,18 @@
                 <spring:message code="REGISTRATION_CLICK_ADVICE"/>
             </p>
         </div>
-
-        <input type="submit" value="<spring:message code="REGISTER"/>"
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+            <input type="submit" value="<spring:message code="REGISTER"/>"
                data-loading-text="<spring:message code="REGISTER"/> ..." id="submitButton"
                class="btn btn-primary">
-        <input type="button" value="<spring:message code="CANCEL"/>"
+            <input type="button" value="<spring:message code="CANCEL"/>"
                onclick="window.location='c/<c:url value="maps/"/>'" class="btn">
-        </form:form>
+           <div>
+        <div>
+        </fieldset>
+
+       </form:form>
 </div>
 
 

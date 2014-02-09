@@ -81,7 +81,7 @@
         <div class="alert alert-info col-md-offset12">
             <span class="label label-danger"><spring:message code="WARNING"/></span> <spring:message
                 code="NO_PRODUCTION_DATABASE_CONFIGURED"/>&nbsp;<a
-                href="http://www.wisemapping.org/documentation/configu"><spring:message code="HERE"/></a>.
+                href="https://wisemapping.atlassian.net/wiki/display/WS/Database+Configuration"><spring:message code="HERE"/></a>.
         </div>
     </div>
 </c:if>
