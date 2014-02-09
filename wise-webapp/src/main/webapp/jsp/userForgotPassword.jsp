@@ -19,8 +19,8 @@
 
         <form:form method="post" commandName="resetPassword"  class="form-horizontal">
             <fieldset>
-                <label for="email" class="col-sm-2 control-label"><spring:message code="EMAIL"/>: </label>
-                <div class="col-sm-5">
+                <label for="email" class="col-md-2 control-label"><spring:message code="EMAIL"/>: </label>
+                <div class="col-md-5">
                     <input id="email" type="email" required="required" name="email" class="form-control"/>
                 </div>
                 <input type="submit" value="<spring:message code="SEND_ME_A_NEW_PASSWORD"/>" class="btn btn-primary"

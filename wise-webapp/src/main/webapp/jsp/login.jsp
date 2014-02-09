@@ -22,13 +22,13 @@
 
         <form action="<c:url value='/c/j_spring_security_check'/>" method="POST" class="form-horizontal" id="loginForm">
             <div class="form-group">
-                <label class="col-sm-2 control-label" for="email"><spring:message code="EMAIL"/></label>
+                <label class="col-md-2 control-label" for="email"><spring:message code="EMAIL"/></label>
                 <div class="col-md-10">
                     <input type='email' tabindex="1" id="email" name='j_username' required="required" class="form-control"/>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label" for="password"><spring:message code="PASSWORD"/></label>
+                <label class="col-md-2 control-label" for="password"><spring:message code="PASSWORD"/></label>
                 <div class="col-md-10">
                     <input type='password' tabindex="2" id="password" name='j_password' required="required" class="form-control"/>
                 </div>

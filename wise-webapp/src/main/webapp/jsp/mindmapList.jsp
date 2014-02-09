@@ -239,14 +239,14 @@
             <form class="form-horizontal">
                 <fieldset>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label" for="newTitle"><spring:message code="NAME"/>:</label>
-                        <div class="col-sm-8">
+                        <label class="col-md-3 control-label" for="newTitle"><spring:message code="NAME"/>:</label>
+                        <div class="col-md-8">
                             <input class="form-control" name="title" id="newTitle" type="text" required="required" placeholder="<spring:message code="MAP_NAME_HINT"/>" autofocus="autofocus" maxlength="255"/>
                          </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label" for="newDec"><spring:message code="DESCRIPTION"/>:</label>
-                        <div class="col-sm-8">
+                        <label class="col-md-3 control-label" for="newDec"><spring:message code="DESCRIPTION"/>:</label>
+                        <div class="col-md-8">
                             <input class="form-control" name="description" id="newDec" type="text" placeholder="<spring:message code="MAP_DESCRIPTION_HINT"/>" maxlength="255"/>
                         </div>
                     </div>
@@ -277,17 +277,17 @@
             <form class="form-horizontal">
                 <fieldset>
                     <div class="form-group">
-                        <label for="title" class="col-sm-3 control-label"><spring:message code="NAME"/>: </label>
-                        <div class="col-sm-8">
+                        <label for="title" class="col-md-3 control-label"><spring:message code="NAME"/>: </label>
+                        <div class="col-md-8">
                             <input name="title" id="title" type="text" required="required"
                                    placeholder="<spring:message code="MAP_DESCRIPTION_HINT"/>" autofocus="autofocus"
                                    class="form-control" maxlength="255"/>
                          </div>
                     </div>
                     <div class="form-group">
-                        <label for="description" class="col-sm-3 control-label"><spring:message
+                        <label for="description" class="col-md-3 control-label"><spring:message
                                 code="DESCRIPTION"/>: </label>
-                        <div class="col-sm-8">
+                        <div class="col-md-8">
                             <input name="description" id="description" type="text"
                                    placeholder="<spring:message code="MAP_DESCRIPTION_HINT"/>" class="form-control" maxlength="255"/>
                         </div>
@@ -317,16 +317,16 @@
             <form class="form-horizontal">
                 <fieldset>
                     <div class="form-group">
-                        <label for="renTitle" class="col-sm-3 control-label"><spring:message code="NAME"/>: </label>
-                        <div class="col-sm-8">
+                        <label for="renTitle" class="col-md-3 control-label"><spring:message code="NAME"/>: </label>
+                        <div class="col-md-8">
                             <input name="title" id="renTitle" required="required" autofocus="autofocus"
                                    class="form-control" maxlength="255"/>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="renDescription" class="col-sm-3 control-label"><spring:message
+                        <label for="renDescription" class="col-md-3 control-label"><spring:message
                                 code="DESCRIPTION"/>:</label>
-                        <div class="col-sm-8">
+                        <div class="col-md-8">
                             <input name="description" class="form-control" id="renDescription" maxlength="255"/>
                         </div>
                     </div>

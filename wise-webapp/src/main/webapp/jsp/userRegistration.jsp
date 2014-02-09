@@ -9,42 +9,42 @@
     <form:form method="post" commandName="user" class="form-horizontal">
     <fieldset>
         <div class="form-group">
-            <label for="email" class="col-sm-2 control-label"><spring:message code="EMAIL"/>: </label>
-            <div class="col-sm-5">
+            <label for="email" class="col-md-2 control-label"><spring:message code="EMAIL"/>: </label>
+            <div class="col-md-5">
                 <form:input path="email" id="email" type="email" required="required" class="form-control"/>
                 <form:errors path="email" cssClass="errorMsg"/>
             </div>
         </div>
         <div class="form-group">
-            <label for="firstname" class="col-sm-2 control-label"><spring:message code="FIRSTNAME"/>: </label>
-            <div class="col-sm-5">
+            <label for="firstname" class="col-md-2 control-label"><spring:message code="FIRSTNAME"/>: </label>
+            <div class="col-md-5">
                 <form:input path="firstname" id="firstname" required="required" class="form-control"/>
                 <form:errors path="firstname" cssClass="errorMsg"/>
            </div>
         </div>
         <div class="form-group">
-            <label for="lastname" class="col-sm-2 control-label"><spring:message code="LASTNAME"/>: </label>
-            <div class="col-sm-5">
+            <label for="lastname" class="col-md-2 control-label"><spring:message code="LASTNAME"/>: </label>
+            <div class="col-md-5">
                 <form:input path="lastname" id="lastname" required="required" class="form-control"/>
                 <form:errors path="lastname" cssClass="errorMsg"/>
             </div>
         </div>
         <div class="form-group">
-            <label for="password" class="col-sm-2 control-label"><spring:message code="PASSWORD"/>: </label>
-            <div class="col-sm-5">
+            <label for="password" class="col-md-2 control-label"><spring:message code="PASSWORD"/>: </label>
+            <div class="col-md-5">
                 <form:password path="password" id="password" required="required" class="form-control"/>
                 <form:errors path="password" cssClass="errorMsg"/>
             </div>
         </div>
         <div class="form-group">
-            <label for="retypePassword" class="col-sm-2 control-label"><spring:message code="RETYPE_PASSWORD"/>: </label>
-            <div class="col-sm-5">
+            <label for="retypePassword" class="col-md-2 control-label"><spring:message code="RETYPE_PASSWORD"/>: </label>
+            <div class="col-md-5">
                 <form:password path="retypePassword" id="retypePassword" class="form-control"/>
                 <form:errors path="retypePassword" cssClass="errorMsg"/>
            </div>
         </div>
         <div class="form-group">
-            <div class="col-sm-10 col-sm-offset-2">
+            <div class="col-md-10 col-md-offset-2">
                 <c:if test="${requestScope.captchaEnabled}">
                     ${requestScope.captchaHtml}
                 <p>
@@ -63,7 +63,7 @@
             </p>
         </div>
         <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
+            <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="<spring:message code="REGISTER"/>"
                data-loading-text="<spring:message code="REGISTER"/> ..." id="submitButton"
                class="btn btn-primary">
