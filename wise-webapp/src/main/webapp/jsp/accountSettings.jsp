@@ -35,8 +35,11 @@
                             <input type="text" name="lastname" id="lastname" required="required" class="form-control" value="${user.lastname}"/>
                         </div>
                     </div>
-                    <br/>
-                    <input type="submit" id="changeUserInfoBtn" class="btn btn-primary" class="form-control" value="<spring:message code="SAVE_CHANGES"/>"/>
+                    <div class="form-group">
+                        <div class="col-sm-offset-8 col-sm-2">
+                            <input type="submit" id="changeUserInfoBtn" class="btn btn-primary" class="form-control" value="<spring:message code="SAVE_CHANGES"/>"/>
+                        <div>
+                    </div>
                 </fieldset>
             </form>
 
@@ -58,8 +61,11 @@
                             <input type="password" name="password" id="repassword" required="required" class="form-control"/>
                         </div>
                     </div>
-                    <br/>
-                    <input type="submit" id="changePasswordBtn" class="btn btn-primary" value="<spring:message code="CHANGE_PASSWORD"/>"/>
+                    <div class="form-group">
+                        <div class="col-sm-offset-8 col-sm-2">
+                            <input type="submit" id="changePasswordBtn" class="btn btn-primary" value="<spring:message code="CHANGE_PASSWORD"/>"/>
+                        </div>
+                    </div>
                 </fieldset>
             </form>
         </div>
@@ -67,7 +73,6 @@
             <div id="languageMsg" class="alert">
             </div>
             <form action="#" method="POST" id="languageForm" class="form-horizontal">
-                <fieldset>
                 <div class="form-group">
                     <label for="language" class="col-sm-3 control-label"><strong><spring:message code="LANGUAGE"/>:</strong></label>
                     <div class="col-sm-8">
@@ -100,20 +105,19 @@
                         </option>
                     </select></div>
                     </div>
-                    <br/>
-                    <input type="submit" id="changeLanguageBtn" class="btn btn-primary"
-                           value="<spring:message code="CHANGE_LANGUAGE"/>"/>
-                </fieldset>
+                    <div class="form-group">
+                        <div class="col-sm-offset-8 col-sm-2">
+                            <input type="submit" id="changeLanguageBtn" class="btn btn-primary" value="<spring:message code="CHANGE_LANGUAGE"/>"/>
+                        </div>
+                    </div>
             </form>
         </div>
         <div class="tab-pane fade" id="deleteAccountPanel">
             <div id="deleteAccountMsg" class="alert alert-danger" style="display: block;"><spring:message code="WARNING_DELETE_USER"/></div>
             <form action="#" method="POST" id="deleteAccountForm">
-                <fieldset>
-                    <input type="checkbox" name="confirmAccountDelete" id="accountMarkedForDelete" required="required"/>
-                    <input type="submit" id="deleteAccountBtn" class="btn btn-primary"
-                           value="<spring:message code="DELETE__ACCOUNT"/>"/>
-                </fieldset>
+                <div class="form-group" style="text-align:right">
+                     <input type="checkbox" name="confirmAccountDelete" id="accountMarkedForDelete" required="required"/>   <input type="submit" id="deleteAccountBtn" class="btn btn-primary" value="<spring:message code="DELETE__ACCOUNT"/>"/>
+                </div>
             </form>
         </div>
     </div>

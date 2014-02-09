@@ -29,15 +29,15 @@
 <div class="row">
     <div id="login" class="fform col-md-8">
         <form action="/c/j_spring_openid_security_check" method="get" id="openid_form">
-            <input type="hidden" name="action" value="verify"/>
+            <input type="hidden" name="action" value="verify" class="form-control"/>
             <fieldset>
                 <div id="openid_choice">
                     </br>
                     <div id="openid_btns"></div>
                 </div>
                 <div id="openid_input_area">
-                    <input id="openid_identifier" name="openid_identifier" type="text" value="http://"/>
-                    <input id="openid_submit" type="submit" value="Sign-In"/>
+                    <input id="openid_identifier" name="openid_identifier" type="text" value="http://" class="form-control"/>
+                    <input id="openid_submit" type="submit" value="Sign-In" class="form-control" class="btn-primary btn"/>
                 </div>
                 <noscript>
                     <p>OpenID is service that allows you to log-on to many different websites using a single indentity.
