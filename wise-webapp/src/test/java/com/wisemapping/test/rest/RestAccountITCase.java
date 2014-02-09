@@ -20,24 +20,16 @@ package com.wisemapping.test.rest;
 
 
 import com.wisemapping.rest.model.RestUser;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.security.crypto.codec.Base64;
 import org.springframework.web.client.RestTemplate;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.wisemapping.test.rest.RestHelper.ADMIN_CREDENTIALS;
 import static com.wisemapping.test.rest.RestHelper.BASE_REST_URL;

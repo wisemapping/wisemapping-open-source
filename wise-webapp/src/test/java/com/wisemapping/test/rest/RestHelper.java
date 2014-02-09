@@ -1,7 +1,5 @@
 package com.wisemapping.test.rest;
 
-import com.wisemapping.rest.model.RestUser;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -21,7 +19,7 @@ public class RestHelper {
     public static final String BASE_REST_URL = HOST_PORT + "/service";
     public static final String ADMIN_CREDENTIALS = "admin@wisemapping.org" + ":" + "admin";
 
-    public static HttpHeaders createHeaders(@NotNull MediaType mediaType) {
+    static HttpHeaders createHeaders(@NotNull MediaType mediaType) {
         List<MediaType> acceptableMediaTypes = new ArrayList<MediaType>();
         acceptableMediaTypes.add(mediaType);
 
@@ -31,7 +29,7 @@ public class RestHelper {
         return result;
     }
 
-    public static RestTemplate createTemplate(@NotNull final String authorisation) {
+    static RestTemplate createTemplate(@NotNull final String authorisation) {
         SimpleClientHttpRequestFactory s = new SimpleClientHttpRequestFactory() {
             @Override
             protected void prepareConnection(HttpURLConnection connection, String httpMethod) throws IOException {
@@ -46,7 +44,7 @@ public class RestHelper {
     }
 
     @DataProvider(name = "ContentType-Provider-Function")
-    public static Object[][] contentTypes() {
+    static Object[][] contentTypes() {
         return new Object[][]{{MediaType.APPLICATION_XML}, {MediaType.APPLICATION_JSON}};
     }
 

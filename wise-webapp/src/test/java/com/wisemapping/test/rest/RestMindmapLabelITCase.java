@@ -3,11 +3,7 @@ package com.wisemapping.test.rest;
 
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.rest.model.RestLabel;
-import com.wisemapping.rest.model.RestMindmap;
-import com.wisemapping.rest.model.RestMindmapInfo;
-import com.wisemapping.rest.model.RestMindmapList;
 import com.wisemapping.rest.model.RestLabelList;
-import com.wisemapping.rest.model.RestUser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.http.HttpEntity;
@@ -15,25 +11,16 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.security.crypto.codec.Base64;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import org.testng.SkipException;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.wisemapping.test.rest.RestHelper.BASE_REST_URL;
-import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
-import static org.testng.Assert.fail;
 
 @Test
 public class RestMindmapLabelITCase {
@@ -82,7 +69,7 @@ public class RestMindmapLabelITCase {
 
     }
 
-    private URI addNewLabel(@NotNull HttpHeaders requestHeaders, @NotNull RestTemplate template, @NotNull String title, @Nullable String xml) throws IOException, WiseMappingException {
+    static URI addNewLabel(@NotNull HttpHeaders requestHeaders, @NotNull RestTemplate template, @NotNull String title, @Nullable String xml) throws IOException, WiseMappingException {
         final RestLabel restLabel = new RestLabel();
         restLabel.setTitle(title);
         restLabel.setColor("#666666");
@@ -92,7 +79,7 @@ public class RestMindmapLabelITCase {
         return template.postForLocation(BASE_REST_URL + "/labels", createUserEntity);
     }
 
-    private URI addNewLabel(@NotNull HttpHeaders requestHeaders, @NotNull RestTemplate template, @NotNull String title) throws IOException, WiseMappingException {
+    static URI addNewLabel(@NotNull HttpHeaders requestHeaders, @NotNull RestTemplate template, @NotNull String title) throws IOException, WiseMappingException {
         return addNewLabel(requestHeaders, template, title, null);
     }
 }

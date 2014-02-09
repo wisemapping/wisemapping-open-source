@@ -20,27 +20,23 @@ package com.wisemapping.test.rest;
 
 
 import com.wisemapping.rest.model.RestUser;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.http.*;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.security.crypto.codec.Base64;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import java.net.URI;
 
 import static com.wisemapping.test.rest.RestHelper.BASE_REST_URL;
 import static com.wisemapping.test.rest.RestHelper.HOST_PORT;
+import static com.wisemapping.test.rest.RestHelper.createHeaders;
 import static com.wisemapping.test.rest.RestHelper.createTemplate;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.fail;
-
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
@@ -139,16 +135,6 @@ public class RestAdminITCase {
     private URI createUser(HttpHeaders requestHeaders, RestTemplate templateRest, RestUser restUser) {
         HttpEntity<RestUser> createUserEntity = new HttpEntity<RestUser>(restUser, requestHeaders);
         return templateRest.postForLocation(BASE_REST_URL + "/admin/users", createUserEntity);
-    }
-
-    private HttpHeaders createHeaders(@NotNull MediaType mediaType) {
-        List<MediaType> acceptableMediaTypes = new ArrayList<MediaType>();
-        acceptableMediaTypes.add(mediaType);
-
-        final HttpHeaders result = new HttpHeaders();
-        result.setAccept(acceptableMediaTypes);
-        result.setContentType(mediaType);
-        return result;
     }
 
     private RestUser createDummyUser() {
