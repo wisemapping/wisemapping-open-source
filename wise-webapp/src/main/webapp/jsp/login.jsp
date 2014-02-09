@@ -23,30 +23,25 @@
         <form action="<c:url value='/c/j_spring_security_check'/>" method="POST" class="form-horizontal" id="loginForm">
             <div class="form-group">
                 <label class="col-sm-2 control-label" for="email"><spring:message code="EMAIL"/></label>
-                <div class="col-md-12">
+                <div class="col-md-10">
                     <input type='email' tabindex="1" id="email" name='j_username' required="required" class="form-control"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label" for="password"><spring:message code="PASSWORD"/></label>
-                <div class="col-md-12">
+                <div class="col-md-10">
                     <input type='password' tabindex="2" id="password" name='j_password' required="required" class="form-control"/>
                 </div>
             </div>
-            <div class="form-group" style="text-align: right">
-
-                <label>
-                    <button class="btn btn-primary" tabindex="4" data-loading-text="<spring:message code="SIGN_ING"/>">
-                        <spring:message code="SIGN_IN"/></button>
-                    <input type="checkbox" id="rememberme" name="_spring_security_remember_me"
-                           tabindex="3"/> <spring:message code="REMEMBER_ME"/>
-                </label>
-
-                <div style="text-align: center">
-                    <a href="<c:url value="/c/user/resetPassword"/>"><spring:message code="FORGOT_PASSWORD"/></a>
+            <div class="form-group" style="text-align: center" >
+                <div class="col-md-offset-2 col-md-10" style="text-align: center" >
+                    <button class="btn btn-primary" tabindex="4" data-loading-text="<spring:message code="SIGN_ING"/>"><spring:message code="SIGN_IN"/></button>
+                    <input type="checkbox" id="rememberme" name="_spring_security_remember_me"/>  <label for="rememberme"><spring:message code="REMEMBER_ME"/></label>
                 </div>
             </div>
-
+            <div class="form-group" style="text-align: center" >
+                <a href="<c:url value="/c/user/resetPassword"/>"><spring:message code="FORGOT_PASSWORD"/></a>
+            </div>
             <div class="form-group">
                 <c:if test="${not empty param.login_error}">
                     <c:choose>
@@ -64,7 +59,7 @@
 </div>
 
 <div class="row">
-    <div id="register" class="col-md-12">
+    <div id="register" class="col-md-10">
         <c:if test="${requestScope['security.type']=='db'}">
             <b><spring:message code="NOT_READY_A_USER"/></b>
             <spring:message code="NOT_READY_A_USER_MESSAGE"/>

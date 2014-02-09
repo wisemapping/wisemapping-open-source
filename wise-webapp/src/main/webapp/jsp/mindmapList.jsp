@@ -88,7 +88,7 @@
 
             // Customize search action ...
             $('#mindmapListTable_filter').appendTo("#tableActions");
-            $('#mindmapListTable_filter input').addClass('input-medium search-query');
+            $('#mindmapListTable_filter input').addClass('input-medium search-query form-control');
             $('#mindmapListTable_filter input').attr('placeholder', 'Search');
             $("#mindmapListTable_info").appendTo("#pageInfo");
 
@@ -132,7 +132,6 @@
     <div class="col-md-1"></div>
     <div class="col-md-2" id="foldersContainer">
         <ul class="nav nav-list">
-            <li class="nav-header"><spring:message code="FILTERS"/></li>
             <li data-filter="all" class="active"><a href="#"><i class="glyphicon glyphicon-inbox glyphicon-white"></i> <spring:message
                     code="ALL_MAPS"/></a></li>
             <li data-filter="my_maps"><a href="#"><i class="glyphicon glyphicon-user"></i> <spring:message code="MY_MAPS"/></a>
