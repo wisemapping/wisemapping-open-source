@@ -30,6 +30,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.wisemapping.test.rest.RestHelper.BASE_REST_URL;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
@@ -37,9 +38,7 @@ import static org.testng.Assert.fail;
 @Test
 public class RestMindmapLabelITCase {
 
-    private String userEmail = "admin@wisemapping.com";
-    private static final String HOST_PORT = "http://localhost:8080";
-    private static final String BASE_REST_URL = HOST_PORT + "/service";
+    private String userEmail;
 
     @BeforeClass
     void createUser() {
@@ -48,10 +47,10 @@ public class RestMindmapLabelITCase {
         userEmail = restAdminITCase.createNewUser(MediaType.APPLICATION_JSON);
     }
 
-    @Test(dataProvider = "ContentType-Provider-Function")
+    @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
     public void createLabel(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
-        final HttpHeaders requestHeaders = createHeaders(mediaType);
-        final RestTemplate template = createTemplate();
+        final HttpHeaders requestHeaders = RestHelper.createHeaders(mediaType);
+        final RestTemplate template = RestHelper.createTemplate( userEmail + ":" + "admin");
 
         // Create a new label
         final String title1 = "Label 1  - " + mediaType.toString();
@@ -95,34 +94,5 @@ public class RestMindmapLabelITCase {
 
     private URI addNewLabel(@NotNull HttpHeaders requestHeaders, @NotNull RestTemplate template, @NotNull String title) throws IOException, WiseMappingException {
         return addNewLabel(requestHeaders, template, title, null);
-    }
-
-    private HttpHeaders createHeaders(@NotNull MediaType mediaType) {
-        List<MediaType> acceptableMediaTypes = new ArrayList<MediaType>();
-        acceptableMediaTypes.add(mediaType);
-        final HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.setAccept(acceptableMediaTypes);
-        requestHeaders.setContentType(mediaType);
-        return requestHeaders;
-    }
-
-    private RestTemplate createTemplate() {
-        SimpleClientHttpRequestFactory s = new SimpleClientHttpRequestFactory() {
-            @Override
-            protected void prepareConnection(HttpURLConnection connection, String httpMethod) throws IOException {
-                super.prepareConnection(connection, httpMethod);
-
-                //Basic Authentication for Police API
-                String authorization = userEmail + ":" + "admin";
-                byte[] encodedAuthorisation = Base64.encode(authorization.getBytes());
-                connection.setRequestProperty("Authorization", "Basic " + new String(encodedAuthorisation));
-            }
-        };
-        return new RestTemplate(s);
-    }
-
-    @DataProvider(name = "ContentType-Provider-Function")
-    public Object[][] contentTypes() {
-        return new Object[][]{{MediaType.APPLICATION_XML}, {MediaType.APPLICATION_JSON}};
     }
 }
