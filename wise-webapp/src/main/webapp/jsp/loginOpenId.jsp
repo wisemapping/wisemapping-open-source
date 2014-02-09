@@ -22,12 +22,12 @@
         });
     });
 </script>
-<div class="row-fluid" style="padding: 10px 0px">
+<div class="row" style="padding: 10px 0px">
     <h1><spring:message code="OPENID_LOGIN"/></h1>
     <spring:message code="LOGING_OPENID_DETAILS"/>
 </div>
-<div class="row-fluid">
-    <div id="login" class="fform span8">
+<div class="row">
+    <div id="login" class="fform col-md-8">
         <form action="/c/j_spring_openid_security_check" method="get" id="openid_form">
             <input type="hidden" name="action" value="verify"/>
             <fieldset>
@@ -48,7 +48,7 @@
         </form>
         <!-- /Simple OpenID Selector -->
     </div>
-    <div class="span4" style="background-color: #FFEFC6;padding: 10px">
+    <div class="col-md-4" style="background-color: #FFEFC6;padding: 10px">
         <spring:message code="WHY_OPENID"/>
     </div>
 </div>

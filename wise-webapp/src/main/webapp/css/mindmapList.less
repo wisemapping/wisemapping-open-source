@@ -1,6 +1,5 @@
-@import "bootstrap/css/bootstrap.min.css";
-@import "bootstrap/css/bootstrap-responsive.min.css";
-@import "css/pageHeaders.css";
+@import "../bootstrap/css/bootstrap.min.css";
+@import "pageHeaders.css";
 
 @html-background: #dedederepeat-xscroll;
 @body-width: 1050px;
@@ -94,6 +93,18 @@ input#selectAll {
 }
 
 .dataTables_length {
+    display: block;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.428571429;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
     float: right;
 }
 
@@ -166,7 +177,7 @@ input#selectAll {
 span.starredOff {
     background: url('../images/star-off.png') no-repeat center left;
     padding: 10px;
-    margin: 0 0px 0 15px;
+    margin: 0 0px 0 5px;
 }
 
 span.starredOff:hover {
@@ -176,7 +187,7 @@ span.starredOff:hover {
 span.starredOn {
     background: url('../images/star-on.png') no-repeat center left;
     padding: 10px;
-    margin: 0 0px 0 15px;
+    margin: 0 0px 0 5px;
 }
 
 span.starredOn:hover {

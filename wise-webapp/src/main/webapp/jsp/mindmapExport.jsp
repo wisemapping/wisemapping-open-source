@@ -78,7 +78,7 @@
 
 
 <p id="exportInfo">
-    <span class="label label-important">Warning</span> <spring:message code="EXPORT_FORMAT_RESTRICTIONS"/>
+    <span class="label label-danger">Warning</span> <spring:message code="EXPORT_FORMAT_RESTRICTIONS"/>
 </p>
 
 

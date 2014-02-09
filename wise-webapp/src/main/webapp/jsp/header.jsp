@@ -14,15 +14,19 @@
 %>
 
 <div id="settings-dialog-modal" class="modal fade">
-    <div class="modal-header">
-        <button class="close" data-dismiss="modal">x</button>
-        <h3><spring:message code="ACCOUNT"/></h3>
-    </div>
-    <div class="modal-body">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="close" data-dismiss="modal">x</button>
+            <h3><spring:message code="ACCOUNT"/></h3>
+        </div>
+        <div class="modal-body">
 
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-cancel"><spring:message code="CLOSE"/></button>
+        </div>
     </div>
-    <div class="modal-footer">
-        <button class="btn btn-cancel"><spring:message code="CLOSE"/></button>
     </div>
 </div>
 <div id="header">

@@ -11,7 +11,7 @@
 <html>
 <head>
     <base href="${requestScope['site.baseurl']}/">
-
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="author" content="WiseMapping">
     <meta name="publisher" content="WiseMapping Open Source">
     <meta name="keywords"
@@ -51,9 +51,9 @@
     </jsp:include>
 
     <div class="bodyContainer">
-        <div class="row-fluid">
-            <div class="span2"></div>
-            <div class="pageBodyContent span8">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="pageBodyContent col-md-8">
                 <tiles:insertAttribute name="body"/>
             </div>
             <c:if test="${requestScope['google.ads.enabled']}">

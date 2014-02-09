@@ -18,7 +18,7 @@
     </label>
 </form>
 
-<p><span class="label label-important"> <spring:message code="WARNING"/></span> <spring:message code="PUBLISH_DETAILS"/>
+<p><span class="label label-danger"> <spring:message code="WARNING"/></span> <spring:message code="PUBLISH_DETAILS"/>
 </p>
 
 <div id="publishPanel">
@@ -34,13 +34,13 @@
             <div id="wizardContainer">
                 <form class="form-inline" action="#">
                     <label for="frameWidth"><spring:message code="FRAME_WIDTH"/>:</label>
-                    <input type="number" id="frameWidth" name="frameWidth" value="600" class="span2" min="0"/>
+                    <input type="number" id="frameWidth" name="frameWidth" value="600" class="col-md-2" min="0"/>
 
                     <label for="frameHeight"><spring:message code="FRAME_HEIGHT"/>:</label>
-                    <input type="number" id="frameHeight" name="frameHeight" value="400" class="span2" min="0"/>
+                    <input type="number" id="frameHeight" name="frameHeight" value="400" class="col-md-2" min="0"/>
 
                     <label for="mapZoom"><spring:message code="ZOOM"/> %:</label>
-                    <input type="number" id="mapZoom" name="mapZoom" value="80" class="span2" min="10" max="200"
+                    <input type="number" id="mapZoom" name="mapZoom" value="80" class="col-md-2" min="10" max="200"
                            step="10"/>
                 </form>
             </div>

@@ -8,17 +8,17 @@
     <form method="POST" enctype="multipart/form-data" action="#" id="dialogMainForm" class="form-horizontal">
         <div class="errorMessage"></div>
         <fieldset>
-            <div class="control-group">
+            <div class="form-group">
                 <label for="mapFile" class="control-label"><spring:message code="MIND_FILE"/>: </label>
                 <input type="file" name="file" id="mapFile" required="required" class="control"/>
             </div>
-            <div class="control-group">
+            <div class="form-group">
                 <label for="title" class="control-label"><spring:message code="NAME"/>: </label>
                 <input type="text" id="title" name="title" required="required"
                        placeholder="<spring:message code="MAP_NAME_HINT"/>"
                        class="control" maxlength="255"/>
             </div>
-            <div class="control-group">
+            <div class="form-group">
 
                 <label for="description" class="control-label"><spring:message code="DESCRIPTION"/>: </label>
                 <textarea type="text" name="description" id="description"
@@ -69,7 +69,7 @@
                                     // Mark the field with errors ...
                                     var message = fieldErrors[fieldName];
                                     var inputField = $("#dialogMainForm input[name='" + fieldName + "']");
-                                    $("#dialogMainForm").find(".errorMessage").text(message).addClass("alert alert-error");
+                                    $("#dialogMainForm").find(".errorMessage").text(message).addClass("alert alert-danger");
                                     inputField.parent().addClass('error');
                                 }
                             }
@@ -77,7 +77,7 @@
                             if (globalErrors) {
                                 for (var error in globalErrors) {
                                     // Mark the field with errors ...
-                                    $("#dialogMainForm").find(".errorMessage").text(error).addClass("alert alert-error");
+                                    $("#dialogMainForm").find(".errorMessage").text(error).addClass("alert alert-danger");
                                     inputField.parent().addClass('error');
                                 }
                             }
