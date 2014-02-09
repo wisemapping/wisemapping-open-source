@@ -35,7 +35,7 @@ import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
 
 @Test
-public class RestMindmapLabelTCase {
+public class RestMindmapLabelITCase {
 
     private String userEmail = "admin@wisemapping.com";
     private static final String HOST_PORT = "http://localhost:8080";
@@ -55,7 +55,7 @@ public class RestMindmapLabelTCase {
 
         // Create a new label
         final String title1 = "Label 1  - " + mediaType.toString();
-        addNewLabel(requestHeaders,template,title1);
+        addNewLabel(requestHeaders, template, title1);
 
         // Create a new label
         final String title2 = "Label 2  - " + mediaType.toString();
