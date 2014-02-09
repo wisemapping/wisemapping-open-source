@@ -1,6 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<div id="footerContainer">
+<div id="footerContainer" class="row">
     <script type="text/javascript" src="https://wisemapping.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e/en_US-f1g0rh-1988229788/6211/26/1.4.5/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=a47981d6"></script>
     <script type="text/javascript" src="https://wisemapping.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e/en_US-f1g0rh-1988229788/6211/26/1.4.5/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=703b9822"></script>
 
@@ -27,7 +27,7 @@
      });
     </script>
 
-    <div class="col-md-1 col-md-offset-3">
+    <div class="col-md-1 col-md-offset-2">
         <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.wisemapping.com" data-text="Check out this site" data-via="wisemapping" data-related="wisemapping">Tweet</a>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     </div>

@@ -54,7 +54,9 @@
         <div class="row">
             <div class="col-md-2"></div>
             <div class="pageBodyContent col-md-8">
+               <div class="row">
                 <tiles:insertAttribute name="body"/>
+               </div>
             </div>
             <c:if test="${requestScope['google.ads.enabled']}">
                 <div class="row" style="text-align: center;margin: 5px">
