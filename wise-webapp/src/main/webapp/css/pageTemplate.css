@@ -33,7 +33,8 @@ div#pageContainer {
 
 /* Reduce styles */
 .jumbotron > h1 {
-    font-size: 35px;
+    font-size: 30px;
+    color: #00008b;
 }
 
 .jumbotron  p {
