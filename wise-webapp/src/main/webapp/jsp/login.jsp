@@ -55,10 +55,10 @@
                     <c:if test="${not empty param.login_error}">
                         <c:choose>
                             <c:when test="${param.login_error == 3}">
-                                <div class="alert alert-danger"><spring:message code="USER_INACTIVE"/></div>
+                                <div class="alert alert-warning"><spring:message code="USER_INACTIVE"/></div>
                             </c:when>
                             <c:otherwise>
-                                <div class="alert alert-danger"><spring:message code="LOGIN_ERROR"/></div>
+                                <div class="alert alert-warning"><spring:message code="LOGIN_ERROR"/></div>
                             </c:otherwise>
                         </c:choose>
                     </c:if>
@@ -86,7 +86,7 @@
 </div>
 
 
-<c:if test="${isHsql== 'false'}">
+<c:if test="${isHsql== 'true'}">
     <div class="row">
         <div class="alert alert-info col-md-offset12">
             <span class="label label-danger"><spring:message code="WARNING"/></span> <spring:message

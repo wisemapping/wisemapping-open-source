@@ -30,10 +30,6 @@ div#pageContainer {
 
 /*--   End Main Page Style -- */
 
-span.errorMsg {
-    color: red;
-}
-
 /* Reduce styles */
 .jumbotron > h1 {
     font-size: 35px;
