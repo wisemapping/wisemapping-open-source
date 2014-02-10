@@ -44,6 +44,7 @@ public class RestLabel {
         return this.label.getParent();
     }
 
+    @Nullable
     public String getTitle() {
         return this.label.getTitle();
     }
@@ -64,7 +65,7 @@ public class RestLabel {
         label.setColor(color);
     }
 
-    @NotNull public String getColor() {
+    @Nullable public String getColor() {
         return label.getColor();
     }
 

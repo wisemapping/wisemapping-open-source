@@ -31,7 +31,7 @@ public class Label {
         return creator;
     }
 
-    @NotNull
+    @Nullable
     public String getTitle() {
         return title;
     }
