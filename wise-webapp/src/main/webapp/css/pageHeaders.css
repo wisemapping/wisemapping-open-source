@@ -18,14 +18,12 @@ html,body {
 }
 
 #headerToolbar {
-    height: 30px;
+    height: 35px;
     width: 100%;
     background-color: #171a17;
     border-top: 1px solid #999999;
     border-bottom: 1px solid #424141;
     color: white;
-    font-size: small;
-    font-style: normal;
 }
 
 #headerContent {
@@ -38,7 +36,7 @@ html,body {
 }
 
 #headerLogo {
-    margin-top: 18px;
+    margin-top: 23px;
     height: 80px;
     width: 160px;
     background: url("../images/logo-medium.png") no-repeat;

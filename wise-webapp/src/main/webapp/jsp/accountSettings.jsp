@@ -11,24 +11,35 @@
         <li><a href="#deleteAccountPanel" data-toggle="pill"><spring:message code="DELETE__ACCOUNT"/></a></li>
     </ul>
 
-    <div class="tab-content">
+    <div class="tab-content" style="padding-top:15px;">
         <div class="tab-pane fade ${principal.databaseSchema?'active in':''}" id="changeUserPanel">
             <div id="changeInfoMsg" class="alert">
             </div>
-            <form action="#" method="POST" id="changeUserForm">
+            <form action="#" method="POST" id="changeUserForm" class="form-horizontal">
                 <fieldset>
-                    <label for="email"><strong><spring:message code="EMAIL"/>:</strong></label>
-                    <input type="text" name="password" id="email" required="required" readonly="readonly"
-                           value="${user.email}"/>
-
-                    <label for="firstname"><strong><spring:message code="FIRSTNAME"/>:</strong></label>
-                    <input type="text" name="firstname" id="firstname" required="required" value="${user.firstname}"/>
-
-                    <label for="lastname"><strong><spring:message code="LASTNAME"/>:</strong></label>
-                    <input type="text" name="lastname" id="lastname" required="required" value="${user.lastname}"/>
-                    <br/>
-                    <input type="submit" id="changeUserInfoBtn" class="btn btn-primary"
-                           value="<spring:message code="SAVE_CHANGES"/>"/>
+                    <div class="form-group">
+                        <label for="email" class="col-sm-3 control-label"><strong><spring:message code="EMAIL"/>:</strong></label>
+                        <div class="col-sm-8">
+                            <input type="text" name="password" id="email" required="required" class="form-control" readonly="readonly" value="${user.email}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="firstname" class="col-sm-3 control-label"><strong><spring:message code="FIRSTNAME"/>:</strong></label>
+                        <div class="col-sm-8">
+                            <input type="text" name="firstname" id="firstname" required="required" class="form-control" value="${user.firstname}"/>
+                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname" class="col-sm-3 control-label"><strong><spring:message code="LASTNAME"/>:</strong></label>
+                        <div class="col-sm-8">
+                            <input type="text" name="lastname" id="lastname" required="required" class="form-control" value="${user.lastname}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-8 col-sm-2">
+                            <input type="submit" id="changeUserInfoBtn" class="btn btn-primary" class="form-control" value="<spring:message code="SAVE_CHANGES"/>"/>
+                        <div>
+                    </div>
                 </fieldset>
             </form>
 
@@ -36,26 +47,36 @@
         <div class="tab-pane fade" id="changePasswordPanel">
             <div id="changePasswordMsg" class="alert">
             </div>
-            <form action="#" method="POST" id="changePasswordForm">
+            <form action="#" method="POST" id="changePasswordForm"  class="form-horizontal">
                 <fieldset>
-                    <label for="password"><strong><spring:message code="NEW_PASSWORD"/>:</strong></label>
-                    <input type="password" name="password" id="password" required="required"/>
-
-                    <label for="repassword"><strong><spring:message code="CONFIRM_NEW_PASSWORD"/>:</strong></label>
-                    <input type="password" name="password" id="repassword" required="required"/>
-                    <br/>
-                    <input type="submit" id="changePasswordBtn" class="btn btn-primary"
-                           value="<spring:message code="CHANGE_PASSWORD"/>"/>
+                    <div class="form-group">
+                        <label for="password" class="col-sm-3 control-label"><strong><spring:message code="NEW_PASSWORD"/>:</strong></label>
+                        <div class="col-sm-8">
+                            <input type="password" name="password" id="password" required="required" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="repassword" class="col-sm-3 control-label"><strong><spring:message code="CONFIRM_NEW_PASSWORD"/>:</strong></label>
+                        <div class="col-sm-8">
+                            <input type="password" name="password" id="repassword" required="required" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-8 col-sm-2">
+                            <input type="submit" id="changePasswordBtn" class="btn btn-primary" value="<spring:message code="CHANGE_PASSWORD"/>"/>
+                        </div>
+                    </div>
                 </fieldset>
             </form>
         </div>
         <div class="tab-pane fade ${principal.databaseSchema?'':'active in'}" id="languagePanel">
             <div id="languageMsg" class="alert">
             </div>
-            <form action="#" method="POST" id="languageForm">
-                <fieldset>
-                    <label for="language"><strong><spring:message code="LANGUAGE"/>:</strong></label>
-                    <select name="language" id="language">
+            <form action="#" method="POST" id="languageForm" class="form-horizontal">
+                <div class="form-group">
+                    <label for="language" class="col-sm-3 control-label"><strong><spring:message code="LANGUAGE"/>:</strong></label>
+                    <div class="col-sm-8">
+                    <select name="language" id="language" class="form-control">
                         <option value="en">English</option>
                         <option value="es" <c:if test="${user.locale=='es'}">selected="selected" </c:if>>Spanish -
                             español
@@ -82,21 +103,21 @@
                         <option value="ca" <c:if test="${user.locale=='ca'}">selected="selected" </c:if>>Catalan -
                             català
                         </option>
-                    </select>
-                    <br/>
-                    <input type="submit" id="changeLanguageBtn" class="btn btn-primary"
-                           value="<spring:message code="CHANGE_LANGUAGE"/>"/>
-                </fieldset>
+                    </select></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-8 col-sm-2">
+                            <input type="submit" id="changeLanguageBtn" class="btn btn-primary" value="<spring:message code="CHANGE_LANGUAGE"/>"/>
+                        </div>
+                    </div>
             </form>
         </div>
         <div class="tab-pane fade" id="deleteAccountPanel">
-            <div id="deleteAccountMsg" class="alert alert-error" style="display: block;"><spring:message code="WARNING_DELETE_USER"/></div>
+            <div id="deleteAccountMsg" class="alert alert-danger" style="display: block;"><spring:message code="WARNING_DELETE_USER"/></div>
             <form action="#" method="POST" id="deleteAccountForm">
-                <fieldset>
-                    <input type="checkbox" name="confirmAccountDelete" id="accountMarkedForDelete" required="required"/>
-                    <input type="submit" id="deleteAccountBtn" class="btn btn-primary"
-                           value="<spring:message code="DELETE__ACCOUNT"/>"/>
-                </fieldset>
+                <div class="form-group" style="text-align:right">
+                     <input type="checkbox" name="confirmAccountDelete" id="accountMarkedForDelete" required="required"/>   <input type="submit" id="deleteAccountBtn" class="btn btn-primary" value="<spring:message code="DELETE__ACCOUNT"/>"/>
+                </div>
             </form>
         </div>
     </div>
@@ -130,18 +151,18 @@
         var changePasswordMsg = $('#changePasswordMsg');
         if (inputVal != rinputVal) {
             // Password mismatch message ...
-            changePasswordMsg.removeClass('alert-info').addClass('alert-error').show();
+            changePasswordMsg.removeClass('alert-info').addClass('alert-danger').show();
             changePasswordMsg.text('<spring:message code="PASSWORD_MISSMATCH"/>');
         } else {
             postChange(
                     "c/restful/account/password",
                     inputVal,
                     function() {
-                        changePasswordMsg.removeClass('alert-error').addClass('alert-info').show();
+                        changePasswordMsg.removeClass('alert-danger').addClass('alert-info').show();
                         changePasswordMsg.text('<spring:message code="CHANGE_PASSWORD_SUCCESS"/>');
                     },
                     function(textStatus) {
-                        changePasswordMsg.removeClass('alert-info').addClass('alert-error').show();
+                        changePasswordMsg.removeClass('alert-info').addClass('alert-danger').show();
                         changePasswordMsg.text(textStatus);
                     }
             );
@@ -162,7 +183,7 @@
                     changeInfoMsg.text('<spring:message code="INFO_UPDATE_SUCCESS"/>');
                 },
                 function(textStatus) {
-                    changeInfoMsg.removeClass('alert-info').addClass('alert-error').show();
+                    changeInfoMsg.removeClass('alert-info').addClass('alert-danger').show();
                     changeInfoMsg.text(textStatus);
                 }
         );
@@ -170,11 +191,11 @@
                 "c/restful/account/lastname",
                 lastname,
                 function() {
-                    changeInfoMsg.removeClass('alert-error').addClass('alert-info').show();
+                    changeInfoMsg.removeClass('alert-danger').addClass('alert-info').show();
                     changeInfoMsg.text('<spring:message code="INFO_UPDATE_SUCCESS"/>');
                 },
                 function(textStatus) {
-                    changeInfoMsg.removeClass('alert-info').addClass('alert-error').show();
+                    changeInfoMsg.removeClass('alert-info').addClass('alert-danger').show();
                     changeInfoMsg.text(textStatus);
                 }
         );
@@ -189,11 +210,11 @@
                 "c/restful/account/locale",
                 locale,
                 function() {
-                    languageMsg.removeClass('alert-error').addClass('alert-info').show();
+                    languageMsg.removeClass('alert-danger').addClass('alert-info').show();
                     languageMsg.text('<spring:message code="INFO_UPDATE_SUCCESS"/>');
                 },
                 function(textStatus) {
-                    languageMsg.removeClass('alert-info').addClass('alert-error').show();
+                    languageMsg.removeClass('alert-info').addClass('alert-danger').show();
                     languageMsg.text(textStatus);
                 }
         );
@@ -210,7 +231,7 @@
                 },
                 function(textStatus) {
                     var deleteAccountMsg = $('#deleteAccountMsg');
-                    deleteAccountMsg.removeClass('alert-info').addClass('alert-error').show();
+                    deleteAccountMsg.removeClass('alert-info').addClass('alert-danger').show();
                     deleteAccountMsg.text(textStatus);
                 },
                 'DELETE'

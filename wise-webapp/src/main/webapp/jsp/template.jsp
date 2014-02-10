@@ -11,7 +11,7 @@
 <html>
 <head>
     <base href="${requestScope['site.baseurl']}/">
-
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="author" content="WiseMapping">
     <meta name="publisher" content="WiseMapping Open Source">
     <meta name="keywords"
@@ -39,6 +39,7 @@
 
     <link rel="icon" href="images/favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
+    <script type="text/javascript" language="javascript" src="js/jquery-2.1.0.min.js"></script>
 
     <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap.js"></script>
     <script src="js/less.js" type="text/javascript"></script>
@@ -51,10 +52,12 @@
     </jsp:include>
 
     <div class="bodyContainer">
-        <div class="row-fluid">
-            <div class="span2"></div>
-            <div class="pageBodyContent span8">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="pageBodyContent col-md-8">
+               <div class="row">
                 <tiles:insertAttribute name="body"/>
+               </div>
             </div>
             <c:if test="${requestScope['google.ads.enabled']}">
                 <div class="row" style="text-align: center;margin: 5px">

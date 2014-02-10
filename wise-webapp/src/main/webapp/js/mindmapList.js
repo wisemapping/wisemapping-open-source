@@ -1,8 +1,5 @@
 /*--------------------------------------------- Common actions --------------------------------------------------**/
-// Hack for bootstrap issue with IE10. https://github.com/twbs/bootstrap/issues/3672
-/*if ($.browser.msie && $.browser.version > 9) {
-    $('.modal').removeClass('fade');
-}*/
+
 $.fn.dataTableExt.oApi.fnReloadAjax = function (oSettings, sNewSource, fnCallback, bStandingRedraw) {
     if (typeof sNewSource != 'undefined' && sNewSource != null) {
         oSettings.sAjaxSource = sNewSource;
@@ -76,8 +73,8 @@ jQuery.fn.dialogForm = function (options) {
     var url = options.url;
 
     // Clear previous state ...
-    $("#" + containerId).find('.errorMessage').text("").removeClass("alert alert-error");
-    $("#" + containerId).find('.control-group').removeClass('error');
+    $("#" + containerId).find('.errorMessage').text("").removeClass("alert alert-danger");
+    $("#" + containerId).find('.form-group').removeClass('error');
 
     // Clear form values ...
     if (options.clearForm == undefined || options.clearForm) {
@@ -122,7 +119,7 @@ jQuery.fn.dialogForm = function (options) {
                     var message = fieldErrors[fieldName];
                     var inputField = $("#" + containerId + " input[name='" + fieldName + "']");
 
-                    $("#" + containerId).find(".errorMessage").text(message).addClass("alert alert-error");
+                    $("#" + containerId).find(".errorMessage").text(message).addClass("alert alert-danger");
                     inputField.parent().addClass('error');
                 }
             }
@@ -447,12 +444,12 @@ $(function () {
 
         // Deselect previous option ...
         $('#foldersContainer li').removeClass('active');
-        $('#foldersContainer i').removeClass('icon-white');
+        $('#foldersContainer i').removeClass('glyphicon-white');
 
         // Select the new item ...
         var dataTable = $('#mindmapListTable').dataTable();
         $(this).addClass('active');
-        $('#foldersContainer .active i').addClass('icon-white');
+        $('#foldersContainer .active i').addClass('glyphicon-white');
 
         $('input:checkbox').prop('checked', false);
         // Reload the table data ...

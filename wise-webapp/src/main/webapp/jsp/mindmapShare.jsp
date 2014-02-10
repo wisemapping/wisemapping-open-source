@@ -52,13 +52,13 @@
 </div>
 
 <div class="well">
-    <div id="errorMsg" class="alert alert-error"></div>
+    <div id="errorMsg" class="alert alert-danger"></div>
     <div>
 
         <p><strong><spring:message code="ADD_PEOPLE"/>:</strong></p>
 
         <input type="text" id="collabEmails" name="collabEmails"
-               placeholder="<spring:message code="COLLABORATORS_SEPARATED_BY_COMA"/>" class="span1"/>
+               placeholder="<spring:message code="COLLABORATORS_SEPARATED_BY_COMA"/>" class="col-md-1"/>
 
         <div class="btn-group" id="roleBtn">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><spring:message code="CAN_EDIT"/>
