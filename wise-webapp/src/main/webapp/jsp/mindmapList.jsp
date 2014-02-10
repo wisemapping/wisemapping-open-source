@@ -131,7 +131,7 @@
 
     <div class="col-md-1"></div>
     <div class="col-md-2" id="foldersContainer">
-        <ul class="nav nav-list">
+        <ul class="nav nav-pills nav-stacked">
             <li data-filter="all" class="active"><a href="#"><i class="glyphicon glyphicon-inbox glyphicon-white"></i> <spring:message
                     code="ALL_MAPS"/></a></li>
             <li data-filter="my_maps"><a href="#"><i class="glyphicon glyphicon-user"></i> <spring:message code="MY_MAPS"/></a>

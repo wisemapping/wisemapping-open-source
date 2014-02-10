@@ -30,6 +30,7 @@ div#pageContainer {
 
 /*--   End Main Page Style -- */
 
+
 /* Reduce styles */
 .jumbotron > h1 {
     font-size: 35px;
@@ -41,6 +42,7 @@ div#pageContainer {
 
 #login h1 {
     font-size: 25px;
+    color: #00008b;
 }
 
 #loginPanel {
@@ -49,6 +51,11 @@ div#pageContainer {
     margin-top: 40px;
     background: #F7C931;
     color: #ffffff;
-
 }
+
+#loginPanel h1 {
+    color: #ffffff;
+}
+
+
 
