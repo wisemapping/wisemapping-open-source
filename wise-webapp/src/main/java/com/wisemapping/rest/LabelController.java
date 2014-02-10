@@ -53,6 +53,7 @@ public class LabelController extends BaseController {
         final Label label = createLabel(restLabel);
 
         // Return the new created label ...
+        response.setHeader("Location", "/service/labels/" + label.getId());
         response.setHeader("ResourceId", Integer.toString(label.getId()));
     }
 
