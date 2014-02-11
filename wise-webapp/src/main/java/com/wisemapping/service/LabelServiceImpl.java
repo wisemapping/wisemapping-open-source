@@ -31,8 +31,8 @@ public class LabelServiceImpl implements LabelService {
     }
 
     @Override @Nullable
-    public Label getLabelById(int id) {
-        return labelManager.getLabelById(id);
+    public Label getLabelById(int id, @NotNull final User user) {
+        return labelManager.getLabelById(id, user);
     }
 
     @Nullable

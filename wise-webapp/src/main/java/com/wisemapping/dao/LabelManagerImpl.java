@@ -29,19 +29,16 @@ public class LabelManagerImpl extends HibernateDaoSupport
 
     @Nullable
     @Override
-    public Label getLabelById(int id) {
-        return getHibernateTemplate().get(Label.class, id);
+    public Label getLabelById(int id, @NotNull final User user) {
+        List<Label> labels = getHibernateTemplate().find("from com.wisemapping.model.Label wisemapping where id=? and creator=?", new Object[]{id, user});
+        return getFirst(labels);
     }
 
     @Nullable
     @Override
     public Label getLabelByTitle(@NotNull String title, @NotNull final User user) {
-        Label result = null;
         final List<Label> labels = getHibernateTemplate().find("from com.wisemapping.model.Label wisemapping where title=? and creator=?", new Object[]{title, user});
-        if (labels != null && !labels.isEmpty()) {
-            result = labels.get(0);
-        }
-        return result;
+        return getFirst(labels);
     }
 
     @Override
@@ -49,5 +46,12 @@ public class LabelManagerImpl extends HibernateDaoSupport
         getHibernateTemplate().delete(label);
     }
 
+    @Nullable private Label getFirst(List<Label> labels) {
+        Label result = null;
+        if (labels != null && !labels.isEmpty()) {
+            result = labels.get(0);
+        }
+        return result;
+    }
 
 }
