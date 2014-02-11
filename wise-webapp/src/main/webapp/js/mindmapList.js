@@ -170,8 +170,8 @@ jQuery.fn.dialogForm = function (options) {
     });
 
     // Open the modal dialog ...
-    this.on('shown', function() {
-        $('#' + containerId + ' input:first').focus();
+    this.on('shown.bs.modal', function() {
+        $(this).find('input:first').focus();
     });
     this.modal();
 
@@ -466,10 +466,9 @@ $(function () {
                 var dataTable = $('#mindmapListTable').dataTable();
                 //remove the selected tag...
                 $("#foldersContainer li.active").remove();
-                //find the second li... (all)
-                $("#foldersContainer li:nth-child(2)").addClass("active");
+                $("#foldersContainer li:first").addClass("active");
                 $('#foldersContainer .active i').addClass('icon-white');
-                $("#foldersContainer li:nth-child(2)").animate({left: '+=8px'}, 'fast');
+                $("#foldersContainer li:first").animate({left: '+=8px'}, 'fast');
                 dataTable.fnReloadAjax("c/restful/maps/?q=all", callbackOnTableInit, true);
             }
         })
