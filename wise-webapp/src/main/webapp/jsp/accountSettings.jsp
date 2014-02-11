@@ -18,25 +18,25 @@
             <form action="#" method="POST" id="changeUserForm" class="form-horizontal">
                 <fieldset>
                     <div class="form-group">
-                        <label for="email" class="col-sm-3 control-label"><strong><spring:message code="EMAIL"/>:</strong></label>
-                        <div class="col-sm-8">
+                        <label for="email" class="col-md-3 control-label"><strong><spring:message code="EMAIL"/>:</strong></label>
+                        <div class="col-md-8">
                             <input type="text" name="password" id="email" required="required" class="form-control" readonly="readonly" value="${user.email}"/>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="firstname" class="col-sm-3 control-label"><strong><spring:message code="FIRSTNAME"/>:</strong></label>
-                        <div class="col-sm-8">
+                        <label for="firstname" class="col-md-3 control-label"><strong><spring:message code="FIRSTNAME"/>:</strong></label>
+                        <div class="col-md-8">
                             <input type="text" name="firstname" id="firstname" required="required" class="form-control" value="${user.firstname}"/>
                          </div>
                     </div>
                     <div class="form-group">
-                        <label for="lastname" class="col-sm-3 control-label"><strong><spring:message code="LASTNAME"/>:</strong></label>
-                        <div class="col-sm-8">
+                        <label for="lastname" class="col-md-3 control-label"><strong><spring:message code="LASTNAME"/>:</strong></label>
+                        <div class="col-md-8">
                             <input type="text" name="lastname" id="lastname" required="required" class="form-control" value="${user.lastname}"/>
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-sm-offset-8 col-sm-2">
+                        <div class="col-md-offset-8 col-md-2">
                             <input type="submit" id="changeUserInfoBtn" class="btn btn-primary" class="form-control" value="<spring:message code="SAVE_CHANGES"/>"/>
                         <div>
                     </div>
@@ -50,19 +50,19 @@
             <form action="#" method="POST" id="changePasswordForm"  class="form-horizontal">
                 <fieldset>
                     <div class="form-group">
-                        <label for="password" class="col-sm-3 control-label"><strong><spring:message code="NEW_PASSWORD"/>:</strong></label>
-                        <div class="col-sm-8">
+                        <label for="password" class="col-md-3 control-label"><strong><spring:message code="NEW_PASSWORD"/>:</strong></label>
+                        <div class="col-md-8">
                             <input type="password" name="password" id="password" required="required" class="form-control"/>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="repassword" class="col-sm-3 control-label"><strong><spring:message code="CONFIRM_NEW_PASSWORD"/>:</strong></label>
-                        <div class="col-sm-8">
+                        <label for="repassword" class="col-md-3 control-label"><strong><spring:message code="CONFIRM_NEW_PASSWORD"/>:</strong></label>
+                        <div class="col-md-8">
                             <input type="password" name="password" id="repassword" required="required" class="form-control"/>
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-sm-offset-8 col-sm-2">
+                        <div class="col-md-offset-8 col-md-2">
                             <input type="submit" id="changePasswordBtn" class="btn btn-primary" value="<spring:message code="CHANGE_PASSWORD"/>"/>
                         </div>
                     </div>
@@ -74,8 +74,8 @@
             </div>
             <form action="#" method="POST" id="languageForm" class="form-horizontal">
                 <div class="form-group">
-                    <label for="language" class="col-sm-3 control-label"><strong><spring:message code="LANGUAGE"/>:</strong></label>
-                    <div class="col-sm-8">
+                    <label for="language" class="col-md-3 control-label"><strong><spring:message code="LANGUAGE"/>:</strong></label>
+                    <div class="col-md-8">
                     <select name="language" id="language" class="form-control">
                         <option value="en">English</option>
                         <option value="es" <c:if test="${user.locale=='es'}">selected="selected" </c:if>>Spanish -
@@ -106,7 +106,7 @@
                     </select></div>
                     </div>
                     <div class="form-group">
-                        <div class="col-sm-offset-8 col-sm-2">
+                        <div class="col-md-offset-8 col-md-2">
                             <input type="submit" id="changeLanguageBtn" class="btn btn-primary" value="<spring:message code="CHANGE_LANGUAGE"/>"/>
                         </div>
                     </div>

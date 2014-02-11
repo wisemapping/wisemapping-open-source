@@ -2,7 +2,7 @@
 @import "pageHeaders.css";
 
 div#register {
-    margin: 40px auto;
+    margin: 20px auto;
     text-align: center;
     white-space: nowrap;
 }
@@ -15,34 +15,6 @@ div#register a {
 div#pageContainer {
     position: relative;
     min-height: 100%;
-}
-
-div.bodyContainer {
-    padding-top: 30px;
-    padding-bottom: 85px; /* Height of the footer */
-}
-
-div.bodyContainer h1 {
-    color: #093A9D;
-    font-size: 150%;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-div.bodyContainer h2 {
-    color: gray;
-    font-size: 150%;
-    border-bottom: 1px dashed #BBB4D6;
-    margin: 20px 0;
-}
-
-div.bodyContainer ul {
-    padding: 5px;
-}
-
-div.bodyContainer li {
-    list-style-type: disc;
-    margin-left: 12px;
 }
 
 #footerContainer {
@@ -58,21 +30,33 @@ div.bodyContainer li {
 
 /*--   End Main Page Style -- */
 
-span.errorMsg {
-    color: red;
+
+/* Reduce styles */
+.jumbotron > h1 {
+    font-size: 30px;
+    color: #00008b;
 }
 
-div.fform {
-    background: #eeeeee;
-    border: 1px solid #cfcfcf;
-    padding: 5px 25px;
-    -moz-border-radius: 8px;
-    -khtml-border-radius: 8px;
-    -webkit-border-radius: 8px;
-    border-radius: 8px;
+.jumbotron  p {
+    font-size: 15px;
 }
 
-div.fform label {
-    font-weight: bold;
+#login h1 {
+    font-size: 25px;
+    color: #00008b;
 }
+
+#loginPanel {
+    padding: 0 60px;
+    background: #ffffff;
+    margin-top: 40px;
+    background: #F7C931;
+    color: #ffffff;
+}
+
+#loginPanel h1 {
+    color: #ffffff;
+}
+
+
 
