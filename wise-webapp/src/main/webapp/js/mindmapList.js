@@ -510,6 +510,13 @@ $(function () {
                 }
             }
         });
+
+        //setting max heigth to ul filters...
+        var maxHeight = $("#map-table").height() - 20;
+         $("#foldersContainer ul").css('overflow-y', 'scrollbar');
+         $("#foldersContainer ul").css('overflow-x', 'hidden');
+         $("#foldersContainer ul").height(maxHeight);
+
     })
 });
 
@@ -519,7 +526,7 @@ function createLabelItem(data, id) {
     var labelItem = $("<li data-filter=\""  + data.title  + "\">");
     labelItem.append(
         "<a href=\"#\"> " +
-            "<i class=\"icon-tag labelIcon\"></i>" +
+            "<i class=\"glyphicon glyphicon-tag labelIcon\"></i>" +
             "<div class='labelColor' style='background: " +  data.color + "'></div>" +
             "<div class='labelName labelNameList'>" + data.title + "</div>" +
             "<button id='deleteLabelBtn' class='close closeLabel' labelid=\""+ labelId +"\">x</button>" +
@@ -624,13 +631,9 @@ function linkLabelToMindmap(mapIds, label) {
 }
 
 //animations...
-$(document).on('mouseenter', '#foldersContainer li[class!="nav-header"]', function (event) {
+$(document).on('click', '#foldersContainer li[class!="nav-header"]', function (event) {
     if ($(this).attr('class') != 'active') {
         $(this).animate({left: '+=8px'}, 'fast');
     }
-});
-
-$(document).on('mouseleave', '#foldersContainer li[class!="active"][class!="nav-header"]', function (event) {
-    $(this).animate({left: '-=8px'}, 'fast');
 });
 
