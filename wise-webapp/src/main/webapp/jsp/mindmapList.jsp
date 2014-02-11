@@ -451,7 +451,7 @@
                         <h3><spring:message code="DELETE_MINDMAP"/></h3>
                     </div>
                     <div class="modal-body">
-                        <div class="alert alert-block">
+                        <div class="alert alert-block alert-warning">
                             <h4 class="alert-heading"><spring:message code="WARNING"/>!</h4><spring:message
                                 code="DELETE_MAPS_WARNING"/>
                         </div>
@@ -475,7 +475,7 @@
                         <h3><spring:message code="DELETE"/></h3>
                     </div>
                     <div class="modal-body">
-                        <div class="alert alert-block">
+                        <div class="alert alert-block alert-warning">
                             <h4 class="alert-heading"><spring:message code="WARNING"/>!</h4><spring:message code="DELETE_LABELS_WARNING"/>
                         </div>
                     </div>
