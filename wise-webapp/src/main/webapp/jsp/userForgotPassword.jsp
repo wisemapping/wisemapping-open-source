@@ -9,29 +9,22 @@
     });
 </script>
 
-<div>
-    <div class="fform">
-        <h1>
-            <spring:message code="FORGOT_PASSWORD"/>
-        </h1>
+<h1>
+    <spring:message code="FORGOT_PASSWORD"/>
+</h1>
 
-        <p><spring:message code="FORGOT_PASSWORD_MESSAGE"/></p>
+<p><spring:message code="FORGOT_PASSWORD_MESSAGE"/></p>
 
-        <form:form method="post" commandName="resetPassword"  class="form-horizontal">
-            <fieldset>
-                <label for="email" class="col-sm-2 control-label"><spring:message code="EMAIL"/>: </label>
-                <div class="col-sm-5">
-                    <input id="email" type="email" required="required" name="email" class="form-control"/>
-                </div>
-                <input type="submit" value="<spring:message code="SEND_ME_A_NEW_PASSWORD"/>" class="btn btn-primary"
-                       data-loading-text="<spring:message code="SENDING"/>"/>
-                <input type="button" value="<spring:message code="CANCEL"/>" class="btn"
-                       onclick="window.location='<c:url value="c/maps/"/>'"/>
-            </fieldset>
-        </form:form>
-        </br>
+<form:form method="post" commandName="resetPassword" class="form-horizontal">
+    <label for="email" class="col-md-2 control-label"><spring:message code="EMAIL"/>: </label>
+    <div class="col-md-5">
+        <input id="email" type="email" required="required" name="email" class="form-control"/>
     </div>
-</div>
+    <input type="submit" value="<spring:message code="SEND_ME_A_NEW_PASSWORD"/>" class="btn btn-primary"
+           data-loading-text="<spring:message code="SENDING"/>"/>
+    <input type="button" value="<spring:message code="CANCEL"/>" class="btn"
+           onclick="window.location='<c:url value="c/maps/"/>'"/>
+</form:form>
 
 <div id="register">
     <b>

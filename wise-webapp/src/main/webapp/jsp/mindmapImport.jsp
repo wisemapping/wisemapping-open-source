@@ -9,22 +9,22 @@
         <div class="errorMessage"></div>
         <fieldset>
             <div class="form-group">
-                <label for="mapFile" class="control-label col-sm-2 "><spring:message code="MIND_FILE"/>: </label>
-                <div class="col-sm-10">
+                <label for="mapFile" class="control-label col-md-2 "><spring:message code="MIND_FILE"/>: </label>
+                <div class="col-md-10">
                     <input type="file" name="file" id="mapFile" required="required" class="form-control"/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="title" class="control-label col-sm-2 "><spring:message code="NAME"/>: </label>
-                <div class="col-sm-10">
+                <label for="title" class="control-label col-md-2 "><spring:message code="NAME"/>: </label>
+                <div class="col-md-10">
                    <input type="text" id="title" name="title" required="required"
                            placeholder="<spring:message code="MAP_NAME_HINT"/>"
                            class="form-control" maxlength="255"/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="description" class="control-label col-sm-2"><spring:message code="DESCRIPTION"/>: </label>
-                <div class="col-sm-10">
+                <label for="description" class="control-label col-md-2"><spring:message code="DESCRIPTION"/>: </label>
+                <div class="col-md-10">
                     <textarea type="text" name="description" id="description"
                           placeholder="<spring:message code="MAP_DESCRIPTION_HINT"/>" class="form-control" maxlength="255"></textarea>
                 </div>

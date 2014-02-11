@@ -51,13 +51,12 @@
         <jsp:param name="removeSignin" value="${requestScope.removeSignin}"/>
     </jsp:include>
 
-    <div class="bodyContainer">
+    <div class="container">
         <div class="row">
-            <div class="col-md-2"></div>
-            <div class="pageBodyContent col-md-8">
-               <div class="row">
-                <tiles:insertAttribute name="body"/>
-               </div>
+            <div class="col-md-offset-1 col-md-10">
+                <div class="jumbotron" style="margin:40px 0 100px 0;padding: 10px 60px;">
+                    <tiles:insertAttribute name="body"/>
+                </div>
             </div>
             <c:if test="${requestScope['google.ads.enabled']}">
                 <div class="row" style="text-align: center;margin: 5px">
