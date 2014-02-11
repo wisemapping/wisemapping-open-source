@@ -20,6 +20,7 @@ package com.wisemapping.rest;
 
 import com.mangofactory.swagger.annotations.ApiIgnore;
 import com.wisemapping.exceptions.ImportUnexpectedException;
+import com.wisemapping.exceptions.LabelCouldNotFoundException;
 import com.wisemapping.exceptions.MapCouldNotFoundException;
 import com.wisemapping.exceptions.MultipleSessionsOpenException;
 import com.wisemapping.exceptions.SessionExpiredException;
@@ -45,6 +46,7 @@ import com.wisemapping.rest.model.RestMindmapInfo;
 import com.wisemapping.rest.model.RestMindmapList;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.CollaborationException;
+import com.wisemapping.service.LabelService;
 import com.wisemapping.service.LockInfo;
 import com.wisemapping.service.LockManager;
 import com.wisemapping.service.MindmapService;
@@ -87,6 +89,10 @@ public class MindmapController extends BaseController {
     @Qualifier("mindmapService")
     @Autowired
     private MindmapService mindmapService;
+
+    @Qualifier("labelService")
+    @Autowired
+    private LabelService labelService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/json", "application/xml", "text/html"})
     @ResponseBody
@@ -634,13 +640,18 @@ public class MindmapController extends BaseController {
     @ResponseStatus(value = HttpStatus.OK)
     public void addLabel(@RequestBody RestLabel restLabel, @RequestParam(required = true) String ids) throws WiseMappingException {
         int labelId = restLabel.getId();
+        final User user = Utils.getUser();
+        final Label delegated = restLabel.getDelegated();
+        delegated.setCreator(user);
+        final Label found = labelService.getLabelById(labelId, user);
+        if (found == null) {
+            throw new LabelCouldNotFoundException("Label could not be found. Id: " + labelId);
+        }
         for (String id : ids.split(",")) {
             final int mindmapId = Integer.parseInt(id);
             final Mindmap mindmap = findMindmapById(mindmapId);
             final Label label = mindmap.findLabel(labelId);
             if (label == null) {
-                final Label delegated = restLabel.getDelegated();
-                delegated.setCreator(Utils.getUser());
                 mindmapService.addLabel(mindmap, delegated);
             }
         }

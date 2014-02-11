@@ -17,7 +17,7 @@ public interface LabelManager {
     List<Label> getAllLabels(@NotNull final User user);
 
     @Nullable
-    Label getLabelById(int id);
+    Label getLabelById(int id, @NotNull final User user);
 
     @Nullable
     Label getLabelByTitle(@NotNull final String title, @NotNull final User user);

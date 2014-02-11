@@ -69,7 +69,7 @@ public class LabelController extends BaseController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteLabelById(@PathVariable int id) throws WiseMappingException {
         final User user = Utils.getUser();
-        final Label label = labelService.getLabelById(id);
+        final Label label = labelService.getLabelById(id, user);
         if (label == null) {
             throw new LabelCouldNotFoundException("Label could not be found. Id: " + id);
         }
