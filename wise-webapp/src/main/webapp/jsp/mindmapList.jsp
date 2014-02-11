@@ -15,6 +15,8 @@
 
     <script type="text/javascript" language="javascript" src="js/jquery-2.1.0.min.js"></script>
     <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap-colorpicker.js"></script>
+
     <script src="js/less.js" type="text/javascript"></script>
 
     <!--jQuery DataTables-->
@@ -50,11 +52,11 @@
                     },
                     {
                         sTitle: "<spring:message code="NAME"/>",
-                        sWidth: "270px",
+                        sWidth:"430px",
                         bUseRendered: false,
                         mDataProp: "title",
                         fnRender: function (obj) {
-                            return '<a href="c/maps/' + obj.aData.id + '/edit">' + $('<span></span>').text(obj.aData.title).html() + '</a>';
+                            return '<a class="mindmapName" value="'+ obj.aData.id +'" href="c/maps/' + obj.aData.id + '/edit">' + $('<span></span>').text(obj.aData.title).html() + '</a>' + labelTagsAsHtml(obj.aData.labels);
                         }
                     },
                     {
@@ -85,6 +87,8 @@
                 },
                 bStateSave: true
             });
+
+            $('#colorGroup').colorpicker();
 
             // Customize search action ...
             $('#mindmapListTable_filter').appendTo("#tableActions");
@@ -130,18 +134,18 @@
     <div class="row">
         <div class="col-md-2" id="foldersContainer">
             <ul class="nav nav-pills nav-stacked">
-                <li data-filter="all" class="active"><a href="#"><i
+                <li data-filter="all" class="active" style="display: none"><a href="#"><i
                         class="glyphicon glyphicon-inbox glyphicon-white"></i>
                     <spring:message
                             code="ALL_MAPS"/></a></li>
-                <li data-filter="my_maps"><a href="#"><i class="glyphicon glyphicon-user"></i> <spring:message
+                <li data-filter="my_maps" style="display: none"><a href="#"><i class="glyphicon glyphicon-user"></i> <spring:message
                         code="MY_MAPS"/></a>
                 </li>
-                <li data-filter="shared_with_me"><a href="#"><i class="glyphicon glyphicon-share"></i> <spring:message
+                <li data-filter="shared_with_me" style="display: none"><a href="#"><i class="glyphicon glyphicon-share"></i> <spring:message
                         code="SHARED_WITH_ME"/></a></li>
-                <li data-filter="starred"><a href="#"><i class="glyphicon glyphicon-star"></i> <spring:message
+                <li data-filter="starred" style="display: none"><a href="#"><i class="glyphicon glyphicon-star"></i> <spring:message
                         code="STARRED"/></a></li>
-                <li data-filter="public"><a href="#"><i class="glyphicon glyphicon-globe"></i> <spring:message
+                <li data-filter="public" style="display: none"><a href="#"><i class="glyphicon glyphicon-globe"></i> <spring:message
                         code="PUBLIC_MAPS"/></a>
                 </li>
             </ul>
@@ -164,6 +168,23 @@
                         class="glyphicon glyphicon-upload glyphicon-white"></i>
                     <spring:message code="IMPORT"/>
                 </button>
+            </div>
+
+            <div class="btn-group">
+                <button id='addLabelButton' class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    <i class="glyphicon glyphicon-tag glyphicon-white"></i>
+                    <spring:message code="LABEL"/>
+                    <span class="caret"></span>
+                </button>
+
+                <ul id="labelList" class="dropdown-menu">
+                    <li id="createLabelBtn">
+                        <a href="#" onclick="return false">
+                            <i class="glyphicon glyphicon-plus"></i>
+                            <spring:message code="CREATE"/>
+                        </a>
+                    </li>
+                </ul>
             </div>
 
             <div class="btn-group act-multiple" id="deleteBtn" style="display:none">
@@ -282,6 +303,45 @@
     </div>
 </div>
 
+<!-- New label dialog -->
+<div id="new-folder-dialog-modal" title="<spring:message code="ADD_NEW_LABEL"/>" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">x</button>
+                <h3><spring:message code="NEW_LABEL_MSG"/></h3>
+            </div>
+            <div class="modal-body">
+                <div class="errorMessage"></div>
+                <form class="form-horizontal">
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="newLabelTitle"><spring:message code="NAME"/>:</label>
+                            <div class="col-md-8">
+                                <input class="form-control" name="title" id="newLabelTitle" type="text" required="required"
+                                       placeholder="<spring:message code="LABEL_NAME_HINT"/>" autofocus="autofocus" maxlength="30"/>
+                            </div>
+                        </div>
+                        <div id="colorGroup" class="form-group">
+                            <label class="col-md-3 control-label" for="colorChooser"><spring:message code="COLOR"/>:</label>
+                            <div class="col-md-1">
+                                <input class="form-control" name="color" id="colorChooser" style="display: none" type="text" required="required" value="#000000"/>
+                                <span class="input-group-addon colorInput"><i></i></span>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary btn-accept" data-loading-text="<spring:message
+                        code="SAVING"/>"><spring:message
+                        code="CREATE"/></button>
+                <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Duplicate map dialog -->
 <div id="duplicate-dialog-modal" class="modal fade">
     <div class="modal-dialog">
@@ -384,6 +444,29 @@
             <div class="modal-footer">
                 <button class="btn btn-primary btn-accept" data-loading-text="<spring:message
                     code="SAVING"/> ..."><spring:message
+                        code="DELETE"/></button>
+                <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete label dialog -->
+<div id="delete-label-dialog-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">x</button>
+                <h3><spring:message code="DELETE"/></h3>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-block">
+                    <h4 class="alert-heading"><spring:message code="WARNING"/>!</h4><spring:message code="DELETE_LABELS_WARNING"/>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary btn-accept" data-loading-text="<spring:message
+                        code="SAVING"/> ..."><spring:message
                         code="DELETE"/></button>
                 <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
             </div>
@@ -508,5 +591,6 @@
     </div>
 </div>
 
+</div>
 </body>
 </html>
