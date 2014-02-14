@@ -7,6 +7,8 @@
 <head>
     <base href="${requestScope['site.baseurl']}/">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title><spring:message code="SITE.TITLE"/> - <spring:message code="MY_WISEMAPS"/></title>
     <link rel="icon" href="images/favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
@@ -14,7 +16,7 @@
     <link rel="stylesheet/less" type="text/css" href="css/mindmapList.less"/>
 
     <script type="text/javascript" language="javascript" src="js/jquery-2.1.0.min.js"></script>
-    <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap-colorpicker.js"></script>
 
     <script src="js/less.js" type="text/javascript"></script>
@@ -210,8 +212,7 @@
 
                 <div id="infoBtn" class="btn-group act-single" style="display:none">
                     <button class="btn btn-primary"><i class="glyphicon glyphicon-exclamation-sign glyphicon-white"></i>
-                        <spring:message
-                                code="INFO"/></button>
+                        <spring:message code="INFO"/></button>
                 </div>
 
                 <div id="actionsBtn" class="btn-group act-single" style="display:none">
@@ -247,7 +248,7 @@
                     </ul>
                 </div>
                 <div id="map-table">
-                    <table class="table" id="mindmapListTable"></table>
+                    <table class="table table-hover" id="mindmapListTable"></table>
                 </div>
                 <div id="tableFooter" class="form-inline"></div>
 

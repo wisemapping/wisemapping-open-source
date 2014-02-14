@@ -33,7 +33,7 @@
             <label for="svg">
                 <input type="radio" id="svg" name="exportFormat" value="svg"/>
                 <strong><spring:message code="SVG_EXPORT_FORMAT"/></strong><br/>
-                <spring:message code="SVG_EXPORT_FORMAT_DETAILS"/>
+                <spring:message code="SVG_EXPORT_FORMAT_DETAILS"/><br/>
             </label>
 
             <label for="pdf">
@@ -51,7 +51,7 @@
                     <option value='png'>PNG</option>
                     <option value='jpg'>JPEG</option>
                 </select>
-            </label>
+            </label><br/>
 
             <label for="txt">
                 <input type="radio" name="exportFormat" value="txt" id="txt"/>
@@ -59,11 +59,11 @@
                 <spring:message code="TXT_EXPORT_FORMAT_DETAILS"/>
             </label>
 
-            <label for="xls">
+            </br><label for="xls">
                 <input type="radio" name="exportFormat" value="xls" id="xls"/>
                 <strong><spring:message code="XLS_EXPORT_FORMAT"/></strong><br/>
                 <spring:message code="XLS_EXPORT_FORMAT_DETAILS"/>
-            </label>
+            </label><br/>
 
             <label for="odt">
                 <input type="radio" name="exportFormat" value="odt" id="odt"/>
