@@ -12,6 +12,7 @@
 <head>
     <base href="${requestScope['site.baseurl']}/">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="WiseMapping">
     <meta name="publisher" content="WiseMapping Open Source">
     <meta name="keywords"
@@ -41,7 +42,7 @@
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
     <script type="text/javascript" language="javascript" src="js/jquery-2.1.0.min.js"></script>
 
-    <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap.min.js"></script>
     <script src="js/less.js" type="text/javascript"></script>
 </head>
 <body>
@@ -58,26 +59,28 @@
                     <tiles:insertAttribute name="body"/>
                 </div>
             </div>
-            <c:if test="${requestScope['google.ads.enabled']}">
-                <div class="row" style="text-align: center;margin: 5px">
+            <div class="col-md-1" style="padding-top:25px">
+                <c:if test="${requestScope['google.ads.enabled']}">
                     <script type="text/javascript"><!--
                     google_ad_client = "ca-pub-7564778578019285";
-                    /* WiseMapping Login */
-                    google_ad_slot = "2192653431";
-                    google_ad_width = 728;
-                    google_ad_height = 90;
+                    /* WiseMapping Mindmap List */
+                    google_ad_slot = "4071968444";
+                    google_ad_width = 120;
+                    google_ad_height = 600;
                     //-->
                     </script>
-                    <script type="text/javascript"
-                            src="https://pagead2.googlesyndication.com/pagead/show_ads.js">
-                    </script>
-                </div>
-            </c:if>
+                    <div style="margin-top:5px;">
+                        <script type="text/javascript"
+                                src="https://pagead2.googlesyndication.com/pagead/show_ads.js">
+                        </script>
+                    </div>
+                </c:if>
+            </div>
         </div>
     </div>
 
-    <jsp:include page="footer.jsp"/>
-</div>
+        <jsp:include page="footer.jsp"/>
+    </div>
 </body>
 </html>
 
