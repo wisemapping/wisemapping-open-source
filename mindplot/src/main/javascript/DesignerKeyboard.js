@@ -193,14 +193,14 @@ mindplot.DesignerKeyboard = new Class({
             'ctrl+s':function (event) {
                 event.preventDefault();
                 event.stopPropagation();
-                $('save').fireEvent('click');
+                document.id('save').fireEvent('click');
             },
 
             'meta+s':function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
-                $('save').fireEvent('click');
+                document.id('save').fireEvent('click');
             },
 
             'ctrl+i':function (event) {
@@ -350,7 +350,7 @@ mindplot.DesignerKeyboard = new Class({
             excludes.push("alt");
         }
 
-        $(document).addEvent('keydown', function (event) {
+        document.id(document).addEvent('keydown', function (event) {
 
             // Convert key to mootools keyboard event format...
             var keys = [];

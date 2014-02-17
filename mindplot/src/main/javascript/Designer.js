@@ -83,7 +83,7 @@ mindplot.Designer = new Class({
             var screenManager = workspace.getScreenManager();
 
             // Zoom In and Zoom Out must active event
-            $(document).addEvent('mousewheel', function (event) {
+            document.id(document).addEvent('mousewheel', function (event) {
                 // Change mousewheel handling so we let the default
                 //event happen if we are outside the container.
                 var coords = screenManager.getContainer().getCoordinates();

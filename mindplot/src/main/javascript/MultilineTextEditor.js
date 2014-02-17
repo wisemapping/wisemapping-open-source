@@ -166,7 +166,7 @@ mindplot.MultilineTextEditor = new Class({
         if (!this.isVisible()) {
             //Create editor ui
             var containerElem = this._buildEditor();
-            containerElem.inject($(document.body));
+            containerElem.inject(document.id(document.body));
 
             this._containerElem = containerElem;
             this._registerEvents(containerElem);
