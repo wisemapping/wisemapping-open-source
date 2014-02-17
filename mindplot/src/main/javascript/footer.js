@@ -1,1 +1,1 @@
-$(document).fireEvent('loadcomplete', 'mind');
+document.id(document).fireEvent('loadcomplete', 'mind');

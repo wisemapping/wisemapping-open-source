@@ -137,7 +137,7 @@ mindplot.layout.LayoutManager = new Class({
         // Collect changes ...
         this._collectChanges();
 
-        if (!$(fireEvents) || fireEvents) {
+        if (!document.id(fireEvents) || fireEvents) {
             this._flushEvents();
         }
 

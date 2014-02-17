@@ -26,12 +26,12 @@ mindplot.widget.Menu = new Class({
         var widgetsBaseUrl = baseUrl + "css/widget";
 
         // Stop event propagation ...
-        $(this._containerId).addEvent('click', function (event) {
+        document.id(this._containerId).addEvent('click', function (event) {
             event.stopPropagation();
             return false;
         });
 
-        $(this._containerId).addEvent('dblclick', function (event) {
+        document.id(this._containerId).addEvent('dblclick', function (event) {
             event.stopPropagation();
             return false;
         });
@@ -39,7 +39,7 @@ mindplot.widget.Menu = new Class({
         // Create panels ...
         var designerModel = designer.getModel();
 
-        var fontFamilyBtn = $('fontFamily');
+        var fontFamilyBtn = document.id('fontFamily');
         if (fontFamilyBtn) {
             var fontFamilyModel = {
                 getValue:function () {
@@ -65,7 +65,7 @@ mindplot.widget.Menu = new Class({
             this._registerTooltip('fontFamily', $msg('FONT_FAMILY'));
         }
 
-        var fontSizeBtn = $('fontSize');
+        var fontSizeBtn = document.id('fontSize');
         if (fontSizeBtn) {
             var fontSizeModel = {
                 getValue:function () {
@@ -89,7 +89,7 @@ mindplot.widget.Menu = new Class({
             this._registerTooltip('fontSize', $msg('FONT_SIZE'));
         }
 
-        var topicShapeBtn = $('topicShape');
+        var topicShapeBtn = document.id('topicShape');
         if (topicShapeBtn) {
             var topicShapeModel = {
                 getValue:function () {
@@ -113,7 +113,7 @@ mindplot.widget.Menu = new Class({
             this._registerTooltip('topicShape', $msg('TOPIC_SHAPE'));
         }
 
-        var topicIconBtn = $('topicIcon');
+        var topicIconBtn = document.id('topicIcon');
         if (topicIconBtn) {
             // Create icon panel dialog ...
             var topicIconModel = {
@@ -129,7 +129,7 @@ mindplot.widget.Menu = new Class({
         }
 
         // Topic color item ...
-        var topicColorBtn = $('topicColor');
+        var topicColorBtn = document.id('topicColor');
         if (topicColorBtn) {
 
             var topicColorModel = {
@@ -155,7 +155,7 @@ mindplot.widget.Menu = new Class({
         }
 
         // Border color item ...
-        var topicBorderBtn = $('topicBorder');
+        var topicBorderBtn = document.id('topicBorder');
         if (topicBorderBtn) {
             var borderColorModel =
             {
@@ -181,7 +181,7 @@ mindplot.widget.Menu = new Class({
         }
 
         // Font color item ...
-        var fontColorBtn = $('fontColor');
+        var fontColorBtn = document.id('fontColor');
         if (fontColorBtn) {
             var fontColorModel =
             {
@@ -316,7 +316,7 @@ mindplot.widget.Menu = new Class({
         this._registerTooltip('fontItalic', $msg('FONT_ITALIC'), "meta+I");
 
 
-        var saveElem = $('save');
+        var saveElem = document.id('save');
         if (saveElem) {
             this._addButton('save', false, false, function () {
                 this.save(saveElem, designer, true);
@@ -327,7 +327,7 @@ mindplot.widget.Menu = new Class({
             if (!readOnly) {
                 // To prevent the user from leaving the page with changes ...
                 Element.NativeEvents.unload = 1;
-                $(window).addEvent('unload', function () {
+                document.id(window).addEvent('unload', function () {
                     if (this.isSaveRequired()) {
                         this.save(saveElem, designer, false, true);
                     }
@@ -343,7 +343,7 @@ mindplot.widget.Menu = new Class({
             }
         }
 
-        var discardElem = $('discard');
+        var discardElem = document.id('discard');
         if (discardElem) {
             this._addButton('discard', false, false, function () {
                 this.discardChanges(designer);
@@ -351,7 +351,7 @@ mindplot.widget.Menu = new Class({
             this._registerTooltip('discard', $msg('DISCARD_CHANGES'));
         }
 
-        var shareElem = $('shareIt');
+        var shareElem = document.id('shareIt');
         if (shareElem) {
             this._addButton('shareIt', false, false, function () {
                 var reqDialog = new MooDialog.Request('c/iframeWrapper?url=c/maps/' + mapId + "/sharef", null,
@@ -371,7 +371,7 @@ mindplot.widget.Menu = new Class({
 
         }
 
-        var publishElem = $('publishIt');
+        var publishElem = document.id('publishIt');
         if (publishElem) {
             this._addButton('publishIt', false, false, function () {
                 var reqDialog = new MooDialog.Request('c/iframeWrapper?url=c/maps/' + mapId + "/publishf", null,
@@ -391,7 +391,7 @@ mindplot.widget.Menu = new Class({
             this._registerTooltip('publishIt', $msg('PUBLISH'));
         }
 
-        var historyElem = $('history');
+        var historyElem = document.id('history');
         if (historyElem) {
 
             this._addButton('history', false, false, function () {
@@ -413,7 +413,7 @@ mindplot.widget.Menu = new Class({
         this._registerEvents(designer);
 
         // Keyboard Shortcuts Action ...
-        var keyboardShortcut = $('keyboardShortcuts');
+        var keyboardShortcut = document.id('keyboardShortcuts');
         if (keyboardShortcut) {
 
             keyboardShortcut.addEvent('click', function (event) {
@@ -434,7 +434,7 @@ mindplot.widget.Menu = new Class({
         }
 
 
-        var videoElem = $("tutorialVideo");
+        var videoElem = document.id("tutorialVideo");
         if (videoElem) {
             var width = 900;
             var height = 500;
@@ -501,7 +501,7 @@ mindplot.widget.Menu = new Class({
     _addButton:function (buttonId, topic, rel, fn) {
         // Register Events ...
         var result = null;
-        if ($(buttonId)) {
+        if (document.id(buttonId)) {
 
             var button = new mindplot.widget.ToolbarItem(buttonId, function (event) {
                 fn(event);
@@ -515,13 +515,13 @@ mindplot.widget.Menu = new Class({
     },
 
     _registerTooltip:function (buttonId, text, shortcut) {
-        if ($(buttonId)) {
+        if (document.id(buttonId)) {
             var tooltip = text;
             if (shortcut) {
                 shortcut = Browser.Platform.mac ? shortcut.replace("meta+", "⌘") : shortcut.replace("meta+", "ctrl+");
                 tooltip = tooltip + " (" + shortcut + ")";
             }
-            new mindplot.widget.KeyboardShortcutTooltip($(buttonId), tooltip);
+            new mindplot.widget.KeyboardShortcutTooltip(document.id(buttonId), tooltip);
         }
     }
 });

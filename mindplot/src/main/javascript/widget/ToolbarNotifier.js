@@ -19,7 +19,7 @@
 mindplot.widget.ToolbarNotifier = new Class({
 
     initialize:function () {
-        var container = $('headerNotifier');
+        var container = document.id('headerNotifier');
         // In case of print,embedded no message is displayed ....
         if (container) {
             this._effect = new Fx.Elements(container, {
@@ -44,14 +44,14 @@ mindplot.widget.ToolbarNotifier = new Class({
     logMessage:function (msg, fade) {
         $assert(msg, 'msg can not be null');
 
-        var container = $('headerNotifier');
+        var container = document.id('headerNotifier');
 
         // In case of print,embedded no message is displayed ....
         if (container) {
             container.set('text', msg);
             container.setStyle('display', 'block');
             container.position({
-                relativeTo:$('header'),
+                relativeTo:document.id('header'),
                 position:'upperCenter',
                 edge:'centerTop'
             });
