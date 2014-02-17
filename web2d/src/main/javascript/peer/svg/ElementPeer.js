@@ -216,7 +216,7 @@ web2d.peer.svg.ElementPeer = new Class({
 
     positionRelativeTo:function (elem, options) {
         options = !$defined(options) ? {} : options;
-        options['relativeTo'] = $(this._native);
+        options['relativeTo'] = document.id(this._native);
         elem.position(options);
     },
 

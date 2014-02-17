@@ -149,7 +149,7 @@
             ebousemoveEventLogger = new EventLogger('mousemove', bigElipse);
             ebblCickEventLogger = new EventLogger('dblclick', bigElipse);
 
-            workspace.addItAsChildTo($("workspaceContainer"));
+            workspace.addItAsChildTo(document.id("workspaceContainer"));
 
             var mEventWorkspace = new web2d.Workspace();
             mEventWorkspace.setSize("150px", "150px");
@@ -161,7 +161,7 @@
             elipse.setFill('blue')
             mEventWorkspace.appendChild(elipse);
 
-            mEventWorkspace.addItAsChildTo($("workspaceMultipleEvents"));
+            mEventWorkspace.addItAsChildTo(document.id("workspaceMultipleEvents"));
             multipleHandler = new MultipleEventHandler('click', elipse);
         }
 
@@ -291,9 +291,9 @@
                     </label>
                     <br/>
                     <input type="button" value="Register Listener"
-                           onclick="multipleHandler.registerOneListener();$('listenerCounter').value=multipleHandler.listenerCount();"/>
+                           onclick="multipleHandler.registerOneListener();document.id('listenerCounter').value=multipleHandler.listenerCount();"/>
                     <input type="button" value="UnRegister Listener"
-                           onclick="multipleHandler.unRegisterOneListener();$('listenerCounter').value=multipleHandler.listenerCount();"/>
+                           onclick="multipleHandler.unRegisterOneListener();document.id('listenerCounter').value=multipleHandler.listenerCount();"/>
                 </fieldset>
 
             </form>

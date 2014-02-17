@@ -17,7 +17,7 @@
 </script>
 
 <script type="text/javascript"
-        src="../../../../../mindplot/src/main/javascript/libraries/mootools/mootools-core-1.4.5-full-nocompat-yc.js"></script>
+        src="../mootools-core-1.4.5.js"></script>
 <script type="text/javascript" src="../../../../../core-js/target/classes/core.js"></script>
 <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/ElementPeer.js"></script>
 <script type="text/javascript" src="../../../../src/main/javascript/Element.js"></script>
@@ -55,14 +55,14 @@
         elipse1.setSize(200, 200);
         elipse1.setPosition(0, 0);
         overflowWorkspace.appendChild(elipse1);
-        overflowWorkspace.addItAsChildTo($("overflowExample"));
+        overflowWorkspace.addItAsChildTo(document.id("overflowExample"));
 
 
         var workspacePosition = function() {
 
             var elipseAttr = {width:100,height:100,x:100,y:100};
 
-            var divElem = $("positionExample");
+            var divElem = document.id("positionExample");
             var workPosition = new web2d.Workspace();
             workPosition.setSize("100px", "100px");
             elipse = new web2d.Elipse(elipseAttr);
@@ -93,7 +93,7 @@
         elipse.setPosition(100, 100);
 
         workspacePixel.appendChild(elipse);
-        workspacePixel.addItAsChildTo($("sizeExamplePixels"));
+        workspacePixel.addItAsChildTo(document.id("sizeExamplePixels"));
 
         var workspaceInchs = new web2d.Workspace();
         workspaceInchs.setSize("1in", "1in");
@@ -102,7 +102,7 @@
         elipse.setPosition(100, 100);
 
         workspaceInchs.appendChild(elipse);
-        workspaceInchs.addItAsChildTo($("sizeExampleInch"));
+        workspaceInchs.addItAsChildTo(document.id("sizeExampleInch"));
 
 
         var workspaceCoordSizeSample = function() {
@@ -135,16 +135,16 @@
             };
 
             var workspace100x100 = coordSizeSampleBuilder(100, 100);
-            workspace100x100.addItAsChildTo($("coordsizeExample100x100"));
+            workspace100x100.addItAsChildTo(document.id("coordsizeExample100x100"));
 
             var workspace100x200 = coordSizeSampleBuilder(100, 200);
-            workspace100x200.addItAsChildTo($("coordsizeExample100x200"));
+            workspace100x200.addItAsChildTo(document.id("coordsizeExample100x200"));
 
             var workspace200x100 = coordSizeSampleBuilder(200, 100);
-            workspace200x100.addItAsChildTo($("coordsizeExample200x100"));
+            workspace200x100.addItAsChildTo(document.id("coordsizeExample200x100"));
 
             var dynamicWorkspace = coordSizeSampleBuilder(100, 100);
-            dynamicWorkspace.addItAsChildTo($("coordsizeExampleDynamic"));
+            dynamicWorkspace.addItAsChildTo(document.id("coordsizeExampleDynamic"));
 
             var size = 100;
             var executer = function() {
@@ -199,17 +199,17 @@
             };
 
             var workspace0x0 = coordOriginSampleBuilder(0, 0);
-            workspace0x0.addItAsChildTo($("coordorigin0x0"));
+            workspace0x0.addItAsChildTo(document.id("coordorigin0x0"));
 
             var workspace0x50 = coordOriginSampleBuilder(0, 50);
-            workspace0x50.addItAsChildTo($("coordorigin0x50"));
+            workspace0x50.addItAsChildTo(document.id("coordorigin0x50"));
 
             var workspace50x0 = coordOriginSampleBuilder(50, 0);
-            workspace50x0.addItAsChildTo($("coordorigin50x0"));
+            workspace50x0.addItAsChildTo(document.id("coordorigin50x0"));
 
             // Workspace animation changing the coordsize from (30,30) to (100,100)
             var dynamicWorkspace = coordOriginSampleBuilder(100, 100);
-            dynamicWorkspace.addItAsChildTo($("coordoriginExampleDynamic"));
+            dynamicWorkspace.addItAsChildTo(document.id("coordoriginExampleDynamic"));
 
             var x = 50;
             var y = 50;
