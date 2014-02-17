@@ -31,7 +31,7 @@ function setUp()
 {
     debug("Setting up workspace");
     workspace = new web2d.Workspace();
-    workspace.addItAsChildTo($("divWorkspace"));
+    workspace.addItAsChildTo(document.id("divWorkspace"));
 
     group = new web2d.Group();
     line = new web2d.Line();

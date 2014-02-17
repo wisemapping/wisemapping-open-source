@@ -70,9 +70,9 @@
             textot = text;
 
 
-            overflowWorkspace.addItAsChildTo($(owner));
+            overflowWorkspace.addItAsChildTo(document.id(owner));
 
-            var parent = $(owner);
+            var parent = document.id(owner);
             var span = document.createElement("span");
             span.setAttribute("id", "textoHTML" + iesimo);
             var textsize = text.offsetWidth;
@@ -129,7 +129,7 @@
 </table>
 <span>Text to Inspect: </span><input type="text" id="iesimo">
 <input type="button" value="Inspect"
-       onclick="alert(document.getElementById('textoHTML'+$('iesimo').value).offsetWidth);">
+       onclick="alert(document.getElementById('textoHTML'+document.id('iesimo').value).offsetWidth);">
 <input type="button" value="Zoom In" onclick="zoomIn()">
 </body>
 </html>

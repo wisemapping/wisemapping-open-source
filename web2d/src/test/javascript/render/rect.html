@@ -59,7 +59,7 @@
                 rect.setPosition(20, 20);
 
                 workspace.appendChild(rect);
-                workspace.addItAsChildTo($("rectExample"));
+                workspace.addItAsChildTo(document.id("rectExample"));
             }
             rectExampleTest();
 
@@ -78,7 +78,7 @@
                 workspace.setSize("500px", "550px");
                 workspace.setCoordOrigin(0, -4);
                 workspace.setCoordSize(500, 550);
-                workspace.addItAsChildTo($("roundRect"));
+                workspace.addItAsChildTo(document.id("roundRect"));
 
                 builder(workspace, 10, 50, 50);
 
