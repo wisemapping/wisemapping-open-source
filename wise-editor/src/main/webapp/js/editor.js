@@ -20,7 +20,7 @@ var designer = null;
 
 function buildDesigner(options) {
 
-    var container = $(options.container);
+    var container = document.id(options.container);
     $assert(container, 'container could not be null');
 
     // Register load events ...
@@ -92,7 +92,7 @@ function buildDesigner(options) {
     mindplot.PersistenceManager.init(persistence);
 
     // Register toolbar event ...
-    if ($('toolbar')) {
+    if ($('#toolbar')) {
         var menu = new mindplot.widget.Menu(designer, 'toolbar', options.mapId, "");
 
         //  If a node has focus, focus can be move to another node using the keys.
