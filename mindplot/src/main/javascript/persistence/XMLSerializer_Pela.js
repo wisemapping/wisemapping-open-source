@@ -251,7 +251,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         if (this._idsMap[id]) {
             id = null;
         } else {
-            this._idsMap[id] = domElem);
+            this._idsMap[id] = domElem;
         }
 
         var topic = mindmap.createNode(type, id);
