@@ -137,6 +137,7 @@ function loadDesignerOptions(jsonConf) {
     return result;
 }
 
+// @Todo: This must be reimplemented using JQuery ...
 editor = {};
 editor.WaitDialog = new Class({
     Extends:MooDialog,
