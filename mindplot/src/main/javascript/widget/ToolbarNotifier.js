@@ -19,18 +19,6 @@
 mindplot.widget.ToolbarNotifier = new Class({
 
     initialize:function () {
-        var container = document.id('headerNotifier');
-        // In case of print,embedded no message is displayed ....
-        if (container) {
-            this._effect = new Fx.Elements(container, {
-                onComplete:function () {
-                    container.setStyle('display', 'none');
-                }.bind(this),
-                link:'cancel',
-                duration:8000,
-                transition:Fx.Transitions.Expo.easeInOut
-            });
-        }
     },
 
     logError:function (userMsg) {
@@ -44,7 +32,7 @@ mindplot.widget.ToolbarNotifier = new Class({
     logMessage:function (msg, fade) {
         $assert(msg, 'msg can not be null');
 
-        var container = document.id('headerNotifier');
+        var container = $('#headerNotifier');
 
         // In case of print,embedded no message is displayed ....
         if (container) {
@@ -57,15 +45,9 @@ mindplot.widget.ToolbarNotifier = new Class({
             });
 
             if (!$defined(fade) || fade) {
-                this._effect.start({
-                    0:{
-                        opacity:[1, 0]
-                    }
-                });
-
+                this._effect = container.fadeIn('slow');
             } else {
-                container.setStyle('opacity', '1');
-                this._effect.pause();
+                this._effect = container.fadeIn(0);
             }
         }
     }
