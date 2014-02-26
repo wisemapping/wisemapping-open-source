@@ -636,7 +636,7 @@ public class MindmapController extends BaseController {
         mindmapService.removeLabel(mindmap, delegated);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/labels/maps", consumes = {"application/json"})
+    @RequestMapping(method = RequestMethod.POST, value = "/labels/maps", consumes = { "application/xml","application/json"})
     @ResponseStatus(value = HttpStatus.OK)
     public void addLabel(@RequestBody RestLabel restLabel, @RequestParam(required = true) String ids) throws WiseMappingException {
         int labelId = restLabel.getId();

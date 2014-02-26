@@ -2,6 +2,10 @@ package com.wisemapping.test.rest;
 
 
 import com.wisemapping.exceptions.WiseMappingException;
+import com.wisemapping.model.Label;
+import com.wisemapping.model.User;
+import com.wisemapping.rest.model.RestLabel;
+import com.wisemapping.rest.model.RestLabelList;
 import com.wisemapping.rest.model.RestMindmap;
 import com.wisemapping.rest.model.RestMindmapInfo;
 import com.wisemapping.rest.model.RestMindmapList;
@@ -24,6 +28,7 @@ import java.net.URI;
 import java.util.List;
 
 import static com.wisemapping.test.rest.RestHelper.BASE_REST_URL;
+import static com.wisemapping.test.rest.RestHelper.COLOR;
 import static com.wisemapping.test.rest.RestHelper.HOST_PORT;
 import static com.wisemapping.test.rest.RestHelper.createHeaders;
 import static com.wisemapping.test.rest.RestHelper.createTemplate;
@@ -237,6 +242,35 @@ public class RestMindmapITCase {
         final ResponseEntity<RestMindmap> response = template.exchange(HOST_PORT + resourceUri.toString(), HttpMethod.GET, findMapEntity, RestMindmap.class);
         assertEquals(response.getBody().getXml(), mapToUpdate.getXml());
         assertEquals(response.getBody().getProperties(), mapToUpdate.getProperties());
+    }
+
+    @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
+    public void addLabelToMindmap(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
+        final HttpHeaders requestHeaders = createHeaders(mediaType);
+        final RestTemplate template = createTemplate(userEmail);
+
+        // Create a new label
+        final String titleLabel = "Label 1  - " + mediaType.toString();
+        final URI labelUri = RestLabelITCase.addNewLabel(requestHeaders, template, titleLabel, COLOR);
+
+        // Create a sample map ...
+        final String mapTitle = "Maps 1  - " + mediaType.toString();
+        final URI mindmapUri = addNewMap(requestHeaders, template, mapTitle);
+        final String mapId = mindmapUri.getPath().replace("/service/maps/", "");
+
+        final RestLabel restLabel = new RestLabel();
+        restLabel.setColor(COLOR);
+        String labelId = labelUri.getPath().replace("/service/labels/", "");
+        restLabel.setId(Integer.parseInt(labelId));
+        restLabel.setTitle(titleLabel);
+
+        HttpEntity<RestLabel> labelEntity = new HttpEntity<>(restLabel, requestHeaders);
+        template.postForLocation(BASE_REST_URL + "/labels/maps?ids=" + mapId, labelEntity);
+
+        // Load map again ..
+        final RestMindmap withLabel = findMap(requestHeaders, template, mindmapUri);
+
+//        assertTrue(withLabel.getDelegated().getLabels().size() == 1);
     }
 
     private RestMindmap findMap(HttpHeaders requestHeaders, RestTemplate template, URI resourceUri) {
