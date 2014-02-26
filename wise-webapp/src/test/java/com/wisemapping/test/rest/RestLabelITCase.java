@@ -54,7 +54,7 @@ public class RestLabelITCase {
         // Check that the label has been created ...
         final RestLabelList restLabelList = getLabels(requestHeaders, template);
 
-        // Validate that the two maps are there ...
+        // Validate that the two labels are there ...
         final List<RestLabel> labels = restLabelList.getLabels();
 
         boolean found1 = false;
@@ -71,7 +71,7 @@ public class RestLabelITCase {
 
     }
 
-    private RestLabelList getLabels(HttpHeaders requestHeaders, RestTemplate template) {
+    static RestLabelList getLabels(HttpHeaders requestHeaders, RestTemplate template) {
         final HttpEntity findLabelEntity = new HttpEntity(requestHeaders);
         final ResponseEntity<RestLabelList> response = template.exchange(BASE_REST_URL + "/labels", HttpMethod.GET, findLabelEntity, RestLabelList.class);
         return response.getBody();
