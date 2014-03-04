@@ -25,57 +25,77 @@ import com.wisemapping.model.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public enum MindmapFilter {
-    ALL("all") {
+public abstract class MindmapFilter {
+
+    public static final MindmapFilter ALL = new MindmapFilter("all") {
         @Override
-        public boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
+        boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
             return true;
         }
-
-    },
-    MY_MAPS("my_maps") {
+    };
+    public static final MindmapFilter MY_MAPS = new MindmapFilter("my_maps") {
         @Override
         boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
             return mindmap.getCreator().identityEquality(user);
         }
-    },
-    STARRED("starred") {
+    };
+    public static final MindmapFilter STARRED = new MindmapFilter("starred") {
         @Override
         boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
             return mindmap.isStarred(user);
         }
-    },
-    SHARED_WITH_ME("shared_with_me") {
+    };
+    public static final MindmapFilter SHARED_WITH_ME = new MindmapFilter("shared_with_me") {
         @Override
         boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
             return !MY_MAPS.accept(mindmap, user);
         }
-    },
-    PUBLIC("public") {
+    };
+    public static final MindmapFilter PUBLIC = new MindmapFilter("public") {
         @Override
         boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
             return mindmap.isPublic();
         }
     };
 
-    private String id;
+    protected String id;
+    private static MindmapFilter[] values = {ALL, MY_MAPS, PUBLIC, STARRED, SHARED_WITH_ME};
 
-    MindmapFilter(@NotNull String id) {
+    private MindmapFilter(@NotNull String id) {
         this.id = id;
     }
 
-    static public MindmapFilter parse(@Nullable String valueStr) {
-        MindmapFilter result = ALL;
-        final MindmapFilter[] values = MindmapFilter.values();
-        for (MindmapFilter value : values) {
-            if (value.id.equals(valueStr)) {
-                result = value;
-                break;
+    static public MindmapFilter parse(@Nullable final String valueStr) {
+        MindmapFilter result = null;
+        if (valueStr != null) {
+            for (MindmapFilter value : MindmapFilter.values) {
+                if (value.id.equals(valueStr)) {
+                    result = value;
+                    break;
+                }
             }
+            // valueStr is not a default filter
+            if (result == null) {
+                result = new LabelFilter(valueStr);
+            }
+        } else {
+            result = ALL;
         }
         return result;
     }
 
     abstract boolean accept(@NotNull Mindmap mindmap, @NotNull User user);
+
+    private static final class LabelFilter extends MindmapFilter {
+
+        private LabelFilter(@NotNull String id) {
+            super(id);
+        }
+
+        @Override
+        boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
+            return mindmap.hasLabel(this.id);
+        }
+    }
 
 }

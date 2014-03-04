@@ -55,6 +55,23 @@
         <property name="target" ref="mindMapServiceTarget"/>
     </bean>
 
+
+    <bean id="labelServiceTarget" class="com.wisemapping.service.LabelServiceImpl">
+        <property name="labelManager" ref="labelManager"/>
+    </bean>
+
+    <bean id="labelService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager"/>
+        <property name="target">
+            <ref local="labelServiceTarget"/>
+        </property>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="host" value="${mail.smtp.host}"/>
         <property name="port" value="${mail.smtp.port}"/>
