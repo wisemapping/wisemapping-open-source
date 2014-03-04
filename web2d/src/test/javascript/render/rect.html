@@ -17,6 +17,8 @@
     </script>
 
     <script type="text/javascript" src="../mootools-core-1.4.5.js"></script>
+    <script type="text/javascript" src="../jquery-2.1.0.js"></script>
+
     <script type="text/javascript" src="../../../../../core-js/target/classes/core.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/ElementPeer.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/Element.js"></script>
@@ -57,7 +59,7 @@
                 var rect = new web2d.Rect();
                 rect.setPosition(20, 20);
 
-                workspace.appendChild(rect);
+                workspace.append(rect);
                 workspace.addItAsChildTo(document.id("rectExample"));
             }
             rectExampleTest();
@@ -68,7 +70,7 @@
                         var rect = new web2d.Rect(i / 10);
                         rect.setPosition(x, ((i - 1) * (50 + 5)));
                         rect.setSize(width, height);
-                        container.appendChild(rect);
+                        container.append(rect);
                     }
                 }
 

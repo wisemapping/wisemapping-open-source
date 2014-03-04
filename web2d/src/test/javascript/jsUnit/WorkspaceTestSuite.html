@@ -32,7 +32,7 @@ function setUp()
 {
     debug("Setting up workspace");
     workspace = new web2d.Workspace();
-    workspace.addItAsChildTo(document.id("divWorkspace"));
+    workspace.addItAsChildTo($('#divWorkspace').first());
 }
 
 function testGettersTest()
@@ -119,8 +119,8 @@ function testAppendAndRemoveTest()
     // Append elements ..
     var elipse = new web2d.Elipse();
     var group = new web2d.Group();
-    group.appendChild(elipse);
-    workspace.appendChild(group);
+    group.append(elipse);
+    workspace.append(group);
 
     // Remove elements ..
     workspace.removeChild(group);

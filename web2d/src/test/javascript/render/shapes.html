@@ -16,6 +16,8 @@
 </script>
 
 <script type="text/javascript" src="../mootools-core-1.4.5.js"></script>
+<script type="text/javascript" src="../jquery-2.1.0.js"></script>
+
 <script type="text/javascript" src="../../../../../core-js/target/classes/core.js"></script>
 <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/ElementPeer.js"></script>
 <script type="text/javascript" src="../../../../src/main/javascript/Element.js"></script>
@@ -58,7 +60,7 @@ function initialize() {
             rect.setPosition(xPosition, yPosition);
             rect.setFill('yellow');
             rect.setStroke(1, 'solid', 'black');
-            parent.appendChild(rect);
+            parent.append(rect);
 
             xPosition = xPosition + 90 * scale;
             rect = new web2d.Rect();
@@ -66,7 +68,7 @@ function initialize() {
             rect.setPosition(xPosition, yPosition);
             rect.setFill('yellow');
             rect.setStroke(strokeWidth, 'dot', 'black');
-            parent.appendChild(rect);
+            parent.append(rect);
 
             xPosition = xPosition + 90 * scale;
             rect = new web2d.Rect();
@@ -74,7 +76,7 @@ function initialize() {
             rect.setPosition(xPosition, yPosition);
             rect.setFill('yellow');
             rect.setStroke(strokeWidth, 'dash', 'black');
-            parent.appendChild(rect);
+            parent.append(rect);
 
             xPosition = xPosition + 90 * scale;
             rect = new web2d.Rect();
@@ -82,7 +84,7 @@ function initialize() {
             rect.setPosition(xPosition, yPosition);
             rect.setFill('yellow');
             rect.setStroke(strokeWidth, 'longdash', 'black');
-            parent.appendChild(rect);
+            parent.append(rect);
 
             xPosition = xPosition + 90 * scale;
             rect = new web2d.Rect();
@@ -90,7 +92,7 @@ function initialize() {
             rect.setPosition(xPosition, yPosition);
             rect.setFill('yellow');
             rect.setStroke(strokeWidth, 'dashdot', 'black');
-            parent.appendChild(rect);
+            parent.append(rect);
         }
 
         // Workspace with default scale ...
@@ -99,7 +101,7 @@ function initialize() {
         workspace.setCoordSize(500, 100);
         workspace.setCoordOrigin(0, 0);
         builder(workspace, 1, 1);
-        workspace.addItAsChildTo(document.id("strokeStyle"));
+        workspace.addItAsChildTo($('#strokeStyle'));
 
         // Workspace with modified scale ...
         workspace = new web2d.Workspace();
@@ -107,7 +109,7 @@ function initialize() {
         workspace.setCoordSize(5000, 1000);
         workspace.setCoordOrigin(0, 0);
         builder(workspace, 10, 1);
-        workspace.addItAsChildTo(document.id("strokeStyleGroup"));
+        workspace.addItAsChildTo($('#strokeStyleGroup'));
 
         // Workspace with default scale ...
         workspace = new web2d.Workspace();
@@ -115,7 +117,7 @@ function initialize() {
         workspace.setCoordSize(500, 100);
         workspace.setCoordOrigin(0, 0);
         builder(workspace, 1, 5);
-        workspace.addItAsChildTo(document.id("strokeStyleWidth"));
+        workspace.addItAsChildTo($('#strokeStyleWidth'));
 
 
     };
@@ -129,30 +131,30 @@ function initialize() {
 
         var rect = new web2d.Rect(0, {x:5,y:5,width:390,height:90,fillColor:'green',
             strokeColor:'black',strokeStyle:'solid',strokeWidth:1});
-        workspace.appendChild(rect);
+        workspace.append(rect);
 
         var rectAttributes = {width:60,height:60,fillColor:'yellow',strokeColor:'black',strokeStyle:'solid',strokeWidth:10};
         rect = new web2d.Rect(0, rectAttributes);
         rect.setPosition(20, 20);
         rect.setAttribute("strokeOpacity", 1);
-        workspace.appendChild(rect);
+        workspace.append(rect);
 
         rect = new web2d.Rect(0, rectAttributes);
         rect.setPosition(120, 20);
         rect.setAttribute("strokeOpacity", 0.5);
-        workspace.appendChild(rect);
+        workspace.append(rect);
 
         rect = new web2d.Rect(0, rectAttributes);
         rect.setPosition(220, 20);
         rect.setAttribute("strokeOpacity", 0.3);
-        workspace.appendChild(rect);
+        workspace.append(rect);
 
         rect = new web2d.Rect(0, rectAttributes);
         rect.setPosition(320, 20);
         rect.setAttribute("strokeOpacity", 0);
-        workspace.appendChild(rect);
+        workspace.append(rect);
 
-        workspace.addItAsChildTo(document.id("strokeOpacity"));
+        workspace.addItAsChildTo($('#strokeOpacity'));
     };
     strokeOpacityTest();
 
@@ -165,30 +167,30 @@ function initialize() {
 
         var rect = new web2d.Rect(0, {x:5,y:5,width:390,height:90,fillColor:'green',
             strokeColor:'black',strokeStyle:'solid',strokeWidth:4});
-        workspace.appendChild(rect);
+        workspace.append(rect);
 
         var rectAttributes = {width:60,height:60,fillColor:'yellow',strokeColor:'black',strokeStyle:'solid',strokeWidth:10};
         rect = new web2d.Rect(0, rectAttributes);
         rect.setPosition(20, 20);
         rect.setAttribute("fillOpacity", 1);
-        workspace.appendChild(rect);
+        workspace.append(rect);
 
         rect = new web2d.Rect(0, rectAttributes);
         rect.setPosition(120, 20);
         rect.setAttribute("fillOpacity", 0.5);
-        workspace.appendChild(rect);
+        workspace.append(rect);
 
         rect = new web2d.Rect(0, rectAttributes);
         rect.setPosition(220, 20);
         rect.setAttribute("fillOpacity", 0.3);
-        workspace.appendChild(rect);
+        workspace.append(rect);
 
         rect = new web2d.Rect(0, rectAttributes);
         rect.setPosition(320, 20);
         rect.setAttribute("fillOpacity", 0);
-        workspace.appendChild(rect);
+        workspace.append(rect);
 
-        workspace.addItAsChildTo(document.id("fillOpacity"));
+        workspace.addItAsChildTo($('#fillOpacity'));
     };
     fillOpacityTest();
 
@@ -201,30 +203,30 @@ function initialize() {
 
         var rect = new web2d.Rect(0, {x:5,y:5,width:390,height:90,fillColor:'green',
             strokeColor:'black',strokeStyle:'solid',strokeWidth:4});
-        workspace.appendChild(rect);
+        workspace.append(rect);
 
         var rectAttributes = {width:60,height:60,fillColor:'yellow',strokeColor:'black',strokeStyle:'solid',strokeWidth:10};
         rect = new web2d.Rect(0, rectAttributes);
         rect.setPosition(20, 20);
         rect.setOpacity(0.8);
-        workspace.appendChild(rect);
+        workspace.append(rect);
 
         rect = new web2d.Rect(0, rectAttributes);
         rect.setPosition(120, 20);
         rect.setOpacity(0.5);
-        workspace.appendChild(rect);
+        workspace.append(rect);
 
         rect = new web2d.Rect(0, rectAttributes);
         rect.setPosition(220, 20);
         rect.setOpacity(0.3);
-        workspace.appendChild(rect);
+        workspace.append(rect);
 
         rect = new web2d.Rect(0, rectAttributes);
         rect.setPosition(320, 20);
         rect.setOpacity(0);
-        workspace.appendChild(rect);
+        workspace.append(rect);
 
-        workspace.addItAsChildTo(document.id("opacity"));
+        workspace.addItAsChildTo($('#opacity'));
     };
     opacityTest();
 
@@ -238,7 +240,7 @@ function initialize() {
         var rectAttributes = {width:60,height:60,fillColor:'green',strokeColor:'black',strokeStyle:'solid',strokeWidth:10};
         var rect = new web2d.Rect(0, rectAttributes);
         rect.setPosition(120, 20);
-        workspace.appendChild(rect);
+        workspace.append(rect);
         rect.addEvent("mouseover", function() {
             alert("Mouse Over");
         });
@@ -250,7 +252,7 @@ function initialize() {
         };
         executer.periodical(100);
 
-        workspace.addItAsChildTo(document.id("visibility"));
+        workspace.addItAsChildTo($('#visibility'));
     };
     visibilityTest();
 }

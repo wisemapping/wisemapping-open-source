@@ -63,15 +63,15 @@
             arrow.setFrom(50,50);
             arrow.setControlPoint(new core.Point(-50,0));
 
-            overflowWorkspace.appendChild(arrow);
+            overflowWorkspace.append(arrow);
 
             var arrow2 = new web2d.Arrow();
             arrow2.setFrom(100,50);
             arrow2.setControlPoint(new core.Point(50,50));
 
-            overflowWorkspace.appendChild(arrow2);
+            overflowWorkspace.append(arrow2);
 
-            overflowWorkspace.addItAsChildTo(document.id("overflowExample"));
+            overflowWorkspace.addItAsChildTo($('#overflowExample').first());
 
         }
     </script>

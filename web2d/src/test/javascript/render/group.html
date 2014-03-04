@@ -16,6 +16,8 @@
     </script>
 
     <script type="text/javascript" src="../mootools-core-1.4.5.js"></script>
+    <script type="text/javascript" src="../jquery-2.1.0.js"></script>
+
     <script type="text/javascript" src="../../../../../core-js/target/classes/core.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/ElementPeer.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/Element.js"></script>
@@ -58,24 +60,24 @@
             group.setPosition(25, 50);
             group.setCoordSize(200, 200);
             group.setCoordOrigin(0, 0);
-            workspace.appendChild(group);
+            workspace.append(group);
 
             var elipse = new web2d.Elipse();
             elipse.setSize(200, 200);
             elipse.setPosition(100, 100);
-            group.appendChild(elipse);
+            group.append(elipse);
 
             var line = new web2d.Line();
             line.setFrom(0, 0);
             line.setTo(200, 200);
             line.setStroke("blue");
-            group.appendChild(line);
+            group.append(line);
 
             line = new web2d.Line();
             line.setFrom(200, 0);
             line.setTo(0, 200);
             line.setStroke("blue");
-            group.appendChild(line);
+            group.append(line);
 
             workspace.addItAsChildTo(document.id("groupBasicContainer"));
 
@@ -119,17 +121,17 @@
 
             var groupAttributes = {width:50,height:50,x:25,y:50,coordSize:'200 200',coordOrigin:'0 0'};
             var group = new web2d.Group(groupAttributes);
-            workspace.appendChild(group);
+            workspace.append(group);
 
             var elipseLeft = new web2d.Elipse();
             elipseLeft.setSize(200, 200)
             elipseLeft.setPosition(200, 0)
-            group.appendChild(elipseLeft);
+            group.append(elipseLeft);
 
             var elipseRight = new web2d.Elipse();
             elipseRight.setSize(200, 200)
             elipseRight.setPosition(0, 0)
-            group.appendChild(elipseRight);
+            group.append(elipseRight);
 
             var listener = function(e) {
                 alert("Click event on:" + this.getType())
@@ -154,49 +156,49 @@
             groupOuter.setPosition(25, 25);
             groupOuter.setCoordSize(100, 100);
             groupOuter.setCoordOrigin(0, 0)
-            workspace.appendChild(groupOuter);
+            workspace.append(groupOuter);
 
             var elipseOuter = new web2d.Elipse();
             elipseOuter.setSize(200, 200);
             elipseOuter.setPosition(100, 100);
             elipseOuter.setFill("red");
-            groupOuter.appendChild(elipseOuter);
+            groupOuter.append(elipseOuter);
 
             var line = new web2d.Line();
             line.setFrom(0, 0);
             line.setTo(200, 200);
             line.setStroke("red");
-            groupOuter.appendChild(line);
+            groupOuter.append(line);
 
             var line = new web2d.Line();
             line.setFrom(200, 0);
             line.setTo(0, 200);
             line.setStroke("red");
-            groupOuter.appendChild(line);
+            groupOuter.append(line);
 
             var groupInner = new web2d.Group();
             groupInner.setSize(50, 50);
             groupInner.setPosition(25, 25);
             groupInner.setCoordSize(100, 100);
             groupInner.setCoordOrigin(0, 0);
-            groupOuter.appendChild(groupInner);
+            groupOuter.append(groupInner);
 
             var elipse = new web2d.Elipse();
             elipse.setSize(200, 200);
             elipse.setPosition(100, 100);
-            groupInner.appendChild(elipse);
+            groupInner.append(elipse);
 
             var line = new web2d.Line();
             line.setFrom(0, 0);
             line.setTo(200, 200);
             line.setStroke("blue");
-            groupInner.appendChild(line);
+            groupInner.append(line);
 
             var line = new web2d.Line();
             line.setFrom(200, 0);
             line.setTo(0, 200);
             line.setStroke("blue");
-            groupInner.appendChild(line);
+            groupInner.append(line);
 
             workspace.addItAsChildTo(document.id("groupNestedContainer"));
         };
@@ -216,19 +218,19 @@
                 elipseOuter = new web2d.Elipse();
                 elipseOuter.setPosition(50, 50);
                 elipseOuter.setSize(50, 50);
-                workspace.appendChild(elipseOuter);
+                workspace.append(elipseOuter);
 
                 var group = new web2d.Group();
                 group.setSize(50, 50);
                 group.setCoordSize(width, height);
                 group.setPosition(25, 25);
-                workspace.appendChild(group);
+                workspace.append(group);
 
                 elipseInner = new web2d.Elipse();
                 elipseInner.setPosition(50, 50);
                 elipseInner.setSize(50, 50);
                 elipseInner.setFill("red");
-                group.appendChild(elipseInner);
+                group.append(elipseInner);
 
                 return workspace;
             }
@@ -257,20 +259,20 @@
                 elipseOuter = new web2d.Elipse();
                 elipseOuter.setPosition(50, 50);
                 elipseOuter.setSize(50, 50);
-                workspace.appendChild(elipseOuter);
+                workspace.append(elipseOuter);
 
                 var group = new web2d.Group();
                 group.setSize(50, 50);
                 group.setCoordSize(100, 100);
                 group.setCoordOrigin(x, y);
                 group.setPosition(25, 25);
-                workspace.appendChild(group);
+                workspace.append(group);
 
                 elipseInner = new web2d.Elipse();
                 elipseInner.setPosition(50, 50);
                 elipseInner.setSize(50, 50);
                 elipseInner.setFill("red");
-                group.appendChild(elipseInner);
+                group.append(elipseInner);
 
                 return workspace;
             }
@@ -303,7 +305,7 @@
             group.addEvent("mouseover", function() {
                 alert("Mouse Over Group");
             });
-            workspace.appendChild(group);
+            workspace.append(group);
 
             elipseOuter = new web2d.Elipse();
             elipseOuter.setPosition(50, 50);
@@ -311,13 +313,13 @@
             group.addEvent("mouseover", function() {
                 alert("Mouse Over elipseOuter");
             });
-            group.appendChild(elipseOuter);
+            group.append(elipseOuter);
 
             elipseInner = new web2d.Elipse();
             elipseInner.setPosition(50, 50);
             elipseInner.setSize(25, 25);
             elipseInner.setFill("red");
-            group.appendChild(elipseInner);
+            group.append(elipseInner);
 
             var isVisible = true;
             var executer = function()
@@ -342,18 +344,18 @@
             group.setSize(100, 100);
             group.setPosition(0, 0);
             group.setCoordSize(100, 100);
-            workspace.appendChild(group);
+            workspace.append(group);
 
             elipseOuter = new web2d.Elipse();
             elipseOuter.setPosition(50, 50);
             elipseOuter.setSize(50, 50);
-            group.appendChild(elipseOuter);
+            group.append(elipseOuter);
 
             elipseInner = new web2d.Elipse();
             elipseInner.setPosition(50, 50);
             elipseInner.setSize(25, 25);
             elipseInner.setFill("red");
-            group.appendChild(elipseInner);
+            group.append(elipseInner);
 
             var width = 10;
             var height = 10;
