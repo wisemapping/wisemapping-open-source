@@ -51,19 +51,6 @@
                                         <include>${basedir}/target/tmp/header-min.js</include>
                                         <include>${basedir}/target/tmp/Functions-min.js</include>
                                         <include>${basedir}/target/tmp/Utils-min.js</include>
-                                        <!-- @Todo:Review this -->
-                                        <include>
-                                            ${basedir}/../mindplot/src/main/javascript/libraries/moodialog/Overlay.js
-                                        </include>
-                                        <include>
-                                            ${basedir}/../mindplot/src/main/javascript/libraries/moodialog/MooDialog.js
-                                        </include>
-                                        <include>
-                                            ${basedir}/../mindplot/src/main/javascript/libraries/moodialog/MooDialog.Request.js
-                                        </include>
-                                        <include>
-                                            ${basedir}/../mindplot/src/main/javascript/libraries/moodialog/MooDialog.Fx.js
-                                        </include>
                                     </includes>
                                 </aggregation>
                             </aggregations>
