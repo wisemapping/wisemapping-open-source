@@ -20,38 +20,29 @@ package com.wisemapping.test.rest;
 
 
 import com.wisemapping.rest.model.RestUser;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.security.crypto.codec.Base64;
 import org.springframework.web.client.RestTemplate;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
+import static com.wisemapping.test.rest.RestHelper.ADMIN_CREDENTIALS;
+import static com.wisemapping.test.rest.RestHelper.BASE_REST_URL;
+import static com.wisemapping.test.rest.RestHelper.HOST_PORT;
+import static com.wisemapping.test.rest.RestHelper.createHeaders;
+import static com.wisemapping.test.rest.RestHelper.createTemplate;
 import static org.testng.Assert.assertEquals;
 
 
 @Test
 public class RestAccountITCase {
 
-    @NonNls
-    private static final String HOST_PORT = "http://localhost:8080";
-    private static final String BASE_REST_URL = HOST_PORT + "/service";
-    private static final String ADMIN_CREDENTIALS = "admin@wisemapping.org" + ":" + "admin";
-
-
-    @Test(dataProvider = "ContentType-Provider-Function")
+    @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
     public void deleteUser(final @NotNull MediaType mediaType) {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate adminTemplate = createTemplate(ADMIN_CREDENTIALS);
@@ -115,30 +106,6 @@ public class RestAccountITCase {
         return templateRest.postForLocation(BASE_REST_URL + "/admin/users", createUserEntity);
     }
 
-    private HttpHeaders createHeaders(@NotNull MediaType mediaType) {
-        List<MediaType> acceptableMediaTypes = new ArrayList<MediaType>();
-        acceptableMediaTypes.add(mediaType);
-
-        final HttpHeaders result = new HttpHeaders();
-        result.setAccept(acceptableMediaTypes);
-        result.setContentType(mediaType);
-        return result;
-    }
-
-    private RestTemplate createTemplate(@NotNull final String authorisation) {
-        SimpleClientHttpRequestFactory s = new SimpleClientHttpRequestFactory() {
-            @Override
-            protected void prepareConnection(HttpURLConnection connection, String httpMethod) throws IOException {
-                super.prepareConnection(connection, httpMethod);
-
-                byte[] encodedAuthorisation = Base64.encode(authorisation.getBytes());
-                connection.setRequestProperty("Authorization", "Basic " + new String(encodedAuthorisation));
-            }
-
-        };
-        return new RestTemplate(s);
-    }
-
     private RestUser createDummyUser() {
         final RestUser restUser = new RestUser();
         final String username = "foo-to-delete" + System.nanoTime();
@@ -150,9 +117,4 @@ public class RestAccountITCase {
         return restUser;
     }
 
-
-    @DataProvider(name = "ContentType-Provider-Function")
-    public Object[][] contentTypes() {
-        return new Object[][]{{MediaType.APPLICATION_XML}, {MediaType.APPLICATION_JSON}};
-    }
 }
