@@ -26,8 +26,8 @@ mindplot.MultilineTextEditor = new Class({
     _buildEditor:function () {
 
         var result = new Element('div');
+        result.set('id',"textContainer")
         result.setStyles({
-                position:"absolute",
                 display:"none",
                 zIndex:"8",
                 overflow:"hidden",
@@ -192,10 +192,14 @@ mindplot.MultilineTextEditor = new Class({
         var displayFunc = function () {
             // Position the editor and set the size...
             var textShape = topic.getTextShape();
-            textShape.positionRelativeTo(this._containerElem, {
-                position:{x:'left', y:'top'},
-                edge:{x:'left', y:'top'}
+
+            $('#textContainer')[0].position({
+                my:        "left top",
+                at:        "left bottom",
+                of:        $(textShape)[0]
+//                collision: "fit"
             });
+
             this._containerElem.setStyle('display', 'block');
 
             // Set editor's initial text ...

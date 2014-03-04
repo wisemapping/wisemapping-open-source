@@ -52,7 +52,7 @@ web2d.peer.svg.ElementPeer = new Class({
         this._parent = parent;
     },
 
-    appendChild:function (elementPeer) {
+    append:function (elementPeer) {
         // Store parent and child relationship.
         elementPeer.setParent(this);
         var children = this.getChildren();
@@ -86,7 +86,7 @@ web2d.peer.svg.ElementPeer = new Class({
      * http://developer.mozilla.org/en/docs/addEvent
      */
     addEvent:function (type, listener) {
-        this._native.addEvent(type, listener);
+        $(this._native).bind(type, listener);
     },
 
     fireEvent:function (type, event) {
@@ -98,7 +98,7 @@ web2d.peer.svg.ElementPeer = new Class({
     },
 
     removeEvent:function (type, listener) {
-        this._native.removeEvent(type, listener);
+        $(this._native).unbind(type, listener);
     },
 
     setSize:function (width, height) {
@@ -214,12 +214,12 @@ web2d.peer.svg.ElementPeer = new Class({
         return listeners;
     },
 
-    positionRelativeTo:function (elem, options) {
-        options = !$defined(options) ? {} : options;
-        options['relativeTo'] = document.id(this._native);
-        elem.position(options);
-    },
-
+//    positionRelativeTo:function (elem, options) {
+//        options = !$defined(options) ? {} : options;
+//        options['relativeTo'] = document.id(this._native);
+//        elem.position(options);
+//    },
+//
 
     /**
      * Move element to the front

@@ -17,27 +17,27 @@
  */
 
 web2d.Workspace = new Class({
-    Extends:web2d.Element,
-    initialize:function(attributes) {
+    Extends: web2d.Element,
+    initialize: function (attributes) {
         this._htmlContainer = this._createDivContainer();
 
         var peer = web2d.peer.Toolkit.createWorkspace(this._htmlContainer);
-        var defaultAttributes = {width:'200px',height:'200px',stroke:'1px solid #edf1be',
-            fillColor:"white",coordOrigin:'0 0',coordSize:'200 200' };
+        var defaultAttributes = {width: '200px', height: '200px', stroke: '1px solid #edf1be',
+            fillColor: "white", coordOrigin: '0 0', coordSize: '200 200' };
         for (var key in attributes) {
             defaultAttributes[key] = attributes[key];
         }
         this.parent(peer, defaultAttributes);
-        this._htmlContainer.appendChild(this._peer._native);
+        this._htmlContainer.append(this._peer._native);
     },
 
-    getType : function() {
+    getType: function () {
         return "Workspace";
     },
     /**
      * Appends an element as a child to the object.
      */
-    appendChild : function(element) {
+    append: function (element) {
         if (!$defined(element)) {
             throw "Child element can not be null";
         }
@@ -50,20 +50,20 @@ web2d.Workspace = new Class({
             throw "A workspace can not have a workspace as a child";
         }
 
-        this._peer.appendChild(element._peer);
+        this._peer.append(element._peer);
     },
 
-    addItAsChildTo : function(element) {
+    addItAsChildTo: function (element) {
         if (!$defined(element)) {
             throw "Workspace div container can not be null";
         }
-        element.appendChild(this._htmlContainer);
+        element.append(this._htmlContainer);
     },
 
     /**
      * Create a new div element that will be responsible for containing the workspace elements.
      */
-    _createDivContainer : function(domElement) {
+    _createDivContainer: function () {
         var container = window.document.createElement("div");
         container.id = "workspaceContainer";
 //        container.style.overflow = "hidden";
@@ -73,7 +73,7 @@ web2d.Workspace = new Class({
         container.style.height = "688px";
         container.style.border = '1px solid red';
 
-        return container;
+        return $(container);
     },
 
     /**
@@ -84,15 +84,15 @@ web2d.Workspace = new Class({
      * pt (points; 1pt=1/72in)
      * pc (picas; 1pc=12pt)
      */
-    setSize : function(width, height) {
+    setSize: function (width, height) {
         // HTML container must have the size of the group element.
         if ($defined(width)) {
-            this._htmlContainer.style.width = width;
+            this._htmlContainer.css('width', width);
 
         }
 
         if ($defined(height)) {
-            this._htmlContainer.style.height = height;
+            this._htmlContainer.css('height', height);
         }
         this._peer.setSize(width, height);
     },
@@ -104,21 +104,21 @@ web2d.Workspace = new Class({
      * Consequently CSS2 position attributes (left, top, width, height and so on) have no unit specifier -
      * they are simple numbers, not CSS length quantities.
      */
-    setCoordSize : function(width, height) {
+    setCoordSize: function (width, height) {
         this._peer.setCoordSize(width, height);
     },
 
     /**
      * @Todo: Complete Doc
      */
-    setCoordOrigin : function(x, y) {
+    setCoordOrigin: function (x, y) {
         this._peer.setCoordOrigin(x, y);
     },
 
     /**
      * @Todo: Complete Doc
      */
-    getCoordOrigin : function() {
+    getCoordOrigin: function () {
         return this._peer.getCoordOrigin();
     },
 
@@ -127,34 +127,34 @@ web2d.Workspace = new Class({
     /**
      * All the SVG elements will be children of this HTML element.
      */
-    _getHtmlContainer : function() {
+    _getHtmlContainer: function () {
         return this._htmlContainer;
     },
 
-    setFill : function(color, opacity) {
-        this._htmlContainer.style.backgroundColor = color;
+    setFill: function (color, opacity) {
+        this._htmlContainer.css('background-color', color);
         if (opacity || opacity === 0) {
             throw "Unsupported operation. Opacity not supported.";
         }
     },
 
-    getFill : function() {
-        var color = this._htmlContainer.style.backgroundColor;
-        return {color:color};
+    getFill: function () {
+        var color = this._htmlContainer.css('background-color');
+        return {color: color};
     },
 
 
-    getSize : function() {
-        var width = this._htmlContainer.style.width;
-        var height = this._htmlContainer.style.height;
-        return {width:width,height:height};
+    getSize: function () {
+        var width = this._htmlContainer.css('width');
+        var height = this._htmlContainer.css('height');
+        return {width: width, height: height};
     },
 
-    setStroke : function(width, style, color, opacity) {
+    setStroke: function (width, style, color, opacity) {
         if (style != 'solid') {
             throw 'Not supported style stroke style:' + style;
         }
-        this._htmlContainer.style.border = width + ' ' + style + ' ' + color;
+        this._htmlContainer.css('border',width + ' ' + style + ' ' + color);
 
         if (opacity || opacity === 0) {
             throw "Unsupported operation. Opacity not supported.";
@@ -162,14 +162,14 @@ web2d.Workspace = new Class({
     },
 
 
-    getCoordSize : function() {
+    getCoordSize: function () {
         return this._peer.getCoordSize();
     },
 
     /**
      * Remove an element as a child to the object.
      */
-    removeChild : function(element) {
+    removeChild: function (element) {
         if (!$defined(element)) {
             throw "Child element can not be null";
         }
@@ -186,7 +186,7 @@ web2d.Workspace = new Class({
         this._peer.removeChild(element._peer);
     },
 
-    dumpNativeChart : function() {
+    dumpNativeChart: function () {
         var elem = this._htmlContainer
         return elem.innerHTML;
     }

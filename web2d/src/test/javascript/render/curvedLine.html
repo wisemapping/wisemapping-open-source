@@ -20,6 +20,8 @@
     </script>
 
     <script type="text/javascript" src="../mootools-core-1.4.5.js"></script>
+    <script type="text/javascript" src="../jquery-2.1.0.js"></script>
+
     <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/ElementPeer.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/Element.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/Workspace.js"></script>
@@ -61,7 +63,7 @@
             line1.setTo(100, 100);
             line1.setSrcControlPoint(new core.Point(-100, 0));
             line1.setDestControlPoint(new core.Point(100, 0));
-            overflowWorkspace.appendChild(line1);
+            overflowWorkspace.append(line1);
 
             var line2 = new web2d.CurvedLine();
             line2.setStyle(web2d.CurvedLine.NICE_LINE);
@@ -69,9 +71,9 @@
             line2.setTo(150, 90);
             line2.setSrcControlPoint(new core.Point(100, 0));
             line2.setDestControlPoint(new core.Point(-100, 0));
-            overflowWorkspace.appendChild(line2);
+            overflowWorkspace.append(line2);
 
-            overflowWorkspace.addItAsChildTo(document.id("overflowExample"));
+            overflowWorkspace.addItAsChildTo($('#overflowExample').first());
 
         }
     </script>

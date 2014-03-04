@@ -26,12 +26,12 @@ function buildDesigner(options) {
     // Register load events ...
     designer = new mindplot.Designer(options, container);
     designer.addEvent('loadSuccess', function () {
-        window.waitDialog.close.delay(1000, window.waitDialog);
-        window.waitDialog = null;
+//        window.waitDialog.close.delay(1000, window.waitDialog);
+//        window.waitDialog = null;
         window.mindmapLoadReady = true;
     });
 
-    window.onerror = function (message, url, lineNo) {
+    var onerrorFn = function (message, url, lineNo) {
 
         // Ignore errors ...
         if (message === "Script error." && lineNo == 0) {
@@ -75,6 +75,9 @@ function buildDesigner(options) {
             $notifyModal($msg('UNEXPECTED_ERROR_LOADING'));
         }
     };
+
+    // @Todo: Remove this after all is fixed.
+//    window.onerror = onerrorFn;
 
     // Configure default persistence manager ...
     var persistence;
@@ -139,81 +142,81 @@ function loadDesignerOptions(jsonConf) {
 
 // @Todo: This must be reimplemented using JQuery ...
 editor = {};
-editor.WaitDialog = new Class({
-    Extends:MooDialog,
-    initialize:function () {
-        var panel = this._buildPanel();
-        this.parent({
-                closeButton:false,
-                destroyOnClose:true,
-                autoOpen:false,
-                useEscKey:false,
-                title:'',
-                onInitialize:function (wrapper) {
-                    wrapper.setStyle('opacity', 0);
-                    this.wrapper.setStyle('display', 'none');
-                    this.fx = new Fx.Morph(wrapper, {
-                        duration:100,
-                        transition:Fx.Transitions.Bounce.easeOut
-                    });
-                },
-
-                onBeforeOpen:function () {
-                    this.overlay = new Overlay(this.options.inject, {
-                        duration:this.options.duration
-                    });
-                    this.overlay.open();
-                    this.fx.start({
-                        'margin-top':[-200, -100],
-                        opacity:[0, 1]
-                    }).chain(function () {
-                        this.fireEvent('show');
-                        this.wrapper.setStyle('display', 'block');
-
-                    }.bind(this));
-                },
-
-                onBeforeClose:function () {
-                    this.fx.start({
-                        'margin-top':[-100, 0],
-                        opacity:0,
-                        duration:200
-                    }).chain(function () {
-                        this.fireEvent('hide');
-                        this.wrapper.setStyle('display', 'none');
-
-                    }.bind(this));
-                }}
-        );
-        this.setContent(panel);
-    },
-
-    _buildPanel:function () {
-        var result = new Element('div');
-        result.setStyles({
-            'text-align':'center',
-            width:'400px'
-        });
-        var img = new Element('img', {'src':'images/ajax-loader.gif'});
-        img.setStyle('margin-top', '15px');
-        img.inject(result);
-        return result;
-    },
-
-    show:function () {
-        this.open();
-    },
-
-    destroy:function () {
-        this.parent();
-        this.overlay.destroy();
-    }
-
-});
+//editor.WaitDialog = new Class({
+//    Extends:MooDialog,
+//    initialize:function () {
+//        var panel = this._buildPanel();
+//        this.parent({
+//                closeButton:false,
+//                destroyOnClose:true,
+//                autoOpen:false,
+//                useEscKey:false,
+//                title:'',
+//                onInitialize:function (wrapper) {
+//                    wrapper.setStyle('opacity', 0);
+//                    this.wrapper.setStyle('display', 'none');
+//                    this.fx = new Fx.Morph(wrapper, {
+//                        duration:100,
+//                        transition:Fx.Transitions.Bounce.easeOut
+//                    });
+//                },
+//
+//                onBeforeOpen:function () {
+//                    this.overlay = new Overlay(this.options.inject, {
+//                        duration:this.options.duration
+//                    });
+//                    this.overlay.open();
+//                    this.fx.start({
+//                        'margin-top':[-200, -100],
+//                        opacity:[0, 1]
+//                    }).chain(function () {
+//                        this.fireEvent('show');
+//                        this.wrapper.setStyle('display', 'block');
+//
+//                    }.bind(this));
+//                },
+//
+//                onBeforeClose:function () {
+//                    this.fx.start({
+//                        'margin-top':[-100, 0],
+//                        opacity:0,
+//                        duration:200
+//                    }).chain(function () {
+//                        this.fireEvent('hide');
+//                        this.wrapper.setStyle('display', 'none');
+//
+//                    }.bind(this));
+//                }}
+//        );
+//        this.setContent(panel);
+//    },
+//
+//    _buildPanel:function () {
+//        var result = new Element('div');
+//        result.setStyles({
+//            'text-align':'center',
+//            width:'400px'
+//        });
+//        var img = new Element('img', {'src':'images/ajax-loader.gif'});
+//        img.setStyle('margin-top', '15px');
+//        img.inject(result);
+//        return result;
+//    },
+//
+//    show:function () {
+//        this.open();
+//    },
+//
+//    destroy:function () {
+//        this.parent();
+//        this.overlay.destroy();
+//    }
+//
+//});
 
 // Show loading dialog ...
-waitDialog = new editor.WaitDialog();
-waitDialog.show();
+//waitDialog = new editor.WaitDialog();
+//waitDialog.show();
 
 // Loading libraries ...
 Asset.javascript("js/mindplot-min.js");

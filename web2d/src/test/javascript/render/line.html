@@ -16,6 +16,8 @@
     </script>
 
     <script type="text/javascript" src="../mootools-core-1.4.5.js"></script>
+    <script type="text/javascript" src="../jquery-2.1.0.js"></script>
+
     <script type="text/javascript" src="../../../../../core-js/target/classes/core.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/ElementPeer.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/Element.js"></script>
@@ -53,16 +55,16 @@
             rect.setSize(10, 10);
             rect.setStroke(0);
             rect.setPosition(250, 5);
-            strokeWidthWorkspace.appendChild(rect);
+            strokeWidthWorkspace.append(rect);
 
             for (var i = 0; i <= 10; i++) {
                 var line = new web2d.Line();
                 line.setFrom(5 + (i * 25), 5);
                 line.setTo(5 + (i * 25), 45);
                 line.setAttribute('strokeWidth', i + 1);
-                strokeWidthWorkspace.appendChild(line);
+                strokeWidthWorkspace.append(line);
             }
-            strokeWidthWorkspace.appendChild(rect);
+            strokeWidthWorkspace.append(rect);
 
             strokeWidthWorkspace.addItAsChildTo(document.id("strokeWidthSample"));
 
@@ -74,7 +76,7 @@
                 line.setAttribute('strokeWidth', 2);
                 line.setAttribute('strokeOpacity', 1 / (i + 1));
                 line.setAttribute('strokeColor', 'red');
-                strokeOpacityWorkspace.appendChild(line);
+                strokeOpacityWorkspace.append(line);
             }
             strokeOpacityWorkspace.addItAsChildTo(document.id("strokeOpacitySample"));
 
@@ -87,7 +89,7 @@
                 line.setAttribute('strokeWidth', 2);
                 line.setAttribute('strokeColor', 'red');
                 line.setAttribute('strokeStyle', styles[i]);
-                strokeStyleWorkspace.appendChild(line);
+                strokeStyleWorkspace.append(line);
             }
             strokeStyleWorkspace.addItAsChildTo(document.id("strokeStyleSample"));
 
@@ -100,7 +102,7 @@
                 line.setAttribute('strokeWidth', 2);
                 line.setAttribute('strokeColor', 'red');
                 line.setArrowStyle(styles[i]);
-                strokeArrowWorkspace.appendChild(line);
+                strokeArrowWorkspace.append(line);
             }
             strokeArrowWorkspace.addItAsChildTo(document.id("strokeArrowSample"));
         }

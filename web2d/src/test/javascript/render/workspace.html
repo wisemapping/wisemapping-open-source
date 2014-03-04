@@ -16,8 +16,9 @@
     web2d.peer.utils = {};
 </script>
 
-<script type="text/javascript"
-        src="../mootools-core-1.4.5.js"></script>
+<script type="text/javascript" src="../mootools-core-1.4.5.js"></script>
+<script type="text/javascript" src="../jquery-2.1.0.js"></script>
+
 <script type="text/javascript" src="../../../../../core-js/target/classes/core.js"></script>
 <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/ElementPeer.js"></script>
 <script type="text/javascript" src="../../../../src/main/javascript/Element.js"></script>
@@ -54,23 +55,23 @@
         var elipse1 = new web2d.Elipse();
         elipse1.setSize(200, 200);
         elipse1.setPosition(0, 0);
-        overflowWorkspace.appendChild(elipse1);
+        overflowWorkspace.append(elipse1);
         overflowWorkspace.addItAsChildTo(document.id("overflowExample"));
 
 
-        var workspacePosition = function() {
+        var workspacePosition = function () {
 
-            var elipseAttr = {width:100,height:100,x:100,y:100};
+            var elipseAttr = {width: 100, height: 100, x: 100, y: 100};
 
             var divElem = document.id("positionExample");
             var workPosition = new web2d.Workspace();
             workPosition.setSize("100px", "100px");
             elipse = new web2d.Elipse(elipseAttr);
-            workPosition.appendChild(elipse);
+            workPosition.append(elipse);
             workPosition.addItAsChildTo(divElem);
 
             var x = 100;
-            var executer = function() {
+            var executer = function () {
                 x = (x + 10) % 100;
                 divElem.style.left = x + "px";
             };
@@ -92,7 +93,7 @@
         elipse.setSize(100, 100);
         elipse.setPosition(100, 100);
 
-        workspacePixel.appendChild(elipse);
+        workspacePixel.append(elipse);
         workspacePixel.addItAsChildTo(document.id("sizeExamplePixels"));
 
         var workspaceInchs = new web2d.Workspace();
@@ -101,36 +102,36 @@
         elipse.setSize(100, 100);
         elipse.setPosition(100, 100);
 
-        workspaceInchs.appendChild(elipse);
+        workspaceInchs.append(elipse);
         workspaceInchs.addItAsChildTo(document.id("sizeExampleInch"));
 
 
-        var workspaceCoordSizeSample = function() {
+        var workspaceCoordSizeSample = function () {
             // Workspace with CoordSize(100,100);
-            var coordSizeSampleBuilder = function(width, height) {
+            var coordSizeSampleBuilder = function (width, height) {
                 var workspace = new web2d.Workspace();
                 workspace.setSize("100px", "100px");
                 workspace.setCoordSize(width, height);
 
                 elipse = new web2d.Elipse();
                 elipse.setPosition(50, 50);
-                workspace.appendChild(elipse);
+                workspace.append(elipse);
 
                 elipse = new web2d.Elipse();
                 elipse.setPosition(0, 0);
-                workspace.appendChild(elipse);
+                workspace.append(elipse);
 
                 elipse = new web2d.Elipse();
                 elipse.setPosition(0, 100);
-                workspace.appendChild(elipse);
+                workspace.append(elipse);
 
                 elipse = new web2d.Elipse();
                 elipse.setPosition(100, 0);
-                workspace.appendChild(elipse);
+                workspace.append(elipse);
 
                 elipse = new web2d.Elipse();
                 elipse.setPosition(100, 100);
-                workspace.appendChild(elipse);
+                workspace.append(elipse);
                 return workspace;
             };
 
@@ -147,7 +148,7 @@
             dynamicWorkspace.addItAsChildTo(document.id("coordsizeExampleDynamic"));
 
             var size = 100;
-            var executer = function() {
+            var executer = function () {
                 size = (size + 1) % 100;
                 if (size < 30) {
                     size = 30;
@@ -162,9 +163,9 @@
         workspaceCoordSizeSample();
 
 
-        var workspaceCoordOriginSample = function() {
+        var workspaceCoordOriginSample = function () {
 
-            var coordOriginSampleBuilder = function(x, y) {
+            var coordOriginSampleBuilder = function (x, y) {
                 // Workspace with CoordOrigin(100,100);
                 var workspace = new web2d.Workspace();
                 workspace.setSize("100px", "100px");
@@ -173,27 +174,27 @@
 
                 elipse = new web2d.Elipse();
                 elipse.setPosition(0, 0);
-                workspace.appendChild(elipse);
+                workspace.append(elipse);
 
                 elipse = new web2d.Elipse();
                 elipse.setPosition(0, 100);
-                workspace.appendChild(elipse);
+                workspace.append(elipse);
 
                 elipse = new web2d.Elipse();
                 elipse.setPosition(100, 0);
-                workspace.appendChild(elipse);
+                workspace.append(elipse);
 
                 elipse = new web2d.Elipse();
                 elipse.setPosition(100, 100);
-                workspace.appendChild(elipse);
+                workspace.append(elipse);
 
                 elipse = new web2d.Elipse();
                 elipse.setPosition(50, 50);
-                workspace.appendChild(elipse);
+                workspace.append(elipse);
 
                 elipse = new web2d.Elipse();
                 elipse.setPosition(100, 100);
-                workspace.appendChild(elipse);
+                workspace.append(elipse);
 
                 return workspace;
             };
@@ -213,7 +214,7 @@
 
             var x = 50;
             var y = 50;
-            executer = function() {
+            executer = function () {
                 x = (x + 1) % 50;
                 y = (y + 1) % 50;
 

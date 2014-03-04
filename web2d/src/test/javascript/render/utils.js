@@ -33,9 +33,9 @@ Grid = function(parent, colums, rows)
             tdElement.style.borderWidth = "1px";
             tdElement.style.borderStyle = "dashed";
             tdElement.style.borderColor = "lightsteelblue";
-            trElement.appendChild(tdElement);
+            trElement.append(tdElement);
         }
-        tbody.appendChild(trElement);
+        tbody.append(trElement);
     }
 };
 
@@ -47,7 +47,7 @@ Grid.prototype.setPosition = function(x, y)
 
 Grid.prototype.render = function()
 {
-    this._parent.appendChild(this._container);
+    this._parent.append(this._container);
 };
 
 Grid.prototype._createContainer = function()

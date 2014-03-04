@@ -18,17 +18,17 @@
 
 web2d.peer.svg.GroupPeer = new Class({
     Extends: web2d.peer.svg.ElementPeer,
-    initialize : function() {
+    initialize: function () {
         var svgElement = window.document.createElementNS(this.svgNamespace, 'g');
         this.parent(svgElement);
         this._native.setAttribute("preserveAspectRatio", "none");
-        this._coordSize = {width:1,height:1};
+        this._coordSize = {width: 1, height: 1};
         this._native.setAttribute("focusable", "true");
-        this._position = {x:0,y:0};
-        this._coordOrigin = {x:0,y:0};
+        this._position = {x: 0, y: 0};
+        this._coordOrigin = {x: 0, y: 0};
     },
 
-    setCoordSize : function(width, height) {
+    setCoordSize: function (width, height) {
         var change = this._coordSize.width != width || this._coordSize.height != height;
         this._coordSize.width = width;
         this._coordSize.height = height;
@@ -38,8 +38,8 @@ web2d.peer.svg.GroupPeer = new Class({
         web2d.peer.utils.EventUtils.broadcastChangeEvent(this, "strokeStyle");
     },
 
-    getCoordSize : function() {
-        return {width:this._coordSize.width,height:this._coordSize.height};
+    getCoordSize: function () {
+        return {width: this._coordSize.width, height: this._coordSize.height};
     },
 
     /**
@@ -63,7 +63,7 @@ web2d.peer.svg.GroupPeer = new Class({
      *    * skewY(<skew-angle>), which specifies a skew transformation along the y-axis.
      **/
 
-    updateTransform : function() {
+    updateTransform: function () {
         var sx = this._size.width / this._coordSize.width;
         var sy = this._size.height / this._coordSize.height;
 
@@ -73,11 +73,11 @@ web2d.peer.svg.GroupPeer = new Class({
         this._native.setAttribute("transform", "translate(" + cx + "," + cy + ") scale(" + sx + "," + sy + ")");
     },
 
-    setOpacity : function(value) {
+    setOpacity: function (value) {
         this._native.setAttribute("opacity", value);
     },
 
-    setCoordOrigin : function(x, y) {
+    setCoordOrigin: function (x, y) {
         var change = x != this._coordOrigin.x || y != this._coordOrigin.y;
         if ($defined(x)) {
             this._coordOrigin.x = x;
@@ -90,14 +90,14 @@ web2d.peer.svg.GroupPeer = new Class({
             this.updateTransform();
     },
 
-    setSize : function(width, height) {
+    setSize: function (width, height) {
         var change = width != this._size.width || height != this._size.height;
         this.parent(width, height);
         if (change)
             this.updateTransform();
     },
 
-    setPosition : function(x, y) {
+    setPosition: function (x, y) {
         var change = x != this._position.x || y != this._position.y;
         if ($defined(x)) {
             this._position.x = parseInt(x);
@@ -110,16 +110,16 @@ web2d.peer.svg.GroupPeer = new Class({
             this.updateTransform();
     },
 
-    getPosition : function() {
-        return {x:this._position.x,y:this._position.y};
+    getPosition: function () {
+        return {x: this._position.x, y: this._position.y};
     },
 
-    appendChild : function(child) {
+    append: function (child) {
         this.parent(child);
         web2d.peer.utils.EventUtils.broadcastChangeEvent(child, "onChangeCoordSize");
     },
 
-    getCoordOrigin : function () {
-        return {x:this._coordOrigin.x, y:this._coordOrigin.y};
+    getCoordOrigin: function () {
+        return {x: this._coordOrigin.x, y: this._coordOrigin.y};
     }
 });
