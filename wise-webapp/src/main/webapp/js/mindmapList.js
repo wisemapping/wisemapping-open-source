@@ -1,3 +1,5 @@
+/*--------------------------------------------- Common actions --------------------------------------------------**/
+
 $.fn.dataTableExt.oApi.fnReloadAjax = function (oSettings, sNewSource, fnCallback, bStandingRedraw) {
     if (typeof sNewSource != 'undefined' && sNewSource != null) {
         oSettings.sAjaxSource = sNewSource;
@@ -39,18 +41,8 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function (oSettings, sNewSource, fnCallbac
 };
 
 jQuery.fn.dataTableExt.selectAllMaps = function () {
-    var total = $('.select input:checkbox[id!="selectAll"]').size();
-    var selected = $('.select input:checked[id!="selectAll"]').size();
-    if (selected < total) {
-        $('.select input:!checked[id!="selectAll"]').each(function () {
-            $(this).prop("checked", true);
-        });
-    }
-    else {
-        $('.select input:!checked[id!="selectAll"]').each(function () {
-            $(this).prop("checked", false);
-        });
-    }
+    var bool = $("input:checkbox[id='selectAll']").prop('checked');
+    $("input:checkbox[id!='selectAll']").prop('checked', bool);
     updateStatusToolbar();
 };
 
@@ -86,14 +78,14 @@ jQuery.fn.dialogForm = function (options) {
 
     // Clear form values ...
     if (options.clearForm == undefined || options.clearForm) {
-        $("#" + containerId).find('input').attr('value', '');
+        $("#" + containerId).find('input[name!="color"]').val('');
     }
 
     // Clear button "Saving..." state ...
     var acceptBtn = $('#' + containerId + ' .btn-accept');
     acceptBtn.button('reset');
 
-    acceptBtn.click(function () {
+    acceptBtn.unbind('click').click( function (event) {
         var formData = {};
         $('#' + containerId + ' input').each(function (index, elem) {
             formData[elem.name] = elem.value;
@@ -101,8 +93,8 @@ jQuery.fn.dialogForm = function (options) {
 
         // Success actions ...
         var onSuccess = function (jqXHR, textStatus, data) {
+            var resourceId = jqXHR ? jqXHR.getResponseHeader("ResourceId") : undefined;
             if (options.redirect) {
-                var resourceId = jqXHR.getResponseHeader("ResourceId");
                 var redirectUrl = options.redirect;
                 redirectUrl = redirectUrl.replace("{header.resourceId}", resourceId);
 
@@ -111,7 +103,7 @@ jQuery.fn.dialogForm = function (options) {
                 window.open(baseUrl + redirectUrl, '_self');
 
             } else if (options.postUpdate) {
-                options.postUpdate(formData);
+                options.postUpdate(formData, resourceId);
             }
             dialogElem.modal('hide');
         };
@@ -169,7 +161,18 @@ jQuery.fn.dialogForm = function (options) {
         this.modal('hide');
     }.bind(this));
 
+    // Register enter input to submit...
+    $("input").keypress(function(event) {
+        if (event.which == 13) {
+            event.preventDefault();
+            acceptBtn.trigger('click');
+        }
+    });
+
     // Open the modal dialog ...
+    this.on('shown.bs.modal', function() {
+        $(this).find('input:first').focus();
+    });
     this.modal();
 
 };
@@ -203,7 +206,6 @@ function updateStatusToolbar() {
         }
     }
 }
-
 
 // Update toolbar events ...
 function updateStarred(spanElem) {
@@ -258,6 +260,13 @@ function callbackOnTableInit() {
     updateStatusToolbar();
 }
 
+// Register time update functions ....
+setTimeout(function () {
+    jQuery("abbr.timeago").timeago()
+}, 50000);
+
+/*--------------------------------------------- Button actions --------------------------------------------------**/
+
 $(function () {
     // Creation buttons actions ...
     $("#newBtn").click(
@@ -266,7 +275,47 @@ $(function () {
                 redirect: "c/maps/{header.resourceId}/edit",
                 url: "c/restful/maps"
             });
+        }
+    );
+
+    $(document).on('click', '#createLabelBtn',
+        function () {
+            var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
+            $("#new-folder-dialog-modal").dialogForm({
+                url: "c/restful/labels",
+                postUpdate: function(data, id) {
+                    createLabelItem(data, id);
+                    if (mapIds.length > 0) {
+                        linkLabelToMindmap(mapIds, {id: id, title: data.title, color: data.color});
+                    }
+                }
+            });
+        }
+    );
+
+    $("#addLabelButton").click( function () {
+        var labels;
+        fetchLabels({
+            postUpdate: function(data) {
+                labels = data.labels;
+            }
         });
+
+        if (labels) {
+            prepareLabelList(labels);
+            $('.chooseLabel').one('click' ,
+                function () {
+                    var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
+                    if (mapIds.length > 0) {
+                        var labelId = $(this).attr('value');
+                        var labelName = $(this).text();
+                        var labelColor = $(this).attr('color');
+                        linkLabelToMindmap(mapIds, {id: labelId, title: labelName, color: labelColor});
+                    }
+                }
+            );
+        }
+    });
 
     $("#duplicateBtn").click(function () {
         // Map to be cloned ...
@@ -388,7 +437,11 @@ $(function () {
         }
     };
 
-    $('#foldersContainer li').click(function (event) {
+    $(document).on('click', '#foldersContainer li', function (event) {
+        if (!$(this).is($('#foldersContainer .active'))) {
+            $('#foldersContainer .active').animate({left: '-=8px'}, 'fast');
+        }
+
         // Deselect previous option ...
         $('#foldersContainer li').removeClass('active');
         $('#foldersContainer i').removeClass('glyphicon-white');
@@ -398,16 +451,188 @@ $(function () {
         $(this).addClass('active');
         $('#foldersContainer .active i').addClass('glyphicon-white');
 
+        $('input:checkbox').prop('checked', false);
         // Reload the table data ...
         dataTable.fnReloadAjax("c/restful/maps/?q=" + $(this).attr('data-filter'), callbackOnTableInit, true);
         event.preventDefault();
     });
+
+    $(document).on('click', "#deleteLabelBtn", function() {
+        var me = $(this);
+        $("#delete-label-dialog-modal").dialogForm({
+            url: "c/restful/labels/" + me.attr('labelid'),
+            type: 'DELETE',
+            postUpdate: function() {
+                var dataTable = $('#mindmapListTable').dataTable();
+                //remove the selected tag...
+                $("#foldersContainer li.active").remove();
+                $("#foldersContainer li:first").addClass("active");
+                $('#foldersContainer .active i').addClass('icon-white');
+                $("#foldersContainer li:first").animate({left: '+=8px'}, 'fast');
+                dataTable.fnReloadAjax("c/restful/maps/?q=all", callbackOnTableInit, true);
+            }
+        })
+    });
+
+    $(document).on('click', ".closeTag", function() {
+        var me = $(this);
+        var mindmapId = me.parents("td").find("a").attr("value");
+        var data = {
+            id: me.attr("value"),
+            title: me.attr("name"),
+            color: me.css('background-color')
+        };
+        jQuery.ajax("c/restful/labels/maps/" + mindmapId, {
+            async:false,
+            dataType:'json',
+            data:JSON.stringify(data),
+            type:'DELETE',
+            contentType:"application/json; charset=utf-8",
+            success: function() {
+                var tag = me.closest("table");
+                $(tag).fadeOut('fast', function () {
+                    $(this).remove();
+                });
+
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        // add labels to filter list...
+        $("#foldersContainer li").fadeIn('fast');
+        fetchLabels({
+            postUpdate: function(data) {
+                var labels = data.labels;
+                for (var i = 0; i < labels.length; i++) {
+                    createLabelItem(labels[i], null)
+                }
+            }
+        });
+
+        //setting max heigth to ul filters...
+        var maxHeight = $("#map-table").height() - 20;
+         $("#foldersContainer ul").css('overflow-y', 'scrollbar');
+         $("#foldersContainer ul").css('overflow-x', 'hidden');
+         $("#foldersContainer ul").height(maxHeight);
+
+    })
 });
 
-// Register time update functions ....
-setTimeout(function () {
-    jQuery("abbr.timeago").timeago()
-}, 50000);
+/*--------------------------------------------- Label actions --------------------------------------------------**/
+function createLabelItem(data, id) {
+    var labelId = data.id || id;
+    var labelItem = $("<li data-filter=\""  + data.title  + "\">");
+    labelItem.append(
+        "<a href=\"#\"> " +
+            "<i class=\"glyphicon glyphicon-tag labelIcon\"></i>" +
+            "<div class='labelColor' style='background: " +  data.color + "'></div>" +
+            "<div class='labelName labelNameList'>" + data.title + "</div>" +
+            "<button id='deleteLabelBtn' class='close closeLabel' labelid=\""+ labelId +"\">x</button>" +
+        "</a>"
+    );
+    labelItem.hide().appendTo($("#foldersContainer").find("ul"));
+    labelItem.fadeIn('fast');
+}
 
+function labelTagsAsHtml(labels) {
+    var result = "";
+    for (var i = 0; i<labels.length; i++) {
+        var label = labels[i];
+        result +=
+            "<table class='tableTag'>" +
+                "<tbody><tr>" +
+                "<td style='cursor: default; background-color:"+ label.color +"'>" +
+                    "<div class='labelTag' >" +
+                        label.title +
+                    '</div>' +
+                "</td>" +
+                //"<td style='padding: 0; background-color: #d8d4d4'></td>" +
+                "<td class='closeTag' style='background-color:" + label.color +"' name='" + label.title +"'value='" + label.id + "'    >" +
+                    "<span style='top: -1px;position: relative;font-size: 11px' title='delete label'>x</span>"+
+                "</td>" +
+                "</tr></tbody>" +
+                "</table>"
+    }
+    return result;
+}
 
+function fetchLabels(options) {
+    jQuery.ajax("c/restful/labels/", {
+        async:false,
+        dataType:'json',
+        type:'GET',
+        success:function (data) {
+            if (options.postUpdate) {
+                options.postUpdate(data)
+            }
+        },
+        error:function (jqXHR, textStatus, errorThrown) {
+            $('#messagesPanel div').text(errorThrown).parent().show();
+        }
+    });
+}
+
+function tagMindmaps(label) {
+    //tag selected mindmaps...
+    var rows = $('#mindmapListTable').dataTableExt.getSelectedRows();
+    for (var i = 0; i < rows.length; i++) {
+        var row = $(rows[i]);
+        if (row.find(".labelTag:contains('" + label.title + "')").length == 0) {
+            var tag = $(labelTagsAsHtml([label]));
+            tag.hide().appendTo(row.find('.mindmapName').parent());
+            tag.fadeIn('fast');
+        }
+    }
+}
+
+function prepareLabelList(labels) {
+    var labelList = $("#labelList");
+    var defaultValue = labelList.find("li[id=\"createLabelBtn\"]");
+
+    //clear dropdown...
+    labelList.find('li').remove();
+
+    //append items to dropdown
+    $.each(labels, function(index, value) {
+        labelList.append(
+            $('<li class="chooseLabel"></li>').attr('value', value.id).attr('color', value.color)
+                .append(
+                    '<a href="#" onclick="return false">' +
+                        "<div class='labelColor' style='background: " +  value.color + "'></div>" +
+                        "<div class='labelName'>" + value.title + "</div>" +
+                        '</a>')
+        );
+    });
+
+    //add the defaultValue
+    labelList.append('<li><div class="listSeparator"></div></li>')
+    labelList.append(defaultValue);
+}
+
+function linkLabelToMindmap(mapIds, label) {
+    var onSuccess = function () {
+        tagMindmaps(label);
+    };
+    jQuery.ajax("c/restful/labels/maps?ids=" + jQuery.makeArray(mapIds).join(','), {
+        type: 'POST',
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({
+            id: label.id,
+            title: label.title,
+            color: label.color
+        }),
+        statusCode: {
+            200: onSuccess
+        }
+    });
+}
+
+//animations...
+$(document).on('click', '#foldersContainer li[class!="nav-header"]', function (event) {
+    if ($(this).attr('class') != 'active') {
+        $(this).animate({left: '+=8px'}, 'fast');
+    }
+});
 

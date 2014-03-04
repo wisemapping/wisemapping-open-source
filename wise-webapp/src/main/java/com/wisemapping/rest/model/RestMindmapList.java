@@ -48,7 +48,7 @@ public class RestMindmapList {
     }
 
     public RestMindmapList(@NotNull List<Mindmap> mindmaps, @NotNull Collaborator collaborator) {
-        this.mindmapsInfo = new ArrayList<RestMindmapInfo>();
+        this.mindmapsInfo = new ArrayList<>(mindmaps.size());
         for (Mindmap mindMap : mindmaps) {
             this.mindmapsInfo.add(new RestMindmapInfo(mindMap, collaborator));
         }

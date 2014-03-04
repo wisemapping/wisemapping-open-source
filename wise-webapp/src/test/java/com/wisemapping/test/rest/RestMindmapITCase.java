@@ -2,6 +2,10 @@ package com.wisemapping.test.rest;
 
 
 import com.wisemapping.exceptions.WiseMappingException;
+import com.wisemapping.model.Label;
+import com.wisemapping.model.User;
+import com.wisemapping.rest.model.RestLabel;
+import com.wisemapping.rest.model.RestLabelList;
 import com.wisemapping.rest.model.RestMindmap;
 import com.wisemapping.rest.model.RestMindmapInfo;
 import com.wisemapping.rest.model.RestMindmapList;
@@ -13,21 +17,21 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.security.crypto.codec.Base64;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.testng.SkipException;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
+import static com.wisemapping.test.rest.RestHelper.BASE_REST_URL;
+import static com.wisemapping.test.rest.RestHelper.COLOR;
+import static com.wisemapping.test.rest.RestHelper.HOST_PORT;
+import static com.wisemapping.test.rest.RestHelper.createHeaders;
+import static com.wisemapping.test.rest.RestHelper.createTemplate;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
@@ -36,20 +40,19 @@ import static org.testng.Assert.fail;
 public class RestMindmapITCase {
 
     private String userEmail = "admin@wisemapping.com";
-    private static final String HOST_PORT = "http://localhost:8080";
-    private static final String BASE_REST_URL = HOST_PORT + "/service";
 
     @BeforeClass
     void createUser() {
 
         final RestAdminITCase restAdminITCase = new RestAdminITCase();
         userEmail = restAdminITCase.createNewUser(MediaType.APPLICATION_JSON);
+        userEmail += ":" + "admin";
     }
 
-    @Test(dataProvider = "ContentType-Provider-Function")
+    @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
     public void listMaps(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
-        final RestTemplate template = createTemplate();
+        final RestTemplate template = createTemplate(userEmail);
 
         // Create a sample map ...
         final String title1 = "List Maps 1  - " + mediaType.toString();
@@ -79,10 +82,10 @@ public class RestMindmapITCase {
         assertTrue(found1 && found2, "Map could not be found");
     }
 
-    @Test(dataProvider = "ContentType-Provider-Function")
+    @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
     public void deleteMap(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
-        final RestTemplate template = createTemplate();
+        final RestTemplate template = createTemplate(userEmail);
 
         // Create a sample map ...
         final String title1 = "Map to delete  - " + mediaType.toString();
@@ -99,10 +102,10 @@ public class RestMindmapITCase {
         }
     }
 
-    @Test(dataProvider = "ContentType-Provider-Function")
+    @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
     public void changeMapTitle(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
-        final RestTemplate template = createTemplate();
+        final RestTemplate template = createTemplate(userEmail);
 
         // Create a sample map ...
         final URI resourceUri = addNewMap(requestHeaders, template, "Map to change title  - " + mediaType.toString());
@@ -118,10 +121,10 @@ public class RestMindmapITCase {
         assertEquals(newTitle, map.getTitle());
     }
 
-    @Test(dataProvider = "ContentType-Provider-Function")
+    @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
     public void validateMapsCreation(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
-        final RestTemplate template = createTemplate();
+        final RestTemplate template = createTemplate(userEmail);
 
         // Create a sample map ...
         final String title = "Map to Validate Creation  - " + mediaType.toString();
@@ -145,10 +148,10 @@ public class RestMindmapITCase {
     }
 
 
-    @Test(dataProvider = "ContentType-Provider-Function")
+    @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
     public void changeMapDescription(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
-        final RestTemplate template = createTemplate();
+        final RestTemplate template = createTemplate(userEmail);
 
         // Create a sample map ...
         final URI resourceUri = addNewMap(requestHeaders, template, "Map to change Description  - " + mediaType.toString());
@@ -164,10 +167,10 @@ public class RestMindmapITCase {
         assertEquals(newDescription, map.getDescription());
     }
 
-    @Test(dataProvider = "ContentType-Provider-Function")
+    @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
     public void updateMapXml(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
-        final RestTemplate template = createTemplate();
+        final RestTemplate template = createTemplate(userEmail);
 
         // Create a sample map ...
         final String title = "Update XML sample " + mediaType.toString();
@@ -185,10 +188,10 @@ public class RestMindmapITCase {
         assertEquals(response.getXml(), newXmlContent);
     }
 
-    @Test(dataProvider = "ContentType-Provider-Function")
+    @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
     public void cloneMap(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
-        final RestTemplate template = createTemplate();
+        final RestTemplate template = createTemplate(userEmail);
 
         // Create a sample map ...
         final String title = "Map to clone  sample " + mediaType.toString();
@@ -210,14 +213,14 @@ public class RestMindmapITCase {
     }
 
 
-    @Test(dataProvider = "ContentType-Provider-Function")
+    @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
     public void updateMap(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         if(MediaType.APPLICATION_XML==mediaType){
             throw new SkipException("Some research need to check why it;s falling.");
         }
 
         final HttpHeaders requestHeaders = createHeaders(mediaType);
-        final RestTemplate template = createTemplate();
+        final RestTemplate template = createTemplate(userEmail);
 
         // Create a sample map ...
         final String title = "Update sample " + mediaType.toString();
@@ -239,6 +242,35 @@ public class RestMindmapITCase {
         final ResponseEntity<RestMindmap> response = template.exchange(HOST_PORT + resourceUri.toString(), HttpMethod.GET, findMapEntity, RestMindmap.class);
         assertEquals(response.getBody().getXml(), mapToUpdate.getXml());
         assertEquals(response.getBody().getProperties(), mapToUpdate.getProperties());
+    }
+
+    @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
+    public void addLabelToMindmap(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
+        final HttpHeaders requestHeaders = createHeaders(mediaType);
+        final RestTemplate template = createTemplate(userEmail);
+
+        // Create a new label
+        final String titleLabel = "Label 1  - " + mediaType.toString();
+        final URI labelUri = RestLabelITCase.addNewLabel(requestHeaders, template, titleLabel, COLOR);
+
+        // Create a sample map ...
+        final String mapTitle = "Maps 1  - " + mediaType.toString();
+        final URI mindmapUri = addNewMap(requestHeaders, template, mapTitle);
+        final String mapId = mindmapUri.getPath().replace("/service/maps/", "");
+
+        final RestLabel restLabel = new RestLabel();
+        restLabel.setColor(COLOR);
+        String labelId = labelUri.getPath().replace("/service/labels/", "");
+        restLabel.setId(Integer.parseInt(labelId));
+        restLabel.setTitle(titleLabel);
+
+        HttpEntity<RestLabel> labelEntity = new HttpEntity<>(restLabel, requestHeaders);
+        template.postForLocation(BASE_REST_URL + "/labels/maps?ids=" + mapId, labelEntity);
+
+        // Load map again ..
+        final RestMindmap withLabel = findMap(requestHeaders, template, mindmapUri);
+
+//        assertTrue(withLabel.getDelegated().getLabels().size() == 1);
     }
 
     private RestMindmap findMap(HttpHeaders requestHeaders, RestTemplate template, URI resourceUri) {
@@ -265,32 +297,4 @@ public class RestMindmapITCase {
         return addNewMap(requestHeaders, template, title, null);
     }
 
-    private HttpHeaders createHeaders(@NotNull MediaType mediaType) {
-        List<MediaType> acceptableMediaTypes = new ArrayList<MediaType>();
-        acceptableMediaTypes.add(mediaType);
-        final HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.setAccept(acceptableMediaTypes);
-        requestHeaders.setContentType(mediaType);
-        return requestHeaders;
-    }
-
-    private RestTemplate createTemplate() {
-        SimpleClientHttpRequestFactory s = new SimpleClientHttpRequestFactory() {
-            @Override
-            protected void prepareConnection(HttpURLConnection connection, String httpMethod) throws IOException {
-                super.prepareConnection(connection, httpMethod);
-
-                //Basic Authentication for Police API
-                String authorization = userEmail + ":" + "admin";
-                byte[] encodedAuthorisation = Base64.encode(authorization.getBytes());
-                connection.setRequestProperty("Authorization", "Basic " + new String(encodedAuthorisation));
-            }
-        };
-        return new RestTemplate(s);
-    }
-
-    @DataProvider(name = "ContentType-Provider-Function")
-    public Object[][] contentTypes() {
-        return new Object[][]{{MediaType.APPLICATION_XML}, {MediaType.APPLICATION_JSON}};
-    }
 }
