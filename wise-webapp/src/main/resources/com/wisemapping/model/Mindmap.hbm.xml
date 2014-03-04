@@ -25,6 +25,12 @@
             <key column="mindmap_id" not-null="true"/>
             <one-to-many class="com.wisemapping.model.Collaboration"/>
         </set>
+
+        <set name = "labels"
+             table="R_LABEL_MINDMAP" order-by="label_id" fetch="select" cascade="none">
+            <key column="mindmap_id" not-null="true"/>
+            <many-to-many column="label_id" class="com.wisemapping.model.Label"/>
+        </set>
     </class>
 
 </hibernate-mapping>

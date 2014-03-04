@@ -1,3 +1,4 @@
+@import "../bootstrap/css/bootstrap-colorpicker.min.css";
 @import "../bootstrap/css/bootstrap.min.css";
 @import "pageHeaders.css";
 
@@ -13,6 +14,20 @@
 @base-color: #111;
 
 /* ----------------------------- General -------------------------------- */
+.nav-pills li {
+  position: relative;
+  width: 90%;
+}
+.nav-pills {
+  width: 108%;
+}
+.active {
+  position: relative;
+  left: 8px;
+}
+.colorpicker {
+  z-index: 2000;
+}
 
 #mindmapListContainer {
     background: #FFFFFF;
@@ -110,6 +125,113 @@ input#selectAll {
 
 .dataTables_paginate {
     display: none;
+}
+
+/* ---------------------------- Label --------------------------------- */
+
+.labelColor {
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    position: relative;
+    left: 3px;
+    top: 2px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background-color: black;
+    float: left;
+}
+
+.colorInput {
+  border-radius: 4px !important;
+  border: 1px solid #ccc !important;
+}
+
+.labelIcon {
+  float: left;
+}
+
+.labelName {
+    display: inline-block;
+    position: relative;
+    left: 7px;
+    top: -2px;
+}
+
+.labelNameList {
+  max-width: 79px;
+  word-wrap: break-word;
+}
+
+.labelTag {
+  display: inline-block;
+  font-size: 11px;
+  line-height: 1;
+  padding: 2px 0px 0px 2px;
+  position: relative;
+  margin-right: 3px;
+  float: right;
+}
+
+.closeLabel {
+  font-size: 13px;
+  position: relative;
+  top: -1px;
+}
+
+.listSeparator {
+  height: 1px;
+  background-color: #d5d3d4;
+}
+
+.closeTag {
+  cursor: pointer;
+}
+
+.tableTag {
+  padding:0px;
+  margin-bottom: 0px;
+  margin-right: 5px;
+  float: right;
+  position: relative;
+  top: 3px;
+}
+
+table.tableTag td {
+  border-radius: 1px;
+  padding-left: 4px;
+  padding-right: 3px;
+  padding-top :0px;
+  padding-bottom: 0px;
+  color: #ffffff;
+  line-height: 15px;
+}
+
+.closeTag:hover {
+  background-color: #ffffff !important;
+  color: #000000;
+}
+
+/* ---------------------------- Scrollbar for list filter --------------------------------- */
+::-webkit-scrollbar {
+  width: 8px;
+  direction:rtl;
+  text-align: left;
+  position: relative;
+  left: 10px;
+}
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: #eaeaea;
+  border-left: 1px solid #ccc;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #c6c6c6;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #08c;
 }
 
 /* ---------------------------- Sorting --------------------------------- */
