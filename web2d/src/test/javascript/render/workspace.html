@@ -73,7 +73,7 @@
             var x = 100;
             var executer = function () {
                 x = (x + 10) % 100;
-                divElem.style.left = x + "px";
+                divElem.css('left', x + "px");
             };
             executer.periodical(100);
 
@@ -136,13 +136,13 @@
             };
 
             var workspace100x100 = coordSizeSampleBuilder(100, 100);
-            workspace100x100.addItAsChildTo(document.id("coordsizeExample100x100"));
+            workspace100x100.addItAsChildTo($("#coordsizeExample100x100"));
 
             var workspace100x200 = coordSizeSampleBuilder(100, 200);
-            workspace100x200.addItAsChildTo(document.id("coordsizeExample100x200"));
+            workspace100x200.addItAsChildTo($("#coordsizeExample100x200"));
 
             var workspace200x100 = coordSizeSampleBuilder(200, 100);
-            workspace200x100.addItAsChildTo(document.id("coordsizeExample200x100"));
+            workspace200x100.addItAsChildTo($("#coordsizeExample200x100"));
 
             var dynamicWorkspace = coordSizeSampleBuilder(100, 100);
             dynamicWorkspace.addItAsChildTo($('#coordsizeExampleDynamic'));
@@ -200,13 +200,13 @@
             };
 
             var workspace0x0 = coordOriginSampleBuilder(0, 0);
-            workspace0x0.addItAsChildTo(document.id("coordorigin0x0"));
+            workspace0x0.addItAsChildTo($("#coordorigin0x0"));
 
             var workspace0x50 = coordOriginSampleBuilder(0, 50);
-            workspace0x50.addItAsChildTo(document.id("coordorigin0x50"));
+            workspace0x50.addItAsChildTo($("#coordorigin0x50"));
 
             var workspace50x0 = coordOriginSampleBuilder(50, 0);
-            workspace50x0.addItAsChildTo(document.id("coordorigin50x0"));
+            workspace50x0.addItAsChildTo($("#coordorigin50x0"));
 
             // Workspace animation changing the coordsize from (30,30) to (100,100)
             var dynamicWorkspace = coordOriginSampleBuilder(100, 100);
