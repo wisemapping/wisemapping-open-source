@@ -24,11 +24,11 @@ mindplot.ScreenManager = new Class({
 
         // Ignore default click event propagation. Prevent 'click' event on drag.
         this._clickEvents = [];
-        this._divContainer.addEvent('click', function(event) {
+        this._divContainer.bind('click', function(event) {
             event.stopPropagation()
         }.bind(this));
 
-        this._divContainer.addEvent('dblclick', function(event) {
+        this._divContainer.bind('dblclick', function(event) {
             event.stopPropagation();
             event.preventDefault();
         });
@@ -43,7 +43,7 @@ mindplot.ScreenManager = new Class({
         if (event == 'click')
             this._clickEvents.push(listener);
         else
-           this._divContainer.addEvent(event, listener);
+           this._divContainer.bind(event, listener);
     },
 
     removeEvent : function(event, listener) {
@@ -62,7 +62,7 @@ mindplot.ScreenManager = new Class({
             });
         }
         else {
-            this._divContainer.fireEvent(type, event);
+            this._divContainer.trigger(type, event);
         }
     },
 
