@@ -121,7 +121,7 @@ mindplot.TextEditor = new Class({
         if (!this.isVisible()) {
             //Create editor ui
             var editorElem = this._buildEditor();
-            editorElem.inject(document.id(document.body));
+            editorElem.inject($(document.body)[0]);
 
             this._containerElem = editorElem;
             this._registerEvents(editorElem);

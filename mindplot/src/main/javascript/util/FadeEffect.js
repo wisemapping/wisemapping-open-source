@@ -17,8 +17,9 @@
  */
 
 mindplot.util.FadeEffect = new Class({
-    Extends: Fx,
+//    Extends: Fx,
     initialize: function(elements, isVisible) {
+        console.error("Re-impl required ....");
         this.parent({duration:3000,frames:15,transition:'linear'});
         this._isVisible = isVisible;
         this._element = elements;

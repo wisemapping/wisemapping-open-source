@@ -32,7 +32,7 @@ mindplot.widget.ToolbarItem = new Class({
 
     _registerTip: function() {
 
-        return  new mindplot.widget.FloatingTip(document.id(this._buttonId), {
+        return  new mindplot.widget.FloatingTip($("#"+this._buttonId), {
             html: false,
             position: 'bottom',
             arrowOffset : 5,

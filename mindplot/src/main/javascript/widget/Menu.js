@@ -434,7 +434,7 @@ mindplot.widget.Menu = new Class({
         }
 
 
-        var videoElem = document.id("tutorialVideo");
+        var videoElem = $('#tutorialVideo');
         if (videoElem) {
             var width = 900;
             var height = 500;

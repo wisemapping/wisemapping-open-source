@@ -4,25 +4,21 @@
 function JSPomLoader(pomUrl, callback) {
     console.log("POM Load URL:" + pomUrl);
     var jsUrls;
-    var request = new Request({
+    new jQuery.ajax({
         url: pomUrl,
-        method: 'get',
-        onRequest: function() {
-            console.log("loading ...");
-        },
-        onSuccess: function(responseText, responseXML) {
-
+        method: 'get'
+    }).done(function (data) {
             // Collect JS Urls ...
-            var concatRoot = responseXML.getElementsByTagName('includes');
-            var fileSetArray = Array.filter(concatRoot[0].childNodes, function(elem) {
+            var concatRoot = data.getElementsByTagName('includes');
+            var fileSetArray = Array.filter(concatRoot[0].childNodes, function (elem) {
                 return elem.nodeType == Node.ELEMENT_NODE
             });
 
             jsUrls = new Array();
-            Array.each(fileSetArray, function(elem) {
+            Array.each(fileSetArray, function (elem) {
                     var jsUrl = elem.firstChild.nodeValue;
                     if (jsUrl.indexOf("${basedir}") != -1) {
-                        jsUrls.push(pomUrl.substring(0, pomUrl.lastIndexOf('/')) + jsUrl.replace("${basedir}",""));
+                        jsUrls.push(pomUrl.substring(0, pomUrl.lastIndexOf('/')) + jsUrl.replace("${basedir}", ""));
                     } else {
 
                         jsUrls.push(pomUrl.substring(0, pomUrl.lastIndexOf('/')) + "/src/main/javascript/" + jsUrl);
@@ -39,30 +35,30 @@ function JSPomLoader(pomUrl, callback) {
                         callback();
                 } else {
                     var url = urls.pop();
-                    Asset.javascript(url, {
-                        onLoad: function() {
-                            jsRecLoad(urls)
+                    $.ajax({
+                        url: url,
+                        dataType: "script",
+                        success:  function () {
+                            jsRecLoad(urls);
+                        },
+                        error: function(){
+                            console.error("Unexpected error loading:"+url);
+                            console.error(arguments);
                         }
                     });
                 }
             }
 
             jsRecLoad(jsUrls);
-        },
-        onFailure: function() {
-            console.log('Sorry, your request failed :(');
         }
-    });
-    request.send();
+    );
 
 }
 
 
-Asset.javascript("../../../../../web2d/target/classes/web2d.svg-min.js", {
-    onLoad: function() {
-        JSPomLoader('../../../../../mindplot/pom.xml', function() {
-        });
-    }
+jQuery.getScript("../../../../../web2d/target/classes/web2d.svg-min.js", function () {
+    JSPomLoader('../../../../../mindplot/pom.xml', function () {
+    });
 });
 
 
