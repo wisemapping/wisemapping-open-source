@@ -24,7 +24,7 @@ mindplot.widget.FontFamilyPanel = new Class({
 
     buildPanel: function() {
 
-        var content = new Element("div", {'class':'toolbarPanel','id':'fontFamilyPanel'});
+        var content = $("<div class='toolbarPanel' id='fontFamilyPanel'></div>");
         content.innerHTML = '' +
             '<div id="times" model="Times" class="toolbarPanelLink" style="font-family:times;">Times</div>' +
             '<div id="arial"  model="Arial" style="font-family:arial;">Arial</div>' +
