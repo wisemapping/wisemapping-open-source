@@ -24,7 +24,6 @@ mindplot.NodeGraph = new Class({
         this._mouseEvents = true;
         this.setModel(nodeModel);
         this._onFocus = false;
-        this._event = new Events();
         this._size = {width:50,height:20};
     },
 
@@ -67,7 +66,7 @@ mindplot.NodeGraph = new Class({
 
     fireEvent: function(type, event) {
         var elem = this.get2DElement();
-        elem.fireEvent(type, event);
+        elem.toggle(type, event);
     },
 
     setMouseEventsEnabled : function(isEnabled) {
