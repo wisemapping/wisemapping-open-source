@@ -89,7 +89,7 @@ web2d.peer.svg.ElementPeer = new Class({
         $(this._native).bind(type, listener);
     },
 
-    fireEvent:function (type, event) {
+    toggle:function (type, event) {
         $(this._native).toggle(type, event);
     },
 
