@@ -39,7 +39,7 @@ mindplot.widget.ToolbarPaneItem = new Class({
     _init:function () {
         // Load the context of the panel ...
         var panelElem = this.buildPanel();
-        panelElem.setStyle('cursor', 'default');
+        panelElem.css('cursor', 'default');
         var buttonElem = this.getButtonElem();
 
         var item = this;
@@ -65,11 +65,11 @@ mindplot.widget.ToolbarPaneItem = new Class({
             offset: {x:-4,y:0}
         });
 
-        this._tip.addEvent('hide', function() {
+        this._tip.bind('hide', function() {
             this._visible = false
         }.bind(this));
 
-        this._tip.addEvent('show', function() {
+        this._tip.bind('show', function() {
             this._visible = true
         }.bind(this));
 
@@ -108,7 +108,7 @@ mindplot.widget.ToolbarPaneItem = new Class({
         this.hide();
         var elem = this.getButtonElem();
         if (this._enable) {
-            elem.removeEvent('click', this._fn);
+            elem.unbind('click', this._fn);
             elem.removeClass('buttonExtOn');
 
             // Todo: Hack...
@@ -122,7 +122,7 @@ mindplot.widget.ToolbarPaneItem = new Class({
     enable : function() {
         var elem = this.getButtonElem();
         if (!this._enable) {
-            elem.addEvent('click', this._fn);
+            elem.bind('click', this._fn);
             elem.removeClass('buttonExtOff');
             elem.addClass('buttonExtOn');
             this._enable = true;

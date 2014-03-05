@@ -50,7 +50,7 @@ mindplot.widget.ToolbarItem = new Class({
     },
 
     getButtonElem : function() {
-        var elem = document.id(this._buttonId);
+        var elem = $('#'+this._buttonId);
         $assert(elem, "Could not find element for " + this._buttonId);
         return elem;
     }.protect(),
@@ -78,7 +78,7 @@ mindplot.widget.ToolbarItem = new Class({
     disable : function() {
         var elem = this.getButtonElem();
         if (this._enable) {
-            elem.removeEvent('click', this._fn);
+            elem.unbind('click', this._fn);
             elem.removeClass('buttonOn');
             elem.addClass('buttonOff');
             this._enable = false;
@@ -88,7 +88,7 @@ mindplot.widget.ToolbarItem = new Class({
     enable : function() {
         var elem = this.getButtonElem();
         if (!this._enable) {
-            elem.addEvent('click', this._fn);
+            elem.bind('click', this._fn);
             elem.removeClass('buttonOff');
             elem.addClass('buttonOn');
             this._enable = true;

@@ -26,7 +26,7 @@ mindplot.widget.Menu = new Class({
         var widgetsBaseUrl = baseUrl + "css/widget";
 
         // Stop event propagation ...
-        $('#'+this._containerId).addEvent('click', function (event) {
+        $('#'+this._containerId).bind('click', function (event) {
             event.stopPropagation();
             return false;
         });
@@ -416,7 +416,7 @@ mindplot.widget.Menu = new Class({
         var keyboardShortcut = $('#keyboardShortcuts');
         if (keyboardShortcut) {
 
-            keyboardShortcut.addEvent('click', function (event) {
+            keyboardShortcut.bind('click', function (event) {
                 var reqDialog = new MooDialog.Request('c/keyboard', null,
                     {'class': 'modalDialog keyboardModalDialog',
                         closeButton: true,
@@ -441,7 +441,7 @@ mindplot.widget.Menu = new Class({
             var left = (screen.width / 2) - (width / 2);
             var top = (screen.height / 2) - (height / 2);
 
-            videoElem.addEvent('click', function (event) {
+            videoElem.bind('click', function (event) {
                 window.open("https://www.youtube.com/tv?vq=medium#/watch?v=rKxZwNKs9cE", "_blank", 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=no, width=' + width + ', height=' + height + ', top=' + top + ', left=' + left);
                 event.preventDefault();
             });

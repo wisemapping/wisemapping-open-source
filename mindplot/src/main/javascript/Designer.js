@@ -86,7 +86,7 @@ mindplot.Designer = new Class({
             $(document).bind('mousewheel', function (event) {
                 // Change mousewheel handling so we let the default
                 //event happen if we are outside the container.
-                var coords = screenManager.getContainer().getCoordinates();
+                var coords = screenManager.getContainer()[0].getCoordinates();
                 var isOutsideContainer = event.client.y < coords.top ||
                     event.client.y > coords.bottom ||
                     event.client.x < coords.left ||
