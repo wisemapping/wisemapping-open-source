@@ -18,22 +18,22 @@
 
 mindplot.DesignerKeyboard = new Class({
 //    Extends:Keyboard,
-    Static:{
-        register:function (designer) {
-            this._instance = new mindplot.DesignerKeyboard(designer);
-            this._instance.activate();
-        },
-
-        getInstance:function () {
-            return this._instance;
-        }
-    },
+//    Static:{
+//        register:function (designer) {
+//            this._instance = new mindplot.DesignerKeyboard(designer);
+//            this._instance.activate();
+//        },
+//
+//        getInstance:function () {
+//            return this._instance;
+//        }
+//    },
 
     initialize:function (designer) {
         console.error("Re-impl required ....");
-        $assert(designer, "designer can not be null");
-        this.parent({defaultEventType:'keydown'});
-        this._registerEvents(designer);
+//        $assert(designer, "designer can not be null");
+//        this.parent({defaultEventType:'keydown'});
+//        this._registerEvents(designer);
     },
 
 

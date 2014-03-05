@@ -24,7 +24,7 @@
 
     <script type="text/javascript">
         var mapId = 'welcome';
-        document.id(document).addEvent('loadcomplete', function(resource) {
+        $(document).bind('loadcomplete', function(resource) {
             var options = loadDesignerOptions();
             var designer = buildDesigner(options);
 
