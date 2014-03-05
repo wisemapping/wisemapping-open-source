@@ -56,8 +56,8 @@ mindplot.RelationshipPivot = new Class({
             this._startArrow.setStrokeWidth(2);
             this._startArrow.setFrom(sourcePos.x, sourcePos.y);
 
-            this._workspace.appendChild(this._pivot);
-            this._workspace.appendChild(this._startArrow);
+            this._workspace.append(this._pivot);
+            this._workspace.append(this._startArrow);
 
             this._workspace.addEvent('mousemove', this._mouseMoveEvent);
             this._workspace.addEvent('click', this._onClickEvent);

@@ -24,31 +24,32 @@ mindplot.widget.KeyboardShortcutTooltip = new Class({
         $assert(text, "text can not be null");
         this._text = text;
 
-        var children = buttonElem.getChildren();
-        var tipElemId = buttonElem.id + "Tip";
-        var tipDiv = new Element('div', {id:tipElemId});
-        children[0].inject(tipDiv);
-        tipDiv.inject(buttonElem);
-
-        this.parent(tipDiv, {
-            // Content can also be a function of the target element!
-            content: this._buildContent.pass(buttonElem, this),
-            html: true,
-            position: 'bottom',
-            arrowOffset : 10,
-            center: true,
-            arrowSize: 3,
-            offset : {x:0,y:-2},
-            className: 'keyboardShortcutTip',
-            preventHideOnOver : false,
-            motionOnShow:false,
-            motionOnHide:false,
-            fx: { 'duration': '100' }
-        });
-
-        tipDiv.addEvent('click', function(e) {
-            tipDiv.fireEvent('mouseleave', e);
-        });
+        console.error("mindplot.widget.KeyboardShortcutTooltip must be implemented ...");
+//        var children = buttonElem.children();
+//        var tipElemId = buttonElem.id + "Tip";
+//        var tipDiv = new Element('div', {id:tipElemId});
+//        children[0].inject(tipDiv);
+//        tipDiv.inject(buttonElem);
+//
+//        this.parent(tipDiv, {
+//            // Content can also be a function of the target element!
+//            content: this._buildContent.pass(buttonElem, this),
+//            html: true,
+//            position: 'bottom',
+//            arrowOffset : 10,
+//            center: true,
+//            arrowSize: 3,
+//            offset : {x:0,y:-2},
+//            className: 'keyboardShortcutTip',
+//            preventHideOnOver : false,
+//            motionOnShow:false,
+//            motionOnHide:false,
+//            fx: { 'duration': '100' }
+//        });
+//
+//        tipDiv.addEvent('click', function(e) {
+//            tipDiv.fireEvent('mouseleave', e);
+//        });
     },
 
     _buildContent : function() {

@@ -162,10 +162,10 @@ mindplot.ControlPoint = new Class({
 
     addToWorkspace  : function(workspace) {
         this._workspace = workspace;
-        workspace.appendChild(this._controlPointsController[0]);
-        workspace.appendChild(this._controlPointsController[1]);
-        workspace.appendChild(this._controlLines[0]);
-        workspace.appendChild(this._controlLines[1]);
+        workspace.append(this._controlPointsController[0]);
+        workspace.append(this._controlPointsController[1]);
+        workspace.append(this._controlLines[0]);
+        workspace.append(this._controlLines[1]);
     },
 
     removeFromWorkspace  : function(workspace) {

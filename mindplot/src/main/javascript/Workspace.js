@@ -61,11 +61,11 @@ mindplot.Workspace = new Class({
         return  new web2d.Workspace(workspaceProfile);
     },
 
-    appendChild: function(shape) {
+    append: function(shape) {
         if ($defined(shape.addToWorkspace)) {
             shape.addToWorkspace(this);
         } else {
-            this._workspace.appendChild(shape);
+            this._workspace.append(shape);
         }
     },
 

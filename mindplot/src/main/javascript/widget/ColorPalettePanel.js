@@ -21,8 +21,9 @@ mindplot.widget.ColorPalettePanel = new Class({
 
     initialize:function (buttonId, model, baseUrl) {
         this._baseUrl = baseUrl;
-        this.parent(buttonId, model);
-        $assert($defined(baseUrl), "baseUrl can not be null");
+        console.error("mindplot.widget.ColorPalettePanel must be implemented...");
+//        this.parent(buttonId, model);
+//        $assert($defined(baseUrl), "baseUrl can not be null");
     },
 
     _load:function () {

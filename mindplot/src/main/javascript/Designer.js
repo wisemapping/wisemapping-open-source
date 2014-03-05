@@ -686,7 +686,7 @@ mindplot.Designer = new Class({
             var nodeGraph = this._buildNodeGraph(nodeModel, this.isReadOnly());
             nodeGraph.setVisibility(false);
 
-            this._workspace.appendChild(nodeGraph);
+            this._workspace.append(nodeGraph);
             for (var i = 0; i < children.length; i++) {
                 var child = children[i];
                 if ($defined(child))
@@ -709,7 +709,7 @@ mindplot.Designer = new Class({
 
             result.setVisibility(sourceTopic.isVisible() && targetTopic.isVisible());
 
-            this._workspace.appendChild(result);
+            this._workspace.append(result);
             return result;
         },
 

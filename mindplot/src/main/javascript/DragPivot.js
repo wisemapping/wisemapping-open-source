@@ -146,27 +146,27 @@ mindplot.DragPivot = new Class({
 
     addToWorkspace : function(workspace) {
         var pivotRect = this._getPivotRect();
-        workspace.appendChild(pivotRect);
+        workspace.append(pivotRect);
 
         var connectToRect = this._connectRect;
-        workspace.appendChild(connectToRect);
+        workspace.append(connectToRect);
 
         // Add a hidden straight line ...
         var straighLine = this._straightLine;
         straighLine.setVisibility(false);
-        workspace.appendChild(straighLine);
+        workspace.append(straighLine);
         straighLine.moveToBack();
 
         // Add a hidden curved line ...
         var curvedLine = this._curvedLine;
         curvedLine.setVisibility(false);
-        workspace.appendChild(curvedLine);
+        workspace.append(curvedLine);
         curvedLine.moveToBack();
 
         // Add a connect rect ...
         var connectRect = this._connectRect;
         connectRect.setVisibility(false);
-        workspace.appendChild(connectRect);
+        workspace.append(connectRect);
         connectRect.moveToBack();
     },
 

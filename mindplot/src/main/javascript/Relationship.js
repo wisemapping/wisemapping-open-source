@@ -160,16 +160,16 @@ mindplot.Relationship = new Class({
     },
 
     addToWorkspace:function (workspace) {
-        workspace.appendChild(this._focusShape);
-        workspace.appendChild(this._controlPointsController);
+        workspace.append(this._focusShape);
+        workspace.append(this._controlPointsController);
 
         this._controlPointControllerListener = this._initializeControlPointController.bind(this);
         this._line2d.addEvent('click', this._controlPointControllerListener);
         this._isInWorkspace = true;
 
-        workspace.appendChild(this._startArrow);
+        workspace.append(this._startArrow);
         if (this._endArrow)
-            workspace.appendChild(this._endArrow);
+            workspace.append(this._endArrow);
 
         this.parent(workspace);
         this._positionArrows();
