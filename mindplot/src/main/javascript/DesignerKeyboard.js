@@ -17,7 +17,7 @@
  */
 
 mindplot.DesignerKeyboard = new Class({
-    Extends:Keyboard,
+//    Extends:Keyboard,
     Static:{
         register:function (designer) {
             this._instance = new mindplot.DesignerKeyboard(designer);
@@ -30,6 +30,7 @@ mindplot.DesignerKeyboard = new Class({
     },
 
     initialize:function (designer) {
+        console.error("Re-impl required ....");
         $assert(designer, "designer can not be null");
         this.parent({defaultEventType:'keydown'});
         this._registerEvents(designer);

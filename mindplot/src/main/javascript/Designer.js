@@ -29,7 +29,7 @@ mindplot.Designer = new Class({
             this._options = options;
 
             // Set full div elem render area ...
-            divElement.setStyles(options.size);
+            divElement.css(options.size);
 
             // Dispatcher manager ...
             var commandContext = new mindplot.CommandContext(this);
@@ -83,7 +83,7 @@ mindplot.Designer = new Class({
             var screenManager = workspace.getScreenManager();
 
             // Zoom In and Zoom Out must active event
-            document.id(document).addEvent('mousewheel', function (event) {
+            $(document).bind('mousewheel', function (event) {
                 // Change mousewheel handling so we let the default
                 //event happen if we are outside the container.
                 var coords = screenManager.getContainer().getCoordinates();

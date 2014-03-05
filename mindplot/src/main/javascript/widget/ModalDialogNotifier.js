@@ -17,80 +17,82 @@
  */
 
 mindplot.widget.ModalDialogNotifier = new Class({
-    Extends:MooDialog,
-    initialize:function () {
-        this.parent({
-                closeButton:false,
-                destroyOnClose:false,
-                autoOpen:true,
-                useEscKey:false,
-                closeOnOverlayClick:false,
-                title:"",
-                onInitialize:function (wrapper) {
-                    wrapper.setStyle('opacity', 0);
-                    this.wrapper.setStyle('display', 'none');
-                    this.fx = new Fx.Morph(wrapper, {
-                        duration:100,
-                        transition:Fx.Transitions.Bounce.easeOut
-                    });
-                },
-
-                onBeforeOpen:function () {
-                    var panel = this._buildPanel();
-                    this.setContent(panel);
-
-                    this.overlay = new Overlay(this.options.inject, {
-                        duration:this.options.duration
-                    });
-                    if (this.options.closeOnOverlayClick)
-                        this.overlay.addEvent('click', this.close.bind(this));
-                    this.overlay.open();
-                    this.fx.start({
-                        'margin-top':[-200, -100],
-                        opacity:[0, 1]
-                    }).chain(function () {
-                        this.fireEvent('show');
-                        this.wrapper.setStyle('display', 'block');
-                    }.bind(this));
-                },
-
-                onBeforeClose:function () {
-                    this.fx.start({
-                        'margin-top':[-100, 0],
-                        opacity:0,
-                        duration:200
-                    }).chain(function () {
-                        this.wrapper.setStyle('display', 'none');
-                        this.fireEvent('hide');
-
-                    }.bind(this));
-                }}
-        );
-        this.message = null;
+//    Extends:MooDialog,
+    initialize: function () {
+        console.error("Re-impl required ....");
+//        this.parent(
+//            {
+//                closeButton:false,
+//                destroyOnClose:false,
+//                autoOpen:true,
+//                useEscKey:false,
+//                closeOnOverlayClick:false,
+//                title:"",
+//                onInitialize:function (wrapper) {
+//                    wrapper.setStyle('opacity', 0);
+//                    this.wrapper.setStyle('display', 'none');
+//                    this.fx = new Fx.Morph(wrapper, {
+//                        duration:100,
+//                        transition:Fx.Transitions.Bounce.easeOut
+//                    });
+//                },
+//
+//                onBeforeOpen:function () {
+//                    var panel = this._buildPanel();
+//                    this.setContent(panel);
+//
+//                    this.overlay = new Overlay(this.options.inject, {
+//                        duration:this.options.duration
+//                    });
+//                    if (this.options.closeOnOverlayClick)
+//                        this.overlay.addEvent('click', this.close.bind(this));
+//                    this.overlay.open();
+//                    this.fx.start({
+//                        'margin-top':[-200, -100],
+//                        opacity:[0, 1]
+//                    }).chain(function () {
+//                        this.fireEvent('show');
+//                        this.wrapper.setStyle('display', 'block');
+//                    }.bind(this));
+//                },
+//
+//                onBeforeClose:function () {
+//                    this.fx.start({
+//                        'margin-top':[-100, 0],
+//                        opacity:0,
+//                        duration:200
+//                    }).chain(function () {
+//                        this.wrapper.setStyle('display', 'none');
+//                        this.fireEvent('hide');
+//
+//                    }.bind(this));
+//                }}
+//        );
+//        this.message = null;
     },
 
-    show:function (message, title) {
+    show: function (message, title) {
         $assert(message, "message can not be null");
         this._messsage = message;
         this.options.title = $defined(title) ? title : "Outch!!. An unexpected error has occurred";
         this.open();
     },
 
-    destroy:function () {
+    destroy: function () {
         this.parent();
         this.overlay.destroy();
     },
 
-    _buildPanel:function () {
+    _buildPanel: function () {
         var result = new Element('div');
         result.setStyles({
-            'text-align':'center',
-            width:'400px'
+            'text-align': 'center',
+            width: '400px'
         });
-        var p = new Element('p', {'text':this._messsage});
+        var p = new Element('p', {'text': this._messsage});
         p.inject(result);
 
-        var img = new Element('img', {'src':'images/alert-sign.png'});
+        var img = new Element('img', {'src': 'images/alert-sign.png'});
         img.inject(result);
 
         return result;

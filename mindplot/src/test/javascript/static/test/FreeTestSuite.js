@@ -19,7 +19,7 @@ mindplot.layout.FreeTestSuite = new Class({
     Extends: mindplot.layout.TestSuite,
 
     initialize:function() {
-        document.id("freeTest").setStyle("display","block");
+        $('#freeTest').setStyle("display","block");
 
         this.testFreePosition();
         this.testFreePredict();

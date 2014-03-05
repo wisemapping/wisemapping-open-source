@@ -20,7 +20,7 @@ var designer = null;
 
 function buildDesigner(options) {
 
-    var container = document.id(options.container);
+    var container = $("#"+options.container);
     $assert(container, 'container could not be null');
 
     // Register load events ...
@@ -219,4 +219,4 @@ editor = {};
 //waitDialog.show();
 
 // Loading libraries ...
-Asset.javascript("js/mindplot-min.js");
+jQuery.getScript("js/mindplot-min.js");
