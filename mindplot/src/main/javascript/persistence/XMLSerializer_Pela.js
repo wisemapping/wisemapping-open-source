@@ -34,14 +34,14 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
             mapElem.setAttribute('version', version);
         }
 
-        document.appendChild(mapElem);
+        document.append(mapElem);
 
         // Create branches ...
         var topics = mindmap.getBranches();
         for (var i = 0; i < topics.length; i++) {
             var topic = topics[i];
             var topicDom = this._topicToXML(document, topic);
-            mapElem.appendChild(topicDom);
+            mapElem.append(topicDom);
         }
 
         // Create Relationships
@@ -53,7 +53,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
                 if (mindmap.findNodeById(relationship.getFromNode()) !== null && mindmap.findNodeById(relationship.getToNode()) !== null) {
                     // Isolated relationships are not persisted ....
                     var relationDom = this._relationshipToXML(document, relationship);
-                    mapElem.appendChild(relationDom);
+                    mapElem.append(relationDom);
                 }
             }
         }
@@ -150,12 +150,12 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
                 var value = attributes[key];
                 if (key == 'text') {
                     var cdata = document.createCDATASection(this.rmXmlInv(value));
-                    featureDom.appendChild(cdata);
+                    featureDom.append(cdata);
                 } else {
                     featureDom.setAttribute(key, this.rmXmlInv(value));
                 }
             }
-            parentTopic.appendChild(featureDom);
+            parentTopic.append(featureDom);
         }
 
         //CHILDREN TOPICS
@@ -163,7 +163,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         for (var j = 0; j < childTopics.length; j++) {
             var childTopic = childTopics[j];
             var childDom = this._topicToXML(document, childTopic);
-            parentTopic.appendChild(childDom);
+            parentTopic.append(childDom);
 
         }
         return parentTopic;
@@ -175,8 +175,8 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         } else {
             var textDom = document.createElement("text");
             var cdata = document.createCDATASection(this.rmXmlInv(text));
-            textDom.appendChild(cdata);
-            elem.appendChild(textDom);
+            textDom.append(cdata);
+            elem.append(textDom);
         }
     },
 

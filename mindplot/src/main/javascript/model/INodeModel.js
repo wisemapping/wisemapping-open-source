@@ -199,7 +199,7 @@ mindplot.model.INodeModel = new Class({
         return this.getParent() != null;
     },
 
-    appendChild : function(node) {
+    append : function(node) {
         throw "Unsupported operation";
     },
 
@@ -225,7 +225,7 @@ mindplot.model.INodeModel = new Class({
         children.each(function(snode) {
             var tnode = tmindmap.createNode(snode.getType(), snode.getId());
             snode.copyTo(tnode);
-            target.appendChild(tnode);
+            target.append(tnode);
         });
 
         return target;

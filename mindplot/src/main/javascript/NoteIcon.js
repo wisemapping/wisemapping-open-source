@@ -41,7 +41,7 @@ mindplot.NoteIcon = new Class({
             }.bind(this));
         }
 
-        this._tip = new mindplot.widget.FloatingTip(this.getImage()._peer._native, {
+        this._tip = new mindplot.widget.FloatingTip($(this.getImage()._peer._native), {
             // Content can also be a function of the target element!
             content:function () {
                 var result = new Element('div');

@@ -82,7 +82,7 @@ mindplot.Topic = new Class({
             this.setSize(size, true);
 
             var group = this.get2DElement();
-            group.appendChild(innerShape);
+            group.append(innerShape);
 
             // Move text to the front ...
             var text = this.getTextShape();
@@ -246,7 +246,7 @@ mindplot.Topic = new Class({
         if (!$defined(this._iconsGroup)) {
             this._iconsGroup = this._buildIconGroup();
             var group = this.get2DElement();
-            group.appendChild(this._iconsGroup.getNativeElement());
+            group.append(this._iconsGroup.getNativeElement());
             this._iconsGroup.moveToFront();
         }
         return this._iconsGroup;
@@ -542,9 +542,9 @@ mindplot.Topic = new Class({
         var textShape = this.getTextShape();
 
         // Add to the group ...
-        group.appendChild(outerShape);
-        group.appendChild(innerShape);
-        group.appendChild(textShape);
+        group.append(outerShape);
+        group.append(innerShape);
+        group.append(textShape);
 
         // Update figure size ...
         var model = this.getModel();
@@ -1043,7 +1043,7 @@ mindplot.Topic = new Class({
         $assert(workspace, 'Workspace can not be null');
 
         // Connect Graphical Nodes ...
-        targetTopic.appendChild(this);
+        targetTopic.append(this);
         this._parent = targetTopic;
 
         // Update model ...
@@ -1056,7 +1056,7 @@ mindplot.Topic = new Class({
         outgoingLine.setVisibility(false);
 
         this._outgoingLine = outgoingLine;
-        workspace.appendChild(outgoingLine);
+        workspace.append(outgoingLine);
 
         // Update figure is necessary.
         this.updateTopicShape(targetTopic);
@@ -1088,7 +1088,7 @@ mindplot.Topic = new Class({
         }
     },
 
-    appendChild:function (child) {
+    append:function (child) {
         var children = this.getChildren();
         children.push(child);
     },
@@ -1120,7 +1120,7 @@ mindplot.Topic = new Class({
 
     addToWorkspace:function (workspace) {
         var elem = this.get2DElement();
-        workspace.appendChild(elem);
+        workspace.append(elem);
         if (!this.isInWorkspace()) {
             if (!this.isCentralTopic()) {
                 mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeAdded, this.getModel());

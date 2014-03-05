@@ -90,7 +90,7 @@ mindplot.ShirinkConnector = new Class({
     },
 
     addToWorkspace: function(group) {
-        group.appendChild(this._ellipse);
+        group.append(this._ellipse);
     },
 
     setPosition: function(x, y) {

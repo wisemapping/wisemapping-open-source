@@ -19,7 +19,8 @@
 mindplot.widget.IconPanel = new Class({
     Extends:mindplot.widget.ToolbarPaneItem,
     initialize:function (buttonId, model) {
-        this.parent(buttonId, model);
+        console.error("mindplot.widget.IconPanel");
+//        this.parent(buttonId, model);
     },
 
     _updateSelectedItem:function () {

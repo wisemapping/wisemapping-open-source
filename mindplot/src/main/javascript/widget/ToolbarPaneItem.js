@@ -65,11 +65,11 @@ mindplot.widget.ToolbarPaneItem = new Class({
             offset: {x:-4,y:0}
         });
 
-        this._tip.bind('hide', function() {
+        this._tip.addEvent('hide', function() {
             this._visible = false
         }.bind(this));
 
-        this._tip.bind('show', function() {
+        this._tip.addEvent('show', function() {
             this._visible = true
         }.bind(this));
 

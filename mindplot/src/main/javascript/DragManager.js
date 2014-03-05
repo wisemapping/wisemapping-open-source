@@ -79,7 +79,7 @@ mindplot.DragManager = new Class({
                 startDragListener(event, dragNode);
 
                 // Add shadow node to the workspace.
-                workspace.appendChild(dragNode);
+                workspace.append(dragNode);
 
                 this._isDragInProcess = true;
             }

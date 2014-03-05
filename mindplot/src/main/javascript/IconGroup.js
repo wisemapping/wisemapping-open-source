@@ -62,7 +62,7 @@ mindplot.IconGroup = new Class({
         this._positionIcon(icon, this._icons.length - 1);
 
         var imageShape = icon.getImage();
-        this._group.appendChild(imageShape);
+        this._group.append(imageShape);
 
         // Register event for the group ..
         if (remove) {
@@ -175,7 +175,7 @@ mindplot.IconGroup.RemoveTip = new Class({
             }.bind(this));
 
             widget.setPosition(pos.x + 80, pos.y - 50);
-            this._fadeElem.appendChild(widget);
+            this._fadeElem.append(widget);
 
             // Setup current element ...
             this._activeIcon = icon;
@@ -236,7 +236,7 @@ mindplot.IconGroup.RemoveTip = new Class({
             stroke:'0',
             fillColor:'black'
         });
-        result.appendChild(outerRect);
+        result.append(outerRect);
         outerRect.setCursor('pointer');
 
         var innerRect = new web2d.Rect(0, {
@@ -247,17 +247,17 @@ mindplot.IconGroup.RemoveTip = new Class({
             stroke:'1 solid white',
             fillColor:'gray'
         });
-        result.appendChild(innerRect);
+        result.append(innerRect);
 
         var line = new web2d.Line({stroke:'1 solid white'});
         line.setFrom(1, 1);
         line.setTo(9, 9);
-        result.appendChild(line);
+        result.append(line);
 
         var line2 = new web2d.Line({stroke:'1 solid white'});
         line2.setFrom(1, 9);
         line2.setTo(9, 1);
-        result.appendChild(line2);
+        result.append(line2);
 
         // Some events ...
         result.addEvent('mouseover', function () {

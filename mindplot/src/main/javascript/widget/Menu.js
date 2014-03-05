@@ -326,7 +326,7 @@ mindplot.widget.Menu = new Class({
 
             if (!readOnly) {
                 // To prevent the user from leaving the page with changes ...
-                Element.NativeEvents.unload = 1;
+//                Element.NativeEvents.unload = 1;
                 $(window).bind('unload', function () {
                     if (this.isSaveRequired()) {
                         this.save(saveElem, designer, false, true);

@@ -21,7 +21,7 @@ mindplot.widget.LinkIconTooltip = new Class({
 
     initialize:function (linkIcon) {
         $assert(linkIcon, "linkIcon can not be null");
-        this.parent(linkIcon.getImage()._peer._native, {
+        this.parent($(linkIcon.getImage()._peer._native), {
             // Content can also be a function of the target element!
             content:this._buildContent.pass(linkIcon, this),
             html:true,
