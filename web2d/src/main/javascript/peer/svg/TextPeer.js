@@ -27,7 +27,7 @@ web2d.peer.svg.TextPeer = new Class({
     },
 
     append: function (element) {
-        this._native.append(element._native);
+        this._native.appendChild(element._native);
     },
 
     setTextAlignment: function (align) {
@@ -54,7 +54,7 @@ web2d.peer.svg.TextPeer = new Class({
                 tspan.setAttribute('x', this.getPosition().x);
 
                 tspan.textContent = line.length == 0 ? " " : line;
-                this._native.append(tspan);
+                this._native.appendChild(tspan);
             }.bind(this));
         }
     },
