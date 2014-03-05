@@ -129,11 +129,11 @@ function initialize() {
         workspace.setCoordSize(500, 100);
         workspace.setCoordOrigin(0, 0);
 
-        var rect = new web2d.Rect(0, {x:5,y:5,width:390,height:90,fillColor:'green',
-            strokeColor:'black',strokeStyle:'solid',strokeWidth:1});
+        var rect = new web2d.Rect(0, {x: 5, y: 5, width: 390, height: 90, fillColor: 'green',
+            strokeColor: 'black', strokeStyle: 'solid', strokeWidth: 1});
         workspace.append(rect);
 
-        var rectAttributes = {width:60,height:60,fillColor:'yellow',strokeColor:'black',strokeStyle:'solid',strokeWidth:10};
+        var rectAttributes = {width: 60, height: 60, fillColor: 'yellow', strokeColor: 'black', strokeStyle: 'solid', strokeWidth: 10};
         rect = new web2d.Rect(0, rectAttributes);
         rect.setPosition(20, 20);
         rect.setAttribute("strokeOpacity", 1);
@@ -165,11 +165,11 @@ function initialize() {
         workspace.setCoordSize(500, 100);
         workspace.setCoordOrigin(0, 0);
 
-        var rect = new web2d.Rect(0, {x:5,y:5,width:390,height:90,fillColor:'green',
-            strokeColor:'black',strokeStyle:'solid',strokeWidth:4});
+        var rect = new web2d.Rect(0, {x: 5, y: 5, width: 390, height: 90, fillColor: 'green',
+            strokeColor: 'black', strokeStyle: 'solid', strokeWidth: 4});
         workspace.append(rect);
 
-        var rectAttributes = {width:60,height:60,fillColor:'yellow',strokeColor:'black',strokeStyle:'solid',strokeWidth:10};
+        var rectAttributes = {width: 60, height: 60, fillColor: 'yellow', strokeColor: 'black', strokeStyle: 'solid', strokeWidth: 10};
         rect = new web2d.Rect(0, rectAttributes);
         rect.setPosition(20, 20);
         rect.setAttribute("fillOpacity", 1);
@@ -201,11 +201,11 @@ function initialize() {
         workspace.setCoordSize(500, 100);
         workspace.setCoordOrigin(0, 0);
 
-        var rect = new web2d.Rect(0, {x:5,y:5,width:390,height:90,fillColor:'green',
-            strokeColor:'black',strokeStyle:'solid',strokeWidth:4});
+        var rect = new web2d.Rect(0, {x: 5, y: 5, width: 390, height: 90, fillColor: 'green',
+            strokeColor: 'black', strokeStyle: 'solid', strokeWidth: 4});
         workspace.append(rect);
 
-        var rectAttributes = {width:60,height:60,fillColor:'yellow',strokeColor:'black',strokeStyle:'solid',strokeWidth:10};
+        var rectAttributes = {width: 60, height: 60, fillColor: 'yellow', strokeColor: 'black', strokeStyle: 'solid', strokeWidth: 10};
         rect = new web2d.Rect(0, rectAttributes);
         rect.setPosition(20, 20);
         rect.setOpacity(0.8);
@@ -232,21 +232,21 @@ function initialize() {
 
 
     var visibilityTest = function () {
-        var workspace = new web2d.Workspace({fillColor:'yellow',strokeWidth:'2px'});
+        var workspace = new web2d.Workspace({fillColor: 'yellow', strokeWidth: '2px'});
         workspace.setSize("500px", "100px");
         workspace.setCoordSize(500, 100);
         workspace.setCoordOrigin(0, 0);
 
-        var rectAttributes = {width:60,height:60,fillColor:'green',strokeColor:'black',strokeStyle:'solid',strokeWidth:10};
+        var rectAttributes = {width: 60, height: 60, fillColor: 'green', strokeColor: 'black', strokeStyle: 'solid', strokeWidth: 10};
         var rect = new web2d.Rect(0, rectAttributes);
         rect.setPosition(120, 20);
         workspace.append(rect);
-        rect.addEvent("mouseover", function() {
+        rect.addEvent("mouseover", function () {
             alert("Mouse Over");
         });
 
         var isVisible = true;
-        var executer = function() {
+        var executer = function () {
             isVisible = !isVisible;
             rect.setVisibility(isVisible);
         };

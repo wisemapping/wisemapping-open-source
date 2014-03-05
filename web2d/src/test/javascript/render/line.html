@@ -66,7 +66,7 @@
             }
             strokeWidthWorkspace.append(rect);
 
-            strokeWidthWorkspace.addItAsChildTo(document.id("strokeWidthSample"));
+            strokeWidthWorkspace.addItAsChildTo($('#strokeWidthSample'));
 
             var strokeOpacityWorkspace = new web2d.Workspace(workspaceAttributes);
             for (var i = 0; i < 10; i++) {
@@ -78,7 +78,7 @@
                 line.setAttribute('strokeColor', 'red');
                 strokeOpacityWorkspace.append(line);
             }
-            strokeOpacityWorkspace.addItAsChildTo(document.id("strokeOpacitySample"));
+            strokeOpacityWorkspace.addItAsChildTo($('#strokeOpacitySample'));
 
             var strokeStyleWorkspace = new web2d.Workspace(workspaceAttributes);
             var styles = ['solid','dot','dash','dashdot','longdash'];
@@ -91,7 +91,7 @@
                 line.setAttribute('strokeStyle', styles[i]);
                 strokeStyleWorkspace.append(line);
             }
-            strokeStyleWorkspace.addItAsChildTo(document.id("strokeStyleSample"));
+            strokeStyleWorkspace.addItAsChildTo($('#strokeStyleSample'));
 
             var strokeArrowWorkspace = new web2d.Workspace(workspaceAttributes);
             var styles = ['none ','block ','classic','diamond ','oval','open','chevron','doublechevron'];
@@ -104,7 +104,7 @@
                 line.setArrowStyle(styles[i]);
                 strokeArrowWorkspace.append(line);
             }
-            strokeArrowWorkspace.addItAsChildTo(document.id("strokeArrowSample"));
+            strokeArrowWorkspace.addItAsChildTo($('#strokeArrowSample'));
         }
     </script>
 </head>
