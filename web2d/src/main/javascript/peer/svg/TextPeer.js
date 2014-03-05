@@ -69,10 +69,7 @@ web2d.peer.svg.TextPeer = new Class({
         this._native.setAttribute('x', x);
 
         // tspan must be positioned manually.
-        this._native.getElements('tspan').forEach(function (span) {
-            span.setAttribute('x', x);
-        });
-
+        $(this._native).children('tspan').attr('x', x);
     },
 
     getPosition: function () {
