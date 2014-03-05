@@ -56,14 +56,14 @@
         elipse1.setSize(200, 200);
         elipse1.setPosition(0, 0);
         overflowWorkspace.append(elipse1);
-        overflowWorkspace.addItAsChildTo(document.id("overflowExample"));
+        overflowWorkspace.addItAsChildTo($('#overflowExample'));
 
 
         var workspacePosition = function () {
 
             var elipseAttr = {width: 100, height: 100, x: 100, y: 100};
 
-            var divElem = document.id("positionExample");
+            var divElem = $('#positionExample');
             var workPosition = new web2d.Workspace();
             workPosition.setSize("100px", "100px");
             elipse = new web2d.Elipse(elipseAttr);
@@ -94,7 +94,7 @@
         elipse.setPosition(100, 100);
 
         workspacePixel.append(elipse);
-        workspacePixel.addItAsChildTo(document.id("sizeExamplePixels"));
+        workspacePixel.addItAsChildTo($('#sizeExamplePixels'));
 
         var workspaceInchs = new web2d.Workspace();
         workspaceInchs.setSize("1in", "1in");
@@ -103,7 +103,7 @@
         elipse.setPosition(100, 100);
 
         workspaceInchs.append(elipse);
-        workspaceInchs.addItAsChildTo(document.id("sizeExampleInch"));
+        workspaceInchs.addItAsChildTo($('#sizeExampleInch'));
 
 
         var workspaceCoordSizeSample = function () {
@@ -145,7 +145,7 @@
             workspace200x100.addItAsChildTo(document.id("coordsizeExample200x100"));
 
             var dynamicWorkspace = coordSizeSampleBuilder(100, 100);
-            dynamicWorkspace.addItAsChildTo(document.id("coordsizeExampleDynamic"));
+            dynamicWorkspace.addItAsChildTo($('#coordsizeExampleDynamic'));
 
             var size = 100;
             var executer = function () {
@@ -210,7 +210,7 @@
 
             // Workspace animation changing the coordsize from (30,30) to (100,100)
             var dynamicWorkspace = coordOriginSampleBuilder(100, 100);
-            dynamicWorkspace.addItAsChildTo(document.id("coordoriginExampleDynamic"));
+            dynamicWorkspace.addItAsChildTo($('#coordoriginExampleDynamic'));
 
             var x = 50;
             var y = 50;

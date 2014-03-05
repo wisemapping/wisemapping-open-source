@@ -79,7 +79,7 @@
             line.setStroke("blue");
             group.append(line);
 
-            workspace.addItAsChildTo(document.id("groupBasicContainer"));
+            workspace.addItAsChildTo($('#groupBasicContainer'));
 
 
             var xDir = 1;
@@ -140,7 +140,7 @@
             elipseLeft.addEvent("click", listener);
             elipseRight.addEvent("click", listener);
 
-            workspace.addItAsChildTo(document.id("groupEventsContainer"));
+            workspace.addItAsChildTo($('#groupEventsContainer'));
         }
         eventTest();
 
@@ -200,7 +200,7 @@
             line.setStroke("blue");
             groupInner.append(line);
 
-            workspace.addItAsChildTo(document.id("groupNestedContainer"));
+            workspace.addItAsChildTo($('#groupNestedContainer'));
         };
         eventTest();
 
@@ -236,13 +236,13 @@
             }
 
             var sample100x100 = groupSampleBuilder(100, 100);
-            sample100x100.addItAsChildTo(document.id("coordsizeExample100x100"));
+            sample100x100.addItAsChildTo($("#coordsizeExample100x100"));
 
             var sample100x200 = groupSampleBuilder(100, 200);
-            sample100x200.addItAsChildTo(document.id("coordsizeExample100x200"));
+            sample100x200.addItAsChildTo($("#coordsizeExample100x200"));
 
             var sample200x100 = groupSampleBuilder(200, 100);
-            sample200x100.addItAsChildTo(document.id("coordsizeExample200x100"));
+            sample200x100.addItAsChildTo($("#coordsizeExample200x100"));
         };
         workspaceCoordSizeSample();
 
@@ -279,13 +279,13 @@
             ;
 
             var sample0x0 = groupSampleBuilder(0, 0);
-            sample0x0.addItAsChildTo(document.id("coordOriginExample0x0"));
+            sample0x0.addItAsChildTo($("#coordOriginExample0x0"));
 
             var sample100x200 = groupSampleBuilder(0, 50);
-            sample100x200.addItAsChildTo(document.id("coordOriginExample0x50"));
+            sample100x200.addItAsChildTo($("#coordOriginExample0x50"));
 
             var sample200x100 = groupSampleBuilder(50, 0);
-            sample200x100.addItAsChildTo(document.id("coordOriginExample50x0"));
+            sample200x100.addItAsChildTo($("#coordOriginExample50x0"));
         }
         workspaceCoordOriginSample();
 
@@ -328,7 +328,7 @@
                 group.setVisibility(isVisible);
             };
             executer.periodical(100);
-            workspace.addItAsChildTo(document.id("visibilityExample"));
+            workspace.addItAsChildTo($('#visibilityExample'));
 
         }
         groupVisibilitySample();
@@ -366,7 +366,7 @@
                 group.setCoordSize(width, height);
             };
             executer.periodical(100);
-            workspace.addItAsChildTo(document.id("scaleStrokeExample"));
+            workspace.addItAsChildTo($('#scaleStrokeExample'));
 
         }
         groupVisibilitySample();
