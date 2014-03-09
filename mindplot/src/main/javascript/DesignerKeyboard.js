@@ -17,258 +17,273 @@
  */
 
 mindplot.DesignerKeyboard = new Class({
-//    Extends:Keyboard,
-//    Static:{
-//        register:function (designer) {
-//            this._instance = new mindplot.DesignerKeyboard(designer);
-//            this._instance.activate();
-//        },
-//
-//        getInstance:function () {
-//            return this._instance;
-//        }
-//    },
+    //Extends: mindplot.Keyboard,
+    Static:{
+        register:function (designer) {
+            this._instance = new mindplot.DesignerKeyboard(designer);
+            //this._instance.activate();
+        },
 
-    initialize:function (designer) {
-        console.error("Re-impl required ....");
-//        $assert(designer, "designer can not be null");
-//        this.parent({defaultEventType:'keydown'});
-//        this._registerEvents(designer);
+        getInstance:function () {
+            return this._instance;
+        }
     },
 
+    initialize:function (designer) {
+        //console.error("Re-impl required ....");
+        $assert(designer, "designer can not be null");
+        this._registerEvents(designer);
+    },
+
+    //FIXME: mover al parent
+    addShortcut: function(shortcut, callback) {
+        $(document).bind('keydown', shortcut, callback);
+    },
 
     _registerEvents:function (designer) {
 
         // Try with the keyboard ..
         var model = designer.getModel();
-        var keyboardEvents = {
-            'backspace':function (event) {
+        this.addShortcut(
+            'backspace', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
-
                 designer.deleteSelectedEntities();
-
-            }.bind(this),
-
-            'space':function () {
+            }
+        );
+        this.addShortcut(
+            'space', function() {
                 designer.shrinkSelectedBranch();
-            }.bind(this),
-
-            'f2':function () {
+            }
+        );
+        this.addShortcut(
+            'f2',function() {
                 var node = model.selectedTopic();
                 if (node) {
                     node.showTextEditor();
                 }
-            }.bind(this),
-
-            'delete':function (event) {
+            }
+        );
+        this.addShortcut(
+            'delete', function(event) {
                 designer.deleteSelectedEntities();
-
                 event.preventDefault();
                 event.stopPropagation();
-            }.bind(this),
-
-            'enter':function () {
+            }
+        );
+        this.addShortcut(
+            'enter', function() {
                 designer.createSiblingForSelectedNode();
-            }.bind(this),
-
-            'insert':function (event) {
+            }
+        );
+        this.addShortcut(
+            'insert', function(event) {
                 designer.createChildForSelectedNode();
-
                 event.preventDefault();
                 event.stopPropagation();
-            }.bind(this),
-
-            'tab':function (event) {
+            }
+        );
+        this.addShortcut(
+            'tab', function(event) {
                 designer.createChildForSelectedNode();
-
                 event.preventDefault();
                 event.stopPropagation();
-            }.bind(this),
-
-            '-':function () { // "-" is a insert on several Browsers. Don't ask why ...
+            }
+        );
+        this.addShortcut(
+            '-', function() { // "-" is a insert on several Browsers. Don't ask why ...
                 designer.createChildForSelectedNode();
-            }.bind(this),
-
-            'meta+enter':function (event) {
+            }
+        );
+        this.addShortcut(
+            'meta+enter', function(event) {
                 event.preventDefault();
                 event.stopPropagation();
                 designer.createChildForSelectedNode();
-
-            }.bind(this),
-
-            'ctrl+z':function (event) {
+            }
+        );
+        this.addShortcut(
+            'ctrl+z', function(event) {
                 event.preventDefault(event);
                 event.stopPropagation();
                 designer.undo();
-            }.bind(this),
-
-            'meta+z':function (event) {
+            }
+        );
+        this.addShortcut(
+            'meta+z', function(event) {
                 event.preventDefault();
                 event.stopPropagation();
-
                 designer.undo();
-
-            }.bind(this),
-
-            'ctrl+c':function (event) {
+            }
+        );
+        this.addShortcut(
+            'ctrl+c', function (event) {
                 event.preventDefault(event);
                 event.stopPropagation();
                 designer.copyToClipboard();
-            }.bind(this),
-
-            'meta+c':function (event) {
+            }
+        );
+        this.addShortcut(
+            'meta+c', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
-
                 designer.copyToClipboard();
-
-            }.bind(this),
-
-            'ctrl+v':function (event) {
+            }
+        );
+        this.addShortcut(
+            'ctrl+v', function (event) {
                 event.preventDefault(event);
                 event.stopPropagation();
-
                 designer.pasteClipboard();
-            }.bind(this),
-
-            'meta+v':function (event) {
+            }
+        );
+        this.addShortcut(
+            'meta+v', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
-
                 designer.pasteClipboard();
-
-            }.bind(this),
-
-            'ctrl+z+shift':function (event) {
+            }
+        );
+        this.addShortcut(
+            'ctrl+z+shift', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
-
                 designer.redo();
-            }.bind(this),
-
-            'meta+z+shift':function (event) {
+            }
+        );
+        this.addShortcut(
+            'meta+z+shift', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
-
                 designer.redo();
-            }.bind(this),
-
-            'ctrl+y':function (event) {
+            }
+        );
+        this.addShortcut(
+            'ctrl+y', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
-
                 designer.redo();
-
-            }.bind(this),
-
-            'meta+y':function (event) {
+            }
+        );
+        this.addShortcut(
+            'meta+y', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
-
                 designer.redo();
-
-            }.bind(this),
-
-            'ctrl+a':function (event) {
+            }
+        );
+        this.addShortcut(
+            'ctrl+a', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
-
                 designer.selectAll();
-            },
-
-            'ctrl+b':function (event) {
+            }
+        );
+        this.addShortcut(
+            'ctrl+b', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
                 designer.changeFontWeight();
-            },
-
-            'meta+b':function (event) {
+            }
+        );
+        this.addShortcut(
+            'meta+b', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
                 designer.changeFontWeight();
-            },
-
-            'ctrl+s':function (event) {
+            }
+        );
+        this.addShortcut(
+            'ctrl+s', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
                 document.id('save').fireEvent('click');
-            },
-
-            'meta+s':function (event) {
+            }
+        );
+        this.addShortcut(
+            'meta+s', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
                 document.id('save').fireEvent('click');
-            },
-
-            'ctrl+i':function (event) {
+            }
+        );
+        this.addShortcut(
+            'ctrl+i', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
                 designer.changeFontStyle();
-            },
-
-            'meta+i':function (event) {
+            }
+        );
+        this.addShortcut(
+            'meta+i', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
                 designer.changeFontStyle();
-            },
-
-            'meta+shift+a':function (event) {
+            }
+        );
+        this.addShortcut(
+            'meta+shift+a', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
                 designer.deselectAll();
-            },
-
-            'ctrl+shift+a':function (event) {
+            }
+        );
+        this.addShortcut(
+            'ctrl+shift+a', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
                 designer.deselectAll();
-            },
-
-            'meta+a':function (event) {
+            }
+        );
+        this.addShortcut(
+            'meta+a', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
                 designer.selectAll();
-            },
-
-            'meta+=':function (event) {
+            }
+        );
+        this.addShortcut(
+            'meta+=', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
                 designer.zoomIn();
-            },
-
-            'meta+-':function (event) {
+            }
+        );
+        this.addShortcut(
+            'meta+-', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
                 designer.zoomOut();
-            },
-
-            'ctrl+=':function (event) {
+            }
+        );
+        this.addShortcut(
+            'ctrl+=', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
                 designer.zoomIn();
-            },
-
-            'ctrl+-':function (event) {
+            }
+        );
+        this.addShortcut(
+            'ctrl+-', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
                 designer.zoomOut();
-            },
-
-
-            'right':function (event) {
+            }
+        );
+        this.addShortcut(
+            'right', function (event) {
                 var node = model.selectedTopic();
                 if (node) {
                     if (node.isCentralTopic()) {
@@ -288,9 +303,10 @@ mindplot.DesignerKeyboard = new Class({
                 }
                 event.preventDefault();
                 event.stopPropagation();
-            }.bind(this),
-
-            'left':function (event) {
+            }
+        );
+        this.addShortcut(
+            'left', function (event) {
                 var node = model.selectedTopic();
                 if (node) {
                     if (node.isCentralTopic()) {
@@ -310,9 +326,10 @@ mindplot.DesignerKeyboard = new Class({
                 }
                 event.preventDefault();
                 event.stopPropagation();
-            }.bind(this),
-
-            'up':function (event) {
+            }
+        );
+        this.addShortcut(
+            'up', function (event) {
                 var node = model.selectedTopic();
                 if (node) {
                     if (!node.isCentralTopic()) {
@@ -324,9 +341,10 @@ mindplot.DesignerKeyboard = new Class({
                 }
                 event.preventDefault();
                 event.stopPropagation();
-            }.bind(this),
-
-            'down':function (event) {
+            }
+        );
+        this.addShortcut(
+            'down', function (event) {
                 var node = model.selectedTopic();
                 if (node) {
                     if (!node.isCentralTopic()) {
@@ -338,9 +356,8 @@ mindplot.DesignerKeyboard = new Class({
                 }
                 event.preventDefault();
                 event.stopPropagation();
-            }.bind(this)
-        };
-        this.addEvents(keyboardEvents);
+            }
+        );
 
         var regex = /^(?:shift|control|ctrl|alt|meta)$/;
         var modifiers = ['shift', 'control', 'alt', 'meta'];
@@ -351,6 +368,7 @@ mindplot.DesignerKeyboard = new Class({
             excludes.push("alt");
         }
 
+/*
         document.id(document).addEvent('keydown', function (event) {
 
             // Convert key to mootools keyboard event format...
@@ -387,6 +405,7 @@ mindplot.DesignerKeyboard = new Class({
                 }
             }
         });
+*/
 
     },
 
