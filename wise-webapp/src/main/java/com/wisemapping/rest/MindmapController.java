@@ -652,7 +652,7 @@ public class MindmapController extends BaseController {
             final Mindmap mindmap = findMindmapById(mindmapId);
             final Label label = mindmap.findLabel(labelId);
             if (label == null) {
-                mindmapService.addLabel(mindmap, delegated);
+                mindmapService.linkLabel(mindmap, delegated);
             }
         }
     }
