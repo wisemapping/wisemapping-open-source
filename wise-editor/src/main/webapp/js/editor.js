@@ -26,8 +26,8 @@ function buildDesigner(options) {
     // Register load events ...
     designer = new mindplot.Designer(options, container);
     designer.addEvent('loadSuccess', function () {
-//        window.waitDialog.close.delay(1000, window.waitDialog);
-//        window.waitDialog = null;
+        window.waitDialog.close();
+        window.waitDialog = null;
         window.mindmapLoadReady = true;
     });
 
@@ -65,7 +65,7 @@ function buildDesigner(options) {
 
         // Close loading dialog ...
         if (window.waitDialog) {
-            window.waitDialog.close.delay(1000, window.waitDialog);
+            window.waitDialog.close();
             window.waitDialog = null;
         }
 
@@ -142,10 +142,10 @@ function loadDesignerOptions(jsonConf) {
 
 // @Todo: This must be reimplemented using JQuery ...
 editor = {};
-//editor.WaitDialog = new Class({
-//    Extends:MooDialog,
-//    initialize:function () {
-//        var panel = this._buildPanel();
+editor.WaitDialog = new Class({
+    initialize:function () {
+        this.panel = this._buildPanel();
+        this.mask = $('#mask');
 //        this.parent({
 //                closeButton:false,
 //                destroyOnClose:true,
@@ -189,34 +189,52 @@ editor = {};
 //                }}
 //        );
 //        this.setContent(panel);
-//    },
-//
-//    _buildPanel:function () {
-//        var result = new Element('div');
-//        result.setStyles({
-//            'text-align':'center',
-//            width:'400px'
-//        });
-//        var img = new Element('img', {'src':'images/ajax-loader.gif'});
-//        img.setStyle('margin-top', '15px');
-//        img.inject(result);
-//        return result;
-//    },
-//
-//    show:function () {
-//        this.open();
-//    },
-//
-//    destroy:function () {
-//        this.parent();
-//        this.overlay.destroy();
-//    }
-//
-//});
+    },
+
+    _buildPanel:function () {
+        var image = $('<img src="images/ajax-loader.gif">');
+        image.css('margin-top', '25px');
+        var result = $('<div></div>')
+            .css({
+                'text-align': 'center',
+                'width': '400px',
+                'height': '120px',
+                'z-index': '9999',
+                'position': 'absolute',
+                'background-color': 'white',
+                'border-radius': '4px',
+                'border': '1px solid rgb(255, 163, 0)'
+            });
+
+        result.append(image);
+
+        var winH = $(document).height();
+        var winW = $(document).width();
+
+        //Set the popup window to center
+        result.css('top',  winH/2 - result.height()/2);
+        result.css('left', winW/2 - result.width()/2);
+        return result;
+    },
+
+    show:function () {
+        //Set height and width to mask to fill up the whole screen
+        this.mask.css({'width': $(window).width(), 'height': $(window).height()});
+        this.mask.fadeIn('slow');
+        this.mask.fadeTo("slow",0.8);
+        $(document.body).append(this.panel);
+        this.panel.fadeIn('slow');
+    },
+
+    close: function() {
+        this.panel.fadeOut('slow');
+        this.mask.hide();
+    }
+});
 
 // Show loading dialog ...
-//waitDialog = new editor.WaitDialog();
-//waitDialog.show();
+waitDialog = new editor.WaitDialog();
+waitDialog.show();
 
 // Loading libraries ...
 jQuery.getScript("js/mindplot-min.js");

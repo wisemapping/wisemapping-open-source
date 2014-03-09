@@ -65,7 +65,7 @@ mindplot.DesignerKeyboard = new Class({
             }
         );
         this.addShortcut(
-            'delete', function(event) {
+            'del', function(event) {
                 designer.deleteSelectedEntities();
                 event.preventDefault();
                 event.stopPropagation();
