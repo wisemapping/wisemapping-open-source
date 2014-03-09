@@ -13,6 +13,7 @@
             <list>
                 <value>getMindmapUserBy</value>
                 <value>getMindmapById</value>
+                <value>linkLabel</value>
                 <value>find*</value>
                 <value>filter*</value>
             </list>
