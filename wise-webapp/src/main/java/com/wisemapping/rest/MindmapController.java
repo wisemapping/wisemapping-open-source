@@ -165,10 +165,10 @@ public class MindmapController extends BaseController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/maps/", produces = {"application/json", "application/xml"})
-    public RestMindmapList retrieveList(@RequestParam(required = false) String filterValue) throws IOException {
+    public RestMindmapList retrieveList(@RequestParam(required = false) String q) throws IOException {
         final User user = Utils.getUser();
 
-        final MindmapFilter filter = MindmapFilter.parse(filterValue);
+        final MindmapFilter filter = MindmapFilter.parse(q);
         final List<Collaboration> collaborations = mindmapService.findCollaborations(user);
 
         final List<Mindmap> mindmaps = new ArrayList<Mindmap>();
