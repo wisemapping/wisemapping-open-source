@@ -170,24 +170,24 @@
                 <div id="tableActions">
                     <div id="pageInfo"></div>
                     <div class="btn-group" id="pageButtons">
-                        <button class="btn" id="pPageBtn"><strong>&lt;</strong></button>
-                        <button class="btn" id="nPageBtn"><strong>&gt;</strong></button>
+                        <button class="btn btn-sm" id="pPageBtn"><strong>&lt;</strong></button>
+                        <button class="btn btn-sm" id="nPageBtn"><strong>&gt;</strong></button>
                     </div>
                 </div>
 
                 <div class="btn-group">
-                    <button id="newBtn" class="btn btn-primary">
+                    <button id="newBtn" class="btn btn-sm btn-primary">
                         <i class="glyphicon glyphicon-file glyphicon-white"></i>
                         <spring:message code="NEW"/>
                     </button>
-                    <button id="importBtn" class="btn btn-primary">
+                    <button id="importBtn" class="btn btn-sm btn-primary">
                         <i class="glyphicon glyphicon-upload glyphicon-white"></i>
                         <spring:message code="IMPORT"/>
                     </button>
                 </div>
 
                 <div class="btn-group">
-                    <button id='addLabelButton' class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    <button id='addLabelButton' class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
                         <i class="glyphicon glyphicon-tag glyphicon-white"></i>
                         <spring:message code="LABEL"/>
                         <span class="caret"></span>
@@ -204,19 +204,19 @@
                 </div>
 
                 <div class="btn-group act-multiple" id="deleteBtn" style="display:none">
-                    <button class="btn btn-primary">
+                    <button class="btn btn-sm btn-primary">
                         <i class="glyphicon glyphicon-trash glyphicon-white"></i>
                         <spring:message code="DELETE"/>
                     </button>
                 </div>
 
                 <div id="infoBtn" class="btn-group act-single" style="display:none">
-                    <button class="btn btn-primary"><i class="glyphicon glyphicon-exclamation-sign glyphicon-white"></i>
+                    <button class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-exclamation-sign glyphicon-white"></i>
                         <spring:message code="INFO"/></button>
                 </div>
 
                 <div id="actionsBtn" class="btn-group act-single" style="display:none">
-                    <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    <button class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
                         <i class="glyphicon glyphicon-asterisk glyphicon-white"></i> <spring:message code="MORE"/>
                         <span class="caret"></span>
                     </button>
@@ -310,7 +310,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message
+                        <button class="btn btn-sm btn-primary btn-accept" data-loading-text="<spring:message
                             code="SAVING"/>"><spring:message
                                 code="CREATE"/></button>
                         <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
@@ -349,7 +349,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message
+                        <button class="btn btn-sm btn-primary btn-accept" data-loading-text="<spring:message
                                 code="SAVING"/>"><spring:message
                                 code="CREATE"/></button>
                         <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
@@ -394,7 +394,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/>">
+                        <button class="btn btn-sm btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/>">
                             <spring:message code="DUPLICATE"/></button>
                         <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
                     </div>
@@ -434,7 +434,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/>">
+                        <button class="btn btn-sm btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/>">
                             <spring:message
                                     code="RENAME"/></button>
                         <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
@@ -458,7 +458,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message
+                        <button class="btn btn-sm btn-primary btn-accept" data-loading-text="<spring:message
                             code="SAVING"/> ..."><spring:message
                                 code="DELETE"/></button>
                         <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
@@ -481,7 +481,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message
+                        <button class="btn btn-sm btn-primary btn-accept" data-loading-text="<spring:message
                                 code="SAVING"/> ..."><spring:message
                                 code="DELETE"/></button>
                         <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
@@ -520,7 +520,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/>...">
+                        <button class="btn btn-sm btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/>...">
                             <spring:message code="ACCEPT"/></button>
                         <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
                     </div>
@@ -540,7 +540,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary btn-accept" data-loading-text="Exporting..."><spring:message
+                        <button class="btn btn-sm btn-primary btn-accept" data-loading-text="Exporting..."><spring:message
                                 code="EXPORT"/></button>
                         <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
                     </div>
@@ -560,7 +560,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message
+                        <button class="btn btn-sm btn-primary btn-accept" data-loading-text="<spring:message
                                 code="IMPORTING"/>"><spring:message
                                 code="IMPORT"/></button>
                         <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
@@ -581,7 +581,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/>">
+                        <button class="btn btn-sm btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/>">
                             <spring:message code="ACCEPT"/></button>
                         <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
                     </div>
