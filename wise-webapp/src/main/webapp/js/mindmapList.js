@@ -185,14 +185,14 @@ function updateStatusToolbar() {
     $("#mindmapListTable tbody input:checked").parent().parent().addClass('row-selected');
     $("#mindmapListTable tbody input:not(:checked)").parent().parent().removeClass('row-selected');
 
-    $('.buttonsToolbar').find('.act-single').hide().end().find('.act-multiple').hide();
+    $('.buttonsToolbar').find('.act-single').fadeOut('slow').end().find('.act-multiple').fadeOut('slow');
 
     var tableElem = $('#mindmapListTable');
     var selectedRows = tableElem.dataTableExt.getSelectedRows();
 
     if (selectedRows.length > 0) {
         if (selectedRows.length == 1) {
-            $('.buttonsToolbar').find('.act-single').show().end().find('.act-multiple').show();
+            $('.buttonsToolbar').find('.act-single').fadeIn('slow').end().find('.act-multiple').fadeIn('slow');
 
             // Can be executed by the owner ?
             var rowData = tableElem.dataTable().fnGetData(selectedRows[0]);
@@ -202,7 +202,7 @@ function updateStatusToolbar() {
                 $(".buttonsToolbar").find('#publishBtn').hide().end().find('#shareBtn').hide().end().find('#renameBtn').hide();
             }
         } else {
-            $(".buttonsToolbar .act-multiple").show();
+            $(".buttonsToolbar .act-multiple").fadeIn('slow');
         }
     }
 }
