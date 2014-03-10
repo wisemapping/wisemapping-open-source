@@ -94,14 +94,16 @@
 
             // Customize search action ...
             $('#mindmapListTable_filter').appendTo("#tableActions");
+            $('#mindmapListTable_filter label').addClass('input-group-sm');
             var input = $('#mindmapListTable_filter input');
-            input.addClass('input-small search-query form-control');
+            input.addClass('form-control');
             input.attr('placeholder', 'Search');
-            $("#mindmapListTable_info").appendTo("#pageInfo");
 
             // Re-arrange pagination actions ...
             $("#tableFooter").appendTo("#mindmapListTable_wrapper");
             $("#mindmapListTable_length").appendTo("#tableFooter");
+            $("#mindmapListTable_info").appendTo("#tableFooter");
+
             $('#mindmapListTable_length select').attr("style", "width:60px;");
 
 
