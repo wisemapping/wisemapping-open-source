@@ -254,8 +254,23 @@ function updateStarred(spanElem) {
 
 function callbackOnTableInit() {
     // Register starred events ...
-    $('#mindmapListTable .starredOff, #mindmapListTable .starredOn').click(function () {
+    $('#mindmapListTable .starredOff, #mindmapListTable .starredOn').click(function (event) {
         updateStarred(this);
+        event.stopPropagation();
+    });
+
+    $("#mindmapListTable tbody tr").click(
+        function(event) {
+            var target = $(event.target);
+            if (!target.is('.closeTag')){
+                if (!target.parent().is('.closeTag')) {
+                    var baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf("c/maps/"));
+                    window.open(baseUrl + 'c/maps/' + $(this).find('.mindmapName').attr('value') + '/edit' , '_self');
+                }
+            }
+    });
+    $('input:checkbox').click(function(event) {
+        event.stopPropagation();
     });
     updateStatusToolbar();
 }
@@ -474,9 +489,9 @@ $(function () {
         })
     });
 
-    $(document).on('click', ".closeTag", function() {
+    $(document).on('click', ".closeTag", function(event) {
         var me = $(this);
-        var mindmapId = me.parents("td").find("a").attr("value");
+        var mindmapId = me.parents("td").find(".mindmapName").attr("value");
         var data = {
             id: me.attr("value"),
             title: me.attr("name"),

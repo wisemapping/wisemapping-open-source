@@ -47,6 +47,10 @@
     -moz-border-radius: @radius;
 }
 
+.mindmapName {
+    color: #428bca;
+}
+
 /* ------------------------------ Table --------------------------------- */
 
 @table-gap: 2%;
@@ -104,6 +108,10 @@ input#selectAll {
 
 #mindmapListTable th {
     padding: 4px;
+}
+
+#mindmapListTable tbody tr {
+    cursor: pointer;
 }
 
 /* Pagination Styles */
@@ -194,6 +202,7 @@ input#selectAll {
 
 .closeTag {
   cursor: pointer;
+  z-index: 2000;
 }
 
 .tableTag {
