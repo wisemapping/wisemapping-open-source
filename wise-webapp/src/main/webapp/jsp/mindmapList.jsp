@@ -140,7 +140,7 @@
 
         <div class="row">
             <div class="col-md-2" id="foldersContainer">
-                <ul class="nav nav-pills nav-stacked">
+                <ul class="nav nav-pills nav-stacked filterList">
                     <li data-filter="all" class="active" style="display: none">
                         <a href="#"><i class="glyphicon glyphicon-inbox glyphicon-white"></i>
                             <spring:message code="ALL_MAPS"/>
