@@ -281,7 +281,6 @@
         <div id="new-dialog-modal" title="<spring:message code="ADD_NEW_MAP"/>" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
-
                     <div class="modal-header">
                         <button class="close" data-dismiss="modal">x</button>
                         <h3><spring:message code="NEW_MAP_MSG"/></h3>
@@ -453,12 +452,10 @@
                         <button class="close" data-dismiss="modal">x</button>
                         <h3><spring:message code="DELETE_MINDMAP"/></h3>
                     </div>
-                    <div class="modal-body">
                         <div class="alert alert-block alert-warning">
                             <h4 class="alert-heading"><spring:message code="WARNING"/>!</h4><spring:message
                                 code="DELETE_MAPS_WARNING"/>
                         </div>
-                    </div>
                     <div class="modal-footer">
                         <button class="btn btn-sm btn-primary btn-accept" data-loading-text="<spring:message
                             code="SAVING"/> ..."><spring:message
@@ -477,10 +474,8 @@
                         <button class="close" data-dismiss="modal">x</button>
                         <h3><spring:message code="DELETE"/></h3>
                     </div>
-                    <div class="modal-body">
-                        <div class="alert alert-block alert-warning">
-                            <h4 class="alert-heading"><spring:message code="WARNING"/>!</h4><spring:message code="DELETE_LABELS_WARNING"/>
-                        </div>
+                    <div class="alert alert-block alert-warning">
+                        <h4 class="alert-heading"><spring:message code="WARNING"/>!</h4><spring:message code="DELETE_LABELS_WARNING"/>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-sm btn-primary btn-accept" data-loading-text="<spring:message
