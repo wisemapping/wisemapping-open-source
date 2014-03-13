@@ -15,11 +15,12 @@
 
 <style>
     .btn-header {
-        background-color: #171a17;
+        background-color: #F7C931;
         border-color: #575757;
+        color: #000000;
     }
     .btn-header:hover {
-        background-color: #F7C931;
+        background-color: #eee;
     }
     .WelcomeHeader {
         position: relative;
