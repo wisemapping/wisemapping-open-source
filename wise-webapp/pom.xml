@@ -560,14 +560,6 @@
                     </webAppConfig>
                     <systemProperties>
                         <systemProperty>
-                            <name>org.mortbay.util.FileResource.checkAliases</name>
-                            <value>false</value>
-                        </systemProperty>
-                        <systemProperty>
-                            <name>org.mortbay.util.FileResource.checkAliases</name>
-                            <value>false</value>
-                        </systemProperty>
-                        <systemProperty>
                             <name>database.base.url</name>
                             <value>${project.build.directory}</value>
                         </systemProperty>
@@ -606,9 +598,9 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>org.mortbay.jetty</groupId>
+                                    <groupId>org.eclipse.jetty</groupId>
                                     <artifactId>jetty-runner</artifactId>
-                                    <version>7.4.5.v20110725</version>
+                                    <version>9.1.3.v20140225</version>
                                     <destFileName>jetty-runner.jar</destFileName>
                                 </artifactItem>
                             </artifactItems>
