@@ -17,7 +17,7 @@
  */
 
 mindplot.MultilineTextEditor = new Class({
-    Extends:Events,
+    Extends: mindplot.Events,
     initialize:function () {
         this._topic = null;
         this._timeoutId = -1;
