@@ -140,6 +140,7 @@
                                         <include>ScreenManager.js</include>
                                         <include>Workspace.js</include>
                                         <include>ShrinkConnector.js</include>
+                                        <include>Keyboard.js</include>
                                         <include>DesignerKeyboard.js</include>
                                         <include>Keyboard.js</include>
                                         <include>TopicStyle.js</include>
