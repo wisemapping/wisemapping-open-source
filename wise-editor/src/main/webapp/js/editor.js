@@ -140,54 +140,10 @@ function loadDesignerOptions(jsonConf) {
     return result;
 }
 
-// @Todo: This must be reimplemented using JQuery ...
 editor = {};
 editor.WaitDialog = new Class({
     initialize:function () {
         this.panel = this._buildPanel();
-//        this.parent({
-//                closeButton:false,
-//                destroyOnClose:true,
-//                autoOpen:false,
-//                useEscKey:false,
-//                title:'',
-//                onInitialize:function (wrapper) {
-//                    wrapper.setStyle('opacity', 0);
-//                    this.wrapper.setStyle('display', 'none');
-//                    this.fx = new Fx.Morph(wrapper, {
-//                        duration:100,
-//                        transition:Fx.Transitions.Bounce.easeOut
-//                    });
-//                },
-//
-//                onBeforeOpen:function () {
-//                    this.overlay = new Overlay(this.options.inject, {
-//                        duration:this.options.duration
-//                    });
-//                    this.overlay.open();
-//                    this.fx.start({
-//                        'margin-top':[-200, -100],
-//                        opacity:[0, 1]
-//                    }).chain(function () {
-//                        this.fireEvent('show');
-//                        this.wrapper.setStyle('display', 'block');
-//
-//                    }.bind(this));
-//                },
-//
-//                onBeforeClose:function () {
-//                    this.fx.start({
-//                        'margin-top':[-100, 0],
-//                        opacity:0,
-//                        duration:200
-//                    }).chain(function () {
-//                        this.fireEvent('hide');
-//                        this.wrapper.setStyle('display', 'none');
-//
-//                    }.bind(this));
-//                }}
-//        );
-//        this.setContent(panel);
     },
 
     _buildPanel:function () {
@@ -200,11 +156,11 @@ editor.WaitDialog = new Class({
     },
 
     show:function () {
-        this.panel.modal();
+        this.panel.modal('show');
     },
 
     close: function() {
-        this.panel.hide();
+        this.panel.modal('hide');
     }
 });
 
