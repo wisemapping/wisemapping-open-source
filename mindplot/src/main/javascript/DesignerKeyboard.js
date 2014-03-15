@@ -30,7 +30,6 @@ mindplot.DesignerKeyboard = new Class({
     },
 
     initialize:function (designer) {
-        //console.error("Re-impl required ....");
         $assert(designer, "designer can not be null");
         this._registerEvents(designer);
     },
