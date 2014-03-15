@@ -17,6 +17,12 @@
  */
 
 mindplot.Keyboard = new Class({
+
     initialize:function () {
+    },
+
+    addShortcut: function(shortcut, callback) {
+        $(document).bind('keydown', shortcut, callback);
     }
+
 });

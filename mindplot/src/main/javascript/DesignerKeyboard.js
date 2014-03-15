@@ -17,7 +17,7 @@
  */
 
 mindplot.DesignerKeyboard = new Class({
-    //Extends: mindplot.Keyboard,
+    Extends: mindplot.Keyboard,
     Static:{
         register:function (designer) {
             this._instance = new mindplot.DesignerKeyboard(designer);
@@ -32,11 +32,6 @@ mindplot.DesignerKeyboard = new Class({
     initialize:function (designer) {
         $assert(designer, "designer can not be null");
         this._registerEvents(designer);
-    },
-
-    //FIXME: mover al parent
-    addShortcut: function(shortcut, callback) {
-        $(document).bind('keydown', shortcut, callback);
     },
 
     _registerEvents:function (designer) {
