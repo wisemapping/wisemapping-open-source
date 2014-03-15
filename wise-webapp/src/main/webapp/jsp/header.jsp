@@ -13,25 +13,6 @@
     }
 %>
 
-<style>
-    .btn-header {
-        background-color: #F7C931;
-        border-color: #575757;
-        color: #000000;
-    }
-    .btn-header:hover {
-        background-color: #eee;
-    }
-    .WelcomeHeader {
-        position: relative;
-        float: left;
-        padding: 5px 10px;
-        font-size: 14px;
-        line-height: 1.5;
-        border: 1px solid transparent;
-    }
-</style>
-
 <div id="settings-dialog-modal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -52,23 +33,15 @@
     <div id="headerToolbar">
         <c:choose>
             <c:when test="${principal != null}">
-
-                <div class='WelcomeHeader' >
+                <div id="headerActions">
                     <spring:message code="WELCOME"/>, ${principal.firstname}
-                </div>
-
-                <div class="btn-group" id="headerActions">
-
-                    <button type="button" onclick="location.href='c/maps/'" class="btn btn-sm btn-header"><spring:message code="MY_WISEMAPS"/></button>
-
-                    <button type="button" onclick="accountInfo()" title="<spring:message code="ACCOUNT_DETAIL"/>" class="btn btn-sm btn-header">
-                        <spring:message code="ACCOUNT"/>
-                    </button>
-
-                    <button onclick="location.href='c/logout'" title="<spring:message code="LOGOUT"/>" type="button" class="btn btn-sm btn-header">
-                        <spring:message code="LOGOUT"/>
-                    </button>
-
+                    | <span><a href="c/maps/"><spring:message
+                        code="MY_WISEMAPS"/></a></span>
+                    | <span><a id="userSettingsBtn" href="#"
+                               title="<spring:message code="ACCOUNT_DETAIL"/>"><spring:message
+                        code="ACCOUNT"/></a></span>
+                    | <span><a href="c/logout"
+                               title="<spring:message code="LOGOUT"/>"><spring:message code="LOGOUT"/></a></span>
                 </div>
             </c:when>
             <c:when test="${!param.removeSignin && !requestScope.removeSignin}">
@@ -96,18 +69,22 @@
 
 
 <script type="text/javascript">
+    var userSettingsLink = $('#userSettingsBtn');
+    if (userSettingsLink) {
+        userSettingsLink.click(
+                function (event) {
+                    $('#settings-dialog-modal .modal-body').load("c/account/settings",
+                            function () {
+                                $('#settings-dialog-modal .btn-cancel').unbind('click').click(function () {
+                                    $('#settings-dialog-modal').modal("hide");
+                                    window.location.reload();
+                                });
+                            }
+                    );
+                    $('#settings-dialog-modal').modal();
+                    event.preventDefault();
 
-    function accountInfo(event) {
-        $('#settings-dialog-modal .modal-body').load("c/account/settings",
-                function () {
-                    $('#settings-dialog-modal .btn-cancel').unbind('click').click(function () {
-                        $('#settings-dialog-modal').modal("hide");
-                        window.location.reload();
-                    });
-                }
-        );
-        $('#settings-dialog-modal').modal();
-        event.preventDefault();
+                });
     }
 
 </script>
