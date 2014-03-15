@@ -16,7 +16,7 @@
  *   limitations under the License.
  */
 mindplot.layout.LayoutManager = new Class({
-    Extends: Events,
+    Extends: mindplot.Events,
     initialize: function(rootNodeId, rootSize) {
         $assert($defined(rootNodeId), "rootNodeId can not be null");
         $assert(rootSize, "rootSize can not be null");

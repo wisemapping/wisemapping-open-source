@@ -17,7 +17,7 @@
  */
 
 mindplot.Designer = new Class({
-        Extends:Events,
+        Extends: mindplot.Events,
         initialize:function (options, divElement) {
             $assert(options, "options must be defined");
             $assert(options.zoom, "zoom must be defined");

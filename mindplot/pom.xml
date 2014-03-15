@@ -124,6 +124,7 @@
                                     <inputDir>${basedir}/target/compress</inputDir>
                                     <includes>
                                         <include>header.js</include>
+                                        <include>Events.js</include>
                                         <include>${basedir}/../web2d/target/classes/web2d.svg-min.js</include>
                                         <include>Messages.js</include>
                                         <include>TopicEventDispatcher.js</include>
