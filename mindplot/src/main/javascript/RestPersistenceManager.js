@@ -165,24 +165,22 @@ mindplot.RESTPersistenceManager = new Class({
         loadMapDom:function (mapId) {
             // Let's try to open one from the local directory ...
             var xml;
-            var xmlRequest = new Request({
+            $.ajax({
                 url:this.documentUrl.replace("{id}", mapId) + "/xml",
                 method:'get',
                 async:false,
                 headers:{"Content-Type":"text/plain","Accept":"application/xml"},
-                onSuccess:function (responseText) {
+                success:function (responseText) {
                     xml = responseText;
                 }
             });
-            xmlRequest.send();
 
             // If I could not load it from a file, hard code one.
             if (xml == null) {
                 throw new Error("Map could not be loaded");
             }
 
-            var parser = new DOMParser();
-            return  parser.parseFromString(xml, "text/xml");
+            return xml;
         }
     }
 );
