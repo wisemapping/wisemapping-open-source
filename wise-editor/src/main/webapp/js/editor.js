@@ -18,6 +18,27 @@
 
 var designer = null;
 
+
+/*
+* Disclaimer: this global variable is a temporary workaround to Mootools' Browser class
+* We need to avoid browser detection and replace it with feature detection,
+* jquery recommends: http://www.modernizr.com/
+*/
+
+Browser = {
+    firefox: window.globalStorage,
+    ie: document.all && !window.opera,
+    ie6: !window.XMLHttpRequest,
+    ie7: document.all && window.XMLHttpRequest && !XDomainRequest && !window.opera,
+    ie8: document.documentMode==8,
+    opera: Boolean(window.opera),
+    chrome: Boolean(window.chrome),
+    safari: window.getComputedStyle && !window.globalStorage && !window.opera,
+    Platform: {
+        mac: navigator.platform.indexOf('Mac') != -1
+    }
+};
+
 function buildDesigner(options) {
 
     var container = $("#"+options.container);
