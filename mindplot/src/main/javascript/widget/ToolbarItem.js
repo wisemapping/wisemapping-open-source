@@ -17,7 +17,7 @@
  */
 
 mindplot.widget.ToolbarItem = new Class({
-    Implements:[Events],
+    Implements: mindplot.Events, //FIXME: should be extends?
     initialize : function(buttonId, fn, options) {
         $assert(buttonId, "buttonId can not be null");
         $assert(fn, "fn can not be null");
