@@ -87,8 +87,8 @@ web2d.Element = new Class({
         this._peer.addEvent(type, listener);
     },
 
-    toggle : function(type, event) {
-        this._peer.toggle(type, event);
+    trigger : function(type, event) {
+        this._peer.trigger(type, event);
     },
 
     cloneEvents : function(from) {
