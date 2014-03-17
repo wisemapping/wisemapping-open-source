@@ -72,7 +72,7 @@ mindplot.IconGroup = new Class({
 
     _findIconFromModel:function (iconModel) {
         var result = null;
-        this._icons.each(function (icon) {
+        _.each(this._icons, function (icon) {
             var elModel = icon.getModel();
             if (elModel.getId() == iconModel.getId()) {
                 result = icon;
@@ -103,7 +103,7 @@ mindplot.IconGroup = new Class({
         this._resize(this._icons.length);
 
         // Add all again ...
-        this._icons.each(function (elem, i) {
+        _.each(this._icons, function (elem, i) {
             this._positionIcon(elem, i);
         }.bind(this));
     },

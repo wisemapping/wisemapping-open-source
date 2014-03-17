@@ -26,7 +26,7 @@ mindplot.util.FadeEffect = new Class({
 
 
         this.addEvent('complete', function() {
-            this._element.each(function(elem) {
+            _.each(this._element, function(elem) {
                 if(elem){
                     elem.setVisibility(isVisible);
                  }
@@ -40,7 +40,7 @@ mindplot.util.FadeEffect = new Class({
     },
 
     set: function(now) {
-        this._element.each(function(elem) {
+        _.each(this._element, function(elem) {
            if(elem){
                 elem.setOpacity(now);
            }

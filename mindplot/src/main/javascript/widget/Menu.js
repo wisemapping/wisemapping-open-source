@@ -452,7 +452,7 @@ mindplot.widget.Menu = new Class({
     _registerEvents: function (designer) {
 
         // Register on close events ...
-        this._toolbarElems.each(function (elem) {
+        _.each(this._toolbarElems, function (elem) {
             elem.addEvent('show', function () {
                 this.clear()
             }.bind(this));
@@ -462,7 +462,7 @@ mindplot.widget.Menu = new Class({
             var topics = designer.getModel().filterSelectedTopics();
             var rels = designer.getModel().filterSelectedRelationships();
 
-            this._toolbarElems.each(function (button) {
+            _.each(this._toolbarElems, function (button) {
                 var isTopicAction = button.isTopicAction();
                 var isRelAction = button.isRelAction();
 
@@ -480,7 +480,7 @@ mindplot.widget.Menu = new Class({
             var topics = designer.getModel().filterSelectedTopics();
             var rels = designer.getModel().filterSelectedRelationships();
 
-            this._toolbarElems.each(function (button) {
+            _.each(this._toolbarElems, function (button) {
                 var isTopicAction = button.isTopicAction();
                 var isRelAction = button.isRelAction();
 

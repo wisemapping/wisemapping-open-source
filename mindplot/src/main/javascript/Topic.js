@@ -887,7 +887,7 @@ mindplot.Topic = new Class({
     },
 
     _setRelationshipLinesVisibility:function (value) {
-        this._relationships.each(function (relationship) {
+        _.each(this._relationships, function (relationship) {
             var sourceTopic = relationship.getSourceTopic();
             var targetTopic = relationship.getTargetTopic();
 

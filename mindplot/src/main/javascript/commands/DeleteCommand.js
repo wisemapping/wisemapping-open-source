@@ -35,7 +35,7 @@ mindplot.commands.DeleteCommand = new Class({
         var topics = this._filterChildren(this._topicIds, commandContext);
 
         if (topics.length > 0) {
-            topics.each(function (topic) {
+            _.each(topics, function (topic) {
                 // In case that it's editing text node, force close without update ...
                 topic.closeEditors();
 
@@ -47,7 +47,7 @@ mindplot.commands.DeleteCommand = new Class({
                     return rel.getModel().clone();
                 }));
 
-                relationships.each(function (relationship) {
+                _.each(relationships, function (relationship) {
                     commandContext.deleteRelationship(relationship);
                 });
 
@@ -69,7 +69,7 @@ mindplot.commands.DeleteCommand = new Class({
 
         var rels = commandContext.findRelationships(this._relIds);
         if (rels.length > 0) {
-            rels.each(function (rel) {
+            _.each(rels, function (rel) {
                 this._deletedRelModel.push(rel.getModel().clone());
                 commandContext.deleteRelationship(rel);
             }, this);
@@ -79,12 +79,12 @@ mindplot.commands.DeleteCommand = new Class({
     undoExecute:function (commandContext) {
 
         // Add all the topics ...
-        this._deletedTopicModels.each(function (model) {
+        _.each(this._deletedTopicModels, function (model) {
             commandContext.createTopic(model);
         }, this);
 
         // Do they need to be connected ?
-        this._deletedTopicModels.each(function (topicModel, index) {
+        _.each(this._deletedTopicModels, function (topicModel, index) {
             var topics = commandContext.findTopics(topicModel.getId());
 
             var parentId = this._parentTopicIds[index];
@@ -95,12 +95,12 @@ mindplot.commands.DeleteCommand = new Class({
         }, this);
 
         // Add rebuild relationships ...
-        this._deletedRelModel.each(function (model) {
+        _.each(this._deletedRelModel, function (model) {
             commandContext.addRelationship(model);
         }.bind(this));
 
         // Finally display the topics ...
-        this._deletedTopicModels.each(function (topicModel) {
+        _.each(this._deletedTopicModels, function (topicModel) {
             var topics = commandContext.findTopics(topicModel.getId());
             topics[0].setBranchVisibility(true);
         }, this);
@@ -121,7 +121,7 @@ mindplot.commands.DeleteCommand = new Class({
         var topics = commandContext.findTopics(topicIds);
 
         var result = [];
-        topics.each(function (topic) {
+        _.each(topics, function (topic) {
             var parent = topic.getParent();
             var found = false;
             while (parent != null && !found) {

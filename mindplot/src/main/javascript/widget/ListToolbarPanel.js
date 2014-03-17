@@ -37,7 +37,7 @@ mindplot.widget.ListToolbarPanel = new Class({
         var panelElem = this.getPanelElem();
         var menuElems = panelElem.getElements('div');
         var value = this.getModel().getValue();
-        menuElems.each(function (elem) {
+        _.each(menuElems, function (elem) {
             var elemValue = $defined(elem.getAttribute('model')) ? elem.getAttribute('model') : elem.id;
             $assert(elemValue, "elemValue can not be null");
             if (elemValue == value)

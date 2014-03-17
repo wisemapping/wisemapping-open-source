@@ -70,7 +70,7 @@ mindplot.layout.OriginalLayout = new Class({
 
     layout:function () {
         var roots = this._treeSet.getTreeRoots();
-        roots.each(function (node) {
+        _.each(roots, function (node) {
 
             // Calculate all node heights ...
             var sorter = node.getSorter();
@@ -108,7 +108,7 @@ mindplot.layout.OriginalLayout = new Class({
             var offsetById = sorter.computeOffsets(this._treeSet, node);
             var parentPosition = node.getPosition();
 
-            children.each(function (child) {
+            _.each(children, function (child) {
                 var offset = offsetById[child.getId()];
 
                 var childFreeDisplacement = child.getFreeDisplacement();
@@ -133,7 +133,7 @@ mindplot.layout.OriginalLayout = new Class({
         }
 
         // Continue reordering the children nodes ...
-        children.each(function (child) {
+        _.each(children, function (child) {
             this._layoutChildren(child, heightById);
         }, this);
     },
@@ -183,7 +183,7 @@ mindplot.layout.OriginalLayout = new Class({
             this._shiftBranches(node, heightById);
         }
 
-        children.each(function (child) {
+        _.each(children, function (child) {
             this._fixOverlapping(child, heightById);
         }, this);
     },
@@ -193,7 +193,7 @@ mindplot.layout.OriginalLayout = new Class({
 
         var siblingsToShift = this._treeSet.getSiblingsInVerticalDirection(node, node.getFreeDisplacement().y);
         var last = node;
-        siblingsToShift.each(function (sibling) {
+        _.each(siblingsToShift, function (sibling) {
             var overlappingOccurs = shiftedBranches.some(function (shiftedBranch) {
                 return this._branchesOverlap(shiftedBranch, sibling, heightById);
             }, this);
@@ -209,7 +209,7 @@ mindplot.layout.OriginalLayout = new Class({
             return !shiftedBranches.contains(branch);
         });
 
-        branchesToShift.each(function (branch) {
+        _.each(branchesToShift, function (branch) {
             var bAmount = node.getFreeDisplacement().y;
             this._treeSet.shiftBranchPosition(branch, 0, bAmount);
             shiftedBranches.push(branch);

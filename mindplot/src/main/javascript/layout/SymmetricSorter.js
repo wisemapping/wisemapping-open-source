@@ -168,7 +168,7 @@ mindplot.layout.SymmetricSorter = new Class({
 
         // Compute the center of the branch ...
         var totalHeight = 0;
-        heights.each(function (elem) {
+        _.each(heights, function (elem) {
             totalHeight += elem.height;
         });
         var ysum = totalHeight / 2;

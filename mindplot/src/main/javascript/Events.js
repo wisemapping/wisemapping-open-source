@@ -26,7 +26,7 @@ mindplot.Events = new Class({
         var events = this.$events[type];
         if (!events) return this;
         args = Array.from(args);
-        events.each(function(fn){
+        _.each(events, function(fn){
             if (delay) fn.delay(delay, this, args);
             else fn.apply(this, args);
         }, this);
