@@ -126,7 +126,7 @@ mindplot.MultilineTextEditor = new Class({
 
             var lines = textElem.value.split('\n');
             var maxLineLength = 1;
-            lines.each(function (line) {
+            _.each(lines, function (line) {
                 if (maxLineLength < line.length)
                     maxLineLength = line.length;
             });

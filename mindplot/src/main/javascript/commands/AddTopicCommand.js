@@ -29,7 +29,7 @@ mindplot.commands.AddTopicCommand = new Class({
 
     execute:function (commandContext) {
 
-        this._models.each(function (model, index) {
+        _.each(this._models, function (model, index) {
 
             // Add a new topic ...
             var topic = commandContext.createTopic(model);
@@ -59,12 +59,12 @@ mindplot.commands.AddTopicCommand = new Class({
     undoExecute:function (commandContext) {
         // Delete disconnected the nodes. Create a copy of the topics ...
         var clonedModel = [];
-        this._models.each(function (model) {
+        _.each(this._models, function (model) {
            clonedModel.push(model.clone());
         });
 
         // Finally, remove the nodes ...
-        this._models.each(function (model) {
+        _.each(this._models, function (model) {
 
             var topicId = model.getId();
             var topic = commandContext.findTopics(topicId)[0];

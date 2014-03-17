@@ -77,7 +77,7 @@ mindplot.layout.BalancedSorter = new Class({
         var result = null;
         var last = children.getLast();
         position = position || {x:last.getPosition().x, y:last.getPosition().y + 1};
-        children.each(function (child, index) {
+        _.each(children, function (child, index) {
             var cpos = child.getPosition();
             if (position.y > cpos.y) {
                 yOffset = child == last ?
@@ -129,7 +129,7 @@ mindplot.layout.BalancedSorter = new Class({
         // Filter nodes on one side..
         var children = this._getChildrenForOrder(parent, treeSet, node.getOrder());
 
-        children.each(function (child, index) {
+        _.each(children, function (child, index) {
             if (child.getOrder() > node.getOrder()) {
                 child.setOrder(child.getOrder() - 2);
             }
@@ -154,7 +154,7 @@ mindplot.layout.BalancedSorter = new Class({
         var totalPHeight = 0;
         var totalNHeight = 0;
 
-        heights.each(function (elem) {
+        _.each(heights, function (elem) {
             if (elem.order % 2 == 0) {
                 totalPHeight += elem.height;
             } else {

@@ -32,7 +32,7 @@ mindplot.persistence.Beta2PelaMigrator = new Class({
 
         // Beta does not set position on second level nodes ...
         var branches = mindmap.getBranches();
-        branches.each(function (model) {
+        _.each(branches, function (model) {
             this._fixPosition(model);
         }.bind(this));
 
@@ -42,7 +42,7 @@ mindplot.persistence.Beta2PelaMigrator = new Class({
     _fixPosition:function (parentModel) {
         var parentPos = parentModel.getPosition();
         var isRight = parentPos.x > 0;
-        parentModel.getChildren().each(function (child) {
+        _.each(parentModel.getChildren(), function (child) {
             if (!child.getPosition()) {
                 child.setPosition(parentPos.x + (50 * isRight ? 1 : -1), parentPos.y);
             }

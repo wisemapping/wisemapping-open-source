@@ -35,7 +35,7 @@ mindplot.widget.IMenu = new Class({
     },
 
     clear:function () {
-        this._toolbarElems.each(function (item) {
+        _.each(this._toolbarElems, function (item) {
             item.hide();
         });
     },
