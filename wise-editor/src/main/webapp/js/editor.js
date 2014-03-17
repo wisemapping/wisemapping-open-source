@@ -177,7 +177,9 @@ editor.WaitDialog = new Class({
     },
 
     show:function () {
-        this.panel.modal('show');
+        this.panel.modal({
+            backdrop: 'static'
+        });
     },
 
     close: function() {
