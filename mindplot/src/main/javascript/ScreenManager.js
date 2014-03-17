@@ -51,7 +51,7 @@ mindplot.ScreenManager = new Class({
             this._clickEvents.remove(listener);
         }
         else{
-            this._divContainer.removeEvent(event, listener);
+            this._divContainer.unbind(event, listener);
         }
     },
 
@@ -118,13 +118,13 @@ mindplot.ScreenManager = new Class({
 
     getWorkspaceMousePosition : function(event) {
         // Retrieve current mouse position.
-        var x = event.client.x;
-        var y = event.client.y;
+        var x = event.clientX;
+        var y = event.clientY;
 
-        // Subtract div position.
-        var containerPosition = this.getContainer().getPosition();
+        //FIXME: paulo: why? Subtract div position.
+        /*var containerPosition = this.getContainer().position();
         x = x - containerPosition.x;
-        y = y - containerPosition.y;
+        y = y - containerPosition.y;*/
 
         // Scale coordinate in order to be relative to the workspace. That's coordSize/size;
         x = x * this._scale;

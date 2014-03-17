@@ -25,38 +25,33 @@ mindplot.MultilineTextEditor = new Class({
 
     _buildEditor:function () {
 
-        var result = new Element('div');
-        result.set('id',"textContainer")
-        result.setStyles({
+        var result = $('<div></div>')
+            .attr('id', 'textContainer')
+            .css({
                 display:"none",
                 zIndex:"8",
                 overflow:"hidden",
                 border:"0 none"
-            }
-        );
+            });
 
-        var textareaElem = new Element('textarea',
-            {   tabindex:'-1',
-                value:"",
-                wrap:'off'
-            }
-        );
 
-        textareaElem.setStyles({
-            border:"1px gray dashed",
-            background:"rgba(98, 135, 167, .3)",
-            outline:'0 none',
-            resize:'none',
-            overflow:"hidden"
-        });
-        textareaElem.inject(result);
+        var textareaElem = $('<textarea tabindex="-1" value="" wrap="off" ></textarea>')
+            .css({
+                border:"1px gray dashed",
+                background:"rgba(98, 135, 167, .3)",
+                outline:'0 none',
+                resize:'none',
+                overflow:"hidden"
+            });
+
+        result.append(textareaElem);
         return result;
     },
 
     _registerEvents:function (containerElem) {
         var textareaElem = this._getTextareaElem();
 
-        textareaElem.addEvent('keydown', function (event) {
+        textareaElem.on('keydown', function (event) {
             switch (event.key) {
                 case 'esc':
                     this.close(false);
@@ -65,7 +60,7 @@ mindplot.MultilineTextEditor = new Class({
                     if (event.meta || event.control) {
 
                         // Add return ...
-                        var text = textareaElem.value;
+                        var text = textareaElem.val();
                         var cursorPosition = text.length;
                         if (textareaElem.selectionStart) {
                             cursorPosition = textareaElem.selectionStart;
@@ -76,12 +71,12 @@ mindplot.MultilineTextEditor = new Class({
                         if (cursorPosition < text.length) {
                             tail = text.substring(cursorPosition, text.length);
                         }
-                        textareaElem.value = head + "\n" + tail;
+                        textareaElem.val(head + "\n" + tail);
 
                         // Position cursor ...
-                        if (textareaElem.setSelectionRange) {
+                        if (textareaElem[0].setSelectionRange) {
                             textareaElem.focus();
-                            textareaElem.setSelectionRange(cursorPosition + 1, cursorPosition + 1);
+                            textareaElem[0].setSelectionRange(cursorPosition + 1, cursorPosition + 1);
                         } else if (textareaElem.createTextRange) {
                             var range = textareaElem.createTextRange();
                             range.moveStart('character', cursorPosition + 1);
@@ -97,24 +92,24 @@ mindplot.MultilineTextEditor = new Class({
             event.stopPropagation();
         }.bind(this));
 
-        textareaElem.addEvent('keypress', function (event) {
+        textareaElem.on('keypress', function (event) {
             event.stopPropagation();
         });
 
-        textareaElem.addEvent('keyup', function (event) {
-            var text = this._getTextareaElem().value;
+        textareaElem.on('keyup', function (event) {
+            var text = this._getTextareaElem().val();
             this.fireEvent('input', [event, text]);
             this._adjustEditorSize();
         }.bind(this));
 
         // If the user clicks on the input, all event must be ignored ...
-        containerElem.addEvent('click', function (event) {
+        containerElem.on('click', function (event) {
             event.stopPropagation();
         });
-        containerElem.addEvent('dblclick', function (event) {
+        containerElem.on('dblclick', function (event) {
             event.stopPropagation();
         });
-        containerElem.addEvent('mousedown', function (event) {
+        containerElem.on('mousedown', function (event) {
             event.stopPropagation();
         });
     },
@@ -124,25 +119,25 @@ mindplot.MultilineTextEditor = new Class({
         if (this.isVisible()) {
             var textElem = this._getTextareaElem();
 
-            var lines = textElem.value.split('\n');
+            var lines = textElem.val().split('\n');
             var maxLineLength = 1;
             _.each(lines, function (line) {
                 if (maxLineLength < line.length)
                     maxLineLength = line.length;
             });
 
-            textElem.setAttribute('cols', maxLineLength);
-            textElem.setAttribute('rows', lines.length);
+            textElem.attr('cols', maxLineLength);
+            textElem.attr('rows', lines.length);
 
-            this._containerElem.setStyles({
+            this._containerElem.css({
                 width:(maxLineLength + 3) + 'em',
-                height:textElem.getSize().height
+                height:textElem.height()
             });
         }
     },
 
     isVisible:function () {
-        return $defined(this._containerElem) && this._containerElem.getStyle('display') == 'block';
+        return $defined(this._containerElem) && this._containerElem.css('display') == 'block';
     },
 
     _updateModel:function () {
@@ -166,7 +161,7 @@ mindplot.MultilineTextEditor = new Class({
         if (!this.isVisible()) {
             //Create editor ui
             var containerElem = this._buildEditor();
-            containerElem.inject($(document.body)[0]);
+            $('body').append(containerElem);
 
             this._containerElem = containerElem;
             this._registerEvents(containerElem);
@@ -193,14 +188,14 @@ mindplot.MultilineTextEditor = new Class({
             // Position the editor and set the size...
             var textShape = topic.getTextShape();
 
-            $('#textContainer')[0].position({
+            $('#textContainer').position({
                 my:        "left top",
                 at:        "left bottom",
                 of:        $(textShape)[0]
 //                collision: "fit"
             });
 
-            this._containerElem.setStyle('display', 'block');
+            this._containerElem.css('display', 'block');
 
             // Set editor's initial text ...
             var text = $defined(defaultText) ? defaultText : topic.getText();
@@ -236,22 +231,22 @@ mindplot.MultilineTextEditor = new Class({
             fontWeight:fontStyle.weight,
             color:fontStyle.color
         };
-        inputField.setStyles(style);
-        this._containerElem.setStyles(style);
+        inputField.css(style);
+        this._containerElem.css(style);
     },
 
     _setText:function (text) {
         var textareaElem = this._getTextareaElem();
-        textareaElem.value = text;
+        textareaElem.val(text);
         this._adjustEditorSize();
     },
 
     _getText:function () {
-        return this._getTextareaElem().value;
+        return this._getTextareaElem().val();
     },
 
     _getTextareaElem:function () {
-        return this._containerElem.getElement('textarea');
+        return this._containerElem.find('textarea');
     },
 
     _positionCursor:function (textareaElem, selectText) {
@@ -261,19 +256,19 @@ mindplot.MultilineTextEditor = new Class({
             if (textareaElem.createTextRange) {
                 var rang = textareaElem.createTextRange();
                 rang.select();
-                rang.move("character", textareaElem.value.length);
+                rang.move("character", textareaElem.val().length);
             }
             else {
-                textareaElem.setSelectionRange(0, textareaElem.value.length);
+                textareaElem[0].setSelectionRange(0, textareaElem.val().length);
             }
 
         } else {
             // Move the cursor to the last character ..
             if (textareaElem.createTextRange) {
                 var range = textareaElem.createTextRange();
-                range.move("character", textareaElem.value.length);
+                range.move("character", textareaElem.val().length);
             } else {
-                textareaElem.selectionStart = textareaElem.value.length;
+                textareaElem.selectionStart = textareaElem.val().length;
             }
         }
 
