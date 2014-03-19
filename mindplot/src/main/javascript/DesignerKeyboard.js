@@ -276,24 +276,25 @@ mindplot.DesignerKeyboard = new Class({
                 designer.zoomOut();
             }
         );
+        var me = this;
         this.addShortcut(
             'right', function (event) {
                 var node = model.selectedTopic();
                 if (node) {
                     if (node.isCentralTopic()) {
-                        this._goToSideChild(designer, node, 'RIGHT');
+                        me._goToSideChild(designer, node, 'RIGHT');
                     }
                     else {
                         if (node.getPosition().x < 0) {
-                            this._goToParent(designer, node);
+                            me._goToParent(designer, node);
                         }
                         else if (!node.areChildrenShrunken()) {
-                            this._goToChild(designer, node);
+                            me._goToChild(designer, node);
                         }
                     }
                 } else {
                     var centralTopic = model.getCentralTopic();
-                    this._goToNode(designer, centralTopic);
+                    me._goToNode(designer, centralTopic);
                 }
                 event.preventDefault();
                 event.stopPropagation();
@@ -304,19 +305,19 @@ mindplot.DesignerKeyboard = new Class({
                 var node = model.selectedTopic();
                 if (node) {
                     if (node.isCentralTopic()) {
-                        this._goToSideChild(designer, node, 'LEFT');
+                        me._goToSideChild(designer, node, 'LEFT');
                     }
                     else {
                         if (node.getPosition().x > 0) {
-                            this._goToParent(designer, node);
+                            me._goToParent(designer, node);
                         }
                         else if (!node.areChildrenShrunken()) {
-                            this._goToChild(designer, node);
+                            me._goToChild(designer, node);
                         }
                     }
                 } else {
                     var centralTopic = model.getCentralTopic();
-                    this._goToNode(designer, centralTopic);
+                    me._goToNode(designer, centralTopic);
                 }
                 event.preventDefault();
                 event.stopPropagation();
@@ -327,11 +328,11 @@ mindplot.DesignerKeyboard = new Class({
                 var node = model.selectedTopic();
                 if (node) {
                     if (!node.isCentralTopic()) {
-                        this._goToBrother(designer, node, 'UP');
+                        me._goToBrother(designer, node, 'UP');
                     }
                 } else {
                     var centralTopic = model.getCentralTopic();
-                    this._goToNode(designer, centralTopic);
+                    me._goToNode(designer, centralTopic);
                 }
                 event.preventDefault();
                 event.stopPropagation();
@@ -342,11 +343,11 @@ mindplot.DesignerKeyboard = new Class({
                 var node = model.selectedTopic();
                 if (node) {
                     if (!node.isCentralTopic()) {
-                        this._goToBrother(designer, node, 'DOWN');
+                        me._goToBrother(designer, node, 'DOWN');
                     }
                 } else {
                     var centralTopic = model.getCentralTopic();
-                    this._goToNode(designer, centralTopic);
+                    me._goToNode(designer, centralTopic);
                 }
                 event.preventDefault();
                 event.stopPropagation();

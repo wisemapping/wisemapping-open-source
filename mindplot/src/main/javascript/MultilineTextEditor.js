@@ -287,7 +287,7 @@ mindplot.MultilineTextEditor = new Class({
             this._topic.getTextShape().setVisibility(true);
 
             // Remove it form the screen ...
-            this._containerElem.dispose();
+            this._containerElem.remove();
             this._containerElem = null;
             this._timeoutId = -1;
         }
