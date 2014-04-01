@@ -13,15 +13,10 @@ var BootstrapDialog = new Class({
             '<div class="modal-content">' +
             '<div class="modal-header">' +
                 '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
-                '<h2 class="modal-title">' + title + '</h2>' +
+                '<h3 class="modal-title">' + title + '</h3>' +
             '</div>' +
             '<div class="modal-body">' +
             this.content.html() +
-            '</div>' +
-
-            '<div class="modal-footer">' +
-                '<button type="button" class="btn btn-primary">Accept</button>' +
-                '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' +
             '</div>' +
             '</div>' +
             '</div>' +
