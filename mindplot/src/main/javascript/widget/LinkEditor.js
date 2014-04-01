@@ -65,48 +65,54 @@ mindplot.widget.LinkEditor = new Class({
     },
 
     _buildPanel:function (model) {
-        var result = $('<div></div>').css("padding-top", "15px");
+        var result = $('<div></div>').css("padding-top", "5px");
         var form = $('<form></form>').attr('action','none').attr('id','linkFormId');
-        var text = $('<p></p>').text("URL:");
+        var text = $('<p></p>').text("Paste your url here:");
+        text.css('margin','0px 0px 10px');
 
         form.append(text);
-        // Add Input ...
-        var input = $('<input></input>').attr(
+
+        // Add Input
+        var input = $('<input>').attr(
             'placeholder','http://www.example.com/').attr(
             'type','url').attr(
             'required','true').attr(
             'autofocus','autofocus'
             );
-        form.append(input);
-        result.append(form);
-//        var input = new Element('input', {
-//            placeholder:'http://www.example.com/',
-//            type:Browser.ie ? 'text' : 'url', // IE workaround
-//            required:true,
-//            autofocus:'autofocus'
-//        });
-        if (model.getValue() != null)
-            input.value = model.getValue();
+        input.css('width','70%').css('margin','0px 20px');
 
-//        input.setStyles({
-//            width:'55%',
-//            margin:"0px 10px"
-//
-//        });
-//        input.inject(form);
-//
-//        // Open Button
-//        var openButton = new Element('input', {
-//            type:"button",
-//            value:$msg('OPEN_LINK')
-//        });
-//        openButton.inject(form);
+        if (model.getValue() != null){
+            input.value = model.getValue();}
+//            type:Browser.ie ? 'text' : 'url', // IE workaround
+
+        // Open Button
+        var open = $('<input/>').attr(
+                'type','button').attr(
+                'value',$msg('OPEN_LINK'));
+
+        open.click(function(){
+            alert('clicked!');
+        });
+
+        form.append(input);
+        form.append(open);
+
 //        openButton.addEvent('click',function(){
 //            window.open(input.value,"_blank", "status=1,width=700,height=450,resizable=1");
 //        });
 //
 //
-//        // Register submit event ...
+        // Register submit event ...
+        form.submit(function (event) {
+//            event.stopPropagation();
+            event.preventDefault();
+
+            if (input.value != null && input.value.trim() != "") {
+                model.setValue(input.value);
+            }
+            this.close();
+        }.bind(this));
+
 //        form.addEvent('submit', function (event) {
 //            event.stopPropagation();
 //            event.preventDefault();
@@ -116,16 +122,27 @@ mindplot.widget.LinkEditor = new Class({
 //            }
 //            this.close();
 //        }.bind(this));
-//
-//        // Add buttons ...
+
+
+        // Add buttons ...
+
+        var buttonContainer = $('<div></div>');
+        buttonContainer.css('paddingTop','5').css('textAlign','center');
 //        var buttonContainer = new Element('div').setStyles({paddingTop:5, textAlign:'center'});
 //
-//        // Create accept button ...
+        // Create accept button ...
+        var okButton = $('<input>');
+        okButton.attr('type','submit').attr(
+                'value',$msg('ACCEPT')).attr(
+                'class','btn-primary');
+        buttonContainer.append(okButton);
+
 //        var okButton = new Element('input', {type:'submit', value:$msg('ACCEPT'), 'class':'btn-primary'});
 //        okButton.addClass('button');
-//        okButton.inject(buttonContainer);
 //
-//        // Create remove button ...
+        // Create remove button ...
+
+
 //        if ($defined(model.getValue())) {
 //            var rmButton = new Element('input', {type:'button', value:$msg('REMOVE'), 'class':'btn-primary'});
 //            rmButton.setStyle('margin', '5px');
@@ -138,27 +155,35 @@ mindplot.widget.LinkEditor = new Class({
 //            }.bind(this));
 //            buttonContainer.inject(form);
 //        }
-//
-//        // Create cancel button ...
+
+        // Create cancel button ...
+
+        var cancelButton = $('<input>');
+        cancelButton.attr('id','cancel').attr('type','button').attr(
+            'value',$msg('CANCEL')).attr(
+            'class','btn-secondary');
+        cancelButton.css('margin','5px');
+        cancelButton.click(function () {this.close();});
+        buttonContainer.append(cancelButton);
+        form.append(buttonContainer);
 //        var cButton = new Element('input', {type:'button', value:$msg('CANCEL'), 'class':'btn-secondary'});
 //        cButton.setStyle('margin', '5px');
 //        cButton.addClass('button');
-//        cButton.inject(buttonContainer);
 //        cButton.addEvent('click', function () {
 //            this.close();
 //        }.bind(this));
 //        buttonContainer.inject(form);
-//
+
 //        result.addEvent('keydown', function (event) {
 //            event.stopPropagation();
 //        });
 //
-//        form.inject(result);
+
+        result.append(form);
         return result;
     },
 
     show:function () {
         this.parent("Link");
-//        this.open();
     }
 });
