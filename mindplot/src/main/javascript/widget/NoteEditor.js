@@ -17,10 +17,11 @@
  */
 
 mindplot.widget.NoteEditor = new Class({
-//    Extends:MooDialog,
+    Extends:BootstrapDialog,
     initialize:function (model) {
         console.log("Re-impl required ....");
         $assert(model, "model can not be null");
+        this.parent();
         var panel = this._buildPanel(model);
 //        this.parent({
 //            closeButton:true,
@@ -61,79 +62,114 @@ mindplot.widget.NoteEditor = new Class({
 //            }
 //        });
 //        this.setContent(panel);
+        this.appendToContent(panel);
     },
 
     _buildPanel:function (model) {
-        var result = new Element('div');
-        var form = new Element('form', {'action':'none', 'id':'noteFormId'});
+        var result = $('<div></div>').css("padding-top", "5px");
+        var form = $('<form></form>').attr('action','none').attr('id','noteFormId');
 
-        // Add textarea ...
-        var textArea = new Element('textarea',
-            {placeholder:$msg('WRITE_YOUR_TEXT_HERE'),
-                required:true,
-                autofocus:'autofocus'
-            });
-        if (model.getValue() != null)
+        // Add textarea
+
+        var textArea = $('<textarea></textarea>').attr(
+                'placeholder',$msg('WRITE_YOUR_TEXT_HERE')).attr(
+                'required','true').attr(
+                'autofocus','autofocus');
+        textArea.css( 'width','100%').css('height',80).css('resize','none');
+        form.append(textArea);
+
+//        var textArea = new Element('textarea',
+//            {placeholder:$msg('WRITE_YOUR_TEXT_HERE'),
+//                required:true,
+//                autofocus:'autofocus'
+//            });
+//        textArea.setStyles({
+//            'width':'100%',
+//            'height':80, resize:'none'
+//        });
+
+        if (model.getValue() != null){
             textArea.value = model.getValue();
+        }
 
-        textArea.setStyles({
-            'width':'100%',
-            'height':80, resize:'none'
-        });
-        textArea.inject(form);
+        // Register submit event
 
-        // Register submit event ...
-        form.addEvent('submit', function (event) {
+          form.submit(function (event) {
             event.preventDefault();
             event.stopPropagation();
             if (textArea.value) {
                 model.setValue(textArea.value);
             }
             this.close();
+          }.bind(this));
 
-        }.bind(this));
+//        form.addEvent('submit', function (event) {
+//            event.preventDefault();
+//            event.stopPropagation();
+//            if (textArea.value) {
+//                model.setValue(textArea.value);
+//            }
+//            this.close();
+//        }.bind(this));
 
         // Add buttons ...
-        var buttonContainer = new Element('div').setStyles({paddingTop:5, textAlign:'right'});
+        var buttonContainer = $('<div></div>');
+        buttonContainer.css('paddingTop','5').css('textAlign','center');
+//        var buttonContainer = new Element('div').setStyles({paddingTop:5, textAlign:'right'});
 
         // Create accept button ...
-        var okButton = new Element('input', {type:'submit', value:$msg('ACCEPT'), 'class':'btn-primary'});
-        okButton.addClass('button');
-        okButton.inject(buttonContainer);
+        var okButton = $('<input>');
+        okButton.attr('type','submit').attr(
+             'value',$msg('ACCEPT')).attr(
+             'class','btn-primary');
+        buttonContainer.append(okButton);
+
+//        var okButton = new Element('input', {type:'submit', value:$msg('ACCEPT'), 'class':'btn-primary'});
+//        okButton.addClass('button');
+//        okButton.inject(buttonContainer);
 
         // Create remove button ...
-        if ($defined(model.getValue())) {
-            var rmButton = new Element('input', {type:'button', value:$msg('REMOVE'), 'class':'btn-primary'});
-            rmButton.setStyle('margin', '5px');
-            rmButton.addClass('button');
-            rmButton.inject(buttonContainer);
-            rmButton.addEvent('click', function () {
-                model.setValue(null);
-                this.close();
-            }.bind(this));
-            buttonContainer.inject(form);
-        }
+//        if ($defined(model.getValue())) {
+//            var rmButton = new Element('input', {type:'button', value:$msg('REMOVE'), 'class':'btn-primary'});
+//            rmButton.setStyle('margin', '5px');
+//            rmButton.addClass('button');
+//            rmButton.inject(buttonContainer);
+//            rmButton.addEvent('click', function () {
+//                model.setValue(null);
+//                this.close();
+//            }.bind(this));
+//            buttonContainer.inject(form);
+//        }
 
         // Create cancel button ...
-        var cButton = new Element('input', {type:'button', value:$msg('CANCEL'), 'class':'btn-secondary'});
-        cButton.setStyle('margin', '5px');
-        cButton.addClass('button');
-        cButton.inject(buttonContainer);
-        cButton.addEvent('click', function () {
-            this.close();
-        }.bind(this));
-        buttonContainer.inject(form);
+        var cancelButton = $('<input>');
+        cancelButton.attr('id','cancel').attr('type','button').attr(
+              'value',$msg('CANCEL')).attr(
+              'class','btn-secondary');
+        cancelButton.css('margin','5px');
+        cancelButton.click(function () {this.close();});
+        buttonContainer.append(cancelButton);
 
-        result.addEvent('keydown', function (event) {
-            event.stopPropagation();
-        });
+        form.append(buttonContainer);
 
-        form.inject(result);
+//        var cButton = new Element('input', {type:'button', value:$msg('CANCEL'), 'class':'btn-secondary'});
+//        cButton.setStyle('margin', '5px');
+//        cButton.addClass('button');
+//        cButton.inject(buttonContainer);
+//        cButton.addEvent('click', function () {
+//            this.close();
+//        }.bind(this));
+//        buttonContainer.inject(form);
+
+//        result.addEvent('keydown', function (event) {
+//            event.stopPropagation();
+//        });
+        result.append(form);
         return result;
     },
 
     show:function () {
-        this.open();
+        this.parent("Note");
     }
 
 });
