@@ -62,20 +62,27 @@ mindplot.widget.NoteEditor = new Class({
 //            }
 //        });
 //        this.setContent(panel);
-        this.appendToContent(panel);
+        this.setContent(panel);
     },
 
     _buildPanel:function (model) {
         var result = $('<div></div>').css("padding-top", "5px");
-        var form = $('<form></form>').attr('action','none').attr('id','noteFormId');
+        var form = $('<form></form>').attr({
+            'action':'none',
+            'id':'noteFormId'
+        });
 
         // Add textarea
-
-        var textArea = $('<textarea></textarea>').attr(
-                'placeholder',$msg('WRITE_YOUR_TEXT_HERE')).attr(
-                'required','true').attr(
-                'autofocus','autofocus');
-        textArea.css( 'width','100%').css('height',80).css('resize','none');
+        var textArea = $('<textarea></textarea>').attr({
+                'placeholder':$msg('WRITE_YOUR_TEXT_HERE'),
+                'required':'true',
+                'autofocus':'autofocus'
+        });
+        textArea.css({
+            'width':'100%',
+            'height':80,
+            'resize':'none'
+        });
         form.append(textArea);
 
 //        var textArea = new Element('textarea',
@@ -114,8 +121,10 @@ mindplot.widget.NoteEditor = new Class({
 
         // Add buttons ...
         var buttonContainer = $('<div></div>');
-        buttonContainer.css('paddingTop','5').css('textAlign','center');
-//        var buttonContainer = new Element('div').setStyles({paddingTop:5, textAlign:'right'});
+        buttonContainer.css({
+            'paddingTop':'5',
+            'textAlign':'center'
+        });
 
         // Create accept button ...
         var okButton = $('<input>');
@@ -147,7 +156,13 @@ mindplot.widget.NoteEditor = new Class({
               'value',$msg('CANCEL')).attr(
               'class','btn-secondary');
         cancelButton.css('margin','5px');
-        cancelButton.click(function () {this.close();});
+//        cancelButton.on('click','input', function (e) {
+//            console.log('this is the click');
+//            e.preventDefault();
+//        });
+        $(document).on('click', "input.btn-secondary", function () {
+            $(modal-dialog).hide();
+        });
         buttonContainer.append(cancelButton);
 
         form.append(buttonContainer);
