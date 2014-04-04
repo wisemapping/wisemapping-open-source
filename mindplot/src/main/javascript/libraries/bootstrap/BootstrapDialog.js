@@ -21,7 +21,7 @@ var BootstrapDialog = new Class({
             content.append(footer);
         }
 
-        this._native.append(content);
+        this._native.find(".modal-dialog").append(content);
     },
 
     _buildFooter: function() {
