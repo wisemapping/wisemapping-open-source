@@ -18,50 +18,12 @@
 
 mindplot.widget.LinkEditor = new Class({
     Extends:BootstrapDialog,
+
     initialize:function (model) {
         $assert(model, "model can not be null");
-        this.parent();
+        this.parent($msg("LINK"));
         var panel = this._buildPanel(model);
-//        this.parent({
-//            closeButton:true,
-//            destroyOnClose:true,
-//            title:$msg('LINK'),
-//            onInitialize:function (wrapper) {
-//                wrapper.setStyle('opacity', 0);
-//                this.fx = new Fx.Morph(wrapper, {
-//                    duration:600,
-//                    transition:Fx.Transitions.Bounce.easeOut
-//                });
-//            },
-//
-//            onBeforeOpen:function () {
-//                this.overlay = new Overlay(this.options.inject, {
-//                    duration:this.options.duration
-//                });
-//                if (this.options.closeOnOverlayClick)
-//                    this.overlay.addEvent('click', this.close.bind(this));
-//
-//                this.overlay.open();
-//
-//                this.fx.start({
-//                    'margin-top':[-200, -100],
-//                    opacity:[0, 1]
-//                }).chain(function () {
-//                    this.fireEvent('show');
-//                }.bind(this));
-//            },
-//
-//            onBeforeClose:function () {
-//                this.fx.start({
-//                    'margin-top':[-100, 0],
-//                    opacity:0
-//                }).chain(function () {
-//                    this.fireEvent('hide');
-//                }.bind(this));
-//                this.overlay.destroy();
-//            }
-//        });
-        this.appendToContent(panel);
+        this.setContent(panel);
     },
 
     _buildPanel:function (model) {
@@ -75,7 +37,7 @@ mindplot.widget.LinkEditor = new Class({
         // Add Input
         var input = $('<input>').attr(
             'placeholder','http://www.example.com/').attr(
-            'type','url').attr(
+            'type','url').attr( //FIXME: THIS not work on IE, see workaround below
             'required','true').attr(
             'autofocus','autofocus'
             );
@@ -97,11 +59,6 @@ mindplot.widget.LinkEditor = new Class({
         form.append(input);
         form.append(open);
 
-//        openButton.addEvent('click',function(){
-//            window.open(input.value,"_blank", "status=1,width=700,height=450,resizable=1");
-//        });
-//
-//
         // Register submit event ...
         form.submit(function (event) {
 //            event.stopPropagation();
@@ -130,16 +87,6 @@ mindplot.widget.LinkEditor = new Class({
         buttonContainer.css('paddingTop','5').css('textAlign','center');
 //        var buttonContainer = new Element('div').setStyles({paddingTop:5, textAlign:'center'});
 //
-        // Create accept button ...
-        var okButton = $('<input>');
-        okButton.attr('type','submit').attr(
-                'value',$msg('ACCEPT')).attr(
-                'class','btn-primary');
-        buttonContainer.append(okButton);
-
-//        var okButton = new Element('input', {type:'submit', value:$msg('ACCEPT'), 'class':'btn-primary'});
-//        okButton.addClass('button');
-//
         // Create remove button ...
 
 
@@ -156,15 +103,6 @@ mindplot.widget.LinkEditor = new Class({
 //            buttonContainer.inject(form);
 //        }
 
-        // Create cancel button ...
-
-        var cancelButton = $('<input>');
-        cancelButton.attr('id','cancel').attr('type','button').attr(
-            'value',$msg('CANCEL')).attr(
-            'class','btn-secondary');
-        cancelButton.css('margin','5px');
-        cancelButton.click(function () {this.close();});
-        buttonContainer.append(cancelButton);
         form.append(buttonContainer);
 //        var cButton = new Element('input', {type:'button', value:$msg('CANCEL'), 'class':'btn-secondary'});
 //        cButton.setStyle('margin', '5px');
@@ -181,9 +119,5 @@ mindplot.widget.LinkEditor = new Class({
 
         result.append(form);
         return result;
-    },
-
-    show:function () {
-        this.parent("Link");
     }
 });
