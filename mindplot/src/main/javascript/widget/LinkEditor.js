@@ -28,19 +28,23 @@ mindplot.widget.LinkEditor = new Class({
 
     _buildPanel:function (model) {
         var result = $('<div></div>').css("padding-top", "5px");
-        var form = $('<form></form>').attr('action','none').attr('id','linkFormId');
+        var form = $('<form></form>').attr({
+            'action':'none',
+            'id':'linkFormId'
+        });
         var text = $('<p></p>').text("Paste your url here:");
         text.css('margin','0px 0px 10px');
 
         form.append(text);
 
         // Add Input
-        var input = $('<input>').attr(
-            'placeholder','http://www.example.com/').attr(
-            'type','url').attr( //FIXME: THIS not work on IE, see workaround below
-            'required','true').attr(
-            'autofocus','autofocus'
-            );
+
+        var input = $('<input>').attr({
+            'placeholder':'http://www.example.com/',
+            'type':'url', //FIXME: THIS not work on IE, see workaround below
+            'required':'true',
+            'autofocus':'autofocus'
+        });
         input.css('width','70%').css('margin','0px 20px');
 
         if (model.getValue() != null){
@@ -48,9 +52,10 @@ mindplot.widget.LinkEditor = new Class({
 //            type:Browser.ie ? 'text' : 'url', // IE workaround
 
         // Open Button
-        var open = $('<input/>').attr(
-                'type','button').attr(
-                'value',$msg('OPEN_LINK'));
+        var open = $('<input/>').attr({
+                'type':'button',
+                'value':$msg('OPEN_LINK')
+        });
 
         open.click(function(){
             alert('clicked!');
