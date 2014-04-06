@@ -21,7 +21,12 @@ mindplot.widget.LinkEditor = new Class({
 
     initialize:function (model) {
         $assert(model, "model can not be null");
-        this.parent($msg("LINK"));
+        this.parent(
+            $msg("LINK"),
+            {
+                cancelButton: true
+            }
+        );
         var panel = this._buildPanel(model);
         this.setContent(panel);
     },
