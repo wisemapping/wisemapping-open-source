@@ -250,6 +250,31 @@
                     <skipTests>true</skipTests>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.github.searls</groupId>
+                <artifactId>jasmine-maven-plugin</artifactId>
+                <version>1.3.1.4</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <browserVersion>FIREFOX_3_6</browserVersion>
+                    <webDriverClassName>org.openqa.selenium.firefox.FirefoxDriver</webDriverClassName>
+
+                    <sourceIncludes>
+                        <sourceInclude>libraries/mootools/mootools-core-1.4.5-full-nocompat.js</sourceInclude>
+                        <sourceInclude>header.js</sourceInclude>
+                    </sourceIncludes>
+                    <specExcludes>
+                        <exclude>static/test/*.js</exclude>
+                        <exclude>simpleTest.js</exclude>
+                    </specExcludes>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
