@@ -29,11 +29,11 @@ var BootstrapDialog = new Class({
         if (this.options.acceptButton || this.options.cancelButton) {
             footer = $('<div class="modal-footer">');
         }
-        if (this.options.acceptButton) {
-            footer.append('<button type="button" class="btn btn-primary">'+ $msg('ACCEPT') +'</button>')
+        if (this.options.acceptButton) { //falta agregar $msg('ACCEPT')
+            footer.append('<input type="submit" id="acceptBtn" class="btn btn-primary" value="Accept"/>');
         }
         if (this.options.cancelButton) {
-            footer.append('<button type="button" class="btn btn-default" data-dismiss="modal">'+ $msg('CANCEL') +'</button>');
+            footer.append('<button type="button" class="btn btn-secondary" data-dismiss="modal">'+ $msg('CANCEL') +'</button>');
         }
         return footer;
     },
