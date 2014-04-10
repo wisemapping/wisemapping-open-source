@@ -21,7 +21,11 @@ mindplot.widget.LinkEditor = new Class({
 
     initialize:function (model) {
         $assert(model, "model can not be null");
-        this.parent($msg("LINK"));
+        this.parent($msg("LINK"), {
+            cancelButton: true,
+            closeButton: true,
+            acceptButton: true
+        });
         var panel = this._buildPanel(model);
         this.setContent(panel);
     },
@@ -64,64 +68,25 @@ mindplot.widget.LinkEditor = new Class({
         form.append(input);
         form.append(open);
 
-        // Register submit event ...
-        form.submit(function (event) {
-//            event.stopPropagation();
-            event.preventDefault();
+        $(document).ready(function () {
+            $(document).on('submit','#linkFormId',function () {
+                event.stopPropagation();
+                event.preventDefault();
+                if (input.value != null && input.value.trim() != "") {
+                    model.setValue(input.value);
+                }
+                this.close();
+            });
 
-            if (input.value != null && input.value.trim() != "") {
-                model.setValue(input.value);
-            }
-            this.close();
-        }.bind(this));
-
-//        form.addEvent('submit', function (event) {
-//            event.stopPropagation();
-//            event.preventDefault();
-//
-//            if (input.value != null && input.value.trim() != "") {
-//                model.setValue(input.value);
-//            }
-//            this.close();
-//        }.bind(this));
-
-
-        // Add buttons ...
-
-        var buttonContainer = $('<div></div>');
-        buttonContainer.css('paddingTop','5').css('textAlign','center');
-//        var buttonContainer = new Element('div').setStyles({paddingTop:5, textAlign:'center'});
-//
-        // Create remove button ...
-
-
-//        if ($defined(model.getValue())) {
-//            var rmButton = new Element('input', {type:'button', value:$msg('REMOVE'), 'class':'btn-primary'});
-//            rmButton.setStyle('margin', '5px');
-//            rmButton.addClass('button');
-//            rmButton.inject(buttonContainer);
-//            rmButton.addEvent('click', function (event) {
-//                model.setValue(null);
-//                event.stopPropagation();
-//                this.close();
-//            }.bind(this));
-//            buttonContainer.inject(form);
-//        }
-
-        form.append(buttonContainer);
-//        var cButton = new Element('input', {type:'button', value:$msg('CANCEL'), 'class':'btn-secondary'});
-//        cButton.setStyle('margin', '5px');
-//        cButton.addClass('button');
-//        cButton.addEvent('click', function () {
-//            this.close();
-//        }.bind(this));
-//        buttonContainer.inject(form);
+            $(document).on('click','#acceptBtn',function () {
+                $("#linkFormId").submit();
+            });
+        });
 
 //        result.addEvent('keydown', function (event) {
 //            event.stopPropagation();
 //        });
 //
-
         result.append(form);
         return result;
     }
