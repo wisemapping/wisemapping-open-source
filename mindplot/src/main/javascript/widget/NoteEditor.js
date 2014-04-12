@@ -38,26 +38,26 @@ _buildPanel:function (model) {
         }
 
         result.append(form);
-
+        var me = this;
         $(document).ready(function () {
-            $(document).on('submit','#noteFormId',function () {
+            $(document).on('submit','#noteFormId',function (event) {
                 event.stopPropagation();
                 event.preventDefault();
                 if (textArea.val()) {
                     model.setValue(textArea.val());
                 }
-                this.close();
-            });
-
-            $(document).on('click','#acceptBtn',function () {
-                $("#noteFormId").submit();
+                me.close();
             });
         });
         return result;
     },
 
+    onAcceptClick: function() {
+        $("#noteFormId").submit();
+    },
+
     close:function () {
-        this.close();
+        this.parent();
     }
 });
 

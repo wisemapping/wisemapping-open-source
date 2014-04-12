@@ -52,7 +52,8 @@ mindplot.widget.LinkEditor = new Class({
         input.css('width','70%').css('margin','0px 20px');
 
         if (model.getValue() != null){
-            input.value = model.getValue();}
+            input.val(model.getValue());
+        }
 //            type:Browser.ie ? 'text' : 'url', // IE workaround
 
         // Open Button
@@ -69,18 +70,17 @@ mindplot.widget.LinkEditor = new Class({
         form.append(open);
 
         $(document).ready(function () {
-            $(document).on('submit','#linkFormId',function () {
+            var me = this;
+            $(document).on('submit','#linkFormId',function (event) {
                 event.stopPropagation();
                 event.preventDefault();
-                if (input.value != null && input.value.trim() != "") {
-                    model.setValue(input.value);
+                var inputValue = input.val();
+                if (inputValue != null && inputValue.trim() != "") {
+                    model.setValue(inputValue);
                 }
-                this.close();
+                me.close();
             });
 
-            $(document).on('click','#acceptBtn',function () {
-                $("#linkFormId").submit();
-            });
         });
 
 //        result.addEvent('keydown', function (event) {
@@ -89,5 +89,13 @@ mindplot.widget.LinkEditor = new Class({
 //
         result.append(form);
         return result;
+    },
+
+    onAcceptClick: function() {
+        $("#linkFormId").submit();
+    },
+
+    close:function () {
+        this.parent();
     }
 });
