@@ -531,7 +531,15 @@ $(function () {
          $("#foldersContainer ul").css('overflow-x', 'hidden');
          $("#foldersContainer ul").height(maxHeight);
 
-    })
+    });
+
+    $(".bs-glyphicons-list li").on("click", function(){
+        var defaultIcon = $("#defaultIcon");
+        //remove current icon
+        defaultIcon.find("i").remove();
+        var myClass = $(this).attr("class");
+        defaultIcon.prepend("<i class='" + myClass +"'></i>");
+    });
 });
 
 /*--------------------------------------------- Label actions --------------------------------------------------**/
