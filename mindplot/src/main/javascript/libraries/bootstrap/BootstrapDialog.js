@@ -30,7 +30,9 @@ var BootstrapDialog = new Class({
             footer = $('<div class="modal-footer">');
         }
         if (this.options.acceptButton) { //falta agregar $msg('ACCEPT')
-            footer.append('<input type="submit" id="acceptBtn" class="btn btn-primary" value="Accept"/>');
+            this.acceptButton = $('<button type="button" class="btn btn-primary" id="acceptBtn" data-dismiss="modal">'+ $msg('ACCEPT') + '</button>');
+            footer.append(this.acceptButton);
+            this.acceptButton.on('click', this.onAcceptClick)
         }
         if (this.options.cancelButton) {
             footer.append('<button type="button" class="btn btn-secondary" data-dismiss="modal">'+ $msg('CANCEL') +'</button>');
@@ -54,6 +56,9 @@ var BootstrapDialog = new Class({
         return header;
     },
 
+    onAcceptClick: function(event) {
+        //this method should be abstract
+    },
 
     show: function () {
         this._native.modal();
