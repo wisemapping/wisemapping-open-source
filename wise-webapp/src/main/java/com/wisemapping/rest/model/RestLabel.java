@@ -65,8 +65,16 @@ public class RestLabel {
         label.setColor(color);
     }
 
+    public void setIcon(@NotNull final String icon) {
+        label.setIcon(icon);
+    }
+
     @Nullable public String getColor() {
         return label.getColor();
+    }
+
+    @Nullable public String getIcon() {
+        return label.getIcon();
     }
 
     @JsonIgnore
