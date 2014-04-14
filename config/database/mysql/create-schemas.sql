@@ -58,6 +58,7 @@ CREATE TABLE LABEL (
   creator_id      INTEGER            NOT NULL,
   parent_label_id INTEGER,
   color           VARCHAR(7)         NOT NULL,
+  icon            VARCHAR(255)       NOT NULL,
   FOREIGN KEY (creator_id) REFERENCES USER (colaborator_id),
   FOREIGN KEY (parent_label_id) REFERENCES LABEL (id)
     ON DELETE CASCADE
