@@ -91,6 +91,12 @@ jQuery.fn.dialogForm = function (options) {
             formData[elem.name] = elem.value;
         });
 
+        // FIX: How should I do this?
+        var icon = $("#defaultIcon");
+        if (icon) {
+            formData["icon"] =  icon.find('i').attr('class');
+        }
+
         // Success actions ...
         var onSuccess = function (jqXHR, textStatus, data) {
             var resourceId = jqXHR ? jqXHR.getResponseHeader("ResourceId") : undefined;
@@ -301,7 +307,7 @@ $(function () {
                 postUpdate: function(data, id) {
                     createLabelItem(data, id);
                     if (mapIds.length > 0) {
-                        linkLabelToMindmap(mapIds, {id: id, title: data.title, color: data.color});
+                        linkLabelToMindmap(mapIds, {id: id, title: data.title, color: data.color, icon: data.icon});
                     }
                 }
             });
@@ -548,7 +554,7 @@ function createLabelItem(data, id) {
     var labelItem = $("<li data-filter=\""  + data.title  + "\">");
     labelItem.append(
         "<a href=\"#\"> " +
-            "<i class=\"glyphicon glyphicon-tag labelIcon\"></i>" +
+            "<i class=\"" + data.icon + " labelIcon\"></i>" +
             "<div class='labelColor' style='background: " +  data.color + "'></div>" +
             "<div class='labelName labelNameList'>" + data.title + "</div>" +
             "<button id='deleteLabelBtn' class='close closeLabel' labelid=\""+ labelId +"\">x</button>" +
