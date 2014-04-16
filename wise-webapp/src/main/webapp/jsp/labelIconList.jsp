@@ -1,4 +1,5 @@
 <%@page pageEncoding="UTF-8" %>
+
 <ul class="bs-glyphicons-list">
     <li class="glyphicon glyphicon-asterisk"></li>
     <li class="glyphicon glyphicon-plus"></li>
@@ -17,30 +18,22 @@
     <li class="glyphicon glyphicon-film"></li>
     <li class="glyphicon glyphicon-ok"></li>
     <li class="glyphicon glyphicon-remove"></li>
-    <li class="glyphicon glyphicon-zoom-in"></li>
-    <li class="glyphicon glyphicon-zoom-out"></li>
-    <li class="glyphicon glyphicon-off"></li>
     <li class="glyphicon glyphicon-signal"></li>
     <li class="glyphicon glyphicon-cog"></li>
     <li class="glyphicon glyphicon-trash"></li>
     <li class="glyphicon glyphicon-home"></li>
     <li class="glyphicon glyphicon-file"></li>
     <li class="glyphicon glyphicon-time"></li>
-    <li class="glyphicon glyphicon-road"></li>
     <li class="glyphicon glyphicon-download-alt"></li>
     <li class="glyphicon glyphicon-download"></li>
     <li class="glyphicon glyphicon-upload"></li>
     <li class="glyphicon glyphicon-inbox"></li>
-    <li class="glyphicon glyphicon-play-circle"></li>
     <li class="glyphicon glyphicon-repeat"></li>
     <li class="glyphicon glyphicon-refresh"></li>
     <li class="glyphicon glyphicon-list-alt"></li>
     <li class="glyphicon glyphicon-lock"></li>
     <li class="glyphicon glyphicon-flag"></li>
     <li class="glyphicon glyphicon-headphones"></li>
-    <li class="glyphicon glyphicon-volume-off"></li>
-    <li class="glyphicon glyphicon-volume-down"></li>
-    <li class="glyphicon glyphicon-volume-up"></li>
     <li class="glyphicon glyphicon-qrcode"></li>
     <li class="glyphicon glyphicon-barcode"></li>
     <li class="glyphicon glyphicon-tag"></li>
@@ -49,14 +42,7 @@
     <li class="glyphicon glyphicon-bookmark"></li>
     <li class="glyphicon glyphicon-print"></li>
     <li class="glyphicon glyphicon-camera"></li>
-    <li class="glyphicon glyphicon-font"></li>
-    <li class="glyphicon glyphicon-bold"></li>
-    <li class="glyphicon glyphicon-italic"></li>
-    <li class="glyphicon glyphicon-text-height"></li>
-    <li class="glyphicon glyphicon-text-width"></li>
     <li class="glyphicon glyphicon-list"></li>
-    <li class="glyphicon glyphicon-indent-left"></li>
-    <li class="glyphicon glyphicon-indent-right"></li>
     <li class="glyphicon glyphicon-facetime-video"></li>
     <li class="glyphicon glyphicon-picture"></li>
     <li class="glyphicon glyphicon-map-marker"></li>
@@ -65,7 +51,6 @@
     <li class="glyphicon glyphicon-edit"></li>
     <li class="glyphicon glyphicon-share"></li>
     <li class="glyphicon glyphicon-check"></li>
-    <li class="glyphicon glyphicon-move"></li>
     <li class="glyphicon glyphicon-chevron-left"></li>
     <li class="glyphicon glyphicon-chevron-right"></li>
     <li class="glyphicon glyphicon-plus-sign"></li>
@@ -83,8 +68,6 @@
     <li class="glyphicon glyphicon-arrow-up"></li>
     <li class="glyphicon glyphicon-arrow-down"></li>
     <li class="glyphicon glyphicon-share-alt"></li>
-    <li class="glyphicon glyphicon-resize-full"></li>
-    <li class="glyphicon glyphicon-resize-small"></li>
     <li class="glyphicon glyphicon-exclamation-sign"></li>
     <li class="glyphicon glyphicon-gift"></li>
     <li class="glyphicon glyphicon-leaf"></li>
@@ -99,12 +82,9 @@
     <li class="glyphicon glyphicon-magnet"></li>
     <li class="glyphicon glyphicon-chevron-up"></li>
     <li class="glyphicon glyphicon-chevron-down"></li>
-    <li class="glyphicon glyphicon-retweet"></li>
     <li class="glyphicon glyphicon-shopping-cart"></li>
     <li class="glyphicon glyphicon-folder-close"></li>
     <li class="glyphicon glyphicon-folder-open"></li>
-    <li class="glyphicon glyphicon-resize-vertical"></li>
-    <li class="glyphicon glyphicon-resize-horizontal"></li>
     <li class="glyphicon glyphicon-hdd"></li>
     <li class="glyphicon glyphicon-bullhorn"></li>
     <li class="glyphicon glyphicon-bell"></li>
@@ -124,8 +104,6 @@
     <li class="glyphicon glyphicon-tasks"></li>
     <li class="glyphicon glyphicon-filter"></li>
     <li class="glyphicon glyphicon-briefcase"></li>
-    <li class="glyphicon glyphicon-fullscreen"></li>
-    <li class="glyphicon glyphicon-dashboard"></li>
     <li class="glyphicon glyphicon-paperclip"></li>
     <li class="glyphicon glyphicon-heart-empty"></li>
     <li class="glyphicon glyphicon-link"></li>
@@ -133,15 +111,8 @@
     <li class="glyphicon glyphicon-pushpin"></li>
     <li class="glyphicon glyphicon-usd"></li>
     <li class="glyphicon glyphicon-gbp"></li>
-    <li class="glyphicon glyphicon-sort"></li>
     <li class="glyphicon glyphicon-unchecked"></li>
-    <li class="glyphicon glyphicon-expand"></li>
-    <li class="glyphicon glyphicon-collapse-down"></li>
-    <li class="glyphicon glyphicon-collapse-up"></li>
-    <li class="glyphicon glyphicon-log-in"></li>
     <li class="glyphicon glyphicon-flash"></li>
-    <li class="glyphicon glyphicon-log-out"></li>
-    <li class="glyphicon glyphicon-new-window"></li>
     <li class="glyphicon glyphicon-record"></li>
     <li class="glyphicon glyphicon-saved"></li>
     <li class="glyphicon glyphicon-send"></li>
@@ -158,6 +129,4 @@
     <li class="glyphicon glyphicon-registration-mark"></li>
     <li class="glyphicon glyphicon-cloud-download"></li>
     <li class="glyphicon glyphicon-cloud-upload"></li>
-    <li class="glyphicon glyphicon-tree-conifer"></li>
-    <li class="glyphicon glyphicon-tree-deciduous"></li>
 </ul>
