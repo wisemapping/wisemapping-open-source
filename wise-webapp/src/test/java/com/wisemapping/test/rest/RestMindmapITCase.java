@@ -40,6 +40,7 @@ import static org.testng.Assert.fail;
 public class RestMindmapITCase {
 
     private String userEmail = "admin@wisemapping.com";
+    private static final String ICON = "glyphicon glyphicon-tag";
 
     @BeforeClass
     void createUser() {
@@ -251,7 +252,7 @@ public class RestMindmapITCase {
 
         // Create a new label
         final String titleLabel = "Label 1  - " + mediaType.toString();
-        final URI labelUri = RestLabelITCase.addNewLabel(requestHeaders, template, titleLabel, COLOR);
+        final URI labelUri = RestLabelITCase.addNewLabel(requestHeaders, template, titleLabel, COLOR, ICON);
 
         // Create a sample map ...
         final String mapTitle = "Maps 1  - " + mediaType.toString();
