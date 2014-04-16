@@ -30,6 +30,7 @@ public class RestLabelITCase {
 
     private String userEmail;
     private static final String COLOR = "#000000";
+    private static final String ICON = "glyphicon glyphicon-tag";
 
     @BeforeClass
     void createUser() {
@@ -45,11 +46,11 @@ public class RestLabelITCase {
 
         // Create a new label
         final String title1 = "Label 1  - " + mediaType.toString();
-        addNewLabel(requestHeaders, template, title1, COLOR);
+        addNewLabel(requestHeaders, template, title1, COLOR, ICON);
 
         // Create a new label
         final String title2 = "Label 2  - " + mediaType.toString();
-        addNewLabel(requestHeaders, template, title2, COLOR);
+        addNewLabel(requestHeaders, template, title2, COLOR, ICON);
 
         // Check that the label has been created ...
         final RestLabelList restLabelList = getLabels(requestHeaders, template);
@@ -83,7 +84,7 @@ public class RestLabelITCase {
         final RestTemplate template = RestHelper.createTemplate( userEmail + ":" + "admin");
 
         try {
-            addNewLabel(requestHeaders, template, null, COLOR);
+            addNewLabel(requestHeaders, template, null, COLOR, ICON);
             fail("Wrong response");
         } catch (HttpClientErrorException e) {
             final String responseBodyAsString = e.getResponseBodyAsString();
@@ -91,12 +92,21 @@ public class RestLabelITCase {
         }
 
         try {
-            addNewLabel(requestHeaders, template, "title12345", null);
+            addNewLabel(requestHeaders, template, "title12345", null, ICON);
             fail("Wrong response");
         } catch (HttpClientErrorException e) {
             final String responseBodyAsString = e.getResponseBodyAsString();
             assert (responseBodyAsString.contains("Required field cannot be left blank"));
         }
+
+        try {
+            addNewLabel(requestHeaders, template, "title12345", COLOR, null);
+            fail("Wrong response");
+        } catch (HttpClientErrorException e) {
+            final String responseBodyAsString = e.getResponseBodyAsString();
+            assert (responseBodyAsString.contains("Required field cannot be left blank"));
+        }
+
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
@@ -105,7 +115,7 @@ public class RestLabelITCase {
         final RestTemplate template = RestHelper.createTemplate( userEmail + ":" + "admin");
 
         final String title = "title to delete";
-        final URI resourceUri = addNewLabel(requestHeaders, template, title, COLOR);
+        final URI resourceUri = addNewLabel(requestHeaders, template, title, COLOR, ICON);
 
         // Now remove it ...
         template.delete(RestHelper.HOST_PORT + resourceUri.toString());
@@ -119,13 +129,16 @@ public class RestLabelITCase {
 
     }
 
-    static URI addNewLabel(@NotNull HttpHeaders requestHeaders, @NotNull RestTemplate template, @Nullable String title, @Nullable String color ) throws IOException, WiseMappingException {
+    static URI addNewLabel(@NotNull HttpHeaders requestHeaders, @NotNull RestTemplate template, @Nullable String title, @Nullable String color, @Nullable String icon) throws IOException, WiseMappingException {
         final RestLabel restLabel = new RestLabel();
         if (title != null) {
             restLabel.setTitle(title);
         }
         if (color != null) {
             restLabel.setColor(color);
+        }
+        if (icon != null) {
+            restLabel.setIcon(icon);
         }
 
         // Create a new label ...
