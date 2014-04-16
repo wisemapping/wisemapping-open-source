@@ -12,7 +12,7 @@ public class Label {
     @NotNull private User creator;
     @Nullable private Label parent;
     @NotNull private String color;
-    @NotNull private String icon;
+    @NotNull private String iconName;
 
     public void setParent(@Nullable Label parent) {
         this.parent = parent;
@@ -59,12 +59,12 @@ public class Label {
     }
 
     @NotNull
-    public String getIcon() {
-        return icon;
+    public String getIconName() {
+        return iconName;
     }
 
-    public void setIcon(@NotNull String icon) {
-        this.icon = icon;
+    public void setIconName(@NotNull String iconName) {
+        this.iconName = iconName;
     }
 
     @Override

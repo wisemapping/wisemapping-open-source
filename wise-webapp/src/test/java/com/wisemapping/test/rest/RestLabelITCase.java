@@ -138,7 +138,7 @@ public class RestLabelITCase {
             restLabel.setColor(color);
         }
         if (icon != null) {
-            restLabel.setIcon(icon);
+            restLabel.setIconName(icon);
         }
 
         // Create a new label ...

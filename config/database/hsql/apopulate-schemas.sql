@@ -30,7 +30,7 @@ INSERT INTO COLLABORATION (id, colaborator_id, properties_id, mindmap_id, role_i
 INSERT INTO COLLABORATION_PROPERTIES (id, starred, mindmap_properties) VALUES (2, 1, '{zoom:0.8}');
 INSERT INTO COLLABORATION (id, colaborator_id, properties_id, mindmap_id, role_id) VALUES (2, 2, 2, 1, 1);
 
-INSERT INTO LABEL (id, title, creator_id, parent_label_id, color, icon) VALUES (1, 'test label', 1, NULL, '#ff0000', 'glyphicon glyphicon-tag');
+INSERT INTO LABEL (id, title, creator_id, parent_label_id, color, iconName) VALUES (1, 'test label', 1, NULL, '#ff0000', 'glyphicon glyphicon-tag');
 INSERT INTO R_LABEL_MINDMAP (label_id, mindmap_id) VALUES (1,1);
 
 INSERT INTO MINDMAP (id, title, xml, description, public, creation_date, edition_date, creator_id, tags, last_editor_id) 
@@ -38,9 +38,9 @@ INSERT INTO MINDMAP (id, title, xml, description, public, creation_date, edition
 INSERT INTO COLLABORATION_PROPERTIES (id, starred, mindmap_properties) VALUES (3, 1, '{zoom:0.8}');
 INSERT INTO COLLABORATION (id, colaborator_id, properties_id, mindmap_id, role_id) VALUES (3, 2, 3, 2, 0);
 
-INSERT INTO LABEL (id, title, creator_id, parent_label_id, color, icon) VALUES (2, 'admin label', 2, NULL, '#0000ff', 'glyphicon glyphicon-star');
+INSERT INTO LABEL (id, title, creator_id, parent_label_id, color, iconName) VALUES (2, 'admin label', 2, NULL, '#0000ff', 'glyphicon glyphicon-star');
 INSERT INTO R_LABEL_MINDMAP (label_id, mindmap_id) VALUES (2,2);
-INSERT INTO LABEL (id, title, creator_id, parent_label_id, color, icon) VALUES (3, 'mindmap shared', 2, NULL, '#00ff00', 'glyphicon glyphicon-share');
+INSERT INTO LABEL (id, title, creator_id, parent_label_id, color, iconName) VALUES (3, 'mindmap shared', 2, NULL, '#00ff00', 'glyphicon glyphicon-share');
 INSERT INTO R_LABEL_MINDMAP (label_id, mindmap_id) VALUES (3,1);
 
 COMMIT;
