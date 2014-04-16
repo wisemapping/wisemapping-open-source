@@ -11,7 +11,7 @@
         </id>
         <property name="title"/>
         <property name="color"/>
-        <property name="icon"/>
+        <property name="iconName"/>
         <many-to-one name="parent" column="parent_label_id" not-null="false"/>
         <many-to-one name="creator" column="creator_id" unique="true" not-null="false" lazy="proxy"/>
     </class>
