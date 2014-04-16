@@ -306,6 +306,11 @@ $(function () {
                     }
                 }
             });
+            // Setting sizes to label icon list
+            var dropDownHeight = $(window).height()/3;
+            $("#labelIconItems ul").height(dropDownHeight);
+            var dropDownWidth = $(window).width()/3;
+            $("#labelIconItems ul").width(dropDownWidth);
         }
     );
 
@@ -621,9 +626,10 @@ function prepareLabelList(labels) {
     //append items to dropdown
     $.each(labels, function(index, value) {
         labelList.append(
-            $('<li class="chooseLabel"></li>').attr('value', value.id).attr('color', value.color)
+            $('<li class="chooseLabel"></li>').attr('value', value.id).attr('color', value.color).attr('icon', value.icon)
                 .append(
                     '<a href="#" onclick="return false">' +
+                        "<div class='labelIcon " + value.icon + "'></div>" +
                         "<div class='labelColor' style='background: " +  value.color + "'></div>" +
                         "<div class='labelName'>" + value.title + "</div>" +
                         '</a>')

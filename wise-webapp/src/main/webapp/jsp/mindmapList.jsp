@@ -360,7 +360,7 @@
                                             <i class="glyphicon glyphicon-tag"></i>
                                         </div>
                                         <div id="labelIconList" class="dropdown-menu bs-glyphicons"></div>
-                                        <div class="dropdown-menu bs-glyphicons">
+                                        <div id="labelIconItems" class="dropdown-menu bs-glyphicons">
                                             <ul class="bs-glyphicons-list">
                                                 <li class="glyphicon glyphicon-asterisk"></li>
                                                 <li class="glyphicon glyphicon-plus"></li>
