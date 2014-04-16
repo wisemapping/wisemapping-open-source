@@ -78,7 +78,8 @@ jQuery.fn.dialogForm = function (options) {
 
     // Clear form values ...
     if (options.clearForm == undefined || options.clearForm) {
-        $("#" + containerId).find('input[name!="color"]').val('');
+        //FIXME: icon and color should be handled as exceptions..
+        $("#" + containerId).find('input[name!="color"]input[name!="icon"]').val('');
     }
 
     // Clear button "Saving..." state ...
@@ -90,12 +91,6 @@ jQuery.fn.dialogForm = function (options) {
         $('#' + containerId + ' input').each(function (index, elem) {
             formData[elem.name] = elem.value;
         });
-
-        // FIX: How should I do this?
-        var icon = $("#defaultIcon");
-        if (icon) {
-            formData["icon"] =  icon.find('i').attr('class');
-        }
 
         // Success actions ...
         var onSuccess = function (jqXHR, textStatus, data) {
@@ -545,6 +540,7 @@ $(function () {
         defaultIcon.find("i").remove();
         var myClass = $(this).attr("class");
         defaultIcon.prepend("<i class='" + myClass +"'></i>");
+        defaultIcon.closest("#iconGroup").find('input').val(myClass);
     });
 });
 
