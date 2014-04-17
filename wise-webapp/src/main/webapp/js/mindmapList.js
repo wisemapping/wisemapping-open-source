@@ -539,7 +539,19 @@ $(function () {
 
     });
 
-    $(".bs-glyphicons-list li").on("click", function(){
+    //init popovers...
+    var icons = $(".bs-glyphicons-list li");
+    icons.each(function() {
+        $(this).popover({
+            animation: true,
+            placement: "auto",
+            trigger: 'hover',
+            //FIXME: Which is the best way to use messages.properties here?
+            content: ($(this).attr('class').replace('glyphicon glyphicon-',''))
+        })
+    });
+
+    icons.on("click", function(){
         var defaultIcon = $("#defaultIcon");
         //remove current icon
         defaultIcon.find("i").remove();
