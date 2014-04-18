@@ -81,6 +81,10 @@ var BootstrapDialog = new Class({
         this._native.find('.modal-body').append(content);
     },
 
+    setStyle:function(width){
+        this._native.find('.modal-dialog').css("width",width);
+    },
+
     close: function() {
         this._native.modal('hide');
     },

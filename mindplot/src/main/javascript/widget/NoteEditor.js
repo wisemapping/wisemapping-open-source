@@ -9,6 +9,7 @@ mindplot.widget.NoteEditor = new Class({
             acceptButton: true,
             removeButton: true
         });
+        this.setStyle("500px");
         this._model = model;
         var panel = this._buildPanel(model);
         this.setContent(panel);
