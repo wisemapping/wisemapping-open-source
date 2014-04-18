@@ -4,12 +4,13 @@ var BootstrapDialog = new Class({
     options: {
         cancelButton: false,
         closeButton: false,
-        acceptButton: true
+        acceptButton: true,
+        removeButton:false
     },
 
     initialize: function (title, options) {
         this.setOptions(options);
-        this._native = $('<div class="modal fade"></div>').append('<div class="modal-dialog"></div>');
+        this._native = $('<div class="modal fade"></div>').append('<div class="modal-dialog" style="margin:150px auto"></div>');
         var content = $('<div class="modal-content"></div>');
         var header = this._buildHeader(title);
         if (header) {
@@ -26,13 +27,19 @@ var BootstrapDialog = new Class({
 
     _buildFooter: function() {
         var footer = null;
-        if (this.options.acceptButton || this.options.cancelButton) {
-            footer = $('<div class="modal-footer">');
+        if (this.options.acceptButton || this.options.removeButton || this.options.cancelButton) {
+            footer = $('<div class="modal-footer" style="paddingTop:5;textAlign:center">');
         }
-        if (this.options.acceptButton) { //falta agregar $msg('ACCEPT')
+        if (this.options.acceptButton) {
             this.acceptButton = $('<button type="button" class="btn btn-primary" id="acceptBtn" data-dismiss="modal">'+ $msg('ACCEPT') + '</button>');
             footer.append(this.acceptButton);
             this.acceptButton.on('click', this.onAcceptClick)
+        }
+        if (this.options.removeButton) {
+            this.removeButton = $('<button type="button" class="btn btn-secondary" id="removeBtn" data-dismiss="modal">'+ $msg('REMOVE') +'</button>');
+            footer.append(this.removeButton);
+            this.removeButton.on('click', {data:'hola'}, this.onRemoveClick);
+            this.removeButton.hide();
         }
         if (this.options.cancelButton) {
             footer.append('<button type="button" class="btn btn-secondary" data-dismiss="modal">'+ $msg('CANCEL') +'</button>');
@@ -60,6 +67,11 @@ var BootstrapDialog = new Class({
         //this method should be abstract
     },
 
+
+    onRemoveClick: function(event) {
+        //this method should be abstract
+    },
+
     show: function () {
         this._native.modal();
     },
@@ -71,5 +83,9 @@ var BootstrapDialog = new Class({
 
     close: function() {
         this._native.modal('hide');
+    },
+
+    showRemoveButton: function(){
+      this.removeButton.show();
     }
 });
