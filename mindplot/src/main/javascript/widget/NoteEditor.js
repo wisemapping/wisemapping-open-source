@@ -1,24 +1,30 @@
 mindplot.widget.NoteEditor = new Class({
     Extends:BootstrapDialog,
+
     initialize:function (model) {
         $assert(model, "model can not be null");
         this.parent($msg("Note"), {
             cancelButton: true,
             closeButton: true,
-            acceptButton: true
+            acceptButton: true,
+            removeButton: true
         });
+        this._model = model;
         var panel = this._buildPanel(model);
         this.setContent(panel);
+//        this.onRemoveClickData = {model: this._model};
+        onRemoveClickData = {data:'hola'};
     },
 
 
-_buildPanel:function (model) {
+    _buildPanel:function (model) {
         var result = $('<div></div>').css("padding-top", "5px");
 
         var form = $('<form></form>').attr({
             'action':'none',
             'id':'noteFormId'
         });
+
         // Add textarea
         var textArea = $('<textarea></textarea>').attr({
                 'placeholder':$msg('WRITE_YOUR_TEXT_HERE'),
@@ -30,14 +36,12 @@ _buildPanel:function (model) {
             'height':80,
             'resize':'none'
         });
-
         form.append(textArea);
 
-    if (model.getValue() != null){
+        if (model.getValue() != null){
             textArea.val(model.getValue());
         }
 
-        result.append(form);
         var me = this;
         $(document).ready(function () {
             $(document).on('submit','#noteFormId',function (event) {
@@ -49,11 +53,24 @@ _buildPanel:function (model) {
                 me.close();
             });
         });
+
+        if (typeof model.getValue() != 'undefined'){
+            this.showRemoveButton();
+        }
+        result.append(form);
         return result;
     },
 
     onAcceptClick: function() {
         $("#noteFormId").submit();
+    },
+
+    onRemoveClick: function(event) {
+        if(event.data.model){
+            window.alert('claudio se la come!!');
+        }
+        this._model.setValue(null);
+        this.close();
     },
 
     close:function () {

@@ -24,8 +24,10 @@ mindplot.widget.LinkEditor = new Class({
         this.parent($msg("LINK"), {
             cancelButton: true,
             closeButton: true,
-            acceptButton: true
+            acceptButton: true,
+            removeButton: true
         });
+        this._model = model;
         var panel = this._buildPanel(model);
         this.setContent(panel);
     },
@@ -83,16 +85,25 @@ mindplot.widget.LinkEditor = new Class({
 
         });
 
-//        result.addEvent('keydown', function (event) {
-//            event.stopPropagation();
-//        });
-//
+        if (typeof model.getValue() != 'undefined'){
+            this.showRemoveButton();
+        }
+
         result.append(form);
         return result;
     },
 
     onAcceptClick: function() {
         $("#linkFormId").submit();
+    },
+
+    onRemoveClick: function() {
+        this._model.setValue(null);
+        this.close();
+    },
+
+    hideRemoveButton:function(){
+        this.parent();
     },
 
     close:function () {
