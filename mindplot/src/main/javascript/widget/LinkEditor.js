@@ -21,14 +21,15 @@ mindplot.widget.LinkEditor = new Class({
 
     initialize:function (model) {
         $assert(model, "model can not be null");
+        this._model = model;
         this.parent($msg("LINK"), {
             cancelButton: true,
             closeButton: true,
             acceptButton: true,
-            removeButton: true
+            removeButton: true,
+            onRemoveClickData: {model: this._model}
         });
-        this.setStyle("500px");
-        this._model = model;
+        this.css({width:"600px"});
         var panel = this._buildPanel(model);
         this.setContent(panel);
     },
@@ -36,23 +37,27 @@ mindplot.widget.LinkEditor = new Class({
     _buildPanel:function (model) {
         var result = $('<div></div>').css("padding-top", "5px");
         var form = $('<form></form>').attr({
-            'action':'none',
-            'id':'linkFormId'
+            'action': 'none',
+            'id': 'linkFormId'
         });
         var text = $('<p></p>').text("Paste your url here:");
-        text.css('margin','0px 0px 10px');
+        text.css('margin','0px 0px 20px');
 
         form.append(text);
 
-        // Add Input
-
-        var input = $('<input>').attr({
-            'placeholder':'http://www.example.com/',
-            'type':'url', //FIXME: THIS not work on IE, see workaround below
-            'required':'true',
-            'autofocus':'autofocus'
+        var section = $('<div></div>').attr({
+            'class': 'input-group'
         });
-        input.css('width','70%').css('margin','0px 20px');
+
+        // Add Input
+        var input = $('<input/>').attr({
+            'placeholder': 'http://www.example.com/',
+            'type': 'url', //FIXME: THIS not work on IE, see workaround below
+            'required': 'true',
+            'autofocus': 'autofocus',
+            'class': 'form-control'
+        });
+        //input.css('width','70%').css('margin','0px 30px');
 
         if (model.getValue() != null){
             input.val(model.getValue());
@@ -60,17 +65,21 @@ mindplot.widget.LinkEditor = new Class({
 //            type:Browser.ie ? 'text' : 'url', // IE workaround
 
         // Open Button
-        var open = $('<input/>').attr({
-                'type':'button',
-                'value':$msg('OPEN_LINK')
+        var openButton = $('<button></button>').attr({
+                'type': 'button',
+                'class': 'btn btn-default'
         });
 
-        open.click(function(){
+        openButton.html($msg('OPEN_LINK')).css('margin-left', '0px');
+        //FIXME: remove this!
+        openButton.click(function(){
             alert('clicked!');
         });
+        var spanControl = $('<span class="input-group-btn"></span>').append(openButton)
 
-        form.append(input);
-        form.append(open);
+        section.append(input);
+        section.append(spanControl);
+        form.append(section);
 
         $(document).ready(function () {
             var me = this;
@@ -96,18 +105,5 @@ mindplot.widget.LinkEditor = new Class({
 
     onAcceptClick: function() {
         $("#linkFormId").submit();
-    },
-
-    onRemoveClick: function() {
-        this._model.setValue(null);
-        this.close();
-    },
-
-    hideRemoveButton:function(){
-        this.parent();
-    },
-
-    close:function () {
-        this.parent();
     }
 });
