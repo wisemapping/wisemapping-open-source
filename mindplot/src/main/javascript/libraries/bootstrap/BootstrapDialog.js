@@ -5,11 +5,13 @@ var BootstrapDialog = new Class({
         cancelButton: false,
         closeButton: false,
         acceptButton: true,
-        removeButton:false
+        removeButton:false,
+        onRemoveClickData:{}
     },
 
     initialize: function (title, options) {
         this.setOptions(options);
+        this.options.onRemoveClickData.dialog = this;
         this._native = $('<div class="modal fade"></div>').append('<div class="modal-dialog" style="margin:150px auto"></div>');
         var content = $('<div class="modal-content"></div>');
         var header = this._buildHeader(title);
@@ -38,7 +40,7 @@ var BootstrapDialog = new Class({
         if (this.options.removeButton) {
             this.removeButton = $('<button type="button" class="btn btn-secondary" id="removeBtn" data-dismiss="modal">'+ $msg('REMOVE') +'</button>');
             footer.append(this.removeButton);
-            this.removeButton.on('click', {data:'hola'}, this.onRemoveClick);
+            this.removeButton.on('click', this.options.onRemoveClickData, this.onRemoveClick);
             this.removeButton.hide();
         }
         if (this.options.cancelButton) {
@@ -58,7 +60,7 @@ var BootstrapDialog = new Class({
             );
         }
         if (title) {
-            header.append('<h3 class="modal-title">' + title + '</h3>');
+            header.append('<h2 class="modal-title">' + title + '</h2>');
         }
         return header;
     },
@@ -69,7 +71,8 @@ var BootstrapDialog = new Class({
 
 
     onRemoveClick: function(event) {
-        //this method should be abstract
+        event.data.model.setValue(null);
+        event.data.dialog.close();
     },
 
     show: function () {
@@ -81,8 +84,8 @@ var BootstrapDialog = new Class({
         this._native.find('.modal-body').append(content);
     },
 
-    setStyle:function(width){
-        this._native.find('.modal-dialog').css("width",width);
+    css:function(options){
+        this._native.find('.modal-dialog').css(options);
     },
 
     close: function() {
