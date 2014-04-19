@@ -57,7 +57,6 @@ mindplot.widget.LinkEditor = new Class({
             'autofocus': 'autofocus',
             'class': 'form-control'
         });
-        //input.css('width','70%').css('margin','0px 30px');
 
         if (model.getValue() != null){
             input.val(model.getValue());
@@ -71,9 +70,8 @@ mindplot.widget.LinkEditor = new Class({
         });
 
         openButton.html($msg('OPEN_LINK')).css('margin-left', '0px');
-        //FIXME: remove this!
         openButton.click(function(){
-            alert('clicked!');
+            window.open(input.val(),"_blank", "status=1,width=700,height=450,resize=1");
         });
         var spanControl = $('<span class="input-group-btn"></span>').append(openButton)
 
