@@ -354,7 +354,7 @@
                                 </div>
                                 <div id="iconGroup" class="form-group">
                                     <label class="col-md-3 control-label" for="iconChooser"><spring:message code="ICON"/>:</label>
-                                    <input class="form-control" name="icon" id="iconChooser" style="display: none" required="required" value="glyphicon glyphicon-tag"/>
+                                    <input class="form-control" name="iconName" id="iconChooser" style="display: none" required="required" value="glyphicon glyphicon-tag"/>
                                     <div class="col-md-1">
                                         <div class="btn dropdown-toggle" id="defaultIcon" data-toggle="dropdown">
                                             <i class="glyphicon glyphicon-tag"></i>

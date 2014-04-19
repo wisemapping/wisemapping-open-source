@@ -66,7 +66,6 @@ jQuery.fn.dataTableExt.removeSelectedRows = function () {
     updateStatusToolbar();
 };
 
-
 jQuery.fn.dialogForm = function (options) {
 
     var containerId = this[0].id;
@@ -79,7 +78,7 @@ jQuery.fn.dialogForm = function (options) {
     // Clear form values ...
     if (options.clearForm == undefined || options.clearForm) {
         //FIXME: icon and color should be handled as exceptions..
-        $("#" + containerId).find('input[name!="color"]input[name!="icon"]').val('');
+        $("#" + containerId).find('input[name!="color"]input[name!="iconName"]').val('');
     }
 
     // Clear button "Saving..." state ...
@@ -177,7 +176,6 @@ jQuery.fn.dialogForm = function (options) {
     this.modal();
 
 };
-
 
 // Update toolbar events ...
 function updateStatusToolbar() {
@@ -567,7 +565,7 @@ function createLabelItem(data, id) {
     var labelItem = $("<li data-filter=\""  + data.title  + "\">");
     labelItem.append(
         "<a href=\"#\"> " +
-            "<i class=\"" + data.icon + " labelIcon\"></i>" +
+            "<i class=\"" + data.iconName + " labelIcon\"></i>" +
             "<div class='labelColor' style='background: " +  data.color + "'></div>" +
             "<div class='labelName labelNameList'>" + data.title + "</div>" +
             "<button id='deleteLabelBtn' class='close closeLabel' labelid=\""+ labelId +"\">x</button>" +
@@ -641,7 +639,7 @@ function prepareLabelList(labels) {
             $('<li class="chooseLabel"></li>').attr('value', value.id).attr('color', value.color).attr('icon', value.icon)
                 .append(
                     '<a href="#" onclick="return false">' +
-                        "<div class='labelIcon " + value.icon + "'></div>" +
+                        "<div class='labelIcon " + value.iconName + "'></div>" +
                         "<div class='labelColor' style='background: " +  value.color + "'></div>" +
                         "<div class='labelName'>" + value.title + "</div>" +
                         '</a>')
