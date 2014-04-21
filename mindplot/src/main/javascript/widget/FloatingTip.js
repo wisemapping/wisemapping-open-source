@@ -47,6 +47,9 @@ mindplot.widget.FloatingTip = new Class({
     },
 
     hide: function (element) {
+        if (element) {
+            console.error('element is not necessary');
+        }
         this.element.popover('hide');
         this.fireEvent('hide', [this, element]);
         return this;
