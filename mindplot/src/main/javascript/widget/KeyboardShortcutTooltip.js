@@ -25,26 +25,17 @@ mindplot.widget.KeyboardShortcutTooltip = new Class({
         this._text = text;
 
         var children = buttonElem.children().first();
-        var tipElemId = buttonElem.id + "Tip";
+        var tipElemId = buttonElem.attr('id') + "Tip";
         var tipDiv = $('<div></div>').attr('id', tipElemId);
         tipDiv.append(children);
         buttonElem.append(tipDiv);
 
         this.parent(tipDiv, {
             //Content can also be a function of the target element!
-            content: this._buildContent.pass(buttonElem, this),
+            content: this._buildContent(),
             html: true,
-            position: 'bottom',
-            arrowOffset : 10,
-            center: true,
-            arrowSize: 3,
-            offset : {x:0,y:-2},
-            className: 'keyboardShortcutTip',
-            preventHideOnOver : false,
-            //FIXME: this options are not useful anymore
-            motionOnShow:false,
-            motionOnHide:false,
-            fx: { 'duration': '100' }
+            placement: 'bottom',
+            className: 'keyboardShortcutTip'
         });
 
         tipDiv.on('click', function(e) {

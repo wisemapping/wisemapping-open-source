@@ -31,42 +31,38 @@ mindplot.NoteIcon = new Class({
 
     _registerEvents:function () {
         this._image.setCursor('pointer');
+        var me = this;
 
         if (!this._readOnly) {
-
             // Add on click event to open the editor ...
             this.addEvent('click', function (event) {
-                this._topic.showNoteEditor();
+                me._topic.showNoteEditor();
                 event.stopPropagation();
-            }.bind(this));
+            });
         }
-
-        this._tip = new mindplot.widget.FloatingTip($(this.getImage()._peer._native), {
+        this._tip = new mindplot.widget.FloatingTip($(me.getImage()._peer._native), {
             // Content can also be a function of the target element!
             content:function () {
-                var result = new Element('div');
-                result.setStyles({padding:'5px'});
+                var result = $('<div></div>').css({padding:'5px'});
 
-                var title = new Element('div', {text:$msg('NOTE')});
-                title.setStyles({
-                    'font-weight':'bold',
-                    color:'black',
-                    'padding-bottom':'5px',
-                    width:'100px'
-                });
-                title.inject(result);
+                var title = $('<div></div>').text($msg('NOTE'))
+                    .css({
+                        'font-weight':'bold',
+                        color:'black',
+                        'padding-bottom':'5px',
+                        width:'100px'
+                    });
+                result.append(title);
 
-                var text = new Element('div', {text:this._linksModel.getText()});
-                text.setStyles({
+                var text = $('<div></div>').text(me._linksModel.getText())
+                    .css({
                         'white-space':'pre-wrap',
                         'word-wrap':'break-word'
                     }
                 );
-                text.inject(result);
-
-
+                result.append(text);
                 return result;
-            }.bind(this),
+            },
             html:true,
             position:'bottom',
             arrowOffset:10,
@@ -75,6 +71,7 @@ mindplot.NoteIcon = new Class({
             offset:{x:10, y:20},
             className:'notesTip'
         });
+
     },
 
     getModel:function () {
