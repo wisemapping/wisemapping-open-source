@@ -66,7 +66,7 @@ mindplot.widget.ColorPalettePanel = new Class({
         var model = this.getModel();
         _.each(colorCells, function (elem) {
             $(elem).on('click', function () {
-                var color = elem.css("background-color");
+                var color = $(elem).css("background-color");
                 model.setValue(color);
                 this.hide();
             }.bind(this));
