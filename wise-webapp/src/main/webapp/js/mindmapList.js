@@ -66,7 +66,6 @@ jQuery.fn.dataTableExt.removeSelectedRows = function () {
     updateStatusToolbar();
 };
 
-
 jQuery.fn.dialogForm = function (options) {
 
     var containerId = this[0].id;
@@ -78,7 +77,8 @@ jQuery.fn.dialogForm = function (options) {
 
     // Clear form values ...
     if (options.clearForm == undefined || options.clearForm) {
-        $("#" + containerId).find('input[name!="color"]').val('');
+        //FIXME: icon and color should be handled as exceptions..
+        $("#" + containerId).find('input[name!="color"]input[name!="iconName"]').val('');
     }
 
     // Clear button "Saving..." state ...
@@ -176,7 +176,6 @@ jQuery.fn.dialogForm = function (options) {
     this.modal();
 
 };
-
 
 // Update toolbar events ...
 function updateStatusToolbar() {
@@ -301,10 +300,15 @@ $(function () {
                 postUpdate: function(data, id) {
                     createLabelItem(data, id);
                     if (mapIds.length > 0) {
-                        linkLabelToMindmap(mapIds, {id: id, title: data.title, color: data.color});
+                        linkLabelToMindmap(mapIds, {id: id, title: data.title, color: data.color, icon: data.icon});
                     }
                 }
             });
+            // Setting sizes to label icon list
+            var dropDownHeight = $(window).height()/3;
+            $("#labelIconItems ul").height(dropDownHeight);
+            var dropDownWidth = $(window).width()/3;
+            $("#labelIconItems ul").width(dropDownWidth);
         }
     );
 
@@ -531,7 +535,28 @@ $(function () {
          $("#foldersContainer ul").css('overflow-x', 'hidden');
          $("#foldersContainer ul").height(maxHeight);
 
-    })
+    });
+
+    //init popovers...
+    var icons = $(".bs-glyphicons-list li");
+    icons.each(function() {
+        $(this).popover({
+            animation: true,
+            placement: "auto",
+            trigger: 'hover',
+            //FIXME: Which is the best way to use messages.properties here?
+            content: ($(this).attr('class').replace('glyphicon glyphicon-',''))
+        })
+    });
+
+    icons.on("click", function(){
+        var defaultIcon = $("#defaultIcon");
+        //remove current icon
+        defaultIcon.find("i").remove();
+        var myClass = $(this).attr("class");
+        defaultIcon.prepend("<i class='" + myClass +"'></i>");
+        defaultIcon.closest("#iconGroup").find('input').val(myClass);
+    });
 });
 
 /*--------------------------------------------- Label actions --------------------------------------------------**/
@@ -540,7 +565,7 @@ function createLabelItem(data, id) {
     var labelItem = $("<li data-filter=\""  + data.title  + "\">");
     labelItem.append(
         "<a href=\"#\"> " +
-            "<i class=\"glyphicon glyphicon-tag labelIcon\"></i>" +
+            "<i class=\"" + data.iconName + " labelIcon\"></i>" +
             "<div class='labelColor' style='background: " +  data.color + "'></div>" +
             "<div class='labelName labelNameList'>" + data.title + "</div>" +
             "<button id='deleteLabelBtn' class='close closeLabel' labelid=\""+ labelId +"\">x</button>" +
@@ -611,9 +636,10 @@ function prepareLabelList(labels) {
     //append items to dropdown
     $.each(labels, function(index, value) {
         labelList.append(
-            $('<li class="chooseLabel"></li>').attr('value', value.id).attr('color', value.color)
+            $('<li class="chooseLabel"></li>').attr('value', value.id).attr('color', value.color).attr('icon', value.icon)
                 .append(
                     '<a href="#" onclick="return false">' +
+                        "<div class='labelIcon " + value.iconName + "'></div>" +
                         "<div class='labelColor' style='background: " +  value.color + "'></div>" +
                         "<div class='labelName'>" + value.title + "</div>" +
                         '</a>')

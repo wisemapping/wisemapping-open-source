@@ -12,6 +12,7 @@ public class Label {
     @NotNull private User creator;
     @Nullable private Label parent;
     @NotNull private String color;
+    @NotNull private String iconName;
 
     public void setParent(@Nullable Label parent) {
         this.parent = parent;
@@ -57,6 +58,15 @@ public class Label {
         this.color = color;
     }
 
+    @NotNull
+    public String getIconName() {
+        return iconName;
+    }
+
+    public void setIconName(@NotNull String iconName) {
+        this.iconName = iconName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -76,4 +86,5 @@ public class Label {
         result = 31 * result + (parent != null ? parent.hashCode() : 0);
         return result;
     }
+
 }
