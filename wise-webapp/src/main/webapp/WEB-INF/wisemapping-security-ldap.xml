@@ -45,7 +45,7 @@
 
     <bean id="ldapUserSearch"
           class="org.springframework.security.ldap.search.FilterBasedLdapUserSearch">
-        <constructor-arg index="0" value="ou=${security.ldap.subDn}"/>
+        <constructor-arg index="0" value="${security.ldap.subDn}"/>
         <constructor-arg index="1" value="(${security.ldap.auth.attribute}={0})"/>
         <constructor-arg index="2" ref="contextSource"/>
         <property name="searchSubtree" value="true"/>
