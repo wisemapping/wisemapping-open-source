@@ -37,7 +37,8 @@ CREATE TABLE LABEL (
   title           VARCHAR(30),
   creator_id      INTEGER            NOT NULL,
   parent_label_id INTEGER,
-  color           VARCHAR(7)         NOT NULL
+  color           VARCHAR(7)         NOT NULL,
+  iconName        VARCHAR(50)       NOT NULL
   --FOREIGN KEY (creator_id) REFERENCES USER (colaborator_id)
 );
 
