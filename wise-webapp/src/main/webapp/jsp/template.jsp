@@ -76,15 +76,15 @@
         <c:if test="${requestScope['google.ads.enabled']}">
               <div class="row" style="text-align: center;">
                 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                <!-- Template Page (All pages) -->
+                <!-- Wise: Pages Footer  (All pages) -->
                 <ins class="adsbygoogle"
-                     style="display:inline-block;width:728px;height:90px;text-align: center;"
+                     style="display:inline-block;width:728px;height:90px"
                      data-ad-client="ca-pub-7564778578019285"
                      data-ad-slot="3798492923"></ins>
                 <script>
                 (adsbygoogle = window.adsbygoogle || []).push({});
                 </script>
-            </div>
+           </div>
         </c:if>
     </div>
 
