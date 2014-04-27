@@ -11,7 +11,8 @@
 <html>
 <head>
     <base href="${requestScope['site.baseurl']}/">
-
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="WiseMapping">
     <meta name="publisher" content="WiseMapping Open Source">
     <meta name="keywords"
@@ -39,8 +40,9 @@
 
     <link rel="icon" href="images/favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
+    <script type="text/javascript" language="javascript" src="js/jquery-2.1.0.min.js"></script>
 
-    <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap.min.js"></script>
     <script src="js/less.js" type="text/javascript"></script>
 </head>
 <body>
@@ -50,32 +52,44 @@
         <jsp:param name="removeSignin" value="${requestScope.removeSignin}"/>
     </jsp:include>
 
-    <div class="bodyContainer">
-        <div class="row-fluid">
-            <div class="span2"></div>
-            <div class="pageBodyContent span8">
-                <tiles:insertAttribute name="body"/>
-            </div>
-            <c:if test="${requestScope['google.ads.enabled']}">
-                <div class="row" style="text-align: center;margin: 5px">
-                    <script type="text/javascript"><!--
-                    google_ad_client = "ca-pub-7564778578019285";
-                    /* WiseMapping Login */
-                    google_ad_slot = "2192653431";
-                    google_ad_width = 728;
-                    google_ad_height = 90;
-                    //-->
-                    </script>
-                    <script type="text/javascript"
-                            src="https://pagead2.googlesyndication.com/pagead/show_ads.js">
-                    </script>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-1 col-md-10">
+                <div class="jumbotron" style="margin:40px 0 15px 0;padding: 10px 60px;">
+                    <tiles:insertAttribute name="body"/>
                 </div>
-            </c:if>
+            </div>
+            <div class="col-md-1" style="padding-top:25px">
+                <c:if test="${requestScope['google.ads.enabled']}">
+                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <!-- Wise: Lateral Image (Small) -->
+                    <ins class="adsbygoogle"
+                         style="display:inline-block;width:120px;height:240px"
+                         data-ad-client="ca-pub-7564778578019285"
+                         data-ad-slot="6751959325"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </c:if>
+            </div>
         </div>
+        <c:if test="${requestScope['google.ads.enabled']}">
+              <div class="row" style="text-align: center;">
+                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                <!-- Wise: Pages Footer  (All pages) -->
+                <ins class="adsbygoogle"
+                     style="display:inline-block;width:728px;height:90px"
+                     data-ad-client="ca-pub-7564778578019285"
+                     data-ad-slot="3798492923"></ins>
+                <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+           </div>
+        </c:if>
     </div>
 
-    <jsp:include page="footer.jsp"/>
-</div>
+        <jsp:include page="footer.jsp"/>
+    </div>
 </body>
 </html>
 

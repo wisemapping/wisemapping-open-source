@@ -88,6 +88,16 @@ public class MindmapServiceImpl
     }
 
     @Override
+    public void linkLabel(@NotNull Mindmap mindmap, @NotNull final Label label) {
+        mindmap.addLabel(label);
+    }
+
+    @Override
+    public void removeLabel(@NotNull Mindmap mindmap, @NotNull Label label) {
+        mindmap.removeLabel(label);
+    }
+
+    @Override
     public Mindmap getMindmapByTitle(String title, User user) {
         return mindmapManager.getMindmapByTitle(title, user);
     }
@@ -229,28 +239,6 @@ public class MindmapServiceImpl
             mindmapManager.addCollaborator(collaborator);
         }
         return collaborator;
-    }
-
-    @Override
-    public void addTags(@NotNull Mindmap mindmap, String tags) {
-        mindmap.setTags(tags);
-        mindmapManager.updateMindmap(mindmap, false);
-        if (tags != null && tags.length() > 0) {
-            final String tag[] = tags.split(TAG_SEPARATOR);
-            final User user = mindmap.getCreator();
-            // Add new Tags to User
-            boolean updateUser = false;
-            for (String userTag : tag) {
-                if (!user.getTags().contains(userTag)) {
-                    user.getTags().add(userTag);
-                    updateUser = true;
-                }
-            }
-            if (updateUser) {
-                //update user
-                userService.updateUser(user);
-            }
-        }
     }
 
 

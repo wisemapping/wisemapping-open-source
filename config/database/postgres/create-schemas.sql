@@ -5,10 +5,9 @@ CREATE TABLE COLLABORATOR (
 );
 
 CREATE TABLE "user" (
-  id                  SERIAL       NOT NULL PRIMARY KEY,
   authentication_type TEXT         NOT NULL,
   authenticator_uri   VARCHAR(255),
-  colaborator_id      INTEGER      NOT NULL,
+  colaborator_id      INTEGER      NOT NULL PRIMARY KEY,
   firstname           VARCHAR(255) NOT NULL,
   lastname            VARCHAR(255) NOT NULL,
   password            VARCHAR(255) NOT NULL,
@@ -19,6 +18,22 @@ CREATE TABLE "user" (
   FOREIGN KEY (colaborator_id) REFERENCES COLLABORATOR (id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
 
+CREATE TABLE LABEL (
+  id              INTEGER            NOT NULL PRIMARY KEY,
+  title           VARCHAR(255),
+  creator_id      INTEGER            NOT NULL,
+  parent_label_id INTEGER,
+  color           VARCHAR(7)         NOT NULL
+  --FOREIGN KEY (creator_id) REFERENCES USER (colaborator_id)
+);
+
+CREATE TABLE R_LABEL_MINDMAP (
+  mindmap_id       INTEGER            NOT NULL,
+  label_id         INTEGER            NOT NULL,
+  PRIMARY KEY (mindmap_id, label_id),
+  FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id),
+  FOREIGN KEY (label_id) REFERENCES LABEL (id) ON DELETE CASCADE ON UPDATE NO ACTION
+);
 
 CREATE TABLE MINDMAP (
   id             SERIAL       NOT NULL PRIMARY KEY,
@@ -73,7 +88,8 @@ CREATE TABLE TAG (
 CREATE TABLE ACCESS_AUDITORY (
   id         SERIAL  NOT NULL PRIMARY KEY,
   login_date DATE,
-  user_id    INTEGER NOT NULL
+  user_id    INTEGER NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES "user" (colaborator_id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
 
 

@@ -5,6 +5,7 @@
 
     <properties>
         <com.wisemapping.version>3.1-SNAPSHOT</com.wisemapping.version>
+        <superpom.dir>${project.basedir}/wise-webapps</superpom.dir>
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
@@ -101,12 +102,11 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <inherited>true</inherited>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>

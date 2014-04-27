@@ -1,3 +1,5 @@
+/*--------------------------------------------- Common actions --------------------------------------------------**/
+
 $.fn.dataTableExt.oApi.fnReloadAjax = function (oSettings, sNewSource, fnCallback, bStandingRedraw) {
     if (typeof sNewSource != 'undefined' && sNewSource != null) {
         oSettings.sAjaxSource = sNewSource;
@@ -39,18 +41,8 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function (oSettings, sNewSource, fnCallbac
 };
 
 jQuery.fn.dataTableExt.selectAllMaps = function () {
-    var total = $('.select input:checkbox[id!="selectAll"]').size();
-    var selected = $('.select input:checked[id!="selectAll"]').size();
-    if (selected < total) {
-        $('.select input:!checked[id!="selectAll"]').each(function () {
-            $(this).prop("checked", true);
-        });
-    }
-    else {
-        $('.select input:!checked[id!="selectAll"]').each(function () {
-            $(this).prop("checked", false);
-        });
-    }
+    var bool = $("input:checkbox[id='selectAll']").prop('checked');
+    $("input:checkbox[id!='selectAll']").prop('checked', bool);
     updateStatusToolbar();
 };
 
@@ -74,79 +66,93 @@ jQuery.fn.dataTableExt.removeSelectedRows = function () {
     updateStatusToolbar();
 };
 
-
 jQuery.fn.dialogForm = function (options) {
 
     var containerId = this[0].id;
     var url = options.url;
 
     // Clear previous state ...
-    $("#" + containerId).find('.errorMessage').text("").removeClass("alert alert-error");
-    $("#" + containerId).find('.control-group').removeClass('error');
+    $("#" + containerId).find('.errorMessage').text("").removeClass("alert alert-danger");
+    $("#" + containerId).find('.form-group').removeClass('error');
 
     // Clear form values ...
     if (options.clearForm == undefined || options.clearForm) {
-        $("#" + containerId).find('input').attr('value', '');
+        //FIXME: icon and color should be handled as exceptions..
+        $("#" + containerId).find('input[name!="color"]input[name!="iconName"]').val('');
     }
 
     // Clear button "Saving..." state ...
     var acceptBtn = $('#' + containerId + ' .btn-accept');
     acceptBtn.button('reset');
 
-    acceptBtn.click(function () {
+    acceptBtn.unbind('click').click( function (event) {
         var formData = {};
         $('#' + containerId + ' input').each(function (index, elem) {
             formData[elem.name] = elem.value;
         });
+
+        // Success actions ...
+        var onSuccess = function (jqXHR, textStatus, data) {
+            var resourceId = jqXHR ? jqXHR.getResponseHeader("ResourceId") : undefined;
+            if (options.redirect) {
+                var redirectUrl = options.redirect;
+                redirectUrl = redirectUrl.replace("{header.resourceId}", resourceId);
+
+                // Hack: IE ignore the base href tag ...
+                var baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf("c/maps/"));
+                window.open(baseUrl + redirectUrl, '_self');
+
+            } else if (options.postUpdate) {
+                options.postUpdate(formData, resourceId);
+            }
+            dialogElem.modal('hide');
+        };
+
+        // On error message
+        var onFailure = function (jqXHR, textStatus, data) {
+            var errors = JSON.parse(jqXHR.responseText);
+            // Mark fields with errors ...
+            var fieldErrors = errors.fieldErrors;
+            if (fieldErrors) {
+                for (var fieldName in fieldErrors) {
+                    // Mark the field with errors ...
+                    var message = fieldErrors[fieldName];
+                    var inputField = $("#" + containerId + " input[name='" + fieldName + "']");
+
+                    $("#" + containerId).find(".errorMessage").text(message).addClass("alert alert-danger");
+                    inputField.parent().addClass('error');
+                }
+            }
+            var acceptBtn = $('#' + containerId + ' .btn-accept');
+            acceptBtn.button('reset');
+        };
+
+        var onError = function (jqXHR, textStatus, errorThrown) {
+            console.log(errorThrown);
+            console.log(jqXHR);
+            dialogElem.modal('hide');
+            $('#messagesPanel div div').text(errorThrown);
+            $('#messagesPanel').show()
+            var acceptBtn = $('#' + containerId + ' .btn-accept');
+            acceptBtn.button('reset');
+        };
+
         $(acceptBtn).button('loading');
         var dialogElem = this;
         jQuery.ajax(url, {
-            async:false,
-            dataType:'json',
-            data:JSON.stringify(formData),
-            type:options.type ? options.type : 'POST',
-            contentType:"application/json; charset=utf-8",
-            success:function (data, textStatus, jqXHR) {
-                if (options.redirect) {
-                    var resourceId = jqXHR.getResponseHeader("ResourceId");
-                    var redirectUrl = options.redirect;
-                    redirectUrl = redirectUrl.replace("{header.resourceId}", resourceId);
-
-                    // Hack: IE ignore the base href tag ...
-                    var baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf("c/maps/"));
-                    window.open(baseUrl + redirectUrl, '_self');
-
-                } else if (options.postUpdate) {
-                    options.postUpdate(formData);
-                }
-                dialogElem.modal('hide');
-            },
-            error:function (jqXHR, textStatus, errorThrown) {
-                if (jqXHR.status == 400) {
-                    var errors = JSON.parse(jqXHR.responseText);
-                    // Mark fields with errors ...
-                    var fieldErrors = errors.fieldErrors;
-                    if (fieldErrors) {
-                        for (var fieldName in fieldErrors) {
-                            // Mark the field with errors ...
-                            var message = fieldErrors[fieldName];
-                            var inputField = $("#" + containerId + " input[name='" + fieldName + "']");
-
-                            $("#" + containerId).find(".errorMessage").text(message).addClass("alert alert-error");
-                            inputField.parent().addClass('error');
-                        }
-                    }
-
-                } else {
-                    console.log(errorThrown);
-                    console.log(jqXHR);
-                    dialogElem.modal('hide');
-                    $('#messagesPanel div div').text(errorThrown);
-                    $('#messagesPanel').show()
-                }
-                var acceptBtn = $('#' + containerId + ' .btn-accept');
-                acceptBtn.button('reset');
-
+            async: false,
+            dataType: 'json',
+            data: JSON.stringify(formData),
+            type: options.type ? options.type : 'POST',
+            contentType: "application/json; charset=utf-8",
+            statusCode: {
+                200: onSuccess,
+                201: onSuccess,
+                204: onSuccess,
+                400: onFailure,
+                444: onError,
+                500: onError,
+                501: onError
             }
         });
     }.bind(this));
@@ -155,11 +161,21 @@ jQuery.fn.dialogForm = function (options) {
         this.modal('hide');
     }.bind(this));
 
+    // Register enter input to submit...
+    $("input").keypress(function(event) {
+        if (event.which == 13) {
+            event.preventDefault();
+            acceptBtn.trigger('click');
+        }
+    });
+
     // Open the modal dialog ...
+    this.on('shown.bs.modal', function() {
+        $(this).find('input:first').focus();
+    });
     this.modal();
 
 };
-
 
 // Update toolbar events ...
 function updateStatusToolbar() {
@@ -168,14 +184,14 @@ function updateStatusToolbar() {
     $("#mindmapListTable tbody input:checked").parent().parent().addClass('row-selected');
     $("#mindmapListTable tbody input:not(:checked)").parent().parent().removeClass('row-selected');
 
-    $('.buttonsToolbar').find('.act-single').hide().end().find('.act-multiple').hide();
+    $('.buttonsToolbar').find('.act-single').fadeOut('slow').end().find('.act-multiple').fadeOut('slow');
 
     var tableElem = $('#mindmapListTable');
     var selectedRows = tableElem.dataTableExt.getSelectedRows();
 
     if (selectedRows.length > 0) {
         if (selectedRows.length == 1) {
-            $('.buttonsToolbar').find('.act-single').show().end().find('.act-multiple').show();
+            $('.buttonsToolbar').find('.act-single').fadeIn('slow').end().find('.act-multiple').fadeIn('slow');
 
             // Can be executed by the owner ?
             var rowData = tableElem.dataTable().fnGetData(selectedRows[0]);
@@ -185,11 +201,10 @@ function updateStatusToolbar() {
                 $(".buttonsToolbar").find('#publishBtn').hide().end().find('#shareBtn').hide().end().find('#renameBtn').hide();
             }
         } else {
-            $(".buttonsToolbar .act-multiple").show();
+            $(".buttonsToolbar .act-multiple").fadeIn('slow');
         }
     }
 }
-
 
 // Update toolbar events ...
 function updateStarred(spanElem) {
@@ -213,12 +228,12 @@ function updateStarred(spanElem) {
     }
 
     jQuery.ajax("c/restful/maps/" + mapId + "/starred", {
-        async:false,
-        dataType:'json',
-        data:"" + starred,
-        type:'PUT',
-        contentType:"text/plain",
-        success:function () {
+        async: false,
+        dataType: 'json',
+        data: "" + starred,
+        type: 'PUT',
+        contentType: "text/plain",
+        success: function () {
             if (starred) {
                 $(spanElem).removeClass('starredOff');
                 $(spanElem).addClass('starredOn');
@@ -227,7 +242,7 @@ function updateStarred(spanElem) {
                 $(spanElem).addClass('starredOff');
             }
         },
-        error:function (jqXHR, textStatus, errorThrown) {
+        error: function (jqXHR, textStatus, errorThrown) {
             $('#messagesPanel div').text(errorThrown).parent().show();
         }
     });
@@ -238,21 +253,88 @@ function updateStarred(spanElem) {
 
 function callbackOnTableInit() {
     // Register starred events ...
-    $('#mindmapListTable .starredOff, #mindmapListTable .starredOn').click(function () {
+    $('#mindmapListTable .starredOff, #mindmapListTable .starredOn').click(function (event) {
         updateStarred(this);
+        event.stopPropagation();
+    });
+
+    $("#mindmapListTable tbody tr").click(
+        function(event) {
+            var target = $(event.target);
+            if (!target.is('.closeTag')){
+                if (!target.parent().is('.closeTag')) {
+                    var baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf("c/maps/"));
+                    window.open(baseUrl + 'c/maps/' + $(this).find('.mindmapName').attr('value') + '/edit' , '_self');
+                }
+            }
+    });
+    $('input:checkbox').click(function(event) {
+        event.stopPropagation();
     });
     updateStatusToolbar();
 }
+
+// Register time update functions ....
+setTimeout(function () {
+    jQuery("abbr.timeago").timeago()
+}, 50000);
+
+/*--------------------------------------------- Button actions --------------------------------------------------**/
 
 $(function () {
     // Creation buttons actions ...
     $("#newBtn").click(
         function () {
             $("#new-dialog-modal").dialogForm({
-                redirect:"c/maps/{header.resourceId}/edit",
-                url:"c/restful/maps"
+                redirect: "c/maps/{header.resourceId}/edit",
+                url: "c/restful/maps"
             });
+        }
+    );
+
+    $(document).on('click', '#createLabelBtn',
+        function () {
+            var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
+            $("#new-folder-dialog-modal").dialogForm({
+                url: "c/restful/labels",
+                postUpdate: function(data, id) {
+                    createLabelItem(data, id);
+                    if (mapIds.length > 0) {
+                        linkLabelToMindmap(mapIds, {id: id, title: data.title, color: data.color, icon: data.icon});
+                    }
+                }
+            });
+            // Setting sizes to label icon list
+            var dropDownHeight = $(window).height()/3;
+            $("#labelIconItems ul").height(dropDownHeight);
+            var dropDownWidth = $(window).width()/3;
+            $("#labelIconItems ul").width(dropDownWidth);
+        }
+    );
+
+    $("#addLabelButton").click( function () {
+        var labels;
+        fetchLabels({
+            postUpdate: function(data) {
+                labels = data.labels;
+            }
         });
+
+        if (labels) {
+            prepareLabelList(labels);
+            $('.chooseLabel').one('click' ,
+                function () {
+                    var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
+                    if (mapIds.length > 0) {
+                        var labelId = $(this).attr('value');
+                        var labelName = $(this).text();
+                        var labelColor = $(this).attr('color');
+                        linkLabelToMindmap(mapIds, {id: labelId, title: labelName, color: labelColor});
+                    }
+                }
+            );
+        }
+    });
 
     $("#duplicateBtn").click(function () {
         // Map to be cloned ...
@@ -269,8 +351,8 @@ $(function () {
 
             // Initialize dialog ...
             $("#duplicate-dialog-modal").dialogForm({
-                redirect:"c/maps/{header.resourceId}/edit",
-                url:"c/restful/maps/" + mapId
+                redirect: "c/maps/{header.resourceId}/edit",
+                url: "c/restful/maps/" + mapId
             });
         }
     });
@@ -295,16 +377,16 @@ $(function () {
 
             // Initialize dialog ...
             $("#rename-dialog-modal").dialogForm({
-                type:'PUT',
-                clearForm:false,
-                postUpdate:function (reqBodyData) {
+                type: 'PUT',
+                clearForm: false,
+                postUpdate: function (reqBodyData) {
                     tableElem.dataTableExt.removeSelectedRows();
 
                     rowData.title = reqBodyData.title;
                     rowData.description = reqBodyData.description;
                     dataTable.fnAddData(JSON.parse(JSON.stringify(rowData)));
                 },
-                url:"c/restful/maps/" + mapId
+                url: "c/restful/maps/" + mapId
             });
         }
     });
@@ -317,12 +399,12 @@ $(function () {
         if (mapIds.length > 0) {
             // Initialize dialog ...
             $("#delete-dialog-modal").dialogForm({
-                type:'DELETE',
-                postUpdate:function () {
+                type: 'DELETE',
+                postUpdate: function () {
                     // Remove old entry ...
                     tableUI.dataTableExt.removeSelectedRows();
                 },
-                url:"c/restful/maps/batch?ids=" + jQuery.makeArray(mapIds).join(',')
+                url: "c/restful/maps/batch?ids=" + jQuery.makeArray(mapIds).join(',')
             });
         }
     });
@@ -374,26 +456,224 @@ $(function () {
         }
     };
 
-    $('#foldersContainer li').click(function (event) {
+    $(document).on('click', '#foldersContainer li', function (event) {
+        if (!$(this).is($('#foldersContainer .active'))) {
+            $('#foldersContainer .active').animate({left: '-=8px'}, 'fast');
+        }
+
         // Deselect previous option ...
         $('#foldersContainer li').removeClass('active');
-        $('#foldersContainer i').removeClass('icon-white');
+        $('#foldersContainer i').removeClass('glyphicon-white');
 
         // Select the new item ...
         var dataTable = $('#mindmapListTable').dataTable();
         $(this).addClass('active');
-        $('#foldersContainer .active i').addClass('icon-white');
+        $('#foldersContainer .active i').addClass('glyphicon-white');
 
+        $('input:checkbox').prop('checked', false);
         // Reload the table data ...
         dataTable.fnReloadAjax("c/restful/maps/?q=" + $(this).attr('data-filter'), callbackOnTableInit, true);
         event.preventDefault();
     });
+
+    $(document).on('click', "#deleteLabelBtn", function() {
+        var me = $(this);
+        $("#delete-label-dialog-modal").dialogForm({
+            url: "c/restful/labels/" + me.attr('labelid'),
+            type: 'DELETE',
+            postUpdate: function() {
+                var dataTable = $('#mindmapListTable').dataTable();
+                //remove the selected tag...
+                $("#foldersContainer li.active").remove();
+                $("#foldersContainer li:first").addClass("active");
+                $('#foldersContainer .active i').addClass('icon-white');
+                $("#foldersContainer li:first").animate({left: '+=8px'}, 'fast');
+                dataTable.fnReloadAjax("c/restful/maps/?q=all", callbackOnTableInit, true);
+            }
+        })
+    });
+
+    $(document).on('click', ".closeTag", function(event) {
+        var me = $(this);
+        var mindmapId = me.parents("td").find(".mindmapName").attr("value");
+        var data = {
+            id: me.attr("value"),
+            title: me.attr("name"),
+            color: me.css('background-color')
+        };
+        jQuery.ajax("c/restful/labels/maps/" + mindmapId, {
+            async:false,
+            dataType:'json',
+            data:JSON.stringify(data),
+            type:'DELETE',
+            contentType:"application/json; charset=utf-8",
+            success: function() {
+                var tag = me.closest("table");
+                $(tag).fadeOut('fast', function () {
+                    $(this).remove();
+                });
+
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        // add labels to filter list...
+        $("#foldersContainer li").fadeIn('fast');
+        fetchLabels({
+            postUpdate: function(data) {
+                var labels = data.labels;
+                for (var i = 0; i < labels.length; i++) {
+                    createLabelItem(labels[i], null)
+                }
+            }
+        });
+
+        //setting max heigth to ul filters...
+        var maxHeight = $("#map-table").height() - 20;
+         $("#foldersContainer ul").css('overflow-y', 'scrollbar');
+         $("#foldersContainer ul").css('overflow-x', 'hidden');
+         $("#foldersContainer ul").height(maxHeight);
+
+    });
+
+    //init popovers...
+    var icons = $(".bs-glyphicons-list li");
+    icons.each(function() {
+        $(this).popover({
+            animation: true,
+            placement: "auto",
+            trigger: 'hover',
+            //FIXME: Which is the best way to use messages.properties here?
+            content: ($(this).attr('class').replace('glyphicon glyphicon-',''))
+        })
+    });
+
+    icons.on("click", function(){
+        var defaultIcon = $("#defaultIcon");
+        //remove current icon
+        defaultIcon.find("i").remove();
+        var myClass = $(this).attr("class");
+        defaultIcon.prepend("<i class='" + myClass +"'></i>");
+        defaultIcon.closest("#iconGroup").find('input').val(myClass);
+    });
 });
 
-// Register time update functions ....
-setTimeout(function () {
-    jQuery("abbr.timeago").timeago()
-}, 50000);
+/*--------------------------------------------- Label actions --------------------------------------------------**/
+function createLabelItem(data, id) {
+    var labelId = data.id || id;
+    var labelItem = $("<li data-filter=\""  + data.title  + "\">");
+    labelItem.append(
+        "<a href=\"#\"> " +
+            "<i class=\"" + data.iconName + " labelIcon\"></i>" +
+            "<div class='labelColor' style='background: " +  data.color + "'></div>" +
+            "<div class='labelName labelNameList'>" + data.title + "</div>" +
+            "<button id='deleteLabelBtn' class='close closeLabel' labelid=\""+ labelId +"\">x</button>" +
+        "</a>"
+    );
+    labelItem.hide().appendTo($("#foldersContainer").find("ul"));
+    labelItem.fadeIn('fast');
+}
 
+function labelTagsAsHtml(labels) {
+    var result = "";
+    for (var i = 0; i<labels.length; i++) {
+        var label = labels[i];
+        result +=
+            "<table class='tableTag'>" +
+                "<tbody><tr>" +
+                "<td style='cursor: default; background-color:"+ label.color +"'>" +
+                    "<div class='labelTag' >" +
+                        label.title +
+                    '</div>' +
+                "</td>" +
+                //"<td style='padding: 0; background-color: #d8d4d4'></td>" +
+                "<td class='closeTag' style='background-color:" + label.color +"' name='" + label.title +"'value='" + label.id + "'    >" +
+                    "<span style='top: -1px;position: relative;font-size: 11px' title='delete label'>x</span>"+
+                "</td>" +
+                "</tr></tbody>" +
+                "</table>"
+    }
+    return result;
+}
 
+function fetchLabels(options) {
+    jQuery.ajax("c/restful/labels/", {
+        async:false,
+        dataType:'json',
+        type:'GET',
+        success:function (data) {
+            if (options.postUpdate) {
+                options.postUpdate(data)
+            }
+        },
+        error:function (jqXHR, textStatus, errorThrown) {
+            $('#messagesPanel div').text(errorThrown).parent().show();
+        }
+    });
+}
+
+function tagMindmaps(label) {
+    //tag selected mindmaps...
+    var rows = $('#mindmapListTable').dataTableExt.getSelectedRows();
+    for (var i = 0; i < rows.length; i++) {
+        var row = $(rows[i]);
+        if (row.find(".labelTag:contains('" + label.title + "')").length == 0) {
+            var tag = $(labelTagsAsHtml([label]));
+            tag.hide().appendTo(row.find('.mindmapName').parent());
+            tag.fadeIn('fast');
+        }
+    }
+}
+
+function prepareLabelList(labels) {
+    var labelList = $("#labelList");
+    var defaultValue = labelList.find("li[id=\"createLabelBtn\"]");
+
+    //clear dropdown...
+    labelList.find('li').remove();
+
+    //append items to dropdown
+    $.each(labels, function(index, value) {
+        labelList.append(
+            $('<li class="chooseLabel"></li>').attr('value', value.id).attr('color', value.color).attr('icon', value.icon)
+                .append(
+                    '<a href="#" onclick="return false">' +
+                        "<div class='labelIcon " + value.iconName + "'></div>" +
+                        "<div class='labelColor' style='background: " +  value.color + "'></div>" +
+                        "<div class='labelName'>" + value.title + "</div>" +
+                        '</a>')
+        );
+    });
+
+    //add the defaultValue
+    labelList.append('<li><div class="listSeparator"></div></li>')
+    labelList.append(defaultValue);
+}
+
+function linkLabelToMindmap(mapIds, label) {
+    var onSuccess = function () {
+        tagMindmaps(label);
+    };
+    jQuery.ajax("c/restful/labels/maps?ids=" + jQuery.makeArray(mapIds).join(','), {
+        type: 'POST',
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({
+            id: label.id,
+            title: label.title,
+            color: label.color
+        }),
+        statusCode: {
+            200: onSuccess
+        }
+    });
+}
+
+//animations...
+$(document).on('click', '#foldersContainer li[class!="nav-header"]', function (event) {
+    if ($(this).attr('class') != 'active') {
+        $(this).animate({left: '+=8px'}, 'fast');
+    }
+});
 

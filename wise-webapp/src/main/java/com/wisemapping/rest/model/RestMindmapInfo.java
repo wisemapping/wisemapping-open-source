@@ -21,21 +21,24 @@ package com.wisemapping.rest.model;
 
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Collaborator;
+import com.wisemapping.model.Label;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
 import com.wisemapping.security.Utils;
 import com.wisemapping.util.TimeUtils;
-import org.codehaus.jackson.annotate.*;
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @XmlRootElement(name = "map")
 @XmlAccessorType(XmlAccessType.PROPERTY)
@@ -62,28 +65,63 @@ public class RestMindmapInfo {
         this.collaborator = collaborator;
     }
 
+    public void setCreationTime(String value){
+        // Ignore
+    }
+
     public String getCreationTime() {
-        return TimeUtils.toISO8601(mindmap.getCreationTime().getTime());
+        final Calendar creationTime = mindmap.getCreationTime();
+        return creationTime != null ? TimeUtils.toISO8601(creationTime.getTime()) : null;
     }
 
     public String getDescription() {
         return mindmap.getDescription();
     }
 
+    public void setDescription(String description) {
+        mindmap.setDescription(description);
+    }
+
     public String getTags() {
         return mindmap.getTags();
+    }
+
+    public void setTags(String tags) {
+        mindmap.setTags(tags);
     }
 
     public String getTitle() {
         return mindmap.getTitle();
     }
 
+    public void setTitle(String title) {
+        mindmap.setTitle(title);
+    }
+     public Set<RestLabel> getLabels() {
+         final Set<RestLabel> result = new LinkedHashSet<>();
+         final User me = Utils.getUser();
+         for (Label label : mindmap.getLabels()) {
+             if (label.getCreator().equals(me)) {
+                 result.add(new RestLabel(label));
+             }
+         }
+         return result;
+     }
+
     public int getId() {
         return mindmap.getId();
     }
 
+    public void setId(int id) {
+    }
+
     public String getCreator() {
-        return mindmap.getCreator().getFullName();
+        final User creator = mindmap.getCreator();
+        return creator!=null?creator.getFullName():null;
+    }
+
+    public void setCreator(String email) {
+
     }
 
     public void setCreator() {
@@ -95,7 +133,7 @@ public class RestMindmapInfo {
         return collaboration != null ? collaboration.getRole().getLabel() : "none";
     }
 
-    public void setRole() {
+    public void setRole(String value) {
         // Do nothing ...
     }
 
@@ -104,46 +142,27 @@ public class RestMindmapInfo {
         return user != null ? user.getFullName() : "unknown";
     }
 
+    public void setLastModifierUser(String value) {
+    }
+
     public String getLastModificationTime() {
         final Calendar calendar = mindmap.getLastModificationTime();
-        return TimeUtils.toISO8601(calendar.getTime());
+        return calendar!=null?TimeUtils.toISO8601(calendar.getTime()):null;
+    }
+
+    public void setLastModificationTime(String value) {
     }
 
     public boolean isPublic() {
         return mindmap.isPublic();
     }
 
-    public void setId(int id) {
-    }
-
     public boolean getStarred() {
         return mindmap.isStarred(collaborator);
     }
 
-    public void setStarred(int value) {
+    public void setStarred(boolean value) {
 
-    }
-
-    public void setTitle(String title) {
-        mindmap.setTitle(title);
-    }
-
-    public void setTags(String tags) {
-        mindmap.setTags(tags);
-    }
-
-    public void setDescription(String description) {
-        mindmap.setDescription(description);
-    }
-
-    public void setCreator(String email) {
-
-    }
-
-    public void setLastModificationTime(String value) {
-    }
-
-    public void setLastModifierUser(String value) {
     }
 
     @JsonIgnore
