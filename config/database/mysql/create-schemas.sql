@@ -1,3 +1,9 @@
+#
+# Command: mysql -u root -p < create_schemas.sql
+#
+
+USE wisemapping;
+
 CREATE TABLE COLLABORATOR (
   id            INTEGER            NOT NULL PRIMARY KEY AUTO_INCREMENT,
   email         VARCHAR(255)
@@ -7,8 +13,7 @@ CREATE TABLE COLLABORATOR (
   CHARACTER SET utf8;
 
 CREATE TABLE USER (
-  id               INTEGER            NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  colaborator_id   INTEGER            NOT NULL,
+  colaborator_id   INTEGER            NOT NULL PRIMARY KEY,
   authentication_type CHAR(1)
                       CHARACTER SET utf8 NOT NULL,
   authenticator_uri   VARCHAR(255)
@@ -46,6 +51,31 @@ CREATE TABLE MINDMAP (
 )
   CHARACTER SET utf8;
 
+CREATE TABLE LABEL (
+  id              INTEGER            NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  title           VARCHAR(30)
+                  CHARACTER SET utf8 NOT NULL,
+  creator_id      INTEGER            NOT NULL,
+  parent_label_id INTEGER,
+  color           VARCHAR(7)         NOT NULL,
+  iconName        VARCHAR(50)       NOT NULL,
+  FOREIGN KEY (creator_id) REFERENCES USER (colaborator_id),
+  FOREIGN KEY (parent_label_id) REFERENCES LABEL (id)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
+)
+  CHARACTER SET utf8;
+
+CREATE TABLE R_LABEL_MINDMAP (
+  mindmap_id       INTEGER            NOT NULL,
+  label_id         INTEGER            NOT NULL,
+  PRIMARY KEY (mindmap_id, label_id),
+  FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id),
+  FOREIGN KEY (label_id) REFERENCES LABEL (id)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
+)
+  CHARACTER SET utf8;
 
 CREATE TABLE MINDMAP_HISTORY
 (id            INTEGER    NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -97,7 +127,10 @@ CREATE TABLE TAG (
 CREATE TABLE ACCESS_AUDITORY (
   id         INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
   login_date DATE,
-  user_id    INTEGER NOT NULL
+  user_id    INTEGER NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES USER (colaborator_id)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
 )
   CHARACTER SET utf8;
 

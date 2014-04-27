@@ -1,17 +1,17 @@
-## Project Information
+# Project Information
 
 The goal of this project is to provide a high quality product that can be deployed by educational and academic institutions, private and public companies and anyone who needs to have a mindmapping application. WiseMapping is based on the same code source supporting WiseMapping.com. More info: www.wisemapping.org
 
-# Compiling and Running
+## Compiling and Running
 
-## Prerequisites
+### Prerequisites
 
 The following products must be installed:
 
     * Java Development Kit 7 or higher ([http://www.oracle.com/technetwork/java/javase/downloads/index.html])
     * Maven 3.x or higher ([http://maven.apache.org/])
 
-## Compiling
+### Compiling
 
 WiseMapping uses Maven as packaging and project management. It's composed of 5 maven sub-modules:
 
@@ -27,7 +27,7 @@ The full compilation of the project can be performed executing within <project-d
 
 Once this command is execute, the file <project-dir>/wise-webapp/target/wisemapping*.war will be generated.
 
-## Testing
+### Testing
 The previously generated war can be deployed locally executing within the directory <project-dir>/wise-webapp the following command:
 
 `cd wise-webapp;mvn jetty:run-war`
@@ -37,12 +37,34 @@ This will start the application on the URL: [http://localhost:8080/wise-webapp/]
 User: test@wisemapping.org
 Password: test
 
-## Authors
+## Running the JS only version
 
-   * Pablo Luna
-   * Paulo Veiga
+Start by creating the .zip file:
 
-Past Collaborators: Ignacio Manzano, Nicolas Damonte
+`mvn assembly:assembly -Dmaven.test.skip=true`
+
+To test the javascript frontend you then do:
+
+    ruby -rwebrick -e 'WEBrick::HTTPServer.new(:Port=>8000,:DocumentRoot=>".").start'
+
+Now open a browser using the URL http://localhost:8000/wise-editor/src/main/webapp/
+
+## Members
+
+### Founders
+
+   * Pablo Luna <pveiga@wisemapping.com>
+   * Paulo Veiga <pablo@wisemapping.com>
+
+### Individual Controbutors
+
+   * Ezequiel Bergamaschi <ezequielbergamaschi@gmail.com>
+   * Claudio Barril <claudiobarril@gmail.com>
+
+### Past Individual Contributors
+
+   * Ignacio Manzano
+   * Nicolas Damonte
    
 ## License
 

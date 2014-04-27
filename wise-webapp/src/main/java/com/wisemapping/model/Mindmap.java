@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class Mindmap {
@@ -44,6 +45,7 @@ public class Mindmap {
     private User lastEditor;
 
     private Set<Collaboration> collaborations = new HashSet<Collaboration>();
+    private Set<Label> labels = new LinkedHashSet<>();
 
     private User creator;
     private String tags;
@@ -116,6 +118,18 @@ public class Mindmap {
 
     public void removedCollaboration(@NotNull Collaboration collaboration) {
         collaborations.add(collaboration);
+    }
+
+    @NotNull public Set<Label> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(@NotNull final Set<Label> labels) {
+        this.labels = labels;
+    }
+
+    public void addLabel(@NotNull final Label label) {
+        this.labels.add(label);
     }
 
     @Nullable
@@ -229,9 +243,6 @@ public class Mindmap {
     }
 
     public void setCreator(@NotNull User creator) {
-        if (creator == null) {
-            throw new IllegalArgumentException("Owner can not be null");
-        }
         this.creator = creator;
     }
 
@@ -306,5 +317,29 @@ public class Mindmap {
         }
         return result;
 
+    }
+    //creo que no se usa mas
+    public boolean hasLabel(@NotNull final String name) {
+        for (Label label : this.labels) {
+            if (label.getTitle().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Nullable public Label findLabel(int labelId) {
+        Label result = null;
+        for (Label label : this.labels) {
+            if (label.getId() == labelId) {
+                result = label;
+                break;
+            }
+        }
+        return result;
+    }
+
+    public void removeLabel(@NotNull final Label label) {
+        this.labels.remove(label);
     }
 }

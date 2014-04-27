@@ -19,17 +19,28 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.model.*;
+import com.wisemapping.model.AuthenticationType;
+import com.wisemapping.model.Collaboration;
+import com.wisemapping.model.Mindmap;
+import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.service.UserService;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -38,6 +49,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Pattern;
 
+@Api(value = "AdminApi", description = "Administrative Related Objects.")
 @Controller
 public class AdminController extends BaseController {
     @Qualifier("userService")
@@ -48,30 +60,32 @@ public class AdminController extends BaseController {
     @Autowired
     private MindmapService mindmapService;
 
-
-    @RequestMapping(method = RequestMethod.GET, value = "admin/users/{id}", produces = {"application/json", "text/html", "application/xml"})
+    @ApiOperation("Note: Administration permissions required.")
+    @RequestMapping(method = RequestMethod.GET, value = "admin/users/{id}", produces = {"application/json", "application/xml"})
     @ResponseBody
-    public ModelAndView getUserById(@PathVariable long id) throws IOException {
+    public RestUser getUserById(@PathVariable @ApiParam(required = true, value = "User Id", allowableValues = "range[1," + Long.MAX_VALUE + "]") long id) throws IOException {
         final User userBy = userService.getUserBy(id);
         if (userBy == null) {
             throw new IllegalArgumentException("User could not be found");
         }
-        return new ModelAndView("userView", "user", new RestUser(userBy));
+        return new RestUser(userBy);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "admin/users/email/{email}", produces = {"application/json", "text/html", "application/xml"})
+    @ApiOperation("Note: Administration permissions required.")
+    @RequestMapping(method = RequestMethod.GET, value = "admin/users/email/{email}", produces = {"application/json", "application/xml"})
     @ResponseBody
-    public ModelAndView getUserByEmail(@PathVariable String email) throws IOException {
+    public RestUser getUserByEmail(@PathVariable String email) throws IOException {
         final User user = userService.getUserBy(email);
         if (user == null) {
             throw new IllegalArgumentException("User '" + email + "' could not be found");
         }
-        return new ModelAndView("userView", "user", new RestUser(user));
+        return new RestUser(user);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "admin/users", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
+    @ApiOperation("Note: Administration permissions required.")
+    @RequestMapping(method = RequestMethod.POST, value = "admin/users", consumes = {"application/xml", "application/json"}, produces = {"application/json", "application/xml"})
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void createUser(@RequestBody RestUser user, HttpServletResponse response) throws WiseMappingException {
+    public void createUser(@RequestBody @ApiParam(required = true) RestUser user, HttpServletResponse response) throws WiseMappingException {
         if (user == null) {
             throw new IllegalArgumentException("User could not be found");
         }
@@ -100,9 +114,10 @@ public class AdminController extends BaseController {
         response.setHeader("Location", "/service/admin/users/" + user.getId());
     }
 
+    @ApiOperation("Note: Administration permissions required.")
     @RequestMapping(method = RequestMethod.PUT, value = "admin/users/{id}/password", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void changePassword(@RequestBody String password, @PathVariable long id) throws WiseMappingException {
+    public void changePassword(@RequestBody @ApiParam(required = true) String password, @PathVariable @ApiParam(required = true, value = "User Id", allowableValues = "range[1," + Long.MAX_VALUE + "]") long id) throws WiseMappingException {
         if (password == null) {
             throw new IllegalArgumentException("Password can not be null");
         }
@@ -115,16 +130,25 @@ public class AdminController extends BaseController {
         userService.changePassword(user);
     }
 
+    @ApiOperation("Note: Administration permissions required.")
     @RequestMapping(method = RequestMethod.DELETE, value = "admin/users/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void getUserByEmail(@PathVariable long id) throws WiseMappingException {
+    public void deleteUserByEmail(@PathVariable long id) throws WiseMappingException {
         final User user = userService.getUserBy(id);
         if (user == null) {
             throw new IllegalArgumentException("User '" + id + "' could not be found");
         }
-        userService.deleteUser(user);
+
+        final List<Collaboration> collaborations = mindmapService.findCollaborations(user);
+        for (Collaboration collaboration : collaborations) {
+            final Mindmap mindmap = collaboration.getMindMap();
+            mindmapService.removeMindmap(mindmap,user);
+        }
+
+        userService.removeUser(user);
     }
 
+    @ApiOperation("Note: Administration permissions required.")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @RequestMapping(method = RequestMethod.GET, value = "admin/database/purge")
     public void purgeDB(@RequestParam(required = true) Integer minUid, @RequestParam(required = true) Integer maxUid, @RequestParam(required = true) Boolean apply) throws WiseMappingException, UnsupportedEncodingException {
@@ -132,7 +156,6 @@ public class AdminController extends BaseController {
         for (int i = minUid; i < maxUid; i++) {
 
             try {
-
                 System.out.println("Looking for user:" + i);
                 final User user = userService.getUserBy(i);
                 if (user != null) {
@@ -179,13 +202,13 @@ public class AdminController extends BaseController {
         }
     }
 
+    @ApiOperation("Note: Administration permissions required.")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @RequestMapping(method = RequestMethod.GET, value = "admin/database/purge/history")
     public void purgeHistory(@RequestParam(required = true) Integer mapId) throws WiseMappingException, IOException {
 
         mindmapService.purgeHistory(mapId);
     }
-
 
     private boolean isWelcomeMap(@NotNull Mindmap mindmap) throws UnsupportedEncodingException {
         // Is welcome map ?

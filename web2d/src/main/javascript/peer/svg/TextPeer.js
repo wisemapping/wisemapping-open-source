@@ -169,7 +169,6 @@ web2d.peer.svg.TextPeer = new Class({
             computedWidth = 10;
 
         }
-        console.log("Final result:"+computedWidth);
 
         var width = parseInt(computedWidth);
         width = width + this._font.getWidthMargin();

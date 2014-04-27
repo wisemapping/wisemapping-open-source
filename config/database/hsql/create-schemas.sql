@@ -1,11 +1,11 @@
 CREATE TABLE COLLABORATOR (
   id            INTEGER      NOT NULL IDENTITY,
   email         VARCHAR(255) NOT NULL,
-  creation_date DATE);
+  creation_date DATE
+);
 
 CREATE TABLE USER (
-  id                  INTEGER      NOT NULL IDENTITY,
-  colaborator_id      INTEGER      NOT NULL,
+  colaborator_id      INTEGER      NOT NULL IDENTITY,
   authentication_type CHAR(1)      NOT NULL,
   authenticator_uri   VARCHAR(255) NULL,
   firstname           VARCHAR(255) NOT NULL,
@@ -32,22 +32,41 @@ CREATE TABLE MINDMAP (
 --FOREIGN KEY(creator_id) REFERENCES USER(colaborator_id)
 );
 
-CREATE TABLE MINDMAP_HISTORY
-(id            INTEGER       NOT NULL IDENTITY,
+CREATE TABLE LABEL (
+  id              INTEGER            NOT NULL PRIMARY KEY IDENTITY,
+  title           VARCHAR(30),
+  creator_id      INTEGER            NOT NULL,
+  parent_label_id INTEGER,
+  color           VARCHAR(7)         NOT NULL,
+  iconName        VARCHAR(50)       NOT NULL
+  --FOREIGN KEY (creator_id) REFERENCES USER (colaborator_id)
+);
+
+CREATE TABLE R_LABEL_MINDMAP (
+  mindmap_id       INTEGER            NOT NULL,
+  label_id         INTEGER            NOT NULL,
+  PRIMARY KEY (mindmap_id, label_id),
+  FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id),
+  FOREIGN KEY (label_id) REFERENCES LABEL (id) ON DELETE CASCADE ON UPDATE NO ACTION
+);
+
+CREATE TABLE MINDMAP_HISTORY (
+ id            INTEGER       NOT NULL IDENTITY,
  xml           LONGVARBINARY NOT NULL,
  mindmap_id    INTEGER       NOT NULL,
  creation_date DATETIME,
  editor_id     INTEGER       NOT NULL,
-  FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id));
+ FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id)
+);
 
-CREATE TABLE COLLABORATION_PROPERTIES
-(id                 INTEGER NOT NULL IDENTITY,
+CREATE TABLE COLLABORATION_PROPERTIES (
+ id                 INTEGER NOT NULL IDENTITY,
  starred            BOOLEAN NOT NULL,
  mindmap_properties VARCHAR(512)
 );
 
-CREATE TABLE COLLABORATION
-(id             INTEGER NOT NULL IDENTITY,
+CREATE TABLE COLLABORATION (
+ id             INTEGER NOT NULL IDENTITY,
  colaborator_id INTEGER NOT NULL,
  properties_id  INTEGER NOT NULL,
  mindmap_id     INTEGER NOT NULL,
@@ -58,8 +77,8 @@ CREATE TABLE COLLABORATION
 );
 
 
-CREATE TABLE TAG
-(id      INTEGER      NOT NULL IDENTITY,
+CREATE TABLE TAG (
+ id      INTEGER      NOT NULL IDENTITY,
  name    VARCHAR(255) NOT NULL,
  user_id INTEGER      NOT NULL,
 --FOREIGN KEY(user_id) REFERENCES USER(colaborator_id)
@@ -68,7 +87,10 @@ CREATE TABLE TAG
 CREATE TABLE ACCESS_AUDITORY (
   id         INTEGER NOT NULL IDENTITY,
   user_id    INTEGER NOT NULL,
-  login_date DATE
+  login_date DATE,
+  FOREIGN KEY (user_id) REFERENCES USER (colaborator_id)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
 );
 
 COMMIT;

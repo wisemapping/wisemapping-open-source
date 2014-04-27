@@ -4,7 +4,7 @@
 <%--@elvariable id="isHsql" type="boolean"--%>
 <!-- Simple OpenID Selector -->
 <link type="text/css" rel="stylesheet" href="css/openid.css"/>
-<script type="text/javascript" language="javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" language="javascript" src="js/jquery-2.1.0.min.js"></script>
 <script type="text/javascript" language="javascript" src="js/openid-jquery.js"></script>
 <script type="text/javascript" language="javascript" src="js/openid-en.js"></script>
 <!-- /Simple OpenID Selector -->
@@ -14,7 +14,7 @@
     });
 </script>
 
-<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
 <script type="text/javascript" language="javascript">
     $(function () {
         $('#loginForm').submit(function () {
@@ -22,22 +22,22 @@
         });
     });
 </script>
-<div class="row-fluid" style="padding: 10px 0px">
+<div class="row" style="padding: 10px 0px">
     <h1><spring:message code="OPENID_LOGIN"/></h1>
     <spring:message code="LOGING_OPENID_DETAILS"/>
 </div>
-<div class="row-fluid">
-    <div id="login" class="fform span8">
+<div class="row">
+    <div id="login" class="fform col-md-8">
         <form action="/c/j_spring_openid_security_check" method="get" id="openid_form">
-            <input type="hidden" name="action" value="verify"/>
+            <input type="hidden" name="action" value="verify" class="form-control"/>
             <fieldset>
                 <div id="openid_choice">
                     </br>
                     <div id="openid_btns"></div>
                 </div>
                 <div id="openid_input_area">
-                    <input id="openid_identifier" name="openid_identifier" type="text" value="http://"/>
-                    <input id="openid_submit" type="submit" value="Sign-In"/>
+                    <input id="openid_identifier" name="openid_identifier" type="text" value="http://" class="form-control"/>
+                    <input id="openid_submit" type="submit" value="Sign-In" class="form-control" class="btn-primary btn"/>
                 </div>
                 <noscript>
                     <p>OpenID is service that allows you to log-on to many different websites using a single indentity.
@@ -48,7 +48,7 @@
         </form>
         <!-- /Simple OpenID Selector -->
     </div>
-    <div class="span4" style="background-color: #FFEFC6;padding: 10px">
+    <div class="col-md-4" style="background-color: #FFEFC6;padding: 10px">
         <spring:message code="WHY_OPENID"/>
     </div>
 </div>

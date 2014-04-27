@@ -1,12 +1,11 @@
-@import "bootstrap/css/bootstrap.min.css";
-@import "bootstrap/css/bootstrap-responsive.min.css";
-@import "css/pageHeaders.css";
+@import "../bootstrap/css/bootstrap-colorpicker.min.css";
+@import "../bootstrap/css/bootstrap.min.css";
+@import "pageHeaders.css";
 
 @html-background: #dedederepeat-xscroll;
 @body-width: 1050px;
 
 @font-family: "Lucida Grande","Arial","Helvetica","Verdana","sans-serif";
-@base-font-size: 11px;
 
 @base-margin: 10px;
 @base-padding: @base-margin;
@@ -14,6 +13,22 @@
 @base-color: #111;
 
 /* ----------------------------- General -------------------------------- */
+.filterList li {
+  position: relative;
+  width: 90%;
+  height: 35px;
+}
+
+.filterList {
+  width: 108%;
+}
+.active {
+  position: relative;
+  left: 8px;
+}
+.colorpicker {
+  z-index: 2000;
+}
 
 #mindmapListContainer {
     background: #FFFFFF;
@@ -26,6 +41,10 @@
     border-radius: @radius;
     -webkit-border-radius: @radius;
     -moz-border-radius: @radius;
+}
+
+.mindmapName {
+    color: #428bca;
 }
 
 /* ------------------------------ Table --------------------------------- */
@@ -87,18 +106,144 @@ input#selectAll {
     padding: 4px;
 }
 
+#mindmapListTable tbody tr {
+    cursor: pointer;
+}
+
 /* Pagination Styles */
 #paginateContainer {
     height: 40px;
     width: 100%;
 }
 
+.dataTables_info {
+  font-size: 12px;
+  line-height: 1.428571429;
+  color: #555;
+  font-weight: 700;
+
+}
 .dataTables_length {
+    display: block;
+    height: 34px;
+    font-size: 12px;
+    line-height: 1.428571429;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
     float: right;
 }
 
 .dataTables_paginate {
     display: none;
+}
+
+/* ---------------------------- Label --------------------------------- */
+
+.labelColor {
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    position: relative;
+    left: 3px;
+    top: 2px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background-color: black;
+    float: left;
+}
+
+.colorInput {
+  border-radius: 4px !important;
+  border: 1px solid #ccc !important;
+}
+
+.labelIcon {
+  float: left;
+}
+
+.labelName {
+    display: inline-block;
+    position: relative;
+    left: 7px;
+    top: -2px;
+}
+
+.labelNameList {
+  max-width: 79px;
+  word-wrap: break-word;
+}
+
+.labelTag {
+  display: inline-block;
+  font-size: 11px;
+  line-height: 1;
+  padding: 2px 0px 0px 2px;
+  position: relative;
+  margin-right: 3px;
+  float: right;
+}
+
+.closeLabel {
+  font-size: 13px;
+  position: relative;
+  top: -1px;
+}
+
+.listSeparator {
+  height: 1px;
+  background-color: #d5d3d4;
+}
+
+.closeTag {
+  cursor: pointer;
+  z-index: 2000;
+}
+
+.tableTag {
+  padding:0px;
+  margin-bottom: 0px;
+  margin-right: 5px;
+  float: right;
+  position: relative;
+  top: 3px;
+}
+
+table.tableTag td {
+  border-radius: 1px;
+  padding-left: 4px;
+  padding-right: 3px;
+  padding-top :0px;
+  padding-bottom: 0px;
+  color: #ffffff;
+  line-height: 15px;
+}
+
+.closeTag:hover {
+  background-color: #ffffff !important;
+  color: #000000;
+}
+
+/* ---------------------------- Scrollbar for list filter --------------------------------- */
+::-webkit-scrollbar {
+  width: 8px;
+  direction:rtl;
+  text-align: left;
+  position: relative;
+  left: 10px;
+}
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: #eaeaea;
+  border-left: 1px solid #ccc;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #c6c6c6;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #08c;
 }
 
 /* ---------------------------- Sorting --------------------------------- */
@@ -166,7 +311,7 @@ input#selectAll {
 span.starredOff {
     background: url('../images/star-off.png') no-repeat center left;
     padding: 10px;
-    margin: 0 0px 0 15px;
+    margin: 0 0 0 10px;
 }
 
 span.starredOff:hover {
@@ -176,7 +321,7 @@ span.starredOff:hover {
 span.starredOn {
     background: url('../images/star-on.png') no-repeat center left;
     padding: 10px;
-    margin: 0 0px 0 15px;
+    margin: 0 0 0 10px;
 }
 
 span.starredOn:hover {
@@ -200,5 +345,57 @@ abbr[title] {
 }
 
 #foldersContainer {
-    padding-top: 60px;
+    padding-top: 86px;
+}
+
+#footerContainer > ul {
+   padding:0px;
+   margin:0px;
+}
+
+#footerContainer > li.active {
+   padding:0px;
+   margin:0px;
+}
+
+#foldersContainer > ul > li > a {
+  padding: 8px 15px;
+  white-space: nowrap;
+}
+
+/* ----------------------------- Icons ----------------------------------- */
+
+#defaultIcon {
+  background: #eee;
+  border: 1px solid #ccc !important;
+}
+
+#defaultIcon:hover {
+  background-color: #C8C8C8;
+}
+
+.colorInput:hover {
+  background-color: #C8C8C8;
+}
+
+.bs-glyphicons > ul {
+  padding-left: 10px;
+  overflow-x: hidden;
+}
+
+.bs-glyphicons > ul > li {
+  float: left;
+  width: 12%;
+  height: 20%;
+  padding: 10px;
+  font-size: 10px;
+  line-height: 1.4;
+  text-align: center;
+  border: 1px solid #fff;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+.bs-glyphicons > ul > li:hover {
+  background-color: #C8C8C8;
 }
