@@ -42,36 +42,24 @@ mindplot.widget.ToolbarPaneItem = new Class({
         panelElem.css('cursor', 'default');
         var buttonElem = this.getButtonElem();
 
-        var item = this;
+        var me = this;
         this._tip = new mindplot.widget.FloatingTip(buttonElem, {
             html: true,
-            position: 'bottom',
-            arrowOffset : 5,
-            center: true,
-            arrowSize: 7,
-            showDelay: 0,
-            hideDelay: 0,
+            placement: 'bottom',
             content: function() {
-                return item._updateSelectedItem();
-            }.bind(this),
+                return me._updateSelectedItem();
+            },
             className: 'toolbarPaneTip',
-            motionOnShow:false,
-            motionOnHide:false,
-            motion: 0,
-            distance: 0,
-            showOn: 'xxxx',
-            hideOn: 'xxxx',
-            preventHideOnOver:true,
-            offset: {x:-4,y:0}
+            trigger: 'manual'
         });
 
         this._tip.addEvent('hide', function() {
-            this._visible = false
-        }.bind(this));
+            me._visible = false
+        });
 
         this._tip.addEvent('show', function() {
-            this._visible = true
-        }.bind(this));
+            me._visible = true
+        });
 
         return panelElem;
     },
@@ -87,7 +75,7 @@ mindplot.widget.ToolbarPaneItem = new Class({
     show : function() {
         if (!this.isVisible()) {
             this.parent();
-            this._tip.show(this.getButtonElem());
+            this._tip.show();
             this.getButtonElem().className = 'buttonExtActive';
         }
     },
@@ -95,7 +83,7 @@ mindplot.widget.ToolbarPaneItem = new Class({
     hide : function() {
         if (this.isVisible()) {
             this.parent();
-            this._tip.hide(this.getButtonElem());
+            this._tip.hide();
             this.getButtonElem().className = 'buttonExtOn';
         }
     },
