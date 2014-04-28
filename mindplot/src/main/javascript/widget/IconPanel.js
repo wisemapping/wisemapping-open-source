@@ -28,7 +28,7 @@ mindplot.widget.IconPanel = new Class({
     },
 
     buildPanel:function () {
-        var content = $('<div class="toolbarPanel" id="IconsPanel"></div>').css({width: 253, height: 230, padding: 5});
+        var content = $('<div class="toolbarPanel" id="IconsPanel"></div>').css({width: 253, height: 230});
         content.on('click', function (event) {
             event.stopPropagation()
         });
@@ -48,12 +48,8 @@ mindplot.widget.IconPanel = new Class({
                 var img = $('<img>')
                     .attr('id', iconId)
                     .attr('src', mindplot.ImageIcon.prototype._getImageUrl(iconId))
-                    .css({
-                        width:16,
-                        height:16,
-                        padding:"0px 2px",
-                        cursor:'pointer'
-                    });
+                    .attr('class', 'panelIcon');
+
                 familyContent.append(img);
 
                 var panel = this;
