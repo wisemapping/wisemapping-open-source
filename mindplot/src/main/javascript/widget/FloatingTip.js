@@ -42,7 +42,7 @@ mindplot.widget.FloatingTip = new Class({
             console.error('element is not necessary');
         }
         this.element.popover('show');
-        this.fireEvent('show', [this, this.element]);
+        this.fireEvent('show');
         return this;
     },
 
@@ -51,7 +51,7 @@ mindplot.widget.FloatingTip = new Class({
             console.error('element is not necessary');
         }
         this.element.popover('hide');
-        this.fireEvent('hide', [this, element]);
+        this.fireEvent('hide');
         return this;
     }
 });
