@@ -35,7 +35,7 @@ mindplot.widget.ListToolbarPanel = new Class({
 
     _updateSelectedItem: function () {
         var panelElem = this.getPanelElem();
-        var menuElems = panelElem.getElements('div');
+        var menuElems = panelElem.find('div');
         var value = this.getModel().getValue();
         _.each(menuElems, function (elem) {
             var elemValue = $defined(elem.getAttribute('model')) ? elem.getAttribute('model') : elem.id;
