@@ -15,7 +15,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-//FIXME: ver que onda tip en los eventos
+
 mindplot.widget.FloatingTip = new Class({
     Implements: [Options, mindplot.Events],
 
