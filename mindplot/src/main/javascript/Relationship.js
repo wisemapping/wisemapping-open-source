@@ -325,6 +325,6 @@ mindplot.Relationship = new Class({
 
     fireEvent:function (type, event) {
         var elem = this._line2d;
-        elem.fireEvent(type, event);
+        elem.trigger(type, event);
     }
 });
