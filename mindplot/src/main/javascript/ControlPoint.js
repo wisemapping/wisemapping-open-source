@@ -106,7 +106,7 @@ mindplot.ControlPoint = new Class({
             this._workspace.getScreenManager().addEvent('mouseup', this._mouseUpFunction);
         }
         event.preventDefault();
-        event.stop();
+        event.stopPropagation();
         return false;
     },
 
@@ -143,7 +143,7 @@ mindplot.ControlPoint = new Class({
 
     _mouseClick  : function(event) {
         event.preventDefault();
-        event.stop();
+        event.stopPropagation();
         return false;
     },
 

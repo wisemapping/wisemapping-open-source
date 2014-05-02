@@ -23,6 +23,7 @@ mindplot.RelationshipPivot = new Class({
         this._workspace = workspace;
         this._designer = designer;
 
+        //FIXME: the aim of the migration is remove .bind mootools method, please remove these!
         this._mouseMoveEvent = this._mouseMove.bind(this);
         this._onClickEvent = this._cleanOnMouseClick.bind(this);
         this._onTopicClick = this._connectOnFocus.bind(this);
@@ -139,7 +140,7 @@ mindplot.RelationshipPivot = new Class({
         return  mindplot.util.Shape.calculateRelationShipPointCoordinates(this._sourceTopic, spoint);
     },
 
-    _connectOnFocus:function (targetTopic) {
+    _connectOnFocus:function (event, targetTopic) {
         var sourceTopic = this._sourceTopic;
         var mindmap = this._designer.getMindmap();
 
