@@ -30,6 +30,7 @@ mindplot.NoteIcon = new Class({
     },
 
     _registerEvents:function () {
+        console.log('entro');
         this._image.setCursor('pointer');
         var me = this;
 
@@ -41,37 +42,27 @@ mindplot.NoteIcon = new Class({
             });
         }
         this._tip = new mindplot.widget.FloatingTip($(me.getImage()._peer._native), {
+            title: $msg('NOTE'),
+            container: 'body',
             // Content can also be a function of the target element!
-            content:function () {
-                var result = $('<div></div>').css({padding:'5px'});
-
-                var title = $('<div></div>').text($msg('NOTE'))
-                    .css({
-                        'font-weight':'bold',
-                        color:'black',
-                        'padding-bottom':'5px',
-                        width:'100px'
-                    });
-                result.append(title);
-
-                var text = $('<div></div>').text(me._linksModel.getText())
-                    .css({
-                        'white-space':'pre-wrap',
-                        'word-wrap':'break-word'
-                    }
-                );
-                result.append(text);
-                return result;
-            },
+            content: this._buildTooltipContent(),
             html:true,
-            position:'bottom',
-            arrowOffset:10,
-            center:true,
-            arrowSize:15,
-            offset:{x:10, y:20},
-            className:'notesTip'
+            placement:'bottom'
         });
 
+    },
+
+    _buildTooltipContent: function() {
+        var result = $('<div></div>').css({padding:'5px'});
+
+        var text = $('<div></div>').text(this._linksModel.getText())
+            .css({
+                'white-space':'pre-wrap',
+                'word-wrap':'break-word'
+            }
+        );
+        result.append(text);
+        return result;
     },
 
     getModel:function () {
