@@ -30,11 +30,10 @@ mindplot.widget.ColorPalettePanel = new Class({
         if (!mindplot.widget.ColorPalettePanel._panelContent) {
 
             // Load all the CSS styles ...
-            $.ajax({
-                url: this._baseUrl + '/colorPalette.css',
-                method: 'GET',
-                async: true
-            });
+            $('<link>')
+                .appendTo($('head'))
+                .attr({type : 'text/css', rel : 'stylesheet'})
+                .attr('href', this._baseUrl + '/colorPalette.css');
 
             // Load panel html fragment ...
             var result;
@@ -64,13 +63,14 @@ mindplot.widget.ColorPalettePanel = new Class({
         // Register on toolbar elements ...
         var colorCells = content.find('div[class=palette-colorswatch]');
         var model = this.getModel();
+        var me = this;
         _.each(colorCells, function (elem) {
             $(elem).on('click', function () {
                 var color = $(elem).css("background-color");
                 model.setValue(color);
-                this.hide();
-            }.bind(this));
-        }.bind(this));
+                me.hide();
+            });
+        });
 
         return content;
     },
@@ -79,23 +79,20 @@ mindplot.widget.ColorPalettePanel = new Class({
         var panelElem = this.getPanelElem();
 
         // Clear selected cell based on the color  ...
-        var tdCells = panelElem.find("td[class='palette-cell palette-cell-selected']");
-        _.each(tdCells, function (elem) {
-            elem.className = 'palette-cell';
-        });
+        panelElem.find("td[class='palette-cell palette-cell-selected']").attr('class', 'palette-cell');
 
         // Mark the cell as selected ...
         var colorCells = panelElem.find('div[class=palette-colorswatch]');
         var model = this.getModel();
         var modelValue = model.getValue();
         _.each(colorCells, function (elem) {
-            var color = elem.css("background-color");
+            var color = $(elem).css("background-color").rgbToHex();
             if (modelValue != null && modelValue[0] == 'r') {
                 modelValue = modelValue.rgbToHex();
             }
 
             if (modelValue != null && modelValue.toUpperCase() == color.toUpperCase()) {
-                elem.parentNode.className = 'palette-cell palette-cell-selected';
+                $(elem).parent().attr('class', 'palette-cell palette-cell-selected');
             }
         });
         return panelElem;
