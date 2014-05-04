@@ -6,6 +6,7 @@ var BootstrapDialog = new Class({
         closeButton: false,
         acceptButton: true,
         removeButton:false,
+        errorMessage: false,
         onRemoveClickData:{}
     },
 
@@ -18,12 +19,17 @@ var BootstrapDialog = new Class({
         if (header) {
             content.append(header);
         }
-        content.append('<div class="modal-body"></div>');
+        var body = $('<div class="modal-body"></div>');
+        if(this.options.errorMessage){
+            var error = $('<div class="alert alert-danger"></div>');
+            error.hide();
+            body.append(error);
+        }
+        content.append(body);
         var footer = this._buildFooter();
         if (footer) {
             content.append(footer);
         }
-
         this._native.find(".modal-dialog").append(content);
     },
 
@@ -84,12 +90,17 @@ var BootstrapDialog = new Class({
         this._native.find('.modal-body').append(content);
     },
 
-    css:function(options){
+    css: function(options){
         this._native.find('.modal-dialog').css(options);
     },
 
     close: function() {
         this._native.modal('hide');
+    },
+
+    alertError: function(message){
+        this._native.find('.alert-danger').text(message);
+        this._native.find('.alert-danger').show();
     },
 
     showRemoveButton: function(){
