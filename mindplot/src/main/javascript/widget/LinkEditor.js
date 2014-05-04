@@ -27,6 +27,7 @@ mindplot.widget.LinkEditor = new Class({
             closeButton: true,
             acceptButton: true,
             removeButton: true,
+            errorMessage: true,
             onRemoveClickData: {model: this._model}
         });
         this.css({width:"600px"});
@@ -73,22 +74,25 @@ mindplot.widget.LinkEditor = new Class({
         openButton.click(function(){
             window.open(input.val(),"_blank", "status=1,width=700,height=450,resize=1");
         });
-        var spanControl = $('<span class="input-group-btn"></span>').append(openButton)
+        var spanControl = $('<span class="input-group-btn"></span>').append(openButton);
 
         section.append(input);
         section.append(spanControl);
         form.append(section);
 
+        var me = this;
         $(document).ready(function () {
-            var me = this;
             $(document).on('submit','#linkFormId',function (event) {
                 event.stopPropagation();
                 event.preventDefault();
-                var inputValue = input.val();
-                if (inputValue != null && inputValue.trim() != "") {
-                    model.setValue(inputValue);
+                if(me.checkURL(input.val())){
+                    var inputValue = input.val();
+                    if (inputValue != null && inputValue.trim() != "") {
+                        model.setValue(inputValue);
+                    }
+                    me.close();
                 }
-                me.close();
+                me.alertError($msg("URL_ERROR")); //FIXME: add msg
             });
 
         });
@@ -101,7 +105,13 @@ mindplot.widget.LinkEditor = new Class({
         return result;
     },
 
+    checkURL: function(url){
+        var regex = /^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
+        return(regex.test(url));
+    },
+
     onAcceptClick: function() {
         $("#linkFormId").submit();
     }
+
 });
