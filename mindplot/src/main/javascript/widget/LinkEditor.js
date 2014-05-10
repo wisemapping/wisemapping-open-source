@@ -37,14 +37,14 @@ mindplot.widget.LinkEditor = new Class({
 
     _buildPanel:function (model) {
         var result = $('<div></div>').css("padding-top", "5px");
-        var form = $('<form></form>').attr({
+        this.form = $('<form></form>').attr({
             'action': 'none',
             'id': 'linkFormId'
         });
         var text = $('<p></p>').text("Paste your url here:");
         text.css('margin','0px 0px 20px');
 
-        form.append(text);
+        this.form.append(text);
 
         var section = $('<div></div>').attr({
             'class': 'input-group'
@@ -78,30 +78,32 @@ mindplot.widget.LinkEditor = new Class({
 
         section.append(input);
         section.append(spanControl);
-        form.append(section);
+        this.form.append(section);
 
         var me = this;
-        $(document).ready(function () {
-            $(document).on('submit','#linkFormId',function (event) {
-                event.stopPropagation();
+        this.form.unbind('submit').submit(
+            function (event) {
                 event.preventDefault();
                 if(me.checkURL(input.val())){
+                    me.cleanError();
                     var inputValue = input.val();
                     if (inputValue != null && inputValue.trim() != "") {
                         model.setValue(inputValue);
                     }
                     me.close();
+                    this.formSubmitted = true;
+                } else {
+                    me.alertError($msg('URL_ERROR'));
+                    event.stopPropagation();
                 }
-                me.alertError($msg("URL_ERROR")); //FIXME: add msg
-            });
-
-        });
+            }
+        );
 
         if (typeof model.getValue() != 'undefined'){
             this.showRemoveButton();
         }
 
-        result.append(form);
+        result.append(this.form);
         return result;
     },
 
@@ -110,8 +112,12 @@ mindplot.widget.LinkEditor = new Class({
         return(regex.test(url));
     },
 
-    onAcceptClick: function() {
-        $("#linkFormId").submit();
+    onAcceptClick: function(event) {
+        this.formSubmitted = false;
+        $("#linkFormId").trigger('submit');
+        if (!this.formSubmitted) {
+            event.stopPropagation();
+        }
     }
 
 });
