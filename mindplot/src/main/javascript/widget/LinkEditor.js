@@ -53,7 +53,6 @@ mindplot.widget.LinkEditor = new Class({
         // Add Input
         var input = $('<input/>').attr({
             'placeholder': 'http://www.example.com/',
-            'type': 'url', //FIXME: THIS not work on IE, see workaround below
             'required': 'true',
             'autofocus': 'autofocus',
             'class': 'form-control'
@@ -62,7 +61,6 @@ mindplot.widget.LinkEditor = new Class({
         if (model.getValue() != null){
             input.val(model.getValue());
         }
-//            type:Browser.ie ? 'text' : 'url', // IE workaround
 
         // Open Button
         var openButton = $('<button></button>').attr({
