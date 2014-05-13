@@ -16,36 +16,23 @@
  *   limitations under the License.
  */
 
+//FIXME: this Class should be reimplemented
 mindplot.util.FadeEffect = new Class({
-//    Extends: Fx,
+    Extends: mindplot.Events,
     initialize: function(elements, isVisible) {
-        console.error("Re-impl required ....");
-        this.parent({duration:3000,frames:15,transition:'linear'});
         this._isVisible = isVisible;
         this._element = elements;
-
-
-        this.addEvent('complete', function() {
-            _.each(this._element, function(elem) {
-                if(elem){
-                    elem.setVisibility(isVisible);
-                 }
-            });
-        });
-
     },
 
     start: function(){
-      this.parent(this._isVisible ? 0 : 1, this._isVisible ? 1 : 0);
-    },
-
-    set: function(now) {
+        var visible = this._isVisible;
         _.each(this._element, function(elem) {
-           if(elem){
-                elem.setOpacity(now);
-           }
+            if(elem){
+                elem.setVisibility(visible);
+            }
         });
-        return this;
+        this._isVisible = !visible;
+        this.fireEvent('complete');
     }
 });
 
