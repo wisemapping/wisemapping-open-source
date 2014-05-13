@@ -1,5 +1,5 @@
 var BootstrapDialog = new Class({
-    Implements: Options,
+    Implements: mindplot.Options,
 
     options: {
         cancelButton: false,
