@@ -17,7 +17,7 @@
  */
 
 mindplot.widget.FloatingTip = new Class({
-    Implements: [mindplot.Options, mindplot.Events],
+    Implements: [Options, mindplot.Events],
 
     options: {
         animation: true,
