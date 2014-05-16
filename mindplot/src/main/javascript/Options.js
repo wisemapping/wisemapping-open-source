@@ -1,4 +1,4 @@
-mindplot.Options = new Class({
+Options = new Class({
 
     setOptions: function(){
         var options = this.options = Object.merge.apply(null, [{}, this.options].append(arguments));
