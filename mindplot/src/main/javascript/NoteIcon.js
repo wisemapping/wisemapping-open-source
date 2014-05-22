@@ -30,7 +30,6 @@ mindplot.NoteIcon = new Class({
     },
 
     _registerEvents:function () {
-        console.log('entro');
         this._image.setCursor('pointer');
         var me = this;
 
