@@ -222,11 +222,13 @@ mindplot.widget.Menu = new Class({
         });
         this._registerTooltip('export', $msg('EXPORT'));
 
+        var me = this;
+
         this._addButton('print', false, false, function () {
-            this.save(saveElem, designer, false);
+            me.save(saveElem, designer, false);
             var baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf("c/maps/"));
             window.open(baseUrl + 'c/maps/' + mapId + '/print');
-        }.bind(this));
+        });
 
         this._registerTooltip('print', $msg('PRINT'));
 
@@ -271,7 +273,7 @@ mindplot.widget.Menu = new Class({
                     redoButton.disable();
                 }
 
-            }.bind(this));
+            });
         }
 
         this._addButton('addTopic', true, false, function () {
@@ -315,12 +317,12 @@ mindplot.widget.Menu = new Class({
         });
         this._registerTooltip('fontItalic', $msg('FONT_ITALIC'), "meta+I");
 
-
         var saveElem = $('#save');
         if (saveElem) {
-            this._addButton('save', false, false, function () {
-                this.save(saveElem, designer, true);
-            }.bind(this));
+            this._addButton('save', false, false,
+                function () {
+                    me.save(saveElem, designer, true);
+                });
             this._registerTooltip('save', $msg('SAVE'), "meta+S");
 
 
@@ -328,26 +330,27 @@ mindplot.widget.Menu = new Class({
                 // To prevent the user from leaving the page with changes ...
 //                Element.NativeEvents.unload = 1;
                 $(window).bind('unload', function () {
-                    if (this.isSaveRequired()) {
-                        this.save(saveElem, designer, false, true);
+                    if (me.isSaveRequired()) {
+                        me.save(saveElem, designer, false, true);
                     }
-                    this.unlockMap(designer);
-                }.bind(this));
+                    me.unlockMap(designer);
+                });
 
                 // Autosave on a fixed period of time ...
-                (function () {
-                    if (this.isSaveRequired()) {
-                        this.save(saveElem, designer, false);
-                    }
-                }.bind(this)).periodical(30000);
+                setInterval(
+                    function() {
+                        if (me.isSaveRequired()) {
+                            me.save(saveElem, designer, false);
+                        }
+                    }, 30000);
             }
         }
 
         var discardElem = $('#discard');
         if (discardElem) {
             this._addButton('discard', false, false, function () {
-                this.discardChanges(designer);
-            }.bind(this));
+                me.discardChanges(designer);
+            });
             this._registerTooltip('discard', $msg('DISCARD_CHANGES'));
         }
 
@@ -450,19 +453,19 @@ mindplot.widget.Menu = new Class({
     },
 
     _registerEvents: function (designer) {
-
+        var me = this;
         // Register on close events ...
         _.each(this._toolbarElems, function (elem) {
             elem.addEvent('show', function () {
-                this.clear()
-            }.bind(this));
-        }.bind(this));
+                me.clear()
+            });
+        });
 
         designer.addEvent('onblur', function () {
             var topics = designer.getModel().filterSelectedTopics();
             var rels = designer.getModel().filterSelectedRelationships();
 
-            _.each(this._toolbarElems, function (button) {
+            _.each(me._toolbarElems, function (button) {
                 var isTopicAction = button.isTopicAction();
                 var isRelAction = button.isRelAction();
 
@@ -474,13 +477,13 @@ mindplot.widget.Menu = new Class({
                     }
                 }
             })
-        }.bind(this));
+        });
 
         designer.addEvent('onfocus', function () {
             var topics = designer.getModel().filterSelectedTopics();
             var rels = designer.getModel().filterSelectedRelationships();
 
-            _.each(this._toolbarElems, function (button) {
+            _.each(me._toolbarElems, function (button) {
                 var isTopicAction = button.isTopicAction();
                 var isRelAction = button.isRelAction();
 
@@ -495,7 +498,7 @@ mindplot.widget.Menu = new Class({
                     }
                 }
             })
-        }.bind(this));
+        });
     },
 
     _addButton: function (buttonId, topic, rel, fn) {
@@ -505,8 +508,8 @@ mindplot.widget.Menu = new Class({
 
             var button = new mindplot.widget.ToolbarItem(buttonId, function (event) {
                 fn(event);
-                this.clear();
-            }.bind(this), {topicAction: topic, relAction: rel});
+                me.clear();
+            }, {topicAction: topic, relAction: rel});
 
             this._toolbarElems.push(button);
             result = button;
