@@ -137,6 +137,10 @@ web2d.Element = new Class({
         return this._peer.getPosition();
     },
 
+    getNativePosition: function() {
+        return this._peer.getNativePosition();
+    },
+
     /*
      *  Defines the element stroke properties.
      *  width: stroke width

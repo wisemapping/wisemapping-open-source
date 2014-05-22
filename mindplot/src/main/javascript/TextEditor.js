@@ -147,25 +147,24 @@ mindplot.TextEditor = new Class({
         var text = $defined(defaultText) ? defaultText : topic.getText();
         this._setText(text);
 
+        var me = this;
         // Set editor's initial size
         var displayFunc = function() {
             // Position the editor and set the size...
-            var textShape = this._topic.getTextShape();
-            textShape.positionRelativeTo(this._containerElem, {
-                position: {x: 'left',y:'top'},
-                edge: {x: 'left', y: 'top'}
-            });
-            this._containerElem.setStyle('display', 'block');
+            var textShape = me._topic.getTextShape();
 
+            me._containerElem.css('display', 'block');
+
+            me._containerElem.offset(textShape.getNativePosition());
             // Set size ...
             var elemSize = topic.getSize();
-            this._setEditorSize(elemSize.width, elemSize.height);
+            me._setEditorSize(elemSize.width, elemSize.height);
 
-            var textareaElem = this._getTextareaElem();
+            var textareaElem = me._getTextareaElem();
             textareaElem.focus();
-            this._positionCursor(textareaElem, !$defined(defaultText));
+            me._positionCursor(textareaElem, !$defined(defaultText));
 
-        }.bind(this);
+        };
 
         displayFunc.delay(10);
     },

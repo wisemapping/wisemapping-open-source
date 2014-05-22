@@ -76,6 +76,10 @@ web2d.peer.svg.TextPeer = new Class({
         return this._position;
     },
 
+    getNativePosition: function() {
+        return $(this._native).position();
+    },
+
     setFont: function (font, size, style, weight) {
         if ($defined(font)) {
             this._font = new web2d.Font(font, this);
