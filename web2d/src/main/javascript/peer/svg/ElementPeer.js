@@ -214,13 +214,6 @@ web2d.peer.svg.ElementPeer = new Class({
         return listeners;
     },
 
-//    positionRelativeTo:function (elem, options) {
-//        options = !$defined(options) ? {} : options;
-//        options['relativeTo'] = document.id(this._native);
-//        elem.position(options);
-//    },
-//
-
     /**
      * Move element to the front
      */

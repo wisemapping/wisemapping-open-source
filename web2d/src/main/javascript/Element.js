@@ -67,12 +67,6 @@ web2d.Element = new Class({
         this._peer.setPosition(cx, cy);
     },
 
-
-    positionRelativeTo : function(elem, options) {
-        this._peer.positionRelativeTo(elem, options);
-
-    },
-
     /**
      * Allows the registration of event listeners on the event target.
      * type
