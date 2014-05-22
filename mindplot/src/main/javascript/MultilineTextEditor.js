@@ -182,30 +182,27 @@ mindplot.MultilineTextEditor = new Class({
         font.size = nodeText.getHtmlFontSize();
         font.color = nodeText.getColor();
         this._setStyle(font);
-
+        var me = this;
         // Set editor's initial size
         var displayFunc = function () {
             // Position the editor and set the size...
             var textShape = topic.getTextShape();
 
-            $('#textContainer').position({
-                my:        "left top",
-                at:        "left bottom",
-                of:        $(textShape)[0]
-//                collision: "fit"
-            });
+            me._containerElem.css('display', 'block');
 
-            this._containerElem.css('display', 'block');
+            //FIXME: Im not sure if this is best way...
+            var shapePosition = textShape.getNativePosition();
+            me._containerElem.offset(shapePosition);
 
             // Set editor's initial text ...
             var text = $defined(defaultText) ? defaultText : topic.getText();
-            this._setText(text);
+            me._setText(text);
 
             // Set the element focus and select the current text ...
-            var inputElem = this._getTextareaElem();
-            this._positionCursor(inputElem, !$defined(defaultText));
+            var inputElem = me._getTextareaElem();
+            me._positionCursor(inputElem, !$defined(defaultText));
 
-        }.bind(this);
+        };
 
         this._timeoutId = displayFunc.delay(10);
     },
