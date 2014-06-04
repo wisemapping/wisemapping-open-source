@@ -70,6 +70,12 @@ web2d.peer.svg.GroupPeer = new Class({
         var cx = this._position.x - this._coordOrigin.x * sx;
         var cy = this._position.y - this._coordOrigin.y * sy;
 
+        //FIXME: are we sure of this values?
+        cx = isNaN(cx) ? 0 : cx;
+        cy = isNaN(cy) ? 0 : cy;
+        sx = isNaN(sx) ? 0 : sx;
+        sy = isNaN(sy) ? 0 : sy;
+
         this._native.setAttribute("transform", "translate(" + cx + "," + cy + ") scale(" + sx + "," + sy + ")");
     },
 
