@@ -24,7 +24,7 @@ web2d.peer.svg.WorkspacePeer = new Class({
         this.parent(svgElement);
         this._native.setAttribute("focusable", "true");
         this._native.setAttribute("id", "workspace");
-        this._native.setAttribute("preserveAspectRatio", "true");
+        this._native.setAttribute("preserveAspectRatio", "none");
 
     },
 
