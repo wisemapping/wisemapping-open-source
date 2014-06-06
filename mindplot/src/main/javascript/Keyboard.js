@@ -21,8 +21,15 @@ mindplot.Keyboard = new Class({
     initialize:function () {
     },
 
-    addShortcut: function(shortcut, callback) {
-        $(document).bind('keydown', shortcut, callback);
+    addShortcut: function(shortcuts, callback) {
+        if (!$.isArray(shortcuts)) {
+            var value = shortcuts;
+            shortcuts = [];
+            shortcuts.push(value);
+        }
+        _.each(shortcuts, function(shortcut) {
+            $(document).bind('keydown', shortcut, callback);
+        });
     }
 
 });
