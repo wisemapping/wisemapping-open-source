@@ -502,6 +502,7 @@ mindplot.widget.Menu = new Class({
     },
 
     _addButton: function (buttonId, topic, rel, fn) {
+        var me = this;
         // Register Events ...
         var result = null;
         if ($('#'+buttonId)) {
