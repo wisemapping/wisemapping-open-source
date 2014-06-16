@@ -19,47 +19,28 @@
 mindplot.widget.ToolbarNotifier = new Class({
 
     initialize:function () {
-    },
-
-    logError:function (userMsg) {
-        this.logMessage(userMsg, mindplot.widget.ToolbarNotifier.MsgKind.ERROR);
+        this.container = $('#headerNotifier');
     },
 
     hide:function () {
-
+        this.container.hide();
     },
 
     logMessage:function (msg, fade) {
         $assert(msg, 'msg can not be null');
-
-        var container = $('#headerNotifier');
-
         // In case of print,embedded no message is displayed ....
-        if (container) {
-            container.set('text', msg);
-            container.setStyle('display', 'block');
-            container.position({
-                relativeTo:document.id('header'),
-                position:'upperCenter',
-                edge:'centerTop'
-            });
-
-            if (!$defined(fade) || fade) {
-                this._effect = container.fadeIn('slow');
-            } else {
-                this._effect = container.fadeIn(0);
-            }
+        if (this.container && !this.container.data('transitioning')) {
+            this.container.data('transitioning', true);
+            this.container.text(msg);
+            this.container.css({top: "5px", left: ($(window).width() - this.container.width()) / 2 - 9});
+            this.container.show().fadeOut(5000);
         }
+        this.container.data('transitioning', false);
     }
 
 });
 
-mindplot.widget.ToolbarNotifier.MsgKind = {
-    INFO:1,
-    WARNING:2,
-    ERROR:3,
-    FATAL:4
-};
-
 var toolbarNotifier = new mindplot.widget.ToolbarNotifier();
-$notify = toolbarNotifier.logMessage.bind(toolbarNotifier);
+$notify = function(msg) {
+    toolbarNotifier.logMessage(msg);
+};
