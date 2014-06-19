@@ -68,7 +68,7 @@ public interface MindmapService {
 
     void purgeHistory(int mapId) throws IOException;
 
-    void addLabel(@NotNull final Mindmap mindmap, @NotNull final Label label);
+    void linkLabel(@NotNull final Mindmap mindmap, @NotNull final Label label);
 
     void removeLabel(@NotNull final Mindmap mindmap, @NotNull final Label label);
 }

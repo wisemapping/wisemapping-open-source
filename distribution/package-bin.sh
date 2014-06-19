@@ -53,6 +53,7 @@ cp $BASE_DIR/wisemapping.xml $JETTY_DIR/contexts/
 # Distribute scripts
 cp -r $BASE_DIR/../config/ $TARGET_DIR/wisemapping-$WISE_VERSION/config
 cp ./start.sh ${JETTY_DIR}/
+cp -r $BASE_DIR/service $TARGET_DIR/wisemapping-$WISE_VERSION/service
 
 # Store version
 echo $1 > $WISE_WEBAPP_DIR/version

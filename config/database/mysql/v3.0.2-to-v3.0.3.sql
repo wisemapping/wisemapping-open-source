@@ -31,4 +31,7 @@ CREATE TABLE R_LABEL_MINDMAP (
 )
   CHARACTER SET utf8;
 
+ALTER TABLE `LABEL`
+    ADD COLUMN iconName VARCHAR(50) NOT NULL;
 
+UPDATE LABEL SET iconName = 'glyphicon glyphicon-tag';

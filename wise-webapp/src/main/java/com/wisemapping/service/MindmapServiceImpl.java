@@ -88,7 +88,7 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public void addLabel(@NotNull Mindmap mindmap, @NotNull final Label label) {
+    public void linkLabel(@NotNull Mindmap mindmap, @NotNull final Label label) {
         mindmap.addLabel(label);
     }
 
