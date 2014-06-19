@@ -555,9 +555,7 @@
                     <stopPort>9999</stopPort>
                     <war>${project.build.directory}/wisemapping.war</war>
                     <reload>automatic</reload>
-                    <webAppConfig>
-                        <overrideDescriptor>${project.basedir}/webdefault.xml</overrideDescriptor>
-                    </webAppConfig>
+                    <contextXml>${project.basedir}/jetty.xml</contextXml>
                     <systemProperties>
                         <systemProperty>
                             <name>database.base.url</name>
