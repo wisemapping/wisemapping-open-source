@@ -99,8 +99,11 @@ public class RestMindmapInfo {
     }
      public Set<RestLabel> getLabels() {
          final Set<RestLabel> result = new LinkedHashSet<>();
+         final User me = Utils.getUser();
          for (Label label : mindmap.getLabels()) {
-             result.add(new RestLabel(label));
+             if (label.getCreator().equals(me)) {
+                 result.add(new RestLabel(label));
+             }
          }
          return result;
      }

@@ -58,7 +58,7 @@
                         bUseRendered: false,
                         mDataProp: "title",
                         fnRender: function (obj) {
-                            return '<a class="mindmapName" value="'+ obj.aData.id +'" href="c/maps/' + obj.aData.id + '/edit">' + $('<span></span>').text(obj.aData.title).html() + '</a>' + labelTagsAsHtml(obj.aData.labels);
+                            return '<span class="mindmapName" value="'+ obj.aData.id +'" href="c/maps/' + obj.aData.id + '/edit">' + $('<span></span>').text(obj.aData.title).html() + '</span>' + labelTagsAsHtml(obj.aData.labels);
                         }
                     },
                     {
@@ -94,14 +94,16 @@
 
             // Customize search action ...
             $('#mindmapListTable_filter').appendTo("#tableActions");
+            $('#mindmapListTable_filter label').addClass('input-group-sm');
             var input = $('#mindmapListTable_filter input');
-            input.addClass('input-small search-query form-control');
+            input.addClass('form-control');
             input.attr('placeholder', 'Search');
-            $("#mindmapListTable_info").appendTo("#pageInfo");
 
             // Re-arrange pagination actions ...
             $("#tableFooter").appendTo("#mindmapListTable_wrapper");
             $("#mindmapListTable_length").appendTo("#tableFooter");
+            $("#mindmapListTable_info").appendTo("#tableFooter");
+
             $('#mindmapListTable_length select').attr("style", "width:60px;");
 
 
@@ -120,6 +122,12 @@
             });
         });
     </script>
+
+    <!--script type="text/javascript" language="javascript">
+        $(function(){
+            $("#labelIconList").load("jsp/labelIconList.jsp");
+        });
+    </script-->
 </head>
 <body>
     <jsp:include page="header.jsp">
@@ -138,7 +146,7 @@
 
         <div class="row">
             <div class="col-md-2" id="foldersContainer">
-                <ul class="nav nav-pills nav-stacked">
+                <ul class="nav nav-pills nav-stacked filterList">
                     <li data-filter="all" class="active" style="display: none">
                         <a href="#"><i class="glyphicon glyphicon-inbox glyphicon-white"></i>
                             <spring:message code="ALL_MAPS"/>
@@ -170,24 +178,24 @@
                 <div id="tableActions">
                     <div id="pageInfo"></div>
                     <div class="btn-group" id="pageButtons">
-                        <button class="btn" id="pPageBtn"><strong>&lt;</strong></button>
-                        <button class="btn" id="nPageBtn"><strong>&gt;</strong></button>
+                        <button class="btn btn-sm" id="pPageBtn"><strong>&lt;</strong></button>
+                        <button class="btn btn-sm" id="nPageBtn"><strong>&gt;</strong></button>
                     </div>
                 </div>
 
                 <div class="btn-group">
-                    <button id="newBtn" class="btn btn-primary">
+                    <button id="newBtn" class="btn btn-sm btn-primary">
                         <i class="glyphicon glyphicon-file glyphicon-white"></i>
                         <spring:message code="NEW"/>
                     </button>
-                    <button id="importBtn" class="btn btn-primary">
+                    <button id="importBtn" class="btn btn-sm btn-primary">
                         <i class="glyphicon glyphicon-upload glyphicon-white"></i>
                         <spring:message code="IMPORT"/>
                     </button>
                 </div>
 
                 <div class="btn-group">
-                    <button id='addLabelButton' class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    <button id='addLabelButton' class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
                         <i class="glyphicon glyphicon-tag glyphicon-white"></i>
                         <spring:message code="LABEL"/>
                         <span class="caret"></span>
@@ -204,19 +212,19 @@
                 </div>
 
                 <div class="btn-group act-multiple" id="deleteBtn" style="display:none">
-                    <button class="btn btn-primary">
+                    <button class="btn btn-sm btn-primary">
                         <i class="glyphicon glyphicon-trash glyphicon-white"></i>
                         <spring:message code="DELETE"/>
                     </button>
                 </div>
 
                 <div id="infoBtn" class="btn-group act-single" style="display:none">
-                    <button class="btn btn-primary"><i class="glyphicon glyphicon-exclamation-sign glyphicon-white"></i>
+                    <button class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-exclamation-sign glyphicon-white"></i>
                         <spring:message code="INFO"/></button>
                 </div>
 
                 <div id="actionsBtn" class="btn-group act-single" style="display:none">
-                    <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    <button class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
                         <i class="glyphicon glyphicon-asterisk glyphicon-white"></i> <spring:message code="MORE"/>
                         <span class="caret"></span>
                     </button>
@@ -255,19 +263,15 @@
             </div>
             <div class="col-md-1" style="padding-top:25px">
                 <c:if test="${requestScope['google.ads.enabled']}">
-                    <script type="text/javascript"><!--
-                    google_ad_client = "ca-pub-7564778578019285";
-                    /* WiseMapping Mindmap List */
-                    google_ad_slot = "4071968444";
-                    google_ad_width = 120;
-                    google_ad_height = 600;
-                    //-->
+                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <!-- WiseMapping Mindmap List -->
+                    <ins class="adsbygoogle"
+                         style="display:inline-block;width:120px;height:600px"
+                         data-ad-client="ca-pub-7564778578019285"
+                         data-ad-slot="4071968444"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
                     </script>
-                    <div style="margin-top:5px;">
-                        <script type="text/javascript"
-                                src="https://pagead2.googlesyndication.com/pagead/show_ads.js">
-                        </script>
-                    </div>
                 </c:if>
             </div>
         </div>
@@ -279,7 +283,6 @@
         <div id="new-dialog-modal" title="<spring:message code="ADD_NEW_MAP"/>" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
-
                     <div class="modal-header">
                         <button class="close" data-dismiss="modal">x</button>
                         <h3><spring:message code="NEW_MAP_MSG"/></h3>
@@ -310,7 +313,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message
+                        <button class="btn btn-sm btn-primary btn-accept" data-loading-text="<spring:message
                             code="SAVING"/>"><spring:message
                                 code="CREATE"/></button>
                         <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
@@ -341,15 +344,28 @@
                                 <div id="colorGroup" class="form-group">
                                     <label class="col-md-3 control-label" for="colorChooser"><spring:message code="COLOR"/>:</label>
                                     <div class="col-md-1">
-                                        <input class="form-control" name="color" id="colorChooser" style="display: none" type="text" required="required" value="#000000"/>
+                                        <input class="form-control" name="color" id="colorChooser" style="display: none" required="required" value="#000000"/>
                                         <span class="input-group-addon colorInput"><i></i></span>
+                                    </div>
+                                </div>
+                                <div id="iconGroup" class="form-group">
+                                    <label class="col-md-3 control-label" for="iconChooser"><spring:message code="ICON"/>:</label>
+                                    <input class="form-control" name="iconName" id="iconChooser" style="display: none" required="required" value="glyphicon glyphicon-tag"/>
+                                    <div class="col-md-1">
+                                        <div class="btn dropdown-toggle" id="defaultIcon" data-toggle="dropdown">
+                                            <i class="glyphicon glyphicon-tag"></i>
+                                        </div>
+                                        <div id="labelIconList" class="dropdown-menu bs-glyphicons"></div>
+                                        <div id="labelIconItems" class="dropdown-menu bs-glyphicons">
+                                            <jsp:include page="labelIconList.jsp"/>
+                                        </div>
                                     </div>
                                 </div>
                             </fieldset>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message
+                        <button class="btn btn-sm btn-primary btn-accept" data-loading-text="<spring:message
                                 code="SAVING"/>"><spring:message
                                 code="CREATE"/></button>
                         <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
@@ -394,7 +410,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/>">
+                        <button class="btn btn-sm btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/>">
                             <spring:message code="DUPLICATE"/></button>
                         <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
                     </div>
@@ -434,7 +450,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/>">
+                        <button class="btn btn-sm btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/>">
                             <spring:message
                                     code="RENAME"/></button>
                         <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
@@ -451,14 +467,12 @@
                         <button class="close" data-dismiss="modal">x</button>
                         <h3><spring:message code="DELETE_MINDMAP"/></h3>
                     </div>
-                    <div class="modal-body">
                         <div class="alert alert-block alert-warning">
                             <h4 class="alert-heading"><spring:message code="WARNING"/>!</h4><spring:message
                                 code="DELETE_MAPS_WARNING"/>
                         </div>
-                    </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message
+                        <button class="btn btn-sm btn-primary btn-accept" data-loading-text="<spring:message
                             code="SAVING"/> ..."><spring:message
                                 code="DELETE"/></button>
                         <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
@@ -475,13 +489,11 @@
                         <button class="close" data-dismiss="modal">x</button>
                         <h3><spring:message code="DELETE"/></h3>
                     </div>
-                    <div class="modal-body">
-                        <div class="alert alert-block alert-warning">
-                            <h4 class="alert-heading"><spring:message code="WARNING"/>!</h4><spring:message code="DELETE_LABELS_WARNING"/>
-                        </div>
+                    <div class="alert alert-block alert-warning">
+                        <h4 class="alert-heading"><spring:message code="WARNING"/>!</h4><spring:message code="DELETE_LABELS_WARNING"/>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message
+                        <button class="btn btn-sm btn-primary btn-accept" data-loading-text="<spring:message
                                 code="SAVING"/> ..."><spring:message
                                 code="DELETE"/></button>
                         <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
@@ -520,7 +532,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/>...">
+                        <button class="btn btn-sm btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/>...">
                             <spring:message code="ACCEPT"/></button>
                         <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
                     </div>
@@ -540,7 +552,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary btn-accept" data-loading-text="Exporting..."><spring:message
+                        <button class="btn btn-sm btn-primary btn-accept" data-loading-text="Exporting..."><spring:message
                                 code="EXPORT"/></button>
                         <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
                     </div>
@@ -560,7 +572,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message
+                        <button class="btn btn-sm btn-primary btn-accept" data-loading-text="<spring:message
                                 code="IMPORTING"/>"><spring:message
                                 code="IMPORT"/></button>
                         <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
@@ -581,7 +593,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/>">
+                        <button class="btn btn-sm btn-primary btn-accept" data-loading-text="<spring:message code="SAVING"/>">
                             <spring:message code="ACCEPT"/></button>
                         <button class="btn btn-cancel" data-dismiss="modal"><spring:message code="CANCEL"/></button>
                     </div>
