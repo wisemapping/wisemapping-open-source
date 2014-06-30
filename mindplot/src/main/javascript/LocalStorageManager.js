@@ -38,10 +38,10 @@ mindplot.LocalStorageManager = new Class({
                 $.ajax({
                     url: this.documentUrl.replace("{id}", mapId),
                     type:'get',
-                    dataType: "xml",
-                    async:false,
-                    success: function (responseText) {
-                        xml = responseText;
+                    dataType: "text",
+                    async: false,
+                    success:function (response) {
+                        xml = response;
                     }
                 });
                 // If I could not load it from a file, hard code one.
@@ -50,8 +50,7 @@ mindplot.LocalStorageManager = new Class({
                 }
             }
 
-            var parser = new DOMParser();
-            return parser.parseFromString(xml, 'text/xml');
+            return jQuery.parseXML(xml);
         },
 
         unlockMap:function (mindmap) {
