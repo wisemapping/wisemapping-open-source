@@ -50,14 +50,14 @@ mindplot.MultilineTextEditor = new Class({
 
     _registerEvents:function (containerElem) {
         var textareaElem = this._getTextareaElem();
-
+        var me = this;
         textareaElem.on('keydown', function (event) {
-            switch (event.key) {
+            switch (jQuery.hotkeys.specialKeys[event.keyCode]) {
                 case 'esc':
-                    this.close(false);
+                    me.close(false);
                     break;
                 case 'enter':
-                    if (event.meta || event.control) {
+                    if (event.metaKey || event.ctrlKey) {
 
                         // Add return ...
                         var text = textareaElem.val();
@@ -85,22 +85,22 @@ mindplot.MultilineTextEditor = new Class({
 
                     }
                     else {
-                        this.close(true);
+                        me.close(true);
                     }
                     break;
             }
             event.stopPropagation();
-        }.bind(this));
+        });
 
         textareaElem.on('keypress', function (event) {
             event.stopPropagation();
         });
 
         textareaElem.on('keyup', function (event) {
-            var text = this._getTextareaElem().val();
-            this.fireEvent('input', [event, text]);
-            this._adjustEditorSize();
-        }.bind(this));
+            var text = me._getTextareaElem().val();
+            me.fireEvent('input', [event, text]);
+            me._adjustEditorSize();
+        });
 
         // If the user clicks on the input, all event must be ignored ...
         containerElem.on('click', function (event) {
@@ -151,7 +151,7 @@ mindplot.MultilineTextEditor = new Class({
         }
     },
 
-    show:function (topic, text) {
+    show: function (topic, text) {
         // Close a previous node editor if it's opened ...
         if (this._topic) {
             this.close(false);

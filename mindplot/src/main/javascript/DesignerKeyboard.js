@@ -21,7 +21,6 @@ mindplot.DesignerKeyboard = new Class({
     Static:{
         register:function (designer) {
             this._instance = new mindplot.DesignerKeyboard(designer);
-            //this._instance.activate();
         },
 
         getInstance:function () {
@@ -256,53 +255,24 @@ mindplot.DesignerKeyboard = new Class({
             }
         );
 
-        var regex = /^(?:shift|control|ctrl|alt|meta)$/;
-        var modifiers = ['shift', 'control', 'alt', 'meta'];
+        $(document).on('keydown', function (event) {
 
-        var excludes = ['esc', 'capslock', 'tab', 'f1', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10', 'f11', 'f12', 'backspace', 'down', 'up', 'left', 'right', 'control'];
-        if (!Browser.Platform.mac) {
-            // This is to avoid enter on edition mode in the node when alt+tab is pressed.
-            excludes.push("alt");
-        }
+            var keyCode = event.keyCode;
 
-/*
-        document.id(document).addEvent('keydown', function (event) {
-
-            // Convert key to mootools keyboard event format...
-            var keys = [];
-            modifiers.each(function (mod) {
-                if (event[mod]) keys.push(mod);
-            });
-            if (!regex.test(event.key))
-                keys.push(event.key);
-            var key = keys.join('+');
-
-            // Is the pressed key one of the already registered in the keyboard  ?
-            var isRegistered = false;
-            for (var eKey in  keyboardEvents) {
-                if (eKey == key) {
-                    isRegistered = true;
-                    break;
-                }
-            }
-
-            // If it's not registered, let's
-            if (!isRegistered && !excludes.contains(key) && !excludes.contains(event.key) && !event.meta && !event.control) {
+            if (!jQuery.hotkeys.specialKeys[keyCode] && !jQuery.hotkeys.shiftNums[keyCode]) {
                 var nodes = designer.getModel().filterSelectedTopics();
                 if (nodes.length > 0) {
 
                     // If a modifier is press, the key selected must be ignored.
-                    var pressKey = event.key;
-                    if (modifiers.contains(event.key)) {
+                    var pressKey = String.fromCharCode(keyCode);
+                    if (event.ctrlKey || event.altKey || event.metaKey || event.shiftKey) {
                         pressKey = "";
                     }
-
                     nodes[0].showTextEditor(pressKey);
                     event.stopPropagation();
                 }
             }
         });
-*/
 
     },
 
