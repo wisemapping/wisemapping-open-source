@@ -23,9 +23,7 @@ mindplot.Keyboard = new Class({
 
     addShortcut: function(shortcuts, callback) {
         if (!$.isArray(shortcuts)) {
-            var value = shortcuts;
-            shortcuts = [];
-            shortcuts.push(value);
+            shortcuts = [shortcuts];
         }
         _.each(shortcuts, function(shortcut) {
             $(document).bind('keydown', shortcut, callback);
