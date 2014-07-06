@@ -27,11 +27,11 @@ mindplot.widget.IMenu = new Class({
         this._containerId = containerId;
         this._mapId = mapId;
         this._mindmapUpdated = false;
-
+        var me = this;
         // Register update events ...
         this._designer.addEvent('modelUpdate', function () {
-            this.setRequireChange(true);
-        }.bind(this));
+            me.setRequireChange(true);
+        });
     },
 
     clear:function () {

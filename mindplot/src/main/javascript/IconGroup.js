@@ -101,11 +101,11 @@ mindplot.IconGroup = new Class({
 
         this._icons.erase(icon);
         this._resize(this._icons.length);
-
+        var me = this;
         // Add all again ...
         _.each(this._icons, function (elem, i) {
-            this._positionIcon(elem, i);
-        }.bind(this));
+            me._positionIcon(elem, i);
+        });
     },
 
     moveToFront:function () {

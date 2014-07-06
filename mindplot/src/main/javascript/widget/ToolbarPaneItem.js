@@ -22,15 +22,11 @@ mindplot.widget.ToolbarPaneItem = new Class({
         $assert(buttonId, "buttonId can not be null");
         $assert(model, "model can not be null");
         this._model = model;
+        var me = this;
         var fn = function() {
             // Is the panel being displayed ?
-            if (this.isVisible()) {
-                this.hide();
-            } else {
-                this.show();
-            }
-
-        }.bind(this);
+            me.isVisible() ? me.hide() : me.show();
+        };
         this.parent(buttonId, fn, {topicAction:true,relAction:false});
         this._panelElem = this._init();
         this._visible = false;

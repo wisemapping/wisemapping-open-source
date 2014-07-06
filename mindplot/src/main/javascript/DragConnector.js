@@ -84,15 +84,16 @@ mindplot.DragConnector = new Class({
         // - Horizontal proximity
         // - It's already connected.
         var currentConnection = dragTopic.getConnectedToTopic();
+        var me = this;
         topics = topics.sort(function (a, b) {
             var aPos = a.getPosition();
             var bPos = b.getPosition();
 
-            var av = this._isVerticallyAligned(a.getSize(), aPos, sPos);
-            var bv = this._isVerticallyAligned(b.getSize(), bPos, sPos);
-            return  this._proximityWeight(av, a, sPos, currentConnection) - this._proximityWeight(bv, b, sPos, currentConnection);
+            var av = me._isVerticallyAligned(a.getSize(), aPos, sPos);
+            var bv = me._isVerticallyAligned(b.getSize(), bPos, sPos);
+            return  me._proximityWeight(av, a, sPos, currentConnection) - me._proximityWeight(bv, b, sPos, currentConnection);
 
-        }.bind(this));
+        });
         return topics;
     },
 

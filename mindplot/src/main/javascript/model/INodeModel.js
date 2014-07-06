@@ -286,7 +286,7 @@ mindplot.model.INodeModel = new Class({
                     result = result + key + ":" + value + ",";
                 });
                 result = result + "}"
-            }.bind(this));
+            });
         }
 
         result = result + ' }';

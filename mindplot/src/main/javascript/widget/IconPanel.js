@@ -55,9 +55,9 @@ mindplot.widget.IconPanel = new Class({
                 var panel = this;
                 var model = this.getModel();
                 img.on('click', function (event) {
-                    model.setValue(this.attr('id'));
+                    model.setValue($(this).attr('id'));
                     panel.hide();
-                }.bind(img));
+                });
 
                 count = count + 1;
             }

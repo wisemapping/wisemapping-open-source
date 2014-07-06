@@ -48,14 +48,16 @@ web2d.peer.svg.TextPeer = new Class({
         this._text = text;
         if (text) {
             var lines = text.split('\n');
+            var me = this;
+            //FIXME: we could use underscorejs here
             lines.forEach(function (line) {
-                var tspan = window.document.createElementNS(this.svgNamespace, 'tspan');
+                var tspan = window.document.createElementNS(me.svgNamespace, 'tspan');
                 tspan.setAttribute('dy', '1em');
-                tspan.setAttribute('x', this.getPosition().x);
+                tspan.setAttribute('x', me.getPosition().x);
 
                 tspan.textContent = line.length == 0 ? " " : line;
-                this._native.appendChild(tspan);
-            }.bind(this));
+                me._native.appendChild(tspan);
+            });
         }
     },
 
