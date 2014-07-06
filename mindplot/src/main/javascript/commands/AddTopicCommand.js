@@ -29,19 +29,20 @@ mindplot.commands.AddTopicCommand = new Class({
 
     execute:function (commandContext) {
 
+        var me = this;
         _.each(this._models, function (model, index) {
 
             // Add a new topic ...
             var topic = commandContext.createTopic(model);
 
             // Connect to topic ...
-            if (this._parentsIds) {
-                var parentId = this._parentsIds[index];
+            if (me._parentsIds) {
+                var parentId = me._parentsIds[index];
                 if ($defined(parentId)) {
                     var parentTopic = commandContext.findTopics(parentId)[0];
                     commandContext.connect(topic, parentTopic);
                 }
-            }else {
+            } else {
                 commandContext.addTopic(topic);
             }
 
@@ -53,7 +54,7 @@ mindplot.commands.AddTopicCommand = new Class({
             // Render node ...
             topic.setVisibility(true);
 
-        }.bind(this));
+        });
     },
 
     undoExecute:function (commandContext) {
@@ -69,7 +70,7 @@ mindplot.commands.AddTopicCommand = new Class({
             var topicId = model.getId();
             var topic = commandContext.findTopics(topicId)[0];
             commandContext.deleteTopic(topic);
-        }.bind(this));
+        });
 
         this._models = clonedModel;
     }

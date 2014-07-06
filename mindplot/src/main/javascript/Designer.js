@@ -35,9 +35,10 @@ mindplot.Designer = new Class({
             var commandContext = new mindplot.CommandContext(this);
             this._actionDispatcher = new mindplot.StandaloneActionDispatcher(commandContext);
 
+            var me = this;
             this._actionDispatcher.addEvent("modelUpdate", function (event) {
-                this.fireEvent("modelUpdate", event);
-            }.bind(this));
+                me.fireEvent("modelUpdate", event);
+            });
 
             mindplot.ActionDispatcher.setInstance(this._actionDispatcher);
             this._model = new mindplot.DesignerModel(options);
@@ -130,37 +131,34 @@ mindplot.Designer = new Class({
         _registerMouseEvents:function () {
             var workspace = this._workspace;
             var screenManager = workspace.getScreenManager();
-
+            var me = this;
             // Initialize workspace event listeners.
             screenManager.addEvent('update', function () {
                 // Topic must be set to his original state. All editors must be closed.
-                var topics = this.getModel().getTopics();
+                var topics = me.getModel().getTopics();
                 _.each(topics, function(object){
                     object.closeEditors();
                 });
 
                 // Clean some selected nodes on event ..
-                if (this._cleanScreen)
-                    this._cleanScreen();
-
-            }.bind(this));
+                if (me._cleanScreen)
+                    me._cleanScreen();
+            });
 
             // Deselect on click ...
             screenManager.addEvent('click', function (event) {
-                this.onObjectFocusEvent(null, event);
-            }.bind(this));
+                me.onObjectFocusEvent(null, event);
+            });
 
             // Create nodes on double click...
             screenManager.addEvent('dblclick', function (event) {
                 if (workspace.isWorkspaceEventsEnabled()) {
-
                     var mousePos = screenManager.getWorkspaceMousePosition(event);
-
-                    var centralTopic = this.getModel().getCentralTopic();
-                    var model = this._createChildModel(centralTopic, mousePos);
+                    var centralTopic = me.getModel().getCentralTopic();
+                    var model = me._createChildModel(centralTopic, mousePos);
                     this._actionDispatcher.addTopics([model], [centralTopic.getId()]);
                 }
-            }.bind(this));
+            });
 
             // Register mouse drag and drop event ...
             function noopHandler(evt) {
@@ -254,13 +252,13 @@ mindplot.Designer = new Class({
             // Create node graph ...
             var topic = mindplot.NodeGraph.create(model, {readOnly:readOnly});
             this.getModel().addTopic(topic);
-
+            var me = this;
             // Add Topic events ...
             if (!readOnly) {
                 // If a node had gained focus, clean the rest of the nodes ...
                 topic.addEvent('mousedown', function (event) {
-                    this.onObjectFocusEvent(topic, event);
-                }.bind(this));
+                    me.onObjectFocusEvent(topic, event);
+                });
 
                 // Register node listeners ...
                 if (topic.getType() != mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE) {
@@ -292,24 +290,24 @@ mindplot.Designer = new Class({
             }
 
             topic.addEvent('ontblur', function () {
-                var topics = this.getModel().filterSelectedTopics();
-                var rels = this.getModel().filterSelectedRelationships();
+                var topics = me.getModel().filterSelectedTopics();
+                var rels = me.getModel().filterSelectedRelationships();
 
                 if (topics.length == 0 || rels.length == 0) {
-                    this.fireEvent('onblur');
+                    me.fireEvent('onblur');
                 }
-            }.bind(this));
+            });
 
             topic.addEvent('ontfocus', function () {
-                var topics = this.getModel().filterSelectedTopics();
-                var rels = this.getModel().filterSelectedRelationships();
+                var topics = me.getModel().filterSelectedTopics();
+                var rels = me.getModel().filterSelectedRelationships();
 
                 if (topics.length == 1 || rels.length == 1) {
-                    this.fireEvent('onfocus');
+                    me.fireEvent('onfocus');
                 }
-            }.bind(this));
+            });
 
-            return  topic;
+            return topic;
         },
 
         onObjectFocusEvent:function (currentObject, event) {
@@ -630,12 +628,13 @@ mindplot.Designer = new Class({
             // Init layout manager ...
             var size = {width:25, height:25};
             var layoutManager = new mindplot.layout.LayoutManager(mindmapModel.getCentralTopic().getId(), size);
+            var me = this;
             layoutManager.addEvent('change', function (event) {
                 var id = event.getId();
-                var topic = this.getModel().findTopicById(id);
+                var topic = me.getModel().findTopicById(id);
                 topic.setPosition(event.getPosition());
                 topic.setOrder(event.getOrder());
-            }.bind(this));
+            });
             this._eventBussDispatcher.setLayoutManager(layoutManager);
 
 
@@ -753,24 +752,25 @@ mindplot.Designer = new Class({
 
             // Build relationship line ....
             var result = new mindplot.Relationship(sourceTopic, targetTopic, model);
+            var me = this;
 
             result.addEvent('ontblur', function () {
-                var topics = this.getModel().filterSelectedTopics();
-                var rels = this.getModel().filterSelectedRelationships();
+                var topics = me.getModel().filterSelectedTopics();
+                var rels = me.getModel().filterSelectedRelationships();
 
                 if (topics.length == 0 || rels.length == 0) {
-                    this.fireEvent('onblur');
+                    me.fireEvent('onblur');
                 }
-            }.bind(this));
+            });
 
             result.addEvent('ontfocus', function () {
-                var topics = this.getModel().filterSelectedTopics();
-                var rels = this.getModel().filterSelectedRelationships();
+                var topics = me.getModel().filterSelectedTopics();
+                var rels = me.getModel().filterSelectedRelationships();
 
                 if (topics.length == 1 || rels.length == 1) {
-                    this.fireEvent('onfocus');
+                    me.fireEvent('onfocus');
                 }
-            }.bind(this));
+            });
 
             // Append it to the workspace ...
             dmodel.addRelationship(result);

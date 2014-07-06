@@ -31,14 +31,14 @@ mindplot.DragManager = new Class({
         var workspace = this._workspace;
         var screen = workspace.getScreenManager();
         var dragManager = this;
-
+        var me = this;
         var mouseDownListener = function(event) {
             if (workspace.isWorkspaceEventsEnabled()) {
                 // Disable double drag...
                 workspace.enableWorkspaceEvents(false);
 
                 // Set initial position.
-                var layoutManager = this._eventDispatcher.getLayoutManager();
+                var layoutManager = me._eventDispatcher.getLayoutManager();
                 var dragNode = node.createDragNode(layoutManager);
 
                 // Register mouse move listener ...
@@ -52,7 +52,7 @@ mindplot.DragManager = new Class({
                 // Change cursor.
                 window.document.body.style.cursor = 'move';
             }
-        }.bind(this);
+        };
         node.addEvent('mousedown', mouseDownListener);
     },
 
@@ -70,10 +70,10 @@ mindplot.DragManager = new Class({
 
     _buildMouseMoveListener : function(workspace, dragNode, dragManager) {
         var screen = workspace.getScreenManager();
-
+        var me = this;
         var result = function(event) {
 
-            if (!this._isDragInProcess) {
+            if (!me._isDragInProcess) {
                 // Execute Listeners ..
                 var startDragListener = dragManager._listeners['startdragging'];
                 startDragListener(event, dragNode);
@@ -81,7 +81,7 @@ mindplot.DragManager = new Class({
                 // Add shadow node to the workspace.
                 workspace.append(dragNode);
 
-                this._isDragInProcess = true;
+                me._isDragInProcess = true;
             }
 
             var pos = screen.getWorkspaceMousePosition(event);
@@ -95,13 +95,14 @@ mindplot.DragManager = new Class({
 
             event.preventDefault();
 
-        }.bind(this);
+        };
         dragManager._mouseMoveListener = result;
         return result;
     },
 
     _buildMouseUpListener : function(workspace, node, dragNode, dragManager) {
         var screen = workspace.getScreenManager();
+        var me = this;
         var result = function(event) {
             $assert(dragNode.isDragTopic, 'dragNode must be an DragTopic');
 
@@ -117,7 +118,7 @@ mindplot.DragManager = new Class({
             // Change the cursor to the default.
             window.document.body.style.cursor = 'default';
 
-            if (this._isDragInProcess) {
+            if (me._isDragInProcess) {
 
                 // Execute Listeners only if the node has been moved.
                 var endDragListener = dragManager._listeners['enddragging'];
@@ -126,11 +127,11 @@ mindplot.DragManager = new Class({
                 // Remove drag node from the workspace.
                 dragNode.removeFromWorkspace(workspace);
 
-                this._isDragInProcess = false;
+                me._isDragInProcess = false;
             }
 
 
-        }.bind(this);
+        };
         dragManager._mouseUpListener = result;
         return result;
     },

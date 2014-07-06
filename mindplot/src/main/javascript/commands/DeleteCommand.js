@@ -97,7 +97,7 @@ mindplot.commands.DeleteCommand = new Class({
         // Add rebuild relationships ...
         _.each(this._deletedRelModel, function (model) {
             commandContext.addRelationship(model);
-        }.bind(this));
+        });
 
         // Finally display the topics ...
         _.each(this._deletedTopicModels, function (topicModel) {

@@ -240,9 +240,10 @@ mindplot.layout.RootedTreeSet = new Class({
         var yOffset = oldPos.y - position.y;
 
         var children = this.getChildren(node);
+        var me = this;
         _.each(children, function (child) {
-            this.shiftBranchPosition(child, xOffset, yOffset);
-        }.bind(this));
+            me.shiftBranchPosition(child, xOffset, yOffset);
+        });
 
     },
 
@@ -251,9 +252,10 @@ mindplot.layout.RootedTreeSet = new Class({
         node.setPosition({x:position.x + xOffset, y:position.y + yOffset});
 
         var children = this.getChildren(node);
+        var me = this;
         _.each(children, function (child) {
-            this.shiftBranchPosition(child, xOffset, yOffset);
-        }.bind(this));
+            me.shiftBranchPosition(child, xOffset, yOffset);
+        });
     },
 
     getSiblingsInVerticalDirection:function (node, yOffset) {
