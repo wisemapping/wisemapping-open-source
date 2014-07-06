@@ -37,6 +37,7 @@ function JSPomLoader(pomUrl, callback) {
                     var url = urls.pop();
                     $.ajax({
                         url: url,
+                        crossDomain: true,
                         dataType: "script",
                         success:  function () {
                             jsRecLoad(urls);
