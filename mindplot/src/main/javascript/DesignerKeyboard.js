@@ -259,7 +259,7 @@ mindplot.DesignerKeyboard = new Class({
 
             var keyCode = event.keyCode;
 
-            if (!jQuery.hotkeys.specialKeys[keyCode] && !jQuery.hotkeys.shiftNums[keyCode]) {
+            if (!jQuery.hotkeys.specialKeys[keyCode] && !jQuery.hotkeys.shiftNums[keyCode] && keyCode != 91 /*win key*/) {
                 var nodes = designer.getModel().filterSelectedTopics();
                 if (nodes.length > 0) {
 
