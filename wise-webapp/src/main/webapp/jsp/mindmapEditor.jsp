@@ -111,6 +111,14 @@
     <%@ include file="/jsp/mindmapEditorToolbar.jsf" %>
 </div>
 
+<div id='load' class="modal fade">
+    <div class="modal-dialog">
+        <div style="height: 120px; text-align: center; border: 2px solid orange" class="modal-content">
+            <img style='margin-top:25px; text-align: center' src="images/ajax-loader.gif">
+        </div>
+    </div>
+</div>
+
 <div id="mindplot" onselectstart="return false;"></div>
 <script type="text/javascript" src="js/editor.js"></script>
 </body>
