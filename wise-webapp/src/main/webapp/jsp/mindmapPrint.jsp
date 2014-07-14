@@ -48,8 +48,12 @@
 
     </style>
 
+    <script type='text/javascript' src='js/jquery-2.1.0.min.js'></script>
+    <script type='text/javascript' src='js/jquery-mousewheel.js'></script>
+    <script type='text/javascript' src='js/hotkeys.js'></script>
+    <script type='text/javascript' src='js/underscorejs.js'></script>
+    <script type='text/javascript' src='bootstrap/js/bootstrap.min.js'></script>
     <script type='text/javascript' src='js/mootools-core.js'></script>
-    <script type='text/javascript' src='js/mootools-more.js'></script>
     <script type='text/javascript' src='js/core.js'></script>
     <script type='text/javascript' src='js/less.js'></script>
 

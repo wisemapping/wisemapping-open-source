@@ -57,7 +57,7 @@ function createStorageManager(mindplot) {
 
 In your script for loading the mindmap you add a call to the callback into the loadcomplete method::
 
-     $(document).addEvent('loadcomplete', function(resource) {
+     $(document).on('loadcomplete', function(resource) {
                //Asset.javascript("{{ asset('bundles/fpgadmin/js/FpgMindmapPersistence.js')}}");
                // Options has been defined in by a external ile ?
                var options = {
