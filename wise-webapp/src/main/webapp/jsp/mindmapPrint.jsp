@@ -60,7 +60,7 @@
     <script type="text/javascript">
         var mapId = '${mindmap.id}';
 
-        $(document).addEvent('loadcomplete', function (resource) {
+        $(document).on('loadcomplete', function (resource) {
 
             // Configure designer options ...
             var options = loadDesignerOptions();

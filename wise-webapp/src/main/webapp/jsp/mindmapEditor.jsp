@@ -28,7 +28,7 @@
 
     <script type="text/javascript">
 
-        $(document).addEvent('loadcomplete', function (resource) {
+        $(document).on('loadcomplete', function (resource) {
             try {
                 var mapId = '${mindmap.id}';
                 // Configure designer options ...

@@ -21,7 +21,7 @@
     <script type="text/javascript">
 
         var mapId = 'welcome';
-        $(document).addEvent('loadcomplete', function(resource) {
+        $(document).on('loadcomplete', function(resource) {
             var options = loadDesignerOptions();
             var designer = buildDesigner(options);
 
@@ -32,7 +32,7 @@
         });
 
 
-        $(document).addEvent('loadcomplete', function(resource) {
+        $(document).on('loadcomplete', function(resource) {
 
             $("dragImageNode").addEvent('mousedown', function(event) {
                 event.preventDefault();
