@@ -53,6 +53,7 @@ mindplot.widget.KeyboardShortcutTooltip = new Class({
         var textContainer = $('<div></div>').text(this._text);
         textContainer.css({
             width: '100%',
+            'font-size': "90%",
             textAlign: 'center',
             'font-weight':'bold'
         });
