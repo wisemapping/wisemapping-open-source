@@ -56,11 +56,20 @@ function JSPomLoader(pomUrl, callback) {
 
 }
 
-
-jQuery.getScript("../../../../../web2d/target/classes/web2d.svg-min.js", function () {
-    JSPomLoader('../../../../../mindplot/pom.xml', function () {
-    });
+$.ajax({
+    url: "../../../../../web2d/target/classes/web2d.svg-min.js",
+    crossDomain: true,
+    dataType: "script",
+    success:  function () {
+        JSPomLoader('../../../../../mindplot/pom.xml', function () {
+        });
+    },
+    error: function(){
+        console.error("Unexpected error loading:"+url);
+        console.error(arguments);
+    }
 });
+
 
 
 

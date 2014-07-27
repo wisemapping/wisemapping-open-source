@@ -16,6 +16,7 @@
  *   limitations under the License.
  */
 
+//FIXME: remove Request class
 mindplot.RESTPersistenceManager = new Class({
         Extends:mindplot.PersistenceManager,
         initialize:function (options) {
