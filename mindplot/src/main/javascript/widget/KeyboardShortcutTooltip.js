@@ -35,7 +35,8 @@ mindplot.widget.KeyboardShortcutTooltip = new Class({
             content: this._buildContent(),
             html: true,
             placement: 'bottom',
-            className: 'keyboardShortcutTip'
+            className: 'keyboardShortcutTip',
+            template: '<div class="popover popoverBlack" role="tooltip"><div class="arrow arrowBlack"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
         });
 
         tipDiv.on('click', function(e) {
@@ -47,7 +48,8 @@ mindplot.widget.KeyboardShortcutTooltip = new Class({
         var result = $('<div></div>');
         result.css({
             padding:'3px 0px',
-            width:'100%'
+            width:'100%',
+            color: "white"
         });
 
         var textContainer = $('<div></div>').text(this._text);
