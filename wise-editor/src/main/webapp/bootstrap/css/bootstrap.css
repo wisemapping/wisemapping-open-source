@@ -5340,7 +5340,7 @@ button.close {
   border-radius: 5px 5px 0 0;
 }
 .popover-content {
-  padding: 4px 6px;
+  padding: 2px 8px;
 }
 .popover .arrow,
 .popover .arrow:after {
