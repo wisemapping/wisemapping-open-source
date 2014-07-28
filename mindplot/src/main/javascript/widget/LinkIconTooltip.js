@@ -21,14 +21,23 @@ mindplot.widget.LinkIconTooltip = new Class({
 
     initialize:function (linkIcon) {
         $assert(linkIcon, "linkIcon can not be null");
-        this.parent($(linkIcon.getImage()._peer._native), {
+        var nativeElement = $(linkIcon.getImage()._peer._native);
+        this.parent(nativeElement, {
             // Content can also be a function of the target element!
             content:this._buildContent(linkIcon),
             html:true,
             placement:'bottom',
             container: 'body',
-            title: $msg('LINK')
+            title: $msg('LINK'),
+            trigger: "manual",
+            template: '<div class="popover" onmouseover="$(this).mouseleave(function() {$(this).hide(); });" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
         });
+        var me = this;
+        nativeElement.mouseenter(
+            function() {
+                me.show();
+            }
+        );
     },
 
     _buildContent:function (linkIcon) {
