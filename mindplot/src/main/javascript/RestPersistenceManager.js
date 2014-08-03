@@ -16,7 +16,6 @@
  *   limitations under the License.
  */
 
-//FIXME: remove Request class
 mindplot.RESTPersistenceManager = new Class({
         Extends:mindplot.PersistenceManager,
         initialize:function (options) {
@@ -56,38 +55,38 @@ mindplot.RESTPersistenceManager = new Class({
                     persistence.onSave = false;
                 }, 10000);
 
-                var request = new Request({
-                    url:this.documentUrl.replace("{id}", mapId) + "?" + query,
+                $.ajax({
+                    url: this.documentUrl.replace("{id}", mapId) + "?" + query,
+                    headers:{"Content-Type":"application/json; charset=utf-8", "Accept":"application/json"},
                     method:'put',
                     async:!sync,
+                    dataType: "json",
+                    data: data,
 
-                    onSuccess:function (responseText, responseXML) {
-                        persistence.timestamp = responseText;
+                    success: function (data, textStatus, jqXHRresponseText) {
+                        persistence.timestamp = jqXHRresponseText;
                         events.onSuccess();
                     },
-
-                    onException:function (headerName, value) {
+                    error: function (jqXHR, textStatus, errorThrown) {
                         events.onError(persistence._buildError());
                     },
-
-                    onComplete:function () {
+                    complete: function () {
                         // Clear event timeout ...
                         if (persistence.clearTimeout) {
                             clearTimeout(persistence.clearTimeout);
                         }
                         persistence.onSave = false;
                     },
-
-                    onFailure:function (xhr) {
+                    fail:function (xhr, textStatus) {
 
                         var responseText = xhr.responseText;
                         var userMsg = {severity:"SEVERE", message:$msg('SAVE_COULD_NOT_BE_COMPLETED')};
 
-                        var contentType = this.getHeader("Content-Type");
+                        var contentType = xhr.getResponseHeader("Content-Type");
                         if (contentType != null && contentType.indexOf("application/json") != -1) {
                             var serverMsg = null;
                             try {
-                                serverMsg = JSON.decode(responseText);
+                                serverMsg = $.parseJSON(responseText);
                                 serverMsg = serverMsg.globalSeverity ? serverMsg : null;
                             } catch (e) {
                                 // Message could not be decoded ...
@@ -101,52 +100,29 @@ mindplot.RESTPersistenceManager = new Class({
                         }
                         events.onError(userMsg);
                         persistence.onSave = false;
-                    },
-
-                    headers:{"Content-Type":"application/json; charset=utf-8", "Accept":"application/json"},
-                    emulation:false,
-                    urlEncoded:false
+                    }
                 });
-                request.put(JSON.encode(data));
             }
         },
 
         discardChanges:function (mapId) {
-            var request = new Request({
+            $.ajax({
                 url:this.revertUrl.replace("{id}", mapId),
                 async:false,
                 method:'post',
-                onSuccess:function () {
-                },
-                onException:function () {
-                },
-                onFailure:function () {
-                },
-                headers:{"Content-Type":"application/json; charset=utf-8", "Accept":"application/json"},
-                emulation:false,
-                urlEncoded:false
+                headers:{"Content-Type":"application/json; charset=utf-8", "Accept":"application/json"}
             });
-            request.post();
         },
 
         unlockMap:function (mindmap) {
             var mapId = mindmap.getId();
-            var request = new Request({
+            $.ajax({
                 url:this.lockUrl.replace("{id}", mapId),
                 async:false,
                 method:'put',
-                onSuccess:function () {
-
-                },
-                onException:function () {
-                },
-                onFailure:function () {
-                },
                 headers:{"Content-Type":"text/plain"},
-                emulation:false,
-                urlEncoded:false
+                data: "false"
             });
-            request.put("false");
         },
 
         _buildError:function (jsonSeverResponse) {
