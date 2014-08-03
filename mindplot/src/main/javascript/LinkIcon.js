@@ -33,17 +33,18 @@ mindplot.LinkIcon = new Class({
 
     _registerEvents:function () {
         this._image.setCursor('pointer');
+        this._tip = new mindplot.widget.LinkIconTooltip(this);
 
         var me = this;
         if (!this._readOnly) {
             // Add on click event to open the editor ...
             this.addEvent('click', function (event) {
+                me._tip.hide();
                 me._topic.showLinkEditor();
                 event.stopPropagation();
             });
         }
 
-        this._tip = new mindplot.widget.LinkIconTooltip(this);
     },
 
     getModel:function () {
