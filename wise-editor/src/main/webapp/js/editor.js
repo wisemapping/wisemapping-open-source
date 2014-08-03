@@ -71,18 +71,17 @@ function buildDesigner(options) {
         }
         errorMsg = errorMsg.toString();
 
-        new Request({
+        $.ajax({
             method:'post',
             url:"/c/restful/logger/editor",
             headers:{"Content-Type":"application/json", "Accept":"application/json"},
-            emulation:false,
-            urlEncoded:false
-        }).post(JSON.encode({
-            jsErrorMsg:"Message: '" + errorMsg + "', line:'" + lineNo + "', url: :" + url,
-            jsStack:window.errorStack,
-            userAgent:navigator.userAgent,
-            mapId:options.mapId}));
-
+            data: {
+                    jsErrorMsg: "Message: '" + errorMsg + "', line:'" + lineNo + "', url: :" + url,
+                    jsStack: window.errorStack,
+                    userAgent: navigator.userAgent,
+                    mapId: options.mapId
+            }
+        });
 
         // Close loading dialog ...
         if (window.waitDialog) {
@@ -132,17 +131,16 @@ function buildDesigner(options) {
 function loadDesignerOptions(jsonConf) {
     // Load map options ...
     var result;
+    var me = this;
     if (jsonConf) {
-        var request = new Request.JSON({
-                url:jsonConf,
-                async:false,
-                onSuccess:function (options) {
-                    this.options = options;
-
-                }.bind(this)
+        $.ajax({
+            url: jsonConf,
+            async: false,
+            method: 'get',
+            success: function (options) {
+                me.options = options;
             }
-        );
-        request.get();
+        });
         result = this.options;
     }
     else {
