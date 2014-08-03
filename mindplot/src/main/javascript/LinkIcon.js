@@ -34,12 +34,13 @@ mindplot.LinkIcon = new Class({
     _registerEvents:function () {
         this._image.setCursor('pointer');
 
+        var me = this;
         if (!this._readOnly) {
             // Add on click event to open the editor ...
             this.addEvent('click', function (event) {
-                this._topic.showLinkEditor();
+                me._topic.showLinkEditor();
                 event.stopPropagation();
-            }.bind(this));
+            });
         }
 
         this._tip = new mindplot.widget.LinkIconTooltip(this);
