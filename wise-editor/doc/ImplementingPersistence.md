@@ -14,32 +14,30 @@ function createStorageManager(mindplot) {
 
         saveMapXml : function(mapId, mapXml, pref, saveHistory, events) {
             var url = this.backendUrl  + mapId;
-            var xmlRequest = new Request({
+            $.ajax({
                 url: url,
                 method: 'post',
                 async: false,
-                onSuccess: function(responseText) {
-                    events.onSuccess();        
-                }, 
+                success: function(responseText) {
+                    events.onSuccess();
+                },
                 onError: function (text, error) {
                     console.log("Error saving mindmap to: " + url, text, error);
                     events.onError();
                 }
             });
-            xmlRequest.send();
         },
 
         loadMapDom : function(mapId) {
                 var xml;
-                var xmlRequest = new Request({
+                $.ajax({
                     url: this.backendUrl  + mapId,
                     method: 'get',
                     async: false,
-                    onSuccess: function(responseText) {
+                    success: function(responseText) {
                         xml = responseText;
                     }
                 });
-                xmlRequest.send();
 
                 // If I could not load it from a file, hard code one.
                 if (xml == null) {
