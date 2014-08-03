@@ -166,13 +166,15 @@ mindplot.IconGroup.RemoveTip = new Class({
                 icon.remove();
             });
 
+            var me = this;
+
             widget.addEvent('mouseover', function () {
-                this.show(topicId, icon);
-            }.bind(this));
+                me.show(topicId, icon);
+            });
 
             widget.addEvent('mouseout', function () {
-                this.hide();
-            }.bind(this));
+                me.hide();
+            });
 
             widget.setPosition(pos.x + 80, pos.y - 50);
             this._fadeElem.append(widget);
@@ -197,17 +199,15 @@ mindplot.IconGroup.RemoveTip = new Class({
             clearTimeout(this._closeTimeoutId)
         }
 
+        var me = this;
         if (this._activeIcon) {
             var widget = this._widget;
             var close = function () {
-
-                this._activeIcon = null;
-                this._fadeElem.removeChild(widget);
-                this._widget = null;
-
-                this._closeTimeoutId = null;
-
-            }.bind(this);
+                me._activeIcon = null;
+                me._fadeElem.removeChild(widget);
+                me._widget = null;
+                me._closeTimeoutId = null;
+            };
 
             if (!$defined(delay) || delay == 0) {
                 close();
@@ -273,14 +273,16 @@ mindplot.IconGroup.RemoveTip = new Class({
 
     decorate:function (topicId, icon) {
 
+        var me = this;
+
         if (!icon.__remove) {
             icon.addEvent('mouseover', function () {
-                this.show(topicId, icon);
-            }.bind(this));
+                me.show(topicId, icon);
+            });
 
             icon.addEvent('mouseout', function () {
-                this.hide();
-            }.bind(this));
+                me.hide();
+            });
             icon.__remove = true;
         }
     }
