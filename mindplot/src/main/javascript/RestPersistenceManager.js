@@ -57,11 +57,11 @@ mindplot.RESTPersistenceManager = new Class({
 
                 $.ajax({
                     url: this.documentUrl.replace("{id}", mapId) + "?" + query,
-                    headers:{"Content-Type":"application/json; charset=utf-8", "Accept":"application/json"},
-                    method:'put',
+                    type:'put',
+                    dataType:"json",
+                    data: JSON.stringify(data),
+                    contentType:"application/json; charset=utf-8",
                     async:!sync,
-                    dataType: "json",
-                    data: data,
 
                     success: function (data, textStatus, jqXHRresponseText) {
                         persistence.timestamp = jqXHRresponseText;
