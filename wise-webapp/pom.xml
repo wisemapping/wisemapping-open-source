@@ -555,7 +555,9 @@
                     <stopPort>9999</stopPort>
                     <war>${project.build.directory}/wisemapping.war</war>
                     <reload>automatic</reload>
-                    <contextXml>${project.basedir}/jetty.xml</contextXml>
+                    <webAppConfig>
+                        <overrideDescriptor>${project.basedir}/webdefault.xml</overrideDescriptor>
+                    </webAppConfig>
                     <systemProperties>
                         <systemProperty>
                             <name>org.mortbay.util.FileResource.checkAliases</name>
