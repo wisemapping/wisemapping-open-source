@@ -69,7 +69,7 @@ public class FreemindImporter
     private static final String EMPTY_FONT_STYLE = ";;;;;";
     private final static Charset UTF_8_CHARSET = Charset.forName("UTF-8");
     private final static int ORDER_SEPARATION_FACTOR = 2;
-    private static final VersionNumber SUPPORTED_FREEMIND_VERSION = new VersionNumber("0.9.0");
+    private static final VersionNumber SUPPORTED_FREEMIND_VERSION = new VersionNumber("1.0.1");
 
 
     private int currentId;
@@ -120,13 +120,8 @@ public class FreemindImporter
             final String version = freemindMap.getVersion();
             if (version != null) {
 
-                // Is freemind mindmap ?
-                if (version.charAt(0) != '0') {
-                    throw new ImporterException("Mindmap is not a FreeMind document. Document type info " + version);
-                }
-
                 final VersionNumber mapVersion = new VersionNumber(version);
-                if (SUPPORTED_FREEMIND_VERSION.isGreaterThan(mapVersion)) {
+                if (mapVersion.isGreaterThan(SUPPORTED_FREEMIND_VERSION)) {
                     throw new ImporterException("FreeMind version " + mapVersion.getVersion() + " is not supported.");
                 }
             }
