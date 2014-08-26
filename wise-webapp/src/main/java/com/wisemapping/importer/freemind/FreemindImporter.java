@@ -230,6 +230,8 @@ public class FreemindImporter
         TopicType currentWiseTopic = wiseParent;
 
         int order = 0;
+        int firstLevelRightOrder = 0;
+        int firstLevelLeftOrder = 1;
         for (Object element : freeChilden) {
 
             if (element instanceof Node) {
@@ -247,7 +249,13 @@ public class FreemindImporter
                 if (depth != 1) {
                     norder = order++;
                 } else {
-                    norder = calcFirstLevelOrder(freeChilden, freeChild);
+                    if (freeChild.getPOSITION().equals(POSITION_LEFT)) {
+                        norder = firstLevelLeftOrder;
+                        firstLevelLeftOrder = firstLevelLeftOrder + 2;
+                    } else {
+                        norder = firstLevelRightOrder;
+                        firstLevelRightOrder = firstLevelRightOrder + 2;
+                    }
                 }
                 wiseChild.setOrder(norder);
 
@@ -344,53 +352,6 @@ public class FreemindImporter
     }
 
     /**
-     * Sort the freemind node following this pattern:
-     * <p/>
-     * 0 -> 3
-     * 1 -> 1
-     * 2 -> 0
-     * 3 -> 2
-     * 4 -> 4
-     */
-    private int calcFirstLevelOrder(@NotNull List<Object> freeChilden, @Nullable Node freeChild) {
-        final List<Node> nodes = new ArrayList<Node>();
-        int result;
-
-        // Collect all the nodes of the same side ...
-        for (Object child : freeChilden) {
-            if (child instanceof Node) {
-                Node node = (Node) child;
-
-                final String side = node.getPOSITION();
-                if (side == freeChild.getPOSITION() || freeChild.getPOSITION().equals(side)) {
-                    nodes.add(node);
-                }
-            }
-        }
-
-        // What is the index of the current node ?
-        int nodeIndex = 0;
-        for (Node node : nodes) {
-            if (node == freeChild) {
-                break;
-            }
-            nodeIndex++;
-        }
-
-        int size = nodes.size();
-        int center = (size - 1) / 2;
-        result = nodeIndex - center;
-
-        if (result < 0) {
-            result = (result * ORDER_SEPARATION_FACTOR * -2) - 1;
-
-        } else {
-            result = result * ORDER_SEPARATION_FACTOR * 2;
-        }
-        return result;
-    }
-
-    /**
      * Position is (x,y).
      * x values greater than 0 are right axis
      * x values lower than 0 are left axis
@@ -420,16 +381,14 @@ public class FreemindImporter
         int y;
         if (depth == 1) {
 
-            // Follow the following algorithm ...
-            // Order: 3 = -100  1
-            // Order: 1 = -50   2
-            // Order: 0 =  0    3
-            // Order: 2 = 50    4
-            // Order: 4 = 100   5
+            // pair order numbers represent nodes at the right
+            // odd order numbers represent nodes at the left
             if (order % 2 == 0) {
-                y = ROOT_LEVEL_TOPIC_HEIGHT * order;
+                int multiplier = (int) ((order - Math.floor((childrenCount - 1) / 2)) * 2);
+                y = multiplier * ROOT_LEVEL_TOPIC_HEIGHT;
             } else {
-                y = -ROOT_LEVEL_TOPIC_HEIGHT * (order + 1);
+                int multiplier = (int) ((order - Math.floor(childrenCount / 2)) * 2);
+                y = multiplier * ROOT_LEVEL_TOPIC_HEIGHT;
             }
         } else {
 
