@@ -2,7 +2,7 @@
 <map name="basic" version="tango">
     <topic central="true" id="0" position="0,0" shape="rounded rectagle">
         <text><![CDATA[This is the root node]]></text>
-        <topic id="1" order="7" position="200,-200" shape="line">
+        <topic id="1" order="0" position="200,-200" shape="line">
             <text><![CDATA[Simbols]]></text>
             <topic id="2" order="0" position="290,-300" shape="line">
                 <text><![CDATA[Warning]]></text>
@@ -40,7 +40,7 @@
                 <icon id="sign_help"/>
             </topic>
         </topic>
-        <topic id="11" order="7" position="-200,-200" shape="line" shrink="true">
+        <topic id="11" order="1" position="-200,-200" shape="line" shrink="true">
             <text><![CDATA[Numbers]]></text>
             <topic id="12" order="0" position="-290,-325" shape="line">
                 <text><![CDATA[1]]></text>
@@ -80,7 +80,7 @@
                 <icon id="bullet_black"/>
             </topic>
         </topic>
-        <topic id="22" order="3" position="200,-100" shape="line">
+        <topic id="22" order="2" position="200,-100" shape="line">
             <text><![CDATA[Trafic]]></text>
             <topic id="23" order="0" position="290,-125" shape="line">
                 <text><![CDATA[Read]]></text>
@@ -111,7 +111,7 @@
                 <icon id="arrow_down"/>
             </topic>
         </topic>
-        <topic id="31" order="0" position="200,0" shape="line" shrink="true">
+        <topic id="31" order="4" position="200,0" shape="line" shrink="true">
             <text><![CDATA[Smiles]]></text>
             <topic id="32" order="0" position="290,-50" shape="line">
                 <text><![CDATA[Smile]]></text>
@@ -132,7 +132,7 @@
                 <text><![CDATA[Angry]]></text>
             </topic>
         </topic>
-        <topic id="37" order="0" position="-200,0" shape="line" shrink="true">
+        <topic id="37" order="5" position="-200,0" shape="line" shrink="true">
             <text><![CDATA[People]]></text>
             <topic id="38" order="0" position="-290,-75" shape="line">
                 <text><![CDATA[Family]]></text>
@@ -161,7 +161,7 @@
                 <icon id="people_group"/>
             </topic>
         </topic>
-        <topic id="45" order="4" position="200,100" shape="line" shrink="true">
+        <topic id="45" order="6" position="200,100" shape="line" shrink="true">
             <text><![CDATA[Flags]]></text>
             <topic id="46" order="0" position="290,25" shape="line">
                 <text><![CDATA[Black]]></text>
@@ -190,7 +190,7 @@
                 <icon id="flag_yellow"/>
             </topic>
         </topic>
-        <topic id="53" order="4" position="-200,100" shape="line" shrink="true">
+        <topic id="53" order="7" position="-200,100" shape="line" shrink="true">
             <text><![CDATA[Time]]></text>
             <topic id="54" order="0" position="-290,75" shape="line">
                 <text><![CDATA[Calendar]]></text>
@@ -269,7 +269,7 @@
                 <icon id="object_clip"/>
             </topic>
         </topic>
-        <topic id="74" order="8" position="-200,200" shape="line">
+        <topic id="74" order="9" position="-200,200" shape="line">
             <text><![CDATA[Mail]]></text>
             <topic id="75" order="0" position="-290,150" shape="line">
                 <text><![CDATA[Envelop]]></text>

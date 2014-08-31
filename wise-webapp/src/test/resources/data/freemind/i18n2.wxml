@@ -6,7 +6,7 @@
             <text><![CDATA[أَبْجَدِيَّة عَرَبِ]]></text>
             <note><![CDATA[This is a not in languange أَبْجَدِيَّة عَرَبِ]]></note>
         </topic>
-        <topic id="2" order="0" position="-200,0" shape="line">
+        <topic id="2" order="1" position="-200,0" shape="line">
             <text><![CDATA[Long text node: 
  أَبْجَدِيَّة عَرَب]]></text>
         </topic>

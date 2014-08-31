@@ -13,7 +13,7 @@
                 <text><![CDATA[Italic]]></text>
             </topic>
         </topic>
-        <topic id="4" order="0" position="-200,0" shape="line">
+        <topic id="4" order="1" position="-200,0" shape="line">
             <text><![CDATA[Sizes]]></text>
             <topic fontStyle="Arial;6;;;;" id="5" order="0"
                 position="-290,-100" shape="line">

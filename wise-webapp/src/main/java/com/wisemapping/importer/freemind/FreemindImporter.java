@@ -33,9 +33,7 @@ import com.wisemapping.jaxb.wisemap.Link;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.*;
 import org.jsoup.nodes.Document;
-import org.w3c.dom.*;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.JAXBException;
@@ -61,6 +59,7 @@ public class FreemindImporter
     public static final String NODE_TYPE = "NODE";
     private com.wisemapping.jaxb.wisemap.ObjectFactory mindmapObjectFactory;
     private static final String POSITION_LEFT = "left";
+    private static final String POSITION_RIGHT = "right";
     private static final String BOLD = "bold";
     private static final String ITALIC = "italic";
     private static final String EMPTY_NOTE = "";
@@ -249,7 +248,7 @@ public class FreemindImporter
                 if (depth != 1) {
                     norder = order++;
                 } else {
-                    if (freeChild.getPOSITION().equals(POSITION_LEFT)) {
+                    if (freeChild.getPOSITION() != null && freeChild.getPOSITION().equals(POSITION_LEFT)) {
                         norder = firstLevelLeftOrder;
                         firstLevelLeftOrder = firstLevelLeftOrder + 2;
                     } else {
@@ -260,8 +259,8 @@ public class FreemindImporter
                 wiseChild.setOrder(norder);
 
                 // Convert node position
-                int childrenCount = freeChilden.size();
-                final String position = convertPosition(wiseParent, freeChild, depth, norder, childrenCount);
+                int childrenCountSameSide = getChildrenCountSameSide(freeChilden, freeChild);
+                final String position = convertPosition(wiseParent, freeChild, depth, norder, childrenCountSameSide);
                 wiseChild.setPosition(position);
 
                 // Convert the rest of the node properties ...
@@ -351,6 +350,30 @@ public class FreemindImporter
         }
     }
 
+    private int getChildrenCountSameSide(@NotNull List<Object> freeChildren, Node freeChild)  {
+        int result = 0;
+        String childSide = freeChild.getPOSITION();
+        if (childSide == null) {
+            childSide = POSITION_RIGHT;
+        }
+
+        // Count all the nodes of the same side ...
+        for (Object child : freeChildren) {
+            if (child instanceof Node) {
+                Node node = (Node) child;
+
+                String side = node.getPOSITION();
+                if (side == null) {
+                    side = POSITION_RIGHT;
+                }
+                if (childSide.equals(side)) {
+                    result++;
+                }
+            }
+        }
+        return result;
+    }
+
     /**
      * Position is (x,y).
      * x values greater than 0 are right axis
@@ -384,10 +407,10 @@ public class FreemindImporter
             // pair order numbers represent nodes at the right
             // odd order numbers represent nodes at the left
             if (order % 2 == 0) {
-                int multiplier = (int) ((order - Math.floor((childrenCount - 1) / 2)) * 2);
+                int multiplier = ((order + 1) - childrenCount) * 2;
                 y = multiplier * ROOT_LEVEL_TOPIC_HEIGHT;
             } else {
-                int multiplier = (int) ((order - Math.floor(childrenCount / 2)) * 2);
+                int multiplier = (order - childrenCount) * 2;
                 y = multiplier * ROOT_LEVEL_TOPIC_HEIGHT;
             }
         } else {
