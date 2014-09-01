@@ -53,6 +53,7 @@
                                         <include>${basedir}/target/tmp/Utils-min.js</include>
                                         <include>${basedir}/../mindplot/src/main/javascript/Options.js</include>
                                         <include>${basedir}/../mindplot/src/main/javascript/libraries/bootstrap/BootstrapDialog.js</include>
+                                        <include>${basedir}/../mindplot/src/main/javascript/libraries/bootstrap/BootstrapDialog.Request.js</include>
                                     </includes>
                                 </aggregation>
                             </aggregations>

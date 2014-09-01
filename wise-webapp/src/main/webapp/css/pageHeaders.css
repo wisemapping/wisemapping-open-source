@@ -130,4 +130,5 @@ div#headerActions a:hover, div#headerActions a:active, div#headerActions a:link,
 #dialogMainForm label
 {
     font-weight:normal;
+    display: block;
 }
