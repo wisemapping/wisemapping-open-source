@@ -53,7 +53,6 @@
         description = description == undefined ? "" : description;
 
         var onSuccess = function (data, textStatus, jqXHR) {
-            console.log('hola');
             var resourceId = data.getResponseHeader("ResourceId");
             window.location = "c/maps/" + resourceId + "/edit";
         };
