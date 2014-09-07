@@ -322,8 +322,9 @@ public class FreemindImporter
                 final Arrowlink arrow = (Arrowlink) element;
                 RelationshipType relt = mindmapObjectFactory.createRelationshipType();
                 String destId = arrow.getDESTINATION();
-                relt.setSrcTopicId(freeParent.getID());
-                relt.setDestTopicId(destId);
+                // FIXME: invert srcTopic and dstTopic to correct a bug in the wise mind map representation
+                relt.setSrcTopicId(destId);
+                relt.setDestTopicId(freeParent.getID());
                 final String endinclination = arrow.getENDINCLINATION();
                 if (endinclination != null) {
                     String[] inclination = endinclination.split(";");

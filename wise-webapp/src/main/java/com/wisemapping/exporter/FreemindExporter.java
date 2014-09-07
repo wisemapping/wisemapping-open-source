@@ -99,8 +99,9 @@ public class FreemindExporter
 
             final List<RelationshipType> relationships = mindmapMap.getRelationship();
             for (RelationshipType relationship : relationships) {
-                Node srcNode = nodesMap.get(relationship.getSrcTopicId());
-                Node dstNode = nodesMap.get(relationship.getDestTopicId());
+                // FIXME:invert srcNode and dstNode to correct a bug in the wise mind map representation
+                Node srcNode = nodesMap.get(relationship.getDestTopicId());
+                Node dstNode = nodesMap.get(relationship.getSrcTopicId());
 
 
                 // Workaround for nodes without relationship associated ...
