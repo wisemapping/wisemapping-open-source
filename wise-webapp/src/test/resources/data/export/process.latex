@@ -8,23 +8,6 @@
 	\subsection{Santa Clara}\label{ID_6}
 	\subsection{Marin/Napa/Solano}\label{ID_7}
 	\section{Hawaii}\label{ID_8}
-	\section{Southern California}\label{ID_9}
-	\subsection{Los Angeles}\label{ID_10}
-	\subsection{Anaheim/Santa Ana}\label{ID_11}
-	\subsection{Ventura}\label{ID_12}
-	\subsection{Other South}\label{ID_13}
-	\section{Policy Bodies}\label{ID_14}
-	\subsection{Advocacy}\label{ID_15}
-	\subsubsection{AAO}\label{ID_16}
-	\subsubsection{ASCRS}\label{ID_17}
-	\subsubsection{EBAA}\label{ID_18}
-	\subsection{Military}\label{ID_19}
-	\subsection{United Network for Organ Sharing}\label{ID_20}
-	\subsection{Kaiser Hospital System}\label{ID_21}
-	\subsection{University of California System}\label{ID_22}
-	\subsection{CMS}\label{ID_23}
-	\subsubsection{Medicare Part A}\label{ID_24}
-	\subsubsection{Medicare Part B}\label{ID_25}
 	\section{Corneal Tissue OPS}\label{ID_26}
 	\subsection{Transplant Bank International}\label{ID_27}
 	\subsubsection{Orange County Eye and Transplant Bank}\label{ID_28}
@@ -43,11 +26,28 @@
 	\subsubsection{Sierra Eye and Tissue Donor Services}\label{ID_41}In 2010, 2.023 referrals\par
 		
 	\subsection{SightLife}\label{ID_43}
+	\section{Southern California}\label{ID_9}
+	\subsection{Los Angeles}\label{ID_10}
+	\subsection{Anaheim/Santa Ana}\label{ID_11}
+	\subsection{Ventura}\label{ID_12}
+	\subsection{Other South}\label{ID_13}
+	\section{QE Medicare}\label{ID_47}
+	\section{Policy Bodies}\label{ID_14}
+	\subsection{Advocacy}\label{ID_15}
+	\subsubsection{AAO}\label{ID_16}
+	\subsubsection{ASCRS}\label{ID_17}
+	\subsubsection{EBAA}\label{ID_18}
+	\subsection{Military}\label{ID_19}
+	\subsection{United Network for Organ Sharing}\label{ID_20}
+	\subsection{Kaiser Hospital System}\label{ID_21}
+	\subsection{University of California System}\label{ID_22}
+	\subsection{CMS}\label{ID_23}
+	\subsubsection{Medicare Part A}\label{ID_24}
+	\subsubsection{Medicare Part B}\label{ID_25}
+	\section{CMS Data}\label{ID_48}
 	\section{Tools}\label{ID_44}
 	\subsection{Darthmouth Atlas of Health}\label{ID_45}
 	\subsection{HealthLandscape}\label{ID_46}
-	\section{QE Medicare}\label{ID_47}
-	\section{CMS Data}\label{ID_48}
 	\section{Ambulatory Payment Classification}\label{ID_49}
 	\subsection{CPT's which don't allow V2785}\label{ID_50}
 	\subsubsection{Ocular Reconstruction Transplant}\label{ID_51}\begin{itemize}

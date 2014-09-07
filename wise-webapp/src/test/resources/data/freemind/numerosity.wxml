@@ -189,5 +189,5 @@
             </topic>
         </topic>
     </topic>
-    <relationship destTopicId="32" endArrow="true" id="56" lineType="3" srcTopicId="15"/>
+    <relationship destTopicId="15" endArrow="true" id="56" lineType="3" srcTopicId="32"/>
 </map>
