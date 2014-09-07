@@ -42,6 +42,7 @@ import java.io.OutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -136,6 +137,7 @@ public class FreemindExporter
     private void addNodeFromTopic(@NotNull final TopicType mainTopic, @NotNull final Node destNode) throws IOException, SAXException, ParserConfigurationException {
         final List<TopicType> currentTopic = mainTopic.getTopic();
 
+        Collections.sort(currentTopic, new VerticalPositionComparator());
         for (TopicType topicType : currentTopic) {
             final Node newNode = objectFactory.createNode();
             nodesMap.put(topicType.getId(), newNode);
