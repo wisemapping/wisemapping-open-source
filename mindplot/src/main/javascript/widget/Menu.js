@@ -207,18 +207,10 @@ mindplot.widget.Menu = new Class({
         }
 
         this._addButton('export', false, false, function () {
-            var reqDialog = new MooDialog.Request('c/iframeWrapper.htm?url=c/maps/' + mapId + "/exportf", null,
-                {'class': 'modalDialog exportModalDialog',
-                    closeButton: true,
-                    destroyOnClose: true,
-                    title: $msg('EXPORT')
-                });
-            reqDialog.setRequestOptions({
-                onRequest: function () {
-                    reqDialog.setContent($msg('LOADING'));
-                }
+            BootstrapDialog.Request.active = new BootstrapDialog.Request('c/maps/' + mapId + "/exportf", $msg('EXPORT'), {
+                cancelButton: true,
+                closeButton: true
             });
-            MooDialog.Request.active = reqDialog;
         });
         this._registerTooltip('export', $msg('EXPORT'));
 
