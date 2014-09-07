@@ -2,9 +2,9 @@ BootstrapDialog.Request = new Class({
 
     Extends: BootstrapDialog,
 
-    initialize: function(url, requestOptions, options) {
-        //this.parent(options);
-        this.requestOptions = requestOptions || {};
+    initialize: function(url, title, options) {
+        this.parent(title, options);
+        this.requestOptions = {};
         this.requestOptions.cache = false;
         var me = this;
         this.requestOptions.fail = function(xhr) {
@@ -28,21 +28,15 @@ BootstrapDialog.Request = new Class({
             });
         };
 
-        var request = $('<div></div>');
-        request.load(url, function() {
-            me._native = $(this).find('.modal');
-            if (!me._native) {
-                throw new Error('modal not found');
-            } else {
-                $(document.body).append(me._native);
-                me.show();
-            }
+        this._native.find('.modal-body').load(url, function () {
+            me.acceptButton.unbind('click').click(function () {
+                submitDialogForm();
+            });
+            me._native.on('hidden.bs.modal', function () {
+                $(this).remove();
+            });
+            me.show();
         });
-
-        this._native.on('hidden.bs.modal', function () {
-            $(this).remove();
-        });
-
     }
 
 
