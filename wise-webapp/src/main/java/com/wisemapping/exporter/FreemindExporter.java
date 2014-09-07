@@ -55,7 +55,7 @@ public class FreemindExporter
     private com.wisemapping.jaxb.freemind.ObjectFactory objectFactory;
     private static final String EMPTY_FONT_STYLE = ";;;;;";
     private Map<String, Node> nodesMap = null;
-    private String version;
+    private String version = "1.0.1";
 
     public void export(Mindmap map, OutputStream outputStream) throws ExportException {
         export(map.getUnzipXml(), outputStream);
