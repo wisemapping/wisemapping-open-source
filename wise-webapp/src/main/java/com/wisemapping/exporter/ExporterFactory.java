@@ -142,6 +142,7 @@ public class ExporterFactory {
             }
             case FREEMIND: {
                 final FreemindExporter exporter = new FreemindExporter();
+                exporter.setVersion(properties.getVersion());
                 exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
                 break;
             }
