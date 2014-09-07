@@ -79,215 +79,215 @@
 <text:sequence-decl text:display-outline-level="0" text:name="Drawing"/>
 </text:sequence-decls>
 <text:p text:style-name="Title">I Care</text:p>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">veiligheid</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">verkeer</text:h>
-<text:p text:style-name="Standard"/>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">filevorming</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">preventie</text:h>
-<text:p text:style-name="Standard"/>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">Omleiding zoeken</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">Openbaar vervoer</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">Openbare fietsen</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">Trackingsysteem, # fietsen op 1 plaats</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">Fiets bestellen in grote steden</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">ongevallen</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">preventie</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">roekeloos rijgedrag opsporen</text:h>
-<text:h text:style-name="Heading_20_6" text:outline-level="6">via sensoren aan boord versnelling, manouvres, snelheid,... registreren</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">bestraffen van chauffeurs?</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">oorzaak</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">nagaan van de oorzaak</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">Automatisch opbellen van hulpdiensten</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">opsporen van vluchtmisdrijf</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">info over de staat van het wegdek</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">wegenwerken</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">waarschuwingen</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">aanpassing van max. snelheid</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">criminaliteit</text:h>
-<text:p text:style-name="Standard"/>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">drugs</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">opsporen</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">individuele tests</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">testen per woonregio (via afvoerstelsels)</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">wapenhandel</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">opsporen</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">diefstal</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">tracking via gps</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">Aantal ongevallen/criminele feiten registreren</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">Mapping van probleemsituaties</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">Meer controle</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">Terugkoppeling naar politie/verkeersdienst</text:h>
 <text:h text:style-name="Heading_20_1" text:outline-level="1">De markt</text:h>
 <text:p text:style-name="Standard"/>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">kleding</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">informatiebronnen per merk</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">slimme kledij</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">kwaliteitsinfo bij aankoop</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">info uit cloud</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">reviews</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">monitoring</text:h>
-<text:p text:style-name="Standard"/>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">stijlen</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">begeleiding bij het winkelen naar gelijkaardige kleding</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">voeding</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">zie bij handelingen --&gt;winkelen</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">electronica</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">eigendomsverificatie</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">GPS tracking</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">koop-verkoop</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">afdanking (sluikstorten)</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">monitoring</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">kwaliteit</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">rechtstreekse link naar producent bij falen</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">reparatieservice</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">levensloop</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">gebruikscycli</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">productie verloop</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">door wie</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">wat/wanneer</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">testfasen</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">medicijnen</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">kwaliteit</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">werking</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">neveneffecten</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">alternatieven</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">hygiëne</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">diensten</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">energie</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">kamer herkent gebruiker</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">automatische lichten</text:h>
 <text:h text:style-name="Heading_20_2" text:outline-level="2">inrichting (woning)</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">monitoring</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">kwaliteit</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">eigendomsverificatie</text:h>
 <text:h text:style-name="Heading_20_3" text:outline-level="3">advies</text:h>
 <text:h text:style-name="Heading_20_4" text:outline-level="4">kleuren en stijlen</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">energie</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">automatische lichten</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">kamer herkent gebruiker</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">diensten</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">hygiëne</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">monitoring</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">eigendomsverificatie</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">kwaliteit</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">medicijnen</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">alternatieven</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">neveneffecten</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">werking</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">kwaliteit</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">electronica</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">monitoring</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">productie verloop</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">testfasen</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">wat/wanneer</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">door wie</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">levensloop</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">gebruikscycli</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">kwaliteit</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">reparatieservice</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">rechtstreekse link naar producent bij falen</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">eigendomsverificatie</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">afdanking (sluikstorten)</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">koop-verkoop</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">GPS tracking</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">voeding</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">zie bij handelingen --&gt;winkelen</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">kleding</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">stijlen</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">begeleiding bij het winkelen naar gelijkaardige kleding</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">monitoring</text:h>
+<text:p text:style-name="Standard"/>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">kwaliteitsinfo bij aankoop</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">reviews</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">info uit cloud</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">informatiebronnen per merk</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">slimme kledij</text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">veiligheid</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">criminaliteit</text:h>
+<text:p text:style-name="Standard"/>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">Aantal ongevallen/criminele feiten registreren</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">Terugkoppeling naar politie/verkeersdienst</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">Meer controle</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">Mapping van probleemsituaties</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">diefstal</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">tracking via gps</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">wapenhandel</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">opsporen</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">drugs</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">opsporen</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">testen per woonregio (via afvoerstelsels)</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">individuele tests</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">verkeer</text:h>
+<text:p text:style-name="Standard"/>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">ongevallen</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">info over de staat van het wegdek</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">aanpassing van max. snelheid</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">waarschuwingen</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">wegenwerken</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">oorzaak</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">opsporen van vluchtmisdrijf</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">Automatisch opbellen van hulpdiensten</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">nagaan van de oorzaak</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">preventie</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">bestraffen van chauffeurs?</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">roekeloos rijgedrag opsporen</text:h>
+<text:h text:style-name="Heading_20_6" text:outline-level="6">via sensoren aan boord versnelling, manouvres, snelheid,... registreren</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">Openbare fietsen</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">Fiets bestellen in grote steden</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">Trackingsysteem, # fietsen op 1 plaats</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">Openbaar vervoer</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">filevorming</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">Omleiding zoeken</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">preventie</text:h>
+<text:p text:style-name="Standard"/>
 <text:h text:style-name="Heading_20_1" text:outline-level="1">handelingen</text:h>
 <text:h text:style-name="Heading_20_2" text:outline-level="2">winkelen</text:h>
 <text:h text:style-name="Heading_20_3" text:outline-level="3">winkelhulp</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">productinfo</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">allergie</text:h>
-<text:h text:style-name="Heading_20_6" text:outline-level="6">Gezondheidscontrole</text:h>
-<text:h text:style-name="Heading_20_6" text:outline-level="6">Sensor voor vers fruit en vlees</text:h>
-<text:h text:style-name="Heading_20_6" text:outline-level="6">Salmonella sensor</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">prijs</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">kwaliteit</text:h>
-<text:h text:style-name="Heading_20_6" text:outline-level="6">via cloud</text:h>
-<text:h text:style-name="Heading_20_6" text:outline-level="6">databases v. reviews</text:h>
-<text:h text:style-name="Heading_20_6" text:outline-level="6">bio</text:h>
-<text:h text:style-name="Heading_20_6" text:outline-level="6">voedingstoffen</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">diëet checker</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">alternatieve producten</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">digitale portemonnee</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">bestellingen op afstand</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">boodschappenlijst</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">alternatieven indien uitverkocht</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">dichtste bij bovenaan</text:h>
 <text:h text:style-name="Heading_20_4" text:outline-level="4">recepten generator</text:h>
 <text:p text:style-name="Standard"/>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">boodschappenlijst</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">dichtste bij bovenaan</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">alternatieven indien uitverkocht</text:h>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">milieu</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">bosbouw</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">ziektes bij bomen</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">parasieten</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">bodemvervuiling</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">onderzoek</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">mag ik dit door mijn gootsteen kappen</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">pollutie</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">afval</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">verwerking</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">riolen</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">cradle 2 cradle</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3"/>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">dioxines</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">eco systemen</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">diversiteit</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">waterreserves</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">reserves</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">vervuiling</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">alternatieve energie</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">wind</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">zon</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">kernenergie</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">bestellingen op afstand</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">digitale portemonnee</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">productinfo</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">alternatieve producten</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">diëet checker</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">kwaliteit</text:h>
+<text:h text:style-name="Heading_20_6" text:outline-level="6">voedingstoffen</text:h>
+<text:h text:style-name="Heading_20_6" text:outline-level="6">bio</text:h>
+<text:h text:style-name="Heading_20_6" text:outline-level="6">databases v. reviews</text:h>
+<text:h text:style-name="Heading_20_6" text:outline-level="6">via cloud</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">prijs</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">allergie</text:h>
+<text:h text:style-name="Heading_20_6" text:outline-level="6">Salmonella sensor</text:h>
+<text:h text:style-name="Heading_20_6" text:outline-level="6">Sensor voor vers fruit en vlees</text:h>
+<text:h text:style-name="Heading_20_6" text:outline-level="6">Gezondheidscontrole</text:h>
 <text:h text:style-name="Heading_20_1" text:outline-level="1">industrie</text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">aandoeningen en situaties</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">dementen</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">eten</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">wassen</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">wegloopdetectie</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">zwangerschap</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">geboortetimer</text:h>
+<text:p text:style-name="Standard"/>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">info over voeding</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">via cloud info over voeding</text:h>
+<text:p text:style-name="Standard"/>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">wat is gezond</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">baby monitoren</text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">sport</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">opvolging van de sporter</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">gps</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">cadans</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">energieverbruik</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">bloeddruk</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">hartslag</text:h>
 <text:h text:style-name="Heading_20_1" text:outline-level="1">cultuur</text:h>
 <text:h text:style-name="Heading_20_2" text:outline-level="2">festival</text:h>
 <text:h text:style-name="Heading_20_1" text:outline-level="1">bouw</text:h>
 <text:p text:style-name="Standard"/>
 <text:h text:style-name="Heading_20_2" text:outline-level="2">opvolging zoals plannen zijn getekend</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">nameten</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">juistheid van materialen</text:h>
 <text:h text:style-name="Heading_20_3" text:outline-level="3">isolatie</text:h>
 <text:h text:style-name="Heading_20_4" text:outline-level="4">warmtemetingen</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">juistheid van materialen</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">nameten</text:h>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">aandoeningen en situaties</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">zwangerschap</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">baby monitoren</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">info over voeding</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">wat is gezond</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">via cloud info over voeding</text:h>
-<text:p text:style-name="Standard"/>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">geboortetimer</text:h>
-<text:p text:style-name="Standard"/>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">dementen</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">wegloopdetectie</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">wassen</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">eten</text:h>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">sport</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">opvolging van de sporter</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">hartslag</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">bloeddruk</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">energieverbruik</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">cadans</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">gps</text:h>
 <text:h text:style-name="Heading_20_1" text:outline-level="1">ziektes</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">stress</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">monitoring</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">in welke afdeling een probleem</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">aanpak</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">aan welke factoren ligt dat</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">afreageren</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">thuisverzorging</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">link naar ziekenhuis</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">link naar dokter</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">meting van de symptomen</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">objectieve metingen</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">toevoeging van eigen waarneming</text:h>
 <text:h text:style-name="Heading_20_2" text:outline-level="2">verschillende ziektes</text:h>
 <text:p text:style-name="Standard"/>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">feedback van de lichaamsconditie</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">aan de patiënt</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">waarschuwingen</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">link</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">naar ziekenhuis</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">naar hulpdiensten</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">naar behandelend arts</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">aan dokter</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">contacteert patient indien nodig</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">volledig overzicht</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">op afstand consulatie</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">MS</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">bevorderen van communicatie tijdens de aftakeling</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">naar de dokters toe</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">naar familie en vrienden toe</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">mucoviscidose</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">longcapaciteit meten</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">alert voor donor</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">aids</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">vergroten van de database aan info</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">diabetes</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">suikerspiegel meten</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">alert indien te laag</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">automatische inspuiting</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">epilepsie</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">aanval voorspellen??</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">anorexia</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">eten ze voldoende</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">nagaan of ze eten</text:h>
 <text:h text:style-name="Heading_20_3" text:outline-level="3">astma</text:h>
 <text:h text:style-name="Heading_20_4" text:outline-level="4">detectie van luchtkwaliteit</text:h>
 <text:h text:style-name="Heading_20_5" text:outline-level="5">in kaart brengen van</text:h>
-<text:h text:style-name="Heading_20_6" text:outline-level="6">vervuiling</text:h>
-<text:h text:style-name="Heading_20_6" text:outline-level="6">pollen</text:h>
 <text:h text:style-name="Heading_20_6" text:outline-level="6">allergie veroorzakende deeltjes</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">anorexia</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">nagaan of ze eten</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">eten ze voldoende</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">thuisverzorging</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">meting van de symptomen</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">toevoeging van eigen waarneming</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">objectieve metingen</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">link naar dokter</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">link naar ziekenhuis</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">stress</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">afreageren</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">monitoring</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">in welke afdeling een probleem</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">aan welke factoren ligt dat</text:h>
-<text:h text:style-name="Heading_20_5" text:outline-level="5">aanpak</text:h>
+<text:h text:style-name="Heading_20_6" text:outline-level="6">pollen</text:h>
+<text:h text:style-name="Heading_20_6" text:outline-level="6">vervuiling</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">epilepsie</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">aanval voorspellen??</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">diabetes</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">suikerspiegel meten</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">automatische inspuiting</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">alert indien te laag</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">aids</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">vergroten van de database aan info</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">mucoviscidose</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">alert voor donor</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">longcapaciteit meten</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">MS</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">bevorderen van communicatie tijdens de aftakeling</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">naar familie en vrienden toe</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">naar de dokters toe</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">feedback van de lichaamsconditie</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">aan dokter</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">op afstand consulatie</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">volledig overzicht</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">contacteert patient indien nodig</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">link</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">naar behandelend arts</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">naar hulpdiensten</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">naar ziekenhuis</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">aan de patiënt</text:h>
+<text:h text:style-name="Heading_20_5" text:outline-level="5">waarschuwingen</text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">milieu</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">alternatieve energie</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">kernenergie</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">zon</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">wind</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">waterreserves</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">vervuiling</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">reserves</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">eco systemen</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">diversiteit</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">dioxines</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">afval</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3"/>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">cradle 2 cradle</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">riolen</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">verwerking</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">pollutie</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">mag ik dit door mijn gootsteen kappen</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">bosbouw</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">bodemvervuiling</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">onderzoek</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">parasieten</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">ziektes bij bomen</text:h>
 </office:text>
 </office:body>
 </office:document-content>

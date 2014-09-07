@@ -79,13 +79,6 @@
 <text:sequence-decl text:display-outline-level="0" text:name="Drawing"/>
 </text:sequence-decls>
 <text:p text:style-name="Title">La computadora</text:p>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">Hardware(componentes físicos)</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">Entrada de datos</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">Ratón, Teclado, Joystick,Cámara digital, Micrófono, Escáner.</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">Salida de datos</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">Monitor, Impresora, Bocinas, Plóter.</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">Almacenamiento</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">Disquete, Disco compacto, DVD,BD, Disco duro, Memoria flash.</text:h>
 <text:h text:style-name="Heading_20_1" text:outline-level="1">Software(Programas y datos con los que funciona la computadora)</text:h>
 <text:h text:style-name="Heading_20_2" text:outline-level="2">Software de Sistema:Permite el entendimientoentre el usuario y la maquina.</text:h>
 <text:h text:style-name="Heading_20_3" text:outline-level="3">Microsoft Windows</text:h>
@@ -97,6 +90,13 @@
 <text:h text:style-name="Heading_20_3" text:outline-level="3">Navegadores</text:h>
 <text:h text:style-name="Heading_20_3" text:outline-level="3">Msn</text:h>
 <text:h text:style-name="Heading_20_2" text:outline-level="2">Software de Desarrollo</text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">Hardware(componentes físicos)</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">Entrada de datos</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">Ratón, Teclado, Joystick,Cámara digital, Micrófono, Escáner.</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">Salida de datos</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">Monitor, Impresora, Bocinas, Plóter.</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">Almacenamiento</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">Disquete, Disco compacto, DVD,BD, Disco duro, Memoria flash.</text:h>
 <text:h text:style-name="Heading_20_1" text:outline-level="1">Tipos de computadora</text:h>
 <text:h text:style-name="Heading_20_2" text:outline-level="2">Computadora personal de escritorio o Desktop</text:h>
 <text:h text:style-name="Heading_20_2" text:outline-level="2">PDA</text:h>

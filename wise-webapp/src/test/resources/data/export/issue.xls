@@ -29,54 +29,6 @@
 <Row>
 <Cell ss:Index="2">
 <ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
-<p>Hardware</p>
-<p>(componentes físicos)</p>
-</ss:Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="3">
-<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
-<p>Entrada de datos</p>
-</ss:Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="4">
-<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
-<p>Ratón, Teclado, Joystick,</p>
-<p>Cámara digital, Micrófono, Escáner.</p>
-</ss:Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="3">
-<Data ss:Type="String">Salida de datos</Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="4">
-<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
-<p>Monitor, Impresora, Bocinas, Plóter.</p>
-</ss:Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="3">
-<Data ss:Type="String">Almacenamiento</Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="4">
-<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
-<p>Disquete, Disco compacto, DVD,</p>
-<p>BD, Disco duro, Memoria flash.</p>
-</ss:Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="2">
-<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
 <p>Software</p>
 <p>(Programas y datos con los que funciona la computadora)</p>
 </ss:Data>
@@ -137,6 +89,54 @@
 <Cell ss:Index="3">
 <ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
 <p>Software de Desarrollo</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Hardware</p>
+<p>(componentes físicos)</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Entrada de datos</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Ratón, Teclado, Joystick,</p>
+<p>Cámara digital, Micrófono, Escáner.</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Salida de datos</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Monitor, Impresora, Bocinas, Plóter.</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Almacenamiento</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Disquete, Disco compacto, DVD,</p>
+<p>BD, Disco duro, Memoria flash.</p>
 </ss:Data>
 </Cell>
 </Row>

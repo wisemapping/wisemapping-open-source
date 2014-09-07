@@ -1,19 +1,5 @@
-<map version="0.9.0">
+<map version="1.0.1">
     <node ID="ID_0" TEXT="Shapes">
-        <node ID="ID_1" POSITION="right" TEXT="Node Styles">
-            <node ID="ID_2" POSITION="right" TEXT="Fork">
-                <edge COLOR="#808080"/>
-            </node>
-            <node ID="ID_3" POSITION="right" STYLE="bubble" TEXT="Bubble">
-                <edge COLOR="#808080"/>
-            </node>
-            <node ID="ID_4" POSITION="right" TEXT="As parent">
-                <edge COLOR="#808080"/>
-            </node>
-            <node ID="ID_5" POSITION="right" TEXT="Combined">
-                <edge COLOR="#808080"/>
-            </node>
-        </node>
         <node BACKGROUND_COLOR="#f20707" ID="ID_6" POSITION="left" STYLE="rectagle" TEXT="Node Background Color">
             <node BACKGROUND_COLOR="#0000cc" ID="ID_7" POSITION="left" STYLE="rectagle" TEXT="Fork">
                 <edge COLOR="#808080"/>
@@ -25,6 +11,20 @@
                 <edge COLOR="#808080"/>
             </node>
             <node BACKGROUND_COLOR="#990099" ID="ID_10" POSITION="left" STYLE="rectagle" TEXT="Combined">
+                <edge COLOR="#808080"/>
+            </node>
+        </node>
+        <node ID="ID_1" POSITION="right" TEXT="Node Styles">
+            <node ID="ID_2" POSITION="right" TEXT="Fork">
+                <edge COLOR="#808080"/>
+            </node>
+            <node ID="ID_3" POSITION="right" STYLE="bubble" TEXT="Bubble">
+                <edge COLOR="#808080"/>
+            </node>
+            <node ID="ID_4" POSITION="right" TEXT="As parent">
+                <edge COLOR="#808080"/>
+            </node>
+            <node ID="ID_5" POSITION="right" TEXT="Combined">
                 <edge COLOR="#808080"/>
             </node>
         </node>

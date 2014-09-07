@@ -58,17 +58,17 @@
 </Row>
 <Row>
 <Cell ss:Index="3">
+<Data ss:Type="String"/>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
 <Data ss:Type="String">Brainstorming</Data>
 </Cell>
 </Row>
 <Row>
 <Cell ss:Index="3">
 <Data ss:Type="String">Visual </Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="3">
-<Data ss:Type="String"/>
 </Cell>
 </Row>
 <Row>

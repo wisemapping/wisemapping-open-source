@@ -1,4 +1,4 @@
-<map version="0.9.0">
+<map version="1.0.1">
     <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_1" TEXT="As&#237; que quieres recorrer Medell&#237;n...">
         <font SIZE="24"/>
         <edge COLOR="#ffffff"/>
@@ -538,7 +538,6 @@
                                             <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_62" POSITION="left" STYLE="bubble" TEXT="S&#237;">
                                                 <font/>
                                                 <edge COLOR="#000000"/>
-                                                <arrowlink DESTINATION="ID_76" ENDARROW="Default"/>
                                             </node>
                                             <node BACKGROUND_COLOR="#000000" COLOR="#ffffff" ID="ID_63" POSITION="left" STYLE="bubble" TEXT="Tampoco">
                                                 <font/>
@@ -670,6 +669,7 @@
                                     <edge COLOR="#000000"/>
                                 </node>
                             </node>
+                            <arrowlink DESTINATION="ID_62" ENDARROW="Default"/>
                         </node>
                     </node>
                 </node>

@@ -220,6 +220,6 @@
             </topic>
         </topic>
     </topic>
-    <relationship destTopicId="32" endArrow="true" id="71" lineType="3" srcTopicId="27"/>
-    <relationship destTopicId="36" endArrow="true" id="72" lineType="3" srcTopicId="27"/>
+    <relationship destTopicId="27" endArrow="true" id="71" lineType="3" srcTopicId="32"/>
+    <relationship destTopicId="27" endArrow="true" id="72" lineType="3" srcTopicId="36"/>
 </map>
