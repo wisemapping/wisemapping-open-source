@@ -49,12 +49,12 @@ import java.util.Map;
 public class FreemindExporter
         implements Exporter {
 
-    private static final String FREE_MIND_VERSION = "0.9.0";
     private static final String POSITION_LEFT = "left";
     private static final String POSITION_RIGHT = "right";
     private com.wisemapping.jaxb.freemind.ObjectFactory objectFactory;
     private static final String EMPTY_FONT_STYLE = ";;;;;";
     private Map<String, Node> nodesMap = null;
+    private String version;
 
     public void export(Mindmap map, OutputStream outputStream) throws ExportException {
         export(map.getUnzipXml(), outputStream);
@@ -71,7 +71,7 @@ public class FreemindExporter
             mindmapMap = (com.wisemapping.jaxb.wisemap.Map) JAXBUtils.getMapObject(stream, "com.wisemapping.jaxb.wisemap");
 
             final com.wisemapping.jaxb.freemind.Map freemindMap = objectFactory.createMap();
-            freemindMap.setVersion(FREE_MIND_VERSION);
+            freemindMap.setVersion(this.getVersion());
 
             final List<TopicType> topics = mindmapMap.getTopic();
 
@@ -342,4 +342,11 @@ public class FreemindExporter
     }
 
 
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
 }
