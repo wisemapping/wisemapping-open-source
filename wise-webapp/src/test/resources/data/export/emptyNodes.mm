@@ -1,4 +1,4 @@
-<map version="0.9.0">
+<map version="1.0.1">
     <node BACKGROUND_COLOR="#ffcc33" COLOR="#0000cc" ID="ID_0" TEXT="">
         <font BOLD="true" NAME="Arial"/>
         <edge COLOR="#808080"/>

@@ -2,27 +2,27 @@
 <map name="basic" version="tango">
     <topic central="true" id="0" position="0,0" shape="rounded rectagle">
         <text><![CDATA[This is the root node]]></text>
-        <topic id="1" order="0" position="200,0" shape="line">
+        <topic id="1" order="0" position="200,-50" shape="line">
             <text><![CDATA[Child Level 1 Right 1]]></text>
         </topic>
-        <topic id="2" order="0" position="-200,0" shape="line">
+        <topic id="2" order="1" position="-200,-50" shape="line">
             <text><![CDATA[Child Level 1 Left 1]]></text>
-            <topic id="3" order="0" position="-290,-25" shape="line">
+            <topic id="3" order="0" position="-290,-75" shape="line">
                 <text><![CDATA[Child Level 2 Left 11]]></text>
             </topic>
-            <topic id="4" order="1" position="-290,0" shape="line">
+            <topic id="4" order="1" position="-290,-50" shape="line">
                 <text><![CDATA[Child Level 2 Left 12]]></text>
             </topic>
         </topic>
-        <topic id="5" order="4" position="200,100" shape="line">
+        <topic id="5" order="2" position="200,50" shape="line">
             <text><![CDATA[Child Level 1 Right 2]]></text>
         </topic>
-        <topic id="6" order="4" position="-200,100" shape="line">
+        <topic id="6" order="3" position="-200,50" shape="line">
             <text><![CDATA[Child Level 1 Left  2]]></text>
-            <topic id="7" order="0" position="-290,75" shape="line">
+            <topic id="7" order="0" position="-290,25" shape="line">
                 <text><![CDATA[Child Level 2 Left 21 ]]></text>
             </topic>
-            <topic id="8" order="1" position="-290,100" shape="line">
+            <topic id="8" order="1" position="-290,50" shape="line">
                 <text><![CDATA[Child Level 2 Left 22]]></text>
             </topic>
         </topic>

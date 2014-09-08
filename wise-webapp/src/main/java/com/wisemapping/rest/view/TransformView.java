@@ -56,12 +56,16 @@ public class TransformView extends AbstractView {
 
         final String content = (String) viewMap.get("content");
         final String filename = (String) viewMap.get("filename");
+        final String version = (String) viewMap.get("version");
 
         // Build format properties ...
         final ExportProperties properties = ExportProperties.create(exportFormat);
         if (properties instanceof ExportProperties.ImageProperties) {
             final ExportProperties.ImageProperties imageProperties = (ExportProperties.ImageProperties) properties;
             imageProperties.setSize(ExportProperties.ImageProperties.Size.LARGE);
+        }
+        if (version != null) {
+            properties.setVersion(version);
         }
 
         // Set format content type...
