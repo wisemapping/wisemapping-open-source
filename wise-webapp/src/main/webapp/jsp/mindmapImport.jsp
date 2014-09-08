@@ -96,7 +96,8 @@
                     contentType:contentType,
                     statusCode: {
                         201: onSuccess,
-                        400: onError
+                        400: onError,
+                        default: onError
                     }
                 });
         event.preventDefault();
