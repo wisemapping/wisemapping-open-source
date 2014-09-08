@@ -30,19 +30,15 @@
         </node>
         <node BACKGROUND_COLOR="#f20707" ID="ID_11" POSITION="left" STYLE="rectagle" TEXT="Node Text Color">
             <node BACKGROUND_COLOR="#0000cc" COLOR="#ffff00" ID="ID_12" POSITION="left" STYLE="rectagle" TEXT="Fork">
-                <font/>
                 <edge COLOR="#808080"/>
             </node>
             <node BACKGROUND_COLOR="#ccffcc" COLOR="#ff6666" ID="ID_13" POSITION="left" STYLE="bubble" TEXT="Bubble">
-                <font/>
                 <edge COLOR="#808080"/>
             </node>
             <node BACKGROUND_COLOR="#00ffff" COLOR="#009999" ID="ID_14" POSITION="left" STYLE="rectagle" TEXT="As parent">
-                <font/>
                 <edge COLOR="#808080"/>
             </node>
             <node BACKGROUND_COLOR="#990099" COLOR="#009999" ID="ID_15" POSITION="left" STYLE="rectagle" TEXT="Combined">
-                <font/>
                 <edge COLOR="#808080"/>
             </node>
         </node>

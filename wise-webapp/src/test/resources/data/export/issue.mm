@@ -152,12 +152,12 @@
                 </node>
             </node>
         </node>
-        <node ID="ID_3" POSITION="left" STYLE="elipse" TEXT="Tipos de computadora">
+        <node ID="ID_3" POSITION="left" STYLE="bubble" TEXT="Tipos de computadora">
             <font BOLD="true" SIZE="18"/>
-            <node ID="ID_8" POSITION="left" STYLE="elipse" TEXT="Computadora personal de escritorio o Desktop">
+            <node ID="ID_8" POSITION="left" STYLE="bubble" TEXT="Computadora personal de escritorio o Desktop">
                 <font BOLD="true" SIZE="12"/>
             </node>
-            <node ID="ID_10" POSITION="left" STYLE="elipse">
+            <node ID="ID_10" POSITION="left" STYLE="bubble">
                 <richcontent TYPE="NODE">
                     <html>
                         <head/>
@@ -168,13 +168,13 @@
                 </richcontent>
                 <font BOLD="true" SIZE="12"/>
             </node>
-            <node ID="ID_11" POSITION="left" STYLE="elipse" TEXT="Laptop">
+            <node ID="ID_11" POSITION="left" STYLE="bubble" TEXT="Laptop">
                 <font BOLD="true" SIZE="12"/>
             </node>
-            <node ID="ID_12" POSITION="left" STYLE="elipse" TEXT="Servidor">
+            <node ID="ID_12" POSITION="left" STYLE="bubble" TEXT="Servidor">
                 <font BOLD="true" SIZE="12"/>
             </node>
-            <node ID="ID_13" POSITION="left" STYLE="elipse" TEXT="Tablet PC">
+            <node ID="ID_13" POSITION="left" STYLE="bubble" TEXT="Tablet PC">
                 <font BOLD="true" SIZE="12"/>
             </node>
         </node>

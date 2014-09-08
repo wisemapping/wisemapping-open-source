@@ -177,17 +177,23 @@ public class FreemindExporter
             }
         }
 
-        freemindNode.setBACKGROUNDCOLOR(mindmapTopic.getBgColor());
+        String wiseShape = mindmapTopic.getShape();
+        if (wiseShape != null && !ShapeStyle.LINE.equals(ShapeStyle.fromValue(wiseShape))) {
+            freemindNode.setBACKGROUNDCOLOR(mindmapTopic.getBgColor());
+        }
         final String shape = mindmapTopic.getShape();
         if (shape != null && !shape.isEmpty()) {
             if (isRoot && !ShapeStyle.ROUNDED_RECTANGLE.getStyle().endsWith(shape) || !isRoot && !ShapeStyle.LINE.getStyle().endsWith(shape)) {
 
                 String style = shape;
-                if (ShapeStyle.ROUNDED_RECTANGLE.getStyle().equals(shape)) {
+                if (ShapeStyle.ROUNDED_RECTANGLE.getStyle().equals(shape) || ShapeStyle.ELLIPSE.getStyle().equals(shape)) {
                     style = "bubble";
                 }
                 freemindNode.setSTYLE(style);
             }
+        } else if (!isRoot) {
+            String style = "fork";
+            freemindNode.setSTYLE(style);
         }
 
         addIconNode(freemindNode, mindmapTopic);
@@ -277,7 +283,7 @@ public class FreemindExporter
             final Font font = objectFactory.createFont();
             final String[] part = fontStyle.split(";", 6);
             int countParts = part.length;
-            boolean updated = false;
+            boolean fontNodeNeeded = false;
 
             if (!fontStyle.endsWith(FreemindConstant.EMPTY_FONT_STYLE)) {
                 int idx = 0;
@@ -285,7 +291,7 @@ public class FreemindExporter
                 // Font name
                 if (idx < countParts && part[idx].length() != 0) {
                     font.setNAME(part[idx]);
-                    updated = true;
+                    fontNodeNeeded = true;
                 }
                 idx++;
 
@@ -293,11 +299,11 @@ public class FreemindExporter
                 if (idx < countParts && part[idx].length() != 0) {
                     final String size = part[idx];
                     if (size != null && !size.isEmpty()) {
-                        int freeSize = Integer.parseInt(size);
-                        Integer fsize = wiseToFreeFontSize.get(freeSize);
-                        if(fsize!=null){
-                            font.setSIZE(BigInteger.valueOf(fsize));
-                            updated = true;
+                        int wiseSize = Integer.parseInt(size);
+                        Integer freeSize = wiseToFreeFontSize.get(wiseSize);
+                        if(freeSize!=null){
+                            font.setSIZE(BigInteger.valueOf(freeSize));
+                            fontNodeNeeded = true;
                         }
                     }
                 }
@@ -306,23 +312,26 @@ public class FreemindExporter
                 // Font Color
                 if (idx < countParts && part[idx].length() != 0) {
                     freemindNode.setCOLOR(part[idx]);
-                    updated = true;
                 }
                 idx++;
 
                 // Font Styles
                 if (idx < countParts && part[idx].length() != 0) {
                     font.setBOLD(Boolean.TRUE.toString());
-                    updated = true;
+                    fontNodeNeeded = true;
                 }
                 idx++;
 
                 if (idx < countParts && part[idx].length() != 0) {
                     font.setITALIC(Boolean.TRUE.toString());
-                    updated = true;
+                    fontNodeNeeded = true;
                 }
 
-                if (updated) {
+                if (fontNodeNeeded) {
+                    // font size should be set if freemind node has font properties note
+                    if (font.getSIZE() == null) {
+                        font.setSIZE(BigInteger.valueOf(wiseToFreeFontSize.get(8)));
+                    }
                     freemindNode.getArrowlinkOrCloudOrEdge().add(font);
                 }
             }
