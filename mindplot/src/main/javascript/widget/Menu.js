@@ -349,18 +349,10 @@ mindplot.widget.Menu = new Class({
         var shareElem = $('#shareIt');
         if (shareElem) {
             this._addButton('shareIt', false, false, function () {
-                var reqDialog = new MooDialog.Request('c/iframeWrapper?url=c/maps/' + mapId + "/sharef", null,
-                    {'class': 'modalDialog shareModalDialog',
+                BootstrapDialog.Request.active = new BootstrapDialog.Request('c/maps/' + mapId + "/sharef", $msg('COLLABORATE'), {
                         closeButton: true,
-                        destroyOnClose: true,
-                        title: $msg('COLLABORATE')
-                    });
-                reqDialog.setRequestOptions({
-                    onRequest: function () {
-                        reqDialog.setContent($msg('LOADING'));
-                    }
+                        cancelButton: true
                 });
-                MooDialog.Request.active = reqDialog;
             });
             this._registerTooltip('shareIt', $msg('COLLABORATE'));
 
@@ -369,19 +361,10 @@ mindplot.widget.Menu = new Class({
         var publishElem = $('#publishIt');
         if (publishElem) {
             this._addButton('publishIt', false, false, function () {
-                var reqDialog = new MooDialog.Request('c/iframeWrapper?url=c/maps/' + mapId + "/publishf", null,
-                    {'class': 'modalDialog publishModalDialog',
+                BootstrapDialog.Request.active = new BootstrapDialog.Request('c/maps/' + mapId + "/publishf", $msg('PUBLISH'), {
                         closeButton: true,
-                        destroyOnClose: true,
-                        title: $msg('PUBLISH')
-                    });
-                reqDialog.setRequestOptions({
-                    onRequest: function () {
-                        reqDialog.setContent($msg('LOADING'));
-                    }
+                        cancelButton: true
                 });
-                MooDialog.Request.active = reqDialog;
-
             });
             this._registerTooltip('publishIt', $msg('PUBLISH'));
         }
@@ -390,16 +373,9 @@ mindplot.widget.Menu = new Class({
         if (historyElem) {
 
             this._addButton('history', false, false, function () {
-                var reqDialog = new MooDialog.Request('c/iframeWrapper?url=c/maps/' + mapId + "/historyf", null,
-                    {'class': 'modalDialog historyModalDialog',
-                        closeButton: true,
-                        destroyOnClose: true,
-                        title: $msg('HISTORY')
-                    });
-                reqDialog.setRequestOptions({
-                    onRequest: function () {
-                        reqDialog.setContent($msg('LOADING'));
-                    }
+                BootstrapDialog.Request.active = new BootstrapDialog.Request('c/maps/' + mapId + "/historyf", $msg('HISTORY'), {
+                    closeButton: true,
+                    cancelButton: true
                 });
             });
             this._registerTooltip('history', $msg('HISTORY'));
@@ -412,18 +388,10 @@ mindplot.widget.Menu = new Class({
         if (keyboardShortcut) {
 
             keyboardShortcut.bind('click', function (event) {
-                var reqDialog = new MooDialog.Request('c/keyboard', null,
-                    {'class': 'modalDialog keyboardModalDialog',
-                        closeButton: true,
-                        destroyOnClose: true,
-                        title: $msg('SHORTCUTS')
-                    });
-                reqDialog.setRequestOptions({
-                    onRequest: function () {
-                        reqDialog.setContent($msg('LOADING'));
-                    }
+                BootstrapDialog.Request.active = new BootstrapDialog.Request('c/keyboard', $msg('SHORTCUTS'), {
+                    closeButton: true,
+                    cancelButton: true
                 });
-                MooDialog.Request.active = reqDialog;
                 event.preventDefault();
             });
         }
