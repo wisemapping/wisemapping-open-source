@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 public class VersionComparisonTest {
 
     @Test
-    public void testVersionComparison() throws ImporterException {
+    public void compareVersionTest() throws ImporterException {
 
         final VersionNumber greatest = new VersionNumber("1.0.1");
         final VersionNumber smaller = new VersionNumber("0.9.0");
@@ -17,8 +17,10 @@ public class VersionComparisonTest {
 
         Assert.assertTrue(smaller.isSmallerThan(intermediate));
         Assert.assertFalse(greatest.isSmallerThan(intermediate));
+
         Assert.assertTrue(greatest.isGreaterThan(smaller));
         Assert.assertFalse(intermediate.isGreaterThan(greatest));
+
         Assert.assertTrue(intermediate.equals(intermediate));
         Assert.assertFalse(greatest.equals(smaller));
 
