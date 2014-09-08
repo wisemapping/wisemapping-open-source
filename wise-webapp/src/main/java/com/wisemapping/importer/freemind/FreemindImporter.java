@@ -44,38 +44,17 @@ import java.io.InputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.nio.charset.Charset;
 import java.util.*;
 import java.math.BigInteger;
 
 public class FreemindImporter
         implements Importer {
 
-    public static final String CODE_VERSION = "tango";
-    public static final int SECOND_LEVEL_TOPIC_HEIGHT = 25;
-    public static final int ROOT_LEVEL_TOPIC_HEIGHT = SECOND_LEVEL_TOPIC_HEIGHT;
-    public static final int CENTRAL_TO_TOPIC_DISTANCE = 200;
-    public static final int TOPIC_TO_TOPIC_DISTANCE = 90;
-    public static final String NODE_TYPE = "NODE";
     private com.wisemapping.jaxb.wisemap.ObjectFactory mindmapObjectFactory;
-    private static final String POSITION_LEFT = "left";
-    private static final String POSITION_RIGHT = "right";
-    private static final String BOLD = "bold";
-    private static final String ITALIC = "italic";
-    private static final String EMPTY_NOTE = "";
     private java.util.Map<String, TopicType> nodesMap = null;
     private List<RelationshipType> relationships = null;
-    private static final String EMPTY_FONT_STYLE = ";;;;;";
-    private final static Charset UTF_8_CHARSET = Charset.forName("UTF-8");
-    private final static int ORDER_SEPARATION_FACTOR = 2;
-    private static final VersionNumber SUPPORTED_FREEMIND_VERSION = new VersionNumber("1.0.1");
-
 
     private int currentId;
-    private static final int FONT_SIZE_HUGE = 15;
-    private static final int FONT_SIZE_LARGE = 10;
-    public static final int FONT_SIZE_NORMAL = 8;
-    private static final int FONT_SIZE_SMALL = 6;
 
     public static void main(String argv[]) {
 
@@ -120,7 +99,7 @@ public class FreemindImporter
             if (version != null) {
 
                 final VersionNumber mapVersion = new VersionNumber(version);
-                if (mapVersion.isGreaterThan(SUPPORTED_FREEMIND_VERSION)) {
+                if (mapVersion.isGreaterThan(FreemindConstant.SUPPORTED_FREEMIND_VERSION)) {
                     throw new ImporterException("FreeMind version " + mapVersion.getVersion() + " is not supported.");
                 }
             }
@@ -129,7 +108,7 @@ public class FreemindImporter
             final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
             final com.wisemapping.jaxb.wisemap.Map mindmapMap = mindmapObjectFactory.createMap();
-            mindmapMap.setVersion(CODE_VERSION);
+            mindmapMap.setVersion(FreemindConstant.CODE_VERSION);
             currentId = 0;
 
             final Node freeNode = freemindMap.getNode();
@@ -150,7 +129,7 @@ public class FreemindImporter
             addRelationships(mindmapMap);
 
             JAXBUtils.saveMap(mindmapMap, baos);
-            wiseXml = new String(baos.toByteArray(), UTF_8_CHARSET);
+            wiseXml = new String(baos.toByteArray(), FreemindConstant.UTF_8_CHARSET);
             result.setXmlStr(wiseXml);
             result.setTitle(mapName);
             result.setDescription(description);
@@ -248,7 +227,7 @@ public class FreemindImporter
                 if (depth != 1) {
                     norder = order++;
                 } else {
-                    if (freeChild.getPOSITION() != null && freeChild.getPOSITION().equals(POSITION_LEFT)) {
+                    if (freeChild.getPOSITION() != null && freeChild.getPOSITION().equals(FreemindConstant.POSITION_LEFT)) {
                         norder = firstLevelLeftOrder;
                         firstLevelLeftOrder = firstLevelLeftOrder + 2;
                     } else {
@@ -299,7 +278,7 @@ public class FreemindImporter
                 String textNote = hook.getText();
                 if (textNote == null) // It is not a note is a BlinkingNodeHook or AutomaticLayout Hook
                 {
-                    textNote = EMPTY_NOTE;
+                    textNote = FreemindConstant.EMPTY_NOTE;
                     mindmapNote.setValue(textNote);
                     currentWiseTopic.setNote(mindmapNote);
                 }
@@ -307,13 +286,13 @@ public class FreemindImporter
                 final Richcontent content = (Richcontent) element;
                 final String type = content.getTYPE();
 
-                if (type.equals(NODE_TYPE)) {
+                if (type.equals(FreemindConstant.NODE_TYPE)) {
                     String text = html2text(content);
                     currentWiseTopic.setText(text);
                 } else {
                     String text = html2text(content);
                     final com.wisemapping.jaxb.wisemap.Note mindmapNote = new com.wisemapping.jaxb.wisemap.Note();
-                    text = text != null ? text : EMPTY_NOTE;
+                    text = text != null ? text : FreemindConstant.EMPTY_NOTE;
                     mindmapNote.setValue(text);
                     currentWiseTopic.setNote(mindmapNote);
 
@@ -355,7 +334,7 @@ public class FreemindImporter
         int result = 0;
         String childSide = freeChild.getPOSITION();
         if (childSide == null) {
-            childSide = POSITION_RIGHT;
+            childSide = FreemindConstant.POSITION_RIGHT;
         }
 
         // Count all the nodes of the same side ...
@@ -365,7 +344,7 @@ public class FreemindImporter
 
                 String side = node.getPOSITION();
                 if (side == null) {
-                    side = POSITION_RIGHT;
+                    side = FreemindConstant.POSITION_RIGHT;
                 }
                 if (childSide.equals(side)) {
                     result++;
@@ -390,11 +369,11 @@ public class FreemindImporter
 
         // Problem on setting X position:
         // Text Size is not taken into account ...
-        int x = CENTRAL_TO_TOPIC_DISTANCE + ((depth - 1) * TOPIC_TO_TOPIC_DISTANCE);
+        int x = FreemindConstant.CENTRAL_TO_TOPIC_DISTANCE + ((depth - 1) * FreemindConstant.TOPIC_TO_TOPIC_DISTANCE);
         if (depth == 1) {
 
             final String side = freeChild.getPOSITION();
-            x = x * (side != null && POSITION_LEFT.equals(side) ? -1 : 1);
+            x = x * (side != null && FreemindConstant.POSITION_LEFT.equals(side) ? -1 : 1);
         } else {
             final Coord coord = Coord.parse(wiseParent.getPosition());
             x = x * (coord.isOnLeftSide() ? -1 : 1);
@@ -409,17 +388,17 @@ public class FreemindImporter
             // odd order numbers represent nodes at the left
             if (order % 2 == 0) {
                 int multiplier = ((order + 1) - childrenCount) * 2;
-                y = multiplier * ROOT_LEVEL_TOPIC_HEIGHT;
+                y = multiplier * FreemindConstant.ROOT_LEVEL_TOPIC_HEIGHT;
             } else {
                 int multiplier = (order - childrenCount) * 2;
-                y = multiplier * ROOT_LEVEL_TOPIC_HEIGHT;
+                y = multiplier * FreemindConstant.ROOT_LEVEL_TOPIC_HEIGHT;
             }
         } else {
 
             // Problem: What happen if the node is more tall than what is defined here.
             Coord coord = Coord.parse(wiseParent.getPosition());
             int parentY = coord.y;
-            y = parentY - ((childrenCount / 2) * SECOND_LEVEL_TOPIC_HEIGHT - (order * SECOND_LEVEL_TOPIC_HEIGHT));
+            y = parentY - ((childrenCount / 2) * FreemindConstant.SECOND_LEVEL_TOPIC_HEIGHT - (order * FreemindConstant.SECOND_LEVEL_TOPIC_HEIGHT));
 
 
         }
@@ -551,14 +530,14 @@ public class FreemindImporter
         // 10 Large
         // 15 Huge
         if (font != null) {
-            final int fontSize = ((font.getSIZE() == null || font.getSIZE().intValue() < 8) ? BigInteger.valueOf(FONT_SIZE_NORMAL) : font.getSIZE()).intValue();
-            int wiseFontSize = FONT_SIZE_SMALL;
+            final int fontSize = ((font.getSIZE() == null || font.getSIZE().intValue() < 8) ? BigInteger.valueOf(FreemindConstant.FONT_SIZE_NORMAL) : font.getSIZE()).intValue();
+            int wiseFontSize = FreemindConstant.FONT_SIZE_SMALL;
             if (fontSize >= 24) {
-                wiseFontSize = FONT_SIZE_HUGE;
+                wiseFontSize = FreemindConstant.FONT_SIZE_HUGE;
             } else if (fontSize >= 16) {
-                wiseFontSize = FONT_SIZE_LARGE;
+                wiseFontSize = FreemindConstant.FONT_SIZE_LARGE;
             } else if (fontSize >= 12) {
-                wiseFontSize = FONT_SIZE_NORMAL;
+                wiseFontSize = FreemindConstant.FONT_SIZE_NORMAL;
             }
             fontStyle.append(wiseFontSize);
 
@@ -575,19 +554,19 @@ public class FreemindImporter
         // Bold ...
         if (font != null) {
             boolean hasBold = Boolean.parseBoolean(font.getBOLD());
-            fontStyle.append(hasBold ? BOLD : "");
+            fontStyle.append(hasBold ? FreemindConstant.BOLD : "");
         }
         fontStyle.append(";");
 
         // Italic ...
         if (font != null) {
             boolean hasItalic = Boolean.parseBoolean(font.getITALIC());
-            fontStyle.append(hasItalic ? ITALIC : "");
+            fontStyle.append(hasItalic ? FreemindConstant.ITALIC : "");
         }
         fontStyle.append(";");
 
         final String result = fontStyle.toString();
-        return result.equals(EMPTY_FONT_STYLE) ? null : result;
+        return result.equals(FreemindConstant.EMPTY_FONT_STYLE) ? null : result;
     }
 
     private

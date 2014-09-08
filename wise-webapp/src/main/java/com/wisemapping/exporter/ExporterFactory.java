@@ -18,6 +18,7 @@
 
 package com.wisemapping.exporter;
 
+import com.wisemapping.importer.VersionNumber;
 import org.apache.batik.parser.AWTTransformProducer;
 import org.apache.batik.parser.ParseException;
 import org.apache.batik.parser.TransformListParser;
@@ -142,7 +143,7 @@ public class ExporterFactory {
             }
             case FREEMIND: {
                 final FreemindExporter exporter = new FreemindExporter();
-                exporter.setVersion(properties.getVersion());
+                exporter.setVersion(new VersionNumber(properties.getVersion()));
                 exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
                 break;
             }
