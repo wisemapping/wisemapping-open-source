@@ -78,6 +78,12 @@
 </div>
 
 
+<style>
+    h2 {
+        font-size: 160%;
+        color: #8e9181;
+    }
+</style>
 <script type="text/javascript">
 
     // No way to obtain map svg. Hide panels..
