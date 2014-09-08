@@ -2694,6 +2694,56 @@
 <w:pStyle w:val="Heading1"/>
 </w:pPr>
 <w:r>
+<w:t>How to improve image</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>Rankings</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>macro indicators</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>meso-indicators</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>Innovation investment climate</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
 <w:t>What investments in innovative projects</w:t>
 </w:r>
 </w:p>
@@ -3006,56 +3056,6 @@
 </w:r>
 </w:p>
 </wx:sub-section>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
-<w:t>How to improve image</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>Rankings</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>macro indicators</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>meso-indicators</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>Innovation investment climate</w:t>
-</w:r>
-</w:p>
 </wx:sub-section>
 </wx:sub-section>
 </wx:sub-section>

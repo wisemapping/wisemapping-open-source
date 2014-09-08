@@ -1,4 +1,4 @@
-<map version="0.9.0">
+<map version="1.0.1">
     <node BACKGROUND_COLOR="#0a0a08" COLOR="#dfcfe6" ID="ID_1" TEXT="Welcome To WiseMapping">
         <font/>
         <node BACKGROUND_COLOR="#250be3" COLOR="#ffffff" ID="ID_11" POSITION="right" TEXT="Try it Now!">

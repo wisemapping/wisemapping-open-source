@@ -19,6 +19,8 @@
 package com.wisemapping.exporter;
 
 
+import com.wisemapping.importer.VersionNumber;
+import com.wisemapping.importer.freemind.FreemindConstant;
 import com.wisemapping.importer.freemind.FreemindIconConverter;
 import com.wisemapping.jaxb.wisemap.Note;
 import com.wisemapping.model.Mindmap;
@@ -42,6 +44,7 @@ import java.io.OutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,12 +52,10 @@ import java.util.Map;
 public class FreemindExporter
         implements Exporter {
 
-    private static final String FREE_MIND_VERSION = "0.9.0";
-    private static final String POSITION_LEFT = "left";
-    private static final String POSITION_RIGHT = "right";
+
     private com.wisemapping.jaxb.freemind.ObjectFactory objectFactory;
-    private static final String EMPTY_FONT_STYLE = ";;;;;";
     private Map<String, Node> nodesMap = null;
+    private VersionNumber version = FreemindConstant.SUPPORTED_FREEMIND_VERSION;
 
     public void export(Mindmap map, OutputStream outputStream) throws ExportException {
         export(map.getUnzipXml(), outputStream);
@@ -71,7 +72,7 @@ public class FreemindExporter
             mindmapMap = (com.wisemapping.jaxb.wisemap.Map) JAXBUtils.getMapObject(stream, "com.wisemapping.jaxb.wisemap");
 
             final com.wisemapping.jaxb.freemind.Map freemindMap = objectFactory.createMap();
-            freemindMap.setVersion(FREE_MIND_VERSION);
+            freemindMap.setVersion(this.getVersionNumber());
 
             final List<TopicType> topics = mindmapMap.getTopic();
 
@@ -98,8 +99,9 @@ public class FreemindExporter
 
             final List<RelationshipType> relationships = mindmapMap.getRelationship();
             for (RelationshipType relationship : relationships) {
-                Node srcNode = nodesMap.get(relationship.getSrcTopicId());
-                Node dstNode = nodesMap.get(relationship.getDestTopicId());
+                // FIXME:invert srcNode and dstNode to correct a bug in the wise mind map representation
+                Node srcNode = nodesMap.get(relationship.getDestTopicId());
+                Node dstNode = nodesMap.get(relationship.getSrcTopicId());
 
 
                 // Workaround for nodes without relationship associated ...
@@ -136,6 +138,7 @@ public class FreemindExporter
     private void addNodeFromTopic(@NotNull final TopicType mainTopic, @NotNull final Node destNode) throws IOException, SAXException, ParserConfigurationException {
         final List<TopicType> currentTopic = mainTopic.getTopic();
 
+        Collections.sort(currentTopic, new VerticalPositionComparator());
         for (TopicType topicType : currentTopic) {
             final Node newNode = objectFactory.createNode();
             nodesMap.put(topicType.getId(), newNode);
@@ -149,9 +152,9 @@ public class FreemindExporter
             if (position != null) {
                 String xPos = position.split(",")[0];
                 int x = Integer.valueOf(xPos);
-                newNode.setPOSITION((x < 0 ? POSITION_LEFT : POSITION_RIGHT));
+                newNode.setPOSITION((x < 0 ? FreemindConstant.POSITION_LEFT : FreemindConstant.POSITION_RIGHT));
             } else {
-                newNode.setPOSITION(POSITION_LEFT);
+                newNode.setPOSITION(FreemindConstant.POSITION_LEFT);
             }
         }
     }
@@ -276,7 +279,7 @@ public class FreemindExporter
             int countParts = part.length;
             boolean updated = false;
 
-            if (!fontStyle.endsWith(EMPTY_FONT_STYLE)) {
+            if (!fontStyle.endsWith(FreemindConstant.EMPTY_FONT_STYLE)) {
                 int idx = 0;
 
                 // Font name
@@ -342,4 +345,15 @@ public class FreemindExporter
     }
 
 
+    public VersionNumber getVersion() {
+        return version;
+    }
+
+    public void setVersion(VersionNumber version) {
+        this.version = version;
+    }
+
+    public String getVersionNumber() {
+        return this.getVersion().getVersion();
+    }
 }

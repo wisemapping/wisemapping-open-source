@@ -148,7 +148,7 @@
 								1.2.2.1.2.1.2.1.2 No
 									1.2.2.1.2.1.2.1.2.1 ¿Mejor a un parque?
 										1.2.2.1.2.1.2.1.2.1.1 Sí
- (see:¿De los tradicionales?)										1.2.2.1.2.1.2.1.2.1.2 Tampoco
+										1.2.2.1.2.1.2.1.2.1.2 Tampoco
 			1.2.2.2 De la geografía
 				1.2.2.2.1 Parques naturales
 					1.2.2.2.1.1 Parque ecológico Piedras Blancas
@@ -157,7 +157,7 @@
 					1.2.2.2.1.4 Parque Ecoturístico Arví
 				1.2.2.2.2 Parques urbanos
 					1.2.2.2.2.1 ¿De los tradicionales?
-						1.2.2.2.2.1.1 Sí
+ (see:Sí)						1.2.2.2.2.1.1 Sí
 							1.2.2.2.2.1.1.1 Plazas
 								1.2.2.2.2.1.1.1.1 Plaza de San Antonio
 								1.2.2.2.2.1.1.1.2 Plaza Botero

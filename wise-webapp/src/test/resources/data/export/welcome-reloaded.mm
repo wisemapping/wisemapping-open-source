@@ -1,4 +1,4 @@
-<map version="0.9.0">
+<map version="1.0.1">
     <node BACKGROUND_COLOR="#0a0a08" COLOR="#dfcfe6" ID="ID_1" TEXT="Welcome To WiseMapping">
         <font/>
         <node BACKGROUND_COLOR="#250be3" COLOR="#ffffff" ID="ID_11" POSITION="right" TEXT="Try it Now!">
@@ -20,9 +20,9 @@
             <node ID="ID_3" POSITION="left" TEXT="Share your ideas">
                 <icon BUILTIN="idea"/>
             </node>
+            <node ID="ID_27" POSITION="left" STYLE="image"/>
             <node ID="ID_4" POSITION="left" TEXT="Brainstorming"/>
             <node ID="ID_5" POSITION="left" TEXT="Visual "/>
-            <node ID="ID_27" POSITION="left" STYLE="image"/>
         </node>
         <node BACKGROUND_COLOR="#edabff" COLOR="#602378" ID="ID_6" POSITION="right" TEXT="Mind Mapping">
             <font/>

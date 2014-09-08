@@ -51,7 +51,7 @@
 				1.3.2.1.2 Volume of manufacturing production per capita 
 				1.3.2.1.3 Manufacturing value added per capita (non-natural resource-based)
 			1.3.2.2 The enabling environment
- (see:Innovation investment climate)				1.3.2.2.1 Ease of doing business
+				1.3.2.2.1 Ease of doing business
 					* Note: WB
 					1.3.2.2.1.1 Level of administrative barriers (number and cost of administrative procedures) 
 				1.3.2.2.2 Competition index
@@ -205,7 +205,7 @@
 					1.3.2.4.2.3 Access to certification and licensing for specific activities 
 					1.3.2.4.2.4 Access to suppliers of equipment, production and engineering services 
 				1.3.2.4.3 Innovation infrastructure
-					1.3.2.4.3.1 Investments
+ (see:What to do about existing measures)					1.3.2.4.3.1 Investments
 						1.3.2.4.3.1.1 Public investment in innovation infrastructure
 						1.3.2.4.3.1.2 Increase of government investment in innovation infrastructure
 						1.3.2.4.3.1.3  Number of Development institution projects performed in the region
@@ -214,7 +214,7 @@
 					1.3.2.4.3.2 Volume of state support per one company 
 	1.4 What to do about existing measures
 		* Note: Understanding which measures should be strengthened, dropped or improved, and how.
- (see:Innovation infrastructure)		1.4.1 Demand for measure
+		1.4.1 Demand for measure
 			1.4.1.1 Quality of beneficiaries
 				1.4.1.1.1 Growth rates of employment in supported innovative firms
 				1.4.1.1.2 Growth rates of employment in supported innovative firms
@@ -267,41 +267,41 @@
 			1.4.4.3 Impact assessment 
 			1.4.4.4 
 			1.4.4.5 
-	1.5 What investments in innovative projects
+	1.5 How to improve image
+		1.5.1 Rankings
+			1.5.1.1 macro indicators
+			1.5.1.2 meso-indicators
+		1.5.2 Innovation investment climate
+ (see:The enabling environment)	1.6 What investments in innovative projects
 		* Note: Understanding what investments should be made in innovative projects.
-		1.5.1 Competitive niches
-			1.5.1.1 Clusters behavior
-				1.5.1.1.1 Cluster EU star rating
-				1.5.1.1.2 Share of value added of cluster enterprises in GRP
-				1.5.1.1.3 Share of cluster products in the relevant world market segment 
-				1.5.1.1.4 Share of export in cluster total volume of sales
-				1.5.1.1.5 Growth of the volume of production in the cluster companies
-				1.5.1.1.6 
-				1.5.1.1.7 Growth of the volume of innovation production in the cluster
-				1.5.1.1.8 Share of export in cluster total volume of sales (by zones: US, EU, CIS, other countries) 
-				1.5.1.1.9 Internal behavior
-					1.5.1.1.9.1 Median wage in the cluster
-					1.5.1.1.9.2 Growth of the volume of R&D in the cluster
-					1.5.1.1.9.3 Cluster collaboration
-			1.5.1.2 R&D
-				1.5.1.2.1 Patent map
-				1.5.1.2.2 Publications map
-			1.5.1.3 Industry
-				1.5.1.3.1 FDI map
-				1.5.1.3.2 Gazelle map
-				1.5.1.3.3 Business R&D expenditures as a share of revenues by sector
-				1.5.1.3.4 Share of regional products in the world market
-				1.5.1.3.5 Expenditure on innovation by firm size, by sector 
-			1.5.1.4 Entrepreneurship
-				1.5.1.4.1 Startup map
-				1.5.1.4.2 Venture investment map
-				1.5.1.4.3 Attractiveness to public competitive funding
-					1.5.1.4.3.1 Fed and regional seed fund investments
-					1.5.1.4.3.2 
-		1.5.2 Competitiveness support factors
-			1.5.2.1 Private investment in innovation
-	1.6 How to improve image
-		1.6.1 Rankings
-			1.6.1.1 macro indicators
-			1.6.1.2 meso-indicators
-		1.6.2 Innovation investment climate
+		1.6.1 Competitive niches
+			1.6.1.1 Clusters behavior
+				1.6.1.1.1 Cluster EU star rating
+				1.6.1.1.2 Share of value added of cluster enterprises in GRP
+				1.6.1.1.3 Share of cluster products in the relevant world market segment 
+				1.6.1.1.4 Share of export in cluster total volume of sales
+				1.6.1.1.5 Growth of the volume of production in the cluster companies
+				1.6.1.1.6 
+				1.6.1.1.7 Growth of the volume of innovation production in the cluster
+				1.6.1.1.8 Share of export in cluster total volume of sales (by zones: US, EU, CIS, other countries) 
+				1.6.1.1.9 Internal behavior
+					1.6.1.1.9.1 Median wage in the cluster
+					1.6.1.1.9.2 Growth of the volume of R&D in the cluster
+					1.6.1.1.9.3 Cluster collaboration
+			1.6.1.2 R&D
+				1.6.1.2.1 Patent map
+				1.6.1.2.2 Publications map
+			1.6.1.3 Industry
+				1.6.1.3.1 FDI map
+				1.6.1.3.2 Gazelle map
+				1.6.1.3.3 Business R&D expenditures as a share of revenues by sector
+				1.6.1.3.4 Share of regional products in the world market
+				1.6.1.3.5 Expenditure on innovation by firm size, by sector 
+			1.6.1.4 Entrepreneurship
+				1.6.1.4.1 Startup map
+				1.6.1.4.2 Venture investment map
+				1.6.1.4.3 Attractiveness to public competitive funding
+					1.6.1.4.3.1 Fed and regional seed fund investments
+					1.6.1.4.3.2 
+		1.6.2 Competitiveness support factors
+			1.6.2.1 Private investment in innovation

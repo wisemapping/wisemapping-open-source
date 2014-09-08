@@ -267,364 +267,6 @@
 <w:pStyle w:val="Heading1"/>
 </w:pPr>
 <w:r>
-<w:t>veiligheid</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>verkeer</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="BodyText"/>
-</w:pPr>
-<w:r>
-<w:t>
-                            
-                        </w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>filevorming</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>preventie</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="BodyText"/>
-</w:pPr>
-<w:r>
-<w:t>
-                                    
-                                </w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>Omleiding zoeken</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>Openbaar vervoer</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>Openbare fietsen</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>Trackingsysteem, # fietsen op 1 plaats</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>Fiets bestellen in grote steden</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>ongevallen</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>preventie</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>roekeloos rijgedrag opsporen</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>via sensoren aan boord versnelling, manouvres, snelheid,... registreren</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>bestraffen van chauffeurs?</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>oorzaak</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>nagaan van de oorzaak</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>Automatisch opbellen van hulpdiensten</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>opsporen van vluchtmisdrijf</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>info over de staat van het wegdek</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>wegenwerken</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>waarschuwingen</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>aanpassing van max. snelheid</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>criminaliteit</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="BodyText"/>
-</w:pPr>
-<w:r>
-<w:t>
-                            
-                        </w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>drugs</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>opsporen</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>individuele tests</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>testen per woonregio (via afvoerstelsels)</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>wapenhandel</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>opsporen</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>diefstal</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>tracking via gps</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>Aantal ongevallen/criminele feiten registreren</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>Mapping van probleemsituaties</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>Meer controle</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>Terugkoppeling naar politie/verkeersdienst</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
 <w:t>De markt</w:t>
 </w:r>
 </w:p>
@@ -644,7 +286,27 @@
 <w:pStyle w:val="Heading2"/>
 </w:pPr>
 <w:r>
-<w:t>kleding</w:t>
+<w:t>hygiëne</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>diensten</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>energie</w:t>
 </w:r>
 </w:p>
 <wx:sub-section>
@@ -653,19 +315,9 @@
 <w:pStyle w:val="Heading3"/>
 </w:pPr>
 <w:r>
-<w:t>informatiebronnen per merk</w:t>
+<w:t>kamer herkent gebruiker</w:t>
 </w:r>
 </w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>slimme kledij</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
 </wx:sub-section>
 <wx:sub-section>
 <w:p>
@@ -673,26 +325,36 @@
 <w:pStyle w:val="Heading3"/>
 </w:pPr>
 <w:r>
-<w:t>kwaliteitsinfo bij aankoop</w:t>
+<w:t>automatische lichten</w:t>
 </w:r>
 </w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>info uit cloud</w:t>
-</w:r>
-</w:p>
+</wx:sub-section>
 </wx:sub-section>
 <wx:sub-section>
 <w:p>
 <w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>inrichting (woning)</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>advies</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
 <w:pStyle w:val="Heading4"/>
 </w:pPr>
 <w:r>
-<w:t>reviews</w:t>
+<w:t>kleuren en stijlen</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -706,14 +368,44 @@
 <w:t>monitoring</w:t>
 </w:r>
 </w:p>
+<wx:sub-section>
 <w:p>
 <w:pPr>
-<w:pStyle w:val="BodyText"/>
+<w:pStyle w:val="Heading4"/>
 </w:pPr>
 <w:r>
-<w:t>
-                                
-                            </w:t>
+<w:t>eigendomsverificatie</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>kwaliteit</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>medicijnen</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>alternatieven</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -723,7 +415,47 @@
 <w:pStyle w:val="Heading3"/>
 </w:pPr>
 <w:r>
-<w:t>stijlen</w:t>
+<w:t>neveneffecten</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>werking</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>kwaliteit</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>electronica</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>monitoring</w:t>
 </w:r>
 </w:p>
 <wx:sub-section>
@@ -732,7 +464,115 @@
 <w:pStyle w:val="Heading4"/>
 </w:pPr>
 <w:r>
-<w:t>begeleiding bij het winkelen naar gelijkaardige kleding</w:t>
+<w:t>productie verloop</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>testfasen</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>wat/wanneer</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>door wie</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>levensloop</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>gebruikscycli</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>kwaliteit</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>reparatieservice</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>rechtstreekse link naar producent bij falen</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>eigendomsverificatie</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>afdanking (sluikstorten)</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>koop-verkoop</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>GPS tracking</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -764,7 +604,7 @@
 <w:pStyle w:val="Heading2"/>
 </w:pPr>
 <w:r>
-<w:t>electronica</w:t>
+<w:t>kleding</w:t>
 </w:r>
 </w:p>
 <wx:sub-section>
@@ -773,7 +613,7 @@
 <w:pStyle w:val="Heading3"/>
 </w:pPr>
 <w:r>
-<w:t>eigendomsverificatie</w:t>
+<w:t>stijlen</w:t>
 </w:r>
 </w:p>
 <wx:sub-section>
@@ -782,27 +622,7 @@
 <w:pStyle w:val="Heading4"/>
 </w:pPr>
 <w:r>
-<w:t>GPS tracking</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>koop-verkoop</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>afdanking (sluikstorten)</w:t>
+<w:t>begeleiding bij het winkelen naar gelijkaardige kleding</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -816,29 +636,33 @@
 <w:t>monitoring</w:t>
 </w:r>
 </w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="BodyText"/>
+</w:pPr>
+<w:r>
+<w:t>
+                                
+                            </w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>kwaliteitsinfo bij aankoop</w:t>
+</w:r>
+</w:p>
 <wx:sub-section>
 <w:p>
 <w:pPr>
 <w:pStyle w:val="Heading4"/>
 </w:pPr>
 <w:r>
-<w:t>kwaliteit</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>rechtstreekse link naar producent bij falen</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>reparatieservice</w:t>
+<w:t>reviews</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -848,15 +672,77 @@
 <w:pStyle w:val="Heading4"/>
 </w:pPr>
 <w:r>
-<w:t>levensloop</w:t>
+<w:t>info uit cloud</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>informatiebronnen per merk</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>slimme kledij</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
+<w:t>veiligheid</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>criminaliteit</w:t>
 </w:r>
 </w:p>
 <w:p>
 <w:pPr>
-<w:pStyle w:val="Normal"/>
+<w:pStyle w:val="BodyText"/>
 </w:pPr>
 <w:r>
-<w:t>gebruikscycli</w:t>
+<w:t>
+                            
+                        </w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>Aantal ongevallen/criminele feiten registreren</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>Terugkoppeling naar politie/verkeersdienst</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -866,7 +752,77 @@
 <w:pStyle w:val="Heading4"/>
 </w:pPr>
 <w:r>
-<w:t>productie verloop</w:t>
+<w:t>Meer controle</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>Mapping van probleemsituaties</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>diefstal</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>tracking via gps</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>wapenhandel</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>opsporen</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>drugs</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>opsporen</w:t>
 </w:r>
 </w:p>
 <w:p>
@@ -874,7 +830,7 @@
 <w:pStyle w:val="Normal"/>
 </w:pPr>
 <w:r>
-<w:t>door wie</w:t>
+<w:t>testen per woonregio (via afvoerstelsels)</w:t>
 </w:r>
 </w:p>
 <w:p>
@@ -882,15 +838,7 @@
 <w:pStyle w:val="Normal"/>
 </w:pPr>
 <w:r>
-<w:t>wat/wanneer</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>testfasen</w:t>
+<w:t>individuele tests</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -902,7 +850,17 @@
 <w:pStyle w:val="Heading2"/>
 </w:pPr>
 <w:r>
-<w:t>medicijnen</w:t>
+<w:t>verkeer</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="BodyText"/>
+</w:pPr>
+<w:r>
+<w:t>
+                            
+                        </w:t>
 </w:r>
 </w:p>
 <wx:sub-section>
@@ -911,57 +869,7 @@
 <w:pStyle w:val="Heading3"/>
 </w:pPr>
 <w:r>
-<w:t>kwaliteit</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>werking</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>neveneffecten</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>alternatieven</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>inrichting (woning)</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>monitoring</w:t>
+<w:t>ongevallen</w:t>
 </w:r>
 </w:p>
 <wx:sub-section>
@@ -970,7 +878,31 @@
 <w:pStyle w:val="Heading4"/>
 </w:pPr>
 <w:r>
-<w:t>kwaliteit</w:t>
+<w:t>info over de staat van het wegdek</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>aanpassing van max. snelheid</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>waarschuwingen</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>wegenwerken</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -980,7 +912,65 @@
 <w:pStyle w:val="Heading4"/>
 </w:pPr>
 <w:r>
-<w:t>eigendomsverificatie</w:t>
+<w:t>oorzaak</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>opsporen van vluchtmisdrijf</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>Automatisch opbellen van hulpdiensten</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>nagaan van de oorzaak</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>preventie</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>bestraffen van chauffeurs?</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>roekeloos rijgedrag opsporen</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>via sensoren aan boord versnelling, manouvres, snelheid,... registreren</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -991,7 +981,7 @@
 <w:pStyle w:val="Heading3"/>
 </w:pPr>
 <w:r>
-<w:t>advies</w:t>
+<w:t>Openbare fietsen</w:t>
 </w:r>
 </w:p>
 <wx:sub-section>
@@ -1000,30 +990,20 @@
 <w:pStyle w:val="Heading4"/>
 </w:pPr>
 <w:r>
-<w:t>kleuren en stijlen</w:t>
+<w:t>Fiets bestellen in grote steden</w:t>
 </w:r>
 </w:p>
-</wx:sub-section>
-</wx:sub-section>
 </wx:sub-section>
 <wx:sub-section>
 <w:p>
 <w:pPr>
-<w:pStyle w:val="Heading2"/>
+<w:pStyle w:val="Heading4"/>
 </w:pPr>
 <w:r>
-<w:t>energie</w:t>
+<w:t>Trackingsysteem, # fietsen op 1 plaats</w:t>
 </w:r>
 </w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>automatische lichten</w:t>
-</w:r>
-</w:p>
+</wx:sub-section>
 </wx:sub-section>
 <wx:sub-section>
 <w:p>
@@ -1031,30 +1011,50 @@
 <w:pStyle w:val="Heading3"/>
 </w:pPr>
 <w:r>
-<w:t>kamer herkent gebruiker</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>diensten</w:t>
+<w:t>Openbaar vervoer</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
 <wx:sub-section>
 <w:p>
 <w:pPr>
-<w:pStyle w:val="Heading2"/>
+<w:pStyle w:val="Heading3"/>
 </w:pPr>
 <w:r>
-<w:t>hygiëne</w:t>
+<w:t>filevorming</w:t>
 </w:r>
 </w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>Omleiding zoeken</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>preventie</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="BodyText"/>
+</w:pPr>
+<w:r>
+<w:t>
+                                    
+                                </w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
 </wx:sub-section>
 </wx:sub-section>
 <wx:sub-section>
@@ -1090,7 +1090,7 @@
 <w:pStyle w:val="Heading4"/>
 </w:pPr>
 <w:r>
-<w:t>productinfo</w:t>
+<w:t>boodschappenlijst</w:t>
 </w:r>
 </w:p>
 <w:p>
@@ -1098,7 +1098,7 @@
 <w:pStyle w:val="Normal"/>
 </w:pPr>
 <w:r>
-<w:t>allergie</w:t>
+<w:t>alternatieven indien uitverkocht</w:t>
 </w:r>
 </w:p>
 <w:p>
@@ -1106,107 +1106,7 @@
 <w:pStyle w:val="Normal"/>
 </w:pPr>
 <w:r>
-<w:t>Gezondheidscontrole</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>Sensor voor vers fruit en vlees</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>Salmonella sensor</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>prijs</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>kwaliteit</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>via cloud</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>databases v. reviews</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>bio</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>voedingstoffen</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>diëet checker</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>alternatieve producten</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>digitale portemonnee</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>bestellingen op afstand</w:t>
+<w:t>dichtste bij bovenaan</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -1236,256 +1136,126 @@
 <w:pStyle w:val="Heading4"/>
 </w:pPr>
 <w:r>
-<w:t>boodschappenlijst</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>dichtste bij bovenaan</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>alternatieven indien uitverkocht</w:t>
+<w:t>bestellingen op afstand</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
-</wx:sub-section>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
-<w:t>milieu</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>bosbouw</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>ziektes bij bomen</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>parasieten</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>bodemvervuiling</w:t>
-</w:r>
-</w:p>
 <wx:sub-section>
 <w:p>
 <w:pPr>
 <w:pStyle w:val="Heading4"/>
 </w:pPr>
 <w:r>
-<w:t>onderzoek</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>mag ik dit door mijn gootsteen kappen</w:t>
+<w:t>digitale portemonnee</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
 <wx:sub-section>
 <w:p>
 <w:pPr>
-<w:pStyle w:val="Heading2"/>
+<w:pStyle w:val="Heading4"/>
 </w:pPr>
 <w:r>
-<w:t>pollutie</w:t>
+<w:t>productinfo</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>alternatieve producten</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>diëet checker</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>kwaliteit</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>voedingstoffen</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>bio</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>databases v. reviews</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>via cloud</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>prijs</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>allergie</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>Salmonella sensor</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>Sensor voor vers fruit en vlees</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>Gezondheidscontrole</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>afval</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>verwerking</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>riolen</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>cradle 2 cradle</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t/>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>dioxines</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>eco systemen</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>diversiteit</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>waterreserves</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>reserves</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>vervuiling</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>alternatieve energie</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>wind</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>zon</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>kernenergie</w:t>
-</w:r>
-</w:p>
 </wx:sub-section>
 </wx:sub-section>
 </wx:sub-section>
@@ -1498,6 +1268,206 @@
 <w:t>industrie</w:t>
 </w:r>
 </w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
+<w:t>aandoeningen en situaties</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>dementen</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>eten</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>wassen</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>wegloopdetectie</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>zwangerschap</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>geboortetimer</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="BodyText"/>
+</w:pPr>
+<w:r>
+<w:t>
+                                
+                            </w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>info over voeding</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>via cloud info over voeding</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="BodyText"/>
+</w:pPr>
+<w:r>
+<w:t>
+                                    
+                                </w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>wat is gezond</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>baby monitoren</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
+<w:t>sport</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>opvolging van de sporter</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>gps</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>cadans</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>energieverbruik</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>bloeddruk</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>hartslag</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
 </wx:sub-section>
 <wx:sub-section>
 <w:p>
@@ -1553,19 +1523,9 @@
 <w:pStyle w:val="Heading3"/>
 </w:pPr>
 <w:r>
-<w:t>isolatie</w:t>
+<w:t>nameten</w:t>
 </w:r>
 </w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>warmtemetingen</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
 </wx:sub-section>
 <wx:sub-section>
 <w:p>
@@ -1583,47 +1543,7 @@
 <w:pStyle w:val="Heading3"/>
 </w:pPr>
 <w:r>
-<w:t>nameten</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
-<w:t>aandoeningen en situaties</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>zwangerschap</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>baby monitoren</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>info over voeding</w:t>
+<w:t>isolatie</w:t>
 </w:r>
 </w:p>
 <wx:sub-section>
@@ -1632,160 +1552,10 @@
 <w:pStyle w:val="Heading4"/>
 </w:pPr>
 <w:r>
-<w:t>wat is gezond</w:t>
+<w:t>warmtemetingen</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>via cloud info over voeding</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="BodyText"/>
-</w:pPr>
-<w:r>
-<w:t>
-                                    
-                                </w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>geboortetimer</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="BodyText"/>
-</w:pPr>
-<w:r>
-<w:t>
-                                
-                            </w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>dementen</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>wegloopdetectie</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>wassen</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>eten</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
-<w:t>sport</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>opvolging van de sporter</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>hartslag</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>bloeddruk</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>energieverbruik</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>cadans</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>gps</w:t>
-</w:r>
-</w:p>
 </wx:sub-section>
 </wx:sub-section>
 </wx:sub-section>
@@ -1798,6 +1568,122 @@
 <w:t>ziektes</w:t>
 </w:r>
 </w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>stress</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>monitoring</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>in welke afdeling een probleem</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>aanpak</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>aan welke factoren ligt dat</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>afreageren</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>thuisverzorging</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>link naar ziekenhuis</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>link naar dokter</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>meting van de symptomen</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>objectieve metingen</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>toevoeging van eigen waarneming</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+</wx:sub-section>
 <wx:sub-section>
 <w:p>
 <w:pPr>
@@ -1823,7 +1709,7 @@
 <w:pStyle w:val="Heading3"/>
 </w:pPr>
 <w:r>
-<w:t>feedback van de lichaamsconditie</w:t>
+<w:t>anorexia</w:t>
 </w:r>
 </w:p>
 <wx:sub-section>
@@ -1832,15 +1718,7 @@
 <w:pStyle w:val="Heading4"/>
 </w:pPr>
 <w:r>
-<w:t>aan de patiënt</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>waarschuwingen</w:t>
+<w:t>eten ze voldoende</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -1850,207 +1728,7 @@
 <w:pStyle w:val="Heading4"/>
 </w:pPr>
 <w:r>
-<w:t>link</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>naar ziekenhuis</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>naar hulpdiensten</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>naar behandelend arts</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>aan dokter</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>contacteert patient indien nodig</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>volledig overzicht</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>op afstand consulatie</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>MS</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>bevorderen van communicatie tijdens de aftakeling</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>naar de dokters toe</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>naar familie en vrienden toe</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>mucoviscidose</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>longcapaciteit meten</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>alert voor donor</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>aids</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>vergroten van de database aan info</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>diabetes</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>suikerspiegel meten</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>alert indien te laag</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>automatische inspuiting</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>epilepsie</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>aanval voorspellen??</w:t>
+<w:t>nagaan of ze eten</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -2086,7 +1764,7 @@
 <w:pStyle w:val="Normal"/>
 </w:pPr>
 <w:r>
-<w:t>vervuiling</w:t>
+<w:t>allergie veroorzakende deeltjes</w:t>
 </w:r>
 </w:p>
 <w:p>
@@ -2102,7 +1780,7 @@
 <w:pStyle w:val="Normal"/>
 </w:pPr>
 <w:r>
-<w:t>allergie veroorzakende deeltjes</w:t>
+<w:t>vervuiling</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -2113,7 +1791,7 @@
 <w:pStyle w:val="Heading3"/>
 </w:pPr>
 <w:r>
-<w:t>anorexia</w:t>
+<w:t>epilepsie</w:t>
 </w:r>
 </w:p>
 <wx:sub-section>
@@ -2122,7 +1800,83 @@
 <w:pStyle w:val="Heading4"/>
 </w:pPr>
 <w:r>
-<w:t>nagaan of ze eten</w:t>
+<w:t>aanval voorspellen??</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>diabetes</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>suikerspiegel meten</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>automatische inspuiting</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>alert indien te laag</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>aids</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>vergroten van de database aan info</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>mucoviscidose</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>alert voor donor</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -2132,10 +1886,192 @@
 <w:pStyle w:val="Heading4"/>
 </w:pPr>
 <w:r>
-<w:t>eten ze voldoende</w:t>
+<w:t>longcapaciteit meten</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>MS</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>bevorderen van communicatie tijdens de aftakeling</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>naar familie en vrienden toe</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>naar de dokters toe</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>feedback van de lichaamsconditie</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>aan dokter</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>op afstand consulatie</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>volledig overzicht</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>contacteert patient indien nodig</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>link</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>naar behandelend arts</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>naar hulpdiensten</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>naar ziekenhuis</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading4"/>
+</w:pPr>
+<w:r>
+<w:t>aan de patiënt</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Normal"/>
+</w:pPr>
+<w:r>
+<w:t>waarschuwingen</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
+<w:t>milieu</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>alternatieve energie</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>kernenergie</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>zon</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>wind</w:t>
+</w:r>
+</w:p>
 </wx:sub-section>
 </wx:sub-section>
 <wx:sub-section>
@@ -2144,7 +2080,7 @@
 <w:pStyle w:val="Heading2"/>
 </w:pPr>
 <w:r>
-<w:t>thuisverzorging</w:t>
+<w:t>waterreserves</w:t>
 </w:r>
 </w:p>
 <wx:sub-section>
@@ -2153,37 +2089,7 @@
 <w:pStyle w:val="Heading3"/>
 </w:pPr>
 <w:r>
-<w:t>meting van de symptomen</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>toevoeging van eigen waarneming</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading4"/>
-</w:pPr>
-<w:r>
-<w:t>objectieve metingen</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>link naar dokter</w:t>
+<w:t>vervuiling</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -2193,7 +2099,7 @@
 <w:pStyle w:val="Heading3"/>
 </w:pPr>
 <w:r>
-<w:t>link naar ziekenhuis</w:t>
+<w:t>reserves</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -2204,7 +2110,7 @@
 <w:pStyle w:val="Heading2"/>
 </w:pPr>
 <w:r>
-<w:t>stress</w:t>
+<w:t>eco systemen</w:t>
 </w:r>
 </w:p>
 <wx:sub-section>
@@ -2213,7 +2119,37 @@
 <w:pStyle w:val="Heading3"/>
 </w:pPr>
 <w:r>
-<w:t>afreageren</w:t>
+<w:t>diversiteit</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>dioxines</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>afval</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t/>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -2223,7 +2159,67 @@
 <w:pStyle w:val="Heading3"/>
 </w:pPr>
 <w:r>
-<w:t>monitoring</w:t>
+<w:t>cradle 2 cradle</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>riolen</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>verwerking</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>pollutie</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>mag ik dit door mijn gootsteen kappen</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>bosbouw</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>bodemvervuiling</w:t>
 </w:r>
 </w:p>
 <wx:sub-section>
@@ -2232,26 +2228,30 @@
 <w:pStyle w:val="Heading4"/>
 </w:pPr>
 <w:r>
-<w:t>in welke afdeling een probleem</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>aan welke factoren ligt dat</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Normal"/>
-</w:pPr>
-<w:r>
-<w:t>aanpak</w:t>
+<w:t>onderzoek</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>parasieten</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>ziektes bij bomen</w:t>
+</w:r>
+</w:p>
 </wx:sub-section>
 </wx:sub-section>
 </wx:sub-section>

@@ -1,4 +1,4 @@
-<map version="0.9.0">
+<map version="1.0.1">
     <node ID="ID_1" TEXT="Indicator needs">
         <font SIZE="24"/>
         <node ID="ID_5" POSITION="right" STYLE="bubble" TEXT="Which new measures">
@@ -332,7 +332,6 @@
                         <node ID="ID_334" POSITION="right" TEXT="Internet penetration"/>
                         <node ID="ID_335" POSITION="right" TEXT="Computer literacy "/>
                     </node>
-                    <arrowlink DESTINATION="ID_76" STARTARROW="Default"/>
                 </node>
                 <node ID="ID_10" POSITION="right" TEXT="Behavior of innovation actors">
                     <node ID="ID_167" POSITION="right" TEXT="Access to markets">
@@ -775,6 +774,7 @@
                             <node ID="ID_392" POSITION="right" TEXT="Volume of venture financing from the regional budget "/>
                         </node>
                         <node ID="ID_413" POSITION="right" TEXT="Volume of state support per one company "/>
+                        <arrowlink DESTINATION="ID_4" STARTARROW="Default"/>
                     </node>
                 </node>
             </node>
@@ -956,7 +956,16 @@
                     <icon BUILTIN="messagebox_warning"/>
                 </node>
             </node>
-            <arrowlink DESTINATION="ID_114" STARTARROW="Default"/>
+        </node>
+        <node BACKGROUND_COLOR="#e0e5ef" ID="ID_69" POSITION="left" STYLE="bubble" TEXT="How to improve image">
+            <font SIZE="18"/>
+            <node BACKGROUND_COLOR="#feffff" ID="ID_75" POSITION="left" STYLE="bubble" TEXT="Rankings">
+                <node ID="ID_70" POSITION="left" TEXT="macro indicators"/>
+                <node ID="ID_71" POSITION="left" TEXT="meso-indicators"/>
+            </node>
+            <node BACKGROUND_COLOR="#feffff" ID="ID_76" POSITION="left" STYLE="bubble" TEXT="Innovation investment climate">
+                <arrowlink DESTINATION="ID_9" STARTARROW="Default"/>
+            </node>
         </node>
         <node ID="ID_7" POSITION="right" STYLE="bubble" TEXT="What investments in innovative projects">
             <font SIZE="18"/>
@@ -1029,14 +1038,6 @@
             <node BACKGROUND_COLOR="#ffffff" ID="ID_64" POSITION="right" STYLE="bubble" TEXT="Competitiveness support factors">
                 <node ID="ID_68" POSITION="right" TEXT="Private investment in innovation"/>
             </node>
-        </node>
-        <node BACKGROUND_COLOR="#e0e5ef" ID="ID_69" POSITION="left" STYLE="bubble" TEXT="How to improve image">
-            <font SIZE="18"/>
-            <node BACKGROUND_COLOR="#feffff" ID="ID_75" POSITION="left" STYLE="bubble" TEXT="Rankings">
-                <node ID="ID_70" POSITION="left" TEXT="macro indicators"/>
-                <node ID="ID_71" POSITION="left" TEXT="meso-indicators"/>
-            </node>
-            <node BACKGROUND_COLOR="#feffff" ID="ID_76" POSITION="left" STYLE="bubble" TEXT="Innovation investment climate"/>
         </node>
     </node>
 </map>
