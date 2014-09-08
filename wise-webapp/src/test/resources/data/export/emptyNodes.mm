@@ -1,6 +1,6 @@
 <map version="1.0.1">
     <node BACKGROUND_COLOR="#ffcc33" COLOR="#0000cc" ID="ID_0" TEXT="">
-        <font BOLD="true" NAME="Arial"/>
+        <font BOLD="true" NAME="Arial" SIZE="12"/>
         <edge COLOR="#808080"/>
         <richcontent TYPE="NOTE">
             <html>
@@ -12,26 +12,26 @@
             </html>
         </richcontent>
         <node BACKGROUND_COLOR="#ffcc33" COLOR="#0000cc" ID="ID_1" POSITION="right" STYLE="bubble" TEXT="objectifs journ&#233;e">
-            <font BOLD="true" NAME="Arial"/>
+            <font BOLD="true" NAME="Arial" SIZE="12"/>
             <edge COLOR="#808080"/>
             <node BACKGROUND_COLOR="#ffff33" COLOR="#0000cc" ID="ID_2" POSITION="right" STYLE="bubble" TEXT="&quot;business plan&quot; associatif ?">
-                <font BOLD="true" NAME="Arial"/>
+                <font BOLD="true" NAME="Arial" SIZE="12"/>
                 <edge COLOR="#808080"/>
             </node>
             <node BACKGROUND_COLOR="#ffff33" COLOR="#0000cc" ID="ID_3" POSITION="right" STYLE="bubble" TEXT="mod&#232;le / activit&#233;s responsabilit&#233;s">
-                <font BOLD="true" NAME="Arial"/>
+                <font BOLD="true" NAME="Arial" SIZE="12"/>
                 <edge COLOR="#808080"/>
             </node>
             <node BACKGROUND_COLOR="#ffff33" COLOR="#0000cc" ID="ID_4" POSITION="right" STYLE="bubble" TEXT="articulations / LOG">
-                <font BOLD="true" NAME="Arial"/>
+                <font BOLD="true" NAME="Arial" SIZE="12"/>
                 <edge COLOR="#808080"/>
             </node>
         </node>
         <node BACKGROUND_COLOR="#ffcc33" COLOR="#0000cc" ID="ID_5" POSITION="right" STYLE="bubble" TEXT="SWOT">
-            <font BOLD="true" NAME="Arial"/>
+            <font BOLD="true" NAME="Arial" SIZE="12"/>
             <edge COLOR="#808080"/>
             <node BACKGROUND_COLOR="#ffff33" COLOR="#0000cc" ID="ID_6" POSITION="right" STYLE="bubble" TEXT="">
-                <font BOLD="true" NAME="Arial"/>
+                <font BOLD="true" NAME="Arial" SIZE="12"/>
                 <edge COLOR="#808080"/>
                 <node ID="ID_7" POSITION="right" TEXT="l'entreprise a aujourd'hui un potentiel important">
                     <node ID="ID_8" POSITION="right" TEXT="comp&#233;tences professionnel"/>
@@ -77,7 +77,7 @@
                 <node ID="ID_45" POSITION="right" TEXT="pratiquons en interne et externe une gouvernance explaire etune citoyennt&#233; de r&#234;ve"/>
             </node>
             <node BACKGROUND_COLOR="#ffff33" COLOR="#0000cc" ID="ID_46" POSITION="right" STYLE="bubble" TEXT="Risques : cauchemars, dangers">
-                <font BOLD="true" NAME="Arial"/>
+                <font BOLD="true" NAME="Arial" SIZE="12"/>
                 <edge COLOR="#808080"/>
                 <node ID="ID_47" POSITION="right" TEXT="disparition des forces vives, d&#233;part de membres actuels"/>
                 <node ID="ID_48" POSITION="right" TEXT="opportunit&#233;s atteignables mais difficile"/>

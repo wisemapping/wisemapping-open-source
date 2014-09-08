@@ -1,17 +1,15 @@
 <map version="1.0.1">
     <node ID="ID_1" TEXT="Artigos GF coment&#225;rios interessantes">
         <node BACKGROUND_COLOR="#cccccc" COLOR="#000000" ID="ID_2" POSITION="left" STYLE="rectagle" TEXT="Poorter 1999. Functional Ecology. 13:396-410">
-            <font/>
             <edge COLOR="#cccccc"/>
-            <node ID="ID_3" POSITION="left" TEXT="Esp&#233;cies pioneiras crescem mais r&#225;pido do que as n&#227;o pioneiras">
-                <node ID="ID_4" POSITION="left" TEXT="Toler&#226;ncia a sombra est&#225; relacionada com persist&#234;ncia e n&#227;o com crescimento"/>
+            <node ID="ID_3" POSITION="left" STYLE="fork" TEXT="Esp&#233;cies pioneiras crescem mais r&#225;pido do que as n&#227;o pioneiras">
+                <node ID="ID_4" POSITION="left" STYLE="fork" TEXT="Toler&#226;ncia a sombra est&#225; relacionada com persist&#234;ncia e n&#227;o com crescimento"/>
             </node>
         </node>
         <node BACKGROUND_COLOR="#cccccc" COLOR="#000000" ID="ID_17" POSITION="right" STYLE="rectagle" TEXT="Chazdon 2010. Biotropica. 42(1): 31&#8211;40">
-            <font/>
             <edge COLOR="#cccccc"/>
-            <node ID="ID_24" POSITION="right" TEXT="Falar no artigo que esse trabalho fala que &#233; inadequada a divis&#227;o entre pioneira e n&#227;o pioneira devido a grande varia&#231;&#227;o que h&#225; entre elas. Al&#233;m de terem descoberto que durante a ontogenia a resposta a luminosidade muda dentro de uma mesma esp&#233;cie. Por&#233;m recomendar que essa classifica&#231;&#227;o continue sendo usada em curto prazo enquanto n&#227;o h&#225; informa&#231;&#245;es confi&#225;veis suficiente para esta simples classifica&#231;&#227;o. Outras classifica&#231;&#245;es como esta do artigo s&#227;o bem vinda, contanto que tenham dados confi&#225;veis. Por&#233;m dados est&#225;ticos j&#225; s&#227;o dif&#237;ceis de se obter, dados temporais, como taxa de crescimento em di&#226;metro ou altura, s&#227;o mais dif&#237;ceis ainda. Falar que v&#225;rios tipos de classifica&#231;&#245;es podem ser utilizadas e quanto mais detalhe melhor, por&#233;m os dados &#233; que s&#227;o mais limitantes. Se focarmos em dados de germina&#231;&#227;o e crescimento limitantes, como sugerem sainete e whitmore, da uma id&#233;ia maismr&#225;pida e a curto prazo da classifica&#231;&#227;o destas esp&#233;cies. Depois com o tempo conseguiremos construir classifica&#231;&#245;es mais detalhadas e com mais dados confi&#225;veis. "/>
-            <node ID="ID_22" POSITION="right">
+            <node ID="ID_24" POSITION="right" STYLE="fork" TEXT="Falar no artigo que esse trabalho fala que &#233; inadequada a divis&#227;o entre pioneira e n&#227;o pioneira devido a grande varia&#231;&#227;o que h&#225; entre elas. Al&#233;m de terem descoberto que durante a ontogenia a resposta a luminosidade muda dentro de uma mesma esp&#233;cie. Por&#233;m recomendar que essa classifica&#231;&#227;o continue sendo usada em curto prazo enquanto n&#227;o h&#225; informa&#231;&#245;es confi&#225;veis suficiente para esta simples classifica&#231;&#227;o. Outras classifica&#231;&#245;es como esta do artigo s&#227;o bem vinda, contanto que tenham dados confi&#225;veis. Por&#233;m dados est&#225;ticos j&#225; s&#227;o dif&#237;ceis de se obter, dados temporais, como taxa de crescimento em di&#226;metro ou altura, s&#227;o mais dif&#237;ceis ainda. Falar que v&#225;rios tipos de classifica&#231;&#245;es podem ser utilizadas e quanto mais detalhe melhor, por&#233;m os dados &#233; que s&#227;o mais limitantes. Se focarmos em dados de germina&#231;&#227;o e crescimento limitantes, como sugerem sainete e whitmore, da uma id&#233;ia maismr&#225;pida e a curto prazo da classifica&#231;&#227;o destas esp&#233;cies. Depois com o tempo conseguiremos construir classifica&#231;&#245;es mais detalhadas e com mais dados confi&#225;veis. "/>
+            <node ID="ID_22" POSITION="right" STYLE="fork">
                 <richcontent TYPE="NODE">
                     <html>
                         <head/>
@@ -28,7 +26,7 @@
                     </html>
                 </richcontent>
             </node>
-            <node ID="ID_23" POSITION="right">
+            <node ID="ID_23" POSITION="right" STYLE="fork">
                 <richcontent TYPE="NODE">
                     <html>
                         <head/>
@@ -42,7 +40,7 @@
                     </html>
                 </richcontent>
             </node>
-            <node ID="ID_25" POSITION="right">
+            <node ID="ID_25" POSITION="right" STYLE="fork">
                 <richcontent TYPE="NODE">
                     <html>
                         <head/>
@@ -60,7 +58,7 @@
                     </html>
                 </richcontent>
             </node>
-            <node ID="ID_26" POSITION="right">
+            <node ID="ID_26" POSITION="right" STYLE="fork">
                 <richcontent TYPE="NODE">
                     <html>
                         <head/>
@@ -73,7 +71,7 @@
                     </html>
                 </richcontent>
             </node>
-            <node ID="ID_27" POSITION="right">
+            <node ID="ID_27" POSITION="right" STYLE="fork">
                 <richcontent TYPE="NODE">
                     <html>
                         <head/>
@@ -87,7 +85,7 @@
                     </html>
                 </richcontent>
             </node>
-            <node ID="ID_28" POSITION="right">
+            <node ID="ID_28" POSITION="right" STYLE="fork">
                 <richcontent TYPE="NODE">
                     <html>
                         <head/>
@@ -106,7 +104,7 @@
                     </html>
                 </richcontent>
             </node>
-            <node ID="ID_29" POSITION="right">
+            <node ID="ID_29" POSITION="right" STYLE="fork">
                 <richcontent TYPE="NODE">
                     <html>
                         <head/>
@@ -141,7 +139,7 @@
                     </html>
                 </richcontent>
             </node>
-            <node ID="ID_30" POSITION="right">
+            <node ID="ID_30" POSITION="right" STYLE="fork">
                 <richcontent TYPE="NODE">
                     <html>
                         <head/>
@@ -154,7 +152,7 @@
                     </html>
                 </richcontent>
             </node>
-            <node ID="ID_31" POSITION="right">
+            <node ID="ID_31" POSITION="right" STYLE="fork">
                 <richcontent TYPE="NODE">
                     <html>
                         <head/>
@@ -184,7 +182,7 @@
         </node>
         <node BACKGROUND_COLOR="#cccccc" ID="ID_5" POSITION="left" STYLE="rectagle" TEXT="Baraloto et al. 2010. Functional trait variation and sampling strategies in species-rich plant communities">
             <edge COLOR="#cccccc"/>
-            <node ID="ID_6" POSITION="left">
+            <node ID="ID_6" POSITION="left" STYLE="fork">
                 <richcontent TYPE="NODE">
                     <html>
                         <head/>
@@ -202,7 +200,7 @@
                     </html>
                 </richcontent>
             </node>
-            <node ID="ID_7" POSITION="left">
+            <node ID="ID_7" POSITION="left" STYLE="fork">
                 <richcontent TYPE="NODE">
                     <html>
                         <head/>
@@ -215,7 +213,7 @@
                     </html>
                 </richcontent>
             </node>
-            <node ID="ID_8" POSITION="left">
+            <node ID="ID_8" POSITION="left" STYLE="fork">
                 <richcontent TYPE="NODE">
                     <html>
                         <head/>
@@ -237,10 +235,10 @@
                     </html>
                 </richcontent>
             </node>
-            <node ID="ID_9" POSITION="left" TEXT="Falar que a escolha das categorias de sucess&#227;o e dos par&#226;metros ou caracter&#237;stica dos indiv&#237;duos que ser&#227;o utilizadas dependera da facilidade de coleta dos dados e do custo monet&#225;rio e temporal."/>
-            <node ID="ID_12" POSITION="left" TEXT="Ver se classifica sucess&#227;o por densidade de tronco para citar no artigo como exemplo de outros atributos al&#233;m de germina&#231;&#227;o e ver se e custoso no tempo e em dinheiro"/>
-            <node ID="ID_13" POSITION="left" TEXT="Intensas amostragens de experimentos simples  tem maior retorno em acur&#225;cia de estimativa e de custo tb."/>
-            <node ID="ID_14" POSITION="left">
+            <node ID="ID_9" POSITION="left" STYLE="fork" TEXT="Falar que a escolha das categorias de sucess&#227;o e dos par&#226;metros ou caracter&#237;stica dos indiv&#237;duos que ser&#227;o utilizadas dependera da facilidade de coleta dos dados e do custo monet&#225;rio e temporal."/>
+            <node ID="ID_12" POSITION="left" STYLE="fork" TEXT="Ver se classifica sucess&#227;o por densidade de tronco para citar no artigo como exemplo de outros atributos al&#233;m de germina&#231;&#227;o e ver se e custoso no tempo e em dinheiro"/>
+            <node ID="ID_13" POSITION="left" STYLE="fork" TEXT="Intensas amostragens de experimentos simples  tem maior retorno em acur&#225;cia de estimativa e de custo tb."/>
+            <node ID="ID_14" POSITION="left" STYLE="fork">
                 <richcontent TYPE="NODE">
                     <html>
                         <head/>
@@ -264,7 +262,7 @@
                     </html>
                 </richcontent>
             </node>
-            <node ID="ID_15" POSITION="left">
+            <node ID="ID_15" POSITION="left" STYLE="fork">
                 <richcontent TYPE="NODE">
                     <html>
                         <head/>
