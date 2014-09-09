@@ -37,6 +37,7 @@ mindplot.LocalStorageManager = new Class({
             if (xml == null || this.forceLoad) {
                 $.ajax({
                     url: this.documentUrl.replace("{id}", mapId),
+                    headers:{"Content-Type":"text/plain","Accept":"application/xml"},
                     type:'get',
                     dataType: "text",
                     async: false,
