@@ -25,6 +25,7 @@
         margin: 0 10px;
         display: inline-block;
         vertical-align: middle;
+        color: #428bca;
     }
 
     #addBtn {
@@ -58,15 +59,15 @@
         <p><strong><spring:message code="ADD_PEOPLE"/>:</strong></p>
 
         <input type="text" id="collabEmails" name="collabEmails"
-               placeholder="<spring:message code="COLLABORATORS_SEPARATED_BY_COMA"/>" class="col-md-1"/>
+               placeholder="<spring:message code="COLLABORATORS_SEPARATED_BY_COMA"/>"/>
 
         <div class="btn-group" id="roleBtn">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><spring:message code="CAN_EDIT"/>
                 <span class="caret"> </span>
             </a>
-            <ul class="dropdown-menu" data-role="editor" id="shareRole">
-                <li><a href="#" data-role="editor"><spring:message code="CAN_EDIT"/></a></li>
-                <li><a href="#" data-role="viewer"><spring:message code="CAN_VIEW"/></a></li>
+            <ul class="dropdown-menu" role="menu" id="shareRole">
+                <li><a href="#" data-role="editor" style="text-decoration: none"><spring:message code="CAN_EDIT"/></a></li>
+                <li><a href="#" data-role="viewer" style="text-decoration: none"><spring:message code="CAN_VIEW"/></a></li>
             </ul>
         </div>
         <button id="addBtn" class="btn btn-primary"><spring:message code="ADD"/></button>
@@ -115,7 +116,7 @@ function addCollaboration(email, role, changeType) {
                    <td>{email}{typeIcon}</td>\
                    <td>\
                        <div class="btn-group">\
-                           <a class="btn dropdown-toggle" data-toggle="dropdown" href="#""></a>\
+                           <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"">'+ messages['editor'] + '</a>\
                            <ul class="dropdown-menu">\
                                <li><a href="#" data-role="editor">' + messages['editor'] + '</a></li>\
                                <li><a href="#" data-role="viewer">' + messages['viewer'] + '</a></li>\
