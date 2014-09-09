@@ -64,7 +64,7 @@ mindplot.RESTPersistenceManager = new Class({
                     async:!sync,
 
                     success: function (data, textStatus, jqXHRresponseText) {
-                        persistence.timestamp = jqXHRresponseText;
+                        persistence.timestamp = data;
                         events.onSuccess();
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
@@ -161,5 +161,3 @@ mindplot.RESTPersistenceManager = new Class({
         }
     }
 );
-
-
