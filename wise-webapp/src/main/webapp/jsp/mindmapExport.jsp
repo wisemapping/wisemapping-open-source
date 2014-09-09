@@ -87,7 +87,7 @@
 <script type="text/javascript">
 
     // No way to obtain map svg. Hide panels..
-    if (window.location.pathname.match(/\/[0-9]\/edit/)) {
+    if (window.location.pathname.match(/\/[0-9]+\/edit/)) {
         $('#exportInfo').hide();
         $('#freemind,#pdf,#svg,#odt,#txt,#xls,#mmap').click('click', function (event) {
             $('#imgFormat').hide();
