@@ -25,7 +25,7 @@
             <div class="form-group">
                 <label for="description" class="control-label col-md-2"><spring:message code="DESCRIPTION"/>: </label>
                 <div class="col-md-10">
-                    <textarea type="text" name="description" id="description"
+                    <textarea name="description" id="description"
                           placeholder="<spring:message code="MAP_DESCRIPTION_HINT"/>" class="form-control" maxlength="255"></textarea>
                 </div>
             </div>
@@ -46,11 +46,45 @@
 
     $('#dialogMainForm').submit(function (event) {
         // Load form parameters ...
-        var title = $('#dialogMainForm #title').attr('value');
+        var title = $('#dialogMainForm #title').val();
         title = title == undefined ? "" : title;
 
-        var description = $('#dialogMainForm #description').attr('value');
+        var description = $('#dialogMainForm #description').val();
         description = description == undefined ? "" : description;
+
+        var onSuccess = function (data, textStatus, jqXHR) {
+            var resourceId = data.getResponseHeader("ResourceId");
+            window.location = "c/maps/" + resourceId + "/edit";
+        };
+
+        var onError = function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status == 400) {
+                var errors = JSON.parse(jqXHR.responseText);
+                // Mark fields with errors ...
+                var fieldErrors = errors.fieldErrors;
+                if (fieldErrors) {
+                    for (var fieldName in fieldErrors) {
+                        // Mark the field with errors ...
+                        var message = fieldErrors[fieldName];
+                        var inputField = $("#dialogMainForm input[name='" + fieldName + "']");
+                        $("#dialogMainForm").find(".errorMessage").text(message).addClass("alert alert-danger");
+                        inputField.parent().addClass('error');
+                    }
+                }
+                var globalErrors = errors.globalErrors;
+                if (globalErrors) {
+                    for (var error in globalErrors) {
+                        // Mark the field with errors ...
+                        $("#dialogMainForm").find(".errorMessage").text(error).addClass("alert alert-danger");
+                        inputField.parent().addClass('error');
+                    }
+                }
+            } else {
+                console.log(errorThrown);
+                console.log(jqXHR);
+                $('#messagesPanel div').text(errorThrown).parent().show();
+            }
+        };
 
         // Save status on click ...
         jQuery.ajax("c/restful/maps?title=" + encodeURI(title) + "&description=" + encodeURI(description),
@@ -60,37 +94,10 @@
                     type:'POST',
                     dataType:'json',
                     contentType:contentType,
-                    success:function (data, textStatus, jqXHR) {
-                        var resourceId = jqXHR.getResponseHeader("ResourceId");
-                        window.location = "c/maps/" + resourceId + "/edit";
-                    },
-                    error:function (jqXHR, textStatus, errorThrown) {
-                        if (jqXHR.status == 400) {
-                            var errors = JSON.parse(jqXHR.responseText);
-                            // Mark fields with errors ...
-                            var fieldErrors = errors.fieldErrors;
-                            if (fieldErrors) {
-                                for (var fieldName in fieldErrors) {
-                                    // Mark the field with errors ...
-                                    var message = fieldErrors[fieldName];
-                                    var inputField = $("#dialogMainForm input[name='" + fieldName + "']");
-                                    $("#dialogMainForm").find(".errorMessage").text(message).addClass("alert alert-danger");
-                                    inputField.parent().addClass('error');
-                                }
-                            }
-                            var globalErrors = errors.globalErrors;
-                            if (globalErrors) {
-                                for (var error in globalErrors) {
-                                    // Mark the field with errors ...
-                                    $("#dialogMainForm").find(".errorMessage").text(error).addClass("alert alert-danger");
-                                    inputField.parent().addClass('error');
-                                }
-                            }
-                        } else {
-                            console.log(errorThrown);
-                            console.log(jqXHR);
-                            $('#messagesPanel div').text(errorThrown).parent().show();
-                        }
+                    statusCode: {
+                        201: onSuccess,
+                        400: onError,
+                        default: onError
                     }
                 });
         event.preventDefault();

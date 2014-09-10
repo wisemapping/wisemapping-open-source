@@ -1,3 +1,3 @@
-<map version="0.9.0">
+<map version="1.0.1">
     <node/>
 </map>

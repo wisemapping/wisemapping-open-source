@@ -79,30 +79,6 @@
 <text:sequence-decl text:display-outline-level="0" text:name="Drawing"/>
 </text:sequence-decls>
 <text:p text:style-name="Title">SaberMás</text:p>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">Utilización de medios de expresión artística, digitales y analógicos</text:h>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">Precio también limitado: 100-120?</text:h>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">Talleres temáticos</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">Naturaleza</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">Animales, Plantas, Piedras</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">Arqueología</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">Energía</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">Astronomía</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">Arquitectura</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">Cocina</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">Poesía</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">Culturas Antiguas</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">Egipto, Grecia, China...</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">Paleontología</text:h>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">Duración limitada: 5-6 semanas</text:h>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">Niños y niñas que quieren saber más</text:h>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">Alternativa a otras actividades de ocio</text:h>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">Uso de la tecnología durante todo el proceso de aprendizaje</text:h>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">Estructura PBL: aprendemos cuando buscamos respuestas a nuestras propias preguntas </text:h>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">Trabajo basado en la experimentación y en la investigación</text:h>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">De 8 a 12 años, sin separación por edades</text:h>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">Máximo 10/1 por taller</text:h>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">Actividades centradas en el contexto cercano</text:h>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">Flexibilidad en el uso de las lenguas de trabajo (inglés, castellano, esukara?)</text:h>
 <text:h text:style-name="Heading_20_1" text:outline-level="1">Complementamos el trabajo de la escuela</text:h>
 <text:p text:style-name="Standard">Todos los contenidos de los talleres están relacionados con el currículo de la enseñanza básica.</text:p>
 <text:p text:style-name="Standard">A diferencia de la práctica tradicional, pretendemos ahondar en el conocimiento partiendo de lo que realmente interesa al niño o niña,</text:p>
@@ -110,11 +86,35 @@
 <text:p text:style-name="Standard"/>
 <text:p text:style-name="Standard">Por ese motivo, SaberMás proyecta estar al lado de los niños que necesitan una motivación extra para entender la escuela y fluir en ella,</text:p>
 <text:p text:style-name="Standard">y también al lado de aquellos a quienes la curiosidad y las ganas de saber les lleva más allá.</text:p>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">SaberMás trabaja con, desde y para la motivación</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">Trabajamos en equipo en nuestros proyectos </text:h>
 <text:h text:style-name="Heading_20_2" text:outline-level="2">Cada uno va a su ritmo, y cada cual pone sus límites</text:h>
 <text:h text:style-name="Heading_20_2" text:outline-level="2">Aprendemos todos de todos</text:h>
 <text:h text:style-name="Heading_20_2" text:outline-level="2">Valoramos lo que hemos aprendido</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">SaberMás trabaja con, desde y para la motivación</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">Trabajamos en equipo en nuestros proyectos </text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">Estructura PBL: aprendemos cuando buscamos respuestas a nuestras propias preguntas </text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">Trabajo basado en la experimentación y en la investigación</text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">Alternativa a otras actividades de ocio</text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">Actividades centradas en el contexto cercano</text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">Duración limitada: 5-6 semanas</text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">Utilización de medios de expresión artística, digitales y analógicos</text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">Precio también limitado: 100-120?</text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">Uso de la tecnología durante todo el proceso de aprendizaje</text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">Niños y niñas que quieren saber más</text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">Flexibilidad en el uso de las lenguas de trabajo (inglés, castellano, esukara?)</text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">De 8 a 12 años, sin separación por edades</text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">Máximo 10/1 por taller</text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">Talleres temáticos</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">Naturaleza</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">Animales, Plantas, Piedras</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">Arqueología</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">Culturas Antiguas</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">Egipto, Grecia, China...</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">Energía</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">Paleontología</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">Astronomía</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">Arquitectura</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">Cocina</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">Poesía</text:h>
 </office:text>
 </office:body>
 </office:document-content>

@@ -267,76 +267,6 @@
 <w:pStyle w:val="Heading1"/>
 </w:pPr>
 <w:r>
-<w:t>Hardware (componentes físicos)</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>Entrada de datos</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>Ratón, Teclado, Joystick, Cámara digital, Micrófono, Escáner.</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>Salida de datos</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>Monitor, Impresora, Bocinas, Plóter.</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>Almacenamiento</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>Disquete, Disco compacto, DVD, BD, Disco duro, Memoria flash.</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
 <w:t>Software (Programas y datos con los que funciona la computadora)</w:t>
 </w:r>
 </w:p>
@@ -439,6 +369,76 @@
 <w:t>Software de Desarrollo</w:t>
 </w:r>
 </w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
+<w:t>Hardware (componentes físicos)</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>Entrada de datos</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>Ratón, Teclado, Joystick, Cámara digital, Micrófono, Escáner.</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>Salida de datos</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>Monitor, Impresora, Bocinas, Plóter.</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>Almacenamiento</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>Disquete, Disco compacto, DVD, BD, Disco duro, Memoria flash.</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
 </wx:sub-section>
 </wx:sub-section>
 <wx:sub-section>

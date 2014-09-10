@@ -23,7 +23,8 @@ public enum ShapeStyle
     LINE("line"),
     ROUNDED_RECTANGLE("rounded rectagle"),
     RECTANGLE("rectagle"),
-    ELLIPSE("elipse");
+    ELLIPSE("elipse"),
+    IMAGE("image");
 
     private String style;
 
@@ -35,5 +36,14 @@ public enum ShapeStyle
     public String getStyle()
     {
         return style;
-    }    
+    }
+
+    public static ShapeStyle fromValue(String value) {
+        for (ShapeStyle shapeStyle : ShapeStyle.values()) {
+            if (shapeStyle.getStyle().equals(value)) {
+                return shapeStyle;
+            }
+        }
+        throw new IllegalArgumentException("Shape value \"" + value + "\" doesn't match with a value shape style.");
+    }
 }

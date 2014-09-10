@@ -1,4 +1,4 @@
-<map version="0.9.0">
+<map version="1.0.1">
     <node ID="ID_0" TEXT="I have HTML In Nodes">
         <node ID="ID_1" POSITION="right">
             <richcontent TYPE="NODE">

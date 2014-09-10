@@ -506,6 +506,11 @@ mindplot.Designer = new Class({
             if(borderColor){
                 targetModel.setBorderColor(borderColor)
             }
+
+            var backgroundColor = sourceModel.getBackgroundColor();
+            if(backgroundColor){
+                targetModel.setBackgroundColor(backgroundColor)
+            }
         },
 
         _createChildModel:function (topic, mousePos) {

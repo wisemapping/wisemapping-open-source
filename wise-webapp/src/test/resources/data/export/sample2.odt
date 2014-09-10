@@ -83,21 +83,21 @@
 <text:a xmlns:text="text" xmlns:xlink="xlink" xlink:type="simple" xlink:href="../prospace.com">prospace.com</text:a>
 </text:p>
 <text:p text:style-name="Standard"/>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">Newspapers</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">College Newspapers</text:h>
 <text:h text:style-name="Heading_20_1" text:outline-level="1">Third Party </text:h>
 <text:h text:style-name="Heading_20_2" text:outline-level="2">Thumbshot</text:h>
 <text:p text:style-name="Standard">
 <text:a xmlns:text="text" xmlns:xlink="xlink" xlink:type="simple" xlink:href="../thumbshots.org">thumbshots.org</text:a>
 </text:p>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">Newspapers</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">College Newspapers</text:h>
 <text:h text:style-name="Heading_20_1" text:outline-level="1">Partnerships</text:h>
 <text:h text:style-name="Heading_20_2" text:outline-level="2">Websites</text:h>
 <text:h text:style-name="Heading_20_3" text:outline-level="3">Business Networks</text:h>
-<text:h text:style-name="Heading_20_4" text:outline-level="4">Xing</text:h>
 <text:h text:style-name="Heading_20_4" text:outline-level="4">konnects.com</text:h>
+<text:h text:style-name="Heading_20_4" text:outline-level="4">Xing</text:h>
 <text:h text:style-name="Heading_20_1" text:outline-level="1">Career Counseling</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">Fraternity</text:h>
 <text:h text:style-name="Heading_20_2" text:outline-level="2">Professional Associations</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">Fraternity</text:h>
 <text:h text:style-name="Heading_20_1" text:outline-level="1">White-Label</text:h>
 <text:h text:style-name="Heading_20_2" text:outline-level="2">http://www.harrisconnect.com/</text:h>
 </office:text>

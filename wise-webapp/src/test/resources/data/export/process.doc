@@ -347,176 +347,6 @@
 <w:pStyle w:val="Heading1"/>
 </w:pPr>
 <w:r>
-<w:t>Southern California</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>Los Angeles</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>Anaheim/Santa Ana</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>Ventura</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>Other South</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
-<w:t>Policy Bodies</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>Advocacy</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>AAO</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>ASCRS</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>EBAA</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>Military</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>United Network for Organ Sharing</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>Kaiser Hospital System</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>University of California System</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>CMS</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>Medicare Part A</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>Medicare Part B</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
 <w:t>Corneal Tissue OPS</w:t>
 </w:r>
 </w:p>
@@ -697,6 +527,196 @@
 <w:pStyle w:val="Heading1"/>
 </w:pPr>
 <w:r>
+<w:t>Southern California</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>Los Angeles</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>Anaheim/Santa Ana</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>Ventura</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>Other South</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
+<w:t>QE Medicare</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
+<w:t>Policy Bodies</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>Advocacy</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>AAO</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>ASCRS</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>EBAA</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>Military</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>United Network for Organ Sharing</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>Kaiser Hospital System</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>University of California System</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>CMS</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>Medicare Part A</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>Medicare Part B</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
+<w:t>CMS Data</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
 <w:t>Tools</w:t>
 </w:r>
 </w:p>
@@ -720,26 +740,6 @@
 </w:r>
 </w:p>
 </wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
-<w:t>QE Medicare</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
-<w:t>CMS Data</w:t>
-</w:r>
-</w:p>
 </wx:sub-section>
 <wx:sub-section>
 <w:p>
