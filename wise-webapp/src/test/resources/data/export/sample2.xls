@@ -33,22 +33,22 @@
 </Row>
 <Row>
 <Cell ss:Index="2">
-<Data ss:Type="String">Newspapers</Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="3">
-<Data ss:Type="String">College Newspapers</Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="2">
 <Data ss:Type="String">Third Party </Data>
 </Cell>
 </Row>
 <Row>
 <Cell ss:Index="3">
 <Data ss:Type="String">Thumbshot</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Newspapers</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">College Newspapers</Data>
 </Cell>
 </Row>
 <Row>
@@ -68,12 +68,12 @@
 </Row>
 <Row>
 <Cell ss:Index="5">
-<Data ss:Type="String">Xing</Data>
+<Data ss:Type="String">konnects.com</Data>
 </Cell>
 </Row>
 <Row>
 <Cell ss:Index="5">
-<Data ss:Type="String">konnects.com</Data>
+<Data ss:Type="String">Xing</Data>
 </Cell>
 </Row>
 <Row>
@@ -83,12 +83,12 @@
 </Row>
 <Row>
 <Cell ss:Index="3">
-<Data ss:Type="String">Fraternity</Data>
+<Data ss:Type="String">Professional Associations</Data>
 </Cell>
 </Row>
 <Row>
 <Cell ss:Index="3">
-<Data ss:Type="String">Professional Associations</Data>
+<Data ss:Type="String">Fraternity</Data>
 </Cell>
 </Row>
 <Row>

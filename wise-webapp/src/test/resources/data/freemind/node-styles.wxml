@@ -17,45 +17,45 @@
                 <text><![CDATA[Combined]]></text>
             </topic>
         </topic>
-        <topic bgColor="#f20707" id="6" order="0" position="-200,0" shape="rectagle">
+        <topic bgColor="#f20707" id="6" order="1" position="-200,-50" shape="rectagle">
             <text><![CDATA[Node Background Color]]></text>
             <topic bgColor="#0000cc" brColor="#808080" id="7" order="0"
-                position="-290,-50" shape="rectagle">
+                position="-290,-100" shape="rectagle">
                 <text><![CDATA[Fork]]></text>
             </topic>
             <topic bgColor="#ccffcc" brColor="#808080" id="8" order="1"
-                position="-290,-25" shape="rounded rectagle">
+                position="-290,-75" shape="rounded rectagle">
                 <text><![CDATA[Bubble]]></text>
             </topic>
             <topic bgColor="#00ffff" brColor="#808080" id="9" order="2"
-                position="-290,0" shape="rectagle">
+                position="-290,-50" shape="rectagle">
                 <text><![CDATA[As parent]]></text>
             </topic>
             <topic bgColor="#990099" brColor="#808080" id="10" order="3"
-                position="-290,25" shape="rectagle">
+                position="-290,-25" shape="rectagle">
                 <text><![CDATA[Combined]]></text>
             </topic>
         </topic>
-        <topic bgColor="#f20707" id="11" order="4" position="-200,100" shape="rectagle">
+        <topic bgColor="#f20707" id="11" order="3" position="-200,50" shape="rectagle">
             <text><![CDATA[Node Text Color]]></text>
             <topic bgColor="#0000cc" brColor="#808080"
                 fontStyle=";;#ffff00;;;" id="12" order="0"
-                position="-290,50" shape="rectagle">
+                position="-290,0" shape="rectagle">
                 <text><![CDATA[Fork]]></text>
             </topic>
             <topic bgColor="#ccffcc" brColor="#808080"
                 fontStyle=";;#ff6666;;;" id="13" order="1"
-                position="-290,75" shape="rounded rectagle">
+                position="-290,25" shape="rounded rectagle">
                 <text><![CDATA[Bubble]]></text>
             </topic>
             <topic bgColor="#00ffff" brColor="#808080"
                 fontStyle=";;#009999;;;" id="14" order="2"
-                position="-290,100" shape="rectagle">
+                position="-290,50" shape="rectagle">
                 <text><![CDATA[As parent]]></text>
             </topic>
             <topic bgColor="#990099" brColor="#808080"
                 fontStyle=";;#009999;;;" id="15" order="3"
-                position="-290,125" shape="rectagle">
+                position="-290,75" shape="rectagle">
                 <text><![CDATA[Combined]]></text>
             </topic>
         </topic>

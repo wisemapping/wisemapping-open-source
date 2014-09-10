@@ -87,23 +87,6 @@
 <text:h text:style-name="Heading_20_2" text:outline-level="2">Santa Clara</text:h>
 <text:h text:style-name="Heading_20_2" text:outline-level="2">Marin/Napa/Solano</text:h>
 <text:h text:style-name="Heading_20_1" text:outline-level="1">Hawaii</text:h>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">Southern California</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">Los Angeles</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">Anaheim/Santa Ana</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">Ventura</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">Other South</text:h>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">Policy Bodies</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">Advocacy</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">AAO</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">ASCRS</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">EBAA</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">Military</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">United Network for Organ Sharing</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">Kaiser Hospital System</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">University of California System</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2">CMS</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">Medicare Part A</text:h>
-<text:h text:style-name="Heading_20_3" text:outline-level="3">Medicare Part B</text:h>
 <text:h text:style-name="Heading_20_1" text:outline-level="1">Corneal Tissue OPS</text:h>
 <text:h text:style-name="Heading_20_2" text:outline-level="2">Transplant Bank International</text:h>
 <text:h text:style-name="Heading_20_3" text:outline-level="3">Orange County Eye and Transplant Bank</text:h>
@@ -125,11 +108,28 @@
 <text:h text:style-name="Heading_20_3" text:outline-level="3">Sierra Eye and Tissue Donor Services</text:h>
 <text:h text:style-name="Heading_20_4" text:outline-level="4">In 2010, 2.023 referrals</text:h>
 <text:h text:style-name="Heading_20_2" text:outline-level="2">SightLife</text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">Southern California</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">Los Angeles</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">Anaheim/Santa Ana</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">Ventura</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">Other South</text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">QE Medicare</text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">Policy Bodies</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">Advocacy</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">AAO</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">ASCRS</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">EBAA</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">Military</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">United Network for Organ Sharing</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">Kaiser Hospital System</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">University of California System</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2">CMS</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">Medicare Part A</text:h>
+<text:h text:style-name="Heading_20_3" text:outline-level="3">Medicare Part B</text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">CMS Data</text:h>
 <text:h text:style-name="Heading_20_1" text:outline-level="1">Tools</text:h>
 <text:h text:style-name="Heading_20_2" text:outline-level="2">Darthmouth Atlas of Health</text:h>
 <text:h text:style-name="Heading_20_2" text:outline-level="2">HealthLandscape</text:h>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">QE Medicare</text:h>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">CMS Data</text:h>
 <text:h text:style-name="Heading_20_1" text:outline-level="1">Ambulatory Payment Classification</text:h>
 <text:h text:style-name="Heading_20_2" text:outline-level="2">CPT's which don't allow V2785</text:h>
 <text:h text:style-name="Heading_20_3" text:outline-level="3">Ocular Reconstruction Transplant</text:h>

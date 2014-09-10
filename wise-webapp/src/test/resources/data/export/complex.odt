@@ -79,25 +79,25 @@
 <text:sequence-decl text:display-outline-level="0" text:name="Drawing"/>
 </text:sequence-decls>
 <text:p text:style-name="Title">PPM Plan</text:p>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">Business Development </text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">Finance</text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">Governance &amp; Executive</text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">Administration</text:h>
 <text:h text:style-name="Heading_20_1" text:outline-level="1">Backlog Management</text:h>
 <text:p text:style-name="Standard">
 <text:a xmlns:text="text" xmlns:xlink="xlink" xlink:type="simple" xlink:href="https://docs.google.com/a/freeform.ca/drawings/d/1mrtkVAN3_XefJJCgfxw4Va6xk9TVDBKXDt_uzyIF4Us/edit">https://docs.google.com/a/freeform.ca/drawings/d/1mrtkVAN3_XefJJCgfxw4Va6xk9TVDBKXDt_uzyIF4Us/edit</text:a>
 </text:p>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">Freeform IT</text:h>
 <text:h text:style-name="Heading_20_1" text:outline-level="1">Client Project Management</text:h>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">Governance &amp; Executive</text:h>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">Finance</text:h>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">Administration</text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">Probono</text:h>
+<text:h text:style-name="Heading_20_2" text:outline-level="2"/>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">Freeform IT</text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">Community Outreach</text:h>
 <text:h text:style-name="Heading_20_1" text:outline-level="1">Human Resources</text:h>
 <text:p text:style-name="Standard"/>
 <text:h text:style-name="Heading_20_1" text:outline-level="1">Freeform Hosting</text:h>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">Community Outreach</text:h>
+<text:h text:style-name="Heading_20_1" text:outline-level="1">Business Development </text:h>
 <text:h text:style-name="Heading_20_1" text:outline-level="1">R&amp;D</text:h>
 <text:h text:style-name="Heading_20_2" text:outline-level="2">Goals</text:h>
 <text:h text:style-name="Heading_20_2" text:outline-level="2">Formulize</text:h>
-<text:h text:style-name="Heading_20_1" text:outline-level="1">Probono</text:h>
-<text:h text:style-name="Heading_20_2" text:outline-level="2"/>
 </office:text>
 </office:body>
 </office:document-content>
