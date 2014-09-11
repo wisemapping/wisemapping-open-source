@@ -19,12 +19,6 @@
         display: inline-block;
     }
 
-    #addMessageLink,.btn-group a {
-        padding-left: 20px;
-        color: #428bca;
-        text-decoration: none;
-    }
-
     #roleBtn a:hover {
         text-decoration: underline;
     }
