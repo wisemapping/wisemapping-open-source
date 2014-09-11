@@ -29,7 +29,7 @@ mindplot.widget.NoteEditor = new Class({
             removeButton: true,
             onRemoveClickData: {model: this._model}
         });
-        this.css({width:"600px"});
+        this.css({margin:"150px auto"});
         var panel = this._buildPanel(model);
         this.setContent(panel);
         },

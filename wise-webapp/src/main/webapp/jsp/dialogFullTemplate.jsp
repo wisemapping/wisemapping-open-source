@@ -23,7 +23,6 @@
 
     <script type="text/javascript" language="javascript" src="js/jquery.timeago.js"></script>
     <script type="text/javascript" language="javascript" src="js/jquery.timeago.${locale}.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/pageHeaders.css"/>
 
 <body>
 <div style="padding:10px">

@@ -20,7 +20,7 @@
         color: #000000;
     }
     .btn-header:hover {
-        background-color: #eee;
+        background-color: #C8E2DF;
     }
     .WelcomeHeader {
         position: relative;
