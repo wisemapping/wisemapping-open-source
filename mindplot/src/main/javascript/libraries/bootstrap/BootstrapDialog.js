@@ -13,7 +13,7 @@ var BootstrapDialog = new Class({
     initialize: function (title, options) {
         this.setOptions(options);
         this.options.onRemoveClickData.dialog = this;
-        this._native = $('<div class="modal fade"></div>').append('<div class="modal-dialog"></div>');
+        this._native = $('<div class="modal fade" tabindex="-1"></div>').append('<div class="modal-dialog"></div>');
         var content = $('<div class="modal-content"></div>');
         content.on('keydown', function(event) {
             event.stopPropagation();
