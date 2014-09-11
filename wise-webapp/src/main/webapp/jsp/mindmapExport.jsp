@@ -71,7 +71,7 @@
             </label>
         </fieldset>
     </form>
-    <div id="exportInfo">
+    <div id="exportInfo" style="margin-top: 19px;">
         <span class="label label-danger">Warning</span> <spring:message code="EXPORT_FORMAT_RESTRICTIONS"/>
     </div>
 
@@ -82,6 +82,15 @@
     h2 {
         font-size: 160%;
         color: #8e9181;
+    }
+
+    #dialogMainForm label {
+        font-weight:normal;
+        display: block;
+    }
+
+    #dialogMainForm label strong {
+        font-weight: 700;
     }
 </style>
 <script type="text/javascript">
