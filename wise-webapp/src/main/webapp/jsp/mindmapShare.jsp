@@ -15,22 +15,18 @@
     }
 
     #collabEmails {
-        width: 250px;
+        width: 325px;
         display: inline-block;
-        vertical-align: middle;
-        margin-bottom: 0;
     }
 
-    #roleBtn {
-        margin: 0 10px;
-        display: inline-block;
-        vertical-align: middle;
+    #addMessageLink,#roleBtn a {
+        padding-left: 20px;
         color: #428bca;
+        text-decoration: none;
     }
 
-    #addBtn {
-        display: inline-block;
-        vertical-align: middle;
+    #roleBtn a:hover {
+        text-decoration: underline;
     }
 
     #collabMessage {
@@ -58,7 +54,7 @@
 
         <p><strong><spring:message code="ADD_PEOPLE"/>:</strong></p>
 
-        <input type="text" id="collabEmails" name="collabEmails"
+        <input type="text" id="collabEmails" name="collabEmails" class="form-control"
                placeholder="<spring:message code="COLLABORATORS_SEPARATED_BY_COMA"/>"/>
 
         <div class="btn-group" id="roleBtn">
@@ -74,9 +70,9 @@
     </div>
     <div style="margin-top: 10px;">
         <p><strong><spring:message code="EMAIL_NOTIFICATION_MESSAGE"/></strong> - <a href="#"
-                                                                                     id="addMessageLink"><spring:message
+                                                                                     id="addMessageLink" style="padding-left: 0px"><spring:message
                 code="ADD_MESSAGE"/></a></p>
-        <textarea cols="4" id="collabMessage" placeholder="<spring:message code="OPTIONAL_CUSTOM_MESSAGE"/>">
+        <textarea cols="4" id="collabMessage" class="form-control" placeholder="<spring:message code="OPTIONAL_CUSTOM_MESSAGE"/>">
 
         </textarea>
     </div>
@@ -151,7 +147,7 @@ function addCollaboration(email, role, changeType) {
     } else {
         rowStr = '<tr data-collab=' + email + ' data-role="' + role + '">\
                             <td>' + email + ' (<spring:message code="YOU"/>)</td>\
-                            <td><button class="btn btn-secondary">' + messages[role] + '</button></td>\
+                            <td><button class="btn btn-secondary" style="float: right">' + messages[role] + '</button></td>\
                               <td></td>\
                              </tr>';
         tableElem.append(rowStr);
