@@ -34,6 +34,7 @@ var BootstrapDialog = new Class({
             content.append(footer);
         }
         this._native.find(".modal-dialog").append(content);
+        this._native.on('shown.bs.modal', this.onDialogShown);
     },
 
     _buildFooter: function() {
@@ -78,7 +79,9 @@ var BootstrapDialog = new Class({
         //this method should be abstract
     },
 
+    onDialogShown: function() {
 
+    },
     onRemoveClick: function(event) {
         event.data.model.setValue(null);
         event.data.dialog.close();

@@ -44,10 +44,9 @@ mindplot.widget.NoteEditor = new Class({
         });
 
         // Add textarea
-        var textArea = $('<textarea></textarea>').attr({
+        var textArea = $('<textarea></textarea autofocus>').attr({
                 'placeholder':$msg('WRITE_YOUR_TEXT_HERE'),
                 'required':'true',
-                'autofocus':'autofocus',
                 'class':'form-control'
         });
         textArea.css({
@@ -82,6 +81,10 @@ mindplot.widget.NoteEditor = new Class({
 
     onAcceptClick: function() {
         $("#noteFormId").submit();
+    },
+
+    onDialogShown: function() {
+        $(this).find('textarea').focus();
     }
 });
 
