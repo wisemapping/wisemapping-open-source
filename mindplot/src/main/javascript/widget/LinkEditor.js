@@ -51,7 +51,7 @@ mindplot.widget.LinkEditor = new Class({
         });
 
         // Add Input
-        var input = $('<input/>').attr({
+        var input = $('<input id="inputUrl"/>').attr({
             'placeholder': 'http://www.example.com/',
             'required': 'true',
             'autofocus': 'autofocus',
@@ -116,6 +116,10 @@ mindplot.widget.LinkEditor = new Class({
         if (!this.formSubmitted) {
             event.stopPropagation();
         }
+    },
+
+    onDialogShown: function() {
+        $(this).find('#inputUrl').focus();
     }
 
 });

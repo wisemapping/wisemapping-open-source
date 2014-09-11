@@ -71,7 +71,7 @@
 
         <p><strong><spring:message code="ADD_PEOPLE"/>:</strong></p>
 
-        <input type="text" id="collabEmails" name="collabEmails" class="form-control"
+        <input type="text" id="collabEmails" name="collabEmails" class="form-control" autofocus='autofocus'
                placeholder="<spring:message code="COLLABORATORS_SEPARATED_BY_COMA"/>"/>
 
         <div class="btn-group" id="roleBtn">
@@ -112,6 +112,10 @@ $("#collabEmails").keyup(function(event) {
         $('#addBtn').trigger('click');
     }
 });
+
+function onDialogShown() {
+    $('#collabEmails').focus();
+}
 
 var messages = {
     owner:'<spring:message code="IS_OWNER"/>',
