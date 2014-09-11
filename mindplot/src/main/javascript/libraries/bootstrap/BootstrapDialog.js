@@ -34,6 +34,9 @@ var BootstrapDialog = new Class({
             content.append(footer);
         }
         this._native.find(".modal-dialog").append(content);
+        this._native.on('hidden.bs.modal', function() {
+            $(this).remove();
+        });
         this._native.on('shown.bs.modal', this.onDialogShown);
     },
 
