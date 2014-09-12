@@ -67,7 +67,7 @@ mindplot.widget.LinkIconTooltip = new Class({
         });
 
         var img = new Element('img', {
-                src:'http://immediatenet.com/t/m?Size=1024x768&URL=' + linkIcon.getModel().getUrl(),
+                src:'http://api.webthumbnail.org?width=250&height=250&screen=1024&url=' + linkIcon.getModel().getUrl(),
                 img:linkIcon.getModel().getUrl(),
                 alt:linkIcon.getModel().getUrl()
             }
