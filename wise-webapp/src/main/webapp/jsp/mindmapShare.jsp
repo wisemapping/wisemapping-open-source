@@ -15,7 +15,7 @@
     }
 
     #collabEmails {
-        width: 325px;
+        width: 60%;
         display: inline-block;
     }
 
