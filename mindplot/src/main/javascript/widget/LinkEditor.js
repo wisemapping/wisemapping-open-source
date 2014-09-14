@@ -116,6 +116,11 @@ mindplot.widget.LinkEditor = new Class({
 
     onDialogShown: function() {
         $(this).find('#inputUrl').focus();
+    },
+
+    onRemoveClick: function(event) {
+        event.data.model.setValue(null);
+        event.data.dialog.close();
     }
 
 });
