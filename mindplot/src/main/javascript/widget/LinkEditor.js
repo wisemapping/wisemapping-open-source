@@ -26,7 +26,7 @@ mindplot.widget.LinkEditor = new Class({
             cancelButton: true,
             closeButton: true,
             acceptButton: true,
-            removeButton: true,
+            removeButton: typeof model.getValue() != 'undefined',
             errorMessage: true,
             onRemoveClickData: {model: this._model}
         });
@@ -96,10 +96,6 @@ mindplot.widget.LinkEditor = new Class({
                 }
             }
         );
-
-        if (typeof model.getValue() != 'undefined'){
-            this.showRemoveButton();
-        }
 
         result.append(this.form);
         return result;

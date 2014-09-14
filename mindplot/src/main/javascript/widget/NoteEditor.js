@@ -26,7 +26,7 @@ mindplot.widget.NoteEditor = new Class({
             cancelButton: true,
             closeButton: true,
             acceptButton: true,
-            removeButton: true,
+            removeButton: typeof model.getValue() != 'undefined',
             onRemoveClickData: {model: this._model}
         });
         this.css({margin:"150px auto"});
@@ -72,9 +72,6 @@ mindplot.widget.NoteEditor = new Class({
             });
         });
 
-        if (typeof model.getValue() != 'undefined'){
-            this.showRemoveButton();
-        }
         result.append(form);
         return result;
     },
