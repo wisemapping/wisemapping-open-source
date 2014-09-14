@@ -54,7 +54,6 @@ var BootstrapDialog = new Class({
             this.removeButton = $('<button type="button" class="btn btn-secondary" id="removeBtn" data-dismiss="modal">'+ $msg('REMOVE') +'</button>');
             footer.append(this.removeButton);
             this.removeButton.on('click', this.options.onRemoveClickData, this.onRemoveClick);
-            this.removeButton.hide();
         }
         if (this.options.cancelButton) {
             footer.append('<button type="button" class="btn btn-secondary" data-dismiss="modal">'+ $msg('CANCEL') +'</button>');
