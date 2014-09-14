@@ -79,15 +79,12 @@ var BootstrapDialog = new Class({
     },
 
     onAcceptClick: function(event) {
-        //this method should be abstract
+        throw "Unsupported operation";
     },
 
-    onDialogShown: function() {
-
-    },
+    onDialogShown: function() {},
     onRemoveClick: function(event) {
-        event.data.model.setValue(null);
-        event.data.dialog.close();
+        throw "Unsupported operation";
     },
 
     show: function () {
@@ -95,8 +92,9 @@ var BootstrapDialog = new Class({
     },
 
     setContent: function(content) {
-        // faltaria remover body previo
-        this._native.find('.modal-body').append(content);
+        var modalBody = this._native.find('.modal-body');
+        modalBody.empty();
+        modalBody.append(content);
     },
 
     css: function(options){
@@ -114,9 +112,5 @@ var BootstrapDialog = new Class({
 
     cleanError: function(){
         this._native.find('.alert-danger').hide();
-    },
-
-    showRemoveButton: function(){
-      this.removeButton.show();
     }
 });
