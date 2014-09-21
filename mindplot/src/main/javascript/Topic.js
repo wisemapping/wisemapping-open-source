@@ -581,7 +581,7 @@ mindplot.Topic = new Class({
             if (!this.isReadOnly()) {
                 // Disable topic selection of readOnly mode ...
                 var value = true;
-                if ((event.meta && Browser.Platform.mac) || (event.control && !Browser.Platform.mac)) {
+                if ((event.metaKey && Browser.Platform.mac) || (event.ctrlKey && !Browser.Platform.mac)) {
                     value = !this.isOnFocus();
                     event.stopPropagation();
                     event.preventDefault();
