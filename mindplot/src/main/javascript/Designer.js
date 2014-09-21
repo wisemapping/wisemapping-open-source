@@ -321,7 +321,7 @@ mindplot.Designer = new Class({
             var objects = model.getEntities();
             _.each(objects, function(object) {
                 // Disable all nodes on focus but not the current if Ctrl key isn't being pressed
-                if (!$defined(event) || (!event.control && !event.meta)) {
+                if (!$defined(event) || (!event.ctrlKey && !event.metaKey)) {
                     if (object.isOnFocus() && object != currentObject) {
                         object.setOnFocus(false);
                     }
