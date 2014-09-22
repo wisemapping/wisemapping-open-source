@@ -15,7 +15,7 @@
 
     <link rel="stylesheet/less" type="text/css" href="css/mindmapList.less"/>
 
-    <script type="text/javascript" language="javascript" src="js/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" language="javascript" src="js/jquery.js"></script>
     <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap-colorpicker.js"></script>
 
