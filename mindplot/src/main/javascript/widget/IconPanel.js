@@ -28,7 +28,7 @@ mindplot.widget.IconPanel = new Class({
     },
 
     buildPanel:function () {
-        var content = $('<div class="toolbarPanel" id="IconsPanel"></div>').css({width: 253, height: 230});
+        var content = $('<div class="toolbarPanel" id="IconsPanel"></div>').css({width: 245, height: 230});
         content.on('click', function (event) {
             event.stopPropagation()
         });
