@@ -1,0 +1,1 @@
+../../../../../wise-editor/src/main/webapp/js/jquery.js

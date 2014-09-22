@@ -18,7 +18,7 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <![endif]-->
     <link rel="stylesheet/less" type="text/css" href="css/editor.less"/>
-    <script type='text/javascript' src='js/jquery-2.1.0.min.js'></script>
+    <script type='text/javascript' src='js/jquery.js'></script>
     <script type='text/javascript' src='js/jquery-mousewheel.js'></script>
     <script type='text/javascript' src='js/hotkeys.js'></script>
     <script type='text/javascript' src='js/underscorejs.js'></script>
