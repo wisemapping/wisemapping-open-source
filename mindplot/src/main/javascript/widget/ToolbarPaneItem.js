@@ -46,7 +46,8 @@ mindplot.widget.ToolbarPaneItem = new Class({
                 return me._updateSelectedItem();
             },
             className: 'toolbarPaneTip',
-            trigger: 'manual'
+            trigger: 'manual',
+            template: '<div class="popover popoverGray" role="tooltip"><div class="arrow arrowGray"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
         });
 
         this._tip.addEvent('hide', function() {
