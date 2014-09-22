@@ -488,6 +488,9 @@
                                 <include>**/*.jpg</include>
                                 <include>**/*.less</include>
                                 <include>js/editor.js</include>
+                                <include>js/hotkeys.js</include>
+                                <include>js/jquery-mousewheel.js</include>
+                                <include>js/underscore.js</include>
                             </includes>
                         </overlay>
                         <overlay>
