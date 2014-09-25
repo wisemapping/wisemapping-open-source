@@ -28,22 +28,7 @@
 </Row>
 <Row>
 <Cell ss:Index="2">
-<Data ss:Type="String">Business Development </Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="2">
-<Data ss:Type="String">Backlog Management</Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="2">
-<Data ss:Type="String">Freeform IT</Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="2">
-<Data ss:Type="String">Client Project Management</Data>
+<Data ss:Type="String">Finance</Data>
 </Cell>
 </Row>
 <Row>
@@ -53,12 +38,37 @@
 </Row>
 <Row>
 <Cell ss:Index="2">
-<Data ss:Type="String">Finance</Data>
+<Data ss:Type="String">Administration</Data>
 </Cell>
 </Row>
 <Row>
 <Cell ss:Index="2">
-<Data ss:Type="String">Administration</Data>
+<Data ss:Type="String">Backlog Management</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Client Project Management</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Probono</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String"/>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Freeform IT</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
+<Data ss:Type="String">Community Outreach</Data>
 </Cell>
 </Row>
 <Row>
@@ -78,7 +88,7 @@
 </Row>
 <Row>
 <Cell ss:Index="2">
-<Data ss:Type="String">Community Outreach</Data>
+<Data ss:Type="String">Business Development </Data>
 </Cell>
 </Row>
 <Row>
@@ -94,16 +104,6 @@
 <Row>
 <Cell ss:Index="3">
 <Data ss:Type="String">Formulize</Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="2">
-<Data ss:Type="String">Probono</Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="3">
-<Data ss:Type="String"/>
 </Cell>
 </Row>
 </Table>

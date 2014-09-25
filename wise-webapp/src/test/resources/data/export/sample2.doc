@@ -277,26 +277,6 @@
 <w:pStyle w:val="Heading1"/>
 </w:pPr>
 <w:r>
-<w:t>Newspapers</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>College Newspapers</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
 <w:t>Third Party</w:t>
 </w:r>
 </w:p>
@@ -307,6 +287,26 @@
 </w:pPr>
 <w:r>
 <w:t>Thumbshot</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
+<w:t>Newspapers</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>College Newspapers</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -344,7 +344,7 @@
 <w:pStyle w:val="Heading4"/>
 </w:pPr>
 <w:r>
-<w:t>Xing</w:t>
+<w:t>konnects.com</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -354,7 +354,7 @@
 <w:pStyle w:val="Heading4"/>
 </w:pPr>
 <w:r>
-<w:t>konnects.com</w:t>
+<w:t>Xing</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -376,7 +376,7 @@
 <w:pStyle w:val="Heading2"/>
 </w:pPr>
 <w:r>
-<w:t>Fraternity</w:t>
+<w:t>Professional Associations</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -386,7 +386,7 @@
 <w:pStyle w:val="Heading2"/>
 </w:pPr>
 <w:r>
-<w:t>Professional Associations</w:t>
+<w:t>Fraternity</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>

@@ -55,28 +55,37 @@
     <div class="container">
         <div class="row">
             <div class="col-md-offset-1 col-md-10">
-                <div class="jumbotron" style="margin:40px 0 100px 0;padding: 10px 60px;">
+                <div class="jumbotron" style="margin:40px 0 15px 0;padding: 10px 60px;">
                     <tiles:insertAttribute name="body"/>
                 </div>
             </div>
             <div class="col-md-1" style="padding-top:25px">
                 <c:if test="${requestScope['google.ads.enabled']}">
-                    <script type="text/javascript"><!--
-                    google_ad_client = "ca-pub-7564778578019285";
-                    /* WiseMapping Mindmap List */
-                    google_ad_slot = "4071968444";
-                    google_ad_width = 120;
-                    google_ad_height = 600;
-                    //-->
+                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <!-- Wise: Lateral Image (Small) -->
+                    <ins class="adsbygoogle"
+                         style="display:inline-block;width:120px;height:240px"
+                         data-ad-client="ca-pub-7564778578019285"
+                         data-ad-slot="6751959325"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
                     </script>
-                    <div style="margin-top:5px;">
-                        <script type="text/javascript"
-                                src="https://pagead2.googlesyndication.com/pagead/show_ads.js">
-                        </script>
-                    </div>
                 </c:if>
             </div>
         </div>
+        <c:if test="${requestScope['google.ads.enabled']}">
+              <div class="row" style="text-align: center;">
+                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                <!-- Wise: Pages Footer  (All pages) -->
+                <ins class="adsbygoogle"
+                     style="display:inline-block;width:728px;height:90px"
+                     data-ad-client="ca-pub-7564778578019285"
+                     data-ad-slot="3798492923"></ins>
+                <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+           </div>
+        </c:if>
     </div>
 
         <jsp:include page="footer.jsp"/>

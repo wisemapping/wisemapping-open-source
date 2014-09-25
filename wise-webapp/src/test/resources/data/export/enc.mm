@@ -1,113 +1,15 @@
-<map version="0.9.0">
+<map version="1.0.1">
     <node ID="ID_1" TEXT="Artigos GF coment&#225;rios interessantes">
-        <node BACKGROUND_COLOR="#cccccc" ID="ID_5" POSITION="left" STYLE="rectagle" TEXT="Baraloto et al. 2010. Functional trait variation and sampling strategies in species-rich plant communities">
+        <node BACKGROUND_COLOR="#cccccc" COLOR="#000000" ID="ID_2" POSITION="left" STYLE="rectagle" TEXT="Poorter 1999. Functional Ecology. 13:396-410">
             <edge COLOR="#cccccc"/>
-            <node ID="ID_6" POSITION="left">
-                <richcontent TYPE="NODE">
-                    <html>
-                        <head/>
-                        <body>
-                            <p>Therecent growth of large functional trait data</p>
-                            <p>bases has been fuelled by standardized protocols forthe</p>
-                            <p>measurement of individual functional traits and intensive</p>
-                            <p>efforts to compile trait data(Cornelissen etal. 2003; Chave etal. 2009). Nonetheless, there remains no consensusfor</p>
-                            <p>the most appropriate sampling design so that traits can be</p>
-                            <p>scaled from the individuals on whom measurements are</p>
-                            <p>made to the community or ecosystem levels at which infer-</p>
-                            <p>ences are drawn (Swenson etal. 2006,2007,Reich,Wright</p>
-                            <p>&amp; Lusk 2007;Kraft,Valencia &amp; Ackerly 2008).</p>
-                        </body>
-                    </html>
-                </richcontent>
-            </node>
-            <node ID="ID_7" POSITION="left">
-                <richcontent TYPE="NODE">
-                    <html>
-                        <head/>
-                        <body>
-                            <p>However, the fast pace of</p>
-                            <p>development of plant trait meta-analyses also suggests that</p>
-                            <p>trait acquisition in the field is a factor limiting the growth of</p>
-                            <p>plant trait data bases.</p>
-                        </body>
-                    </html>
-                </richcontent>
-            </node>
-            <node ID="ID_8" POSITION="left">
-                <richcontent TYPE="NODE">
-                    <html>
-                        <head/>
-                        <body>
-                            <p>We measured</p>
-                            <p>traits for every individual tree in nine 1-ha plots in tropical</p>
-                            <p>lowland rainforest (N = 4709). Each plant was sampled for</p>
-                            <p>10 functional traits related to wood and leaf morphology and</p>
-                            <p>ecophysiology. Here, we contrast the trait means and variances</p>
-                            <p>obtained with a full sampling strategy with those of</p>
-                            <p>other sampling designs used in the recent literature, which we</p>
-                            <p>obtain by simulation. We assess the differences in community-</p>
-                            <p>level estimates of functional trait means and variances</p>
-                            <p>among design types and sampling intensities. We then contrast</p>
-                            <p>the relative costs of these designs and discuss the appropriateness</p>
-                            <p>of different sampling designs and intensities for</p>
-                            <p>different questions and systems.</p>
-                        </body>
-                    </html>
-                </richcontent>
-            </node>
-            <node ID="ID_9" POSITION="left" TEXT="Falar que a escolha das categorias de sucess&#227;o e dos par&#226;metros ou caracter&#237;stica dos indiv&#237;duos que ser&#227;o utilizadas dependera da facilidade de coleta dos dados e do custo monet&#225;rio e temporal."/>
-            <node ID="ID_12" POSITION="left" TEXT="Ver se classifica sucess&#227;o por densidade de tronco para citar no artigo como exemplo de outros atributos al&#233;m de germina&#231;&#227;o e ver se e custoso no tempo e em dinheiro"/>
-            <node ID="ID_13" POSITION="left" TEXT="Intensas amostragens de experimentos simples  tem maior retorno em acur&#225;cia de estimativa e de custo tb."/>
-            <node ID="ID_14" POSITION="left">
-                <richcontent TYPE="NODE">
-                    <html>
-                        <head/>
-                        <body>
-                            <p>With regard to estimating mean trait values, strategies</p>
-                            <p>alternative to BRIDGE were consistently cost-effective. On</p>
-                            <p>the other hand, strategies alternative to BRIDGE clearly</p>
-                            <p>failed to accurately estimate the variance of trait values. This</p>
-                            <p>indicates that in situations where accurate estimation of plotlevel</p>
-                            <p>variance is desired, complete censuses are essential.</p>
-                        </body>
-                    </html>
-                </richcontent>
-                <richcontent TYPE="NOTE">
-                    <html>
-                        <head/>
-                        <body>
-                            <p/>
-                            <p>Isso significa que estudos de caracter&#237;stica de hist&#243;ria de vida compensam? Ver nos m&amp;m.</p>
-                        </body>
-                    </html>
-                </richcontent>
-            </node>
-            <node ID="ID_15" POSITION="left">
-                <richcontent TYPE="NODE">
-                    <html>
-                        <head/>
-                        <body>
-                            <p>We suggest that, in these studies,</p>
-                            <p>the investment in complete sampling may be worthwhile</p>
-                            <p>for at least some traits.</p>
-                        </body>
-                    </html>
-                </richcontent>
-                <richcontent TYPE="NOTE">
-                    <html>
-                        <head/>
-                        <body>
-                            <p/>
-                            <p>Falar que isso corrobora nossa sugest&#227;o de utilizar poucas medidas, mas que elas sejam confi&#225;veis.</p>
-                        </body>
-                    </html>
-                </richcontent>
+            <node ID="ID_3" POSITION="left" STYLE="fork" TEXT="Esp&#233;cies pioneiras crescem mais r&#225;pido do que as n&#227;o pioneiras">
+                <node ID="ID_4" POSITION="left" STYLE="fork" TEXT="Toler&#226;ncia a sombra est&#225; relacionada com persist&#234;ncia e n&#227;o com crescimento"/>
             </node>
         </node>
         <node BACKGROUND_COLOR="#cccccc" COLOR="#000000" ID="ID_17" POSITION="right" STYLE="rectagle" TEXT="Chazdon 2010. Biotropica. 42(1): 31&#8211;40">
-            <font/>
             <edge COLOR="#cccccc"/>
-            <node ID="ID_22" POSITION="right">
+            <node ID="ID_24" POSITION="right" STYLE="fork" TEXT="Falar no artigo que esse trabalho fala que &#233; inadequada a divis&#227;o entre pioneira e n&#227;o pioneira devido a grande varia&#231;&#227;o que h&#225; entre elas. Al&#233;m de terem descoberto que durante a ontogenia a resposta a luminosidade muda dentro de uma mesma esp&#233;cie. Por&#233;m recomendar que essa classifica&#231;&#227;o continue sendo usada em curto prazo enquanto n&#227;o h&#225; informa&#231;&#245;es confi&#225;veis suficiente para esta simples classifica&#231;&#227;o. Outras classifica&#231;&#245;es como esta do artigo s&#227;o bem vinda, contanto que tenham dados confi&#225;veis. Por&#233;m dados est&#225;ticos j&#225; s&#227;o dif&#237;ceis de se obter, dados temporais, como taxa de crescimento em di&#226;metro ou altura, s&#227;o mais dif&#237;ceis ainda. Falar que v&#225;rios tipos de classifica&#231;&#245;es podem ser utilizadas e quanto mais detalhe melhor, por&#233;m os dados &#233; que s&#227;o mais limitantes. Se focarmos em dados de germina&#231;&#227;o e crescimento limitantes, como sugerem sainete e whitmore, da uma id&#233;ia maismr&#225;pida e a curto prazo da classifica&#231;&#227;o destas esp&#233;cies. Depois com o tempo conseguiremos construir classifica&#231;&#245;es mais detalhadas e com mais dados confi&#225;veis. "/>
+            <node ID="ID_22" POSITION="right" STYLE="fork">
                 <richcontent TYPE="NODE">
                     <html>
                         <head/>
@@ -124,7 +26,7 @@
                     </html>
                 </richcontent>
             </node>
-            <node ID="ID_23" POSITION="right">
+            <node ID="ID_23" POSITION="right" STYLE="fork">
                 <richcontent TYPE="NODE">
                     <html>
                         <head/>
@@ -138,8 +40,7 @@
                     </html>
                 </richcontent>
             </node>
-            <node ID="ID_24" POSITION="right" TEXT="Falar no artigo que esse trabalho fala que &#233; inadequada a divis&#227;o entre pioneira e n&#227;o pioneira devido a grande varia&#231;&#227;o que h&#225; entre elas. Al&#233;m de terem descoberto que durante a ontogenia a resposta a luminosidade muda dentro de uma mesma esp&#233;cie. Por&#233;m recomendar que essa classifica&#231;&#227;o continue sendo usada em curto prazo enquanto n&#227;o h&#225; informa&#231;&#245;es confi&#225;veis suficiente para esta simples classifica&#231;&#227;o. Outras classifica&#231;&#245;es como esta do artigo s&#227;o bem vinda, contanto que tenham dados confi&#225;veis. Por&#233;m dados est&#225;ticos j&#225; s&#227;o dif&#237;ceis de se obter, dados temporais, como taxa de crescimento em di&#226;metro ou altura, s&#227;o mais dif&#237;ceis ainda. Falar que v&#225;rios tipos de classifica&#231;&#245;es podem ser utilizadas e quanto mais detalhe melhor, por&#233;m os dados &#233; que s&#227;o mais limitantes. Se focarmos em dados de germina&#231;&#227;o e crescimento limitantes, como sugerem sainete e whitmore, da uma id&#233;ia maismr&#225;pida e a curto prazo da classifica&#231;&#227;o destas esp&#233;cies. Depois com o tempo conseguiremos construir classifica&#231;&#245;es mais detalhadas e com mais dados confi&#225;veis. "/>
-            <node ID="ID_25" POSITION="right">
+            <node ID="ID_25" POSITION="right" STYLE="fork">
                 <richcontent TYPE="NODE">
                     <html>
                         <head/>
@@ -157,7 +58,7 @@
                     </html>
                 </richcontent>
             </node>
-            <node ID="ID_26" POSITION="right">
+            <node ID="ID_26" POSITION="right" STYLE="fork">
                 <richcontent TYPE="NODE">
                     <html>
                         <head/>
@@ -170,7 +71,7 @@
                     </html>
                 </richcontent>
             </node>
-            <node ID="ID_27" POSITION="right">
+            <node ID="ID_27" POSITION="right" STYLE="fork">
                 <richcontent TYPE="NODE">
                     <html>
                         <head/>
@@ -184,7 +85,7 @@
                     </html>
                 </richcontent>
             </node>
-            <node ID="ID_28" POSITION="right">
+            <node ID="ID_28" POSITION="right" STYLE="fork">
                 <richcontent TYPE="NODE">
                     <html>
                         <head/>
@@ -203,7 +104,7 @@
                     </html>
                 </richcontent>
             </node>
-            <node ID="ID_29" POSITION="right">
+            <node ID="ID_29" POSITION="right" STYLE="fork">
                 <richcontent TYPE="NODE">
                     <html>
                         <head/>
@@ -238,7 +139,7 @@
                     </html>
                 </richcontent>
             </node>
-            <node ID="ID_30" POSITION="right">
+            <node ID="ID_30" POSITION="right" STYLE="fork">
                 <richcontent TYPE="NODE">
                     <html>
                         <head/>
@@ -251,7 +152,7 @@
                     </html>
                 </richcontent>
             </node>
-            <node ID="ID_31" POSITION="right">
+            <node ID="ID_31" POSITION="right" STYLE="fork">
                 <richcontent TYPE="NODE">
                     <html>
                         <head/>
@@ -279,11 +180,108 @@
                 </richcontent>
             </node>
         </node>
-        <node BACKGROUND_COLOR="#cccccc" COLOR="#000000" ID="ID_2" POSITION="left" STYLE="rectagle" TEXT="Poorter 1999. Functional Ecology. 13:396-410">
-            <font/>
+        <node BACKGROUND_COLOR="#cccccc" ID="ID_5" POSITION="left" STYLE="rectagle" TEXT="Baraloto et al. 2010. Functional trait variation and sampling strategies in species-rich plant communities">
             <edge COLOR="#cccccc"/>
-            <node ID="ID_3" POSITION="left" TEXT="Esp&#233;cies pioneiras crescem mais r&#225;pido do que as n&#227;o pioneiras">
-                <node ID="ID_4" POSITION="left" TEXT="Toler&#226;ncia a sombra est&#225; relacionada com persist&#234;ncia e n&#227;o com crescimento"/>
+            <node ID="ID_6" POSITION="left" STYLE="fork">
+                <richcontent TYPE="NODE">
+                    <html>
+                        <head/>
+                        <body>
+                            <p>Therecent growth of large functional trait data</p>
+                            <p>bases has been fuelled by standardized protocols forthe</p>
+                            <p>measurement of individual functional traits and intensive</p>
+                            <p>efforts to compile trait data(Cornelissen etal. 2003; Chave etal. 2009). Nonetheless, there remains no consensusfor</p>
+                            <p>the most appropriate sampling design so that traits can be</p>
+                            <p>scaled from the individuals on whom measurements are</p>
+                            <p>made to the community or ecosystem levels at which infer-</p>
+                            <p>ences are drawn (Swenson etal. 2006,2007,Reich,Wright</p>
+                            <p>&amp; Lusk 2007;Kraft,Valencia &amp; Ackerly 2008).</p>
+                        </body>
+                    </html>
+                </richcontent>
+            </node>
+            <node ID="ID_7" POSITION="left" STYLE="fork">
+                <richcontent TYPE="NODE">
+                    <html>
+                        <head/>
+                        <body>
+                            <p>However, the fast pace of</p>
+                            <p>development of plant trait meta-analyses also suggests that</p>
+                            <p>trait acquisition in the field is a factor limiting the growth of</p>
+                            <p>plant trait data bases.</p>
+                        </body>
+                    </html>
+                </richcontent>
+            </node>
+            <node ID="ID_8" POSITION="left" STYLE="fork">
+                <richcontent TYPE="NODE">
+                    <html>
+                        <head/>
+                        <body>
+                            <p>We measured</p>
+                            <p>traits for every individual tree in nine 1-ha plots in tropical</p>
+                            <p>lowland rainforest (N = 4709). Each plant was sampled for</p>
+                            <p>10 functional traits related to wood and leaf morphology and</p>
+                            <p>ecophysiology. Here, we contrast the trait means and variances</p>
+                            <p>obtained with a full sampling strategy with those of</p>
+                            <p>other sampling designs used in the recent literature, which we</p>
+                            <p>obtain by simulation. We assess the differences in community-</p>
+                            <p>level estimates of functional trait means and variances</p>
+                            <p>among design types and sampling intensities. We then contrast</p>
+                            <p>the relative costs of these designs and discuss the appropriateness</p>
+                            <p>of different sampling designs and intensities for</p>
+                            <p>different questions and systems.</p>
+                        </body>
+                    </html>
+                </richcontent>
+            </node>
+            <node ID="ID_9" POSITION="left" STYLE="fork" TEXT="Falar que a escolha das categorias de sucess&#227;o e dos par&#226;metros ou caracter&#237;stica dos indiv&#237;duos que ser&#227;o utilizadas dependera da facilidade de coleta dos dados e do custo monet&#225;rio e temporal."/>
+            <node ID="ID_12" POSITION="left" STYLE="fork" TEXT="Ver se classifica sucess&#227;o por densidade de tronco para citar no artigo como exemplo de outros atributos al&#233;m de germina&#231;&#227;o e ver se e custoso no tempo e em dinheiro"/>
+            <node ID="ID_13" POSITION="left" STYLE="fork" TEXT="Intensas amostragens de experimentos simples  tem maior retorno em acur&#225;cia de estimativa e de custo tb."/>
+            <node ID="ID_14" POSITION="left" STYLE="fork">
+                <richcontent TYPE="NODE">
+                    <html>
+                        <head/>
+                        <body>
+                            <p>With regard to estimating mean trait values, strategies</p>
+                            <p>alternative to BRIDGE were consistently cost-effective. On</p>
+                            <p>the other hand, strategies alternative to BRIDGE clearly</p>
+                            <p>failed to accurately estimate the variance of trait values. This</p>
+                            <p>indicates that in situations where accurate estimation of plotlevel</p>
+                            <p>variance is desired, complete censuses are essential.</p>
+                        </body>
+                    </html>
+                </richcontent>
+                <richcontent TYPE="NOTE">
+                    <html>
+                        <head/>
+                        <body>
+                            <p/>
+                            <p>Isso significa que estudos de caracter&#237;stica de hist&#243;ria de vida compensam? Ver nos m&amp;m.</p>
+                        </body>
+                    </html>
+                </richcontent>
+            </node>
+            <node ID="ID_15" POSITION="left" STYLE="fork">
+                <richcontent TYPE="NODE">
+                    <html>
+                        <head/>
+                        <body>
+                            <p>We suggest that, in these studies,</p>
+                            <p>the investment in complete sampling may be worthwhile</p>
+                            <p>for at least some traits.</p>
+                        </body>
+                    </html>
+                </richcontent>
+                <richcontent TYPE="NOTE">
+                    <html>
+                        <head/>
+                        <body>
+                            <p/>
+                            <p>Falar que isso corrobora nossa sugest&#227;o de utilizar poucas medidas, mas que elas sejam confi&#225;veis.</p>
+                        </body>
+                    </html>
+                </richcontent>
             </node>
         </node>
     </node>

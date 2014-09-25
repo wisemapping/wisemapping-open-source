@@ -114,13 +114,14 @@ public class MindmapController extends BaseController {
         return new ModelAndView("transformViewWise", values);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/freemind"}, params = {"download=mm"})
+    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/freemind"}, params = {"download=mm","version"})
     @ResponseBody
-    public ModelAndView retrieveDocumentAsFreemind(@PathVariable int id) throws IOException, MapCouldNotFoundException {
+    public ModelAndView retrieveDocumentAsFreemind(@PathVariable int id, @RequestParam(value = "version") String version) throws IOException, MapCouldNotFoundException {
         final Mindmap mindMap = findMindmapById(id);
         final Map<String, Object> values = new HashMap<String, Object>();
         values.put("content", mindMap.getXmlStr());
         values.put("filename", mindMap.getTitle());
+        values.put("version", version);
         return new ModelAndView("transformViewFreemind", values);
     }
 
