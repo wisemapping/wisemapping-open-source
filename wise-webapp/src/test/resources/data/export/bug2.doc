@@ -267,6 +267,131 @@
 <w:pStyle w:val="Heading1"/>
 </w:pPr>
 <w:r>
+<w:t>Complementamos el trabajo de la escuela</w:t>
+</w:r>
+</w:p>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="BodyText"/>
+</w:pPr>
+<w:r>
+<w:t>
+                        Todos los contenidos de los talleres están relacionados con el currículo de la enseñanza básica.
+                        A diferencia de la práctica tradicional, pretendemos ahondar en el conocimiento partiendo de lo que realmente interesa al niño o niña,
+                        ayudándole a que encuentre respuesta a las preguntas que él o ella se plantea.
+                        
+                        Por ese motivo, SaberMás proyecta estar al lado de los niños que necesitan una motivación extra para entender la escuela y fluir en ella,
+                        y también al lado de aquellos a quienes la curiosidad y las ganas de saber les lleva más allá.
+                    </w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>SaberMás trabaja con, desde y para la motivación</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>Trabajamos en equipo en nuestros proyectos</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>Cada uno va a su ritmo, y cada cual pone sus límites</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>Aprendemos todos de todos</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>Valoramos lo que hemos aprendido</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
+<w:t>Estructura PBL: aprendemos cuando buscamos respuestas a nuestras propias preguntas</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
+<w:t>Trabajo basado en la experimentación y en la investigación</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
+<w:t>Alternativa a otras actividades de ocio</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
+<w:t>Actividades centradas en el contexto cercano</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
+<w:t>Duración limitada: 5-6 semanas</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
 <w:t>Utilización de medios de expresión artística, digitales y analógicos</w:t>
 </w:r>
 </w:p>
@@ -278,6 +403,56 @@
 </w:pPr>
 <w:r>
 <w:t>Precio también limitado: 100-120?</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
+<w:t>Uso de la tecnología durante todo el proceso de aprendizaje</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
+<w:t>Niños y niñas que quieren saber más</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
+<w:t>Flexibilidad en el uso de las lenguas de trabajo (inglés, castellano, esukara?)</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
+<w:t>De 8 a 12 años, sin separación por edades</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
+<w:t>Máximo 10/1 por taller</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -326,7 +501,37 @@
 <w:pStyle w:val="Heading2"/>
 </w:pPr>
 <w:r>
+<w:t>Culturas Antiguas</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading3"/>
+</w:pPr>
+<w:r>
+<w:t>Egipto, Grecia, China...</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
 <w:t>Energía</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t>Paleontología</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -367,211 +572,6 @@
 </w:pPr>
 <w:r>
 <w:t>Poesía</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>Culturas Antiguas</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading3"/>
-</w:pPr>
-<w:r>
-<w:t>Egipto, Grecia, China...</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>Paleontología</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
-<w:t>Duración limitada: 5-6 semanas</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
-<w:t>Niños y niñas que quieren saber más</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
-<w:t>Alternativa a otras actividades de ocio</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
-<w:t>Uso de la tecnología durante todo el proceso de aprendizaje</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
-<w:t>Estructura PBL: aprendemos cuando buscamos respuestas a nuestras propias preguntas</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
-<w:t>Trabajo basado en la experimentación y en la investigación</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
-<w:t>De 8 a 12 años, sin separación por edades</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
-<w:t>Máximo 10/1 por taller</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
-<w:t>Actividades centradas en el contexto cercano</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
-<w:t>Flexibilidad en el uso de las lenguas de trabajo (inglés, castellano, esukara?)</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
-<w:t>Complementamos el trabajo de la escuela</w:t>
-</w:r>
-</w:p>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="BodyText"/>
-</w:pPr>
-<w:r>
-<w:t>
-                        Todos los contenidos de los talleres están relacionados con el currículo de la enseñanza básica.
-                        A diferencia de la práctica tradicional, pretendemos ahondar en el conocimiento partiendo de lo que realmente interesa al niño o niña,
-                        ayudándole a que encuentre respuesta a las preguntas que él o ella se plantea.
-                        
-                        Por ese motivo, SaberMás proyecta estar al lado de los niños que necesitan una motivación extra para entender la escuela y fluir en ella,
-                        y también al lado de aquellos a quienes la curiosidad y las ganas de saber les lleva más allá.
-                    </w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>Cada uno va a su ritmo, y cada cual pone sus límites</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>Aprendemos todos de todos</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>Valoramos lo que hemos aprendido</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>SaberMás trabaja con, desde y para la motivación</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t>Trabajamos en equipo en nuestros proyectos</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>

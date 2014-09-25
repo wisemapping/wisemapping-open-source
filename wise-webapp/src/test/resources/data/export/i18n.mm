@@ -1,4 +1,4 @@
-<map version="0.9.0">
+<map version="1.0.1">
     <node ID="ID_0" TEXT="i18n">
         <node ID="ID_1" POSITION="right" TEXT="Este es un &#233; con acento"/>
         <node ID="ID_2" POSITION="left" TEXT="Este es una &#241;"/>

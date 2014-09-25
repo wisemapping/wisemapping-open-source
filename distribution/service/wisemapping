@@ -1,0 +1,72 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          wisemapping
+# Required-Start:    $all
+# Required-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: wisemapping
+# Description:       www.wisemapping.com
+### END INIT INFO
+
+set -e
+set -u
+
+#environmental variables
+JAVA_HOME="/usr/lib/jvm/java7"
+JDK_HOME=$JAVA_HOME
+export PATH=$JAVA_HOME/bin:$PATH
+WISE_HOME="/opt/wisemapping"
+PID_FILE="$WISE_HOME/.pid"
+SELF=$(cd $(dirname $0); pwd -P)/$(basename $0)
+
+preInitChecks() {
+  MYSQL_STATUS=`pgrep mysql`
+  if [ -z $MYSQL_STATUS ]; then
+    service mysql start >/dev/null 2>&1
+  fi
+}
+
+wiseStatus() {
+  echo `pgrep -f "$WISE_HOME/start.jar"`
+}
+
+case "${1:-''}" in
+  'start')
+    #preInitChecks
+    cd $WISE_HOME
+    echo "Starting Wisemapping..."
+    java -Xmx256m -Dorg.apache.jasper.compiler.disablejsr199=true -jar $WISE_HOME/start.jar > $WISE_HOME/logs/start.log 2>&1 &
+    PID=$!
+    cd - >/dev/null 2>&1
+    echo "proccess id: $PID"
+    echo "$PID" > $PID_FILE
+	;;
+  'stop')
+    if [ ! -f $PID_FILE ]; then
+      PID=$(wiseStatus)
+    else 
+      PID=`cat $PID_FILE`
+      rm $PID_FILE >/dev/null 2>&1
+    fi
+    kill $PID
+    echo "Wisemapping stopped"
+	;;
+  'restart')
+	set +e; $SELF stop; set -e
+	$SELF start 
+	;;
+  'status')
+	STATUS=$(wiseStatus)
+        if [ -n "$STATUS" ]; then
+          echo "Wisemapping server is running, pid: $STATUS"
+        else
+          echo "Wisemapping is stopped"
+        fi
+        ;;
+
+  *)
+	echo "Usage: $SELF start|stop|restart|status"
+	exit 1
+	;;
+esac

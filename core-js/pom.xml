@@ -9,8 +9,11 @@
         <groupId>org.wisemapping</groupId>
         <artifactId>wisemapping</artifactId>
         <relativePath>../pom.xml</relativePath>
-        <version>3.1-SNAPSHOT</version>
+        <version>3.0.5-SNAPSHOT</version>
     </parent>
+    <scm>
+        <developerConnection>scm:git:git@bitbucket.org:wisemapping/wisemapping-open-source.git</developerConnection>
+    </scm>
 
     <build>
         <plugins>
@@ -30,6 +33,12 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5</version>
             </plugin>
 
             <plugin>

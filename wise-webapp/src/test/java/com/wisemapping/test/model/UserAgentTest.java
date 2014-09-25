@@ -54,6 +54,9 @@ public class UserAgentTest {
 
         final SupportedUserAgent firefox20 = SupportedUserAgent.create("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:20.0) Gecko/20121215 Firefox/20.0 AppEngine-Google; (+http://code.google.com/appengine; appid: slubuntuk)");
         Assert.assertEquals(firefox20.isBrowserSupported(), true);
+
+        final SupportedUserAgent firefox30 = SupportedUserAgent.create("Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0");
+        Assert.assertEquals(firefox30.isBrowserSupported(), true);
     }
 
 

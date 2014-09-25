@@ -122,6 +122,12 @@
             });
         });
     </script>
+
+    <!--script type="text/javascript" language="javascript">
+        $(function(){
+            $("#labelIconList").load("jsp/labelIconList.jsp");
+        });
+    </script-->
 </head>
 <body>
     <jsp:include page="header.jsp">
@@ -257,19 +263,15 @@
             </div>
             <div class="col-md-1" style="padding-top:25px">
                 <c:if test="${requestScope['google.ads.enabled']}">
-                    <script type="text/javascript"><!--
-                    google_ad_client = "ca-pub-7564778578019285";
-                    /* WiseMapping Mindmap List */
-                    google_ad_slot = "4071968444";
-                    google_ad_width = 120;
-                    google_ad_height = 600;
-                    //-->
+                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <!-- WiseMapping Mindmap List -->
+                    <ins class="adsbygoogle"
+                         style="display:inline-block;width:120px;height:600px"
+                         data-ad-client="ca-pub-7564778578019285"
+                         data-ad-slot="4071968444"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
                     </script>
-                    <div style="margin-top:5px;">
-                        <script type="text/javascript"
-                                src="https://pagead2.googlesyndication.com/pagead/show_ads.js">
-                        </script>
-                    </div>
                 </c:if>
             </div>
         </div>
@@ -342,8 +344,21 @@
                                 <div id="colorGroup" class="form-group">
                                     <label class="col-md-3 control-label" for="colorChooser"><spring:message code="COLOR"/>:</label>
                                     <div class="col-md-1">
-                                        <input class="form-control" name="color" id="colorChooser" style="display: none" type="text" required="required" value="#000000"/>
+                                        <input class="form-control" name="color" id="colorChooser" style="display: none" required="required" value="#000000"/>
                                         <span class="input-group-addon colorInput"><i></i></span>
+                                    </div>
+                                </div>
+                                <div id="iconGroup" class="form-group">
+                                    <label class="col-md-3 control-label" for="iconChooser"><spring:message code="ICON"/>:</label>
+                                    <input class="form-control" name="iconName" id="iconChooser" style="display: none" required="required" value="glyphicon glyphicon-tag"/>
+                                    <div class="col-md-1">
+                                        <div class="btn dropdown-toggle" id="defaultIcon" data-toggle="dropdown">
+                                            <i class="glyphicon glyphicon-tag"></i>
+                                        </div>
+                                        <div id="labelIconList" class="dropdown-menu bs-glyphicons"></div>
+                                        <div id="labelIconItems" class="dropdown-menu bs-glyphicons">
+                                            <jsp:include page="labelIconList.jsp"/>
+                                        </div>
                                     </div>
                                 </div>
                             </fieldset>
