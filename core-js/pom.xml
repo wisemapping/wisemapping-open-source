@@ -56,6 +56,7 @@
                     <sourceIncludes>
                         <include>Functions.js</include>
                     </sourceIncludes>
+                    <browserVersion>CHROME</browserVersion>
                 </configuration>
             </plugin>
 
