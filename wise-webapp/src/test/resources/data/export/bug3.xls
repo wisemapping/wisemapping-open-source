@@ -1470,6 +1470,31 @@
 </Row>
 <Row>
 <Cell ss:Index="2">
+<Data ss:Type="String">How to improve image</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Rankings</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">macro indicators</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="4">
+<Data ss:Type="String">meso-indicators</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Innovation investment climate</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="2">
 <Data ss:Type="String">What investments in innovative projects</Data>
 <Comment>
 <ss:Data xmlns="http://www.w3.org/TR/REC-html40">
@@ -1637,31 +1662,6 @@
 <Row>
 <Cell ss:Index="4">
 <Data ss:Type="String">Private investment in innovation</Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="2">
-<Data ss:Type="String">How to improve image</Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="3">
-<Data ss:Type="String">Rankings</Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="4">
-<Data ss:Type="String">macro indicators</Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="4">
-<Data ss:Type="String">meso-indicators</Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="3">
-<Data ss:Type="String">Innovation investment climate</Data>
 </Cell>
 </Row>
 </Table>

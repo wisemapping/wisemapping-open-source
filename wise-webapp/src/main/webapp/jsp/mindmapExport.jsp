@@ -10,10 +10,16 @@
           enctype="application/x-www-form-urlencoded" id="dialogMainForm">
         <input name="svgXml" id="svgXml" value="" type="hidden"/>
         <input name="download" type="hidden" value="mm"/>
+        <input name="version" type="hidden" value=""/>
         <fieldset>
             <label for="freemind">
-                <input type="radio" id="freemind" name="exportFormat" value="mm" checked="checked"/>
+                <input type="radio" id="freemind" name="exportFormat" value="mm" version="1.0.1" checked="checked"/>
                 <strong><spring:message code="FREEMIND_EXPORT_FORMAT"/></strong><br/>
+            </label>
+
+            <label for="freemind09">
+                <input type="radio" id="freemind09" name="exportFormat" value="mm" version="0.9.0"/>
+                <strong><spring:message code="FREEMIND_EXPORT_FORMAT_09"/></strong><br/>
                 <spring:message code="FREEMIND_EXPORT_FORMAT_DETAILS"/>
             </label>
 
@@ -98,7 +104,7 @@
     // No way to obtain map svg. Hide panels..
     if (window.location.pathname.match(/\/[0-9]+\/edit/)) {
         $('#exportInfo').hide();
-        $('#freemind,#pdf,#svg,#odt,#txt,#xls,#mmap').click('click', function (event) {
+        $('#freemind,#freemind09,#pdf,#svg,#odt,#txt,#xls,#mmap').click('click', function (event) {
             $('#imgFormat').hide();
         });
 
@@ -114,7 +120,6 @@
         // If the map is opened, use the latest model ...
         var formatType = $('#dialogMainForm input:checked').attr('value');
         var form = $('#dialogMainForm');
-
         // Restore default ..
         form.attr('action', 'c/restful/maps/${mindmap.id}.' + formatType);
 
@@ -132,6 +137,11 @@
             var svgXml = window.parent.document.getElementById('workspaceContainer').innerHTML;
             $('#svgXml').attr('value', svgXml);
 
+        }
+
+        var version = $('#dialogMainForm input:checked').attr('version');
+        if (version) {
+            $('#dialogMainForm input[name=version]').attr('value', version);
         }
 
         $('#dialogMainForm input[name=download]').attr('value', formatType);

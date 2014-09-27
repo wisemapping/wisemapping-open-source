@@ -21,6 +21,7 @@ package com.wisemapping.exporter;
 public class ExportProperties {
     private ExportFormat format;
     private String baseImgPath;
+    private String version;
 
     public ExportFormat getFormat() {
         return format;
@@ -38,6 +39,14 @@ public class ExportProperties {
             result = new GenericProperties(format);
         }
         return result;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 
     static public class GenericProperties extends ExportProperties {

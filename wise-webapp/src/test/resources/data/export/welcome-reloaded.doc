@@ -326,6 +326,16 @@
 <w:pStyle w:val="Heading2"/>
 </w:pPr>
 <w:r>
+<w:t/>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
 <w:t>Brainstorming</w:t>
 </w:r>
 </w:p>
@@ -337,16 +347,6 @@
 </w:pPr>
 <w:r>
 <w:t>Visual</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t/>
 </w:r>
 </w:p>
 </wx:sub-section>
