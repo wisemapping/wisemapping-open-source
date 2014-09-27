@@ -52,7 +52,6 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <!-- configuration properties will go here -->
                     <sourceIncludes>
                         <include>Functions.js</include>
                     </sourceIncludes>
