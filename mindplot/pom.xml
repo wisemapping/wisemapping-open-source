@@ -266,11 +266,7 @@
                     </execution>
                 </executions>
                 <configuration>
-<!--
-                    <browserVersion>FIREFOX_3_6</browserVersion>
                     <webDriverClassName>org.openqa.selenium.firefox.FirefoxDriver</webDriverClassName>
-
--->
                     <sourceIncludes>
                         <include>libraries/mootools/mootools-core-1.4.5-full-nocompat-yc.js</include>
                         <include>header.js</include>
