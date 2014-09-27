@@ -1,18 +1,18 @@
 1 PPM Plan
-	1.1 Business Development 
-	1.2 Backlog Management
+	1.1 Finance
+	1.2 Governance & Executive
+	1.3 Administration
+	1.4 Backlog Management
 		* Link: https://docs.google.com/a/freeform.ca/drawings/d/1mrtkVAN3_XefJJCgfxw4Va6xk9TVDBKXDt_uzyIF4Us/edit
-	1.3 Freeform IT
-	1.4 Client Project Management
-	1.5 Governance & Executive
-	1.6 Finance
-	1.7 Administration
-	1.8 Human Resources
+	1.5 Client Project Management
+	1.6 Probono
+		1.6.1 
+	1.7 Freeform IT
+	1.8 Community Outreach
+	1.9 Human Resources
 		* Note: 
-	1.9 Freeform Hosting
-	1.10 Community Outreach
-	1.11 R&D
-		1.11.1 Goals
-		1.11.2 Formulize
-	1.12 Probono
-		1.12.1 
+	1.10 Freeform Hosting
+	1.11 Business Development 
+	1.12 R&D
+		1.12.1 Goals
+		1.12.2 Formulize

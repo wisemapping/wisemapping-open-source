@@ -267,37 +267,7 @@
 <w:pStyle w:val="Heading1"/>
 </w:pPr>
 <w:r>
-<w:t>Business Development</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
-<w:t>Backlog Management</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
-<w:t>Freeform IT</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
-<w:t>Client Project Management</w:t>
+<w:t>Finance</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -317,7 +287,7 @@
 <w:pStyle w:val="Heading1"/>
 </w:pPr>
 <w:r>
-<w:t>Finance</w:t>
+<w:t>Administration</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -327,7 +297,57 @@
 <w:pStyle w:val="Heading1"/>
 </w:pPr>
 <w:r>
-<w:t>Administration</w:t>
+<w:t>Backlog Management</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
+<w:t>Client Project Management</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
+<w:t>Probono</w:t>
+</w:r>
+</w:p>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading2"/>
+</w:pPr>
+<w:r>
+<w:t/>
+</w:r>
+</w:p>
+</wx:sub-section>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
+<w:t>Freeform IT</w:t>
+</w:r>
+</w:p>
+</wx:sub-section>
+<wx:sub-section>
+<w:p>
+<w:pPr>
+<w:pStyle w:val="Heading1"/>
+</w:pPr>
+<w:r>
+<w:t>Community Outreach</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -367,7 +387,7 @@
 <w:pStyle w:val="Heading1"/>
 </w:pPr>
 <w:r>
-<w:t>Community Outreach</w:t>
+<w:t>Business Development</w:t>
 </w:r>
 </w:p>
 </wx:sub-section>
@@ -397,26 +417,6 @@
 </w:pPr>
 <w:r>
 <w:t>Formulize</w:t>
-</w:r>
-</w:p>
-</wx:sub-section>
-</wx:sub-section>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading1"/>
-</w:pPr>
-<w:r>
-<w:t>Probono</w:t>
-</w:r>
-</w:p>
-<wx:sub-section>
-<w:p>
-<w:pPr>
-<w:pStyle w:val="Heading2"/>
-</w:pPr>
-<w:r>
-<w:t/>
 </w:r>
 </w:p>
 </wx:sub-section>

@@ -26,6 +26,7 @@
                 var svgXml = context.method == "POST" ? window.document.getElementById('workspaceContainer').innerHTML : "";
                 $('svgXml').setAttribute('value', svgXml);
                 $('download').setAttribute('value', context.formatType);
+                $('version').setAttribute('value', context.version);
                 iframeForm.submit();
             }
             if (MooDialog.Request.active) {
@@ -44,4 +45,5 @@
       enctype="application/x-www-form-urlencoded" id="iframeExportForm">
     <input name="svgXml" id="svgXml" value="" type="hidden"/>
     <input name="download" id="download" type="hidden" value="mm"/>
+    <input name="version" id="version" type="hidden" value=""/>
 </form>

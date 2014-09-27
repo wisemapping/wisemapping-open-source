@@ -28,104 +28,27 @@
 </Row>
 <Row>
 <Cell ss:Index="2">
-<Data ss:Type="String">Baraloto et al. 2010. Functional trait variation and sampling strategies in species-rich plant communities</Data>
+<Data ss:Type="String">Poorter 1999. Functional Ecology. 13:396-410</Data>
 </Cell>
 </Row>
 <Row>
 <Cell ss:Index="3">
-<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
-<p>Therecent growth of large functional trait data</p>
-<p>bases has been fuelled by standardized protocols forthe</p>
-<p>measurement of individual functional traits and intensive</p>
-<p>efforts to compile trait data(Cornelissen etal. 2003; Chave etal. 2009). Nonetheless, there remains no consensusfor</p>
-<p>the most appropriate sampling design so that traits can be</p>
-<p>scaled from the individuals on whom measurements are</p>
-<p>made to the community or ecosystem levels at which infer-</p>
-<p>ences are drawn (Swenson etal. 2006,2007,Reich,Wright</p>
-<p>&amp; Lusk 2007;Kraft,Valencia &amp; Ackerly 2008).</p>
-</ss:Data>
+<Data ss:Type="String">Espécies pioneiras crescem mais rápido do que as não pioneiras</Data>
 </Cell>
 </Row>
 <Row>
-<Cell ss:Index="3">
-<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
-<p>However, the fast pace of</p>
-<p>development of plant trait meta-analyses also suggests that</p>
-<p>trait acquisition in the field is a factor limiting the growth of</p>
-<p>plant trait data bases.</p>
-</ss:Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="3">
-<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
-<p>We measured</p>
-<p>traits for every individual tree in nine 1-ha plots in tropical</p>
-<p>lowland rainforest (N = 4709). Each plant was sampled for</p>
-<p>10 functional traits related to wood and leaf morphology and</p>
-<p>ecophysiology. Here, we contrast the trait means and variances</p>
-<p>obtained with a full sampling strategy with those of</p>
-<p>other sampling designs used in the recent literature, which we</p>
-<p>obtain by simulation. We assess the differences in community-</p>
-<p>level estimates of functional trait means and variances</p>
-<p>among design types and sampling intensities. We then contrast</p>
-<p>the relative costs of these designs and discuss the appropriateness</p>
-<p>of different sampling designs and intensities for</p>
-<p>different questions and systems.</p>
-</ss:Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="3">
-<Data ss:Type="String">Falar que a escolha das categorias de sucessão e dos parâmetros ou característica dos indivíduos que serão utilizadas dependera da facilidade de coleta dos dados e do custo monetário e temporal.</Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="3">
-<Data ss:Type="String">Ver se classifica sucessão por densidade de tronco para citar no artigo como exemplo de outros atributos além de germinação e ver se e custoso no tempo e em dinheiro</Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="3">
-<Data ss:Type="String">Intensas amostragens de experimentos simples  tem maior retorno em acurácia de estimativa e de custo tb.</Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="3">
-<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
-<p>With regard to estimating mean trait values, strategies</p>
-<p>alternative to BRIDGE were consistently cost-effective. On</p>
-<p>the other hand, strategies alternative to BRIDGE clearly</p>
-<p>failed to accurately estimate the variance of trait values. This</p>
-<p>indicates that in situations where accurate estimation of plotlevel</p>
-<p>variance is desired, complete censuses are essential.</p>
-</ss:Data>
-<Comment>
-<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
-<p/>
-<p>Isso significa que estudos de característica de história de vida compensam? Ver nos m&amp;m.</p>
-</ss:Data>
-</Comment>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="3">
-<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
-<p>We suggest that, in these studies,</p>
-<p>the investment in complete sampling may be worthwhile</p>
-<p>for at least some traits.</p>
-</ss:Data>
-<Comment>
-<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
-<p/>
-<p>Falar que isso corrobora nossa sugestão de utilizar poucas medidas, mas que elas sejam confiáveis.</p>
-</ss:Data>
-</Comment>
+<Cell ss:Index="4">
+<Data ss:Type="String">Tolerância a sombra está relacionada com persistência e não com crescimento</Data>
 </Cell>
 </Row>
 <Row>
 <Cell ss:Index="2">
 <Data ss:Type="String">Chazdon 2010. Biotropica. 42(1): 31–40</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Falar no artigo que esse trabalho fala que é inadequada a divisão entre pioneira e não pioneira devido a grande variação que há entre elas. Além de terem descoberto que durante a ontogenia a resposta a luminosidade muda dentro de uma mesma espécie. Porém recomendar que essa classificação continue sendo usada em curto prazo enquanto não há informações confiáveis suficiente para esta simples classificação. Outras classificações como esta do artigo são bem vinda, contanto que tenham dados confiáveis. Porém dados estáticos já são difíceis de se obter, dados temporais, como taxa de crescimento em diâmetro ou altura, são mais difíceis ainda. Falar que vários tipos de classificações podem ser utilizadas e quanto mais detalhe melhor, porém os dados é que são mais limitantes. Se focarmos em dados de germinação e crescimento limitantes, como sugerem sainete e whitmore, da uma idéia maismrápida e a curto prazo da classificação destas espécies. Depois com o tempo conseguiremos construir classificações mais detalhadas e com mais dados confiáveis. </Data>
 </Cell>
 </Row>
 <Row>
@@ -151,11 +74,6 @@
 <p>for a large number of tree species obtained through vegetation</p>
 <p>monitoring studies.</p>
 </ss:Data>
-</Cell>
-</Row>
-<Row>
-<Cell ss:Index="3">
-<Data ss:Type="String">Falar no artigo que esse trabalho fala que é inadequada a divisão entre pioneira e não pioneira devido a grande variação que há entre elas. Além de terem descoberto que durante a ontogenia a resposta a luminosidade muda dentro de uma mesma espécie. Porém recomendar que essa classificação continue sendo usada em curto prazo enquanto não há informações confiáveis suficiente para esta simples classificação. Outras classificações como esta do artigo são bem vinda, contanto que tenham dados confiáveis. Porém dados estáticos já são difíceis de se obter, dados temporais, como taxa de crescimento em diâmetro ou altura, são mais difíceis ainda. Falar que vários tipos de classificações podem ser utilizadas e quanto mais detalhe melhor, porém os dados é que são mais limitantes. Se focarmos em dados de germinação e crescimento limitantes, como sugerem sainete e whitmore, da uma idéia maismrápida e a curto prazo da classificação destas espécies. Depois com o tempo conseguiremos construir classificações mais detalhadas e com mais dados confiáveis. </Data>
 </Cell>
 </Row>
 <Row>
@@ -278,17 +196,99 @@
 </Row>
 <Row>
 <Cell ss:Index="2">
-<Data ss:Type="String">Poorter 1999. Functional Ecology. 13:396-410</Data>
+<Data ss:Type="String">Baraloto et al. 2010. Functional trait variation and sampling strategies in species-rich plant communities</Data>
 </Cell>
 </Row>
 <Row>
 <Cell ss:Index="3">
-<Data ss:Type="String">Espécies pioneiras crescem mais rápido do que as não pioneiras</Data>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>Therecent growth of large functional trait data</p>
+<p>bases has been fuelled by standardized protocols forthe</p>
+<p>measurement of individual functional traits and intensive</p>
+<p>efforts to compile trait data(Cornelissen etal. 2003; Chave etal. 2009). Nonetheless, there remains no consensusfor</p>
+<p>the most appropriate sampling design so that traits can be</p>
+<p>scaled from the individuals on whom measurements are</p>
+<p>made to the community or ecosystem levels at which infer-</p>
+<p>ences are drawn (Swenson etal. 2006,2007,Reich,Wright</p>
+<p>&amp; Lusk 2007;Kraft,Valencia &amp; Ackerly 2008).</p>
+</ss:Data>
 </Cell>
 </Row>
 <Row>
-<Cell ss:Index="4">
-<Data ss:Type="String">Tolerância a sombra está relacionada com persistência e não com crescimento</Data>
+<Cell ss:Index="3">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>However, the fast pace of</p>
+<p>development of plant trait meta-analyses also suggests that</p>
+<p>trait acquisition in the field is a factor limiting the growth of</p>
+<p>plant trait data bases.</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>We measured</p>
+<p>traits for every individual tree in nine 1-ha plots in tropical</p>
+<p>lowland rainforest (N = 4709). Each plant was sampled for</p>
+<p>10 functional traits related to wood and leaf morphology and</p>
+<p>ecophysiology. Here, we contrast the trait means and variances</p>
+<p>obtained with a full sampling strategy with those of</p>
+<p>other sampling designs used in the recent literature, which we</p>
+<p>obtain by simulation. We assess the differences in community-</p>
+<p>level estimates of functional trait means and variances</p>
+<p>among design types and sampling intensities. We then contrast</p>
+<p>the relative costs of these designs and discuss the appropriateness</p>
+<p>of different sampling designs and intensities for</p>
+<p>different questions and systems.</p>
+</ss:Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Falar que a escolha das categorias de sucessão e dos parâmetros ou característica dos indivíduos que serão utilizadas dependera da facilidade de coleta dos dados e do custo monetário e temporal.</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Ver se classifica sucessão por densidade de tronco para citar no artigo como exemplo de outros atributos além de germinação e ver se e custoso no tempo e em dinheiro</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<Data ss:Type="String">Intensas amostragens de experimentos simples  tem maior retorno em acurácia de estimativa e de custo tb.</Data>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>With regard to estimating mean trait values, strategies</p>
+<p>alternative to BRIDGE were consistently cost-effective. On</p>
+<p>the other hand, strategies alternative to BRIDGE clearly</p>
+<p>failed to accurately estimate the variance of trait values. This</p>
+<p>indicates that in situations where accurate estimation of plotlevel</p>
+<p>variance is desired, complete censuses are essential.</p>
+</ss:Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p/>
+<p>Isso significa que estudos de característica de história de vida compensam? Ver nos m&amp;m.</p>
+</ss:Data>
+</Comment>
+</Cell>
+</Row>
+<Row>
+<Cell ss:Index="3">
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
+<p>We suggest that, in these studies,</p>
+<p>the investment in complete sampling may be worthwhile</p>
+<p>for at least some traits.</p>
+</ss:Data>
+<Comment>
+<ss:Data xmlns="http://www.w3.org/TR/REC-html40">
+<p/>
+<p>Falar que isso corrobora nossa sugestão de utilizar poucas medidas, mas que elas sejam confiáveis.</p>
+</ss:Data>
+</Comment>
 </Cell>
 </Row>
 </Table>

@@ -62,7 +62,7 @@ mindplot.widget.LinkIconTooltip = new Class({
         });
 
         var img = $('<img>')
-            .prop('src', 'http://immediatenet.com/t/m?Size=1024x768&URL=' + linkIcon.getModel().getUrl())
+            .prop('src', 'https://api.thumbalizr.com/?url=' + linkIcon.getModel().getUrl() + '&width=250')
             .prop('img', linkIcon.getModel().getUrl())
             .prop('alt', linkIcon.getModel().getUrl());
 
