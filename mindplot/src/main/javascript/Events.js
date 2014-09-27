@@ -16,11 +16,6 @@ mindplot.Events = new Class({
         return this;
     },
 
-    addEvents: function(events){
-        for (var type in events) this.addEvent(type, events[type]);
-        return this;
-    },
-
     fireEvent: function(type, args, delay){
         type = this._removeOn(type);
         var events = this.$events[type];
@@ -38,24 +33,7 @@ mindplot.Events = new Class({
         var events = this.$events[type];
         if (events && !fn.internal){
             var index =  events.indexOf(fn);
-            if (index != -1) delete events[index];
-        }
-        return this;
-    },
-
-    removeEvents: function(events){
-        var type;
-        if (typeOf(events) == 'object'){
-            for (type in events) this.removeEvent(type, events[type]);
-            return this;
-        }
-        if (events) events = removeOn(events);
-        for (type in this.$events){
-            if (events && events != type) continue;
-            var fns = this.$events[type];
-            for (var i = fns.length; i--;) if (i in fns){
-                this.removeEvent(type, fns[i]);
-            }
+            if (index != -1) events.splice(index, 1);
         }
         return this;
     }
