@@ -44,7 +44,7 @@ var setup = function() {
 describe("Designer test suite", function() {
 
     beforeEach(function() {
-        setup();
+        //setup();
     });
     it("testWorkspaceBuild", function(){
         var id = $(document).attr('id');
