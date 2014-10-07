@@ -21,6 +21,7 @@ mindplot.Designer = new Class({
         initialize:function (options, divElement) {
             $assert(options, "options must be defined");
             $assert(options.zoom, "zoom must be defined");
+            $assert(options.size, "size must be defined");
             $assert(divElement, "divElement must be defined");
 
             // Set up i18n location ...
