@@ -273,11 +273,90 @@
                     </dependency>
                 </dependencies>
                 <configuration>
+                    <preloadSources>
+                        <source>libraries/mootools/mootools-core-1.4.5-full-nocompat-yc.js</source>
+                        <source>lib/jquery-1.8.2.js</source>
+                        <source>lib/core.js/</source>
+                        <source>lib/web2d.svg-min.js</source>
+                        <source>libraries/hotkeys/jquery.hotkeys.js</source>
+                        <source>libraries/underscorejs/underscore-min.js</source>
+                    </preloadSources>
                     <sourceIncludes>
-                        <include>libraries/mootools/mootools-core-1.4.5-full-nocompat-yc.js</include>
                         <include>header.js</include>
-                        <include>jquery-1.8.2.js</include>
                         <include>Events.js</include>
+                        <include>Messages.js</include>
+                        <include>TopicEventDispatcher.js</include>
+                        <include>model/IMindmap.js</include>
+                        <include>model/Mindmap.js</include>
+                        <include>model/INodeModel.js</include>
+                        <include>model/NodeModel.js</include>
+                        <include>model/RelationshipModel.js</include>
+                        <include>ActionDispatcher.js</include>
+                        <include>StandaloneActionDispatcher.js</include>
+                        <include>DesignerModel.js</include>
+                        <include>Designer.js</include>
+                        <include>ScreenManager.js</include>
+                        <include>Workspace.js</include>
+                        <include>ShrinkConnector.js</include>
+                        <include>Keyboard.js</include>
+                        <include>DesignerKeyboard.js</include>
+                        <include>Keyboard.js</include>
+                        <include>TopicStyle.js</include>
+                        <include>NodeGraph.js</include>
+                        <include>Topic.js</include>
+                        <include>CentralTopic.js</include>
+                        <include>MainTopic.js</include>
+                        <include>DragTopic.js</include>
+                        <include>DragManager.js</include>
+                        <include>DragPivot.js</include>
+                        <include>ConnectionLine.js</include>
+                        <include>Relationship.js</include>
+                        <include>DragConnector.js</include>
+                        <include>TextEditor.js</include>
+                        <include>MultilineTextEditor.js</include>
+                        <include>TextEditorFactory.js</include>
+                        <include>util/Shape.js</include>
+                        <include>util/FadeEffect.js</include>
+                        <include>persistence/ModelCodeName.js</include>
+                        <include>persistence/XMLSerializer_Pela.js</include>
+                        <include>persistence/XMLSerializer_Tango.js</include>
+                        <include>persistence/Pela2TangoMigrator.js</include>
+                        <include>persistence/XMLSerializer_Beta.js</include>
+                        <include>persistence/Beta2PelaMigrator.js</include>
+                        <include>persistence/XMLSerializerFactory.js</include>
+                        <include>PersistenceManager.js</include>
+                        <include>RestPersistenceManager.js</include>
+                        <include>LocalStorageManager.js</include>
+                        <include>EditorProperties.js</include>
+                        <include>IconGroup.js</include>
+                        <include>Icon.js</include>
+                        <include>LinkIcon.js</include>
+                        <include>NoteIcon.js</include>
+                        <include>ActionIcon.js</include>
+                        <include>ImageIcon.js</include>
+                        <include>model/FeatureModel.js</include>
+                        <include>model/IconModel.js</include>
+                        <include>model/LinkModel.js</include>
+                        <include>model/NoteModel.js</include>
+                        <include>Command.js</include>
+                        <include>DesignerActionRunner.js</include>
+                        <include>DesignerUndoManager.js</include>
+                        <include>ControlPoint.js</include>
+                        <include>EditorOptions.js</include>
+                        <include>RelationshipPivot.js</include>
+                        <include>TopicFeature.js</include>
+                        <include>layout/EventBusDispatcher.js</include>
+                        <include>layout/ChangeEvent.js</include>
+                        <include>layout/LayoutManager.js</include>
+                        <include>layout/Node.js</include>
+                        <include>layout/RootedTreeSet.js</include>
+                        <include>layout/ChildrenSorterStrategy.js</include>
+                        <include>layout/AbstractBasicSorter.js</include>
+                        <include>layout/BalancedSorter.js</include>
+                        <include>layout/SymmetricSorter.js</include>
+                        <include>layout/GridSorter.js</include>
+                        <include>layout/OriginalLayout.js</include>
+                        <include>layout/EventBus.js</include>
                     </sourceIncludes>
                     <specExcludes>
                         <exclude>static/test/*.js</exclude>
