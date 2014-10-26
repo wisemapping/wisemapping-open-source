@@ -280,7 +280,7 @@
                         <source>lib/web2d.svg-min.js</source>
                         <source>libraries/hotkeys/jquery.hotkeys.js</source>
                         <source>libraries/underscorejs/underscore-min.js</source>
-                        <source>libraries/bootstrap/underscore-min.js</source>
+                        <source>libraries/bootstrap/js/bootstrap.js</source>
                     </preloadSources>
                     <sourceIncludes>
                         <include>header.js</include>
