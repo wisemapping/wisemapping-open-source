@@ -1,1 +1,1 @@
-../../../../web2d/target/classes/web2d.svg-min.js
+../../../../../web2d/target/classes/web2d.svg-min.js
