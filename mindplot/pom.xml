@@ -280,6 +280,7 @@
                         <source>lib/web2d.svg-min.js</source>
                         <source>libraries/hotkeys/jquery.hotkeys.js</source>
                         <source>libraries/underscorejs/underscore-min.js</source>
+                        <source>libraries/bootstrap/underscore-min.js</source>
                     </preloadSources>
                     <sourceIncludes>
                         <include>header.js</include>
@@ -345,6 +346,33 @@
                         <include>EditorOptions.js</include>
                         <include>RelationshipPivot.js</include>
                         <include>TopicFeature.js</include>
+                        <include>commands/GenericFunctionCommand.js</include>
+                        <include>commands/DeleteCommand.js</include>
+                        <include>commands/DragTopicCommand.js</include>
+                        <include>commands/AddTopicCommand.js</include>
+                        <include>commands/ChangeFeatureToTopicCommand.js</include>
+                        <include>commands/RemoveFeatureFromTopicCommand.js</include>
+                        <include>commands/AddFeatureToTopicCommand.js</include>
+                        <include>commands/AddRelationshipCommand.js</include>
+                        <include>commands/MoveControlPointCommand.js</include>
+                        <include>widget/ModalDialogNotifier.js</include>
+                        <include>widget/ToolbarNotifier.js</include>
+                        <include>widget/ToolbarItem.js</include>
+                        <include>widget/ToolbarPaneItem.js</include>
+                        <include>widget/NoteEditor.js</include>
+                        <include>widget/LinkEditor.js</include>
+                        <include>widget/FloatingTip.js</include>
+                        <include>widget/LinkIconTooltip.js</include>
+                        <include>widget/KeyboardShortcutTooltip.js</include>
+                        <include>widget/ColorPalettePanel.js</include>
+                        <include>widget/ListToolbarPanel.js</include>
+                        <include>widget/FontFamilyPanel.js</include>
+                        <include>widget/FontSizePanel.js</include>
+                        <include>widget/TopicShapePanel.js</include>
+                        <include>widget/IconPanel.js</include>
+                        <include>widget/IMenu.js</include>
+                        <include>widget/Menu.js</include>
+                        <include>TopicFeature.js</include>
                         <include>layout/EventBusDispatcher.js</include>
                         <include>layout/ChangeEvent.js</include>
                         <include>layout/LayoutManager.js</include>
@@ -357,6 +385,15 @@
                         <include>layout/GridSorter.js</include>
                         <include>layout/OriginalLayout.js</include>
                         <include>layout/EventBus.js</include>
+                        <include>MessageBundle_en.js</include>
+                        <include>MessageBundle_es.js</include>
+                        <include>MessageBundle_de.js</include>
+                        <include>MessageBundle_fr.js</include>
+                        <include>MessageBundle_pt_BR.js</include>
+                        <include>MessageBundle_zh_CN.js</include>
+                        <include>MessageBundle_zh_TW.js</include>
+                        <include>MessageBundle_ca.js</include>
+                        <include>footer.js</include>
                     </sourceIncludes>
                     <specExcludes>
                         <exclude>static/test/*.js</exclude>
