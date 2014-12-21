@@ -61,6 +61,6 @@ mindplot.CentralTopic = new Class({
         var pos = this.getPosition();
         var isAtRight = mindplot.util.Shape.isAtRight(targetPosition, pos);
         var size = this.getSize();
-        return   mindplot.util.Shape.calculateRectConnectionPoint(pos, size, !isAtRight);
+        return mindplot.util.Shape.calculateRectConnectionPoint(pos, size, !isAtRight);
     }
 });
