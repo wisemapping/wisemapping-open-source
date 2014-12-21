@@ -1,5 +1,5 @@
 
-describe("Balanced Test Suite", function() {
+describe("Symmetric Test Suite", function() {
 
     it("symmetricTest", function() {
         var position = {x:0,y:0};
