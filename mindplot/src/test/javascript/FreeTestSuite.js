@@ -10,37 +10,37 @@ describe("Free Test Suite", function() {
         });
     });
 
-    it("avoidCollisionTest", function () {
+    function branchCollision(treeSet, node, heightById) {
+        var children = treeSet.getChildren(node);
+        var childOfRootNode = treeSet._rootNodes.contains(node);
 
-        function branchCollision(treeSet, node, heightById) {
-            var children = treeSet.getChildren(node);
-            var childOfRootNode = treeSet._rootNodes.contains(node);
-
-            _.each(children, function(child) {
-                var siblings = treeSet.getSiblings(child);
-                if (childOfRootNode) {
-                    siblings = siblings.filter(function(sibling) {
-                        return (child.getOrder() % 2) == (sibling.getOrder() % 2);
-                    });
-                }
-                _.each(siblings, function(sibling) {
-                    branchesOverlap(child, sibling, heightById);
-                }, this);
+        _.each(children, function(child) {
+            var siblings = treeSet.getSiblings(child);
+            if (childOfRootNode) {
+                siblings = siblings.filter(function(sibling) {
+                    return (child.getOrder() % 2) == (sibling.getOrder() % 2);
+                });
+            }
+            _.each(siblings, function(sibling) {
+                branchesOverlap(child, sibling, heightById);
             }, this);
+        }, this);
 
-            _.each(children, function(child) {
-                branchCollision(treeSet, child, heightById);
-            }, this);
+        _.each(children, function(child) {
+            branchCollision(treeSet, child, heightById);
+        }, this);
 
-        }
+    }
 
-        function branchesOverlap(branchA, branchB, heightById) {
-            var topA = branchA.getPosition().y - heightById[branchA.getId()]/2;
-            var bottomA = branchA.getPosition().y + heightById[branchA.getId()]/2;
-            var topB = branchB.getPosition().y - heightById[branchB.getId()]/2;
-            var bottomB = branchB.getPosition().y + heightById[branchB.getId()]/2;
-            expect([bottomA, topA]).toNotBeBranchesOverlap([bottomB,topB]);
-        }
+    function branchesOverlap(branchA, branchB, heightById) {
+        var topA = branchA.getPosition().y - heightById[branchA.getId()]/2;
+        var bottomA = branchA.getPosition().y + heightById[branchA.getId()]/2;
+        var topB = branchB.getPosition().y - heightById[branchB.getId()]/2;
+        var bottomB = branchB.getPosition().y + heightById[branchB.getId()]/2;
+        expect([bottomA, topA]).toNotBeBranchesOverlap([bottomB,topB]);
+    }
+
+    it("avoidCollisionTree1Test", function () {
 
         var position = {x:0,y:0};
         var manager = new mindplot.layout.LayoutManager(0, TestSuite.ROOT_NODE_SIZE);
@@ -76,6 +76,55 @@ describe("Free Test Suite", function() {
         manager.connectNode(0,1,0).connectNode(0,2,1).connectNode(0,3,2).connectNode(0,4,3);
         manager.connectNode(4,21,0).connectNode(4,22,0);
         manager.connectNode(1,5,0).connectNode(1,23,0).connectNode(23,24,0).connectNode(24,25,0).connectNode(24,26,0);
+        manager.connectNode(5,6,0).connectNode(6,8,0).connectNode(8,9,0);
+        manager.connectNode(5,7,1).connectNode(7,10,0);
+        manager.connectNode(3,11,0).connectNode(11,14,0).connectNode(14,18,0).connectNode(14,19,1).connectNode(14,20,2);
+        manager.connectNode(3,12,1).connectNode(12,15,0).connectNode(12,16,1).connectNode(12,17,2);
+        manager.connectNode(3,13,2);
+
+        manager.layout(true);
+
+        var treeSet = manager._treeSet;
+        _.each(treeSet._rootNodes, function(rootNode) {
+            var heightById = rootNode.getSorter().computeChildrenIdByHeights(treeSet, rootNode);
+            branchCollision(treeSet, rootNode, heightById);
+        }, this);
+
+    });
+
+    //FIXME: This is broken in master. This configuration has two topics overlapping.
+    it("avoidCollisionTree2Test", function () {
+
+        var position = {x:0,y:0};
+        var manager = new mindplot.layout.LayoutManager(0, TestSuite.ROOT_NODE_SIZE);
+
+        // Prepare a sample graph ...
+        manager.addNode(1, TestSuite.NODE_SIZE, position);
+        manager.addNode(2, TestSuite.NODE_SIZE, position);
+        manager.addNode(3, TestSuite.NODE_SIZE, position);
+        manager.addNode(4, TestSuite.NODE_SIZE, position);
+        manager.addNode(5, TestSuite.NODE_SIZE, position);
+        manager.addNode(6, TestSuite.NODE_SIZE, position);
+        manager.addNode(7, TestSuite.NODE_SIZE, position);
+        manager.addNode(8, TestSuite.NODE_SIZE, position);
+        manager.addNode(9, TestSuite.NODE_SIZE, position);
+        manager.addNode(10, TestSuite.NODE_SIZE, position);
+        manager.addNode(11, TestSuite.NODE_SIZE, position);
+        manager.addNode(12, TestSuite.NODE_SIZE, position);
+        manager.addNode(13, TestSuite.NODE_SIZE, position);
+        manager.addNode(14, TestSuite.NODE_SIZE, position);
+        manager.addNode(15, TestSuite.NODE_SIZE, position);
+        manager.addNode(16, TestSuite.NODE_SIZE, position);
+        manager.addNode(17, TestSuite.NODE_SIZE, position);
+        manager.addNode(18, TestSuite.NODE_SIZE, position);
+        manager.addNode(19, TestSuite.NODE_SIZE, position);
+        manager.addNode(20, TestSuite.NODE_SIZE, position);
+        manager.addNode(21, TestSuite.NODE_SIZE, position);
+        manager.addNode(22, TestSuite.NODE_SIZE, position);
+
+        manager.connectNode(0,1,0).connectNode(0,2,1).connectNode(0,3,2).connectNode(0,4,3);
+        manager.connectNode(4,21,0).connectNode(4,22,0);
+        manager.connectNode(1,5,0);
         manager.connectNode(5,6,0).connectNode(6,8,0).connectNode(8,9,0);
         manager.connectNode(5,7,1).connectNode(7,10,0);
         manager.connectNode(3,11,0).connectNode(11,14,0).connectNode(14,18,0).connectNode(14,19,1).connectNode(14,20,2);
