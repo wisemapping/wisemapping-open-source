@@ -26,7 +26,7 @@ mindplot.ScreenManager = new Class({
         this._clickEvents = [];
         this._divContainer.bind('click', function(event) {
             event.stopPropagation()
-        }.bind(this));
+        });
 
         this._divContainer.bind('dblclick', function(event) {
             event.stopPropagation();
