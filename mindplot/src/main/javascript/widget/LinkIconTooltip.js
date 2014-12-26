@@ -67,7 +67,7 @@ mindplot.widget.LinkIconTooltip = new Class({
         });
 
         var img = new Element('img', {
-                src:'https://api.thumbalizr.com/?url=' + linkIcon.getModel().getUrl() + '&width=250',
+                src:'http://free.pagepeeker.com/v2/thumbs.php?size=m&url=' + linkIcon.getModel().getUrl(),
                 img:linkIcon.getModel().getUrl(),
                 alt:linkIcon.getModel().getUrl()
             }
