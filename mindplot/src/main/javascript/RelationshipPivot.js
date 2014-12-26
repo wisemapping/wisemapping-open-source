@@ -82,9 +82,10 @@ mindplot.RelationshipPivot = new Class({
 
             var model = this._designer.getModel();
             var topics = model.getTopics();
+            var me = this;
             _.each(topics, function (topic) {
-                topic.removeEvent('ontfocus', this._onTopicClick);
-            }.bind(this));
+                topic.removeEvent('ontfocus', me._onTopicClick);
+            });
 
             workspace.removeChild(this._pivot);
             workspace.removeChild(this._startArrow);

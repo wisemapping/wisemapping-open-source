@@ -17,7 +17,7 @@
             <div class="form-group">
                 <label for="title" class="control-label col-md-2 "><spring:message code="NAME"/>: </label>
                 <div class="col-md-10">
-                   <input type="text" id="title" name="title" required="required"
+                   <input type="text" id="title" name="title" required="required" autofocus="autofocus"
                            placeholder="<spring:message code="MAP_NAME_HINT"/>"
                            class="form-control" maxlength="255"/>
                 </div>

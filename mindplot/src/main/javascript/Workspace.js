@@ -189,7 +189,7 @@ mindplot.Workspace = new Class({
                         wasDragged = true;
 
 
-                    }.bind(this);
+                    };
                     screenManager.addEvent('mousemove', workspace._mouseMoveListener);
 
                     // Register mouse up listeners ...
