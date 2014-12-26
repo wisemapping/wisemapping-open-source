@@ -36,7 +36,7 @@ mindplot.model.FeatureModel = new Class({
         this._attributes = {};
 
         // Create type method ...
-        this['is' + type.camelCase() + 'Model'] = function () {
+        this['is' + $.camelCase(type) + 'Model'] = function () {
             return true;
         };
     },
