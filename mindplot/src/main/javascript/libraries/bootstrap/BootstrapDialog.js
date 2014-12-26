@@ -92,7 +92,6 @@ var BootstrapDialog = new Class({
 
     setContent: function(content) {
         var modalBody = this._native.find('.modal-body');
-        modalBody.empty();
         modalBody.append(content);
     },
 
