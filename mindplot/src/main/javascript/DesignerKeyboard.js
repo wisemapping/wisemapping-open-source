@@ -266,7 +266,7 @@ mindplot.DesignerKeyboard = new Class({
                     // If a modifier is press, the key selected must be ignored.
                     var pressKey = String.fromCharCode(keyCode);
                     if (event.ctrlKey || event.altKey || event.metaKey || event.shiftKey) {
-                        pressKey = "";
+                        return;
                     }
                     nodes[0].showTextEditor(pressKey);
                     event.stopPropagation();

@@ -44,6 +44,22 @@
         }
         return typeof i;
     };
+    this.instanceOf = function (t, i) {
+        if (t == null) {
+            return false;
+        }
+        var s = t.$constructor || t.constructor;
+        while (s) {
+            if (s === i) {
+                return true;
+            }
+            s = s.parent;
+        }
+        if (!t.hasOwnProperty) {
+            return false;
+        }
+        return t instanceof i;
+    };
     var f = this.Function;
     var p = true;
     for (var k in {toString: 1}) {
@@ -232,6 +248,16 @@
             return this;
         }
     });
+    var l = function (i) {
+        switch (o(i)) {
+            case"array":
+                return i.clone();
+            case"object":
+                return Object.clone(i);
+            default:
+                return i;
+        }
+    };
     Array.implement("clone", function () {
         var s = this.length, t = new Array(s);
         while (s--) {
