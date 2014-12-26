@@ -85,7 +85,7 @@ mindplot.widget.LinkEditor = new Class({
                 if(me.checkURL(input.val())){
                     me.cleanError();
                     var inputValue = input.val();
-                    if (inputValue != null && inputValue.trim() != "") {
+                    if (inputValue != null && $.trim(inputValue) != "") {
                         model.setValue(inputValue);
                     }
                     me.close();

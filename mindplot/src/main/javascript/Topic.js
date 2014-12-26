@@ -458,7 +458,7 @@ mindplot.Topic = new Class({
 
     setText:function (text) {
         // Avoid empty nodes ...
-        if (!text || text.trim().length == 0) {
+        if (!text || $.trim(text).length == 0) {
             text = null;
         }
 

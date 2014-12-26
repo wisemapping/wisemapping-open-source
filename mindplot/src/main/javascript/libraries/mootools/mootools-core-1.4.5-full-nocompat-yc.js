@@ -44,22 +44,6 @@
         }
         return typeof i;
     };
-    var j = this.instanceOf = function (t, i) {
-        if (t == null) {
-            return false;
-        }
-        var s = t.$constructor || t.constructor;
-        while (s) {
-            if (s === i) {
-                return true;
-            }
-            s = s.parent;
-        }
-        if (!t.hasOwnProperty) {
-            return false;
-        }
-        return t instanceof i;
-    };
     var f = this.Function;
     var p = true;
     for (var k in {toString: 1}) {
@@ -92,32 +76,6 @@
             return this;
         };
     };
-    f.prototype.overloadGetter = function (s) {
-        var i = this;
-        return function (u) {
-            var v, t;
-            if (typeof u != "string") {
-                v = u;
-            } else {
-                if (arguments.length > 1) {
-                    v = arguments;
-                } else {
-                    if (s) {
-                        v = [u];
-                    }
-                }
-            }
-            if (v) {
-                t = {};
-                for (var w = 0; w < v.length; w++) {
-                    t[v[w]] = i.call(this, v[w]);
-                }
-            } else {
-                t = i.call(this, u);
-            }
-            return t;
-        };
-    };
     f.prototype.extend = function (i, s) {
         this[i] = s;
     }.overloadSetter();
@@ -125,23 +83,11 @@
         this.prototype[i] = s;
     }.overloadSetter();
     var n = Array.prototype.slice;
-    f.from = function (i) {
-        return (o(i) == "function") ? i : function () {
-            return i;
-        };
-    };
     Array.from = function (i) {
         if (i == null) {
             return [];
         }
         return (a.isEnumerable(i) && typeof i != "string") ? (o(i) == "array") ? i : n.call(i) : [i];
-    };
-    Number.from = function (s) {
-        var i = parseFloat(s);
-        return isFinite(i) ? i : null;
-    };
-    String.from = function (i) {
-        return i + "";
     };
     f.implement({
         hide: function () {
@@ -286,16 +232,6 @@
             return this;
         }
     });
-    var l = function (i) {
-        switch (o(i)) {
-            case"array":
-                return i.clone();
-            case"object":
-                return Object.clone(i);
-            default:
-                return i;
-        }
-    };
     Array.implement("clone", function () {
         var s = this.length, t = new Array(s);
         while (s--) {
@@ -358,16 +294,9 @@
         return (c++).toString(36);
     });
 })();
+
 Array.implement({
-    every: function (c, d) {
-        for (var b = 0, a = this.length >>> 0;
-             b < a; b++) {
-            if ((b in this) && !c.call(d, this[b], b, this)) {
-                return false;
-            }
-        }
-        return true;
-    }, filter: function (d, f) {
+    filter: function (d, f) {
         var c = [];
         for (var e, b = 0, a = this.length >>> 0; b < a; b++) {
             if (b in this) {
@@ -406,29 +335,6 @@ Array.implement({
         return this.filter(function (a) {
             return a != null;
         });
-    }, invoke: function (a) {
-        var b = Array.slice(arguments, 1);
-        return this.map(function (c) {
-            return c[a].apply(c, b);
-        });
-    }, associate: function (c) {
-        var d = {}, b = Math.min(this.length, c.length);
-        for (var a = 0; a < b; a++) {
-            d[c[a]] = this[a];
-        }
-        return d;
-    }, link: function (c) {
-        var a = {};
-        for (var e = 0, b = this.length; e < b; e++) {
-            for (var d in c) {
-                if (c[d](this[e])) {
-                    a[d] = this[e];
-                    delete c[d];
-                    break;
-                }
-            }
-        }
-        return a;
     }, contains: function (a, b) {
         return this.indexOf(a, b) != -1;
     }, append: function (a) {
@@ -436,16 +342,9 @@ Array.implement({
         return this;
     }, getLast: function () {
         return (this.length) ? this[this.length - 1] : null;
-    }, getRandom: function () {
-        return (this.length) ? this[Number.random(0, this.length - 1)] : null;
     }, include: function (a) {
         if (!this.contains(a)) {
             this.push(a);
-        }
-        return this;
-    }, combine: function (c) {
-        for (var b = 0, a = c.length; b < a; b++) {
-            this.include(c[b]);
         }
         return this;
     }, erase: function (b) {
@@ -495,34 +394,13 @@ String.implement({
         return ((typeOf(a) == "regexp") ? a : new RegExp("" + a, b)).test(this);
     }, contains: function (a, b) {
         return (b) ? (b + this + b).indexOf(b + a + b) > -1 : String(this).indexOf(a) > -1;
-    }, trim: function () {
-        return String(this).replace(/^\s+|\s+$/g, "");
-    }, clean: function () {
-        return String(this).replace(/\s+/g, " ").trim();
-    }, camelCase: function () {
-        return String(this).replace(/-\D/g, function (a) {
-            return a.charAt(1).toUpperCase();
-        });
-    }, hyphenate: function () {
-        return String(this).replace(/[A-Z]/g, function (a) {
-            return ("-" + a.charAt(0).toLowerCase());
-        });
     }, capitalize: function () {
         return String(this).replace(/\b[a-z]/g, function (a) {
             return a.toUpperCase();
         });
-    }, escapeRegExp: function () {
-        return String(this).replace(/([-.*+?^${}()|[\]\/\\])/g, "\\$1");
     }, rgbToHex: function (b) {
         var a = String(this).match(/\d{1,3}/g);
         return (a) ? a.rgbToHex(b) : null;
-    }, substitute: function (a, b) {
-        return String(this).replace(b || (/\\?\{([^{}]+)\}/g), function (d, c) {
-            if (d.charAt(0) == "\\") {
-                return d.slice(1);
-            }
-            return (a[c] != null) ? a[c] : "";
-        });
     }
 });
 Function.implement({
@@ -549,8 +427,9 @@ Function.implement({
         };
     }, delay: function (b, c, a) {
         return setTimeout(this.pass((a == null ? [] : a), c), b);
-    },
+    }
 });
+
 Number.alias("each", "times");
 (function (b) {
     var a = {};
@@ -563,6 +442,7 @@ Number.alias("each", "times");
     });
     Number.implement(a);
 })(["abs", "acos", "asin", "atan", "atan2", "ceil", "cos", "exp", "floor", "log", "max", "min", "pow", "sin", "sqrt", "tan"]);
+
 (function () {
     var a = this.Class = new Type("Class", function (h) {
         if (instanceOf(h, Function)) {
