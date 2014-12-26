@@ -1281,10 +1281,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     };
 
     SwaggerUi.prototype.buildUrl = function(base, url) {
-      var parts;
       console.log("base is " + base);
-      parts = base.split("/");
-      base = parts[0] + "//" + parts[2];
+      base = base.substring(0,base.indexOf("/doc/"));
       if (url.indexOf("/") === 0) {
         return base + url;
       } else {
