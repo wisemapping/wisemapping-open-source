@@ -44,7 +44,9 @@ mindplot.NoteIcon = new Class({
             title: $msg('NOTE'),
             container: 'body',
             // Content can also be a function of the target element!
-            content: this._buildTooltipContent(),
+            content: function() {
+                return me._buildTooltipContent();
+            },
             html:true,
             placement:'bottom'
         });
@@ -52,16 +54,21 @@ mindplot.NoteIcon = new Class({
     },
 
     _buildTooltipContent: function() {
-        var result = $('<div></div>').css({padding:'5px'});
+        if ($("body").find("#textPopoverNote").length == 1) {
+            var text = $("body").find("#textPopoverNote");
+            text.text(this._linksModel.getText());
+        } else {
+            var result = $('<div id="textPopoverNote"></div>').css({padding:'5px'});
 
-        var text = $('<div></div>').text(this._linksModel.getText())
-            .css({
-                'white-space':'pre-wrap',
-                'word-wrap':'break-word'
-            }
-        );
-        result.append(text);
-        return result;
+            var text = $('<div></div>').text(this._linksModel.getText())
+                .css({
+                    'white-space':'pre-wrap',
+                    'word-wrap':'break-word'
+                }
+            );
+            result.append(text);
+            return result;
+        }
     },
 
     getModel:function () {
