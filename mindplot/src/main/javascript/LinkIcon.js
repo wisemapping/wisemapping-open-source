@@ -43,8 +43,20 @@ mindplot.LinkIcon = new Class({
                 me._topic.showLinkEditor();
                 event.stopPropagation();
             });
+            //FIXME: we shouldn't have timeout of that..
+            this.addEvent("mouseleave", function(event) {
+                window.setTimeout(function() {
+                    if (!$("#linkPopover:hover").length) {
+                        me._tip.hide();
+                    }
+                    event.stopPropagation();
+                }, 100)
+            });
         }
 
+        $(this.getImage()._peer._native).mouseenter(function() {
+            me._tip.show();
+        })
     },
 
     getModel:function () {

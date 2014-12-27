@@ -48,7 +48,8 @@ mindplot.NoteIcon = new Class({
                 return me._buildTooltipContent();
             },
             html:true,
-            placement:'bottom'
+            placement:'bottom',
+            destroyOnExit: true
         });
 
     },

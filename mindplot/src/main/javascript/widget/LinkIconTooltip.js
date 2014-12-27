@@ -30,14 +30,8 @@ mindplot.widget.LinkIconTooltip = new Class({
             container: 'body',
             title: $msg('LINK'),
             trigger: "manual",
-            template: '<div class="popover" onmouseover="$(this).mouseleave(function() {$(this).hide(); });" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
+            template: '<div id="linkPopover" class="popover" onmouseover="$(this).mouseleave(function() {$(this).fadeOut(200); });" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
         });
-        var me = this;
-        nativeElement.mouseenter(
-            function() {
-                me.show();
-            }
-        );
     },
 
     _buildContent:function (linkIcon) {
