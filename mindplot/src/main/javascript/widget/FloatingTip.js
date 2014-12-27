@@ -28,7 +28,8 @@ mindplot.widget.FloatingTip = new Class({
         title: '',
         content: '',
         delay: 0,
-        container: false
+        container: false,
+        destroyOnExit: false
     },
 
     initialize: function (element, options) {
@@ -41,10 +42,12 @@ mindplot.widget.FloatingTip = new Class({
     _createPopover: function() {
         this.element.popover(this.options);
         var me = this;
-        this.element.one('hidden.bs.popover', function() {
-            me.element.popover('destroy');
-            me._createPopover();
-        });
+        if (this.options.destroyOnExit) {
+            this.element.one('hidden.bs.popover', function() {
+                me.element.popover('destroy');
+                me._createPopover();
+            });
+        }
     },
 
     show: function () {
