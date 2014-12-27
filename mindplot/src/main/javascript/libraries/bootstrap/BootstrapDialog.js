@@ -7,12 +7,12 @@ var BootstrapDialog = new Class({
         acceptButton: true,
         removeButton:false,
         errorMessage: false,
-        onRemoveClickData:{}
+        onEventData:{}
     },
 
     initialize: function (title, options) {
         this.setOptions(options);
-        this.options.onRemoveClickData.dialog = this;
+        this.options.onEventData.dialog = this;
         this._native = $('<div class="modal fade" tabindex="-1"></div>').append('<div class="modal-dialog"></div>');
         var content = $('<div class="modal-content"></div>');
         content.on('keydown', function(event) {
@@ -48,12 +48,12 @@ var BootstrapDialog = new Class({
         if (this.options.acceptButton) {
             this.acceptButton = $('<button type="button" class="btn btn-primary" id="acceptBtn" data-dismiss="modal">'+ $msg('ACCEPT') + '</button>');
             footer.append(this.acceptButton);
-            this.acceptButton.unbind('click').click(this.onAcceptClick)
+            this.acceptButton.unbind('click').on("click",this.options.onEventData, this.onAcceptClick)
         }
         if (this.options.removeButton) {
             this.removeButton = $('<button type="button" class="btn btn-secondary" id="removeBtn" data-dismiss="modal">'+ $msg('REMOVE') +'</button>');
             footer.append(this.removeButton);
-            this.removeButton.on('click', this.options.onRemoveClickData, this.onRemoveClick);
+            this.removeButton.on('click', this.options.onEventData, this.onRemoveClick);
         }
         if (this.options.cancelButton) {
             footer.append('<button type="button" class="btn btn-secondary" data-dismiss="modal">'+ $msg('CANCEL') +'</button>');

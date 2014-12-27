@@ -28,7 +28,7 @@ mindplot.widget.LinkEditor = new Class({
             acceptButton: true,
             removeButton: typeof model.getValue() != 'undefined',
             errorMessage: true,
-            onRemoveClickData: {model: this._model}
+            onEventData: {model: this._model}
         });
         this.css({margin:"150px auto"});
         var panel = this._buildPanel(model);
