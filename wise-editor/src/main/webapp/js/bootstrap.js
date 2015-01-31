@@ -1,0 +1,1 @@
+../../../../../mindplot/src/main/javascript/libraries/bootstrap/js/bootstrap.min.js

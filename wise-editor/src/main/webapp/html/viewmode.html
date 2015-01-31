@@ -11,6 +11,8 @@
     <link rel="stylesheet/less" type="text/css" href="css/embedded.less"/>
 
     <script type='text/javascript' src='js/jquery.js'></script>
+    <script type='text/javascript' src='js/bootstrap.js'></script>
+    <script type='text/javascript' src='js/underscore.js'></script>
     <script type='text/javascript' src='js/mootools-core.js'></script>
     <script type='text/javascript' src='js/core.js'></script>
     <script type='text/javascript' src='js/less.js'></script>
@@ -44,6 +46,13 @@
     </script>
 </head>
 <body>
+<div id='load' class="modal fade">
+    <div class="modal-dialog">
+        <div style="height: 120px; text-align: center; border: 2px solid orange" class="modal-content">
+            <img style='margin-top:25px; text-align: center' src="images/ajax-loader.gif">
+        </div>
+    </div>
+</div>
 
 <div id="header">
     <div id="headerNotifier"></div>
