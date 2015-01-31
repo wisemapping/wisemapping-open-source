@@ -16,7 +16,6 @@
     <script type='text/javascript' src='js/mootools-core.js'></script>
     <script type='text/javascript' src='js/core.js'></script>
     <script type='text/javascript' src='js/less.js'></script>
-    <script type='text/javascript' src='js/mindplot-min.js'></script>
 
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
@@ -24,7 +23,7 @@
     <script type="text/javascript">
 
         var mapId = 'welcome';
-        $(document).bind('loadcomplete', function (resource) {
+        $(document).unbind().bind('loadcomplete', function (resource) {
 
             // Set readonly option ...
             var options = loadDesignerOptions();

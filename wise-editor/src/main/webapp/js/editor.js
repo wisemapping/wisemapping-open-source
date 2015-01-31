@@ -135,6 +135,7 @@ function loadDesignerOptions(jsonConf) {
     if (jsonConf) {
         $.ajax({
             url: jsonConf,
+            dataType: 'json',
             async: false,
             method: 'get',
             success: function (options) {
