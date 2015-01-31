@@ -253,26 +253,30 @@ function updateStarred(spanElem) {
 }
 
 function callbackOnTableInit() {
+    var clickAction = function() {
+        $("#mindmapListTable tbody tr").unbind('click').click(
+            function (event) {
+                var target = $(event.target);
+                if (!target.is('.closeTag')) {
+                    if (!target.parent().is('.closeTag')) {
+                        var baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf("c/maps/"));
+                        window.open(baseUrl + 'c/maps/' + $(this).find('.mindmapName').attr('value') + '/edit', '_self');
+                    }
+                }
+            });
+    };
     // Register starred events ...
     $('#mindmapListTable .starredOff, #mindmapListTable .starredOn').click(function (event) {
         updateStarred(this);
         event.stopPropagation();
     });
 
-    $("#mindmapListTable tbody tr").click(
-        function(event) {
-            var target = $(event.target);
-            if (!target.is('.closeTag')){
-                if (!target.parent().is('.closeTag')) {
-                    var baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf("c/maps/"));
-                    window.open(baseUrl + 'c/maps/' + $(this).find('.mindmapName').attr('value') + '/edit' , '_self');
-                }
-            }
-    });
+    clickAction();
     $('input:checkbox').click(function(event) {
         event.stopPropagation();
     });
     updateStatusToolbar();
+    $("#mindmapListTable").on("draw", clickAction);
 }
 
 // Register time update functions ....
