@@ -4,7 +4,7 @@
 <%--@elvariable id="isHsql" type="boolean"--%>
 <!-- Simple OpenID Selector -->
 <link type="text/css" rel="stylesheet" href="css/openid.css"/>
-<script type="text/javascript" language="javascript" src="js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" language="javascript" src="js/jquery.js"></script>
 <script type="text/javascript" language="javascript" src="js/openid-jquery.js"></script>
 <script type="text/javascript" language="javascript" src="js/openid-en.js"></script>
 <!-- /Simple OpenID Selector -->
@@ -14,7 +14,7 @@
     });
 </script>
 
-<script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" language="javascript">
     $(function () {
         $('#loginForm').submit(function () {

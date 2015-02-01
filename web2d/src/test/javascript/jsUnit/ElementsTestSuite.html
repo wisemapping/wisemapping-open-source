@@ -31,7 +31,7 @@ function setUp()
 {
     debug("Setting up workspace");
     workspace = new web2d.Workspace();
-    workspace.addItAsChildTo($("divWorkspace"));
+    workspace.addItAsChildTo($('#divWorkspace').first());
 
     group = new web2d.Group();
     line = new web2d.Line();
@@ -43,11 +43,11 @@ function setUp()
 
 function testAppendAndRemoveElements()
 {
-    workspace.appendChild(group);
-    workspace.appendChild(line);
-    workspace.appendChild(elipse);
-    workspace.appendChild(rect);
-    workspace.appendChild(rectArc);
+    workspace.append(group);
+    workspace.append(line);
+    workspace.append(elipse);
+    workspace.append(rect);
+    workspace.append(rectArc);
 
     workspace.removeChild(group);
     workspace.removeChild(line);
@@ -55,11 +55,11 @@ function testAppendAndRemoveElements()
     workspace.removeChild(rect);
     workspace.removeChild(rectArc);
 
-    workspace.appendChild(group);
-    group.appendChild(line);
-    group.appendChild(elipse);
-    group.appendChild(rect);
-    group.appendChild(rectArc);
+    workspace.append(group);
+    group.append(line);
+    group.append(elipse);
+    group.append(rect);
+    group.append(rectArc);
 
     group.removeChild(line);
     group.removeChild(elipse);
@@ -75,7 +75,7 @@ function testElementFill()
     {
         if (parent)
         {
-            parent.appendChild(elem);
+            parent.append(elem);
         }
 
         if (isSupported)
@@ -129,7 +129,7 @@ function testElementPosition()
         if (isSupported)
         {
             // Method setting ...
-            parent.appendChild(elem);
+            parent.append(elem);
             elem.setPosition(x, y);
 
             assertEquals(x, elem.getPosition().x);
@@ -183,7 +183,7 @@ function testElementSize()
     {
         if (parent)
         {
-            parent.appendChild(elem);
+            parent.append(elem);
         }
         if (isSupported)
         {
@@ -234,7 +234,7 @@ function testElementEventHandling()
     {
         if (parent)
         {
-            parent.appendChild(elem);
+            parent.append(elem);
         }
 
         var listener = function() { /* Dummy event listener */
@@ -258,7 +258,7 @@ function testStroke()
     {
         if (parent)
         {
-            parent.appendChild(elem);
+            parent.append(elem);
         }
         var strokeStyles = ['solid','dot','dash','dashdot','longdash'];
         for (var i = 0; i < strokeStyles.length; i++)

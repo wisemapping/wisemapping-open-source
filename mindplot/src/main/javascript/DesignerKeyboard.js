@@ -17,11 +17,10 @@
  */
 
 mindplot.DesignerKeyboard = new Class({
-    Extends:Keyboard,
+    Extends: mindplot.Keyboard,
     Static:{
         register:function (designer) {
             this._instance = new mindplot.DesignerKeyboard(designer);
-            this._instance.activate();
         },
 
         getInstance:function () {
@@ -31,356 +30,244 @@ mindplot.DesignerKeyboard = new Class({
 
     initialize:function (designer) {
         $assert(designer, "designer can not be null");
-        this.parent({defaultEventType:'keydown'});
         this._registerEvents(designer);
     },
-
 
     _registerEvents:function (designer) {
 
         // Try with the keyboard ..
         var model = designer.getModel();
-        var keyboardEvents = {
-            'backspace':function (event) {
+        this.addShortcut(
+            ['backspace'], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
-
                 designer.deleteSelectedEntities();
-
-            }.bind(this),
-
-            'space':function () {
+            }
+        );
+        this.addShortcut(
+            ['space'], function() {
                 designer.shrinkSelectedBranch();
-            }.bind(this),
-
-            'f2':function () {
+            }
+        );
+        this.addShortcut(
+            ['f2'],function() {
                 var node = model.selectedTopic();
                 if (node) {
                     node.showTextEditor();
                 }
-            }.bind(this),
-
-            'delete':function (event) {
+            }
+        );
+        this.addShortcut(
+            ['del'], function(event) {
                 designer.deleteSelectedEntities();
-
                 event.preventDefault();
                 event.stopPropagation();
-            }.bind(this),
-
-            'enter':function () {
+            }
+        );
+        this.addShortcut(
+            ['enter'], function() {
                 designer.createSiblingForSelectedNode();
-            }.bind(this),
-
-            'insert':function (event) {
+            }
+        );
+        this.addShortcut(
+            ['insert'], function(event) {
                 designer.createChildForSelectedNode();
-
                 event.preventDefault();
                 event.stopPropagation();
-            }.bind(this),
-
-            'tab':function (event) {
+            }
+        );
+        this.addShortcut(
+            ['tab'], function(event) {
                 designer.createChildForSelectedNode();
-
                 event.preventDefault();
                 event.stopPropagation();
-            }.bind(this),
-
-            '-':function () { // "-" is a insert on several Browsers. Don't ask why ...
+            }
+        );
+        this.addShortcut(
+            '-', function() { // "-" is a insert on several Browsers. Don't ask why ...
                 designer.createChildForSelectedNode();
-            }.bind(this),
-
-            'meta+enter':function (event) {
+            }
+        );
+        this.addShortcut(
+            ['meta+enter'], function(event) {
                 event.preventDefault();
                 event.stopPropagation();
                 designer.createChildForSelectedNode();
-
-            }.bind(this),
-
-            'ctrl+z':function (event) {
+            }
+        );
+        this.addShortcut(
+            ['ctrl+z', 'meta+z'], function(event) {
                 event.preventDefault(event);
                 event.stopPropagation();
                 designer.undo();
-            }.bind(this),
-
-            'meta+z':function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                designer.undo();
-
-            }.bind(this),
-
-            'ctrl+c':function (event) {
+            }
+        );
+        this.addShortcut(
+            ['ctrl+c', 'meta+c'], function (event) {
                 event.preventDefault(event);
                 event.stopPropagation();
                 designer.copyToClipboard();
-            }.bind(this),
-
-            'meta+c':function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                designer.copyToClipboard();
-
-            }.bind(this),
-
-            'ctrl+v':function (event) {
+            }
+        );
+        this.addShortcut(
+            ['ctrl+v', 'meta+v'], function (event) {
                 event.preventDefault(event);
                 event.stopPropagation();
-
                 designer.pasteClipboard();
-            }.bind(this),
-
-            'meta+v':function (event) {
+            }
+        );
+        this.addShortcut(
+            ['ctrl+shift+z', 'meta+shift+z', 'ctrl+y', 'meta+y'], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
-
-                designer.pasteClipboard();
-
-            }.bind(this),
-
-            'ctrl+z+shift':function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-
                 designer.redo();
-            }.bind(this),
-
-            'meta+z+shift':function (event) {
+            }
+        );
+        this.addShortcut(
+            ['ctrl+a', 'meta+a'], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
-
-                designer.redo();
-            }.bind(this),
-
-            'ctrl+y':function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                designer.redo();
-
-            }.bind(this),
-
-            'meta+y':function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                designer.redo();
-
-            }.bind(this),
-
-            'ctrl+a':function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-
                 designer.selectAll();
-            },
-
-            'ctrl+b':function (event) {
+            }
+        );
+        this.addShortcut(
+            ['ctrl+b', 'meta+b'], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
                 designer.changeFontWeight();
-            },
-
-            'meta+b':function (event) {
+            }
+        );
+        this.addShortcut(
+            ['ctrl+s', 'meta+s'], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
-
-                designer.changeFontWeight();
-            },
-
-            'ctrl+s':function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-                $('save').fireEvent('click');
-            },
-
-            'meta+s':function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                $('save').fireEvent('click');
-            },
-
-            'ctrl+i':function (event) {
+                $(document).find('#save').trigger('click');
+            }
+        );
+        this.addShortcut(
+            ['ctrl+i', 'meta+i'], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
                 designer.changeFontStyle();
-            },
-
-            'meta+i':function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                designer.changeFontStyle();
-            },
-
-            'meta+shift+a':function (event) {
+            }
+        );
+        this.addShortcut(
+            ['ctrl+shift+a', 'meta+shift+a'], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
                 designer.deselectAll();
-            },
-
-            'ctrl+shift+a':function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                designer.deselectAll();
-            },
-
-            'meta+a':function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                designer.selectAll();
-            },
-
-            'meta+=':function (event) {
+            }
+        );
+        this.addShortcut(
+            ['meta+=', 'ctrl+='], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
                 designer.zoomIn();
-            },
-
-            'meta+-':function (event) {
+            }
+        );
+        this.addShortcut(
+            ['meta+-', 'ctrl+-'], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
                 designer.zoomOut();
-            },
-
-            'ctrl+=':function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                designer.zoomIn();
-            },
-
-            'ctrl+-':function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                designer.zoomOut();
-            },
-
-
-            'right':function (event) {
+            }
+        );
+        var me = this;
+        this.addShortcut(
+            'right', function (event) {
                 var node = model.selectedTopic();
                 if (node) {
                     if (node.isCentralTopic()) {
-                        this._goToSideChild(designer, node, 'RIGHT');
+                        me._goToSideChild(designer, node, 'RIGHT');
                     }
                     else {
                         if (node.getPosition().x < 0) {
-                            this._goToParent(designer, node);
+                            me._goToParent(designer, node);
                         }
                         else if (!node.areChildrenShrunken()) {
-                            this._goToChild(designer, node);
+                            me._goToChild(designer, node);
                         }
                     }
                 } else {
                     var centralTopic = model.getCentralTopic();
-                    this._goToNode(designer, centralTopic);
+                    me._goToNode(designer, centralTopic);
                 }
                 event.preventDefault();
                 event.stopPropagation();
-            }.bind(this),
-
-            'left':function (event) {
+            }
+        );
+        this.addShortcut(
+            'left', function (event) {
                 var node = model.selectedTopic();
                 if (node) {
                     if (node.isCentralTopic()) {
-                        this._goToSideChild(designer, node, 'LEFT');
+                        me._goToSideChild(designer, node, 'LEFT');
                     }
                     else {
                         if (node.getPosition().x > 0) {
-                            this._goToParent(designer, node);
+                            me._goToParent(designer, node);
                         }
                         else if (!node.areChildrenShrunken()) {
-                            this._goToChild(designer, node);
+                            me._goToChild(designer, node);
                         }
                     }
                 } else {
                     var centralTopic = model.getCentralTopic();
-                    this._goToNode(designer, centralTopic);
+                    me._goToNode(designer, centralTopic);
                 }
                 event.preventDefault();
                 event.stopPropagation();
-            }.bind(this),
-
-            'up':function (event) {
-                var node = model.selectedTopic();
-                if (node) {
-                    if (!node.isCentralTopic()) {
-                        this._goToBrother(designer, node, 'UP');
-                    }
-                } else {
-                    var centralTopic = model.getCentralTopic();
-                    this._goToNode(designer, centralTopic);
-                }
-                event.preventDefault();
-                event.stopPropagation();
-            }.bind(this),
-
-            'down':function (event) {
-                var node = model.selectedTopic();
-                if (node) {
-                    if (!node.isCentralTopic()) {
-                        this._goToBrother(designer, node, 'DOWN');
-                    }
-                } else {
-                    var centralTopic = model.getCentralTopic();
-                    this._goToNode(designer, centralTopic);
-                }
-                event.preventDefault();
-                event.stopPropagation();
-            }.bind(this)
-        };
-        this.addEvents(keyboardEvents);
-
-        var regex = /^(?:shift|control|ctrl|alt|meta)$/;
-        var modifiers = ['shift', 'control', 'alt', 'meta'];
-
-        var excludes = ['esc', 'capslock', 'tab', 'f1', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10', 'f11', 'f12', 'backspace', 'down', 'up', 'left', 'right', 'control'];
-        if (!Browser.Platform.mac) {
-            // This is to avoid enter on edition mode in the node when alt+tab is pressed.
-            excludes.push("alt");
-        }
-
-        $(document).addEvent('keydown', function (event) {
-
-            // Convert key to mootools keyboard event format...
-            var keys = [];
-            modifiers.each(function (mod) {
-                if (event[mod]) keys.push(mod);
-            });
-            if (!regex.test(event.key))
-                keys.push(event.key);
-            var key = keys.join('+');
-
-            // Is the pressed key one of the already registered in the keyboard  ?
-            var isRegistered = false;
-            for (var eKey in  keyboardEvents) {
-                if (eKey == key) {
-                    isRegistered = true;
-                    break;
-                }
             }
+        );
+        this.addShortcut(
+            'up', function (event) {
+                var node = model.selectedTopic();
+                if (node) {
+                    if (!node.isCentralTopic()) {
+                        me._goToBrother(designer, node, 'UP');
+                    }
+                } else {
+                    var centralTopic = model.getCentralTopic();
+                    me._goToNode(designer, centralTopic);
+                }
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        );
+        this.addShortcut(
+            'down', function (event) {
+                var node = model.selectedTopic();
+                if (node) {
+                    if (!node.isCentralTopic()) {
+                        me._goToBrother(designer, node, 'DOWN');
+                    }
+                } else {
+                    var centralTopic = model.getCentralTopic();
+                    me._goToNode(designer, centralTopic);
+                }
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        );
 
-            // If it's not registered, let's
-            if (!isRegistered && !excludes.contains(key) && !excludes.contains(event.key) && !event.meta && !event.control) {
+        $(document).on('keydown', function (event) {
+
+            var keyCode = event.keyCode;
+
+            if (!jQuery.hotkeys.specialKeys[keyCode] && !jQuery.hotkeys.shiftNums[keyCode] && keyCode != 91 /*win key*/) {
                 var nodes = designer.getModel().filterSelectedTopics();
                 if (nodes.length > 0) {
 
                     // If a modifier is press, the key selected must be ignored.
-                    var pressKey = event.key;
-                    if (modifiers.contains(event.key)) {
-                        pressKey = "";
+                    var pressKey = String.fromCharCode(keyCode);
+                    if (event.ctrlKey || event.altKey || event.metaKey || event.shiftKey) {
+                        return;
                     }
-
                     nodes[0].showTextEditor(pressKey);
                     event.stopPropagation();
                 }

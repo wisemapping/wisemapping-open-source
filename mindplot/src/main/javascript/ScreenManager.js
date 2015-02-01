@@ -24,11 +24,11 @@ mindplot.ScreenManager = new Class({
 
         // Ignore default click event propagation. Prevent 'click' event on drag.
         this._clickEvents = [];
-        this._divContainer.addEvent('click', function(event) {
+        this._divContainer.bind('click', function(event) {
             event.stopPropagation()
-        }.bind(this));
+        });
 
-        this._divContainer.addEvent('dblclick', function(event) {
+        this._divContainer.bind('dblclick', function(event) {
             event.stopPropagation();
             event.preventDefault();
         });
@@ -43,7 +43,7 @@ mindplot.ScreenManager = new Class({
         if (event == 'click')
             this._clickEvents.push(listener);
         else
-           this._divContainer.addEvent(event, listener);
+           this._divContainer.bind(event, listener);
     },
 
     removeEvent : function(event, listener) {
@@ -51,18 +51,18 @@ mindplot.ScreenManager = new Class({
             this._clickEvents.remove(listener);
         }
         else{
-            this._divContainer.removeEvent(event, listener);
+            this._divContainer.unbind(event, listener);
         }
     },
 
     fireEvent : function(type, event) {
         if (type == 'click') {
-            this._clickEvents.each(function(listener) {
+            _.each(this._clickEvents, function(listener) {
                 listener(type, event);
             });
         }
         else {
-            this._divContainer.fireEvent(type, event);
+            this._divContainer.trigger(type, event);
         }
     },
 
@@ -118,13 +118,13 @@ mindplot.ScreenManager = new Class({
 
     getWorkspaceMousePosition : function(event) {
         // Retrieve current mouse position.
-        var x = event.client.x;
-        var y = event.client.y;
+        var x = event.clientX;
+        var y = event.clientY;
 
-        // Subtract div position.
-        var containerPosition = this.getContainer().getPosition();
+        //FIXME: paulo: why? Subtract div position.
+        /*var containerPosition = this.getContainer().position();
         x = x - containerPosition.x;
-        y = y - containerPosition.y;
+        y = y - containerPosition.y;*/
 
         // Scale coordinate in order to be relative to the workspace. That's coordSize/size;
         x = x * this._scale;

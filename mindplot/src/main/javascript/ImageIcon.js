@@ -34,16 +34,17 @@ mindplot.ImageIcon = new Class({
 
             //Icon
             var image = this.getImage();
+            var me = this;
             image.addEvent('click', function () {
 
                 var iconType = iconModel.getIconType();
-                var newIconType = this._getNextFamilyIconId(iconType);
+                var newIconType = me._getNextFamilyIconId(iconType);
                 iconModel.setIconType(newIconType);
 
-                var imgUrl = this._getImageUrl(newIconType);
-                this._image.setHref(imgUrl);
+                var imgUrl = me._getImageUrl(newIconType);
+                me._image.setHref(imgUrl);
 
-            }.bind(this));
+            });
             this._image.setCursor('pointer');
         }
     },

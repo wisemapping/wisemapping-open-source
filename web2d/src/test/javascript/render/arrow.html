@@ -19,7 +19,7 @@
         web2d.peer.utils = {};
     </script>
 
-    <script type="text/javascript" src="../../../../../mindplot/src/main/javascript/libraries/mootools/mootools-core-1.4.5-full-nocompat-yc.js"></script>
+    <script type="text/javascript" src="../mootools-core-1.4.5.js"></script>
     <script type="text/javascript" src="../../../../../core-js/target/classes/core.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/ElementPeer.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/Element.js"></script>
@@ -50,6 +50,8 @@
     <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/TimesFont.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/ArialFont.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/VerdanaFont.js"></script>
+    <script type="text/javascript" src="../../../../src/main/javascript/Point.js"></script>
+
     <script type="text/javascript" src="utils.js"></script>
     <script type="text/javascript">
         function initialize(){
@@ -61,15 +63,15 @@
             arrow.setFrom(50,50);
             arrow.setControlPoint(new core.Point(-50,0));
 
-            overflowWorkspace.appendChild(arrow);
+            overflowWorkspace.append(arrow);
 
             var arrow2 = new web2d.Arrow();
             arrow2.setFrom(100,50);
             arrow2.setControlPoint(new core.Point(50,50));
 
-            overflowWorkspace.appendChild(arrow2);
+            overflowWorkspace.append(arrow2);
 
-            overflowWorkspace.addItAsChildTo($("overflowExample"));
+            overflowWorkspace.addItAsChildTo($('#overflowExample').first());
 
         }
     </script>

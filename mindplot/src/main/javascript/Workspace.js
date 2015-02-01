@@ -26,8 +26,8 @@ mindplot.Workspace = new Class({
         this._screenManager = screenManager;
 
         var divContainer = screenManager.getContainer();
-        this._screenWidth = parseInt(divContainer.getStyle('width'));
-        this._screenHeight = parseInt(divContainer.getStyle('height'));
+        this._screenWidth = parseInt(divContainer.css('width'));
+        this._screenHeight = parseInt(divContainer.css('height'));
 
         // Initialize web2d workspace.
         var workspace = this._createWorkspace();
@@ -61,11 +61,11 @@ mindplot.Workspace = new Class({
         return  new web2d.Workspace(workspaceProfile);
     },
 
-    appendChild: function(shape) {
+    append: function(shape) {
         if ($defined(shape.addToWorkspace)) {
             shape.addToWorkspace(this);
         } else {
-            this._workspace.appendChild(shape);
+            this._workspace.append(shape);
         }
     },
 
@@ -189,7 +189,7 @@ mindplot.Workspace = new Class({
                         wasDragged = true;
 
 
-                    }.bind(this);
+                    };
                     screenManager.addEvent('mousemove', workspace._mouseMoveListener);
 
                     // Register mouse up listeners ...

@@ -36,7 +36,7 @@ mindplot.ActionIcon = new Class({
     },
 
     addToGroup:function(group) {
-        group.appendChild(this.getImage());
+        group.append(this.getImage());
     },
 
     setVisibility:function(visible) {

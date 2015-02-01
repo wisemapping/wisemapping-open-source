@@ -18,36 +18,33 @@
 
 mindplot.widget.ListToolbarPanel = new Class({
     Extends: mindplot.widget.ToolbarPaneItem,
-    initialize : function(buttonId, model) {
+    initialize: function (buttonId, model) {
         this.parent(buttonId, model);
         this._initPanel();
     },
 
     _initPanel: function () {
         // Register on toolbar elements ...
-        var menuElems = this.getPanelElem().getElements('div');
-        menuElems.each(function(elem) {
-            elem.addEvent('click', function(event) {
-                event.stopPropagation();
-                this.hide();
-
-                var value = $defined(elem.getAttribute('model')) ? elem.getAttribute('model') : elem.id;
-                this.getModel().setValue(value);
-            }.bind(this));
-        }.bind(this));
+        var me = this;
+        this.getPanelElem().children('div').bind('click', function (event) {
+            event.stopPropagation();
+            me.hide();
+            var value = $defined($(this).attr('model')) ? $(this).attr('model') : $(this).attr('id');
+            me.getModel().setValue(value);
+        });
     },
 
-    _updateSelectedItem : function() {
+    _updateSelectedItem: function () {
         var panelElem = this.getPanelElem();
-        var menuElems = panelElem.getElements('div');
+        var menuElems = panelElem.find('div');
         var value = this.getModel().getValue();
-        menuElems.each(function(elem) {
-            var elemValue = $defined(elem.getAttribute('model')) ? elem.getAttribute('model') : elem.id;
-            $assert(elemValue,"elemValue can not be null");
+        _.each(menuElems, function (elem) {
+            var elemValue = $defined($(elem).attr('model')) ? $(elem).attr('model') : $(elem).attr('id');
+            $assert(elemValue, "elemValue can not be null");
             if (elemValue == value)
-                elem.className = "toolbarPanelLinkSelectedLink";
+                $(elem).attr('class', "toolbarPanelLinkSelectedLink");
             else
-                elem.className = "toolbarPanelLink";
+                $(elem).attr('class', "toolbarPanelLink");
         });
         return panelElem;
     }

@@ -85,7 +85,8 @@ jQuery.fn.dialogForm = function (options) {
     var acceptBtn = $('#' + containerId + ' .btn-accept');
     acceptBtn.button('reset');
 
-    acceptBtn.unbind('click').click( function (event) {
+    var dialogElem = this;
+    acceptBtn.unbind('click').one('click', function (event) {
         var formData = {};
         $('#' + containerId + ' input').each(function (index, elem) {
             formData[elem.name] = elem.value;
@@ -138,7 +139,6 @@ jQuery.fn.dialogForm = function (options) {
         };
 
         $(acceptBtn).button('loading');
-        var dialogElem = this;
         jQuery.ajax(url, {
             async: false,
             dataType: 'json',
@@ -155,11 +155,11 @@ jQuery.fn.dialogForm = function (options) {
                 501: onError
             }
         });
-    }.bind(this));
+    });
 
     $('#' + containerId + ' .btn-cancel').click(function () {
         this.modal('hide');
-    }.bind(this));
+    });
 
     // Register enter input to submit...
     $("input").keypress(function(event) {
@@ -174,6 +174,7 @@ jQuery.fn.dialogForm = function (options) {
         $(this).find('input:first').focus();
     });
     this.modal();
+    this.first('input').focus();
 
 };
 
@@ -252,26 +253,30 @@ function updateStarred(spanElem) {
 }
 
 function callbackOnTableInit() {
+    var clickAction = function() {
+        $("#mindmapListTable tbody tr").unbind('click').click(
+            function (event) {
+                var target = $(event.target);
+                if (!target.is('.closeTag')) {
+                    if (!target.parent().is('.closeTag')) {
+                        var baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf("c/maps/"));
+                        window.open(baseUrl + 'c/maps/' + $(this).find('.mindmapName').attr('value') + '/edit', '_self');
+                    }
+                }
+            });
+    };
     // Register starred events ...
     $('#mindmapListTable .starredOff, #mindmapListTable .starredOn').click(function (event) {
         updateStarred(this);
         event.stopPropagation();
     });
 
-    $("#mindmapListTable tbody tr").click(
-        function(event) {
-            var target = $(event.target);
-            if (!target.is('.closeTag')){
-                if (!target.parent().is('.closeTag')) {
-                    var baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf("c/maps/"));
-                    window.open(baseUrl + 'c/maps/' + $(this).find('.mindmapName').attr('value') + '/edit' , '_self');
-                }
-            }
-    });
+    clickAction();
     $('input:checkbox').click(function(event) {
         event.stopPropagation();
     });
     updateStatusToolbar();
+    $("#mindmapListTable").on("draw", clickAction);
 }
 
 // Register time update functions ....
@@ -357,7 +362,7 @@ $(function () {
         }
     });
 
-    $("#renameBtn").click(function () {
+    $("#renameBtn").click(function (event) {
         // Map to be cloned ...
         var tableElem = $('#mindmapListTable');
         var rows = tableElem.dataTableExt.getSelectedRows();
@@ -446,12 +451,14 @@ $(function () {
         var mapIds = $('#mindmapListTable').dataTableExt.getSelectedMapsIds();
         if (mapIds.length > 0 || ignore) {
             var mapId = mapIds[0];
-            $('#' + dialogElemId + ' .modal-body').load(urlTemplate.replace("{mapId}", mapId),
+            var modalElement = $('#' + dialogElemId);
+            modalElement.find('.modal-body').load(urlTemplate.replace("{mapId}", mapId),
                 function () {
-                    $('#' + dialogElemId + ' .btn-accept').unbind('click').click(function () {
+                    modalElement.find('.btn-accept').unbind('click').click(function () {
                         submitDialogForm();
                     });
-                    $('#' + dialogElemId).modal();
+                    modalElement.modal();
+                    //TODO here we need to make focus on a input tag
                 });
         }
     };
@@ -647,7 +654,9 @@ function prepareLabelList(labels) {
     });
 
     //add the defaultValue
-    labelList.append('<li><div class="listSeparator"></div></li>')
+    if (labels.length > 0) {
+        labelList.append('<li><div class="listSeparator"></div></li>')
+    }
     labelList.append(defaultValue);
 }
 

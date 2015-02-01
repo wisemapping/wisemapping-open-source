@@ -18,7 +18,7 @@
 
 //noinspection JSUnusedLocalSymbols
 mindplot.ActionDispatcher = new Class({
-    Implements:[Events],
+    Implements:[mindplot.Events],
     initialize: function(commandContext) {
         $assert(commandContext, "commandContext can not be null");
     },

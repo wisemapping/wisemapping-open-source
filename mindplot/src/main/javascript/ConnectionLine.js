@@ -145,7 +145,7 @@ mindplot.ConnectionLine = new Class({
     },
 
     addToWorkspace:function (workspace) {
-        workspace.appendChild(this._line2d);
+        workspace.append(this._line2d);
         this._line2d.moveToBack();
     },
 

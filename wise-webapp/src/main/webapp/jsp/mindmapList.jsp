@@ -15,7 +15,7 @@
 
     <link rel="stylesheet/less" type="text/css" href="css/mindmapList.less"/>
 
-    <script type="text/javascript" language="javascript" src="js/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" language="javascript" src="js/jquery.js"></script>
     <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap-colorpicker.js"></script>
 
@@ -460,7 +460,7 @@
         </div>
 
         <!-- Delete map dialog -->
-        <div id="delete-dialog-modal" class="modal fade">
+        <div id="delete-dialog-modal" class="modal fade" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -503,7 +503,7 @@
         </div>
 
         <!-- Info map dialog -->
-        <div id="info-dialog-modal" class="modal fade">
+        <div id="info-dialog-modal" class="modal fade" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -521,7 +521,7 @@
         </div>
 
         <!-- Publish Dialog Config -->
-        <div id="publish-dialog-modal" class="modal fade">
+        <div id="publish-dialog-modal" class="modal fade" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -541,7 +541,7 @@
         </div>
 
         <!-- Export Dialog Config -->
-        <div id="export-dialog-modal" class="modal fade">
+        <div id="export-dialog-modal" class="modal fade" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -561,7 +561,7 @@
         </div>
 
         <!-- Import Dialog Config -->
-        <div id="import-dialog-modal" class="modal fade">
+        <div id="import-dialog-modal" class="modal fade" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -582,7 +582,7 @@
         </div>
 
         <!-- Share Dialog Config -->
-        <div id="share-dialog-modal" class="modal fade">
+        <div id="share-dialog-modal" class="modal fade" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -602,7 +602,7 @@
         </div>
 
         <!-- History Dialog Config -->
-        <div id="history-dialog-modal" class="modal fade">
+        <div id="history-dialog-modal" class="modal fade" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">

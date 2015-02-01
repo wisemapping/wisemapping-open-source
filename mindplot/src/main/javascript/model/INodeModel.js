@@ -199,7 +199,7 @@ mindplot.model.INodeModel = new Class({
         return this.getParent() != null;
     },
 
-    appendChild : function(node) {
+    append : function(node) {
         throw "Unsupported operation";
     },
 
@@ -213,7 +213,7 @@ mindplot.model.INodeModel = new Class({
         var source = this;
         // Copy properties ...
         var keys = source.getPropertiesKeys();
-        keys.each(function(key) {
+        _.each(keys, function(key) {
             var value = source.getProperty(key);
             target.putProperty(key, value);
         });
@@ -222,10 +222,10 @@ mindplot.model.INodeModel = new Class({
         var children = this.getChildren();
         var tmindmap = target.getMindmap();
 
-        children.each(function(snode) {
+        _.each(function(children, snode) {
             var tnode = tmindmap.createNode(snode.getType(), snode.getId());
             snode.copyTo(tnode);
-            target.appendChild(tnode);
+            target.append(tnode);
         });
 
         return target;
@@ -278,15 +278,15 @@ mindplot.model.INodeModel = new Class({
         var children = this.getChildren();
         if (children.length > 0) {
             result = result + ", children: {(size:" + children.length;
-            children.each(function(node) {
+            _.each(children, function(node) {
                 result = result + "=> (";
                 var keys = node.getPropertiesKeys();
-                keys.each(function(key) {
+                _.each(keys, function(key) {
                     var value = node.getProperty(key);
                     result = result + key + ":" + value + ",";
                 });
                 result = result + "}"
-            }.bind(this));
+            });
         }
 
         result = result + ' }';

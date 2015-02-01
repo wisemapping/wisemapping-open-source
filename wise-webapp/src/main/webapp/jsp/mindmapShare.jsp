@@ -3,7 +3,7 @@
 
 <style type="text/css">
     #sharingContainer {
-        height: 180px;
+        height: 220px;
         width: 100%;
         overflow-y: scroll;
         border-top: 1px solid #d3d3d3;
@@ -15,26 +15,34 @@
     }
 
     #collabEmails {
-        width: 250px;
+        width: 60%;
         display: inline-block;
-        vertical-align: middle;
-        margin-bottom: 0;
     }
 
-    #roleBtn {
-        margin: 0 10px;
-        display: inline-block;
-        vertical-align: middle;
-    }
-
-    #addBtn {
-        display: inline-block;
-        vertical-align: middle;
+    #roleBtn a:hover {
+        text-decoration: underline;
     }
 
     #collabMessage {
         display: block;
         width: 100%;
+    }
+
+    .closeBtn {
+        font-size: 13px;
+        font-weight: 800;
+        line-height: 1;
+        color: #000;
+        text-shadow: 0 1px 0 #fff;
+        text-decoration: none;
+    }
+
+    #collabsTable td {
+        vertical-align: middle;
+    }
+
+    .alert-small {
+        padding: 7px;
     }
 
 </style>
@@ -51,31 +59,31 @@
     </table>
 </div>
 
-<div class="well">
-    <div id="errorMsg" class="alert alert-danger"></div>
+<div class="well" style="margin-bottom: 0px">
+    <div id="errorMsg" class="alert alert-danger alert-small"></div>
     <div>
 
         <p><strong><spring:message code="ADD_PEOPLE"/>:</strong></p>
 
-        <input type="text" id="collabEmails" name="collabEmails"
-               placeholder="<spring:message code="COLLABORATORS_SEPARATED_BY_COMA"/>" class="col-md-1"/>
+        <input type="text" id="collabEmails" name="collabEmails" class="form-control" autofocus='autofocus'
+               placeholder="<spring:message code="COLLABORATORS_SEPARATED_BY_COMA"/>"/>
 
         <div class="btn-group" id="roleBtn">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><spring:message code="CAN_EDIT"/>
                 <span class="caret"> </span>
             </a>
-            <ul class="dropdown-menu" data-role="editor" id="shareRole">
-                <li><a href="#" data-role="editor"><spring:message code="CAN_EDIT"/></a></li>
-                <li><a href="#" data-role="viewer"><spring:message code="CAN_VIEW"/></a></li>
+            <ul class="dropdown-menu" role="menu" id="shareRole" data-role="editor">
+                <li><a href="#" data-role="editor" style="text-decoration: none"><spring:message code="CAN_EDIT"/></a></li>
+                <li><a href="#" data-role="viewer" style="text-decoration: none"><spring:message code="CAN_VIEW"/></a></li>
             </ul>
         </div>
         <button id="addBtn" class="btn btn-primary"><spring:message code="ADD"/></button>
     </div>
     <div style="margin-top: 10px;">
         <p><strong><spring:message code="EMAIL_NOTIFICATION_MESSAGE"/></strong> - <a href="#"
-                                                                                     id="addMessageLink"><spring:message
+                                                                                     id="addMessageLink" style="padding-left: 0px"><spring:message
                 code="ADD_MESSAGE"/></a></p>
-        <textarea cols="4" id="collabMessage" placeholder="<spring:message code="OPTIONAL_CUSTOM_MESSAGE"/>">
+        <textarea cols="4" id="collabMessage" class="form-control" placeholder="<spring:message code="OPTIONAL_CUSTOM_MESSAGE"/>">
 
         </textarea>
     </div>
@@ -91,6 +99,17 @@ $("#addMessageLink").click(function (event) {
     $("#collabMessage").toggle().val("");
     event.preventDefault();
 });
+
+$("#collabEmails").keyup(function(event) {
+    var keyCode = event.keyCode;
+    if (keyCode == 13) {
+        $('#addBtn').trigger('click');
+    }
+});
+
+function onDialogShown() {
+    $('#collabEmails').focus();
+}
 
 var messages = {
     owner:'<spring:message code="IS_OWNER"/>',
@@ -109,10 +128,11 @@ function addCollaboration(email, role, changeType) {
     var rowStr;
     var tableElem = $("#collabsTable");
     if (role != "owner") {
+        tableElem = $("#collabsTable tbody");
         // Add row to the table ...
         var rowTemplate = '\
                    <tr data-collab="{email}" data-role="{role}">\
-                   <td>{email}{typeIcon}</td>\
+                   <td><span>{email}{typeIcon}</span></td>\
                    <td>\
                        <div class="btn-group">\
                            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#""></a>\
@@ -122,7 +142,7 @@ function addCollaboration(email, role, changeType) {
                            </ul>\
                        </div>\
                    </td>\
-                 <td><a href="#">x</a></td>\
+                 <td><a href="#" class="closeBtn" style="text-decoration: none; color: rgb(201, 1, 1)">x</a></td>\
                 </tr>';
 
         rowStr = rowTemplate.replace(/{email}/g, email);
@@ -149,8 +169,8 @@ function addCollaboration(email, role, changeType) {
         });
     } else {
         rowStr = '<tr data-collab=' + email + ' data-role="' + role + '">\
-                            <td>' + email + ' (<spring:message code="YOU"/>)</td>\
-                            <td><button class="btn btn-secondary">' + messages[role] + '</button></td>\
+                            <td><span>' + email + ' (<spring:message code="YOU"/>)</span></td>\
+                            <td><button class="btn btn-secondary" style="margin-left: 15px">' + messages[role] + '</button></td>\
                               <td></td>\
                              </tr>';
         tableElem.append(rowStr);
@@ -241,7 +261,7 @@ $("#addBtn").click(function (event) {
 // Register change event  ...
 $("#shareRole a").click(function (event) {
     var role = onClickShare(this);
-    $(this).parent().attr('data-role', role);
+    $(this).closest("ul").attr('data-role', role);
 
     event.preventDefault();
 });

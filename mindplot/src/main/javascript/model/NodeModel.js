@@ -124,7 +124,7 @@ mindplot.model.NodeModel = new Class({
         return result;
     },
 
-    appendChild:function (child) {
+    append:function (child) {
         $assert(child && child.isNodeModel(), 'Only NodeModel can be appended to Mindmap object');
         this._children.push(child);
         child._parent = this;

@@ -69,7 +69,7 @@ mindplot.model.IMindmap = new Class({
         $assert(!child.getParent(), 'Child model seems to be already connected');
 
         //  Connect node...
-        parent.appendChild(child);
+        parent.append(child);
 
         // Remove from the branch ...
         this.removeBranch(child);
@@ -135,7 +135,7 @@ mindplot.model.IMindmap = new Class({
 
         // Then the rest of the branches ...
         var sbranchs = source.getBranches();
-        sbranchs.each(function(snode) {
+        _.each(sbranchs, function(snode) {
             var tnode = target.createNode(snode.getType(), snode.getId());
             snode.copyTo(tnode);
             target.addBranch(tnode);

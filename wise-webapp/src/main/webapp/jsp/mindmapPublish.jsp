@@ -31,24 +31,30 @@
         <div class="tab-pane fade active in" id="embedTab">
             <spring:message code="BLOG_INCLUSION"/>
             <div id="wizardContainer">
-                <form class="form-inline" action="#">
+                <form class="form-horizontal" action="#" style="padding-top: 1em">
                     <div class="form-group">
-                    <label for="frameWidth" class="form-label"><spring:message code="FRAME_WIDTH"/>:</label>
-                    <input type="number" id="frameWidth" name="frameWidth" value="600" class="col-md-2 form-control" min="0"/>
-                     </div>
-                    <div class="form-group">
-                    <label for="frameHeight" class="form-label"><spring:message code="FRAME_HEIGHT"/>:</label>
-                    <input type="number" id="frameHeight" name="frameHeight" value="400" class="col-md-2 form-control" min="0"/>
+                        <label for="frameWidth" class="col-sm-4 control-label"><spring:message code="FRAME_WIDTH"/>:</label>
+                        <div class="col-sm-4">
+                            <input type="number" id="frameWidth" name="frameWidth" value="600" class="form-control" min="0"/>
+                        </div>
                     </div>
                     <div class="form-group">
-                    <label for="mapZoom" class="form-label"><spring:message code="ZOOM"/> %:</label>
-                    <input type="number" id="mapZoom" name="mapZoom" value="80" class="col-md-2 form-control" min="10" max="200" step="10"/>
+                        <label for="frameHeight" class="col-sm-4 control-label"><spring:message code="FRAME_HEIGHT"/>:</label>
+                        <div class="col-sm-4">
+                            <input type="number" id="frameHeight" name="frameHeight" value="400" class="form-control" min="0"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="mapZoom" class="col-sm-4 control-label"><spring:message code="ZOOM"/> %:</label>
+                        <div class="col-sm-4">
+                            <input type="number" id="mapZoom" name="mapZoom" value="80" class="form-control" min="10" max="200" step="10"/>
+                        </div>
                     </div>
                 </form>
             </div>
             <label><spring:message code="BLOG_SNIPPET"/></label>
-                <pre id="embedCode">&lt;iframe style="width:600px;height:400px;border: 1px
-solid black" src="${baseUrl}/c/maps/${mindmap.id}/embed?zoom=1"&gt; &lt;/iframe&gt;</pre>
+                <textarea disabled style="cursor: text; font-family: monospace;resize: none" class="form-control" id="embedCode">&lt;iframe style="width:600px;height:400px;border: 1px
+solid black" src="${baseUrl}/c/maps/${mindmap.id}/embed?zoom=1"&gt; &lt;/iframe&gt;</textarea>
         </div>
 
         <div class="tab-pane fade" id="publicUrlTab">

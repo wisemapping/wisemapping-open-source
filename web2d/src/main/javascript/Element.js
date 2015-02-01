@@ -67,12 +67,6 @@ web2d.Element = new Class({
         this._peer.setPosition(cx, cy);
     },
 
-
-    positionRelativeTo : function(elem, options) {
-        this._peer.positionRelativeTo(elem, options);
-
-    },
-
     /**
      * Allows the registration of event listeners on the event target.
      * type
@@ -87,8 +81,8 @@ web2d.Element = new Class({
         this._peer.addEvent(type, listener);
     },
 
-    fireEvent : function(type, event) {
-        this._peer.fireEvent(type, event);
+    trigger : function(type, event) {
+        this._peer.trigger(type, event);
     },
 
     cloneEvents : function(from) {
@@ -135,6 +129,10 @@ web2d.Element = new Class({
 
     getPosition : function() {
         return this._peer.getPosition();
+    },
+
+    getNativePosition: function() {
+        return this._peer.getNativePosition();
     },
 
     /*

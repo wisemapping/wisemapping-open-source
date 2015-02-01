@@ -5,3 +5,4 @@
 <%
     request.setAttribute("principal", com.wisemapping.security.Utils.getUser());
 %>
+

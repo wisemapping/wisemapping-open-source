@@ -1,1 +1,0 @@
-../../../../../mindplot/src/main/javascript/libraries/mootools/mootools-more-1.4.0.1.js

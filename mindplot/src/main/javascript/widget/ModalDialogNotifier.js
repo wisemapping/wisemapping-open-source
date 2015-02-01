@@ -17,83 +17,33 @@
  */
 
 mindplot.widget.ModalDialogNotifier = new Class({
-    Extends:MooDialog,
-    initialize:function () {
-        this.parent({
-                closeButton:false,
-                destroyOnClose:false,
-                autoOpen:true,
-                useEscKey:false,
-                closeOnOverlayClick:false,
-                title:"",
-                onInitialize:function (wrapper) {
-                    wrapper.setStyle('opacity', 0);
-                    this.wrapper.setStyle('display', 'none');
-                    this.fx = new Fx.Morph(wrapper, {
-                        duration:100,
-                        transition:Fx.Transitions.Bounce.easeOut
-                    });
-                },
 
-                onBeforeOpen:function () {
-                    var panel = this._buildPanel();
-                    this.setContent(panel);
+    initialize: function () {},
 
-                    this.overlay = new Overlay(this.options.inject, {
-                        duration:this.options.duration
-                    });
-                    if (this.options.closeOnOverlayClick)
-                        this.overlay.addEvent('click', this.close.bind(this));
-                    this.overlay.open();
-                    this.fx.start({
-                        'margin-top':[-200, -100],
-                        opacity:[0, 1]
-                    }).chain(function () {
-                        this.fireEvent('show');
-                        this.wrapper.setStyle('display', 'block');
-                    }.bind(this));
-                },
-
-                onBeforeClose:function () {
-                    this.fx.start({
-                        'margin-top':[-100, 0],
-                        opacity:0,
-                        duration:200
-                    }).chain(function () {
-                        this.wrapper.setStyle('display', 'none');
-                        this.fireEvent('hide');
-
-                    }.bind(this));
-                }}
-        );
-        this.message = null;
-    },
-
-    show:function (message, title) {
+    //FIXME: replace by alert()
+    show: function (message, title) {
         $assert(message, "message can not be null");
-        this._messsage = message;
-        this.options.title = $defined(title) ? title : "Outch!!. An unexpected error has occurred";
-        this.open();
-    },
 
-    destroy:function () {
-        this.parent();
-        this.overlay.destroy();
-    },
+        var modalDialog = $('<div class="modal fade">' +
+                        '<div class="modal-dialog">' +
+                            '<div class="modal-content">' +
+                                '<div class="modal-body"></div>' +
+                                    '<div class="alert alert-block alert-warning">' +
+                                        '<img src="images/alert-sign.png">' +
+                                        '<div style="display: inline-block" class="alert-content"></div>' +
+                                    '</div>' +
+                                '<div class="modal-footer">' +
+                                    '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
+                      '</div>');
 
-    _buildPanel:function () {
-        var result = new Element('div');
-        result.setStyles({
-            'text-align':'center',
-            width:'400px'
-        });
-        var p = new Element('p', {'text':this._messsage});
-        p.inject(result);
+        var p = '<p>' + message + '</p>'
+        var h4 = title ? '<h4>' + title + '</h4>' : "";
 
-        var img = new Element('img', {'src':'images/alert-sign.png'});
-        img.inject(result);
-
-        return result;
+        modalDialog.find('.alert-content').append(h4 + p);
+        modalDialog.modal();
     }
 });
 

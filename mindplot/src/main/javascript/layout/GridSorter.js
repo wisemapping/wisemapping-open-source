@@ -26,9 +26,13 @@ mindplot.layout.GridSorter = new Class({
         var children = this._getSortedChildren(treeSet, node);
 
         // Compute heights ...
+        var me = this;
         var heights = children.map(function(child) {
-            return {id:child.getId(),height:this._computeChildrenHeight(treeSet, child)};
-        }.bind(this));
+            return {
+                id: child.getId(),
+                height: me._computeChildrenHeight(treeSet, child)
+            };
+        });
 
         // Calculate the offsets ...
         var result = {};

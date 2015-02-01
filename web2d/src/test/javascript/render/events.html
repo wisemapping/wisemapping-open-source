@@ -15,7 +15,9 @@
         web2d.peer.utils = {};
     </script>
 
-    <script type="text/javascript" src="../../../../../mindplot/src/main/javascript/libraries/mootools/mootools-core-1.4.5-full-nocompat-yc.js"></script>
+    <script type="text/javascript" src="../mootools-core-1.4.5.js"></script>
+    <script type="text/javascript" src="../jquery-2.1.0.js"></script>
+
     <script type="text/javascript" src="../../../../../core-js/target/classes/core.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/ElementPeer.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/Element.js"></script>
@@ -53,13 +55,11 @@
 
     <script type="text/javascript">
 
-        function EventLogger(type, element)
-        {
+        function EventLogger(type, element) {
             this._enable = false;
             this._element = element;
             this._type = type;
-            this._listener = function logger(event)
-            {
+            this._listener = function logger(event) {
                 var oldColor = this.getAttribute('fillColor');
                 this.setFill("yellow");
                 alert("Event on:" + this.getType() + ", Type:" + type);
@@ -67,52 +67,44 @@
             };
         }
 
-        EventLogger.prototype.changeState = function()
-        {
+        EventLogger.prototype.changeState = function () {
             this._enable = !this._enable;
-            if (this._enable)
-            {
+            if (this._enable) {
                 this._element.addEvent(this._type, this._listener);
-            } else
-            {
+            } else {
                 this._element.removeEvent(this._type, this._listener);
             }
             return this._enable;
         };
 
-         function MultipleEventHandler(type, element)
-            {
-                this._listeners = [];
-                this._type = type;
-                this._element = element;
+        function MultipleEventHandler(type, element) {
+            this._listeners = [];
+            this._type = type;
+            this._element = element;
+        }
+
+        MultipleEventHandler.prototype.registerOneListener = function () {
+            var count = this._listeners.length;
+            var listener = function (event) {
+                alert("Listener #:" + count);
+            };
+            this._listeners.push(listener);
+            this._element.addEvent(this._type, listener);
+
+        }
+
+        MultipleEventHandler.prototype.listenerCount = function () {
+            return  this._listeners.length;
+        }
+
+        MultipleEventHandler.prototype.unRegisterOneListener = function () {
+            if (this._listeners.length > 0) {
+                var listener = this._listeners.pop();
+                this._element.removeEvent(this._type, listener);
             }
+        }
 
-            MultipleEventHandler.prototype.registerOneListener = function()
-            {
-                var count = this._listeners.length;
-                var listener = function(event) {
-                    alert("Listener #:" + count);
-                };
-                this._listeners.push(listener);
-                this._element.addEvent(this._type, listener);
-
-            }
-
-            MultipleEventHandler.prototype.listenerCount = function()
-            {
-                return  this._listeners.length;
-            }
-
-            MultipleEventHandler.prototype.unRegisterOneListener = function()
-            {
-                if (this._listeners.length > 0)
-                {
-                    var listener = this._listeners.pop();
-                    this._element.removeEvent(this._type, listener);
-                }
-            }
-
-        function initialize(){
+        function initialize() {
             web2d.peer.Toolkit.init();
 
             // Workspace with CoordOrigin(100,100);
@@ -123,13 +115,13 @@
             var bigElipse = new web2d.Elipse();
             bigElipse.setSize(100, 100);
             bigElipse.setPosition(75, 75);
-            workspace.appendChild(bigElipse);
+            workspace.append(bigElipse);
 
             var smallElipse = new web2d.Elipse();
             smallElipse.setSize(50, 50);
             smallElipse.setPosition(75, 75);
             smallElipse.setFill('red')
-            workspace.appendChild(smallElipse);
+            workspace.append(smallElipse);
 
             wClickEventLogger = new EventLogger('click', workspace);
             wMouseoverEventLogger = new EventLogger('mouseover', workspace);
@@ -149,7 +141,7 @@
             ebousemoveEventLogger = new EventLogger('mousemove', bigElipse);
             ebblCickEventLogger = new EventLogger('dblclick', bigElipse);
 
-            workspace.addItAsChildTo($("workspaceContainer"));
+            workspace.addItAsChildTo($('#workspaceContainer').first());
 
             var mEventWorkspace = new web2d.Workspace();
             mEventWorkspace.setSize("150px", "150px");
@@ -159,9 +151,9 @@
             elipse.setSize(100, 100);
             elipse.setPosition(75, 75);
             elipse.setFill('blue')
-            mEventWorkspace.appendChild(elipse);
+            mEventWorkspace.append(elipse);
 
-            mEventWorkspace.addItAsChildTo($("workspaceMultipleEvents"));
+            mEventWorkspace.addItAsChildTo($('#workspaceMultipleEvents').first());
             multipleHandler = new MultipleEventHandler('click', elipse);
         }
 
@@ -177,131 +169,133 @@
 <h1>Elements Event Handling</h1>
 
 <table border="1">
-<colgroup style="width:80%;">
-    <col style="width:30%"/>
-    <col style="width:60%"/>
-</colgroup>
-<tbody>
-<tr>
-<td>
-    This examples shows the ability to attach listeners to handle several events.
-    In this example, you can attach different events to three elements: workspace, small elipse and the big elipse.
-    Events will follow the event bubbling behaviour.
-</td>
-<td>
-    <div id="workspaceContainer" style="float:left;"></div>
+    <colgroup style="width:80%;">
+        <col style="width:30%"/>
+        <col style="width:60%"/>
+    </colgroup>
+    <tbody>
+    <tr>
+        <td>
+            This examples shows the ability to attach listeners to handle several events.
+            In this example, you can attach different events to three elements: workspace, small elipse and the big
+            elipse.
+            Events will follow the event bubbling behaviour.
+        </td>
+        <td>
+            <div id="workspaceContainer" style="float:left;"></div>
 
-    <div class="eventForm">
-        <form action="">
-            <fieldset>
-                <legend>Workspace Events</legend>
-                <label>Click Event:
-                    <input type="button" value="Register"
-                           onclick="(!wClickEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
-                </label><br/>
-                <label>Double Click Event:
-                    <input type="button" value="Register"
-                           onclick="(!wDblCickEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
-                </label><br/>
-                <label>Mouse Over Event:
-                    <input type="button" value="Register"
-                           onclick="(!wMouseoverEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
-                </label><br/>
-                <label>Mouse Out Event:
-                    <input type="button" value="Register"
-                           onclick="(!wMouseoutEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
-                </label><br/>
-                <label>Mouse Move Event:
-                    <input type="button" value="Register"
-                           onclick="(!wMousemoveEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
-                </label>
-            </fieldset>
-        </form>
+            <div class="eventForm">
+                <form action="">
+                    <fieldset>
+                        <legend>Workspace Events</legend>
+                        <label>Click Event:
+                            <input type="button" value="Register"
+                                   onclick="(!wClickEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
+                        </label><br/>
+                        <label>Double Click Event:
+                            <input type="button" value="Register"
+                                   onclick="(!wDblCickEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
+                        </label><br/>
+                        <label>Mouse Over Event:
+                            <input type="button" value="Register"
+                                   onclick="(!wMouseoverEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
+                        </label><br/>
+                        <label>Mouse Out Event:
+                            <input type="button" value="Register"
+                                   onclick="(!wMouseoutEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
+                        </label><br/>
+                        <label>Mouse Move Event:
+                            <input type="button" value="Register"
+                                   onclick="(!wMousemoveEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
+                        </label>
+                    </fieldset>
+                </form>
 
-        <form action="">
-            <fieldset>
-                <legend>Small Elipse Events</legend>
-                <label>Click Event:
-                    <input type="button" value="Register"
-                           onclick="(!esClickEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
-                </label><br/>
-                <label>Double Click Event:
-                    <input type="button" value="Register"
-                           onclick="(!esDblCickEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
-                </label><br/>
-                <label>Mouse Over Event:
-                    <input type="button" value="Register"
-                           onclick="(!esMouseoverEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
-                </label><br/>
-                <label>Mouse Out Event:
-                    <input type="button" value="Register"
-                           onclick="(!esMouseoutEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
-                </label><br/>
-                <label>Mouse Move Event:
-                    <input type="button" value="Register"
-                           onclick="(!esMousemoveEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
-                </label>
-            </fieldset>
-        </form>
+                <form action="">
+                    <fieldset>
+                        <legend>Small Elipse Events</legend>
+                        <label>Click Event:
+                            <input type="button" value="Register"
+                                   onclick="(!esClickEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
+                        </label><br/>
+                        <label>Double Click Event:
+                            <input type="button" value="Register"
+                                   onclick="(!esDblCickEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
+                        </label><br/>
+                        <label>Mouse Over Event:
+                            <input type="button" value="Register"
+                                   onclick="(!esMouseoverEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
+                        </label><br/>
+                        <label>Mouse Out Event:
+                            <input type="button" value="Register"
+                                   onclick="(!esMouseoutEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
+                        </label><br/>
+                        <label>Mouse Move Event:
+                            <input type="button" value="Register"
+                                   onclick="(!esMousemoveEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
+                        </label>
+                    </fieldset>
+                </form>
 
-        <form action="">
-            <fieldset>
-                <legend>Big Elipse Events</legend>
-                <label>Click Event:
-                    <input type="button" value="Register"
-                           onclick="(!ebClickEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
-                </label><br/>
-                <label>Double Click Event:
-                    <input type="button" value="Register"
-                           onclick="(!ebDblCickEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
-                </label><br/>
-                <label>Mouse Over Event:
-                    <input type="button" value="Register"
-                           onclick="(!ebMouseoverEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
-                </label><br/>
-                <label>Mouse Out Event:
-                    <input type="button" value="Register"
-                           onclick="(!ebMouseoutEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
-                </label><br/>
-                <label>Mouse Move Event:
-                    <input type="button" value="Register"
-                           onclick="(!ebMousemoveEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
-                </label>
-            </fieldset>
-        </form>
+                <form action="">
+                    <fieldset>
+                        <legend>Big Elipse Events</legend>
+                        <label>Click Event:
+                            <input type="button" value="Register"
+                                   onclick="(!ebClickEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
+                        </label><br/>
+                        <label>Double Click Event:
+                            <input type="button" value="Register"
+                                   onclick="(!ebDblCickEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
+                        </label><br/>
+                        <label>Mouse Over Event:
+                            <input type="button" value="Register"
+                                   onclick="(!ebMouseoverEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
+                        </label><br/>
+                        <label>Mouse Out Event:
+                            <input type="button" value="Register"
+                                   onclick="(!ebMouseoutEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
+                        </label><br/>
+                        <label>Mouse Move Event:
+                            <input type="button" value="Register"
+                                   onclick="(!ebMousemoveEventLogger.changeState())?this.value='Register':this.value='Unregister'"/>
+                        </label>
+                    </fieldset>
+                </form>
 
-    </div>
-</td>
+            </div>
+        </td>
 
 
-</tr>
-<tr>
-    <td>Multiple listeners can be attached to an element to handle an event type.
-        In this example, multiple listeners can be registered to the elipse element to handle the click event type.
-    </td>
-    <td>
-        <div id="workspaceMultipleEvents" style="float:left;"></div>
+    </tr>
+    <tr>
+        <td>Multiple listeners can be attached to an element to handle an event type.
+            In this example, multiple listeners can be registered to the elipse element to handle the click event type.
+        </td>
+        <td>
+            <div id="workspaceMultipleEvents" style="float:left;"></div>
 
-        <div class="eventForm">
-            <form action="">
-                <fieldset>
-                    <legend>Elipse Click Events Listeners</legend>
-                    <label>Registered Listeners #:
-                        <input type="text" disabled="disabled" value="0" id="listenerCounter" maxlength="2" size="2"/>
-                    </label>
-                    <br/>
-                    <input type="button" value="Register Listener"
-                           onclick="multipleHandler.registerOneListener();$('listenerCounter').value=multipleHandler.listenerCount();"/>
-                    <input type="button" value="UnRegister Listener"
-                           onclick="multipleHandler.unRegisterOneListener();$('listenerCounter').value=multipleHandler.listenerCount();"/>
-                </fieldset>
+            <div class="eventForm">
+                <form action="">
+                    <fieldset>
+                        <legend>Elipse Click Events Listeners</legend>
+                        <label>Registered Listeners #:
+                            <input type="text" disabled="disabled" value="0" id="listenerCounter" maxlength="2"
+                                   size="2"/>
+                        </label>
+                        <br/>
+                        <input type="button" value="Register Listener"
+                               onclick="multipleHandler.registerOneListener();$('#listenerCounter').first().value=multipleHandler.listenerCount();"/>
+                        <input type="button" value="UnRegister Listener"
+                               onclick="multipleHandler.unRegisterOneListener();$('#listenerCounter').first().value=multipleHandler.listenerCount();"/>
+                    </fieldset>
 
-            </form>
+                </form>
 
-        </div>
-    </td>
-</tr>
-</tbody>
+            </div>
+        </td>
+    </tr>
+    </tbody>
 </table>
 </body>
 </html>
