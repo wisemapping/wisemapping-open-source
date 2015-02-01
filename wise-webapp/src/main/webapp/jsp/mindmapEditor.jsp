@@ -18,8 +18,12 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <![endif]-->
     <link rel="stylesheet/less" type="text/css" href="css/editor.less"/>
+    <script type='text/javascript' src='js/jquery.js'></script>
+    <script type='text/javascript' src='js/jquery-mousewheel.js'></script>
+    <script type='text/javascript' src='js/hotkeys.js'></script>
+    <script type='text/javascript' src='js/underscorejs.js'></script>
+    <script type='text/javascript' src='bootstrap/js/bootstrap.min.js'></script>
     <script type='text/javascript' src='js/mootools-core.js'></script>
-    <script type='text/javascript' src='js/mootools-more.js'></script>
     <script type='text/javascript' src='js/core.js'></script>
     <script type='text/javascript' src='js/less.js'></script>
 
@@ -28,7 +32,7 @@
 
     <script type="text/javascript">
 
-        $(document).addEvent('loadcomplete', function (resource) {
+        $(document).on('loadcomplete', function (resource) {
             try {
                 var mapId = '${mindmap.id}';
                 // Configure designer options ...
@@ -46,7 +50,7 @@
                 );
             </c:if>
             <c:if test="${memoryPersistence || readOnlyMode}">
-                    options.persistenceManager = new mindplot.LocalStorageManager("c/restful/maps/{id}${hid!=null?'/':''}${hid!=null?hid:''}/document/xml${principal!=null?'':'-pub'}",true);
+                options.persistenceManager = new mindplot.LocalStorageManager("c/restful/maps/{id}${hid!=null?'/':''}${hid!=null?hid:''}/document/xml${principal!=null?'':'-pub'}",true);
             </c:if>
 
                 var userOptions = ${mindmap.properties};
@@ -109,6 +113,14 @@
         <div id="headerMapTitle"><spring:message code="NAME"/>: <span><c:out value="${mindmap.title}"/></span></div>
     </div>
     <%@ include file="/jsp/mindmapEditorToolbar.jsf" %>
+</div>
+
+<div id='load' class="modal fade">
+    <div class="modal-dialog">
+        <div style="height: 120px; text-align: center; border: 2px solid orange" class="modal-content">
+            <img style='margin-top:25px; text-align: center' src="images/ajax-loader.gif">
+        </div>
+    </div>
 </div>
 
 <div id="mindplot" onselectstart="return false;"></div>

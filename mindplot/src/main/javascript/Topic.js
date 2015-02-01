@@ -47,11 +47,11 @@ mindplot.Topic = new Class({
         this.addEvent('click', function (event) {
             event.stopPropagation();
         });
-
+        var me = this;
         this.addEvent('dblclick', function (event) {
-            this._getTopicEventDispatcher().show(this);
+            me._getTopicEventDispatcher().show(me);
             event.stopPropagation();
-        }.bind(this));
+        });
     },
 
     setShapeType:function (type) {
@@ -82,7 +82,7 @@ mindplot.Topic = new Class({
             this.setSize(size, true);
 
             var group = this.get2DElement();
-            group.appendChild(innerShape);
+            group.append(innerShape);
 
             // Move text to the front ...
             var text = this.getTextShape();
@@ -246,7 +246,7 @@ mindplot.Topic = new Class({
         if (!$defined(this._iconsGroup)) {
             this._iconsGroup = this._buildIconGroup();
             var group = this.get2DElement();
-            group.appendChild(this._iconsGroup.getNativeElement());
+            group.append(this._iconsGroup.getNativeElement());
             this._iconsGroup.moveToFront();
         }
         return this._iconsGroup;
@@ -458,7 +458,7 @@ mindplot.Topic = new Class({
 
     setText:function (text) {
         // Avoid empty nodes ...
-        if (!text || text.trim().length == 0) {
+        if (!text || $.trim(text).length == 0) {
             text = null;
         }
 
@@ -542,9 +542,9 @@ mindplot.Topic = new Class({
         var textShape = this.getTextShape();
 
         // Add to the group ...
-        group.appendChild(outerShape);
-        group.appendChild(innerShape);
-        group.appendChild(textShape);
+        group.append(outerShape);
+        group.append(innerShape);
+        group.append(textShape);
 
         // Update figure size ...
         var model = this.getModel();
@@ -576,24 +576,25 @@ mindplot.Topic = new Class({
         };
         elem.addEvent('mouseout', outout);
 
+        var me = this;
         // Focus events ...
         elem.addEvent('mousedown', function (event) {
-            if (!this.isReadOnly()) {
+            if (!me.isReadOnly()) {
                 // Disable topic selection of readOnly mode ...
                 var value = true;
-                if ((event.meta && Browser.Platform.mac) || (event.control && !Browser.Platform.mac)) {
-                    value = !this.isOnFocus();
+                if ((event.metaKey && Browser.Platform.mac) || (event.ctrlKey && !Browser.Platform.mac)) {
+                    value = !me.isOnFocus();
                     event.stopPropagation();
                     event.preventDefault();
                 }
                 topic.setOnFocus(value);
             }
 
-            var eventDispatcher = this._getTopicEventDispatcher();
-            eventDispatcher.process(mindplot.TopicEvent.CLICK, this);
+            var eventDispatcher = me._getTopicEventDispatcher();
+            eventDispatcher.process(mindplot.TopicEvent.CLICK, me);
             event.stopPropagation();
 
-        }.bind(this));
+        });
     },
 
     areChildrenShrunken:function () {
@@ -626,10 +627,11 @@ mindplot.Topic = new Class({
         // Do some fancy animation ....
         var elements = this._flatten2DElements(this);
         var fade = new mindplot.util.FadeEffect(elements, !value);
+        var me = this;
         fade.addEvent('complete', function () {
             // Set focus on the parent node ...
             if (value) {
-                this.setOnFocus(true);
+                me.setOnFocus(true);
             }
 
             // Set focus in false for all the children ...
@@ -638,7 +640,7 @@ mindplot.Topic = new Class({
                     elem.setOnFocus(false);
                 }
             });
-        }.bind(this));
+        });
         fade.start();
 
         mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeShrinkEvent, model);
@@ -887,7 +889,7 @@ mindplot.Topic = new Class({
     },
 
     _setRelationshipLinesVisibility:function (value) {
-        this._relationships.each(function (relationship) {
+        _.each(this._relationships, function (relationship) {
             var sourceTopic = relationship.getSourceTopic();
             var targetTopic = relationship.getTargetTopic();
 
@@ -1043,7 +1045,7 @@ mindplot.Topic = new Class({
         $assert(workspace, 'Workspace can not be null');
 
         // Connect Graphical Nodes ...
-        targetTopic.appendChild(this);
+        targetTopic.append(this);
         this._parent = targetTopic;
 
         // Update model ...
@@ -1056,7 +1058,7 @@ mindplot.Topic = new Class({
         outgoingLine.setVisibility(false);
 
         this._outgoingLine = outgoingLine;
-        workspace.appendChild(outgoingLine);
+        workspace.append(outgoingLine);
 
         // Update figure is necessary.
         this.updateTopicShape(targetTopic);
@@ -1088,7 +1090,7 @@ mindplot.Topic = new Class({
         }
     },
 
-    appendChild:function (child) {
+    append:function (child) {
         var children = this.getChildren();
         children.push(child);
     },
@@ -1120,7 +1122,7 @@ mindplot.Topic = new Class({
 
     addToWorkspace:function (workspace) {
         var elem = this.get2DElement();
-        workspace.appendChild(elem);
+        workspace.append(elem);
         if (!this.isInWorkspace()) {
             if (!this.isCentralTopic()) {
                 mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeAdded, this.getModel());

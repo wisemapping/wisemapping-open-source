@@ -11,7 +11,7 @@ TestCase("Mindplot test",{
             buildMindmapDesigner();
 
             // Register Events ...
-//            $(document).addEvent('keydown', designer.keyEventHandler.bindWithEvent(designer));
+//            document.id(document).addEvent('keydown', designer.keyEventHandler.bindWithEvent(designer));
 
             /*// Autosave ...
             if (!isTryMode)
@@ -44,7 +44,7 @@ TestCase("Mindplot test",{
         {
 
             // Initialize message logger ...
-            var container = $('mindplot');
+            var container = document.id('mindplot');
 
             // Initialize Editor ...
 
@@ -76,7 +76,7 @@ TestCase("Mindplot test",{
         afterMindpotLibraryLoading();
     },
     testWorkspaceBuild:function(){
-        assertNotNull($('workspace'));
+        assertNotNull(document.id('workspace'));
     },
     testCentralTopicPresent:function(){
         var centralTopic = designer.getCentralTopic();

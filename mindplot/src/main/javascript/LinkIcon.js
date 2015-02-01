@@ -33,16 +33,30 @@ mindplot.LinkIcon = new Class({
 
     _registerEvents:function () {
         this._image.setCursor('pointer');
+        this._tip = new mindplot.widget.LinkIconTooltip(this);
 
+        var me = this;
         if (!this._readOnly) {
             // Add on click event to open the editor ...
             this.addEvent('click', function (event) {
-                this._topic.showLinkEditor();
+                me._tip.hide();
+                me._topic.showLinkEditor();
                 event.stopPropagation();
-            }.bind(this));
+            });
+            //FIXME: we shouldn't have timeout of that..
+            this.addEvent("mouseleave", function(event) {
+                window.setTimeout(function() {
+                    if (!$("#linkPopover:hover").length) {
+                        me._tip.hide();
+                    }
+                    event.stopPropagation();
+                }, 100)
+            });
         }
 
-        this._tip = new mindplot.widget.LinkIconTooltip(this);
+        $(this.getImage()._peer._native).mouseenter(function() {
+            me._tip.show();
+        })
     },
 
     getModel:function () {

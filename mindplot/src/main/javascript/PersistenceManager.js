@@ -42,7 +42,7 @@ mindplot.PersistenceManager = new Class({
         var domMap = serializer.toXML(mindmap);
         var mapXml = core.Utils.innerXML(domMap);
 
-        var pref = JSON.encode(editorProperties);
+        var pref = JSON.stringify(editorProperties);
         try {
             this.saveMapXml(mapId, mapXml, pref, saveHistory, events, sync);
         } catch (e) {

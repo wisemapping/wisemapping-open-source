@@ -16,7 +16,7 @@
  *   limitations under the License.
  */
 mindplot.EventBus = new Class({
-    Implements:Events,
+    Implements: mindplot.Events,
     initialize: function() {
     }
 });

@@ -17,7 +17,7 @@
  */
 
 mindplot.widget.ToolbarItem = new Class({
-    Implements:[Events],
+    Implements: mindplot.Events, //FIXME: should be extends?
     initialize : function(buttonId, fn, options) {
         $assert(buttonId, "buttonId can not be null");
         $assert(fn, "fn can not be null");
@@ -26,38 +26,13 @@ mindplot.widget.ToolbarItem = new Class({
         this._options = options;
         this._enable = false;
         this.enable();
-//        this._registerTip();
-
-    },
-
-    _registerTip: function() {
-
-        return  new mindplot.widget.FloatingTip($(this._buttonId), {
-            html: false,
-            position: 'bottom',
-            arrowOffset : 5,
-            center: true,
-            arrowSize: 5,
-            showDelay: 500,
-            hideDelay: 0,
-            className: 'toolbarTip',
-            motionOnShow:false,
-            motionOnHide:false,
-            motion: 0,
-            distance: 0,
-            preventHideOnOver:false
-        });
     },
 
     getButtonElem : function() {
-        var elem = $(this._buttonId);
+        var elem = $('#'+this._buttonId);
         $assert(elem, "Could not find element for " + this._buttonId);
         return elem;
     }.protect(),
-
-    getButtonId : function(){
-      return this._buttonId;
-    },
 
     show : function() {
         this.fireEvent('show');
@@ -78,7 +53,7 @@ mindplot.widget.ToolbarItem = new Class({
     disable : function() {
         var elem = this.getButtonElem();
         if (this._enable) {
-            elem.removeEvent('click', this._fn);
+            elem.unbind('click', this._fn);
             elem.removeClass('buttonOn');
             elem.addClass('buttonOff');
             this._enable = false;
@@ -88,7 +63,7 @@ mindplot.widget.ToolbarItem = new Class({
     enable : function() {
         var elem = this.getButtonElem();
         if (!this._enable) {
-            elem.addEvent('click', this._fn);
+            elem.bind('click', this._fn);
             elem.removeClass('buttonOff');
             elem.addClass('buttonOn');
             this._enable = true;

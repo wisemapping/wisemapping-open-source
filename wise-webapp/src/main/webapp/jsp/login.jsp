@@ -3,7 +3,7 @@
 
 <%--@elvariable id="isHsql" type="boolean"--%>
 
-<script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" language="javascript">
     $(function () {
         $('#loginForm').submit(function () {

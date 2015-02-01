@@ -15,7 +15,9 @@
         web2d.peer.utils = {};
     </script>
 
-    <script type="text/javascript" src="../../../../../mindplot/src/main/javascript/libraries/mootools/mootools-core-1.4.5-full-nocompat-yc.js"></script>
+    <script type="text/javascript" src="../mootools-core-1.4.5.js"></script>
+    <script type="text/javascript" src="../jquery-2.1.0.js"></script>
+
     <script type="text/javascript" src="../../../../../core-js/target/classes/core.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/ElementPeer.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/Element.js"></script>
@@ -55,7 +57,7 @@
             line.setFrom(95, 95);
             line.setStyle("Straight");
             line.setStroke('10');
-            overflowWorkspace.appendChild(line);
+            overflowWorkspace.append(line);
 
 
             //    line.setTo(165, 165);
@@ -98,35 +100,35 @@
             //    var line = new web2d.PolyLine();
             //    line.setFrom(95, 90);
             //    line.setTo(160, 20);
-            //    overflowWorkspace.appendChild(line);
+            //    overflowWorkspace.append(line);
             //
             //    var line = new web2d.PolyLine();
             //    line.setStyle("Straight");
             //    line.setFrom(90, -90);
             //    line.setTo(20, 20);
-            //    overflowWorkspace.appendChild(line);
+            //    overflowWorkspace.append(line);
             //
             //    var line = new web2d.PolyLine();
             //    line.setFrom(95, 95);
             //    line.setTo(165, 165);
             //    line.setStroke(1, 'solid', 'red');
-            //    overflowWorkspace.appendChild(line);
+            //    overflowWorkspace.append(line);
             //
             //    // Reference ...
             //    var refLine = new web2d.Line();
             //    refLine.setFrom(95, 0);
             //    refLine.setTo(95, 200);
             //    refLine.setStroke(1, 'solid', 'red');
-            //    overflowWorkspace.appendChild(refLine);
+            //    overflowWorkspace.append(refLine);
             //
             //    var refLine = new web2d.Line();
             //    refLine.setFrom(165, 0);
             //    refLine.setTo(165, 200);
             //    refLine.setStroke(1, 'solid', 'red');
-            //    overflowWorkspace.appendChild(refLine);
+            //    overflowWorkspace.append(refLine);
             //
 
-            overflowWorkspace.addItAsChildTo($("overflowExample"));
+            overflowWorkspace.addItAsChildTo($('#overflowExample'));
 
 
             var overflowWorkspace = new web2d.Workspace();
@@ -135,47 +137,47 @@
             line1.setFrom(95, 95);
             line1.setTo(165, 165);
             line1.setStyle("Curved");
-            overflowWorkspace.appendChild(line1);
+            overflowWorkspace.append(line1);
 
             var line1 = new web2d.PolyLine();
             line1.setFrom(95, 95);
             line1.setTo(165, 135);
             line1.setStyle("Curved");
-            overflowWorkspace.appendChild(line1);
+            overflowWorkspace.append(line1);
 
             var line1 = new web2d.PolyLine();
             line1.setFrom(95, 90);
             line1.setTo(160, 20);
             line1.setStyle("Straight");
-            overflowWorkspace.appendChild(line1);
+            overflowWorkspace.append(line1);
 
             var line1 = new web2d.PolyLine();
             line1.setFrom(95, 90);
             line1.setTo(160, 50);
             line1.setStyle("Straight");
-            overflowWorkspace.appendChild(line1);
+            overflowWorkspace.append(line1);
 
             var line1 = new web2d.PolyLine();
             line1.setFrom(90, 90);
             line1.setTo(20, 20);
-            overflowWorkspace.appendChild(line1);
+            overflowWorkspace.append(line1);
 
             var line1 = new web2d.PolyLine();
             line1.setFrom(90, 90);
             line1.setTo(20, 50);
-            overflowWorkspace.appendChild(line1);
+            overflowWorkspace.append(line1);
 
             var line1 = new web2d.PolyLine();
             line1.setFrom(90, 95);
             line1.setTo(20, 165);
-            overflowWorkspace.appendChild(line1);
+            overflowWorkspace.append(line1);
 
             var line1 = new web2d.PolyLine();
             line1.setFrom(90, 95);
             line1.setTo(20, 135);
-            overflowWorkspace.appendChild(line1);
+            overflowWorkspace.append(line1);
 
-            overflowWorkspace.addItAsChildTo($("multipleLineExample"));
+            overflowWorkspace.addItAsChildTo($('#multipleLineExample'));
         }
     </script>
 </head>

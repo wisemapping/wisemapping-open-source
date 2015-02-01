@@ -10,8 +10,10 @@
     <![endif]-->
     <link rel="stylesheet/less" type="text/css" href="css/embedded.less"/>
 
+    <script type='text/javascript' src='js/jquery.js'></script>
+    <script type='text/javascript' src='js/bootstrap.js'></script>
+    <script type='text/javascript' src='js/underscore.js'></script>
     <script type='text/javascript' src='js/mootools-core.js'></script>
-    <script type='text/javascript' src='js/mootools-more.js'></script>
     <script type='text/javascript' src='js/core.js'></script>
     <script type='text/javascript' src='js/less.js'></script>
 
@@ -21,13 +23,11 @@
     <script type="text/javascript">
 
         var mapId = 'welcome';
-        $(document).addEvent('loadcomplete', function(resource) {
+        $(document).on('loadcomplete', function(resource) {
 
             // Options has been defined in by a external ile ?
-            var uri = new URI(window.location);
-            var query = String.parseQueryString(uri.get('query'));
-            var confUrl = query.confUrl;
-
+            var queryString = window.location.search;
+            var confUrl = queryString.replace("?confUrl=", "");
             var options = loadDesignerOptions(confUrl);
             var designer = buildDesigner(options);
 
@@ -130,9 +130,6 @@
         </div>
     </div>
     <div id="headerNotifier"></div>
-    <div id="footer">
-        <div id="footerLogo"></div>
-    </div>
 </div>
 
 <div id="mindplot" onselectstart="return false;"></div>

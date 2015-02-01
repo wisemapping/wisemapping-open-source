@@ -21,9 +21,9 @@
  */
 web2d.Group = new Class({
     Extends: web2d.Element,
-    initialize : function(attributes) {
+    initialize: function (attributes) {
         var peer = web2d.peer.Toolkit.createGroup();
-        var defaultAttributes = {width:50, height:50, x:50, y:50,coordOrigin:'0 0',coordSize:'50 50'};
+        var defaultAttributes = {width: 50, height: 50, x: 50, y: 50, coordOrigin: '0 0', coordSize: '50 50'};
         for (var key in attributes) {
             defaultAttributes[key] = attributes[key];
         }
@@ -33,7 +33,7 @@ web2d.Group = new Class({
     /**
      * Remove an element as a child to the object.
      */
-    removeChild : function(element) {
+    removeChild: function (element) {
         if (!$defined(element)) {
             throw "Child element can not be null";
         }
@@ -53,7 +53,7 @@ web2d.Group = new Class({
     /**
      * Appends an element as a child to the object.
      */
-    appendChild : function(element) {
+    append: function (element) {
         if (!$defined(element)) {
             throw "Child element can not be null";
         }
@@ -71,11 +71,11 @@ web2d.Group = new Class({
             throw "A group can not have a workspace as a child";
         }
 
-        this._peer.appendChild(element._peer);
+        this._peer.append(element._peer);
     },
 
 
-    getType : function() {
+    getType: function () {
         return "Group";
     },
 
@@ -86,34 +86,34 @@ web2d.Group = new Class({
      * Consequently CSS2 position attributes (left, top, width, height and so on) have no unit specifier -
      * they are simple numbers, not CSS length quantities.
      */
-    setCoordSize : function(width, height) {
+    setCoordSize: function (width, height) {
         this._peer.setCoordSize(width, height);
     },
 
-    setCoordOrigin : function(x, y) {
+    setCoordOrigin: function (x, y) {
         this._peer.setCoordOrigin(x, y);
     },
 
-    getCoordOrigin : function() {
+    getCoordOrigin: function () {
         return this._peer.getCoordOrigin();
     },
-   getSize : function() {
+    getSize: function () {
         return this._peer.getSize();
     },
 
-    setFill : function(color, opacity) {
+    setFill: function (color, opacity) {
         throw "Unsupported operation. Fill can not be set to a group";
     },
 
-    setStroke : function(width, style, color, opacity) {
+    setStroke: function (width, style, color, opacity) {
         throw "Unsupported operation. Stroke can not be set to a group";
     },
 
-    getCoordSize : function() {
+    getCoordSize: function () {
         return this._peer.getCoordSize();
     },
 
-    appendDomChild : function(DomElement) {
+    appendDomChild: function (DomElement) {
         if (!$defined(DomElement)) {
             throw "Child element can not be null";
         }
@@ -122,11 +122,11 @@ web2d.Group = new Class({
             throw "It's not possible to add the group as a child of itself";
         }
 
-        this._peer._native.appendChild(DomElement);
+        this._peer._native.append(DomElement);
     },
 
-    setOpacity:function(value){
-      this._peer.setOpacity(value);
+    setOpacity: function (value) {
+        this._peer.setOpacity(value);
     }
 
 });

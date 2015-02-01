@@ -15,8 +15,9 @@
         web2d.peer.utils = {};
     </script>
 
-    <script type="text/javascript"
-            src="../../../../../mindplot/src/main/javascript/libraries/mootools/mootools-core-1.4.5-full-nocompat-yc.js"></script>
+    <script type="text/javascript" src="../mootools-core-1.4.5.js"></script>
+    <script type="text/javascript" src="../jquery-2.1.0.js"></script>
+
     <script type="text/javascript" src="../../../../../core-js/target/classes/core.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/ElementPeer.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/Element.js"></script>
@@ -61,7 +62,7 @@
             overflowWorkspace.setCoordOrigin(0, 0);
 
             var text = new web2d.Text();
-            overflowWorkspace.appendChild(text);
+            overflowWorkspace.append(text);
             var scale = web2d.peer.utils.TransformUtil.workoutScale(text._peer);
             text.setText(textval + " " + scale.height);
             text.setFont(font, fontSizeval, style, modifier);
@@ -70,19 +71,19 @@
             textot = text;
 
 
-            overflowWorkspace.addItAsChildTo($(owner));
+            overflowWorkspace.addItAsChildTo(document.id(owner));
 
-            var parent = $(owner);
+            var parent = document.id(owner);
             var span = document.createElement("span");
             span.setAttribute("id", "textoHTML" + iesimo);
             var textsize = text.offsetWidth;
             var textHtml = document.createTextNode(textsize);
             var fontSize = text.getHtmlFontSize();
-            span.appendChild(textHtml);
+            span.append(textHtml);
             //var fontSize=20*scale.height*2;
             span.setAttribute("style", "font-weight:" + modifier + ";font-style: " + style + "; font-size:" + fontSize + "pt; font-family: " + font + ";width:30;height:30;");
 
-            parent.appendChild(span);
+            parent.append(span);
             workspaces[iesimo] = overflowWorkspace;
         };
 
@@ -129,7 +130,7 @@
 </table>
 <span>Text to Inspect: </span><input type="text" id="iesimo">
 <input type="button" value="Inspect"
-       onclick="alert(document.getElementById('textoHTML'+$('iesimo').value).offsetWidth);">
+       onclick="alert(document.getElementById('textoHTML'+document.id('iesimo').value).offsetWidth);">
 <input type="button" value="Zoom In" onclick="zoomIn()">
 </body>
 </html>

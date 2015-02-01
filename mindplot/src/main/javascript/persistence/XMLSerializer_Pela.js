@@ -212,7 +212,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         // Is a wisemap?.
         $assert(rootElem.tagName == mindplot.persistence.XMLSerializer_Pela.MAP_ROOT_NODE, "This seem not to be a map document.");
 
-        this._idsMap = new Hash();
+        this._idsMap = {};
         // Start the loading process ...
         var version = rootElem.getAttribute("version");
 
@@ -248,10 +248,10 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
             id = parseInt(id);
         }
 
-        if (this._idsMap.has(id)) {
+        if (this._idsMap[id]) {
             id = null;
         } else {
-            this._idsMap.set(id, domElem);
+            this._idsMap[id] = domElem;
         }
 
         var topic = mindmap.createNode(type, id);

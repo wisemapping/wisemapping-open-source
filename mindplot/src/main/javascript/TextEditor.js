@@ -68,14 +68,15 @@ mindplot.TextEditor = new Class({
     _registerEvents : function(divElem) {
         var inputElem = this._getTextareaElem();
         var spanElem = this._getSpanElem();
+        var me = this;
 
         divElem.addEvent('keydown', function (event) {
             switch (event.key) {
                 case 'esc':
-                    this.close(false);
+                    me.close(false);
                     break;
                 case 'enter':
-                    this.close(true);
+                    me.close(true);
                     break;
                 default:
                     spanElem.innerHTML = inputElem.value;
@@ -87,7 +88,7 @@ mindplot.TextEditor = new Class({
                     break;
             }
             event.stopPropagation();
-        }.bind(this));
+        });
 
         // If the user clicks on the input, all event must be ignored ...
         divElem.addEvent('click', function(event) {
@@ -121,7 +122,7 @@ mindplot.TextEditor = new Class({
         if (!this.isVisible()) {
             //Create editor ui
             var editorElem = this._buildEditor();
-            editorElem.inject($(document.body));
+            editorElem.inject($(document.body)[0]);
 
             this._containerElem = editorElem;
             this._registerEvents(editorElem);
@@ -147,25 +148,24 @@ mindplot.TextEditor = new Class({
         var text = $defined(defaultText) ? defaultText : topic.getText();
         this._setText(text);
 
+        var me = this;
         // Set editor's initial size
         var displayFunc = function() {
             // Position the editor and set the size...
-            var textShape = this._topic.getTextShape();
-            textShape.positionRelativeTo(this._containerElem, {
-                position: {x: 'left',y:'top'},
-                edge: {x: 'left', y: 'top'}
-            });
-            this._containerElem.setStyle('display', 'block');
+            var textShape = me._topic.getTextShape();
 
+            me._containerElem.css('display', 'block');
+
+            me._containerElem.offset(textShape.getNativePosition());
             // Set size ...
             var elemSize = topic.getSize();
-            this._setEditorSize(elemSize.width, elemSize.height);
+            me._setEditorSize(elemSize.width, elemSize.height);
 
-            var textareaElem = this._getTextareaElem();
+            var textareaElem = me._getTextareaElem();
             textareaElem.focus();
-            this._positionCursor(textareaElem, !$defined(defaultText));
+            me._positionCursor(textareaElem, !$defined(defaultText));
 
-        }.bind(this);
+        };
 
         displayFunc.delay(10);
     },
