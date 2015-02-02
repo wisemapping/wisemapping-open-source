@@ -255,23 +255,25 @@ mindplot.DesignerKeyboard = new Class({
             }
         );
 
-        $(document).on('keydown', function (event) {
+        $(document).on('keypress', function (event) {
 
             var keyCode = event.keyCode;
 
-            if (!jQuery.hotkeys.specialKeys[keyCode] && !jQuery.hotkeys.shiftNums[keyCode] && keyCode != 91 /*win key*/) {
+            var specialKey = jQuery.hotkeys.specialKeys[keyCode];
+            if (["enter", "capslock"].indexOf(specialKey) == -1 && !jQuery.hotkeys.shiftNums[keyCode] && keyCode != 91 /*win key*/) {
                 var nodes = designer.getModel().filterSelectedTopics();
                 if (nodes.length > 0) {
 
                     // If a modifier is press, the key selected must be ignored.
                     var pressKey = String.fromCharCode(keyCode);
-                    if (event.ctrlKey || event.altKey || event.metaKey || event.shiftKey) {
+                    if (event.ctrlKey || event.altKey || event.metaKey) {
                         return;
                     }
                     nodes[0].showTextEditor(pressKey);
                     event.stopPropagation();
                 }
             }
+            
         });
 
     },
