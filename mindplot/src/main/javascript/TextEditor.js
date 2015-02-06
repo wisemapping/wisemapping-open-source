@@ -16,6 +16,7 @@
  *   limitations under the License.
  */
 
+//FIXME: Not used!
 mindplot.TextEditor = new Class({
     initialize:function(topic) {
         this._topic = topic;
