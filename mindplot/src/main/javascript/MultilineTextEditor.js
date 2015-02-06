@@ -88,6 +88,17 @@ mindplot.MultilineTextEditor = new Class({
                         me.close(true);
                     }
                     break;
+                case 'tab':
+                    event.preventDefault();
+                    var start = $(this).get(0).selectionStart;
+                    var end = $(this).get(0).selectionEnd;
+
+                    // set textarea value to: text before caret + tab + text after caret
+                    $(this).val($(this).val().substring(0, start) + "\t" + $(this).val().substring(end));
+
+                    // put caret at right position again
+                    $(this).get(0).selectionStart = $(this).get(0).selectionEnd = start + 1;
+                    break;
             }
             event.stopPropagation();
         });
@@ -248,24 +259,32 @@ mindplot.MultilineTextEditor = new Class({
 
     _positionCursor:function (textareaElem, selectText) {
         textareaElem.focus();
+        var lenght = textareaElem.val().length;
         if (selectText) {
             // Mark text as selected ...
             if (textareaElem.createTextRange) {
                 var rang = textareaElem.createTextRange();
                 rang.select();
-                rang.move("character", textareaElem.val().length);
+                rang.move("character", lenght);
             }
             else {
-                textareaElem[0].setSelectionRange(0, textareaElem.val().length);
+                textareaElem[0].setSelectionRange(0, lenght);
             }
 
         } else {
             // Move the cursor to the last character ..
             if (textareaElem.createTextRange) {
                 var range = textareaElem.createTextRange();
-                range.move("character", textareaElem.val().length);
+                range.move("character", lenght);
             } else {
-                textareaElem.selectionStart = textareaElem.val().length;
+                if (Browser.ie11) {
+                    textareaElem[0].selectionStart = lenght;
+                    textareaElem[0].selectionEnd = lenght;
+                } else {
+                    textareaElem.selectionStart = lenght;
+                    textareaElem.selectionEnd = lenght;
+                }
+                textareaElem.focus();
             }
         }
 
