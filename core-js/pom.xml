@@ -9,8 +9,11 @@
         <groupId>org.wisemapping</groupId>
         <artifactId>wisemapping</artifactId>
         <relativePath>../pom.xml</relativePath>
-        <version>3.0.4</version>
+        <version>4.0.0</version>
     </parent>
+    <scm>
+        <developerConnection>scm:git:git@bitbucket.org:wisemapping/wisemapping-open-source.git</developerConnection>
+    </scm>
 
     <build>
         <plugins>
@@ -33,6 +36,28 @@
             </plugin>
 
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5</version>
+            </plugin>
+            <plugin>
+                <groupId>com.github.searls</groupId>
+                <artifactId>jasmine-maven-plugin</artifactId>
+                <version>1.3.1.5</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <sourceIncludes>
+                        <include>Functions.js</include>
+                    </sourceIncludes>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>yuicompressor-maven-plugin</artifactId>
                 <executions>
@@ -51,19 +76,9 @@
                                         <include>${basedir}/target/tmp/header-min.js</include>
                                         <include>${basedir}/target/tmp/Functions-min.js</include>
                                         <include>${basedir}/target/tmp/Utils-min.js</include>
-                                        <!-- @Todo:Review this -->
-                                        <include>
-                                            ${basedir}/../mindplot/src/main/javascript/libraries/moodialog/Overlay.js
-                                        </include>
-                                        <include>
-                                            ${basedir}/../mindplot/src/main/javascript/libraries/moodialog/MooDialog.js
-                                        </include>
-                                        <include>
-                                            ${basedir}/../mindplot/src/main/javascript/libraries/moodialog/MooDialog.Request.js
-                                        </include>
-                                        <include>
-                                            ${basedir}/../mindplot/src/main/javascript/libraries/moodialog/MooDialog.Fx.js
-                                        </include>
+                                        <include>${basedir}/../mindplot/src/main/javascript/Options.js</include>
+                                        <include>${basedir}/../mindplot/src/main/javascript/libraries/bootstrap/BootstrapDialog.js</include>
+                                        <include>${basedir}/../mindplot/src/main/javascript/libraries/bootstrap/BootstrapDialog.Request.js</include>
                                     </includes>
                                 </aggregation>
                             </aggregations>

@@ -28,9 +28,8 @@ mindplot.widget.IconPanel = new Class({
     },
 
     buildPanel:function () {
-        var content = new Element('div', {'class':'toolbarPanel', 'id':'IconsPanel'});
-        content.setStyles({width:253, height:230, padding:5});
-        content.addEvent("click", function (event) {
+        var content = $('<div class="toolbarPanel" id="IconsPanel"></div>').css({width: 245, height: 230});
+        content.on('click', function (event) {
             event.stopPropagation()
         });
 
@@ -41,26 +40,24 @@ mindplot.widget.IconPanel = new Class({
                 // Separate icons by line ...
                 var familyContent;
                 if ((count % 12) == 0) {
-                    familyContent = new Element('div').inject(content);
+                    familyContent = $('<div></div>');
+                    content.append(familyContent);
                 }
 
                 var iconId = familyIcons[j];
-                var img = new Element('img', {
-                    id:iconId,
-                    src:mindplot.ImageIcon.prototype._getImageUrl(iconId)
-                });
-                img.setStyles({width:16,
-                    height:16,
-                    padding:"0px 2px",
-                    cursor:'pointer'
-                }).inject(familyContent);
+                var img = $('<img>')
+                    .attr('id', iconId)
+                    .attr('src', mindplot.ImageIcon.prototype._getImageUrl(iconId))
+                    .attr('class', 'panelIcon');
+
+                familyContent.append(img);
 
                 var panel = this;
                 var model = this.getModel();
-                img.addEvent('click', function (event) {
-                    model.setValue(this.id);
+                img.on('click', function (event) {
+                    model.setValue($(this).attr('id'));
                     panel.hide();
-                }.bind(img));
+                });
 
                 count = count + 1;
             }

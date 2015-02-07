@@ -17,7 +17,7 @@
  */
 
 mindplot.DesignerModel = new Class({
-    Implements:[Events],
+    Implements:[mindplot.Events],
     initialize:function (options) {
         this._zoom = options.zoom;
         this._topics = [];

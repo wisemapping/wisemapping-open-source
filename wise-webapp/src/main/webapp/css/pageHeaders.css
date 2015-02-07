@@ -126,8 +126,3 @@ div#headerActions {
 div#headerActions a:hover, div#headerActions a:active, div#headerActions a:link, div#headerActions a:visited {
     color: white;
 }
-
-#dialogMainForm label
-{
-    font-weight:normal;
-}

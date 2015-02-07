@@ -62,7 +62,7 @@ mindplot.IconGroup = new Class({
         this._positionIcon(icon, this._icons.length - 1);
 
         var imageShape = icon.getImage();
-        this._group.appendChild(imageShape);
+        this._group.append(imageShape);
 
         // Register event for the group ..
         if (remove) {
@@ -72,7 +72,7 @@ mindplot.IconGroup = new Class({
 
     _findIconFromModel:function (iconModel) {
         var result = null;
-        this._icons.each(function (icon) {
+        _.each(this._icons, function (icon) {
             var elModel = icon.getModel();
             if (elModel.getId() == iconModel.getId()) {
                 result = icon;
@@ -101,11 +101,11 @@ mindplot.IconGroup = new Class({
 
         this._icons.erase(icon);
         this._resize(this._icons.length);
-
+        var me = this;
         // Add all again ...
-        this._icons.each(function (elem, i) {
-            this._positionIcon(elem, i);
-        }.bind(this));
+        _.each(this._icons, function (elem, i) {
+            me._positionIcon(elem, i);
+        });
     },
 
     moveToFront:function () {
@@ -166,16 +166,18 @@ mindplot.IconGroup.RemoveTip = new Class({
                 icon.remove();
             });
 
+            var me = this;
+
             widget.addEvent('mouseover', function () {
-                this.show(topicId, icon);
-            }.bind(this));
+                me.show(topicId, icon);
+            });
 
             widget.addEvent('mouseout', function () {
-                this.hide();
-            }.bind(this));
+                me.hide();
+            });
 
             widget.setPosition(pos.x + 80, pos.y - 50);
-            this._fadeElem.appendChild(widget);
+            this._fadeElem.append(widget);
 
             // Setup current element ...
             this._activeIcon = icon;
@@ -197,17 +199,15 @@ mindplot.IconGroup.RemoveTip = new Class({
             clearTimeout(this._closeTimeoutId)
         }
 
+        var me = this;
         if (this._activeIcon) {
             var widget = this._widget;
             var close = function () {
-
-                this._activeIcon = null;
-                this._fadeElem.removeChild(widget);
-                this._widget = null;
-
-                this._closeTimeoutId = null;
-
-            }.bind(this);
+                me._activeIcon = null;
+                me._fadeElem.removeChild(widget);
+                me._widget = null;
+                me._closeTimeoutId = null;
+            };
 
             if (!$defined(delay) || delay == 0) {
                 close();
@@ -236,7 +236,7 @@ mindplot.IconGroup.RemoveTip = new Class({
             stroke:'0',
             fillColor:'black'
         });
-        result.appendChild(outerRect);
+        result.append(outerRect);
         outerRect.setCursor('pointer');
 
         var innerRect = new web2d.Rect(0, {
@@ -247,17 +247,17 @@ mindplot.IconGroup.RemoveTip = new Class({
             stroke:'1 solid white',
             fillColor:'gray'
         });
-        result.appendChild(innerRect);
+        result.append(innerRect);
 
         var line = new web2d.Line({stroke:'1 solid white'});
         line.setFrom(1, 1);
         line.setTo(9, 9);
-        result.appendChild(line);
+        result.append(line);
 
         var line2 = new web2d.Line({stroke:'1 solid white'});
         line2.setFrom(1, 9);
         line2.setTo(9, 1);
-        result.appendChild(line2);
+        result.append(line2);
 
         // Some events ...
         result.addEvent('mouseover', function () {
@@ -273,14 +273,16 @@ mindplot.IconGroup.RemoveTip = new Class({
 
     decorate:function (topicId, icon) {
 
+        var me = this;
+
         if (!icon.__remove) {
             icon.addEvent('mouseover', function () {
-                this.show(topicId, icon);
-            }.bind(this));
+                me.show(topicId, icon);
+            });
 
             icon.addEvent('mouseout', function () {
-                this.hide();
-            }.bind(this));
+                me.hide();
+            });
             icon.__remove = true;
         }
     }

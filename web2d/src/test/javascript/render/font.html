@@ -15,7 +15,10 @@
         web2d.peer.utils = {};
     </script>
 
-    <script type="text/javascript" src="../../../../../mindplot/src/main/javascript/libraries/mootools/mootools-core-1.4.5-full-nocompat-yc.js"></script>
+    <script type="text/javascript" src="../mootools-core-1.4.5.js"></script>
+    <script type="text/javascript" src="../jquery-2.1.0.js"></script>
+
+
     <script type="text/javascript" src="../../../../../core-js/target/classes/core.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/ElementPeer.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/Element.js"></script>
@@ -52,7 +55,7 @@
 
             [6,8,10,15].forEach(function(size, i) {
                 var wText = new web2d.Text();
-                overflowWorkspace.appendChild(wText);
+                overflowWorkspace.append(wText);
 
                 wText.setText(text);
                 wText.setFont(family, size, 'bold');
@@ -60,7 +63,7 @@
                 wText.setColor('red');
             });
 
-            overflowWorkspace.addItAsChildTo($(elemId));
+            overflowWorkspace.addItAsChildTo($("#"+elemId));
         }
 
         function alignments(text, family, elemId) {
@@ -71,7 +74,7 @@
 
             ['center','left','right'].forEach(function(align, i) {
                 var wText = new web2d.Text();
-                overflowWorkspace.appendChild(wText);
+                overflowWorkspace.append(wText);
 
                 wText.setText(text);
                 wText.setFont(family, 8, 'bold');
@@ -80,7 +83,7 @@
                 wText.setTextAlignment(align);
             });
 
-            overflowWorkspace.addItAsChildTo($(elemId));
+            overflowWorkspace.addItAsChildTo($("#"+elemId));
         }
 
         function initialize() {

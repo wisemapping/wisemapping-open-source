@@ -35,25 +35,23 @@ mindplot.LocalStorageManager = new Class({
         loadMapDom:function (mapId) {
             var xml = localStorage.getItem(mapId + "-xml");
             if (xml == null || this.forceLoad) {
-                var xmlRequest = new Request({
-                    url:this.documentUrl.replace("{id}", mapId),
+                $.ajax({
+                    url: this.documentUrl.replace("{id}", mapId),
                     headers:{"Content-Type":"text/plain","Accept":"application/xml"},
-                    method:'get',
-                    async:false,
-                    onSuccess:function (responseText) {
-                        xml = responseText;
+                    type:'get',
+                    dataType: "text",
+                    async: false,
+                    success:function (response) {
+                        xml = response;
                     }
                 });
-                xmlRequest.send();
-
                 // If I could not load it from a file, hard code one.
                 if (xml == null) {
                     throw new Error("Map could not be loaded");
                 }
             }
 
-            var parser = new DOMParser();
-            return  parser.parseFromString(xml, "text/xml");
+            return jQuery.parseXML(xml);
         },
 
         unlockMap:function (mindmap) {

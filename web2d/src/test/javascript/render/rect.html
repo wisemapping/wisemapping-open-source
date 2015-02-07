@@ -16,7 +16,8 @@
         web2d.peer.utils = {};
     </script>
 
-    <script type="text/javascript" src="../../../../../mindplot/src/main/javascript/libraries/mootools/mootools-core-1.4.5-full-nocompat-yc.js"></script>
+    <script type="text/javascript" src="../mootools-core-1.4.5.js"></script>
+    <script type="text/javascript" src="../jquery-2.1.0.js"></script>
 
     <script type="text/javascript" src="../../../../../core-js/target/classes/core.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/ElementPeer.js"></script>
@@ -58,8 +59,8 @@
                 var rect = new web2d.Rect();
                 rect.setPosition(20, 20);
 
-                workspace.appendChild(rect);
-                workspace.addItAsChildTo($("rectExample"));
+                workspace.append(rect);
+                workspace.addItAsChildTo($('#rectExample'));
             }
             rectExampleTest();
 
@@ -69,7 +70,7 @@
                         var rect = new web2d.Rect(i / 10);
                         rect.setPosition(x, ((i - 1) * (50 + 5)));
                         rect.setSize(width, height);
-                        container.appendChild(rect);
+                        container.append(rect);
                     }
                 }
 
@@ -78,7 +79,7 @@
                 workspace.setSize("500px", "550px");
                 workspace.setCoordOrigin(0, -4);
                 workspace.setCoordSize(500, 550);
-                workspace.addItAsChildTo($("roundRect"));
+                workspace.addItAsChildTo($('#roundRect'));
 
                 builder(workspace, 10, 50, 50);
 

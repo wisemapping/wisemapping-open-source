@@ -15,7 +15,9 @@
         web2d.peer.utils = {};
     </script>
 
-    <script type="text/javascript" src="../../../../../mindplot/src/main/javascript/libraries/mootools/mootools-core-1.4.5-full-nocompat-yc.js"></script>
+    <script type="text/javascript" src="../mootools-core-1.4.5.js"></script>
+    <script type="text/javascript" src="../jquery-2.1.0.js"></script>
+
     <script type="text/javascript" src="../../../../../core-js/target/classes/core.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/peer/svg/ElementPeer.js"></script>
     <script type="text/javascript" src="../../../../src/main/javascript/Element.js"></script>
@@ -63,9 +65,9 @@
             centralRect.setPosition(300, 300);
             centralRect.setFill("#99ccff");
             centralRect.setStroke(1, 'solid', "#878b8f");
-            workspace.appendChild(centralRect);
+            workspace.append(centralRect);
 
-            workspace.addItAsChildTo($("divWorkspace"));
+            workspace.addItAsChildTo($('#divWorkspace'));
         }
 
         function zoomIn() {
@@ -93,17 +95,17 @@
             outerRect.setPosition(0, 0);
             outerRect.setFill("#3e9eff");
             outerRect.setStroke(1, 'solid', "#878b8f");
-            nodeGroup.appendChild(outerRect);
+            nodeGroup.append(outerRect);
 
             var inerRect = new web2d.Rect(0.3);
             inerRect.setSize(190, 85);
             inerRect.setPosition(5, 10);
             inerRect.setFill("white");
             inerRect.setStroke(1, 'dash', '#878b8f');
-            nodeGroup.appendChild(inerRect);
+            nodeGroup.append(inerRect);
             nodeGroup._drag = false;
 
-            workspace.appendChild(nodeGroup);
+            workspace.append(nodeGroup);
 
             // Add behaviour ...
             inerRect.addEvent("mouseover", function() {
@@ -128,9 +130,9 @@
                 shadowRect.setPosition(5, 10);
                 shadowRect.setFill("white", 0.3);
                 shadowRect.setStroke(1, 'dash', '#878b8f');
-                shadowGroup.appendChild(shadowRect);
+                shadowGroup.append(shadowRect);
 
-                workspace.appendChild(shadowGroup);
+                workspace.append(shadowGroup);
 
                 this._shadowGroup = shadowGroup;
                 if (!this._moveFunction) {

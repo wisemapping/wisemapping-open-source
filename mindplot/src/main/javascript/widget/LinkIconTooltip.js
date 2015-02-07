@@ -21,72 +21,56 @@ mindplot.widget.LinkIconTooltip = new Class({
 
     initialize:function (linkIcon) {
         $assert(linkIcon, "linkIcon can not be null");
-        this.parent(linkIcon.getImage()._peer._native, {
+        var nativeElement = $(linkIcon.getImage()._peer._native);
+        this.parent(nativeElement, {
             // Content can also be a function of the target element!
-            content:this._buildContent.pass(linkIcon, this),
+            content:this._buildContent(linkIcon),
             html:true,
-            position:'bottom',
-            arrowOffset:10,
-            center:true,
-            arrowSize:15,
-            offset:{x:10, y:20},
-            className:'linkTip'
+            placement:'bottom',
+            container: 'body',
+            title: $msg('LINK'),
+            trigger: "manual",
+            template: '<div id="linkPopover" class="popover" onmouseover="$(this).mouseleave(function() {$(this).fadeOut(200); });" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
         });
     },
 
     _buildContent:function (linkIcon) {
-        var result = new Element('div');
-        result.setStyles({
+        var result = $('<div></div>').css({
             padding:'5px',
             width:'100%'
         });
 
-        var title = new Element('div', {text:$msg('LINK')});
-        title.setStyles({
-            'font-weight':'bold',
-            color:'black',
-            'padding-bottom':'5px',
-            width:'100px'
+        var text = $('<div></div>').text("URL: " + linkIcon.getModel().getUrl())
+        .css({
+            'white-space':'pre-wrap',
+            'word-wrap':'break-word'
         });
-        title.inject(result);
+        result.append(text);
 
-        var text = new Element('div', {text:"URL: " + linkIcon.getModel().getUrl()});
-        text.setStyles({
-                'white-space':'pre-wrap',
-                'word-wrap':'break-word'
-            }
-        );
-        text.inject(result);
-
-        var imgContainer = new Element('div');
-        imgContainer.setStyles({
+        var imgContainer = $('<div></div>')
+        .css({
             width:'100%',
-            textAlign:'right',
+            'textAlign':'right',
             'padding-bottom':'5px',
             'padding-top':'5px'
         });
 
-        var img = new Element('img', {
-                src:'http://immediatenet.com/t/m?Size=1024x768&URL=' + linkIcon.getModel().getUrl(),
-                img:linkIcon.getModel().getUrl(),
-                alt:linkIcon.getModel().getUrl()
-            }
-        );
-        img.setStyles({
-                padding:'5px'
-            }
-        );
+        var img = $('<img>')
+            .prop('src', 'http://free.pagepeeker.com/v2/thumbs.php?size=m&url=' + linkIcon.getModel().getUrl())
+            .prop('img', linkIcon.getModel().getUrl())
+            .prop('alt', linkIcon.getModel().getUrl());
 
-        var link = new Element('a', {
+        img.css('padding', '5px');
+
+        var link = $('<a></a>').attr({
             href:linkIcon.getModel().getUrl(),
             alt:'Open in new window ...',
             target:'_blank'
-
         });
-        img.inject(link);
-        link.inject(imgContainer);
-        imgContainer.inject(result);
 
+        link.append(img);
+        imgContainer.append(link);
+        result.append(imgContainer);
         return result;
     }
 });

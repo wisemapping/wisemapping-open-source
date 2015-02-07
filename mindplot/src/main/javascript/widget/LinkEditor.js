@@ -17,144 +17,110 @@
  */
 
 mindplot.widget.LinkEditor = new Class({
-    Extends:MooDialog,
+    Extends:BootstrapDialog,
+
     initialize:function (model) {
         $assert(model, "model can not be null");
-        var panel = this._buildPanel(model);
-        this.parent({
-            closeButton:true,
-            destroyOnClose:true,
-            title:$msg('LINK'),
-            onInitialize:function (wrapper) {
-                wrapper.setStyle('opacity', 0);
-                this.fx = new Fx.Morph(wrapper, {
-                    duration:600,
-                    transition:Fx.Transitions.Bounce.easeOut
-                });
-            },
-
-            onBeforeOpen:function () {
-                this.overlay = new Overlay(this.options.inject, {
-                    duration:this.options.duration
-                });
-                if (this.options.closeOnOverlayClick)
-                    this.overlay.addEvent('click', this.close.bind(this));
-
-                this.overlay.open();
-
-                this.fx.start({
-                    'margin-top':[-200, -100],
-                    opacity:[0, 1]
-                }).chain(function () {
-                    this.fireEvent('show');
-                }.bind(this));
-            },
-
-            onBeforeClose:function () {
-                this.fx.start({
-                    'margin-top':[-100, 0],
-                    opacity:0
-                }).chain(function () {
-                    this.fireEvent('hide');
-                }.bind(this));
-                this.overlay.destroy();
-            }
+        this._model = model;
+        this.parent($msg("LINK"), {
+            cancelButton: true,
+            closeButton: true,
+            acceptButton: true,
+            removeButton: typeof model.getValue() != 'undefined',
+            errorMessage: true,
+            onEventData: {model: this._model}
         });
+        this.css({margin:"150px auto"});
+        var panel = this._buildPanel(model);
         this.setContent(panel);
     },
 
     _buildPanel:function (model) {
-        var result = new Element('div');
-        result.setStyle("padding-top", "15px");
-        var form = new Element('form', {'action':'none', 'id':'linkFormId'});
-
-        // Add combo ...
-        var select = new Element('select');
-        select.setStyles({margin:'5px'});
-        new Element('option', {text:'URL'}).inject(select);
-//        new Element('option', {text:'Mail'}).inject(select);
-        select.inject(form);
-
-        // Add Input ...
-        var input = new Element('input', {
-            placeholder:'http://www.example.com/',
-            type:Browser.ie ? 'text' : 'url', // IE workaround
-            required:true,
-            autofocus:'autofocus'
+        var result = $('<div></div>').css("padding-top", "5px");
+        this.form = $('<form></form>').attr({
+            'action': 'none',
+            'id': 'linkFormId'
         });
-        if (model.getValue() != null)
-            input.value = model.getValue();
+        var text = $('<p></p>').text("Paste your url here:");
+        text.css('margin','0px 0px 20px');
 
-        input.setStyles({
-            width:'55%',
-            margin:"0px 10px"
+        this.form.append(text);
 
-        });
-        input.inject(form);
-
-        // Open Button
-        var openButton = new Element('input', {
-            type:"button",
-            value:$msg('OPEN_LINK')
-        });
-        openButton.inject(form);
-        openButton.addEvent('click',function(){
-            window.open(input.value,"_blank", "status=1,width=700,height=450,resizable=1");
+        var section = $('<div></div>').attr({
+            'class': 'input-group'
         });
 
+        // Add Input
+        var input = $('<input id="inputUrl"/>').attr({
+            'placeholder': 'http://www.example.com/',
+            'required': 'true',
+            'autofocus': 'autofocus',
+            'class': 'form-control'
+        });
 
-        // Register submit event ...
-        form.addEvent('submit', function (event) {
-            event.stopPropagation();
-            event.preventDefault();
-
-            if (input.value != null && input.value.trim() != "") {
-                model.setValue(input.value);
-            }
-            this.close();
-        }.bind(this));
-
-        // Add buttons ...
-        var buttonContainer = new Element('div').setStyles({paddingTop:5, textAlign:'center'});
-
-        // Create accept button ...
-        var okButton = new Element('input', {type:'submit', value:$msg('ACCEPT'), 'class':'btn-primary'});
-        okButton.addClass('button');
-        okButton.inject(buttonContainer);
-
-        // Create remove button ...
-        if ($defined(model.getValue())) {
-            var rmButton = new Element('input', {type:'button', value:$msg('REMOVE'), 'class':'btn-primary'});
-            rmButton.setStyle('margin', '5px');
-            rmButton.addClass('button');
-            rmButton.inject(buttonContainer);
-            rmButton.addEvent('click', function (event) {
-                model.setValue(null);
-                event.stopPropagation();
-                this.close();
-            }.bind(this));
-            buttonContainer.inject(form);
+        if (model.getValue() != null){
+            input.val(model.getValue());
         }
 
-        // Create cancel button ...
-        var cButton = new Element('input', {type:'button', value:$msg('CANCEL'), 'class':'btn-secondary'});
-        cButton.setStyle('margin', '5px');
-        cButton.addClass('button');
-        cButton.inject(buttonContainer);
-        cButton.addEvent('click', function () {
-            this.close();
-        }.bind(this));
-        buttonContainer.inject(form);
-
-        result.addEvent('keydown', function (event) {
-            event.stopPropagation();
+        // Open Button
+        var openButton = $('<button></button>').attr({
+                'type': 'button',
+                'class': 'btn btn-default'
         });
 
-        form.inject(result);
+        openButton.html($msg('OPEN_LINK')).css('margin-left', '0px');
+        openButton.click(function(){
+            window.open(input.val(),"_blank", "status=1,width=700,height=450,resize=1");
+        });
+        var spanControl = $('<span class="input-group-btn"></span>').append(openButton);
+
+        section.append(input);
+        section.append(spanControl);
+        this.form.append(section);
+
+        var me = this;
+        this.form.unbind('submit').submit(
+            function (event) {
+                event.preventDefault();
+                if(me.checkURL(input.val())){
+                    me.cleanError();
+                    var inputValue = input.val();
+                    if (inputValue != null && $.trim(inputValue) != "") {
+                        model.setValue(inputValue);
+                    }
+                    me.close();
+                    this.formSubmitted = true;
+                } else {
+                    me.alertError($msg('URL_ERROR'));
+                    event.stopPropagation();
+                }
+            }
+        );
+
+        result.append(this.form);
         return result;
     },
 
-    show:function () {
-        this.open();
+    checkURL: function(url){
+        var regex = /^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
+        return(regex.test(url));
+    },
+
+    onAcceptClick: function(event) {
+        this.formSubmitted = false;
+        $("#linkFormId").trigger('submit');
+        if (!this.formSubmitted) {
+            event.stopPropagation();
+        }
+    },
+
+    onDialogShown: function() {
+        $(this).find('#inputUrl').focus();
+    },
+
+    onRemoveClick: function(event) {
+        event.data.model.setValue(null);
+        event.data.dialog.close();
     }
+
 });

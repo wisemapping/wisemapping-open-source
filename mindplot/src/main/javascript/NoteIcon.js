@@ -31,50 +31,45 @@ mindplot.NoteIcon = new Class({
 
     _registerEvents:function () {
         this._image.setCursor('pointer');
+        var me = this;
 
         if (!this._readOnly) {
-
             // Add on click event to open the editor ...
             this.addEvent('click', function (event) {
-                this._topic.showNoteEditor();
+                me._topic.showNoteEditor();
                 event.stopPropagation();
-            }.bind(this));
+            });
         }
-
-        this._tip = new mindplot.widget.FloatingTip(this.getImage()._peer._native, {
+        this._tip = new mindplot.widget.FloatingTip($(me.getImage()._peer._native), {
+            title: $msg('NOTE'),
+            container: 'body',
             // Content can also be a function of the target element!
-            content:function () {
-                var result = new Element('div');
-                result.setStyles({padding:'5px'});
-
-                var title = new Element('div', {text:$msg('NOTE')});
-                title.setStyles({
-                    'font-weight':'bold',
-                    color:'black',
-                    'padding-bottom':'5px',
-                    width:'100px'
-                });
-                title.inject(result);
-
-                var text = new Element('div', {text:this._linksModel.getText()});
-                text.setStyles({
-                        'white-space':'pre-wrap',
-                        'word-wrap':'break-word'
-                    }
-                );
-                text.inject(result);
-
-
-                return result;
-            }.bind(this),
+            content: function() {
+                return me._buildTooltipContent();
+            },
             html:true,
-            position:'bottom',
-            arrowOffset:10,
-            center:true,
-            arrowSize:15,
-            offset:{x:10, y:20},
-            className:'notesTip'
+            placement:'bottom',
+            destroyOnExit: true
         });
+
+    },
+
+    _buildTooltipContent: function() {
+        if ($("body").find("#textPopoverNote").length == 1) {
+            var text = $("body").find("#textPopoverNote");
+            text.text(this._linksModel.getText());
+        } else {
+            var result = $('<div id="textPopoverNote"></div>').css({padding:'5px'});
+
+            var text = $('<div></div>').text(this._linksModel.getText())
+                .css({
+                    'white-space':'pre-wrap',
+                    'word-wrap':'break-word'
+                }
+            );
+            result.append(text);
+            return result;
+        }
     },
 
     getModel:function () {
