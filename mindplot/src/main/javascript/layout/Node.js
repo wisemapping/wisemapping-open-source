@@ -155,7 +155,7 @@ mindplot.layout.Node = new Class({
         }
 
         // Only update if the property has changed ...
-        if (JSON.encode(prop.value) != JSON.encode(value)) {
+        if (JSON.stringify(prop.value) != JSON.stringify(value)) {
             prop.oldValue = prop.value;
             prop.value = value;
             prop.hasChanged = true;

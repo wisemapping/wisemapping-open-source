@@ -17,122 +17,73 @@
  */
 
 mindplot.widget.NoteEditor = new Class({
-    Extends:MooDialog,
+    Extends:BootstrapDialog,
+
     initialize:function (model) {
         $assert(model, "model can not be null");
-        var panel = this._buildPanel(model);
-        this.parent({
-            closeButton:true,
-            destroyOnClose:true,
-            title:$msg('NOTE'),
-            onInitialize:function (wrapper) {
-                wrapper.setStyle('opacity', 0);
-                this.fx = new Fx.Morph(wrapper, {
-                    duration:600,
-                    transition:Fx.Transitions.Bounce.easeOut
-                });
-            },
-
-            onBeforeOpen:function () {
-                this.overlay = new Overlay(this.options.inject, {
-                    duration:this.options.duration
-                });
-                if (this.options.closeOnOverlayClick)
-                    this.overlay.addEvent('click', this.close.bind(this));
-                this.overlay.open();
-
-                this.fx.start({
-                    'margin-top':[-200, -100],
-                    opacity:[0, 1]
-                }).chain(function () {
-                    this.fireEvent('show');
-                }.bind(this));
-            },
-
-            onBeforeClose:function () {
-                this.fx.start({
-                    'margin-top':[-100, 0],
-                    opacity:0
-                }).chain(function () {
-                    this.fireEvent('hide');
-                }.bind(this));
-                this.overlay.destroy();
-            }
+        this._model = model;
+        this.parent($msg("Note"), {
+            cancelButton: true,
+            closeButton: true,
+            acceptButton: true,
+            removeButton: typeof model.getValue() != 'undefined',
+            onEventData: {model: this._model}
         });
+        this.css({margin:"150px auto"});
+        var panel = this._buildPanel(model);
         this.setContent(panel);
-    },
+        },
+
 
     _buildPanel:function (model) {
-        var result = new Element('div');
-        var form = new Element('form', {'action':'none', 'id':'noteFormId'});
+        var result = $('<div></div>').css("padding-top", "5px");
 
-        // Add textarea ...
-        var textArea = new Element('textarea',
-            {placeholder:$msg('WRITE_YOUR_TEXT_HERE'),
-                required:true,
-                autofocus:'autofocus'
-            });
-        if (model.getValue() != null)
-            textArea.value = model.getValue();
-
-        textArea.setStyles({
-            'width':'100%',
-            'height':80, resize:'none'
+        var form = $('<form></form>').attr({
+            'action':'none',
+            'id':'noteFormId'
         });
-        textArea.inject(form);
 
-        // Register submit event ...
-        form.addEvent('submit', function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-            if (textArea.value) {
-                model.setValue(textArea.value);
-            }
-            this.close();
+        // Add textarea
+        var textArea = $('<textarea></textarea autofocus>').attr({
+                'placeholder':$msg('WRITE_YOUR_TEXT_HERE'),
+                'required':'true',
+                'class':'form-control'
+        });
+        textArea.css({
+            'width':'100%',
+            'height':80,
+            'resize':'none'
+        });
+        form.append(textArea);
 
-        }.bind(this));
-
-        // Add buttons ...
-        var buttonContainer = new Element('div').setStyles({paddingTop:5, textAlign:'right'});
-
-        // Create accept button ...
-        var okButton = new Element('input', {type:'submit', value:$msg('ACCEPT'), 'class':'btn-primary'});
-        okButton.addClass('button');
-        okButton.inject(buttonContainer);
-
-        // Create remove button ...
-        if ($defined(model.getValue())) {
-            var rmButton = new Element('input', {type:'button', value:$msg('REMOVE'), 'class':'btn-primary'});
-            rmButton.setStyle('margin', '5px');
-            rmButton.addClass('button');
-            rmButton.inject(buttonContainer);
-            rmButton.addEvent('click', function () {
-                model.setValue(null);
-                this.close();
-            }.bind(this));
-            buttonContainer.inject(form);
+        if (model.getValue() != null){
+            textArea.val(model.getValue());
         }
 
-        // Create cancel button ...
-        var cButton = new Element('input', {type:'button', value:$msg('CANCEL'), 'class':'btn-secondary'});
-        cButton.setStyle('margin', '5px');
-        cButton.addClass('button');
-        cButton.inject(buttonContainer);
-        cButton.addEvent('click', function () {
-            this.close();
-        }.bind(this));
-        buttonContainer.inject(form);
-
-        result.addEvent('keydown', function (event) {
-            event.stopPropagation();
-        });
-
-        form.inject(result);
+        result.append(form);
         return result;
     },
 
-    show:function () {
-        this.open();
-    }
+    onAcceptClick: function(event) {
+        event.data.dialog._submitForm(event.data.model);
+    },
 
+    _submitForm: function(model) {
+        var textarea = this._native.find("textarea");
+        if (textarea.val()) {
+            model.setValue(textarea.val());
+        }
+        this.close();
+    },
+
+    onDialogShown: function() {
+        $(this).find('textarea').focus();
+    },
+
+    onRemoveClick: function(event) {
+        event.data.model.setValue(null);
+        event.data.dialog.close();
+    }
 });
+
+

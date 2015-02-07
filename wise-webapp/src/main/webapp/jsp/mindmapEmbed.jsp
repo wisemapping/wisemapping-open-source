@@ -18,8 +18,12 @@
     <![endif]-->
 
     <link rel="stylesheet/less" type="text/css" href="css/embedded.less"/>
+    <script type='text/javascript' src='js/jquery.js'></script>
+    <script type='text/javascript' src='js/jquery-mousewheel.js'></script>
+    <script type='text/javascript' src='js/hotkeys.js'></script>
+    <script type='text/javascript' src='js/underscorejs.js'></script>
+    <script type='text/javascript' src='bootstrap/js/bootstrap.min.js'></script>
     <script type='text/javascript' src='js/mootools-core.js'></script>
-    <script type='text/javascript' src='js/mootools-more.js'></script>
     <script type='text/javascript' src='js/core.js'></script>
     <script type='text/javascript' src='js/less.js'></script>
 
@@ -27,7 +31,7 @@
     <script type="text/javascript">
         var mapId = '${mindmap.id}';
 
-        $(document).addEvent('loadcomplete', function (resource) {
+        $(document).on('loadcomplete', function (resource) {
 
             // Configure designer options ...
             var options = loadDesignerOptions();

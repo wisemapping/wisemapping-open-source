@@ -24,48 +24,43 @@ mindplot.widget.KeyboardShortcutTooltip = new Class({
         $assert(text, "text can not be null");
         this._text = text;
 
-        var children = buttonElem.getChildren();
-        var tipElemId = buttonElem.id + "Tip";
-        var tipDiv = new Element('div', {id:tipElemId});
-        children[0].inject(tipDiv);
-        tipDiv.inject(buttonElem);
+        var children = buttonElem.children().first();
+        var tipElemId = buttonElem.attr('id') + "Tip";
+        var tipDiv = $('<div></div>').attr('id', tipElemId);
+        tipDiv.append(children);
+        buttonElem.append(tipDiv);
 
         this.parent(tipDiv, {
-            // Content can also be a function of the target element!
-            content: this._buildContent.pass(buttonElem, this),
+            //Content can also be a function of the target element!
+            content: this._buildContent(),
             html: true,
-            position: 'bottom',
-            arrowOffset : 10,
-            center: true,
-            arrowSize: 3,
-            offset : {x:0,y:-2},
+            placement: 'bottom',
             className: 'keyboardShortcutTip',
-            preventHideOnOver : false,
-            motionOnShow:false,
-            motionOnHide:false,
-            fx: { 'duration': '100' }
+            template: '<div class="popover popoverBlack" role="tooltip"><div class="arrow arrowBlack"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
         });
 
-        tipDiv.addEvent('click', function(e) {
-            tipDiv.fireEvent('mouseleave', e);
+        tipDiv.on('click', function(e) {
+            tipDiv.trigger('mouseleave', e);
         });
     },
 
     _buildContent : function() {
-        var result = new Element('div');
-        result.setStyles({
+        var result = $('<div></div>');
+        result.css({
             padding:'3px 0px',
-            width:'100%'
+            width:'100%',
+            color: "white"
         });
 
-        var textContainer = new Element('div', {text:this._text});
-        textContainer.setStyles({
+        var textContainer = $('<div></div>').text(this._text);
+        textContainer.css({
             width: '100%',
+            'font-size': "90%",
             textAlign: 'center',
             'font-weight':'bold'
         });
 
-        textContainer.inject(result);
+        result.append(textContainer);
         return result;
     }
 });

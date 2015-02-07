@@ -27,15 +27,15 @@ mindplot.widget.IMenu = new Class({
         this._containerId = containerId;
         this._mapId = mapId;
         this._mindmapUpdated = false;
-
+        var me = this;
         // Register update events ...
         this._designer.addEvent('modelUpdate', function () {
-            this.setRequireChange(true);
-        }.bind(this));
+            me.setRequireChange(true);
+        });
     },
 
     clear:function () {
-        this._toolbarElems.each(function (item) {
+        _.each(this._toolbarElems, function (item) {
             item.hide();
         });
     },
@@ -71,7 +71,7 @@ mindplot.widget.IMenu = new Class({
         // Display save message ..
         if (saveHistory) {
             $notify($msg('SAVING'));
-            saveElem.setStyle('cursor', 'wait');
+            saveElem.css('cursor', 'wait');
         }
 
         // Call persistence manager for saving ...
@@ -80,7 +80,7 @@ mindplot.widget.IMenu = new Class({
         persistenceManager.save(mindmap, mindmapProp, saveHistory, {
             onSuccess:function () {
                 if (saveHistory) {
-                    saveElem.setStyle('cursor', 'pointer');
+                    saveElem.css('cursor', 'pointer');
                     $notify($msg('SAVE_COMPLETE'));
                 }
                 menu.setRequireChange(false);
@@ -88,7 +88,7 @@ mindplot.widget.IMenu = new Class({
 
             onError:function (error) {
                 if (saveHistory) {
-                    saveElem.setStyle('cursor', 'pointer');
+                    saveElem.css('cursor', 'pointer');
 
                     if (error.severity != "FATAL") {
                         $notify(error.message);

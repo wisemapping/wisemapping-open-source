@@ -1,18 +1,17 @@
 <%@page pageEncoding="UTF-8" %>
 <%@include file="/jsp/init.jsp" %>
 
-<p class="alert alert-info">
-    <spring:message code="EXPORT_DETAILS"/>
-</p>
 
-<div>
+<div style="height: 400px; overflow-y: auto">
+    <div class="alert alert-info" role="alert">
+        <spring:message code="EXPORT_DETAILS"/>
+    </div>
     <form method="GET" class="form-horizontal" action="c/restful/maps/${mindmap.id}"
           enctype="application/x-www-form-urlencoded" id="dialogMainForm">
         <input name="svgXml" id="svgXml" value="" type="hidden"/>
         <input name="download" type="hidden" value="mm"/>
         <input name="version" type="hidden" value=""/>
         <fieldset>
-
             <label for="freemind">
                 <input type="radio" id="freemind" name="exportFormat" value="mm" version="1.0.1" checked="checked"/>
                 <strong><spring:message code="FREEMIND_EXPORT_FORMAT"/></strong><br/>
@@ -57,7 +56,7 @@
                     <option value='png'>PNG</option>
                     <option value='jpg'>JPEG</option>
                 </select>
-            </label><br/>
+            </label>
 
             <label for="txt">
                 <input type="radio" name="exportFormat" value="txt" id="txt"/>
@@ -65,33 +64,45 @@
                 <spring:message code="TXT_EXPORT_FORMAT_DETAILS"/>
             </label>
 
-            </br><label for="xls">
+            <label for="xls">
                 <input type="radio" name="exportFormat" value="xls" id="xls"/>
                 <strong><spring:message code="XLS_EXPORT_FORMAT"/></strong><br/>
                 <spring:message code="XLS_EXPORT_FORMAT_DETAILS"/>
-            </label><br/>
+            </label>
 
             <label for="odt">
                 <input type="radio" name="exportFormat" value="odt" id="odt"/>
                 <strong><spring:message code="OPEN_OFFICE_EXPORT_FORMAT"/></strong><br/>
                 <spring:message code="OPEN_OFFICE_EXPORT_FORMAT_DETAILS"/>
             </label>
-
-
         </fieldset>
     </form>
+    <div id="exportInfo" style="margin-top: 19px;">
+        <span class="label label-danger">Warning</span> <spring:message code="EXPORT_FORMAT_RESTRICTIONS"/>
+    </div>
+
 </div>
 
 
-<p id="exportInfo">
-    <span class="label label-danger">Warning</span> <spring:message code="EXPORT_FORMAT_RESTRICTIONS"/>
-</p>
+<style>
+    h2 {
+        font-size: 160%;
+        color: #8e9181;
+    }
 
+    #dialogMainForm label {
+        font-weight:normal;
+        display: block;
+    }
 
+    #dialogMainForm label strong {
+        font-weight: 700;
+    }
+</style>
 <script type="text/javascript">
 
     // No way to obtain map svg. Hide panels..
-    if (window.location.pathname.indexOf('exportf') != -1) {
+    if (window.location.pathname.match(/\/[0-9]+\/edit/)) {
         $('#exportInfo').hide();
         $('#freemind,#freemind09,#pdf,#svg,#odt,#txt,#xls,#mmap').click('click', function (event) {
             $('#imgFormat').hide();
@@ -134,14 +145,10 @@
         }
 
         $('#dialogMainForm input[name=download]').attr('value', formatType);
-        if (!differ) {
-            form.submit();
-        }
+        form.submit();
 
         // Close dialog ...
         $('#export-dialog-modal').modal('hide');
-
-        return {"action":form.attr('action'), "method":form.attr('method'), "formatType":formatType, "version": version};
     }
 
 </script>

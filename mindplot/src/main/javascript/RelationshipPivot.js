@@ -23,6 +23,7 @@ mindplot.RelationshipPivot = new Class({
         this._workspace = workspace;
         this._designer = designer;
 
+        //FIXME: the aim of the migration is remove .bind mootools method, please remove these!
         this._mouseMoveEvent = this._mouseMove.bind(this);
         this._onClickEvent = this._cleanOnMouseClick.bind(this);
         this._onTopicClick = this._connectOnFocus.bind(this);
@@ -56,8 +57,8 @@ mindplot.RelationshipPivot = new Class({
             this._startArrow.setStrokeWidth(2);
             this._startArrow.setFrom(sourcePos.x, sourcePos.y);
 
-            this._workspace.appendChild(this._pivot);
-            this._workspace.appendChild(this._startArrow);
+            this._workspace.append(this._pivot);
+            this._workspace.append(this._startArrow);
 
             this._workspace.addEvent('mousemove', this._mouseMoveEvent);
             this._workspace.addEvent('click', this._onClickEvent);
@@ -65,7 +66,7 @@ mindplot.RelationshipPivot = new Class({
             // Register focus events on all topics ...
             var model = this._designer.getModel();
             var topics = model.getTopics();
-            topics.each(function (topic) {
+            _.each(topics, function (topic) {
                 topic.addEvent('ontfocus', this._onTopicClick);
             }.bind(this));
         }
@@ -81,9 +82,10 @@ mindplot.RelationshipPivot = new Class({
 
             var model = this._designer.getModel();
             var topics = model.getTopics();
-            topics.each(function (topic) {
-                topic.removeEvent('ontfocus', this._onTopicClick);
-            }.bind(this));
+            var me = this;
+            _.each(topics, function (topic) {
+                topic.removeEvent('ontfocus', me._onTopicClick);
+            });
 
             workspace.removeChild(this._pivot);
             workspace.removeChild(this._startArrow);
@@ -139,7 +141,7 @@ mindplot.RelationshipPivot = new Class({
         return  mindplot.util.Shape.calculateRelationShipPointCoordinates(this._sourceTopic, spoint);
     },
 
-    _connectOnFocus:function (targetTopic) {
+    _connectOnFocus:function (event, targetTopic) {
         var sourceTopic = this._sourceTopic;
         var mindmap = this._designer.getMindmap();
 

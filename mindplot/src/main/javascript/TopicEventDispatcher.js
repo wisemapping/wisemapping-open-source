@@ -17,7 +17,7 @@
  */
 
 mindplot.TopicEventDispatcher = new Class({
-    Extends: Events,
+    Extends: mindplot.Events,
     Static: {
         _instance: null,
 

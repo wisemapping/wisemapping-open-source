@@ -42,7 +42,7 @@ mindplot.MainTopic = new Class({
         //  Create group ...
         var groupAttributes = {width:100, height:100, coordSizeWidth:100, coordSizeHeight:100};
         var group = new web2d.Group(groupAttributes);
-        group.appendChild(innerShape);
+        group.append(innerShape);
 
         // Add Text ...
         if (this.getShapeType() != mindplot.model.TopicShape.IMAGE) {
@@ -50,7 +50,7 @@ mindplot.MainTopic = new Class({
             var text = this.getText();
             textShape.setText(text);
             textShape.setOpacity(0.5);
-            group.appendChild(textShape);
+            group.append(textShape);
         }
         return group;
     },

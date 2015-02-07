@@ -29,30 +29,26 @@ mindplot.ControlPoint = new Class({
             new web2d.Line({strokeColor:"#6589de", strokeWidth:1, opacity:0.3})];
 
         this._isBinded = false;
+        var me = this;
         this._controlPointsController[0].addEvent('mousedown', function(event) {
-            (this._mouseDown.bind(this))(event, mindplot.ControlPoint.FROM);
-        }.bind(this));
+            (me._mouseDown)(event, mindplot.ControlPoint.FROM, me);
+        });
         this._controlPointsController[0].addEvent('click', function(event) {
-            (this._mouseClick.bind(this))(event);
-        }.bind(this));
+            (me._mouseClick)(event);
+        });
         this._controlPointsController[0].addEvent('dblclick', function(event) {
-            (this._mouseClick.bind(this))(event);
-        }.bind(this));
+            (me._mouseClick)(event);
+        });
 
         this._controlPointsController[1].addEvent('mousedown', function(event) {
-            (this._mouseDown.bind(this))(event, mindplot.ControlPoint.TO);
-        }.bind(this));
+            (me._mouseDown)(event, mindplot.ControlPoint.TO, me);
+        });
         this._controlPointsController[1].addEvent('click', function(event) {
-            (this._mouseClick.bind(this))(event);
-        }.bind(this));
+            (me._mouseClick)(event);
+        });
         this._controlPointsController[1].addEvent('dblclick', function(event) {
-            (this._mouseClick.bind(this))(event);
-        }.bind(this));
-    },
-
-
-    setSide  : function(side) {
-        this._side = side;
+            (me._mouseClick)(event);
+        });
     },
 
     setLine  : function(line) {
@@ -91,22 +87,21 @@ mindplot.ControlPoint = new Class({
 
     },
 
-    _mouseDown  : function(event, point) {
+    _mouseDown  : function(event, point, me) {
         if (!this._isBinded) {
             this._isBinded = true;
-
             this._mouseMoveFunction = function(event) {
-                (this._mouseMoveEvent.bind(this))(event, point);
-            }.bind(this);
+                (me._mouseMoveEvent)(event, point, me);
+            };
 
             this._workspace.getScreenManager().addEvent('mousemove', this._mouseMoveFunction);
             this._mouseUpFunction = function(event) {
-                (this._mouseUp.bind(this))(event, point);
-            }.bind(this);
+                (me._mouseUp)(event, point, me);
+            };
             this._workspace.getScreenManager().addEvent('mouseup', this._mouseUpFunction);
         }
         event.preventDefault();
-        event.stop();
+        event.stopPropagation();
         return false;
     },
 
@@ -143,7 +138,7 @@ mindplot.ControlPoint = new Class({
 
     _mouseClick  : function(event) {
         event.preventDefault();
-        event.stop();
+        event.stopPropagation();
         return false;
     },
 
@@ -162,10 +157,10 @@ mindplot.ControlPoint = new Class({
 
     addToWorkspace  : function(workspace) {
         this._workspace = workspace;
-        workspace.appendChild(this._controlPointsController[0]);
-        workspace.appendChild(this._controlPointsController[1]);
-        workspace.appendChild(this._controlLines[0]);
-        workspace.appendChild(this._controlLines[1]);
+        workspace.append(this._controlPointsController[0]);
+        workspace.append(this._controlPointsController[1]);
+        workspace.append(this._controlLines[0]);
+        workspace.append(this._controlLines[1]);
     },
 
     removeFromWorkspace  : function(workspace) {

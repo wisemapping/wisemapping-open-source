@@ -27,14 +27,14 @@ mindplot.persistence.XMLSerializer_Beta = new Class({
         if ($defined(name)) {
             mapElem.setAttribute('name', name);
         }
-        document.appendChild(mapElem);
+        document.append(mapElem);
 
         // Create branches ...
         var topics = mindmap.getBranches();
         for (var i = 0; i < topics.length; i++) {
             var topic = topics[i];
             var topicDom = this._topicToXML(document, topic);
-            mapElem.appendChild(topicDom);
+            mapElem.append(topicDom);
         }
 
         return document;
@@ -110,7 +110,7 @@ mindplot.persistence.XMLSerializer_Beta = new Class({
         for (i = 0; i < icons.length; i++) {
             var icon = icons[i];
             var iconDom = this._iconToXML(document, icon);
-            parentTopic.appendChild(iconDom);
+            parentTopic.append(iconDom);
         }
 
         //LINKS
@@ -118,14 +118,14 @@ mindplot.persistence.XMLSerializer_Beta = new Class({
         for (i = 0; i < links.length; i++) {
             var link = links[i];
             var linkDom = this._linkToXML(document, link);
-            parentTopic.appendChild(linkDom);
+            parentTopic.append(linkDom);
         }
 
         var notes = topic.getNotes();
         for (i = 0; i < notes.length; i++) {
             var note = notes[i];
             var noteDom = this._noteToXML(document, note);
-            parentTopic.appendChild(noteDom);
+            parentTopic.append(noteDom);
         }
 
         //CHILDREN TOPICS
@@ -133,7 +133,7 @@ mindplot.persistence.XMLSerializer_Beta = new Class({
         for (i = 0; i < childTopics.length; i++) {
             var childTopic = childTopics[i];
             var childDom = this._topicToXML(document, childTopic);
-            parentTopic.appendChild(childDom);
+            parentTopic.append(childDom);
 
         }
 

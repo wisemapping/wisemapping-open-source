@@ -67,7 +67,7 @@ mindplot.DragTopic = new Class({
     },
 
     updateFreeLayout:function (event) {
-        var isFreeEnabled = (event.meta && Browser.Platform.mac) || (event.control && !Browser.Platform.mac);
+        var isFreeEnabled = (event.metaKey && Browser.Platform.mac) || (event.ctrlKey && !Browser.Platform.mac);
         if (this.isFreeLayoutOn() != isFreeEnabled) {
             var dragPivot = this._getDragPivot();
             dragPivot.setVisibility(!isFreeEnabled);
@@ -133,7 +133,7 @@ mindplot.DragTopic = new Class({
 
     addToWorkspace:function (workspace) {
         if (!this._isInWorkspace) {
-            workspace.appendChild(this._elem2d);
+            workspace.append(this._elem2d);
             var dragPivot = this._getDragPivot();
             dragPivot.addToWorkspace(workspace);
             this._isInWorkspace = true;
@@ -201,7 +201,7 @@ mindplot.DragTopic.init = function (workspace) {
 
     $assert(workspace, "workspace can not be null");
     var pivot = mindplot.DragTopic.__getDragPivot();
-    workspace.appendChild(pivot);
+    workspace.append(pivot);
 };
 
 mindplot.DragTopic.__getDragPivot = function () {

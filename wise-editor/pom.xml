@@ -9,13 +9,13 @@
         <groupId>org.wisemapping</groupId>
         <artifactId>wisemapping</artifactId>
         <relativePath>../pom.xml</relativePath>
-        <version>3.0.4</version>
+        <version>4.0.0</version>
     </parent>
 
     <dependencies>
         <dependency>
             <groupId>org.wisemapping</groupId>
-            <artifactId>core-js</artifactId>
+	    <artifactId>core-js</artifactId>
             <version>${com.wisemapping.version}</version>
             <scope>provided</scope>
         </dependency>

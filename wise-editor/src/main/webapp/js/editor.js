@@ -18,20 +18,41 @@
 
 var designer = null;
 
+
+/*
+* Disclaimer: this global variable is a temporary workaround to Mootools' Browser class
+* We need to avoid browser detection and replace it with feature detection,
+* jquery recommends: http://www.modernizr.com/
+*/
+
+Browser = {
+    firefox: window.globalStorage,
+    ie: document.all && !window.opera,
+    ie6: !window.XMLHttpRequest,
+    ie7: document.all && window.XMLHttpRequest && !XDomainRequest && !window.opera,
+    ie8: document.documentMode==8,
+    opera: Boolean(window.opera),
+    chrome: Boolean(window.chrome),
+    safari: window.getComputedStyle && !window.globalStorage && !window.opera,
+    Platform: {
+        mac: navigator.platform.indexOf('Mac') != -1
+    }
+};
+
 function buildDesigner(options) {
 
-    var container = $(options.container);
+    var container = $("#"+options.container);
     $assert(container, 'container could not be null');
 
     // Register load events ...
     designer = new mindplot.Designer(options, container);
     designer.addEvent('loadSuccess', function () {
-        window.waitDialog.close.delay(1000, window.waitDialog);
+        window.waitDialog.close();
         window.waitDialog = null;
         window.mindmapLoadReady = true;
     });
 
-    window.onerror = function (message, url, lineNo) {
+    var onerrorFn = function (message, url, lineNo) {
 
         // Ignore errors ...
         if (message === "Script error." && lineNo == 0) {
@@ -50,22 +71,21 @@ function buildDesigner(options) {
         }
         errorMsg = errorMsg.toString();
 
-        new Request({
+        $.ajax({
             method:'post',
             url:"/c/restful/logger/editor",
             headers:{"Content-Type":"application/json", "Accept":"application/json"},
-            emulation:false,
-            urlEncoded:false
-        }).post(JSON.encode({
-            jsErrorMsg:"Message: '" + errorMsg + "', line:'" + lineNo + "', url: :" + url,
-            jsStack:window.errorStack,
-            userAgent:navigator.userAgent,
-            mapId:options.mapId}));
-
+            data: {
+                    jsErrorMsg: "Message: '" + errorMsg + "', line:'" + lineNo + "', url: :" + url,
+                    jsStack: window.errorStack,
+                    userAgent: navigator.userAgent,
+                    mapId: options.mapId
+            }
+        });
 
         // Close loading dialog ...
         if (window.waitDialog) {
-            window.waitDialog.close.delay(1000, window.waitDialog);
+            window.waitDialog.close();
             window.waitDialog = null;
         }
 
@@ -75,6 +95,9 @@ function buildDesigner(options) {
             $notifyModal($msg('UNEXPECTED_ERROR_LOADING'));
         }
     };
+
+    // @Todo: Remove this after all is fixed.
+//    window.onerror = onerrorFn;
 
     // Configure default persistence manager ...
     var persistence;
@@ -92,7 +115,7 @@ function buildDesigner(options) {
     mindplot.PersistenceManager.init(persistence);
 
     // Register toolbar event ...
-    if ($('toolbar')) {
+    if ($('#toolbar')) {
         var menu = new mindplot.widget.Menu(designer, 'toolbar', options.mapId, "");
 
         //  If a node has focus, focus can be move to another node using the keys.
@@ -108,17 +131,17 @@ function buildDesigner(options) {
 function loadDesignerOptions(jsonConf) {
     // Load map options ...
     var result;
+    var me = this;
     if (jsonConf) {
-        var request = new Request.JSON({
-                url:jsonConf,
-                async:false,
-                onSuccess:function (options) {
-                    this.options = options;
-
-                }.bind(this)
+        $.ajax({
+            url: jsonConf,
+            dataType: 'json',
+            async: false,
+            method: 'get',
+            success: function (options) {
+                me.options = options;
             }
-        );
-        request.get();
+        });
         result = this.options;
     }
     else {
@@ -139,75 +162,28 @@ function loadDesignerOptions(jsonConf) {
 
 editor = {};
 editor.WaitDialog = new Class({
-    Extends:MooDialog,
     initialize:function () {
-        var panel = this._buildPanel();
-        this.parent({
-                closeButton:false,
-                destroyOnClose:true,
-                autoOpen:false,
-                useEscKey:false,
-                title:'',
-                onInitialize:function (wrapper) {
-                    wrapper.setStyle('opacity', 0);
-                    this.wrapper.setStyle('display', 'none');
-                    this.fx = new Fx.Morph(wrapper, {
-                        duration:100,
-                        transition:Fx.Transitions.Bounce.easeOut
-                    });
-                },
-
-                onBeforeOpen:function () {
-                    this.overlay = new Overlay(this.options.inject, {
-                        duration:this.options.duration
-                    });
-                    this.overlay.open();
-                    this.fx.start({
-                        'margin-top':[-200, -100],
-                        opacity:[0, 1]
-                    }).chain(function () {
-                        this.fireEvent('show');
-                        this.wrapper.setStyle('display', 'block');
-
-                    }.bind(this));
-                },
-
-                onBeforeClose:function () {
-                    this.fx.start({
-                        'margin-top':[-100, 0],
-                        opacity:0,
-                        duration:200
-                    }).chain(function () {
-                        this.fireEvent('hide');
-                        this.wrapper.setStyle('display', 'none');
-
-                    }.bind(this));
-                }}
-        );
-        this.setContent(panel);
+        this.panel = this._buildPanel();
     },
 
     _buildPanel:function () {
-        var result = new Element('div');
-        result.setStyles({
-            'text-align':'center',
-            width:'400px'
-        });
-        var img = new Element('img', {'src':'images/ajax-loader.gif'});
-        img.setStyle('margin-top', '15px');
-        img.inject(result);
+        var result = $('#load');
+        var content = result.find('.modal-content');
+        var winH = $(window).height();
+        //Set the popup window to center
+        content.css('margin-top',  winH/2 - content.height()/2);
         return result;
     },
 
     show:function () {
-        this.open();
+        this.panel.modal({
+            backdrop: 'static'
+        });
     },
 
-    destroy:function () {
-        this.parent();
-        this.overlay.destroy();
+    close: function() {
+        this.panel.modal('hide');
     }
-
 });
 
 // Show loading dialog ...
@@ -215,4 +191,4 @@ waitDialog = new editor.WaitDialog();
 waitDialog.show();
 
 // Loading libraries ...
-Asset.javascript("js/mindplot-min.js");
+jQuery.getScript("js/mindplot-min.js");

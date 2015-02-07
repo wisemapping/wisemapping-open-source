@@ -17,21 +17,21 @@
  */
 
 mindplot.widget.Menu = new Class({
-    Extends:mindplot.widget.IMenu,
+    Extends: mindplot.widget.IMenu,
 
-    initialize:function (designer, containerId, mapId, readOnly, baseUrl) {
+    initialize: function (designer, containerId, mapId, readOnly, baseUrl) {
         this.parent(designer, containerId, mapId);
 
         baseUrl = !$defined(baseUrl) ? "" : baseUrl;
         var widgetsBaseUrl = baseUrl + "css/widget";
 
         // Stop event propagation ...
-        $(this._containerId).addEvent('click', function (event) {
+        $('#'+this._containerId).bind('click', function (event) {
             event.stopPropagation();
             return false;
         });
 
-        $(this._containerId).addEvent('dblclick', function (event) {
+        $("#" + this._containerId).bind('dblclick', function (event) {
             event.stopPropagation();
             return false;
         });
@@ -39,10 +39,10 @@ mindplot.widget.Menu = new Class({
         // Create panels ...
         var designerModel = designer.getModel();
 
-        var fontFamilyBtn = $('fontFamily');
+        var fontFamilyBtn = $('#fontFamily');
         if (fontFamilyBtn) {
             var fontFamilyModel = {
-                getValue:function () {
+                getValue: function () {
                     var nodes = designerModel.filterSelectedTopics();
                     var result = null;
                     for (var i = 0; i < nodes.length; i++) {
@@ -56,7 +56,7 @@ mindplot.widget.Menu = new Class({
                     return result;
                 },
 
-                setValue:function (value) {
+                setValue: function (value) {
                     designer.changeFontFamily(value);
 
                 }
@@ -65,10 +65,10 @@ mindplot.widget.Menu = new Class({
             this._registerTooltip('fontFamily', $msg('FONT_FAMILY'));
         }
 
-        var fontSizeBtn = $('fontSize');
+        var fontSizeBtn = $('#fontSize');
         if (fontSizeBtn) {
             var fontSizeModel = {
-                getValue:function () {
+                getValue: function () {
                     var nodes = designerModel.filterSelectedTopics();
                     var result = null;
                     for (var i = 0; i < nodes.length; i++) {
@@ -81,7 +81,7 @@ mindplot.widget.Menu = new Class({
                     }
                     return result;
                 },
-                setValue:function (value) {
+                setValue: function (value) {
                     designer.changeFontSize(value);
                 }
             };
@@ -89,10 +89,10 @@ mindplot.widget.Menu = new Class({
             this._registerTooltip('fontSize', $msg('FONT_SIZE'));
         }
 
-        var topicShapeBtn = $('topicShape');
+        var topicShapeBtn = $('#topicShape');
         if (topicShapeBtn) {
             var topicShapeModel = {
-                getValue:function () {
+                getValue: function () {
                     var nodes = designerModel.filterSelectedTopics();
                     var result = null;
                     for (var i = 0; i < nodes.length; i++) {
@@ -105,7 +105,7 @@ mindplot.widget.Menu = new Class({
                     }
                     return result;
                 },
-                setValue:function (value) {
+                setValue: function (value) {
                     designer.changeTopicShape(value);
                 }
             };
@@ -113,14 +113,14 @@ mindplot.widget.Menu = new Class({
             this._registerTooltip('topicShape', $msg('TOPIC_SHAPE'));
         }
 
-        var topicIconBtn = $('topicIcon');
+        var topicIconBtn = $('#topicIcon');
         if (topicIconBtn) {
             // Create icon panel dialog ...
             var topicIconModel = {
-                getValue:function () {
+                getValue: function () {
                     return null;
                 },
-                setValue:function (value) {
+                setValue: function (value) {
                     designer.addIconType(value);
                 }
             };
@@ -129,11 +129,11 @@ mindplot.widget.Menu = new Class({
         }
 
         // Topic color item ...
-        var topicColorBtn = $('topicColor');
+        var topicColorBtn = $('#topicColor');
         if (topicColorBtn) {
 
             var topicColorModel = {
-                getValue:function () {
+                getValue: function () {
                     var nodes = designerModel.filterSelectedTopics();
                     var result = null;
                     for (var i = 0; i < nodes.length; i++) {
@@ -146,7 +146,7 @@ mindplot.widget.Menu = new Class({
                     }
                     return result;
                 },
-                setValue:function (hex) {
+                setValue: function (hex) {
                     designer.changeBackgroundColor(hex);
                 }
             };
@@ -155,11 +155,11 @@ mindplot.widget.Menu = new Class({
         }
 
         // Border color item ...
-        var topicBorderBtn = $('topicBorder');
+        var topicBorderBtn = $('#topicBorder');
         if (topicBorderBtn) {
             var borderColorModel =
             {
-                getValue:function () {
+                getValue: function () {
                     var nodes = designerModel.filterSelectedTopics();
                     var result = null;
                     for (var i = 0; i < nodes.length; i++) {
@@ -172,7 +172,7 @@ mindplot.widget.Menu = new Class({
                     }
                     return result;
                 },
-                setValue:function (hex) {
+                setValue: function (hex) {
                     designer.changeBorderColor(hex);
                 }
             };
@@ -181,11 +181,11 @@ mindplot.widget.Menu = new Class({
         }
 
         // Font color item ...
-        var fontColorBtn = $('fontColor');
+        var fontColorBtn = $('#fontColor');
         if (fontColorBtn) {
             var fontColorModel =
             {
-                getValue:function () {
+                getValue: function () {
                     var result = null;
                     var nodes = designerModel.filterSelectedTopics();
                     for (var i = 0; i < nodes.length; i++) {
@@ -198,7 +198,7 @@ mindplot.widget.Menu = new Class({
                     }
                     return result;
                 },
-                setValue:function (hex) {
+                setValue: function (hex) {
                     designer.changeFontColor(hex);
                 }
             };
@@ -207,26 +207,20 @@ mindplot.widget.Menu = new Class({
         }
 
         this._addButton('export', false, false, function () {
-            var reqDialog = new MooDialog.Request('c/iframeWrapper.htm?url=c/maps/' + mapId + "/exportf", null,
-                {'class':'modalDialog exportModalDialog',
-                    closeButton:true,
-                    destroyOnClose:true,
-                    title:$msg('EXPORT')
-                });
-            reqDialog.setRequestOptions({
-                onRequest:function () {
-                    reqDialog.setContent($msg('LOADING'));
-                }
+            BootstrapDialog.Request.active = new BootstrapDialog.Request('c/maps/' + mapId + "/exportf", $msg('EXPORT'), {
+                cancelButton: true,
+                closeButton: true
             });
-            MooDialog.Request.active = reqDialog;
         });
         this._registerTooltip('export', $msg('EXPORT'));
 
+        var me = this;
+
         this._addButton('print', false, false, function () {
-            this.save(saveElem, designer, false);
+            me.save(saveElem, designer, false);
             var baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf("c/maps/"));
             window.open(baseUrl + 'c/maps/' + mapId + '/print');
-        }.bind(this));
+        });
 
         this._registerTooltip('print', $msg('PRINT'));
 
@@ -271,7 +265,7 @@ mindplot.widget.Menu = new Class({
                     redoButton.disable();
                 }
 
-            }.bind(this));
+            });
         }
 
         this._addButton('addTopic', true, false, function () {
@@ -315,96 +309,73 @@ mindplot.widget.Menu = new Class({
         });
         this._registerTooltip('fontItalic', $msg('FONT_ITALIC'), "meta+I");
 
-
-        var saveElem = $('save');
+        var saveElem = $('#save');
         if (saveElem) {
-            this._addButton('save', false, false, function () {
-                this.save(saveElem, designer, true);
-            }.bind(this));
+            this._addButton('save', false, false,
+                function () {
+                    me.save(saveElem, designer, true);
+                });
             this._registerTooltip('save', $msg('SAVE'), "meta+S");
 
 
             if (!readOnly) {
                 // To prevent the user from leaving the page with changes ...
-                Element.NativeEvents.unload = 1;
-                $(window).addEvent('unload', function () {
-                    if (this.isSaveRequired()) {
-                        this.save(saveElem, designer, false, true);
+//                Element.NativeEvents.unload = 1;
+                $(window).bind('unload', function () {
+                    if (me.isSaveRequired()) {
+                        me.save(saveElem, designer, false, true);
                     }
-                    this.unlockMap(designer);
-                }.bind(this));
+                    me.unlockMap(designer);
+                });
 
                 // Autosave on a fixed period of time ...
-                (function () {
-                    if (this.isSaveRequired()) {
-                        this.save(saveElem, designer, false);
-                    }
-                }.bind(this)).periodical(30000);
+                setInterval(
+                    function() {
+                        if (me.isSaveRequired()) {
+                            me.save(saveElem, designer, false);
+                        }
+                    }, 30000);
             }
         }
 
-        var discardElem = $('discard');
+        var discardElem = $('#discard');
         if (discardElem) {
             this._addButton('discard', false, false, function () {
-                this.discardChanges(designer);
-            }.bind(this));
+                me.discardChanges(designer);
+            });
             this._registerTooltip('discard', $msg('DISCARD_CHANGES'));
         }
 
-        var shareElem = $('shareIt');
+        var shareElem = $('#shareIt');
         if (shareElem) {
             this._addButton('shareIt', false, false, function () {
-                var reqDialog = new MooDialog.Request('c/iframeWrapper?url=c/maps/' + mapId + "/sharef", null,
-                    {'class':'modalDialog shareModalDialog',
-                        closeButton:true,
-                        destroyOnClose:true,
-                        title:$msg('COLLABORATE')
-                    });
-                reqDialog.setRequestOptions({
-                    onRequest:function () {
-                        reqDialog.setContent($msg('LOADING'));
-                    }
+                BootstrapDialog.Request.active = new BootstrapDialog.Request('c/maps/' + mapId + "/sharef", $msg('COLLABORATE'), {
+                        closeButton: true,
+                        cancelButton: true
                 });
-                MooDialog.Request.active = reqDialog;
             });
             this._registerTooltip('shareIt', $msg('COLLABORATE'));
 
         }
 
-        var publishElem = $('publishIt');
+        var publishElem = $('#publishIt');
         if (publishElem) {
             this._addButton('publishIt', false, false, function () {
-                var reqDialog = new MooDialog.Request('c/iframeWrapper?url=c/maps/' + mapId + "/publishf", null,
-                    {'class':'modalDialog publishModalDialog',
-                        closeButton:true,
-                        destroyOnClose:true,
-                        title:$msg('PUBLISH')
-                    });
-                reqDialog.setRequestOptions({
-                    onRequest:function () {
-                        reqDialog.setContent($msg('LOADING'));
-                    }
+                BootstrapDialog.Request.active = new BootstrapDialog.Request('c/maps/' + mapId + "/publishf", $msg('PUBLISH'), {
+                        closeButton: true,
+                        cancelButton: true
                 });
-                MooDialog.Request.active = reqDialog;
-
             });
             this._registerTooltip('publishIt', $msg('PUBLISH'));
         }
 
-        var historyElem = $('history');
+        var historyElem = $('#history');
         if (historyElem) {
 
             this._addButton('history', false, false, function () {
-                var reqDialog = new MooDialog.Request('c/iframeWrapper?url=c/maps/' + mapId + "/historyf", null,
-                    {'class':'modalDialog historyModalDialog',
-                        closeButton:true,
-                        destroyOnClose:true,
-                        title:$msg('HISTORY')
-                    });
-                reqDialog.setRequestOptions({
-                    onRequest:function () {
-                        reqDialog.setContent($msg('LOADING'));
-                    }
+                BootstrapDialog.Request.active = new BootstrapDialog.Request('c/maps/' + mapId + "/historyf", $msg('HISTORY'), {
+                    closeButton: true,
+                    cancelButton: true
                 });
             });
             this._registerTooltip('history', $msg('HISTORY'));
@@ -413,35 +384,27 @@ mindplot.widget.Menu = new Class({
         this._registerEvents(designer);
 
         // Keyboard Shortcuts Action ...
-        var keyboardShortcut = $('keyboardShortcuts');
+        var keyboardShortcut = $('#keyboardShortcuts');
         if (keyboardShortcut) {
 
-            keyboardShortcut.addEvent('click', function (event) {
-                var reqDialog = new MooDialog.Request('c/keyboard', null,
-                    {'class':'modalDialog keyboardModalDialog',
-                        closeButton:true,
-                        destroyOnClose:true,
-                        title:$msg('SHORTCUTS')
-                    });
-                reqDialog.setRequestOptions({
-                    onRequest:function () {
-                        reqDialog.setContent($msg('LOADING'));
-                    }
+            keyboardShortcut.bind('click', function (event) {
+                BootstrapDialog.Request.active = new BootstrapDialog.Request('c/keyboard', $msg('SHORTCUTS'), {
+                    closeButton: true,
+                    cancelButton: true
                 });
-                MooDialog.Request.active = reqDialog;
                 event.preventDefault();
             });
         }
 
 
-        var videoElem = $("tutorialVideo");
+        var videoElem = $('#tutorialVideo');
         if (videoElem) {
             var width = 900;
             var height = 500;
             var left = (screen.width / 2) - (width / 2);
             var top = (screen.height / 2) - (height / 2);
 
-            videoElem.addEvent('click', function (event) {
+            videoElem.bind('click', function (event) {
                 window.open("https://www.youtube.com/tv?vq=medium#/watch?v=rKxZwNKs9cE", "_blank", 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=no, width=' + width + ', height=' + height + ', top=' + top + ', left=' + left);
                 event.preventDefault();
             });
@@ -449,20 +412,20 @@ mindplot.widget.Menu = new Class({
 
     },
 
-    _registerEvents:function (designer) {
-
+    _registerEvents: function (designer) {
+        var me = this;
         // Register on close events ...
-        this._toolbarElems.each(function (elem) {
+        _.each(this._toolbarElems, function (elem) {
             elem.addEvent('show', function () {
-                this.clear()
-            }.bind(this));
-        }.bind(this));
+                me.clear()
+            });
+        });
 
         designer.addEvent('onblur', function () {
             var topics = designer.getModel().filterSelectedTopics();
             var rels = designer.getModel().filterSelectedRelationships();
 
-            this._toolbarElems.each(function (button) {
+            _.each(me._toolbarElems, function (button) {
                 var isTopicAction = button.isTopicAction();
                 var isRelAction = button.isRelAction();
 
@@ -474,13 +437,13 @@ mindplot.widget.Menu = new Class({
                     }
                 }
             })
-        }.bind(this));
+        });
 
         designer.addEvent('onfocus', function () {
             var topics = designer.getModel().filterSelectedTopics();
             var rels = designer.getModel().filterSelectedRelationships();
 
-            this._toolbarElems.each(function (button) {
+            _.each(me._toolbarElems, function (button) {
                 var isTopicAction = button.isTopicAction();
                 var isRelAction = button.isRelAction();
 
@@ -495,18 +458,19 @@ mindplot.widget.Menu = new Class({
                     }
                 }
             })
-        }.bind(this));
+        });
     },
 
-    _addButton:function (buttonId, topic, rel, fn) {
+    _addButton: function (buttonId, topic, rel, fn) {
+        var me = this;
         // Register Events ...
         var result = null;
-        if ($(buttonId)) {
+        if ($('#'+buttonId)) {
 
             var button = new mindplot.widget.ToolbarItem(buttonId, function (event) {
                 fn(event);
-                this.clear();
-            }.bind(this), {topicAction:topic, relAction:rel});
+                me.clear();
+            }, {topicAction: topic, relAction: rel});
 
             this._toolbarElems.push(button);
             result = button;
@@ -514,14 +478,14 @@ mindplot.widget.Menu = new Class({
         return result;
     },
 
-    _registerTooltip:function (buttonId, text, shortcut) {
-        if ($(buttonId)) {
+    _registerTooltip: function (buttonId, text, shortcut) {
+        if ($('#'+buttonId)) {
             var tooltip = text;
             if (shortcut) {
                 shortcut = Browser.Platform.mac ? shortcut.replace("meta+", "⌘") : shortcut.replace("meta+", "ctrl+");
                 tooltip = tooltip + " (" + shortcut + ")";
             }
-            new mindplot.widget.KeyboardShortcutTooltip($(buttonId), tooltip);
+            new mindplot.widget.KeyboardShortcutTooltip($('#'+buttonId), tooltip);
         }
     }
 });
