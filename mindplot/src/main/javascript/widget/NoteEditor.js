@@ -54,6 +54,9 @@ mindplot.widget.NoteEditor = new Class({
             'height':80,
             'resize':'none'
         });
+        textArea.on("keypress", function(event) {
+            event.stopPropagation();
+        });
         form.append(textArea);
 
         if (model.getValue() != null){
