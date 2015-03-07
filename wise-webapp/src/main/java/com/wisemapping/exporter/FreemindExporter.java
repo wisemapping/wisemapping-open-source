@@ -22,6 +22,7 @@ package com.wisemapping.exporter;
 import com.wisemapping.importer.VersionNumber;
 import com.wisemapping.importer.freemind.FreemindConstant;
 import com.wisemapping.importer.freemind.FreemindIconConverter;
+import com.wisemapping.jaxb.freemind.Font;
 import com.wisemapping.jaxb.wisemap.Note;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.ShapeStyle;
@@ -48,6 +49,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class FreemindExporter
         implements Exporter {
@@ -179,7 +181,7 @@ public class FreemindExporter
 
         String wiseShape = mindmapTopic.getShape();
         if (wiseShape != null && !ShapeStyle.LINE.equals(ShapeStyle.fromValue(wiseShape))) {
-            freemindNode.setBACKGROUNDCOLOR(mindmapTopic.getBgColor());
+            freemindNode.setBACKGROUNDCOLOR(this.rgbToHex(mindmapTopic.getBgColor()));
         }
         final String shape = mindmapTopic.getShape();
         if (shape != null && !shape.isEmpty()) {
@@ -268,7 +270,7 @@ public class FreemindExporter
     private void addEdgeNode(com.wisemapping.jaxb.freemind.Node freemindNode, com.wisemapping.jaxb.wisemap.TopicType mindmapTopic) {
         if (mindmapTopic.getBrColor() != null) {
             final Edge edgeNode = objectFactory.createEdge();
-            edgeNode.setCOLOR(mindmapTopic.getBrColor());
+            edgeNode.setCOLOR(this.rgbToHex(mindmapTopic.getBrColor()));
             freemindNode.getArrowlinkOrCloudOrEdge().add(edgeNode);
         }
     }
@@ -311,7 +313,7 @@ public class FreemindExporter
 
                 // Font Color
                 if (idx < countParts && part[idx].length() != 0) {
-                    freemindNode.setCOLOR(part[idx]);
+                    freemindNode.setCOLOR(this.rgbToHex(part[idx]));
                 }
                 idx++;
 
@@ -353,6 +355,18 @@ public class FreemindExporter
         wiseToFreeFontSize.put(15, 24);
     }
 
+    private String rgbToHex(String color) {
+        String result = color;
+        boolean isRGB = Pattern.matches("^rgb\\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}\\)$", color);
+        if (isRGB) {
+            String[] rgb = color.substring(4, color.length() - 1).split(",");
+            Integer r = Integer.valueOf(rgb[0].trim());
+            Integer g = Integer.valueOf(rgb[1].trim());
+            Integer b = Integer.valueOf(rgb[2].trim());
+            result = String.format("#%02x%02x%02x", r, g, b);
+        }
+        return result;
+    }
 
     public VersionNumber getVersion() {
         return version;
