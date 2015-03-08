@@ -357,13 +357,15 @@ public class FreemindExporter
 
     private String rgbToHex(String color) {
         String result = color;
-        boolean isRGB = Pattern.matches("^rgb\\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}\\)$", color);
-        if (isRGB) {
-            String[] rgb = color.substring(4, color.length() - 1).split(",");
-            Integer r = Integer.valueOf(rgb[0].trim());
-            Integer g = Integer.valueOf(rgb[1].trim());
-            Integer b = Integer.valueOf(rgb[2].trim());
-            result = String.format("#%02x%02x%02x", r, g, b);
+        if (color != null) {
+            boolean isRGB = Pattern.matches("^rgb\\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}\\)$", color);
+            if (isRGB) {
+                String[] rgb = color.substring(4, color.length() - 1).split(",");
+                Integer r = Integer.valueOf(rgb[0].trim());
+                Integer g = Integer.valueOf(rgb[1].trim());
+                Integer b = Integer.valueOf(rgb[2].trim());
+                result = String.format("#%02x%02x%02x", r, g, b);
+            }
         }
         return result;
     }
