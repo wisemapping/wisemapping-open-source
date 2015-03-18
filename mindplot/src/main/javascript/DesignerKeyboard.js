@@ -50,7 +50,9 @@ mindplot.DesignerKeyboard = new Class({
             }
         );
         this.addShortcut(
-            ['f2'],function() {
+            ['f2'],function(event) {
+                event.stopPropagation();
+                event.preventDefault();
                 var node = model.selectedTopic();
                 if (node) {
                     node.showTextEditor();
