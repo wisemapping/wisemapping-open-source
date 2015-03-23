@@ -16,9 +16,15 @@
  *   limitations under the License.
  */
 
-mindplot.widget.LinkEditor = new Class({
+mindplot.widget.LinkEditor = new Class(/** @lends LinkEditor */{
     Extends:BootstrapDialog,
 
+    /**
+     * @constructs
+     * @param model
+     * @throws will throw an error if model is null or undefined
+     * @extends BootstrapDialog
+     */
     initialize:function (model) {
         $assert(model, "model can not be null");
         this._model = model;
@@ -101,11 +107,20 @@ mindplot.widget.LinkEditor = new Class({
         return result;
     },
 
+    /** 
+     * checks whether the input is a valid url 
+     * @return {Boolean} true if the url is valid
+     */
     checkURL: function(url){
         var regex = /^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
         return(regex.test(url));
     },
 
+    /**
+     * overrides abstract parent method
+     * triggered when the user clicks the accept button - submits the url input
+     * @param event
+     */
     onAcceptClick: function(event) {
         this.formSubmitted = false;
         $("#linkFormId").trigger('submit');
@@ -114,10 +129,18 @@ mindplot.widget.LinkEditor = new Class({
         }
     },
 
+    /**
+     * overrides parent method
+     * sets the url input on focus 
+     */
     onDialogShown: function() {
         $(this).find('#inputUrl').focus();
     },
 
+    /**
+     * overrides abstract parent method
+     * triggered when the user clicks the remove button - deletes the link
+     */
     onRemoveClick: function(event) {
         event.data.model.setValue(null);
         event.data.dialog.close();

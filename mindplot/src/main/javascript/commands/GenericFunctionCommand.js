@@ -16,8 +16,19 @@
  *   limitations under the License.
  */
 
-mindplot.commands.GenericFunctionCommand = new Class({
+mindplot.commands.GenericFunctionCommand = new Class(/** @lends GenericFunctionCommand */{
     Extends:mindplot.Command,
+    /**
+     * @classdesc This command handles do/undo of different actions, e.g. moving topics to 
+     * a different position, changing text or font,... (for full reference check the 
+     * StandaloneActionDispatcher i.e. the ActionDispatcher subclass in use)
+     * @constructs
+     * @param {Function} commandFunc the function the command shall execute
+     * @param {String|Array<String>} topicsIds the ids of the topics affected
+     * @param {Object} value arbitrary value necessary for the execution of the function,
+     * e.g. color, font family or text
+     * @extends mindplot.Command
+     */
     initialize:function (commandFunc, topicsIds, value) {
         $assert(commandFunc, "commandFunc must be defined");
         $assert($defined(topicsIds), "topicsIds must be defined");
@@ -29,6 +40,9 @@ mindplot.commands.GenericFunctionCommand = new Class({
         this._oldValues = [];
     },
 
+    /** 
+     * Overrides abstract parent method 
+     */
     execute:function (commandContext) {
         if (!this.applied) {
 
@@ -60,6 +74,10 @@ mindplot.commands.GenericFunctionCommand = new Class({
 
     },
 
+    /** 
+     * Overrides abstract parent method
+     * @see {@link mindplot.Command.undoExecute} 
+     */
     undoExecute:function (commandContext) {
         if (this.applied) {
             var topics = commandContext.findTopics(this._topicsId);

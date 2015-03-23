@@ -16,9 +16,18 @@
  *   limitations under the License.
  */
 
-mindplot.layout.AbstractBasicSorter = new Class({
+/**
+ * @class
+ * @extends mindplot.layout.ChildrenSorterStrategy
+ */
+mindplot.layout.AbstractBasicSorter = new Class(/** @lends AbstractBasicSorter */{
     Extends: mindplot.layout.ChildrenSorterStrategy,
 
+    /**
+     * @param {} treeSet
+     * @param {} node
+     * @return the height of a node and its children if existing and not shrunken
+     */
     computeChildrenIdByHeights: function(treeSet, node) {
         var result = {};
         this._computeChildrenHeight(treeSet, node, result);
@@ -67,5 +76,15 @@ mindplot.layout.AbstractBasicSorter = new Class({
 
 });
 
+/**
+ * @constant
+ * @type {Number}
+ * @default
+ */
 mindplot.layout.AbstractBasicSorter.INTERNODE_VERTICAL_PADDING = 5;
+/**
+ * @constant
+ * @type {Number}
+ * @default
+ */
 mindplot.layout.AbstractBasicSorter.INTERNODE_HORIZONTAL_PADDING = 30;

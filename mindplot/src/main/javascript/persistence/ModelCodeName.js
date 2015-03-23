@@ -15,6 +15,11 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
+/**
+ * Enum for wisemap version names
+ * @enum {String}
+ */
 mindplot.persistence.ModelCodeName = {
     BETA : "beta",
     PELA : "pela",

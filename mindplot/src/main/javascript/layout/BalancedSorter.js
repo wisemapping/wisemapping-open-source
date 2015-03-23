@@ -15,13 +15,25 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.layout.BalancedSorter = new Class({
-    Extends:mindplot.layout.AbstractBasicSorter,
 
+mindplot.layout.BalancedSorter = new Class(/** @lends BalancedSorter */{
+    Extends:mindplot.layout.AbstractBasicSorter,
+    /** 
+     * @constructs
+     * @extends mindplot.layout.AbstractBasicSorter
+     */
     initialize:function () {
 
     },
 
+    /**
+     * @param {} graph
+     * @param {} parent
+     * @param {} node
+     * @param {} position
+     * @param {Boolean} free
+     * @return an array with order and position
+     */
     predict:function (graph, parent, node, position, free) {
         // If its a free node...
         if (free) {
@@ -99,6 +111,12 @@ mindplot.layout.BalancedSorter = new Class({
         return result;
     },
 
+    /**
+     * @param {} treeSet
+     * @param {} parent
+     * @param {} child
+     * @param {} order
+     */
     insert:function (treeSet, parent, child, order) {
         var children = this._getChildrenForOrder(parent, treeSet, order);
 
@@ -124,6 +142,10 @@ mindplot.layout.BalancedSorter = new Class({
         child.setOrder(newOrder);
     },
 
+    /**
+     * @param {} treeSet
+     * @param {} node
+     */
     detach:function (treeSet, node) {
         var parent = treeSet.getParent(node);
         // Filter nodes on one side..
@@ -137,6 +159,11 @@ mindplot.layout.BalancedSorter = new Class({
         node.setOrder(node.getOrder() % 2 == 0 ? 0 : 1);
     },
 
+    /**
+     * @param {} treeSet
+     * @param {} node
+     * @return offsets
+     */
     computeOffsets:function (treeSet, node) {
         $assert(treeSet, "treeSet can no be null.");
         $assert(node, "node can no be null.");
@@ -189,6 +216,11 @@ mindplot.layout.BalancedSorter = new Class({
         return result;
     },
 
+    /**
+     * @param {} treeSet
+     * @param {} node
+     * @throw will throw an error if order elements are missing
+     */
     verify:function (treeSet, node) {
         // Check that all is consistent ...
         var children = this._getChildrenForOrder(node, treeSet, node.getOrder());
@@ -202,10 +234,18 @@ mindplot.layout.BalancedSorter = new Class({
         }
     },
 
+    /**
+     * @param {} treeSet
+     * @param {} child
+     * @return the direction of the child within the treeSet 
+     */
     getChildDirection:function (treeSet, child) {
         return child.getOrder() % 2 == 0 ? 1 : -1;
     },
 
+    /**
+     * @return {String} the print name of this class
+     */
     toString:function () {
         return "Balanced Sorter";
     },
@@ -221,5 +261,15 @@ mindplot.layout.BalancedSorter = new Class({
     }
 });
 
+/**
+ * @constant
+ * @type {Number}
+ * @default
+ */
 mindplot.layout.BalancedSorter.INTERNODE_VERTICAL_PADDING = 5;
+/**
+ * @constant
+ * @type {Number}
+ * @default
+ */
 mindplot.layout.BalancedSorter.INTERNODE_HORIZONTAL_PADDING = 30;
