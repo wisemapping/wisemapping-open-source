@@ -15,9 +15,19 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.layout.GridSorter = new Class({
+
+/**
+ * @class
+ * @extends mindplot.layout.AbstractBasicSorter
+ */
+mindplot.layout.GridSorter = new Class(/** @lends GridSorter */{
     Extends: mindplot.layout.AbstractBasicSorter,
 
+    /**
+     * @param {} treeSet
+     * @param {} node
+     * @return offsets
+     */
     computeOffsets: function(treeSet, node) {
         $assert(treeSet, "treeSet can no be null.");
         $assert(node, "node can no be null.");
@@ -58,12 +68,25 @@ mindplot.layout.GridSorter = new Class({
         return result;
     },
 
+    /**
+     * @return {String} the print name of this class
+     */
     toString:function() {
         return "Grid Sorter";
     }
 
 });
 
+/**
+ * @constant
+ * @type {Number}
+ * @default
+ */
 mindplot.layout.GridSorter.GRID_HORIZONTAR_SIZE = 20;
+/**
+ * @constant
+ * @type {Number}
+ * @default
+ */
 mindplot.layout.GridSorter.INTER_NODE_VERTICAL_DISTANCE = 50;
 

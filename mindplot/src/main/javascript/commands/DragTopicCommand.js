@@ -16,8 +16,17 @@
  *   limitations under the License.
  */
 
-mindplot.commands.DragTopicCommand = new Class({
+mindplot.commands.DragTopicCommand = new Class(/** @lends DragTopicCommand */{
     Extends:mindplot.Command,
+    /** 
+     * @classdesc This command class handles do/undo of dragging a topic to a new position.
+     * @constructs
+     * @param {String} topicId id of the topic to drag
+     * @param {Object} position
+     * @param {Number} order the order property (children of one node are displayed in order from 0 to n)
+     * @param {mindplot.Topic} parentTopic the topic to be made the dragged topic's new parent
+     * @extends mindplot.Command
+     */
     initialize:function (topicId, position, order, parentTopic) {
         $assert(topicId, "topicId must be defined");
 
@@ -30,6 +39,9 @@ mindplot.commands.DragTopicCommand = new Class({
         this._order = order;
     },
 
+    /** 
+     * Overrides abstract parent method 
+     */
     execute:function (commandContext) {
 
         var topic = commandContext.findTopics(this._topicsId)[0];
@@ -78,6 +90,10 @@ mindplot.commands.DragTopicCommand = new Class({
 
     },
 
+    /** 
+     * Overrides abstract parent method
+     * @see {@link mindplot.Command.undoExecute} 
+     */
     undoExecute:function (commandContext) {
         this.execute(commandContext);
     }

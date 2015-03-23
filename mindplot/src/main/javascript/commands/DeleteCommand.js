@@ -16,8 +16,15 @@
  *   limitations under the License.
  */
 
-mindplot.commands.DeleteCommand = new Class({
+mindplot.commands.DeleteCommand = new Class(/** @lends mindplot.commands.DeleteCommand */{
     Extends:mindplot.Command,
+    /** 
+     * @classdesc This command class handles do/undo of deleting a topic.
+     * @constructs
+     * @param {Array<String>} topicIds ids of the topics to delete
+     * @param {Array<String>} relIds ids of the relationships connected to the topics
+     * @extends mindplot.Command
+     */
     initialize:function (topicIds, relIds) {
         $assert($defined(relIds), 'topicIds can not be null');
 
@@ -29,6 +36,9 @@ mindplot.commands.DeleteCommand = new Class({
         this._parentTopicIds = [];
     },
 
+    /** 
+     * Overrides abstract parent method 
+     */
     execute:function (commandContext) {
 
         // If a parent has been selected for deletion, the children must be excluded from the delete ...
@@ -76,6 +86,10 @@ mindplot.commands.DeleteCommand = new Class({
         }
     },
 
+    /** 
+     * Overrides abstract parent method
+     * @see {@link mindplot.Command.undoExecute} 
+     */
     undoExecute:function (commandContext) {
 
         // Add all the topics ...

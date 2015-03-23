@@ -16,8 +16,14 @@
  *   limitations under the License.
  */
 
-mindplot.MainTopic = new Class({
+mindplot.MainTopic = new Class(/** @lends MainTopic */{
     Extends:mindplot.Topic,
+    /**
+     * @extends mindplot.Topic
+     * @constructs
+     * @param model
+     * @param options
+     */
     initialize:function (model, options) {
         this.parent(model, options);
     },
@@ -55,6 +61,7 @@ mindplot.MainTopic = new Class({
         return group;
     },
 
+    /** */
     updateTopicShape:function (targetTopic, workspace) {
         // Change figure based on the connected topic ...
         var model = this.getModel();
@@ -68,6 +75,7 @@ mindplot.MainTopic = new Class({
         }
     },
 
+    /** */
     disconnect:function (workspace) {
         this.parent(workspace);
         var size = this.getSize();
@@ -97,10 +105,12 @@ mindplot.MainTopic = new Class({
         }
     },
 
+    /** */
     workoutIncomingConnectionPoint:function (sourcePosition) {
         return mindplot.util.Shape.workoutIncomingConnectionPoint(this, sourcePosition);
     },
 
+    /** */
     workoutOutgoingConnectionPoint:function (targetPosition) {
         $assert(targetPosition, 'targetPoint can not be null');
         var pos = this.getPosition();

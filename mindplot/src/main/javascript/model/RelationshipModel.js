@@ -15,7 +15,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.model.RelationshipModel = new Class({
+
+mindplot.model.RelationshipModel = new Class(/** @lends RelationshipModel */{
     Static:{
         _nextUUID:function () {
             if (!$defined(mindplot.model.RelationshipModel._uuid)) {
@@ -26,6 +27,13 @@ mindplot.model.RelationshipModel = new Class({
         }
     },
 
+    /**
+     * @constructs
+     * @param sourceTopicId
+     * @param targetTopicId
+     * @throws will throw an error if sourceTopicId is null or undefined
+     * @throws will throw an error if targetTopicId is null or undefined
+     */
     initialize:function (sourceTopicId, targetTopicId) {
         $assert($defined(sourceTopicId), 'from node type can not be null');
         $assert($defined(targetTopicId), 'to node type can not be null');
@@ -40,59 +48,75 @@ mindplot.model.RelationshipModel = new Class({
         this._startArrow = false;
     },
 
+    /** */
     getFromNode:function () {
         return this._sourceTargetId;
     },
 
+    /** */
     getToNode:function () {
         return this._targetTopicId;
     },
 
+    /** */
     getId:function () {
         $assert(this._id, "id is null");
         return this._id;
     },
 
+    /** */
     getLineType:function () {
         return this._lineType;
     },
 
+    /** */
     setLineType:function (lineType) {
         this._lineType = lineType;
     },
 
+    /** */
     getSrcCtrlPoint:function () {
         return this._srcCtrlPoint;
     },
 
+    /** */
     setSrcCtrlPoint:function (srcCtrlPoint) {
         this._srcCtrlPoint = srcCtrlPoint;
     },
 
+    /** */
     getDestCtrlPoint:function () {
         return this._destCtrlPoint;
     },
 
+    /** */
     setDestCtrlPoint:function (destCtrlPoint) {
         this._destCtrlPoint = destCtrlPoint;
     },
 
+    /** */
     getEndArrow:function () {
         return this._endArrow;
     },
 
+    /** */
     setEndArrow:function (endArrow) {
         this._endArrow = endArrow;
     },
 
+    /** */
     getStartArrow:function () {
         return this._startArrow;
     },
 
+    /** */
     setStartArrow:function (startArrow) {
         this._startArrow = startArrow;
     },
 
+    /**
+     * @return a clone of the relationship model
+     */
     clone:function () {
         var result = new mindplot.model.RelationshipModel(this._sourceTargetId, this._targetTopicId);
         result._id = this._id;
@@ -104,6 +128,9 @@ mindplot.model.RelationshipModel = new Class({
         return result;
     },
 
+    /**
+     * @return {String} textual information about the relationship's source and target node
+     */
     inspect:function () {
         return '(fromNode:' + this.getFromNode().getId() + ' , toNode: ' + this.getToNode().getId() + ')';
     }

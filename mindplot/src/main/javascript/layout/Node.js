@@ -15,7 +15,19 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.layout.Node = new Class({
+
+mindplot.layout.Node = new Class(/** @lends Node */{
+    /**
+     * @constructs
+     * @param id
+     * @param size
+     * @param position
+     * @param sorter
+     * @throws will throw an error if id is not a finite number or is null or undefined
+     * @throws will throw an error if size is null or undefined
+     * @throws will throw an error if position is null or undefined
+     * @throws will throw an error if sorter is null or undefined
+     */
     initialize:function (id, size, position, sorter) {
         $assert(typeof id === 'number' && isFinite(id), "id can not be null");
         $assert(size, "size can not be null");
@@ -31,39 +43,48 @@ mindplot.layout.Node = new Class({
         this.setShrunken(false);
     },
 
+    /** */
     getId:function () {
         return this._id;
     },
 
+    /** */
     setFree:function (value) {
         this._setProperty('free', value);
     },
 
+    /** */
     isFree:function () {
         return this._getProperty('free');
     },
 
+    /** */
     hasFreeChanged:function () {
         return this._isPropertyChanged('free');
     },
 
+    /** */
     hasFreeDisplacementChanged:function () {
         return this._isPropertyChanged('freeDisplacement');
     },
 
+    /** */
     setShrunken:function (value) {
         this._setProperty('shrink', value);
     },
 
+    /** */
     areChildrenShrunken:function () {
         return this._getProperty('shrink');
     },
 
+    /** */
     setOrder:function (order) {
         $assert(typeof order === 'number' && isFinite(order), "Order can not be null. Value:" + order);
         this._setProperty('order', order);
     },
 
+    /** */
     resetPositionState:function () {
         var prop = this._properties['position'];
         if (prop) {
@@ -71,6 +92,7 @@ mindplot.layout.Node = new Class({
         }
     },
 
+    /** */
     resetOrderState:function () {
         var prop = this._properties['order'];
         if (prop) {
@@ -78,6 +100,7 @@ mindplot.layout.Node = new Class({
         }
     },
 
+    /** */
     resetFreeState:function () {
         var prop = this._properties['freeDisplacement'];
         if (prop) {
@@ -85,35 +108,43 @@ mindplot.layout.Node = new Class({
         }
     },
 
+    /** */
     getOrder:function () {
         return this._getProperty('order');
     },
 
+    /** */
     hasOrderChanged:function () {
         return this._isPropertyChanged('order');
     },
 
+    /** */
     hasPositionChanged:function () {
         return this._isPropertyChanged('position');
     },
 
+    /** */
     hasSizeChanged:function () {
         return this._isPropertyChanged('size');
     },
 
+    /** */
     getPosition:function () {
         return this._getProperty('position');
     },
 
+    /** */
     setSize:function (size) {
         $assert($defined(size), "Size can not be null");
         this._setProperty('size', Object.clone(size));
     },
 
+    /** */
     getSize:function () {
         return this._getProperty('size');
     },
 
+    /** */
     setFreeDisplacement:function (displacement) {
         $assert($defined(displacement), "Position can not be null");
         $assert($defined(displacement.x), "x can not be null");
@@ -124,15 +155,18 @@ mindplot.layout.Node = new Class({
         this._setProperty('freeDisplacement', Object.clone(newDisplacement));
     },
 
+    /** */
     resetFreeDisplacement:function () {
         this._setProperty('freeDisplacement', {x:0, y:0});
     },
 
+    /** */
     getFreeDisplacement:function () {
         var freeDisplacement = this._getProperty('freeDisplacement');
         return (freeDisplacement || {x:0, y:0});
     },
 
+    /** */
     setPosition:function (position) {
         $assert($defined(position), "Position can not be null");
         $assert($defined(position.x), "x can not be null");
@@ -173,10 +207,12 @@ mindplot.layout.Node = new Class({
         return prop ? prop.hasChanged : false;
     },
 
+    /** */
     getSorter:function () {
         return this._sorter;
     },
 
+    /** @return {String} returns id, order, position, size and shrink information*/
     toString:function () {
         return "[id:" + this.getId() + ", order:" + this.getOrder() + ", position: {" + this.getPosition().x + "," + this.getPosition().y + "}, size: {" + this.getSize().width + "," + this.getSize().height + "}, shrink:" + this.areChildrenShrunken() + "]";
     }

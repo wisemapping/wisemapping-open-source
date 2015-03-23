@@ -16,8 +16,16 @@
  *   limitations under the License.
  */
 
-mindplot.persistence.XMLSerializer_Pela = new Class({
+/**
+ * @class
+ */
+mindplot.persistence.XMLSerializer_Pela = new Class(/** @lends XMLSerializer_Pela */{
 
+    /**
+     * @param mindmap
+     * @throws will throw an error if mindmap is null or undefined
+     * @return the created XML document (using the cross-browser implementation in core)
+     */
     toXML: function (mindmap) {
         $assert(mindmap, "Can not save a null mindmap");
 
@@ -203,6 +211,14 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         return result;
     },
 
+    /**
+     * @param dom
+     * @param mapId
+     * @throws will throw an error if dom is null or undefined
+     * @throws will throw an error if mapId is null or undefined
+     * @throws will throw an error if the document element is not consistent with a wisemap's root
+     * element
+     */
     loadFromDom: function (dom, mapId) {
         $assert(dom, "dom can not be null");
         $assert(mapId, "mapId can not be null");
@@ -436,8 +452,9 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
         model.setEndArrow('false');
         model.setStartArrow('true');
         return model;
-    }
-    /*
+    },
+    
+    /**
      * This method ensures that the output String has only
      * valid XML unicode characters as specified by the
      * XML 1.0 standard. For reference, please see
@@ -447,7 +464,7 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
      *
      * @param in The String whose non-valid characters we want to remove.
      * @return The in String, stripped of non-valid characters.
-     */,
+     */
     rmXmlInv: function (str) {
 
         if (str == null || str == undefined)
@@ -469,4 +486,10 @@ mindplot.persistence.XMLSerializer_Pela = new Class({
     }
 });
 
+/**
+ * a wisemap's root element tag name
+ * @constant
+ * @type {String}
+ * @default
+ */
 mindplot.persistence.XMLSerializer_Pela.MAP_ROOT_NODE = 'map';
