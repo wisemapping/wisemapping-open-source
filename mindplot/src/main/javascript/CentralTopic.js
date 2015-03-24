@@ -16,9 +16,15 @@
  *   limitations under the License.
  */
 
-mindplot.CentralTopic = new Class({
+mindplot.CentralTopic = new Class(/** @lends CentralTopic*/{
 
     Extends:mindplot.Topic,
+    /**
+     * @extends mindplot.Topic
+     * @constructs
+     * @param model
+     * @param options
+     */
     initialize:function (model, options) {
         this.parent(model, options);
     },
@@ -32,15 +38,18 @@ mindplot.CentralTopic = new Class({
         });
     },
 
+    /** */
     workoutIncomingConnectionPoint:function () {
         return this.getPosition();
     },
 
+    /** */
     setCursor:function (type) {
         type = (type == 'move') ? 'default' : type;
         this.parent(type);
     },
 
+    /** */
     updateTopicShape:function () {
 
     },
@@ -52,10 +61,12 @@ mindplot.CentralTopic = new Class({
         this.setPosition(zeroPoint);
     },
 
+    /** */
     getShrinkConnector:function () {
         return null;
     },
 
+    /** */
     workoutOutgoingConnectionPoint:function (targetPosition) {
         $assert(targetPosition, 'targetPoint can not be null');
         var pos = this.getPosition();

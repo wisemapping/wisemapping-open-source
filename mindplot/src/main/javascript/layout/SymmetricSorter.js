@@ -15,8 +15,13 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.layout.SymmetricSorter = new Class({
+
+mindplot.layout.SymmetricSorter = new Class(/** @lends SymmetricSorter */{
     Extends:mindplot.layout.AbstractBasicSorter,
+    /**
+     * @constructs
+     * @extends mindplot.layout.AbstractBasicSorter
+     */
     initialize:function () {
 
     },
@@ -128,6 +133,13 @@ mindplot.layout.SymmetricSorter = new Class({
         return [0, position];
     },
 
+    /** 
+     * @param treeSet
+     * @param parent
+     * @param child
+     * @param order
+     * @throws will throw an error if the order is not strictly continuous
+     */
     insert:function (treeSet, parent, child, order) {
         var children = this._getSortedChildren(treeSet, parent);
         $assert(order <= children.length, "Order must be continues and can not have holes. Order:" + order);
@@ -140,6 +152,10 @@ mindplot.layout.SymmetricSorter = new Class({
         child.setOrder(order);
     },
 
+    /** 
+     * @param treeSet
+     * @param node
+     * @throws will throw an error if the node is in the wrong position*/
     detach:function (treeSet, node) {
         var parent = treeSet.getParent(node);
         var children = this._getSortedChildren(treeSet, parent);
@@ -154,6 +170,17 @@ mindplot.layout.SymmetricSorter = new Class({
         node.setOrder(0);
     },
 
+    /** 
+     * @param treeSet
+     * @param node
+     * @throws will throw an error if treeSet is null or undefined
+     * @throws will throw an error if node is null or undefined
+     * @throws will throw an error if the calculated x offset cannot be converted to a numeric 
+     * value, is null or undefined
+     * @throws will throw an error if the calculated y offset cannot be converted to a numeric 
+     * value, is null or undefined
+     * @return offsets
+     */
     computeOffsets:function (treeSet, node) {
         $assert(treeSet, "treeSet can no be null.");
         $assert(node, "node can no be null.");
@@ -191,6 +218,11 @@ mindplot.layout.SymmetricSorter = new Class({
         return result;
     },
 
+    /** 
+     * @param treeSet
+     * @param node
+     * @throws will throw an error if order elements are missing
+     */
     verify:function (treeSet, node) {
         // Check that all is consistent ...
         var children = this._getSortedChildren(treeSet, node);
@@ -200,6 +232,10 @@ mindplot.layout.SymmetricSorter = new Class({
         }
     },
 
+    /** 
+     * @param treeSet
+     * @param child
+     * @return direction of the given child from its parent or from the root node, if isolated*/
     getChildDirection:function (treeSet, child) {
         $assert(treeSet, "treeSet can no be null.");
         $assert(treeSet.getParent(child), "This should not happen");
@@ -220,6 +256,7 @@ mindplot.layout.SymmetricSorter = new Class({
         return result;
     },
 
+    /** @return {String} the print name of this class */
     toString:function () {
         return "Symmetric Sorter";
     },
@@ -229,7 +266,17 @@ mindplot.layout.SymmetricSorter = new Class({
     }
 });
 
+/**
+ * @constant
+ * @type {Number}
+ * @default
+ */
 mindplot.layout.SymmetricSorter.INTERNODE_VERTICAL_PADDING = 5;
+/**
+ * @constant
+ * @type {Number}
+ * @default
+ */
 mindplot.layout.SymmetricSorter.INTERNODE_HORIZONTAL_PADDING = 30;
 
 

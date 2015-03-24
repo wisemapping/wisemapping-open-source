@@ -15,16 +15,25 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.layout.EventBusDispatcher = new Class({
 
+mindplot.layout.EventBusDispatcher = new Class(/** @lends EventBusDispatcher */{
+    /**
+     * @constructs
+     */
     initialize:function() {
         this.registerBusEvents();
     },
 
+    /**
+     * @param {mindplot.layout.LayoutManager} layoutManager
+     */
     setLayoutManager : function(layoutManager) {
         this._layoutManager = layoutManager;
     },
 
+    /**
+     * register bus events
+     */
     registerBusEvents:function () {
         mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeAdded, this._nodeAdded.bind(this));
         mindplot.EventBus.instance.addEvent(mindplot.EventBus.events.NodeRemoved, this._nodeRemoved.bind(this));
@@ -79,6 +88,7 @@ mindplot.layout.EventBusDispatcher = new Class({
 //        }).delay(0, this);
     },
 
+    /** @return layout manager */
     getLayoutManager: function() {
         return this._layoutManager;
     }

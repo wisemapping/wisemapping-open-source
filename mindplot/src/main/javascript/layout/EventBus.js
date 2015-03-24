@@ -15,12 +15,21 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.EventBus = new Class({
+
+mindplot.EventBus = new Class(/** @lends EventBus */{
     Implements: mindplot.Events,
+    /**
+     * @constructs
+     * @implements mindplot.Events
+     */
     initialize: function() {
     }
 });
 
+/**
+ * Enum for events
+ * @enum {String}
+ */
 mindplot.EventBus.events = {
     NodeResizeEvent:'NodeResizeEvent',
     NodeMoveEvent:'NodeMoveEvent',
@@ -32,4 +41,5 @@ mindplot.EventBus.events = {
     DoLayout:'DoLayout'
 };
 
+/** instance */
 mindplot.EventBus.instance = new mindplot.EventBus();

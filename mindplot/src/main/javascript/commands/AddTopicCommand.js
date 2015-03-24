@@ -16,8 +16,17 @@
  *   limitations under the License.
  */
 
-mindplot.commands.AddTopicCommand = new Class({
+mindplot.commands.AddTopicCommand = new Class(/** @lends AddTopicCommand */{
     Extends:mindplot.Command,
+    /** 
+     * @classdesc This command class handles do/undo of adding one or multiple topics to 
+     * the mindmap.
+     * @constructs
+     * @param {Array<mindplot.model.NodeModel>} models one or multiple models
+     * @param {Array<String>} parentTopicsId ids of the parent topics to add the children to, or null 
+     * when attaching a dragged node or a node/branch from clipboard
+     * @extends mindplot.Command
+     */
     initialize:function (models, parentTopicsId) {
         $assert(models, 'models can not be null');
         $assert(parentTopicsId == null || parentTopicsId.length == models.length, 'parents and models must have the same size');
@@ -27,6 +36,9 @@ mindplot.commands.AddTopicCommand = new Class({
         this._parentsIds = parentTopicsId;
     },
 
+    /** 
+     * Overrides abstract parent method 
+     */
     execute:function (commandContext) {
 
         var me = this;
@@ -57,6 +69,10 @@ mindplot.commands.AddTopicCommand = new Class({
         });
     },
 
+    /** 
+     * Overrides abstract parent method
+     * @see {@link mindplot.Command.undoExecute} 
+     */
     undoExecute:function (commandContext) {
         // Delete disconnected the nodes. Create a copy of the topics ...
         var clonedModel = [];
