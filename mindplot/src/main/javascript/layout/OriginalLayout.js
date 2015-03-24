@@ -15,11 +15,17 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.layout.OriginalLayout = new Class({
+
+mindplot.layout.OriginalLayout = new Class(/** @lends OriginalLayout */{
+    /**
+     * @constructs
+     * @param treeSet
+     */
     initialize:function (treeSet) {
         this._treeSet = treeSet;
     },
 
+    /** */
     createNode:function (id, size, position, type) {
         $assert($defined(id), "id can not be null");
         $assert(size, "size can not be null");
@@ -32,6 +38,7 @@ mindplot.layout.OriginalLayout = new Class({
         return new mindplot.layout.Node(id, size, position, strategy);
     },
 
+    /** */
     connectNode:function (parentId, childId, order) {
 
         var parent = this._treeSet.find(parentId);
@@ -48,6 +55,7 @@ mindplot.layout.OriginalLayout = new Class({
         sorter.verify(this._treeSet, parent);
     },
 
+    /** */
     disconnectNode:function (nodeId) {
         var node = this._treeSet.find(nodeId);
         var parent = this._treeSet.getParent(node);
@@ -68,6 +76,7 @@ mindplot.layout.OriginalLayout = new Class({
         parent.getSorter().verify(this._treeSet, parent);
     },
 
+    /** */
     layout:function () {
         var roots = this._treeSet.getTreeRoots();
         _.each(roots, function (node) {
@@ -233,7 +242,14 @@ mindplot.layout.OriginalLayout = new Class({
 
 });
 
+
+/**
+ * @type {mindplot.layout.SymmetricSorter}
+ */
 mindplot.layout.OriginalLayout.SYMMETRIC_SORTER = new mindplot.layout.SymmetricSorter();
+/**
+ * @type {mindplot.layout.BalancedSorter}
+ */
 mindplot.layout.OriginalLayout.BALANCED_SORTER = new mindplot.layout.BalancedSorter();
 
 

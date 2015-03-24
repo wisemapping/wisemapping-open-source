@@ -15,18 +15,37 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
+/**
+ * @class mindplot.persistence.XMLSerializerFactory
+ */
 mindplot.persistence.XMLSerializerFactory = {};
 
+/** 
+ * @param {mindplot.model.IMindmap} mindmap
+ * @return {mindplot.persistence.XMLSerializer_Beta|mindplot.persistence.XMLSerializer_Pela|
+ * mindplot.persistence.XMLSerializer_Tango} serializer corresponding to the mindmap's version
+ */
 mindplot.persistence.XMLSerializerFactory.getSerializerFromMindmap = function(mindmap) {
     return mindplot.persistence.XMLSerializerFactory.getSerializer(mindmap.getVersion());
 };
 
+/**
+ * @param domDocument
+ * @return serializer corresponding to the mindmap's version
+ */
 mindplot.persistence.XMLSerializerFactory.getSerializerFromDocument = function(domDocument) {
     var rootElem = domDocument.documentElement;
     return mindplot.persistence.XMLSerializerFactory.getSerializer(rootElem.getAttribute("version"))
 };
 
-
+/**
+ * retrieves the serializer for the mindmap's version and migrates to the current version,
+ * e.g. for a Beta mindmap and current version Tango: 
+ * serializer = new Pela2TangoMigrator(new Beta2PelaMigrator(new XMLSerializer_Beta()))
+ * @param {String} version the version name
+ * @return serializer
+ */
 mindplot.persistence.XMLSerializerFactory.getSerializer = function(version) {
     if (!$defined(version)) {
         version = mindplot.persistence.ModelCodeName.BETA;

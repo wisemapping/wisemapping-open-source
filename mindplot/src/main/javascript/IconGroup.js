@@ -16,7 +16,14 @@
  *   limitations under the License.
  */
 
-mindplot.IconGroup = new Class({
+mindplot.IconGroup = new Class(/**@lends IconGroup */{
+    /**
+     * @constructs
+     * @param topicId
+     * @param iconSize
+     * @throws will throw an error if topicId is null or undefined
+     * @throws will throw an error if iconSize is null or undefined
+     */
     initialize:function (topicId, iconSize) {
         $assert($defined(topicId), "topicId can not be null");
         $assert($defined(iconSize), "iconSize can not be null");
@@ -30,27 +37,37 @@ mindplot.IconGroup = new Class({
 
     },
 
+    /** */
     setPosition:function (x, y) {
         this._group.setPosition(x, y);
     },
 
+    /** */
     getPosition:function () {
         return this._group.getPosition();
     },
 
+    /** */
     getNativeElement:function () {
         return this._group;
     },
 
+    /** */
     getSize:function () {
         return this._group.getSize();
     },
 
+    /** */
     seIconSize:function (width, height) {
         this._iconSize = {width:width, height:height};
         this._resize(this._icons.length);
     },
 
+    /**
+     * @param icon the icon to be added to the icon group
+     * @param {Boolean} remove
+     * @throws will throw an error if icon is not defined
+     */
     addIcon:function (icon, remove) {
         $defined(icon, "icon is not defined");
 
@@ -86,6 +103,7 @@ mindplot.IconGroup = new Class({
         return result;
     },
 
+    /** */
     removeIconByModel:function (featureModel) {
         $assert(featureModel, "featureModel can not be null");
 
@@ -108,6 +126,7 @@ mindplot.IconGroup = new Class({
         });
     },
 
+    /** */
     moveToFront:function () {
         this._group.moveToFront();
     },
@@ -138,15 +157,31 @@ mindplot.IconGroup = new Class({
         icon.getImage().setPosition(iconSize * order + mindplot.IconGroup.ICON_PADDING, mindplot.IconGroup.ICON_PADDING);
     }
 });
+
+/**
+ * @constant
+ * @type {Number}
+ * @default
+ */
 mindplot.IconGroup.ICON_PADDING = 5;
 
-mindplot.IconGroup.RemoveTip = new Class({
+mindplot.IconGroup.RemoveTip = new Class(/** @lends IconGroup.RemoveTip */{
+    /**
+     * @classdesc inner class of IconGroup
+     * @constructs
+     * @param container
+     */
     initialize:function (container) {
         $assert(container, "group can not be null");
         this._fadeElem = container;
     },
 
 
+    /**
+     * @param topicId
+     * @param icon
+     * @throws will throw an error if icon is null or undefined
+     */
     show:function (topicId, icon) {
         $assert(icon, 'icon can not be null');
 
@@ -188,10 +223,14 @@ mindplot.IconGroup.RemoveTip = new Class({
         }
     },
 
+    /** */
     hide:function () {
         this.close(200);
     },
 
+    /**
+     * @param delay
+     */
     close:function (delay) {
 
         // This is not ok, trying to close the same dialog twice ?
@@ -271,6 +310,10 @@ mindplot.IconGroup.RemoveTip = new Class({
         return result;
     },
 
+    /**
+     * @param topicId
+     * @param icon
+     */
     decorate:function (topicId, icon) {
 
         var me = this;

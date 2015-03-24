@@ -15,55 +15,76 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.model.IMindmap = new Class({
+
+mindplot.model.IMindmap = new Class(/** @lends IMindmap */{
+    /**
+     * @constructs
+     * @abstract
+     */
     initialize : function() {
         throw "Unsupported operation";
     },
 
+    /** */
     getCentralTopic : function() {
         return this.getBranches()[0];
     },
 
+    /** @abstract */
     getDescription : function() {
         throw "Unsupported operation";
     },
 
+    /** @abstract */
     setDescription : function(value) {
         throw "Unsupported operation";
     },
 
+    /** @abstract */
     getId : function() {
         throw "Unsupported operation";
     },
 
+    /** @abstract */
     setId : function(id) {
         throw "Unsupported operation";
     },
 
+    /** @abstract */
     getVersion : function() {
         throw "Unsupported operation";
     },
 
+    /** @abstract */
     setVersion : function(version) {
         throw "Unsupported operation";
     },
 
+    /** @abstract */
     addBranch : function(nodeModel) {
         throw "Unsupported operation";
     },
 
+    /** @abstract */
     getBranches : function() {
         throw "Unsupported operation";
     },
 
+    /** @abstract */
     removeBranch : function(node) {
         throw "Unsupported operation";
     },
 
+    /** @abstract */
     getRelationships : function() {
         throw "Unsupported operation";
     },
 
+    /**
+     * @param parent
+     * @param child
+     * @throws will throw an error if child already has a connection to a parent node
+     */
     connect : function(parent, child) {
         // Child already has a parent ?
         $assert(!child.getParent(), 'Child model seems to be already connected');
@@ -75,6 +96,11 @@ mindplot.model.IMindmap = new Class({
         this.removeBranch(child);
     },
 
+    /**
+     * @param child
+     * @throws will throw an error if child is null or undefined
+     * @throws will throw an error if child's parent cannot be found
+     */
     disconnect : function(child) {
         var parent = child.getParent();
         $assert(child, 'Child can not be null.');
@@ -84,26 +110,32 @@ mindplot.model.IMindmap = new Class({
         this.addBranch(child);
     },
 
+    /** @abstract */
     hasAlreadyAdded : function(node) {
         throw "Unsupported operation";
     },
 
+    /** @abstract */
     createNode : function(type, id) {
         throw "Unsupported operation";
     },
 
+    /** @abstract */
     createRelationship : function(fromNode, toNode) {
         throw "Unsupported operation";
     },
 
+    /** @abstract */
     addRelationship : function(rel) {
         throw "Unsupported operation";
     },
 
+    /** @abstract */
     deleteRelationship : function(relationship) {
         throw "Unsupported operation";
     },
 
+    /** */
     inspect : function() {
         var result = '';
         result = '{ ';
@@ -125,6 +157,9 @@ mindplot.model.IMindmap = new Class({
         return result;
     },
 
+    /**
+     * @param target
+     */
     copyTo : function(target) {
         var source = this;
         var version = source.getVersion();
