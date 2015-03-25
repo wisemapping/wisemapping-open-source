@@ -96,8 +96,9 @@ public class FreemindImporter
             final Map freemindMap = (Map) JAXBUtils.getMapObject(input, "com.wisemapping.jaxb.freemind");
 
             final String version = freemindMap.getVersion();
-            if (version != null) {
-
+            if (version == null || version.startsWith("freeplane")) {
+                throw new ImporterException("You seems to be be trying to import a Freeplane map. FreePlane is not supported format.");
+            } else {
                 final VersionNumber mapVersion = new VersionNumber(version);
                 if (mapVersion.isGreaterThan(FreemindConstant.SUPPORTED_FREEMIND_VERSION)) {
                     throw new ImporterException("FreeMind version " + mapVersion.getVersion() + " is not supported.");
@@ -134,11 +135,7 @@ public class FreemindImporter
             result.setTitle(mapName);
             result.setDescription(description);
 
-        } catch (JAXBException e) {
-            throw new ImporterException(e);
-        } catch (IOException e) {
-            throw new ImporterException(e);
-        } catch (TransformerException e) {
+        } catch (JAXBException | IOException | TransformerException e) {
             throw new ImporterException(e);
         }
         return result;
@@ -330,7 +327,7 @@ public class FreemindImporter
         }
     }
 
-    private int getChildrenCountSameSide(@NotNull List<Object> freeChildren, Node freeChild)  {
+    private int getChildrenCountSameSide(@NotNull List<Object> freeChildren, Node freeChild) {
         int result = 0;
         String childSide = freeChild.getPOSITION();
         if (childSide == null) {
@@ -500,11 +497,7 @@ public class FreemindImporter
         }
 
         final Boolean folded = Boolean.valueOf(freeNode.getFOLDED());
-        if (folded) {
-            wiseTopic.setShrink(folded);
-        }
-
-
+        wiseTopic.setShrink(folded);
     }
 
 
