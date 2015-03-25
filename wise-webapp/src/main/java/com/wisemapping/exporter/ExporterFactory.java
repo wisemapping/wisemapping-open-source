@@ -54,7 +54,7 @@ import java.util.regex.Pattern;
 public class ExporterFactory {
     private static final String GROUP_NODE_NAME = "g";
     private static final String IMAGE_NODE_NAME = "image";
-    public static final int MARGING = 50;
+    public static final int MANGING = 50;
     public static final String UTF_8_CHARSET_NAME = "UTF-8";
     private File baseImgDir;
 
@@ -79,7 +79,7 @@ public class ExporterFactory {
                 transcoder.addTranscodingHint(ImageTranscoder.KEY_WIDTH, size.getWidth());
 
                 // Create the transcoder input.
-                final String svgString = normalizeSvg(mapSvg, false);
+                final String svgString = normalizeSvg(mapSvg);
                 final TranscoderInput input = new TranscoderInput(new CharArrayReader(svgString.toCharArray()));
 
                 TranscoderOutput trascoderOutput = new TranscoderOutput(output);
@@ -99,7 +99,7 @@ public class ExporterFactory {
                 transcoder.addTranscodingHint(ImageTranscoder.KEY_WIDTH, size.getWidth());
 
                 // Create the transcoder input.
-                final String svgString = normalizeSvg(mapSvg, false);
+                final String svgString = normalizeSvg(mapSvg);
                 final TranscoderInput input = new TranscoderInput(new CharArrayReader(svgString.toCharArray()));
 
                 TranscoderOutput trascoderOutput = new TranscoderOutput(output);
@@ -113,7 +113,7 @@ public class ExporterFactory {
                 final Transcoder transcoder = new PDFTranscoder();
 
                 // Create the transcoder input.
-                final String svgString = normalizeSvg(mapSvg, false);
+                final String svgString = normalizeSvg(mapSvg);
                 final TranscoderInput input = new TranscoderInput(new CharArrayReader(svgString.toCharArray()));
                 TranscoderOutput trascoderOutput = new TranscoderOutput(output);
 
@@ -122,22 +122,22 @@ public class ExporterFactory {
                 break;
             }
             case SVG: {
-                final String svgString = normalizeSvg(mapSvg, true);
+                final String svgString = normalizeSvg(mapSvg);
                 output.write(svgString.getBytes(UTF_8_CHARSET_NAME));
                 break;
             }
             case TEXT: {
-                final Exporter exporter =  XSLTExporter.create(XSLTExporter.Type.TEXT);
+                final Exporter exporter = XSLTExporter.create(XSLTExporter.Type.TEXT);
                 exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
                 break;
             }
             case OPEN_OFFICE_WRITER: {
-                final Exporter exporter =  XSLTExporter.create(XSLTExporter.Type.OPEN_OFFICE);
+                final Exporter exporter = XSLTExporter.create(XSLTExporter.Type.OPEN_OFFICE);
                 exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
                 break;
             }
             case MICROSOFT_EXCEL: {
-                final Exporter exporter =  XSLTExporter.create(XSLTExporter.Type.MICROSOFT_EXCEL);
+                final Exporter exporter = XSLTExporter.create(XSLTExporter.Type.MICROSOFT_EXCEL);
                 exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
                 break;
             }
@@ -148,7 +148,7 @@ public class ExporterFactory {
                 break;
             }
             case MINDJET: {
-                final Exporter exporter =  XSLTExporter.create(XSLTExporter.Type.MINDJET);
+                final Exporter exporter = XSLTExporter.create(XSLTExporter.Type.MINDJET);
                 exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
                 break;
             }
@@ -157,7 +157,7 @@ public class ExporterFactory {
         }
     }
 
-    private String normalizeSvg(@NotNull String svgXml, boolean embedImg) throws ExportException {
+    private String normalizeSvg(@NotNull String svgXml) throws ExportException {
 
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -195,13 +195,7 @@ public class ExporterFactory {
             inlineImages(document, (Element) child);
 
             return domToString(document);
-        } catch (ParserConfigurationException e) {
-            throw new ExportException(e);
-        } catch (IOException e) {
-            throw new ExportException(e);
-        } catch (SAXException e) {
-            throw new ExportException(e);
-        } catch (TransformerException e) {
+        } catch (ParserConfigurationException | TransformerException | SAXException | IOException e) {
             throw new ExportException(e);
         }
 
@@ -243,27 +237,22 @@ public class ExporterFactory {
 
                 Element elem = (Element) node;
 
-                // If the image is a external URL, embeed it...
-                String imgUrl = elem.getAttribute("href");
-                if (!imgUrl.startsWith("image/png;base64") ||!imgUrl.startsWith("data:image/png;base64") ) {
+                final String imgUrl = fixHref(elem);
+                if (!imgUrl.isEmpty() && (!imgUrl.startsWith("image/png;base64") || !imgUrl.startsWith("data:image/png;base64"))) {
                     elem.removeAttribute("href");
 
-                    if (imgUrl == null || imgUrl.isEmpty()) {
-                        imgUrl = elem.getAttribute("xlink:href"); // Do not support namespaces ...
-                        elem.removeAttribute("xlink:href");
-                    }
-                    FileInputStream fis = null;
-
+                    InputStream fis = null;
                     // Obtains file name ...
                     try {
                         final File iconFile = iconFile(imgUrl);
-                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
                         fis = new FileInputStream(iconFile);
                         BASE64Encoder encoder = new BASE64Encoder();
                         encoder.encode(fis, bos);
 
                         elem.setAttribute("xlink:href", "data:image/png;base64," + bos.toString("8859_1"));
                         elem.appendChild(document.createTextNode(" "));
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     } finally {
@@ -274,28 +263,55 @@ public class ExporterFactory {
         }
     }
 
+    @NotNull
+    private String fixHref(@NotNull Element elem) {
+        // Fix href attribute ...
+        // Hack for IE: If the image is a external URL, embeed it...
+        String result = elem.getAttribute("href");
+        if (result.isEmpty()) {
+
+
+            // Bug WISE-422: This seems to be a bug in Safari. For some reason, img add prefixed with NS1
+            // <image NS1:href="icons/sign_help.png"
+            // Also: Remove replace "xlink:href" to href to uniform ...
+            final NamedNodeMap attributes = elem.getAttributes();
+            for (int i = 0; i < attributes.getLength(); i++) {
+                final Node node = attributes.item(i);
+                String nodeName = node.getNodeName();
+                if(nodeName.contains(":href")){
+                    elem.removeAttribute(nodeName);
+                    result = node.getNodeValue();
+                }
+            }
+
+            elem.setAttribute("href", result);
+        }
+        return result;
+    }
+
     private File iconFile(@NotNull final String imgUrl) throws IOException {
         int index = imgUrl.lastIndexOf("/");
         final String iconName = imgUrl.substring(index + 1);
         final File iconsDir = new File(baseImgDir, "icons");
 
-        File iconFile = new File(iconsDir, iconName);
-        if (!iconFile.exists()) {
+        File result = new File(iconsDir, iconName);
+        if (!result.exists()) {
             // It's not a icon, must be a note, attach image ...
             final File legacyIconsDir = new File(baseImgDir, "images");
-            iconFile = new File(legacyIconsDir, iconName);
+            result = new File(legacyIconsDir, iconName);
         }
 
-        if (!iconFile.exists()) {
+        if (!result.exists()) {
             final File legacyIconsDir = new File(iconsDir, "legacy");
-            iconFile = new File(legacyIconsDir, iconName);
+            result = new File(legacyIconsDir, iconName);
         }
 
-        if (!iconFile.exists()) {
+        if (!result.exists() || result.isDirectory()) {
+
             throw new IOException("Icon could not be found:" + imgUrl);
         }
 
-        return iconFile;
+        return result;
     }
 
 
@@ -349,11 +365,11 @@ public class ExporterFactory {
             }
 
             // Add some extra margin ...
-            maxX += MARGING;
-            minX += -MARGING;
+            maxX += MANGING;
+            minX += -MANGING;
 
-            maxY += MARGING;
-            minY += -MARGING;
+            maxY += MANGING;
+            minY += -MANGING;
 
             // Calculate dimentions ...
             final double width = maxX + Math.abs(minX);
@@ -366,13 +382,7 @@ public class ExporterFactory {
             svgNode.setAttribute("width", Double.toString(width));
             svgNode.setAttribute("height", Double.toString(height));
             svgNode.setAttribute("preserveAspectRatio", "xMinYMin");
-        } catch (XPathExpressionException e) {
-            throw new ExportException(e);
-        } catch (ParseException e) {
-            throw new ExportException(e);
-        } catch (NumberFormatException e) {
-            throw new ExportException(e);
-        } catch (DOMException e) {
+        } catch (XPathExpressionException | ParseException | NumberFormatException | DOMException e) {
             throw new ExportException(e);
         }
     }

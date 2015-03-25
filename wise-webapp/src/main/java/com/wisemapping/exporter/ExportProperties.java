@@ -20,7 +20,6 @@ package com.wisemapping.exporter;
 
 public class ExportProperties {
     private ExportFormat format;
-    private String baseImgPath;
     private String version;
 
     public ExportFormat getFormat() {
