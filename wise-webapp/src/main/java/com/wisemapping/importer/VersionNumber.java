@@ -18,10 +18,12 @@
 
 package com.wisemapping.importer;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 public class VersionNumber
-        implements Comparable {
+        implements Comparable<VersionNumber> {
 
     protected String version_d;
 
@@ -58,13 +60,13 @@ public class VersionNumber
     }
 
 
-    public int compareTo(final Object otherObject) {
+    public int compareTo(@NotNull final VersionNumber otherObject) {
         if (this.equals(otherObject)) {
             return 0;
         }
 
         final StringTokenizer ownTokenizer = this.getTokenizer();
-        final StringTokenizer otherTokenizer = ((VersionNumber) otherObject).getTokenizer();
+        final StringTokenizer otherTokenizer = otherObject.getTokenizer();
 
         while (ownTokenizer.hasMoreTokens()) {
             final int ownNumber;
@@ -112,8 +114,8 @@ public class VersionNumber
         return (version_d != null ? version_d.hashCode() : 0);
     }
 
-
-    protected StringTokenizer getTokenizer() {
+    @NotNull
+    private StringTokenizer getTokenizer() {
         return new StringTokenizer(this.getVersion(), ".");
     }
 }
