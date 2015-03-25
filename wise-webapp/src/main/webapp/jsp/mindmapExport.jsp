@@ -11,6 +11,7 @@
         <input name="svgXml" id="svgXml" value="" type="hidden"/>
         <input name="download" type="hidden" value="mm"/>
         <input name="version" type="hidden" value=""/>
+        <input name="filename" type="hidden" value="${mindmap.title}"/>
         <fieldset>
             <label for="freemind">
                 <input type="radio" id="freemind" name="exportFormat" value="mm" version="1.0.1" checked="checked"/>
