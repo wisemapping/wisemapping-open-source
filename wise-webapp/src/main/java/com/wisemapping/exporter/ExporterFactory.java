@@ -79,7 +79,7 @@ public class ExporterFactory {
                 transcoder.addTranscodingHint(ImageTranscoder.KEY_WIDTH, size.getWidth());
 
                 // Create the transcoder input.
-                final String svgString = normalizeSvg(mapSvg, false);
+                final String svgString = normalizeSvg(mapSvg);
                 final TranscoderInput input = new TranscoderInput(new CharArrayReader(svgString.toCharArray()));
 
                 TranscoderOutput trascoderOutput = new TranscoderOutput(output);
@@ -99,7 +99,7 @@ public class ExporterFactory {
                 transcoder.addTranscodingHint(ImageTranscoder.KEY_WIDTH, size.getWidth());
 
                 // Create the transcoder input.
-                final String svgString = normalizeSvg(mapSvg, false);
+                final String svgString = normalizeSvg(mapSvg);
                 final TranscoderInput input = new TranscoderInput(new CharArrayReader(svgString.toCharArray()));
 
                 TranscoderOutput trascoderOutput = new TranscoderOutput(output);
@@ -113,7 +113,7 @@ public class ExporterFactory {
                 final Transcoder transcoder = new PDFTranscoder();
 
                 // Create the transcoder input.
-                final String svgString = normalizeSvg(mapSvg, false);
+                final String svgString = normalizeSvg(mapSvg);
                 final TranscoderInput input = new TranscoderInput(new CharArrayReader(svgString.toCharArray()));
                 TranscoderOutput trascoderOutput = new TranscoderOutput(output);
 
@@ -122,7 +122,7 @@ public class ExporterFactory {
                 break;
             }
             case SVG: {
-                final String svgString = normalizeSvg(mapSvg, true);
+                final String svgString = normalizeSvg(mapSvg);
                 output.write(svgString.getBytes(UTF_8_CHARSET_NAME));
                 break;
             }
@@ -157,7 +157,7 @@ public class ExporterFactory {
         }
     }
 
-    private String normalizeSvg(@NotNull String svgXml, boolean embedImg) throws ExportException {
+    private String normalizeSvg(@NotNull String svgXml) throws ExportException {
 
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -195,13 +195,7 @@ public class ExporterFactory {
             inlineImages(document, (Element) child);
 
             return domToString(document);
-        } catch (ParserConfigurationException e) {
-            throw new ExportException(e);
-        } catch (IOException e) {
-            throw new ExportException(e);
-        } catch (SAXException e) {
-            throw new ExportException(e);
-        } catch (TransformerException e) {
+        } catch (ParserConfigurationException | TransformerException | SAXException | IOException e) {
             throw new ExportException(e);
         }
 
@@ -276,13 +270,10 @@ public class ExporterFactory {
         String result = elem.getAttribute("href");
         if (result.isEmpty()) {
 
-            result = elem.getAttribute("xlink:href");
-            if (!result.isEmpty()) {
-                elem.removeAttribute("xlink:href");
-            }
 
             // Bug WISE-422: This seems to be a bug in Safari. For some reason, img add prefixed with NS1
             // <image NS1:href="icons/sign_help.png"
+            // Also: Remove replace "xlink:href" to href to uniform ...
             final NamedNodeMap attributes = elem.getAttributes();
             for (int i = 0; i < attributes.getLength(); i++) {
                 final Node node = attributes.item(i);
