@@ -96,6 +96,10 @@ public class ExportSVGBasedTest {
             }
         });
 
+        if(svgFile==null){
+            throw new IllegalArgumentException("Wrong based path specified. Change based path...");
+        }
+
         final Object[][] result = new Object[svgFile.length][4];
         for (int i = 0; i < svgFile.length; i++) {
             File freeMindFile = svgFile[i];

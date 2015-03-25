@@ -23,6 +23,7 @@ import com.wisemapping.exporter.ExportProperties;
 import com.wisemapping.exporter.ExporterFactory;
 import com.wisemapping.mail.NotificationService;
 import com.wisemapping.security.Utils;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
@@ -38,6 +39,8 @@ import java.util.Map;
 
 public class TransformView extends AbstractView {
 
+    @NonNls
+    private static final String DEFAULT_ENCODING = "UTF-8";
     private String contentType;
     private ExportFormat exportFormat;
     private NotificationService notificationService;
@@ -74,7 +77,7 @@ public class TransformView extends AbstractView {
 
         // Set file name...:http://stackoverflow.com/questions/5325322/java-servlet-download-filename-special-characters/13359949#13359949
         final String fileName = (filename != null ? filename : "map") + "." + exportFormat.getFileExtension();
-        setContentDisposition(request, response, fileName);
+        this.setContentDisposition(request, response, fileName);
 
         // Change image link URL.
         final ServletContext servletContext = request.getSession().getServletContext();
@@ -86,14 +89,15 @@ public class TransformView extends AbstractView {
                 response.setCharacterEncoding("ASCII");
                 factory.export(properties, content, outputStream, null);
             } else if (exportFormat == ExportFormat.WISEMAPPING) {
-                response.setCharacterEncoding("UTF-8");
+                response.setCharacterEncoding(DEFAULT_ENCODING);
                 final Object mindmap = viewMap.get("mindmap");
                 final StreamResult result = new StreamResult(outputStream);
                 jaxbMarshaller.marshal(mindmap, result);
             } else if (exportFormat == ExportFormat.MICROSOFT_EXCEL || exportFormat == ExportFormat.TEXT || exportFormat == ExportFormat.OPEN_OFFICE_WRITER || exportFormat == ExportFormat.MINDJET) {
-                response.setCharacterEncoding("UTF-8");
+                response.setCharacterEncoding(DEFAULT_ENCODING);
                 factory.export(properties, content, outputStream, null);
             } else {
+                // Image export ...
                 factory.export(properties, null, outputStream, content);
             }
         } catch (Throwable e) {
