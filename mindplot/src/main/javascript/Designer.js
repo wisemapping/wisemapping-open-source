@@ -79,14 +79,6 @@ mindplot.Designer = new Class(/** @lends Designer */{
         },
 
         /**
-         * Deactivates the keyboard events so you can enter text into forms
-         */
-        deactivateKeyboard:function () {
-            mindplot.DesignerKeyboard.getInstance().deactivate();
-            this.deselectAll();
-        },
-
-        /**
          * @private
          */
         _registerWheelEvents:function () {
@@ -119,13 +111,6 @@ mindplot.Designer = new Class(/** @lends Designer */{
                 }
                 event.preventDefault();
             });
-        },
-
-        /**
-         * Activates the keyboard events so you can enter text into forms
-         */
-        activateKeyboard:function () {
-            mindplot.DesignerKeyboard.getInstance().activate();
         },
 
         /** 
