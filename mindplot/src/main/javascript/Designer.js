@@ -660,7 +660,7 @@ mindplot.Designer = new Class(/** @lends Designer */{
             for (var i = 0; i < branches.length; i++) {
                 // NodeModel -> NodeGraph ...
                 var nodeModel = branches[i];
-                var nodeGraph = this._nodeModelToNodeGraph(nodeModel);
+                var nodeGraph = this.nodeModelToNodeGraph(nodeModel);
 
                 // Update shrink render state...
                 nodeGraph.setBranchVisibility(true);
@@ -703,12 +703,10 @@ mindplot.Designer = new Class(/** @lends Designer */{
         },
 
         /**
-         * @private
          * @param {mindplot.model.NodeModel} nodeModel
          * @return {mindplot.Topic} the topic (extends mindplot.NodeGraph) created to the model
-         * @todo marked private but called from mindplot.StandaloneActionDispatcher
          */
-        _nodeModelToNodeGraph:function (nodeModel) {
+        nodeModelToNodeGraph:function (nodeModel) {
             $assert(nodeModel, "Node model can not be null");
             var children = nodeModel.getChildren().slice();
             children = children.sort(function (a, b) {
@@ -722,7 +720,7 @@ mindplot.Designer = new Class(/** @lends Designer */{
             for (var i = 0; i < children.length; i++) {
                 var child = children[i];
                 if ($defined(child))
-                    this._nodeModelToNodeGraph(child);
+                    this.nodeModelToNodeGraph(child);
             }
 
             return nodeGraph;
@@ -752,12 +750,10 @@ mindplot.Designer = new Class(/** @lends Designer */{
         },
 
         /**
-         * @private
          * @param {mindplot.model.RelationshipModel} model
          * @return {mindplot.Relationship} the relationship added to the mindmap
-         * @todo marked private but called from mindplot.StandaloneActionDispatcher
          */
-        _addRelationship:function (model) {
+        addRelationship:function (model) {
             var mindmap = this.getMindmap();
             mindmap.addRelationship(model);
             return this._relationshipModelToRelationship(model);
@@ -765,11 +761,9 @@ mindplot.Designer = new Class(/** @lends Designer */{
 
         /**
          * deletes the relationship from the linked topics, DesignerModel, Workspace and Mindmap
-         * @private
          * @param {mindplot.Relationship} rel the relationship to delete
-         * @todo marked private but called from mindplot.StandaloneActionDispatcher
          */
-        _deleteRelationship:function (rel) {
+        deleteRelationship:function (rel) {
             var sourceTopic = rel.getSourceTopic();
             sourceTopic.deleteRelationship(rel);
 
@@ -830,19 +824,17 @@ mindplot.Designer = new Class(/** @lends Designer */{
         },
 
         /**
-         * @private
          * @param {mindplot.model.Topic} node the topic to remove
          * removes the given topic and its children from Workspace, DesignerModel and NodeModel
-         * @todo marked private but called from mindplot.StandaloneActionDispatcher
          */
-        _removeTopic:function (node) {
+        removeTopic:function (node) {
             if (!node.isCentralTopic()) {
                 var parent = node._parent;
                 node.disconnect(this._workspace);
 
                 //remove children
                 while (node.getChildren().length > 0) {
-                    this._removeTopic(node.getChildren()[0]);
+                    this.removeTopic(node.getChildren()[0]);
                 }
 
                 this._workspace.removeChild(node);
