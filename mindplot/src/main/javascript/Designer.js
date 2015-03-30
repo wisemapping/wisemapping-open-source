@@ -546,25 +546,6 @@ mindplot.Designer = new Class(/** @lends Designer */{
         },
 
         /** 
-         * @param {Events} event
-         * @param {mindplot.model.NodeModel} model
-         * @todo not used
-         */
-        addDraggedNode:function (event, model) {
-            $assert(event, "event can not be null");
-            $assert(model, "model can not be null");
-
-            // Position far from the visual area ...
-            model.setPosition(1000, 1000);
-
-            this._actionDispatcher.addTopics([model]);
-            var topic = this.getModel().findTopicById(model.getId());
-
-            // Simulate a mouse down event to start the dragging ...
-            topic.fireEvent("mousedown", event);
-        },
-
-        /** 
          * creates a sibling or child node of the selected node, if the selected node is the 
          * central topic 
          */
