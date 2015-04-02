@@ -15,9 +15,6 @@ var BootstrapDialog = new Class({
         this.options.onEventData.dialog = this;
         this._native = $('<div class="modal fade" tabindex="-1"></div>').append('<div class="modal-dialog"></div>');
         var content = $('<div class="modal-content"></div>');
-        content.on('keydown', function(event) {
-            event.stopPropagation();
-        });
         var header = this._buildHeader(title);
         if (header) {
             content.append(header);

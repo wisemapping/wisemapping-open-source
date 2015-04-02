@@ -1036,6 +1036,7 @@ mindplot.Designer = new Class(/** @lends Designer */{
             var topic = model.selectedTopic();
             if (topic) {
                 topic.showLinkEditor();
+                this.onObjectFocusEvent();
             }
         },
 
@@ -1045,6 +1046,7 @@ mindplot.Designer = new Class(/** @lends Designer */{
             var topic = model.selectedTopic();
             if (topic) {
                 topic.showNoteEditor();
+                this.onObjectFocusEvent();
             }
         },
 
