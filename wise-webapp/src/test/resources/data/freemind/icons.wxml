@@ -1,292 +1,292 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map name="basic" version="tango">
-    <topic central="true" id="0" position="0,0" shape="rounded rectagle">
+    <topic central="true" id="0" position="0,0" shape="rounded rectagle" shrink="false">
         <text><![CDATA[This is the root node]]></text>
-        <topic id="1" order="0" position="200,-200" shape="line">
+        <topic id="1" order="0" position="200,-200" shape="line" shrink="false">
             <text><![CDATA[Simbols]]></text>
-            <topic id="2" order="0" position="290,-300" shape="line">
+            <topic id="2" order="0" position="290,-300" shape="line" shrink="false">
                 <text><![CDATA[Warning]]></text>
                 <icon id="sign_warning"/>
             </topic>
-            <topic id="3" order="1" position="290,-275" shape="line">
+            <topic id="3" order="1" position="290,-275" shape="line" shrink="false">
                 <text><![CDATA[No Ok]]></text>
                 <icon id="tick_cross"/>
             </topic>
-            <topic id="4" order="2" position="290,-250" shape="line">
+            <topic id="4" order="2" position="290,-250" shape="line" shrink="false">
                 <text><![CDATA[Ok]]></text>
                 <icon id="tick_tick"/>
             </topic>
-            <topic id="5" order="3" position="290,-225" shape="line">
+            <topic id="5" order="3" position="290,-225" shape="line" shrink="false">
                 <text><![CDATA[Info]]></text>
                 <icon id="sign_info"/>
             </topic>
-            <topic id="6" order="4" position="290,-200" shape="line">
+            <topic id="6" order="4" position="290,-200" shape="line" shrink="false">
                 <text><![CDATA[No Entry]]></text>
                 <icon id="onoff_delete"/>
             </topic>
-            <topic id="7" order="5" position="290,-175" shape="line">
+            <topic id="7" order="5" position="290,-175" shape="line" shrink="false">
                 <text><![CDATA[Stop]]></text>
                 <icon id="sign_stop"/>
             </topic>
-            <topic id="8" order="6" position="290,-150" shape="line">
+            <topic id="8" order="6" position="290,-150" shape="line" shrink="false">
                 <text><![CDATA[Lamp]]></text>
                 <icon id="bulb_light_on"/>
             </topic>
-            <topic id="9" order="7" position="290,-125" shape="line">
+            <topic id="9" order="7" position="290,-125" shape="line" shrink="false">
                 <text><![CDATA[! Simbol]]></text>
             </topic>
-            <topic id="10" order="8" position="290,-100" shape="line">
+            <topic id="10" order="8" position="290,-100" shape="line" shrink="false">
                 <text><![CDATA[Question Mark]]></text>
                 <icon id="sign_help"/>
             </topic>
         </topic>
         <topic id="11" order="1" position="-200,-200" shape="line" shrink="true">
             <text><![CDATA[Numbers]]></text>
-            <topic id="12" order="0" position="-290,-325" shape="line">
+            <topic id="12" order="0" position="-290,-325" shape="line" shrink="false">
                 <text><![CDATA[1]]></text>
                 <icon id="bullet_blue"/>
             </topic>
-            <topic id="13" order="1" position="-290,-300" shape="line">
+            <topic id="13" order="1" position="-290,-300" shape="line" shrink="false">
                 <text><![CDATA[2]]></text>
                 <icon id="bullet_green"/>
             </topic>
-            <topic id="14" order="2" position="-290,-275" shape="line">
+            <topic id="14" order="2" position="-290,-275" shape="line" shrink="false">
                 <text><![CDATA[3]]></text>
                 <icon id="bullet_orange"/>
             </topic>
-            <topic id="15" order="3" position="-290,-250" shape="line">
+            <topic id="15" order="3" position="-290,-250" shape="line" shrink="false">
                 <text><![CDATA[4]]></text>
                 <icon id="bullet_red"/>
             </topic>
-            <topic id="16" order="4" position="-290,-225" shape="line">
+            <topic id="16" order="4" position="-290,-225" shape="line" shrink="false">
                 <text><![CDATA[5]]></text>
                 <icon id="bullet_pink"/>
             </topic>
-            <topic id="17" order="5" position="-290,-200" shape="line">
+            <topic id="17" order="5" position="-290,-200" shape="line" shrink="false">
                 <text><![CDATA[6]]></text>
                 <icon id="bullet_purple"/>
             </topic>
-            <topic id="18" order="6" position="-290,-175" shape="line">
+            <topic id="18" order="6" position="-290,-175" shape="line" shrink="false">
                 <text><![CDATA[7]]></text>
             </topic>
-            <topic id="19" order="7" position="-290,-150" shape="line">
+            <topic id="19" order="7" position="-290,-150" shape="line" shrink="false">
                 <text><![CDATA[8]]></text>
             </topic>
-            <topic id="20" order="8" position="-290,-125" shape="line">
+            <topic id="20" order="8" position="-290,-125" shape="line" shrink="false">
                 <text><![CDATA[9]]></text>
             </topic>
-            <topic id="21" order="9" position="-290,-100" shape="line">
+            <topic id="21" order="9" position="-290,-100" shape="line" shrink="false">
                 <text><![CDATA[0]]></text>
                 <icon id="bullet_black"/>
             </topic>
         </topic>
-        <topic id="22" order="2" position="200,-100" shape="line">
+        <topic id="22" order="2" position="200,-100" shape="line" shrink="false">
             <text><![CDATA[Trafic]]></text>
-            <topic id="23" order="0" position="290,-125" shape="line">
+            <topic id="23" order="0" position="290,-125" shape="line" shrink="false">
                 <text><![CDATA[Read]]></text>
             </topic>
-            <topic id="24" order="1" position="290,-100" shape="line">
+            <topic id="24" order="1" position="290,-100" shape="line" shrink="false">
                 <text><![CDATA[Green]]></text>
             </topic>
-            <topic id="25" order="2" position="290,-75" shape="line">
+            <topic id="25" order="2" position="290,-75" shape="line" shrink="false">
                 <text><![CDATA[Yellow]]></text>
             </topic>
         </topic>
         <topic id="26" order="3" position="-200,-100" shape="line" shrink="true">
             <text><![CDATA[Arrow]]></text>
-            <topic id="27" order="0" position="-290,-150" shape="line">
+            <topic id="27" order="0" position="-290,-150" shape="line" shrink="false">
                 <text><![CDATA[Back]]></text>
                 <icon id="arrow_right"/>
             </topic>
-            <topic id="28" order="1" position="-290,-125" shape="line">
+            <topic id="28" order="1" position="-290,-125" shape="line" shrink="false">
                 <text><![CDATA[Forward]]></text>
                 <icon id="arrow_left"/>
             </topic>
-            <topic id="29" order="2" position="-290,-100" shape="line">
+            <topic id="29" order="2" position="-290,-100" shape="line" shrink="false">
                 <text><![CDATA[Up]]></text>
                 <icon id="arrow_up"/>
             </topic>
-            <topic id="30" order="3" position="-290,-75" shape="line">
+            <topic id="30" order="3" position="-290,-75" shape="line" shrink="false">
                 <text><![CDATA[Down]]></text>
                 <icon id="arrow_down"/>
             </topic>
         </topic>
         <topic id="31" order="4" position="200,0" shape="line" shrink="true">
             <text><![CDATA[Smiles]]></text>
-            <topic id="32" order="0" position="290,-50" shape="line">
+            <topic id="32" order="0" position="290,-50" shape="line" shrink="false">
                 <text><![CDATA[Smile]]></text>
                 <icon id="face_smile"/>
             </topic>
-            <topic id="33" order="1" position="290,-25" shape="line">
+            <topic id="33" order="1" position="290,-25" shape="line" shrink="false">
                 <text><![CDATA[No Mind]]></text>
                 <icon id="face_plain"/>
             </topic>
-            <topic id="34" order="2" position="290,0" shape="line">
+            <topic id="34" order="2" position="290,0" shape="line" shrink="false">
                 <text><![CDATA[Surprise]]></text>
                 <icon id="face_surprise"/>
             </topic>
-            <topic id="35" order="3" position="290,25" shape="line">
+            <topic id="35" order="3" position="290,25" shape="line" shrink="false">
                 <text><![CDATA[Sad]]></text>
             </topic>
-            <topic id="36" order="4" position="290,50" shape="line">
+            <topic id="36" order="4" position="290,50" shape="line" shrink="false">
                 <text><![CDATA[Angry]]></text>
             </topic>
         </topic>
         <topic id="37" order="5" position="-200,0" shape="line" shrink="true">
             <text><![CDATA[People]]></text>
-            <topic id="38" order="0" position="-290,-75" shape="line">
+            <topic id="38" order="0" position="-290,-75" shape="line" shrink="false">
                 <text><![CDATA[Family]]></text>
             </topic>
-            <topic id="39" order="1" position="-290,-50" shape="line">
+            <topic id="39" order="1" position="-290,-50" shape="line" shrink="false">
                 <text><![CDATA[Female1]]></text>
                 <icon id="people_female1"/>
             </topic>
-            <topic id="40" order="2" position="-290,-25" shape="line">
+            <topic id="40" order="2" position="-290,-25" shape="line" shrink="false">
                 <text><![CDATA[Female2]]></text>
                 <icon id="people_female2"/>
             </topic>
-            <topic id="41" order="3" position="-290,0" shape="line">
+            <topic id="41" order="3" position="-290,0" shape="line" shrink="false">
                 <text><![CDATA[Male1]]></text>
                 <icon id="people_male1"/>
             </topic>
-            <topic id="42" order="4" position="-290,25" shape="line">
+            <topic id="42" order="4" position="-290,25" shape="line" shrink="false">
                 <text><![CDATA[Male2]]></text>
                 <icon id="people_male2"/>
             </topic>
-            <topic id="43" order="5" position="-290,50" shape="line">
+            <topic id="43" order="5" position="-290,50" shape="line" shrink="false">
                 <text><![CDATA[Females]]></text>
             </topic>
-            <topic id="44" order="6" position="-290,75" shape="line">
+            <topic id="44" order="6" position="-290,75" shape="line" shrink="false">
                 <text><![CDATA[Group]]></text>
                 <icon id="people_group"/>
             </topic>
         </topic>
         <topic id="45" order="6" position="200,100" shape="line" shrink="true">
             <text><![CDATA[Flags]]></text>
-            <topic id="46" order="0" position="290,25" shape="line">
+            <topic id="46" order="0" position="290,25" shape="line" shrink="false">
                 <text><![CDATA[Black]]></text>
             </topic>
-            <topic id="47" order="1" position="290,50" shape="line">
+            <topic id="47" order="1" position="290,50" shape="line" shrink="false">
                 <text><![CDATA[Blue]]></text>
                 <icon id="flag_blue"/>
             </topic>
-            <topic id="48" order="2" position="290,75" shape="line">
+            <topic id="48" order="2" position="290,75" shape="line" shrink="false">
                 <text><![CDATA[Green]]></text>
                 <icon id="flag_green"/>
             </topic>
-            <topic id="49" order="3" position="290,100" shape="line">
+            <topic id="49" order="3" position="290,100" shape="line" shrink="false">
                 <text><![CDATA[Orange]]></text>
                 <icon id="flag_orange"/>
             </topic>
-            <topic id="50" order="4" position="290,125" shape="line">
+            <topic id="50" order="4" position="290,125" shape="line" shrink="false">
                 <text><![CDATA[Pink]]></text>
                 <icon id="flag_pink"/>
             </topic>
-            <topic id="51" order="5" position="290,150" shape="line">
+            <topic id="51" order="5" position="290,150" shape="line" shrink="false">
                 <text><![CDATA[Red]]></text>
             </topic>
-            <topic id="52" order="6" position="290,175" shape="line">
+            <topic id="52" order="6" position="290,175" shape="line" shrink="false">
                 <text><![CDATA[Yellow]]></text>
                 <icon id="flag_yellow"/>
             </topic>
         </topic>
         <topic id="53" order="7" position="-200,100" shape="line" shrink="true">
             <text><![CDATA[Time]]></text>
-            <topic id="54" order="0" position="-290,75" shape="line">
+            <topic id="54" order="0" position="-290,75" shape="line" shrink="false">
                 <text><![CDATA[Calendar]]></text>
                 <icon id="time_calendar"/>
             </topic>
-            <topic id="55" order="1" position="-290,100" shape="line">
+            <topic id="55" order="1" position="-290,100" shape="line" shrink="false">
                 <text><![CDATA[Digial Clock]]></text>
                 <icon id="onoff_clock"/>
             </topic>
-            <topic id="56" order="2" position="-290,125" shape="line">
+            <topic id="56" order="2" position="-290,125" shape="line" shrink="false">
                 <text><![CDATA[Hourglass]]></text>
                 <icon id="time_hourglass"/>
             </topic>
         </topic>
-        <topic id="57" order="8" position="200,200" shape="line">
+        <topic id="57" order="8" position="200,200" shape="line" shrink="false">
             <text><![CDATA[Suff]]></text>
-            <topic id="58" order="0" position="290,0" shape="line">
+            <topic id="58" order="0" position="290,0" shape="line" shrink="false">
                 <text><![CDATA[Broken]]></text>
             </topic>
-            <topic id="59" order="1" position="290,25" shape="line">
+            <topic id="59" order="1" position="290,25" shape="line" shrink="false">
                 <text><![CDATA[WiseIcon]]></text>
             </topic>
-            <topic id="60" order="2" position="290,50" shape="line">
+            <topic id="60" order="2" position="290,50" shape="line" shrink="false">
                 <text><![CDATA[ICQ/Flower]]></text>
                 <icon id="onoff_status_online"/>
             </topic>
-            <topic id="61" order="3" position="290,75" shape="line">
+            <topic id="61" order="3" position="290,75" shape="line" shrink="false">
                 <text><![CDATA[Linux/Pinguin]]></text>
                 <icon id="soft_penguin"/>
             </topic>
-            <topic id="62" order="4" position="290,100" shape="line">
+            <topic id="62" order="4" position="290,100" shape="line" shrink="false">
                 <text><![CDATA[Star]]></text>
                 <icon id="object_star"/>
             </topic>
-            <topic id="63" order="5" position="290,125" shape="line">
+            <topic id="63" order="5" position="290,125" shape="line" shrink="false">
                 <text><![CDATA[Reminder]]></text>
                 <icon id="object_bell"/>
             </topic>
-            <topic id="64" order="6" position="290,150" shape="line">
+            <topic id="64" order="6" position="290,150" shape="line" shrink="false">
                 <text><![CDATA[Zoom]]></text>
                 <icon id="object_magnifier"/>
             </topic>
-            <topic id="65" order="7" position="290,175" shape="line">
+            <topic id="65" order="7" position="290,175" shape="line" shrink="false">
                 <text><![CDATA[Magic]]></text>
                 <icon id="object_wizard"/>
             </topic>
-            <topic id="66" order="8" position="290,200" shape="line">
+            <topic id="66" order="8" position="290,200" shape="line" shrink="false">
                 <text><![CDATA[Music]]></text>
                 <icon id="object_music"/>
             </topic>
-            <topic id="67" order="9" position="290,225" shape="line">
+            <topic id="67" order="9" position="290,225" shape="line" shrink="false">
                 <text><![CDATA[Pen]]></text>
                 <icon id="object_pencil"/>
             </topic>
-            <topic id="68" order="10" position="290,250" shape="line">
+            <topic id="68" order="10" position="290,250" shape="line" shrink="false">
                 <text><![CDATA[Key]]></text>
                 <icon id="object_key"/>
             </topic>
-            <topic id="69" order="11" position="290,275" shape="line">
+            <topic id="69" order="11" position="290,275" shape="line" shrink="false">
                 <text><![CDATA[House]]></text>
                 <icon id="object_house"/>
             </topic>
-            <topic id="70" order="12" position="290,300" shape="line">
+            <topic id="70" order="12" position="290,300" shape="line" shrink="false">
                 <text><![CDATA[Phone]]></text>
                 <icon id="object_phone"/>
             </topic>
-            <topic id="71" order="13" position="290,325" shape="line">
+            <topic id="71" order="13" position="290,325" shape="line" shrink="false">
                 <text><![CDATA[Do not Forget]]></text>
             </topic>
-            <topic id="72" order="14" position="290,350" shape="line">
+            <topic id="72" order="14" position="290,350" shape="line" shrink="false">
                 <text><![CDATA[Bomb]]></text>
                 <icon id="object_clanbomber"/>
             </topic>
-            <topic id="73" order="15" position="290,375" shape="line">
+            <topic id="73" order="15" position="290,375" shape="line" shrink="false">
                 <text><![CDATA[Clip]]></text>
                 <icon id="object_clip"/>
             </topic>
         </topic>
-        <topic id="74" order="9" position="-200,200" shape="line">
+        <topic id="74" order="9" position="-200,200" shape="line" shrink="false">
             <text><![CDATA[Mail]]></text>
-            <topic id="75" order="0" position="-290,150" shape="line">
+            <topic id="75" order="0" position="-290,150" shape="line" shrink="false">
                 <text><![CDATA[Envelop]]></text>
                 <icon id="mail_envelop"/>
             </topic>
-            <topic id="76" order="1" position="-290,175" shape="line">
+            <topic id="76" order="1" position="-290,175" shape="line" shrink="false">
                 <text><![CDATA[E-Mail]]></text>
             </topic>
-            <topic id="77" order="2" position="-290,200" shape="line">
+            <topic id="77" order="2" position="-290,200" shape="line" shrink="false">
                 <text><![CDATA[List]]></text>
                 <icon id="mail_list"/>
             </topic>
-            <topic id="78" order="3" position="-290,225" shape="line">
+            <topic id="78" order="3" position="-290,225" shape="line" shrink="false">
                 <text><![CDATA[Refine]]></text>
                 <icon id="mail_edit"/>
             </topic>
-            <topic id="79" order="4" position="-290,250" shape="line">
+            <topic id="79" order="4" position="-290,250" shape="line" shrink="false">
                 <text><![CDATA[Mailbox]]></text>
                 <icon id="mail_mailbox"/>
             </topic>
