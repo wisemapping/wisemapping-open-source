@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map name="basic" version="tango">
-    <topic central="true" id="0" position="0,0" shape="rounded rectagle">
+    <topic central="true" id="0" position="0,0" shape="rounded rectagle" shrink="false">
         <text><![CDATA[i18n]]></text>
-        <topic id="1" order="0" position="200,-50" shape="line">
+        <topic id="1" order="0" position="200,-50" shape="line" shrink="false">
             <text><![CDATA[Este es un é con acento]]></text>
         </topic>
-        <topic id="2" order="1" position="-200,0" shape="line">
+        <topic id="2" order="1" position="-200,0" shape="line" shrink="false">
             <text><![CDATA[Este es una ñ]]></text>
         </topic>
-        <topic id="3" order="2" position="200,50" shape="line">
+        <topic id="3" order="2" position="200,50" shape="line" shrink="false">
             <text><![CDATA[這是一個樣本 Japanise。]]></text>
         </topic>
     </topic>
