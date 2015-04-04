@@ -65,7 +65,7 @@
 
         <p><strong><spring:message code="ADD_PEOPLE"/>:</strong></p>
 
-        <input type="text" id="collabEmails" name="collabEmails" class="form-control" autofocus='autofocus'
+        <input type="text" id="collabEmails" name="collabEmails" class="form-control"
                placeholder="<spring:message code="COLLABORATORS_SEPARATED_BY_COMA"/>"/>
 
         <div class="btn-group" id="roleBtn">
