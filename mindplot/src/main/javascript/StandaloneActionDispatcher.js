@@ -288,13 +288,13 @@ mindplot.CommandContext = new Class(/** @lends CommandContext */{
 
     /** */
     deleteTopic:function (topic) {
-        this._designer._removeTopic(topic);
+        this._designer.removeTopic(topic);
     },
 
     /** */
     createTopic:function (model) {
         $assert(model, "model can not be null");
-        return  this._designer._nodeModelToNodeGraph(model);
+        return  this._designer.nodeModelToNodeGraph(model);
     },
 
     /** */
@@ -322,12 +322,12 @@ mindplot.CommandContext = new Class(/** @lends CommandContext */{
     /** */
     addRelationship:function (model) {
         $assert(model, "model cannot be null");
-        return this._designer._addRelationship(model);
+        return this._designer.addRelationship(model);
     },
 
     /** */
     deleteRelationship:function (relationship) {
-        this._designer._deleteRelationship(relationship);
+        this._designer.deleteRelationship(relationship);
     },
 
     /** */
