@@ -20,18 +20,18 @@ var designer = null;
 
 
 /*
-* Disclaimer: this global variable is a temporary workaround to Mootools' Browser class
-* We need to avoid browser detection and replace it with feature detection,
-* jquery recommends: http://www.modernizr.com/
-*/
+ * Disclaimer: this global variable is a temporary workaround to Mootools' Browser class
+ * We need to avoid browser detection and replace it with feature detection,
+ * jquery recommends: http://www.modernizr.com/
+ */
 
 Browser = {
     firefox: window.globalStorage,
     ie: document.all && !window.opera,
     ie6: !window.XMLHttpRequest,
     ie7: document.all && window.XMLHttpRequest && !XDomainRequest && !window.opera,
-    ie8: document.documentMode==8,
-    ie11: document.documentMode==11,
+    ie8: document.documentMode == 8,
+    ie11: document.documentMode == 11,
     opera: Boolean(window.opera),
     chrome: Boolean(window.chrome),
     safari: window.getComputedStyle && !window.globalStorage && !window.opera,
@@ -42,7 +42,7 @@ Browser = {
 
 function buildDesigner(options) {
 
-    var container = $("#"+options.container);
+    var container = $("#" + options.container);
     $assert(container, 'container could not be null');
 
     // Register load events ...
@@ -73,14 +73,14 @@ function buildDesigner(options) {
         errorMsg = errorMsg.toString();
 
         $.ajax({
-            method:'post',
-            url:"/c/restful/logger/editor",
-            headers:{"Content-Type":"application/json", "Accept":"application/json"},
+            method: 'post',
+            url: "/c/restful/logger/editor",
+            headers: {"Content-Type": "application/json", "Accept": "application/json"},
             data: {
-                    jsErrorMsg: "Message: '" + errorMsg + "', line:'" + lineNo + "', url: :" + url,
-                    jsStack: window.errorStack,
-                    userAgent: navigator.userAgent,
-                    mapId: options.mapId
+                jsErrorMsg: "Message: '" + errorMsg + "', line:'" + lineNo + "', url: :" + url,
+                jsStack: window.errorStack,
+                userAgent: navigator.userAgent,
+                mapId: options.mapId
             }
         });
 
@@ -97,8 +97,7 @@ function buildDesigner(options) {
         }
     };
 
-    // @Todo: Remove this after all is fixed.
-//    window.onerror = onerrorFn;
+    window.onerror = onerrorFn;
 
     // Configure default persistence manager ...
     var persistence;
@@ -121,7 +120,7 @@ function buildDesigner(options) {
 
         //  If a node has focus, focus can be move to another node using the keys.
         designer._cleanScreen = function () {
-            menu.clear()
+            menu.clear();
         };
     }
 
@@ -148,41 +147,49 @@ function loadDesignerOptions(jsonConf) {
     else {
         // Set workspace screen size as default. In this way, resize issues are solved.
         var containerSize = {
-            height:parseInt(screen.height),
-            width:parseInt(screen.width)
+            height: parseInt(screen.height),
+            width: parseInt(screen.width)
         };
 
         var viewPort = {
-            height:parseInt(window.innerHeight - 70), // Footer and Header
-            width:parseInt(window.innerWidth)
+            height: parseInt(window.innerHeight - 70), // Footer and Header
+            width: parseInt(window.innerWidth)
         };
-        result = {readOnly:false, zoom:0.85, saveOnLoad:true, size:containerSize, viewPort:viewPort, container:'mindplot', locale:'en'};
+        result = {
+            readOnly: false,
+            zoom: 0.85,
+            saveOnLoad: true,
+            size: containerSize,
+            viewPort: viewPort,
+            container: 'mindplot',
+            locale: 'en'
+        };
     }
     return result;
 }
 
 editor = {};
 editor.WaitDialog = new Class({
-    initialize:function () {
+    initialize: function () {
         this.panel = this._buildPanel();
     },
 
-    _buildPanel:function () {
+    _buildPanel: function () {
         var result = $('#load');
         var content = result.find('.modal-content');
         var winH = $(window).height();
         //Set the popup window to center
-        content.css('margin-top',  winH/2 - content.height()/2);
+        content.css('margin-top', winH / 2 - content.height() / 2);
         return result;
     },
 
-    show:function () {
+    show: function () {
         this.panel.modal({
             backdrop: 'static'
         });
     },
 
-    close: function() {
+    close: function () {
         this.panel.modal('hide');
     }
 });
