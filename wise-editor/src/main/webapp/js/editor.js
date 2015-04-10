@@ -76,12 +76,12 @@ function buildDesigner(options) {
             method: 'post',
             url: "/c/restful/logger/editor",
             headers: {"Content-Type": "application/json", "Accept": "application/json"},
-            data: {
+            data: JSON.stringify({
                 jsErrorMsg: "Message: '" + errorMsg + "', line:'" + lineNo + "', url: :" + url,
                 jsStack: window.errorStack,
                 userAgent: navigator.userAgent,
                 mapId: options.mapId
-            }
+            })
         });
 
         // Close loading dialog ...
