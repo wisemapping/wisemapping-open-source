@@ -192,7 +192,7 @@ public class MindmapController extends BaseController {
         return result;
     }
 
-    @RequestMapping(value = "maps/{id}/history/{hid}", method = RequestMethod.POST)
+    @RequestMapping(value = "/maps/{id}/history/{hid}", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateRevertMindmap(@PathVariable int id, @PathVariable String hid) throws WiseMappingException, IOException {
         final Mindmap mindmap = findMindmapById(id);
