@@ -1,5 +1,5 @@
 /*
- *    Copyright [2012] [wisemapping]
+ *    Copyright [2015] [wisemapping]
  *
  *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
  *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -212,7 +212,7 @@ mindplot.Designer = new Class(/** @lends Designer */{
         },
 
         /**
-         * @param {width:Number, height:Number} size
+         * @param {{width:Number, height:Number}} size
          * sets width and height of the workspace
          */
         setViewPort: function (size) {
@@ -647,9 +647,10 @@ mindplot.Designer = new Class(/** @lends Designer */{
             this._relPivot.start(nodes[0], pos);
         },
 
-        /** @return the zoom */
+        /** @return {{zoom:Number}} the zoom */
         getMindmapProperties: function () {
-            return {zoom: this.getModel().getZoom()};
+            var model = this.getModel();
+            return {zoom: model.getZoom()};
         },
 
         /**
@@ -842,7 +843,7 @@ mindplot.Designer = new Class(/** @lends Designer */{
         },
 
         /**
-         * @param {mindplot.model.Topic} node the topic to remove
+         * @param {mindplot.Topic} node the topic to remove
          * removes the given topic and its children from Workspace, DesignerModel and NodeModel
          */
         removeTopic: function (node) {

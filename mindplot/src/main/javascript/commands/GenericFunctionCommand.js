@@ -1,5 +1,5 @@
 /*
- *    Copyright [2012] [wisemapping]
+ *    Copyright [2015] [wisemapping]
  *
  *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
  *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -25,7 +25,7 @@ mindplot.commands.GenericFunctionCommand = new Class(/** @lends GenericFunctionC
      * @constructs
      * @param {Function} commandFunc the function the command shall execute
      * @param {String|Array<String>} topicsIds the ids of the topics affected
-     * @param {Object} value arbitrary value necessary for the execution of the function,
+     * @param {Object} [value] value arbitrary value necessary for the execution of the function,
      * e.g. color, font family or text
      * @extends mindplot.Command
      */
