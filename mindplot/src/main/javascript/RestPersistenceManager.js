@@ -17,8 +17,8 @@
  */
 
 mindplot.RESTPersistenceManager = new Class({
-        Extends:mindplot.PersistenceManager,
-        initialize:function (options) {
+        Extends: mindplot.PersistenceManager,
+        initialize: function (options) {
             this.parent();
             $assert(options.documentUrl, "documentUrl can not be null");
             $assert(options.revertUrl, "revertUrl can not be null");
@@ -33,12 +33,12 @@ mindplot.RESTPersistenceManager = new Class({
             this.session = options.session;
         },
 
-        saveMapXml:function (mapId, mapXml, pref, saveHistory, events, sync) {
+        saveMapXml: function (mapId, mapXml, pref, saveHistory, events, sync) {
 
             var data = {
-                id:mapId,
-                xml:mapXml,
-                properties:pref
+                id: mapId,
+                xml: mapXml,
+                properties: pref
             };
 
             var persistence = this;
@@ -57,11 +57,11 @@ mindplot.RESTPersistenceManager = new Class({
 
                 $.ajax({
                     url: this.documentUrl.replace("{id}", mapId) + "?" + query,
-                    type:'put',
-                    dataType:"json",
+                    type: 'put',
+                    dataType: "json",
                     data: JSON.stringify(data),
-                    contentType:"application/json; charset=utf-8",
-                    async:!sync,
+                    contentType: "application/json; charset=utf-8",
+                    async: !sync,
 
                     success: function (data, textStatus, jqXHRresponseText) {
                         persistence.timestamp = data;
@@ -77,10 +77,10 @@ mindplot.RESTPersistenceManager = new Class({
                         }
                         persistence.onSave = false;
                     },
-                    fail:function (xhr, textStatus) {
+                    fail: function (xhr, textStatus) {
 
                         var responseText = xhr.responseText;
-                        var userMsg = {severity:"SEVERE", message:$msg('SAVE_COULD_NOT_BE_COMPLETED')};
+                        var userMsg = {severity: "SEVERE", message: $msg('SAVE_COULD_NOT_BE_COMPLETED')};
 
                         var contentType = xhr.getResponseHeader("Content-Type");
                         if (contentType != null && contentType.indexOf("application/json") != -1) {
@@ -95,7 +95,7 @@ mindplot.RESTPersistenceManager = new Class({
 
                         } else {
                             if (this.status == 405) {
-                                userMsg = {severity:"SEVERE", message:$msg('SESSION_EXPIRED')};
+                                userMsg = {severity: "SEVERE", message: $msg('SESSION_EXPIRED')};
                             }
                         }
                         events.onError(userMsg);
@@ -105,27 +105,27 @@ mindplot.RESTPersistenceManager = new Class({
             }
         },
 
-        discardChanges:function (mapId) {
+        discardChanges: function (mapId) {
             $.ajax({
-                url:this.revertUrl.replace("{id}", mapId),
-                async:false,
-                method:'post',
-                headers:{"Content-Type":"application/json; charset=utf-8", "Accept":"application/json"}
+                url: this.revertUrl.replace("{id}", mapId),
+                async: false,
+                method: 'post',
+                headers: {"Content-Type": "application/json; charset=utf-8", "Accept": "application/json"}
             });
         },
 
-        unlockMap:function (mindmap) {
+        unlockMap: function (mindmap) {
             var mapId = mindmap.getId();
             $.ajax({
-                url:this.lockUrl.replace("{id}", mapId),
-                async:false,
-                method:'put',
-                headers:{"Content-Type":"text/plain"},
+                url: this.lockUrl.replace("{id}", mapId),
+                async: false,
+                method: 'put',
+                headers: {"Content-Type": "text/plain"},
                 data: "false"
             });
         },
 
-        _buildError:function (jsonSeverResponse) {
+        _buildError: function (jsonSeverResponse) {
             var message = jsonSeverResponse ? jsonSeverResponse.globalErrors[0] : null;
             var severity = jsonSeverResponse ? jsonSeverResponse.globalSeverity : null;
 
@@ -136,18 +136,18 @@ mindplot.RESTPersistenceManager = new Class({
             if (!severity) {
                 severity = "INFO";
             }
-            return {severity:severity, message:message};
+            return {severity: severity, message: message};
         },
 
-        loadMapDom:function (mapId) {
+        loadMapDom: function (mapId) {
             // Let's try to open one from the local directory ...
             var xml;
             $.ajax({
-                url:this.documentUrl.replace("{id}", mapId) + "/xml",
-                method:'get',
-                async:false,
-                headers:{"Content-Type":"text/plain","Accept":"application/xml"},
-                success:function (responseText) {
+                url: this.documentUrl.replace("{id}", mapId) + "/xml",
+                method: 'get',
+                async: false,
+                headers: {"Content-Type": "text/plain", "Accept": "application/xml"},
+                success: function (responseText) {
                     xml = responseText;
                 }
             });

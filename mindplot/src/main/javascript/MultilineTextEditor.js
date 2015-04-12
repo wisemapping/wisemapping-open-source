@@ -18,37 +18,37 @@
 
 mindplot.MultilineTextEditor = new Class({
     Extends: mindplot.Events,
-    initialize:function () {
+    initialize: function () {
         this._topic = null;
         this._timeoutId = -1;
     },
 
-    _buildEditor:function () {
+    _buildEditor: function () {
 
         var result = $('<div></div>')
             .attr('id', 'textContainer')
             .css({
-                display:"none",
-                zIndex:"8",
-                overflow:"hidden",
-                border:"0 none"
+                display: "none",
+                zIndex: "8",
+                overflow: "hidden",
+                border: "0 none"
             });
 
 
         var textareaElem = $('<textarea tabindex="-1" value="" wrap="off" ></textarea>')
             .css({
-                border:"1px gray dashed",
-                background:"rgba(98, 135, 167, .3)",
-                outline:'0 none',
-                resize:'none',
-                overflow:"hidden"
+                border: "1px gray dashed",
+                background: "rgba(98, 135, 167, .3)",
+                outline: '0 none',
+                resize: 'none',
+                overflow: "hidden"
             });
 
         result.append(textareaElem);
         return result;
     },
 
-    _registerEvents:function (containerElem) {
+    _registerEvents: function (containerElem) {
         var textareaElem = this._getTextareaElem();
         var me = this;
         textareaElem.on('keydown', function (event) {
@@ -125,7 +125,7 @@ mindplot.MultilineTextEditor = new Class({
         });
     },
 
-    _adjustEditorSize:function () {
+    _adjustEditorSize: function () {
 
         if (this.isVisible()) {
             var textElem = this._getTextareaElem();
@@ -141,17 +141,17 @@ mindplot.MultilineTextEditor = new Class({
             textElem.attr('rows', lines.length);
 
             this._containerElem.css({
-                width:(maxLineLength + 3) + 'em',
-                height:textElem.height()
+                width: (maxLineLength + 3) + 'em',
+                height: textElem.height()
             });
         }
     },
 
-    isVisible:function () {
+    isVisible: function () {
         return $defined(this._containerElem) && this._containerElem.css('display') == 'block';
     },
 
-    _updateModel:function () {
+    _updateModel: function () {
 
         if (this._topic.getText() != this._getText()) {
             var text = this._getText();
@@ -180,7 +180,7 @@ mindplot.MultilineTextEditor = new Class({
         }
     },
 
-    _showEditor:function (defaultText) {
+    _showEditor: function (defaultText) {
 
         var topic = this._topic;
 
@@ -218,7 +218,7 @@ mindplot.MultilineTextEditor = new Class({
         this._timeoutId = displayFunc.delay(10);
     },
 
-    _setStyle:function (fontStyle) {
+    _setStyle: function (fontStyle) {
         var inputField = this._getTextareaElem();
         if (!$defined(fontStyle.font)) {
             fontStyle.font = "Arial";
@@ -233,56 +233,56 @@ mindplot.MultilineTextEditor = new Class({
             fontStyle.size = 12;
         }
         var style = {
-            fontSize:fontStyle.size + "px",
-            fontFamily:fontStyle.font,
-            fontStyle:fontStyle.style,
-            fontWeight:fontStyle.weight,
-            color:fontStyle.color
+            fontSize: fontStyle.size + "px",
+            fontFamily: fontStyle.font,
+            fontStyle: fontStyle.style,
+            fontWeight: fontStyle.weight,
+            color: fontStyle.color
         };
         inputField.css(style);
         this._containerElem.css(style);
     },
 
-    _setText:function (text) {
+    _setText: function (text) {
         var textareaElem = this._getTextareaElem();
         textareaElem.val(text);
         this._adjustEditorSize();
     },
 
-    _getText:function () {
+    _getText: function () {
         return this._getTextareaElem().val();
     },
 
-    _getTextareaElem:function () {
+    _getTextareaElem: function () {
         return this._containerElem.find('textarea');
     },
 
-    _positionCursor:function (textareaElem, selectText) {
+    _positionCursor: function (textareaElem, selectText) {
         textareaElem.focus();
-        var lenght = textareaElem.val().length;
+        var lengh = textareaElem.val().length;
         if (selectText) {
             // Mark text as selected ...
             if (textareaElem.createTextRange) {
                 var rang = textareaElem.createTextRange();
                 rang.select();
-                rang.move("character", lenght);
+                rang.move("character", lengh);
             }
             else {
-                textareaElem[0].setSelectionRange(0, lenght);
+                textareaElem[0].setSelectionRange(0, lengh);
             }
 
         } else {
             // Move the cursor to the last character ..
             if (textareaElem.createTextRange) {
                 var range = textareaElem.createTextRange();
-                range.move("character", lenght);
+                range.move("character", lengh);
             } else {
                 if (Browser.ie11) {
-                    textareaElem[0].selectionStart = lenght;
-                    textareaElem[0].selectionEnd = lenght;
+                    textareaElem[0].selectionStart = lengh;
+                    textareaElem[0].selectionEnd = lengh;
                 } else {
-                    textareaElem.selectionStart = lenght;
-                    textareaElem.selectionEnd = lenght;
+                    textareaElem.selectionStart = lengh;
+                    textareaElem.selectionEnd = lengh;
                 }
                 textareaElem.focus();
             }
@@ -290,7 +290,7 @@ mindplot.MultilineTextEditor = new Class({
 
     },
 
-    close:function (update) {
+    close: function (update) {
         if (this.isVisible() && this._topic) {
             // Update changes ...
             clearTimeout(this._timeoutId);

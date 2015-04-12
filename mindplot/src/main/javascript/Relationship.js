@@ -16,14 +16,14 @@
  *   limitations under the License.
  */
 mindplot.Relationship = new Class({
-    Extends:mindplot.ConnectionLine,
-    Static:{
-        getStrokeColor:function () {
+    Extends: mindplot.ConnectionLine,
+    Static: {
+        getStrokeColor: function () {
             return '#9b74e6';
         },
-        type:"Relationship"
+        type: "Relationship"
     },
-    initialize:function (sourceNode, targetNode, model) {
+    initialize: function (sourceNode, targetNode, model) {
         $assert(sourceNode, "sourceNode can not be null");
         $assert(targetNode, "targetNode can not be null");
 
@@ -71,12 +71,12 @@ mindplot.Relationship = new Class({
         }
     },
 
-    setStroke:function (color, style, opacity) {
+    setStroke: function (color, style, opacity) {
         this.parent(color, style, opacity);
         this._startArrow.setStrokeColor(color);
     },
 
-    redraw:function () {
+    redraw: function () {
         var line2d = this._line2d;
         var sourceTopic = this._sourceTopic;
         var sourcePosition = sourceTopic.getPosition();
@@ -128,7 +128,7 @@ mindplot.Relationship = new Class({
         this._controlPointsController.redraw();
     },
 
-    _positionArrows:function () {
+    _positionArrows: function () {
         var tpos = this._line2d.getTo();
         var spos = this._line2d.getFrom();
 
@@ -159,7 +159,7 @@ mindplot.Relationship = new Class({
         this._startArrow.setVisibility(this.isVisible() && this._showStartArrow);
     },
 
-    addToWorkspace:function (workspace) {
+    addToWorkspace: function (workspace) {
         workspace.append(this._focusShape);
         workspace.append(this._controlPointsController);
 
@@ -177,11 +177,11 @@ mindplot.Relationship = new Class({
 
     },
 
-    _initializeControlPointController:function () {
+    _initializeControlPointController: function () {
         this.setOnFocus(true);
     },
 
-    removeFromWorkspace:function (workspace) {
+    removeFromWorkspace: function (workspace) {
         workspace.removeChild(this._focusShape);
         workspace.removeChild(this._controlPointsController);
         this._line2d.removeEvent('click', this._controlPointControllerListener);
@@ -193,11 +193,11 @@ mindplot.Relationship = new Class({
         this.parent(workspace);
     },
 
-    getType:function () {
+    getType: function () {
         return mindplot.Relationship.type;
     },
 
-    setOnFocus:function (focus) {
+    setOnFocus: function (focus) {
         // Change focus shape
         if (this.isOnFocus() != focus) {
             if (focus) {
@@ -212,7 +212,7 @@ mindplot.Relationship = new Class({
         }
     },
 
-    _refreshShape:function () {
+    _refreshShape: function () {
         var sPos = this._line2d.getFrom();
         var tPos = this._line2d.getTo();
         var ctrlPoints = this._line2d.getControlPoints();
@@ -226,7 +226,7 @@ mindplot.Relationship = new Class({
         this._focusShape.updateLine();
     },
 
-    addEvent:function (type, listener) {
+    addEvent: function (type, listener) {
         // Translate to web 2d events ...
         if (type == 'onfocus') {
             type = 'mousedown';
@@ -236,22 +236,22 @@ mindplot.Relationship = new Class({
         line.addEvent(type, listener);
     },
 
-    isOnFocus:function () {
+    isOnFocus: function () {
         return this._onFocus;
     },
 
-    isInWorkspace:function () {
+    isInWorkspace: function () {
         return this._isInWorkspace;
     },
 
-    setVisibility:function (value) {
+    setVisibility: function (value) {
         this.parent(value);
         if (this._showEndArrow)
             this._endArrow.setVisibility(this._showEndArrow);
         this._startArrow.setVisibility(this._showStartArrow && value);
     },
 
-    setOpacity:function (opacity) {
+    setOpacity: function (opacity) {
         this.parent(opacity);
         if (this._showEndArrow)
             this._endArrow.setOpacity(opacity);
@@ -259,19 +259,19 @@ mindplot.Relationship = new Class({
             this._startArrow.setOpacity(opacity);
     },
 
-    setShowEndArrow:function (visible) {
+    setShowEndArrow: function (visible) {
         this._showEndArrow = visible;
         if (this._isInWorkspace)
             this.redraw();
     },
 
-    setShowStartArrow:function (visible) {
+    setShowStartArrow: function (visible) {
         this._showStartArrow = visible;
         if (this._isInWorkspace)
             this.redraw();
     },
 
-    setFrom:function (x, y) {
+    setFrom: function (x, y) {
         $assert($defined(x), "x must be defined");
         $assert($defined(y), "y must be defined");
 
@@ -279,7 +279,7 @@ mindplot.Relationship = new Class({
         this._startArrow.setFrom(x, y);
     },
 
-    setTo:function (x, y) {
+    setTo: function (x, y) {
         $assert($defined(x), "x must be defined");
         $assert($defined(y), "y must be defined");
 
@@ -288,42 +288,42 @@ mindplot.Relationship = new Class({
             this._endArrow.setFrom(x, y);
     },
 
-    setSrcControlPoint:function (control) {
+    setSrcControlPoint: function (control) {
         this._line2d.setSrcControlPoint(control);
         this._startArrow.setControlPoint(control);
     },
 
-    setDestControlPoint:function (control) {
+    setDestControlPoint: function (control) {
         this._line2d.setDestControlPoint(control);
         if (this._showEndArrow)
             this._endArrow.setControlPoint(control);
     },
 
-    getControlPoints:function () {
+    getControlPoints: function () {
         return this._line2d.getControlPoints();
     },
 
-    isSrcControlPointCustom:function () {
+    isSrcControlPointCustom: function () {
         return this._line2d.isSrcControlPointCustom();
     },
 
-    isDestControlPointCustom:function () {
+    isDestControlPointCustom: function () {
         return this._line2d.isDestControlPointCustom();
     },
 
-    setIsSrcControlPointCustom:function (isCustom) {
+    setIsSrcControlPointCustom: function (isCustom) {
         this._line2d.setIsSrcControlPointCustom(isCustom);
     },
 
-    setIsDestControlPointCustom:function (isCustom) {
+    setIsDestControlPointCustom: function (isCustom) {
         this._line2d.setIsDestControlPointCustom(isCustom);
     },
 
-    getId:function () {
+    getId: function () {
         return this._model.getId();
     },
 
-    fireEvent:function (type, event) {
+    fireEvent: function (type, event) {
         var elem = this._line2d;
         elem.trigger(type, event);
     }

@@ -17,8 +17,8 @@
  */
 
 mindplot.PersistenceManager = new Class({
-    Static:{
-        loadFromDom:function (mapId, mapDom) {
+    Static: {
+        loadFromDom: function (mapId, mapDom) {
             $assert(mapId, "mapId can not be null");
             $assert(mapDom, "mapDom can not be null");
 
@@ -27,11 +27,11 @@ mindplot.PersistenceManager = new Class({
         }
     },
 
-    initialize:function () {
+    initialize: function () {
 
     },
 
-    save:function (mindmap, editorProperties, saveHistory, events, sync) {
+    save: function (mindmap, editorProperties, saveHistory, events, sync) {
         $assert(mindmap, "mindmap can not be null");
         $assert(editorProperties, "editorProperties can not be null");
 
@@ -51,25 +51,25 @@ mindplot.PersistenceManager = new Class({
         }
     },
 
-    load:function (mapId) {
+    load: function (mapId) {
         $assert(mapId, "mapId can not be null");
         var domDocument = this.loadMapDom(mapId);
-        return  mindplot.PersistenceManager.loadFromDom(mapId, domDocument);
+        return mindplot.PersistenceManager.loadFromDom(mapId, domDocument);
     },
 
-    discardChanges:function (mapId) {
+    discardChanges: function (mapId) {
         throw new Error("Method must be implemented");
     },
 
-    loadMapDom:function (mapId) {
+    loadMapDom: function (mapId) {
         throw new Error("Method must be implemented");
     },
 
-    saveMapXml:function (mapId, mapXml, pref, saveHistory, events, sync) {
+    saveMapXml: function (mapId, mapXml, pref, saveHistory, events, sync) {
         throw new Error("Method must be implemented");
     },
 
-    unlockMap:function (mindmap) {
+    unlockMap: function (mindmap) {
         throw new Error("Method must be implemented");
     }
 });

@@ -22,8 +22,10 @@ web2d.Workspace = new Class({
         this._htmlContainer = this._createDivContainer();
 
         var peer = web2d.peer.Toolkit.createWorkspace(this._htmlContainer);
-        var defaultAttributes = {width: '200px', height: '200px', stroke: '1px solid #edf1be',
-            fillColor: "white", coordOrigin: '0 0', coordSize: '200 200' };
+        var defaultAttributes = {
+            width: '200px', height: '200px', stroke: '1px solid #edf1be',
+            fillColor: "white", coordOrigin: '0 0', coordSize: '200 200'
+        };
         for (var key in attributes) {
             defaultAttributes[key] = attributes[key];
         }
@@ -34,6 +36,7 @@ web2d.Workspace = new Class({
     getType: function () {
         return "Workspace";
     },
+
     /**
      * Appends an element as a child to the object.
      */
@@ -154,7 +157,7 @@ web2d.Workspace = new Class({
         if (style != 'solid') {
             throw 'Not supported style stroke style:' + style;
         }
-        this._htmlContainer.css('border',width + ' ' + style + ' ' + color);
+        this._htmlContainer.css('border', width + ' ' + style + ' ' + color);
 
         if (opacity || opacity === 0) {
             throw "Unsupported operation. Opacity not supported.";

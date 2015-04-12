@@ -229,6 +229,7 @@ mindplot.Designer = new Class(/** @lends Designer */{
          * connected, added to the drag manager, with events registered - complying type & read mode
          */
         _buildNodeGraph: function (model, readOnly) {
+            
             // Create node graph ...
             var topic = mindplot.NodeGraph.create(model, {readOnly: readOnly});
             this.getModel().addTopic(topic);

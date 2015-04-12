@@ -18,38 +18,41 @@
 
 //FIXME: Not used!
 mindplot.TextEditor = new Class({
-    initialize:function(topic) {
+    initialize: function (topic) {
         this._topic = topic;
     },
 
-    _buildEditor : function() {
+    _buildEditor: function () {
 
-        this._size = {width:500, height:100};
+        this._size = {width: 500, height: 100};
         var result = new Element('div');
         result.setStyles({
-                position:"absolute",
+                position: "absolute",
                 display: "none",
                 zIndex: "8",
-                width:"500px",
-                height:"100px"}
+                width: "500px",
+                height: "100px"
+            }
         );
 
 
         var inputContainer = new Element('div');
         inputContainer.setStyles({
-            border:"none",
-            overflow:"auto"
+            border: "none",
+            overflow: "auto"
         });
         inputContainer.inject(result);
 
         var inputText = new Element('input',
-            {type:"text",
-                tabindex:'-1',
-                value:""}
+            {
+                type: "text",
+                tabindex: '-1',
+                value: ""
+            }
         );
         inputText.setStyles({
-            border:"none",
-            background:"transparent"
+            border: "none",
+            background: "transparent"
         });
         inputText.inject(inputContainer);
 
@@ -57,7 +60,7 @@ mindplot.TextEditor = new Class({
         spanContainer.setStyle('visibility', "hidden");
         spanContainer.inject(result);
 
-        var spanElem = new Element('span', {tabindex:"-1"});
+        var spanElem = new Element('span', {tabindex: "-1"});
         spanElem.setStyle('white-space', "nowrap");
         spanElem.setStyle('nowrap', 'nowrap');
         spanElem.inject(spanContainer);
@@ -66,7 +69,7 @@ mindplot.TextEditor = new Class({
         return result;
     },
 
-    _registerEvents : function(divElem) {
+    _registerEvents: function (divElem) {
         var inputElem = this._getTextareaElem();
         var spanElem = this._getSpanElem();
         var me = this;
@@ -92,22 +95,22 @@ mindplot.TextEditor = new Class({
         });
 
         // If the user clicks on the input, all event must be ignored ...
-        divElem.addEvent('click', function(event) {
+        divElem.addEvent('click', function (event) {
             event.stopPropagation();
         });
-        divElem.addEvent('dblclick', function(event) {
+        divElem.addEvent('dblclick', function (event) {
             event.stopPropagation();
         });
-        divElem.addEvent('mousedown', function(event) {
+        divElem.addEvent('mousedown', function (event) {
             event.stopPropagation();
         });
     },
 
-    isVisible : function () {
+    isVisible: function () {
         return $defined(this._containerElem) && this._containerElem.getStyle('display') == 'block';
     },
 
-    _updateModel : function () {
+    _updateModel: function () {
 
         if (this._topic.getText() != this._getText()) {
             var text = this._getText();
@@ -118,7 +121,7 @@ mindplot.TextEditor = new Class({
         }
     },
 
-    show : function (text) {
+    show: function (text) {
 
         if (!this.isVisible()) {
             //Create editor ui
@@ -131,7 +134,7 @@ mindplot.TextEditor = new Class({
         }
     },
 
-    _showEditor : function (defaultText) {
+    _showEditor: function (defaultText) {
 
         var topic = this._topic;
 
@@ -151,7 +154,7 @@ mindplot.TextEditor = new Class({
 
         var me = this;
         // Set editor's initial size
-        var displayFunc = function() {
+        var displayFunc = function () {
             // Position the editor and set the size...
             var textShape = me._topic.getTextShape();
 
@@ -171,7 +174,7 @@ mindplot.TextEditor = new Class({
         displayFunc.delay(10);
     },
 
-    _setStyle : function (fontStyle) {
+    _setStyle: function (fontStyle) {
         var inputField = this._getTextareaElem();
         var spanField = this._getSpanElem();
         if (!$defined(fontStyle.font)) {
@@ -197,7 +200,7 @@ mindplot.TextEditor = new Class({
         spanField.style.fontSize = fontStyle.size + "px";
     },
 
-    _setText : function(text) {
+    _setText: function (text) {
         var inputField = this._getTextareaElem();
         inputField.size = text.length + 1;
         this._containerElem.style.width = (inputField.size * parseInt(inputField.style.fontSize) + 100) + "px";
@@ -206,27 +209,27 @@ mindplot.TextEditor = new Class({
         inputField.value = text;
     },
 
-    _getText : function() {
+    _getText: function () {
         return this._getTextareaElem().value;
     },
 
-    _getTextareaElem : function() {
+    _getTextareaElem: function () {
         return this._containerElem.getElement('input');
     },
 
-    _getSpanElem : function() {
+    _getSpanElem: function () {
         return this._containerElem.getElement('span');
     },
 
-    _setEditorSize : function (width, height) {
+    _setEditorSize: function (width, height) {
         var textShape = this._topic.getTextShape();
         var scale = web2d.peer.utils.TransformUtil.workoutScale(textShape._peer);
-        this._size = {width:width * scale.width, height:height * scale.height};
+        this._size = {width: width * scale.width, height: height * scale.height};
         this._containerElem.style.width = this._size.width * 2 + "px";
         this._containerElem.style.height = this._size.height + "px";
     },
 
-    _positionCursor : function(inputElem, selectText) {
+    _positionCursor: function (inputElem, selectText) {
         // Select text if it's required ...
         if (inputElem.createTextRange) //ie
         {
@@ -246,7 +249,7 @@ mindplot.TextEditor = new Class({
         }
     },
 
-    close : function(update) {
+    close: function (update) {
         if (this.isVisible()) {
             // Update changes ...
             if (!$defined(update) || update) {

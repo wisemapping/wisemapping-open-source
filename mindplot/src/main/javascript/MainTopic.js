@@ -17,20 +17,20 @@
  */
 
 mindplot.MainTopic = new Class(/** @lends MainTopic */{
-    Extends:mindplot.Topic,
+    Extends: mindplot.Topic,
     /**
      * @extends mindplot.Topic
      * @constructs
      * @param model
      * @param options
      */
-    initialize:function (model, options) {
+    initialize: function (model, options) {
         this.parent(model, options);
     },
 
-    INNER_RECT_ATTRIBUTES:{stroke:'0.5 solid #009900'},
+    INNER_RECT_ATTRIBUTES: {stroke: '0.5 solid #009900'},
 
-    _buildDragShape:function () {
+    _buildDragShape: function () {
         var innerShape = this._buildShape(this.INNER_RECT_ATTRIBUTES, this.getShapeType());
         var size = this.getSize();
         innerShape.setSize(size.width, size.height);
@@ -46,7 +46,7 @@ mindplot.MainTopic = new Class(/** @lends MainTopic */{
         innerShape.setAttribute("fillColor", bgColor);
 
         //  Create group ...
-        var groupAttributes = {width:100, height:100, coordSizeWidth:100, coordSizeHeight:100};
+        var groupAttributes = {width: 100, height: 100, coordSizeWidth: 100, coordSizeHeight: 100};
         var group = new web2d.Group(groupAttributes);
         group.append(innerShape);
 
@@ -62,7 +62,7 @@ mindplot.MainTopic = new Class(/** @lends MainTopic */{
     },
 
     /** */
-    updateTopicShape:function (targetTopic, workspace) {
+    updateTopicShape: function (targetTopic, workspace) {
         // Change figure based on the connected topic ...
         var model = this.getModel();
         var shapeType = model.getShapeType();
@@ -76,7 +76,7 @@ mindplot.MainTopic = new Class(/** @lends MainTopic */{
     },
 
     /** */
-    disconnect:function (workspace) {
+    disconnect: function (workspace) {
         this.parent(workspace);
         var size = this.getSize();
 
@@ -91,7 +91,7 @@ mindplot.MainTopic = new Class(/** @lends MainTopic */{
         innerShape.setVisibility(true);
     },
 
-    _updatePositionOnChangeSize:function (oldSize, newSize) {
+    _updatePositionOnChangeSize: function (oldSize, newSize) {
 
         var xOffset = Math.round((newSize.width - oldSize.width) / 2);
         var pos = this.getPosition();
@@ -106,12 +106,12 @@ mindplot.MainTopic = new Class(/** @lends MainTopic */{
     },
 
     /** */
-    workoutIncomingConnectionPoint:function (sourcePosition) {
+    workoutIncomingConnectionPoint: function (sourcePosition) {
         return mindplot.util.Shape.workoutIncomingConnectionPoint(this, sourcePosition);
     },
 
     /** */
-    workoutOutgoingConnectionPoint:function (targetPosition) {
+    workoutOutgoingConnectionPoint: function (targetPosition) {
         $assert(targetPosition, 'targetPoint can not be null');
         var pos = this.getPosition();
         var isAtRight = mindplot.util.Shape.isAtRight(targetPosition, pos);

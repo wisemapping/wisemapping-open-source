@@ -17,47 +17,47 @@
  */
 
 mindplot.ScreenManager = new Class({
-    initialize:function(divElement) {
+    initialize: function (divElement) {
         $assert(divElement, "can not be null");
         this._divContainer = divElement;
-        this._padding = {x:0,y:0};
+        this._padding = {x: 0, y: 0};
 
         // Ignore default click event propagation. Prevent 'click' event on drag.
         this._clickEvents = [];
-        this._divContainer.bind('click', function(event) {
+        this._divContainer.bind('click', function (event) {
             event.stopPropagation()
         });
 
-        this._divContainer.bind('dblclick', function(event) {
+        this._divContainer.bind('dblclick', function (event) {
             event.stopPropagation();
             event.preventDefault();
         });
     },
 
-    setScale : function(scale) {
+    setScale: function (scale) {
         $assert(scale, 'Screen scale can not be null');
         this._scale = scale;
     },
 
-    addEvent : function(event, listener) {
+    addEvent: function (event, listener) {
         if (event == 'click')
             this._clickEvents.push(listener);
         else
-           this._divContainer.bind(event, listener);
+            this._divContainer.bind(event, listener);
     },
 
-    removeEvent : function(event, listener) {
+    removeEvent: function (event, listener) {
         if (event == 'click') {
             this._clickEvents.remove(listener);
         }
-        else{
+        else {
             this._divContainer.unbind(event, listener);
         }
     },
 
-    fireEvent : function(type, event) {
+    fireEvent: function (type, event) {
         if (type == 'click') {
-            _.each(this._clickEvents, function(listener) {
+            _.each(this._clickEvents, function (listener) {
                 listener(type, event);
             });
         }
@@ -66,7 +66,7 @@ mindplot.ScreenManager = new Class({
         }
     },
 
-    _getElementPosition : function(elem) {
+    _getElementPosition: function (elem) {
         // Retrieve current element position.
         var elementPosition = elem.getPosition();
         var x = elementPosition.x;
@@ -81,10 +81,10 @@ mindplot.ScreenManager = new Class({
         y = y / this._scale;
 
         // Remove decimal part..
-        return {x:x,y:y};
+        return {x: x, y: y};
     },
 
-    getWorkspaceIconPosition : function(e) {
+    getWorkspaceIconPosition: function (e) {
         // Retrieve current icon position.
         var image = e.getImage();
         var elementPosition = image.getPosition();
@@ -97,7 +97,7 @@ mindplot.ScreenManager = new Class({
         var groupSize = group.getSize();
         var coordSize = group.getCoordSize();
 
-        var scale = {x:coordSize.width / parseInt(groupSize.width), y:coordSize.height / parseInt(groupSize.height)};
+        var scale = {x: coordSize.width / parseInt(groupSize.width), y: coordSize.height / parseInt(groupSize.height)};
 
         var x = (elementPosition.x - coordOrigin.x - (parseInt(imageSize.width) / 2)) / scale.x;
         var y = (elementPosition.y - coordOrigin.y - (parseInt(imageSize.height) / 2)) / scale.y;
@@ -113,18 +113,18 @@ mindplot.ScreenManager = new Class({
         topicPosition.x = topicPosition.x - (parseInt(topic.getSize().width) / 2);
 
         // Remove decimal part..
-        return {x:x + topicPosition.x,y:y + topicPosition.y};
+        return {x: x + topicPosition.x, y: y + topicPosition.y};
     },
 
-    getWorkspaceMousePosition : function(event) {
+    getWorkspaceMousePosition: function (event) {
         // Retrieve current mouse position.
         var x = event.clientX;
         var y = event.clientY;
 
         //FIXME: paulo: why? Subtract div position.
         /*var containerPosition = this.getContainer().position();
-        x = x - containerPosition.x;
-        y = y - containerPosition.y;*/
+         x = x - containerPosition.x;
+         y = y - containerPosition.y;*/
 
         // Scale coordinate in order to be relative to the workspace. That's coordSize/size;
         x = x * this._scale;
@@ -138,11 +138,11 @@ mindplot.ScreenManager = new Class({
         return new core.Point(x, y);
     },
 
-    getContainer : function() {
+    getContainer: function () {
         return this._divContainer;
     },
 
-    setOffset : function(x, y) {
+    setOffset: function (x, y) {
         this._padding.x = x;
         this._padding.y = y;
     }
