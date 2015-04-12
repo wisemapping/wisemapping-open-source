@@ -412,15 +412,15 @@ public class MindmapController extends BaseController {
                 throw new IllegalArgumentException(roleStr + " is not a valid role");
             }
 
+            // Remove from the list of pendings to remove ...
+            if (collaboration != null) {
+                collabsToRemove.remove(collaboration);
+            }
+
             // Is owner ?
             final CollaborationRole role = CollaborationRole.valueOf(roleStr.toUpperCase());
             if (role != CollaborationRole.OWNER) {
                 mindmapService.addCollaboration(mindMap, restCollab.getEmail(), role, restCollabs.getMessage());
-            }
-
-            // Remove from the list of pendings to remove ...
-            if (collaboration != null) {
-                collabsToRemove.remove(collaboration);
             }
 
         }

@@ -192,7 +192,7 @@ $(function () {
         success:function (data, textStatus, jqXHR) {
             // Owner roles is the first in the table ...
             var collabs = data.collaborations.sort(function (a, b) {
-                return a.role <= b.role;
+                return a.id > b.id;
             });
 
             // Add all the columns in the table ...
