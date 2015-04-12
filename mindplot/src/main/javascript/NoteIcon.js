@@ -17,8 +17,8 @@
  */
 
 mindplot.NoteIcon = new Class({
-    Extends:mindplot.Icon,
-    initialize:function (topic, noteModel, readOnly) {
+    Extends: mindplot.Icon,
+    initialize: function (topic, noteModel, readOnly) {
         $assert(topic, 'topic can not be null');
 
         this.parent(mindplot.NoteIcon.IMAGE_URL);
@@ -29,7 +29,7 @@ mindplot.NoteIcon = new Class({
         this._registerEvents();
     },
 
-    _registerEvents:function () {
+    _registerEvents: function () {
         this._image.setCursor('pointer');
         var me = this;
 
@@ -44,27 +44,27 @@ mindplot.NoteIcon = new Class({
             title: $msg('NOTE'),
             container: 'body',
             // Content can also be a function of the target element!
-            content: function() {
+            content: function () {
                 return me._buildTooltipContent();
             },
-            html:true,
-            placement:'bottom',
+            html: true,
+            placement: 'bottom',
             destroyOnExit: true
         });
 
     },
 
-    _buildTooltipContent: function() {
+    _buildTooltipContent: function () {
         if ($("body").find("#textPopoverNote").length == 1) {
             var text = $("body").find("#textPopoverNote");
             text.text(this._linksModel.getText());
         } else {
-            var result = $('<div id="textPopoverNote"></div>').css({padding:'5px'});
+            var result = $('<div id="textPopoverNote"></div>').css({padding: '5px'});
 
             var text = $('<div></div>').text(this._linksModel.getText())
                 .css({
-                    'white-space':'pre-wrap',
-                    'word-wrap':'break-word'
+                    'white-space': 'pre-wrap',
+                    'word-wrap': 'break-word'
                 }
             );
             result.append(text);
@@ -72,7 +72,7 @@ mindplot.NoteIcon = new Class({
         }
     },
 
-    getModel:function () {
+    getModel: function () {
         return this._linksModel;
     }
 });

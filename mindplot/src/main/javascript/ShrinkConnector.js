@@ -17,14 +17,14 @@
  */
 
 mindplot.ShirinkConnector = new Class({
-    initialize: function(topic) {
+    initialize: function (topic) {
 
         var ellipse = new web2d.Elipse(mindplot.Topic.prototype.INNER_RECT_ATTRIBUTES);
         this._ellipse = ellipse;
         ellipse.setFill('rgb(62,118,179)');
 
         ellipse.setSize(mindplot.Topic.CONNECTOR_WIDTH, mindplot.Topic.CONNECTOR_WIDTH);
-        ellipse.addEvent('click', function(event) {
+        ellipse.addEvent('click', function (event) {
             var model = topic.getModel();
             var collapse = !model.areChildrenShrunken();
 
@@ -36,22 +36,22 @@ mindplot.ShirinkConnector = new Class({
 
         });
 
-        ellipse.addEvent('mousedown', function(event) {
+        ellipse.addEvent('mousedown', function (event) {
             // Avoid node creation ...
             event.stopPropagation();
         });
 
-        ellipse.addEvent('dblclick', function(event) {
+        ellipse.addEvent('dblclick', function (event) {
             // Avoid node creation ...
             event.stopPropagation();
         });
 
-        ellipse.addEvent('mouseover', function(event) {
+        ellipse.addEvent('mouseover', function (event) {
 
             ellipse.setFill('rgb(153, 0, 255)');
         });
         var me = this;
-        ellipse.addEvent('mouseout', function(event) {
+        ellipse.addEvent('mouseout', function (event) {
             var color = topic.getBackgroundColor();
             me.setFill(color);
         });
@@ -63,7 +63,7 @@ mindplot.ShirinkConnector = new Class({
 
     },
 
-    changeRender: function(isShrink) {
+    changeRender: function (isShrink) {
         var elipse = this._ellipse;
         if (isShrink) {
             elipse.setStroke('2', 'solid');
@@ -72,36 +72,36 @@ mindplot.ShirinkConnector = new Class({
         }
     },
 
-    setVisibility: function(value) {
+    setVisibility: function (value) {
         this._ellipse.setVisibility(value);
     },
 
-    setOpacity: function(opacity) {
+    setOpacity: function (opacity) {
         this._ellipse.setOpacity(opacity);
     },
 
-    setFill: function(color) {
+    setFill: function (color) {
         this._fillColor = color;
         this._ellipse.setFill(color);
     },
 
-    setAttribute: function(name, value) {
+    setAttribute: function (name, value) {
         this._ellipse.setAttribute(name, value);
     },
 
-    addToWorkspace: function(group) {
+    addToWorkspace: function (group) {
         group.append(this._ellipse);
     },
 
-    setPosition: function(x, y) {
+    setPosition: function (x, y) {
         this._ellipse.setPosition(x, y);
     },
 
-    moveToBack: function() {
+    moveToBack: function () {
         this._ellipse.moveToBack();
     },
 
-    moveToFront: function() {
+    moveToFront: function () {
         this._ellipse.moveToFront();
     }
 });

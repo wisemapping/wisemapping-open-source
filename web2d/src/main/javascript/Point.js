@@ -17,27 +17,36 @@
  */
 
 core.Point = new Class({
-    initialize : function(x, y) {
+    /**
+     * @constructs
+     * @param {Number} x coordinate
+     * @param {Number} y coordinate
+     */
+    initialize: function (x, y) {
         this.x = x;
         this.y = y;
     },
 
-    setValue : function(x, y) {
+    /**
+     * @param {Number} x coordinate
+     * @param {Number} y coordinate
+     */
+    setValue: function (x, y) {
         this.x = x;
         this.y = y;
     },
 
-    inspect : function() {
+    inspect: function () {
         return "{x:" + this.x + ",y:" + this.y + "}";
     },
 
-    clone : function() {
+    clone: function () {
         return new core.Point(this.x, this.y);
     }
 
 });
 
-core.Point.fromString = function(point) {
+core.Point.fromString = function (point) {
     var values = point.split(',');
     return new core.Point(values[0], values[1]);
 

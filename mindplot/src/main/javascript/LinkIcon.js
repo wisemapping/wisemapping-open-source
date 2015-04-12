@@ -18,8 +18,8 @@
 
 mindplot.LinkIcon = new Class({
 
-    Extends:mindplot.Icon,
-    initialize:function (topic, linkModel, readOnly) {
+    Extends: mindplot.Icon,
+    initialize: function (topic, linkModel, readOnly) {
         $assert(topic, 'topic can not be null');
         $assert(linkModel, 'linkModel can not be null');
 
@@ -31,7 +31,7 @@ mindplot.LinkIcon = new Class({
         this._registerEvents();
     },
 
-    _registerEvents:function () {
+    _registerEvents: function () {
         this._image.setCursor('pointer');
         this._tip = new mindplot.widget.LinkIconTooltip(this);
 
@@ -44,8 +44,8 @@ mindplot.LinkIcon = new Class({
                 event.stopPropagation();
             });
             //FIXME: we shouldn't have timeout of that..
-            this.addEvent("mouseleave", function(event) {
-                window.setTimeout(function() {
+            this.addEvent("mouseleave", function (event) {
+                window.setTimeout(function () {
                     if (!$("#linkPopover:hover").length) {
                         me._tip.hide();
                     }
@@ -54,12 +54,12 @@ mindplot.LinkIcon = new Class({
             });
         }
 
-        $(this.getImage()._peer._native).mouseenter(function() {
+        $(this.getImage()._peer._native).mouseenter(function () {
             me._tip.show();
         })
     },
 
-    getModel:function () {
+    getModel: function () {
         return this._linksModel;
     }
 });

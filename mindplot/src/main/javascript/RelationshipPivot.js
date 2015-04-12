@@ -17,7 +17,7 @@
  */
 
 mindplot.RelationshipPivot = new Class({
-    initialize:function (workspace, designer) {
+    initialize: function (workspace, designer) {
         $assert(workspace, "workspace can not be null");
         $assert(designer, "designer can not be null");
         this._workspace = workspace;
@@ -30,7 +30,7 @@ mindplot.RelationshipPivot = new Class({
 
     },
 
-    start:function (sourceTopic, targetPos) {
+    start: function (sourceTopic, targetPos) {
         $assert(sourceTopic, "sourceTopic can not be null");
         $assert(targetPos, "targetPos can not be null");
 
@@ -73,7 +73,7 @@ mindplot.RelationshipPivot = new Class({
 
     },
 
-    dispose:function () {
+    dispose: function () {
         var workspace = this._workspace;
 
         if (this._isActive()) {
@@ -97,7 +97,7 @@ mindplot.RelationshipPivot = new Class({
         }
     },
 
-    _mouseMove:function (event) {
+    _mouseMove: function (event) {
         var screen = this._workspace.getScreenManager();
         var pos = screen.getWorkspaceMousePosition(event);
 
@@ -119,14 +119,14 @@ mindplot.RelationshipPivot = new Class({
         return false;
     },
 
-    _cleanOnMouseClick:function (event) {
+    _cleanOnMouseClick: function (event) {
 
         // The user clicks on a desktop on in other element that is not a node.
         this.dispose();
         event.stopPropagation();
     },
 
-    _calculateFromPosition:function (toPosition) {
+    _calculateFromPosition: function (toPosition) {
 
         // Calculate origin position ...
         var sourcePosition = this._sourceTopic.getPosition();
@@ -138,10 +138,10 @@ mindplot.RelationshipPivot = new Class({
         var spoint = new core.Point();
         spoint.x = parseInt(controlPoint[0].x) + parseInt(sourcePosition.x);
         spoint.y = parseInt(controlPoint[0].y) + parseInt(sourcePosition.y);
-        return  mindplot.util.Shape.calculateRelationShipPointCoordinates(this._sourceTopic, spoint);
+        return mindplot.util.Shape.calculateRelationShipPointCoordinates(this._sourceTopic, spoint);
     },
 
-    _connectOnFocus:function (event, targetTopic) {
+    _connectOnFocus: function (event, targetTopic) {
         var sourceTopic = this._sourceTopic;
         var mindmap = this._designer.getMindmap();
 
@@ -153,7 +153,7 @@ mindplot.RelationshipPivot = new Class({
         this.dispose();
     },
 
-    _isActive:function () {
+    _isActive: function () {
         return this._pivot != null;
     }
 });

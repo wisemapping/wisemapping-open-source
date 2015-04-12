@@ -211,5 +211,5 @@ mindplot.DragTopic.__getDragPivot = function () {
         mindplot.DragTopic._dragPivot = result;
     }
     return result;
-}
+};
                              

@@ -30,7 +30,7 @@ mindplot.persistence = {};
 
 mindplot.layout = {};
 
-Class.Mutators.Static = function(items){
+Class.Mutators.Static = function (items) {
     this.extend(items);
 };
 

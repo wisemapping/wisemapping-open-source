@@ -17,7 +17,7 @@
  */
 
 mindplot.Workspace = new Class({
-    initialize: function(screenManager, zoom) {
+    initialize: function (screenManager, zoom) {
         // Create a suitable container ...
         $assert(screenManager, 'Div container can not be null');
         $assert(zoom, 'zoom container can not be null');
@@ -42,7 +42,7 @@ mindplot.Workspace = new Class({
         this._eventsEnabled = true;
     },
 
-    _createWorkspace: function() {
+    _createWorkspace: function () {
         // Initialize workspace ...
         var coordOriginX = -(this._screenWidth / 2);
         var coordOriginY = -(this._screenHeight / 2);
@@ -50,18 +50,18 @@ mindplot.Workspace = new Class({
         var workspaceProfile = {
             width: this._screenWidth + "px",
             height: this._screenHeight + "px",
-            coordSizeWidth:this._screenWidth,
-            coordSizeHeight:this._screenHeight,
-            coordOriginX:coordOriginX,
-            coordOriginY:coordOriginY,
-            fillColor:'transparent',
-            strokeWidth:0
+            coordSizeWidth: this._screenWidth,
+            coordSizeHeight: this._screenHeight,
+            coordOriginX: coordOriginX,
+            coordOriginY: coordOriginY,
+            fillColor: 'transparent',
+            strokeWidth: 0
         };
         web2d.peer.Toolkit.init();
-        return  new web2d.Workspace(workspaceProfile);
+        return new web2d.Workspace(workspaceProfile);
     },
 
-    append: function(shape) {
+    append: function (shape) {
         if ($defined(shape.addToWorkspace)) {
             shape.addToWorkspace(this);
         } else {
@@ -69,7 +69,7 @@ mindplot.Workspace = new Class({
         }
     },
 
-    removeChild: function(shape) {
+    removeChild: function (shape) {
         // Element is a node, not a web2d element?
         if ($defined(shape.removeFromWorkspace)) {
             shape.removeFromWorkspace(this);
@@ -78,21 +78,21 @@ mindplot.Workspace = new Class({
         }
     },
 
-    addEvent: function(type, listener) {
+    addEvent: function (type, listener) {
         this._workspace.addEvent(type, listener);
     },
 
-    removeEvent: function(type, listener) {
+    removeEvent: function (type, listener) {
         $assert(type, 'type can not be null');
         $assert(listener, 'listener can not be null');
         this._workspace.removeEvent(type, listener);
     },
 
-    getSize: function() {
+    getSize: function () {
         return this._workspace.getCoordSize();
     },
 
-    setZoom: function(zoom, center) {
+    setZoom: function (zoom, center) {
         this._zoom = zoom;
         var workspace = this._workspace;
 
@@ -135,27 +135,27 @@ mindplot.Workspace = new Class({
         this._screenManager.fireEvent('update');
     },
 
-    getScreenManager: function() {
+    getScreenManager: function () {
         return this._screenManager;
     },
 
-    enableWorkspaceEvents: function(value) {
+    enableWorkspaceEvents: function (value) {
         this._eventsEnabled = value;
     },
 
-    isWorkspaceEventsEnabled: function() {
+    isWorkspaceEventsEnabled: function () {
         return this._eventsEnabled;
     },
 
-    dumpNativeChart: function() {
+    dumpNativeChart: function () {
         return this._workspace.dumpNativeChart();
     },
 
-    _registerDragEvents: function() {
+    _registerDragEvents: function () {
         var workspace = this._workspace;
         var screenManager = this._screenManager;
         var mWorkspace = this;
-        var mouseDownListener = function(event) {
+        var mouseDownListener = function (event) {
             if (!$defined(workspace._mouseMoveListener)) {
                 if (mWorkspace.isWorkspaceEventsEnabled()) {
                     mWorkspace.enableWorkspaceEvents(false);
@@ -164,7 +164,7 @@ mindplot.Workspace = new Class({
                     var originalCoordOrigin = workspace.getCoordOrigin();
 
                     var wasDragged = false;
-                    workspace._mouseMoveListener = function(event) {
+                    workspace._mouseMoveListener = function (event) {
 
                         var currentMousePosition = screenManager.getWorkspaceMousePosition(event);
 
@@ -193,7 +193,7 @@ mindplot.Workspace = new Class({
                     screenManager.addEvent('mousemove', workspace._mouseMoveListener);
 
                     // Register mouse up listeners ...
-                    workspace._mouseUpListener = function(event) {
+                    workspace._mouseUpListener = function (event) {
 
                         screenManager.removeEvent('mousemove', workspace._mouseMoveListener);
                         screenManager.removeEvent('mouseup', workspace._mouseUpListener);
@@ -219,7 +219,7 @@ mindplot.Workspace = new Class({
         screenManager.addEvent('mousedown', mouseDownListener);
     },
 
-    setViewPort : function(size) {
+    setViewPort: function (size) {
         this._viewPort = size;
     }
 });
