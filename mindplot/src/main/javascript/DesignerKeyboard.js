@@ -86,11 +86,6 @@ mindplot.DesignerKeyboard = new Class({
             }
         );
         this.addShortcut(
-            '-', function() { // "-" is a insert on several Browsers. Don't ask why ...
-                designer.createChildForSelectedNode();
-            }
-        );
-        this.addShortcut(
             ['meta+enter'], function(event) {
                 event.preventDefault();
                 event.stopPropagation();
