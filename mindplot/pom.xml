@@ -261,7 +261,7 @@
                 <executions>
                     <execution>
                         <goals>
-                            <!--goal>test</goal-->
+                            <goal>test</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -273,9 +273,16 @@
                     </dependency>
                 </dependencies>
                 <configuration>
+                    <webDriverClassName>org.openqa.selenium.phantomjs.PhantomJSDriver</webDriverClassName>
+                    <webDriverCapabilities>
+                        <capability>
+                            <name>phantomjs.binary.path</name>
+                            <value>${phantomjs.binary}</value>
+                        </capability>
+                    </webDriverCapabilities>
                     <preloadSources>
                         <source>libraries/mootools/mootools-core-1.4.5-full-nocompat-yc.js</source>
-                        <source>lib/jquery-1.8.2.js</source>
+                        <source>lib/jquery.js</source>
                         <source>lib/core.js/</source>
                         <source>lib/web2d.svg-min.js</source>
                         <source>libraries/hotkeys/jquery.hotkeys.js</source>
@@ -399,6 +406,21 @@
                         <exclude>static/test/*.js</exclude>
                         <exclude>simpleTest.js</exclude>
                     </specExcludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.github.klieber</groupId>
+                <artifactId>phantomjs-maven-plugin</artifactId>
+                <version>0.5</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>install</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <version>1.9.2</version>
                 </configuration>
             </plugin>
         </plugins>
