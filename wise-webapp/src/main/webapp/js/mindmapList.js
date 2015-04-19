@@ -158,7 +158,7 @@ jQuery.fn.dialogForm = function (options) {
     });
 
     $('#' + containerId + ' .btn-cancel').click(function () {
-        this.modal('hide');
+        $(this).modal('hide');
     });
 
     // Register enter input to submit...
