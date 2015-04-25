@@ -122,7 +122,7 @@
     });
 
     // Hook for interaction with the main parent window ...
-    var submitDialogForm = function () {
+    function submitDialogForm() {
         $('#dialogMainForm').submit();
     }
 

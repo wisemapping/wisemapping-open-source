@@ -296,7 +296,7 @@ function buildCollabModel() {
 }
 
 // Hook for interaction with the main parent window ...
-var submitDialogForm = function () {
+function submitDialogForm() {
 
     var collabs = buildCollabModel();
     collabs.collaborations = jQuery.grep(collabs.collaborations, function () {
