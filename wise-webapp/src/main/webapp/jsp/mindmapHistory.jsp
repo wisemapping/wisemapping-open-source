@@ -68,6 +68,5 @@
         }
     });
 
-    var submitDialogForm = function () {
-    }
+    function submitDialogForm() {}
 </script>

@@ -130,7 +130,7 @@ solid black" src="${baseUrl}/c/maps/${mindmap.id}/embed?zoom=1"&gt; &lt;/iframe&
     });
 
     // Hook for interaction with the main parent window ...
-    var submitDialogForm = function () {
+    function submitDialogForm() {
         $('#dialogMainForm').submit();
     }
 </script>
