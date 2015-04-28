@@ -251,7 +251,7 @@ mindplot.DesignerKeyboard = new Class({
                 event.stopPropagation();
             }
         );
-        var excludes = ['esc', 'f1', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10', 'f11', 'f12'];
+        var excludes = ['esc', 'escape', 'f1', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10', 'f11', 'f12'];
         
         $(document).on('keypress', function (event) {
             var keyCode;
