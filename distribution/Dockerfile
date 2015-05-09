@@ -34,6 +34,9 @@ RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true 
     echo oracle-java8-installer shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections;\
     sudo apt-get install -y oracle-java8-installer
 
+# Configure instance
+COPY docker-conf/app.properties wisemapping-v4.0.1/webapps/wisemapping/WEB-INF/app.properties
+
 # Clean up
 RUN apt-get clean
 RUN rm wisemapping-v${WISE_VERSION}.zip
@@ -41,5 +44,4 @@ RUN rm wisemapping-v${WISE_VERSION}.zip
 
 EXPOSE 8080
 
-CMD "echo" "Starting WiseMapping ${WISE_VERSION}"
-CMD “cd wisemapping-v${WISE_VERSION};./start.sh”
+CMD "sh" "-c" "service mysql start;cd wisemapping-v${WISE_VERSION};./start.sh"
