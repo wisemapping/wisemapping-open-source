@@ -78,7 +78,7 @@ function buildDesigner(options) {
             headers: {"Content-Type": "application/json", "Accept": "application/json"},
             data: JSON.stringify({
                 jsErrorMsg: "Message: '" + errorMsg + "', line:'" + lineNo + "', url: :" + url,
-                jsStack: window.errorStack,
+                jsStack: window.event.errorStack || window.errorStack,
                 userAgent: navigator.userAgent,
                 mapId: options.mapId
             })
