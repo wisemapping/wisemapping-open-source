@@ -25,6 +25,9 @@
         color: #ffffff;
     }
 </style>
+<script>
+    function submitDialogForm() {}
+</script>
 
 <div id="keyboardTable">
     <table>
