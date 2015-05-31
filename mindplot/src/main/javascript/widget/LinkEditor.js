@@ -63,6 +63,9 @@ mindplot.widget.LinkEditor = new Class(/** @lends LinkEditor */{
             'autofocus': 'autofocus',
             'class': 'form-control'
         });
+        input.on("keypress", function(event) {
+            event.stopPropagation();
+        });
 
         if (model.getValue() != null){
             input.val(model.getValue());
