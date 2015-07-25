@@ -53,21 +53,16 @@ public final class Mailer {
 
     public void sendEmail(final String from, final String to, final String subject, final Map model,
                           @NotNull final String templateMail) {
-        final MimeMessagePreparator preparator =
-                new MimeMessagePreparator() {
-                    public void prepare(MimeMessage mimeMessage)
-                            throws Exception {
-                        final MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
-                        message.setTo(to);
-                        message.setFrom(from);
-                        message.setSubject(subject);
 
-                        final String messageBody = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "/mail/" + templateMail, model);
-                        message.setText(messageBody, true);
-                    }
-                };
+        this.mailSender.send(mimeMessage -> {
+            final MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+            message.setTo(to);
+            message.setFrom(from);
+            message.setSubject(subject);
 
-        this.mailSender.send(preparator);
+            final String messageBody = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "/mail/" + templateMail, model);
+            message.setText(messageBody, true);
+        });
     }
 
     public void setMailSender(JavaMailSender mailer) {
