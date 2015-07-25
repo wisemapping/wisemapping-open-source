@@ -63,10 +63,10 @@ public class FreemindExporter
         export(map.getUnzipXml(), outputStream);
     }
 
-    public void export(byte[] xml, @NotNull OutputStream outputStream) throws ExportException {
+    public void export(@NotNull byte[] xml, @NotNull OutputStream outputStream) throws ExportException {
 
         objectFactory = new com.wisemapping.jaxb.freemind.ObjectFactory();
-        nodesMap = new HashMap<String, Node>();
+        nodesMap = new HashMap<>();
         final com.wisemapping.jaxb.wisemap.Map mindmapMap;
 
         try {
@@ -124,15 +124,7 @@ public class FreemindExporter
             }
 
             JAXBUtils.saveMap(freemindMap, outputStream);
-        } catch (JAXBException e) {
-            throw new ExportException(e);
-        } catch (UnsupportedEncodingException e) {
-            throw new ExportException(e);
-        } catch (SAXException e) {
-            throw new ExportException(e);
-        } catch (ParserConfigurationException e) {
-            throw new ExportException(e);
-        } catch (IOException e) {
+        } catch (JAXBException | SAXException | IOException | ParserConfigurationException e) {
             throw new ExportException(e);
         }
     }
