@@ -82,32 +82,14 @@ mindplot.Designer = new Class(/** @lends Designer */{
          * @private
          */
         _registerWheelEvents: function () {
-            var workspace = this._workspace;
+            var zoomFactor = 1.006;
             var me = this;
             // Zoom In and Zoom Out must active event
             $(document).on('mousewheel', function (event) {
-                // Change mousewheel handling so we let the default
-                // event happen if we are outside the container. -> FIXME: it still happening?
-                /*var coords = screenManager.getContainer().getCoordinates();
-                 var isOutsideContainer = event.client.y < coords.top ||
-                 event.client.y > coords.bottom ||
-                 event.client.x < coords.left ||
-                 event.client.x > coords.right;
-
-                 if (!isOutsideContainer) {
-                 if (event.wheel > 0) {
-                 this.zoomIn(1.05);
-                 }
-                 else {
-                 this.zoomOut(1.05);
-                 }
-                 event.preventDefault();
-                 }*/
                 if (event.deltaY > 0) {
-                    me.zoomIn(1.05);
-                }
-                else {
-                    me.zoomOut(1.05);
+                    me.zoomIn(zoomFactor);
+                } else {
+                    me.zoomOut(zoomFactor);
                 }
                 event.preventDefault();
             });

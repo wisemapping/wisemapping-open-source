@@ -58,14 +58,6 @@
             var persistence = mindplot.PersistenceManager.getInstance();
             var mindmap = mindmap = persistence.load(mapId);
             designer.loadMap(mindmap);
-
-            $('zoomIn').addEvent('click', function () {
-                designer.zoomIn();
-            });
-
-            $('zoomOut').addEvent('click', function () {
-                designer.zoomOut();
-            });
         });
     </script>
 </head>
