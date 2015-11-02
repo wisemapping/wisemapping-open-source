@@ -72,7 +72,7 @@ public class AdminController extends BaseController {
     }
 
     @ApiOperation("Note: Administration permissions required.")
-    @RequestMapping(method = RequestMethod.GET, value = "admin/users/email/{email}", produces = {"application/json", "application/xml"})
+    @RequestMapping(method = RequestMethod.GET, value = "admin/users/email/{email:.+}", produces = {"application/json", "application/xml"})
     @ResponseBody
     public RestUser getUserByEmail(@PathVariable String email) throws IOException {
         final User user = userService.getUserBy(email);
