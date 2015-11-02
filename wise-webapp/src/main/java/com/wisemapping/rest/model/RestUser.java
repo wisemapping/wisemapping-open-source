@@ -51,6 +51,7 @@ public class RestUser {
 
     public RestUser(@NotNull User user) {
         this.user = user;
+        this.password = user.getPassword();
     }
 
     public Calendar getCreationDate() {
