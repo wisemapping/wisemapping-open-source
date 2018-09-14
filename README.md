@@ -8,8 +8,8 @@ The goal of this project is to provide a high quality product that can be deploy
 
 The following products must be installed:
 
-   * Java Development Kit 7 or higher ([http://www.oracle.com/technetwork/java/javase/downloads/index.html])
-   * Maven 3.x or higher ([http://maven.apache.org/])
+    * Java Development Kit 7 or higher ([http://www.oracle.com/technetwork/java/javase/downloads/index.html])
+    * Maven 3.x or higher ([http://maven.apache.org/])
 
 ### Compiling
 
