@@ -50,28 +50,27 @@
                         <configuration>
                             <source>
                                 def outdir = new File(project.basedir, 'src/main/javascript');
-                                if (project.packaging != 'pom')
-                                {
-                                def dir = new File(project.basedir, 'src/main/resources/');
+                                if (project.packaging != 'pom') {
+                                    def dir = new File(project.basedir, 'src/main/resources/');
 
-                                dir.eachFile { file ->
-                                def matcher = file.name =~ /messages_(.+)\.properties/;
-                                def lang = matcher[0][1];
-                                def outfile = new File(outdir, "MessageBundle_${lang}.js");
-                                println "Converting ${file.name} to ${outfile.name}";
+                                    dir.eachFile { file ->
+                                        def matcher = file.name =~ /messages_(.+)\.properties/;
+                                        def lang = matcher[0][1];
+                                        def outfile = new File(outdir, "MessageBundle_${lang}.js");
+                                        println "Converting ${file.name} to ${outfile.name}";
 
-                                outfile.withWriter('UTF-8') { out ->
-                                out.writeLine "mindplot.Messages.BUNDLES['${lang.toLowerCase()}'] = { ";
-                                file.eachLine('UTF-8') { line ->
-                                if( line.trim()!="" &amp;&amp; line[0]!='#' ) {
-                                  matcher = line =~ /(.+)=(.+)/;
-                                  out.writeLine("'${matcher[0][1]}' : \"${matcher[0][2]}\",");
-                                }
-                                }
-                                out.writeLine("'DUMMY' : '' ");
-                                out.writeLine "};"
-                                }
-                                }
+                                        outfile.withWriter('UTF-8') { out ->
+                                            out.writeLine "mindplot.Messages.BUNDLES['${lang.toLowerCase()}'] = { ";
+                                            file.eachLine('UTF-8') { line ->
+                                                if (line.trim() != "" &amp;&amp; line[0] != '#') {
+                                                    matcher = line =~ /(.+)=(.+)/;
+                                                    out.writeLine("'${matcher[0][1]}' : \"${matcher[0][2]}\",");
+                                                }
+                                            }
+                                            out.writeLine("'DUMMY' : '' ");
+                                            out.writeLine "};"
+                                        }
+                                    }
                                 }
                             </source>
                         </configuration>
@@ -258,13 +257,13 @@
                 <groupId>com.github.searls</groupId>
                 <artifactId>jasmine-maven-plugin</artifactId>
                 <version>1.3.1.5</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<goals>-->
+                            <!--<goal>test</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
                 <dependencies>
                     <dependency>
                         <groupId>net.sourceforge.htmlunit</groupId>

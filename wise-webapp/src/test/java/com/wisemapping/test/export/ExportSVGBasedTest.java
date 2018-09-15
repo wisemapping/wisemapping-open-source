@@ -92,11 +92,11 @@ public class ExportSVGBasedTest {
         final File[] svgFile = dataDir.listFiles(new FilenameFilter() {
 
             public boolean accept(File dir, String name) {
-                return name.endsWith(".svg") &&  !name.contains( "-exp.svg");
+                return name.endsWith(".svg") && !name.contains("-exp.svg");
             }
         });
 
-        if(svgFile==null){
+        if (svgFile == null) {
             throw new IllegalArgumentException("Wrong based path specified. Change based path...");
         }
 
