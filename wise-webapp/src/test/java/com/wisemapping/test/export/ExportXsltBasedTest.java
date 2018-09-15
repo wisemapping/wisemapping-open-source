@@ -13,6 +13,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 @Test
 public class ExportXsltBasedTest {
@@ -32,7 +33,7 @@ public class ExportXsltBasedTest {
             // Export mile content ...
             final ByteArrayOutputStream bos = new ByteArrayOutputStream();
             exporter.export(wiseMapContent, bos);
-            final String exportContent = new String(bos.toByteArray(), ENC_UTF_8);
+            final String exportContent = new String(bos.toByteArray(), StandardCharsets.UTF_8);
             Assert.assertEquals(exportContent, recContent);
 
         } else {

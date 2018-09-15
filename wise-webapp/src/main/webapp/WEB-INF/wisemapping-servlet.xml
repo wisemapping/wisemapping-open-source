@@ -86,12 +86,6 @@
           class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
     </bean>
 
-    <bean id="reCaptcha" class="net.tanesha.recaptcha.ReCaptchaImpl">
-        <property name="privateKey" value="${google.recaptcha.privateKey}"/>
-        <property name="publicKey" value="${google.recaptcha.publicKey}"/>
-        <property name="includeNoscript" value="false"/>
-    </bean>
-
     <bean id="multipartResolver"
           class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <!-- one of the properties available; the maximum file size in bytes -->

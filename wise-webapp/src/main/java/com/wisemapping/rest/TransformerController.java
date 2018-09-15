@@ -41,7 +41,7 @@ public class TransformerController extends BaseController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/transform", produces = {"application/pdf"}, consumes = {"image/svg+xml"})
     @ResponseBody
-    public ModelAndView transformPdf(@RequestBody @Nullable final String content) throws IOException {
+    public ModelAndView transformPdf(@RequestBody @Nullable final String content) {
         final Map<String, Object> values = new HashMap<String, Object>();
         if (content == null || content.length() == 0) {
             throw new IllegalArgumentException("Body can not be null.");
@@ -53,7 +53,7 @@ public class TransformerController extends BaseController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/transform", produces = {"image/svg+xml"}, consumes = {"image/svg+xml"})
     @ResponseBody
-    public ModelAndView transformSvg(@RequestBody @Nullable final String content) throws IOException {
+    public ModelAndView transformSvg(@RequestBody @Nullable final String content) {
         final Map<String, Object> values = new HashMap<String, Object>();
         if (content == null || content.length() == 0) {
             throw new IllegalArgumentException("Body can not be null.");
@@ -65,7 +65,7 @@ public class TransformerController extends BaseController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/transform", produces = {"image/png"}, consumes = {"image/svg+xml"})
     @ResponseBody
-    public ModelAndView transformPng(@RequestBody @Nullable final String content) throws IOException {
+    public ModelAndView transformPng(@RequestBody @Nullable final String content) {
         final Map<String, Object> values = new HashMap<String, Object>();
         if (content == null || content.length() == 0) {
             throw new IllegalArgumentException("Body can not be null.");
