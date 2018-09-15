@@ -18,10 +18,10 @@
 
 package com.wisemapping.validator;
 
+import com.wisemapping.service.RecaptchaService;
 import com.wisemapping.service.UserService;
 import com.wisemapping.view.UserBean;
 import com.wisemapping.model.Constants;
-import net.tanesha.recaptcha.ReCaptcha;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.validation.Errors;
@@ -32,7 +32,7 @@ public class UserValidator
         implements Validator {
 
     private UserService userService;
-    private ReCaptcha captchaService;
+    private RecaptchaService captchaService;
 
 
     public boolean supports(final Class clazz) {
@@ -92,11 +92,11 @@ public class UserValidator
         this.userService = userService;
     }
 
-    public void setCaptchaService(@NotNull final ReCaptcha captchaService) {
+    public void setCaptchaService(@NotNull final RecaptchaService captchaService) {
         this.captchaService = captchaService;
     }
 
-    public ReCaptcha getCaptchaService() {
+    public RecaptchaService getCaptchaService() {
         return captchaService;
     }
 }

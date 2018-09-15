@@ -32,7 +32,7 @@ The previously generated war can be deployed locally executing within the direct
 
 `cd wise-webapp;mvn jetty:run-war`
 
-This will start the application on the URL: [http://localhost:8080/wise-webapp/]. Additionally, a file based database is automatically populated with a test user.
+This will start the application on the URL: [http://localhost:8080/] using file based database..
 
 User: test@wisemapping.org
 Password: test
