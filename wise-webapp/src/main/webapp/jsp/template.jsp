@@ -24,7 +24,6 @@
     <meta property="og:url" content="http://www.wisemapping.com"/>
     <meta property="og:image" content="http://www.wisemapping.com/images/logo.png"/>
     <meta property="og:site_name" content="WiseMapping.com"/>
-
     <title>
         <spring:message code="SITE.TITLE"/>-
         <c:choose>
@@ -44,6 +43,8 @@
 
     <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap.min.js"></script>
     <script src="js/less.js" type="text/javascript"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
 </head>
 <body>
 
