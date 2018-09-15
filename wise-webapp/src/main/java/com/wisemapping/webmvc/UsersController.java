@@ -1,36 +1,35 @@
 /*
-*    Copyright [2015] [wisemapping]
-*
-*   Licensed under WiseMapping Public License, Version 1.0 (the "License").
-*   It is basically the Apache License, Version 2.0 (the "License") plus the
-*   "powered by wisemapping" text requirement on every single page;
-*   you may not use this file except in compliance with the License.
-*   You may obtain a copy of the license at
-*
-*       http://www.wisemapping.org/license
-*
-*   Unless required by applicable law or agreed to in writing, software
-*   distributed under the License is distributed on an "AS IS" BASIS,
-*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*   See the License for the specific language governing permissions and
-*   limitations under the License.
-*/
+ *    Copyright [2015] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 
 package com.wisemapping.webmvc;
 
 
-import com.wisemapping.model.AuthenticationType;
-import com.wisemapping.service.InvalidAuthSchemaException;
-import com.wisemapping.validator.Messages;
 import com.wisemapping.exceptions.WiseMappingException;
+import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.model.User;
 import com.wisemapping.security.Utils;
+import com.wisemapping.service.InvalidAuthSchemaException;
 import com.wisemapping.service.InvalidUserEmailException;
+import com.wisemapping.service.RecaptchaService;
 import com.wisemapping.service.UserService;
+import com.wisemapping.validator.Messages;
 import com.wisemapping.validator.UserValidator;
 import com.wisemapping.view.UserBean;
-import net.tanesha.recaptcha.ReCaptcha;
-import net.tanesha.recaptcha.ReCaptchaResponse;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -55,11 +54,13 @@ public class UsersController {
     private UserService userService;
 
     @Autowired
-    private ReCaptcha captchaService;
+    private RecaptchaService captchaService;
 
-    @Value("${google.recaptcha.enabled}")
+    @Value("${google.recaptcha2.enabled}")
     private boolean captchaEnabled;
 
+    @Value("${google.recaptcha2.siteKey}")
+    private String recaptchaSiteKey;
 
     @RequestMapping(value = "user/resetPassword", method = RequestMethod.GET)
     public ModelAndView showResetPasswordPage() {
@@ -74,10 +75,7 @@ public class UsersController {
             userService.resetPassword(email);
             result = new ModelAndView("forgotPasswordSuccess");
 
-        } catch (InvalidUserEmailException e) {
-            result = new ModelAndView("forgotPasswordError");
-        }
-        catch (InvalidAuthSchemaException e) {
+        } catch (InvalidUserEmailException | InvalidAuthSchemaException e) {
             result = new ModelAndView("forgotPasswordError");
         }
         return result;
@@ -89,10 +87,8 @@ public class UsersController {
             // If captcha is enabled, generate it ...
             final Properties prop = new Properties();
             prop.put("theme", "white");
-
-            final String captchaHtml = captchaService.createRecaptchaHtml(null, prop);
-            request.setAttribute("captchaHtml", captchaHtml);
-            request.setAttribute("captchaEnabled", true);
+            request.setAttribute("recaptchaSiteKey", recaptchaSiteKey);
+            request.setAttribute("recaptchaEnabled", true);
         }
         return new ModelAndView("userRegistration", "user", new UserBean());
     }
@@ -115,7 +111,7 @@ public class UsersController {
 
             boolean confirmRegistrationByEmail = false;
             user.setAuthenticationType(AuthenticationType.DATABASE);
-            userService.createUser(user, confirmRegistrationByEmail,true);
+            userService.createUser(user, confirmRegistrationByEmail, true);
 
             // Forward to the success view ...
             result = new ModelAndView("userRegistrationSuccess");
@@ -130,7 +126,7 @@ public class UsersController {
         return "accountSettings";
     }
 
-    private BindingResult validateRegistrationForm(@NotNull UserBean userBean, @NotNull HttpServletRequest request, @NotNull BindingResult bindingResult) {
+    private void validateRegistrationForm(@NotNull UserBean userBean, @NotNull HttpServletRequest request, @NotNull BindingResult bindingResult) {
         final UserValidator userValidator = new UserValidator();
         userValidator.setUserService(userService);
         userValidator.setCaptchaService(captchaService);
@@ -138,21 +134,18 @@ public class UsersController {
 
         // If captcha is enabled, generate it ...
         if (captchaEnabled) {
-            final String challenge = request.getParameter("recaptcha_challenge_field");
-            final String uresponse = request.getParameter("recaptcha_response_field");
+            final String gReponse = request.getParameter("g-recaptcha-response");
 
-            if (challenge != null && uresponse != null) {
+            if (gReponse != null) {
                 final String remoteAddr = request.getRemoteAddr();
-                final ReCaptchaResponse reCaptchaResponse = captchaService.checkAnswer(remoteAddr, challenge, uresponse);
-
-                if (!reCaptchaResponse.isValid()) {
-                    bindingResult.rejectValue("captcha", Messages.CAPTCHA_ERROR);
+                final String reCaptchaResponse = captchaService.verifyRecaptcha(remoteAddr, gReponse);
+                if (!reCaptchaResponse.isEmpty()) {
+                    bindingResult.rejectValue("captcha", reCaptchaResponse);
                 }
 
             } else {
                 bindingResult.rejectValue("captcha", Messages.CAPTCHA_LOADING_ERROR);
             }
         }
-        return bindingResult;
     }
 }

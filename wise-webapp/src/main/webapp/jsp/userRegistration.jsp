@@ -47,11 +47,9 @@
     </div>
     <div class="form-group">
         <div class="col-md-10 col-md-offset-2">
-            <c:if test="${requestScope.captchaEnabled}">
-                ${requestScope.captchaHtml}
-                <p>
-                    <form:errors path="captcha" cssClass="errorMsg"/>
-                </p>
+            <c:if test="${requestScope.recaptchaEnabled}">
+                <div class="g-recaptcha" data-sitekey="${requestScope.recaptchaSiteKey}"></div>
+                <p>${requestScope.captcha}</p>
             </c:if>
         </div>
     </div>

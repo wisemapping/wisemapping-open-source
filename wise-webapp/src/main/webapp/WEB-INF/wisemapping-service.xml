@@ -43,6 +43,10 @@
         <property name="adminUser" value="${admin.user}"/>
     </bean>
 
+    <bean id="recaptchaService" class="com.wisemapping.service.RecaptchaService">
+        <property name="recaptchaSecret" value="${google.recaptcha2.secretKey}"/>
+    </bean>
+
     <bean id="mindmapService" class="org.springframework.aop.framework.ProxyFactoryBean">
         <property name="proxyInterfaces" value="com.wisemapping.service.MindmapService"/>
         <property name="interceptorNames">

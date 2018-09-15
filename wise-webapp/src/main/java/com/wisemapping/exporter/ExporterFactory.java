@@ -167,6 +167,10 @@ public class ExporterFactory {
                 svgXml = svgXml.replaceFirst("<svg ", "<svg xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
             }
 
+            if (!svgXml.contains("xmlns=\"http://www.w3.org/2000/svg\"")) {
+                svgXml = svgXml.replaceFirst("<svg ", "<svg xmlns=\"http://www.w3.org/2000/svg\" ");
+            }
+
             // Hacks for some legacy cases ....
             svgXml = svgXml.replaceAll("NaN,", "0");
             svgXml = svgXml.replaceAll(",NaN", "0");
