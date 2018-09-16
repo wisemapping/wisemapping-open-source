@@ -576,6 +576,7 @@
                 <configuration>
                     <baseAppFirst>false</baseAppFirst>
                     <stopKey>foo</stopKey>
+                    <nonBlocking>true</nonBlocking>
                     <stopPort>9999</stopPort>
                     <war>${project.build.directory}/wisemapping.war</war>
                     <reload>automatic</reload>
