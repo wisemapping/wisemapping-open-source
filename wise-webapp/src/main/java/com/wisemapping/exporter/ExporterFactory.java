@@ -49,13 +49,14 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.*;
 import java.awt.geom.AffineTransform;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Pattern;
 
 public class ExporterFactory {
     private static final String GROUP_NODE_NAME = "g";
     private static final String IMAGE_NODE_NAME = "image";
-    public static final int MANGING = 50;
-    public static final String UTF_8_CHARSET_NAME = "UTF-8";
+    private static final int MANGING = 50;
+    private static final String UTF_8_CHARSET_NAME = "UTF-8";
     private File baseImgDir;
 
     public ExporterFactory(@NotNull final ServletContext servletContext) throws ParserConfigurationException {
@@ -82,16 +83,16 @@ public class ExporterFactory {
                 final String svgString = normalizeSvg(mapSvg);
                 final TranscoderInput input = new TranscoderInput(new CharArrayReader(svgString.toCharArray()));
 
-                TranscoderOutput trascoderOutput = new TranscoderOutput(output);
+                TranscoderOutput transcoderOutput = new TranscoderOutput(output);
 
                 // Save the image.
-                transcoder.transcode(input, trascoderOutput);
+                transcoder.transcode(input, transcoderOutput);
                 break;
             }
             case JPG: {
                 // Create a JPEG transcoder
                 final Transcoder transcoder = new JPEGTranscoder();
-                transcoder.addTranscodingHint(JPEGTranscoder.KEY_QUALITY, new Float(.99));
+                transcoder.addTranscodingHint(JPEGTranscoder.KEY_QUALITY, .99f);
 
                 final ExportProperties.ImageProperties imageProperties =
                         (ExportProperties.ImageProperties) properties;
@@ -123,22 +124,22 @@ public class ExporterFactory {
             }
             case SVG: {
                 final String svgString = normalizeSvg(mapSvg);
-                output.write(svgString.getBytes(UTF_8_CHARSET_NAME));
+                output.write(svgString.getBytes(StandardCharsets.UTF_8));
                 break;
             }
             case TEXT: {
                 final Exporter exporter = XSLTExporter.create(XSLTExporter.Type.TEXT);
-                exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
+                exporter.export(xml.getBytes(StandardCharsets.UTF_8), output);
                 break;
             }
             case OPEN_OFFICE_WRITER: {
                 final Exporter exporter = XSLTExporter.create(XSLTExporter.Type.OPEN_OFFICE);
-                exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
+                exporter.export(xml.getBytes(StandardCharsets.UTF_8), output);
                 break;
             }
             case MICROSOFT_EXCEL: {
                 final Exporter exporter = XSLTExporter.create(XSLTExporter.Type.MICROSOFT_EXCEL);
-                exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
+                exporter.export(xml.getBytes(StandardCharsets.UTF_8), output);
                 break;
             }
             case FREEMIND: {
