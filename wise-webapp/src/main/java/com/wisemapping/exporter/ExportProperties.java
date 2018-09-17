@@ -48,7 +48,7 @@ public class ExportProperties {
         this.version = version;
     }
 
-    static public class GenericProperties extends ExportProperties {
+    private static class GenericProperties extends ExportProperties {
         private GenericProperties(ExportFormat format) {
             super(format);
         }
@@ -65,7 +65,7 @@ public class ExportProperties {
             this.size = size;
         }
 
-        public ImageProperties(ExportFormat format) {
+        ImageProperties(ExportFormat format) {
             super(format);
         }
 

@@ -23,7 +23,7 @@
     <input type="submit" value="<spring:message code="SEND_ME_A_NEW_PASSWORD"/>" class="btn btn-primary"
            data-loading-text="<spring:message code="SENDING"/>"/>
     <input type="button" value="<spring:message code="CANCEL"/>" class="btn"
-           onclick="window.location='<c:url value="c/maps/"/>'"/>
+           onclick="window.location='/c/maps/'"/>
 </form:form>
 
 <div id="register">

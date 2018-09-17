@@ -8,7 +8,7 @@ The goal of this project is to provide a high quality product that can be deploy
 
 The following products must be installed:
 
-    * Java Development Kit 7 or higher ([http://www.oracle.com/technetwork/java/javase/downloads/index.html])
+    * Java Development Kit 8 or higher ([http://www.oracle.com/technetwork/java/javase/downloads/index.html])
     * Maven 3.x or higher ([http://maven.apache.org/])
 
 ### Compiling
@@ -49,6 +49,10 @@ To test the javascript frontend you then do:
 
 Now open a browser using the URL http://localhost:8000/wise-editor/src/main/webapp/
 
+## Maintenance
+
+
+
 ## Members
 
 ### Founders
@@ -70,3 +74,4 @@ Now open a browser using the URL http://localhost:8000/wise-editor/src/main/weba
 
 The source code is Licensed under the WiseMapping Open License, Version 1.0 (the “License”);
 You may obtain a copy of the License at: [https://wisemapping.atlassian.net/wiki/display/WS/License]
+
