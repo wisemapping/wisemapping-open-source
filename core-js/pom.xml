@@ -9,7 +9,7 @@
         <groupId>org.wisemapping</groupId>
         <artifactId>wisemapping</artifactId>
         <relativePath>../pom.xml</relativePath>
-        <version>4.0.4</version>
+        <version>4.0.5-SNAPSHOT</version>
     </parent>
     <scm>
         <developerConnection>scm:git:git@bitbucket.org:wisemapping/wisemapping-open-source.git</developerConnection>

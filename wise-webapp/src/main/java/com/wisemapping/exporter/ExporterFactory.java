@@ -19,6 +19,7 @@
 package com.wisemapping.exporter;
 
 import com.wisemapping.importer.VersionNumber;
+import org.apache.batik.ext.awt.image.rendered.TileCache;
 import org.apache.batik.parser.AWTTransformProducer;
 import org.apache.batik.parser.ParseException;
 import org.apache.batik.parser.TransformListParser;
@@ -49,25 +50,32 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.*;
 import java.awt.geom.AffineTransform;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Pattern;
 
 public class ExporterFactory {
+
+    static {
+        // Try to prevent OOM.
+        TileCache.setSize(0);
+    }
     private static final String GROUP_NODE_NAME = "g";
     private static final String IMAGE_NODE_NAME = "image";
-    public static final int MANGING = 50;
-    public static final String UTF_8_CHARSET_NAME = "UTF-8";
+    private static final int MANGING = 50;
+    private static final String UTF_8_CHARSET_NAME = "UTF-8";
     private File baseImgDir;
 
-    public ExporterFactory(@NotNull final ServletContext servletContext) throws ParserConfigurationException {
+    public ExporterFactory(@NotNull final ServletContext servletContext) {
         this.baseImgDir = new File(servletContext.getRealPath("/"));
     }
 
-    public ExporterFactory(@NotNull final File baseImgDir) throws ParserConfigurationException {
+    public ExporterFactory(@NotNull final File baseImgDir) {
         this.baseImgDir = baseImgDir;
     }
 
     public void export(@NotNull ExportProperties properties, @Nullable String xml, @NotNull OutputStream output, @Nullable String mapSvg) throws ExportException, IOException, TranscoderException {
         final ExportFormat format = properties.getFormat();
+
 
         switch (format) {
             case PNG: {
@@ -80,18 +88,20 @@ public class ExporterFactory {
 
                 // Create the transcoder input.
                 final String svgString = normalizeSvg(mapSvg);
-                final TranscoderInput input = new TranscoderInput(new CharArrayReader(svgString.toCharArray()));
+                final CharArrayReader reader = new CharArrayReader(svgString.toCharArray());
+                final TranscoderInput input = new TranscoderInput(reader);
 
-                TranscoderOutput trascoderOutput = new TranscoderOutput(output);
+                TranscoderOutput transcoderOutput = new TranscoderOutput(output);
 
                 // Save the image.
-                transcoder.transcode(input, trascoderOutput);
+                transcoder.transcode(input, transcoderOutput);
+                reader.close();
                 break;
             }
             case JPG: {
                 // Create a JPEG transcoder
                 final Transcoder transcoder = new JPEGTranscoder();
-                transcoder.addTranscodingHint(JPEGTranscoder.KEY_QUALITY, new Float(.99));
+                transcoder.addTranscodingHint(JPEGTranscoder.KEY_QUALITY, .99f);
 
                 final ExportProperties.ImageProperties imageProperties =
                         (ExportProperties.ImageProperties) properties;
@@ -100,12 +110,13 @@ public class ExporterFactory {
 
                 // Create the transcoder input.
                 final String svgString = normalizeSvg(mapSvg);
-                final TranscoderInput input = new TranscoderInput(new CharArrayReader(svgString.toCharArray()));
-
+                CharArrayReader reader = new CharArrayReader(svgString.toCharArray());
+                final TranscoderInput input = new TranscoderInput(reader);
                 TranscoderOutput trascoderOutput = new TranscoderOutput(output);
 
                 // Save the image.
                 transcoder.transcode(input, trascoderOutput);
+                reader.close();
                 break;
             }
             case PDF: {
@@ -114,31 +125,32 @@ public class ExporterFactory {
 
                 // Create the transcoder input.
                 final String svgString = normalizeSvg(mapSvg);
-                final TranscoderInput input = new TranscoderInput(new CharArrayReader(svgString.toCharArray()));
+                CharArrayReader reader = new CharArrayReader(svgString.toCharArray());
+                final TranscoderInput input = new TranscoderInput(reader);
                 TranscoderOutput trascoderOutput = new TranscoderOutput(output);
-
                 // Save the image.
                 transcoder.transcode(input, trascoderOutput);
+                reader.close();
                 break;
             }
             case SVG: {
                 final String svgString = normalizeSvg(mapSvg);
-                output.write(svgString.getBytes(UTF_8_CHARSET_NAME));
+                output.write(svgString.getBytes(StandardCharsets.UTF_8));
                 break;
             }
             case TEXT: {
                 final Exporter exporter = XSLTExporter.create(XSLTExporter.Type.TEXT);
-                exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
+                exporter.export(xml.getBytes(StandardCharsets.UTF_8), output);
                 break;
             }
             case OPEN_OFFICE_WRITER: {
                 final Exporter exporter = XSLTExporter.create(XSLTExporter.Type.OPEN_OFFICE);
-                exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
+                exporter.export(xml.getBytes(StandardCharsets.UTF_8), output);
                 break;
             }
             case MICROSOFT_EXCEL: {
                 final Exporter exporter = XSLTExporter.create(XSLTExporter.Type.MICROSOFT_EXCEL);
-                exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
+                exporter.export(xml.getBytes(StandardCharsets.UTF_8), output);
                 break;
             }
             case FREEMIND: {
@@ -155,6 +167,9 @@ public class ExporterFactory {
             default:
                 throw new UnsupportedOperationException("Export method not supported.");
         }
+
+        output.flush();
+        output.close();
     }
 
     private String normalizeSvg(@NotNull String svgXml) throws ExportException {

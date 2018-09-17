@@ -21,7 +21,7 @@
         <div class="row jumbotron" id="loginPanel">
             <h1><spring:message code="SIGN_IN"/></h1>
 
-            <form action="<c:url value='/c/j_spring_security_check'/>" method="POST" class="form-horizontal"
+            <form action="/c/j_spring_security_check" method="POST" class="form-horizontal"
                   id="loginForm">
                 <div class="form-group">
                     <label class="col-md-3 control-label" for="email"><spring:message code="EMAIL"/>: </label>
@@ -49,7 +49,7 @@
                     </div>
                 </div>
                 <div class="form-group" style="text-align: center">
-                    <a href="<c:url value="/c/user/resetPassword"/>"><spring:message code="FORGOT_PASSWORD"/></a>
+                    <a href="/c/user/resetPassword"><spring:message code="FORGOT_PASSWORD"/></a>
                 </div>
                 <div class="form-group">
                     <c:if test="${not empty param.login_error}">
