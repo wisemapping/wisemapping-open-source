@@ -41,9 +41,7 @@ public class XSLTExporter implements Exporter {
             final CharArrayReader reader = new CharArrayReader(mmos.toString("iso-8859-1").toCharArray());
             final Source mmSource = new StreamSource(reader);
             transformer.transform(mmSource, new StreamResult(outputStream));
-        } catch (TransformerException e) {
-            throw new ExportException(e);
-        } catch (UnsupportedEncodingException e) {
+        } catch (TransformerException | UnsupportedEncodingException e) {
             throw new ExportException(e);
         }
 
