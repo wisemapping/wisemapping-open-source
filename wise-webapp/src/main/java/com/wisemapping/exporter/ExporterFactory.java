@@ -65,11 +65,11 @@ public class ExporterFactory {
     private static final String UTF_8_CHARSET_NAME = "UTF-8";
     private File baseImgDir;
 
-    public ExporterFactory(@NotNull final ServletContext servletContext) throws ParserConfigurationException {
+    public ExporterFactory(@NotNull final ServletContext servletContext) {
         this.baseImgDir = new File(servletContext.getRealPath("/"));
     }
 
-    public ExporterFactory(@NotNull final File baseImgDir) throws ParserConfigurationException {
+    public ExporterFactory(@NotNull final File baseImgDir) {
         this.baseImgDir = baseImgDir;
     }
 
@@ -112,12 +112,11 @@ public class ExporterFactory {
                 final String svgString = normalizeSvg(mapSvg);
                 CharArrayReader reader = new CharArrayReader(svgString.toCharArray());
                 final TranscoderInput input = new TranscoderInput(reader);
-                reader.close();
-
                 TranscoderOutput trascoderOutput = new TranscoderOutput(output);
 
                 // Save the image.
                 transcoder.transcode(input, trascoderOutput);
+                reader.close();
                 break;
             }
             case PDF: {
@@ -129,9 +128,9 @@ public class ExporterFactory {
                 CharArrayReader reader = new CharArrayReader(svgString.toCharArray());
                 final TranscoderInput input = new TranscoderInput(reader);
                 TranscoderOutput trascoderOutput = new TranscoderOutput(output);
-                reader.close();
                 // Save the image.
                 transcoder.transcode(input, trascoderOutput);
+                reader.close();
                 break;
             }
             case SVG: {
