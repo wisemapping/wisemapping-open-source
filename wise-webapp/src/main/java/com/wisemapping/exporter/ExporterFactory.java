@@ -19,6 +19,7 @@
 package com.wisemapping.exporter;
 
 import com.wisemapping.importer.VersionNumber;
+import org.apache.batik.ext.awt.image.rendered.TileCache;
 import org.apache.batik.parser.AWTTransformProducer;
 import org.apache.batik.parser.ParseException;
 import org.apache.batik.parser.TransformListParser;
@@ -53,6 +54,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.regex.Pattern;
 
 public class ExporterFactory {
+
+    static {
+        // Try to prevent OOM.
+        TileCache.setSize(0);
+    }
     private static final String GROUP_NODE_NAME = "g";
     private static final String IMAGE_NODE_NAME = "image";
     private static final int MANGING = 50;
@@ -70,6 +76,7 @@ public class ExporterFactory {
     public void export(@NotNull ExportProperties properties, @Nullable String xml, @NotNull OutputStream output, @Nullable String mapSvg) throws ExportException, IOException, TranscoderException {
         final ExportFormat format = properties.getFormat();
 
+
         switch (format) {
             case PNG: {
                 // Create a JPEG transcoder
@@ -81,12 +88,14 @@ public class ExporterFactory {
 
                 // Create the transcoder input.
                 final String svgString = normalizeSvg(mapSvg);
-                final TranscoderInput input = new TranscoderInput(new CharArrayReader(svgString.toCharArray()));
+                final CharArrayReader reader = new CharArrayReader(svgString.toCharArray());
+                final TranscoderInput input = new TranscoderInput(reader);
 
                 TranscoderOutput transcoderOutput = new TranscoderOutput(output);
 
                 // Save the image.
                 transcoder.transcode(input, transcoderOutput);
+                reader.close();
                 break;
             }
             case JPG: {
@@ -101,7 +110,9 @@ public class ExporterFactory {
 
                 // Create the transcoder input.
                 final String svgString = normalizeSvg(mapSvg);
-                final TranscoderInput input = new TranscoderInput(new CharArrayReader(svgString.toCharArray()));
+                CharArrayReader reader = new CharArrayReader(svgString.toCharArray());
+                final TranscoderInput input = new TranscoderInput(reader);
+                reader.close();
 
                 TranscoderOutput trascoderOutput = new TranscoderOutput(output);
 
@@ -115,9 +126,10 @@ public class ExporterFactory {
 
                 // Create the transcoder input.
                 final String svgString = normalizeSvg(mapSvg);
-                final TranscoderInput input = new TranscoderInput(new CharArrayReader(svgString.toCharArray()));
+                CharArrayReader reader = new CharArrayReader(svgString.toCharArray());
+                final TranscoderInput input = new TranscoderInput(reader);
                 TranscoderOutput trascoderOutput = new TranscoderOutput(output);
-
+                reader.close();
                 // Save the image.
                 transcoder.transcode(input, trascoderOutput);
                 break;
@@ -156,6 +168,9 @@ public class ExporterFactory {
             default:
                 throw new UnsupportedOperationException("Export method not supported.");
         }
+
+        output.flush();
+        output.close();
     }
 
     private String normalizeSvg(@NotNull String svgXml) throws ExportException {
