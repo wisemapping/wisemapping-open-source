@@ -39,27 +39,27 @@ public class SupportedUserAgent implements Serializable {
 
     public boolean isBrowserSupported() {
 
-        final UserAgent userAgent = this.getUserAgent();
-        final Browser browser = userAgent.getBrowser();
-        final OperatingSystem os = userAgent.getOperatingSystem();
-        final Version version = userAgent.getBrowserVersion();
-        final int majorVersion = version != null ? Integer.parseInt(version.getMajorVersion()) : -1;
+//        final UserAgent userAgent = this.getUserAgent();
+//        final Browser browser = userAgent.getBrowser();
+//        final OperatingSystem os = userAgent.getOperatingSystem();
+//        final Version version = userAgent.getBrowserVersion();
+//        final int majorVersion = version != null ? Integer.parseInt(version.getMajorVersion()) : -1;
+//
+//        boolean result = browser == Browser.FIREFOX && majorVersion >= 10;
+//        result = result || browser == Browser.FIREFOX2 && majorVersion >= 17;
+//        result = result || browser == Browser.FIREFOX3 && majorVersion >= 29;
+//        result = result || browser == Browser.FIREFOX4 && majorVersion >= 40;
+//        result = result || browser == Browser.IE8 || browser == Browser.IE9 || browser == Browser.IE11 ;
+//        result = result || browser == Browser.IE && majorVersion >= 8;
+//        result = result || browser == Browser.OPERA10 && majorVersion >= 11;
+//        result = result || browser == Browser.CHROME && majorVersion >= 18;
+//        result = result || browser == Browser.SAFARI5;
+//        result = result || browser == Browser.SAFARI && majorVersion >= 5;
+//        result = result || browser == Browser.MOBILE_SAFARI;
+//        result = result || os.isMobileDevice() && (os == OperatingSystem.ANDROID || os == OperatingSystem.iOS4_IPHONE);
+//        result = result || browser.getBrowserType() == BrowserType.ROBOT;
 
-        boolean result = browser == Browser.FIREFOX && majorVersion >= 10;
-        result = result || browser == Browser.FIREFOX2 && majorVersion >= 17;
-        result = result || browser == Browser.FIREFOX3 && majorVersion >= 29;
-        result = result || browser == Browser.FIREFOX4 && majorVersion >= 40;
-        result = result || browser == Browser.IE8 || browser == Browser.IE9 || browser == Browser.IE11 ;
-        result = result || browser == Browser.IE && majorVersion >= 8;
-        result = result || browser == Browser.OPERA10 && majorVersion >= 11;
-        result = result || browser == Browser.CHROME && majorVersion >= 18;
-        result = result || browser == Browser.SAFARI5;
-        result = result || browser == Browser.SAFARI && majorVersion >= 5;
-        result = result || browser == Browser.MOBILE_SAFARI;
-        result = result || os.isMobileDevice() && (os == OperatingSystem.ANDROID || os == OperatingSystem.iOS4_IPHONE);
-        result = result || browser.getBrowserType() == BrowserType.ROBOT;
-
-        return result;
+        return true;
     }
 
     @NotNull
