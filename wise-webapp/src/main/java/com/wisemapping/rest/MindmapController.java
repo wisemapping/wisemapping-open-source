@@ -53,6 +53,7 @@ import com.wisemapping.service.MindmapService;
 import com.wisemapping.validator.MapInfoValidator;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
+import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -84,6 +85,7 @@ import java.util.Set;
 @Api(value = "mindmap", description = "User Mindmap Objects.")
 @Controller
 public class MindmapController extends BaseController {
+    final Logger logger = Logger.getLogger("com.wisemapping");
 
     public static final String LATEST_HISTORY_REVISION = "latest";
     @Qualifier("mindmapService")
@@ -301,16 +303,20 @@ public class MindmapController extends BaseController {
 
         final LockInfo lockInfo = lockManager.getLockInfo(mindmap);
         if (lockInfo.getUser().identityEquality(user)) {
-            final boolean outdated = mindmap.getLastModificationTime().getTimeInMillis() > timestamp;
+            long savedTimestamp = mindmap.getLastModificationTime().getTimeInMillis();
+            final boolean outdated = savedTimestamp > timestamp;
+
             if (lockInfo.getSession() == session) {
                 // Timestamp might not be returned to the client. This try to cover this case, ignoring the client timestamp check.
                 final User lastEditor = mindmap.getLastEditor();
                 boolean editedBySameUser = lastEditor == null || user.identityEquality(lastEditor);
                 if (outdated && !editedBySameUser) {
-                    throw new SessionExpiredException("Map has been updated by " + (lastEditor.getEmail()) + ",Timestamp:" + timestamp + "," + mindmap.getLastModificationTime().getTimeInMillis() + ", User:" + lastEditor.getId() + ":" + user.getId() + ",Mail:'" + lastEditor.getEmail() + "':'" + user.getEmail(), lastEditor);
+                    throw new SessionExpiredException("Map has been updated by " + (lastEditor.getEmail()) + ",Timestamp:" + timestamp + "," + savedTimestamp + ", User:" + lastEditor.getId() + ":" + user.getId() + ",Mail:'" + lastEditor.getEmail() + "':'" + user.getEmail(), lastEditor);
                 }
             } else if (outdated) {
-                throw new MultipleSessionsOpenException("Sessions:" + session + ":" + lockInfo.getSession() + ",Timestamp: " + timestamp + ": " + lockInfo.getTimestamp() + ",User:");
+                logger.warn("Sessions:" + session + ":" + lockInfo.getSession() + ",Timestamp: " + timestamp + ": " + savedTimestamp);
+                // @Todo: Temporally disabled to unblock save action. More research needed.
+//                throw new MultipleSessionsOpenException("Sessions:" + session + ":" + lockInfo.getSession() + ",Timestamp: " + timestamp + ": " + savedTimestamp);
             }
         } else {
             throw new SessionExpiredException("Different Users.", lockInfo.getUser());
