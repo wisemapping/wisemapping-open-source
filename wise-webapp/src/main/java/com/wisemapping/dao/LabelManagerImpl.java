@@ -1,10 +1,27 @@
+/*
+ *    Copyright [2015] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 package com.wisemapping.dao;
 
 import com.wisemapping.model.Label;
 import com.wisemapping.model.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import java.util.List;
 
@@ -18,27 +35,34 @@ public class LabelManagerImpl extends HibernateDaoSupport
 
     @Override
     public void saveLabel(@NotNull final Label label) {
-        getSession().save(label);
+        currentSession().save(label);
     }
 
     @NotNull
     @Override
+    @SuppressWarnings("unchecked")
     public List<Label> getAllLabels(@NotNull final User user) {
-        return (List<Label>) getHibernateTemplate().find("from com.wisemapping.model.Label wisemapping where creator_id=?", user.getId());
+        var query = currentSession().createQuery("from com.wisemapping.model.Label wisemapping where creator_id=:creatorId");
+        query.setParameter("creatorId", user.getId());
+        return query.list();
     }
 
     @Nullable
     @Override
     public Label getLabelById(int id, @NotNull final User user) {
-        List<Label> labels = (List<Label>) getHibernateTemplate().find("from com.wisemapping.model.Label wisemapping where id=? and creator=?", new Object[]{id, user});
-        return getFirst(labels);
+        var query = currentSession().createQuery("from com.wisemapping.model.Label wisemapping where id=:id and creator=:creator");
+        query.setParameter("id", id);
+        query.setParameter("creator", user);
+        return getFirst(query.list());
     }
 
     @Nullable
     @Override
     public Label getLabelByTitle(@NotNull String title, @NotNull final User user) {
-        final List<Label> labels = (List<Label>) getHibernateTemplate().find("from com.wisemapping.model.Label wisemapping where title=? and creator=?", new Object[]{title, user});
-        return getFirst(labels);
+        var query = currentSession().createQuery("from com.wisemapping.model.Label wisemapping where title=:title and creator=:creator");
+        query.setParameter("title", title);
+        query.setParameter("creator", user);
+        return getFirst(query.list());
     }
 
     @Override
