@@ -18,19 +18,16 @@
 
 package com.wisemapping.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wisemapping.model.Collaborator;
-import com.wisemapping.model.User;
 import com.wisemapping.util.TimeUtils;
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Calendar;
-import java.util.Date;
 
 @XmlRootElement(name = "collaborator")
 @XmlAccessorType(XmlAccessType.PROPERTY)

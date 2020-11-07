@@ -43,14 +43,14 @@ public class UserManagerImpl
     }
 
     public List<User> getAllUsers() {
-        return getHibernateTemplate().find("from com.wisemapping.model.User user");
+        return (List<User>) getHibernateTemplate().find("from com.wisemapping.model.User user");
     }
 
 
     @Override
     public User getUserBy(@NotNull final String email) {
         User user = null;
-        final List<User> users = getHibernateTemplate().find("from com.wisemapping.model.User colaborator where email=?", email);
+        final List<User> users = (List<User>) getHibernateTemplate().find("from com.wisemapping.model.User colaborator where email=?", email);
         if (users != null && !users.isEmpty()) {
             assert users.size() == 1 : "More than one user with the same email!";
             user = users.get(0);

@@ -19,10 +19,9 @@
 package com.wisemapping.rest.model;
 
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.CollaborationRole;
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;

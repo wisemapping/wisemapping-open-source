@@ -85,9 +85,10 @@ import java.util.Set;
 @Api(value = "mindmap", description = "User Mindmap Objects.")
 @Controller
 public class MindmapController extends BaseController {
-    final Logger logger = Logger.getLogger("com.wisemapping");
+    private final static Logger logger = Logger.getLogger("com.wisemapping");
 
-    public static final String LATEST_HISTORY_REVISION = "latest";
+    private static final String LATEST_HISTORY_REVISION = "latest";
+
     @Qualifier("mindmapService")
     @Autowired
     private MindmapService mindmapService;
