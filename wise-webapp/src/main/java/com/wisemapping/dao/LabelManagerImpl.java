@@ -24,20 +24,20 @@ public class LabelManagerImpl extends HibernateDaoSupport
     @NotNull
     @Override
     public List<Label> getAllLabels(@NotNull final User user) {
-        return getHibernateTemplate().find("from com.wisemapping.model.Label wisemapping where creator_id=?", user.getId());
+        return (List<Label>) getHibernateTemplate().find("from com.wisemapping.model.Label wisemapping where creator_id=?", user.getId());
     }
 
     @Nullable
     @Override
     public Label getLabelById(int id, @NotNull final User user) {
-        List<Label> labels = getHibernateTemplate().find("from com.wisemapping.model.Label wisemapping where id=? and creator=?", new Object[]{id, user});
+        List<Label> labels = (List<Label>) getHibernateTemplate().find("from com.wisemapping.model.Label wisemapping where id=? and creator=?", new Object[]{id, user});
         return getFirst(labels);
     }
 
     @Nullable
     @Override
     public Label getLabelByTitle(@NotNull String title, @NotNull final User user) {
-        final List<Label> labels = getHibernateTemplate().find("from com.wisemapping.model.Label wisemapping where title=? and creator=?", new Object[]{title, user});
+        final List<Label> labels = (List<Label>) getHibernateTemplate().find("from com.wisemapping.model.Label wisemapping where title=? and creator=?", new Object[]{title, user});
         return getFirst(labels);
     }
 

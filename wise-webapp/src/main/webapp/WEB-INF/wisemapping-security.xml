@@ -4,9 +4,9 @@
        xmlns:sec="http://www.springframework.org/schema/security"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-          http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+          http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
           http://www.springframework.org/schema/security
-          http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+          http://www.springframework.org/schema/security/spring-security-4.2.xsd">
 
     <sec:http pattern="/css/**" security="none"/>
     <sec:http pattern="/js/**" security="none"/>
@@ -17,7 +17,7 @@
     <sec:http pattern="/c/login" security="none"/>
     <sec:http pattern="/c/loginopenid" security="none"/>
     <sec:http pattern="/c/user/registration" security="none"/>
-    <sec:http pattern="/c/user/resetpassword" security="none"/>
+    <sec:http pattern="/c/user/resetPassword" security="none"/>
     <sec:http pattern="/c/home" security="none"/>
 
     <sec:http pattern="/c/maps/*/embed" security="none"/>
@@ -36,13 +36,18 @@
 
 
     <sec:http use-expressions="true" create-session="stateless" pattern="/service/**">
+        <sec:csrf disabled="true"/>
+
         <sec:intercept-url pattern="/service/admin/users/**" access="isAuthenticated() and hasRole('ROLE_ADMIN')"/>
         <sec:intercept-url pattern="/service/admin/database/**" access="isAuthenticated() and hasRole('ROLE_ADMIN')"/>
         <sec:intercept-url pattern="/service/**" access="isAuthenticated() and hasRole('ROLE_USER')"/>
         <sec:http-basic/>
     </sec:http>
 
-    <sec:http use-expressions="true" access-denied-page="/c/login">
+    <sec:http use-expressions="true">
+        <sec:csrf disabled="true"/>
+        <sec:access-denied-handler error-page="/c/login"/>
+
         <sec:intercept-url pattern="/c/restful/admin/users/**" access="isAuthenticated() and hasRole('ROLE_ADMIN')"/>
         <sec:intercept-url pattern="/c/restful/admin/database/**" access="isAuthenticated() and hasRole('ROLE_ADMIN')"/>
         <sec:intercept-url pattern="/c/**/*" access="isAuthenticated() and hasRole('ROLE_USER')"/>
@@ -51,7 +56,7 @@
                         authentication-success-handler-ref="authenticationSuccessHandler"
                         always-use-default-target="false"
                         authentication-failure-url="/c/login?login_error=2"
-                        login-processing-url="/c/j_spring_security_check"/>
+                        login-processing-url="/c/perform-login"/>
 
         <sec:openid-login user-service-ref="userDetailsService"
                           authentication-failure-url="/c/login.jsp?login_error=true"

@@ -22,18 +22,22 @@ public class ExportXsltBasedTest {
 
 
     @Test(dataProvider = "Data-Provider-Function")
-    public void exportImportExportTest(@NotNull XSLTExporter.Type type, @NotNull final File wisemap, @NotNull final File recFile) throws ImporterException, IOException, ExportException {
+    public void exportImportExportTest(@NotNull XSLTExporter.Type type, @NotNull final File wisemap, @NotNull final File recFile) throws IOException, ExportException {
 
         final Exporter exporter = XSLTExporter.create(type);
         byte[] wiseMapContent = FileUtils.readFileToByteArray(wisemap);
         if (recFile.exists()) {
             // Compare rec and file ...
-            final String recContent = FileUtils.readFileToString(recFile, ENC_UTF_8);
+            final String recContent = FileUtils.readFileToString(recFile, ENC_UTF_8)
+                    .replaceAll("\n\\p{Blank}+", "\n")
+                    .replaceAll("\n+", "\n");
 
             // Export mile content ...
             final ByteArrayOutputStream bos = new ByteArrayOutputStream();
             exporter.export(wiseMapContent, bos);
-            final String exportContent = new String(bos.toByteArray(), StandardCharsets.UTF_8);
+            final String exportContent = new String(bos.toByteArray(), StandardCharsets.UTF_8)
+                    .replaceAll("\n\\p{Blank}+", "\n")
+                    .replaceAll("\n+", "\n");
             Assert.assertEquals(exportContent, recContent);
 
         } else {

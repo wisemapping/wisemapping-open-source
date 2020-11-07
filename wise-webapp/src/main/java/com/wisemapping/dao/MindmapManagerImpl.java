@@ -40,7 +40,7 @@ public class MindmapManagerImpl
     @Override
     public Collaborator findCollaborator(@NotNull final String email) {
         final Collaborator collaborator;
-        final List<Collaborator> collaborators = getHibernateTemplate().find("from com.wisemapping.model.Collaborator collaborator where email=?", email);
+        final List<Collaborator> collaborators = (List<Collaborator>) getHibernateTemplate().find("from com.wisemapping.model.Collaborator collaborator where email=?", email);
         if (collaborators != null && !collaborators.isEmpty()) {
             assert collaborators.size() == 1 : "More than one user with the same email!";
             collaborator = collaborators.get(0);
@@ -154,19 +154,19 @@ public class MindmapManagerImpl
 
     @Override
     public List<Collaboration> findCollaboration(final long collaboratorId) {
-        return getHibernateTemplate().find("from com.wisemapping.model.Collaboration collaboration where colaborator_id=?", collaboratorId);
+        return (List<Collaboration>) getHibernateTemplate().find("from com.wisemapping.model.Collaboration collaboration where colaborator_id=?", collaboratorId);
     }
 
     @Override
     public List<Collaboration> findCollaboration(final CollaborationRole collaborationRole) {
-        return getHibernateTemplate().find("from com.wisemapping.model.Collaboration collaboration where roleId=?", collaborationRole.ordinal());
+        return (List<Collaboration>) getHibernateTemplate().find("from com.wisemapping.model.Collaboration collaboration where roleId=?", collaborationRole.ordinal());
     }
 
     @Override
     public Collaboration findCollaboration(final int mindmapId, final User user) {
         final Collaboration result;
 
-        final List<Collaboration> mindMaps = getHibernateTemplate().find("from com.wisemapping.model.Collaboration collaboration where mindMap.id=? and colaborator_id=?", new Object[]{mindmapId, user.getId()});
+        final List<Collaboration> mindMaps = (List<Collaboration>) getHibernateTemplate().find("from com.wisemapping.model.Collaboration collaboration where mindMap.id=? and colaborator_id=?", new Object[]{mindmapId, user.getId()});
         if (mindMaps != null && !mindMaps.isEmpty()) {
             result = mindMaps.get(0);
         } else {
@@ -194,7 +194,7 @@ public class MindmapManagerImpl
 
     @Override
     public List<Mindmap> getAllMindmaps() {
-        return getHibernateTemplate().find("from com.wisemapping.model.Mindmap wisemapping");
+        return (List<Mindmap>) getHibernateTemplate().find("from com.wisemapping.model.Mindmap wisemapping");
     }
 
     @Override
@@ -206,7 +206,7 @@ public class MindmapManagerImpl
     @Override
     public Mindmap getMindmapByTitle(final String title, final User user) {
         final Mindmap result;
-        List<Mindmap> mindMaps = getHibernateTemplate().find("from com.wisemapping.model.Mindmap wisemapping where title=? and creator=?", new Object[]{title, user});
+        List<Mindmap> mindMaps = (List<Mindmap>) getHibernateTemplate().find("from com.wisemapping.model.Mindmap wisemapping where title=? and creator=?", new Object[]{title, user});
         if (mindMaps != null && !mindMaps.isEmpty()) {
             result = mindMaps.get(0);
         } else {
