@@ -31,7 +31,6 @@
         <org.springframework.version>5.2.10.RELEASE</org.springframework.version>
         <org.springframework.addons>5.2.5.RELEASE</org.springframework.addons>
         <hibernate.version>5.4.23.Final</hibernate.version>
-
     </properties>
 
     <dependencies>
@@ -106,13 +105,15 @@
         <!-- Hibernate -->
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>${hibernate.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>${hibernate.version}</version>
+        </dependency>
+
+        <!-- Hibernate Validator -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.0.21.Final</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -208,18 +209,6 @@
             <artifactId>spring-jdbc</artifactId>
             <version>${org.springframework.version}</version>
             <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>3.6.0.Final</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>3.6.0.Final</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>aopalliance</groupId>
