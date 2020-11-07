@@ -1,43 +1,35 @@
 /*
-*    Copyright [2015] [wisemapping]
-*
-*   Licensed under WiseMapping Public License, Version 1.0 (the "License").
-*   It is basically the Apache License, Version 2.0 (the "License") plus the
-*   "powered by wisemapping" text requirement on every single page;
-*   you may not use this file except in compliance with the License.
-*   You may obtain a copy of the license at
-*
-*       http://www.wisemapping.org/license
-*
-*   Unless required by applicable law or agreed to in writing, software
-*   distributed under the License is distributed on an "AS IS" BASIS,
-*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*   See the License for the specific language governing permissions and
-*   limitations under the License.
-*/
+ *    Copyright [2015] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 
 package com.wisemapping.service;
 
 import com.wisemapping.dao.UserManager;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.mail.NotificationService;
-import com.wisemapping.model.AccessAuditory;
-import com.wisemapping.model.AuthenticationType;
-import com.wisemapping.model.Collaborator;
-import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.User;
-import org.apache.velocity.app.VelocityEngine;
+import com.wisemapping.model.*;
+import com.wisemapping.util.VelocityEngineUtils;
+import com.wisemapping.util.VelocityEngineWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.ui.velocity.VelocityEngineUtils;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class UserServiceImpl
         implements UserService {
@@ -45,7 +37,7 @@ public class UserServiceImpl
     private MindmapService mindmapService;
     private NotificationService notificationService;
     private MessageSource messageSource;
-    private VelocityEngine velocityEngine;
+    private VelocityEngineWrapper velocityEngineWrapper;
 
 
     @Override
@@ -102,7 +94,7 @@ public class UserServiceImpl
     }
 
     @Override
-    public void removeUser(@NotNull  User user) {
+    public void removeUser(@NotNull User user) {
         // Force object reload before removing....
         final User userBy = userManager.getUserBy(user.getEmail());
         userManager.removeUser(userBy);
@@ -165,7 +157,9 @@ public class UserServiceImpl
         model.put("noArgs", new Object[]{});
         model.put("locale", locale);
 
-        final String mapXml = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "/samples/tutorial.vm", model);
+        final String mapXml = VelocityEngineUtils
+                .mergeTemplateIntoString(velocityEngineWrapper
+                        .getVelocityEngine(), "/samples/tutorial.vm", model);
 
         result.setXmlStr(mapXml);
         result.setTitle(messageSource.getMessage("WELCOME", null, locale) + " " + firstName);
@@ -212,8 +206,8 @@ public class UserServiceImpl
         this.messageSource = messageSource;
     }
 
-    public void setVelocityEngine(VelocityEngine velocityEngine) {
-        this.velocityEngine = velocityEngine;
+    public void setVelocityEngineWrapper(VelocityEngineWrapper velocityEngineWrapper) {
+        this.velocityEngineWrapper = velocityEngineWrapper;
     }
 
     @Override

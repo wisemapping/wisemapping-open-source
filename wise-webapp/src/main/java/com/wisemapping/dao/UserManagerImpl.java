@@ -1,20 +1,20 @@
 /*
-*    Copyright [2015] [wisemapping]
-*
-*   Licensed under WiseMapping Public License, Version 1.0 (the "License").
-*   It is basically the Apache License, Version 2.0 (the "License") plus the
-*   "powered by wisemapping" text requirement on every single page;
-*   you may not use this file except in compliance with the License.
-*   You may obtain a copy of the license at
-*
-*       http://www.wisemapping.org/license
-*
-*   Unless required by applicable law or agreed to in writing, software
-*   distributed under the License is distributed on an "AS IS" BASIS,
-*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*   See the License for the specific language governing permissions and
-*   limitations under the License.
-*/
+ *    Copyright [2015] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 
 package com.wisemapping.dao;
 
@@ -25,9 +25,8 @@ import com.wisemapping.model.AccessAuditory;
 import org.hibernate.ObjectNotFoundException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
-//import org.acegisecurity.providers.encoding.PasswordEncoder;
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Set;
@@ -42,29 +41,39 @@ public class UserManagerImpl
         this.passwordEncoder = passwordEncoder;
     }
 
+    @SuppressWarnings("unchecked")
     public List<User> getAllUsers() {
-        return (List<User>) getHibernateTemplate().find("from com.wisemapping.model.User user");
+        return currentSession().createQuery("from com.wisemapping.model.User user").list();
     }
 
 
     @Override
     public User getUserBy(@NotNull final String email) {
         User user = null;
-        final List<User> users = (List<User>) getHibernateTemplate().find("from com.wisemapping.model.User colaborator where email=?", email);
+
+        var query = currentSession().createQuery("from com.wisemapping.model.User colaborator where email=:email");
+        query.setParameter("email", email);
+
+        final List<User> users = query.list();
         if (users != null && !users.isEmpty()) {
             assert users.size() == 1 : "More than one user with the same email!";
             user = users.get(0);
         }
         return user;
+
     }
 
     @Override
     public Collaborator getCollaboratorBy(final String email) {
         final Collaborator cola;
-        final List cols = getHibernateTemplate().find("from com.wisemapping.model.Collaborator colaborator where email=?", email);
+        var query = currentSession().createQuery("from com.wisemapping.model.Collaborator colaborator where " +
+                "email=:email");
+        query.setParameter("email", email);
+
+        final List<User> cols = query.list();
         if (cols != null && !cols.isEmpty()) {
             assert cols.size() == 1 : "More than one colaborator with the same email!";
-            cola = (Collaborator) cols.get(0);
+            cola = cols.get(0);
         } else {
             cola = null;
         }
@@ -74,9 +83,9 @@ public class UserManagerImpl
     @Nullable
     public User getUserBy(long id) {
         User user = null;
-        try{
+        try {
             user = getHibernateTemplate().get(User.class, id);
-        } catch (ObjectNotFoundException e){
+        } catch (ObjectNotFoundException e) {
             // Ignore ...
         }
         return user;
@@ -85,13 +94,13 @@ public class UserManagerImpl
     @Override
     public void createUser(User user) {
         assert user != null : "Trying to store a null user";
-        user.setPassword(passwordEncoder.encodePassword(user.getPassword(), null));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         getHibernateTemplate().saveOrUpdate(user);
     }
 
     @Override
     public User createUser(@NotNull User user, @NotNull Collaborator col) {
-        user.setPassword(passwordEncoder.encodePassword(user.getPassword(), null));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         assert user != null : "Trying to store a null user";
 
         final Set<Collaboration> set = col.getCollaborations();
@@ -121,14 +130,20 @@ public class UserManagerImpl
 
     public void updateUser(@NotNull User user) {
         assert user != null : "user is null";
-        user.setPassword(passwordEncoder.encodePassword(user.getPassword(), null));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         getHibernateTemplate().update(user);
     }
 
     public User getUserByActivationCode(long code) {
         final User user;
-        final List users = getHibernateTemplate().find("from com.wisemapping.model.User user where activationCode=?", code);
-        if (users != null && !users.isEmpty()) {
+
+        var query = currentSession().createQuery("from com.wisemapping.model.User user where " +
+                "activationCode=:activationCode");
+        query.setParameter("activationCode", code);
+        final List users = query.list();
+
+        if(users != null && !users.isEmpty()) {
+
             assert users.size() == 1 : "More than one user with the same username!";
             user = (User) users.get(0);
         } else {

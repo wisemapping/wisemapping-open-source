@@ -1,20 +1,20 @@
 /*
-*    Copyright [2015] [wisemapping]
-*
-*   Licensed under WiseMapping Public License, Version 1.0 (the "License").
-*   It is basically the Apache License, Version 2.0 (the "License") plus the
-*   "powered by wisemapping" text requirement on every single page;
-*   you may not use this file except in compliance with the License.
-*   You may obtain a copy of the license at
-*
-*       http://www.wisemapping.org/license
-*
-*   Unless required by applicable law or agreed to in writing, software
-*   distributed under the License is distributed on an "AS IS" BASIS,
-*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*   See the License for the specific language governing permissions and
-*   limitations under the License.
-*/
+ *    Copyright [2015] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 
 package com.wisemapping.security;
 
@@ -23,9 +23,9 @@ import com.wisemapping.model.User;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 public class AuthenticationProvider implements org.springframework.security.authentication.AuthenticationProvider {
@@ -41,7 +41,8 @@ public class AuthenticationProvider implements org.springframework.security.auth
         final UserDetails userDetails = getUserDetailsService().loadUserByUsername(email);
         final User user = userDetails.getUser();
         final String credentials = (String) auth.getCredentials();
-        if (user == null || credentials == null || !encoder.isPasswordValid(user.getPassword(), credentials, null)) {
+
+        if (user == null || credentials == null || !encoder.matches(user.getPassword(), credentials)) {
             throw new BadCredentialsException("Username/Password does not match for " + auth.getPrincipal());
         }
         userDetailsService.getUserService().auditLogin(user);
@@ -49,7 +50,7 @@ public class AuthenticationProvider implements org.springframework.security.auth
     }
 
     @Override
-    public boolean supports(final Class<? extends Object> authentication) {
+    public boolean supports(final Class<?> authentication) {
         return (UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication));
     }
 

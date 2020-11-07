@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+		http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="wiseDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${database.driver}"/>
@@ -13,14 +13,14 @@
         <property name="validationQuery" value="${database.validation.query}"/>
     </bean>
 
-     <!--Disconnect this lines for production environments -->
+    <!--Descoment this lines for production environments -->
     <!--<bean id="wiseDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">-->
-        <!--<property name="jndiName">-->
-            <!--<value>java:comp/env/jdbc/wisemapping</value>-->
-        <!--</property>-->
+    <!--<property name="jndiName">-->
+    <!--<value>java:comp/env/jdbc/wisemapping</value>-->
+    <!--</property>-->
     <!--</bean>-->
 
-    <bean id="mindmapSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+    <bean id="mindmapSessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="dataSource" ref="wiseDataSource"/>
         <property name="mappingResources">
             <list>
@@ -40,21 +40,13 @@
         </property>
     </bean>
 
-    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-        <property name="sessionFactory">
-            <ref local="mindmapSessionFactory"/>
-        </property>
-    </bean>
-
-    <!-- Spring Data Access Exception Translator Defintion -->
-    <bean id="jdbcExceptionTranslator" class="org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator">
-        <property name="dataSource" ref="wiseDataSource"/>
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="mindmapSessionFactory"/>
     </bean>
 
     <!-- Hibernate Template Definition -->
-    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
         <property name="sessionFactory" ref="mindmapSessionFactory"/>
-        <property name="jdbcExceptionTranslator" ref="jdbcExceptionTranslator"/>
     </bean>
 
     <bean id="txAttributes"
@@ -66,8 +58,7 @@
         </property>
     </bean>
 
-    <bean id="txInterceptor"
-          class="org.springframework.transaction.interceptor.TransactionInterceptor">
+    <bean id="txInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
         <property name="transactionManager" ref="transactionManager"/>
         <property name="transactionAttributeSource" ref="txAttributes"/>
     </bean>
