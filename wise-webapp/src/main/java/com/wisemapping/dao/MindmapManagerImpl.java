@@ -146,10 +146,6 @@ public class MindmapManagerImpl
 
             hibernateCriteria.add(junction);
         }
-//        if (maxResult>0)
-//        {
-//            hibernateCriteria.setMaxResults(maxResult);
-//        }
         return hibernateCriteria.list();
     }
 
@@ -160,7 +156,7 @@ public class MindmapManagerImpl
 
     @Override
     public List<Collaboration> findCollaboration(final long collaboratorId) {
-        Query query = currentSession().createQuery("from com.wisemapping.model.Collaboration collaboration where colaboratorId=:colaboratorId");
+        Query query = currentSession().createQuery("from com.wisemapping.model.Collaboration collaboration where colaborator_id=:colaboratorId");
         query.setParameter("colaboratorId", collaboratorId);
         return query.list();
     }
