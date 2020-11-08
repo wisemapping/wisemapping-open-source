@@ -8,6 +8,8 @@
           http://www.springframework.org/schema/security
           http://www.springframework.org/schema/security/spring-security.xsd">
 
+    <bean id="passwordEncoder" class="com.wisemapping.security.DefaultPasswordEncoderFactories" factory-method="createDelegatingPasswordEncoder"/>
+
     <sec:authentication-manager alias="authenticationManager">
         <sec:authentication-provider ref="dbAuthenticationProvider"/>
         <sec:authentication-provider user-service-ref="userDetailsService"/>
@@ -15,7 +17,6 @@
 
     <bean id="dbAuthenticationProvider" class="com.wisemapping.security.AuthenticationProvider">
         <property name="userDetailsService" ref="userDetailsService"/>
-        <property name="encoder" ref="encoder"/>
+        <property name="encoder" ref="passwordEncoder"/>
     </bean>
-
 </beans>

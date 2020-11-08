@@ -18,27 +18,37 @@
 
 package com.wisemapping.security;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.apache.log4j.Logger;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-public class CustomPasswordEncoder implements PasswordEncoder {
+@SuppressWarnings("deprecation")
+public class LegacyPasswordEncoder implements PasswordEncoder {
+    final private static Logger logger = Logger.getLogger("com.wisemapping.security.LegacyPasswordEncoder");
+
     private static final String ENC_PREFIX = "ENC:";
-    private BCryptPasswordEncoder delegateEncoder = new BCryptPasswordEncoder(16);
+    private static final PasswordEncoder sha1Encoder = new org.springframework.security.crypto.password.MessageDigestPasswordEncoder("SHA-1");
 
     @Override
     public String encode(CharSequence rawPassword) {
-        String password = rawPassword.toString();
-        if(!rawPassword.toString().startsWith(ENC_PREFIX)) {
-            password = ENC_PREFIX + delegateEncoder.encode(rawPassword);
+
+        logger.info("LegacyPasswordEncoder encode executed.");
+
+        String result = rawPassword.toString();
+        if (!rawPassword.toString().startsWith(ENC_PREFIX)) {
+            result = ENC_PREFIX + sha1Encoder.encode(rawPassword);
         }
 
-        return password;
+        return result;
     }
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        String encodedRawPassword = delegateEncoder.encode(rawPassword);
 
-        return delegateEncoder.matches(encodedRawPassword, encodedPassword);
+        String newEncodedPassword = encodedPassword;
+        if (encodedPassword.startsWith(ENC_PREFIX)) {
+
+            newEncodedPassword = encode(rawPassword);
+        }
+        return newEncodedPassword.equals(encodedPassword);
     }
 }

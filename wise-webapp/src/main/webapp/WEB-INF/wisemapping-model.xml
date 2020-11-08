@@ -7,7 +7,7 @@
     <beans>
         <bean id="userManager" class="com.wisemapping.dao.UserManagerImpl">
             <property name="hibernateTemplate" ref="hibernateTemplate"/>
-            <property name="encoder" ref="encoder"/>
+            <property name="encoder" ref="passwordEncoder"/>
         </bean>
 
         <bean id="mindmapManager" class="com.wisemapping.dao.MindmapManagerImpl">

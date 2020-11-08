@@ -87,8 +87,6 @@
         <sec:logout logout-url="/c/logout" invalidate-session="true" logout-success-url="/c/login"/>
     </sec:http>
 
-    <bean id="encoder" class="com.wisemapping.security.CustomPasswordEncoder"/>
-
     <import resource="wisemapping-security-${security.type}.xml"/>
 
     <bean id="userDetailsService" class="com.wisemapping.security.UserDetailsService">
