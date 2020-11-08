@@ -30,13 +30,13 @@ import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.ImageTranscoder;
 import org.apache.batik.transcoder.image.JPEGTranscoder;
 import org.apache.batik.transcoder.image.PNGTranscoder;
+import org.apache.commons.io.IOUtils;
 import org.apache.fop.svg.PDFTranscoder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import sun.misc.BASE64Encoder;
 
 import javax.servlet.ServletContext;
 import javax.xml.parsers.DocumentBuilder;
@@ -51,6 +51,7 @@ import javax.xml.xpath.*;
 import java.awt.geom.AffineTransform;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.regex.Pattern;
 
 public class ExporterFactory {
@@ -266,8 +267,8 @@ public class ExporterFactory {
                         final File iconFile = iconFile(imgUrl);
                         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
                         fis = new FileInputStream(iconFile);
-                        BASE64Encoder encoder = new BASE64Encoder();
-                        encoder.encode(fis, bos);
+                        Base64.Encoder enc = Base64.getEncoder();
+                        bos.write(enc.encode(IOUtils.toByteArray(fis)));
 
                         elem.setAttribute("xlink:href", "data:image/png;base64," + bos.toString("8859_1"));
                         elem.appendChild(document.createTextNode(" "));

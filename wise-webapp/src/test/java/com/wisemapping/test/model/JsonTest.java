@@ -1,8 +1,8 @@
 package com.wisemapping.test.model;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisemapping.rest.model.*;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.testng.annotations.Test;
 
 import java.io.IOException;

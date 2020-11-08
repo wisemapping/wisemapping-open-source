@@ -1,28 +1,30 @@
 /*
-*    Copyright [2015] [wisemapping]
-*
-*   Licensed under WiseMapping Public License, Version 1.0 (the "License").
-*   It is basically the Apache License, Version 2.0 (the "License") plus the
-*   "powered by wisemapping" text requirement on every single page;
-*   you may not use this file except in compliance with the License.
-*   You may obtain a copy of the license at
-*
-*       http://www.wisemapping.org/license
-*
-*   Unless required by applicable law or agreed to in writing, software
-*   distributed under the License is distributed on an "AS IS" BASIS,
-*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*   See the License for the specific language governing permissions and
-*   limitations under the License.
-*/
+ *    Copyright [2015] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 
 package com.wisemapping.dao;
 
 import com.wisemapping.model.*;
 import com.wisemapping.util.ZipUtils;
+import org.hibernate.Query;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.hibernate5.HibernateTemplate;
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.SimpleExpression;
 import org.hibernate.criterion.Junction;
@@ -40,7 +42,10 @@ public class MindmapManagerImpl
     @Override
     public Collaborator findCollaborator(@NotNull final String email) {
         final Collaborator collaborator;
-        final List<Collaborator> collaborators = getHibernateTemplate().find("from com.wisemapping.model.Collaborator collaborator where email=?", email);
+        Query query = currentSession().createQuery("from com.wisemapping.model.Collaborator collaborator where email=:email");
+        query.setParameter("email", email);
+
+        final List<Collaborator> collaborators = query.list();
         if (collaborators != null && !collaborators.isEmpty()) {
             assert collaborators.size() == 1 : "More than one user with the same email!";
             collaborator = collaborators.get(0);
@@ -57,7 +62,7 @@ public class MindmapManagerImpl
 
     @Override
     public List<MindMapHistory> getHistoryFrom(int mindmapId) {
-        final Criteria hibernateCriteria = getSession().createCriteria(MindMapHistory.class);
+        final Criteria hibernateCriteria = currentSession().createCriteria(MindMapHistory.class);
         hibernateCriteria.add(Restrictions.eq("mindmapId", mindmapId));
         hibernateCriteria.addOrder(Order.desc("creationTime"));
 
@@ -78,7 +83,7 @@ public class MindmapManagerImpl
 
     @Override
     public void purgeHistory(int mapId) throws IOException {
-        final Criteria hibernateCriteria = getSession().createCriteria(MindMapHistory.class);
+        final Criteria hibernateCriteria = currentSession().createCriteria(MindMapHistory.class);
         hibernateCriteria.add(Restrictions.eq("mindmapId", mapId));
         hibernateCriteria.addOrder(Order.desc("creationTime"));
 
@@ -92,17 +97,18 @@ public class MindmapManagerImpl
             // If the map has not been modified in the last months, it means that I don't need to keep all the history ...
             int max = mindmap.getLastModificationTime().before(yearAgo) ? 10 : 25;
 
+            final HibernateTemplate hibernateTemplate = getHibernateTemplate();
             for (MindMapHistory history : historyList) {
                 byte[] zippedXml = history.getZippedXml();
                 if (new String(zippedXml).startsWith("<map")) {
                     history.setZippedXml(ZipUtils.bytesToZip(zippedXml));
-                    getHibernateTemplate().update(history);
+                    hibernateTemplate.update(history);
                 }
             }
 
             if (historyList.size() > max) {
                 for (int i = max; i < historyList.size(); i++) {
-                    getHibernateTemplate().delete(historyList.get(i));
+                    hibernateTemplate.delete(historyList.get(i));
                 }
             }
         }
@@ -110,7 +116,7 @@ public class MindmapManagerImpl
 
     @Override
     public List<Mindmap> search(MindMapCriteria criteria, int maxResult) {
-        final Criteria hibernateCriteria = getSession().createCriteria(Mindmap.class);
+        final Criteria hibernateCriteria = currentSession().createCriteria(Mindmap.class);
         //always search public maps
         hibernateCriteria.add(Restrictions.like("public", Boolean.TRUE));
 
@@ -154,19 +160,28 @@ public class MindmapManagerImpl
 
     @Override
     public List<Collaboration> findCollaboration(final long collaboratorId) {
-        return getHibernateTemplate().find("from com.wisemapping.model.Collaboration collaboration where colaborator_id=?", collaboratorId);
+        Query query = currentSession().createQuery("from com.wisemapping.model.Collaboration collaboration where colaboratorId=:colaboratorId");
+        query.setParameter("colaboratorId", collaboratorId);
+        return query.list();
     }
 
     @Override
     public List<Collaboration> findCollaboration(final CollaborationRole collaborationRole) {
-        return getHibernateTemplate().find("from com.wisemapping.model.Collaboration collaboration where roleId=?", collaborationRole.ordinal());
+        Query query = currentSession().createQuery("from com.wisemapping.model.Collaboration collaboration where roleId=:roleId");
+        query.setParameter("roleId", collaborationRole.ordinal());
+        return query.list();
     }
 
     @Override
     public Collaboration findCollaboration(final int mindmapId, final User user) {
         final Collaboration result;
 
-        final List<Collaboration> mindMaps = getHibernateTemplate().find("from com.wisemapping.model.Collaboration collaboration where mindMap.id=? and colaborator_id=?", new Object[]{mindmapId, user.getId()});
+        Query query = currentSession().createQuery("from com.wisemapping.model.Collaboration collaboration where mindMap.id=:mindMapId and colaborator_id=:collaboratorId");
+        query.setParameter("mindMap", mindmapId);
+        query.setParameter("collaboratorId", user.getId());
+
+        final List<Collaboration> mindMaps = query.list();
+
         if (mindMaps != null && !mindMaps.isEmpty()) {
             result = mindMaps.get(0);
         } else {
@@ -193,8 +208,9 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Mindmap> getAllMindmaps() {
-        return getHibernateTemplate().find("from com.wisemapping.model.Mindmap wisemapping");
+        return currentSession().createQuery("from com.wisemapping.model.Mindmap wisemapping").list();
     }
 
     @Override
@@ -206,7 +222,12 @@ public class MindmapManagerImpl
     @Override
     public Mindmap getMindmapByTitle(final String title, final User user) {
         final Mindmap result;
-        List<Mindmap> mindMaps = getHibernateTemplate().find("from com.wisemapping.model.Mindmap wisemapping where title=? and creator=?", new Object[]{title, user});
+        Query query = currentSession().createQuery("from com.wisemapping.model.Mindmap wisemapping where title=:title and creator=:creator");
+        query.setParameter("title", title);
+        query.setParameter("creator", user);
+
+        List<Mindmap> mindMaps = query.list();
+
         if (mindMaps != null && !mindMaps.isEmpty()) {
             result = mindMaps.get(0);
         } else {
@@ -223,7 +244,7 @@ public class MindmapManagerImpl
     @Override
     public void saveMindmap(Mindmap mindMap) {
         assert mindMap != null : "Save Mindmap: Mindmap is required!";
-        getSession().save(mindMap);
+        currentSession().save(mindMap);
     }
 
     @Override
@@ -238,7 +259,7 @@ public class MindmapManagerImpl
     @Override
     public void removeMindmap(@NotNull final Mindmap mindMap) {
         // Delete history first ...
-        final Criteria hibernateCriteria = getSession().createCriteria(MindMapHistory.class);
+        final Criteria hibernateCriteria = currentSession().createCriteria(MindMapHistory.class);
         hibernateCriteria.add(Restrictions.eq("mindmapId", mindMap.getId()));
         List list = hibernateCriteria.list();
         getHibernateTemplate().deleteAll(list);
@@ -257,4 +278,3 @@ public class MindmapManagerImpl
         getHibernateTemplate().saveOrUpdate(history);
     }
 }
-

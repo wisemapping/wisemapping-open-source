@@ -135,7 +135,7 @@ public class FreemindImporter
             result.setTitle(mapName);
             result.setDescription(description);
 
-        } catch (JAXBException | IOException | TransformerException e) {
+        } catch (JAXBException |  TransformerException e) {
             throw new ImporterException(e);
         }
         return result;

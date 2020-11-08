@@ -125,10 +125,10 @@ public class RestAdminITCase {
     }
 
     private ResponseEntity<RestUser> findUserByEmail(HttpHeaders requestHeaders, RestTemplate templateRest, final String email) {
-        HttpEntity<RestUser> findUserEntity = new HttpEntity<RestUser>(requestHeaders);
+        HttpEntity<RestUser> findUserEntity = new HttpEntity<>(requestHeaders);
 
         // Add extension only to avoid the fact that the last part is extracted ...
-        final String url = BASE_REST_URL + "/admin/users/email/{email}.json";
+        final String url = BASE_REST_URL + "/admin/users/email/{email}?mediaType=json";
         return templateRest.exchange(url, HttpMethod.GET, findUserEntity, RestUser.class, email);
     }
 
