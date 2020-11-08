@@ -26,13 +26,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.wisemapping.exceptions.UnsupportedBrowserException;
-
 import java.util.Set;
 
 public class BrowserSupportInterceptor extends HandlerInterceptorAdapter {
     private Set<String> exclude;
-    public static final String USER_AGENT = "wisemapping.user_agent";
+    private static final String USER_AGENT = "wisemapping.user_agent";
 
     public boolean preHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, Object object) throws Exception {
 
@@ -54,15 +52,16 @@ public class BrowserSupportInterceptor extends HandlerInterceptorAdapter {
                 }
             }
 
-            // It's a supported browser ?.
-            if (!userAgent.isBrowserSupported()) {
-                throw new UnsupportedBrowserException();
-            }
-
-            // Is a Explorer 9 or less without Google Chrome Frame ?.
-            if (userAgent.needsGCF()) {
-                throw new GoogleChromeFrameRequiredException();
-            }
+            return true;
+//            // It's a supported browser ?.
+//            if (!userAgent.isBrowserSupported()) {
+//                throw new UnsupportedBrowserException();
+//            }
+//
+//            // Is a Explorer 9 or less without Google Chrome Frame ?.
+//            if (userAgent.needsGCF()) {
+//                throw new GoogleChromeFrameRequiredException();
+//            }
 
 
         }

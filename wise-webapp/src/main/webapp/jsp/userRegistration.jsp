@@ -4,7 +4,7 @@
 <h1><spring:message code="USER_REGISTRATION"/></h1>
 
 <p><spring:message code="REGISTRATION_TITLE_MSG"/></p>
-<form:form method="post" commandName="user" class="form-horizontal">
+<form:form method="post" modelAttribute="user" class="form-horizontal">
     <div class="form-group">
         <label for="email" class="col-md-2 control-label"><spring:message code="EMAIL"/>: </label>
         <div class="col-md-5">

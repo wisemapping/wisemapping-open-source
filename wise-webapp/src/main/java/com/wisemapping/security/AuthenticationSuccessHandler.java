@@ -24,8 +24,8 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
 
         SavedRequest savedRequest = cache.getRequest(request, response);
-        if (savedRequest!=null && savedRequest.getRedirectUrl().contains("c/restful")) {
-            cache.removeRequest(request,response);
+        if (savedRequest != null && savedRequest.getRedirectUrl().contains("c/restful")) {
+            cache.removeRequest(request, response);
         }
         super.onAuthenticationSuccess(request, response, authentication);
     }

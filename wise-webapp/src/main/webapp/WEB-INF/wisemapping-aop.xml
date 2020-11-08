@@ -2,13 +2,11 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+		http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="viewSecurityAdvisor"
           class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
-        <property name="advice">
-            <ref local="viewSecurityAdvice"/>
-        </property>
+        <property name="advice" ref="viewSecurityAdvice"/>
         <property name="mappedNames">
             <list>
                 <value>getMindmapUserBy</value>
@@ -22,9 +20,7 @@
 
     <bean id="updateSecurityAdvisor"
           class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
-        <property name="advice">
-            <ref local="updateSecurityAdvice"/>
-        </property>
+        <property name="advice" ref="updateSecurityAdvice"/>
         <property name="mappedNames">
             <list>
                 <value>save*</value>

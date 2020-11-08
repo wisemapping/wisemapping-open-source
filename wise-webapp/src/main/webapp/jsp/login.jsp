@@ -21,13 +21,13 @@
         <div class="row jumbotron" id="loginPanel">
             <h1><spring:message code="SIGN_IN"/></h1>
 
-            <form action="/c/j_spring_security_check" method="POST" class="form-horizontal"
+            <form action="/c/perform-login" method="POST" class="form-horizontal"
                   id="loginForm">
                 <div class="form-group">
                     <label class="col-md-3 control-label" for="email"><spring:message code="EMAIL"/>: </label>
 
                     <div class="col-md-9">
-                        <input type='email' tabindex="1" id="email" name='j_username' required="required"
+                        <input type='email' tabindex="1" id="username" name='username' required="required"
                                class="form-control"/>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
                     <label class="col-md-3 control-label" for="password"><spring:message code="PASSWORD"/>: </label>
 
                     <div class="col-md-9">
-                        <input type='password' tabindex="2" id="password" name='j_password' required="required"
+                        <input type='password' tabindex="2" id="password" name='password' required="required"
                                class="form-control"/>
                     </div>
                 </div>

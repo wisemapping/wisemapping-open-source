@@ -4,9 +4,11 @@
        xmlns:sec="http://www.springframework.org/schema/security"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-          http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+          http://www.springframework.org/schema/beans/spring-beans.xsd
           http://www.springframework.org/schema/security
-          http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+          http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <bean id="passwordEncoder" class="com.wisemapping.security.DefaultPasswordEncoderFactories" factory-method="createDelegatingPasswordEncoder"/>
 
     <sec:authentication-manager alias="authenticationManager">
         <sec:authentication-provider ref="dbAuthenticationProvider"/>
@@ -15,7 +17,6 @@
 
     <bean id="dbAuthenticationProvider" class="com.wisemapping.security.AuthenticationProvider">
         <property name="userDetailsService" ref="userDetailsService"/>
-        <property name="encoder" ref="encoder"/>
+        <property name="encoder" ref="passwordEncoder"/>
     </bean>
-
 </beans>

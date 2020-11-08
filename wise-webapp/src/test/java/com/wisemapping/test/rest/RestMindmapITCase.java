@@ -2,21 +2,10 @@ package com.wisemapping.test.rest;
 
 
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.model.Label;
-import com.wisemapping.model.User;
-import com.wisemapping.rest.model.RestLabel;
-import com.wisemapping.rest.model.RestLabelList;
-import com.wisemapping.rest.model.RestMindmap;
-import com.wisemapping.rest.model.RestMindmapInfo;
-import com.wisemapping.rest.model.RestMindmapList;
-import com.wisemapping.rest.model.RestUser;
+import com.wisemapping.rest.model.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.testng.SkipException;
@@ -27,14 +16,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
-import static com.wisemapping.test.rest.RestHelper.BASE_REST_URL;
-import static com.wisemapping.test.rest.RestHelper.COLOR;
-import static com.wisemapping.test.rest.RestHelper.HOST_PORT;
-import static com.wisemapping.test.rest.RestHelper.createHeaders;
-import static com.wisemapping.test.rest.RestHelper.createTemplate;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
-import static org.testng.Assert.fail;
+import static com.wisemapping.test.rest.RestHelper.*;
+import static org.testng.Assert.*;
 
 @Test
 public class RestMindmapITCase {

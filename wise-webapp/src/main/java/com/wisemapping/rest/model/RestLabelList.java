@@ -1,7 +1,7 @@
 package com.wisemapping.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.wisemapping.model.Label;
-import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;

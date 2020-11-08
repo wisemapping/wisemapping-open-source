@@ -1,20 +1,20 @@
 /*
-*    Copyright [2015] [wisemapping]
-*
-*   Licensed under WiseMapping Public License, Version 1.0 (the "License").
-*   It is basically the Apache License, Version 2.0 (the "License") plus the
-*   "powered by wisemapping" text requirement on every single page;
-*   you may not use this file except in compliance with the License.
-*   You may obtain a copy of the license at
-*
-*       http://www.wisemapping.org/license
-*
-*   Unless required by applicable law or agreed to in writing, software
-*   distributed under the License is distributed on an "AS IS" BASIS,
-*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*   See the License for the specific language governing permissions and
-*   limitations under the License.
-*/
+ *    Copyright [2015] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 
 package com.wisemapping.rest;
 
@@ -73,6 +73,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -87,7 +88,8 @@ import java.util.Set;
 public class MindmapController extends BaseController {
     final Logger logger = Logger.getLogger("com.wisemapping");
 
-    public static final String LATEST_HISTORY_REVISION = "latest";
+    private static final String LATEST_HISTORY_REVISION = "latest";
+
     @Qualifier("mindmapService")
     @Autowired
     private MindmapService mindmapService;
@@ -256,15 +258,13 @@ public class MindmapController extends BaseController {
     }
 
     @ApiIgnore
-    @RequestMapping(method = RequestMethod.GET, value = {"/maps/{id}/document/xml", "/maps/{id}/document/xml-pub"}, consumes = {"text/plain"}, produces = {"application/xml"})
+    @RequestMapping(method = RequestMethod.GET, value = {"/maps/{id}/document/xml", "/maps/{id}/document/xml-pub"}, consumes = {"text/plain"}, produces = {"application/xml; charset=UTF-8"})
     @ResponseBody
     public byte[] retrieveDocument(@PathVariable int id, @NotNull HttpServletResponse response) throws WiseMappingException, IOException {
-        // I should not return byte, but there is some encoding issue here. Further research needed.
-        response.setCharacterEncoding("UTF-8");
         final Mindmap mindmap = findMindmapById(id);
 
         String xmlStr = mindmap.getXmlStr();
-        return xmlStr.getBytes("UTF-8");
+        return xmlStr.getBytes(StandardCharsets.UTF_8);
     }
 
     @ApiIgnore
@@ -283,11 +283,9 @@ public class MindmapController extends BaseController {
     }
 
 
-    @RequestMapping(method = RequestMethod.GET, value = {"/maps/{id}/{hid}/document/xml"}, consumes = {"text/plain"}, produces = {"application/xml"})
+    @RequestMapping(method = RequestMethod.GET, value = {"/maps/{id}/{hid}/document/xml"}, consumes = {"text/plain"}, produces = {"application/xml; charset=UTF-8"})
     @ResponseBody
     public byte[] retrieveDocument(@PathVariable int id, @PathVariable int hid, @NotNull HttpServletResponse response) throws WiseMappingException, IOException {
-        // I should not return byte, but there is some encoding issue here. Further research needed.
-        response.setCharacterEncoding("UTF-8");
         final MindMapHistory mindmapHistory = mindmapService.findMindmapHistory(id, hid);
         return mindmapHistory.getUnzipXml();
     }
@@ -394,7 +392,7 @@ public class MindmapController extends BaseController {
         // Update map ...
         final Mindmap mindmap = findMindmapById(id);
         mindmap.setTitle(title);
-        mindmapService.updateMindmap(mindMap, !true);
+        mindmapService.updateMindmap(mindMap, false);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/collabs", consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
@@ -463,7 +461,7 @@ public class MindmapController extends BaseController {
         // Update map ...
         final Mindmap mindmap = findMindmapById(id);
         mindmap.setDescription(description);
-        mindmapService.updateMindmap(mindMap, !true);
+        mindmapService.updateMindmap(mindMap, false);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/publish", consumes = {"text/plain"}, produces = {"application/json", "application/xml"})
@@ -479,7 +477,7 @@ public class MindmapController extends BaseController {
 
         // Update map status ...
         mindMap.setPublic(Boolean.parseBoolean(value));
-        mindmapService.updateMindmap(mindMap, !true);
+        mindmapService.updateMindmap(mindMap, false);
 
     }
 
@@ -529,7 +527,7 @@ public class MindmapController extends BaseController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void batchDelete(@RequestParam(required = true) String ids) throws IOException, WiseMappingException {
         final User user = Utils.getUser();
-        final String[] mapsIds = ids.split(",");
+        final String[] mapsIds = ",".split(ids);
         for (final String mapId : mapsIds) {
             final Mindmap mindmap = findMindmapById(Integer.parseInt(mapId));
             mindmapService.removeMindmap(mindmap, user);
@@ -650,11 +648,12 @@ public class MindmapController extends BaseController {
         final User user = Utils.getUser();
         final Label delegated = restLabel.getDelegated();
         delegated.setCreator(user);
+
         final Label found = labelService.getLabelById(labelId, user);
         if (found == null) {
             throw new LabelCouldNotFoundException("Label could not be found. Id: " + labelId);
         }
-        for (String id : ids.split(",")) {
+        for (String id : ",".split(ids)) {
             final int mindmapId = Integer.parseInt(id);
             final Mindmap mindmap = findMindmapById(mindmapId);
             final Label label = mindmap.findLabel(labelId);

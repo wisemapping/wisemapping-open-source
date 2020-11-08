@@ -15,7 +15,7 @@
 
 <p><spring:message code="FORGOT_PASSWORD_MESSAGE"/></p>
 
-<form:form method="post" commandName="resetPassword" class="form-horizontal">
+<form:form method="post" modelAttribute="resetPassword" class="form-horizontal">
     <label for="email" class="col-md-2 control-label"><spring:message code="EMAIL"/>: </label>
     <div class="col-md-5">
         <input id="email" type="email" required="required" name="email" class="form-control"/>

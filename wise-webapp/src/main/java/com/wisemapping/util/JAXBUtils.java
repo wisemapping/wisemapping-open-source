@@ -27,6 +27,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,11 +35,11 @@ public class JAXBUtils {
 
     private final static Map<String, JAXBContext> context = new HashMap<String, JAXBContext>();
 
-    public static Object getMapObject(@NotNull InputStream is, @NotNull final String pakage) throws JAXBException, UnsupportedEncodingException {
+    public static Object getMapObject(@NotNull InputStream is, @NotNull final String pakage) throws JAXBException {
 
         final JAXBContext context = getInstance(pakage);
         final Unmarshaller unmarshaller = context.createUnmarshaller();
-        final Reader reader = new InputStreamReader(is, "UTF-8");
+        final Reader reader = new InputStreamReader(is, StandardCharsets.UTF_8);
         return unmarshaller.unmarshal(reader);
     }
 

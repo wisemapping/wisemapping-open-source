@@ -97,12 +97,12 @@ public class RestAccountITCase {
         HttpEntity<RestUser> findUserEntity = new HttpEntity<RestUser>(requestHeaders);
 
         // Add extension only to avoid the fact that the last part is extracted ...
-        final String url = BASE_REST_URL + "/admin/users/email/{email}.json";
+        final String url = BASE_REST_URL + "/admin/users/email/{email}";
         return templateRest.exchange(url, HttpMethod.GET, findUserEntity, RestUser.class, email);
     }
 
     private URI createUser(HttpHeaders requestHeaders, RestTemplate templateRest, RestUser restUser) {
-        HttpEntity<RestUser> createUserEntity = new HttpEntity<RestUser>(restUser, requestHeaders);
+        HttpEntity<RestUser> createUserEntity = new HttpEntity< >(restUser, requestHeaders);
         return templateRest.postForLocation(BASE_REST_URL + "/admin/users", createUserEntity);
     }
 
