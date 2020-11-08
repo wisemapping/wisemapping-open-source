@@ -19,6 +19,7 @@
 package com.wisemapping.security;
 
 import org.apache.log4j.Logger;
+import org.springframework.security.crypto.password.MessageDigestPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SuppressWarnings("deprecation")
@@ -26,29 +27,21 @@ public class LegacyPasswordEncoder implements PasswordEncoder {
     final private static Logger logger = Logger.getLogger("com.wisemapping.security.LegacyPasswordEncoder");
 
     private static final String ENC_PREFIX = "ENC:";
-    private static final PasswordEncoder sha1Encoder = new org.springframework.security.crypto.password.MessageDigestPasswordEncoder("SHA-1");
+    private static final PasswordEncoder sha1Encoder = new MessageDigestPasswordEncoder("SHA-1");
 
     @Override
     public String encode(CharSequence rawPassword) {
 
         logger.info("LegacyPasswordEncoder encode executed.");
+        return ENC_PREFIX + sha1Encoder.encode(rawPassword);
 
-        String result = rawPassword.toString();
-        if (!rawPassword.toString().startsWith(ENC_PREFIX)) {
-            result = ENC_PREFIX + sha1Encoder.encode(rawPassword);
-        }
-
-        return result;
     }
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
 
-        String newEncodedPassword = encodedPassword;
-        if (encodedPassword.startsWith(ENC_PREFIX)) {
-
-            newEncodedPassword = encode(rawPassword);
-        }
-        return newEncodedPassword.equals(encodedPassword);
+        final String encode = encode(rawPassword);
+        logger.info("LegacyPasswordEncoder encode executed ->" + encode + ":" + encodedPassword);
+        return encode.equals(encodedPassword);
     }
 }
