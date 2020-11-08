@@ -4,7 +4,7 @@ import com.wisemapping.filter.SupportedUserAgent;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-@Test
+@Test(enabled=false)
 public class UserAgentTest {
 
 
