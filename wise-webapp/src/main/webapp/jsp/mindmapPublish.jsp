@@ -11,7 +11,7 @@
 <form method="post" id="dialogMainForm" action="#" class="well form-inline">
     <label for="enablePublicView" class="control-label"><spring:message code="ENABLE_PUBLISHING"/>:
         <input type="checkbox" id="enablePublicView" name="publicView"
-                <c:if test="${mindmap.public}">
+                <c:if test="${mindmap.accessible}">
                     checked="checked"
                 </c:if> />
     </label>
@@ -28,6 +28,7 @@
     </ul>
     <br/>
     <div class="tab-content">
+        <div class="tab-pane fade active in" id="embedTab">
         <div class="tab-pane fade active in" id="embedTab">
             <spring:message code="BLOG_INCLUSION"/>
             <div id="wizardContainer">
