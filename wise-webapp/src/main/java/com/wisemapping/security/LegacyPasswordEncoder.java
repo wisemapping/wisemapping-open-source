@@ -48,7 +48,7 @@ public class LegacyPasswordEncoder implements PasswordEncoder {
     @Override
     public String encode(CharSequence rawPassword) {
 
-        logger.info("LegacyPasswordEncoder encode executed.");
+        logger.debug("LegacyPasswordEncoder encode executed.");
         return ENC_PREFIX + sha1Encoder.encode(rawPassword.toString(), "");
 
     }
