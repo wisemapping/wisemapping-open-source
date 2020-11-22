@@ -9,7 +9,7 @@
         <groupId>org.wisemapping</groupId>
         <artifactId>wisemapping</artifactId>
         <relativePath>../pom.xml</relativePath>
-        <version>5.0.0</version>
+        <version>5.0.1-SNAPSHOT</version>
     </parent>
 
     <repositories>
