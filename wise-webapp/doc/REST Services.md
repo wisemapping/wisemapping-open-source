@@ -24,19 +24,19 @@ The following variables should be replaced:
 
 Obtaining user information by email:
  * Template Path: /service/admin/users/email/{user.email}.json
- * Example: curl "http://{host.name}:{host.port}/{context.path}/service/admin/users/email/{user.email}.json" --get --basic -u "admin@wisemapping.org:admin"
+ * Example: curl "http://{host.name}:{host.port}/{context.path}/service/admin/users/email/{user.email}.json" --get --basic -u "admin@wisemapping.org:test"
 
 Deleting a based on the user id:
  * Template Path: /service/admin/users/{userId}
- * curl "http://{host.name}:{host.port}/{context.path}/service/admin/users/{userId}" --request delete --basic -u "admin@wisemapping.org:admin"
+ * curl "http://{host.name}:{host.port}/{context.path}/service/admin/users/{userId}" --request delete --basic -u "admin@wisemapping.org:test"
 
 Changing Password:
 Template Path: /service/admin/users/{userId}/password
- * curl "http://{host.name}:{host.port}/{context.path}/service/admin/users/{userId}/password" --request put --basic -u "admin@wisemapping.org:admin" -H "Content-Type:text/plain" --data "<new_password>"
+ * curl "http://{host.name}:{host.port}/{context.path}/service/admin/users/{userId}/password" --request put --basic -u "admin@wisemapping.org:test" -H "Content-Type:text/plain" --data "<new_password>"
 
 Creating a new user:
  * Template Path: /service/admin/users/
  * Method: Post
- * curl "http://{host.name}:{host.port}/{context.path}/service/admin/users" --request post --basic -u "admin@wisemapping.org:admin" -H "Content-Type:application/json" --data '{"email": "te2@mydomain.de", "lastname": "lastname", "firstname":"myfirstname","password":"password"}'
+ * curl "http://{host.name}:{host.port}/{context.path}/service/admin/users" --request post --basic -u "admin@wisemapping.org:test" -H "Content-Type:application/json" --data '{"email": "te2@mydomain.de", "lastname": "lastname", "firstname":"myfirstname","password":"password"}'
 
 

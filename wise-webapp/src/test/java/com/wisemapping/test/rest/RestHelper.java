@@ -17,7 +17,7 @@ public class RestHelper {
 
     public static final String HOST_PORT = "http://localhost:8080";
     public static final String BASE_REST_URL = HOST_PORT + "/service";
-    public static final String ADMIN_CREDENTIALS = "admin@wisemapping.org" + ":" + "admin";
+    public static final String ADMIN_CREDENTIALS = "admin@wisemapping.org" + ":" + "test";
     public static final String COLOR = "#000000";
 
     static HttpHeaders createHeaders(@NotNull MediaType mediaType) {

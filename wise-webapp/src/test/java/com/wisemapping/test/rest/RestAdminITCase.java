@@ -42,7 +42,7 @@ import static org.testng.Assert.fail;
 @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
 public class RestAdminITCase {
 
-    String authorisation = "admin@wisemapping.org" + ":" + "admin";
+    String authorisation = "admin@wisemapping.org" + ":" + "test";
 
     @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
     public void changePassword(final @NotNull MediaType mediaType) {    // Configure media types ...
