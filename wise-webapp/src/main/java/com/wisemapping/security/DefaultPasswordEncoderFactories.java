@@ -11,7 +11,6 @@ public class DefaultPasswordEncoderFactories {
 
     private static final String ENCODING_ID = "bcrypt";
 
-    @SuppressWarnings("deprecation")
     static PasswordEncoder createDelegatingPasswordEncoder() {
 
         final Map<String, PasswordEncoder> encoders = new HashMap<>();

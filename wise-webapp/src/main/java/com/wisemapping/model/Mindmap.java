@@ -160,6 +160,12 @@ public class Mindmap {
         return isPublic;
     }
 
+    //@Todo: This is a hack to overcome some problem with JS EL. For some reason, ${mindmap.public} fails as not supported.
+    // More research is needed...
+    public boolean isAccessible() {
+        return isPublic();
+    }
+
     public void setPublic(boolean isPublic) {
         this.isPublic = isPublic;
     }

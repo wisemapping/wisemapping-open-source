@@ -45,7 +45,7 @@
 
         <div class="tab-pane fade" id="publish">
             <c:choose>
-                <c:when test="${mindmap.public}">
+                <c:when test="${mindmap.accessible}">
                     <ul class="unstyled">
                         <p><spring:message code="ALL_VIEW_PUBLIC"/></p>
                         <li><strong><spring:message code="DIRECT_LINK_EXPLANATION"/></strong>

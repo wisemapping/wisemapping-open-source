@@ -47,6 +47,12 @@ public class MindMapBean {
         return mindmap.isPublic();
     }
 
+    //@Todo: This is a hack to overcome some problem with JS EL. For some reason, ${mindmap.public} fails as not supported.
+    // More research is needed...
+    public boolean isAccessible() {
+        return getPublic();
+    }
+
     public String getTitle() {
         return mindmap.getTitle();
     }
