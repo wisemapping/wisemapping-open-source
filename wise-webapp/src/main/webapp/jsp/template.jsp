@@ -24,6 +24,8 @@
     <meta property="og:url" content="http://www.wisemapping.com"/>
     <meta property="og:image" content="http://www.wisemapping.com/images/logo.png"/>
     <meta property="og:site_name" content="WiseMapping.com"/>
+    <link rel="icon" href="favicon.ico?v=2" />
+
     <title>
         <spring:message code="SITE.TITLE"/>-
         <c:choose>
