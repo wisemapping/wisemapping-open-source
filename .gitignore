@@ -5,6 +5,7 @@ wisemapping.iws
 wisemapping.iml
 wisemapping.ids
 wise-webapp/wisemapping.log*
+wise-webapp/velocity.log
 wisemapping.log*
 */.DS_Store
 .DS_Store
