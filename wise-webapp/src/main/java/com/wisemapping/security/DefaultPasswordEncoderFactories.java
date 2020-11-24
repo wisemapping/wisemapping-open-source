@@ -14,7 +14,7 @@ public class DefaultPasswordEncoderFactories {
     static PasswordEncoder createDelegatingPasswordEncoder() {
 
         final Map<String, PasswordEncoder> encoders = new HashMap<>();
-        encoders.put(ENCODING_ID, new BCryptPasswordEncoder(16));
+        encoders.put(ENCODING_ID, new BCryptPasswordEncoder(12));
 
         DelegatingPasswordEncoder result = new DelegatingPasswordEncoder(ENCODING_ID, encoders);
         result.setDefaultPasswordEncoderForMatches(new LegacyPasswordEncoder());
