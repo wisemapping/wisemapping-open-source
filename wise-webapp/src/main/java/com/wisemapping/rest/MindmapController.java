@@ -653,7 +653,7 @@ public class MindmapController extends BaseController {
         if (found == null) {
             throw new LabelCouldNotFoundException("Label could not be found. Id: " + labelId);
         }
-        for (String id : ",".split(ids)) {
+        for (String id : ids.split(",")) {
             final int mindmapId = Integer.parseInt(id);
             final Mindmap mindmap = findMindmapById(mindmapId);
             final Label label = mindmap.findLabel(labelId);

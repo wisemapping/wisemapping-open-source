@@ -25,6 +25,7 @@ import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestErrors;
 import com.wisemapping.security.Utils;
+import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -42,6 +43,8 @@ import java.util.Locale;
 
 public class BaseController {
 
+    final private Logger logger = Logger.getLogger("com.wisemapping.rest");
+
     @Qualifier("messageSource")
     @Autowired
     private ResourceBundleMessageSource messageSource;
@@ -56,8 +59,8 @@ public class BaseController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public RestErrors handleClientErrors(@NotNull IllegalArgumentException ex) {
-        System.err.println(ex.getMessage());
-        return new RestErrors(ex.getMessage(),Severity.WARNING);
+        logger.error(ex.getMessage(), ex);
+        return new RestErrors(ex.getMessage(), Severity.WARNING);
     }
 
     @ExceptionHandler(ImportUnexpectedException.class)
@@ -66,7 +69,7 @@ public class BaseController {
     public RestErrors handleImportErrors(@NotNull ImportUnexpectedException ex, @NotNull HttpServletRequest request) {
         final User user = Utils.getUser();
         notificationService.reportJavaException(ex, user, new String(ex.getFreemindXml()), request);
-        return new RestErrors(ex.getMessage(),Severity.SEVERE);
+        return new RestErrors(ex.getMessage(), Severity.SEVERE);
     }
 
     @ExceptionHandler(ValidationException.class)
@@ -78,7 +81,7 @@ public class BaseController {
     @ExceptionHandler(JsonHttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RestErrors handleJSONErrors(@NotNull JsonHttpMessageNotReadableException ex) {
-        return new RestErrors("Communication error",Severity.SEVERE);
+        return new RestErrors("Communication error", Severity.SEVERE);
     }
 
     @ExceptionHandler(java.lang.reflect.UndeclaredThrowableException.class)
@@ -98,7 +101,7 @@ public class BaseController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RestErrors handleClientErrors(@NotNull ClientException ex) {
         final Locale locale = LocaleContextHolder.getLocale();
-        return new RestErrors(ex.getMessage(messageSource, locale),ex.getSeverity(),ex.getTechInfo());
+        return new RestErrors(ex.getMessage(messageSource, locale), ex.getSeverity(), ex.getTechInfo());
     }
 
     @ExceptionHandler(Exception.class)
@@ -108,7 +111,7 @@ public class BaseController {
         final User user = Utils.getUser(false);
         notificationService.reportJavaException(ex, user, request);
         ex.printStackTrace();
-        return new RestErrors(ex.getMessage(),Severity.SEVERE);
+        return new RestErrors(ex.getMessage(), Severity.SEVERE);
     }
 
 
