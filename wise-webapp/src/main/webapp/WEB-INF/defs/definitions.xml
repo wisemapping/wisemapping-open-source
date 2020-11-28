@@ -1,6 +1,6 @@
 <!DOCTYPE tiles-definitions PUBLIC
         "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
-        "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 
 <tiles-definitions>
 
@@ -37,16 +37,6 @@
     <definition name="iframeWrapper" template="/jsp/iframeWrapper.jsp"/>
 
     <!-- Error Pages -->
-    <definition name="GCFPluginRequired" extends="pageTemplate">
-        <put-attribute name="body" value="/jsp/GCFPluginRequired.jsp"/>
-        <put-attribute name="title" value="INSTALL_CFG"/>
-    </definition>
-
-    <definition name="GCFInstall" extends="pageTemplate">
-        <put-attribute name="body" value="/jsp/GCFInstall.jsp"/>
-        <put-attribute name="title" value="INSTALL_CFG"/>
-    </definition>
-
     <definition name="unexpectedError" extends="errorTemplate">
         <put-attribute name="title" value="UNEXPECTED_ERROR"/>
         <put-attribute name="details" value="UNEXPECTED_ERROR_DETAILS"/>
@@ -68,16 +58,9 @@
         <put-attribute name="body" value="/jsp/userForgotPasswordSuccess.jsp"/>
     </definition>
 
-    <!-- Main Pages -->
     <definition name="login" extends="pageTemplate">
         <put-attribute name="title" value="LOGIN"/>
         <put-attribute name="body" value="/jsp/login.jsp"/>
-        <put-attribute name="removeSignin" value="true"/>
-    </definition>
-
-    <definition name="loginopenid" extends="pageTemplate">
-        <put-attribute name="title" value="LOGIN"/>
-        <put-attribute name="body" value="/jsp/loginOpenId.jsp"/>
         <put-attribute name="removeSignin" value="true"/>
     </definition>
 

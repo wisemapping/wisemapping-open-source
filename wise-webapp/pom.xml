@@ -86,9 +86,13 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-openid</artifactId>
+            <artifactId>spring-security-oauth2-client</artifactId>
             <version>${org.springframework.addons}</version>
-            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-jose</artifactId>
+            <version>${org.springframework.addons}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

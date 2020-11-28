@@ -48,11 +48,6 @@ public class PublicPagesController {
         return "crew";
     }
 
-    @RequestMapping(value = "GCFInstall")
-    public String showGCFInstallationPage() {
-        return "GCFInstall";
-    }
-
     @RequestMapping(value = "keyboard")
     public String newsPage() {
         return "keyboard";

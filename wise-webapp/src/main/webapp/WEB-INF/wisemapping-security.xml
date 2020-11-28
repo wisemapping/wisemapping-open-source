@@ -15,7 +15,6 @@
     <sec:http pattern="/favicon.ico" security="none"/>
 
     <sec:http pattern="/c/login" security="none"/>
-    <sec:http pattern="/c/loginopenid" security="none"/>
     <sec:http pattern="/c/user/registration" security="none"/>
     <sec:http pattern="/c/user/resetPassword" security="none"/>
     <sec:http pattern="/c/home" security="none"/>
@@ -23,7 +22,6 @@
     <sec:http pattern="/c/maps/*/embed" security="none"/>
     <sec:http pattern="/c/maps/*/try" security="none"/>
     <sec:http pattern="/c/maps/*/public" security="none"/>
-    <sec:http pattern="/c/GCFInstall" security="none"/>
     <sec:http pattern="/c/restful/maps/*/document/xml-pub" security="none"/>
 
     <sec:http pattern="/c/publicview.htm" security="none"/>
@@ -58,31 +56,6 @@
                         authentication-failure-url="/c/login?login_error=2"
                         login-processing-url="/c/perform-login"/>
 
-        <sec:openid-login user-service-ref="userDetailsService"
-                          authentication-failure-url="/c/login.jsp?login_error=true"
-                          login-processing-url="/c/j_spring_openid_security_check">
-
-            <sec:attribute-exchange identifier-match="https://www.google.com/.*">
-                <sec:openid-attribute name="email" type="http://axschema.org/contact/email" required="true" count="1"/>
-                <sec:openid-attribute name="firstname" type="http://axschema.org/namePerson/first" required="true"/>
-                <sec:openid-attribute name="lastname" type="http://axschema.org/namePerson/last" required="true"/>
-            </sec:attribute-exchange>
-
-            <sec:attribute-exchange identifier-match=".*yahoo.com.*">
-                <sec:openid-attribute name="email" type="http://axschema.org/contact/email" required="true"/>
-                <sec:openid-attribute name="fullname" type="http://axschema.org/namePerson" required="true"/>
-            </sec:attribute-exchange>
-
-            <sec:attribute-exchange identifier-match=".*yahoo.com.*">
-                <sec:openid-attribute name="email" type="http://axschema.org/contact/email" required="true"/>
-                <sec:openid-attribute name="fullname" type="http://axschema.org/namePerson" required="true"/>
-            </sec:attribute-exchange>
-
-            <sec:attribute-exchange identifier-match=".*myopenid.com.*">
-                <sec:openid-attribute name="email" type="http://schema.openid.net/contact/email" required="true"/>
-                <sec:openid-attribute name="fullname" type="http://schema.openid.net/namePerson" required="true"/>
-            </sec:attribute-exchange>
-        </sec:openid-login>
         <sec:remember-me key="wisemapping-hashed-key"/>
         <sec:logout logout-url="/c/logout" invalidate-session="true" logout-success-url="/c/login"/>
     </sec:http>
