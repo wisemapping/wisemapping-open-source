@@ -27,6 +27,10 @@ The full compilation of the project can be performed executing within <project-d
 
 Once this command is execute, the file <project-dir>/wise-webapp/target/wisemapping*.war will be generated.
 
+### Compiling and running with docker-compose
+
+Check out the [docker section](./docker/README.md)
+
 ### Testing
 The previously generated war can be deployed locally executing within the directory <project-dir>/wise-webapp the following command:
 
@@ -48,6 +52,22 @@ To test the javascript frontend you then do:
     ruby -rwebrick -e 'WEBrick::HTTPServer.new(:Port=>8000,:DocumentRoot=>".").start'
 
 Now open a browser using the URL http://localhost:8000/wise-editor/src/main/webapp/
+
+## Troubleshooting
+
+<details>
+    <summary>
+    <code>mvn package</code> fails with the error <code>java.lang.UnsatisfiedLinkError: Can't load library: /usr/lib/jvm/java-11-openjdk-amd64/lib/libawt_xawt.so</code> in Ubuntu
+    </summary>
+
+    Make sure you have the jdk installed: `sudo apt-get install openjdk-11-jdk`
+</details>
+
+<details>
+    <summary><code>mvn package</code> does not generate the wisemapping.war file </summary>
+
+    Run `mvn clean install -DskipTests`
+</details>
 
 ## Maintenance
 

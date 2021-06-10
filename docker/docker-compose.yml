@@ -1,0 +1,24 @@
+version: "3.3"
+services:
+  db:
+    image: mysql:5.5
+    volumes:
+      - /opt/wisemapping-db:/var/lib/mysql
+      - ./mysql-init/:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: wisemapping
+      MYSQL_USER: wisemapping
+      MYSQL_PASSWORD: password
+    ports:
+      - 3306:3306
+    restart: unless-stopped
+  web:
+    depends_on:
+      - db
+    image: tomcat:9
+    volumes:
+      - ../wise-webapp/target/wisemapping.war:/usr/local/tomcat/webapps/ROOT.war
+    ports:
+      - "8082:8080"
+    restart: unless-stopped
