@@ -19,29 +19,19 @@ package com.wisemapping.webmvc;
 
 
 import org.jetbrains.annotations.NotNull;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.core.env.PropertiesPropertySource;
-import org.springframework.core.env.PropertySourcesPropertyResolver;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.core.io.support.ResourcePropertySource;
 import org.springframework.web.context.ConfigurableWebApplicationContext;
 import org.springframework.web.context.support.ServletContextResource;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Properties;
+import java.util.Objects;
 
 public class ApplicationContextInitializer implements org.springframework.context.ApplicationContextInitializer<ConfigurableWebApplicationContext> {
 
     public void initialize(@NotNull ConfigurableWebApplicationContext ctx) {
         try {
-            final Resource resource = new ServletContextResource(ctx.getServletContext(), "/WEB-INF/app.properties");
+            final Resource resource = new ServletContextResource(Objects.requireNonNull(ctx.getServletContext()), "/WEB-INF/app.properties");
             final ResourcePropertySource resourcePropertySource = new ResourcePropertySource(resource);
             ctx.getEnvironment().getPropertySources().addFirst(resourcePropertySource);
         } catch (IOException e) {

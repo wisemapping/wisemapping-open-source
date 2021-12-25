@@ -123,7 +123,7 @@ public enum Manufacturer {
 	private final byte id;
 	private final String name;
 	
-	private Manufacturer(int id, String name) {
+	Manufacturer(int id, String name) {
 		this.id = (byte) id;
 		this.name = name;
 	}

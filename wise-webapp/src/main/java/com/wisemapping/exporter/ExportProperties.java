@@ -19,7 +19,7 @@
 package com.wisemapping.exporter;
 
 public class ExportProperties {
-    private ExportFormat format;
+    private final ExportFormat format;
     private String version;
 
     public ExportFormat getFormat() {
@@ -71,7 +71,7 @@ public class ExportProperties {
 
         public enum Size {
             SMALL(100), MEDIUM(800), XMEDIUM(1024), LARGE(2048);
-            private int width;
+            private final int width;
 
             Size(int width) {
                 this.width = width;

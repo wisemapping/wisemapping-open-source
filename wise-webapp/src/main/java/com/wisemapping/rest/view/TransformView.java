@@ -41,9 +41,9 @@ public class TransformView extends AbstractView {
 
     @NonNls
     private static final String DEFAULT_ENCODING = "UTF-8";
-    private String contentType;
-    private ExportFormat exportFormat;
-    private NotificationService notificationService;
+    private final String contentType;
+    private final ExportFormat exportFormat;
+    private final NotificationService notificationService;
 
     @Autowired
     private Jaxb2Marshaller jaxbMarshaller;

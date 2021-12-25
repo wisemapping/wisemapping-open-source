@@ -24,7 +24,10 @@ import com.wisemapping.exporter.ExportProperties;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -107,7 +110,7 @@ public class TransformerController extends BaseController {
 
         // Obtains transformation type based on the last part of the URL ...
         final String requestURI = request.getRequestURI();
-        final String format = requestURI.substring(requestURI.lastIndexOf(".") + 1, requestURI.length());
+        final String format = requestURI.substring(requestURI.lastIndexOf(".") + 1);
         final ExportFormat exportFormat = ExportFormat.valueOf(format.toUpperCase());
 
         ModelAndView result;
@@ -123,9 +126,6 @@ public class TransformerController extends BaseController {
                 break;
             case SVG:
                 result = this.transformSvg(svg);
-                break;
-            case FREEMIND:
-                result = this.transformFreemind(mapXml);
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported export format");

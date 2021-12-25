@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.validation.Errors;
 
 public class ValidationException extends WiseMappingException{
-    private Errors errors;
+    private final Errors errors;
 
     public ValidationException(@NotNull Errors errors) {
         super("Validation Exceptions:"+errors);

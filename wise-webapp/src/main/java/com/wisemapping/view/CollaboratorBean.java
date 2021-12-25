@@ -23,9 +23,9 @@ import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.User;
 
 public class CollaboratorBean {
-    private CollaborationRole collaborationRole;
-    private boolean isUser;
-    private Collaborator collaborator;
+    private final CollaborationRole collaborationRole;
+    private final boolean isUser;
+    private final Collaborator collaborator;
 
     public CollaboratorBean(Collaborator collaborator, CollaborationRole role) {
         this.collaborator = collaborator;

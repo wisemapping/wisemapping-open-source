@@ -18,13 +18,16 @@
 
 package com.wisemapping.importer.freemind;
 
+import com.wisemapping.model.IconFamily;
 import com.wisemapping.model.MindmapIcon;
 import com.wisemapping.model.MindmapIcons;
-import com.wisemapping.model.IconFamily;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 final public class FreemindIconConverter {
 

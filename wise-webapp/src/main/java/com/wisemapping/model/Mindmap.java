@@ -27,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -69,11 +70,7 @@ public class Mindmap {
     }
 
     public void setXmlStr(@NotNull String xml) {
-        try {
-            this.setUnzipXml(xml.getBytes(UTF_8));
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalStateException(e);
-        }
+        this.setUnzipXml(xml.getBytes(StandardCharsets.UTF_8));
     }
 
     @NotNull
@@ -92,7 +89,7 @@ public class Mindmap {
 
     @NotNull
     public String getXmlStr() throws UnsupportedEncodingException {
-        return new String(this.getUnzipXml(), UTF_8);
+        return new String(this.getUnzipXml(), StandardCharsets.UTF_8);
     }
 
     @NotNull
@@ -170,7 +167,6 @@ public class Mindmap {
         this.isPublic = isPublic;
     }
 
-    @NotNull
     public Calendar getLastModificationTime() {
         return lastModificationTime;
     }

@@ -8,15 +8,17 @@
           http://www.springframework.org/schema/security
           http://www.springframework.org/schema/security/spring-security.xsd">
 
+    <sec:http pattern="/static/webapp/**" security="none"/>
+    <sec:http pattern="/static/mindplot/**" security="none"/>
+    <sec:http pattern="/c/login" security="none"/>
+    <sec:http pattern="/c/registration" security="none"/>
+    <sec:http pattern="/c/forgot-password" security="none"/>
+
     <sec:http pattern="/css/**" security="none"/>
     <sec:http pattern="/js/**" security="none"/>
     <sec:http pattern="/images/**" security="none"/>
     <sec:http pattern="/icons/**" security="none"/>
-    <sec:http pattern="/favicon.ico" security="none"/>
 
-    <sec:http pattern="/c/login" security="none"/>
-    <sec:http pattern="/c/user/registration" security="none"/>
-    <sec:http pattern="/c/user/resetPassword" security="none"/>
     <sec:http pattern="/c/home" security="none"/>
 
     <sec:http pattern="/c/maps/*/embed" security="none"/>
@@ -32,13 +34,21 @@
     <sec:http pattern="/c/activation" security="none"/>
     <sec:http pattern="/c/try" security="none"/>
 
-
+    <!-- Admin related services that required admin role-->
     <sec:http use-expressions="true" create-session="stateless" pattern="/service/**">
         <sec:csrf disabled="true"/>
+
+        <!-- Enabled only for cors -->
+        <sec:intercept-url pattern="/service/users" method="OPTIONS" access="permitAll"/>
+        <sec:intercept-url pattern="/service/users/resetPassword" method="OPTIONS" access="permitAll"/>
+
+        <sec:intercept-url pattern="/service/users/" method="POST" access="permitAll"/>
+        <sec:intercept-url pattern="/service/users/resetPassword" method="PUT" access="permitAll"/>
 
         <sec:intercept-url pattern="/service/admin/users/**" access="isAuthenticated() and hasRole('ROLE_ADMIN')"/>
         <sec:intercept-url pattern="/service/admin/database/**" access="isAuthenticated() and hasRole('ROLE_ADMIN')"/>
         <sec:intercept-url pattern="/service/**" access="isAuthenticated() and hasRole('ROLE_USER')"/>
+
         <sec:http-basic/>
     </sec:http>
 
@@ -56,7 +66,8 @@
                         authentication-failure-url="/c/login?login_error=2"
                         login-processing-url="/c/perform-login"/>
 
-        <sec:remember-me key="wisemapping-hashed-key"/>
+        <!-- Expire in 28 days -->
+        <sec:remember-me  token-validity-seconds="2419200" remember-me-parameter="remember-me"/>
         <sec:logout logout-url="/c/logout" invalidate-session="true" logout-success-url="/c/login"/>
     </sec:http>
 

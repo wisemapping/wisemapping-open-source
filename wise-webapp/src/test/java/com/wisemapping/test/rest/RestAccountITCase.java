@@ -21,21 +21,13 @@ package com.wisemapping.test.rest;
 
 import com.wisemapping.rest.model.RestUser;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import org.testng.annotations.Test;
 
 import java.net.URI;
 
-import static com.wisemapping.test.rest.RestHelper.ADMIN_CREDENTIALS;
-import static com.wisemapping.test.rest.RestHelper.BASE_REST_URL;
-import static com.wisemapping.test.rest.RestHelper.HOST_PORT;
-import static com.wisemapping.test.rest.RestHelper.createHeaders;
-import static com.wisemapping.test.rest.RestHelper.createTemplate;
+import static com.wisemapping.test.rest.RestHelper.*;
 import static org.testng.Assert.assertEquals;
 
 

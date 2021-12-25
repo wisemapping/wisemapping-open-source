@@ -26,7 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class RestLabel {
 
     @JsonIgnore
-    private Label label;
+    private final Label label;
 
     public RestLabel() {
         this(new Label());

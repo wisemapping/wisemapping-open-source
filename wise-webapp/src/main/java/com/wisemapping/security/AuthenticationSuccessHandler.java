@@ -13,7 +13,7 @@ import java.io.IOException;
 
 
 public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
-    private RequestCache cache;
+    private final RequestCache cache;
 
     public AuthenticationSuccessHandler() {
         cache = new HttpSessionRequestCache();

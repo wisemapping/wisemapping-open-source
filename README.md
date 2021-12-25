@@ -8,50 +8,58 @@ The goal of this project is to provide a high quality product that can be deploy
 
 The following products must be installed:
 
-    * Java Development Kit 8 or higher ([http://www.oracle.com/technetwork/java/javase/downloads/index.html])
+    * Java 11 to 16 
     * Maven 3.x or higher ([http://maven.apache.org/])
 
 ### Compiling
 
 WiseMapping uses Maven as packaging and project management. It's composed of 5 maven sub-modules:
 
-    * core-js: Utilities JavaScript classes
-    * web2d: JavaScript 2D SVG abstraction library used by the mind map editor
-    * mindplot: JavaScript mindmap designer core
-    * wise-editor: Mindmap Editor standalone distribution
+    * wise-react: React font-end fetcher
     * wise-webapp: J2EE web application 
 
 The full compilation of the project can be performed executing within <project-dir>:
 
-`mvn package`
+`export MAVEN_OPTS="--illegal-access=permit"`
+`mvn clean install`
 
-Once this command is execute, the file <project-dir>/wise-webapp/target/wisemapping*.war will be generated.
+Once this command is executed, the file <project-dir>/wise-webapp/target/wisemapping*.war will be generated.
+
+### Local Development
+The previously generated war can be deployed locally executing within the directory <project-dir>/wise-webapp the following command:
+
+`cd wise-webapp;mvn jetty:run-war`
+
+This will start the application on the URL: [http://localhost:8080/] using file based database.
+
+User: test@wisemapping.org
+Password: test
+
+### Local Development - UI Integration
+
+In order to reduce the life-cycle to develop UI backend testing, you can do the following hack:
+
+* Clone [https://bitbucket.org/wisemapping/wisemapping-open-source/] and [https://bitbucket.org/wisemapping/wisemapping-frontend/] at the same top level directory
+* Compile `WiseMapping Frontend`
+* Compile `WiseMapping Open Source`
+* Follow the Local Testing steps.
 
 ### Compiling and running with docker-compose
 
 Check out the [docker section](./docker/README.md)
 
-### Testing
-The previously generated war can be deployed locally executing within the directory <project-dir>/wise-webapp the following command:
-
-`cd wise-webapp;mvn jetty:run-war`
-
-This will start the application on the URL: [http://localhost:8080/] using file based database..
-
-User: test@wisemapping.org
-Password: test
 
 ## Running the JS only version
 
-Start by creating the .zip file:
+Start by creating the .zip file.
 
 `mvn assembly:assembly -Dmaven.test.skip=true`
 
-To test the javascript frontend you then do:
+To test the javascript frontend, install a simple http-server.
 
-    ruby -rwebrick -e 'WEBrick::HTTPServer.new(:Port=>8000,:DocumentRoot=>".").start'
+`npm install -g http-server`
 
-Now open a browser using the URL http://localhost:8000/wise-editor/src/main/webapp/
+Now open a browser using the URL http://localhost:8080/wise-editor/src/main/webapp/
 
 ## Troubleshooting
 
@@ -77,18 +85,18 @@ Now open a browser using the URL http://localhost:8000/wise-editor/src/main/weba
 
 ### Founders
 
-   * Pablo Luna <pveiga@wisemapping.com>
    * Paulo Veiga <pablo@wisemapping.com>
+   * Pablo Luna <pveiga@wisemapping.com>
 
-### Individual Controbutors
+### Individual Contributors
 
    * Ezequiel Bergamaschi <ezequielbergamaschi@gmail.com>
-   * Claudio Barril <claudiobarril@gmail.com>
 
 ### Past Individual Contributors
 
    * Ignacio Manzano
    * Nicolas Damonte
+   * Claudio Barril <claudiobarril@gmail.com>
    
 ## License
 

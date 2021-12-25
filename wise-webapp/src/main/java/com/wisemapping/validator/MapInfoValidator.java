@@ -18,9 +18,9 @@
 
 package com.wisemapping.validator;
 
+import com.wisemapping.model.Constants;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
-import com.wisemapping.model.Constants;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.view.MindMapInfoBean;
 import org.jetbrains.annotations.NotNull;

@@ -21,11 +21,8 @@ package com.wisemapping.filter;
 import com.wisemapping.model.User;
 import com.wisemapping.security.Utils;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.propertyeditors.LocaleEditor;
-import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

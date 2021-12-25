@@ -6,7 +6,7 @@ import org.springframework.context.MessageSource;
 import java.util.Locale;
 
 abstract public class ClientException extends WiseMappingException {
-    private Severity severity;
+    private final Severity severity;
 
     public ClientException(@NotNull String message, @NotNull Severity severity) {
         super(message);

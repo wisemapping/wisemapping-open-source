@@ -32,12 +32,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 public class ImportTransformationView extends AbstractView {
 
-    private String contentType;
-    private Importer importer;
+    private final String contentType;
+    private final Importer importer;
 
     public ImportTransformationView(@NotNull final String contentType) throws ImporterException {
         ImporterFactory exporterFactory = ImporterFactory.getInstance();
@@ -51,7 +52,7 @@ public class ImportTransformationView extends AbstractView {
         final String filename = (String) viewMap.get("filename");
 
         // Convert to map ...
-        final InputStream is = new ByteArrayInputStream(content.getBytes("UTF-8"));
+        final InputStream is = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
         final Mindmap mindMap = importer.importMap("filename", "filename", is);
 
         // Set file name...:http://stackoverflow.com/questions/5325322/java-servlet-download-filename-special-characters/13359949#13359949

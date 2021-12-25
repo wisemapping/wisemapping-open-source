@@ -24,6 +24,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.OutputStream;
 
 public interface Exporter {
-    public void export(@NotNull byte[] xml, @NotNull OutputStream outputStream) throws ExportException;
-    public void export(Mindmap map, OutputStream outputStream) throws ExportException;
+    void export(@NotNull byte[] xml, @NotNull OutputStream outputStream) throws ExportException;
+    void export(Mindmap map, OutputStream outputStream) throws ExportException;
 }

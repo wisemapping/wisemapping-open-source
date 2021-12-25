@@ -39,7 +39,7 @@ import java.util.Calendar;
 public class RestCollaborator {
 
     @JsonIgnore
-    private Collaborator collaborator;
+    private final Collaborator collaborator;
 
     public RestCollaborator(@NotNull Collaborator collaborator) {
 

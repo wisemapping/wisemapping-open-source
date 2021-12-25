@@ -23,11 +23,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.model.CollaborationProperties;
-import com.wisemapping.model.CollaborationRole;
-import com.wisemapping.model.Collaborator;
-import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.User;
+import com.wisemapping.model.*;
 import com.wisemapping.util.TimeUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -49,9 +45,9 @@ import java.util.Calendar;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RestMindmap {
     @JsonIgnore
-    private Collaborator collaborator;
+    private final Collaborator collaborator;
     @JsonIgnore
-    private Mindmap mindmap;
+    private final Mindmap mindmap;
     @Nullable
     private String properties;
 

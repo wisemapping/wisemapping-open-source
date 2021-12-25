@@ -18,11 +18,11 @@
 
 package com.wisemapping.security.aop;
 
+import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.Mindmap;
+import com.wisemapping.model.User;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import com.wisemapping.model.CollaborationRole;
-import com.wisemapping.model.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

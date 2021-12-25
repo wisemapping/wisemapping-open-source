@@ -41,7 +41,7 @@ final public class NotificationService {
     @Autowired
     private Mailer mailer;
 
-    private NotifierFilter notificationFilter;
+    private final NotifierFilter notificationFilter;
 
     private String baseUrl;
 

@@ -29,7 +29,7 @@ public class IconsTest {
             final List<MindmapIcon> iconByFamily = MindmapIcons.getIconByFamily(family);
             for (MindmapIcon mindmapIcon : iconByFamily) {
                 final String pngName = mindmapIcon.getId() + ".png";
-                final File file = new File("../wise-editor/src/main/webapp/icons/", pngName);
+                final File file = new File("src/main/webapp/map-icons/icons", pngName);
                 Assert.assertTrue(file.exists(), "Could not be found:" + file.getAbsolutePath());
             }
 

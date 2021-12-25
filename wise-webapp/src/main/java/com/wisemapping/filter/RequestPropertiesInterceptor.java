@@ -33,6 +33,12 @@ public class RequestPropertiesInterceptor extends HandlerInterceptorAdapter {
     @Value("${google.analytics.account}")
     private String analyticsAccount;
 
+    @Value("${google.recaptcha2.enabled}")
+    private Boolean recaptcha2Enabled;
+
+    @Value("${google.recaptcha2.siteKey}")
+    private String recaptcha2SiteKey;
+
     @Value("${google.ads.enabled}")
     private Boolean adsEnabled;
 
@@ -50,9 +56,12 @@ public class RequestPropertiesInterceptor extends HandlerInterceptorAdapter {
         request.setAttribute("google.analytics.enabled", analyticsEnabled);
         request.setAttribute("google.analytics.account", analyticsAccount);
         request.setAttribute("google.ads.enabled", adsEnabled);
+
+        request.setAttribute("google.recaptcha2.enabled", recaptcha2Enabled);
+        request.setAttribute("google.recaptcha2.siteKey", recaptcha2SiteKey);
+
         request.setAttribute("site.homepage", siteHomepage);
         request.setAttribute("security.type", securityType);
-
 
         // If the property could not be resolved, try to infer one from the request...
         if ("${site.baseurl}".equals(siteUrl)) {

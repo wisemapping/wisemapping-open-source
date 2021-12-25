@@ -4,7 +4,6 @@ import com.wisemapping.exporter.ExportException;
 import com.wisemapping.exporter.ExportFormat;
 import com.wisemapping.exporter.Exporter;
 import com.wisemapping.exporter.XSLTExporter;
-import com.wisemapping.importer.ImporterException;
 import com.wisemapping.model.Mindmap;
 import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +34,7 @@ public class ExportXsltBasedTest {
             // Export mile content ...
             final ByteArrayOutputStream bos = new ByteArrayOutputStream();
             exporter.export(wiseMapContent, bos);
-            final String exportContent = new String(bos.toByteArray(), StandardCharsets.UTF_8)
+            final String exportContent = bos.toString(StandardCharsets.UTF_8)
                     .replaceAll("\n\\p{Blank}+", "\n")
                     .replaceAll("\n+", "\n");
             Assert.assertEquals(exportContent, recContent);

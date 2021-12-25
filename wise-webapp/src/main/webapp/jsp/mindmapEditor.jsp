@@ -3,86 +3,37 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <%@ include file="/jsp/init.jsp" %>
 
-<!DOCTYPE HTML>
-
 <%--@elvariable id="mindmap" type="com.wisemapping.model.Mindmap"--%>
 <%--@elvariable id="editorTryMode" type="java.lang.Boolean"--%>
 <%--@elvariable id="editorTryMode" type="java.lang.String"--%>
 <%--@elvariable id="lockInfo" type="com.wisemapping.service.LockInfo"--%>
+
+<!DOCTYPE HTML>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <base href="${requestScope['site.baseurl']}/">
+    <base href="${requestScope['site.baseurl']}/static/mindplot/">
     <title><spring:message code="SITE.TITLE"/> - <c:out value="${mindmap.title}"/></title>
-    <!--[if lt IE 9]>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <![endif]-->
-    <link rel="stylesheet/less" type="text/css" href="css/editor.less"/>
-    <script type='text/javascript' src='js/jquery.js'></script>
-    <script type='text/javascript' src='js/jquery-mousewheel.js'></script>
-    <script type='text/javascript' src='js/hotkeys.js'></script>
-    <script type='text/javascript' src='js/underscorejs.js'></script>
-    <script type='text/javascript' src='bootstrap/js/bootstrap.min.js'></script>
-    <script type='text/javascript' src='js/mootools-core.js'></script>
-    <script type='text/javascript' src='js/core.js'></script>
-    <script type='text/javascript' src='js/less.js'></script>
-
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet/less" type="text/css" href="../../css/editor.less"/>
+    <script type='text/javascript' src="../../js/less.js"/></script>
+    <link rel="icon" href="../../images/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="../../images/favicon.ico" type="image/x-icon"/>
 
     <script type="text/javascript">
-
-        $(document).on('loadcomplete', function (resource) {
-            try {
-                var mapId = '${mindmap.id}';
-                // Configure designer options ...
-                var options = loadDesignerOptions();
-
-            <c:if test="${!memoryPersistence && !readOnlyMode}">
-                options.persistenceManager = new mindplot.RESTPersistenceManager(
-                        {
-                            documentUrl:"c/restful/maps/{id}/document",
-                            revertUrl:"c/restful/maps/{id}/history/latest",
-                            lockUrl:"c/restful/maps/{id}/lock",
-                            timestamp: "${lockTimestamp}",
-                            session: "${lockSession}"
-                        }
-                );
-            </c:if>
-            <c:if test="${memoryPersistence || readOnlyMode}">
-                options.persistenceManager = new mindplot.LocalStorageManager("c/restful/maps/{id}${hid!=null?'/':''}${hid!=null?hid:''}/document/xml${principal!=null?'':'-pub'}",true);
-            </c:if>
-
-                var userOptions = ${mindmap.properties};
-                options.zoom = userOptions.zoom;
-                options.readOnly = ${!!readOnlyMode};
-                options.locale = '${locale}';
-
-                // Set map id ...
-                options.mapId = mapId;
-
-                // Build designer ...
-                var designer = buildDesigner(options);
-
-                // Load map from XML file persisted on disk...
-                var persistence = mindplot.PersistenceManager.getInstance();
-                var mindmap = mindmap = persistence.load(mapId);
-                designer.loadMap(mindmap);
-
-            } catch (e) {
-                logStackTrace(e);
-                throw e;
-            }
-
-            <c:if test="${mindmapLocked}">
-            $notify("<spring:message code="MINDMAP_LOCKED" arguments="${lockInfo.user.fullName},${lockInfo.user.email}"/>", false);
-            </c:if>
-        });
-
+        var mapId = '${mindmap.id}';
+        var memoryPersistence = ${memoryPersistence};
+        var readOnly = ${readOnlyMode};
+        var lockTimestamp = '${lockTimestamp}';
+        var lockSession = '${lockSession}';
+        var locale = '${locale}';
+        var mindmapLocked = ${mindmapLocked};
+        var mindmapLockedMsg = '<spring:message code="MINDMAP_LOCKED" arguments="${lockInfo.user.fullName},${lockInfo.user.email}"/>';
+        var userOptions = ${mindmap.properties};
 
     </script>
     <%@ include file="/jsp/googleAnalytics.jsf" %>
 </head>
+
 <body>
 
 <div id="actionsContainer"></div>
@@ -114,16 +65,14 @@
     </div>
     <%@ include file="/jsp/mindmapEditorToolbar.jsf" %>
 </div>
-
 <div id='load' class="modal fade">
     <div class="modal-dialog">
         <div style="height: 120px; text-align: center; border: 2px solid orange" class="modal-content">
-            <img style='margin-top:25px; text-align: center' src="images/ajax-loader.gif">
+            <img style='margin-top:25px; text-align: center' src="../../images/editor/ajax-loader.gif">
         </div>
     </div>
 </div>
-
 <div id="mindplot" onselectstart="return false;"></div>
-<script type="text/javascript" src="js/editor.js"></script>
+<script src="loader.js"></script>
 </body>
 </html>

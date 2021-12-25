@@ -40,8 +40,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.Locale;
 
 @Controller
@@ -52,19 +50,6 @@ public class MindmapController {
     @Autowired
     private MindmapService mindmapService;
 
-    @RequestMapping(value = "maps/import")
-    public String showImportPage() {
-        return "mindmapImport";
-    }
-
-    @RequestMapping(value = "maps/{id}/details")
-    public String showDetails(@PathVariable int id, @NotNull Model model, @NotNull HttpServletRequest request) throws MapCouldNotFoundException {
-        final MindMapBean mindmap = findMindmapBean(id);
-        model.addAttribute("mindmap", mindmap);
-        model.addAttribute("baseUrl", request.getAttribute("site.baseurl"));
-        return "mindmapDetail";
-    }
-
     @RequestMapping(value = "maps/{id}/print")
     public String showPrintPage(@PathVariable int id, @NotNull Model model) throws MapCouldNotFoundException {
         final MindMapBean mindmap = findMindmapBean(id);
@@ -73,19 +58,6 @@ public class MindmapController {
         final Locale locale = LocaleContextHolder.getLocale();
         model.addAttribute("locale", locale.toString().toLowerCase());
         return "mindmapPrint";
-    }
-
-    @RequestMapping(value = "maps/{id}/export")
-    public String showExportPage(@PathVariable int id, @NotNull Model model) throws IOException, MapCouldNotFoundException {
-        final Mindmap mindmap = findMindmap(id);
-        model.addAttribute("mindmap", mindmap);
-        return "mindmapExport";
-    }
-
-    @RequestMapping(value = "maps/{id}/exportf")
-    public String showExportPageFull(@PathVariable int id, @NotNull Model model) throws IOException, MapCouldNotFoundException {
-        showExportPage(id, model);
-        return "mindmapExportFull";
     }
 
     @RequestMapping(value = "maps/{id}/share")
@@ -101,41 +73,8 @@ public class MindmapController {
         return "mindmapShareFull";
     }
 
-    @RequestMapping(value = "maps/{id}/publish")
-    public String showPublishPage(@PathVariable int id, @NotNull Model model, @NotNull HttpServletRequest request) throws MapCouldNotFoundException {
-        final Mindmap mindmap = findMindmap(id);
-        model.addAttribute("mindmap", mindmap);
-        model.addAttribute("baseUrl", request.getAttribute("site.baseurl"));
-        return "mindmapPublish";
-    }
-
-    @RequestMapping(value = "maps/{id}/publishf")
-    public String showPublishPageFull(@PathVariable int id, @NotNull Model model, @NotNull HttpServletRequest request) throws MapCouldNotFoundException {
-        showPublishPage(id, model, request);
-        return "mindmapPublishFull";
-    }
-
-    @RequestMapping(value = "maps/{id}/history", method = RequestMethod.GET)
-    public String showHistoryPage(@PathVariable int id, @NotNull Model model) {
-        model.addAttribute("mindmapId", id);
-        return "mindmapHistory";
-    }
-
-    @RequestMapping(value = "maps/{id}/historyf", method = RequestMethod.GET)
-    public String showHistoryPageFull(@PathVariable int id, @NotNull Model model) {
-        showHistoryPage(id, model);
-        return "mindmapHistoryFull";
-    }
-
     @RequestMapping(value = "maps/")
     public String showListPage(@NotNull Model model) {
-        final Locale locale = LocaleContextHolder.getLocale();
-        // @Todo: This should be more flexible  ...
-        String localeStr = locale.toString().toLowerCase();
-        if ("es".equals(locale.getLanguage()) || "pt".equals(locale.getLanguage())) {
-            localeStr = locale.getLanguage();
-        }
-        model.addAttribute("locale", localeStr);
         return "mindmapList";
     }
 

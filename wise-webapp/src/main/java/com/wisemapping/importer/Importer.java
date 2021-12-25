@@ -24,5 +24,5 @@ import org.jetbrains.annotations.NotNull;
 import java.io.InputStream;
 
 public interface Importer {
-    public Mindmap importMap(@NotNull String mapName, @NotNull String description, @NotNull InputStream input) throws ImporterException;
+    Mindmap importMap(@NotNull String mapName, @NotNull String description, @NotNull InputStream input) throws ImporterException;
 }

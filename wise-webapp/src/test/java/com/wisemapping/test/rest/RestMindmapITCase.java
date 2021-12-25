@@ -15,6 +15,7 @@ import org.testng.annotations.Test;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import static com.wisemapping.test.rest.RestHelper.*;
 import static org.testng.Assert.*;
@@ -33,7 +34,7 @@ public class RestMindmapITCase {
         userEmail += ":" + "admin";
     }
 
-    @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
     public void listMaps(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate(userEmail);
@@ -66,7 +67,7 @@ public class RestMindmapITCase {
         assertTrue(found1 && found2, "Map could not be found");
     }
 
-    @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
     public void deleteMap(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate(userEmail);
@@ -86,7 +87,7 @@ public class RestMindmapITCase {
         }
     }
 
-    @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
     public void changeMapTitle(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate(userEmail);
@@ -105,7 +106,7 @@ public class RestMindmapITCase {
         assertEquals(newTitle, map.getTitle());
     }
 
-    @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
     public void validateMapsCreation(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate(userEmail);
@@ -132,7 +133,7 @@ public class RestMindmapITCase {
     }
 
 
-    @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
     public void changeMapDescription(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate(userEmail);
@@ -151,7 +152,7 @@ public class RestMindmapITCase {
         assertEquals(newDescription, map.getDescription());
     }
 
-    @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
     public void updateMapXml(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate(userEmail);
@@ -172,7 +173,7 @@ public class RestMindmapITCase {
         assertEquals(response.getXml(), newXmlContent);
     }
 
-    @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
     public void cloneMap(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate(userEmail);
@@ -197,10 +198,10 @@ public class RestMindmapITCase {
     }
 
 
-    @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
     public void updateMap(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         if(MediaType.APPLICATION_XML==mediaType){
-            throw new SkipException("Some research need to check why it;s falling.");
+            throw new SkipException("Some research need to check why it's falling.");
         }
 
         final HttpHeaders requestHeaders = createHeaders(mediaType);
@@ -228,7 +229,154 @@ public class RestMindmapITCase {
         assertEquals(response.getBody().getProperties(), mapToUpdate.getProperties());
     }
 
-    @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
+    public void addCollabs(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {
+        final HttpHeaders requestHeaders = createHeaders(mediaType);
+        final RestTemplate template = createTemplate(userEmail);
+
+        // Create a sample map ...
+        final URI resourceUri = addNewMap(requestHeaders, template, "Map for addCollabs  - " + mediaType.toString());
+
+        // Add a new collaboration ...
+        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+        final RestCollaborationList collabs = new RestCollaborationList();
+        collabs.setMessage("Adding new permission");
+
+        final String newCollab = "new-collab@example.com";
+        String role = "editor";
+
+        final RestCollaboration collab = new RestCollaboration();
+        collab.setEmail(newCollab);
+        collab.setRole(role);
+        collabs.addCollaboration(collab);
+
+        final HttpEntity<RestCollaborationList> updateEntity = new HttpEntity<>(collabs, requestHeaders);
+        template.put(HOST_PORT + resourceUri + "/collabs/", updateEntity);
+
+        // Has been added ?
+        final ResponseEntity<RestCollaborationList> response = fetchCollabs(requestHeaders, template, resourceUri);
+        RestCollaborationList responseCollbs = response.getBody();
+
+        // Has been added ?
+        assertEquals(responseCollbs.getCount(), 2);
+
+        final Optional<RestCollaboration> addedCollab = responseCollbs.getCollaborations().stream().filter(c -> c.getEmail().equals(newCollab)).findAny();
+        assertTrue(addedCollab.isPresent());
+        assertEquals(addedCollab.get().getRole(), "editor");
+    }
+
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
+    public void updateCollabType(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {
+        final HttpHeaders requestHeaders = createHeaders(mediaType);
+        final RestTemplate template = createTemplate(userEmail);
+
+        // Create a sample map ...
+        final URI resourceUri = addNewMap(requestHeaders, template, "Map for updateCollabType  - " + mediaType.toString());
+
+        // Add a new collaboration ...
+        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+        final RestCollaborationList collabs = new RestCollaborationList();
+        collabs.setMessage("Adding new permission");
+
+        final String newCollab = "new-collab@example.com";
+        String role = "editor";
+
+        final RestCollaboration collab = new RestCollaboration();
+        collab.setEmail(newCollab);
+        collab.setRole(role);
+        collabs.addCollaboration(collab);
+
+        final HttpEntity<RestCollaborationList> updateEntity = new HttpEntity<>(collabs, requestHeaders);
+        template.put(HOST_PORT + resourceUri + "/collabs/", updateEntity);
+
+        // Has been added ?
+        final ResponseEntity<RestCollaborationList> response = fetchCollabs(requestHeaders, template, resourceUri);
+        RestCollaborationList responseCollbs = response.getBody();
+        assertEquals(responseCollbs.getCount(), 2);
+
+       // Update the collaboration type ...
+        collab.setRole("viewer");
+        template.put(HOST_PORT + resourceUri + "/collabs/", updateEntity);
+
+        // Has been added ?
+        final ResponseEntity<RestCollaborationList> afterResponse = fetchCollabs(requestHeaders, template, resourceUri);
+        final Optional<RestCollaboration> updatedCollab = afterResponse.getBody().getCollaborations().stream().filter(c -> c.getEmail().equals(newCollab)).findAny();
+        assertTrue(updatedCollab.isPresent());
+        assertEquals(updatedCollab.get().getRole(), "viewer");
+    }
+
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
+    public void deleteCollabs(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {
+        final HttpHeaders requestHeaders = createHeaders(mediaType);
+        final RestTemplate template = createTemplate(userEmail);
+
+        // Create a sample map ...
+        final URI resourceUri = addNewMap(requestHeaders, template, "Map for deleteCollabs  - " + mediaType.toString());
+
+        // Add a new collaboration ...
+        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+        final RestCollaborationList collabs = new RestCollaborationList();
+        collabs.setMessage("Adding new permission");
+
+        final String newCollab = "new-collab@example.com";
+        String role = "editor";
+
+        final RestCollaboration collab = new RestCollaboration();
+        collab.setEmail(newCollab);
+        collab.setRole(role);
+        collabs.addCollaboration(collab);
+
+        final HttpEntity<RestCollaborationList> updateEntity = new HttpEntity<>(collabs, requestHeaders);
+        template.put(HOST_PORT + resourceUri + "/collabs/", updateEntity);
+
+        // Has been added ?
+        final ResponseEntity<RestCollaborationList> response = fetchCollabs(requestHeaders, template, resourceUri);
+        RestCollaborationList responseCollbs = response.getBody();
+
+        // Has been added ?
+        assertEquals(responseCollbs.getCount(), 2);
+
+        // Now, remove it ...
+        template.delete(HOST_PORT + resourceUri + "/collabs?email=" + newCollab);
+
+        // Check that it has been removed ...
+        final ResponseEntity<RestCollaborationList> afterDeleteResponse = fetchCollabs(requestHeaders, template, resourceUri);
+        assertEquals(afterDeleteResponse.getBody().getCollaborations().size(), 1);
+    }
+
+    @NotNull
+    private ResponseEntity<RestCollaborationList> fetchCollabs(HttpHeaders requestHeaders, RestTemplate template, URI resourceUri) {
+        final HttpEntity findCollabs = new HttpEntity(requestHeaders);
+        return template.exchange(HOST_PORT + resourceUri + "/collabs", HttpMethod.GET, findCollabs, RestCollaborationList.class);
+    }
+
+    @Test(dataProviderClass = RestHelper.class, expectedExceptions = {HttpClientErrorException.class}, dataProvider = "ContentType-Provider-Function")
+    public void addCollabsInvalidOwner(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {
+
+        final HttpHeaders requestHeaders = createHeaders(mediaType);
+        final RestTemplate template = createTemplate(userEmail);
+
+        // Create a sample map ...
+        final URI resourceUri = addNewMap(requestHeaders, template, "Map for Collaboration  - " + mediaType.toString());
+
+        // Add a new collaboration ...
+        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+        final RestCollaborationList collabs = new RestCollaborationList();
+        collabs.setMessage("Adding new permission");
+
+        // Validate that owner can not be added.
+        final RestCollaboration collab = new RestCollaboration();
+        final String newCollab = "new-collab@example.com";
+        collab.setEmail(newCollab);
+        collab.setRole("owner");
+        collabs.addCollaboration(collab);
+
+        final HttpEntity<RestCollaborationList> updateEntity = new HttpEntity<>(collabs, requestHeaders);
+        template.put(HOST_PORT + resourceUri + "/collabs/", updateEntity);
+    }
+
+
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
     public void addLabelToMindmap(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate(userEmail);
@@ -267,15 +415,15 @@ public class RestMindmapITCase {
         final RestMindmap restMindmap = new RestMindmap();
         restMindmap.setTitle(title);
         restMindmap.setDescription("My Map Desc");
+
         if (xml != null) {
             restMindmap.setXml(xml);
         }
 
         // Create a new map ...
-        HttpEntity<RestMindmap> createUserEntity = new HttpEntity<RestMindmap>(restMindmap, requestHeaders);
+        HttpEntity<RestMindmap> createUserEntity = new HttpEntity<>(restMindmap, requestHeaders);
         return template.postForLocation(BASE_REST_URL + "/maps", createUserEntity);
     }
-
 
     private URI addNewMap(@NotNull HttpHeaders requestHeaders, @NotNull RestTemplate template, @NotNull String title) throws IOException, WiseMappingException {
         return addNewMap(requestHeaders, template, title, null);

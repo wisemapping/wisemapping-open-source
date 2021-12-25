@@ -111,9 +111,7 @@ public class Collaboration {
         if (id != that.id) return false;
         if (collaborator != null ? !collaborator.equals(that.collaborator) : that.collaborator != null) return false;
         if (mindMap != null ? !mindMap.equals(that.mindMap) : that.mindMap != null) return false;
-        if (role != that.role) return false;
-
-        return true;
+        return role == that.role;
     }
 
     @Override

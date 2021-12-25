@@ -18,13 +18,12 @@
 
 package com.wisemapping.security.aop;
 
+import com.wisemapping.exceptions.AccessDeniedSecurityException;
 import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
-import com.wisemapping.exceptions.AccessDeniedSecurityException;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapService;
-import com.wisemapping.service.MindmapServiceImpl;
 import org.aopalliance.intercept.MethodInvocation;
 import org.jetbrains.annotations.Nullable;
 

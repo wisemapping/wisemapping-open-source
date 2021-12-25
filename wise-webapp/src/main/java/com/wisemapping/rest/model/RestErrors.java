@@ -80,13 +80,13 @@ public class RestErrors {
 
     public RestErrors(@NotNull String errorMsg, @NotNull Severity severity, @Nullable String debugInfo) {
         this._debugInfo = debugInfo;
-        this.gErrors = new ArrayList<String>();
+        this.gErrors = new ArrayList<>();
         this.gErrors.add(errorMsg);
         this.gSeverity = severity;
     }
 
     private List<String> processGlobalErrors(@NotNull Errors errors) {
-        final List<String> result = new ArrayList<String>();
+        final List<String> result = new ArrayList<>();
         final List<ObjectError> globalErrors = errors.getGlobalErrors();
         for (ObjectError globalError : globalErrors) {
             result.add(globalError.getObjectName());
@@ -100,7 +100,7 @@ public class RestErrors {
 
     public Map<String, String> getFieldErrors() {
         Locale locale = LocaleContextHolder.getLocale();
-        final Map<String, String> result = new HashMap<String, String>();
+        final Map<String, String> result = new HashMap<>();
         if (errors != null) {
             final List<FieldError> fieldErrors = errors.getFieldErrors();
             for (FieldError fieldError : fieldErrors) {

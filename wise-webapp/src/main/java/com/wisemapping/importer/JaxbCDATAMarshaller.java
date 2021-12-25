@@ -67,7 +67,7 @@ public class JaxbCDATAMarshaller {
         final Map<Integer, Integer> sortedToUnsorted = new HashMap<Integer, Integer>();
         final Map<Integer, Integer> unsortedToSorted = new HashMap<Integer, Integer>();
 
-        private Attributes delegated;
+        private final Attributes delegated;
 
         SortedAttributesDecorator(final Attributes delegated) {
             this.delegated = delegated;

@@ -26,7 +26,7 @@ public enum ShapeStyle
     ELLIPSE("elipse"),
     IMAGE("image");
 
-    private String style;
+    private final String style;
 
     ShapeStyle(String style)
     {

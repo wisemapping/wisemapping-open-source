@@ -20,7 +20,8 @@ package com.wisemapping.importer;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
 
 public class VersionNumber
         implements Comparable<VersionNumber> {

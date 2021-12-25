@@ -18,8 +18,8 @@
 
 package com.wisemapping.service;
 
-import com.wisemapping.model.*;
 import com.wisemapping.exceptions.WiseMappingException;
+import com.wisemapping.model.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,7 +28,7 @@ import java.util.List;
 
 public interface MindmapService {
 
-    static final String TAG_SEPARATOR = " ";
+    String TAG_SEPARATOR = " ";
 
     @Nullable
     Mindmap findMindmapById(int id);

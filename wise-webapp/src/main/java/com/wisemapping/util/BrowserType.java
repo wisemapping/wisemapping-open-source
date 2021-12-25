@@ -70,9 +70,9 @@ public enum BrowserType {
 	TOOL("Downloading tool"),
 	UNKNOWN("unknown");
 	
-	private String name;
+	private final String name;
 	
-	private BrowserType(String name) {
+	BrowserType(String name) {
 		this.name = name;
 	}
 

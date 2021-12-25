@@ -22,11 +22,7 @@ package com.wisemapping.rest.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.wisemapping.model.Collaboration;
-import com.wisemapping.model.Collaborator;
-import com.wisemapping.model.Label;
-import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.User;
+import com.wisemapping.model.*;
 import com.wisemapping.security.Utils;
 import com.wisemapping.util.TimeUtils;
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +35,7 @@ import java.util.Calendar;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-@XmlRootElement(name = "map")
+@XmlRootElement(name = "mapinfo")
 @XmlAccessorType(XmlAccessType.PROPERTY)
 @JsonAutoDetect(
         fieldVisibility = JsonAutoDetect.Visibility.NONE,
@@ -51,8 +47,8 @@ import java.util.Set;
 public class RestMindmapInfo {
 
     @JsonIgnore
-    private Mindmap mindmap;
-    private Collaborator collaborator;
+    private final Mindmap mindmap;
+    private final Collaborator collaborator;
 
     public RestMindmapInfo() {
         this(new Mindmap(), null);
@@ -152,7 +148,7 @@ public class RestMindmapInfo {
     public void setLastModificationTime(String value) {
     }
 
-    public boolean isPublic() {
+    public boolean getPublic() {
         return mindmap.isPublic();
     }
 

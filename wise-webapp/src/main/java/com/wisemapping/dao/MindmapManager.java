@@ -58,13 +58,13 @@ public interface MindmapManager {
 
     void removeCollaboration(Collaboration collaboration);
 
-    public List<Mindmap> search(MindMapCriteria criteria);
+    List<Mindmap> search(MindMapCriteria criteria);
 
-    public List<Mindmap> search(MindMapCriteria criteria, int maxResult);
+    List<Mindmap> search(MindMapCriteria criteria, int maxResult);
 
-    public List<MindMapHistory> getHistoryFrom(int mindmapId);
+    List<MindMapHistory> getHistoryFrom(int mindmapId);
 
-    public MindMapHistory getHistory(int historyId);
+    MindMapHistory getHistory(int historyId);
 
     void updateCollaboration(@NotNull Collaboration collaboration);
 

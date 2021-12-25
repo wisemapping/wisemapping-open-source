@@ -21,15 +21,14 @@ package com.wisemapping.importer.freemind;
 import com.wisemapping.importer.Importer;
 import com.wisemapping.importer.ImporterException;
 import com.wisemapping.importer.VersionNumber;
+import com.wisemapping.jaxb.freemind.*;
+import com.wisemapping.jaxb.wisemap.Link;
+import com.wisemapping.jaxb.wisemap.RelationshipType;
+import com.wisemapping.jaxb.wisemap.TopicType;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.ShapeStyle;
 import com.wisemapping.util.JAXBUtils;
-import com.wisemapping.jaxb.freemind.*;
-import com.wisemapping.jaxb.freemind.Map;
-import com.wisemapping.jaxb.freemind.Node;
-import com.wisemapping.jaxb.wisemap.RelationshipType;
-import com.wisemapping.jaxb.wisemap.TopicType;
-import com.wisemapping.jaxb.wisemap.Link;
+import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jsoup.Jsoup;
@@ -37,18 +36,23 @@ import org.jsoup.nodes.Document;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.JAXBException;
-import javax.xml.transform.*;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.InputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
-import java.util.*;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class FreemindImporter
         implements Importer {
+    final private Logger logger = Logger.getLogger(FreemindImporter.class);
 
     private com.wisemapping.jaxb.wisemap.ObjectFactory mindmapObjectFactory;
     private java.util.Map<String, TopicType> nodesMap = null;
@@ -56,7 +60,7 @@ public class FreemindImporter
 
     private int currentId;
 
-    public static void main(String argv[]) {
+    public static void main(String[] argv) {
 
 
         // Now, calculate the order it belongs to ...
@@ -130,12 +134,13 @@ public class FreemindImporter
             addRelationships(mindmapMap);
 
             JAXBUtils.saveMap(mindmapMap, baos);
-            wiseXml = new String(baos.toByteArray(), FreemindConstant.UTF_8_CHARSET);
+            wiseXml = baos.toString(FreemindConstant.UTF_8_CHARSET);
             result.setXmlStr(wiseXml);
             result.setTitle(mapName);
             result.setDescription(description);
 
         } catch (JAXBException |  TransformerException e) {
+            logger.debug(e);
             throw new ImporterException(e);
         }
         return result;
@@ -314,12 +319,12 @@ public class FreemindImporter
 
                 final String endarrow = arrow.getENDARROW();
                 if (endarrow != null) {
-                    relt.setEndArrow(!endarrow.toLowerCase().equals("none"));
+                    relt.setEndArrow(!endarrow.equalsIgnoreCase("none"));
                 }
 
                 final String startarrow = arrow.getSTARTARROW();
                 if (startarrow != null) {
-                    relt.setStartArrow(!startarrow.toLowerCase().equals("none"));
+                    relt.setStartArrow(!startarrow.equalsIgnoreCase("none"));
                 }
                 relt.setLineType("3");
                 relationships.add(relt);
@@ -591,8 +596,8 @@ public class FreemindImporter
     }
 
     static private class Coord {
-        private int y;
-        private int x;
+        private final int y;
+        private final int x;
 
         private Coord(@NotNull String pos) {
             final String[] split = pos.split(",");

@@ -18,10 +18,10 @@
 
 package com.wisemapping.validator;
 
-import com.wisemapping.service.RecaptchaService;
+import com.wisemapping.model.Constants;
+import com.wisemapping.rest.model.RestUserRegistration;
 import com.wisemapping.service.UserService;
 import com.wisemapping.view.UserBean;
-import com.wisemapping.model.Constants;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.validation.Errors;
@@ -32,15 +32,12 @@ public class UserValidator
         implements Validator {
 
     private UserService userService;
-    private RecaptchaService captchaService;
-
-
     public boolean supports(final Class clazz) {
         return clazz.equals(UserBean.class);
     }
 
     public void validate(@Nullable Object obj, @NotNull Errors errors) {
-        UserBean user = (UserBean) obj;
+        RestUserRegistration user = (RestUserRegistration) obj;
         if (user == null) {
             errors.rejectValue("user", "error.not-specified");
         } else {
@@ -59,7 +56,6 @@ public class UserValidator
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstname", Messages.FIELD_REQUIRED);
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastname", Messages.FIELD_REQUIRED);
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", Messages.FIELD_REQUIRED);
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "retypePassword", Messages.FIELD_REQUIRED);
             ValidatorUtils.rejectIfExceeded(errors,
                     "firstname",
                     "The firstname must have less than " + Constants.MAX_USER_FIRSTNAME_LENGTH + " characters.",
@@ -75,28 +71,10 @@ public class UserValidator
                     "The password must have less than " + Constants.MAX_USER_PASSWORD_LENGTH + " characters.",
                     user.getPassword(),
                     Constants.MAX_USER_PASSWORD_LENGTH);
-            ValidatorUtils.rejectIfExceeded(errors,
-                    "retypePassword",
-                    "The retypePassword must have less than " + Constants.MAX_USER_PASSWORD_LENGTH + " characters.",
-                    user.getRetypePassword(),
-                    Constants.MAX_USER_PASSWORD_LENGTH);
-
-            final String password = user.getPassword();
-            if (password != null && !password.equals(user.getRetypePassword())) {
-                errors.rejectValue("password", Messages.PASSWORD_MISSMATCH);
-            }
         }
     }
 
     public void setUserService(UserService userService) {
         this.userService = userService;
-    }
-
-    public void setCaptchaService(@NotNull final RecaptchaService captchaService) {
-        this.captchaService = captchaService;
-    }
-
-    public RecaptchaService getCaptchaService() {
-        return captchaService;
     }
 }

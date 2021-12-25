@@ -64,7 +64,7 @@ public class ExporterFactory {
     private static final String IMAGE_NODE_NAME = "image";
     private static final int MANGING = 50;
     private static final String UTF_8_CHARSET_NAME = "UTF-8";
-    private File baseImgDir;
+    private final File baseImgDir;
 
     public ExporterFactory(@NotNull final ServletContext servletContext) {
         this.baseImgDir = new File(servletContext.getRealPath("/"));
@@ -157,12 +157,12 @@ public class ExporterFactory {
             case FREEMIND: {
                 final FreemindExporter exporter = new FreemindExporter();
                 exporter.setVersion(new VersionNumber(properties.getVersion()));
-                exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
+                exporter.export(xml.getBytes(StandardCharsets.UTF_8), output);
                 break;
             }
             case MINDJET: {
                 final Exporter exporter = XSLTExporter.create(XSLTExporter.Type.MINDJET);
-                exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
+                exporter.export(xml.getBytes(StandardCharsets.UTF_8), output);
                 break;
             }
             default:

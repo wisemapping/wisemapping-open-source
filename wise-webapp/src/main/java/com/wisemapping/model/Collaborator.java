@@ -84,9 +84,7 @@ public class Collaborator implements Serializable {
         Collaborator that = (Collaborator) o;
 
         if (id != that.getId()) return false;
-        if (email != null ? !email.equals(that.getEmail()) : that.getEmail() != null) return false;
-
-        return true;
+        return email != null ? email.equals(that.getEmail()) : that.getEmail() == null;
     }
 
     @Override
@@ -105,9 +103,7 @@ public class Collaborator implements Serializable {
         if (that == null) return false;
 
         if (id != that.getId()) return false;
-        if (email != null ? !email.equals(that.getEmail()) : that.getEmail() != null) return false;
-
-        return true;
+        return email != null ? email.equals(that.getEmail()) : that.getEmail() == null;
 
     }
 

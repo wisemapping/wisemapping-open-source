@@ -27,7 +27,7 @@ public enum Font {
     TAHOMA("Tahoma"),
     ARIAL("Arial");
 
-    private String fontName;
+    private final String fontName;
 
     Font (String name)
     {

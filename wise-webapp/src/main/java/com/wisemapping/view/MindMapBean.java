@@ -31,10 +31,10 @@ import java.util.List;
 import java.util.Set;
 
 public class MindMapBean {
-    private Mindmap mindmap;
-    private List<CollaboratorBean> viewers;
-    private List<CollaboratorBean> collaborators;
-    private Collaborator collaborator;
+    private final Mindmap mindmap;
+    private final List<CollaboratorBean> viewers;
+    private final List<CollaboratorBean> collaborators;
+    private final Collaborator collaborator;
 
     public MindMapBean(@NotNull final Mindmap mindmap, @Nullable final Collaborator collaborator) {
         this.mindmap = mindmap;

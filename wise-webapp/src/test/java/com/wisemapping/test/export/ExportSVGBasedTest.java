@@ -10,15 +10,15 @@ import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 
 @Test
 public class ExportSVGBasedTest {
     private static final String DATA_DIR_PATH = "src/test/resources/data/svg/";
+    public static final String ICONS_BASED_PATH = "/../../../../../src/main/webapp/map-icons";
 
     @Test(dataProvider = "Data-Provider-Function")
-    public void exportSvgTest(@NotNull final File svgFile, @NotNull final File pngFile, @NotNull final File pdfFile, @NotNull final File svgExpFile) throws IOException, ExportException, TranscoderException, ParserConfigurationException {
+    public void exportSvgTest(@NotNull final File svgFile, @NotNull final File pngFile, @NotNull final File pdfFile, @NotNull final File svgExpFile) throws IOException, ExportException, TranscoderException {
 
         final String svgXml = FileUtils.readFileToString(svgFile, "UTF-8");
 
@@ -28,11 +28,11 @@ public class ExportSVGBasedTest {
 
     }
 
-    private void exportSvg(File svgFile, File pdfFile, String svgXml) throws IOException, ExportException, TranscoderException, ParserConfigurationException {
+    private void exportSvg(File svgFile, File pdfFile, String svgXml) throws IOException, ExportException, TranscoderException {
         final ExportFormat format = ExportFormat.SVG;
         final ExportProperties properties = ExportProperties.create(format);
 
-        String baseUrl = svgFile.getParentFile().getAbsolutePath() + "/../../../../../../wise-editor/src/main/webapp";
+        String baseUrl = svgFile.getParentFile().getAbsolutePath() + ICONS_BASED_PATH;
         ExporterFactory factory = new ExporterFactory(new File(baseUrl));
         // Write content ...
         if (pdfFile.exists()) {
@@ -46,13 +46,13 @@ public class ExportSVGBasedTest {
         }
     }
 
-    private void exportPng(File svgFile, File pngFile, String svgXml) throws ParserConfigurationException, ExportException, IOException, TranscoderException {
+    private void exportPng(File svgFile, File pngFile, String svgXml) throws ExportException, IOException, TranscoderException {
         final ExportFormat format = ExportFormat.PNG;
         final ExportProperties properties = ExportProperties.create(format);
         final ExportProperties.ImageProperties imageProperties = (ExportProperties.ImageProperties) properties;
         imageProperties.setSize(ExportProperties.ImageProperties.Size.LARGE);
 
-        String baseUrl = svgFile.getParentFile().getAbsolutePath() + "/../../../../../../wise-editor/src/main/webapp";
+        String baseUrl = svgFile.getParentFile().getAbsolutePath() + ICONS_BASED_PATH;
         ExporterFactory factory = new ExporterFactory(new File(baseUrl));
         // Write content ...
         if (pngFile.exists()) {
@@ -66,11 +66,11 @@ public class ExportSVGBasedTest {
         }
     }
 
-    private void exportPdf(File svgFile, File pdfFile, String svgXml) throws ParserConfigurationException, ExportException, IOException, TranscoderException {
+    private void exportPdf(File svgFile, File pdfFile, String svgXml) throws ExportException, IOException, TranscoderException {
         final ExportFormat format = ExportFormat.PDF;
         final ExportProperties properties = ExportProperties.create(format);
 
-        String baseUrl = svgFile.getParentFile().getAbsolutePath() + "/../../../../../../wise-editor/src/main/webapp";
+        String baseUrl = svgFile.getParentFile().getAbsolutePath() + ICONS_BASED_PATH;
         ExporterFactory factory = new ExporterFactory(new File(baseUrl));
         // Write content ...
         if (pdfFile.exists()) {
@@ -89,12 +89,7 @@ public class ExportSVGBasedTest {
     public Object[][] parameterIntTestProvider() {
 
         final File dataDir = new File(DATA_DIR_PATH);
-        final File[] svgFile = dataDir.listFiles(new FilenameFilter() {
-
-            public boolean accept(File dir, String name) {
-                return name.endsWith(".svg") && !name.contains("-exp.svg");
-            }
-        });
+        final File[] svgFile = dataDir.listFiles((dir, name) -> name.endsWith(".svg") && !name.contains("-exp.svg"));
 
         if (svgFile == null) {
             throw new IllegalArgumentException("Wrong based path specified. Change based path...");

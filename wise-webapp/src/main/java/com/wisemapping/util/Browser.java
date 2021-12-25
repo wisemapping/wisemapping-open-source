@@ -168,10 +168,10 @@ public enum Browser {
     private final Manufacturer manufacturer;
     private final RenderingEngine renderingEngine;
     private final Browser parent;
-    private List<Browser> children;
+    private final List<Browser> children;
     private Pattern versionRegEx;
 
-    private Browser(Manufacturer manufacturer, Browser parent, int versionId, String name, String[] aliases, String[] exclude, BrowserType browserType, RenderingEngine renderingEngine, String versionRegexString) {
+    Browser(Manufacturer manufacturer, Browser parent, int versionId, String name, String[] aliases, String[] exclude, BrowserType browserType, RenderingEngine renderingEngine, String versionRegexString) {
         this.id = (short) ((manufacturer.getId() << 8) + (byte) versionId);
         this.name = name;
         this.parent = parent;

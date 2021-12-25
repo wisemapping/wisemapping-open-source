@@ -19,8 +19,8 @@
 package com.wisemapping.model;
 
 public class MindmapIcon implements Comparable{
-    private String name;
-    private IconFamily family;
+    private final String name;
+    private final IconFamily family;
 
     MindmapIcon(IconFamily family, String name) {
         this.name = name;

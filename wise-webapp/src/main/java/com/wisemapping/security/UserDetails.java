@@ -27,8 +27,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
-	private com.wisemapping.model.User user;
-    private boolean isAdmin;
+	private final com.wisemapping.model.User user;
+    private final boolean isAdmin;
 
     public  UserDetails(@NotNull final com.wisemapping.model.User user, boolean isAdmin) {
         this.user = user;

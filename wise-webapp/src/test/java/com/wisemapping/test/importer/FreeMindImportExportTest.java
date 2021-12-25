@@ -14,6 +14,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 @Test
 public class FreeMindImportExportTest {
@@ -47,7 +48,7 @@ public class FreeMindImportExportTest {
 
         } else {
             final FileOutputStream fos = new FileOutputStream(wiseFile);
-            fos.write(mindMap.getXmlStr().getBytes(UTF_8));
+            fos.write(mindMap.getXmlStr().getBytes(StandardCharsets.UTF_8));
             fos.close();
         }
 
@@ -61,7 +62,7 @@ public class FreeMindImportExportTest {
             final ByteArrayOutputStream bos = new ByteArrayOutputStream();
             exporter.export(mindMap, bos);
 
-            Assert.assertEquals(new String(bos.toByteArray(), UTF_8), recContent);
+            Assert.assertEquals(bos.toString(StandardCharsets.UTF_8), recContent);
 
         } else {
             final FileOutputStream fos = new FileOutputStream(freeRecFile);

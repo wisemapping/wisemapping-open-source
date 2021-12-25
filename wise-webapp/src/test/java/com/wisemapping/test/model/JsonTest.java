@@ -2,7 +2,10 @@ package com.wisemapping.test.model;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wisemapping.rest.model.*;
+import com.wisemapping.rest.model.RestCollaboration;
+import com.wisemapping.rest.model.RestCollaborationList;
+import com.wisemapping.rest.model.RestMindmap;
+import com.wisemapping.rest.model.RestUser;
 import org.testng.annotations.Test;
 
 import java.io.IOException;

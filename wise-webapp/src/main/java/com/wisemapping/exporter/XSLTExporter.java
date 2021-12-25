@@ -9,11 +9,15 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.CharArrayReader;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 public class XSLTExporter implements Exporter {
 
-    private Type type;
+    private final Type type;
 
     public XSLTExporter(@NotNull Type type) {
         this.type = type;
@@ -38,10 +42,10 @@ public class XSLTExporter implements Exporter {
             final Source xslt = new StreamSource(xsltis);
             Transformer transformer = factory.newTransformer(xslt);
 
-            final CharArrayReader reader = new CharArrayReader(mmos.toString("iso-8859-1").toCharArray());
+            final CharArrayReader reader = new CharArrayReader(mmos.toString(StandardCharsets.ISO_8859_1).toCharArray());
             final Source mmSource = new StreamSource(reader);
             transformer.transform(mmSource, new StreamResult(outputStream));
-        } catch (TransformerException | UnsupportedEncodingException e) {
+        } catch (TransformerException e) {
             throw new ExportException(e);
         }
 
@@ -57,7 +61,7 @@ public class XSLTExporter implements Exporter {
         return new XSLTExporter(type);
     }
 
-    public static enum Type {
+    public enum Type {
         TEXT("mm2text.xsl"),
         WORD("mm2wordml_utf8.xsl"),
         CSV("mm2csv.xsl"),
@@ -70,7 +74,7 @@ public class XSLTExporter implements Exporter {
             return xsltName;
         }
 
-        private String xsltName;
+        private final String xsltName;
 
         Type(@NotNull String xstFile) {
             this.xsltName = xstFile;

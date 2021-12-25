@@ -1,1 +1,0 @@
-../../../../../wise-editor/src/main/webapp/bootstrap/js/bootstrap.js

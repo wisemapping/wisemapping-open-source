@@ -34,8 +34,8 @@ public enum ExportFormat {
     WISEMAPPING("application/wisemapping+xml", "wxml");
 
 
-    private String contentType;
-    private String fileExtension;
+    private final String contentType;
+    private final String fileExtension;
 
     ExportFormat(String contentType, String fileExtension) {
         this.contentType = contentType;

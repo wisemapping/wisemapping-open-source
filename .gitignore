@@ -11,3 +11,4 @@ wisemapping.log*
 .DS_Store
 target
 .idea
+wise-webapp/src/main/webapp/react/*

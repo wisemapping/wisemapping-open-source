@@ -46,6 +46,7 @@
                 <value>com.wisemapping.rest.model.RestLockInfo</value>
                 <value>com.wisemapping.rest.model.RestLabel</value>
                 <value>com.wisemapping.rest.model.RestLabelList</value>
+                <value>com.wisemapping.rest.model.RestUserRegistration</value>
             </list>
         </property>
     </bean>
@@ -152,10 +153,6 @@
             </list>
         </property>
     </bean>
-
     <!-- Configuration Bean -->
     <context:property-placeholder location="/WEB-INF/app.properties" ignore-unresolvable="true"/>
-    <bean id="documentationConfig" class="com.mangofactory.swagger.configuration.DocumentationConfig"/>
-    <!-- Custom extensibility module (bean) Has override methods to customize the document generation-->
-    <!--<bean id="extensibilityModule" class="com.mangofactory.swagger.springmvc.example.config.ExampleExtensibilityModule" />-->
 </beans>

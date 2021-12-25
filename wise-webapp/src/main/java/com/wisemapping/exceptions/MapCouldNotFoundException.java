@@ -18,7 +18,8 @@
 
 package com.wisemapping.exceptions;
 
-import org.jetbrains.annotations.NotNull;
+
+import javax.validation.constraints.NotNull;
 
 public class MapCouldNotFoundException
     extends ClientException

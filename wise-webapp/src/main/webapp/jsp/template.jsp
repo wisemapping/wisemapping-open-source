@@ -46,17 +46,10 @@
     <script type="text/javascript" language="javascript" src="bootstrap/js/bootstrap.min.js"></script>
     <script src="js/less.js" type="text/javascript"></script>
     <script src='https://www.google.com/recaptcha/api.js'></script>
-    <c:if test="${requestScope['google.ads.enabled']}">
-          <script data-ad-client="ca-pub-4996113942657337" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    </c:if>
 </head>
 <body>
 
 <div id="pageContainer">
-    <jsp:include page="header.jsp">
-        <jsp:param name="removeSignin" value="${requestScope.removeSignin}"/>
-    </jsp:include>
-
     <div class="container">
         <div class="row">
             <div class="col-md-offset-1 col-md-10">
@@ -92,9 +85,7 @@
            </div>
         </c:if>
     </div>
-
-        <jsp:include page="footer.jsp"/>
-    </div>
+</div>
 </body>
 </html>
 

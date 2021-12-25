@@ -18,7 +18,9 @@
 
 package com.wisemapping.filter;
 
-import com.wisemapping.util.*;
+import com.wisemapping.util.Browser;
+import com.wisemapping.util.UserAgent;
+import com.wisemapping.util.Version;
 import org.jetbrains.annotations.NotNull;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +29,7 @@ import java.io.Serializable;
 public class SupportedUserAgent implements Serializable {
     public static final String USER_AGENT_HEADER = "User-Agent";
     transient private UserAgent userAgent;
-    private String header;
+    private final String header;
 
     private SupportedUserAgent(@NotNull final String header) {
         this.header = header;

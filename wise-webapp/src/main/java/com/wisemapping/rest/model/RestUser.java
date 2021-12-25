@@ -22,6 +22,7 @@ package com.wisemapping.rest.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.wisemapping.model.User;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,7 +30,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Calendar;
-import java.util.Set;
 
 
 @XmlRootElement(name = "user")
@@ -39,9 +39,10 @@ import java.util.Set;
         getterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY,
         isGetterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RestUser {
 
-    private User user;
+    private final User user;
     private String password;
 
     public RestUser() {
@@ -50,20 +51,14 @@ public class RestUser {
 
     public RestUser(@NotNull User user) {
         this.user = user;
-        this.password = user.getPassword();
     }
 
-    @JsonIgnore
     public Calendar getCreationDate() {
         return user.getCreationDate();
     }
 
-    public void setTags(Set<String> tags) {
-        user.setTags(tags);
-    }
-
-    public Set<String> getTags() {
-        return user.getTags();
+    public String getLocale() {
+        return user.getLocale();
     }
 
     public String getFirstname() {
@@ -104,7 +99,7 @@ public class RestUser {
     }
 
     public String getPassword() {
-        return this.password;
+        return password;
     }
 
     @JsonIgnore

@@ -3,7 +3,6 @@ package com.wisemapping.test.export;
 import com.wisemapping.exporter.ExportException;
 import com.wisemapping.exporter.FreemindExporter;
 import com.wisemapping.importer.ImporterException;
-
 import com.wisemapping.model.Mindmap;
 import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
@@ -33,7 +32,7 @@ public class ExportFreemindTest {
             // Export mile content ...
             final ByteArrayOutputStream bos = new ByteArrayOutputStream();
             freemindExporter.export(mindmap, bos);
-            final String exportContent = new String(bos.toByteArray(), ENC_LATIN1);
+            final String exportContent = bos.toString(ENC_LATIN1);
 
             Assert.assertEquals(exportContent, recContent);
 
