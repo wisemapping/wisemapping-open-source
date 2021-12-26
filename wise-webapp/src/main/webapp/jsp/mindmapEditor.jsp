@@ -16,8 +16,7 @@
     <title><spring:message code="SITE.TITLE"/> - <c:out value="${mindmap.title}"/></title>
     <link rel="stylesheet/less" type="text/css" href="../../css/editor.less"/>
     <script type='text/javascript' src="../../js/less.js"/></script>
-    <link rel="icon" href="../../images/favicon.ico" type="image/x-icon"/>
-    <link rel="shortcut icon" href="../../images/favicon.ico" type="image/x-icon"/>
+    <%@ include file="/jsp/commonPageHeader.jsf" %>
 
     <script type="text/javascript">
         var mapId = '${mindmap.id}';

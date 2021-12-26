@@ -3,8 +3,4 @@
 <c:if test="${requestScope['google.analytics.enabled']}">
 
 
-      ga('create', '${requestScope['google.analytics.account']}', 'wisemapping.com');
-      ga('send', 'pageview');
-
-    </script>
 </c:if>

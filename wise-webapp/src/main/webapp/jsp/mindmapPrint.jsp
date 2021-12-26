@@ -7,14 +7,13 @@
 
 <html>
 <head>
-    <base href="${requestScope['site.baseurl']}/static/mindplot/">
-    <title><spring:message code="SITE.TITLE"/> - ${mindmap.title} </title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title><spring:message code="SITE.TITLE"/> - <c:out value="${mindmap.title}"/></title>
-    <link rel="stylesheet/less" type="text/css" href="../../css/embedded.less"/>
+    <base href="${requestScope['site.baseurl']}/static/mindplot/">
+    <title><spring:message code="SITE.TITLE"/> | ${mindmap.title} </title>
+    <link rel="stylesheet/less" type="text/css" href="../../css/viewonly.less"/>
     <script type='text/javascript' src="../../js/less.js"/></script>
-    <link rel="icon" href="../../images/favicon.ico" type="image/x-icon"/>
-    <link rel="shortcut icon" href="../../images/favicon.ico" type="image/x-icon"/>
+
+    <%@ include file="/jsp/commonPageHeader.jsf" %>
 
    <script type="text/javascript">
           var mapId = '${mindmap.id}';

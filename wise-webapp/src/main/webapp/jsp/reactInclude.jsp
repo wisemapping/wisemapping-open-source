@@ -6,15 +6,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta charset="utf-8" />
     <base href="${requestScope['site.baseurl']}/static/webapp/">
-    <link rel="icon" href="favicon.ico" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;600&display=swap" rel="stylesheet" />
 
-    <meta name="viewport" content="width=device-width" />
-    <meta name="theme-color" content="#000000" />
-    <meta name="description" content="WiseMapping" />
-    <link rel="apple-touch-icon" href="favicon.png" />
-    <link rel="manifest" href="manifest.json" />
+    <%@ include file="/jsp/commonPageHeader.jsf" %>
+
     <title>Loading | WiseMapping</title>
 
     <script>
