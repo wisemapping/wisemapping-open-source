@@ -2,8 +2,6 @@
 <%@include file="/jsp/init.jsp" %>
 
 <%--@elvariable id="mindmap" type="com.wisemapping.model.Mindmap"--%>
-<%--@elvariable id="editorTryMode" type="java.lang.Boolean"--%>
-<%--@elvariable id="editorTryMode" type="java.lang.String"--%>
 
 <!DOCTYPE HTML>
 
