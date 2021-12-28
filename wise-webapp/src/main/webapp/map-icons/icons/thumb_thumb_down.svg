@@ -1,0 +1,12 @@
+<svg width="48" height="48" xmlns="http://www.w3.org/2000/svg">
+ <title>70 Basic icons by Xicons.co</title>
+
+ <g>
+  <title>Layer 1</title>
+  <g transform="rotate(180 24.8913 22.9976)" id="svg_4">
+   <rect id="svg_1" fill="#38b1e7" ry="2" rx="2" height="26" width="16" y="16" x="1.78"/>
+   <path id="svg_2" fill="#fac591" d="m32.44,16.17l11.56,0a4,4 0 0 1 3.9,4.9l-3.66,15.83a4,4 0 0 1 -3.9,3.1l-15.34,0a3,3 0 0 1 -0.9,-0.14l-6.36,-2l0,-17.31l1.38,-0.35a1,1 0 0 0 0.56,-0.45l4.61,-7.92a1,1 0 0 0 0.13,-0.52c0,-1 -0.11,-4.43 0.31,-5.58c0.49,-1.36 5,-3.82 7.7,1.72s0,8.51 0,8.51l0.01,0.21z"/>
+   <circle id="svg_3" fill="#fff" r="2" cy="36" cx="11.78"/>
+  </g>
+ </g>
+</svg>
