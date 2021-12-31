@@ -43,16 +43,16 @@
             <c:if test="${!memoryPersistence}">
 
                 <spring:message code="WELCOME"/>, ${principal.firstname} |
-                <span><a href="c/maps/"><spring:message code="MY_WISEMAPS"/></a></span> |
+                <span><a href="../../c/maps/"><spring:message code="MY_WISEMAPS"/></a></span> |
                 <span><a href="#" target=" " id="tutorialVideo"><spring:message code="TUTORIAL_VIDEO"/></a></span> |
-                <span><a href="c/keyboard" id="keyboardShortcuts"><spring:message code="SHORTCUTS"/></a></span> |
-                <span><a href="c/logout" title="<spring:message code="LOGOUT"/>"><spring:message
+                <span><a href="../../c/keyboard" id="keyboardShortcuts"><spring:message code="SHORTCUTS"/></a></span> |
+                <span><a href="../../c/logout" title="<spring:message code="LOGOUT"/>"><spring:message
                         code="LOGOUT"/></a></span>
             </c:if>
             <c:if test="${memoryPersistence}">
-                <span><a href="c/keyboard" id="tutorialVideo"><spring:message code="TUTORIAL_VIDEO"/></a></span> |
+                <span><a href="../../c/keyboard" id="tutorialVideo"><spring:message code="TUTORIAL_VIDEO"/></a></span> |
                 <span><a href="#" id="keyboardShortcuts"><spring:message code="SHORTCUTS"/></a></span> |
-                <span><a href="c/user/registration" title="<spring:message code="REGISTER"/>"><spring:message
+                <span><a href="../../c/user/registration" title="<spring:message code="REGISTER"/>"><spring:message
                         code="REGISTER"/></a></span>
             </c:if>
         </div>
