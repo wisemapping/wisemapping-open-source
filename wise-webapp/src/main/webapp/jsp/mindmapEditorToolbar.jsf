@@ -88,11 +88,10 @@
                 <img src="../../images/editor/public.svg"/>
             </div>
         </c:if>
-        <c:if test="${!memoryPersistence}">
-            <div id="export" class="buttonOn">
-                <img src="../../images/editor/export.svg"/>
-            </div>
-        </c:if>
+        <div id="export" class="buttonOn">
+            <img src="../../images/editor/export.svg"/>
+        </div>
+        <a id="export_anchor" href="" download=""></a>
         <c:if test="${!readOnlyMode && !memoryPersistence}">
             <div id="history" class="buttonOn">
                 <img src="../../images/editor/history.svg"/>
