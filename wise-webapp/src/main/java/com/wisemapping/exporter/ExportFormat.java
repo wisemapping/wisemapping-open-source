@@ -21,15 +21,10 @@ package com.wisemapping.exporter;
 import org.jetbrains.annotations.NotNull;
 
 public enum ExportFormat {
-    SVG("image/svg+xml", "svg"),
-    JPG("image/jpeg", "jpg"),
-    PNG("image/png", "png"),
-    PDF("application/pdf", "pdf"),
     FREEMIND("application/freemind", "mm"),
     TEXT("text/plain", "txt"),
     MICROSOFT_EXCEL("application/vnd.ms-excel", "xls"),
     MICROSOFT_WORD("application/msword", "doc"),
-    OPEN_OFFICE_WRITER("application/vnd.oasis.opendocument.text", "odt"),
     MINDJET("application/vnd.mindjet.mindmanager", "mmap"),
     WISEMAPPING("application/wisemapping+xml", "wxml");
 

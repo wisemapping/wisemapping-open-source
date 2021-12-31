@@ -31,13 +31,7 @@ public class ExportProperties {
     }
 
     public static ExportProperties create(final ExportFormat format) {
-        ExportProperties result;
-        if (format == ExportFormat.JPG || format == ExportFormat.PNG) {
-            result = new ImageProperties(format);
-        } else {
-            result = new GenericProperties(format);
-        }
-        return result;
+        return  new GenericProperties(format);
     }
 
     public String getVersion() {
@@ -51,35 +45,6 @@ public class ExportProperties {
     private static class GenericProperties extends ExportProperties {
         private GenericProperties(ExportFormat format) {
             super(format);
-        }
-    }
-
-    static public class ImageProperties extends ExportProperties {
-        private Size size;
-
-        public Size getSize() {
-            return size;
-        }
-
-        public void setSize(Size size) {
-            this.size = size;
-        }
-
-        ImageProperties(ExportFormat format) {
-            super(format);
-        }
-
-        public enum Size {
-            SMALL(100), MEDIUM(800), XMEDIUM(1024), LARGE(2048);
-            private final int width;
-
-            Size(int width) {
-                this.width = width;
-            }
-
-            public Float getWidth() {
-                return (float) width;
-            }
         }
     }
 

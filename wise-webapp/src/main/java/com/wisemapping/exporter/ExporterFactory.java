@@ -19,19 +19,7 @@
 package com.wisemapping.exporter;
 
 import com.wisemapping.importer.VersionNumber;
-import org.apache.batik.ext.awt.image.rendered.TileCache;
-import org.apache.batik.parser.AWTTransformProducer;
-import org.apache.batik.parser.ParseException;
-import org.apache.batik.parser.TransformListParser;
-import org.apache.batik.transcoder.Transcoder;
-import org.apache.batik.transcoder.TranscoderException;
-import org.apache.batik.transcoder.TranscoderInput;
-import org.apache.batik.transcoder.TranscoderOutput;
-import org.apache.batik.transcoder.image.ImageTranscoder;
-import org.apache.batik.transcoder.image.JPEGTranscoder;
-import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.apache.commons.io.IOUtils;
-import org.apache.fop.svg.PDFTranscoder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.*;
@@ -56,14 +44,9 @@ import java.util.regex.Pattern;
 
 public class ExporterFactory {
 
-    static {
-        // Try to prevent OOM.
-        TileCache.setSize(0);
-    }
     private static final String GROUP_NODE_NAME = "g";
     private static final String IMAGE_NODE_NAME = "image";
     private static final int MANGING = 50;
-    private static final String UTF_8_CHARSET_NAME = "UTF-8";
     private final File baseImgDir;
 
     public ExporterFactory(@NotNull final ServletContext servletContext) {
@@ -74,78 +57,13 @@ public class ExporterFactory {
         this.baseImgDir = baseImgDir;
     }
 
-    public void export(@NotNull ExportProperties properties, @Nullable String xml, @NotNull OutputStream output, @Nullable String mapSvg) throws ExportException, IOException, TranscoderException {
+    public void export(@NotNull ExportProperties properties, @Nullable String xml, @NotNull OutputStream output, @Nullable String mapSvg) throws ExportException, IOException {
         final ExportFormat format = properties.getFormat();
 
 
         switch (format) {
-            case PNG: {
-                // Create a JPEG transcoder
-                final Transcoder transcoder = new PNGTranscoder();
-                final ExportProperties.ImageProperties imageProperties =
-                        (ExportProperties.ImageProperties) properties;
-                final ExportProperties.ImageProperties.Size size = imageProperties.getSize();
-                transcoder.addTranscodingHint(ImageTranscoder.KEY_WIDTH, size.getWidth());
-
-                // Create the transcoder input.
-                final String svgString = normalizeSvg(mapSvg);
-                final CharArrayReader reader = new CharArrayReader(svgString.toCharArray());
-                final TranscoderInput input = new TranscoderInput(reader);
-
-                TranscoderOutput transcoderOutput = new TranscoderOutput(output);
-
-                // Save the image.
-                transcoder.transcode(input, transcoderOutput);
-                reader.close();
-                break;
-            }
-            case JPG: {
-                // Create a JPEG transcoder
-                final Transcoder transcoder = new JPEGTranscoder();
-                transcoder.addTranscodingHint(JPEGTranscoder.KEY_QUALITY, .99f);
-
-                final ExportProperties.ImageProperties imageProperties =
-                        (ExportProperties.ImageProperties) properties;
-                final ExportProperties.ImageProperties.Size size = imageProperties.getSize();
-                transcoder.addTranscodingHint(ImageTranscoder.KEY_WIDTH, size.getWidth());
-
-                // Create the transcoder input.
-                final String svgString = normalizeSvg(mapSvg);
-                CharArrayReader reader = new CharArrayReader(svgString.toCharArray());
-                final TranscoderInput input = new TranscoderInput(reader);
-                TranscoderOutput trascoderOutput = new TranscoderOutput(output);
-
-                // Save the image.
-                transcoder.transcode(input, trascoderOutput);
-                reader.close();
-                break;
-            }
-            case PDF: {
-                // Create a JPEG transcoder
-                final Transcoder transcoder = new PDFTranscoder();
-
-                // Create the transcoder input.
-                final String svgString = normalizeSvg(mapSvg);
-                CharArrayReader reader = new CharArrayReader(svgString.toCharArray());
-                final TranscoderInput input = new TranscoderInput(reader);
-                TranscoderOutput trascoderOutput = new TranscoderOutput(output);
-                // Save the image.
-                transcoder.transcode(input, trascoderOutput);
-                reader.close();
-                break;
-            }
-            case SVG: {
-                final String svgString = normalizeSvg(mapSvg);
-                output.write(svgString.getBytes(StandardCharsets.UTF_8));
-                break;
-            }
             case TEXT: {
                 final Exporter exporter = XSLTExporter.create(XSLTExporter.Type.TEXT);
-                exporter.export(xml.getBytes(StandardCharsets.UTF_8), output);
-                break;
-            }
-            case OPEN_OFFICE_WRITER: {
-                final Exporter exporter = XSLTExporter.create(XSLTExporter.Type.OPEN_OFFICE);
                 exporter.export(xml.getBytes(StandardCharsets.UTF_8), output);
                 break;
             }
@@ -171,54 +89,6 @@ public class ExporterFactory {
 
         output.flush();
         output.close();
-    }
-
-    private String normalizeSvg(@NotNull String svgXml) throws ExportException {
-
-        try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            final DocumentBuilder documentBuilder = factory.newDocumentBuilder();
-
-            if (!svgXml.contains("xmlns:xlink=\"http://www.w3.org/1999/xlink\"")) {
-                svgXml = svgXml.replaceFirst("<svg ", "<svg xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
-            }
-
-            if (!svgXml.contains("xmlns=\"http://www.w3.org/2000/svg\"")) {
-                svgXml = svgXml.replaceFirst("<svg ", "<svg xmlns=\"http://www.w3.org/2000/svg\" ");
-            }
-
-            // Hacks for some legacy cases ....
-            svgXml = svgXml.replaceAll("NaN,", "0");
-            svgXml = svgXml.replaceAll(",NaN", "0");
-
-            // Bratik do not manage nbsp properly.
-            svgXml = svgXml.replaceAll(Pattern.quote("&nbsp;"), " ");
-
-            Document document;
-            try {
-                final Reader in = new CharArrayReader(svgXml.toCharArray());
-                final InputSource is = new InputSource(in);
-
-                document = documentBuilder.parse(is);
-            } catch (SAXException e) {
-                // It must be a corrupted SVG format. Try to hack it and try again ...
-                svgXml = svgXml.replaceAll("<image([^>]+)>", "<image$1/>");
-                svgXml = svgXml.replaceAll("\u001B", "");
-                final Reader in = new CharArrayReader(svgXml.toCharArray());
-                final InputSource is = new InputSource(in);
-                document = documentBuilder.parse(is);
-            }
-
-            resizeSVG(document);
-
-            final Node child = document.getFirstChild();
-            inlineImages(document, (Element) child);
-
-            return domToString(document);
-        } catch (ParserConfigurationException | TransformerException | SAXException | IOException e) {
-            throw new ExportException(e);
-        }
-
     }
 
     private static String domToString(@NotNull Document document) throws TransformerException {
@@ -344,76 +214,4 @@ public class ExporterFactory {
             }
         }
     }
-
-    private static void resizeSVG(@NotNull Document document) throws ExportException {
-
-        try {
-            XPathFactory xPathfactory = XPathFactory.newInstance();
-            XPath xpath = xPathfactory.newXPath();
-            XPathExpression expr = xpath.compile("/svg/g/rect");
-
-            NodeList nl = (NodeList) expr.evaluate(document, XPathConstants.NODESET);
-            final int length = nl.getLength();
-            double maxX = 0, minX = 0, minY = 0, maxY = 0;
-
-
-            for (int i = 0; i < length; i++) {
-                final Element rectElem = (Element) nl.item(i);
-                final Element gElem = (Element) rectElem.getParentNode();
-
-
-                final TransformListParser p = new TransformListParser();
-                final AWTTransformProducer tp = new AWTTransformProducer();
-                p.setTransformListHandler(tp);
-                p.parse(gElem.getAttribute("transform"));
-                final AffineTransform transform = tp.getAffineTransform();
-
-                double yPos = transform.getTranslateY();
-                if (yPos > 0) {
-                    yPos += Double.parseDouble(rectElem.getAttribute("height"));
-                }
-                maxY = maxY < yPos ? yPos : maxY;
-                minY = minY > yPos ? yPos : minY;
-
-                double xPos = transform.getTranslateX();
-                if (xPos > 0) {
-                    xPos += Double.parseDouble(rectElem.getAttribute("width"));
-                }
-
-                maxX = maxX < xPos ? xPos : maxX;
-                minX = minX > xPos ? xPos : minX;
-            }
-
-            // Add some extra margin ...
-            maxX += MANGING;
-            minX += -MANGING;
-
-            maxY += MANGING;
-            minY += -MANGING;
-
-            // Calculate dimentions ...
-            final double width = maxX + Math.abs(minX);
-            final double height = maxY + Math.abs(minY);
-
-            // Finally, update centers ...
-            final Element svgNode = (Element) document.getFirstChild();
-
-            svgNode.setAttribute("viewBox", minX + " " + minY + " " + width + " " + height);
-            svgNode.setAttribute("width", Double.toString(width));
-            svgNode.setAttribute("height", Double.toString(height));
-            svgNode.setAttribute("preserveAspectRatio", "xMinYMin");
-        } catch (XPathExpressionException | ParseException | NumberFormatException | DOMException e) {
-            throw new ExportException(e);
-        }
-    }
-
-    private static String[] getTransformUnit(NamedNodeMap groupAttributes) {
-        final String value = groupAttributes.getNamedItem("transform").getNodeValue();
-        final int pos = value.indexOf("translate");
-        final int initTranslate = value.indexOf("(", pos);
-        final int endTranslate = value.indexOf(")", pos);
-        final String transate = value.substring(initTranslate + 1, endTranslate);
-        return transate.contains(",") ? transate.split(",") : transate.split(" ");
-    }
-
 }
