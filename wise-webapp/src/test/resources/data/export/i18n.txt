@@ -1,4 +1,0 @@
-1 i18n
-	1.1 Este es un é con acento
-	1.2 Este es una ñ
-	1.3 這是一個樣本 Japanise。
