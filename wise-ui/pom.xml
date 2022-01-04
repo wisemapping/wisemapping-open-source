@@ -29,11 +29,11 @@
                                 <mkdir dir="target/wisemapping-mindplot"/>
                                 <exec executable="npm" dir="target">
                                     <arg value="pack"/>
-                                    <arg value="@wisemapping/mindplot@0.4.8"/>
+                                    <arg value="@wisemapping/mindplot@0.4.9"/>
                                 </exec>
                                 <exec executable="tar" dir="target">
                                     <arg value="-xvzf"/>
-                                    <arg value="wisemapping-mindplot-0.4.8.tgz"/>
+                                    <arg value="wisemapping-mindplot-0.4.9.tgz"/>
                                     <arg value="-C"/>
                                     <arg value="wisemapping-mindplot"/>
                                 </exec>
