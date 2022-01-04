@@ -259,11 +259,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.3.1</version>
-        </dependency>
-        <dependency>
             <!-- jsoup HTML parser library @ http://jsoup.org/ -->
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
@@ -509,48 +504,6 @@
                         <goals>
                             <goal>stop</goal>
                         </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.jvnet.jaxb2.maven2</groupId>
-                <artifactId>maven-jaxb2-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>mindmap-generate</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <schemaDirectory>src/main/resources/</schemaDirectory>
-                            <schemaIncludes>
-                                <include>mindmap.xsd</include>
-                            </schemaIncludes>
-                            <bindingDirectory>src/main/resources/</bindingDirectory>
-                            <bindingIncludes>
-                                <include>mindmap.xjb</include>
-                            </bindingIncludes>
-                            <generatePackage>com.wisemapping.jaxb.wisemap</generatePackage>
-                            <generateDirectory>${project.build.directory}/generated-sources/xjc1</generateDirectory>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>freemind-generate</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <schemaDirectory>src/main/resources/</schemaDirectory>
-                            <schemaIncludes>
-                                <include>freemind_0.9.0.xsd</include>
-                            </schemaIncludes>
-                            <bindingDirectory>src/main/resources/</bindingDirectory>
-                            <bindingIncludes>
-                                <include>freemind_0.9.0.xjb</include>
-                            </bindingIncludes>
-                            <generatePackage>com.wisemapping.jaxb.freemind</generatePackage>
-                            <generateDirectory>${project.build.directory}/generated-sources/xjc2</generateDirectory>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

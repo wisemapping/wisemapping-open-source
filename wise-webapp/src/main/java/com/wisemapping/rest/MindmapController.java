@@ -19,10 +19,6 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.*;
-import com.wisemapping.importer.ImportFormat;
-import com.wisemapping.importer.Importer;
-import com.wisemapping.importer.ImporterException;
-import com.wisemapping.importer.ImporterFactory;
 import com.wisemapping.model.*;
 import com.wisemapping.rest.model.*;
 import com.wisemapping.security.Utils;
@@ -547,27 +543,6 @@ public class MindmapController extends BaseController {
         // Return the new created map ...
         response.setHeader("Location", "/service/maps/" + delegated.getId());
         response.setHeader("ResourceId", Integer.toString(delegated.getId()));
-    }
-
-    @RequestMapping(method = RequestMethod.POST, value = "/maps", consumes = {"application/freemind"})
-    @ResponseStatus(value = HttpStatus.CREATED)
-    public void createMapFromFreemind(@RequestBody byte[] freemindXml, @RequestParam(required = true) String title, @RequestParam(required = false) String description, @NotNull HttpServletResponse response) throws IOException, WiseMappingException {
-
-        // Convert map ...
-        final Mindmap mindMap;
-        try {
-            final Importer importer = ImporterFactory.getInstance().getImporter(ImportFormat.FREEMIND);
-            final ByteArrayInputStream stream = new ByteArrayInputStream(freemindXml);
-            mindMap = importer.importMap(title, "", stream);
-        } catch (ImporterException e) {
-            // @Todo: This should be an illegal argument exception. Review the all the other cases.
-            throw buildValidationException("xml", "The selected file does not seems to be a valid Freemind or WiseMapping file. Contact support in case the problem persists.");
-        } catch (Throwable e) {
-            throw new ImportUnexpectedException(e, freemindXml);
-        }
-
-        // Save new map ...
-        createMap(new RestMindmap(mindMap, null), response, title, description);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/maps/{id}", consumes = {"application/xml", "application/json"},produces = {"application/xml", "application/json","text/plain"})
