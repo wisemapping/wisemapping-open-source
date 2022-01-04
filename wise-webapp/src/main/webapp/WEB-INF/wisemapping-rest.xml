@@ -93,59 +93,7 @@
             </list>
         </property>
     </bean>
-
-    <bean id="transformViewPdf" class="com.wisemapping.rest.view.TransformView">
-        <constructor-arg value="application/pdf"/>
-        <constructor-arg ref="notificationService"/>
-    </bean>
-
-    <bean id="transformViewPng" class="com.wisemapping.rest.view.TransformView">
-        <constructor-arg value="image/png"/>
-        <constructor-arg ref="notificationService"/>
-    </bean>
-
-    <bean id="transformViewJpeg" class="com.wisemapping.rest.view.TransformView">
-        <constructor-arg value="image/jpeg"/>
-        <constructor-arg ref="notificationService"/>
-    </bean>
-
-    <bean id="transformViewFreemind" class="com.wisemapping.rest.view.TransformView">
-        <constructor-arg value="application/freemind"/>
-        <constructor-arg ref="notificationService"/>
-    </bean>
-
-    <bean id="transformViewSvg" class="com.wisemapping.rest.view.TransformView">
-        <constructor-arg value="image/svg+xml"/>
-        <constructor-arg ref="notificationService"/>
-    </bean>
-
-    <bean id="transformViewXls" class="com.wisemapping.rest.view.TransformView">
-        <constructor-arg value="application/vnd.ms-excel"/>
-        <constructor-arg ref="notificationService"/>
-    </bean>
-
-
-    <bean id="transformViewOdt" class="com.wisemapping.rest.view.TransformView">
-        <constructor-arg value="application/vnd.oasis.opendocument.text"/>
-        <constructor-arg ref="notificationService"/>
-    </bean>
-
-
-    <bean id="transformViewTxt" class="com.wisemapping.rest.view.TransformView">
-        <constructor-arg value="text/plain"/>
-        <constructor-arg ref="notificationService"/>
-    </bean>
-
-    <bean id="transformViewMMap" class="com.wisemapping.rest.view.TransformView">
-        <constructor-arg value="application/vnd.mindjet.mindmanager"/>
-        <constructor-arg ref="notificationService"/>
-    </bean>
-
-    <bean id="transformViewWise" class="com.wisemapping.rest.view.TransformView">
-        <constructor-arg value="application/wisemapping+xml"/>
-        <constructor-arg ref="notificationService"/>
-    </bean>
-
+    
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basenames">
             <list>

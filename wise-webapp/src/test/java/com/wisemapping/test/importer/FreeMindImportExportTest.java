@@ -27,7 +27,6 @@ public class FreeMindImportExportTest {
         ImporterFactory exporterFactory = ImporterFactory.getInstance();
         importer = exporterFactory.getImporter(ImportFormat.FREEMIND);
         exporter = new FreemindExporter();
-
     }
 
 

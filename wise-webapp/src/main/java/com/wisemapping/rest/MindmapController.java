@@ -69,68 +69,6 @@ public class MindmapController extends BaseController {
         return new RestMindmap(mindMap, user);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/wisemapping+xml"}, params = {"download=wxml"})
-    @ResponseBody
-    public ModelAndView retrieveAsWise(@PathVariable int id) throws WiseMappingException {
-        final Mindmap mindMap = findMindmapById(id);
-        final Map<String, Object> values = new HashMap<String, Object>();
-
-        final User user = Utils.getUser();
-        values.put("mindmap", new RestMindmap(mindMap, user));
-        values.put("filename", mindMap.getTitle());
-        return new ModelAndView("transformViewWise", values);
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/freemind"}, params = {"download=mm"})
-    @ResponseBody
-    public ModelAndView retrieveDocumentAsFreemind(@PathVariable int id) throws IOException, MapCouldNotFoundException {
-        final Mindmap mindMap = findMindmapById(id);
-        final Map<String, Object> values = new HashMap<String, Object>();
-        values.put("content", mindMap.getXmlStr());
-        values.put("filename", mindMap.getTitle());
-        return new ModelAndView("transformViewFreemind", values);
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"text/plain"}, params = {"download=txt"})
-    @ResponseBody
-    public ModelAndView retrieveDocumentAsText(@PathVariable int id) throws IOException, MapCouldNotFoundException {
-        final Mindmap mindMap = findMindmapById(id);
-        final Map<String, Object> values = new HashMap<String, Object>();
-        values.put("content", mindMap.getXmlStr());
-        values.put("filename", mindMap.getTitle());
-        return new ModelAndView("transformViewTxt", values);
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/vnd.mindjet.mindmanager"}, params = {"download=mmap"})
-    @ResponseBody
-    public ModelAndView retrieveDocumentAsMindJet(@PathVariable int id) throws IOException, MapCouldNotFoundException {
-        final Mindmap mindMap = findMindmapById(id);
-        final Map<String, Object> values = new HashMap<String, Object>();
-        values.put("content", mindMap.getXmlStr());
-        values.put("filename", mindMap.getTitle());
-        return new ModelAndView("transformViewMMap", values);
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/vnd.ms-excel"}, params = {"download=xls"})
-    @ResponseBody
-    public ModelAndView retrieveDocumentAsExcel(@PathVariable int id) throws IOException, MapCouldNotFoundException {
-        final Mindmap mindMap = findMindmapById(id);
-        final Map<String, Object> values = new HashMap<String, Object>();
-        values.put("content", mindMap.getXmlStr());
-        values.put("filename", mindMap.getTitle());
-        return new ModelAndView("transformViewXls", values);
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/vnd.oasis.opendocument.text"}, params = {"download=odt"})
-    @ResponseBody
-    public ModelAndView retrieveDocumentAsOdt(@PathVariable int id) throws IOException, MapCouldNotFoundException {
-        final Mindmap mindMap = findMindmapById(id);
-        final Map<String, Object> values = new HashMap<String, Object>();
-        values.put("content", mindMap.getXmlStr());
-        values.put("filename", mindMap.getTitle());
-        return new ModelAndView("transformViewOdt", values);
-    }
-
     @RequestMapping(method = RequestMethod.GET, value = "/maps/", produces = {"application/json", "application/xml"})
     public RestMindmapList retrieveList(@RequestParam(required = false) String q) throws IOException {
         final User user = Utils.getUser();

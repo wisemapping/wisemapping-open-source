@@ -18,10 +18,6 @@
 
 package com.wisemapping.rest;
 
-
-import com.wisemapping.exporter.ExportFormat;
-import com.wisemapping.exporter.ExportProperties;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,11 +33,7 @@ import java.util.Map;
 @Controller
 public class TransformerController extends BaseController {
 
-    private static final String PARAM_SVG_XML = "svgXml";
-    private static final String PARAM_WISE_MAP_XML = "mapXml";
-    private static final String PARAM_FILENAME = "filename";
-
-       @RequestMapping(method = RequestMethod.POST, value = "/transform", produces = {"application/freemind"}, consumes = {"application/xml"})
+    @RequestMapping(method = RequestMethod.POST, value = "/transform", produces = {"application/freemind"}, consumes = {"application/xml"})
     @ResponseBody
     public ModelAndView transformFreemind(@RequestBody @Nullable final String content) throws IOException {
         final Map<String, Object> values = new HashMap<String, Object>();
