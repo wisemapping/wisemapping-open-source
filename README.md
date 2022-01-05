@@ -1,6 +1,7 @@
-# Project Information
+# Overview
 
-The goal of this project is to provide a high quality product that can be deployed by educational and academic institutions, private and public companies and anyone who needs to have a mindmapping application. WiseMapping is based on the same code source supporting WiseMapping.com. More info: www.wisemapping.org
+WiseMapping is a free web based *mind map* product. The goal of this project is to provide a high quality product that can be deployed by enterprises, educational and academic institutions. 
+WiseMapping is based on the same code product supporting http://www.wisemapping.com. 
 
 ## Compiling and Running
 
