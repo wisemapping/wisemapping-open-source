@@ -8,19 +8,18 @@ The goal of this project is to provide a high quality product that can be deploy
 
 The following products must be installed:
 
-    * Java 11 to 16 
+    * Java 11 or higher
     * Maven 3.x or higher ([http://maven.apache.org/])
 
 ### Compiling
 
 WiseMapping uses Maven as packaging and project management. It's composed of 5 maven sub-modules:
 
-    * wise-react: React font-end fetcher
+    * wise-ui:  React font-end fetcher
     * wise-webapp: J2EE web application 
 
 The full compilation of the project can be performed executing within <project-dir>:
 
-`export MAVEN_OPTS="--illegal-access=permit"`
 `mvn clean install`
 
 Once this command is executed, the file <project-dir>/wise-webapp/target/wisemapping*.war will be generated.
@@ -46,21 +45,7 @@ In order to reduce the life-cycle to develop UI backend testing, you can do the 
 
 ### Compiling and running with docker-compose
 
-Check out the [docker section](./docker/README.md)
-
-
-## Running the JS only version
-
-Start by creating the .zip file.
-
-`mvn assembly:assembly -Dmaven.test.skip=true`
-
-To test the javascript frontend, install a simple http-server.
-
-`npm install -g http-server`
-
-Now open a browser using the URL http://localhost:8080/wise-editor/src/main/webapp/
-
+Check out the [docker section](./docker/README.
 ## Troubleshooting
 
 <details>
@@ -95,8 +80,6 @@ Now open a browser using the URL http://localhost:8080/wise-editor/src/main/weba
 ### Past Individual Contributors
 
    * Ignacio Manzano
-   * Nicolas Damonte
-   * Claudio Barril <claudiobarril@gmail.com>
    
 ## License
 
