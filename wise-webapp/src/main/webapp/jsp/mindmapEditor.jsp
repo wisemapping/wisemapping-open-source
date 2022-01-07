@@ -14,6 +14,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <base href="${requestScope['site.baseurl']}/static/mindplot/">
     <title><spring:message code="SITE.TITLE"/> - <c:out value="${mindmap.title}"/></title>
+    <link rel="stylesheet/less" type="text/css" href="../../css/bootstrap.min.css"/>
     <link rel="stylesheet/less" type="text/css" href="../../css/editor.less"/>
     <script type='text/javascript' src="../../js/less.js"/></script>
     <%@ include file="/jsp/commonPageHeader.jsf" %>
@@ -35,43 +36,28 @@
 
 <body>
 
-<div id="actionsContainer"></div>
-
 <div id="header">
-    <div id="headerInfo">
-        <div id="headerActions">
-            <c:if test="${!memoryPersistence}">
-
-                <spring:message code="WELCOME"/>, ${principal.firstname} |
-                <span><a href="../../c/maps/"><spring:message code="MY_WISEMAPS"/></a></span> |
-                <span><a href="../../c/keyboard" id="keyboardShortcuts"><spring:message code="SHORTCUTS"/></a></span> |
-                <span><a href="../../c/logout" title="<spring:message code="LOGOUT"/>"><spring:message
-                        code="LOGOUT"/></a></span>
-            </c:if>
-            <%-- This is the try page toolbar --%>
-            <c:if test="${memoryPersistence}">
-                <span><a href="../../c/keyboard" id="tutorialVideo"><spring:message code="TUTORIAL_VIDEO"/></a></span> |
-                <span><a href="#" id="keyboardShortcuts"><spring:message code="SHORTCUTS"/></a></span> |
-                <span><a href="../../c/user/registration" title="<spring:message code="REGISTER"/>"><spring:message
-                        code="REGISTER"/></a></span>
-            </c:if>
-        </div>
-        <a href="${requestScope['site.homepage']}">
-            <div id="headerLogo"></div>
-        </a>
-
-        <div id="headerMapTitle"><spring:message code="NAME"/>: <span><c:out value="${mindmap.title}"/></span></div>
-    </div>
     <%@ include file="/jsp/mindmapEditorToolbar.jsf" %>
 </div>
-<div id='load' class="modal fade">
-    <div class="modal-dialog">
-        <div style="height: 120px; text-align: center; border: 2px solid orange" class="modal-content">
-            <img style='margin-top:25px; text-align: center' src="../../images/editor/ajax-loader.gif">
-        </div>
+<div id="mindplot" onselectstart="return false;"></div>
+
+<div id="floating-panel">
+    <div id="keyboardShortcuts" class="buttonExtOn">
+        <img src="../../images/editor/keyboard.svg"/>
+    </div>
+    <div id="zoom-button">
+        <button id="zoom-plus">
+            <img src="../../images/editor/add.svg" />
+        </button>
+        <button id="zoom-minus">
+            <img src="../../images/editor/minus.svg" />
+        </button>
     </div>
 </div>
-<div id="mindplot" onselectstart="return false;"></div>
+<div id="bottom-logo"></div>
+<div id="headerNotifier"></div>
+
 <script src="loader.js"></script>
+
 </body>
 </html>

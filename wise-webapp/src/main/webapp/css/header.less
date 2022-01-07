@@ -1,5 +1,5 @@
-@header-height : 75px;
-@header-toolbar-height : 35px;
+@header-height : 0px;
+@header-toolbar-height : 50px;
 @header-info-height : @header-height - @header-toolbar-height;
 
 div#header {
@@ -11,30 +11,6 @@ div#header {
     top: 0;
 }
 
-div#headerLogo {
-    background: url(../images/logo-icon.svg) no-repeat center top;
-    height: 40px;
-    width: 80px;
-    float: left;
-    padding-left: 20px;
-}
-
-div#headerInfo {
-    width: 100%;
-    height: @header-info-height;
-    color: white;
-    padding: 0px 0px
-
-}
-
-div#headerActions {
-    text-align: right;
-    margin-top: 13px;
-    padding-right: 10px;
-    color: white;
-    float: right;
-}
-
 div#headerActions span {
     border-bottom: 3px solid rgb(247, 201, 49);
 }
@@ -44,42 +20,62 @@ div#headerActions a {
     text-decoration: none;
 }
 
-div#headerMapTitle {
-    min-width: 200px;
-    height:@header-info-height - 13;
-    text-align: left;
-    padding-top: 13px;
-    padding-left: 50px;
-    color: white;
-    float: left;
-    font-style: italic;
-}
-
-div#headerMapTitle span {
-    padding: 4px 50px;
-    border: 1px solid rgb(90, 90, 90);
-    background-color: rgb(45, 45, 45);
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
-    white-space:nowrap;
-}
-
 div#headerNotifier {
-    border: 1px solid rgb(241,163,39);
-    background-color: rgb(252,235,192);
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
+    border: 1px solid rgb(241, 163, 39);
+    background-color: rgb(252, 235, 192);
     border-radius: 3px;
-    position: absolute;
+    position: fixed;
     padding: 5px 9px;
-    color:back;
-    white-space:nowrap;
-    margin-top:5px;
-        /*margin-top:-34px;*/
-    display:none;
-    /*right: 5px;*/
+    color: back;
+    white-space: nowrap;
+    margin-top: 5px;
+    display: none;
+    bottom: 10px;
+}
+
+div#toolbarRight {
+    float: right;
+    white-space: nowrap;
+    vertical-align: middle;
+    justify-content: center;
+    margin: 6px 10px;
+    height: 100%;
+}
+
+#account {
+    float: right;
+    display: inline;
+}
+
+#account >img {
+    width: 36x;
+    height: 36px;
+}
+
+#share {
+    margin: 0 30px;
+}
+
+.actionButton {
+    float: right;
+    cursor: pointer;
+    margin: 0px 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    user-select: none;
+    vertical-align: middle;
+    justify-content: center;
+    padding: 10px 25px;
+    font-size: 15px;
+    min-width: 64px;
+    box-sizing: border-box;
+    font-weight: 600;
+    border-radius: 9px;
+    color: white;    
+    background-color: #ffa800;
+}
+
+.actionButton:hover {
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 }
 
 @import "toolbar.less";
