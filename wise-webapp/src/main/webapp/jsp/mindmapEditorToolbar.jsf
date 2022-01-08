@@ -74,17 +74,23 @@
     </c:if>
 </div>
 <div id="toolbarRight">
-    <div id="share" class="actionButton">Share</div>
     <div id="export" class="buttonOn">
         <img src="../../images/editor/export.svg" />
     </div>
-    <div id="print" class="buttonOn">
-        <img src="../../images/editor/print.svg" />
+
+    <div id="publishIt" class="buttonOn">
+        <img src="../../images/editor/public.svg" />
     </div>
     <div id="history" class="buttonOn">
         <img src="../../images/editor/history.svg" />
     </div>
+    <div id="print" class="buttonOn">
+        <img src="../../images/editor/print.svg" />
+    </div>
     <div id="account">
         <img src="../../images/editor/account.svg"/>
+    </div>
+    <div id="share" class="actionButton">
+        Share
     </div>
 </div>
