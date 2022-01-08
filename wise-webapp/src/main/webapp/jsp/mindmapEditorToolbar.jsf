@@ -1,91 +1,90 @@
 <%--@elvariable id="mindmap" type="com.wisemapping.model.Mindmap"--%>
 
 <div id="toolbar">
-    <a href="/c/maps/"><div id="back"></div></a>
-    <div id="editTab" class="tabContent">
-        <div id="persist" class="buttonContainer">
-            <c:if test="${!readOnlyMode}">
-                <div id="save" class="buttonOn">
-                    <img src="../../images/editor/save.svg"/>
-                </div>
-            </c:if>
-        </div>
+    <div id="backToList">
+        <img src="../../images/editor/back-icon.svg" />
+    </div>    <div id="editTab" class="tabContent">
+    <div id="persist" class="buttonContainer">
         <c:if test="${!readOnlyMode}">
-            <div id="edit" class="buttonContainer">
-                <div id="undoEdition" class="buttonOn">
-                    <img src="../../images/editor/undo.svg"/>
-                </div>
-                <div id="redoEdition" class="buttonOn">
-                    <img src="../../images/editor/redo.svg"/>
-                </div>
+            <div id="save" class="buttonOn">
+                <img src="../../images/editor/save.svg"/>
             </div>
-        </c:if>
-        <c:if test="${!readOnlyMode}">
-            <div id="nodeStyle" class="buttonContainer">
-                <div id="addTopic" class="buttonOn">
-                    <img src="../../images/editor/topic-add.svg"/>
-                </div>
-                <div id="deleteTopic" class="buttonOn">
-                    <img src="../../images/editor/topic-delete.svg"/>
-                </div>
-                <div id="topicBorder" class="buttonExtOn">
-                    <img src="../../images/editor/topic-border.svg"/>
-                </div>
-                <div id="topicColor" class="buttonExtOn">
-                    <img src="../../images/editor/topic-color.svg"/>
-                </div>
-                <div id="topicShape" class="buttonExtOn">
-                    <img src="../../images/editor/topic-shape.svg"/>
-                </div>
-            </div>
-            <div id="font" class="buttonContainer">
-                <div id="fontFamily" class="buttonOn">
-                    <img src="../../images/editor/font-type.svg"/>
-                </div>
-                <div id="fontSize" class="buttonExtOn">
-                    <img src="../../images/editor/font-size.svg"/>
-                </div>
-                <div id="fontBold" class="buttonOn">
-                    <img src="../../images/editor/font-bold.svg"/>
-                </div>
-                <div id="fontItalic" class="buttonOn">
-                    <img src="../../images/editor/font-italic.svg"/>
-                </div>
-                <div id="fontColor" class="buttonExtOn">
-                    <img src="../../images/editor/font-color.svg"/>
-                </div>
-            </div>
-            <div id="nodeContent" class="buttonContainer">
-                <div id="topicIcon" class="buttonExtOn">
-                    <img src="../../images/editor/topic-icon.svg"/>
-                </div>
-                <div id="topicNote" class="buttonOn" >
-                    <img src="../../images/editor/topic-note.svg"/>
-                </div>
-                <div id="topicLink" class="buttonOn">
-                    <img src="../../images/editor/topic-link.svg"/>
-                </div>
-                <div id="topicRelation" class="buttonOn">
-                    <img src="../../images/editor/topic-relation.svg"/>
-                </div>
-            </div>
-            <div id="separator" class="buttonContainer"></div>
-
         </c:if>
     </div>
-    <div id="toolbarRight">
-        <div id="account">
-            <img src="../../images/editor/account.svg"/>
+    <c:if test="${!readOnlyMode}">
+        <div id="edit" class="buttonContainer">
+            <div id="undoEdition" class="buttonOn">
+                <img src="../../images/editor/undo.svg"/>
+            </div>
+            <div id="redoEdition" class="buttonOn">
+                <img src="../../images/editor/redo.svg"/>
+            </div>
         </div>
-        <div id="share" class="actionButton">Share</div>
-        <div id="export" class="buttonOn">
-            <img src="../../images/editor/export.svg" />
+    </c:if>
+    <c:if test="${!readOnlyMode}">
+        <div id="nodeStyle" class="buttonContainer">
+            <div id="addTopic" class="buttonOn">
+                <img src="../../images/editor/topic-add.svg"/>
+            </div>
+            <div id="deleteTopic" class="buttonOn">
+                <img src="../../images/editor/topic-delete.svg"/>
+            </div>
+            <div id="topicBorder" class="buttonExtOn">
+                <img src="../../images/editor/topic-border.svg"/>
+            </div>
+            <div id="topicColor" class="buttonExtOn">
+                <img src="../../images/editor/topic-color.svg"/>
+            </div>
+            <div id="topicShape" class="buttonExtOn">
+                <img src="../../images/editor/topic-shape.svg"/>
+            </div>
         </div>
-        <div id="print" class="buttonOn">
-            <img src="../../images/editor/print.svg" />
+        <div id="font" class="buttonContainer">
+            <div id="fontFamily" class="buttonOn">
+                <img src="../../images/editor/font-type.svg"/>
+            </div>
+            <div id="fontSize" class="buttonExtOn">
+                <img src="../../images/editor/font-size.svg"/>
+            </div>
+            <div id="fontBold" class="buttonOn">
+                <img src="../../images/editor/font-bold.svg"/>
+            </div>
+            <div id="fontItalic" class="buttonOn">
+                <img src="../../images/editor/font-italic.svg"/>
+            </div>
+            <div id="fontColor" class="buttonExtOn">
+                <img src="../../images/editor/font-color.svg"/>
+            </div>
         </div>
-        <div id="history" class="buttonOn">
-            <img src="../../images/editor/history.svg" />
+        <div id="nodeContent" class="buttonContainer">
+            <div id="topicIcon" class="buttonExtOn">
+                <img src="../../images/editor/topic-icon.svg"/>
+            </div>
+            <div id="topicNote" class="buttonOn" >
+                <img src="../../images/editor/topic-note.svg"/>
+            </div>
+            <div id="topicLink" class="buttonOn">
+                <img src="../../images/editor/topic-link.svg"/>
+            </div>
+            <div id="topicRelation" class="buttonOn">
+                <img src="../../images/editor/topic-relation.svg"/>
+            </div>
         </div>
+        <div id="separator" class="buttonContainer"></div>
+    </c:if>
+</div>
+<div id="toolbarRight">
+    <div id="share" class="actionButton">Share</div>
+    <div id="export" class="buttonOn">
+        <img src="../../images/editor/export.svg" />
+    </div>
+    <div id="print" class="buttonOn">
+        <img src="../../images/editor/print.svg" />
+    </div>
+    <div id="history" class="buttonOn">
+        <img src="../../images/editor/history.svg" />
+    </div>
+    <div id="account">
+        <img src="../../images/editor/account.svg"/>
     </div>
 </div>

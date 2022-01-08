@@ -30,6 +30,8 @@
         var mindmapLockedMsg = '<spring:message code="MINDMAP_LOCKED" arguments="${lockInfo.user.fullName},${lockInfo.user.email}"/>';
         var userOptions = ${mindmap.properties};
         var isAuth = ${principal != null};
+        var accountName = '${principal.fullName}';
+        var accountEmail = '${principal.email}';
     </script>
     <%@ include file="/jsp/googleAnalytics.jsf" %>
 </head>
