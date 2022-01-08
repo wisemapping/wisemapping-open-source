@@ -3,7 +3,7 @@
 <tiles-definitions>
 
     <definition name="homepage" template="/jsp/homepage.jsp"/>
-    <definition name="mindmapEmbedded" template="/jsp/mindmapEmbed.jsp"/>
+    <definition name="mindmapEmbedded" template="/jsp/mindmapViewonly.jsp"/>
     <definition name="mindmapEditor" template="/jsp/mindmapEditor.jsp"/>
     <definition name="mindmapPrint" template="/jsp/mindmapViewonly.jsp"/>
 
