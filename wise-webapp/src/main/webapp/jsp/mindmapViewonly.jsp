@@ -12,10 +12,8 @@
     <title><spring:message code="SITE.TITLE"/> | ${mindmap.title} </title>
     <link rel="stylesheet/less" type="text/css" href="../../css/viewonly.less"/>
     <script type='text/javascript' src="../../js/less.js"/></script>
-
     <%@ include file="/jsp/commonPageHeader.jsf" %>
-
-   <script type="text/javascript">
+    <script type="text/javascript">
           var mapId = '${mindmap.id}';
           var memoryPersistence = true;
           var readOnly = true;
@@ -26,25 +24,43 @@
      <%@ include file="/jsp/googleAnalytics.jsf" %>
 </head>
 <body>
+<div id="mindplot"></div>
 
-<div id="mapContainer">
-    <div id="mindplot"></div>
-    <div id="printLogo"></div>
+<a href="${requestScope['site.homepage']}" target="new">
+<div id="footerLogo"></div>
+</a>
 
-    <div id="embFooter">
-        <a href="${requestScope['site.homepage']}" target="new">
-            <div id="footerLogo"></div>
-        </a>
+<div id="mapDetails">
+    <span class="title"><spring:message code="CREATOR"/>:</span><span><c:out value="${mindmap.creator.fullName}"/></span>
+    <span class="title"><spring:message code="DESCRIPTION"/>:</span><span><c:out value="${mindmap.title}"/></span>
+</div>
 
-        <div id="zoomOut" class="button"></div>
-        <div id="zoomIn" class="button"></div>
+<script src="loader.js"></script>
 
-        <div id="mapDetails">
-            <span class="title"><spring:message code="CREATOR"/>:</span><span><c:out value="${mindmap.creator.fullName}"/></span>
-            <span class="title"><spring:message code="DESCRIPTION"/>:</span><span><c:out value="${mindmap.title}"/></span>
-        </div>
+<div id="floating-panel">
+    <div id="zoom-button">
+        <button id="zoom-plus">
+            <img src="../../images/editor/add.svg" />
+        </button>
+        <button id="zoom-minus">
+            <img src="../../images/editor/minus.svg" />
+        </button>
     </div>
 </div>
-<script src="loader.js"></script>
+<script type="text/javascript">
+    // Hock zoom events ...
+    const zoomInButton = document.getElementById('zoom-plus');
+    const zoomOutButton = document.getElementById('zoom-minus');
+    if (zoomInButton) {
+      zoomInButton.addEventListener('click', () => {
+        designer.zoomIn();
+      });
+    }
+    if (zoomOutButton) {
+      zoomOutButton.addEventListener('click', () => {
+        designer.zoomOut();
+      });
+    }
+</script>
 </body>
 </html>

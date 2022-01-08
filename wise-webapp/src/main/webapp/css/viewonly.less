@@ -5,79 +5,20 @@ body{
     position: inherit;
 }
 
-div#headerInfo {
-    height: 0;
-}
-
-div#header {
-    height: 35px;
-}
-
-div#headerMapTitle, #headerActions, #headerLogo {
-    display: none;
-}
-
-/* Footer Styles */
-div#footer {
-    position: absolute;
-    height: 0px;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-}
-
 div#footerLogo {
-    position: absolute;
+    position: fixed;
     display: list-item;
-    list-style-image: url(../../images/pwrdby-white.svg);
+    list-style-image: url(../../images/editor/logo-text-black.svg);
     list-style-position: inside;
-    right: 10px;
-    top: 5px;
-}
-
-div#embFooter {
-    position: absolute;
-    height: 55px;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-    background: rgb(249, 168, 38)
-}
-
-div#zoomIn {
-    background: url(../../images/zoom-in.png) no-repeat left top;
-    margin-top: 10px;
-    margin-left: 10px;
-}
-
-#zoomOut {
-    background: url(../../images/zoom-out.png) no-repeat left top;
-    margin-top: 10px;
-    margin-left: 5px;
-}
-
-.button {
-    width: 20px;
-    height: 20px;
-    float: left;
-    cursor: pointer;
-    white-space: nowrap;
-    margin: 1px;
-}
-
-.button:hover {
-    float: left;
-    cursor: pointer;
-    border: 1px solid black;
-    border-top-color: white;
-    border-left-color: white;
-    margin: 0;
+    left: 10px;
+    bottom: 10px;
 }
 
 div#mapDetails {
-    float: right;
+    position: fixed;
+    bottom:20px;
+    left: 100px;
     padding-top: 20px;
-    margin-right: 130px;
     font-size: 14px;
 }
 
@@ -86,27 +27,4 @@ div#mapDetails .title {
     margin-left: 10px;
     margin-right: 3px;
 }
-
-div#infoPanel {
-    border: 2px black solid;
-    position: absolute;
-    background: gray;
-    width: 100px;
-    height: 300px;
-    z-index: 100;
-    padding: 5px;
-    border-radius: 8px;
-    top: 150px;
-    right: 10px;
-    text-align: center;
-}
-
-div#infoPanel .textNode {
-    background-color: #E0E5EF;
-    height: 20px;
-    width: 80px;
-    padding: 4px;
-    cursor: move
-}
-
 
