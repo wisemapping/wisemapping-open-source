@@ -19,7 +19,6 @@ body {
 div#mindplot {
     position: relative;
     top: @header-toolbar-height;
-    top: 0;
     left: 0;
     width: 100%;
     height: 100%;
@@ -29,12 +28,6 @@ div#mindplot {
     background-color: #f2f2f2;
     background-image:  linear-gradient(#ebe9e7 1px, transparent 1px), linear-gradient(to right, #ebe9e7 1px, #f2f2f2 1px);
     background-size: 50px 50px;
-}
-
-div#small_error_icon {
-    padding-left: 18px;
-    min-height: 16px;
-    background: url(../images/error_icon.png) bottom left no-repeat !important;
 }
 
 .notesTip {
@@ -149,9 +142,25 @@ div#bottom-logo {
     position: fixed;
     left: 20px;
     bottom: 10px;
-    background: url(../../images/editor/logo-text-black.svg) no-repeat;
+    background: url(../images/logo-text-black.svg) no-repeat;
     width: 90px;
     height: 40px;
+}
+
+div#position {
+    margin-top: 5px;
+}
+
+#position-button {
+    cursor: pointer;
+    border: solid black 1px;
+    width: 40px;
+    height: 40px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 40px 40px;
+    background-color: #FFF;
+    border-radius: 8px;
 }
 
 #zoom-button {
@@ -161,6 +170,7 @@ div#bottom-logo {
 
 #zoom-plus,
 #zoom-minus {
+    border: solid black 1px;
     height: 40px;
     width: 40px;
     background-repeat: no-repeat;

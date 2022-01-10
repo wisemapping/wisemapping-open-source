@@ -55,6 +55,11 @@
             <img src="../../images/editor/minus.svg" />
         </button>
     </div>
+    <div id="position">
+        <button id="position-button">
+            <img src="../../images/editor/center_focus.svg" />
+        </button>
+    </div>
 </div>
 <div id="bottom-logo"></div>
 <div id="headerNotifier"></div>

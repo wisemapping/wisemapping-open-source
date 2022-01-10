@@ -45,22 +45,36 @@
         <button id="zoom-minus">
             <img src="../../images/editor/minus.svg" />
         </button>
+        <div id="position">
+            <button id="position-button">
+                <img src="../../images/editor/center_focus.svg" />
+            </button>
+        </div>
     </div>
 </div>
 <script type="text/javascript">
     // Hock zoom events ...
     const zoomInButton = document.getElementById('zoom-plus');
-    const zoomOutButton = document.getElementById('zoom-minus');
     if (zoomInButton) {
       zoomInButton.addEventListener('click', () => {
         designer.zoomIn();
       });
     }
+
+    const zoomOutButton = document.getElementById('zoom-minus');
     if (zoomOutButton) {
       zoomOutButton.addEventListener('click', () => {
         designer.zoomOut();
       });
     }
+    
+    const position = document.getElementById('position');
+    if (position) {
+      position.addEventListener('click', () => {
+        designer.zoomToFit();
+      });
+    }
+
 </script>
 </body>
 </html>
