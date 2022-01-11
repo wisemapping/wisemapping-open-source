@@ -9,7 +9,7 @@ WiseMapping is based on the same code product supporting http://www.wisemapping.
 
 The following products must be installed:
 
-    * Java 11 or higher
+    * OpenJDK 11 or higher
     * Maven 3.x or higher ([http://maven.apache.org/])
 
 ### Compiling
@@ -35,14 +35,18 @@ This will start the application on the URL: [http://localhost:8080/] using file 
 User: test@wisemapping.org
 Password: test
 
-### Local Development - UI Integration
+### Local Development + UI Integration
 
 In order to reduce the life-cycle to develop UI backend testing, you can do the following hack:
 
-* Clone [https://bitbucket.org/wisemapping/wisemapping-open-source/] and [https://bitbucket.org/wisemapping/wisemapping-frontend/] at the same top level directory
-* Compile `WiseMapping Frontend`
-* Compile `WiseMapping Open Source`
-* Follow the Local Testing steps.
+    * Clone [wisemapping-open-source](https://bitbucket.org/wisemapping/wisemapping-open-source/) and [wisemapping-frontend](https://bitbucket.org/wisemapping/wisemapping-frontend/) at the same top level directory
+    * Compile `wisemapping-frontend`. Details for compilation can be found in the `wisemapping-frontend` readme.
+    * Compile `wisemapping-open-source`
+
+A quick and dirty solution to share changes in the UI is to manually compile the dist. This will make the loader file available without the need to publish:
+
+`cp -r wisemapping-frontend/packages/mindplot/dist/* wisemapping-open-source/wise-ui/target/wisemapping-mindplot/package/dist`
+
 
 ### Compiling and running with docker-compose
 
@@ -62,10 +66,6 @@ Check out the [docker section](./docker/README.
 
     Run `mvn clean install -DskipTests`
 </details>
-
-## Maintenance
-
-
 
 ## Members
 
