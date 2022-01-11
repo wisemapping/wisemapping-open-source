@@ -17,7 +17,7 @@
     <link rel="stylesheet/less" type="text/css" href="../../css/bootstrap.min.css"/>
     <link rel="stylesheet/less" type="text/css" href="../../css/editor.less"/>
     <script type='text/javascript' src="../../js/less.js"/></script>
-    <%@ include file="/jsp/commonPageHeader.jsf" %>
+    <%@ include file="/jsp/pageHeaders.jsf" %>
 
     <script type="text/javascript">
         var mapId = '${mindmap.id}';

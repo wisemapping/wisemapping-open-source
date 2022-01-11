@@ -13,15 +13,9 @@
     <definition name="mindmapList" template="/jsp/reactInclude.jsp"/>
 
     <!-- Template Declaration -->
-    <definition name="pageTemplate" template="/jsp/template.jsp">
+    <definition name="errorTemplate" template="/jsp/errorTemplate.jsp">
         <put-attribute name="title" value="" type="string"/>
         <put-attribute name="details" value="" type="string"/>
-        <put-attribute name="body" value="/jsp/error.jsp" type="page"/>
-    </definition>
-
-
-    <definition name="errorTemplate" extends="pageTemplate">
-        <put-attribute name="body" value="/jsp/errorTemplate.jsp"/>
     </definition>
 
     <!-- Error Pages -->

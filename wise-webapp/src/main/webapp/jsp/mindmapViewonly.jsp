@@ -12,7 +12,7 @@
     <title><spring:message code="SITE.TITLE"/> | ${mindmap.title} </title>
     <link rel="stylesheet/less" type="text/css" href="../../css/viewonly.less"/>
     <script type='text/javascript' src="../../js/less.js"/></script>
-    <%@ include file="/jsp/commonPageHeader.jsf" %>
+    <%@ include file="/jsp/pageHeaders.jsf" %>
     <script type="text/javascript">
           var mapId = '${mindmap.id}';
           var memoryPersistence = true;

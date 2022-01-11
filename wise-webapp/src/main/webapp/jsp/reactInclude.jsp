@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;600&display=swap" rel="stylesheet" />
 
-    <%@ include file="/jsp/commonPageHeader.jsf" %>
+    <%@ include file="/jsp/pageHeaders.jsf" %>
 
     <title>Loading | WiseMapping</title>
 
