@@ -56,8 +56,8 @@ Check out the [docker section](./docker/README.
 
 ### Founders
 
-   * Paulo Veiga <pablo@wisemapping.com>
-   * Pablo Luna <pveiga@wisemapping.com>
+   * Paulo Veiga <pveiga@wisemapping.com>
+   * Pablo Luna <pablo@wisemapping.com>
 
 ### Individual Contributors
 
