@@ -42,7 +42,7 @@
         </p>
     </div>
      <div class='column'>
-      <div id="icon"></div>
+      <a href="https://www.wisemapping.com"><div id="icon"></div></a>
     </div>
 </div>
 <div id="bottom-logo"></div>
