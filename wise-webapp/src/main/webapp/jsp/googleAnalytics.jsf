@@ -1,6 +1,5 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <c:if test="${requestScope['google.analytics.enabled']}">
-
-
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4996113942657337" crossorigin="anonymous"></script>
 </c:if>
