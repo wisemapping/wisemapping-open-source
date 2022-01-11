@@ -39,9 +39,9 @@ Password: test
 
 In order to reduce the life-cycle to develop UI backend testing, you can do the following hack:
 
-    * Clone [wisemapping-open-source](https://bitbucket.org/wisemapping/wisemapping-open-source/) and [wisemapping-frontend](https://bitbucket.org/wisemapping/wisemapping-frontend/) at the same top level directory
-    * Compile `wisemapping-frontend`. Details for compilation can be found in the `wisemapping-frontend` readme.
-    * Compile `wisemapping-open-source`
+* Clone [wisemapping-open-source](https://bitbucket.org/wisemapping/wisemapping-open-source/) and [wisemapping-frontend](https://bitbucket.org/wisemapping/wisemapping-frontend/) at the same top level directory
+* Compile `wisemapping-frontend`. Details for compilation can be found in the `wisemapping-frontend` readme.
+* Compile `wisemapping-open-source`
 
 A quick and dirty solution to share changes in the UI is to manually compile the dist. This will make the loader file available without the need to publish:
 
@@ -51,21 +51,6 @@ A quick and dirty solution to share changes in the UI is to manually compile the
 ### Compiling and running with docker-compose
 
 Check out the [docker section](./docker/README.
-## Troubleshooting
-
-<details>
-    <summary>
-    <code>mvn package</code> fails with the error <code>java.lang.UnsatisfiedLinkError: Can't load library: /usr/lib/jvm/java-11-openjdk-amd64/lib/libawt_xawt.so</code> in Ubuntu
-    </summary>
-
-    Make sure you have the jdk installed: `sudo apt-get install openjdk-11-jdk`
-</details>
-
-<details>
-    <summary><code>mvn package</code> does not generate the wisemapping.war file </summary>
-
-    Run `mvn clean install -DskipTests`
-</details>
 
 ## Members
 
