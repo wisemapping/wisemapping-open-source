@@ -10,8 +10,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <base href="${requestScope['site.baseurl']}/static/mindplot/">
     <title><spring:message code="SITE.TITLE"/> | ${mindmap.title} </title>
-    <link rel="stylesheet/less" type="text/css" href="../../css/viewonly.less"/>
-    <script type='text/javascript' src="../../js/less.js"/></script>
+    <link rel="stylesheet"  href="../../css/viewonly.css"/>
     <%@ include file="/jsp/pageHeaders.jsf" %>
     <script type="text/javascript">
           var mapId = '${mindmap.id}';

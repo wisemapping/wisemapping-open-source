@@ -1,9 +1,9 @@
-@import "compatibility.less";
+@import "compatibility.css";
 
 /********************************************************************************/
 /* Header & Toolbar Styles */
 /********************************************************************************/
-@import "header.less";
+@import "header.css";
 @import "../bootstrap/css/bootstrap.min.css";
 
 body {
@@ -18,7 +18,7 @@ body {
 
 div#mindplot {
     position: relative;
-    top: @header-toolbar-height;
+    top: 50px;
     left: 0;
     width: 100%;
     height: 100%;

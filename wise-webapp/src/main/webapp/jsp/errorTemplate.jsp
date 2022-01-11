@@ -25,8 +25,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <base href="${requestScope['site.baseurl']}/static/mindplot/">
     <title><spring:message code="SITE.TITLE"/> - <c:out value="${mindmap.title}"/></title>
-    <link rel="stylesheet/less" type="text/css" href="../../css/error.less"/>
-    <script type='text/javascript' src="../../js/less.js"/></script>
+    <link rel="stylesheet" href="../../css/error.css"/>
     <%@ include file="/jsp/pageHeaders.jsf" %>
 
 </head>

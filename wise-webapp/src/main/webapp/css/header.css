@@ -1,8 +1,7 @@
-@header-toolbar-height : 50px;
-
+@import "toolbar.css";
 div#header {
     width: 100%;
-    height:@header-toolbar-height;
+    height:50px;
     position: absolute;
     top: 0;
     z-index:1000;
@@ -69,4 +68,3 @@ div#toolbarRight {
     transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 }
 
-@import "toolbar.less";
