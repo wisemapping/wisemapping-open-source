@@ -31,15 +31,21 @@
 
 </head>
 <body>
-    <div id="errorContainer">
-        <h1>
+<div id="errorContainer">
+    <div class='col'>
+        <h1>Opps !</h1>
+        <h2>
             <spring:message code="${requestScope.title}"/>
         </h2>
         <p>
             <spring:message code="${requestScope.details}"/>
         </p>
     </div>
-    <div id="bottom-logo"></div>
+     <div class='column'>
+      <div id="icon"></div>
+    </div>
+</div>
+<div id="bottom-logo"></div>
 </body>
 </html>
 
