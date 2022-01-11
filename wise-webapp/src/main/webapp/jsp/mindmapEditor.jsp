@@ -61,8 +61,17 @@
         </button>
     </div>
 </div>
+
 <div id="bottom-logo"></div>
 <div id="headerNotifier"></div>
+<%-- Try message dialog --%>
+<c:if test="${memoryPersistence}">
+    <div id="tryInfoPanel">
+        <p><spring:message code="TRY_WELCOME"/></p>
+        <p><b><spring:message code="TRY_WELCOME_DESC"/></b></p>
+        <a href="/c/registration"><div class="actionButton"><spring:message code="SIGN_UP"/></div></a>
+    </div>
+</c:if>
 
 <script src="loader.js"></script>
 

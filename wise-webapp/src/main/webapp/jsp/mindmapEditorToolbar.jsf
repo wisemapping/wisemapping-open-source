@@ -3,14 +3,14 @@
 <div id="toolbar">
     <div id="backToList">
         <img src="../../images/editor/back-icon.svg" />
-    </div>    <div id="editTab" class="tabContent">
-    <div id="persist" class="buttonContainer">
-        <c:if test="${!readOnlyMode}">
+    </div>
+    <c:if test="${!memoryPersistence}">
+        <div id="persist" class="buttonContainer">
             <div id="save" class="buttonOn">
                 <img src="../../images/editor/save.svg"/>
             </div>
-        </c:if>
-    </div>
+        </div>
+    </c:if>
     <c:if test="${!readOnlyMode}">
         <div id="edit" class="buttonContainer">
             <div id="undoEdition" class="buttonOn">
@@ -20,8 +20,6 @@
                 <img src="../../images/editor/redo.svg"/>
             </div>
         </div>
-    </c:if>
-    <c:if test="${!readOnlyMode}">
         <div id="nodeStyle" class="buttonContainer">
             <div id="addTopic" class="buttonOn">
                 <img src="../../images/editor/topic-add.svg"/>
@@ -73,25 +71,25 @@
         <div id="separator" class="buttonContainer"></div>
     </c:if>
 </div>
-<div id="toolbarRight">
-    <div id="export" class="buttonOn">
-        <img src="../../images/editor/export.svg" />
+<c:if test="${!memoryPersistence}">
+    <div id="toolbarRight">
+        <div id="export" class="buttonOn">
+            <img src="../../images/editor/export.svg" />
+        </div>
+        <div id="publishIt" class="buttonOn">
+            <img src="../../images/editor/public.svg" />
+        </div>
+        <div id="history" class="buttonOn">
+            <img src="../../images/editor/history.svg" />
+        </div>
+        <div id="print" class="buttonOn">
+            <img src="../../images/editor/print.svg" />
+        </div>
+        <div id="account">
+            <img src="../../images/editor/account.svg"/>
+        </div>
+        <div id="share" class="actionButton">
+            <spring:message code="SHARE"/>
+        </div>
     </div>
-
-    <div id="publishIt" class="buttonOn">
-        <img src="../../images/editor/public.svg" />
-    </div>
-    <div id="history" class="buttonOn">
-        <img src="../../images/editor/history.svg" />
-    </div>
-    <div id="print" class="buttonOn">
-        <img src="../../images/editor/print.svg" />
-    </div>
-    <div id="account">
-        <img src="../../images/editor/account.svg"/>
-    </div>
-    <div id="share" class="actionButton">
-        Share
-    </div>
-</div>
-</div>
+</c:if>
