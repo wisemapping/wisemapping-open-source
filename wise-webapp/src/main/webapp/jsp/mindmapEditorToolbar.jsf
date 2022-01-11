@@ -70,26 +70,26 @@
         </div>
         <div id="separator" class="buttonContainer"></div>
     </c:if>
+    <c:if test="${!memoryPersistence}">
+        <div id="toolbarRight">
+            <div id="export" class="buttonOn">
+                <img src="../../images/editor/export.svg" />
+            </div>
+            <div id="publishIt" class="buttonOn">
+                <img src="../../images/editor/public.svg" />
+            </div>
+            <div id="history" class="buttonOn">
+                <img src="../../images/editor/history.svg" />
+            </div>
+            <div id="print" class="buttonOn">
+                <img src="../../images/editor/print.svg" />
+            </div>
+            <div id="account">
+                <img src="../../images/editor/account.svg"/>
+            </div>
+            <div id="share" class="actionButton">
+                <spring:message code="SHARE"/>
+            </div>
+        </div>
+    </c:if>
 </div>
-<c:if test="${!memoryPersistence}">
-    <div id="toolbarRight">
-        <div id="export" class="buttonOn">
-            <img src="../../images/editor/export.svg" />
-        </div>
-        <div id="publishIt" class="buttonOn">
-            <img src="../../images/editor/public.svg" />
-        </div>
-        <div id="history" class="buttonOn">
-            <img src="../../images/editor/history.svg" />
-        </div>
-        <div id="print" class="buttonOn">
-            <img src="../../images/editor/print.svg" />
-        </div>
-        <div id="account">
-            <img src="../../images/editor/account.svg"/>
-        </div>
-        <div id="share" class="actionButton">
-            <spring:message code="SHARE"/>
-        </div>
-    </div>
-</c:if>
