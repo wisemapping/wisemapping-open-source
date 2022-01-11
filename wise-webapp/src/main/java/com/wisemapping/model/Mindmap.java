@@ -28,10 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Mindmap {
     private static final String UTF_8 = "UTF-8";
@@ -264,7 +261,7 @@ public class Mindmap {
 
     @NotNull
     public CollaborationProperties findCollaborationProperties(@NotNull Collaborator collaborator) throws WiseMappingException {
-        return this.findCollaborationProperties(collaborator, true);
+        return Objects.requireNonNull(this.findCollaborationProperties(collaborator, true));
     }
 
     @Nullable
