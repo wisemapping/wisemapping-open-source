@@ -62,6 +62,7 @@
 
 <div id="bottom-logo"></div>
 <div id="headerNotifier"></div>
+
 <%-- Try message dialog --%>
 <c:if test="${memoryPersistence}">
     <div id="tryInfoPanel">
