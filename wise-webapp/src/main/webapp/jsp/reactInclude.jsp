@@ -34,17 +34,11 @@
         gtag('js', new Date());
         gtag('config', );
       </script>
+    </c:if>
 
-
+    <c:if test="${requestScope['google.analytics.enabled']}">
       <!-- Google Ads Sense  Config-->
-      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-      <script>
-        (adsbygoogle = window.adsbygoogle || []).push({
-          google_ad_client: '${requestScope['google.adssense.account']}',
-          enable_page_level_ads: true,
-          overlays: { bottom: true }
-        });
-      </script>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4996113942657337" crossorigin="anonymous"></script>
     </c:if>
 </head>
 
