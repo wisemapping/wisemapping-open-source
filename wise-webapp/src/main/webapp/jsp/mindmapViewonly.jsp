@@ -34,7 +34,7 @@
     <span class="title"><spring:message code="DESCRIPTION"/>:</span><span><c:out value="${mindmap.title}"/></span>
 </div>
 
-<script src="loader.js"></script>
+<script type="text/javascript" src="<c:out value="${requestScope['site.static.js.url']}"/>loader.js"></script>
 
 <div id="floating-panel">
     <div id="zoom-button">
