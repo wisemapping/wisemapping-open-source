@@ -72,7 +72,8 @@
     </div>
 </c:if>
 
-<script src="loader.js"></script>
+<script type="text/javascript" src="<c:out value="${requestScope['site.static.js.url']}"/>loader.js"></script>
+
 
 </body>
 </html>

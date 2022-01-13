@@ -34,8 +34,9 @@
 <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <script src="vendors.bundle.js"></script>
-    <script src="app.bundle.js"></script>
+
+    <script type="text/javascript" src="<c:out value="${requestScope['site.static.js.url']}"/>vendors.bundle.js"></script>
+    <script type="text/javascript" src="<c:out value="${requestScope['site.static.js.url']}"/>app.bundle.js"></script>
 </body>
 
 </html>

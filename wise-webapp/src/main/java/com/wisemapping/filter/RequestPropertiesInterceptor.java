@@ -36,6 +36,9 @@ public class RequestPropertiesInterceptor extends HandlerInterceptorAdapter {
     @Value("${google.recaptcha2.enabled}")
     private Boolean recaptcha2Enabled;
 
+    @Value("${site.static.js.url}")
+    private String siteStaticUrl;
+
     @Value("${google.recaptcha2.siteKey}")
     private String recaptcha2SiteKey;
 
@@ -61,6 +64,8 @@ public class RequestPropertiesInterceptor extends HandlerInterceptorAdapter {
         request.setAttribute("google.recaptcha2.siteKey", recaptcha2SiteKey);
 
         request.setAttribute("site.homepage", siteHomepage);
+        request.setAttribute("site.static.js.url", siteStaticUrl);
+
         request.setAttribute("security.type", securityType);
 
         // If the property could not be resolved, try to infer one from the request...
