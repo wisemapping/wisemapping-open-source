@@ -20,13 +20,13 @@ package com.wisemapping.filter;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-public class RequestPropertiesInterceptor extends HandlerInterceptorAdapter {
+public class RequestPropertiesInterceptor implements HandlerInterceptor {
     @Value("${google.analytics.enabled}")
     private Boolean analyticsEnabled;
 
@@ -54,6 +54,7 @@ public class RequestPropertiesInterceptor extends HandlerInterceptorAdapter {
     @Value("${security.type}")
     private String securityType;
 
+    @Override
     public boolean preHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, Object object) throws Exception {
 
         request.setAttribute("google.analytics.enabled", analyticsEnabled);

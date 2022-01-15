@@ -72,7 +72,7 @@
     </div>
 </c:if>
 
-<script type="text/javascript" src="<c:out value="${requestScope['site.static.js.url']}"/>loader.js"></script>
+<script type="text/javascript" src="${requestScope['site.static.js.url']}/mindplot/loader.js"></script>
 
 
 </body>

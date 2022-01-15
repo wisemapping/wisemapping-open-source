@@ -21,6 +21,7 @@ package com.wisemapping.filter;
 import com.wisemapping.model.User;
 import com.wisemapping.security.Utils;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
@@ -29,8 +30,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
-public class UserLocaleInterceptor extends HandlerInterceptorAdapter {
+public class UserLocaleInterceptor implements HandlerInterceptor {
 
+    @Override
     public boolean preHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, Object object) throws Exception {
 
         final HttpSession session = request.getSession(false);

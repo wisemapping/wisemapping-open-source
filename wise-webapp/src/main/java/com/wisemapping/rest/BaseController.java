@@ -19,7 +19,6 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.ClientException;
-import com.wisemapping.exceptions.ImportUnexpectedException;
 import com.wisemapping.exceptions.Severity;
 import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.User;
@@ -62,15 +61,6 @@ public class BaseController {
     public RestErrors handleClientErrors(@NotNull IllegalArgumentException ex) {
         logger.error(ex.getMessage(), ex);
         return new RestErrors(ex.getMessage(), Severity.WARNING);
-    }
-
-    @ExceptionHandler(ImportUnexpectedException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ResponseBody
-    public RestErrors handleImportErrors(@NotNull ImportUnexpectedException ex, @NotNull HttpServletRequest request) {
-        final User user = Utils.getUser();
-        notificationService.reportJavaException(ex, user, new String(ex.getFreemindXml()), request);
-        return new RestErrors(ex.getMessage(), Severity.SEVERE);
     }
 
     @ExceptionHandler(ValidationException.class)

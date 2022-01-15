@@ -60,19 +60,6 @@ public class MindmapController {
         return "mindmapPrint";
     }
 
-    @RequestMapping(value = "maps/{id}/share")
-    public String showSharePage(@PathVariable int id, @NotNull Model model) throws MapCouldNotFoundException {
-        final Mindmap mindmap = findMindmap(id);
-        model.addAttribute("mindmap", mindmap);
-        return "mindmapShare";
-    }
-
-    @RequestMapping(value = "maps/{id}/sharef")
-    public String showSharePageFull(@PathVariable int id, @NotNull Model model) throws MapCouldNotFoundException {
-        showSharePage(id, model);
-        return "mindmapShareFull";
-    }
-
     @RequestMapping(value = "maps/")
     public String showListPage(@NotNull Model model) {
         return "mindmapList";
