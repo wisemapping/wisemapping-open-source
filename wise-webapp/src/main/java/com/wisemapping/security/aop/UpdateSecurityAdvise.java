@@ -30,11 +30,13 @@ public class UpdateSecurityAdvise
         extends BaseSecurityAdvice
         implements MethodInterceptor {
 
+    @Override
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
         checkRole(methodInvocation);
         return methodInvocation.proceed();
     }
 
+    @Override
     protected boolean isAllowed(@Nullable User user, @NotNull Mindmap map) {
         boolean result;
         if (map.getCreator() == null) {
@@ -46,6 +48,7 @@ public class UpdateSecurityAdvise
         return result;
     }
 
+    @Override
     protected boolean isAllowed(@Nullable User user, int mapId) {
         return getMindmapService().hasPermissions(user, mapId, CollaborationRole.EDITOR);
     }

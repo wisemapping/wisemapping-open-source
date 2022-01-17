@@ -20,10 +20,19 @@ package com.wisemapping.model;
 
 import org.jetbrains.annotations.NotNull;
 
-public class CollaborationProperties {
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity
+@Table(name = "COLLABORATION_PROPERTIES")
+public class CollaborationProperties implements Serializable  {
     public static final String DEFAULT_JSON_PROPERTIES = "{zoom:0.8}";
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private boolean starred;
+    @Column(name = "mindmap_properties")
     private String mindmapProperties;
 
     public CollaborationProperties() {

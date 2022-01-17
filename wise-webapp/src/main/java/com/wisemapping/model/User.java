@@ -21,11 +21,15 @@ package com.wisemapping.model;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
+@Entity
+@Table(name = "USER")
+@PrimaryKeyJoinColumn(name="colaborator_id")
 public class User
         extends Collaborator
         implements Serializable {
@@ -33,15 +37,27 @@ public class User
     private String firstname;
     private String lastname;
     private String password;
-    private long activationCode;
-    private Calendar activationDate;
-    private Set<String> tags = new HashSet<String>();
-    private boolean allowSendEmail = false;
     private String locale;
-    private AuthenticationType authenticationType;
 
+    @Column(name = "activation_code")
+    private long activationCode;
 
+    @Column(name = "activation_date")
+    private Calendar activationDate;
+
+    @Column(name = "allow_send_email")
+    private boolean allowSendEmail = false;
+
+    @Column(name="authentication_type")
+    private Character authenticationTypeCode = AuthenticationType.DATABASE.getCode();
+
+    @Column(name="authenticator_uri")
     private String authenticatorUri;
+
+    @ElementCollection
+    @CollectionTable(name = "TAG", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "name")
+    private Set<String> tags = new HashSet<>();
 
     public User() {
     }
@@ -118,25 +134,24 @@ public class User
         this.locale = locale;
     }
 
-    public char getAutheticationTypeCode() {
-        // Default authentication is database ....
-        return this.authenticationType != null ? this.authenticationType.getCode() : AuthenticationType.DATABASE.getCode();
+    public char getAuthenticationTypeCode() {
+        return this.authenticationTypeCode;
     }
 
-    public void setAutheticationTypeCode(char code) {
-        this.authenticationType = AuthenticationType.valueOf(code);
+    public void setAuthenticationTypeCode(char code) {
+        this.authenticationTypeCode = code;
     }
 
     public AuthenticationType getAuthenticationType() {
-        return authenticationType;
+        return authenticationTypeCode!=null ? AuthenticationType.valueOf(authenticationTypeCode):AuthenticationType.DATABASE;
     }
 
     public void setAuthenticationType(@NotNull AuthenticationType authenticationType) {
-        this.authenticationType = authenticationType;
+        this.authenticationTypeCode = authenticationType.getCode();
     }
 
     public boolean isDatabaseSchema(){
-        return this.authenticationType == AuthenticationType.DATABASE;
+        return this.getAuthenticationType() == AuthenticationType.DATABASE;
     }
 
     public String getAuthenticatorUri() {

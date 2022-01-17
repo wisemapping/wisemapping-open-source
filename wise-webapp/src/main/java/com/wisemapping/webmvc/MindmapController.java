@@ -154,7 +154,7 @@ public class MindmapController {
     }
 
     @NotNull
-    private Mindmap findMindmap(long mapId) throws MapCouldNotFoundException {
+    private Mindmap findMindmap(int mapId) throws MapCouldNotFoundException {
         final Mindmap result = mindmapService.findMindmapById((int) mapId);
         if (result == null) {
             throw new MapCouldNotFoundException("Map could not be found " + mapId);
@@ -164,7 +164,7 @@ public class MindmapController {
     }
 
     @NotNull
-    private MindMapBean findMindmapBean(long mapId) throws MapCouldNotFoundException {
+    private MindMapBean findMindmapBean(int mapId) throws MapCouldNotFoundException {
         final Mindmap mindmap = findMindmap(mapId);
         return new MindMapBean(mindmap, Utils.getUser());
     }

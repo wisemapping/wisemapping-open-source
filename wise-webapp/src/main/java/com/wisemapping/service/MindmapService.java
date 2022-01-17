@@ -28,12 +28,10 @@ import java.util.List;
 
 public interface MindmapService {
 
-    String TAG_SEPARATOR = " ";
-
     @Nullable
     Mindmap findMindmapById(int id);
 
-    Mindmap getMindmapByTitle(String title, User user);
+    Mindmap getMindmapByTitle(@NotNull  String title, User user);
 
     List<Collaboration> findCollaborations(@NotNull User user);
 

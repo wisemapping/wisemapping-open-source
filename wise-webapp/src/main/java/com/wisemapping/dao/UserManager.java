@@ -31,7 +31,7 @@ public interface UserManager {
 
     User getUserBy(String email);
 
-    User getUserBy(long id);
+    User getUserBy(int id);
 
     void createUser(User user);
 

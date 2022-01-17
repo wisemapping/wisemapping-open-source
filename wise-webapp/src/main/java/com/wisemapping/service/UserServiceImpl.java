@@ -181,7 +181,7 @@ public class UserServiceImpl
 
     @Override
     @Nullable
-    public User getUserBy(long id) {
+    public User getUserBy(int id) {
         return userManager.getUserBy(id);
     }
 

@@ -4,15 +4,27 @@ package com.wisemapping.model;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class Label {
+import javax.persistence.*;
+import java.io.Serializable;
 
-    //~ Instance fields ......................................................................................
+@Entity
+@Table(name = "LABEL")
+public class Label implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @NotNull private String title;
-    @NotNull private User creator;
-    @Nullable private Label parent;
     @NotNull private String color;
     @NotNull private String iconName;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="creator_id",nullable = true,unique = true)
+    @NotNull private User creator;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="parent_label_id",nullable = true)
+    @Nullable private Label parent;
 
     public void setParent(@Nullable Label parent) {
         this.parent = parent;
@@ -80,11 +92,11 @@ public class Label {
 
     @Override
     public int hashCode() {
-        int result = id;
+        long result = id;
         result = 31 * result + title.hashCode();
         result = 31 * result + creator.hashCode();
         result = 31 * result + (parent != null ? parent.hashCode() : 0);
-        return result;
+        return (int) result;
     }
 
 }

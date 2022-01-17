@@ -30,15 +30,18 @@ public class ViewBaseSecurityAdvise
         extends BaseSecurityAdvice
         implements MethodInterceptor {
 
+    @Override
     public Object invoke(@NotNull MethodInvocation methodInvocation) throws Throwable {
         checkRole(methodInvocation);
         return methodInvocation.proceed();
     }
 
+    @Override
     protected boolean isAllowed(@Nullable User user, Mindmap map) {
         return getMindmapService().hasPermissions(user, map, CollaborationRole.VIEWER);
     }
 
+    @Override
     protected boolean isAllowed(@Nullable User user, int mapId) {
         return getMindmapService().hasPermissions(user, mapId, CollaborationRole.VIEWER);
     }

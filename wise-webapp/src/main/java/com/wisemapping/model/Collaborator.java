@@ -18,20 +18,33 @@
 
 package com.wisemapping.model;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
 
+@Entity
+@Table(name = "COLLABORATOR")
+@Inheritance(strategy = InheritanceType.JOINED)
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Collaborator implements Serializable {
-    private long id;
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private int id;
     private String email;
+
+    @Column(name = "creation_date")
     private Calendar creationDate;
-    private Set<Collaboration> collaborations = new HashSet<Collaboration>();
+
+    @OneToMany(mappedBy="collaborator")
+    private Set<Collaboration> collaborations = new HashSet<>();
 
     public Collaborator() {
     }
@@ -52,11 +65,11 @@ public class Collaborator implements Serializable {
         return collaborations;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -89,7 +102,7 @@ public class Collaborator implements Serializable {
 
     @Override
     public int hashCode() {
-        long id = this.getId();
+        int id = this.getId();
         String email = this.getEmail();
 
         int result = (int) (id ^ (id >>> 32));

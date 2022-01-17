@@ -18,7 +18,10 @@
 
 package com.wisemapping.rest;
 
-import com.wisemapping.exceptions.*;
+import com.wisemapping.exceptions.LabelCouldNotFoundException;
+import com.wisemapping.exceptions.MapCouldNotFoundException;
+import com.wisemapping.exceptions.SessionExpiredException;
+import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.*;
 import com.wisemapping.rest.model.*;
 import com.wisemapping.security.Utils;
@@ -33,10 +36,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -71,8 +72,9 @@ public class MindmapController extends BaseController {
 
         final MindmapFilter filter = MindmapFilter.parse(q);
         final List<Collaboration> collaborations = mindmapService.findCollaborations(user);
+        logger.debug("Collaborators list: " + collaborations.size());
 
-        final List<Mindmap> mindmaps = new ArrayList<Mindmap>();
+        final List<Mindmap> mindmaps = new ArrayList<>();
         for (Collaboration collaboration : collaborations) {
             final Mindmap mindmap = collaboration.getMindMap();
             if (filter.accept(mindmap, user)) {
@@ -83,7 +85,7 @@ public class MindmapController extends BaseController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}/history", produces = {"application/json", "application/xml"})
-    public RestMindmapHistoryList retrieveHistory(@PathVariable int id) throws IOException {
+    public RestMindmapHistoryList retrieveHistory(@PathVariable int id) {
         final List<MindMapHistory> histories = mindmapService.findMindmapHistory(id);
         final RestMindmapHistoryList result = new RestMindmapHistoryList();
         for (MindMapHistory history : histories) {
@@ -301,7 +303,7 @@ public class MindmapController extends BaseController {
         }
 
         // Compare one by one if some of the elements has been changed ....
-        final Set<Collaboration> collabsToRemove = new HashSet<Collaboration>(mindMap.getCollaborations());
+        final Set<Collaboration> collabsToRemove = new HashSet<>(mindMap.getCollaborations());
         for (RestCollaboration restCollab : restCollabs.getCollaborations()) {
             final Collaboration collaboration = mindMap.findCollaboration(restCollab.getEmail());
             // Validate role format ...
@@ -385,7 +387,7 @@ public class MindmapController extends BaseController {
         final Mindmap mindMap = findMindmapById(id);
 
         final Set<Collaboration> collaborations = mindMap.getCollaborations();
-        final List<RestCollaboration> collabs = new ArrayList<RestCollaboration>();
+        final List<RestCollaboration> collabs = new ArrayList<>();
         for (Collaboration collaboration : collaborations) {
             collabs.add(new RestCollaboration(collaboration));
         }

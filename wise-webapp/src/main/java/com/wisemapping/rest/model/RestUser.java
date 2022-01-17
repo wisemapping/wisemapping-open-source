@@ -77,11 +77,11 @@ public class RestUser {
         user.setLastname(lastname);
     }
 
-    public long getId() {
+    public int getId() {
         return user.getId();
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         user.setId(id);
     }
 

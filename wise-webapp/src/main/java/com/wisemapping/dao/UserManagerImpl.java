@@ -83,7 +83,8 @@ public class UserManagerImpl
     }
 
     @Nullable
-    public User getUserBy(long id) {
+    @Override
+    public User getUserBy(int id) {
         User user = null;
         try {
             user = getHibernateTemplate().get(User.class, id);

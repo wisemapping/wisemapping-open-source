@@ -150,12 +150,12 @@ public class MindmapManagerImpl
     }
 
     @Override
-    public Collaborator findCollaborator(long id) {
+    public Collaborator findCollaborator(int id) {
         return getHibernateTemplate().get(Collaborator.class, id);
     }
 
     @Override
-    public List<Collaboration> findCollaboration(final long collaboratorId) {
+    public List<Collaboration> findCollaboration(final int collaboratorId) {
         Query query = currentSession().createQuery("from com.wisemapping.model.Collaboration collaboration where colaborator_id=:colaboratorId");
         query.setParameter("colaboratorId", collaboratorId);
         return query.list();

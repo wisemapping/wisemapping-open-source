@@ -168,7 +168,7 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public void addMindmap(@NotNull Mindmap map, @NotNull User user) throws WiseMappingException {
+    public void addMindmap(@NotNull Mindmap map, @NotNull User user) {
 
         final String title = map.getTitle();
 

@@ -1,20 +1,20 @@
 /*
-*    Copyright [2015] [wisemapping]
-*
-*   Licensed under WiseMapping Public License, Version 1.0 (the "License").
-*   It is basically the Apache License, Version 2.0 (the "License") plus the
-*   "powered by wisemapping" text requirement on every single page;
-*   you may not use this file except in compliance with the License.
-*   You may obtain a copy of the license at
-*
-*       http://www.wisemapping.org/license
-*
-*   Unless required by applicable law or agreed to in writing, software
-*   distributed under the License is distributed on an "AS IS" BASIS,
-*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*   See the License for the specific language governing permissions and
-*   limitations under the License.
-*/
+ *    Copyright [2015] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 
 package com.wisemapping.model;
 
@@ -25,29 +25,55 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.persistence.*;
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-public class Mindmap {
-    private static final String UTF_8 = "UTF-8";
+@Entity
+@Table(name = "MINDMAP")
+public class Mindmap implements Serializable  {
 
-    //~ Instance fields ......................................................................................
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    
+    @Column(name = "creation_date")
     private Calendar creationTime;
-    private String description;
 
-    private boolean isPublic;
+    @Column(name = "edition_date")
     private Calendar lastModificationTime;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "creator_id", unique = true, nullable = true)
+    private User creator;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "last_editor_id", unique = false, nullable = false)
     private User lastEditor;
 
-    private Set<Collaboration> collaborations = new HashSet<Collaboration>();
+    private String description;
+
+    @Column(name = "public")
+    private boolean isPublic;
+
+    @OneToMany(mappedBy="mindMap",orphanRemoval = true, cascade = {CascadeType.ALL},fetch = FetchType.LAZY)
+    private Set<Collaboration> collaborations = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "R_LABEL_MINDMAP",
+            joinColumns = @JoinColumn(name = "mindmap_id"),
+            inverseJoinColumns = @JoinColumn(name = "label_id"))
     private Set<Label> labels = new LinkedHashSet<>();
 
-    private User creator;
     private String tags;
     private String title;
+
+    @Column(name = "xml")
+    @Basic(fetch = FetchType.LAZY)
     private byte[] zippedXml;
 
     //~ Constructors .........................................................................................
@@ -114,7 +140,8 @@ public class Mindmap {
         collaborations.add(collaboration);
     }
 
-    @NotNull public Set<Label> getLabels() {
+    @NotNull
+    public Set<Label> getLabels() {
         return labels;
     }
 
@@ -317,7 +344,7 @@ public class Mindmap {
         return result;
 
     }
-    //creo que no se usa mas
+
     public boolean hasLabel(@NotNull final String name) {
         for (Label label : this.labels) {
             if (label.getTitle().equals(name)) {
@@ -327,7 +354,8 @@ public class Mindmap {
         return false;
     }
 
-    @Nullable public Label findLabel(int labelId) {
+    @Nullable
+    public Label findLabel(int labelId) {
         Label result = null;
         for (Label label : this.labels) {
             if (label.getId() == labelId) {

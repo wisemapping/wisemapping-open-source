@@ -55,7 +55,7 @@ public class CollaboratorBean {
         return collaborator.getEmail();
     }
 
-    public long getId() {
+    public int getId() {
         return collaborator.getId();
     }
 }

@@ -44,7 +44,7 @@ public class LabelController extends BaseController {
 
         // Return the new created label ...
         response.setHeader("Location", "/service/labels/" + label.getId());
-        response.setHeader("ResourceId", Integer.toString(label.getId()));
+        response.setHeader("ResourceId", Long.toString(label.getId()));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/labels", produces = {"application/json", "application/xml"})

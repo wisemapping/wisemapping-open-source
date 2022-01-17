@@ -32,7 +32,7 @@ public interface UserService {
 
     User getUserBy(String email);
 
-    User getUserBy(long id);
+    User getUserBy(int id);
 
     void updateUser(User user);
 

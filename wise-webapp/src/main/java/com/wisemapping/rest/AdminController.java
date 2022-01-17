@@ -52,7 +52,7 @@ public class AdminController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "admin/users/{id}", produces = {"application/json", "application/xml"})
     @ResponseBody
-    public RestUser getUserById(@PathVariable long id) throws IOException {
+    public RestUser getUserById(@PathVariable int id) throws IOException {
         final User userBy = userService.getUserBy(id);
         if (userBy == null) {
             throw new IllegalArgumentException("User could not be found");
@@ -109,7 +109,7 @@ public class AdminController extends BaseController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "admin/users/{id}/password", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void changePassword(@RequestBody  String password, @PathVariable long id) throws WiseMappingException {
+    public void changePassword(@RequestBody  String password, @PathVariable int id) throws WiseMappingException {
         if (password == null) {
             throw new IllegalArgumentException("Password can not be null");
         }
@@ -124,7 +124,7 @@ public class AdminController extends BaseController {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "admin/users/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteUserByEmail(@PathVariable long id) throws WiseMappingException {
+    public void deleteUserByEmail(@PathVariable int id) throws WiseMappingException {
         final User user = userService.getUserBy(id);
         if (user == null) {
             throw new IllegalArgumentException("User '" + id + "' could not be found");
