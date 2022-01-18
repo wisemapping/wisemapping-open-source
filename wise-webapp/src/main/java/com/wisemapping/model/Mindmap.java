@@ -59,7 +59,7 @@ public class Mindmap implements Serializable  {
     @Column(name = "public")
     private boolean isPublic;
 
-    @OneToMany(mappedBy="mindMap",orphanRemoval = true, cascade = {CascadeType.ALL},fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="mindMap",orphanRemoval = true, cascade = {CascadeType.ALL})
     private Set<Collaboration> collaborations = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL)
