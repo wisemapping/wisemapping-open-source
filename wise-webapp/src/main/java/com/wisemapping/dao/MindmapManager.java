@@ -69,4 +69,6 @@ public interface MindmapManager {
     void updateCollaboration(@NotNull Collaboration collaboration);
 
     void purgeHistory(int mapId) throws IOException;
+
+    List<Mindmap> findMindmapByUser(User user);
 }

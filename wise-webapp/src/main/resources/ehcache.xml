@@ -8,4 +8,7 @@
     <cache name="com.wisemapping.model.User"
            maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
            timeToLiveSeconds="3600" overflowToDisk="false"/>
+    <cache name="com.wisemapping.model.Label"
+           maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
+           timeToLiveSeconds="3600" overflowToDisk="false"/>
 </ehcache>

@@ -20,9 +20,9 @@ package com.wisemapping.service;
 
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.*;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.List;
 
@@ -30,6 +30,9 @@ public interface MindmapService {
 
     @Nullable
     Mindmap findMindmapById(int id);
+
+    @NotNull
+    List<Mindmap> findMindmapsByUser(@NotNull User user);
 
     Mindmap getMindmapByTitle(@NotNull  String title, User user);
 
@@ -65,8 +68,4 @@ public interface MindmapService {
     boolean isAdmin(@Nullable User user);
 
     void purgeHistory(int mapId) throws IOException;
-
-    void linkLabel(@NotNull final Mindmap mindmap, @NotNull final Label label);
-
-    void removeLabel(@NotNull final Mindmap mindmap, @NotNull final Label label);
 }

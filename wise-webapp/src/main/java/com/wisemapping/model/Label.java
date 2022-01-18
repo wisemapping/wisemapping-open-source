@@ -1,6 +1,7 @@
 package com.wisemapping.model;
 
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -9,6 +10,8 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "LABEL")
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Label implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +19,7 @@ public class Label implements Serializable {
 
     @NotNull private String title;
     @NotNull private String color;
-    @NotNull private String iconName;
+    @Nullable private String iconName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="creator_id",nullable = true,unique = true)
@@ -70,7 +73,7 @@ public class Label implements Serializable {
         this.color = color;
     }
 
-    @NotNull
+    @Nullable
     public String getIconName() {
         return iconName;
     }
@@ -94,7 +97,7 @@ public class Label implements Serializable {
     public int hashCode() {
         long result = id;
         result = 31 * result + title.hashCode();
-        result = 31 * result + creator.hashCode();
+        result = 31 * result + (creator!=null?creator.hashCode():0);
         result = 31 * result + (parent != null ? parent.hashCode() : 0);
         return (int) result;
     }

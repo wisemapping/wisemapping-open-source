@@ -47,11 +47,11 @@ public class Mindmap implements Serializable  {
     private Calendar lastModificationTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "creator_id", unique = true, nullable = true)
+    @JoinColumn(name = "creator_id", unique = true)
     private User creator;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "last_editor_id", unique = false, nullable = false)
+    @JoinColumn(name = "last_editor_id", nullable = false)
     private User lastEditor;
 
     private String description;
@@ -62,14 +62,13 @@ public class Mindmap implements Serializable  {
     @OneToMany(mappedBy="mindMap",orphanRemoval = true, cascade = {CascadeType.ALL},fetch = FetchType.LAZY)
     private Set<Collaboration> collaborations = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "R_LABEL_MINDMAP",
             joinColumns = @JoinColumn(name = "mindmap_id"),
             inverseJoinColumns = @JoinColumn(name = "label_id"))
     private Set<Label> labels = new LinkedHashSet<>();
 
-    private String tags;
     private String title;
 
     @Column(name = "xml")
@@ -153,16 +152,11 @@ public class Mindmap implements Serializable  {
         this.labels.add(label);
     }
 
-    @Nullable
-    public Collaboration findCollaboration(@NotNull Collaborator collaborator) {
-        Collaboration result = null;
-        for (Collaboration collaboration : collaborations) {
-            if (collaboration.getCollaborator().identityEquality(collaborator)) {
-                result = collaboration;
-                break;
-            }
-        }
-        return result;
+    public Optional<Collaboration> findCollaboration(@NotNull Collaborator collaborator) {
+        return this.collaborations
+                .stream()
+                .filter(c->c.getCollaborator().identityEquality(collaborator))
+                .findAny();
     }
 
     @Nullable
@@ -228,29 +222,19 @@ public class Mindmap implements Serializable  {
     public String getXmlAsJsLiteral()
             throws IOException {
         String xml = this.getXmlStr();
-        if (xml != null) {
-            xml = xml.replace("'", "\\'");
-            xml = xml.replace("\n", "\\n");
-            xml = xml.replace("\r", "");
 
-            xml = xml.replace("\\b", "\\\\b");
-            xml = xml.replace("\\t", "\\\\t");
-            xml = xml.replace("\\r", "\\\\r");
-            xml = xml.replace("\\f", "\\\\f");
+        xml = xml.replace("'", "\\'");
+        xml = xml.replace("\n", "\\n");
+        xml = xml.replace("\r", "");
 
-            xml = xml.trim();
-        }
+        xml = xml.replace("\\b", "\\\\b");
+        xml = xml.replace("\\t", "\\\\t");
+        xml = xml.replace("\\r", "\\\\r");
+        xml = xml.replace("\\f", "\\\\f");
+        xml = xml.trim();
         return xml;
     }
 
-
-    public void setTags(String tags) {
-        this.tags = tags;
-    }
-
-    public String getTags() {
-        return tags;
-    }
 
     public String getDescription() {
         return description;
@@ -276,9 +260,10 @@ public class Mindmap implements Serializable  {
         return creator;
     }
 
+    @Nullable
     private CollaborationProperties findUserProperty(@NotNull Collaborator collaborator) {
-        final Collaboration collaboration = this.findCollaboration(collaborator);
-        return collaboration != null ? collaboration.getCollaborationProperties() : null;
+        final Optional<Collaboration> collaboration = this.findCollaboration(collaborator);
+        return collaboration.map(Collaboration::getCollaborationProperties).orElse(null);
     }
 
     public void setStarred(@NotNull Collaborator collaborator, boolean value) throws WiseMappingException {
@@ -297,10 +282,10 @@ public class Mindmap implements Serializable  {
             throw new IllegalStateException("Collaborator can not be null");
         }
 
-        final Collaboration collaboration = this.findCollaboration(collaborator);
+        final Optional<Collaboration> collaboration = this.findCollaboration(collaborator);
         CollaborationProperties result = null;
-        if (collaboration != null) {
-            result = collaboration.getCollaborationProperties();
+        if (collaboration.isPresent()) {
+            result = collaboration.get().getCollaborationProperties();
         } else {
             if (forceCheck)
                 throw new AccessDeniedSecurityException("Collaborator " + collaborator.getEmail() + " could not access " + this.getId());
@@ -328,7 +313,6 @@ public class Mindmap implements Serializable  {
         result.setDescription(this.getDescription());
         result.setTitle(this.getTitle());
         result.setUnzipXml(this.getUnzipXml());
-        result.setTags(this.getTags());
 
         return result;
     }
@@ -336,9 +320,9 @@ public class Mindmap implements Serializable  {
     public boolean hasPermissions(@Nullable Collaborator collaborator, @NotNull CollaborationRole role) {
         boolean result = false;
         if (collaborator != null) {
-            final Collaboration collaboration = this.findCollaboration(collaborator);
-            if (collaboration != null) {
-                result = collaboration.hasPermissions(role);
+            final Optional<Collaboration> collaboration = this.findCollaboration(collaborator);
+            if (collaboration.isPresent()) {
+                result = collaboration.get().hasPermissions(role);
             }
         }
         return result;

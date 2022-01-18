@@ -10,6 +10,7 @@ import org.springframework.http.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.testng.Assert;
+import org.testng.SkipException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -35,10 +36,10 @@ public class RestLabelITCase {
         userEmail = restAdminITCase.createNewUser(MediaType.APPLICATION_JSON);
     }
 
-    @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
     public void createLabel(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
         final HttpHeaders requestHeaders = RestHelper.createHeaders(mediaType);
-        final RestTemplate template = RestHelper.createTemplate( userEmail + ":" + "admin");
+        final RestTemplate template = RestHelper.createTemplate(userEmail + ":" + "admin");
 
         // Create a new label
         final String title1 = "Label 1  - " + mediaType.toString();
@@ -74,17 +75,17 @@ public class RestLabelITCase {
         return response.getBody();
     }
 
-    @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
     public void createLabelWithoutRequiredField(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {
         final HttpHeaders requestHeaders = RestHelper.createHeaders(mediaType);
-        final RestTemplate template = RestHelper.createTemplate( userEmail + ":" + "admin");
+        final RestTemplate template = RestHelper.createTemplate(userEmail + ":" + "admin");
 
         try {
             addNewLabel(requestHeaders, template, null, COLOR, ICON);
             fail("Wrong response");
         } catch (HttpClientErrorException e) {
             final String responseBodyAsString = e.getResponseBodyAsString();
-            assertTrue (responseBodyAsString.contains("Required field cannot be left blank"));
+            assertTrue(responseBodyAsString.contains("Required field cannot be left blank"));
         }
 
         try {
@@ -102,13 +103,17 @@ public class RestLabelITCase {
             final String responseBodyAsString = e.getResponseBodyAsString();
             assert (responseBodyAsString.contains("Required field cannot be left blank"));
         }
-
     }
 
-    @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
+    public void validateLabelsUserIsolation(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
+        throw new SkipException("missing test: labels belong to users");
+    }
+
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
     public void deleteLabel(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {
         final HttpHeaders requestHeaders = RestHelper.createHeaders(mediaType);
-        final RestTemplate template = RestHelper.createTemplate( userEmail + ":" + "admin");
+        final RestTemplate template = RestHelper.createTemplate(userEmail + ":" + "admin");
 
         final String title = "title to delete";
         final URI resourceUri = addNewLabel(requestHeaders, template, title, COLOR, ICON);

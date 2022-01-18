@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @XmlRootElement(name = "maps")
 @XmlAccessorType(XmlAccessType.PROPERTY)
@@ -47,10 +48,9 @@ public class RestMindmapList {
     }
 
     public RestMindmapList(@NotNull List<Mindmap> mindmaps, @NotNull Collaborator collaborator) {
-        this.mindmapsInfo = new ArrayList<>(mindmaps.size());
-        for (Mindmap mindMap : mindmaps) {
-            this.mindmapsInfo.add(new RestMindmapInfo(mindMap, collaborator));
-        }
+        this.mindmapsInfo = mindmaps.stream()
+                .map(m->new RestMindmapInfo(m, collaborator))
+                .collect(Collectors.toList());
     }
 
     public int getCount() {

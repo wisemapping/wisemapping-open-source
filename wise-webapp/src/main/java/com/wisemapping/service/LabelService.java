@@ -15,7 +15,7 @@ public interface LabelService {
     @NotNull List<Label> getAll(@NotNull final User user);
 
     @Nullable
-    Label getLabelById(int id, @NotNull final User user);
+    Label findLabelById(int id, @NotNull final User user);
 
     Label getLabelByTitle(@NotNull String title, @NotNull final User user);
 
