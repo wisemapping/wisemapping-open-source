@@ -15,16 +15,6 @@
     <context:component-scan base-package="com.wisemapping.rest"/>
     <context:annotation-config/>
 
-    <!-- Interceptors Registration -->
-    <mvc:interceptors>
-        <bean id="webContentInterceptor" class="org.springframework.web.servlet.mvc.WebContentInterceptor">
-            <property name="cacheSeconds" value="0"/>
-            <property name="useExpiresHeader" value="true"/>
-            <property name="useCacheControlHeader" value="true"/>
-            <property name="useCacheControlNoStore" value="true"/>
-        </bean>
-    </mvc:interceptors>
-
     <mvc:annotation-driven>
         <mvc:message-converters>
             <bean class="com.wisemapping.rest.DebugMappingJacksonHttpMessageConverter"/>
@@ -55,22 +45,11 @@
         <property name="favorParameter" value="true"/>
         <property name="parameterName" value="mediaType"/>
         <property name="defaultContentType" value="application/json" />
-        <property name="useJaf" value="false" />
 
         <property name="mediaTypes">
             <map>
                 <entry key="xml" value="application/xml"/>
                 <entry key="json" value="application/json"/>
-                <entry key="freemind" value="application/freemind"/>
-                <entry key="pdf" value="application/pdf"/>
-                <entry key="png" value="image/png"/>
-                <entry key="jpg" value="image/jpeg"/>
-                <entry key="svg" value="image/svg+xml"/>
-                <entry key="wxml" value="application/wisemapping+xml"/>
-                <entry key="txt" value="text/plain"/>
-                <entry key="xls" value="application/vnd.ms-excel"/>
-                <entry key="otd" value="application/vnd.oasis.opendocument.text"/>
-                <entry key="mmap" value="application/vnd.mindjet.mindmanager"/>
             </map>
         </property>
     </bean>
