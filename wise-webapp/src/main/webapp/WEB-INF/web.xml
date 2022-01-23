@@ -25,6 +25,7 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             /WEB-INF/wisemapping-aop.xml
+            /WEB-INF/wisemapping-datasource.xml
             /WEB-INF/wisemapping-dao.xml
             /WEB-INF/wisemapping-service.xml
             /WEB-INF/wisemapping-model.xml

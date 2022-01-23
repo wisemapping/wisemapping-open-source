@@ -1,7 +1,7 @@
 # Overview
 
-WiseMapping is a free web based *mind map* product. The goal of this project is to provide a high quality product that can be deployed by enterprises, educational and academic institutions. 
-WiseMapping is based on the same code product supporting http://www.wisemapping.com. 
+Wise Mapping is the web mind mapping open source tool that leverages the power of Mind Maps mixing open standards technologies such as SVG and React.
+WiseMapping is based on the same code product supporting [http://www.wisemapping.com]. 
 
 ## Compiling and Running
 

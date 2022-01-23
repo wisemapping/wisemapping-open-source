@@ -4,22 +4,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="wiseDataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="${database.driver}"/>
-        <property name="url" value="${database.url}"/>
-        <property name="username" value="${database.username}"/>
-        <property name="password" value="${database.password}"/>
-        <property name="testOnBorrow" value="${database.validation.enabled}"/>
-        <property name="validationQuery" value="${database.validation.query}"/>
-    </bean>
-
-    <!--Uncomment this lines for production environments -->
-    <!--<bean id="wiseDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">-->
-    <!--<property name="jndiName">-->
-    <!--<value>java:comp/env/jdbc/wisemapping</value>-->
-    <!--</property>-->
-    <!--</bean>-->
-
     <bean id="mindmapSessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="dataSource" ref="wiseDataSource"/>
         <property name="annotatedClasses">
