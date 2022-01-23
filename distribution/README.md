@@ -9,7 +9,7 @@ There are multiple ways to run WiseMapping depending on your database configurat
 
 ## Option 1: Running HSQL within the image storage 
 
-> docker run -it --rm -p 8080:8080 veigap/wisemapping:latest>
+> $ docker run -it --rm -p 8080:8080 veigap/wisemapping:latest>
 
 Then, open your browser at `http://localhost:8888`. A default user is available for testing `test@wisemapping.com` and password `test`.
 
@@ -17,7 +17,7 @@ Then, open your browser at `http://localhost:8888`. A default user is available 
 
 ## Option 2: Running HSQL with mounted directory
 
-> docker run -it --rm -p 8080:8080 veigap/wisemapping:latest
+> $ docker run -it --rm -p 8080:8080 veigap/wisemapping:latest
 
 ## Option 3: External MySQL/PostgreSQL
 
@@ -30,7 +30,7 @@ Depending on the database your want to configure, you can create initialization 
 The next step is configure the WiseMapping for the database and credentials. 
 Download `app.properties` configuration file and configure the required sections:
 
-> $ curl https://bitbucket.org/wisemapping/wisemapping-open-source/raw/644b7078d790220c7844b732a83d45495f11d64e/wise-webapp/src/main/webapp/WEB-INF/app.properties' 
+> $ curl https://bitbucket.org/wisemapping/wisemapping-open-source/raw/644b7078d790220c7844b732a83d45495f11d64e/wise-webapp/src/main/webapp/WEB-INF/app.properties 
 
 ### Starting the application
 

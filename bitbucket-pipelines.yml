@@ -8,25 +8,34 @@
 image: maven:3.6.3
 
 pipelines:
-  default:
-    - parallel:
-        - step:
-            name: Build and Test
-            caches:
-              - node
-              - maven
-            script:
-              - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
-              - . $HOME/.nvm/nvm.sh && nvm install node
-              # Workaround for jaxb plugin bug on java 11 or higher.
-              - export MAVEN_OPTS="--illegal-access=permit"
-              - mvn -B verify --file pom.xml
-            after-script:
-              # Collect checkstyle results, if any, and convert to Bitbucket Code Insights.
-              - pipe: atlassian/checkstyle-report:0.3.0
-        - step:
-            name: Security Scan
-            script:
-              # Run a security scan for sensitive data.
-              # See more security tools at https://bitbucket.org/product/features/pipelines/integrations?&category=security
-              - pipe: atlassian/git-secrets-scan:0.5.1
+  branches:
+    '{master,develop}':
+      - step:
+          name: Build and Test
+          caches:
+            - node
+            - maven
+          script:
+            # Compile sources ...
+            - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
+            - . $HOME/.nvm/nvm.sh && nvm install node
+            - mvn -B verify --file pom.xml
+          after-script:
+            # Collect checkstyle results, if any, and convert to Bitbucket Code Insights.
+            - pipe: atlassian/checkstyle-report:0.3.0
+      - step:
+          name: Security Scan
+          script:
+            # Run a security scan for sensitive data.
+            # See more security tools at https://bitbucket.org/product/features/pipelines/integrations?&category=security
+            - pipe: atlassian/git-secrets-scan:0.5.1
+      - step:
+          name: Docker publish
+          script:
+            - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+            - docker build -t veigap/wisemapping:latest -f distribution/Dockerfile wise-webapp/target/
+          services:
+            - docker
+          caches:
+            - docker
+
