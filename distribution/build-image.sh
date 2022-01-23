@@ -3,4 +3,5 @@
 set -o
 set -u
 
-docker build -t wisemapping -f ./Dockerfile ../wise-webapp/target/
+mvn -f ../pom.xml clean package
+docker build -t veigap/wisemapping:latest -f ./Dockerfile ../wise-webapp/target/
