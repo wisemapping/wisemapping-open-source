@@ -15,23 +15,19 @@ pipelines:
           caches:
             - node
             - maven
+            - docker
           script:
             # Compile sources ...
             - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
             - . $HOME/.nvm/nvm.sh && nvm install node
             - mvn -B verify --file pom.xml
+            # Publish to docker repo ...
+            - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+            - docker build -t veigap/wisemapping:latest -f distribution/Dockerfile wise-webapp/target/
           after-script:
             # Collect checkstyle results, if any, and convert to Bitbucket Code Insights.
             - pipe: atlassian/checkstyle-report:0.3.0
-      - step:
-          name: Docker publish
-          script:
-            - echo $DOCKER_USERNAME
-            - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
-            - docker build -t veigap/wisemapping:latest -f distribution/Dockerfile wise-webapp/target/
           services:
-            - docker
-          caches:
             - docker
       - step:
           name: Security Scan
