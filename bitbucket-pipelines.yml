@@ -32,6 +32,7 @@ pipelines:
       - step:
           name: Docker publish
           script:
+            - echo $DOCKER_USERNAME
             - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
             - docker build -t veigap/wisemapping:latest -f distribution/Dockerfile wise-webapp/target/
           services:
