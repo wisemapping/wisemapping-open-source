@@ -24,6 +24,7 @@ pipelines:
             # Publish to docker repo ...
             - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
             - docker build -t veigap/wisemapping:latest -f distribution/Dockerfile wise-webapp/target/
+            - docker docker push veigap/wisemapping:latest
           after-script:
             # Collect checkstyle results, if any, and convert to Bitbucket Code Insights.
             - pipe: atlassian/checkstyle-report:0.3.0
