@@ -23,7 +23,7 @@ pipelines:
             - mvn -B verify --file pom.xml
             # Publish to docker repo ...
             - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
-            - docker build -t veigap/wisemapping:latest -f distribution/Dockerfile wise-webapp/target/
+            - docker build -t wisemapping/wisemapping:latest -f distribution/Dockerfile wise-webapp/target/
             - docker push wisemapping/wisemapping:latest
           after-script:
             # Collect checkstyle results, if any, and convert to Bitbucket Code Insights.
