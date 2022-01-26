@@ -6,6 +6,11 @@
 @import "header.css";
 @import "../bootstrap/css/bootstrap.min.css";
 
+html {
+    /* avoid bootstrap overriding font-size and breaking Mui */
+    font-size: initial;
+}
+
 body {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -126,6 +131,7 @@ div.shareModalDialog {
 }
 
 .popover {
+    font-size: 13px;
     max-width: none;
 }
 
