@@ -8,15 +8,30 @@
 <%--@elvariable id="editorTryMode" type="java.lang.String"--%>
 <%--@elvariable id="lockInfo" type="com.wisemapping.service.LockInfo"--%>
 
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <base href="${requestScope['site.baseurl']}/static/mindplot/">
-    <title><spring:message code="SITE.TITLE"/> - <c:out value="${mindmap.title}"/></title>
+    <meta charset="utf-8" />
+    <base href="${requestScope['site.baseurl']}/static/webapp/">
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet"  href="../../css/editor.css"/>
+    
     <%@ include file="/jsp/pageHeaders.jsf" %>
 
+    <title>Loading | WiseMapping</title>
+
+    <script>
+        window.serverconfig = {
+            apiBaseUrl: '',
+            analyticsAccount: '${requestScope['google.analytics.account']}',
+            clientType: 'rest',
+            recaptcha2Enabled: ${requestScope['google.recaptcha2.enabled']},
+            recaptcha2SiteKey: '${requestScope['google.recaptcha2.siteKey']}'
+        };
+
+    </script>
     <script type="text/javascript">
         var mapId = '${mindmap.id}';
         var memoryPersistence = ${memoryPersistence};
@@ -35,45 +50,12 @@
 </head>
 
 <body>
-
-<div id="header">
-    <%@ include file="/jsp/mindmapEditorToolbar.jsf" %>
-</div>
-<div id="mindplot" onselectstart="return false;"></div>
-
-<div id="floating-panel">
-    <div id="keyboardShortcuts" class="buttonExtOn">
-        <img src="../../images/editor/keyboard.svg"/>
-    </div>
-    <div id="zoom-button">
-        <button id="zoom-plus">
-            <img src="../../images/editor/add.svg" />
-        </button>
-        <button id="zoom-minus">
-            <img src="../../images/editor/minus.svg" />
-        </button>
-    </div>
-    <div id="position">
-        <button id="position-button">
-            <img src="../../images/editor/center_focus.svg" />
-        </button>
-    </div>
-</div>
-
-<div id="bottom-logo"></div>
-<div id="headerNotifier"></div>
-
-<%-- Try message dialog --%>
-<c:if test="${memoryPersistence}">
-    <div id="tryInfoPanel">
-        <p><spring:message code="TRY_WELCOME"/></p>
-        <p><b><spring:message code="TRY_WELCOME_DESC"/></b></p>
-        <a href="/c/registration"><div class="actionButton"><spring:message code="SIGN_UP"/></div></a>
-    </div>
-</c:if>
-
-<script type="text/javascript" src="${requestScope['site.static.js.url']}/mindplot/loader.js"></script>
-
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    
+    <script type="text/javascript" src="<c:out value="${requestScope['site.static.js.url']}"/>/webapp/vendors.bundle.js"></script>
+    <script type="text/javascript" src="<c:out value="${requestScope['site.static.js.url']}"/>/webapp/app.bundle.js"></script>
 
 </body>
+
 </html>
