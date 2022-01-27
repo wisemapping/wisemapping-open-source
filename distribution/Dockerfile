@@ -7,10 +7,11 @@ LABEL maintainer="Paulo Gustavo Veiga <pveiga@wisemapping.com>"
 
 # Build variables ...
 ARG WEBAPP_TARGET_DIR="/usr/local/tomcat/webapps/ROOT"
+ARG DB_BASE_DIR="/var/lib/wisemapping"
 
 # Defautl ENV configurations ...
 ENV JAVA_OPTS="-XX:+PrintFlagsFinal -XX:InitialRAMPercentage=30 -XX:MaxRAMPercentage=80"
-ENV database.base.url="/var/lib/wisemapping"
+ENV database.base.url=${DB_BASE_DIR}
 
 # Copy wisemapping distribution ...
 COPY wisemapping.war /tmp
@@ -22,5 +23,5 @@ RUN rm /tmp/wisemapping.war
 RUN cp ${WEBAPP_TARGET_DIR}/WEB-INF/classes/log4j-stdout.properties ${WEBAPP_TARGET_DIR}/WEB-INF/classes/log4j.properties
 
 # Copy default HSQL DB for testing ...
-RUN mkdir -p ${database.base.url}/db
-COPY db/ ${database.base.url}/db
+RUN mkdir -p ${DB_BASE_DIR}/db
+COPY db/ ${DB_BASE_DIR}/db
