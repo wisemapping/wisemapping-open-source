@@ -10,7 +10,7 @@ ARG WEBAPP_TARGET_DIR="/usr/local/tomcat/webapps/ROOT"
 
 # Defautl ENV configurations ...
 ENV JAVA_OPTS="-XX:+PrintFlagsFinal -XX:InitialRAMPercentage=30 -XX:MaxRAMPercentage=80"
-ENV database.base.url="/var/wisemapping"
+ENV database.base.url="/var/lib/wisemapping"
 
 # Copy wisemapping distribution ...
 COPY wisemapping.war /tmp
@@ -22,5 +22,5 @@ RUN rm /tmp/wisemapping.war
 RUN cp ${WEBAPP_TARGET_DIR}/WEB-INF/classes/log4j-stdout.properties ${WEBAPP_TARGET_DIR}/WEB-INF/classes/log4j.properties
 
 # Copy default HSQL DB for testing ...
-RUN mkdir -p /var/wisemapping/db
-COPY db/ /var/wisemapping/db
+RUN mkdir -p ${database.base.url}/db
+COPY db/ ${database.base.url}/db
