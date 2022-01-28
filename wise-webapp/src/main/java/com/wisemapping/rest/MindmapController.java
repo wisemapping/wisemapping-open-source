@@ -80,8 +80,8 @@ public class MindmapController extends BaseController {
         return new RestMindmapList(mindmaps, user);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}/history", produces = {"application/json", "application/xml"})
-    public RestMindmapHistoryList retrieveHistory(@PathVariable int id) {
+    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}/history/", produces = {"application/json", "application/xml"})
+    public RestMindmapHistoryList fetchHistory(@PathVariable int id) {
         final List<MindMapHistory> histories = mindmapService.findMindmapHistory(id);
         final RestMindmapHistoryList result = new RestMindmapHistoryList();
         for (MindMapHistory history : histories) {
