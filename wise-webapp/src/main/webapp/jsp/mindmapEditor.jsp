@@ -20,7 +20,7 @@
     
     <%@ include file="/jsp/pageHeaders.jsf" %>
 
-    <title>Loading | WiseMapping</title>
+    <title>Loading ... | WiseMapping</title>
 
     <script>
         window.serverconfig = {
@@ -45,6 +45,7 @@
         var isAuth = ${principal != null};
         var accountName = '${principal.fullName}';
         var accountEmail = '${principal.email}';
+        var mapTitle = '${mindmap.title}';
     </script>
     <%@ include file="/jsp/googleAnalytics.jsf" %>
 </head>
@@ -53,8 +54,8 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     
-    <script type="text/javascript" src="<c:out value="${requestScope['site.static.js.url']}"/>/webapp/vendors.bundle.js"></script>
-    <script type="text/javascript" src="<c:out value="${requestScope['site.static.js.url']}"/>/webapp/app.bundle.js"></script>
+    <script type="text/javascript" src="${requestScope['site.static.js.url']}/webapp/vendors.bundle.js"></script>
+    <script type="text/javascript" src="${requestScope['site.static.js.url']}/webapp/app.bundle.js"></script>
 
 </body>
 
