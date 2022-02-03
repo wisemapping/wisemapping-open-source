@@ -23,9 +23,9 @@
         </table>
     </div>
     <div style="font-size: 13px; background-color: #FFF; padding: 10px 7px 7px 7px; min-height: 100px">
-        <p><strong>Message from ${senderMail}: </strong></p>
         #if($message )
-        <pre style="font-family: Arial, sans-serif; color: #000; ">${message}</pre>
+            <p><strong>Message from ${senderMail}: </strong></p>
+            <pre style="font-family: Arial, sans-serif; color: #000; ">${message}</pre>
         #end
         <p>Click to open: <a href="${mapEditUrl}">${mindmap.title}</a></p>
 
