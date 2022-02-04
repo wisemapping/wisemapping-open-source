@@ -62,7 +62,7 @@ public class UserController extends BaseController {
 
         // If tomcat is behind a reverse proxy, ip needs to be found in other header.
         String remoteIp = request.getHeader(REAL_IP_ADDRESS_HEADER);
-        if(remoteIp==null || remoteIp.isEmpty()){
+        if (remoteIp == null || remoteIp.isEmpty()) {
             remoteIp = request.getRemoteAddr();
         }
         logger.debug("Remote address" + remoteIp);
@@ -85,7 +85,7 @@ public class UserController extends BaseController {
     public void resetPassword(@RequestParam String email) throws InvalidAuthSchemaException, EmailNotExistsException {
         try {
             userService.resetPassword(email);
-        }catch (InvalidUserEmailException e){
+        } catch (InvalidUserEmailException e) {
             throw new EmailNotExistsException(e);
         }
     }
@@ -101,14 +101,14 @@ public class UserController extends BaseController {
         if (recatchaEnabled) {
             final String recaptcha = registration.getRecaptcha();
             if (recaptcha != null) {
-                final String reCaptchaResponse = captchaService.verifyRecaptcha(remoteAddress,recaptcha);
-                if (!reCaptchaResponse.isEmpty()) {
+                final String reCaptchaResponse = captchaService.verifyRecaptcha(remoteAddress, recaptcha);
+                if (reCaptchaResponse != null && !reCaptchaResponse.isEmpty()) {
                     errors.rejectValue("recaptcha", reCaptchaResponse);
                 }
             } else {
                 errors.rejectValue("recaptcha", Messages.CAPTCHA_LOADING_ERROR);
             }
-        }else {
+        } else {
             logger.warn("captchaEnabled is enabled.Recommend to enable it for production environments.");
         }
 

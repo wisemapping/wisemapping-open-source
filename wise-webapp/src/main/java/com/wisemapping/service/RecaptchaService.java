@@ -6,6 +6,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
 
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
@@ -23,6 +24,7 @@ public class RecaptchaService {
     private final static ObjectMapper objectMapper = new ObjectMapper();
     private String recaptchaSecret;
 
+    @Nullable
     public String verifyRecaptcha(@NotNull String ip, @NotNull String recaptcha) {
 
         final List<NameValuePair> build = Form.form()
