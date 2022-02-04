@@ -1,20 +1,20 @@
 /*
-*    Copyright [2015] [wisemapping]
-*
-*   Licensed under WiseMapping Public License, Version 1.0 (the "License").
-*   It is basically the Apache License, Version 2.0 (the "License") plus the
-*   "powered by wisemapping" text requirement on every single page;
-*   you may not use this file except in compliance with the License.
-*   You may obtain a copy of the license at
-*
-*       http://www.wisemapping.org/license
-*
-*   Unless required by applicable law or agreed to in writing, software
-*   distributed under the License is distributed on an "AS IS" BASIS,
-*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*   See the License for the specific language governing permissions and
-*   limitations under the License.
-*/
+ *    Copyright [2015] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 
 package com.wisemapping.mail;
 
@@ -22,8 +22,11 @@ import com.wisemapping.filter.SupportedUserAgent;
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
+import com.wisemapping.util.VelocityEngineUtils;
+import com.wisemapping.util.VelocityEngineWrapper;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,17 +39,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 final public class NotificationService {
+    final private static Logger logger = Logger.getLogger(Mailer.class);
+    final private static String DEFAULT_WISE_URL = "http://localhost:8080/wisemapping";
+    private VelocityEngineWrapper velocityEngineWrapper;
 
-    public static final String DEFAULT_WISE_URL = "http://localhost:8080/wisemapping";
     @Autowired
     private Mailer mailer;
-
-    private final NotifierFilter notificationFilter;
 
     private String baseUrl;
 
     public NotificationService() {
-        this.notificationFilter = new NotifierFilter();
+        NotifierFilter notificationFilter = new NotifierFilter();
     }
 
     public void newCollaboration(@NotNull Collaboration collaboration, @NotNull Mindmap mindmap, @NotNull User user, @Nullable String message) {
@@ -89,6 +92,13 @@ final public class NotificationService {
 
         sendTemplateMail(user, mailSubject, messageTitle, messageBody);
     }
+
+    private void logErrorMessage(final Map model,
+                                 @NotNull final String templateMail) {
+        final String messageBody = VelocityEngineUtils.mergeTemplateIntoString(velocityEngineWrapper.getVelocityEngine(), "/mail/" + templateMail, model);
+        logger.error("Unexpected editor error => " + messageBody);
+    }
+
 
     public void passwordChanged(@NotNull User user) {
         final String mailSubject = "[WiseMapping] Your password has been changed";
@@ -154,9 +164,13 @@ final public class NotificationService {
 //        }
     }
 
+    public void setVelocityEngineWrapper(VelocityEngineWrapper engine) {
+        this.velocityEngineWrapper = engine;
+    }
+
     public void reportJavascriptException(@Nullable Mindmap mindmap, @Nullable User user, @Nullable String jsErrorMsg, @NotNull HttpServletRequest request) {
 
-        final Map<String, String> model = new HashMap<String, String>();
+        final Map<String, String> model = new HashMap<>();
         model.put("errorMsg", jsErrorMsg);
         try {
             model.put("mapXML", StringEscapeUtils.escapeXml(mindmap == null ? "map not found" : mindmap.getXmlStr()));
@@ -166,10 +180,10 @@ final public class NotificationService {
         model.put("mapId", Integer.toString(mindmap.getId()));
         model.put("mapTitle", mindmap.getTitle());
 
-        sendNotification(model, user, request);
+        logError(model, user, request);
     }
 
-    private void sendNotification(@NotNull Map<String, String> model, @Nullable User user, @NotNull HttpServletRequest request) {
+    private void logError(@NotNull Map<String, String> model, @Nullable User user, @NotNull HttpServletRequest request) {
         model.put("fullName", (user != null ? user.getFullName() : "'anonymous'"));
         final String userEmail = user != null ? user.getEmail() : "'anonymous'";
 
@@ -180,37 +194,19 @@ final public class NotificationService {
         model.put("method", request.getMethod());
         model.put("remoteAddress", request.getRemoteAddr());
 
-        try {
-            final String errorReporterEmail = mailer.getErrorReporterEmail();
-            if (errorReporterEmail != null && !errorReporterEmail.isEmpty()) {
-
-                if (!notificationFilter.hasBeenSend(userEmail, model)) {
-                    mailer.sendEmail(mailer.getServerSenderEmail(), errorReporterEmail, "[WiseMapping] Bug from '" + (user != null ? user.getEmail() + "'" : "'anonymous'"), model,
-                            "errorNotification.vm");
-                }
-            }
-        } catch (Exception e) {
-            handleException(e);
-        }
-    }
-
-    public void reportJavaException(@NotNull Throwable exception, @Nullable User user, @NotNull String content, @NotNull HttpServletRequest request) {
-        final Map<String, String> model = new HashMap<String, String>();
-        model.put("errorMsg", stackTraceToString(exception));
-        model.put("mapXML", StringEscapeUtils.escapeXml(content));
-
-        sendNotification(model, user, request);
+        logErrorMessage(model,
+                "errorNotification.vm");
     }
 
     public void reportJavaException(@NotNull Throwable exception, @Nullable User user, @NotNull HttpServletRequest request) {
         final Map<String, String> model = new HashMap<String, String>();
         model.put("errorMsg", stackTraceToString(exception));
 
-        sendNotification(model, user, request);
+        logError(model, user, request);
     }
 
     public String stackTraceToString(@NotNull Throwable e) {
-        String retValue = null;
+        String retValue;
         StringWriter sw = null;
         PrintWriter pw = null;
         try {

@@ -1,32 +1,18 @@
-<html>
-<body>
-<ul>
-    <li>User Name: ${fullName}</li>
-    <li>Email: ${email}</li>
-    <li>Server: ${server}</li>
-    <li>RequestURI: ${requestURI}</li>
-    <li>Method: ${method}</li>
-    <li>User Agent: ${userAgent}</li>
-    <li>Remote Address: ${remoteAddress}</li>
-
-
-    #if($mapId)
-        <li>Mindmap Id: ${mapId}</li>
-    #end
-    #if($mapTitle)
-        <li>Mindmap Title: ${mapTitle}</li>
-    #end
-</ul>
-
-<pre style="border:1px dashed #a9a9a9">
-    ${errorMsg}
-</pre>
+User Name: ${fullName} -
+Email: ${email} -
+Server: ${server} -
+RequestURI: ${requestURI} -
+Method: ${method} -
+User Agent: ${userAgent} -
+Remote Address: ${remoteAddress} -
+#if($mapId)
+    Mindmap Id: ${mapId} -
+#end
+#if($mapTitle)
+    Mindmap Title: ${mapTitle} -
+#end
+${errorMsg}
 
 #if($mapXML)
-<pre style="border:1px dashed #a9a9a9">
-    ${mapXML}
-</pre>
+${mapXML}
 #end
-
-</body>
-</html>
