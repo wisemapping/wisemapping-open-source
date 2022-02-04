@@ -10,7 +10,8 @@ ARG WEBAPP_TARGET_DIR="/usr/local/tomcat/webapps/ROOT"
 ARG DB_BASE_DIR="/var/lib/wisemapping"
 
 # Defautl ENV configurations ...
-ENV JAVA_OPTS="-XX:+PrintFlagsFinal -XX:InitialRAMPercentage=30 -XX:MaxRAMPercentage=80 -Dnewrelic.config.log_file_name=STDOUT"ENV database.base.url=${DB_BASE_DIR}
+ENV JAVA_OPTS="-XX:+PrintFlagsFinal -XX:InitialRAMPercentage=30 -XX:MaxRAMPercentage=80"
+ENV database.base.url=${DB_BASE_DIR}
 
 # Copy wisemapping distribution ...
 COPY wisemapping.war /tmp
