@@ -9,7 +9,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <base href="${requestScope['site.baseurl']}/static/mindplot/">
-    <title><spring:message code="SITE.TITLE"/> | ${mindmap.title} </title>
+    <title>${mindmap.title} | <spring:message code="SITE.TITLE"/></title>
     <link rel="stylesheet"  href="../../css/viewonly.css"/>
     <%@ include file="/jsp/pageHeaders.jsf" %>
     <script type="text/javascript">

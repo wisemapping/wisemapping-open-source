@@ -113,7 +113,7 @@ final public class NotificationService {
         final String mailSubject = "Welcome to WiseMapping !";
         final String messageTitle = "Your account has been created successfully";
         final String messageBody =
-                "<p> Thank you for your interest in WiseMapping.  If have any feedback or idea, send us an email to <a href=\"mailto:feedback@wisemapping.com\">feedback@wisemapping.com</a> .We'd love to hear from  you.</p>";
+                "<p> Thank you for your interest in WiseMapping.  Click <a href='https://app.wisemapping.com/c/login'>here</a> to start creating and sharing new mind maps. If have any feedback or idea, send us an email to <a href=\"mailto:feedback@wisemapping.com\">feedback@wisemapping.com</a> .We'd love to hear from  you.</p>";
         sendTemplateMail(user, mailSubject, messageTitle, messageBody);
     }
 
