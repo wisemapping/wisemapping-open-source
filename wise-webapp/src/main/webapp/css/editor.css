@@ -142,6 +142,7 @@ div.shareModalDialog {
     align-items: flex-end;
     bottom: 20px;
     right: 20px;
+    align-items: stretch;
 }
 
 div#bottom-logo {
