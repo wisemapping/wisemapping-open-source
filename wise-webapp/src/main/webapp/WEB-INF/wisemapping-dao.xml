@@ -4,38 +4,26 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="wiseDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="${database.driver}"/>
-        <property name="url" value="${database.url}"/>
-        <property name="username" value="${database.username}"/>
-        <property name="password" value="${database.password}"/>
-        <property name="testOnBorrow" value="${database.validation.enabled}"/>
-        <property name="validationQuery" value="${database.validation.query}"/>
-    </bean>
-
-    <!--Descoment this lines for production environments -->
-    <!--<bean id="wiseDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">-->
-    <!--<property name="jndiName">-->
-    <!--<value>java:comp/env/jdbc/wisemapping</value>-->
-    <!--</property>-->
-    <!--</bean>-->
-
     <bean id="mindmapSessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="dataSource" ref="wiseDataSource"/>
-        <property name="mappingResources">
+        <property name="annotatedClasses">
             <list>
-                <value>com/wisemapping/model/Collaborator.hbm.xml</value>
-                <value>com/wisemapping/model/Mindmap.hbm.xml</value>
-                <value>com/wisemapping/model/Collaboration.hbm.xml</value>
-                <value>com/wisemapping/model/CollaborationProperties.hbm.xml</value>
-                <value>com/wisemapping/model/AccessAuditory.hbm.xml</value>
-                <value>com/wisemapping/model/MindMapHistory.hbm.xml</value>
-                <value>com/wisemapping/model/Label.hbm.xml</value>
+                <value>com.wisemapping.model.User</value>
+                <value>com.wisemapping.model.Collaborator</value>
+                <value>com.wisemapping.model.Collaboration</value>
+                <value>com.wisemapping.model.Mindmap</value>
+                <value>com.wisemapping.model.Label</value>
+                <value>com.wisemapping.model.CollaborationProperties</value>
+                <value>com.wisemapping.model.AccessAuditory</value>
+                <value>com.wisemapping.model.MindMapHistory</value>
             </list>
         </property>
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">${database.hibernate.dialect}</prop>
+                <prop key="hibernate.cache.use_second_level_cache">true</prop>
+                <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+                <prop key="hibernate.default_batch_fetch_size">200</prop>
             </props>
         </property>
     </bean>

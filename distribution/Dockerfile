@@ -1,47 +1,27 @@
 # Dockerizing WiseMapping: Dockerfile for building WiseMapping images
 # Based on ubuntu:latest, installs WiseMapping (http://ww.wisemapping.org)
 
-FROM       ubuntu:latest
-MAINTAINER Paulo Gustavo Veiga <pveiga@wisemapping.com>
+# Based info setup ...
+FROM tomcat:9.0-jdk17-openjdk
+LABEL maintainer="Paulo Gustavo Veiga <pveiga@wisemapping.com>"
 
-ENV DEBIAN_FRONTEND noninteractive
-ENV MYSQL_ROOT_PASSWORD password
-ENV WISE_VERSION 4.0.2
+# Build variables ...
+ARG WEBAPP_TARGET_DIR="/usr/local/tomcat/webapps/ROOT"
+ARG DB_BASE_DIR="/var/lib/wisemapping"
 
-# Install utilities
-RUN apt-get install -y zip
+# Defautl ENV configurations ...
+ENV JAVA_OPTS="-XX:+PrintFlagsFinal -XX:InitialRAMPercentage=30 -XX:MaxRAMPercentage=80"
+ENV database.base.url=${DB_BASE_DIR}
 
-# Prepare distribution
-COPY target/wisemapping-v${WISE_VERSION}.zip .
-RUN unzip wisemapping-v${WISE_VERSION}.zip
+# Copy wisemapping distribution ...
+COPY wisemapping.war /tmp
+RUN mkdir ${WEBAPP_TARGET_DIR}
+RUN cd ${WEBAPP_TARGET_DIR} && jar -xvf /tmp/wisemapping.war
+RUN rm /tmp/wisemapping.war
 
-# Install MySQL
-RUN echo mysql-server mysql-server/root_password password ${MYSQL_ROOT_PASSWORD} | debconf-set-selections;\
-    echo mysql-server mysql-server/root_password_again password ${MYSQL_ROOT_PASSWORD} | debconf-set-selections;\
-    apt-get install -y mysql-server
+# Change logger to
+RUN cp ${WEBAPP_TARGET_DIR}/WEB-INF/classes/log4j-stdout.properties ${WEBAPP_TARGET_DIR}/WEB-INF/classes/log4j.properties
 
-RUN service mysql start && \
-    mysql -uroot -p${MYSQL_ROOT_PASSWORD} < /wisemapping-v${WISE_VERSION}/config/database/mysql/create-database.sql && \
-    mysql -uwisemapping -Dwisemapping -ppassword < /wisemapping-v${WISE_VERSION}/config/database/mysql/create-schemas.sql && \
-    mysql -uwisemapping -Dwisemapping -ppassword < /wisemapping-v${WISE_VERSION}/config/database/mysql/apopulate-schemas.sql
-
-# Install Java 8
-RUN apt-get install -y software-properties-common && \
-    add-apt-repository ppa:webupd8team/java && \
-    apt-get update
-
-RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections;\
-    echo oracle-java8-installer shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections;\
-    sudo apt-get install -y oracle-java8-installer
-
-# Configure instance
-COPY docker-conf/app.properties wisemapping-v4.0.1/webapps/wisemapping/WEB-INF/app.properties
-
-# Clean up
-RUN apt-get clean
-RUN rm wisemapping-v${WISE_VERSION}.zip
-
-
-EXPOSE 8080
-
-CMD "sh" "-c" "service mysql start;cd wisemapping-v${WISE_VERSION};./start.sh"
+# Copy default HSQL DB for testing ...
+RUN mkdir -p ${DB_BASE_DIR}/db
+COPY db/ ${DB_BASE_DIR}/db

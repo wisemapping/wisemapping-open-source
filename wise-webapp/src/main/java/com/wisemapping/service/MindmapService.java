@@ -18,22 +18,23 @@
 
 package com.wisemapping.service;
 
-import com.wisemapping.model.*;
 import com.wisemapping.exceptions.WiseMappingException;
-import org.jetbrains.annotations.NotNull;
+import com.wisemapping.model.*;
 import org.jetbrains.annotations.Nullable;
 
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.List;
 
 public interface MindmapService {
 
-    static final String TAG_SEPARATOR = " ";
-
     @Nullable
     Mindmap findMindmapById(int id);
 
-    Mindmap getMindmapByTitle(String title, User user);
+    @NotNull
+    List<Mindmap> findMindmapsByUser(@NotNull User user);
+
+    Mindmap getMindmapByTitle(@NotNull  String title, User user);
 
     List<Collaboration> findCollaborations(@NotNull User user);
 
@@ -67,8 +68,4 @@ public interface MindmapService {
     boolean isAdmin(@Nullable User user);
 
     void purgeHistory(int mapId) throws IOException;
-
-    void linkLabel(@NotNull final Mindmap mindmap, @NotNull final Label label);
-
-    void removeLabel(@NotNull final Mindmap mindmap, @NotNull final Label label);
 }

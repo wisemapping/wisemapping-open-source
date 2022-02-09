@@ -19,9 +19,9 @@
 package com.wisemapping.rest.model;
 
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.Mindmap;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -29,9 +29,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
-
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @XmlRootElement(name = "maps")
 @XmlAccessorType(XmlAccessType.PROPERTY)
@@ -44,14 +44,13 @@ public class RestMindmapList {
     private List<RestMindmapInfo> mindmapsInfo;
 
     public RestMindmapList() {
-        this(Collections.<Mindmap>emptyList(), null);
+        this(Collections.emptyList(), null);
     }
 
     public RestMindmapList(@NotNull List<Mindmap> mindmaps, @NotNull Collaborator collaborator) {
-        this.mindmapsInfo = new ArrayList<>(mindmaps.size());
-        for (Mindmap mindMap : mindmaps) {
-            this.mindmapsInfo.add(new RestMindmapInfo(mindMap, collaborator));
-        }
+        this.mindmapsInfo = mindmaps.stream()
+                .map(m->new RestMindmapInfo(m, collaborator))
+                .collect(Collectors.toList());
     }
 
     public int getCount() {

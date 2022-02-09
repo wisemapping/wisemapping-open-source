@@ -28,7 +28,7 @@ public class LockInfo {
     final private User user;
     private Calendar timeout;
     private long session;
-    private static int EXPIRATION_MIN = 30;
+    private static final int EXPIRATION_MIN = 30;
     private long timestamp = -1;
     private long previousTimestamp;
 

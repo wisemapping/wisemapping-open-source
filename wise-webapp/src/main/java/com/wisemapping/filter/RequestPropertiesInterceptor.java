@@ -20,18 +20,27 @@ package com.wisemapping.filter;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-public class RequestPropertiesInterceptor extends HandlerInterceptorAdapter {
+public class RequestPropertiesInterceptor implements HandlerInterceptor {
     @Value("${google.analytics.enabled}")
     private Boolean analyticsEnabled;
 
     @Value("${google.analytics.account}")
     private String analyticsAccount;
+
+    @Value("${google.recaptcha2.enabled}")
+    private Boolean recaptcha2Enabled;
+
+    @Value("${site.static.js.url}")
+    private String siteStaticUrl;
+
+    @Value("${google.recaptcha2.siteKey}")
+    private String recaptcha2SiteKey;
 
     @Value("${google.ads.enabled}")
     private Boolean adsEnabled;
@@ -45,18 +54,20 @@ public class RequestPropertiesInterceptor extends HandlerInterceptorAdapter {
     @Value("${security.type}")
     private String securityType;
 
-    @Value("${security.openid.enabled}")
-    private Boolean openIdEnabled;
-
+    @Override
     public boolean preHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, Object object) throws Exception {
 
         request.setAttribute("google.analytics.enabled", analyticsEnabled);
         request.setAttribute("google.analytics.account", analyticsAccount);
         request.setAttribute("google.ads.enabled", adsEnabled);
-        request.setAttribute("site.homepage", siteHomepage);
-        request.setAttribute("security.type", securityType);
-        request.setAttribute("security.openid.enabled", openIdEnabled);
 
+        request.setAttribute("google.recaptcha2.enabled", recaptcha2Enabled);
+        request.setAttribute("google.recaptcha2.siteKey", recaptcha2SiteKey);
+
+        request.setAttribute("site.homepage", siteHomepage);
+        request.setAttribute("site.static.js.url", siteStaticUrl);
+
+        request.setAttribute("security.type", securityType);
 
         // If the property could not be resolved, try to infer one from the request...
         if ("${site.baseurl}".equals(siteUrl)) {

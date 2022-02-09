@@ -1,103 +1,95 @@
 <%--@elvariable id="mindmap" type="com.wisemapping.model.Mindmap"--%>
 
 <div id="toolbar">
-    <div id="persist" class="buttonContainer">
-        <c:if test="${!readOnlyMode}">
-            <div id="save" class="buttonOn">
-                <img src="images/save.png"/>
-            </div>
-        </c:if>
-        <c:if test="${!memoryPersistence}">
-            <div id="print" class="buttonOn">
-                <img src="images/print.png"/>
-            </div>
-        </c:if>
+    <div id="backToList">
+        <img src="../../images/editor/back-icon.svg" />
     </div>
-    <c:if test="${!readOnlyMode}">
-        <div id="edit" class="buttonContainer">
-            <div id="undoEdition" class="buttonOn">
-                <img src="images/undo.png"/>
-            </div>
-            <div id="redoEdition" class="buttonOn">
-                <img src="images/redo.png"/>
+    <c:if test="${!memoryPersistence}">
+        <div id="persist" class="buttonContainer">
+            <div id="save" class="buttonOn">
+                <img src="../../images/editor/save.svg"/>
             </div>
         </div>
     </c:if>
-    <div id="zoom" class="buttonContainer">
-        <div id="zoomOut" class="buttonOn">
-            <img src="images/zoom-out.png"/>
-        </div>
-        <div id="zoomIn" class="buttonOn">
-            <img src="images/zoom-in.png"/>
-        </div>
-    </div>
     <c:if test="${!readOnlyMode}">
-        <div id="node" class="buttonContainer">
-            <div id="topicShape" class="buttonExtOn">
-                <img src="images/topic-shape.png"/>
+        <div id="edit" class="buttonContainer">
+            <div id="undoEdition" class="buttonOn">
+                <img src="../../images/editor/undo.svg"/>
             </div>
+            <div id="redoEdition" class="buttonOn">
+                <img src="../../images/editor/redo.svg"/>
+            </div>
+        </div>
+        <div id="nodeStyle" class="buttonContainer">
             <div id="addTopic" class="buttonOn">
-                <img src="images/topic-add.png"/>
+                <img src="../../images/editor/topic-add.svg"/>
             </div>
             <div id="deleteTopic" class="buttonOn">
-                <img src="images/topic-delete.png"/>
+                <img src="../../images/editor/topic-delete.svg"/>
             </div>
             <div id="topicBorder" class="buttonExtOn">
-                <img src="images/topic-border.png"/>
+                <img src="../../images/editor/topic-border.svg"/>
             </div>
             <div id="topicColor" class="buttonExtOn">
-                <img src="images/topic-color.png"/>
+                <img src="../../images/editor/topic-color.svg"/>
             </div>
-            <div id="topicIcon" class="buttonExtOn">
-                <img src="images/topic-icon.png"/>
-            </div>
-            <div id="topicNote" class="buttonOn">
-                <img src="images/topic-note.png"/>
-            </div>
-            <div id="topicLink" class="buttonOn">
-                <img src="images/topic-link.png"/>
-            </div>
-            <div id="topicRelation" class="buttonOn">
-                <img src="images/topic-relation.png"/>
+            <div id="topicShape" class="buttonExtOn">
+                <img src="../../images/editor/topic-shape.svg"/>
             </div>
         </div>
         <div id="font" class="buttonContainer">
             <div id="fontFamily" class="buttonOn">
-                <img src="images/font-type.png"/>
+                <img src="../../images/editor/font-type.svg"/>
             </div>
             <div id="fontSize" class="buttonExtOn">
-                <img src="images/font-size.png"/>
+                <img src="../../images/editor/font-size.svg"/>
             </div>
             <div id="fontBold" class="buttonOn">
-                <img src="images/font-bold.png"/>
+                <img src="../../images/editor/font-bold.svg"/>
             </div>
             <div id="fontItalic" class="buttonOn">
-                <img src="images/font-italic.png"/>
+                <img src="../../images/editor/font-italic.svg"/>
             </div>
             <div id="fontColor" class="buttonExtOn">
-                <img src="images/font-color.png"/>
+                <img src="../../images/editor/font-color.svg"/>
+            </div>
+        </div>
+        <div id="nodeContent" class="buttonContainer">
+            <div id="topicIcon" class="buttonExtOn">
+                <img src="../../images/editor/topic-icon.svg"/>
+            </div>
+            <div id="topicNote" class="buttonOn" >
+                <img src="../../images/editor/topic-note.svg"/>
+            </div>
+            <div id="topicLink" class="buttonOn">
+                <img src="../../images/editor/topic-link.svg"/>
+            </div>
+            <div id="topicRelation" class="buttonOn">
+                <img src="../../images/editor/topic-relation.svg"/>
+            </div>
+        </div>
+        <div id="separator" class="buttonContainer"></div>
+    </c:if>
+    <c:if test="${!memoryPersistence}">
+        <div id="toolbarRight">
+            <div id="export" class="buttonOn">
+                <img src="../../images/editor/export.svg" />
+            </div>
+            <div id="publishIt" class="buttonOn">
+                <img src="../../images/editor/public.svg" />
+            </div>
+            <div id="history" class="buttonOn">
+                <img src="../../images/editor/history.svg" />
+            </div>
+            <div id="print" class="buttonOn">
+                <img src="../../images/editor/print.svg" />
+            </div>
+            <div id="account">
+                <img src="../../images/editor/account.svg"/>
+            </div>
+            <div id="share" class="actionButton">
+                <spring:message code="SHARE"/>
             </div>
         </div>
     </c:if>
-    <div id="collaboration" class="buttonContainer">
-        <c:if test="${mindmap.owner && !readOnlyMode}">
-            <div id="shareIt" class="buttonOn">
-                <img src="images/share.png"/>
-            </div>
-            <div id="publishIt" class="buttonOn">
-                <img src="images/public.png"/>
-            </div>
-        </c:if>
-        <c:if test="${!memoryPersistence}">
-            <div id="export" class="buttonOn">
-                <img src="images/export.png"/>
-            </div>
-        </c:if>
-        <c:if test="${!readOnlyMode && !memoryPersistence}">
-            <div id="history" class="buttonOn">
-                <img src="images/history.png"/>
-            </div>
-        </c:if>
-    </div>
-    <div id="headerNotifier"></div>
 </div>

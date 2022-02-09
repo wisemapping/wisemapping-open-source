@@ -8,20 +8,32 @@
 image: maven:3.6.3
 
 pipelines:
-  default:
-    - parallel:
+  branches:
+    '{master,develop}':
       - step:
           name: Build and Test
           caches:
+            - node
             - maven
+            - docker
           script:
-            - mvn -B verify --file pom.xml install
+            # Compile sources ...
+            - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
+            - . $HOME/.nvm/nvm.sh && nvm install node
+            - mvn -B verify --file pom.xml
+            # Publish to docker repo ...
+            - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+            - docker build -t wisemapping/wisemapping:latest -f distribution/Dockerfile wise-webapp/target/
+            - docker push wisemapping/wisemapping:latest
           after-script:
-              # Collect checkstyle results, if any, and convert to Bitbucket Code Insights.
-            - pipe: atlassian/checkstyle-report:0.2.0
+            # Collect checkstyle results, if any, and convert to Bitbucket Code Insights.
+            - pipe: atlassian/checkstyle-report:0.3.0
+          services:
+            - docker
       - step:
           name: Security Scan
           script:
             # Run a security scan for sensitive data.
             # See more security tools at https://bitbucket.org/product/features/pipelines/integrations?&category=security
-            - pipe: atlassian/git-secrets-scan:0.4.3
+            - pipe: atlassian/git-secrets-scan:0.5.1
+

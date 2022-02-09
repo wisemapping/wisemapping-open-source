@@ -18,7 +18,6 @@
 
 package com.wisemapping.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpInputMessage;
@@ -49,8 +48,8 @@ public class DebugMappingJacksonHttpMessageConverter extends MappingJackson2Http
 
 
 class WrapHttpInputMessage implements HttpInputMessage {
-    private InputStream body;
-    private HttpHeaders headers;
+    private final InputStream body;
+    private final HttpHeaders headers;
 
     WrapHttpInputMessage(InputStream is, HttpHeaders headers) {
         this.body = is;

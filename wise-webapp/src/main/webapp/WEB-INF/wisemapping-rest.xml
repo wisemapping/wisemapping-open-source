@@ -15,16 +15,6 @@
     <context:component-scan base-package="com.wisemapping.rest"/>
     <context:annotation-config/>
 
-    <!-- Interceptors Registration -->
-    <mvc:interceptors>
-        <bean id="webContentInterceptor" class="org.springframework.web.servlet.mvc.WebContentInterceptor">
-            <property name="cacheSeconds" value="0"/>
-            <property name="useExpiresHeader" value="true"/>
-            <property name="useCacheControlHeader" value="true"/>
-            <property name="useCacheControlNoStore" value="true"/>
-        </bean>
-    </mvc:interceptors>
-
     <mvc:annotation-driven>
         <mvc:message-converters>
             <bean class="com.wisemapping.rest.DebugMappingJacksonHttpMessageConverter"/>
@@ -46,6 +36,7 @@
                 <value>com.wisemapping.rest.model.RestLockInfo</value>
                 <value>com.wisemapping.rest.model.RestLabel</value>
                 <value>com.wisemapping.rest.model.RestLabelList</value>
+                <value>com.wisemapping.rest.model.RestUserRegistration</value>
             </list>
         </property>
     </bean>
@@ -54,22 +45,11 @@
         <property name="favorParameter" value="true"/>
         <property name="parameterName" value="mediaType"/>
         <property name="defaultContentType" value="application/json" />
-        <property name="useJaf" value="false" />
 
         <property name="mediaTypes">
             <map>
                 <entry key="xml" value="application/xml"/>
                 <entry key="json" value="application/json"/>
-                <entry key="freemind" value="application/freemind"/>
-                <entry key="pdf" value="application/pdf"/>
-                <entry key="png" value="image/png"/>
-                <entry key="jpg" value="image/jpeg"/>
-                <entry key="svg" value="image/svg+xml"/>
-                <entry key="wxml" value="application/wisemapping+xml"/>
-                <entry key="txt" value="text/plain"/>
-                <entry key="xls" value="application/vnd.ms-excel"/>
-                <entry key="otd" value="application/vnd.oasis.opendocument.text"/>
-                <entry key="mmap" value="application/vnd.mindjet.mindmanager"/>
             </map>
         </property>
     </bean>
@@ -93,58 +73,6 @@
         </property>
     </bean>
 
-    <bean id="transformViewPdf" class="com.wisemapping.rest.view.TransformView">
-        <constructor-arg value="application/pdf"/>
-        <constructor-arg ref="notificationService"/>
-    </bean>
-
-    <bean id="transformViewPng" class="com.wisemapping.rest.view.TransformView">
-        <constructor-arg value="image/png"/>
-        <constructor-arg ref="notificationService"/>
-    </bean>
-
-    <bean id="transformViewJpeg" class="com.wisemapping.rest.view.TransformView">
-        <constructor-arg value="image/jpeg"/>
-        <constructor-arg ref="notificationService"/>
-    </bean>
-
-    <bean id="transformViewFreemind" class="com.wisemapping.rest.view.TransformView">
-        <constructor-arg value="application/freemind"/>
-        <constructor-arg ref="notificationService"/>
-    </bean>
-
-    <bean id="transformViewSvg" class="com.wisemapping.rest.view.TransformView">
-        <constructor-arg value="image/svg+xml"/>
-        <constructor-arg ref="notificationService"/>
-    </bean>
-
-    <bean id="transformViewXls" class="com.wisemapping.rest.view.TransformView">
-        <constructor-arg value="application/vnd.ms-excel"/>
-        <constructor-arg ref="notificationService"/>
-    </bean>
-
-
-    <bean id="transformViewOdt" class="com.wisemapping.rest.view.TransformView">
-        <constructor-arg value="application/vnd.oasis.opendocument.text"/>
-        <constructor-arg ref="notificationService"/>
-    </bean>
-
-
-    <bean id="transformViewTxt" class="com.wisemapping.rest.view.TransformView">
-        <constructor-arg value="text/plain"/>
-        <constructor-arg ref="notificationService"/>
-    </bean>
-
-    <bean id="transformViewMMap" class="com.wisemapping.rest.view.TransformView">
-        <constructor-arg value="application/vnd.mindjet.mindmanager"/>
-        <constructor-arg ref="notificationService"/>
-    </bean>
-
-    <bean id="transformViewWise" class="com.wisemapping.rest.view.TransformView">
-        <constructor-arg value="application/wisemapping+xml"/>
-        <constructor-arg ref="notificationService"/>
-    </bean>
-
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basenames">
             <list>
@@ -152,10 +80,6 @@
             </list>
         </property>
     </bean>
-
     <!-- Configuration Bean -->
     <context:property-placeholder location="/WEB-INF/app.properties" ignore-unresolvable="true"/>
-    <bean id="documentationConfig" class="com.mangofactory.swagger.configuration.DocumentationConfig"/>
-    <!-- Custom extensibility module (bean) Has override methods to customize the document generation-->
-    <!--<bean id="extensibilityModule" class="com.mangofactory.swagger.springmvc.example.config.ExampleExtensibilityModule" />-->
 </beans>

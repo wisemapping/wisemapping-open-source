@@ -1,20 +1,20 @@
 /*
-*    Copyright [2015] [wisemapping]
-*
-*   Licensed under WiseMapping Public License, Version 1.0 (the "License").
-*   It is basically the Apache License, Version 2.0 (the "License") plus the
-*   "powered by wisemapping" text requirement on every single page;
-*   you may not use this file except in compliance with the License.
-*   You may obtain a copy of the license at
-*
-*       http://www.wisemapping.org/license
-*
-*   Unless required by applicable law or agreed to in writing, software
-*   distributed under the License is distributed on an "AS IS" BASIS,
-*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*   See the License for the specific language governing permissions and
-*   limitations under the License.
-*/
+ *    Copyright [2015] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 
 package com.wisemapping.webmvc;
 
@@ -40,8 +40,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.Locale;
 
 @Controller
@@ -51,19 +49,6 @@ public class MindmapController {
     @Qualifier("mindmapService")
     @Autowired
     private MindmapService mindmapService;
-
-    @RequestMapping(value = "maps/import")
-    public String showImportPage() {
-        return "mindmapImport";
-    }
-
-    @RequestMapping(value = "maps/{id}/details")
-    public String showDetails(@PathVariable int id, @NotNull Model model, @NotNull HttpServletRequest request) throws MapCouldNotFoundException {
-        final MindMapBean mindmap = findMindmapBean(id);
-        model.addAttribute("mindmap", mindmap);
-        model.addAttribute("baseUrl", request.getAttribute("site.baseurl"));
-        return "mindmapDetail";
-    }
 
     @RequestMapping(value = "maps/{id}/print")
     public String showPrintPage(@PathVariable int id, @NotNull Model model) throws MapCouldNotFoundException {
@@ -75,67 +60,8 @@ public class MindmapController {
         return "mindmapPrint";
     }
 
-    @RequestMapping(value = "maps/{id}/export")
-    public String showExportPage(@PathVariable int id, @NotNull Model model) throws IOException, MapCouldNotFoundException {
-        final Mindmap mindmap = findMindmap(id);
-        model.addAttribute("mindmap", mindmap);
-        return "mindmapExport";
-    }
-
-    @RequestMapping(value = "maps/{id}/exportf")
-    public String showExportPageFull(@PathVariable int id, @NotNull Model model) throws IOException, MapCouldNotFoundException {
-        showExportPage(id, model);
-        return "mindmapExportFull";
-    }
-
-    @RequestMapping(value = "maps/{id}/share")
-    public String showSharePage(@PathVariable int id, @NotNull Model model) throws MapCouldNotFoundException {
-        final Mindmap mindmap = findMindmap(id);
-        model.addAttribute("mindmap", mindmap);
-        return "mindmapShare";
-    }
-
-    @RequestMapping(value = "maps/{id}/sharef")
-    public String showSharePageFull(@PathVariable int id, @NotNull Model model) throws MapCouldNotFoundException {
-        showSharePage(id, model);
-        return "mindmapShareFull";
-    }
-
-    @RequestMapping(value = "maps/{id}/publish")
-    public String showPublishPage(@PathVariable int id, @NotNull Model model, @NotNull HttpServletRequest request) throws MapCouldNotFoundException {
-        final Mindmap mindmap = findMindmap(id);
-        model.addAttribute("mindmap", mindmap);
-        model.addAttribute("baseUrl", request.getAttribute("site.baseurl"));
-        return "mindmapPublish";
-    }
-
-    @RequestMapping(value = "maps/{id}/publishf")
-    public String showPublishPageFull(@PathVariable int id, @NotNull Model model, @NotNull HttpServletRequest request) throws MapCouldNotFoundException {
-        showPublishPage(id, model, request);
-        return "mindmapPublishFull";
-    }
-
-    @RequestMapping(value = "maps/{id}/history", method = RequestMethod.GET)
-    public String showHistoryPage(@PathVariable int id, @NotNull Model model) {
-        model.addAttribute("mindmapId", id);
-        return "mindmapHistory";
-    }
-
-    @RequestMapping(value = "maps/{id}/historyf", method = RequestMethod.GET)
-    public String showHistoryPageFull(@PathVariable int id, @NotNull Model model) {
-        showHistoryPage(id, model);
-        return "mindmapHistoryFull";
-    }
-
     @RequestMapping(value = "maps/")
     public String showListPage(@NotNull Model model) {
-        final Locale locale = LocaleContextHolder.getLocale();
-        // @Todo: This should be more flexible  ...
-        String localeStr = locale.toString().toLowerCase();
-        if ("es".equals(locale.getLanguage()) || "pt".equals(locale.getLanguage())) {
-            localeStr = locale.getLanguage();
-        }
-        model.addAttribute("locale", localeStr);
         return "mindmapList";
     }
 
@@ -179,8 +105,9 @@ public class MindmapController {
 
     @RequestMapping(value = "maps/{id}/view", method = RequestMethod.GET)
     public String showMindmapViewerPage(@PathVariable int id, @NotNull Model model) throws WiseMappingException {
-        return showEditorPage(id, model, false);
-    }
+        final String result = showPrintPage(id, model);
+        model.addAttribute("readOnlyMode", true);
+        return result;    }
 
     @RequestMapping(value = "maps/{id}/try", method = RequestMethod.GET)
     public String showMindmapTryPage(@PathVariable int id, @NotNull Model model) throws WiseMappingException {
@@ -193,7 +120,7 @@ public class MindmapController {
     @RequestMapping(value = "maps/{id}/{hid}/view", method = RequestMethod.GET)
     public String showMindmapViewerRevPage(@PathVariable int id, @PathVariable int hid, @NotNull Model model) throws WiseMappingException {
 
-        final String result = showMindmapEditorPage(id, model);
+        final String result = showPrintPage(id, model);
         model.addAttribute("readOnlyMode", true);
         model.addAttribute("hid", String.valueOf(hid));
         return result;
@@ -228,7 +155,7 @@ public class MindmapController {
     }
 
     @NotNull
-    private Mindmap findMindmap(long mapId) throws MapCouldNotFoundException {
+    private Mindmap findMindmap(int mapId) throws MapCouldNotFoundException {
         final Mindmap result = mindmapService.findMindmapById((int) mapId);
         if (result == null) {
             throw new MapCouldNotFoundException("Map could not be found " + mapId);
@@ -238,7 +165,7 @@ public class MindmapController {
     }
 
     @NotNull
-    private MindMapBean findMindmapBean(long mapId) throws MapCouldNotFoundException {
+    private MindMapBean findMindmapBean(int mapId) throws MapCouldNotFoundException {
         final Mindmap mindmap = findMindmap(mapId);
         return new MindMapBean(mindmap, Utils.getUser());
     }

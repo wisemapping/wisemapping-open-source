@@ -78,7 +78,7 @@ public class UserServiceImpl
 
     private String randomstring(int lo, int hi) {
         int n = rand(lo, hi);
-        byte b[] = new byte[n];
+        byte[] b = new byte[n];
         for (int i = 0; i < n; i++)
             b[i] = (byte) rand('@', 'Z');
         return new String(b);
@@ -181,7 +181,7 @@ public class UserServiceImpl
 
     @Override
     @Nullable
-    public User getUserBy(long id) {
+    public User getUserBy(int id) {
         return userManager.getUserBy(id);
     }
 

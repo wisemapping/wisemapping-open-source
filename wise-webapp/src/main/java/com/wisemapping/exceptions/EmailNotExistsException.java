@@ -18,11 +18,23 @@
 
 package com.wisemapping.exceptions;
 
+import com.wisemapping.service.InvalidUserEmailException;
+import org.jetbrains.annotations.NotNull;
+
 public class EmailNotExistsException
-        extends Exception
+        extends ClientException
 {
-    public EmailNotExistsException(Exception e)
+
+    private static final String MSG_KEY = "RESET_PASSWORD_INVALID_EMAIL";
+
+    public EmailNotExistsException(@NotNull InvalidUserEmailException e)
     {
-        super(e);
+        super(e.getMessage(),Severity.INFO);
+    }
+
+    @NotNull
+    @Override
+    protected String getMsgBundleKey() {
+        return MSG_KEY;
     }
 }

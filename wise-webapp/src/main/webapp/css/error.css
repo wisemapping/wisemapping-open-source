@@ -1,0 +1,42 @@
+@import "compatibility.css";
+
+div#errorContainer {
+    font-family:Helvetica;
+    display: flex;
+    padding: 200px 80px;
+}
+
+h1 {
+    color: #696969;
+    font-weight: bold;
+    font-size:100px;
+}
+
+h2 {
+    color: rgb(241, 163, 39);
+    font-size: 40px;
+}
+
+p {
+    font-size: 25px;
+}
+div#icon {
+    padding-top: 100px;
+    background-image: url(../../images/logo-icon.svg);
+    height: 150px;
+    background-size: cover;
+}
+
+div#bottom-logo {
+    position: fixed;
+    right: 20px;
+    bottom: 10px;
+    background: url(../../images/logo-text-black.svg) no-repeat;
+    width: 90px;
+    height: 40px;
+}
+
+.column {
+  flex: 50%;
+}
+

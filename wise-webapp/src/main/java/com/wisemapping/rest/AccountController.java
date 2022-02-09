@@ -18,17 +18,16 @@
 
 package com.wisemapping.rest;
 
-import com.mangofactory.swagger.annotations.ApiIgnore;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestLogItem;
+import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.service.UserService;
-import com.wordnik.swagger.annotations.Api;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +42,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@Api(value="UserApi",description = "Account Account Related Objects.")
 @Controller
 public class AccountController extends BaseController {
     @Qualifier("userService")
@@ -57,7 +55,7 @@ public class AccountController extends BaseController {
     @Autowired
     private NotificationService notificationService;
 
-    final Logger logger = Logger.getLogger("com.wisemapping");
+    final Logger logger = Logger.getLogger(AccountController.class);
 
 
     @RequestMapping(method = RequestMethod.PUT, value = "account/password", consumes = {"text/plain"})
@@ -70,6 +68,12 @@ public class AccountController extends BaseController {
         final User user = Utils.getUser(true);
         user.setPassword(password);
         userService.changePassword(user);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/account", produces = {"application/json", "application/xml"})
+    public RestUser fetchAccount() {
+        final User user = Utils.getUser(true);
+        return new RestUser(user);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "account/firstname", consumes = {"text/plain"})
@@ -124,7 +128,6 @@ public class AccountController extends BaseController {
     }
 
 
-    @ApiIgnore
     @RequestMapping(method = RequestMethod.POST, value = "/logger/editor", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void logError(@RequestBody RestLogItem item, @NotNull HttpServletRequest request) {

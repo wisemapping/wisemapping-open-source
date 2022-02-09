@@ -1,20 +1,20 @@
 /*
-*    Copyright [2015] [wisemapping]
-*
-*   Licensed under WiseMapping Public License, Version 1.0 (the "License").
-*   It is basically the Apache License, Version 2.0 (the "License") plus the
-*   "powered by wisemapping" text requirement on every single page;
-*   you may not use this file except in compliance with the License.
-*   You may obtain a copy of the license at
-*
-*       http://www.wisemapping.org/license
-*
-*   Unless required by applicable law or agreed to in writing, software
-*   distributed under the License is distributed on an "AS IS" BASIS,
-*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*   See the License for the specific language governing permissions and
-*   limitations under the License.
-*/
+ *    Copyright [2015] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 
 package com.wisemapping.rest.model;
 
@@ -22,11 +22,7 @@ package com.wisemapping.rest.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.wisemapping.model.Collaboration;
-import com.wisemapping.model.Collaborator;
-import com.wisemapping.model.Label;
-import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.User;
+import com.wisemapping.model.*;
 import com.wisemapping.security.Utils;
 import com.wisemapping.util.TimeUtils;
 import org.jetbrains.annotations.NotNull;
@@ -36,10 +32,12 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Calendar;
-import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-@XmlRootElement(name = "map")
+@XmlRootElement(name = "mapinfo")
 @XmlAccessorType(XmlAccessType.PROPERTY)
 @JsonAutoDetect(
         fieldVisibility = JsonAutoDetect.Visibility.NONE,
@@ -50,9 +48,16 @@ import java.util.Set;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RestMindmapInfo {
 
+    public static final String ROLE_NONE = "none";
     @JsonIgnore
-    private Mindmap mindmap;
-    private Collaborator collaborator;
+    private final Mindmap mindmap;
+    @JsonIgnore
+    private  Set<RestLabel> restLabels;
+
+    @JsonIgnore
+    private  int mapId = -1;
+
+    private final Collaborator collaborator;
 
     public RestMindmapInfo() {
         this(new Mindmap(), null);
@@ -64,7 +69,7 @@ public class RestMindmapInfo {
         this.collaborator = collaborator;
     }
 
-    public void setCreationTime(String value){
+    public void setCreationTime(String value) {
         // Ignore
     }
 
@@ -81,14 +86,6 @@ public class RestMindmapInfo {
         mindmap.setDescription(description);
     }
 
-    public String getTags() {
-        return mindmap.getTags();
-    }
-
-    public void setTags(String tags) {
-        mindmap.setTags(tags);
-    }
-
     public String getTitle() {
         return mindmap.getTitle();
     }
@@ -96,27 +93,40 @@ public class RestMindmapInfo {
     public void setTitle(String title) {
         mindmap.setTitle(title);
     }
-     public Set<RestLabel> getLabels() {
-         final Set<RestLabel> result = new LinkedHashSet<>();
-         final User me = Utils.getUser();
-         for (Label label : mindmap.getLabels()) {
-             if (label.getCreator().equals(me)) {
-                 result.add(new RestLabel(label));
-             }
-         }
-         return result;
-     }
+
+    public Set<RestLabel> getLabels() {
+        // Support test deserialization...
+        Set<RestLabel> result = this.restLabels;
+        if(result==null) {
+            final User me = Utils.getUser();
+            result =  mindmap.getLabels().
+                    stream()
+                    .filter(l -> l.getCreator().equals(me))
+                    .map(RestLabel::new)
+                    .collect(Collectors.toSet());
+        }
+        return result;
+    }
+
+    public void setLabels(Set<RestLabel> restLabels) {
+        this.restLabels = restLabels;
+    }
 
     public int getId() {
-        return mindmap.getId();
+        int result  =  this.mapId;
+        if(mapId==-1) {
+            result = mindmap.getId();
+        }
+        return result;
     }
 
     public void setId(int id) {
+        this.mapId = id;
     }
 
     public String getCreator() {
         final User creator = mindmap.getCreator();
-        return creator!=null?creator.getFullName():null;
+        return creator != null ? creator.getFullName() : null;
     }
 
     public void setCreator(String email) {
@@ -128,8 +138,8 @@ public class RestMindmapInfo {
     }
 
     public String getRole() {
-        final Collaboration collaboration = mindmap.findCollaboration(Utils.getUser());
-        return collaboration != null ? collaboration.getRole().getLabel() : "none";
+        final Optional<Collaboration> collaboration = mindmap.findCollaboration(Utils.getUser());
+        return collaboration.map(value -> value.getRole().getLabel()).orElse(ROLE_NONE);
     }
 
     public void setRole(String value) {
@@ -146,13 +156,13 @@ public class RestMindmapInfo {
 
     public String getLastModificationTime() {
         final Calendar calendar = mindmap.getLastModificationTime();
-        return calendar!=null?TimeUtils.toISO8601(calendar.getTime()):null;
+        return calendar != null ? TimeUtils.toISO8601(calendar.getTime()) : null;
     }
 
     public void setLastModificationTime(String value) {
     }
 
-    public boolean isPublic() {
+    public boolean getPublic() {
         return mindmap.isPublic();
     }
 

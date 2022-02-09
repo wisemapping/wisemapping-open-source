@@ -1,18 +1,13 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.LabelCouldNotFoundException;
-import com.wisemapping.exceptions.MapCouldNotFoundException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.Label;
-import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestLabel;
 import com.wisemapping.rest.model.RestLabelList;
-import com.wisemapping.rest.model.RestMindmapInfo;
-import com.wisemapping.rest.model.RestMindmapList;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.LabelService;
-import com.wisemapping.service.MindmapService;
 import com.wisemapping.validator.LabelValidator;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -54,7 +44,7 @@ public class LabelController extends BaseController {
 
         // Return the new created label ...
         response.setHeader("Location", "/service/labels/" + label.getId());
-        response.setHeader("ResourceId", Integer.toString(label.getId()));
+        response.setHeader("ResourceId", Long.toString(label.getId()));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/labels", produces = {"application/json", "application/xml"})
@@ -69,7 +59,7 @@ public class LabelController extends BaseController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteLabelById(@PathVariable int id) throws WiseMappingException {
         final User user = Utils.getUser();
-        final Label label = labelService.getLabelById(id, user);
+        final Label label = labelService.findLabelById(id, user);
         if (label == null) {
             throw new LabelCouldNotFoundException("Label could not be found. Id: " + id);
         }

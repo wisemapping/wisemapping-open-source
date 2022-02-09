@@ -29,9 +29,9 @@ public interface MindmapManager {
 
     Collaborator findCollaborator(@NotNull String email);
 
-    Collaborator findCollaborator(long id);
+    Collaborator findCollaborator(int id);
     
-    List<Collaboration> findCollaboration(final long collaboratorId);
+    List<Collaboration> findCollaboration(final int collaboratorId);
 
     List<Collaboration> findCollaboration(final CollaborationRole userRole);
 
@@ -46,27 +46,29 @@ public interface MindmapManager {
 
     void addCollaborator(Collaborator collaborator);
 
-    void addMindmap(User user, Mindmap mindMap);
+    void addMindmap(User user, Mindmap mindmap);
 
-    void saveMindmap(Mindmap mindMap);
+    void saveMindmap(Mindmap mindmap);
 
-    void updateMindmap(@NotNull Mindmap mindMap, boolean saveHistory);
+    void updateMindmap(@NotNull Mindmap mindmap, boolean saveHistory);
 
     void removeCollaborator(@NotNull Collaborator collaborator);
 
-    void removeMindmap(Mindmap mindap);
+    void removeMindmap(Mindmap mindmap);
 
     void removeCollaboration(Collaboration collaboration);
 
-    public List<Mindmap> search(MindMapCriteria criteria);
+    List<Mindmap> search(MindMapCriteria criteria);
 
-    public List<Mindmap> search(MindMapCriteria criteria, int maxResult);
+    List<Mindmap> search(MindMapCriteria criteria, int maxResult);
 
-    public List<MindMapHistory> getHistoryFrom(int mindmapId);
+    List<MindMapHistory> getHistoryFrom(int mindmapId);
 
-    public MindMapHistory getHistory(int historyId);
+    MindMapHistory getHistory(int historyId);
 
     void updateCollaboration(@NotNull Collaboration collaboration);
 
     void purgeHistory(int mapId) throws IOException;
+
+    List<Mindmap> findMindmapByUser(User user);
 }

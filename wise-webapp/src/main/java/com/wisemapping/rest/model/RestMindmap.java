@@ -23,11 +23,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.model.CollaborationProperties;
-import com.wisemapping.model.CollaborationRole;
-import com.wisemapping.model.Collaborator;
-import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.User;
+import com.wisemapping.model.*;
+import com.wisemapping.security.Utils;
 import com.wisemapping.util.TimeUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -37,6 +34,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @XmlRootElement(name = "map")
 @XmlAccessorType(XmlAccessType.PROPERTY)
@@ -49,9 +50,9 @@ import java.util.Calendar;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RestMindmap {
     @JsonIgnore
-    private Collaborator collaborator;
+    private final Collaborator collaborator;
     @JsonIgnore
-    private Mindmap mindmap;
+    private final Mindmap mindmap;
     @Nullable
     private String properties;
 
@@ -89,14 +90,6 @@ public class RestMindmap {
 
     public void setDescription(String description) {
         mindmap.setDescription(description);
-    }
-
-    public String getTags() {
-        return mindmap.getTags();
-    }
-
-    public void setTags(String tags) {
-        mindmap.setTags(tags);
     }
 
     public String getTitle() {

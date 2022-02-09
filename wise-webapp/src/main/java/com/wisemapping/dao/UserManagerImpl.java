@@ -18,10 +18,12 @@
 
 package com.wisemapping.dao;
 
+import com.wisemapping.model.AccessAuditory;
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.User;
-import com.wisemapping.model.AccessAuditory;
+import com.wisemapping.security.DefaultPasswordEncoderFactories;
+import com.wisemapping.security.LegacyPasswordEncoder;
 import org.hibernate.ObjectNotFoundException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -81,7 +83,8 @@ public class UserManagerImpl
     }
 
     @Nullable
-    public User getUserBy(long id) {
+    @Override
+    public User getUserBy(int id) {
         User user = null;
         try {
             user = getHibernateTemplate().get(User.class, id);
@@ -130,7 +133,14 @@ public class UserManagerImpl
 
     public void updateUser(@NotNull User user) {
         assert user != null : "user is null";
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        // Does the password need to be encrypted ?
+        final String password = user.getPassword();
+        if(password!=null && (!password.startsWith(LegacyPasswordEncoder.ENC_PREFIX) && !password.startsWith( "{"+ DefaultPasswordEncoderFactories.ENCODING_ID)))
+        {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+
         getHibernateTemplate().update(user);
     }
 

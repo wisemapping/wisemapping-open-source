@@ -21,7 +21,7 @@ package com.wisemapping.mail;
 
 import com.wisemapping.util.VelocityEngineUtils;
 import com.wisemapping.util.VelocityEngineWrapper;
-    import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -35,9 +35,9 @@ public final class Mailer {
 
     private JavaMailSender mailSender;
     private VelocityEngineWrapper velocityEngineWrapper;
-    private String serverFromEmail;
-    private String supportEmail;
-    private String errorReporterEmail;
+    private final String serverFromEmail;
+    private final String supportEmail;
+    private final String errorReporterEmail;
 
     //~ Methods ..............................................................................................
 

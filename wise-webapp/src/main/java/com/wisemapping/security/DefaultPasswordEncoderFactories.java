@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class DefaultPasswordEncoderFactories {
 
-    private static final String ENCODING_ID = "bcrypt";
+    public static final String ENCODING_ID = "bcrypt";
 
     static PasswordEncoder createDelegatingPasswordEncoder() {
 

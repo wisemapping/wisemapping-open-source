@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -68,9 +69,11 @@ public class MindmapServiceImpl
             if ((map.isPublic() && role == CollaborationRole.VIEWER) || isAdmin(user)) {
                 result = true;
             } else if (user != null) {
-                final Collaboration collaboration = map.findCollaboration(user);
-                if (collaboration != null) {
-                    result = collaboration.hasPermissions(role);
+                final Optional<Collaboration> collaboration = map.findCollaboration(user);
+                if (collaboration .isPresent()) {
+                    result = collaboration
+                            .get()
+                            .hasPermissions(role);
                 }
 
             }
@@ -88,16 +91,6 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public void linkLabel(@NotNull Mindmap mindmap, @NotNull final Label label) {
-        mindmap.addLabel(label);
-    }
-
-    @Override
-    public void removeLabel(@NotNull Mindmap mindmap, @NotNull Label label) {
-        mindmap.removeLabel(label);
-    }
-
-    @Override
     public Mindmap getMindmapByTitle(String title, User user) {
         return mindmapManager.getMindmapByTitle(title, user);
     }
@@ -106,6 +99,12 @@ public class MindmapServiceImpl
     @Nullable
     public Mindmap findMindmapById(int id) {
         return mindmapManager.getMindmapById(id);
+    }
+
+    @NotNull
+    @Override
+    public List<Mindmap> findMindmapsByUser(@NotNull User user) {
+        return mindmapManager.findMindmapByUser(user);
     }
 
     @Override
@@ -160,15 +159,15 @@ public class MindmapServiceImpl
         if (mindmap.getCreator().identityEquality(user) || isAdmin(user)) {
             mindmapManager.removeMindmap(mindmap);
         } else {
-            final Collaboration collaboration = mindmap.findCollaboration(user);
-            if (collaboration != null) {
-                this.removeCollaboration(mindmap, collaboration);
+            final Optional<Collaboration> collaboration = mindmap.findCollaboration(user);
+            if (collaboration.isPresent()) {
+                this.removeCollaboration(mindmap, collaboration.get());
             }
         }
     }
 
     @Override
-    public void addMindmap(@NotNull Mindmap map, @NotNull User user) throws WiseMappingException {
+    public void addMindmap(@NotNull Mindmap map, @NotNull User user) {
 
         final String title = map.getTitle();
 

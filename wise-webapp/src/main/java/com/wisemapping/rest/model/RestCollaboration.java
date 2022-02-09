@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlRootElement;
         isGetterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY)
 public class RestCollaboration {
 
-    private long id;
+    private int id;
     private String email;
     private String role;
 
@@ -60,7 +60,7 @@ public class RestCollaboration {
 
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 

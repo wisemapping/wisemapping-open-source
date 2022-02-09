@@ -50,7 +50,7 @@ class LockManagerImpl implements LockManager {
     public static final int ONE_MINUTE_MILLISECONDS = 1000 * 60;
     final Map<Integer, LockInfo> lockInfoByMapId;
     final static Timer expirationTimer = new Timer();
-    final private static Logger logger = Logger.getLogger("com.wisemapping.service.LockManager");
+    final private static Logger logger = Logger.getLogger(LockManagerImpl.class);
 
     @Override
     public boolean isLocked(@NotNull Mindmap mindmap) {

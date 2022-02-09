@@ -22,27 +22,16 @@ import org.apache.log4j.Logger;
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.security.crypto.codec.Hex;
 import org.springframework.security.crypto.codec.Utf8;
-import org.springframework.security.crypto.password.MessageDigestPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.util.Assert;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
-import org.springframework.security.crypto.codec.Base64;
-import org.springframework.security.crypto.codec.Hex;
-import org.springframework.security.crypto.codec.Utf8;
-import org.springframework.util.Assert;
 
 
 public class LegacyPasswordEncoder implements PasswordEncoder {
-    final private static Logger logger = Logger.getLogger("com.wisemapping.security.LegacyPasswordEncoder");
+    final private static Logger logger = Logger.getLogger(LegacyPasswordEncoder.class);
 
-    private static final String ENC_PREFIX = "ENC:";
+    public static final String ENC_PREFIX = "ENC:";
     private final ShaPasswordEncoder sha1Encoder = new ShaPasswordEncoder();
 
     @Override
@@ -67,7 +56,7 @@ public class LegacyPasswordEncoder implements PasswordEncoder {
 class ShaPasswordEncoder {
 
     private final String algorithm;
-    private boolean encodeHashAsBase64;
+    private final boolean encodeHashAsBase64;
 
 
     /**

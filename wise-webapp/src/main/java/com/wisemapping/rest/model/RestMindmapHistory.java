@@ -44,10 +44,10 @@ import java.util.TimeZone;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RestMindmapHistory {
 
-    static private SimpleDateFormat sdf;
-    private int id;
-    private Calendar creation;
-    private String creator;
+    static private final SimpleDateFormat sdf;
+    private final int id;
+    private final Calendar creation;
+    private final String creator;
 
     static {
         sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");

@@ -22,13 +22,13 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 final public class Utils {
     //Set the email emailPattern string
 
-    static private Pattern emailPattern = Pattern.compile(".+@.+\\.[a-z]+");
+    static private final Pattern emailPattern = Pattern.compile(".+@.+\\.[a-z]+");
 
     private Utils() {
 

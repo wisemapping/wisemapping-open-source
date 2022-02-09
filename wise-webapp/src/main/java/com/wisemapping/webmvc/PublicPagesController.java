@@ -32,27 +32,6 @@ public class PublicPagesController {
     @Autowired
     private MindmapService mindmapService;
 
-
-    @RequestMapping(value = "aboutUs")
-    public String aboutUs() {
-        return "aboutUs";
-    }
-
-    @RequestMapping(value = "termsOfUse")
-    public String showTermsOfUse() {
-        return "termsOfUse";
-    }
-
-    @RequestMapping(value = "crew")
-    public String crew() {
-        return "crew";
-    }
-
-    @RequestMapping(value = "GCFInstall")
-    public String showGCFInstallationPage() {
-        return "GCFInstall";
-    }
-
     @RequestMapping(value = "keyboard")
     public String newsPage() {
         return "keyboard";

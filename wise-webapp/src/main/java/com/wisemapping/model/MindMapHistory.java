@@ -22,15 +22,28 @@ import com.wisemapping.util.ZipUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.persistence.*;
 import java.io.IOException;
 import java.util.Calendar;
 
+@Entity
+@Table(name = "MINDMAP_HISTORY")
 public class MindMapHistory {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(name = "creation_date")
     private Calendar creationTime;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "editor_id", nullable = true,unique = false)
     private User editor;
+
+    @Column(name = "xml")
     private byte[] zippedXml;
+
+    @Column(name = "mindmap_id")
     private int mindmapId;
 
     public MindMapHistory() {

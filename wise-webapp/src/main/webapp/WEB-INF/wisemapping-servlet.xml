@@ -18,35 +18,9 @@
 
     <!-- Interceptors Registration -->
     <mvc:interceptors>
-        <bean id="browserSupportInterceptor" class="com.wisemapping.filter.BrowserSupportInterceptor">
-            <property name="exclude">
-                <set>
-                    <value>/</value>
-                    <value>/index.jsp</value>
-                    <value>/c/home</value>
-                    <value>/c/j_spring_security</value>
-                    <value>/c/login</value>
-                    <value>/c/GCFInstall</value>
-                    <value>/service/</value>
-                    <value>/c/maps/*/embed</value>
-                    <value>/c/maps/*/public</value>
-                    <value>/c/embeddedView</value>
-                    <value>/c/user/resetPassword</value>
-                    <value>/c/user/registration</value>
-                </set>
-            </property>
-        </bean>
         <bean id="userLocaleInterceptor" class="com.wisemapping.filter.UserLocaleInterceptor"/>
         <bean id="requestInterceptor" class="com.wisemapping.filter.RequestPropertiesInterceptor"/>
-
-        <bean id="webContentInterceptor" class="org.springframework.web.servlet.mvc.WebContentInterceptor">
-            <property name="cacheSeconds" value="0"/>
-            <property name="useExpiresHeader" value="true"/>
-            <property name="useCacheControlHeader" value="true"/>
-            <property name="useCacheControlNoStore" value="true"/>
-        </bean>
     </mvc:interceptors>
-
 
     <bean id="exceptionHandlerResolver"
           class="com.wisemapping.mail.NotifyingExceptionResolver">
@@ -54,17 +28,21 @@
         <property name="defaultErrorView" value="unexpectedError"/>
         <property name="exceptionMappings">
             <props>
-                <prop key="com.wisemapping.exceptions.UnsupportedBrowserException">browserNotSupported</prop>
-                <prop key="com.wisemapping.exceptions.GoogleChromeFrameRequiredException">GCFPluginRequired</prop>
                 <!-- Security exceptions are wrapped in this exceptions -->
                 <prop key="java.lang.reflect.UndeclaredThrowableException">securityError</prop>
             </props>
         </property>
+
+        <property name="statusCodes">
+            <props>
+                <!-- Handle missing found pages. Avoid generation of errors -->
+                <prop key="securityError">200</prop>
+            </props>
+        </property>
+
         <property name="exclude">
             <set>
                 <value>java.lang.reflect.UndeclaredThrowableException</value>
-                <value>com.wisemapping.exceptions.GoogleChromeFrameRequiredException</value>
-                <value>com.wisemapping.exceptions.UnsupportedBrowserException</value>
             </set>
         </property>
         <property name="notificationService" ref="notificationService"/>

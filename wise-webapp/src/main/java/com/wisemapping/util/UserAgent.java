@@ -215,11 +215,8 @@ public class UserAgent {
         if (id != other.id)
             return false;
         if (operatingSystem == null) {
-            if (other.operatingSystem != null)
-                return false;
-        } else if (!operatingSystem.equals(other.operatingSystem))
-            return false;
-        return true;
+            return other.operatingSystem == null;
+        } else return operatingSystem.equals(other.operatingSystem);
     }
 
 }

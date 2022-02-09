@@ -19,12 +19,12 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.ClientException;
-import com.wisemapping.exceptions.ImportUnexpectedException;
 import com.wisemapping.exceptions.Severity;
 import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestErrors;
 import com.wisemapping.security.Utils;
+import com.wisemapping.service.RegistrationException;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ import java.util.Locale;
 
 public class BaseController {
 
-    final private Logger logger = Logger.getLogger("com.wisemapping.rest");
+    final private Logger logger = Logger.getLogger(BaseController.class);
 
     @Qualifier("messageSource")
     @Autowired
@@ -61,15 +61,6 @@ public class BaseController {
     public RestErrors handleClientErrors(@NotNull IllegalArgumentException ex) {
         logger.error(ex.getMessage(), ex);
         return new RestErrors(ex.getMessage(), Severity.WARNING);
-    }
-
-    @ExceptionHandler(ImportUnexpectedException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ResponseBody
-    public RestErrors handleImportErrors(@NotNull ImportUnexpectedException ex, @NotNull HttpServletRequest request) {
-        final User user = Utils.getUser();
-        notificationService.reportJavaException(ex, user, new String(ex.getFreemindXml()), request);
-        return new RestErrors(ex.getMessage(), Severity.SEVERE);
     }
 
     @ExceptionHandler(ValidationException.class)
@@ -110,9 +101,15 @@ public class BaseController {
     public RestErrors handleServerErrors(@NotNull Exception ex, @NotNull HttpServletRequest request) {
         final User user = Utils.getUser(false);
         notificationService.reportJavaException(ex, user, request);
-        ex.printStackTrace();
+        logger.error(ex);
+
         return new RestErrors(ex.getMessage(), Severity.SEVERE);
     }
 
-
+    @ExceptionHandler(RegistrationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public RestErrors handleRegistrationErrors(@NotNull RegistrationException exception) {
+        return new RestErrors(exception, messageSource);
+    }
 }

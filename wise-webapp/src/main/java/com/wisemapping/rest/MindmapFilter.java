@@ -33,24 +33,28 @@ public abstract class MindmapFilter {
             return true;
         }
     };
+
     public static final MindmapFilter MY_MAPS = new MindmapFilter("my_maps") {
         @Override
         boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
             return mindmap.getCreator().identityEquality(user);
         }
     };
+
     public static final MindmapFilter STARRED = new MindmapFilter("starred") {
         @Override
         boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
             return mindmap.isStarred(user);
         }
     };
+
     public static final MindmapFilter SHARED_WITH_ME = new MindmapFilter("shared_with_me") {
         @Override
         boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
             return !MY_MAPS.accept(mindmap, user);
         }
     };
+
     public static final MindmapFilter PUBLIC = new MindmapFilter("public") {
         @Override
         boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
@@ -59,7 +63,7 @@ public abstract class MindmapFilter {
     };
 
     protected String id;
-    private static MindmapFilter[] values = {ALL, MY_MAPS, PUBLIC, STARRED, SHARED_WITH_ME};
+    private static final MindmapFilter[] values = {ALL, MY_MAPS, PUBLIC, STARRED, SHARED_WITH_ME};
 
     private MindmapFilter(@NotNull String id) {
         this.id = id;

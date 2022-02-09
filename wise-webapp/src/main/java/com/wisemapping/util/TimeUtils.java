@@ -8,7 +8,7 @@ import java.util.TimeZone;
 
 final public class TimeUtils
 {
-    private static SimpleDateFormat sdf;
+    private static final SimpleDateFormat sdf;
     static {
         sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));

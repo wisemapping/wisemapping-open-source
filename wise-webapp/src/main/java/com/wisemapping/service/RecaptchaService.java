@@ -6,7 +6,9 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
 
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -22,21 +24,21 @@ public class RecaptchaService {
     private final static ObjectMapper objectMapper = new ObjectMapper();
     private String recaptchaSecret;
 
-    public String verifyRecaptcha(String ip, String recaptchaResponse) {
+    @Nullable
+    public String verifyRecaptcha(@NotNull String ip, @NotNull String recaptcha) {
 
         final List<NameValuePair> build = Form.form()
                 .add("secret", recaptchaSecret)
-                .add("response", recaptchaResponse)
+                .add("response", recaptcha)
                 .add("remoteip", ip)
                 .build();
 
         // Add logs ...
         logger.debug("Response from remoteip: " + ip);
         logger.debug("Response from recaptchaSecret: " + recaptchaSecret);
-        logger.debug("Response from recaptchaResponse: " + recaptchaResponse);
+        logger.debug("Response from recaptcha: " + recaptcha);
 
         String result = StringUtils.EMPTY;
-        HashMap bodyJson;
         try {
             final byte[] body = Request
                     .Post(GOOGLE_RECAPTCHA_VERIFY_URL)
@@ -45,16 +47,13 @@ public class RecaptchaService {
                     .returnContent()
                     .asBytes();
 
-            bodyJson = objectMapper
-                    .readValue(body, HashMap.class);
+            final Map responseBody = objectMapper.readValue(body, HashMap.class);
+            logger.warn("Response from recaptcha after parse: " + responseBody);
 
-            logger.debug("Response from recaptcha after parse: " + bodyJson);
-
-            final Boolean success = (Boolean) bodyJson.get("success");
-            if (!success) {
-                final List<String> errorCodes = (List<String>) bodyJson
-                        .get("error-codes");
-                result = RecaptchaUtil.RECAPTCHA_ERROR_CODE.get(errorCodes.get(0));
+            final Boolean success = (Boolean) responseBody.get("success");
+            if (success!=null && !success) {
+                final List<String> errorCodes = (List<String>) responseBody.get("error-codes");
+                result = RecaptchaUtil.codeToDescription(errorCodes.get(0));
             }
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
@@ -73,8 +72,13 @@ public class RecaptchaService {
 
 class RecaptchaUtil {
 
-    static final Map<String, String>
+    private static final Map<String, String>
             RECAPTCHA_ERROR_CODE = new HashMap<>();
+
+    static String codeToDescription(final String code)
+    {
+        return  RECAPTCHA_ERROR_CODE.getOrDefault(code,"Unexpected error validating code. Please, refresh the page and try again.");
+    }
 
     static {
         RECAPTCHA_ERROR_CODE.put("missing-input-secret",
@@ -87,5 +91,7 @@ class RecaptchaUtil {
                 "The response parameter is invalid or malformed");
         RECAPTCHA_ERROR_CODE.put("bad-request",
                 "The request is invalid or malformed");
+        RECAPTCHA_ERROR_CODE.put("timeout-or-duplicate",
+                "Please, refresh the page and try again.");
     }
 }

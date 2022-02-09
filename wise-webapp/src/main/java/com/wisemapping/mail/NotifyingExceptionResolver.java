@@ -14,7 +14,7 @@ import java.util.Set;
 
 public class NotifyingExceptionResolver extends SimpleMappingExceptionResolver {
 
-    final private Logger logger = Logger.getLogger("com.wisemapping");
+    final private Logger logger = Logger.getLogger(NotifyingExceptionResolver.class);
     private Set<String> exclude = new HashSet<String>();
     private NotificationService notificationService;
 

@@ -18,15 +18,33 @@
 
 package com.wisemapping.model;
 
-import org.jetbrains.annotations.NotNull;
 
-public class Collaboration {
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
-    private long id;
+@Entity
+@Table(name = "COLLABORATION")
+public class Collaboration implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;;
+
+    @Column(name = "role_id",unique = true,nullable = true)
     private CollaborationRole role;
+
+    @ManyToOne
+    @JoinColumn(name="mindmap_id",nullable = false)
     private Mindmap mindMap;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="colaborator_id",nullable = false)
     private Collaborator collaborator;
-    private CollaborationProperties collaborationProperties;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="properties_id",nullable = false, unique = true)
+    private CollaborationProperties collaborationProperties =  new CollaborationProperties();;
 
     public Collaboration() {
     }
@@ -41,11 +59,11 @@ public class Collaboration {
         collaborator.addCollaboration(this);
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -84,12 +102,7 @@ public class Collaboration {
 
     @NotNull
     public CollaborationProperties getCollaborationProperties() {
-        CollaborationProperties result = collaborationProperties;
-        if (result == null) {
-            collaborationProperties = new CollaborationProperties();
-            result = collaborationProperties;
-        }
-        return result;
+        return this.collaborationProperties;
     }
 
     public void setCollaborationProperties(@NotNull CollaborationProperties collaborationProperties) {
@@ -111,9 +124,7 @@ public class Collaboration {
         if (id != that.id) return false;
         if (collaborator != null ? !collaborator.equals(that.collaborator) : that.collaborator != null) return false;
         if (mindMap != null ? !mindMap.equals(that.mindMap) : that.mindMap != null) return false;
-        if (role != that.role) return false;
-
-        return true;
+        return role == that.role;
     }
 
     @Override

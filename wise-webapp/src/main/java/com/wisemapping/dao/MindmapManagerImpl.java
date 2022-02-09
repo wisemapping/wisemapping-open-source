@@ -20,20 +20,20 @@ package com.wisemapping.dao;
 
 import com.wisemapping.model.*;
 import com.wisemapping.util.ZipUtils;
-import org.hibernate.Query;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Junction;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.SimpleExpression;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.SimpleExpression;
-import org.hibernate.criterion.Junction;
-import org.hibernate.criterion.Order;
-import org.hibernate.Criteria;
 
+import javax.persistence.Query;
 import java.io.IOException;
-import java.util.List;
 import java.util.Calendar;
+import java.util.List;
 
 public class MindmapManagerImpl
         extends HibernateDaoSupport
@@ -45,7 +45,7 @@ public class MindmapManagerImpl
         Query query = currentSession().createQuery("from com.wisemapping.model.Collaborator collaborator where email=:email");
         query.setParameter("email", email);
 
-        final List<Collaborator> collaborators = query.list();
+        final List<Collaborator> collaborators = query.getResultList();
         if (collaborators != null && !collaborators.isEmpty()) {
             assert collaborators.size() == 1 : "More than one user with the same email!";
             collaborator = collaborators.get(0);
@@ -115,6 +115,16 @@ public class MindmapManagerImpl
     }
 
     @Override
+    public List<Mindmap> findMindmapByUser(@NotNull User user) {
+        final Mindmap collaborator;
+        final Query query = currentSession()
+                .createQuery("from com.wisemapping.model.Mindmap m where m.id in (select c.mindMap.id from com.wisemapping.model.Collaboration as c where c.collaborator.id=:collabId )");
+        query.setParameter("collabId", user.getId());
+
+        return query.getResultList();
+    }
+
+    @Override
     public List<Mindmap> search(MindMapCriteria criteria, int maxResult) {
         final Criteria hibernateCriteria = currentSession().createCriteria(Mindmap.class);
         //always search public maps
@@ -150,33 +160,33 @@ public class MindmapManagerImpl
     }
 
     @Override
-    public Collaborator findCollaborator(long id) {
+    public Collaborator findCollaborator(int id) {
         return getHibernateTemplate().get(Collaborator.class, id);
     }
 
     @Override
-    public List<Collaboration> findCollaboration(final long collaboratorId) {
-        Query query = currentSession().createQuery("from com.wisemapping.model.Collaboration collaboration where colaborator_id=:colaboratorId");
-        query.setParameter("colaboratorId", collaboratorId);
-        return query.list();
+    public List<Collaboration> findCollaboration(final int collaboratorId) {
+        Query query = currentSession().createQuery("from com.wisemapping.model.Collaboration c where c.collaborator.id=:collaboratorId");
+        query.setParameter("collaboratorId", collaboratorId);
+        return query.getResultList();
     }
 
     @Override
     public List<Collaboration> findCollaboration(final CollaborationRole collaborationRole) {
-        Query query = currentSession().createQuery("from com.wisemapping.model.Collaboration collaboration where roleId=:roleId");
+        Query query = currentSession().createQuery("from com.wisemapping.model.Collaboration c where c.role=:roleId");
         query.setParameter("roleId", collaborationRole.ordinal());
-        return query.list();
+        return query.getResultList();
     }
 
     @Override
     public Collaboration findCollaboration(final int mindmapId, final User user) {
         final Collaboration result;
 
-        Query query = currentSession().createQuery("from com.wisemapping.model.Collaboration collaboration where mindMap.id=:mindMapId and colaborator_id=:collaboratorId");
-        query.setParameter("mindMap", mindmapId);
+        Query query = currentSession().createQuery("from com.wisemapping.model.Collaboration c where c.mindMap.id=:mindmapId and c.id=:collaboratorId");
+        query.setParameter("mindmapId", mindmapId);
         query.setParameter("collaboratorId", user.getId());
 
-        final List<Collaboration> mindMaps = query.list();
+        final List<Collaboration> mindMaps = query.getResultList();
 
         if (mindMaps != null && !mindMaps.isEmpty()) {
             result = mindMaps.get(0);
@@ -222,7 +232,7 @@ public class MindmapManagerImpl
         query.setParameter("title", title);
         query.setParameter("creator", user);
 
-        List<Mindmap> mindMaps = query.list();
+        List<Mindmap> mindMaps = query.getResultList();
 
         if (mindMaps != null && !mindMaps.isEmpty()) {
             result = mindMaps.get(0);

@@ -18,9 +18,9 @@
 
 package com.wisemapping.dao;
 
+import com.wisemapping.model.AccessAuditory;
 import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.User;
-import com.wisemapping.model.AccessAuditory;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public interface UserManager {
 
     User getUserBy(String email);
 
-    public User getUserBy(long id);
+    User getUserBy(int id);
 
     void createUser(User user);
 
@@ -41,10 +41,10 @@ public interface UserManager {
 
     User getUserByActivationCode(long code);
 
-    public Collaborator getCollaboratorBy(String email);
+    Collaborator getCollaboratorBy(String email);
 
-    public User createUser(User user, Collaborator col);
+    User createUser(User user, Collaborator col);
 
-    public void removeUser(@NotNull User user);
+    void removeUser(@NotNull User user);
 
 }

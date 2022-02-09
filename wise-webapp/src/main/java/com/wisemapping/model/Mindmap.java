@@ -1,20 +1,20 @@
 /*
-*    Copyright [2015] [wisemapping]
-*
-*   Licensed under WiseMapping Public License, Version 1.0 (the "License").
-*   It is basically the Apache License, Version 2.0 (the "License") plus the
-*   "powered by wisemapping" text requirement on every single page;
-*   you may not use this file except in compliance with the License.
-*   You may obtain a copy of the license at
-*
-*       http://www.wisemapping.org/license
-*
-*   Unless required by applicable law or agreed to in writing, software
-*   distributed under the License is distributed on an "AS IS" BASIS,
-*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*   See the License for the specific language governing permissions and
-*   limitations under the License.
-*/
+ *    Copyright [2015] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 
 package com.wisemapping.model;
 
@@ -25,31 +25,54 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.persistence.*;
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
-public class Mindmap {
-    private static final String UTF_8 = "UTF-8";
+@Entity
+@Table(name = "MINDMAP")
+public class Mindmap implements Serializable  {
 
-    //~ Instance fields ......................................................................................
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    
+    @Column(name = "creation_date")
     private Calendar creationTime;
-    private String description;
 
-    private boolean isPublic;
+    @Column(name = "edition_date")
     private Calendar lastModificationTime;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "creator_id", unique = true)
+    private User creator;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "last_editor_id", nullable = false)
     private User lastEditor;
 
-    private Set<Collaboration> collaborations = new HashSet<Collaboration>();
+    private String description;
+
+    @Column(name = "public")
+    private boolean isPublic;
+
+    @OneToMany(mappedBy="mindMap",orphanRemoval = true, cascade = {CascadeType.ALL})
+    private Set<Collaboration> collaborations = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "R_LABEL_MINDMAP",
+            joinColumns = @JoinColumn(name = "mindmap_id"),
+            inverseJoinColumns = @JoinColumn(name = "label_id"))
     private Set<Label> labels = new LinkedHashSet<>();
 
-    private User creator;
-    private String tags;
     private String title;
+
+    @Column(name = "xml")
+    @Basic(fetch = FetchType.LAZY)
     private byte[] zippedXml;
 
     //~ Constructors .........................................................................................
@@ -69,11 +92,7 @@ public class Mindmap {
     }
 
     public void setXmlStr(@NotNull String xml) {
-        try {
-            this.setUnzipXml(xml.getBytes(UTF_8));
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalStateException(e);
-        }
+        this.setUnzipXml(xml.getBytes(StandardCharsets.UTF_8));
     }
 
     @NotNull
@@ -92,7 +111,7 @@ public class Mindmap {
 
     @NotNull
     public String getXmlStr() throws UnsupportedEncodingException {
-        return new String(this.getUnzipXml(), UTF_8);
+        return new String(this.getUnzipXml(), StandardCharsets.UTF_8);
     }
 
     @NotNull
@@ -120,7 +139,8 @@ public class Mindmap {
         collaborations.add(collaboration);
     }
 
-    @NotNull public Set<Label> getLabels() {
+    @NotNull
+    public Set<Label> getLabels() {
         return labels;
     }
 
@@ -132,16 +152,11 @@ public class Mindmap {
         this.labels.add(label);
     }
 
-    @Nullable
-    public Collaboration findCollaboration(@NotNull Collaborator collaborator) {
-        Collaboration result = null;
-        for (Collaboration collaboration : collaborations) {
-            if (collaboration.getCollaborator().identityEquality(collaborator)) {
-                result = collaboration;
-                break;
-            }
-        }
-        return result;
+    public Optional<Collaboration> findCollaboration(@NotNull Collaborator collaborator) {
+        return this.collaborations
+                .stream()
+                .filter(c->c.getCollaborator().identityEquality(collaborator))
+                .findAny();
     }
 
     @Nullable
@@ -170,7 +185,6 @@ public class Mindmap {
         this.isPublic = isPublic;
     }
 
-    @NotNull
     public Calendar getLastModificationTime() {
         return lastModificationTime;
     }
@@ -208,29 +222,19 @@ public class Mindmap {
     public String getXmlAsJsLiteral()
             throws IOException {
         String xml = this.getXmlStr();
-        if (xml != null) {
-            xml = xml.replace("'", "\\'");
-            xml = xml.replace("\n", "\\n");
-            xml = xml.replace("\r", "");
 
-            xml = xml.replace("\\b", "\\\\b");
-            xml = xml.replace("\\t", "\\\\t");
-            xml = xml.replace("\\r", "\\\\r");
-            xml = xml.replace("\\f", "\\\\f");
+        xml = xml.replace("'", "\\'");
+        xml = xml.replace("\n", "\\n");
+        xml = xml.replace("\r", "");
 
-            xml = xml.trim();
-        }
+        xml = xml.replace("\\b", "\\\\b");
+        xml = xml.replace("\\t", "\\\\t");
+        xml = xml.replace("\\r", "\\\\r");
+        xml = xml.replace("\\f", "\\\\f");
+        xml = xml.trim();
         return xml;
     }
 
-
-    public void setTags(String tags) {
-        this.tags = tags;
-    }
-
-    public String getTags() {
-        return tags;
-    }
 
     public String getDescription() {
         return description;
@@ -256,9 +260,10 @@ public class Mindmap {
         return creator;
     }
 
+    @Nullable
     private CollaborationProperties findUserProperty(@NotNull Collaborator collaborator) {
-        final Collaboration collaboration = this.findCollaboration(collaborator);
-        return collaboration != null ? collaboration.getCollaborationProperties() : null;
+        final Optional<Collaboration> collaboration = this.findCollaboration(collaborator);
+        return collaboration.map(Collaboration::getCollaborationProperties).orElse(null);
     }
 
     public void setStarred(@NotNull Collaborator collaborator, boolean value) throws WiseMappingException {
@@ -268,7 +273,7 @@ public class Mindmap {
 
     @NotNull
     public CollaborationProperties findCollaborationProperties(@NotNull Collaborator collaborator) throws WiseMappingException {
-        return this.findCollaborationProperties(collaborator, true);
+        return Objects.requireNonNull(this.findCollaborationProperties(collaborator, true));
     }
 
     @Nullable
@@ -277,10 +282,10 @@ public class Mindmap {
             throw new IllegalStateException("Collaborator can not be null");
         }
 
-        final Collaboration collaboration = this.findCollaboration(collaborator);
+        final Optional<Collaboration> collaboration = this.findCollaboration(collaborator);
         CollaborationProperties result = null;
-        if (collaboration != null) {
-            result = collaboration.getCollaborationProperties();
+        if (collaboration.isPresent()) {
+            result = collaboration.get().getCollaborationProperties();
         } else {
             if (forceCheck)
                 throw new AccessDeniedSecurityException("Collaborator " + collaborator.getEmail() + " could not access " + this.getId());
@@ -308,7 +313,6 @@ public class Mindmap {
         result.setDescription(this.getDescription());
         result.setTitle(this.getTitle());
         result.setUnzipXml(this.getUnzipXml());
-        result.setTags(this.getTags());
 
         return result;
     }
@@ -316,15 +320,15 @@ public class Mindmap {
     public boolean hasPermissions(@Nullable Collaborator collaborator, @NotNull CollaborationRole role) {
         boolean result = false;
         if (collaborator != null) {
-            final Collaboration collaboration = this.findCollaboration(collaborator);
-            if (collaboration != null) {
-                result = collaboration.hasPermissions(role);
+            final Optional<Collaboration> collaboration = this.findCollaboration(collaborator);
+            if (collaboration.isPresent()) {
+                result = collaboration.get().hasPermissions(role);
             }
         }
         return result;
 
     }
-    //creo que no se usa mas
+
     public boolean hasLabel(@NotNull final String name) {
         for (Label label : this.labels) {
             if (label.getTitle().equals(name)) {
@@ -334,7 +338,8 @@ public class Mindmap {
         return false;
     }
 
-    @Nullable public Label findLabel(int labelId) {
+    @Nullable
+    public Label findLabel(int labelId) {
         Label result = null;
         for (Label label : this.labels) {
             if (label.getId() == labelId) {

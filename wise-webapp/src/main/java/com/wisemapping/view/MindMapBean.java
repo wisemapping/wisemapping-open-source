@@ -28,13 +28,14 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class MindMapBean {
-    private Mindmap mindmap;
-    private List<CollaboratorBean> viewers;
-    private List<CollaboratorBean> collaborators;
-    private Collaborator collaborator;
+    private final Mindmap mindmap;
+    private final List<CollaboratorBean> viewers;
+    private final List<CollaboratorBean> collaborators;
+    private final Collaborator collaborator;
 
     public MindMapBean(@NotNull final Mindmap mindmap, @Nullable final Collaborator collaborator) {
         this.mindmap = mindmap;
@@ -88,10 +89,6 @@ public class MindMapBean {
 
     public String getCreationTime() {
         return DateFormat.getInstance().format(mindmap.getCreationTime().getTime());
-    }
-
-    public String getTags() {
-        return mindmap.getTags();
     }
 
     private List<CollaboratorBean> filterCollaboratorBy(Set<Collaboration> source, CollaborationRole role) {
@@ -167,8 +164,8 @@ public class MindMapBean {
     }
 
     public String getRole() {
-        final Collaboration collaboration = this.mindmap.findCollaboration(collaborator);
-        return collaboration.getRole().getLabel();
+        final Optional<Collaboration> collaboration = this.mindmap.findCollaboration(collaborator);
+        return collaboration.map(value -> value.getRole().getLabel()).orElse("none");
     }
 
 

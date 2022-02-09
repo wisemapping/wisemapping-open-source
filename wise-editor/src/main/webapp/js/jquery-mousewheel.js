@@ -1,1 +1,0 @@
-../../../../../mindplot/src/main/javascript/libraries/jquery/jquery.mousewheel.min.js

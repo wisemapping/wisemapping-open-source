@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 public class SessionExpiredException
         extends ClientException {
     private static final String MSG_KEY = "MINDMAP_TIMESTAMP_OUTDATED";
-    private User lastUpdater;
+    private final User lastUpdater;
 
     public SessionExpiredException(@NotNull String debugInfo, @NotNull User lastUpdater) {
         super(debugInfo, Severity.FATAL);

@@ -1,0 +1,34 @@
+@import "editor.css";
+
+/* Overwrite some styles */
+body{
+    position: inherit;
+}
+
+div#footerLogo {
+    position: fixed;
+    display: list-item;
+    list-style-image: url(../../images/editor/logo-text-black.svg);
+    list-style-position: inside;
+    left: 10px;
+    bottom: 10px;
+}
+
+div#mapDetails {
+    position: fixed;
+    bottom:20px;
+    left: 100px;
+    padding-top: 20px;
+    font-size: 14px;
+}
+
+div#mapDetails .title {
+    font-weight: bold;
+    margin-left: 10px;
+    margin-right: 3px;
+}
+
+div#mindplot {
+    top: 0;
+}
+

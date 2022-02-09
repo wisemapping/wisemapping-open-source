@@ -18,11 +18,11 @@
 
 package com.wisemapping.security.aop;
 
+import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.Mindmap;
+import com.wisemapping.model.User;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import com.wisemapping.model.CollaborationRole;
-import com.wisemapping.model.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,15 +30,18 @@ public class ViewBaseSecurityAdvise
         extends BaseSecurityAdvice
         implements MethodInterceptor {
 
+    @Override
     public Object invoke(@NotNull MethodInvocation methodInvocation) throws Throwable {
         checkRole(methodInvocation);
         return methodInvocation.proceed();
     }
 
+    @Override
     protected boolean isAllowed(@Nullable User user, Mindmap map) {
         return getMindmapService().hasPermissions(user, map, CollaborationRole.VIEWER);
     }
 
+    @Override
     protected boolean isAllowed(@Nullable User user, int mapId) {
         return getMindmapService().hasPermissions(user, mapId, CollaborationRole.VIEWER);
     }
