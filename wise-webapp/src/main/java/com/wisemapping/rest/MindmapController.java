@@ -580,7 +580,7 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/maps/{id}/labels/{lid)}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void removeLabelFromMap(@PathVariable int id, @RequestBody int lid) throws WiseMappingException {
+    public void removeLabelFromMap(@PathVariable int id, @PathVariable int lid) throws WiseMappingException {
         final User user = Utils.getUser();
         final Mindmap mindmap = findMindmapById(id);
         final Label label = labelService.findLabelById(lid, user);
