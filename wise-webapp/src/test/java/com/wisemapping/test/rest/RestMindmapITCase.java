@@ -35,16 +35,16 @@ public class RestMindmapITCase {
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-    public void listMaps(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
+    public void listMaps(final @NotNull MediaType mediaType) {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate(userEmail);
 
         // Create a sample map ...
         final String title1 = "List Maps 1  - " + mediaType;
-        addNewMap(requestHeaders, template, title1);
+        addNewMap(template, title1);
 
         final String title2 = "List Maps 2 - " + mediaType;
-        addNewMap(requestHeaders, template, title2);
+        addNewMap(template, title2);
 
         // Check that the map has been created ...
         final HttpEntity findMapEntity = new HttpEntity(requestHeaders);
@@ -68,13 +68,13 @@ public class RestMindmapITCase {
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-    public void deleteMap(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
+    public void deleteMap(final @NotNull MediaType mediaType) {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate(userEmail);
 
         // Create a sample map ...
         final String title1 = "Map to delete  - " + mediaType;
-        final URI resourceUri = addNewMap(requestHeaders, template, title1);
+        final URI resourceUri = addNewMap(template, title1);
 
         // Now remove it ...
         template.delete(HOST_PORT + resourceUri.toString());
@@ -84,21 +84,22 @@ public class RestMindmapITCase {
             findMap(requestHeaders, template, resourceUri);
             fail("Map could not be removed:" + resourceUri);
         } catch (Exception e) {
+            // Ignore
         }
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-    public void changeMapTitle(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
+    public void changeMapTitle(final @NotNull MediaType mediaType) {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate(userEmail);
 
         // Create a sample map ...
-        final URI resourceUri = addNewMap(requestHeaders, template, "Map to change title  - " + mediaType);
+        final URI resourceUri = addNewMap(template, "Map to change title  - " + mediaType);
 
         // Change map title ...
         requestHeaders.setContentType(MediaType.TEXT_PLAIN);
         final String newTitle = "New map to change title  - " + mediaType;
-        final HttpEntity<String> updateEntity = new HttpEntity<String>(newTitle, requestHeaders);
+        final HttpEntity<String> updateEntity = new HttpEntity<>(newTitle, requestHeaders);
         template.put(HOST_PORT + resourceUri + "/title", updateEntity);
 
         // Load map again ..
@@ -107,22 +108,18 @@ public class RestMindmapITCase {
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-    public void validateMapsCreation(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
+    public void validateMapsCreation(final @NotNull MediaType mediaType) {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate(userEmail);
 
         // Create a sample map ...
         final String title = "Map to Validate Creation  - " + mediaType;
-        final URI resourceUri = addNewMap(requestHeaders, template, title);
+        addNewMap(template, title);
 
-        // Try to create a map with the same title ..
-        final RestMindmap restMindmap = new RestMindmap();
-        restMindmap.setTitle(title);
-        restMindmap.setDescription("My Map Desc");
-
+        // Add map with same name ...
         try {
-            HttpEntity<RestMindmap> createUserEntity = new HttpEntity<RestMindmap>(restMindmap, requestHeaders);
-            template.postForLocation(BASE_REST_URL + "/maps", createUserEntity);
+            HttpEntity<RestMindmap> createUserEntity = new HttpEntity<>(requestHeaders);
+            template.postForLocation(BASE_REST_URL + "/maps?title=" + title, createUserEntity);
         } catch (HttpClientErrorException cause) {
             final String responseBodyAsString = cause.getResponseBodyAsString();
             assert (responseBodyAsString.contains("You have already a map"));
@@ -134,17 +131,17 @@ public class RestMindmapITCase {
 
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-    public void changeMapDescription(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
+    public void changeMapDescription(final @NotNull MediaType mediaType) {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate(userEmail);
 
         // Create a sample map ...
-        final URI resourceUri = addNewMap(requestHeaders, template, "Map to change Description  - " + mediaType);
+        final URI resourceUri = addNewMap(template, "Map to change Description  - " + mediaType);
 
         // Change map title ...
         requestHeaders.setContentType(MediaType.TEXT_PLAIN);
         final String newDescription = "New map to change description  - " + mediaType;
-        final HttpEntity<String> updateEntity = new HttpEntity<String>(newDescription, requestHeaders);
+        final HttpEntity<String> updateEntity = new HttpEntity<>(newDescription, requestHeaders);
         template.put(HOST_PORT + resourceUri + "/description", updateEntity);
 
         // Load map again ..
@@ -153,19 +150,19 @@ public class RestMindmapITCase {
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-    public void updateMapXml(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
+    public void updateMapXml(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate(userEmail);
 
         // Create a sample map ...
         final String title = "Update XML sample " + mediaType;
-        final URI resourceUri = addNewMap(requestHeaders, template, title);
+        final URI resourceUri = addNewMap(template, title);
 
         // Update map xml content ...
         final String resourceUrl = HOST_PORT + resourceUri.toString();
         requestHeaders.setContentType(MediaType.TEXT_PLAIN);
         final String newXmlContent = "<map>this is not valid</map>";
-        HttpEntity<String> updateEntity = new HttpEntity<String>(newXmlContent, requestHeaders);
+        HttpEntity<String> updateEntity = new HttpEntity<>(newXmlContent, requestHeaders);
         template.put(resourceUrl + "/document/xml", updateEntity);
 
         // Check that the map has been updated ...
@@ -174,14 +171,14 @@ public class RestMindmapITCase {
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-    public void cloneMap(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
+    public void cloneMap(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate(userEmail);
 
         // Create a sample map ...
         final String title = "Map to clone  sample " + mediaType;
         final String xml = "<map><node text='this is a cloned map'></map>";
-        final URI newMapUri = addNewMap(requestHeaders, template, title, xml);
+        final URI newMapUri = addNewMap(template, title, xml);
 
         // Clone map ...
         final RestMindmapInfo restMindmap = new RestMindmapInfo();
@@ -189,7 +186,7 @@ public class RestMindmapITCase {
         restMindmap.setDescription("Cloned map desc");
 
         // Create a new map ...
-        final HttpEntity<RestMindmapInfo> cloneEntity = new HttpEntity<RestMindmapInfo>(restMindmap, requestHeaders);
+        final HttpEntity<RestMindmapInfo> cloneEntity = new HttpEntity<>(restMindmap, requestHeaders);
         final URI clonedMapUri = template.postForLocation(HOST_PORT + newMapUri, cloneEntity);
 
         // Check that the map has been updated ...
@@ -198,7 +195,7 @@ public class RestMindmapITCase {
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-    public void verifyMapOwnership(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
+    public void verifyMapOwnership(final @NotNull MediaType mediaType) {    // Configure media types ...
         throw new SkipException("missing test: removeUserShouldOnlyDeleteOnwedMap");
     }
 
@@ -213,7 +210,7 @@ public class RestMindmapITCase {
 
         // Create a sample map ...
         final String title = "Update sample " + mediaType;
-        final URI resourceUri = addNewMap(requestHeaders, template, title);
+        final URI resourceUri = addNewMap(template, title);
 
         // Build map to update ...
         final RestMindmap mapToUpdate = new RestMindmap();
@@ -223,23 +220,23 @@ public class RestMindmapITCase {
         // Update map ...
         final String resourceUrl = HOST_PORT + resourceUri.toString() + "/document";
         requestHeaders.setContentType(MediaType.APPLICATION_XML);
-        final HttpEntity<RestMindmap> updateEntity = new HttpEntity<RestMindmap>(mapToUpdate, requestHeaders);
+        final HttpEntity<RestMindmap> updateEntity = new HttpEntity<>(mapToUpdate, requestHeaders);
         template.put(resourceUrl, updateEntity);
 
         // Check that the map has been updated ...
-        HttpEntity<RestUser> findMapEntity = new HttpEntity<RestUser>(requestHeaders);
+        HttpEntity<RestUser> findMapEntity = new HttpEntity<>(requestHeaders);
         final ResponseEntity<RestMindmap> response = template.exchange(HOST_PORT + resourceUri, HttpMethod.GET, findMapEntity, RestMindmap.class);
         assertEquals(response.getBody().getXml(), mapToUpdate.getXml());
         assertEquals(response.getBody().getProperties(), mapToUpdate.getProperties());
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-    public void addCollabs(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {
+    public void addCollabs(final @NotNull MediaType mediaType) {
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate(userEmail);
 
         // Create a sample map ...
-        final URI resourceUri = addNewMap(requestHeaders, template, "Map for addCollabs  - " + mediaType);
+        final URI resourceUri = addNewMap(template, "Map for addCollabs  - " + mediaType);
 
         // Add a new collaboration ...
         requestHeaders.setContentType(MediaType.APPLICATION_JSON);
@@ -270,12 +267,12 @@ public class RestMindmapITCase {
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-    public void updateCollabType(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {
+    public void updateCollabType(final @NotNull MediaType mediaType) {
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate(userEmail);
 
         // Create a sample map ...
-        final URI resourceUri = addNewMap(requestHeaders, template, "Map for updateCollabType  - " + mediaType);
+        final URI resourceUri = addNewMap(template, "Map for updateCollabType  - " + mediaType);
 
         // Add a new collaboration ...
         requestHeaders.setContentType(MediaType.APPLICATION_JSON);
@@ -310,12 +307,12 @@ public class RestMindmapITCase {
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-    public void deleteCollabs(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {
+    public void deleteCollabs(final @NotNull MediaType mediaType) {
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate(userEmail);
 
         // Create a sample map ...
-        final URI resourceUri = addNewMap(requestHeaders, template, "Map for deleteCollabs  - " + mediaType);
+        final URI resourceUri = addNewMap(template, "Map for deleteCollabs  - " + mediaType);
 
         // Add a new collaboration ...
         requestHeaders.setContentType(MediaType.APPLICATION_JSON);
@@ -355,13 +352,13 @@ public class RestMindmapITCase {
     }
 
     @Test(dataProviderClass = RestHelper.class, expectedExceptions = {HttpClientErrorException.class}, dataProvider = "ContentType-Provider-Function")
-    public void addCollabsInvalidOwner(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {
+    public void addCollabsInvalidOwner(final @NotNull MediaType mediaType) {
 
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate(userEmail);
 
         // Create a sample map ...
-        final URI resourceUri = addNewMap(requestHeaders, template, "Map for Collaboration  - " + mediaType);
+        final URI resourceUri = addNewMap(template, "Map for Collaboration  - " + mediaType);
 
         // Add a new collaboration ...
         requestHeaders.setContentType(MediaType.APPLICATION_JSON);
@@ -380,12 +377,12 @@ public class RestMindmapITCase {
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-    public void removeLabelFromMindmap(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
+    public void removeLabelFromMindmap(final @NotNull MediaType mediaType) {    // Configure media types ...
         throw new SkipException("missing test: label removal from map");
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-    public void deleteMapAndCheckLabels(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
+    public void deleteMapAndCheckLabels(final @NotNull MediaType mediaType) {    // Configure media types ...
         throw new SkipException("missing test: delete map should not affects others labels");
     }
 
@@ -404,7 +401,7 @@ public class RestMindmapITCase {
 
         // Create a sample map ...
         final String mapTitle = "Maps 1  - " + mediaType;
-        final URI mindmapUri = addNewMap(requestHeaders, template, mapTitle);
+        final URI mindmapUri = addNewMap(template, mapTitle);
         final String mapId = mindmapUri.getPath().replace("/service/maps/", "");
 
         // Assign label to map ...
@@ -432,22 +429,15 @@ public class RestMindmapITCase {
     }
 
 
-    private URI addNewMap(@NotNull HttpHeaders requestHeaders, @NotNull RestTemplate template, @NotNull String title, @Nullable String xml) throws IOException, WiseMappingException {
-        final RestMindmap restMindmap = new RestMindmap();
-        restMindmap.setTitle(title);
-        restMindmap.setDescription("My Map Desc");
-
-        if (xml != null) {
-            restMindmap.setXml(xml);
-        }
-
+    private URI addNewMap(@NotNull RestTemplate template, @NotNull String title, @Nullable String xml) {
         // Create a new map ...
-        HttpEntity<RestMindmap> createUserEntity = new HttpEntity<>(restMindmap, requestHeaders);
-        return template.postForLocation(BASE_REST_URL + "/maps", createUserEntity);
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_XML);
+        HttpEntity<String> createUserEntity = new HttpEntity<>(xml, requestHeaders);
+        return template.postForLocation(BASE_REST_URL + "/maps?title=" + title, createUserEntity);
     }
 
-    private URI addNewMap(@NotNull HttpHeaders requestHeaders, @NotNull RestTemplate template, @NotNull String title) throws IOException, WiseMappingException {
-        return addNewMap(requestHeaders, template, title, null);
+    private URI addNewMap(@NotNull RestTemplate template, @NotNull String title) {
+        return addNewMap(template, title, null);
     }
 
 }
