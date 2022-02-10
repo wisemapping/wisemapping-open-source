@@ -74,7 +74,7 @@ public class MindmapController extends BaseController {
         List<Mindmap> mindmaps = mindmapService.findMindmapsByUser(user);
         mindmaps = mindmaps
                 .stream()
-                .filter(m->filter.accept(m, user))
+                .filter(m -> filter.accept(m, user))
                 .collect(Collectors.toUnmodifiableList());
 
         return new RestMindmapList(mindmaps, user);
@@ -496,7 +496,7 @@ public class MindmapController extends BaseController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/maps", consumes = {"application/xml", "application/json", "application/wisemapping+xml"})
+    @RequestMapping(method = RequestMethod.POST, value = "/maps", consumes = {"application/xml", "application/json"})
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createMap(@RequestBody(required = false) RestMindmap restMindmap, @NotNull HttpServletResponse response, @RequestParam(required = false) String title, @RequestParam(required = false) String description) throws IOException, WiseMappingException {
         // If a default maps has not been defined, just create one ...
@@ -508,11 +508,9 @@ public class MindmapController extends BaseController {
         if (title != null && !title.isEmpty()) {
             restMindmap.setTitle(title);
         }
-        if (description != null && !description.isEmpty()) {
-            restMindmap.setDescription(description);
-        } else {
-            restMindmap.setDescription("");
-        }
+
+        description  = description != null && !description.isEmpty() ? description : "";
+        restMindmap.setDescription(description);
 
         // Validate ...
         final BindingResult result = new BeanPropertyBindingResult(restMindmap, "");
@@ -578,7 +576,7 @@ public class MindmapController extends BaseController {
         return new ValidationException(result);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/maps/{id}/labels/{lid)}")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/maps/{id}/labels/{lid}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void removeLabelFromMap(@PathVariable int id, @PathVariable int lid) throws WiseMappingException {
         final User user = Utils.getUser();
@@ -590,7 +588,7 @@ public class MindmapController extends BaseController {
         }
 
         mindmap.removeLabel(label);
-        mindmapService.updateMindmap(mindmap,false);
+        mindmapService.updateMindmap(mindmap, false);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/maps/{id}/labels", consumes = {"application/xml", "application/json"})
@@ -604,6 +602,6 @@ public class MindmapController extends BaseController {
 
         final Mindmap mindmap = findMindmapById(id);
         mindmap.addLabel(label);
-        mindmapService.updateMindmap(mindmap,false);
+        mindmapService.updateMindmap(mindmap, false);
     }
 }
