@@ -37,6 +37,7 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 final public class NotificationService {
     final private static Logger logger = Logger.getLogger(Mailer.class);
@@ -65,7 +66,7 @@ final public class NotificationService {
             final String subject = "[WiseMapping] " + user.getFullName() + " has shared a mindmap with you";
 
             // Fill template properties ...
-            final Map<String, Object> model = new HashMap<String, Object>();
+            final Map<String, Object> model = new HashMap<>();
             model.put("mindmap", mindmap);
             model.put("message", "message");
             model.put("ownerName", user.getFirstname());
@@ -93,12 +94,6 @@ final public class NotificationService {
         sendTemplateMail(user, mailSubject, messageTitle, messageBody);
     }
 
-    private void logErrorMessage(final Map model,
-                                 @NotNull final String templateMail) {
-        final String messageBody = VelocityEngineUtils.mergeTemplateIntoString(velocityEngineWrapper.getVelocityEngine(), "/mail/" + templateMail, model);
-        logger.error("Unexpected editor error => " + messageBody);
-    }
-
 
     public void passwordChanged(@NotNull User user) {
         final String mailSubject = "[WiseMapping] Your password has been changed";
@@ -120,7 +115,7 @@ final public class NotificationService {
     private void sendTemplateMail(@NotNull User user, @NotNull String mailSubject, @NotNull String messageTitle, @NotNull String messageBody) {
 
         try {
-            final Map<String, Object> model = new HashMap<String, Object>();
+            final Map<String, Object> model = new HashMap<>();
             model.put("firstName", user.getFirstname());
             model.put("messageTitle", messageTitle);
             model.put("messageBody", messageBody);
@@ -145,7 +140,7 @@ final public class NotificationService {
 
 
     public void activateAccount(@NotNull User user) {
-        final Map<String, User> model = new HashMap<String, User>();
+        final Map<String, User> model = new HashMap<>();
         model.put("user", user);
         mailer.sendEmail(mailer.getServerSenderEmail(), user.getEmail(), "[WiseMapping] Active account", model, "activationAccountMail.vm");
     }
@@ -194,12 +189,15 @@ final public class NotificationService {
         model.put("method", request.getMethod());
         model.put("remoteAddress", request.getRemoteAddr());
 
-        logErrorMessage(model,
-                "errorNotification.vm");
+        String errorAsString = model.keySet().stream()
+                .map(key -> key + "=" + model.get(key))
+                .collect(Collectors.joining(", ", "{", "}"));
+
+        logger.error("Unexpected editor error => " + errorAsString);
     }
 
     public void reportJavaException(@NotNull Throwable exception, @Nullable User user, @NotNull HttpServletRequest request) {
-        final Map<String, String> model = new HashMap<String, String>();
+        final Map<String, String> model = new HashMap<>();
         model.put("errorMsg", stackTraceToString(exception));
 
         logError(model, user, request);
