@@ -23,6 +23,8 @@ public class RecaptchaService {
             "https://www.google.com/recaptcha/api/siteverify";
 
     private final static ObjectMapper objectMapper = new ObjectMapper();
+    public static final String CATCH_ERROR_CODE_TIMEOUT_OR_DUPLICATE = "timeout-or-duplicate";
+    public static final String CATCHA_ERROR_CODE_INPUT_RESPONSE = "invalid-input-response";
     private String recaptchaSecret;
 
     @Nullable
@@ -54,7 +56,8 @@ public class RecaptchaService {
             final Boolean success = (Boolean) responseBody.get("success");
             if (success != null && !success) {
                 final List<String> errorCodes = (List<String>) responseBody.get("error-codes");
-                if (errorCodes.get(0).equals("timeout-or-duplicate")) {
+                String errorCode = errorCodes.get(0);
+                if (errorCode.equals(CATCH_ERROR_CODE_TIMEOUT_OR_DUPLICATE) || errorCodes.equals(CATCHA_ERROR_CODE_INPUT_RESPONSE)) {
                     result = Messages.CAPTCHA_TIMEOUT_OUT_DUPLICATE;
                 } else {
                     result = Messages.CAPTCHA_LOADING_ERROR;
