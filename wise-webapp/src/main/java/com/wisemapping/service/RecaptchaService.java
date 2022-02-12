@@ -57,8 +57,11 @@ public class RecaptchaService {
             if (success != null && !success) {
                 final List<String> errorCodes = (List<String>) responseBody.get("error-codes");
                 String errorCode = errorCodes.get(0);
-                if (errorCode.equals(CATCH_ERROR_CODE_TIMEOUT_OR_DUPLICATE) || errorCodes.equals(CATCHA_ERROR_CODE_INPUT_RESPONSE)) {
+                if (errorCode.equals(CATCH_ERROR_CODE_TIMEOUT_OR_DUPLICATE)) {
                     result = Messages.CAPTCHA_TIMEOUT_OUT_DUPLICATE;
+
+                } else if (errorCode.equals("invalid-input-response")) {
+                    result = Messages.CAPTCHA_INVALID_INPUT_RESPONSE;
                 } else {
                     result = Messages.CAPTCHA_LOADING_ERROR;
                     logger.error("Unexpected error during catch resolution:" + errorCodes);
