@@ -166,9 +166,9 @@ final public class NotificationService {
 
     public void reportJavascriptException(@Nullable Mindmap mindmap, @Nullable User user, @NotNull RestLogItem errorItem, @NotNull HttpServletRequest request) {
 
-        final Map<String, String> model = new HashMap<>();
-        model.put("JS-MSG", errorItem.getJsErrorMsg());
-        model.put("JS-STACK", errorItem.getJsStack());
+        final Map<String, String> summary = new HashMap<>();
+        summary.put("JS-MSG", errorItem.getJsErrorMsg());
+        summary.put("JS-STACK", errorItem.getJsStack());
 
         String mindmapXML = "";
         try {
@@ -176,11 +176,12 @@ final public class NotificationService {
         } catch (UnsupportedEncodingException e) {
             // Ignore ...
         }
-        model.put("mapId", Integer.toString(mindmap.getId()));
-        model.put("mapTitle", mindmap.getTitle());
+        summary.put("mapId", Integer.toString(mindmap.getId()));
+        summary.put("mapTitle", mindmap.getTitle());
 
-        logError(model, user, request);
+        logError(summary, user, request);
         logger.error("Unexpected editor mindmap => " + mindmapXML);
+        logger.error("Unexpected editor JS Stack => " + errorItem.getJsErrorMsg() + "-" + errorItem.getJsStack());
     }
 
     private void logError(@NotNull Map<String, String> model, @Nullable User user, @NotNull HttpServletRequest request) {
