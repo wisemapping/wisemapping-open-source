@@ -167,8 +167,10 @@ final public class NotificationService {
 
         final Map<String, String> model = new HashMap<>();
         model.put("errorMsg", jsErrorMsg);
+
+        String mindmapXML = "";
         try {
-            model.put("mapXML", StringEscapeUtils.escapeXml(mindmap == null ? "map not found" : mindmap.getXmlStr()));
+            mindmapXML = StringEscapeUtils.escapeXml(mindmap == null ? "map not found" : mindmap.getXmlStr());
         } catch (UnsupportedEncodingException e) {
             // Ignore ...
         }
@@ -176,6 +178,7 @@ final public class NotificationService {
         model.put("mapTitle", mindmap.getTitle());
 
         logError(model, user, request);
+        logger.error("Unexpected editor mindmap => " + mindmapXML);
     }
 
     private void logError(@NotNull Map<String, String> model, @Nullable User user, @NotNull HttpServletRequest request) {
@@ -193,7 +196,7 @@ final public class NotificationService {
                 .map(key -> key + "=" + model.get(key))
                 .collect(Collectors.joining(", ", "{", "}"));
 
-        logger.error("Unexpected editor error => " + errorAsString);
+        logger.error("Unexpected editor info => " + errorAsString);
     }
 
     public void reportJavaException(@NotNull Throwable exception, @Nullable User user, @NotNull HttpServletRequest request) {
