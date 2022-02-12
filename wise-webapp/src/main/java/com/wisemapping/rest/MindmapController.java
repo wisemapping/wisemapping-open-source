@@ -74,7 +74,7 @@ public class MindmapController extends BaseController {
         List<Mindmap> mindmaps = mindmapService.findMindmapsByUser(user);
         mindmaps = mindmaps
                 .stream()
-                .filter(m->filter.accept(m, user))
+                .filter(m -> filter.accept(m, user))
                 .collect(Collectors.toUnmodifiableList());
 
         return new RestMindmapList(mindmaps, user);
@@ -495,47 +495,41 @@ public class MindmapController extends BaseController {
             mindmapService.removeMindmap(mindmap, user);
         }
     }
-
-    @RequestMapping(method = RequestMethod.POST, value = "/maps", consumes = {"application/xml", "application/json", "application/wisemapping+xml"})
+    @RequestMapping(method = RequestMethod.POST, value = "/maps", consumes = {"application/xml", "application/json"})
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void createMap(@RequestBody(required = false) RestMindmap restMindmap, @NotNull HttpServletResponse response, @RequestParam(required = false) String title, @RequestParam(required = false) String description) throws IOException, WiseMappingException {
-        // If a default maps has not been defined, just create one ...
-        if (restMindmap == null) {
-            restMindmap = new RestMindmap();
+    public void createMap(@RequestBody(required = false) String mapXml, @NotNull HttpServletResponse response, @RequestParam(required = false) String title, @RequestParam(required = false) String description) throws IOException, WiseMappingException {
+
+        final Mindmap mindmap = new Mindmap();
+        if (title != null && !title.isEmpty()) {
+            mindmap.setTitle(title);
         }
 
-        // Overwrite title and description if they where specified by parameter.
-        if (title != null && !title.isEmpty()) {
-            restMindmap.setTitle(title);
-        }
         if (description != null && !description.isEmpty()) {
-            restMindmap.setDescription(description);
-        } else {
-            restMindmap.setDescription("");
+            mindmap.setDescription(description);
+        }else {
+            mindmap.setDescription("description");
         }
 
         // Validate ...
-        final BindingResult result = new BeanPropertyBindingResult(restMindmap, "");
-        new MapInfoValidator(mindmapService).validate(restMindmap.getDelegated(), result);
+        final BindingResult result = new BeanPropertyBindingResult(mindmap, "");
+        new MapInfoValidator(mindmapService).validate(mindmap, result);
         if (result.hasErrors()) {
             throw new ValidationException(result);
         }
 
         // If the user has not specified the xml content, add one ...
-        final Mindmap delegated = restMindmap.getDelegated();
-        String xml = restMindmap.getXml();
-        if (xml == null || xml.isEmpty()) {
-            xml = Mindmap.getDefaultMindmapXml(restMindmap.getTitle());
+        if (mapXml == null || mapXml.isEmpty()) {
+            mapXml = Mindmap.getDefaultMindmapXml(mindmap.getTitle());
         }
-        delegated.setXmlStr(xml);
+        mindmap.setXmlStr(mapXml);
 
         // Add new mindmap ...
         final User user = Utils.getUser();
-        mindmapService.addMindmap(delegated, user);
+        mindmapService.addMindmap(mindmap, user);
 
         // Return the new created map ...
-        response.setHeader("Location", "/service/maps/" + delegated.getId());
-        response.setHeader("ResourceId", Integer.toString(delegated.getId()));
+        response.setHeader("Location", "/service/maps/" + mindmap.getId());
+        response.setHeader("ResourceId", Integer.toString(mindmap.getId()));
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/maps/{id}", consumes = {"application/xml", "application/json"}, produces = {"application/xml", "application/json", "text/plain"})
@@ -578,9 +572,9 @@ public class MindmapController extends BaseController {
         return new ValidationException(result);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/maps/{id}/labels/{lid)}")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/maps/{id}/labels/{lid}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void removeLabelFromMap(@PathVariable int id, @RequestBody int lid) throws WiseMappingException {
+    public void removeLabelFromMap(@PathVariable int id, @PathVariable int lid) throws WiseMappingException {
         final User user = Utils.getUser();
         final Mindmap mindmap = findMindmapById(id);
         final Label label = labelService.findLabelById(lid, user);
@@ -590,7 +584,7 @@ public class MindmapController extends BaseController {
         }
 
         mindmap.removeLabel(label);
-        mindmapService.updateMindmap(mindmap,false);
+        mindmapService.updateMindmap(mindmap, false);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/maps/{id}/labels", consumes = {"application/xml", "application/json"})
@@ -604,6 +598,6 @@ public class MindmapController extends BaseController {
 
         final Mindmap mindmap = findMindmapById(id);
         mindmap.addLabel(label);
-        mindmapService.updateMindmap(mindmap,false);
+        mindmapService.updateMindmap(mindmap, false);
     }
 }

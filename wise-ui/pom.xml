@@ -12,7 +12,7 @@
         <groupId>org.wisemapping</groupId>
         <artifactId>wisemapping</artifactId>
         <relativePath>../pom.xml</relativePath>
-        <version>5.0.2</version>
+        <version>5.0.4</version>
     </parent>
 
     <build>
@@ -33,7 +33,7 @@
                                 </exec>
                                 <exec executable="tar" dir="target">
                                     <arg value="-xvzf"/>
-                                    <arg value="wisemapping-mindplot-5.0.3.tgz"/>
+                                    <arg value="wisemapping-mindplot-5.0.4.tgz"/>
                                     <arg value="-C"/>
                                     <arg value="wisemapping-mindplot"/>
                                 </exec>
@@ -46,7 +46,7 @@
                                 </exec>
                                 <exec executable="tar" dir="target">
                                     <arg value="-xvzf"/>
-                                    <arg value="wisemapping-webapp-5.0.3.tgz"/>
+                                    <arg value="wisemapping-webapp-5.0.4.tgz"/>
                                     <arg value="-C"/>
                                     <arg value="wisemapping-webapp"/>
                                 </exec>
