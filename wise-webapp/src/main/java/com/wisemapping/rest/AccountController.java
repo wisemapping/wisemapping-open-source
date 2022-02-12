@@ -133,8 +133,8 @@ public class AccountController extends BaseController {
     public void logError(@RequestBody RestLogItem item, @NotNull HttpServletRequest request) {
         final Mindmap mindmap = mindmapService.findMindmapById(item.getMapId());
         final User user = Utils.getUser();
-        logger.error("Unexpected editor error - " + item.getJsErrorMsg());
-        notificationService.reportJavascriptException(mindmap, user, item.getJsErrorMsg() + "\n" + item.getJsStack(), request);
+
+        notificationService.reportJavascriptException(mindmap, user, item, request);
     }
 
 }

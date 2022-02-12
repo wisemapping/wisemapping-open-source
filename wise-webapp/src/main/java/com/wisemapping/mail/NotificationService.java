@@ -22,6 +22,7 @@ import com.wisemapping.filter.SupportedUserAgent;
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
+import com.wisemapping.rest.model.RestLogItem;
 import com.wisemapping.util.VelocityEngineUtils;
 import com.wisemapping.util.VelocityEngineWrapper;
 import org.apache.commons.io.IOUtils;
@@ -163,10 +164,11 @@ final public class NotificationService {
         this.velocityEngineWrapper = engine;
     }
 
-    public void reportJavascriptException(@Nullable Mindmap mindmap, @Nullable User user, @Nullable String jsErrorMsg, @NotNull HttpServletRequest request) {
+    public void reportJavascriptException(@Nullable Mindmap mindmap, @Nullable User user, @NotNull RestLogItem errorItem, @NotNull HttpServletRequest request) {
 
         final Map<String, String> model = new HashMap<>();
-        model.put("errorMsg", jsErrorMsg);
+        model.put("JS-MSG", errorItem.getJsErrorMsg());
+        model.put("JS-STACK", errorItem.getJsStack());
 
         String mindmapXML = "";
         try {
