@@ -42,7 +42,7 @@
                                 <mkdir dir="target/wisemapping-webapp"/>
                                 <exec executable="npm" dir="target">
                                     <arg value="pack"/>
-                                    <arg value="@wisemapping/webapp@5.0.3"/>
+                                    <arg value="@wisemapping/webapp@5.0.4"/>
                                 </exec>
                                 <exec executable="tar" dir="target">
                                     <arg value="-xvzf"/>
