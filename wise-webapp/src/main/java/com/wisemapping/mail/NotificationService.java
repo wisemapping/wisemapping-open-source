@@ -141,7 +141,7 @@ final public class NotificationService {
 
 
     public void activateAccount(@NotNull User user) {
-        final Map<String, User> model = new HashMap<>();
+        final Map<String, Object> model = new HashMap<>();
         model.put("user", user);
         mailer.sendEmail(mailer.getServerSenderEmail(), user.getEmail(), "[WiseMapping] Active account", model, "activationAccountMail.vm");
     }

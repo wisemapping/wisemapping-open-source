@@ -51,7 +51,7 @@ public class RecaptchaService {
                     .asBytes();
 
             final Map responseBody = objectMapper.readValue(body, HashMap.class);
-            logger.warn("Response from recaptcha after parse: " + responseBody);
+            logger.debug("Response from recaptcha after parse: " + responseBody);
 
             final Boolean success = (Boolean) responseBody.get("success");
             if (success != null && !success) {

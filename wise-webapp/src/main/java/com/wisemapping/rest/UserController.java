@@ -58,7 +58,7 @@ public class UserController extends BaseController {
     @RequestMapping(method = RequestMethod.POST, value = "/users", produces = {"application/json", "application/xml"})
     @ResponseStatus(value = HttpStatus.CREATED)
     public void registerUser(@RequestBody RestUserRegistration registration, @NotNull HttpServletRequest request, @NotNull HttpServletResponse response) throws WiseMappingException, BindException {
-        logger.info("Register new user:" + registration.getEmail());
+        logger.debug("Register new user:" + registration.getEmail());
 
         // If tomcat is behind a reverse proxy, ip needs to be found in other header.
         String remoteIp = request.getHeader(REAL_IP_ADDRESS_HEADER);

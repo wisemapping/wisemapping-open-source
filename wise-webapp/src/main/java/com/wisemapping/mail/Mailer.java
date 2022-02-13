@@ -41,7 +41,7 @@ public final class Mailer {
 
     //~ Methods ..............................................................................................
 
-    public Mailer(@NotNull String siteEmail, @NotNull String supportEmail,@NotNull String errorReporterEmail) {
+    public Mailer(@NotNull String siteEmail, @NotNull String supportEmail, @NotNull String errorReporterEmail) {
         this.serverFromEmail = siteEmail;
         this.supportEmail = supportEmail;
         this.errorReporterEmail = errorReporterEmail;
@@ -51,7 +51,7 @@ public final class Mailer {
         return serverFromEmail;
     }
 
-    public void sendEmail(final String from, final String to, final String subject, final Map model,
+    public void sendEmail(final String from, final String to, final String subject, final Map<String, Object> model,
                           @NotNull final String templateMail) {
         final MimeMessagePreparator preparator =
                 new MimeMessagePreparator() {
