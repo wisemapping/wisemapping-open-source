@@ -27,6 +27,7 @@ import com.wisemapping.rest.model.*;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.*;
 import com.wisemapping.validator.MapInfoValidator;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -296,7 +297,14 @@ public class MindmapController extends BaseController {
         // Compare one by one if some of the elements has been changed ....
         final Set<Collaboration> collabsToRemove = new HashSet<>(mindMap.getCollaborations());
         for (RestCollaboration restCollab : restCollabs.getCollaborations()) {
-            final Collaboration collaboration = mindMap.findCollaboration(restCollab.getEmail());
+            final String email = restCollab.getEmail();
+
+            // Is a valid email address ?
+            if (!EmailValidator.getInstance().isValid(email)) {
+                throw new IllegalArgumentException(email + " is not valid email address");
+            }
+
+            final Collaboration collaboration = mindMap.findCollaboration(email);
             // Validate role format ...
             String roleStr = restCollab.getRole();
             if (roleStr == null) {
@@ -332,6 +340,17 @@ public class MindmapController extends BaseController {
         if (!mindMap.hasPermissions(user, CollaborationRole.OWNER)) {
             throw new IllegalArgumentException("No enough permissions");
         }
+
+        // Is valid email address ?
+        final EmailValidator emailValidator = EmailValidator.getInstance();
+        restCollabs
+                .getCollaborations()
+                .forEach(collab -> {
+                    // Is a valid email address ?
+                    if (!emailValidator.isValid(collab.getEmail())) {
+                        throw new IllegalArgumentException(collab.getEmail() + " is not valid email address");
+                    }
+                });
 
         // Has any role changed ?. Just removed it.
         final Map<String, Collaboration> mapsByEmail = mindMap
@@ -432,6 +451,12 @@ public class MindmapController extends BaseController {
     public void deleteCollabByEmail(@PathVariable int id, @RequestParam(required = false) String email) throws IOException, WiseMappingException {
         logger.debug("Deleting permission for email:" + email);
 
+        // Is a valid email address ?
+        final EmailValidator emailValidator = EmailValidator.getInstance();
+        if (!emailValidator.isValid(email)) {
+            throw new IllegalArgumentException(email + " is not valid email address");
+        }
+
         final Mindmap mindmap = findMindmapById(id);
         final User user = Utils.getUser();
 
@@ -495,6 +520,7 @@ public class MindmapController extends BaseController {
             mindmapService.removeMindmap(mindmap, user);
         }
     }
+
     @RequestMapping(method = RequestMethod.POST, value = "/maps", consumes = {"application/xml", "application/json"})
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createMap(@RequestBody(required = false) String mapXml, @NotNull HttpServletResponse response, @RequestParam(required = false) String title, @RequestParam(required = false) String description) throws IOException, WiseMappingException {
@@ -506,7 +532,7 @@ public class MindmapController extends BaseController {
 
         if (description != null && !description.isEmpty()) {
             mindmap.setDescription(description);
-        }else {
+        } else {
             mindmap.setDescription("description");
         }
 
