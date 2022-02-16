@@ -11,7 +11,7 @@
         <relativePath>../pom.xml</relativePath>
         <version>5.0.4</version>
     </parent>
-    
+
     <properties>
         <org.springframework.version>5.3.14</org.springframework.version>
         <org.springframework.addons>5.3.5.RELEASE</org.springframework.addons>
