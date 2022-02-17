@@ -55,8 +55,6 @@ public class AccountController extends BaseController {
     @Autowired
     private NotificationService notificationService;
 
-    final Logger logger = Logger.getLogger(AccountController.class);
-
 
     @RequestMapping(method = RequestMethod.PUT, value = "account/password", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)

@@ -19,6 +19,9 @@
 package com.wisemapping.model;
 
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -46,7 +49,6 @@ public class Collaboration implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "properties_id", nullable = false, unique = true)
     private CollaborationProperties collaborationProperties = new CollaborationProperties();
-    ;
 
     public Collaboration() {
     }

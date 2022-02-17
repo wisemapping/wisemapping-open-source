@@ -102,22 +102,29 @@ public class UserManagerImpl
     }
 
     @Override
-    public User createUser(@NotNull User user, @NotNull Collaborator col) {
+    public User createUser(@NotNull User user, @NotNull Collaborator collaborator) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         assert user != null : "Trying to store a null user";
 
-        final Set<Collaboration> set = col.getCollaborations();
-        for (Collaboration collaboration : set) {
+        final Set<Collaboration> collaborations = collaborator.getCollaborations();
+        for (Collaboration collaboration : collaborations) {
+            // Move maps to the new ...
             Collaboration newMapUser = new Collaboration();
             newMapUser.setRoleId(collaboration.getRole().ordinal());
             newMapUser.setMindMap(collaboration.getMindMap());
             newMapUser.setCollaborator(user);
             user.addCollaboration(newMapUser);
+
+            // Delete collaborations on this collaborator ...
+            getHibernateTemplate().delete(collaboration);
+            getHibernateTemplate().flush();
         }
 
-        getHibernateTemplate().delete(col);
+        // Delete collaboration ...
+        getHibernateTemplate().delete(collaborator);
         getHibernateTemplate().flush();
         getHibernateTemplate().saveOrUpdate(user);
+
         return user;
     }
 
