@@ -12,7 +12,7 @@
         <groupId>org.wisemapping</groupId>
         <artifactId>wisemapping</artifactId>
         <relativePath>../pom.xml</relativePath>
-        <version>5.0.4</version>
+        <version>5.0.5</version>
     </parent>
 
     <build>
