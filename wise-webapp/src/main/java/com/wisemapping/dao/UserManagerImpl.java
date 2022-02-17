@@ -105,19 +105,20 @@ public class UserManagerImpl
     public User createUser(@NotNull User user, @NotNull Collaborator collaborator) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         assert user != null : "Trying to store a null user";
+        getHibernateTemplate().saveOrUpdate(user);
 
+        // Migrate from previous temporal collab to new user ...
         final Set<Collaboration> collaborations = collaborator.getCollaborations();
-        for (Collaboration collaboration : collaborations) {
-            // Move maps to the new ...
-            Collaboration newMapUser = new Collaboration();
-            newMapUser.setRoleId(collaboration.getRole().ordinal());
-            newMapUser.setMindMap(collaboration.getMindMap());
-            newMapUser.setCollaborator(user);
-            user.addCollaboration(newMapUser);
+        for (Collaboration oldCollab : collaborations) {
+            Collaboration newCollab = new Collaboration();
+            newCollab.setRoleId(oldCollab.getRole().ordinal());
+            newCollab.setMindMap(oldCollab.getMindMap());
+            newCollab.setCollaborator(user);
+            user.addCollaboration(newCollab);
+            getHibernateTemplate().save(newCollab);
 
             // Delete collaborations on this collaborator ...
-            getHibernateTemplate().delete(collaboration);
-            getHibernateTemplate().flush();
+            getHibernateTemplate().delete(oldCollab);
         }
 
         // Delete collaboration ...
@@ -143,8 +144,7 @@ public class UserManagerImpl
 
         // Does the password need to be encrypted ?
         final String password = user.getPassword();
-        if(password!=null && (!password.startsWith(LegacyPasswordEncoder.ENC_PREFIX) && !password.startsWith( "{"+ DefaultPasswordEncoderFactories.ENCODING_ID)))
-        {
+        if (password != null && (!password.startsWith(LegacyPasswordEncoder.ENC_PREFIX) && !password.startsWith("{" + DefaultPasswordEncoderFactories.ENCODING_ID))) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
 
@@ -159,7 +159,7 @@ public class UserManagerImpl
         query.setParameter("activationCode", code);
         final List users = query.list();
 
-        if(users != null && !users.isEmpty()) {
+        if (users != null && !users.isEmpty()) {
 
             assert users.size() == 1 : "More than one user with the same username!";
             user = (User) users.get(0);
