@@ -103,9 +103,7 @@ public class UserManagerImpl
 
     @Override
     public User createUser(@NotNull User user, @NotNull Collaborator collaborator) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        assert user != null : "Trying to store a null user";
-        getHibernateTemplate().saveOrUpdate(user);
+        this.createUser(user);
 
         // Migrate from previous temporal collab to new user ...
         final Set<Collaboration> collaborations = collaborator.getCollaborations();
