@@ -22,6 +22,7 @@ import com.wisemapping.filter.SupportedUserAgent;
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
+import com.wisemapping.rest.model.RestLogItem;
 import com.wisemapping.util.VelocityEngineUtils;
 import com.wisemapping.util.VelocityEngineWrapper;
 import org.apache.commons.io.IOUtils;
@@ -140,7 +141,7 @@ final public class NotificationService {
 
 
     public void activateAccount(@NotNull User user) {
-        final Map<String, User> model = new HashMap<>();
+        final Map<String, Object> model = new HashMap<>();
         model.put("user", user);
         mailer.sendEmail(mailer.getServerSenderEmail(), user.getEmail(), "[WiseMapping] Active account", model, "activationAccountMail.vm");
     }
@@ -163,19 +164,24 @@ final public class NotificationService {
         this.velocityEngineWrapper = engine;
     }
 
-    public void reportJavascriptException(@Nullable Mindmap mindmap, @Nullable User user, @Nullable String jsErrorMsg, @NotNull HttpServletRequest request) {
+    public void reportJavascriptException(@Nullable Mindmap mindmap, @Nullable User user, @NotNull RestLogItem errorItem, @NotNull HttpServletRequest request) {
 
-        final Map<String, String> model = new HashMap<>();
-        model.put("errorMsg", jsErrorMsg);
+        final Map<String, String> summary = new HashMap<>();
+        summary.put("JS-MSG", errorItem.getJsErrorMsg());
+        summary.put("JS-STACK", errorItem.getJsStack());
+
+        String mindmapXML = "";
         try {
-            model.put("mapXML", StringEscapeUtils.escapeXml(mindmap == null ? "map not found" : mindmap.getXmlStr()));
+            mindmapXML = StringEscapeUtils.escapeXml(mindmap == null ? "map not found" : mindmap.getXmlStr());
         } catch (UnsupportedEncodingException e) {
             // Ignore ...
         }
-        model.put("mapId", Integer.toString(mindmap.getId()));
-        model.put("mapTitle", mindmap.getTitle());
+        summary.put("mapId", Integer.toString(mindmap.getId()));
+        summary.put("mapTitle", mindmap.getTitle());
 
-        logError(model, user, request);
+        logError(summary, user, request);
+        logger.error("Unexpected editor mindmap => " + mindmapXML);
+        logger.error("Unexpected editor JS Stack => " + errorItem.getJsErrorMsg() + "-" + errorItem.getJsStack());
     }
 
     private void logError(@NotNull Map<String, String> model, @Nullable User user, @NotNull HttpServletRequest request) {
@@ -193,7 +199,7 @@ final public class NotificationService {
                 .map(key -> key + "=" + model.get(key))
                 .collect(Collectors.joining(", ", "{", "}"));
 
-        logger.error("Unexpected editor error => " + errorAsString);
+        logger.error("Unexpected editor info => " + errorAsString);
     }
 
     public void reportJavaException(@NotNull Throwable exception, @Nullable User user, @NotNull HttpServletRequest request) {

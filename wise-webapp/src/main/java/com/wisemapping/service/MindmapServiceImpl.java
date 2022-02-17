@@ -156,7 +156,7 @@ public class MindmapServiceImpl
 
     @Override
     public void removeMindmap(@NotNull Mindmap mindmap, @NotNull User user) throws WiseMappingException {
-        if (mindmap.getCreator().identityEquality(user) || isAdmin(user)) {
+        if (mindmap.getCreator().identityEquality(user)) {
             mindmapManager.removeMindmap(mindmap);
         } else {
             final Optional<Collaboration> collaboration = mindmap.findCollaboration(user);

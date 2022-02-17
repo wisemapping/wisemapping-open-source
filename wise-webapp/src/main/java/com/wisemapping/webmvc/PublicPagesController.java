@@ -18,32 +18,14 @@
 
 package com.wisemapping.webmvc;
 
-import com.wisemapping.service.MindmapService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class PublicPagesController {
-    @Qualifier("mindmapService")
-    @Autowired
-    private MindmapService mindmapService;
-
-    @RequestMapping(value = "keyboard")
-    public String newsPage() {
-        return "keyboard";
-    }
 
     @RequestMapping(value = "home")
     public String home() {
         return "homepage";
-    }
-
-    @RequestMapping(value = "iframeWrapper")
-    public ModelAndView showIframePage(@RequestParam(required = true) String url) {
-        return new ModelAndView("iframeWrapper", "url", url);
     }
 }

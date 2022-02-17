@@ -46,7 +46,6 @@
         var accountEmail = '${principal.email}';
         var mapTitle = '${mindmap.title}';
     </script>
-    <%@ include file="/jsp/googleAnalytics.jsf" %>
 </head>
 
 <body>

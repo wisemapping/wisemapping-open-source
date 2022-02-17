@@ -52,8 +52,9 @@
         </div>
     </div>
 </div>
+
 <script type="text/javascript">
-    // Hock zoom events ...
+    // Hook zoom events ...
     const zoomInButton = document.getElementById('zoom-plus');
     if (zoomInButton) {
       zoomInButton.addEventListener('click', () => {

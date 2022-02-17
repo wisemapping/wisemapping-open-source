@@ -8,6 +8,13 @@
           http://www.springframework.org/schema/security
           http://www.springframework.org/schema/security/spring-security.xsd">
 
+    <bean id="custom-firewall" class="org.springframework.security.web.firewall.StrictHttpFirewall">
+        <property name="allowSemicolon" value="true"/>
+    </bean>
+
+    <sec:http-firewall ref="custom-firewall"/>
+
+
     <sec:http pattern="/static/webapp/**" security="none"/>
     <sec:http pattern="/static/mindplot/**" security="none"/>
     <sec:http pattern="/c/login" security="none"/>

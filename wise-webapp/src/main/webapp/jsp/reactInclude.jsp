@@ -23,8 +23,6 @@
         };
 
     </script>
-    <%@ include file="/jsp/googleAnalytics.jsf" %>
-
     <c:if test="${requestScope['google.analytics.enabled']}">
       <!-- Google Ads Sense Config-->
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4996113942657337" crossorigin="anonymous"></script>

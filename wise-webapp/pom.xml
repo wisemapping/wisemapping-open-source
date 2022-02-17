@@ -12,25 +12,10 @@
         <version>5.0.4</version>
     </parent>
 
-    <repositories>
-        <repository>
-            <id>maven2-repository.dev.java.net</id>
-            <name>Java.net Repository for Maven</name>
-            <url>http://download.java.net/maven/2/</url>
-            <layout>default</layout>
-        </repository>
-        <repository>
-            <id>maven2-repository.jahia.org</id>
-            <name>Jahia Repository for Maven</name>
-            <url>http://maven.jahia.org/maven2/</url>
-            <layout>default</layout>
-        </repository>
-    </repositories>
-
     <properties>
         <org.springframework.version>5.3.14</org.springframework.version>
         <org.springframework.addons>5.3.5.RELEASE</org.springframework.addons>
-        <hibernate.version>5.6.3.Final</hibernate.version>
+        <hibernate.version>5.6.5.Final</hibernate.version>
         <hibernate-validator.version>6.0.21.Final</hibernate-validator.version>
     </properties>
 
@@ -205,19 +190,13 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.27</version>
+            <version>8.0.28</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-dbcp2</artifactId>
             <version>2.9.0</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-            <version>1.2.1</version>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -240,6 +219,12 @@
             <version>1.2.17</version>
             <scope>compile</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-validator/commons-validator -->
+        <dependency>
+            <groupId>commons-validator</groupId>
+            <artifactId>commons-validator</artifactId>
+            <version>1.7</version>
+        </dependency>
         <!-- Only for test purposes -->
         <dependency>
             <groupId>org.hsqldb</groupId>
@@ -250,7 +235,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.11.3</version>
+            <version>2.13.1</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -277,7 +262,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>fluent-hc</artifactId>
-            <version>4.5.5</version>
+            <version>4.5.13</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

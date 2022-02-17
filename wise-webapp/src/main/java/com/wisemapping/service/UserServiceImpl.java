@@ -119,13 +119,11 @@ public class UserServiceImpl
 
         if (emailConfirmEnabled) {
             user.setActivationDate(null);
-
         } else {
             user.setActivationDate(Calendar.getInstance());
         }
 
-        Collaborator col = userManager.getCollaboratorBy(user.getEmail());
-
+        final Collaborator col = userManager.getCollaboratorBy(user.getEmail());
         if (col != null) {
             userManager.createUser(user, col);
         } else {
