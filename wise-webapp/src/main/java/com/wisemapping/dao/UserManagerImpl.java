@@ -27,9 +27,11 @@ import com.wisemapping.security.LegacyPasswordEncoder;
 import org.hibernate.ObjectNotFoundException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -103,9 +105,10 @@ public class UserManagerImpl
 
     @Override
     public User createUser(@NotNull User user, @NotNull Collaborator collaborator) {
-        this.createUser(user);
+        assert user != null : "Trying to store a null user";
 
         // Migrate from previous temporal collab to new user ...
+        List<Collaboration> newCollabs = new ArrayList<>();
         final Set<Collaboration> collaborations = collaborator.getCollaborations();
         for (Collaboration oldCollab : collaborations) {
             Collaboration newCollab = new Collaboration();
@@ -113,16 +116,18 @@ public class UserManagerImpl
             newCollab.setMindMap(oldCollab.getMindMap());
             newCollab.setCollaborator(user);
             user.addCollaboration(newCollab);
-            getHibernateTemplate().save(newCollab);
-
-            // Delete collaborations on this collaborator ...
-            getHibernateTemplate().delete(oldCollab);
+            newCollabs.add(newCollab);
         }
 
-        // Delete collaboration ...
-        getHibernateTemplate().delete(collaborator);
-        getHibernateTemplate().flush();
-        getHibernateTemplate().saveOrUpdate(user);
+        // Delete old collaboration
+        final HibernateTemplate template = getHibernateTemplate();
+        collaborations.forEach(c -> template.delete(c));
+        template.delete(collaborator);
+
+        // Save all new...
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        template.save(user);
+        newCollabs.forEach(c -> template.save(c));
 
         return user;
     }
