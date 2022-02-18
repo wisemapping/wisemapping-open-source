@@ -125,9 +125,8 @@ public class UserManagerImpl
         template.delete(collaborator);
 
         // Save all new...
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        template.save(user);
-        newCollabs.forEach(c -> template.save(c));
+        this.createUser(user);
+        newCollabs.forEach(c -> template.saveOrUpdate(c));
 
         return user;
     }
