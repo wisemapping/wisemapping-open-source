@@ -42,7 +42,7 @@
         <sec:intercept-url pattern="/service/users" method="OPTIONS" access="permitAll"/>
         <sec:intercept-url pattern="/service/users/resetPassword" method="OPTIONS" access="permitAll"/>
 
-        
+
         <sec:intercept-url pattern="/service/users/" method="POST" access="permitAll"/>
         <sec:intercept-url pattern="/service/users/resetPassword" method="PUT" access="permitAll"/>
 
@@ -62,8 +62,6 @@
         <sec:intercept-url pattern="/c/forgot-password-success" access="hasRole('ANONYMOUS')"/>
 
         <sec:intercept-url pattern="/c/**/*" access="isAuthenticated() and hasRole('ROLE_USER')"/>
-
-        <sec:csrf/>
         <sec:access-denied-handler error-page="/c/login"/>
         <sec:form-login login-page="/c/login"
                         authentication-success-handler-ref="authenticationSuccessHandler"
@@ -74,12 +72,13 @@
         <!-- Expire in 28 days -->
         <sec:remember-me token-validity-seconds="2419200" remember-me-parameter="remember-me"/>
         <sec:logout logout-url="/c/logout" invalidate-session="true" logout-success-url="/c/login"/>
-        <sec:csrf token-repository-ref="tokenRepository"/>
+        <sec:csrf request-matcher-ref="requestMatcher"/>
     </sec:http>
 
-    <bean id="tokenRepository"
-          class="org.springframework.security.web.csrf.CookieCsrfTokenRepository">
-        <property name="cookieHttpOnly" value="true"/>
+    <!-- Extends CFSR check to get methods to have consistency in all errors. Otherwise, request is forward in some cases -->
+    <bean id="requestMatcher"
+          class="com.wisemapping.security.CSFRRequestMatcher">
+        <property name="prefix" value="/c/restful/"/>
     </bean>
 
     <import resource="wisemapping-security-${security.type}.xml"/>
