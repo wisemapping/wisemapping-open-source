@@ -17,10 +17,6 @@
 
     <sec:http pattern="/static/webapp/**" security="none"/>
     <sec:http pattern="/static/mindplot/**" security="none"/>
-    <sec:http pattern="/c/login" security="none"/>
-    <sec:http pattern="/c/registration" security="none"/>
-    <sec:http pattern="/c/forgot-password" security="none"/>
-
     <sec:http pattern="/css/**" security="none"/>
     <sec:http pattern="/js/**" security="none"/>
     <sec:http pattern="/images/**" security="none"/>
@@ -43,12 +39,13 @@
 
     <!-- Admin related services that required admin role-->
     <sec:http use-expressions="true" create-session="stateless" pattern="/service/**">
-        <sec:csrf disabled="true"/>
+        <sec:csrf/>
 
         <!-- Enabled only for cors -->
         <sec:intercept-url pattern="/service/users" method="OPTIONS" access="permitAll"/>
         <sec:intercept-url pattern="/service/users/resetPassword" method="OPTIONS" access="permitAll"/>
 
+        
         <sec:intercept-url pattern="/service/users/" method="POST" access="permitAll"/>
         <sec:intercept-url pattern="/service/users/resetPassword" method="PUT" access="permitAll"/>
 
@@ -59,14 +56,15 @@
         <sec:http-basic/>
     </sec:http>
 
-    <sec:http use-expressions="true">
-        <sec:csrf disabled="true"/>
-        <sec:access-denied-handler error-page="/c/login"/>
-
-        <sec:intercept-url pattern="/c/restful/admin/users/**" access="isAuthenticated() and hasRole('ROLE_ADMIN')"/>
-        <sec:intercept-url pattern="/c/restful/admin/database/**" access="isAuthenticated() and hasRole('ROLE_ADMIN')"/>
+    <sec:http use-expressions="true" pattern="/c/**/*">
+        <sec:intercept-url pattern="/c/login" access="hasRole('ANONYMOUS')"/>
+        <sec:intercept-url pattern="/c/logout" access="hasRole('ANONYMOUS')"/>
+        <sec:intercept-url pattern="/c/registration" access="hasRole('ANONYMOUS')"/>
+        <sec:intercept-url pattern="/c/forgot-password" access="hasRole('ANONYMOUS')"/>
         <sec:intercept-url pattern="/c/**/*" access="isAuthenticated() and hasRole('ROLE_USER')"/>
 
+        <sec:csrf/>
+        <sec:access-denied-handler error-page="/c/login"/>
         <sec:form-login login-page="/c/login"
                         authentication-success-handler-ref="authenticationSuccessHandler"
                         always-use-default-target="false"
@@ -74,9 +72,15 @@
                         login-processing-url="/c/perform-login"/>
 
         <!-- Expire in 28 days -->
-        <sec:remember-me  token-validity-seconds="2419200" remember-me-parameter="remember-me"/>
+        <sec:remember-me token-validity-seconds="2419200" remember-me-parameter="remember-me"/>
         <sec:logout logout-url="/c/logout" invalidate-session="true" logout-success-url="/c/login"/>
+        <sec:csrf token-repository-ref="tokenRepository"/>
     </sec:http>
+
+    <bean id="tokenRepository"
+          class="org.springframework.security.web.csrf.CookieCsrfTokenRepository">
+        <property name="cookieHttpOnly" value="true"/>
+    </bean>
 
     <import resource="wisemapping-security-${security.type}.xml"/>
 
