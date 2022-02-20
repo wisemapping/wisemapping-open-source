@@ -32,12 +32,9 @@
 
     <!-- Admin related services that required admin role-->
     <sec:http use-expressions="true" create-session="stateless" pattern="/service/**">
-        <sec:csrf/>
-
-        <!-- Enabled only for cors -->
+        <sec:csrf disabled="true"/>
         <sec:intercept-url pattern="/service/users" method="OPTIONS" access="permitAll"/>
         <sec:intercept-url pattern="/service/users/resetPassword" method="OPTIONS" access="permitAll"/>
-
 
         <sec:intercept-url pattern="/service/users/" method="POST" access="permitAll"/>
         <sec:intercept-url pattern="/service/users/resetPassword" method="PUT" access="permitAll"/>
