@@ -18,7 +18,6 @@
     <sec:http pattern="/css/**" security="none"/>
     <sec:http pattern="/js/**" security="none"/>
     <sec:http pattern="/images/**" security="none"/>
-    <sec:http pattern="/icons/**" security="none"/>
 
     <sec:http pattern="/c/home" security="none"/>
 
@@ -27,7 +26,6 @@
     <sec:http pattern="/c/maps/*/public" security="none"/>
     <sec:http pattern="/c/restful/maps/*/document/xml-pub" security="none"/>
 
-    <sec:http pattern="/c/termsOfUse" security="none"/>
     <sec:http pattern="/c/activation" security="none"/>
 
     <!-- Admin related services that required admin role-->
