@@ -22,6 +22,8 @@ import com.wisemapping.exceptions.AccessDeniedSecurityException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.util.ZipUtils;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,12 +36,12 @@ import java.util.*;
 
 @Entity
 @Table(name = "MINDMAP")
-public class Mindmap implements Serializable  {
+public class Mindmap implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
+
     @Column(name = "creation_date")
     private Calendar creationTime;
 
@@ -52,6 +54,7 @@ public class Mindmap implements Serializable  {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "last_editor_id", nullable = false)
+    @NotFound(action = NotFoundAction.IGNORE)
     private User lastEditor;
 
     private String description;
@@ -59,7 +62,7 @@ public class Mindmap implements Serializable  {
     @Column(name = "public")
     private boolean isPublic;
 
-    @OneToMany(mappedBy="mindMap",orphanRemoval = true, cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "mindMap", orphanRemoval = true, cascade = {CascadeType.ALL})
     private Set<Collaboration> collaborations = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -155,7 +158,7 @@ public class Mindmap implements Serializable  {
     public Optional<Collaboration> findCollaboration(@NotNull Collaborator collaborator) {
         return this.collaborations
                 .stream()
-                .filter(c->c.getCollaborator().identityEquality(collaborator))
+                .filter(c -> c.getCollaborator().identityEquality(collaborator))
                 .findAny();
     }
 
