@@ -53,15 +53,6 @@ div#mindplot {
     align-items: stretch;
 }
 
-div#bottom-logo {
-    position: fixed;
-    left: 20px;
-    bottom: 10px;
-    background: url(../../images/editor/logo-text-black.svg) no-repeat;
-    width: 90px;
-    height: 40px;
-}
-
 div#position {
     margin-top: 5px;
 }
@@ -106,7 +97,7 @@ div#position {
 div#footerLogo {
     position: fixed;
     display: list-item;
-    list-style-image: url(../../images/editor/logo-text-black.svg);
+    list-style-image: url(../../images/logo-text-black.svg);
     list-style-position: inside;
     left: 10px;
     bottom: 10px;
