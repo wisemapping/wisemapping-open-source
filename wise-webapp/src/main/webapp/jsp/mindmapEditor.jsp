@@ -16,8 +16,7 @@
     <base href="${requestScope['site.baseurl']}/static/webapp/">
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet"  href="../../css/editor.css"/>
-    
+
     <%@ include file="/jsp/pageHeaders.jsf" %>
 
     <title>Loading ... | WiseMapping</title>
