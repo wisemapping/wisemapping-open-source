@@ -40,14 +40,14 @@
 <div id="floating-panel">
     <div id="zoom-button">
         <button id="zoom-plus">
-            <img src="../../images/editor/add.svg" />
+            <img src="../../images/add.svg" />
         </button>
         <button id="zoom-minus">
-            <img src="../../images/editor/minus.svg" />
+            <img src="../../images/minus.svg" />
         </button>
         <div id="position">
             <button id="position-button">
-                <img src="../../images/editor/center_focus.svg" />
+                <img src="../../images/center_focus.svg" />
             </button>
         </div>
     </div>
