@@ -1,20 +1,20 @@
 /*
-*    Copyright [2015] [wisemapping]
-*
-*   Licensed under WiseMapping Public License, Version 1.0 (the "License").
-*   It is basically the Apache License, Version 2.0 (the "License") plus the
-*   "powered by wisemapping" text requirement on every single page;
-*   you may not use this file except in compliance with the License.
-*   You may obtain a copy of the license at
-*
-*       http://www.wisemapping.org/license
-*
-*   Unless required by applicable law or agreed to in writing, software
-*   distributed under the License is distributed on an "AS IS" BASIS,
-*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*   See the License for the specific language governing permissions and
-*   limitations under the License.
-*/
+ *    Copyright [2015] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 
 package com.wisemapping.service;
 
@@ -63,6 +63,12 @@ public class MindmapServiceImpl
     }
 
     @Override
+    public boolean isMindmapPublic(int mapId) {
+        final Mindmap map = mindmapManager.getMindmapById(mapId);
+        return map != null && map.isPublic();
+    }
+
+    @Override
     public boolean hasPermissions(@Nullable User user, @Nullable Mindmap map, @NotNull CollaborationRole role) {
         boolean result = false;
         if (map != null) {
@@ -70,7 +76,7 @@ public class MindmapServiceImpl
                 result = true;
             } else if (user != null) {
                 final Optional<Collaboration> collaboration = map.findCollaboration(user);
-                if (collaboration .isPresent()) {
+                if (collaboration.isPresent()) {
                     result = collaboration
                             .get()
                             .hasPermissions(role);

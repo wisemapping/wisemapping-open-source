@@ -57,6 +57,8 @@ public interface MindmapService {
 
     boolean hasPermissions(@Nullable User user, int mapId, CollaborationRole allowedRole);
 
+    boolean isMindmapPublic(int mapId);
+
     void revertChange(@NotNull Mindmap map, int historyId) throws WiseMappingException, IOException;
 
     MindMapHistory findMindmapHistory(int id, int hid) throws WiseMappingException;
