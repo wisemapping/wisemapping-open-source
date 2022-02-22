@@ -19,6 +19,7 @@
 package com.wisemapping.model;
 
 import com.wisemapping.exceptions.AccessDeniedSecurityException;
+import com.wisemapping.exceptions.InvalidMindmapException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.util.ZipUtils;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -94,7 +95,9 @@ public class Mindmap implements Serializable {
         }
     }
 
-    public void setXmlStr(@NotNull String xml) {
+    public void setXmlStr(@NotNull String xml) throws InvalidMindmapException {
+        // Is a valid mindmap ... ?
+        MindmapUtils.verifyMindmap(xml);
         this.setUnzipXml(xml.getBytes(StandardCharsets.UTF_8));
     }
 
