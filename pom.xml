@@ -16,7 +16,7 @@
     <groupId>org.wisemapping</groupId>
     <artifactId>wisemapping</artifactId>
     <name>WiseMapping Project</name>
-    <version>5.0.7</version>
+    <version>5.0.8-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <licenses>
