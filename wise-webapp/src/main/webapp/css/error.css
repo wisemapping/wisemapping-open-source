@@ -20,11 +20,9 @@ h2 {
 p {
     font-size: 25px;
 }
-div#icon {
-    padding-top: 100px;
-    background-image: url(../../images/logo-icon.svg);
+
+#icon {
     height: 150px;
-    background-size: cover;
 }
 
 div#bottom-logo {
@@ -37,6 +35,9 @@ div#bottom-logo {
 }
 
 .column {
-  flex: 50%;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    display: flex;
 }
 
