@@ -12,7 +12,7 @@
         <groupId>org.wisemapping</groupId>
         <artifactId>wisemapping</artifactId>
         <relativePath>../pom.xml</relativePath>
-        <version>5.0.6-SNAPSHOT</version>
+        <version>5.0.7</version>
     </parent>
 
     <build>
@@ -27,26 +27,26 @@
                             <tasks>
                                 <!-- Download and unzip mindplot npm package -->
                                 <mkdir dir="target/wisemapping-mindplot"/>
-                                <exec executable="npm" dir="target">
+                                <exec executable="npm" dir="target" failonerror="true">
                                     <arg value="pack"/>
-                                    <arg value="@wisemapping/mindplot@5.0.5"/>
+                                    <arg value="@wisemapping/mindplot@5.0.7"/>
                                 </exec>
-                                <exec executable="tar" dir="target">
+                                <exec executable="tar" dir="target" failonerror="true">
                                     <arg value="-xvzf"/>
-                                    <arg value="wisemapping-mindplot-5.0.5.tgz"/>
+                                    <arg value="wisemapping-mindplot-5.0.7.tgz"/>
                                     <arg value="-C"/>
                                     <arg value="wisemapping-mindplot"/>
                                 </exec>
 
                                 <!-- Download and unzip webapp npm package -->
                                 <mkdir dir="target/wisemapping-webapp"/>
-                                <exec executable="npm" dir="target">
+                                <exec executable="npm" dir="target" failonerror="true">
                                     <arg value="pack"/>
-                                    <arg value="@wisemapping/webapp@5.0.6"/>
+                                    <arg value="@wisemapping/webapp@5.0.7"/>
                                 </exec>
-                                <exec executable="tar" dir="target">
+                                <exec executable="tar" dir="target" failonerror="true">
                                     <arg value="-xvzf"/>
-                                    <arg value="wisemapping-webapp-5.0.6.tgz"/>
+                                    <arg value="wisemapping-webapp-5.0.7.tgz"/>
                                     <arg value="-C"/>
                                     <arg value="wisemapping-webapp"/>
                                 </exec>
