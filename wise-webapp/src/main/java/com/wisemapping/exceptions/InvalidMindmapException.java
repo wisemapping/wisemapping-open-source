@@ -37,7 +37,7 @@ public class InvalidMindmapException
     }
 
     static public InvalidMindmapException emptyMindmap() {
-        return new InvalidMindmapException(EMPTY_MINDMAP,"");
+        return new InvalidMindmapException(EMPTY_MINDMAP,"<empty string>");
     }
 
     static public InvalidMindmapException invalidFormat(@Nullable String xmlDoc) {
@@ -45,7 +45,7 @@ public class InvalidMindmapException
     }
 
     static public InvalidMindmapException tooBigMindnap() {
-        return new InvalidMindmapException(TOO_BIG_MINDMAP,"");
+        return new InvalidMindmapException(TOO_BIG_MINDMAP,"<too-big>");
     }
 
     @NotNull
