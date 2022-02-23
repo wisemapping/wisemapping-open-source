@@ -139,66 +139,6 @@ public class AdminController extends BaseController {
         userService.removeUser(user);
     }
 
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @RequestMapping(method = RequestMethod.GET, value = "admin/database/purge")
-    public void purgeDB(@RequestParam(required = true) Integer minUid, @RequestParam(required = true) Integer maxUid, @RequestParam(required = true) Boolean apply) throws WiseMappingException, UnsupportedEncodingException {
-
-        for (int i = minUid; i < maxUid; i++) {
-
-            try {
-                System.out.println("Looking for user:" + i);
-                final User user = userService.getUserBy(i);
-                if (user != null) {
-                    // Do not process admin accounts ...
-                    if (user.getEmail().contains("wisemapping")) {
-                        continue;
-                    }
-                    // Iterate over the list of maps ...
-                    final List<Collaboration> collaborations = mindmapService.findCollaborations(user);
-                    for (Collaboration collaboration : collaborations) {
-                        final Mindmap mindmap = collaboration.getMindMap();
-                        if (MindmapFilter.MY_MAPS.accept(mindmap, user)) {
-
-                            final Calendar yearAgo = Calendar.getInstance();
-                            yearAgo.add(Calendar.MONTH, -4);
-
-                            // The use has only two maps... When they have been modified ..
-                            System.out.println("Checking map id:" + mindmap.getId());
-                            if (mindmap.getLastModificationTime().before(yearAgo) && !mindmap.isPublic()) {
-                                System.out.println("Old map months map:" + mindmap.getId());
-
-                                if (isWelcomeMap(mindmap) || isSimpleMap(mindmap)) {
-                                    System.out.println("Purged map id:" + mindmap.getId() + ", userId:" + user.getId());
-                                    if (apply) {
-                                        mindmapService.removeMindmap(mindmap, user);
-                                    }
-                                }
-                            }
-
-                            // Purge history ...
-                            mindmapService.purgeHistory(mindmap.getId());
-                        }
-                    }
-                }
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (WiseMappingException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (RuntimeException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (IOException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
-        }
-    }
-
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @RequestMapping(method = RequestMethod.GET, value = "admin/database/purge/history")
-    public void purgeHistory(@RequestParam(required = true) Integer mapId) throws WiseMappingException, IOException {
-
-        mindmapService.purgeHistory(mapId);
-    }
-
     private boolean isWelcomeMap(@NotNull Mindmap mindmap) throws UnsupportedEncodingException {
         // Is welcome map ?
         final String xmlStr = mindmap.getXmlStr();

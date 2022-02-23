@@ -2,6 +2,10 @@
 /* Header & Toolbar Styles */
 /********************************************************************************/
 @import "../bootstrap/css/bootstrap.min.css";
+body {
+    margin: 0;
+    font-family:Arial;
+}
 
 div#mindplot {
     position: relative;
