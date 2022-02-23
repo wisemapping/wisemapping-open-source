@@ -4,7 +4,7 @@
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <properties>
-        <com.wisemapping.version>5.0.7</com.wisemapping.version>
+        <com.wisemapping.version>5.0.8-SNAPSHOT</com.wisemapping.version>
         <superpom.dir>${project.basedir}/wise-webapps</superpom.dir>
     </properties>
 
