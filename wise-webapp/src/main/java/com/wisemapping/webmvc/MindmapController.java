@@ -20,6 +20,7 @@ package com.wisemapping.webmvc;
 
 
 import com.wisemapping.exceptions.MapCouldNotFoundException;
+import com.wisemapping.exceptions.MapNonPublicException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.Mindmap;
@@ -107,7 +108,8 @@ public class MindmapController {
     public String showMindmapViewerPage(@PathVariable int id, @NotNull Model model) throws WiseMappingException {
         final String result = showPrintPage(id, model);
         model.addAttribute("readOnlyMode", true);
-        return result;    }
+        return result;
+    }
 
     @RequestMapping(value = "maps/{id}/try", method = RequestMethod.GET)
     public String showMindmapTryPage(@PathVariable int id, @NotNull Model model) throws WiseMappingException {
@@ -127,10 +129,13 @@ public class MindmapController {
     }
 
     @RequestMapping(value = "maps/{id}/embed")
-    public ModelAndView showEmbeddedPage(@PathVariable int id, @RequestParam(required = false) Float zoom) throws MapCouldNotFoundException {
-        ModelAndView view;
+    public ModelAndView showEmbeddedPage(@PathVariable int id, @RequestParam(required = false) Float zoom) throws MapCouldNotFoundException, MapNonPublicException {
+        if (!mindmapService.isMindmapPublic(id)) {
+            throw new MapNonPublicException("Map " + id + " is not public.");
+        }
+
         final MindMapBean mindmap = findMindmapBean(id);
-        view = new ModelAndView("mindmapEmbedded", "mindmap", mindmap);
+        final ModelAndView view = new ModelAndView("mindmapEmbedded", "mindmap", mindmap);
         view.addObject("zoom", zoom == null ? 1 : zoom);
         final Locale locale = LocaleContextHolder.getLocale();
         view.addObject("locale", locale.toString().toLowerCase());
@@ -139,6 +144,9 @@ public class MindmapController {
 
     @RequestMapping(value = "maps/{id}/public", method = RequestMethod.GET)
     public String showPublicViewPage(@PathVariable int id, @NotNull Model model) throws WiseMappingException {
+        if (!mindmapService.isMindmapPublic(id)) {
+            throw new MapNonPublicException("Map " + id + " is not public.");
+        }
         return this.showPrintPage(id, model);
     }
 
@@ -156,7 +164,7 @@ public class MindmapController {
 
     @NotNull
     private Mindmap findMindmap(int mapId) throws MapCouldNotFoundException {
-        final Mindmap result = mindmapService.findMindmapById((int) mapId);
+        final Mindmap result = mindmapService.findMindmapById(mapId);
         if (result == null) {
             throw new MapCouldNotFoundException("Map could not be found " + mapId);
         }

@@ -13,18 +13,11 @@
     </bean>
 
     <sec:http-firewall ref="custom-firewall"/>
-
-
     <sec:http pattern="/static/webapp/**" security="none"/>
     <sec:http pattern="/static/mindplot/**" security="none"/>
-    <sec:http pattern="/c/login" security="none"/>
-    <sec:http pattern="/c/registration" security="none"/>
-    <sec:http pattern="/c/forgot-password" security="none"/>
-
     <sec:http pattern="/css/**" security="none"/>
     <sec:http pattern="/js/**" security="none"/>
     <sec:http pattern="/images/**" security="none"/>
-    <sec:http pattern="/icons/**" security="none"/>
 
     <sec:http pattern="/c/home" security="none"/>
 
@@ -33,19 +26,11 @@
     <sec:http pattern="/c/maps/*/public" security="none"/>
     <sec:http pattern="/c/restful/maps/*/document/xml-pub" security="none"/>
 
-    <sec:http pattern="/c/publicview.htm" security="none"/>
-    <sec:http pattern="/c/embeddedview.htm" security="none"/>
-    <sec:http pattern="/c/termsOfUse" security="none"/>
-    <sec:http pattern="/c/keyboard" security="none"/>
-
     <sec:http pattern="/c/activation" security="none"/>
-    <sec:http pattern="/c/try" security="none"/>
 
     <!-- Admin related services that required admin role-->
     <sec:http use-expressions="true" create-session="stateless" pattern="/service/**">
         <sec:csrf disabled="true"/>
-
-        <!-- Enabled only for cors -->
         <sec:intercept-url pattern="/service/users" method="OPTIONS" access="permitAll"/>
         <sec:intercept-url pattern="/service/users/resetPassword" method="OPTIONS" access="permitAll"/>
 
@@ -59,14 +44,16 @@
         <sec:http-basic/>
     </sec:http>
 
-    <sec:http use-expressions="true">
-        <sec:csrf disabled="true"/>
-        <sec:access-denied-handler error-page="/c/login"/>
+    <sec:http use-expressions="true" pattern="/c/**/*">
+        <sec:csrf request-matcher-ref="requestMatcher"/>
+        <sec:intercept-url pattern="/c/login" access="hasRole('ANONYMOUS')"/>
+        <sec:intercept-url pattern="/c/registration" access="hasRole('ANONYMOUS')"/>
+        <sec:intercept-url pattern="/c/registration-success" access="hasRole('ANONYMOUS')"/>
+        <sec:intercept-url pattern="/c/forgot-password" access="hasRole('ANONYMOUS')"/>
+        <sec:intercept-url pattern="/c/forgot-password-success" access="hasRole('ANONYMOUS')"/>
 
-        <sec:intercept-url pattern="/c/restful/admin/users/**" access="isAuthenticated() and hasRole('ROLE_ADMIN')"/>
-        <sec:intercept-url pattern="/c/restful/admin/database/**" access="isAuthenticated() and hasRole('ROLE_ADMIN')"/>
         <sec:intercept-url pattern="/c/**/*" access="isAuthenticated() and hasRole('ROLE_USER')"/>
-
+        <sec:access-denied-handler error-page="/c/login"/>
         <sec:form-login login-page="/c/login"
                         authentication-success-handler-ref="authenticationSuccessHandler"
                         always-use-default-target="false"
@@ -74,9 +61,15 @@
                         login-processing-url="/c/perform-login"/>
 
         <!-- Expire in 28 days -->
-        <sec:remember-me  token-validity-seconds="2419200" remember-me-parameter="remember-me"/>
+        <sec:remember-me token-validity-seconds="2419200" remember-me-parameter="remember-me"/>
         <sec:logout logout-url="/c/logout" invalidate-session="true" logout-success-url="/c/login"/>
     </sec:http>
+
+    <!-- Extends CSFR match to get methods to have consistency in all errors. Otherwise, get requests are forward in some cases -->
+    <bean id="requestMatcher"
+          class="com.wisemapping.security.CSFRRequestMatcher">
+        <property name="prefix" value="/c/restful/"/>
+    </bean>
 
     <import resource="wisemapping-security-${security.type}.xml"/>
 

@@ -19,6 +19,7 @@
 package com.wisemapping.service;
 
 import com.wisemapping.dao.UserManager;
+import com.wisemapping.exceptions.InvalidMindmapException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.*;
@@ -146,7 +147,7 @@ public class UserServiceImpl
         return user;
     }
 
-    public Mindmap buildTutorialMindmap(@NotNull String firstName) {
+    public Mindmap buildTutorialMindmap(@NotNull String firstName) throws InvalidMindmapException {
         //To change body of created methods use File | Settings | File Templates.
         final Locale locale = LocaleContextHolder.getLocale();
         Mindmap result = new Mindmap();

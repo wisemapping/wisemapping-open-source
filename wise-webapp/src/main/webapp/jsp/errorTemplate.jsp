@@ -32,7 +32,7 @@
 <body>
 <div id="errorContainer">
     <div class='col'>
-        <h1>Opps !</h1>
+        <h1>Oops !</h1>
         <h2>
             <spring:message code="${requestScope.title}"/>
         </h2>
@@ -41,7 +41,9 @@
         </p>
     </div>
      <div class='column'>
-      <a href="https://www.wisemapping.com"><div id="icon"></div></a>
+        <a href="https://www.wisemapping.com">
+            <img src="/images/logo-icon.svg" alt="Wisemapping icon" id="icon" />
+        </a>
     </div>
 </div>
 <div id="bottom-logo"></div>

@@ -1,14 +1,107 @@
-@import "editor.css";
+/********************************************************************************/
+/* Header & Toolbar Styles */
+/********************************************************************************/
+@import "../bootstrap/css/bootstrap.min.css";
+body {
+    margin: 0;
+    font-family:Arial;
+}
 
-/* Overwrite some styles */
-body{
-    position: inherit;
+div#mindplot {
+    position: relative;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    overflow: hidden;
+    opacity: 1;
+    background-color: #f2f2f2;
+    background-image:  linear-gradient(#ebe9e7 1px, transparent 1px), linear-gradient(to right, #ebe9e7 1px, #f2f2f2 1px);
+    background-size: 50px 50px;
+}
+
+.notesTip {
+    background-color: #dfcf3c;
+    padding: 5px 15px;
+    color: #666666;
+    font-size: 13px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+.linkTip {
+    background-color: #dfcf3c;
+    padding: 5px 15px;
+    color: #666666;
+    /*font-weight: bold;*/
+    /*width: 100px;*/
+    font-size: 13px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+
+
+#floating-panel {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    bottom: 20px;
+    right: 20px;
+    align-items: stretch;
+}
+
+div#position {
+    margin-top: 5px;
+}
+
+#position-button {
+    cursor: pointer;
+    border: solid black 1px;
+    width: 40px;
+    height: 40px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 40px 40px;
+    background-color: #FFF;
+    border-radius: 8px;
+}
+
+#zoom-button {
+    width: 40px;
+    border: 0;
+}
+
+#zoom-plus,
+#zoom-minus {
+    border: solid black 1px;
+    height: 40px;
+    width: 40px;
+    background-repeat: no-repeat;
+    background-size: 40px 40px;
+    background-position: center;
+    cursor: pointer;
+    background-color: #FFF;
+}
+
+#zoom-plus {
+    border-radius: 8px 8px 0 0;
+}
+
+#zoom-minus {
+    border-radius: 0 0 8px 8px;
 }
 
 div#footerLogo {
     position: fixed;
     display: list-item;
-    list-style-image: url(../../images/editor/logo-text-black.svg);
+    list-style-image: url(../../images/logo-text-black.svg);
     list-style-position: inside;
     left: 10px;
     bottom: 10px;

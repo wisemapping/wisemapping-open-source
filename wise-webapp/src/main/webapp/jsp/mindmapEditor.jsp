@@ -16,8 +16,7 @@
     <base href="${requestScope['site.baseurl']}/static/webapp/">
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet"  href="../../css/editor.css"/>
-    
+
     <%@ include file="/jsp/pageHeaders.jsf" %>
 
     <title>Loading ... | WiseMapping</title>
@@ -34,14 +33,11 @@
     </script>
     <script type="text/javascript">
         var mapId = '${mindmap.id}';
-        var memoryPersistence = ${memoryPersistence};
-        var readOnly = ${readOnlyMode};
         var lockTimestamp = '${lockTimestamp}';
         var lockSession = '${lockSession}';
         var mindmapLocked = ${mindmapLocked};
         var mindmapLockedMsg = '<spring:message code="MINDMAP_LOCKED" arguments="${lockInfo.user.fullName},${lockInfo.user.email}"/>';
         var userOptions = ${mindmap.properties};
-        var isAuth = ${principal != null};
         var accountName = '${principal.fullName}';
         var accountEmail = '${principal.email}';
         var mapTitle = '${mindmap.title}';

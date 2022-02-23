@@ -133,10 +133,7 @@ public class MindmapController extends BaseController {
         collaborationProperties.setMindmapProperties(properties);
 
         // Validate content ...
-        String xml = restMindmap.getXml();
-        if (xml == null) {
-            throw new IllegalArgumentException("Map xml can not be null");
-        }
+        final String xml = restMindmap.getXml();
         mindmap.setXmlStr(xml);
 
         // Update map ...
@@ -164,14 +161,10 @@ public class MindmapController extends BaseController {
     @RequestMapping(method = RequestMethod.PUT, value = {"/maps/{id}/document/xml"}, consumes = {"text/plain"})
     @ResponseBody
     public void updateDocument(@PathVariable int id, @RequestBody String xmlDoc) throws WiseMappingException, IOException {
-
         final Mindmap mindmap = findMindmapById(id);
         final User user = Utils.getUser();
-        if (xmlDoc != null && !xmlDoc.isEmpty()) {
-            mindmap.setXmlStr(xmlDoc);
-        }
-
         mindmap.setXmlStr(xmlDoc);
+
         saveMindmapDocument(false, mindmap, user);
     }
 
@@ -273,7 +266,6 @@ public class MindmapController extends BaseController {
 
         // Is there a map with the same name ?
         if (mindmapService.getMindmapByTitle(title, user) != null) {
-
             throw buildValidationException("title", "You already have a mindmap with this title");
         }
 
