@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 abstract public class MindmapUtils {
 
-    private static final int MAX_SUPPORTED_NODES = 500;
+    private static final int MAX_SUPPORTED_NODES = 1000;
 
     public static void verifyMindmap(@Nullable String xmlDoc) throws InvalidMindmapException {
         if (xmlDoc == null || xmlDoc.trim().isEmpty()) {
@@ -20,8 +20,9 @@ abstract public class MindmapUtils {
         }
 
         // Validate that the number of nodes is not bigger 500 nodes.
-        if (xmlDoc.split("<topic").length > MAX_SUPPORTED_NODES) {
-            throw InvalidMindmapException.tooBigMindnap();
+        int numberOfTopics = xmlDoc.split("<topic").length;
+        if (numberOfTopics > MAX_SUPPORTED_NODES) {
+            throw InvalidMindmapException.tooBigMindnap(numberOfTopics);
         }
     }
 }
