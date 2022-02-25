@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 abstract public class MindmapUtils {
 
-    private static final int MAX_SUPPORTED_NODES = 1000;
+    private static final int MAX_SUPPORTED_NODES = 4000;
 
     public static void verifyMindmap(@Nullable String xmlDoc) throws InvalidMindmapException {
         if (xmlDoc == null || xmlDoc.trim().isEmpty()) {
