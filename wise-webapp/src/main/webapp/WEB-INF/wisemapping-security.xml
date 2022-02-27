@@ -61,7 +61,9 @@
                         login-processing-url="/c/perform-login"/>
 
         <!-- Expire in 28 days -->
-        <sec:remember-me token-validity-seconds="2419200" remember-me-parameter="remember-me"/>
+        <sec:remember-me token-validity-seconds="2419200"
+                         remember-me-parameter="remember-me"
+                         authentication-success-handler-ref="authenticationSuccessHandler"/>
         <sec:logout logout-url="/c/logout" invalidate-session="true" logout-success-url="/c/login"/>
     </sec:http>
 
