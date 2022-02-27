@@ -53,7 +53,7 @@
         <sec:intercept-url pattern="/c/forgot-password-success" access="hasRole('ANONYMOUS')"/>
 
         <sec:intercept-url pattern="/c/**/*" access="isAuthenticated() and hasRole('ROLE_USER')"/>
-        <sec:access-denied-handler error-page="/c/login"/>
+        <sec:access-denied-handler error-page="/c/maps/"/>
         <sec:form-login login-page="/c/login"
                         authentication-success-handler-ref="authenticationSuccessHandler"
                         always-use-default-target="false"
@@ -61,7 +61,7 @@
                         login-processing-url="/c/perform-login"/>
 
         <!-- Expire in 28 days -->
-        <sec:remember-me token-validity-seconds="2419200" remember-me-parameter="remember-me"/>
+<!--        <sec:remember-me token-validity-seconds="2419200" remember-me-parameter="remember-me"/>-->
         <sec:logout logout-url="/c/logout" invalidate-session="true" logout-success-url="/c/login"/>
     </sec:http>
 
