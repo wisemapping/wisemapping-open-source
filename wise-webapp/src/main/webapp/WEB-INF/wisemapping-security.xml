@@ -18,9 +18,7 @@
     <sec:http pattern="/css/**" security="none"/>
     <sec:http pattern="/js/**" security="none"/>
     <sec:http pattern="/images/**" security="none"/>
-
-    <sec:http pattern="/c/home" security="none"/>
-
+    
     <sec:http pattern="/c/maps/*/embed" security="none"/>
     <sec:http pattern="/c/maps/*/try" security="none"/>
     <sec:http pattern="/c/maps/*/public" security="none"/>
