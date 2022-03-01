@@ -10,7 +10,7 @@ ARG WEBAPP_TARGET_DIR="/usr/local/tomcat/webapps/ROOT"
 ARG DB_BASE_DIR="/var/lib/wisemapping"
 
 # Default ENV configurations ...
-ENV JAVA_OPTS="-XX:+PrintFlagsFinal -XX:InitialRAMPercentage=30 -XX:MaxRAMPercentage=80 ${JAVA_OPTS_EXT}"
+ENV JAVA_OPTS="-XX:+PrintFlagsFinal -XX:InitialRAMPercentage=30 -XX:MaxRAMPercentage=80"
 ENV database.base.url=${DB_BASE_DIR}
 
 # Copy wisemapping distribution ...
