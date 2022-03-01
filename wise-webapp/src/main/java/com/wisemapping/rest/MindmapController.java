@@ -542,7 +542,7 @@ public class MindmapController extends BaseController {
         mindmap.setXmlStr(mapXml);
 
         // Add new mindmap ...
-        final User user = Utils.getUser();
+        final User user = Utils.getUser(true);
         mindmapService.addMindmap(mindmap, user);
 
         // Return the new created map ...
