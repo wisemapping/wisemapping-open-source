@@ -22,6 +22,11 @@
         <bean id="requestInterceptor" class="com.wisemapping.filter.RequestPropertiesInterceptor"/>
     </mvc:interceptors>
 
+    <mvc:cors>
+        <mvc:mapping path="/**"
+                     allowed-origins="https://app.wisemapping.com, https://static-app.wisemapping.com/"/>
+    </mvc:cors>
+
     <bean id="exceptionHandlerResolver"
           class="com.wisemapping.mail.NotifyingExceptionResolver">
         <property name="defaultStatusCode" value="500"/>
