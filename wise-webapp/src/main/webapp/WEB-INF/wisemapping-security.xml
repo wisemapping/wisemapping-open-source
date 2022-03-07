@@ -3,14 +3,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:sec="http://www.springframework.org/schema/security"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
           http://www.springframework.org/schema/beans/spring-beans.xsd
           http://www.springframework.org/schema/security
-          http://www.springframework.org/schema/security/spring-security.xsd
-          http://www.springframework.org/schema/util
-          http://www.springframework.org/schema/util/spring-util.xsd"
->
+          http://www.springframework.org/schema/security/spring-security.xsd">
 
     <bean id="custom-firewall" class="org.springframework.security.web.firewall.StrictHttpFirewall">
         <property name="allowSemicolon" value="true"/>
@@ -22,7 +18,7 @@
     <sec:http pattern="/css/**" security="none"/>
     <sec:http pattern="/js/**" security="none"/>
     <sec:http pattern="/images/**" security="none"/>
-
+    
     <sec:http pattern="/c/maps/*/embed" security="none"/>
     <sec:http pattern="/c/maps/*/try" security="none"/>
     <sec:http pattern="/c/maps/*/public" security="none"/>
@@ -47,8 +43,6 @@
     </sec:http>
 
     <sec:http use-expressions="true" pattern="/c/**/*">
-        <sec:cors configuration-source-ref="corsSource"/>
-
         <sec:csrf request-matcher-ref="requestMatcher"/>
         <sec:intercept-url pattern="/c/login" access="permitAll"/>
         <sec:intercept-url pattern="/c/registration" access="hasRole('ANONYMOUS')"/>
@@ -89,16 +83,4 @@
         <property name="alwaysUseDefaultTargetUrl" value="false"/>
     </bean>
 
-    <bean id="corsSource" class="org.springframework.web.cors.UrlBasedCorsConfigurationSource">
-        <property name="corsConfigurations">
-            <util:map>
-                <entry key="/c/**">
-                    <bean class="org.springframework.web.cors.CorsConfiguration">
-                        <property name="allowedOrigins"
-                                  value="https://app.wisemapping.com, https://static-app.wisemapping.com/"/>
-                    </bean>
-                </entry>
-            </util:map>
-        </property>
-    </bean>
 </beans>

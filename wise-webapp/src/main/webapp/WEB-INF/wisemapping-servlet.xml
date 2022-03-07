@@ -23,7 +23,7 @@
     </mvc:interceptors>
 
     <mvc:cors>
-        <mvc:mapping path="/c/**"
+        <mvc:mapping path="/**"
                      allowed-origins="https://app.wisemapping.com, https://static-app.wisemapping.com/"/>
     </mvc:cors>
 
