@@ -83,7 +83,6 @@ public class MindmapController {
         if (!readOnlyMode) {
             final LockManager lockManager = this.mindmapService.getLockManager();
             if (lockManager.isLocked(mindmap) && !lockManager.isLockedBy(mindmap, collaborator)) {
-                readOnlyMode = true;
                 isLocked = true;
             } else {
                 model.addAttribute("lockTimestamp", mindmap.getLastModificationTime().getTimeInMillis());
@@ -97,7 +96,6 @@ public class MindmapController {
         // Configure default locale for the editor ...
         model.addAttribute("locale", locale.toString().toLowerCase());
         model.addAttribute("principal", collaborator);
-        model.addAttribute("readOnlyMode", readOnlyMode);
         model.addAttribute("memoryPersistence", false);
         model.addAttribute("mindmapLocked", isLocked);
 
