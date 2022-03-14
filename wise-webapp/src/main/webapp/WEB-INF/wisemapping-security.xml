@@ -18,9 +18,7 @@
     <sec:http pattern="/css/**" security="none"/>
     <sec:http pattern="/js/**" security="none"/>
     <sec:http pattern="/images/**" security="none"/>
-
-    <sec:http pattern="/c/home" security="none"/>
-
+    
     <sec:http pattern="/c/maps/*/embed" security="none"/>
     <sec:http pattern="/c/maps/*/try" security="none"/>
     <sec:http pattern="/c/maps/*/public" security="none"/>
@@ -46,7 +44,7 @@
 
     <sec:http use-expressions="true" pattern="/c/**/*">
         <sec:csrf request-matcher-ref="requestMatcher"/>
-        <sec:intercept-url pattern="/c/login" access="hasRole('ANONYMOUS')"/>
+        <sec:intercept-url pattern="/c/login" access="permitAll"/>
         <sec:intercept-url pattern="/c/registration" access="hasRole('ANONYMOUS')"/>
         <sec:intercept-url pattern="/c/registration-success" access="hasRole('ANONYMOUS')"/>
         <sec:intercept-url pattern="/c/forgot-password" access="hasRole('ANONYMOUS')"/>
@@ -61,7 +59,9 @@
                         login-processing-url="/c/perform-login"/>
 
         <!-- Expire in 28 days -->
-        <sec:remember-me token-validity-seconds="2419200" remember-me-parameter="remember-me"/>
+        <sec:remember-me token-validity-seconds="2419200"
+                         remember-me-parameter="remember-me"
+                         authentication-success-handler-ref="authenticationSuccessHandler"/>
         <sec:logout logout-url="/c/logout" invalidate-session="true" logout-success-url="/c/login"/>
     </sec:http>
 

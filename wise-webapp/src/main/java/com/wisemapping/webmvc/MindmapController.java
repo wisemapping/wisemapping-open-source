@@ -19,6 +19,7 @@
 package com.wisemapping.webmvc;
 
 
+import com.wisemapping.exceptions.AccessDeniedSecurityException;
 import com.wisemapping.exceptions.MapCouldNotFoundException;
 import com.wisemapping.exceptions.MapNonPublicException;
 import com.wisemapping.exceptions.WiseMappingException;
@@ -52,7 +53,8 @@ public class MindmapController {
     private MindmapService mindmapService;
 
     @RequestMapping(value = "maps/{id}/print")
-    public String showPrintPage(@PathVariable int id, @NotNull Model model) throws MapCouldNotFoundException {
+    public String showPrintPage(@PathVariable int id, @NotNull Model model) throws MapCouldNotFoundException, AccessDeniedSecurityException {
+
         final MindMapBean mindmap = findMindmapBean(id);
         model.addAttribute("principal", Utils.getUser());
         model.addAttribute("mindmap", mindmap);
@@ -83,7 +85,6 @@ public class MindmapController {
         if (!readOnlyMode) {
             final LockManager lockManager = this.mindmapService.getLockManager();
             if (lockManager.isLocked(mindmap) && !lockManager.isLockedBy(mindmap, collaborator)) {
-                readOnlyMode = true;
                 isLocked = true;
             } else {
                 model.addAttribute("lockTimestamp", mindmap.getLastModificationTime().getTimeInMillis());
@@ -97,7 +98,6 @@ public class MindmapController {
         // Configure default locale for the editor ...
         model.addAttribute("locale", locale.toString().toLowerCase());
         model.addAttribute("principal", collaborator);
-        model.addAttribute("readOnlyMode", readOnlyMode);
         model.addAttribute("memoryPersistence", false);
         model.addAttribute("mindmapLocked", isLocked);
 
@@ -129,7 +129,7 @@ public class MindmapController {
     }
 
     @RequestMapping(value = "maps/{id}/embed")
-    public ModelAndView showEmbeddedPage(@PathVariable int id, @RequestParam(required = false) Float zoom) throws MapCouldNotFoundException, MapNonPublicException {
+    public ModelAndView showEmbeddedPage(@PathVariable int id, @RequestParam(required = false) Float zoom) throws MapCouldNotFoundException, MapNonPublicException, AccessDeniedSecurityException {
         if (!mindmapService.isMindmapPublic(id)) {
             throw new MapNonPublicException("Map " + id + " is not public.");
         }
@@ -173,7 +173,12 @@ public class MindmapController {
     }
 
     @NotNull
-    private MindMapBean findMindmapBean(int mapId) throws MapCouldNotFoundException {
+    private MindMapBean findMindmapBean(int mapId) throws MapCouldNotFoundException, AccessDeniedSecurityException {
+        final User user = Utils.getUser();
+        if (!mindmapService.hasPermissions(user, mapId, CollaborationRole.VIEWER)) {
+            throw new AccessDeniedSecurityException("No enough permissions to open map with id" + mapId);
+        }
+
         final Mindmap mindmap = findMindmap(mapId);
         return new MindMapBean(mindmap, Utils.getUser());
     }

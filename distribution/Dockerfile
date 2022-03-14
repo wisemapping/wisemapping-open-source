@@ -9,8 +9,8 @@ LABEL maintainer="Paulo Gustavo Veiga <pveiga@wisemapping.com>"
 ARG WEBAPP_TARGET_DIR="/usr/local/tomcat/webapps/ROOT"
 ARG DB_BASE_DIR="/var/lib/wisemapping"
 
-# Defautl ENV configurations ...
-ENV JAVA_OPTS="-XX:+PrintFlagsFinal -XX:InitialRAMPercentage=30 -XX:MaxRAMPercentage=80  -javaagent:/opt/newrelic/newrelic.jar"
+# Default ENV configurations ...
+ENV JAVA_OPTS="-XX:+PrintFlagsFinal -XX:InitialRAMPercentage=30 -XX:MaxRAMPercentage=80"
 ENV database.base.url=${DB_BASE_DIR}
 
 # Copy wisemapping distribution ...
@@ -21,6 +21,15 @@ RUN rm /tmp/wisemapping.war
 
 # Change logger to
 RUN cp ${WEBAPP_TARGET_DIR}/WEB-INF/classes/log4j-stdout.properties ${WEBAPP_TARGET_DIR}/WEB-INF/classes/log4j.properties
+
+# Add support for proxy
+RUN sed -i 's|\
+  </Host>|\
+    <Valve className="org.apache.catalina.valves.RemoteIpValve" \
+      remoteIpHeader="X-Forwarded-For" \
+      protocolHeader="X-Forwarded-Proto"/>\
+  </Host>|' \
+  /usr/local/tomcat/conf/server.xml
 
 # Copy default HSQL DB for testing ...
 RUN mkdir -p ${DB_BASE_DIR}/db
