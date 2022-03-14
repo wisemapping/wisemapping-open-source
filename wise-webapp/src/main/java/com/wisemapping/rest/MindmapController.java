@@ -18,10 +18,7 @@
 
 package com.wisemapping.rest;
 
-import com.wisemapping.exceptions.LabelCouldNotFoundException;
-import com.wisemapping.exceptions.MapCouldNotFoundException;
-import com.wisemapping.exceptions.SessionExpiredException;
-import com.wisemapping.exceptions.WiseMappingException;
+import com.wisemapping.exceptions.*;
 import com.wisemapping.model.*;
 import com.wisemapping.rest.model.*;
 import com.wisemapping.security.Utils;
@@ -249,8 +246,15 @@ public class MindmapController extends BaseController {
     }
 
     @NotNull
-    private Mindmap findMindmapById(int id) throws MapCouldNotFoundException {
-        Mindmap result = mindmapService.findMindmapById(id);
+    private Mindmap findMindmapById(int id) throws MapCouldNotFoundException, AccessDeniedSecurityException {
+        // Has enough permissions ?
+        final User user = Utils.getUser();
+        if (!mindmapService.hasPermissions(user, id, CollaborationRole.VIEWER)) {
+            throw new AccessDeniedSecurityException("No enough permissions to open map. Id:" + id);
+        }
+
+        // Does the map exists ?
+        final Mindmap result = mindmapService.findMindmapById(id);
         if (result == null) {
             throw new MapCouldNotFoundException("Map could not be found. Id:" + id);
         }
@@ -489,7 +493,7 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/lock", consumes = {"text/plain"}, produces = {"application/json", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateMapLock(@RequestBody String value, @PathVariable int id) throws IOException, WiseMappingException {
+    public void updateMapLock(@RequestBody String value, @PathVariable int id) throws WiseMappingException {
         final User user = Utils.getUser();
         final LockManager lockManager = mindmapService.getLockManager();
         final Mindmap mindmap = findMindmapById(id);

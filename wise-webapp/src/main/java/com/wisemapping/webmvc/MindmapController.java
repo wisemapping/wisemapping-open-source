@@ -176,7 +176,7 @@ public class MindmapController {
     private MindMapBean findMindmapBean(int mapId) throws MapCouldNotFoundException, AccessDeniedSecurityException {
         final User user = Utils.getUser();
         if (!mindmapService.hasPermissions(user, mapId, CollaborationRole.VIEWER)) {
-            throw new AccessDeniedSecurityException("No enough permissions to open map with id" + mapId);
+            throw new AccessDeniedSecurityException("No enough permissions to open map with id " + mapId);
         }
 
         final Mindmap mindmap = findMindmap(mapId);
