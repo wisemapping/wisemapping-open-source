@@ -250,7 +250,7 @@ public class MindmapController extends BaseController {
         // Has enough permissions ?
         final User user = Utils.getUser();
         if (!mindmapService.hasPermissions(user, id, CollaborationRole.VIEWER)) {
-            throw new AccessDeniedSecurityException("No enough permissions to open map. Id:" + id);
+            throw new AccessDeniedSecurityException(id, user);
         }
 
         // Does the map exists ?

@@ -1,20 +1,20 @@
 /*
-*    Copyright [2015] [wisemapping]
-*
-*   Licensed under WiseMapping Public License, Version 1.0 (the "License").
-*   It is basically the Apache License, Version 2.0 (the "License") plus the
-*   "powered by wisemapping" text requirement on every single page;
-*   you may not use this file except in compliance with the License.
-*   You may obtain a copy of the license at
-*
-*       http://www.wisemapping.org/license
-*
-*   Unless required by applicable law or agreed to in writing, software
-*   distributed under the License is distributed on an "AS IS" BASIS,
-*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*   See the License for the specific language governing permissions and
-*   limitations under the License.
-*/
+ *    Copyright [2015] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 
 package com.wisemapping.service;
 
@@ -31,20 +31,20 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /*
-* Refresh page should not lost the lock.
-* En caso que no sea posible grabar por que se perdio el lock, usar mensaje de error para explicar el por que...
-* Mensaje  modal explicando que el mapa esta siendo editado, por eso no es posible edilarlo....
-* Internacionalizacion de los mensaje ...
-* Logout limpiar las sessiones ...
-*
-* Casos:
-*  - Usuario pierde el lock:
-*      - Y grabo con la misma sessions y el timestap ok.
-*      - Y grabo con la misma session y el timestap esta mal
+ * Refresh page should not lost the lock.
+ * En caso que no sea posible grabar por que se perdio el lock, usar mensaje de error para explicar el por que...
+ * Mensaje  modal explicando que el mapa esta siendo editado, por eso no es posible edilarlo....
+ * Internacionalizacion de los mensaje ...
+ * Logout limpiar las sessiones ...
+ *
+ * Casos:
+ *  - Usuario pierde el lock:
+ *      - Y grabo con la misma sessions y el timestap ok.
+ *      - Y grabo con la misma session y el timestap esta mal
  *     - Y grabo con distinta sessions
  *     -
-*  - Usuario pierde el lock, pero intenta grabar camio
-*/
+ *  - Usuario pierde el lock, pero intenta grabar camio
+ */
 
 class LockManagerImpl implements LockManager {
     public static final int ONE_MINUTE_MILLISECONDS = 1000 * 60;
@@ -97,7 +97,7 @@ class LockManagerImpl implements LockManager {
         }
 
         if (!mindmap.hasPermissions(user, CollaborationRole.EDITOR)) {
-            throw new AccessDeniedSecurityException("Invalid lock, this should not happen");
+            throw new AccessDeniedSecurityException(mindmap.getId(), user);
         }
 
         this.unlock(mindmap.getId());
@@ -132,7 +132,7 @@ class LockManagerImpl implements LockManager {
         }
 
         if (!mindmap.hasPermissions(user, CollaborationRole.EDITOR)) {
-            throw new AccessDeniedSecurityException("Invalid lock, this should not happen");
+            throw new AccessDeniedSecurityException(mindmap.getId(), user);
         }
 
         LockInfo result = lockInfoByMapId.get(mindmap.getId());
