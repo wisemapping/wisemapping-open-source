@@ -29,14 +29,13 @@
         <property name="exceptionMappings">
             <props>
                 <!-- Security exceptions are wrapped in this exceptions -->
-                <prop key="java.lang.reflect.UndeclaredThrowableException">securityError</prop>
+                <prop key="com.wisemapping.exceptions.AccessDeniedSecurityException">securityError</prop>
             </props>
         </property>
 
         <property name="statusCodes">
             <props>
-                <!-- Handle missing found pages. Avoid generation of errors -->
-                <prop key="securityError">200</prop>
+                <prop key="securityError">404</prop>
             </props>
         </property>
 
