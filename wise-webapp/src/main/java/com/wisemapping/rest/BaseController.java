@@ -1,5 +1,5 @@
 /*
- *    Copyright [2011] [wisemapping]
+ *    Copyright [2022] [wisemapping]
  *
  *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
  *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -15,7 +15,6 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.ClientException;
