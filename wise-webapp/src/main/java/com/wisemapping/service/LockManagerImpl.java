@@ -41,8 +41,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *  - Usuario pierde el lock:
  *      - Y grabo con la misma sessions y el timestap ok.
  *      - Y grabo con la misma session y el timestap esta mal
- *     - Y grabo con distinta sessions
- *     -
+ *      - Y grabo con distinta sessions
  *  - Usuario pierde el lock, pero intenta grabar camio
  */
 
@@ -150,25 +149,20 @@ class LockManagerImpl implements LockManager {
     }
 
     public LockManagerImpl() {
-        lockInfoByMapId = new ConcurrentHashMap<Integer, LockInfo>();
+        lockInfoByMapId = new ConcurrentHashMap<>();
         expirationTimer.schedule(new TimerTask() {
             @Override
             public void run() {
 
                 logger.debug("Lock expiration scheduler started. Current locks:" + lockInfoByMapId.keySet());
 
-                final List<Integer> toRemove = new ArrayList<Integer>();
-                final Set<Integer> mapIds = lockInfoByMapId.keySet();
-                for (Integer mapId : mapIds) {
-                    final LockInfo lockInfo = lockInfoByMapId.get(mapId);
-                    if (lockInfo.isExpired()) {
-                        toRemove.add(mapId);
-                    }
-                }
+                // Search for expired sessions and remove them ....
+                lockInfoByMapId.
+                        keySet().
+                        stream().
+                        filter(mapId -> lockInfoByMapId.get(mapId).isExpired()).
+                        forEach(mapId -> unlock(mapId));
 
-                for (Integer mapId : toRemove) {
-                    unlock(mapId);
-                }
             }
         }, ONE_MINUTE_MILLISECONDS, ONE_MINUTE_MILLISECONDS);
     }
