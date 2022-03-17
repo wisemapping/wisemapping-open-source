@@ -27,6 +27,7 @@ import com.wisemapping.validator.MapInfoValidator;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -109,7 +110,7 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/document", consumes = {"application/xml", "application/json"}, produces = {"application/json", "application/xml"})
     @ResponseBody
-    public Long updateDocument(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor, @RequestParam(required = false) Long timestamp, @RequestParam(required = false) Long session) throws WiseMappingException, IOException {
+    public Long updateDocument(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor, @RequestParam(required = true) long timestamp, @RequestParam(required = true) long session) throws WiseMappingException, IOException {
 
         final Mindmap mindmap = findMindmapById(id);
         final User user = Utils.getUser();
@@ -120,10 +121,8 @@ public class MindmapController extends BaseController {
             throw new IllegalArgumentException("Map properties can not be null");
         }
 
-        // Could the map be updated ?
-        if (session != null) {
-            verifyLock(mindmap, user, session, timestamp);
-        }
+        // Have permissions ?
+        long result = verifyAndUpdateLock(mindmap, user, session, timestamp);
 
         // Update collaboration properties ...
         final CollaborationProperties collaborationProperties = mindmap.findCollaborationProperties(user);
@@ -136,13 +135,6 @@ public class MindmapController extends BaseController {
         // Update map ...
         saveMindmapDocument(minor, mindmap, user);
 
-        // Update edition timeout ...
-        final LockManager lockManager = mindmapService.getLockManager();
-        long result = -1;
-        if (session != null) {
-            final LockInfo lockInfo = lockManager.updateExpirationTimeout(mindmap, user);
-            result = lockInfo.getTimestamp();
-        }
         return result;
     }
 
@@ -173,36 +165,6 @@ public class MindmapController extends BaseController {
         return mindmapHistory.getUnzipXml();
     }
 
-    private void verifyLock(@NotNull Mindmap mindmap, @NotNull User user, long session, long timestamp) throws WiseMappingException {
-
-        // The lock was lost, reclaim as the ownership of it.
-        final LockManager lockManager = mindmapService.getLockManager();
-        final boolean lockLost = lockManager.isLocked(mindmap);
-        if (!lockLost) {
-            lockManager.lock(mindmap, user, session);
-        }
-
-        final LockInfo lockInfo = lockManager.getLockInfo(mindmap);
-        if (lockInfo.getUser().identityEquality(user)) {
-            long savedTimestamp = mindmap.getLastModificationTime().getTimeInMillis();
-            final boolean outdated = savedTimestamp > timestamp;
-
-            if (lockInfo.getSession() == session) {
-                // Timestamp might not be returned to the client. This try to cover this case, ignoring the client timestamp check.
-                final User lastEditor = mindmap.getLastEditor();
-                boolean editedBySameUser = lastEditor == null || user.identityEquality(lastEditor);
-                if (outdated && !editedBySameUser) {
-                    throw new SessionExpiredException("Map has been updated by " + (lastEditor.getEmail()) + ",Timestamp:" + timestamp + "," + savedTimestamp + ", User:" + lastEditor.getId() + ":" + user.getId() + ",Mail:'" + lastEditor.getEmail() + "':'" + user.getEmail(), lastEditor);
-                }
-            } else if (outdated) {
-                logger.warn("Sessions:" + session + ":" + lockInfo.getSession() + ",Timestamp: " + timestamp + ": " + savedTimestamp);
-                // @Todo: Temporally disabled to unblock save action. More research needed.
-//                throw new MultipleSessionsOpenException("Sessions:" + session + ":" + lockInfo.getSession() + ",Timestamp: " + timestamp + ": " + savedTimestamp);
-            }
-        } else {
-            throw new SessionExpiredException("Different Users.", lockInfo.getUser());
-        }
-    }
 
     /**
      * The intention of this method is the update of several properties at once ...
@@ -617,4 +579,46 @@ public class MindmapController extends BaseController {
         mindmap.addLabel(label);
         mindmapService.updateMindmap(mindmap, false);
     }
+
+    private long verifyAndUpdateLock(@NotNull Mindmap mindmap, @NotNull User user, @Nullable long session, @NotNull long timestamp) throws WiseMappingException {
+        // Could the map be updated ?
+        verifyLock(mindmap, user, session, timestamp);
+
+        // Update timestamp for lock ...
+        final LockManager lockManager = mindmapService.getLockManager();
+        final LockInfo lockInfo = lockManager.updateExpirationTimeout(mindmap, user);
+        return lockInfo.getTimestamp();
+    }
+
+    private void verifyLock(@NotNull Mindmap mindmap, @NotNull User user, long session, long timestamp) throws WiseMappingException {
+
+        // The lock was lost, reclaim as the ownership of it.
+        final LockManager lockManager = mindmapService.getLockManager();
+        final boolean lockLost = lockManager.isLocked(mindmap);
+        if (!lockLost) {
+            lockManager.lock(mindmap, user, session);
+        }
+
+        final LockInfo lockInfo = lockManager.getLockInfo(mindmap);
+        if (lockInfo.getUser().identityEquality(user)) {
+            long savedTimestamp = mindmap.getLastModificationTime().getTimeInMillis();
+            final boolean outdated = savedTimestamp > timestamp;
+
+            if (lockInfo.getSession() == session) {
+                // Timestamp might not be returned to the client. This try to cover this case, ignoring the client timestamp check.
+                final User lastEditor = mindmap.getLastEditor();
+                boolean editedBySameUser = lastEditor == null || user.identityEquality(lastEditor);
+                if (outdated && !editedBySameUser) {
+                    throw new SessionExpiredException("Map has been updated by " + (lastEditor.getEmail()) + ",Timestamp:" + timestamp + "," + savedTimestamp + ", User:" + lastEditor.getId() + ":" + user.getId() + ",Mail:'" + lastEditor.getEmail() + "':'" + user.getEmail(), lastEditor);
+                }
+            } else if (outdated) {
+                logger.warn("Sessions:" + session + ":" + lockInfo.getSession() + ",Timestamp: " + timestamp + ": " + savedTimestamp);
+                // @Todo: Temporally disabled to unblock save action. More research needed.
+//                throw new MultipleSessionsOpenException("Sessions:" + session + ":" + lockInfo.getSession() + ",Timestamp: " + timestamp + ": " + savedTimestamp);
+            }
+        } else {
+            throw new SessionExpiredException("Different Users.", lockInfo.getUser());
+        }
+    }
+
 }
