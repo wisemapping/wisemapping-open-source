@@ -47,14 +47,16 @@ public class UnlockOnExpireListener implements HttpSessionListener {
         final ServletContext servletContext = event.getSession().getServletContext();
         final WebApplicationContext wc = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext);
         final MindmapService mindmapService = (MindmapService) wc.getBean("mindmapService");
-        final LockManager lockManager = mindmapService.getLockManager();
 
+        final LockManager lockManager = mindmapService.getLockManager();
         final User user = Utils.getUser(false);
         if (user != null) {
-            try {
-                lockManager.unlockAll(user);
-            } catch (LockException | AccessDeniedSecurityException e) {
-                logger.error(e);
+            synchronized (mindmapService.getLockManager()) {
+                try {
+                    lockManager.unlockAll(user);
+                } catch (LockException | AccessDeniedSecurityException e) {
+                    logger.error(e);
+                }
             }
         }
     }

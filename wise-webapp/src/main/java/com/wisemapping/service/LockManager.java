@@ -20,6 +20,7 @@ package com.wisemapping.service;
 
 import com.wisemapping.exceptions.AccessDeniedSecurityException;
 import com.wisemapping.exceptions.LockException;
+import com.wisemapping.exceptions.SessionExpiredException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
@@ -38,8 +39,7 @@ public interface LockManager {
 
     boolean isLockedBy(@NotNull Mindmap mindmap, @NotNull User collaborator);
 
-    @NotNull
-    LockInfo lock(@NotNull Mindmap mindmap, @NotNull User user, long session) throws WiseMappingException;
-
     long generateSession();
+
+    long verifyAndUpdateLock(@NotNull Mindmap mindmap, @NotNull User user, long session, long timestamp) throws LockException, SessionExpiredException;
 }
