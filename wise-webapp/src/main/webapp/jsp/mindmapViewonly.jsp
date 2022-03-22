@@ -23,7 +23,7 @@
      </script>
      <%@ include file="/jsp/googleAnalytics.jsf" %>
 </head>
-<body>
+<body class="editorBody">
 <div id="mindplot"></div>
 
 <a href="${requestScope['site.homepage']}" target="new">
