@@ -168,7 +168,6 @@ public class User
         return "User{" +
                 "firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
-                ", password='" + password + '\'' +
                 "', email = '" + this.getEmail() + "}";
     }
 }
