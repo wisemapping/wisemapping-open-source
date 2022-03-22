@@ -243,7 +243,7 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/maps/{id}/collabs/", consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateCollabs(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws CollaborationException, MapCouldNotFoundException, AccessDeniedSecurityException {
+    public void updateCollabs(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws CollaborationException, MapCouldNotFoundException, AccessDeniedSecurityException, InvalidEmailException {
         final Mindmap mindMap = findMindmapById(id);
 
         // Only owner can change collaborators...
@@ -259,7 +259,7 @@ public class MindmapController extends BaseController {
 
             // Is a valid email address ?
             if (!EmailValidator.getInstance().isValid(email)) {
-                throw new IllegalArgumentException(email + " is not valid email address");
+                throw new InvalidEmailException(email);
             }
 
             final Collaboration collaboration = mindMap.findCollaboration(email);
@@ -269,7 +269,7 @@ public class MindmapController extends BaseController {
                 throw new IllegalArgumentException(roleStr + " is not a valid role");
             }
 
-            // Remove from the list of pendings to remove ...
+            // Remove from the list of pending to remove ...
             if (collaboration != null) {
                 collabsToRemove.remove(collaboration);
             }
@@ -407,7 +407,7 @@ public class MindmapController extends BaseController {
         // Is a valid email address ?
         final EmailValidator emailValidator = EmailValidator.getInstance();
         if (!emailValidator.isValid(email)) {
-            throw new IllegalArgumentException(email + " is not valid email address");
+            throw new InvalidEmailException(email);
         }
 
         final Mindmap mindmap = findMindmapById(id);
