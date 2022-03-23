@@ -74,4 +74,13 @@ public class LockInfo {
         this.previousTimestamp = this.timestamp;
         this.timestamp = mindmap.getLastModificationTime().getTimeInMillis();
     }
+
+    @Override
+    public String toString() {
+        return "LockInfo{" +
+                "user=" + user +
+                ", session=" + session +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }

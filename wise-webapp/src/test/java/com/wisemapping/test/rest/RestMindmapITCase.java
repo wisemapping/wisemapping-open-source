@@ -23,6 +23,7 @@ import static org.testng.Assert.*;
 @Test
 public class RestMindmapITCase {
 
+    private static final int SESSION_ID = 100;
     private String userEmail = "admin@wisemapping.com";
     private static final String ICON = "glyphicon glyphicon-tag";
 
@@ -217,8 +218,16 @@ public class RestMindmapITCase {
         mapToUpdate.setXml("<map>this is not valid</map>");
         mapToUpdate.setProperties("{zoom:x}");
 
+        // Create lock ...
+        final HttpHeaders lockHeaders = createHeaders(mediaType);
+        lockHeaders.setContentType(MediaType.TEXT_PLAIN);
+
+        HttpEntity<String> lockEntity = new HttpEntity<>("true", lockHeaders);
+        final ResponseEntity<RestLockInfo> lockResponse = template.exchange(HOST_PORT + resourceUri + "/locks/{lockid}", HttpMethod.PUT, lockEntity, RestLockInfo.class, SESSION_ID);
+        final RestLockInfo lockInfo = lockResponse.getBody();
+
         // Update map ...
-        final String resourceUrl = HOST_PORT + resourceUri.toString() + "/document";
+        final String resourceUrl = HOST_PORT + resourceUri.toString() + "/document?session=" + lockInfo.getSession() + "&timestamp=" + lockInfo.getTimestamp();
         requestHeaders.setContentType(MediaType.APPLICATION_XML);
         final HttpEntity<RestMindmap> updateEntity = new HttpEntity<>(mapToUpdate, requestHeaders);
         template.put(resourceUrl, updateEntity);

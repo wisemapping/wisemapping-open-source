@@ -21,7 +21,7 @@ public class RestHelper {
     public static final String COLOR = "#000000";
 
     static HttpHeaders createHeaders(@NotNull MediaType mediaType) {
-        List<MediaType> acceptableMediaTypes = new ArrayList<MediaType>();
+        List<MediaType> acceptableMediaTypes = new ArrayList<>();
         acceptableMediaTypes.add(mediaType);
 
         final HttpHeaders result = new HttpHeaders();

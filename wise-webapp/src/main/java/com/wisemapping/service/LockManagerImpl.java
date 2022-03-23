@@ -110,9 +110,10 @@ class LockManagerImpl implements LockManager {
     }
 
     @NotNull
-    private LockInfo lock(@NotNull Mindmap mindmap, @NotNull User user, long session) throws LockException {
+    @Override
+    public LockInfo lock(@NotNull Mindmap mindmap, @NotNull User user, long session) throws LockException {
         if (isLocked(mindmap) && !isLockedBy(mindmap, user)) {
-            throw new LockException("Invalid lock, this should not happen");
+            throw LockException.createLockLost(mindmap, user, this);
         }
 
         LockInfo result = lockInfoByMapId.get(mindmap.getId());

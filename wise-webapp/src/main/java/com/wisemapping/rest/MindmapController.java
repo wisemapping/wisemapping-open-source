@@ -31,10 +31,12 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -449,19 +451,23 @@ public class MindmapController extends BaseController {
         mindmapService.updateCollaboration(user, collaboration.get());
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/lock", consumes = {"text/plain"}, produces = {"application/json", "application/xml"})
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateMapLock(@RequestBody String value, @PathVariable int id) throws WiseMappingException {
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/locks/{lockid}", consumes = {"text/plain"}, produces = {"application/json", "application/xml"})
+    public ResponseEntity<RestLockInfo> lockMindmap(@RequestBody String value, @PathVariable int id, @PathVariable long lockid) throws WiseMappingException {
         final User user = Utils.getUser();
         final LockManager lockManager = mindmapService.getLockManager();
         final Mindmap mindmap = findMindmapById(id);
 
-        final boolean lock = Boolean.parseBoolean(value);
-        if (!lock) {
-            lockManager.unlock(mindmap, user);
+        ResponseEntity<RestLockInfo> result = new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        if (Boolean.parseBoolean(value)) {
+            if (!lockManager.isLocked(mindmap)) {
+                final LockInfo lockInfo = lockManager.lock(mindmap, user, lockid);
+                final RestLockInfo restLockInfo = new RestLockInfo(lockInfo, user);
+                result = new ResponseEntity<>(restLockInfo, HttpStatus.OK);
+            }
         } else {
-            throw new UnsupportedOperationException("REST lock must be implemented.");
+            lockManager.unlock(mindmap, user);
         }
+        return result;
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/maps/batch")
