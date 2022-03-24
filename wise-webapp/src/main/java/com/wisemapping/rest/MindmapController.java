@@ -27,7 +27,6 @@ import com.wisemapping.validator.MapInfoValidator;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -36,7 +35,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -111,8 +109,8 @@ public class MindmapController extends BaseController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/document", consumes = {"application/xml", "application/json"}, produces = {"application/json", "application/xml"})
-    @ResponseBody
-    public Long updateDocument(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor, @RequestParam(required = true) long timestamp, @RequestParam(required = true) long session) throws WiseMappingException, IOException {
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void updateDocument(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor) throws WiseMappingException, IOException {
 
         final Mindmap mindmap = findMindmapById(id);
         final User user = Utils.getUser();
@@ -125,7 +123,7 @@ public class MindmapController extends BaseController {
 
         // Have permissions ?
         final LockManager lockManager = mindmapService.getLockManager();
-        long result = lockManager.verifyAndUpdateLock(mindmap, user, session, timestamp);
+        lockManager.lock(mindmap, user);
 
         // Update collaboration properties ...
         final CollaborationProperties collaborationProperties = mindmap.findCollaborationProperties(user);
@@ -137,8 +135,6 @@ public class MindmapController extends BaseController {
 
         // Update map ...
         saveMindmapDocument(minor, mindmap, user);
-
-        return result;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = {"/maps/{id}/document/xml", "/maps/{id}/document/xml-pub"}, consumes = {"text/plain"}, produces = {"application/xml; charset=UTF-8"})
@@ -451,25 +447,6 @@ public class MindmapController extends BaseController {
         mindmapService.updateCollaboration(user, collaboration.get());
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/locks/{lockid}", consumes = {"text/plain"}, produces = {"application/json", "application/xml"})
-    public ResponseEntity<RestLockInfo> lockMindmap(@RequestBody String value, @PathVariable int id, @PathVariable long lockid) throws WiseMappingException {
-        final User user = Utils.getUser();
-        final LockManager lockManager = mindmapService.getLockManager();
-        final Mindmap mindmap = findMindmapById(id);
-
-        ResponseEntity<RestLockInfo> result = new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-        if (Boolean.parseBoolean(value)) {
-            if (!lockManager.isLocked(mindmap)) {
-                final LockInfo lockInfo = lockManager.lock(mindmap, user, lockid);
-                final RestLockInfo restLockInfo = new RestLockInfo(lockInfo, user);
-                result = new ResponseEntity<>(restLockInfo, HttpStatus.OK);
-            }
-        } else {
-            lockManager.unlock(mindmap, user);
-        }
-        return result;
-    }
-
     @RequestMapping(method = RequestMethod.DELETE, value = "/maps/batch")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void batchDelete(@RequestParam() String ids) throws IOException, WiseMappingException {
@@ -587,5 +564,20 @@ public class MindmapController extends BaseController {
         mindmapService.updateMindmap(mindmap, false);
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/lock", consumes = {"text/plain"}, produces = {"application/json", "application/xml"})
+    public ResponseEntity<RestLockInfo> lockMindmap(@RequestBody String value, @PathVariable int id) throws WiseMappingException {
+        final User user = Utils.getUser();
+        final LockManager lockManager = mindmapService.getLockManager();
+        final Mindmap mindmap = findMindmapById(id);
 
+        ResponseEntity<RestLockInfo> result = new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        if (Boolean.parseBoolean(value)) {
+            final LockInfo lockInfo = lockManager.lock(mindmap, user);
+            final RestLockInfo restLockInfo = new RestLockInfo(lockInfo, user);
+            result = new ResponseEntity<>(restLockInfo, HttpStatus.OK);
+        } else {
+            lockManager.unlock(mindmap, user);
+        }
+        return result;
+    }
 }

@@ -27,16 +27,22 @@ import java.util.Calendar;
 public class LockInfo {
     final private User user;
     private Calendar timeout;
-    private long session;
     private static final int EXPIRATION_MIN = 30;
-    private long timestamp = -1;
-    private long previousTimestamp;
 
-    public LockInfo(@NotNull User user, @NotNull Mindmap mindmap, long session) {
+    public int getMapId() {
+        return mapId;
+    }
+
+    public void setMapId(int mapId) {
+        this.mapId = mapId;
+    }
+
+    private int mapId;
+
+    public LockInfo(@NotNull User user, @NotNull Mindmap mindmap) {
         this.user = user;
+        this.mapId = mindmap.getId();
         this.updateTimeout();
-        this.updateTimestamp(mindmap);
-        this.session = session;
     }
 
     public User getUser() {
@@ -54,33 +60,12 @@ public class LockInfo {
 
     }
 
-    public long getSession() {
-        return session;
-    }
-
-    public void setSession(long session) {
-        this.session = session;
-    }
-
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public long getPreviousTimestamp() {
-        return previousTimestamp;
-    }
-
-    public void updateTimestamp(@NotNull Mindmap mindmap) {
-        this.previousTimestamp = this.timestamp;
-        this.timestamp = mindmap.getLastModificationTime().getTimeInMillis();
-    }
-
     @Override
     public String toString() {
         return "LockInfo{" +
                 "user=" + user +
-                ", session=" + session +
-                ", timestamp=" + timestamp +
+                ", timeout=" + timeout +
+                ", mapId=" + mapId +
                 '}';
     }
 }

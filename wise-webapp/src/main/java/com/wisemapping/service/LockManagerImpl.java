@@ -20,7 +20,6 @@ package com.wisemapping.service;
 
 import com.wisemapping.exceptions.AccessDeniedSecurityException;
 import com.wisemapping.exceptions.LockException;
-import com.wisemapping.exceptions.SessionExpiredException;
 import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
@@ -48,23 +47,6 @@ class LockManagerImpl implements LockManager {
     }
 
     @Override
-    public LockInfo updateExpirationTimeout(@NotNull Mindmap mindmap, @NotNull User user) {
-        if (!this.isLocked(mindmap)) {
-            throw new IllegalStateException("Lock lost for map. No update possible.");
-        }
-
-        final LockInfo result = this.getLockInfo(mindmap);
-        if (!result.getUser().identityEquality(user)) {
-            throw new IllegalStateException("Could not update map lock timeout if you are not the locking user. User:" + result.getUser() + ", " + user);
-        }
-
-        result.updateTimeout();
-        result.updateTimestamp(mindmap);
-        logger.debug("Timeout updated for:" + mindmap.getId());
-        return result;
-    }
-
-    @Override
     public void unlockAll(@NotNull final User user) throws LockException, AccessDeniedSecurityException {
         final Set<Integer> mapIds = lockInfoByMapId.keySet();
         for (final Integer mapId : mapIds) {
@@ -77,14 +59,7 @@ class LockManagerImpl implements LockManager {
 
     @Override
     public void unlock(@NotNull Mindmap mindmap, @NotNull User user) throws LockException, AccessDeniedSecurityException {
-        if (isLocked(mindmap) && !isLockedBy(mindmap, user)) {
-            throw new LockException("Lock can be only revoked by the locker.");
-        }
-
-        if (!mindmap.hasPermissions(user, CollaborationRole.EDITOR)) {
-            throw new AccessDeniedSecurityException(mindmap.getId(), user);
-        }
-
+        verifyHasLock(mindmap, user);
         this.unlock(mindmap.getId());
     }
 
@@ -111,23 +86,36 @@ class LockManagerImpl implements LockManager {
 
     @NotNull
     @Override
-    public LockInfo lock(@NotNull Mindmap mindmap, @NotNull User user, long session) throws LockException {
+    public LockInfo lock(@NotNull Mindmap mindmap, @NotNull User user) throws LockException {
         if (isLocked(mindmap) && !isLockedBy(mindmap, user)) {
             throw LockException.createLockLost(mindmap, user, this);
         }
 
+        // Do I need to create a new lock ?
         LockInfo result = lockInfoByMapId.get(mindmap.getId());
-        if (result != null) {
-            // Update timeout only...
-            logger.debug("Update timestamp:" + mindmap.getId());
-            updateExpirationTimeout(mindmap, user);
-            // result.setSession(session);
-        } else {
-            logger.debug("Lock map id:" + mindmap.getId());
-            result = new LockInfo(user, mindmap, session);
+        if (result == null) {
+            logger.debug("Creating new lock for map id:" + mindmap.getId());
+            result = new LockInfo(user, mindmap);
             lockInfoByMapId.put(mindmap.getId(), result);
         }
+
+        // Update timestamp ...
+        logger.debug("Updating timeout:" + result);
+        result.updateTimeout();
+
         return result;
+    }
+
+    private void verifyHasLock(@NotNull Mindmap mindmap, @NotNull User user) throws LockException, AccessDeniedSecurityException {
+        // Only editor can have lock ...
+        if (!mindmap.hasPermissions(user, CollaborationRole.EDITOR)) {
+            throw new AccessDeniedSecurityException(mindmap.getId(), user);
+        }
+
+        // Is the lock assigned to the user ...
+        if (isLocked(mindmap) && !isLockedBy(mindmap, user)) {
+            throw LockException.createLockLost(mindmap, user, this);
+        }
     }
 
     public LockManagerImpl() {
@@ -149,46 +137,4 @@ class LockManagerImpl implements LockManager {
             }
         }, ONE_MINUTE_MILLISECONDS, ONE_MINUTE_MILLISECONDS);
     }
-
-    public long verifyAndUpdateLock(@NotNull Mindmap mindmap, @NotNull User user, @Nullable long session, @NotNull long timestamp) throws LockException, SessionExpiredException {
-        synchronized (this) {
-            // Could the map be updated ?
-            verifyLock(mindmap, user, session, timestamp);
-
-            // Update timestamp for lock ...
-            final LockInfo lockInfo = this.updateExpirationTimeout(mindmap, user);
-            return lockInfo.getTimestamp();
-        }
-    }
-
-    private void verifyLock(@NotNull Mindmap mindmap, @NotNull User user, long session, long timestamp) throws LockException, SessionExpiredException {
-
-        // The lock was lost, reclaim as the ownership of it.
-        final boolean lockLost = this.isLocked(mindmap);
-        if (!lockLost) {
-            this.lock(mindmap, user, session);
-        }
-
-        final LockInfo lockInfo = this.getLockInfo(mindmap);
-        if (lockInfo.getUser().identityEquality(user)) {
-            long savedTimestamp = mindmap.getLastModificationTime().getTimeInMillis();
-            final boolean outdated = savedTimestamp > timestamp;
-
-            if (lockInfo.getSession() == session) {
-                // Timestamp might not be returned to the client. This try to cover this case, ignoring the client timestamp check.
-                final User lastEditor = mindmap.getLastEditor();
-                boolean editedBySameUser = lastEditor == null || user.identityEquality(lastEditor);
-                if (outdated && !editedBySameUser) {
-                    throw new SessionExpiredException("Map has been updated by " + (lastEditor.getEmail()) + ",Timestamp:" + timestamp + "," + savedTimestamp + ", User:" + lastEditor.getId() + ":" + user.getId() + ",Mail:'" + lastEditor.getEmail() + "':'" + user.getEmail(), lastEditor);
-                }
-            } else if (outdated) {
-                logger.warn("Sessions:" + session + ":" + lockInfo.getSession() + ",Timestamp: " + timestamp + ": " + savedTimestamp);
-                // @Todo: Temporally disabled to unblock save action. More research needed.
-//                throw new MultipleSessionsOpenException("Sessions:" + session + ":" + lockInfo.getSession() + ",Timestamp: " + timestamp + ": " + savedTimestamp);
-            }
-        } else {
-            throw new SessionExpiredException("Different Users.", lockInfo.getUser());
-        }
-    }
-
 }

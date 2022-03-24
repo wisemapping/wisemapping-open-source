@@ -222,12 +222,8 @@ public class RestMindmapITCase {
         final HttpHeaders lockHeaders = createHeaders(mediaType);
         lockHeaders.setContentType(MediaType.TEXT_PLAIN);
 
-        HttpEntity<String> lockEntity = new HttpEntity<>("true", lockHeaders);
-        final ResponseEntity<RestLockInfo> lockResponse = template.exchange(HOST_PORT + resourceUri + "/locks/{lockid}", HttpMethod.PUT, lockEntity, RestLockInfo.class, SESSION_ID);
-        final RestLockInfo lockInfo = lockResponse.getBody();
-
         // Update map ...
-        final String resourceUrl = HOST_PORT + resourceUri.toString() + "/document?session=" + lockInfo.getSession() + "&timestamp=" + lockInfo.getTimestamp();
+        final String resourceUrl = HOST_PORT + resourceUri.toString() + "/document";
         requestHeaders.setContentType(MediaType.APPLICATION_XML);
         final HttpEntity<RestMindmap> updateEntity = new HttpEntity<>(mapToUpdate, requestHeaders);
         template.put(resourceUrl, updateEntity);
@@ -237,6 +233,10 @@ public class RestMindmapITCase {
         final ResponseEntity<RestMindmap> response = template.exchange(HOST_PORT + resourceUri, HttpMethod.GET, findMapEntity, RestMindmap.class);
         assertEquals(response.getBody().getXml(), mapToUpdate.getXml());
         assertEquals(response.getBody().getProperties(), mapToUpdate.getProperties());
+
+        // Unlock ...
+        HttpEntity<String> lockEntity = new HttpEntity<>("false", lockHeaders);
+        template.exchange(HOST_PORT + resourceUri + "/locks/{lockid}", HttpMethod.PUT, lockEntity, RestLockInfo.class, SESSION_ID);
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")

@@ -40,8 +40,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RestLockInfo {
 
-    private long session;
-    private long timestamp;
     private String email;
 
     // This is required only for compliance with the JAXB serializer.
@@ -50,22 +48,9 @@ public class RestLockInfo {
     }
 
     public RestLockInfo(@Nullable LockInfo lockInfo, @NotNull User user) {
-        this.session = lockInfo.getSession();
-        this.timestamp = lockInfo.getTimestamp();
         this.email = user.getEmail();
     }
 
-    public long getTimestamp() {
-        return this.timestamp;
-    }
-
-    public long getSession() {
-        return this.session;
-    }
-
-    public void setSession(long session) {
-        this.session = session;
-    }
 
     public String getEmail() {
         return email;
@@ -74,8 +59,5 @@ public class RestLockInfo {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public void setTimestamp(long value) {
-        this.timestamp = value;
-    }
 }
+
