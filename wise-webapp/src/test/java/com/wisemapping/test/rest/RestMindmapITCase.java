@@ -23,7 +23,6 @@ import static org.testng.Assert.*;
 @Test
 public class RestMindmapITCase {
 
-    private static final int SESSION_ID = 100;
     private String userEmail = "admin@wisemapping.com";
     private static final String ICON = "glyphicon glyphicon-tag";
 
@@ -236,7 +235,7 @@ public class RestMindmapITCase {
 
         // Unlock ...
         HttpEntity<String> lockEntity = new HttpEntity<>("false", lockHeaders);
-        template.exchange(HOST_PORT + resourceUri + "/locks/{lockid}", HttpMethod.PUT, lockEntity, RestLockInfo.class, SESSION_ID);
+        template.exchange(HOST_PORT + resourceUri + "/lock", HttpMethod.PUT, lockEntity, RestLockInfo.class);
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
