@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Controller
@@ -289,25 +290,26 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/collabs/", consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void addCollab(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws CollaborationException, MapCouldNotFoundException, AccessDeniedSecurityException {
+    public void addCollab(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws CollaborationException, MapCouldNotFoundException, AccessDeniedSecurityException, InvalidEmailException {
         final Mindmap mindMap = findMindmapById(id);
 
         // Only owner can change collaborators...
         final User user = Utils.getUser();
         if (!mindMap.hasPermissions(user, CollaborationRole.OWNER)) {
-            throw new IllegalArgumentException("No enough permissions");
+            throw new AccessDeniedSecurityException("User must be owner to share mindmap");
         }
 
         // Is valid email address ?
         final EmailValidator emailValidator = EmailValidator.getInstance();
-        restCollabs
+        final Set<String> invalidEmails = restCollabs
                 .getCollaborations()
-                .forEach(collab -> {
-                    // Is a valid email address ?
-                    if (!emailValidator.isValid(collab.getEmail())) {
-                        throw new IllegalArgumentException(collab.getEmail() + " is not valid email address");
-                    }
-                });
+                .stream()
+                .map(RestCollaboration::getEmail)
+                .filter(e -> !emailValidator.isValid(e)).collect(Collectors.toSet());
+
+        if (!invalidEmails.isEmpty()) {
+            throw new InvalidEmailException(String.join(", ", invalidEmails));
+        }
 
         // Has any role changed ?. Just removed it.
         final Map<String, Collaboration> mapsByEmail = mindMap
