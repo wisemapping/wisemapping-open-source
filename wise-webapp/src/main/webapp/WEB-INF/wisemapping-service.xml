@@ -95,7 +95,7 @@
     <bean id="notificationService" class="com.wisemapping.mail.NotificationService">
         <property name="baseUrl" value="${site.baseurl}"/>
         <property name="mailer" ref="mailer"/>
-        <property name="velocityEngineWrapper" ref="velocityEngineWrapper"/>
+        <property name="messageSource" ref="messageSource"/>
     </bean>
 
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">

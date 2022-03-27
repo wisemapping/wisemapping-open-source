@@ -23,36 +23,34 @@ import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestLogItem;
-import com.wisemapping.util.VelocityEngineUtils;
-import com.wisemapping.util.VelocityEngineWrapper;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.ResourceBundleMessageSource;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 final public class NotificationService {
     final private static Logger logger = Logger.getLogger(Mailer.class);
     final private static String DEFAULT_WISE_URL = "http://localhost:8080/wisemapping";
-    private VelocityEngineWrapper velocityEngineWrapper;
+
+    private ResourceBundleMessageSource messageSource;
 
     @Autowired
     private Mailer mailer;
 
     private String baseUrl;
-
-    public NotificationService() {
-        NotifierFilter notificationFilter = new NotifierFilter();
-    }
 
     public void newCollaboration(@NotNull Collaboration collaboration, @NotNull Mindmap mindmap, @NotNull User user, @Nullable String message) {
 
@@ -106,10 +104,11 @@ final public class NotificationService {
     }
 
     public void newAccountCreated(@NotNull User user) {
-        final String mailSubject = "Welcome to WiseMapping !";
-        final String messageTitle = "Your account has been created successfully";
-        final String messageBody =
-                "<p> Thank you for your interest in WiseMapping.  Click <a href='https://app.wisemapping.com/c/login'>here</a> to start creating and sharing new mind maps. If have any feedback or idea, send us an email to <a href=\"mailto:feedback@wisemapping.com\">feedback@wisemapping.com</a> .We'd love to hear from  you.</p>";
+        final Locale locale = LocaleContextHolder.getLocale();
+
+        final String mailSubject = messageSource.getMessage("REGISTRATION.EMAIL_SUBJECT", null, locale);
+        final String messageTitle = messageSource.getMessage("REGISTRATION.EMAIL_TITLE", null, locale);
+        final String messageBody = messageSource.getMessage("REGISTRATION.EMAIL_BODY", null, locale);
         sendTemplateMail(user, mailSubject, messageTitle, messageBody);
     }
 
@@ -158,10 +157,6 @@ final public class NotificationService {
 //        } catch (Exception e) {
 //            handleException(e);
 //        }
-    }
-
-    public void setVelocityEngineWrapper(VelocityEngineWrapper engine) {
-        this.velocityEngineWrapper = engine;
     }
 
     public void reportJavascriptException(@Nullable Mindmap mindmap, @Nullable User user, @NotNull RestLogItem errorItem, @NotNull HttpServletRequest request) {
@@ -236,6 +231,11 @@ final public class NotificationService {
     public void setBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
     }
+
+    public void setMessageSource(ResourceBundleMessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+
 }
 
 
