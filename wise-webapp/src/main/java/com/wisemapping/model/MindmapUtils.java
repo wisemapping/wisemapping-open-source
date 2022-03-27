@@ -36,10 +36,16 @@ abstract public class MindmapUtils {
             throw InvalidMindmapException.invalidFormat(xmlDoc);
         }
 
-        // Validate that the number of nodes is not bigger 500 nodes.
         int numberOfTopics = xmlDoc.split("<topic").length;
+        // Any valid map must contain at least a central topic ...
+        if (numberOfTopics == 0) {
+            throw InvalidMindmapException.invalidFormat(xmlDoc);
+        }
+
+        // Validate that the number of nodes is not bigger 5000 nodes.
         if (numberOfTopics > MAX_SUPPORTED_NODES) {
             throw InvalidMindmapException.tooBigMindnap(numberOfTopics);
         }
+
     }
 }
