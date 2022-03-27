@@ -22,30 +22,25 @@
         <bean id="requestInterceptor" class="com.wisemapping.filter.RequestPropertiesInterceptor"/>
     </mvc:interceptors>
 
-    <bean id="exceptionHandlerResolver"
-          class="com.wisemapping.mail.NotifyingExceptionResolver">
+    <bean id="simpleMappingExceptionResolver"
+          class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
         <property name="defaultStatusCode" value="500"/>
         <property name="defaultErrorView" value="unexpectedError"/>
+        <property name="warnLogCategory" value="com.wisemapping.mvc.Exceptions"/>
+
         <property name="exceptionMappings">
             <props>
-                <!-- Security exceptions are wrapped in this exceptions -->
-                <prop key="java.lang.reflect.UndeclaredThrowableException">securityError</prop>
+                <!-- Security access exceptions must not handled as unexpected errors -->
+                <prop key="com.wisemapping.exceptions.MapNonPublicException">securityError</prop>
+                <prop key="com.wisemapping.exceptions.AccessDeniedSecurityException">securityError</prop>
             </props>
         </property>
 
         <property name="statusCodes">
             <props>
-                <!-- Handle missing found pages. Avoid generation of errors -->
-                <prop key="securityError">200</prop>
+                <prop key="securityError">403</prop>
             </props>
         </property>
-
-        <property name="exclude">
-            <set>
-                <value>java.lang.reflect.UndeclaredThrowableException</value>
-            </set>
-        </property>
-        <property name="notificationService" ref="notificationService"/>
     </bean>
 
     <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">

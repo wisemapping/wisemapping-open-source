@@ -217,6 +217,10 @@ public class RestMindmapITCase {
         mapToUpdate.setXml("<map>this is not valid</map>");
         mapToUpdate.setProperties("{zoom:x}");
 
+        // Create lock ...
+        final HttpHeaders lockHeaders = createHeaders(mediaType);
+        lockHeaders.setContentType(MediaType.TEXT_PLAIN);
+
         // Update map ...
         final String resourceUrl = HOST_PORT + resourceUri.toString() + "/document";
         requestHeaders.setContentType(MediaType.APPLICATION_XML);
@@ -228,6 +232,10 @@ public class RestMindmapITCase {
         final ResponseEntity<RestMindmap> response = template.exchange(HOST_PORT + resourceUri, HttpMethod.GET, findMapEntity, RestMindmap.class);
         assertEquals(response.getBody().getXml(), mapToUpdate.getXml());
         assertEquals(response.getBody().getProperties(), mapToUpdate.getProperties());
+
+        // Unlock ...
+        HttpEntity<String> lockEntity = new HttpEntity<>("false", lockHeaders);
+        template.exchange(HOST_PORT + resourceUri + "/lock", HttpMethod.PUT, lockEntity, RestLockInfo.class);
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")

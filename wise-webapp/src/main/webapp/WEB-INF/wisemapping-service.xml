@@ -82,9 +82,9 @@
         <property name="password" value="${mail.password}"/>
         <property name="javaMailProperties">
             <props>
-                <prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
-                <prop key="mail.smtp.starttls.enable">${mail.smtp.starttls.enable}</prop>
-                <prop key="mail.smtp.quitwait">${mail.smtp.quitwait}</prop>
+                <prop key="mail.smtp.auth">${mail.smtp.auth:false}</prop>
+                <prop key="mail.smtp.starttls.enable">${mail.smtp.starttls.enable:false}</prop>
+                <prop key="mail.smtp.quitwait">${mail.smtp.quitwait:true}</prop>
             </props>
         </property>
     </bean>
@@ -93,9 +93,9 @@
     </bean>
 
     <bean id="notificationService" class="com.wisemapping.mail.NotificationService">
-        <property name="baseUrl" value="${site.baseurl}"/>
+        <property name="baseUrl" value="${site.baseurl:http://localhost:8080/}"/>
         <property name="mailer" ref="mailer"/>
-        <property name="velocityEngineWrapper" ref="velocityEngineWrapper"/>
+        <property name="messageSource" ref="messageSource"/>
     </bean>
 
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">

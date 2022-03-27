@@ -1,5 +1,5 @@
 /*
- *    Copyright [2015] [wisemapping]
+ *    Copyright [2022] [wisemapping]
  *
  *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
  *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -47,7 +47,6 @@ import java.util.Locale;
 @Controller
 public class MindmapController {
 
-    public static final String LOCK_SESSION_ATTRIBUTE = "lockSession";
     @Qualifier("mindmapService")
     @Autowired
     private MindmapService mindmapService;
@@ -76,19 +75,16 @@ public class MindmapController {
     private String showEditorPage(int id, @NotNull final Model model, boolean requiresLock) throws WiseMappingException {
         final MindMapBean mindmapBean = findMindmapBean(id);
         final Mindmap mindmap = mindmapBean.getDelegated();
-        final User collaborator = Utils.getUser();
+        final User user = Utils.getUser();
         final Locale locale = LocaleContextHolder.getLocale();
 
         // Is the mindmap locked ?.
         boolean isLocked = false;
-        boolean readOnlyMode = !requiresLock || !mindmap.hasPermissions(collaborator, CollaborationRole.EDITOR);
+        boolean readOnlyMode = !requiresLock || !mindmap.hasPermissions(user, CollaborationRole.EDITOR);
         if (!readOnlyMode) {
             final LockManager lockManager = this.mindmapService.getLockManager();
-            if (lockManager.isLocked(mindmap) && !lockManager.isLockedBy(mindmap, collaborator)) {
+            if (lockManager.isLocked(mindmap) && !lockManager.isLockedBy(mindmap, user)) {
                 isLocked = true;
-            } else {
-                model.addAttribute("lockTimestamp", mindmap.getLastModificationTime().getTimeInMillis());
-                model.addAttribute(LOCK_SESSION_ATTRIBUTE, lockManager.generateSession());
             }
             model.addAttribute("lockInfo", lockManager.getLockInfo(mindmap));
         }
@@ -97,8 +93,7 @@ public class MindmapController {
 
         // Configure default locale for the editor ...
         model.addAttribute("locale", locale.toString().toLowerCase());
-        model.addAttribute("principal", collaborator);
-        model.addAttribute("memoryPersistence", false);
+        model.addAttribute("principal", user);
         model.addAttribute("mindmapLocked", isLocked);
 
         return "mindmapEditor";
@@ -107,23 +102,17 @@ public class MindmapController {
     @RequestMapping(value = "maps/{id}/view", method = RequestMethod.GET)
     public String showMindmapViewerPage(@PathVariable int id, @NotNull Model model) throws WiseMappingException {
         final String result = showPrintPage(id, model);
-        model.addAttribute("readOnlyMode", true);
         return result;
     }
 
     @RequestMapping(value = "maps/{id}/try", method = RequestMethod.GET)
     public String showMindmapTryPage(@PathVariable int id, @NotNull Model model) throws WiseMappingException {
-        final String result = showEditorPage(id, model, false);
-        model.addAttribute("memoryPersistence", true);
-        model.addAttribute("readOnlyMode", false);
-        return result;
+        return  showEditorPage(id, model, false);
     }
 
     @RequestMapping(value = "maps/{id}/{hid}/view", method = RequestMethod.GET)
     public String showMindmapViewerRevPage(@PathVariable int id, @PathVariable int hid, @NotNull Model model) throws WiseMappingException {
-
         final String result = showPrintPage(id, model);
-        model.addAttribute("readOnlyMode", true);
         model.addAttribute("hid", String.valueOf(hid));
         return result;
     }
@@ -176,7 +165,7 @@ public class MindmapController {
     private MindMapBean findMindmapBean(int mapId) throws MapCouldNotFoundException, AccessDeniedSecurityException {
         final User user = Utils.getUser();
         if (!mindmapService.hasPermissions(user, mapId, CollaborationRole.VIEWER)) {
-            throw new AccessDeniedSecurityException("No enough permissions to open map with id" + mapId);
+            throw new AccessDeniedSecurityException(mapId, user);
         }
 
         final Mindmap mindmap = findMindmap(mapId);

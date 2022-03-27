@@ -15,7 +15,6 @@
     <script type="text/javascript">
           var mapId = '${mindmap.id}';
           var historyId = '${hid}';
-          var memoryPersistence = true;
           var readOnly = true;
           var userOptions = ${mindmap.properties};
           var locale = '${locale}';

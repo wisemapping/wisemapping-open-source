@@ -1,5 +1,5 @@
 /*
-*    Copyright [2015] [wisemapping]
+*    Copyright [2022] [wisemapping]
 *
 *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
 *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -124,15 +124,4 @@ public class AccountController extends BaseController {
         }
         userService.removeUser(user);
     }
-
-
-    @RequestMapping(method = RequestMethod.POST, value = "/logger/editor", consumes = {"application/xml", "application/json"}, produces = {"application/json", "text/html", "application/xml"})
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void logError(@RequestBody RestLogItem item, @NotNull HttpServletRequest request) {
-        final Mindmap mindmap = mindmapService.findMindmapById(item.getMapId());
-        final User user = Utils.getUser();
-
-        notificationService.reportJavascriptException(mindmap, user, item, request);
-    }
-
 }

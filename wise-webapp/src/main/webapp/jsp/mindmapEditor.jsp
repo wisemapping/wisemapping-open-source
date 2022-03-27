@@ -33,8 +33,6 @@
     </script>
     <script type="text/javascript">
         var mapId = '${mindmap.id}';
-        var lockTimestamp = '${lockTimestamp}';
-        var lockSession = '${lockSession}';
         var mindmapLocked = ${mindmapLocked};
         var mindmapLockedMsg = '<spring:message code="MINDMAP_LOCKED" arguments="${lockInfo.user.fullName},${lockInfo.user.email}"/>';
         var userOptions = ${mindmap.properties};

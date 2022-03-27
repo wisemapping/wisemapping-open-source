@@ -10,13 +10,12 @@
                     <a href="${baseUrl}">
                         <img style="border: 0;margin-top: 10px;"
                              src="${baseUrl}/images/logo-icon.png"
-                             alt="WiseMapping Log"/>
+                             alt="WiseMapping Logo"/>
 
                     </a>
                 </td>
-                <td valign="bottom" height="32px" style="padding: 0;font-size: 16px;">I've shared <a
-                        href='${mapEditUrl}'>
-                    ${mindmap.title}</a> mindmap with you.
+                <td valign="bottom" height="32px" style="padding: 0;font-size: 16px;">
+                    I've shared <a href='${mapEditUrl}'>${mindmap.title}</a> mindmap with you.
                 </td>
             </tr>
             </tbody>

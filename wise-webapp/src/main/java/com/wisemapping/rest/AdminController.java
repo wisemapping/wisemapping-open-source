@@ -1,5 +1,5 @@
 /*
-*    Copyright [2015] [wisemapping]
+*    Copyright [2022] [wisemapping]
 *
 *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
 *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -137,18 +137,5 @@ public class AdminController extends BaseController {
         }
 
         userService.removeUser(user);
-    }
-
-    private boolean isWelcomeMap(@NotNull Mindmap mindmap) throws UnsupportedEncodingException {
-        // Is welcome map ?
-        final String xmlStr = mindmap.getXmlStr();
-        boolean oldWelcomeMap = xmlStr.contains("Welcome to WiseMapping") && xmlStr.contains("My Wisemaps");
-        return oldWelcomeMap;
-    }
-
-    public boolean isSimpleMap(@NotNull Mindmap mindmap) throws UnsupportedEncodingException {
-        String xmlStr = mindmap.getXmlStr();
-        String[] topics = xmlStr.split(Pattern.quote("<topic"));
-        return topics.length <= 3;
     }
 }

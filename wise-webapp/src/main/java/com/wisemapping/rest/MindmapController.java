@@ -1,5 +1,5 @@
 /*
- *    Copyright [2015] [wisemapping]
+ *    Copyright [2022] [wisemapping]
  *
  *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
  *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -18,10 +18,7 @@
 
 package com.wisemapping.rest;
 
-import com.wisemapping.exceptions.LabelCouldNotFoundException;
-import com.wisemapping.exceptions.MapCouldNotFoundException;
-import com.wisemapping.exceptions.SessionExpiredException;
-import com.wisemapping.exceptions.WiseMappingException;
+import com.wisemapping.exceptions.*;
 import com.wisemapping.model.*;
 import com.wisemapping.rest.model.*;
 import com.wisemapping.security.Utils;
@@ -33,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
@@ -43,6 +41,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Controller
@@ -111,8 +110,8 @@ public class MindmapController extends BaseController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/document", consumes = {"application/xml", "application/json"}, produces = {"application/json", "application/xml"})
-    @ResponseBody
-    public Long updateDocument(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor, @RequestParam(required = false) Long timestamp, @RequestParam(required = false) Long session) throws WiseMappingException, IOException {
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void updateDocument(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor) throws WiseMappingException, IOException {
 
         final Mindmap mindmap = findMindmapById(id);
         final User user = Utils.getUser();
@@ -123,10 +122,9 @@ public class MindmapController extends BaseController {
             throw new IllegalArgumentException("Map properties can not be null");
         }
 
-        // Could the map be updated ?
-        if (session != null) {
-            verifyLock(mindmap, user, session, timestamp);
-        }
+        // Have permissions ?
+        final LockManager lockManager = mindmapService.getLockManager();
+        lockManager.lock(mindmap, user);
 
         // Update collaboration properties ...
         final CollaborationProperties collaborationProperties = mindmap.findCollaborationProperties(user);
@@ -138,15 +136,6 @@ public class MindmapController extends BaseController {
 
         // Update map ...
         saveMindmapDocument(minor, mindmap, user);
-
-        // Update edition timeout ...
-        final LockManager lockManager = mindmapService.getLockManager();
-        long result = -1;
-        if (session != null) {
-            final LockInfo lockInfo = lockManager.updateExpirationTimeout(mindmap, user);
-            result = lockInfo.getTimestamp();
-        }
-        return result;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = {"/maps/{id}/document/xml", "/maps/{id}/document/xml-pub"}, consumes = {"text/plain"}, produces = {"application/xml; charset=UTF-8"})
@@ -176,36 +165,6 @@ public class MindmapController extends BaseController {
         return mindmapHistory.getUnzipXml();
     }
 
-    private void verifyLock(@NotNull Mindmap mindmap, @NotNull User user, long session, long timestamp) throws WiseMappingException {
-
-        // The lock was lost, reclaim as the ownership of it.
-        final LockManager lockManager = mindmapService.getLockManager();
-        final boolean lockLost = lockManager.isLocked(mindmap);
-        if (!lockLost) {
-            lockManager.lock(mindmap, user, session);
-        }
-
-        final LockInfo lockInfo = lockManager.getLockInfo(mindmap);
-        if (lockInfo.getUser().identityEquality(user)) {
-            long savedTimestamp = mindmap.getLastModificationTime().getTimeInMillis();
-            final boolean outdated = savedTimestamp > timestamp;
-
-            if (lockInfo.getSession() == session) {
-                // Timestamp might not be returned to the client. This try to cover this case, ignoring the client timestamp check.
-                final User lastEditor = mindmap.getLastEditor();
-                boolean editedBySameUser = lastEditor == null || user.identityEquality(lastEditor);
-                if (outdated && !editedBySameUser) {
-                    throw new SessionExpiredException("Map has been updated by " + (lastEditor.getEmail()) + ",Timestamp:" + timestamp + "," + savedTimestamp + ", User:" + lastEditor.getId() + ":" + user.getId() + ",Mail:'" + lastEditor.getEmail() + "':'" + user.getEmail(), lastEditor);
-                }
-            } else if (outdated) {
-                logger.warn("Sessions:" + session + ":" + lockInfo.getSession() + ",Timestamp: " + timestamp + ": " + savedTimestamp);
-                // @Todo: Temporally disabled to unblock save action. More research needed.
-//                throw new MultipleSessionsOpenException("Sessions:" + session + ":" + lockInfo.getSession() + ",Timestamp: " + timestamp + ": " + savedTimestamp);
-            }
-        } else {
-            throw new SessionExpiredException("Different Users.", lockInfo.getUser());
-        }
-    }
 
     /**
      * The intention of this method is the update of several properties at once ...
@@ -249,8 +208,15 @@ public class MindmapController extends BaseController {
     }
 
     @NotNull
-    private Mindmap findMindmapById(int id) throws MapCouldNotFoundException {
-        Mindmap result = mindmapService.findMindmapById(id);
+    private Mindmap findMindmapById(int id) throws MapCouldNotFoundException, AccessDeniedSecurityException {
+        // Has enough permissions ?
+        final User user = Utils.getUser();
+        if (!mindmapService.hasPermissions(user, id, CollaborationRole.VIEWER)) {
+            throw new AccessDeniedSecurityException(id, user);
+        }
+
+        // Does the map exists ?
+        final Mindmap result = mindmapService.findMindmapById(id);
         if (result == null) {
             throw new MapCouldNotFoundException("Map could not be found. Id:" + id);
         }
@@ -277,7 +243,7 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/maps/{id}/collabs/", consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateCollabs(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws CollaborationException, MapCouldNotFoundException {
+    public void updateCollabs(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws CollaborationException, MapCouldNotFoundException, AccessDeniedSecurityException, InvalidEmailException {
         final Mindmap mindMap = findMindmapById(id);
 
         // Only owner can change collaborators...
@@ -293,7 +259,7 @@ public class MindmapController extends BaseController {
 
             // Is a valid email address ?
             if (!EmailValidator.getInstance().isValid(email)) {
-                throw new IllegalArgumentException(email + " is not valid email address");
+                throw new InvalidEmailException(email);
             }
 
             final Collaboration collaboration = mindMap.findCollaboration(email);
@@ -303,7 +269,7 @@ public class MindmapController extends BaseController {
                 throw new IllegalArgumentException(roleStr + " is not a valid role");
             }
 
-            // Remove from the list of pendings to remove ...
+            // Remove from the list of pending to remove ...
             if (collaboration != null) {
                 collabsToRemove.remove(collaboration);
             }
@@ -324,25 +290,26 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/collabs/", consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void addCollab(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws CollaborationException, MapCouldNotFoundException {
+    public void addCollab(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws CollaborationException, MapCouldNotFoundException, AccessDeniedSecurityException, InvalidEmailException {
         final Mindmap mindMap = findMindmapById(id);
 
         // Only owner can change collaborators...
         final User user = Utils.getUser();
         if (!mindMap.hasPermissions(user, CollaborationRole.OWNER)) {
-            throw new IllegalArgumentException("No enough permissions");
+            throw new AccessDeniedSecurityException("User must be owner to share mindmap");
         }
 
         // Is valid email address ?
         final EmailValidator emailValidator = EmailValidator.getInstance();
-        restCollabs
+        final Set<String> invalidEmails = restCollabs
                 .getCollaborations()
-                .forEach(collab -> {
-                    // Is a valid email address ?
-                    if (!emailValidator.isValid(collab.getEmail())) {
-                        throw new IllegalArgumentException(collab.getEmail() + " is not valid email address");
-                    }
-                });
+                .stream()
+                .map(RestCollaboration::getEmail)
+                .filter(e -> !emailValidator.isValid(e)).collect(Collectors.toSet());
+
+        if (!invalidEmails.isEmpty()) {
+            throw new InvalidEmailException(String.join(", ", invalidEmails));
+        }
 
         // Has any role changed ?. Just removed it.
         final Map<String, Collaboration> mapsByEmail = mindMap
@@ -385,7 +352,7 @@ public class MindmapController extends BaseController {
 
 
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}/collabs", produces = {"application/json", "application/xml"})
-    public RestCollaborationList retrieveList(@PathVariable int id) throws MapCouldNotFoundException {
+    public RestCollaborationList retrieveList(@PathVariable int id) throws MapCouldNotFoundException, AccessDeniedSecurityException {
         final Mindmap mindMap = findMindmapById(id);
 
         final Set<Collaboration> collaborations = mindMap.getCollaborations();
@@ -403,14 +370,9 @@ public class MindmapController extends BaseController {
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/description", consumes = {"text/plain"}, produces = {"application/json", "application/xml"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateDescription(@RequestBody String description, @PathVariable int id) throws WiseMappingException {
-
-        final Mindmap mindMap = findMindmapById(id);
-        final User user = Utils.getUser();
-
-        // Update map ...
         final Mindmap mindmap = findMindmapById(id);
         mindmap.setDescription(description);
-        mindmapService.updateMindmap(mindMap, false);
+        mindmapService.updateMindmap(mindmap, false);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/publish", consumes = {"text/plain"}, produces = {"application/json", "application/xml"})
@@ -446,7 +408,7 @@ public class MindmapController extends BaseController {
         // Is a valid email address ?
         final EmailValidator emailValidator = EmailValidator.getInstance();
         if (!emailValidator.isValid(email)) {
-            throw new IllegalArgumentException(email + " is not valid email address");
+            throw new InvalidEmailException(email);
         }
 
         final Mindmap mindmap = findMindmapById(id);
@@ -485,21 +447,6 @@ public class MindmapController extends BaseController {
         }
         collaboration.get().getCollaborationProperties().setStarred(starred);
         mindmapService.updateCollaboration(user, collaboration.get());
-    }
-
-    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/lock", consumes = {"text/plain"}, produces = {"application/json", "application/xml"})
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateMapLock(@RequestBody String value, @PathVariable int id) throws IOException, WiseMappingException {
-        final User user = Utils.getUser();
-        final LockManager lockManager = mindmapService.getLockManager();
-        final Mindmap mindmap = findMindmapById(id);
-
-        final boolean lock = Boolean.parseBoolean(value);
-        if (!lock) {
-            lockManager.unlock(mindmap, user);
-        } else {
-            throw new UnsupportedOperationException("REST lock must be implemented.");
-        }
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/maps/batch")
@@ -617,5 +564,22 @@ public class MindmapController extends BaseController {
         final Mindmap mindmap = findMindmapById(id);
         mindmap.addLabel(label);
         mindmapService.updateMindmap(mindmap, false);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/lock", consumes = {"text/plain"}, produces = {"application/json", "application/xml"})
+    public ResponseEntity<RestLockInfo> lockMindmap(@RequestBody String value, @PathVariable int id) throws WiseMappingException {
+        final User user = Utils.getUser();
+        final LockManager lockManager = mindmapService.getLockManager();
+        final Mindmap mindmap = findMindmapById(id);
+
+        ResponseEntity<RestLockInfo> result = new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        if (Boolean.parseBoolean(value)) {
+            final LockInfo lockInfo = lockManager.lock(mindmap, user);
+            final RestLockInfo restLockInfo = new RestLockInfo(lockInfo, user);
+            result = new ResponseEntity<>(restLockInfo, HttpStatus.OK);
+        } else {
+            lockManager.unlock(mindmap, user);
+        }
+        return result;
     }
 }

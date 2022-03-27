@@ -1,5 +1,5 @@
 /*
- *    Copyright [2015] [wisemapping]
+ *    Copyright [2022] [wisemapping]
  *
  *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
  *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -23,38 +23,35 @@ import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestLogItem;
-import com.wisemapping.util.VelocityEngineUtils;
-import com.wisemapping.util.VelocityEngineWrapper;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.ResourceBundleMessageSource;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 final public class NotificationService {
     final private static Logger logger = Logger.getLogger(Mailer.class);
-    final private static String DEFAULT_WISE_URL = "http://localhost:8080/wisemapping";
-    private VelocityEngineWrapper velocityEngineWrapper;
+    private ResourceBundleMessageSource messageSource;
 
     @Autowired
     private Mailer mailer;
 
     private String baseUrl;
 
-    public NotificationService() {
-        NotifierFilter notificationFilter = new NotifierFilter();
-    }
-
     public void newCollaboration(@NotNull Collaboration collaboration, @NotNull Mindmap mindmap, @NotNull User user, @Nullable String message) {
+        final Locale locale = LocaleContextHolder.getLocale();
 
         try {
             // Sent collaboration email ...
@@ -64,12 +61,11 @@ final public class NotificationService {
             final String collabEmail = collaboration.getCollaborator().getEmail();
 
             // Build the subject ...
-            final String subject = "[WiseMapping] " + user.getFullName() + " has shared a mindmap with you";
+            final String subject = messageSource.getMessage("SHARE_MAP.EMAIL_SUBJECT", new Object[]{user.getFullName()}, locale);
 
             // Fill template properties ...
             final Map<String, Object> model = new HashMap<>();
             model.put("mindmap", mindmap);
-            model.put("message", "message");
             model.put("ownerName", user.getFirstname());
             model.put("mapEditUrl", getBaseUrl() + "/c/maps/" + mindmap.getId() + "/edit");
             model.put("baseUrl", getBaseUrl());
@@ -85,31 +81,32 @@ final public class NotificationService {
     }
 
     public void resetPassword(@NotNull User user, @NotNull String temporalPassword) {
-        final String mailSubject = "[WiseMapping] Your new password";
-        final String messageTitle = "Your new password has been generated";
-        final String messageBody =
-                "<p>Someone, most likely you, requested a new password for your WiseMapping account. </p>\n" +
-                        "<p><strong>Here is your new password: " + temporalPassword + "</strong></p>\n" +
-                        "<p>You can login clicking <a href=\"" + getBaseUrl() + "/c/login\">here</a>. We strongly encourage you to change the password as soon as possible.</p>";
+        final Locale locale = LocaleContextHolder.getLocale();
+
+        final String mailSubject = messageSource.getMessage("CHANGE_PASSWORD.EMAIL_SUBJECT", null, locale);
+        final String messageTitle = messageSource.getMessage("CHANGE_PASSWORD.EMAIL_TITLE", null, locale);
+        final String messageBody = messageSource.getMessage("CHANGE_PASSWORD.EMAIL_BODY", new Object[]{temporalPassword, getBaseUrl()}, locale);
 
         sendTemplateMail(user, mailSubject, messageTitle, messageBody);
     }
 
 
     public void passwordChanged(@NotNull User user) {
-        final String mailSubject = "[WiseMapping] Your password has been changed";
-        final String messageTitle = "Your password has been changed successfully";
-        final String messageBody =
-                "<p>This is only an notification that your password has been changed. No further action is required.</p>";
+        final Locale locale = LocaleContextHolder.getLocale();
+
+        final String mailSubject = messageSource.getMessage("PASSWORD_CHANGED.EMAIL_SUBJECT", null, locale);
+        final String messageTitle = messageSource.getMessage("PASSWORD_CHANGED.EMAIL_TITLE", null, locale);
+        final String messageBody = messageSource.getMessage("PASSWORD_CHANGED.EMAIL_BODY", null, locale);
 
         sendTemplateMail(user, mailSubject, messageTitle, messageBody);
     }
 
     public void newAccountCreated(@NotNull User user) {
-        final String mailSubject = "Welcome to WiseMapping !";
-        final String messageTitle = "Your account has been created successfully";
-        final String messageBody =
-                "<p> Thank you for your interest in WiseMapping.  Click <a href='https://app.wisemapping.com/c/login'>here</a> to start creating and sharing new mind maps. If have any feedback or idea, send us an email to <a href=\"mailto:feedback@wisemapping.com\">feedback@wisemapping.com</a> .We'd love to hear from  you.</p>";
+        final Locale locale = LocaleContextHolder.getLocale();
+
+        final String mailSubject = messageSource.getMessage("REGISTRATION.EMAIL_SUBJECT", null, locale);
+        final String messageTitle = messageSource.getMessage("REGISTRATION.EMAIL_TITLE", null, locale);
+        final String messageBody = messageSource.getMessage("REGISTRATION.EMAIL_BODY", null, locale);
         sendTemplateMail(user, mailSubject, messageTitle, messageBody);
     }
 
@@ -123,6 +120,7 @@ final public class NotificationService {
             model.put("baseUrl", getBaseUrl());
             model.put("supportEmail", mailer.getSupportEmail());
 
+            logger.debug("Email properties->" + model);
             mailer.sendEmail(mailer.getServerSenderEmail(), user.getEmail(), mailSubject, model, "baseLayout.vm");
         } catch (Exception e) {
             handleException(e);
@@ -158,10 +156,6 @@ final public class NotificationService {
 //        } catch (Exception e) {
 //            handleException(e);
 //        }
-    }
-
-    public void setVelocityEngineWrapper(VelocityEngineWrapper engine) {
-        this.velocityEngineWrapper = engine;
     }
 
     public void reportJavascriptException(@Nullable Mindmap mindmap, @Nullable User user, @NotNull RestLogItem errorItem, @NotNull HttpServletRequest request) {
@@ -210,32 +204,30 @@ final public class NotificationService {
     }
 
     public String stackTraceToString(@NotNull Throwable e) {
-        String retValue;
-        StringWriter sw = null;
-        PrintWriter pw = null;
-        try {
-            sw = new StringWriter();
-            pw = new PrintWriter(sw);
+        String retValue = "";
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        try (sw; pw) {
             e.printStackTrace(pw);
             retValue = sw.toString();
-        } finally {
-            IOUtils.closeQuietly(pw);
-            IOUtils.closeQuietly(sw);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
         }
         return retValue;
     }
 
     public String getBaseUrl() {
-        if ("${site.baseurl}".equals(baseUrl)) {
-            baseUrl = DEFAULT_WISE_URL;
-            System.err.println("Warning: site.baseurl has not being configured. Mail site references could be not properly sent. Using :" + baseUrl);
-        }
         return baseUrl;
     }
 
     public void setBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
     }
+
+    public void setMessageSource(ResourceBundleMessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+
 }
 
 

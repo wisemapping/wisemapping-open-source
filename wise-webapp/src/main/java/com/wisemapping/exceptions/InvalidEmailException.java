@@ -23,34 +23,17 @@ import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotNull;
 
-public class InvalidMindmapException
+public class InvalidEmailException
         extends ClientException {
-    private static final String EMPTY_MINDMAP = "MINDMAP_EMPTY_ERROR";
-    private static final String INVALID_MINDMAP_FORMAT = "INVALID_MINDMAP_FORMAT";
-    private static final String TOO_BIG_MINDMAP = "TOO_BIG_MINDMAP";
+    private static final String EMAIL_IS_INVALID = "INVALID_EMAIL_ADDRESS";
 
-    private final String bundleKey;
-
-    private InvalidMindmapException(@NotNull String bundleKey, @Nullable String xmlDoc) {
-        super("Invalid mindmap format:" + xmlDoc, Severity.SEVERE);
-        this.bundleKey = bundleKey;
-    }
-
-    static public InvalidMindmapException emptyMindmap() {
-        return new InvalidMindmapException(EMPTY_MINDMAP, "<empty string>");
-    }
-
-    static public InvalidMindmapException invalidFormat(@Nullable String xmlDoc) {
-        return new InvalidMindmapException(INVALID_MINDMAP_FORMAT, xmlDoc);
-    }
-
-    static public InvalidMindmapException tooBigMindnap(int numberOfTopics) {
-        return new InvalidMindmapException(TOO_BIG_MINDMAP, "<too-big " + numberOfTopics + ">");
+    public InvalidEmailException(@NotNull String emails) {
+        super("Invalid email exception:" + emails, Severity.WARNING);
     }
 
     @NotNull
     @Override
     protected String getMsgBundleKey() {
-        return bundleKey;
+        return EMAIL_IS_INVALID;
     }
 }

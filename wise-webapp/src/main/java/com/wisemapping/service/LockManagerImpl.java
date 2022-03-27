@@ -1,55 +1,39 @@
 /*
-*    Copyright [2015] [wisemapping]
-*
-*   Licensed under WiseMapping Public License, Version 1.0 (the "License").
-*   It is basically the Apache License, Version 2.0 (the "License") plus the
-*   "powered by wisemapping" text requirement on every single page;
-*   you may not use this file except in compliance with the License.
-*   You may obtain a copy of the license at
-*
-*       http://www.wisemapping.org/license
-*
-*   Unless required by applicable law or agreed to in writing, software
-*   distributed under the License is distributed on an "AS IS" BASIS,
-*   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*   See the License for the specific language governing permissions and
-*   limitations under the License.
-*/
+ *    Copyright [2022] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 
 package com.wisemapping.service;
 
 import com.wisemapping.exceptions.AccessDeniedSecurityException;
 import com.wisemapping.exceptions.LockException;
-import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-/*
-* Refresh page should not lost the lock.
-* En caso que no sea posible grabar por que se perdio el lock, usar mensaje de error para explicar el por que...
-* Mensaje  modal explicando que el mapa esta siendo editado, por eso no es posible edilarlo....
-* Internacionalizacion de los mensaje ...
-* Logout limpiar las sessiones ...
-*
-* Casos:
-*  - Usuario pierde el lock:
-*      - Y grabo con la misma sessions y el timestap ok.
-*      - Y grabo con la misma session y el timestap esta mal
- *     - Y grabo con distinta sessions
- *     -
-*  - Usuario pierde el lock, pero intenta grabar camio
-*/
-
 class LockManagerImpl implements LockManager {
-    public static final int ONE_MINUTE_MILLISECONDS = 1000 * 60;
-    final Map<Integer, LockInfo> lockInfoByMapId;
-    final static Timer expirationTimer = new Timer();
+    private static final int ONE_MINUTE_MILLISECONDS = 1000 * 60;
+    private final Map<Integer, LockInfo> lockInfoByMapId;
+    private final static Timer expirationTimer = new Timer();
     final private static Logger logger = Logger.getLogger(LockManagerImpl.class);
 
     @Override
@@ -60,23 +44,6 @@ class LockManagerImpl implements LockManager {
     @Override
     public LockInfo getLockInfo(@NotNull Mindmap mindmap) {
         return lockInfoByMapId.get(mindmap.getId());
-    }
-
-    @Override
-    public LockInfo updateExpirationTimeout(@NotNull Mindmap mindmap, @NotNull User user) {
-        if (!this.isLocked(mindmap)) {
-            throw new IllegalStateException("Lock lost for map. No update possible.");
-        }
-
-        final LockInfo result = this.getLockInfo(mindmap);
-        if (!result.getUser().identityEquality(user)) {
-            throw new IllegalStateException("Could not update map lock timeout if you are not the locking user. User:" + result.getUser() + ", " + user);
-        }
-
-        result.updateTimeout();
-        result.updateTimestamp(mindmap);
-        logger.debug("Timeout updated for:" + mindmap.getId());
-        return result;
     }
 
     @Override
@@ -92,14 +59,7 @@ class LockManagerImpl implements LockManager {
 
     @Override
     public void unlock(@NotNull Mindmap mindmap, @NotNull User user) throws LockException, AccessDeniedSecurityException {
-        if (isLocked(mindmap) && !isLockedBy(mindmap, user)) {
-            throw new LockException("Lock can be only revoked by the locker.");
-        }
-
-        if (!mindmap.hasPermissions(user, CollaborationRole.EDITOR)) {
-            throw new AccessDeniedSecurityException("Invalid lock, this should not happen");
-        }
-
+        verifyHasLock(mindmap, user);
         this.unlock(mindmap.getId());
     }
 
@@ -124,53 +84,57 @@ class LockManagerImpl implements LockManager {
         return System.nanoTime();
     }
 
-    @Override
     @NotNull
-    public LockInfo lock(@NotNull Mindmap mindmap, @NotNull User user, long session) throws WiseMappingException {
+    @Override
+    public LockInfo lock(@NotNull Mindmap mindmap, @NotNull User user) throws LockException {
         if (isLocked(mindmap) && !isLockedBy(mindmap, user)) {
-            throw new LockException("Invalid lock, this should not happen");
+            throw LockException.createLockLost(mindmap, user, this);
         }
 
-        if (!mindmap.hasPermissions(user, CollaborationRole.EDITOR)) {
-            throw new AccessDeniedSecurityException("Invalid lock, this should not happen");
-        }
-
+        // Do I need to create a new lock ?
         LockInfo result = lockInfoByMapId.get(mindmap.getId());
-        if (result != null) {
-            // Update timeout only...
-            logger.debug("Update timestamp:" + mindmap.getId());
-            updateExpirationTimeout(mindmap, user);
-            // result.setSession(session);
-        } else {
-            logger.debug("Lock map id:" + mindmap.getId());
-            result = new LockInfo(user, mindmap, session);
+        if (result == null) {
+            logger.debug("Creating new lock for map id:" + mindmap.getId());
+            result = new LockInfo(user, mindmap);
             lockInfoByMapId.put(mindmap.getId(), result);
         }
+
+        // Update timestamp ...
+        logger.debug("Updating timeout:" + result);
+        result.updateTimeout();
+
         return result;
     }
 
+    private void verifyHasLock(@NotNull Mindmap mindmap, @NotNull User user) throws LockException, AccessDeniedSecurityException {
+        // Only editor can have lock ...
+        if (!mindmap.hasPermissions(user, CollaborationRole.EDITOR)) {
+            throw new AccessDeniedSecurityException(mindmap.getId(), user);
+        }
+
+        // Is the lock assigned to the user ...
+        if (isLocked(mindmap) && !isLockedBy(mindmap, user)) {
+            throw LockException.createLockLost(mindmap, user, this);
+        }
+    }
+
     public LockManagerImpl() {
-        lockInfoByMapId = new ConcurrentHashMap<Integer, LockInfo>();
+        lockInfoByMapId = new ConcurrentHashMap<>();
         expirationTimer.schedule(new TimerTask() {
             @Override
             public void run() {
 
-                logger.debug("Lock expiration scheduler started. Current locks:" + lockInfoByMapId.keySet());
-
-                final List<Integer> toRemove = new ArrayList<Integer>();
-                final Set<Integer> mapIds = lockInfoByMapId.keySet();
-                for (Integer mapId : mapIds) {
-                    final LockInfo lockInfo = lockInfoByMapId.get(mapId);
-                    if (lockInfo.isExpired()) {
-                        toRemove.add(mapId);
-                    }
+                synchronized (this) {
+                    logger.debug("Lock expiration scheduler started. Current locks:" + lockInfoByMapId.keySet());
+                    // Search for expired sessions and remove them ....
+                    lockInfoByMapId.
+                            keySet().
+                            stream().
+                            filter(mapId -> lockInfoByMapId.get(mapId).isExpired()).
+                            forEach(mapId -> unlock(mapId));
                 }
 
-                for (Integer mapId : toRemove) {
-                    unlock(mapId);
-                }
             }
         }, ONE_MINUTE_MILLISECONDS, ONE_MINUTE_MILLISECONDS);
     }
-
 }

@@ -1,5 +1,5 @@
 /*
-*    Copyright [2015] [wisemapping]
+*    Copyright [2022] [wisemapping]
 *
 *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
 *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -48,7 +48,7 @@ public class RequestPropertiesInterceptor implements HandlerInterceptor {
     @Value("${site.homepage}")
     private String siteHomepage;
 
-    @Value("${site.baseurl}")
+    @Value("${site.baseurl:http://localhost:8080}")
     private String siteUrl;
 
     @Value("${security.type}")
