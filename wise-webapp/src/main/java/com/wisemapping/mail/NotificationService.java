@@ -51,6 +51,7 @@ final public class NotificationService {
     private String baseUrl;
 
     public void newCollaboration(@NotNull Collaboration collaboration, @NotNull Mindmap mindmap, @NotNull User user, @Nullable String message) {
+        final Locale locale = LocaleContextHolder.getLocale();
 
         try {
             // Sent collaboration email ...
@@ -60,12 +61,11 @@ final public class NotificationService {
             final String collabEmail = collaboration.getCollaborator().getEmail();
 
             // Build the subject ...
-            final String subject = "[WiseMapping] " + user.getFullName() + " has shared a mindmap with you";
+            final String subject = messageSource.getMessage("SHARE_MAP.EMAIL_SUBJECT", new Object[]{user.getFullName()}, locale);
 
             // Fill template properties ...
             final Map<String, Object> model = new HashMap<>();
             model.put("mindmap", mindmap);
-            model.put("message", "message");
             model.put("ownerName", user.getFirstname());
             model.put("mapEditUrl", getBaseUrl() + "/c/maps/" + mindmap.getId() + "/edit");
             model.put("baseUrl", getBaseUrl());
