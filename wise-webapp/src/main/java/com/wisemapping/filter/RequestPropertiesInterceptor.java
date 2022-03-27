@@ -48,7 +48,7 @@ public class RequestPropertiesInterceptor implements HandlerInterceptor {
     @Value("${site.homepage}")
     private String siteHomepage;
 
-    @Value("${site.baseurl}")
+    @Value("${site.baseurl:http://localhost:8080}")
     private String siteUrl;
 
     @Value("${security.type}")
