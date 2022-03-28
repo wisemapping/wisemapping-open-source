@@ -271,12 +271,6 @@
             <artifactId>fluent-hc</artifactId>
             <version>4.5.13</version>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>RELEASE</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
     <profiles>
         <profile>
