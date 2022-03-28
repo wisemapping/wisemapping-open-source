@@ -454,9 +454,15 @@ public class MindmapController extends BaseController {
     public void batchDelete(@RequestParam() String ids) throws IOException, WiseMappingException {
         final User user = Utils.getUser();
         final String[] mapsIds = ids.split(",");
-        for (final String mapId : mapsIds) {
-            final Mindmap mindmap = findMindmapById(Integer.parseInt(mapId));
-            mindmapService.removeMindmap(mindmap, user);
+        try {
+            for (final String mapId : mapsIds) {
+                final Mindmap mindmap = findMindmapById(Integer.parseInt(mapId));
+                mindmapService.removeMindmap(mindmap, user);
+            }
+        } catch (Exception e) {
+            final AccessDeniedSecurityException accessDenied = new AccessDeniedSecurityException("Map could not be deleted. Maps to be deleted:" + ids);
+            accessDenied.initCause(e);
+            throw accessDenied;
         }
     }
 
