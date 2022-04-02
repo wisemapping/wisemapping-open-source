@@ -13,8 +13,8 @@
     </parent>
 
     <properties>
-        <org.springframework.version>5.3.14</org.springframework.version>
-        <org.springframework.addons>5.3.5.RELEASE</org.springframework.addons>
+        <org.springframework.version>5.3.18</org.springframework.version>
+        <org.springframework.addons>5.6.2</org.springframework.addons>
         <hibernate.version>5.6.5.Final</hibernate.version>
         <hibernate-validator.version>6.0.21.Final</hibernate-validator.version>
         <spring-security-taglibs.version>5.6.1</spring-security-taglibs.version>
@@ -395,23 +395,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>native2ascii-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>native2ascii</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                    <includes>
-                        <include>messages*.properties</include>
-                    </includes>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
