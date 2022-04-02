@@ -68,7 +68,7 @@ public class AccountController extends BaseController {
         userService.changePassword(user);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/account", produces = {"application/json", "application/xml"})
+    @RequestMapping(method = RequestMethod.GET, value = "/account", produces = {"application/json"})
     public RestUser fetchAccount() {
         final User user = Utils.getUser(true);
         return new RestUser(user);

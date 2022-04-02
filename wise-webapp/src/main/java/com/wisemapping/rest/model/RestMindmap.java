@@ -35,8 +35,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.IOException;
 import java.util.Calendar;
 
-@XmlRootElement(name = "map")
-@XmlAccessorType(XmlAccessType.PROPERTY)
 @JsonAutoDetect(
         fieldVisibility = JsonAutoDetect.Visibility.NONE,
         setterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY,

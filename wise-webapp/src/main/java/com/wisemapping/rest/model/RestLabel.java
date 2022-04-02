@@ -7,15 +7,9 @@ import com.wisemapping.model.Label;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-@XmlRootElement(name = "label")
-@XmlAccessorType(XmlAccessType.PROPERTY)
 @JsonAutoDetect(
         fieldVisibility = NONE,
         setterVisibility = PUBLIC_ONLY,

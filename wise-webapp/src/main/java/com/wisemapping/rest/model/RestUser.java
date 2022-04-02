@@ -26,14 +26,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.wisemapping.model.User;
 import org.jetbrains.annotations.NotNull;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Calendar;
 
 
-@XmlRootElement(name = "user")
-@XmlAccessorType(XmlAccessType.PROPERTY)
 @JsonAutoDetect(
         fieldVisibility = JsonAutoDetect.Visibility.NONE,
         getterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY,

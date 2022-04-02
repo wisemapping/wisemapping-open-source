@@ -50,7 +50,7 @@ public class AdminController extends BaseController {
     @Autowired
     private MindmapService mindmapService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "admin/users/{id}", produces = {"application/json", "application/xml"})
+    @RequestMapping(method = RequestMethod.GET, value = "admin/users/{id}", produces = {"application/json"})
     @ResponseBody
     public RestUser getUserById(@PathVariable int id) throws IOException {
         final User userBy = userService.getUserBy(id);
@@ -60,7 +60,7 @@ public class AdminController extends BaseController {
         return new RestUser(userBy);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "admin/users/email/{email:.+}", produces = {"application/json", "application/xml"})
+    @RequestMapping(method = RequestMethod.GET, value = "admin/users/email/{email:.+}", produces = {"application/json"})
     @ResponseBody
     public RestUser getUserByEmail(@PathVariable String email) throws IOException {
         final User user = userService.getUserBy(email);
@@ -70,7 +70,7 @@ public class AdminController extends BaseController {
         return new RestUser(user);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "admin/users", consumes = {"application/xml", "application/json"}, produces = {"application/json", "application/xml"})
+    @RequestMapping(method = RequestMethod.POST, value = "admin/users", consumes = { "application/json"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createUser(@RequestBody RestUser user, HttpServletResponse response) throws WiseMappingException {
         if (user == null) {

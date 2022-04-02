@@ -201,10 +201,6 @@ public class RestMindmapITCase {
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
     public void updateMap(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
-        if (MediaType.APPLICATION_XML == mediaType) {
-            throw new SkipException("Some research need to check why it's falling.");
-        }
-
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate(userEmail);
 
@@ -223,7 +219,7 @@ public class RestMindmapITCase {
 
         // Update map ...
         final String resourceUrl = HOST_PORT + resourceUri.toString() + "/document";
-        requestHeaders.setContentType(MediaType.APPLICATION_XML);
+        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
         final HttpEntity<RestMindmap> updateEntity = new HttpEntity<>(mapToUpdate, requestHeaders);
         template.put(resourceUrl, updateEntity);
 
@@ -396,10 +392,6 @@ public class RestMindmapITCase {
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
     public void addLabelToMindmap(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
-        if (MediaType.APPLICATION_XML == mediaType) {
-            throw new SkipException("Some research need to check why it's falling.");
-        }
-
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate(userEmail);
 
