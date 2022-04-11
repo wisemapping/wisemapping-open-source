@@ -71,7 +71,7 @@ final public class NotificationService {
             model.put("baseUrl", getBaseUrl());
             model.put("senderMail", user.getEmail());
             model.put("message", message);
-            model.put("supportEmail", mailer.getSupportEmail());
+            model.put("doNotReplay", messageSource.getMessage("EMAIL.DO_NOT_REPLAY", new Object[]{mailer.getSupportEmail()}, locale));
 
             mailer.sendEmail(formMail, collabEmail, subject, model, "newCollaboration.vm");
         } catch (Exception e) {
