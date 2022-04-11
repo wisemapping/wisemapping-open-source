@@ -73,6 +73,11 @@ final public class NotificationService {
             model.put("message", message);
             model.put("doNotReplay", messageSource.getMessage("EMAIL.DO_NOT_REPLAY", new Object[]{mailer.getSupportEmail()}, locale));
 
+            // To resolve resources on templates ...
+            model.put("noArg", new Object[]{});
+            model.put("messages", messageSource);
+            model.put("locale", locale);
+
             mailer.sendEmail(formMail, collabEmail, subject, model, "newCollaboration.vm");
         } catch (Exception e) {
             handleException(e);
@@ -121,6 +126,11 @@ final public class NotificationService {
             model.put("baseUrl", getBaseUrl());
             model.put("supportEmail", mailer.getSupportEmail());
             model.put("doNotReplay", messageSource.getMessage("EMAIL.DO_NOT_REPLAY", new Object[]{mailer.getSupportEmail()}, locale));
+
+            // To resolve resources on templates ...
+            model.put("noArg", new Object[]{});
+            model.put("messages", messageSource);
+            model.put("locale", locale);
 
             logger.debug("Email properties->" + model);
             mailer.sendEmail(mailer.getServerSenderEmail(), user.getEmail(), mailSubject, model, "baseLayout.vm");

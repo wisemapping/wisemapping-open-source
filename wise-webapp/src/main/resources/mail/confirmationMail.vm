@@ -1,29 +1,29 @@
 <html>
 <body>
-<h3>Welcome to WiseMapping!</h3>
+<div>
+    <h3>Welcome to WiseMapping!</h3>
 
-<p>
-    To active your account and verify your e-mail address, please click on the following link.
-</p>
-<a href="${emailcheck}">${emailcheck}</a>
-</p>
-<p>
-    If you have received this mail by error, you do not need to take any action to cancel the account. The account will
-    not be activated, and you will not receive any further emails.
-</p>
+    <p>
+        To active your account and verify your e-mail address, please click on the following link.
+    </p>
+    <a href="${emailcheck}">${emailcheck}</a>
+    </p>
+    <p>
+        If you have received this mail by error, you do not need to take any action to cancel the account. The account will
+        not be activated, and you will not receive any further emails.
+    </p>
 
-<p>
-    If clicking the link above does not work, copy and paste the URL in a new browser window instead.
-</p>
+    <p>
+        If clicking the link above does not work, copy and paste the URL in a new browser window instead.
+    </p>
 
-<p>
-    For questions or concerns regarding your account, send us an email to support@wisemapping.com.
-</p>
+    <p>
+        For questions or concerns regarding your account, send us an email to support@wisemapping.com.
+    </p>
 
-<p>
-    Cheers, <br/>
-    The WiseMapping Team.
-    <a href="http://www.wisemapping.com">WiseMapping Site</a>
-</p>
+    <p style="color: #898989;">
+        <a href="http://www.wisemapping.com">The WiseMapping Team</a><br/>
+    </p>
+<div>
 </body>
-        </html>
+</html>
