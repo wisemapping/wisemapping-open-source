@@ -23,7 +23,10 @@
      <%@ include file="/jsp/googleAnalytics.jsf" %>
 </head>
 <body>
-<div id="mindplot"></div>
+
+<div id="mindplot" style={mindplotStyle} className="wise-editor"></div>
+<div id="mindplot-tooltips" className="wise-editor"></div>
+
 
 <a href="${requestScope['site.homepage']}" target="new">
 <div id="footerLogo"></div>
