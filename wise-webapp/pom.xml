@@ -490,7 +490,7 @@
                         <configuration>
                             <scanIntervalSeconds>0</scanIntervalSeconds>
                             <waitForChild>false</waitForChild>
-                            <jvmArgs>-Ddatabase.base.url=${project.build.directory}</jvmArgs>
+                            <jvmArgs>-Ddatabase.base.url=${project.build.directory} -Dfile.encoding=UTF-8</jvmArgs>
                         </configuration>
                     </execution>
                     <execution>
