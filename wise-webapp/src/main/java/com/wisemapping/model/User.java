@@ -18,6 +18,7 @@
 
 package com.wisemapping.model;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,6 +31,8 @@ import java.util.Set;
 @Entity
 @Table(name = "USER")
 @PrimaryKeyJoinColumn(name = "colaborator_id")
+//@Cacheable
+//@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class User
         extends Collaborator
         implements Serializable {

@@ -55,7 +55,7 @@ public class UserController extends BaseController {
     private static final Logger logger = Logger.getLogger(UserController.class);
     private static final String REAL_IP_ADDRESS_HEADER = "X-Real-IP";
 
-    @RequestMapping(method = RequestMethod.POST, value = "/users", produces = {"application/json", "application/xml"})
+    @RequestMapping(method = RequestMethod.POST, value = "/users", produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.CREATED)
     public void registerUser(@RequestBody RestUserRegistration registration, @NotNull HttpServletRequest request, @NotNull HttpServletResponse response) throws WiseMappingException, BindException {
         logger.debug("Register new user:" + registration.getEmail());
@@ -80,7 +80,7 @@ public class UserController extends BaseController {
         response.setHeader("Location", "/service/users/" + user.getId());
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/users/resetPassword", produces = {"application/json", "application/xml"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/users/resetPassword", produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.OK)
     public void resetPassword(@RequestParam String email) throws InvalidAuthSchemaException, EmailNotExistsException {
         try {

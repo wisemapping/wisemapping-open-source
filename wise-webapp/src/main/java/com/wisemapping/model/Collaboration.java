@@ -19,9 +19,6 @@
 package com.wisemapping.model;
 
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -33,7 +30,6 @@ public class Collaboration implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    ;
 
     @Column(name = "role_id", unique = true)
     private CollaborationRole role;

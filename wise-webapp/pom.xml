@@ -9,12 +9,12 @@
         <groupId>org.wisemapping</groupId>
         <artifactId>wisemapping</artifactId>
         <relativePath>../pom.xml</relativePath>
-        <version>5.0.10</version>
+        <version>5.0.11</version>
     </parent>
 
     <properties>
-        <org.springframework.version>5.3.14</org.springframework.version>
-        <org.springframework.addons>5.3.5.RELEASE</org.springframework.addons>
+        <org.springframework.version>5.3.18</org.springframework.version>
+        <org.springframework.addons>5.6.2</org.springframework.addons>
         <hibernate.version>5.6.5.Final</hibernate.version>
         <hibernate-validator.version>6.0.21.Final</hibernate-validator.version>
         <spring-security-taglibs.version>5.6.1</spring-security-taglibs.version>
@@ -189,9 +189,9 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
-            <version>1.4.3</version>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
@@ -244,6 +244,7 @@
             <version>2.13.1</version>
         </dependency>
         <dependency>
+            <!-- This is required in case of Tomcat, do not remove -->
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
@@ -269,12 +270,6 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>fluent-hc</artifactId>
             <version>4.5.13</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>RELEASE</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
     <profiles>
@@ -400,23 +395,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>native2ascii-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>native2ascii</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                    <includes>
-                        <include>messages*.properties</include>
-                    </includes>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

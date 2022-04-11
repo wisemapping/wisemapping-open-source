@@ -46,7 +46,7 @@ public class RestHelper {
 
     @DataProvider(name = "ContentType-Provider-Function")
     static Object[][] contentTypes() {
-        return new Object[][]{{MediaType.APPLICATION_XML}, {MediaType.APPLICATION_JSON}};
+        return new Object[][]{{MediaType.APPLICATION_JSON}};
     }
 
 }

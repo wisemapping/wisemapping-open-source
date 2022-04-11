@@ -33,8 +33,6 @@
     </div>
 </div>
 
-<p style="font-size: 13px;font-family: Arial, sans-serif">Important: Do not reply this email. If
-    you need further help or have any concerns regarding your account, contact us to <a href="mailto:${supportEmail}">here</a>.
-</p>
+<p style="font-size: 13px;font-family: Arial, sans-serif">${doNotReplay}</p>
 </body>
 </html>

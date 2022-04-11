@@ -26,7 +26,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 
-import javax.mail.internet.MimeMessage;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 public final class Mailer {
@@ -54,17 +54,14 @@ public final class Mailer {
     public void sendEmail(final String from, final String to, final String subject, final Map<String, Object> model,
                           @NotNull final String templateMail) {
         final MimeMessagePreparator preparator =
-                new MimeMessagePreparator() {
-                    public void prepare(MimeMessage mimeMessage)
-                            throws Exception {
-                        final MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
-                        message.setTo(to);
-                        message.setFrom(from);
-                        message.setSubject(subject);
+                mimeMessage -> {
+                    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, StandardCharsets.UTF_8.name());
+                    message.setTo(to);
+                    message.setFrom(from);
+                    message.setSubject(subject);
 
-                        final String messageBody = VelocityEngineUtils.mergeTemplateIntoString(velocityEngineWrapper.getVelocityEngine(), "/mail/" + templateMail, model);
-                        message.setText(messageBody, true);
-                    }
+                    final String messageBody = VelocityEngineUtils.mergeTemplateIntoString(velocityEngineWrapper.getVelocityEngine(), "/mail/" + templateMail, model);
+                    message.setText(messageBody, true);
                 };
 
         this.mailSender.send(preparator);

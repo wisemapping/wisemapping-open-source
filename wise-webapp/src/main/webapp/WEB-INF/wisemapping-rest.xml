@@ -22,25 +22,6 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-    <bean id="jaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
-        <property name="classesToBeBound">
-            <list>
-                <value>com.wisemapping.rest.model.RestMindmap</value>
-                <value>com.wisemapping.rest.model.RestMindmapInfo</value>
-                <value>com.wisemapping.rest.model.RestMindmapList</value>
-                <value>com.wisemapping.rest.model.RestUser</value>
-                <value>com.wisemapping.rest.model.RestErrors</value>
-                <value>com.wisemapping.rest.model.RestCollaboration</value>
-                <value>com.wisemapping.rest.model.RestCollaborationList</value>
-                <value>com.wisemapping.rest.model.RestLogItem</value>
-                <value>com.wisemapping.rest.model.RestLockInfo</value>
-                <value>com.wisemapping.rest.model.RestLabel</value>
-                <value>com.wisemapping.rest.model.RestLabelList</value>
-                <value>com.wisemapping.rest.model.RestUserRegistration</value>
-            </list>
-        </property>
-    </bean>
-
     <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
         <property name="favorParameter" value="true"/>
         <property name="parameterName" value="mediaType"/>
@@ -66,14 +47,12 @@
                 <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
                     <property name="extractValueFromSingleKeyModel" value="true"/>
                 </bean>
-                <bean class="org.springframework.web.servlet.view.xml.MarshallingView">
-                    <constructor-arg ref="jaxbMarshaller"/>
-                </bean>
             </list>
         </property>
     </bean>
 
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="defaultEncoding" value="UTF-8"/>
         <property name="basenames">
             <list>
                 <value>messages</value>
