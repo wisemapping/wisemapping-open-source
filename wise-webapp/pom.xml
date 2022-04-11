@@ -9,7 +9,7 @@
         <groupId>org.wisemapping</groupId>
         <artifactId>wisemapping</artifactId>
         <relativePath>../pom.xml</relativePath>
-        <version>5.0.11-SNAPSHOT</version>
+        <version>5.0.11</version>
     </parent>
 
     <properties>
@@ -490,7 +490,7 @@
                         <configuration>
                             <scanIntervalSeconds>0</scanIntervalSeconds>
                             <waitForChild>false</waitForChild>
-                            <jvmArgs>-Ddatabase.base.url=${project.build.directory} -Dfile.encoding=UTF-8</jvmArgs>
+                            <jvmArgs>-Ddatabase.base.url=${project.build.directory}</jvmArgs>
                         </configuration>
                     </execution>
                     <execution>
