@@ -45,6 +45,12 @@ public class AuthenticationProvider implements org.springframework.security.auth
         if (user == null || credentials == null || !encoder.matches(user.getPassword(), credentials)) {
             throw new BadCredentialsException("Username/Password does not match for " + auth.getPrincipal());
         }
+
+        // User has been disabled ...
+        if (!user.isActive()) {
+            throw new BadCredentialsException("User has been disabled for login " + auth.getPrincipal());
+        }
+
         userDetailsService.getUserService().auditLogin(user);
         return new UsernamePasswordAuthenticationToken(userDetails, credentials, userDetails.getAuthorities());
     }

@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -48,7 +49,6 @@ public class MindmapController extends BaseController {
     final Logger logger = Logger.getLogger(MindmapController.class);
 
     private static final String LATEST_HISTORY_REVISION = "latest";
-    private static final int MAX_ACCOUNTS_INACTIVE = 20;
 
     @Qualifier("mindmapService")
     @Autowired
@@ -61,6 +61,9 @@ public class MindmapController extends BaseController {
     @Qualifier("userService")
     @Autowired
     private UserService userService;
+
+    @Value("${accounts.maxInactive:20}")
+    private int maxAccountsInactive;
 
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/json"})
     @ResponseBody
@@ -614,7 +617,7 @@ public class MindmapController extends BaseController {
                 .collect(Collectors.toSet()));
 
         long inactiveAccounts = allEmails.stream().filter(e -> userService.getUserBy(e) == null).count();
-        if (inactiveAccounts > MAX_ACCOUNTS_INACTIVE) {
+        if (inactiveAccounts > maxAccountsInactive) {
             throw new TooManyInactiveAccountsExceptions(inactiveAccounts);
         }
     }
