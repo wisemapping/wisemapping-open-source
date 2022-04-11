@@ -33,9 +33,5 @@
     </div>
 </div>
 
-<p style="font-size: 13px;font-family: Arial, sans-serif">Important: Do not reply this email. If
-    you need further help or believe you have received this email in error, contact us to <a
-            href="mailto:${supportEmail}">here</a>.
-</p>
-</body>
+<p style="font-size: 13px;font-family: Arial, sans-serif">${doNotReplay}</p></body>
 </html>

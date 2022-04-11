@@ -111,6 +111,7 @@ final public class NotificationService {
     }
 
     private void sendTemplateMail(@NotNull User user, @NotNull String mailSubject, @NotNull String messageTitle, @NotNull String messageBody) {
+        final Locale locale = LocaleContextHolder.getLocale();
 
         try {
             final Map<String, Object> model = new HashMap<>();
@@ -119,6 +120,7 @@ final public class NotificationService {
             model.put("messageBody", messageBody);
             model.put("baseUrl", getBaseUrl());
             model.put("supportEmail", mailer.getSupportEmail());
+            model.put("doNotReplay", messageSource.getMessage("EMAIL.DO_NOT_REPLAY", new Object[]{mailer.getSupportEmail()}, locale));
 
             logger.debug("Email properties->" + model);
             mailer.sendEmail(mailer.getServerSenderEmail(), user.getEmail(), mailSubject, model, "baseLayout.vm");
