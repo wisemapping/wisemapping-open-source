@@ -52,6 +52,7 @@ public class UserManagerImpl
 
 
     @Override
+    @Nullable
     public User getUserBy(@NotNull final String email) {
         User user = null;
 
