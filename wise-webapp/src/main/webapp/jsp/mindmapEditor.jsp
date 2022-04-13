@@ -23,7 +23,7 @@
 
     <script>
         window.serverconfig = {
-            apiBaseUrl: '',
+            apiBaseUrl: '${requestScope['site.baseurl']}',
             analyticsAccount: '${requestScope['google.analytics.account']}',
             clientType: 'rest',
             recaptcha2Enabled: ${requestScope['google.recaptcha2.enabled']},

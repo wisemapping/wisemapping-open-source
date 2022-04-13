@@ -46,12 +46,12 @@ In order to reduce the life-cycle to develop UI backend testing, you can do the 
 
 A quick and dirty solution to share changes in the UI is to manually compile the dist. This will make the loader file available without the need to publish:
 
-`yarn --cwd wisemapping-frontend build;cp -r wisemapping-frontend/packages/mindplot/dist/* wisemapping-open-source/wise-ui/target/wisemapping-mindplot/package/dist;cp -r wisemapping-frontend/packages/mindplot/dist/* wisemapping-open-source/wise-ui/target/wisemapping-mindplot/package/dist`
+`yarn --cwd wisemapping-frontend build;cp -r wisemapping-frontend/packages/mindplot/dist/* wisemapping-open-source/wise-ui/target/wisemapping-mindplot/package/dist;cp -r wisemapping-frontend/packages/webapp/dist/* wisemapping-open-source/wise-ui/target/wisemapping-webapp/package/dist`
 
 
 ### Compiling and running with docker-compose
 
-Check out the [docker section](./docker/README.
+Check out the [docker section](./docker/README.)
 
 ## Members
 
@@ -60,13 +60,10 @@ Check out the [docker section](./docker/README.
    * Paulo Veiga <pveiga@wisemapping.com>
    * Pablo Luna <pablo@wisemapping.com>
 
-### Individual Contributors
-
-   * Ezequiel Bergamaschi <ezequielbergamaschi@gmail.com>
-
 ### Past Individual Contributors
 
-   * Ignacio Manzano
+   * Ignacio Manzano  
+   * Ezequiel Bergamaschi <ezequielbergamaschi@gmail.com>
    
 ## License
 
