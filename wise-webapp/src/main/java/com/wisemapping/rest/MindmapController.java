@@ -299,7 +299,7 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/collabs/", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void addCollab(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws CollaborationException, MapCouldNotFoundException, AccessDeniedSecurityException, InvalidEmailException, TooManyInactiveAccountsExceptions {
+    public void addCollab(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws CollaborationException, MapCouldNotFoundException, AccessDeniedSecurityException, InvalidEmailException, TooManyInactiveAccountsExceptions, CollabChangeException {
         final Mindmap mindMap = findMindmapById(id);
 
         // Only owner can change collaborators...
@@ -345,7 +345,6 @@ public class MindmapController extends BaseController {
 
         // Great, let's add all the collabs again ...
         for (RestCollaboration restCollab : restCollabs.getCollaborations()) {
-            final Collaboration collaboration = mindMap.findCollaboration(restCollab.getEmail());
             // Validate role format ...
             String roleStr = restCollab.getRole();
             if (roleStr == null) {
@@ -353,12 +352,14 @@ public class MindmapController extends BaseController {
             }
 
             // Is owner ?
-            final CollaborationRole role = CollaborationRole.valueOf(roleStr.toUpperCase());
-            if (role == CollaborationRole.OWNER) {
-                throw new IllegalArgumentException("Owner can not be added as part of the collaboration list.");
+            final String email = restCollab.getEmail();
+            final Collaboration collaboration = mindMap.findCollaboration(email);
+            if (collaboration != null && collaboration.getRole() == CollaborationRole.OWNER) {
+                throw new CollabChangeException(email);
             }
 
-            mindmapService.addCollaboration(mindMap, restCollab.getEmail(), role, restCollabs.getMessage());
+            final CollaborationRole role = CollaborationRole.valueOf(roleStr.toUpperCase());
+            mindmapService.addCollaboration(mindMap, email, role, restCollabs.getMessage());
         }
     }
 
