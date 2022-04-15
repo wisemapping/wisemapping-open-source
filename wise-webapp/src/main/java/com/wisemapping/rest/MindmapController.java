@@ -324,42 +324,42 @@ public class MindmapController extends BaseController {
         }
 
         // Has any role changed ?. Just removed it.
-        final Map<String, Collaboration> mapsByEmail = mindMap
+        final Map<String, Collaboration> collabByEmail = mindMap
                 .getCollaborations()
                 .stream()
                 .collect(Collectors.toMap(collaboration -> collaboration.getCollaborator().getEmail(), collaboration -> collaboration));
 
-        restCollabs
-                .getCollaborations()
-                .forEach(collab -> {
-                    final String email = collab.getEmail();
-                    if (mapsByEmail.containsKey(email)) {
-                        try {
-                            mindmapService.removeCollaboration(mindMap, mapsByEmail.get(email));
-                        } catch (CollaborationException e) {
-                            logger.error(e);
-                        }
-                    }
-                });
-
 
         // Great, let's add all the collabs again ...
         for (RestCollaboration restCollab : restCollabs.getCollaborations()) {
-            // Validate role format ...
-            String roleStr = restCollab.getRole();
+            // Validate newRole format ...
+            final String roleStr = restCollab.getRole();
             if (roleStr == null) {
-                throw new IllegalArgumentException(roleStr + " is not a valid role");
+                throw new IllegalArgumentException(roleStr + " is not a valid newRole");
             }
 
-            // Is owner ?
-            final String email = restCollab.getEmail();
-            final Collaboration collaboration = mindMap.findCollaboration(email);
-            if (collaboration != null && collaboration.getRole() == CollaborationRole.OWNER) {
-                throw new CollabChangeException(email);
-            }
+            // Had the newRole changed ?. Otherwise, don't touch it.
+            final CollaborationRole newRole = CollaborationRole.valueOf(roleStr.toUpperCase());
+            final String collabEmail = restCollab.getEmail();
+            final Collaboration currentCollab = collabByEmail.get(collabEmail);
+            if (currentCollab == null || currentCollab.getRole() != newRole) {
 
-            final CollaborationRole role = CollaborationRole.valueOf(roleStr.toUpperCase());
-            mindmapService.addCollaboration(mindMap, email, role, restCollabs.getMessage());
+                // Are we trying to change the owner ...
+                if (currentCollab != null && currentCollab.getRole() == CollaborationRole.OWNER) {
+                    throw new CollabChangeException(collabEmail);
+                }
+
+                // Role can not be changed ...
+                if (newRole == CollaborationRole.OWNER) {
+                    throw new CollabChangeException(collabEmail);
+                }
+
+                // This is collaboration that with different newRole, try to change it ...
+                if (currentCollab != null) {
+                    mindmapService.removeCollaboration(mindMap, currentCollab);
+                }
+                mindmapService.addCollaboration(mindMap, collabEmail, newRole, restCollabs.getMessage());
+            }
         }
     }
 
