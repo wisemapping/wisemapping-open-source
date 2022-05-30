@@ -28,7 +28,7 @@
           gtag('js', new Date());
           gtag('config', '${requestScope['google.analytics.account']}',
           {
-            'page_title' : 'Public - ${mindmap.id}'
+            'page_title' : 'Public View'
           });
         </script>
     </c:if>
