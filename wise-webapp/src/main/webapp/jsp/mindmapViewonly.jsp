@@ -19,7 +19,20 @@
           var locale = '${locale}';
           var isAuth = ${principal != null};
      </script>
-     <%@ include file="/jsp/googleAnalytics.jsf" %>
+    <c:if test="${requestScope['google.analytics.enabled']}">
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id='${requestScope['google.analytics.account']}'"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${requestScope['google.analytics.account']}',
+          {
+            'page_title' : 'Public - ${mindmap.id}'
+          });
+        </script>
+    </c:if>
+
 </head>
 <body>
 
