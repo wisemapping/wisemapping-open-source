@@ -21,7 +21,7 @@
      </script>
     <c:if test="${requestScope['google.analytics.enabled']}">
         <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id='${requestScope['google.analytics.account']}'"></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=${requestScope['google.analytics.account']}"></script>
         <script>
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
