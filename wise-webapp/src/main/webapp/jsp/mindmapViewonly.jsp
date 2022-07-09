@@ -43,7 +43,7 @@
 			margin: 0px;
 		}
 
-		#root {
+		.mindplot-root {
 			height: 100%;
 			width: 100%;
 		}
@@ -52,7 +52,7 @@
 
 </head>
 <body>
-	<div id="root">
+	<div id="root" class="mindplot-root">
 		<div id="mindplot" style={mindplotStyle} className="wise-editor"></div>
 		<div id="mindplot-tooltips" className="wise-editor"></div>
 		
