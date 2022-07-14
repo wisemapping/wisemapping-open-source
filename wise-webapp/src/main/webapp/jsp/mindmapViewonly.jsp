@@ -36,10 +36,11 @@
 
 	<style>
 		body {
-			height: 100vh;
-			width: 100vw;
-			min-width: 100vw;
-			min-height: 100vh;
+			position:fixed;
+			bottom: 0px;
+			top: 0px;
+			left: 0px;
+			right: 0px;
 			margin: 0px;
 		}
 
