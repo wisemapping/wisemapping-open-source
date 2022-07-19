@@ -11,7 +11,7 @@ There are multiple ways to run WiseMapping depending on your database configurat
 
 > $ docker run -it --rm -p 8080:8080 wisemapping/wisemapping:latest
 
-Then, open your browser at `http://localhost:8888`. A default user is available for testing `test@wisemapping.com` and password `test`.
+Then, open your browser at `http://localhost:8888`. A default user is available for testing `test@wisemapping.org` and password `test`.
 
 ***This option, all changes will be lost once the image is stopped. Use it for testing only*** 
 
