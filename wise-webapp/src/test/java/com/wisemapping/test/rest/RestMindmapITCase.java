@@ -18,6 +18,10 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.wisemapping.test.rest.RestHelper.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+import org.springframework.web.client.RestClientException;
 import static org.testng.Assert.*;
 
 @Test
@@ -25,11 +29,11 @@ public class RestMindmapITCase {
 
     private String userEmail = "admin@wisemapping.com";
     private static final String ICON = "glyphicon glyphicon-tag";
+    final RestAdminITCase restAdminITCase = new RestAdminITCase();
 
     @BeforeClass
     void createUser() {
 
-        final RestAdminITCase restAdminITCase = new RestAdminITCase();
         userEmail = restAdminITCase.createNewUser(MediaType.APPLICATION_JSON);
         userEmail += ":" + "admin";
     }
@@ -46,12 +50,8 @@ public class RestMindmapITCase {
         final String title2 = "List Maps 2 - " + mediaType;
         addNewMap(template, title2);
 
-        // Check that the map has been created ...
-        final HttpEntity findMapEntity = new HttpEntity(requestHeaders);
-        final ResponseEntity<RestMindmapList> response = template.exchange(BASE_REST_URL + "/maps/", HttpMethod.GET, findMapEntity, RestMindmapList.class);
-
         // Validate that the two maps are there ...
-        final RestMindmapList body = response.getBody();
+        final RestMindmapList body = fetchMaps(requestHeaders, template);
         final List<RestMindmapInfo> mindmaps = body.getMindmapsInfo();
 
         boolean found1 = false;
@@ -96,11 +96,7 @@ public class RestMindmapITCase {
         // Create a sample map ...
         final URI resourceUri = addNewMap(template, "Map to change title  - " + mediaType);
 
-        // Change map title ...
-        requestHeaders.setContentType(MediaType.TEXT_PLAIN);
-        final String newTitle = "New map to change title  - " + mediaType;
-        final HttpEntity<String> updateEntity = new HttpEntity<>(newTitle, requestHeaders);
-        template.put(HOST_PORT + resourceUri + "/title", updateEntity);
+        String newTitle = changeMapTitle(requestHeaders, mediaType, template, resourceUri);
 
         // Load map again ..
         final RestMindmap map = findMap(requestHeaders, template, resourceUri);
@@ -110,6 +106,7 @@ public class RestMindmapITCase {
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
     public void validateMapsCreation(final @NotNull MediaType mediaType) {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
+        requestHeaders.set(HttpHeaders.ACCEPT_LANGUAGE, "en");
         final RestTemplate template = createTemplate(userEmail);
 
         // Create a sample map ...
@@ -160,14 +157,23 @@ public class RestMindmapITCase {
 
         // Update map xml content ...
         final String resourceUrl = HOST_PORT + resourceUri.toString();
-        requestHeaders.setContentType(MediaType.TEXT_PLAIN);
-        final String newXmlContent = "<map>this is not valid</map>";
-        HttpEntity<String> updateEntity = new HttpEntity<>(newXmlContent, requestHeaders);
-        template.put(resourceUrl + "/document/xml", updateEntity);
+        String newXmlContent = updateMapDocument(requestHeaders, template, resourceUrl);
 
         // Check that the map has been updated ...
         final RestMindmap response = findMap(requestHeaders, template, resourceUri);
         assertEquals(response.getXml(), newXmlContent);
+    }
+
+    private String updateMapDocument(final HttpHeaders requestHeaders, final RestTemplate template, final String resourceUrl, String content) throws RestClientException {
+        requestHeaders.setContentType(MediaType.TEXT_PLAIN);
+        final String newXmlContent = content!=null ? content : "<map>this is not valid</map>";
+        HttpEntity<String> updateEntity = new HttpEntity<>(newXmlContent, requestHeaders);
+        template.put(resourceUrl + "/document/xml", updateEntity);
+        return newXmlContent;
+    }
+    
+    private String updateMapDocument(final HttpHeaders requestHeaders, final RestTemplate template, final String resourceUrl) throws RestClientException {
+        return updateMapDocument(requestHeaders, template, resourceUrl, null);
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
@@ -196,7 +202,38 @@ public class RestMindmapITCase {
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
     public void verifyMapOwnership(final @NotNull MediaType mediaType) {    // Configure media types ...
-        throw new SkipException("missing test: removeUserShouldOnlyDeleteOnwedMap");
+        final RestAdminITCase restAdminITCase = new RestAdminITCase();
+        final HttpHeaders requestHeaders = createHeaders(mediaType);
+        RestTemplate template = createTemplate(userEmail);
+
+        // Create a sample map ...
+        final String title1 = "verifyMapOwnership Map user 1";
+        addNewMap(template, title1);
+
+        //create another user
+        RestUser secondUser = restAdminITCase.createNewUserAndGetUser(MediaType.APPLICATION_JSON);
+        final RestTemplate secondTemplate = createTemplate(secondUser.getEmail()+":admin");
+
+        final String title2 = "verifyMapOwnership Map user 2";
+        addNewMap(secondTemplate, title2);
+
+        // Delete user ...
+        String authorisation = "admin@wisemapping.org" + ":" + "test";
+        RestTemplate superadminTemplate = createTemplate(authorisation);
+
+        superadminTemplate.delete(BASE_REST_URL + "/admin/users/"+secondUser.getId());
+
+        // Validate that the two maps are there ...
+        final RestMindmapList body = fetchMaps(requestHeaders, template);
+        final List<RestMindmapInfo> mindmaps = body.getMindmapsInfo();
+
+        boolean found1 = false;
+        for (RestMindmapInfo mindmap : mindmaps) {
+            if (mindmap.getTitle().equals(title1)) {
+                found1 = true; break;
+            }
+        }
+        assertTrue(found1, "Map could not be found");
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
@@ -242,25 +279,10 @@ public class RestMindmapITCase {
         // Create a sample map ...
         final URI resourceUri = addNewMap(template, "Map for addCollabs  - " + mediaType);
 
-        // Add a new collaboration ...
-        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-        final RestCollaborationList collabs = new RestCollaborationList();
-        collabs.setMessage("Adding new permission");
-
-        final String newCollab = "new-collab@example.com";
-        String role = "editor";
-
-        final RestCollaboration collab = new RestCollaboration();
-        collab.setEmail(newCollab);
-        collab.setRole(role);
-        collabs.addCollaboration(collab);
-
-        final HttpEntity<RestCollaborationList> updateEntity = new HttpEntity<>(collabs, requestHeaders);
-        template.put(HOST_PORT + resourceUri + "/collabs/", updateEntity);
+        String newCollab = addNewCollaboration(requestHeaders, template, resourceUri);
 
         // Has been added ?
-        final ResponseEntity<RestCollaborationList> response = fetchCollabs(requestHeaders, template, resourceUri);
-        RestCollaborationList responseCollbs = response.getBody();
+        RestCollaborationList responseCollbs = fetchAndGetCollabs(requestHeaders, template, resourceUri);
 
         // Has been added ?
         assertEquals(responseCollbs.getCount(), 2);
@@ -286,17 +308,13 @@ public class RestMindmapITCase {
         final String newCollab = "new-collab@example.com";
         String role = "editor";
 
-        final RestCollaboration collab = new RestCollaboration();
-        collab.setEmail(newCollab);
-        collab.setRole(role);
-        collabs.addCollaboration(collab);
+        final RestCollaboration collab = addCollabToList(newCollab, role, collabs);
 
         final HttpEntity<RestCollaborationList> updateEntity = new HttpEntity<>(collabs, requestHeaders);
         template.put(HOST_PORT + resourceUri + "/collabs/", updateEntity);
 
         // Has been added ?
-        final ResponseEntity<RestCollaborationList> response = fetchCollabs(requestHeaders, template, resourceUri);
-        RestCollaborationList responseCollbs = response.getBody();
+        RestCollaborationList responseCollbs = fetchAndGetCollabs(requestHeaders, template, resourceUri);
         assertEquals(responseCollbs.getCount(), 2);
 
         // Update the collaboration type ...
@@ -318,25 +336,10 @@ public class RestMindmapITCase {
         // Create a sample map ...
         final URI resourceUri = addNewMap(template, "Map for deleteCollabs  - " + mediaType);
 
-        // Add a new collaboration ...
-        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-        final RestCollaborationList collabs = new RestCollaborationList();
-        collabs.setMessage("Adding new permission");
-
-        final String newCollab = "new-collab@example.com";
-        String role = "editor";
-
-        final RestCollaboration collab = new RestCollaboration();
-        collab.setEmail(newCollab);
-        collab.setRole(role);
-        collabs.addCollaboration(collab);
-
-        final HttpEntity<RestCollaborationList> updateEntity = new HttpEntity<>(collabs, requestHeaders);
-        template.put(HOST_PORT + resourceUri + "/collabs/", updateEntity);
+        String newCollab = addNewCollaboration(requestHeaders, template, resourceUri);
 
         // Has been added ?
-        final ResponseEntity<RestCollaborationList> response = fetchCollabs(requestHeaders, template, resourceUri);
-        RestCollaborationList responseCollbs = response.getBody();
+        RestCollaborationList responseCollbs = fetchAndGetCollabs(requestHeaders, template, resourceUri);
 
         // Has been added ?
         assertEquals(responseCollbs.getCount(), 2);
@@ -349,6 +352,82 @@ public class RestMindmapITCase {
         assertEquals(afterDeleteResponse.getBody().getCollaborations().size(), 1);
     }
 
+    private String addNewCollaboration(final HttpHeaders requestHeaders, final RestTemplate template, final URI resourceUri) throws RestClientException {
+        // Add a new collaboration ...
+        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+        final RestCollaborationList collabs = new RestCollaborationList();
+        collabs.setMessage("Adding new permission");
+        final String newCollab = "new-collab@example.com";
+        String role = "editor";
+        addCollabToList(newCollab, role, collabs);
+        final HttpEntity<RestCollaborationList> updateEntity = new HttpEntity<>(collabs, requestHeaders);
+        template.put(HOST_PORT + resourceUri + "/collabs/", updateEntity);
+        return newCollab;
+    }
+    
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
+    public void deleteCollabsWithInvalidEmail(final @NotNull MediaType mediaType) {
+        final HttpHeaders requestHeaders = createHeaders(mediaType);
+        final RestTemplate template = createTemplate(userEmail);
+
+        // Create a sample map ...
+        final URI resourceUri = addNewMap(template, "deleteCollabsWithInvalidEmail");
+
+        // Remove with invalid email ...
+        try {
+            
+            template.delete(HOST_PORT + resourceUri + "/collabs?email=invalidEmail" );
+        } catch (HttpClientErrorException e) {
+            assertEquals(e.getRawStatusCode(), 400);
+            assertTrue(e.getMessage().contains("Invalid email exception:"));            
+        }
+
+        // Check that it has been removed ...
+        final ResponseEntity<RestCollaborationList> afterDeleteResponse = fetchCollabs(requestHeaders, template, resourceUri);
+        assertEquals(afterDeleteResponse.getBody().getCollaborations().size(), 1);
+    }
+    
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
+    public void deleteCollabsWithoutOwnerPermission(final @NotNull MediaType mediaType) {
+        
+        
+        final HttpHeaders requestHeaders = createHeaders(mediaType);
+        RestTemplate template = createTemplate(userEmail);
+
+        // Create a sample map ...
+        final URI resourceUri = addNewMap(template, "deleteWithoutOwnerPermission");
+
+        final String newCollab = restAdminITCase.createNewUser(MediaType.APPLICATION_JSON);
+        template = createTemplate(newCollab+":admin");
+
+        // Remove with invalid email ...
+        try {
+            
+            template.delete(HOST_PORT + resourceUri + "/collabs?email="+newCollab );
+        } catch (HttpClientErrorException e) {
+            assertEquals(e.getRawStatusCode(), 400);
+            assertTrue(e.getMessage().contains("No enough permissions"));            
+        }
+
+    }
+
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
+    public void deleteOwnerCollab(final @NotNull MediaType mediaType) {
+        final HttpHeaders requestHeaders = createHeaders(mediaType);
+        final RestTemplate template = createTemplate(userEmail);
+
+        // Create a sample map ...
+        final URI resourceUri = addNewMap(template, "Map for deleteOwnerCollab");
+
+       // Now, remove owner collab ...
+        try {    
+            template.delete(HOST_PORT + resourceUri + "/collabs?email=" + userEmail.replace(":admin", "") );
+        } catch (HttpClientErrorException e) {
+            assertEquals(e.getRawStatusCode(), 400);
+            assertTrue(e.getMessage().contains("Can not remove owner collab"));            
+        }
+    }
+    
     @NotNull
     private ResponseEntity<RestCollaborationList> fetchCollabs(HttpHeaders requestHeaders, RestTemplate template, URI resourceUri) {
         final HttpEntity findCollabs = new HttpEntity(requestHeaders);
@@ -361,7 +440,7 @@ public class RestMindmapITCase {
         final HttpHeaders requestHeaders = createHeaders(mediaType);
         final RestTemplate template = createTemplate(userEmail);
 
-        // Create a sample map ...
+        // Create a sample map ...fetchAndGetCollabs(requestHeaders, template, resourceUri);
         final URI resourceUri = addNewMap(template, "Map for Collaboration  - " + mediaType);
 
         // Add a new collaboration ...
@@ -370,19 +449,43 @@ public class RestMindmapITCase {
         collabs.setMessage("Adding new permission");
 
         // Validate that owner can not be added.
-        final RestCollaboration collab = new RestCollaboration();
-        final String newCollab = "new-collab@example.com";
-        collab.setEmail(newCollab);
-        collab.setRole("owner");
-        collabs.addCollaboration(collab);
+        addCollabToList("newCollab@example", "owner", collabs);
 
         final HttpEntity<RestCollaborationList> updateEntity = new HttpEntity<>(collabs, requestHeaders);
         template.put(HOST_PORT + resourceUri + "/collabs/", updateEntity);
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-    public void removeLabelFromMindmap(final @NotNull MediaType mediaType) {    // Configure media types ...
-        throw new SkipException("missing test: label removal from map");
+    public void removeLabelFromMindmap(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
+        final HttpHeaders requestHeaders = createHeaders(mediaType);
+        final RestTemplate template = createTemplate(userEmail);
+
+        // Create a new label
+        final String titleLabel = "removeLabelFromMindmap";
+        final URI labelUri = RestLabelITCase.addNewLabel(requestHeaders, template, titleLabel, COLOR, ICON);
+
+        // Create a sample map ...
+        final String mapTitle = "removeLabelFromMindmap";
+        final URI mindmapUri = addNewMap(template, mapTitle);
+        final String mapId = mindmapUri.getPath().replace("/service/maps/", "");
+
+        // Assign label to map ...
+        String labelId = labelUri.getPath().replace("/service/labels/", "");
+        HttpEntity<String> labelEntity = new HttpEntity<>(labelId, requestHeaders);
+        template.postForLocation(BASE_REST_URL + "/maps/" + mapId + "/labels", labelEntity);
+
+        // Remove label from map
+        template.delete(BASE_REST_URL + "/maps/" + mapId + "/labels/" + labelId);
+
+        // Check that the label has been removed ...
+        final List<RestMindmapInfo> mindmapsInfo = fetchMaps(requestHeaders, template).getMindmapsInfo();
+        Optional<RestMindmapInfo> mindmapInfo = mindmapsInfo
+                .stream()
+                .filter(m -> m.getId() == Integer.parseInt(mapId))
+                .findAny();
+
+        assertTrue(mindmapInfo.get().getLabels().size() == 0);
+        
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
@@ -410,16 +513,268 @@ public class RestMindmapITCase {
         template.postForLocation(BASE_REST_URL + "/maps/" + mapId + "/labels", labelEntity);
 
         // Check that the label has been assigned ...
-        final HttpEntity findMapEntity = new HttpEntity(requestHeaders);
-        final ResponseEntity<RestMindmapList> mindmapList = template.exchange(BASE_REST_URL + "/maps/", HttpMethod.GET, findMapEntity, RestMindmapList.class);
-
-        final List<RestMindmapInfo> mindmapsInfo = mindmapList.getBody().getMindmapsInfo();
+        final List<RestMindmapInfo> mindmapsInfo = fetchMaps(requestHeaders, template).getMindmapsInfo();
         Optional<RestMindmapInfo> mindmapInfo = mindmapsInfo
                 .stream()
                 .filter(m -> m.getId() == Integer.parseInt(mapId))
                 .findAny();
 
         assertTrue(mindmapInfo.get().getLabels().size() == 1);
+    }
+
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
+    public void updateCollabs(final @NotNull MediaType mediaType) {
+
+        // Create a sample map ...
+        final RestTemplate template = createTemplate(userEmail);
+        final URI resourceUri = addNewMap(template, "Map for updateCollabs  - " + mediaType);
+
+        final HttpHeaders requestHeaders = createHeaders(mediaType);
+        // Add a new collaboration ...
+        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+        RestCollaborationList collabs = new RestCollaborationList();
+        collabs.setMessage("Adding new permission");
+
+        String newCollab = "new-collab@example.com";
+        String role = "editor";
+
+        addCollabToList(newCollab, role, collabs);
+
+        HttpEntity<RestCollaborationList> updateEntity = new HttpEntity<>(collabs, requestHeaders);
+        template.put(HOST_PORT + resourceUri + "/collabs/", updateEntity);
+
+        collabs = fetchAndGetCollabs(requestHeaders, template, resourceUri);
+        
+        //delete one collab
+        collabs.setCollaborations(collabs.getCollaborations().stream().filter(c -> c.getRole().equals("owner")).collect(Collectors.toList()));
+        
+        //Add another collaborationMediaType
+        newCollab = "another-collab@example.com";
+        addCollabToList(newCollab, role, collabs);
+
+        //add owner to list
+        addCollabToList(userEmail.replace(":admin", ""), "owner", collabs);
+    
+        updateEntity = new HttpEntity<>(collabs, requestHeaders);
+        template.postForLocation(HOST_PORT + resourceUri + "/collabs/", updateEntity);
+
+
+        RestCollaborationList responseCollbs = fetchAndGetCollabs(requestHeaders, template, resourceUri);
+
+        // Has been another-collaboration list updated ?
+        assertTrue(responseCollbs.getCollaborations().stream().anyMatch(x -> x.getEmail().equals("another-collab@example.com")));
+        assertEquals(responseCollbs.getCount(), 2);
+
+    }
+    
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
+    public void updateProperties(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
+        final HttpHeaders requestHeaders = createHeaders(mediaType);
+        final RestTemplate template = createTemplate(userEmail);
+
+        // Create a sample map ...
+        final String title = "updateProperties map";
+        final URI resourceUri = addNewMap(template, title);
+
+        // Build map to update ...
+        final RestMindmap mapToUpdate = new RestMindmap();
+        mapToUpdate.setXml("<map>this is not valid</map>");
+        mapToUpdate.setProperties("{zoom:x}");
+        mapToUpdate.setTitle("new title for map");
+        mapToUpdate.setDescription("updated map description");
+
+        // Update map ...
+        final String resourceUrl = HOST_PORT + resourceUri.toString();
+        final HttpEntity<RestMindmap> updateEntity = new HttpEntity<>(mapToUpdate, requestHeaders);
+        template.put(resourceUrl, updateEntity);
+
+        // Check that the map has been updated ...
+        HttpEntity<RestUser> findMapEntity = new HttpEntity<>(requestHeaders);
+        final ResponseEntity<RestMindmap> response = template.exchange(HOST_PORT + resourceUri, HttpMethod.GET, findMapEntity, RestMindmap.class);
+        assertEquals(response.getBody().getTitle(), mapToUpdate.getTitle());
+        assertEquals(response.getBody().getDescription(), mapToUpdate.getDescription());
+        assertEquals(response.getBody().getXml(), mapToUpdate.getXml());
+        assertEquals(response.getBody().getProperties(), mapToUpdate.getProperties());
+    }
+
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
+    public void batchDelete(final @NotNull MediaType mediaType) {    // Configure media types ...
+        final HttpHeaders requestHeaders = createHeaders(mediaType);
+        final RestTemplate template = createTemplate(userEmail);
+
+        // Create a sample map ...
+        final String title1 = "Batch delete map 1";
+        addNewMap(template, title1);
+
+        final String title2 = "Batch delete map 2";
+        addNewMap(template, title2);
+
+        
+        String maps;
+        maps = fetchMaps(requestHeaders, template).getMindmapsInfo().stream().map(map-> {
+            return String.valueOf(map.getId());
+        }).collect(Collectors.joining(","));
+
+        
+        template.delete(BASE_REST_URL + "/maps/batch?ids="+maps);
+        
+        // Validate that the two maps are there ...
+        final RestMindmapList body = fetchMaps(requestHeaders, template);
+        assertEquals(body.getMindmapsInfo().size(), 0);
+    }
+    
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
+    public void updatePublishState(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
+        final HttpHeaders requestHeaders = createHeaders(mediaType);
+        final RestTemplate template = createTemplate(userEmail);
+
+        // Create a sample map ...
+        final String mapTitle = "updatePublishState";
+        final URI mindmapUri = addNewMap(template, mapTitle);
+        final String mapId = mindmapUri.getPath().replace("/service/maps/", "");
+
+        // Change map status ...
+        requestHeaders.setContentType(MediaType.TEXT_PLAIN);
+        //final String newPublicState = "true";
+        final HttpEntity<String> updateEntity = new HttpEntity<>(Boolean.TRUE.toString(), requestHeaders);
+        template.put(HOST_PORT + mindmapUri + "/publish", updateEntity);
+
+        //fetch public view
+        final HttpEntity findMapEntity = new HttpEntity(requestHeaders);
+        ResponseEntity<String> publicView = template.exchange(HOST_PORT + "/c/"+ mapId + "/public", HttpMethod.GET, findMapEntity, String.class);
+        assertNotNull(publicView.getBody());
+        assertEquals(publicView.getStatusCodeValue(), 200);
+    }
+    
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
+    public void fetchMapHistory(final @NotNull MediaType mediaType) {    // Configure media types ...
+        final HttpHeaders requestHeaders = createHeaders(mediaType);
+        final RestTemplate template = createTemplate(userEmail);
+
+        // Create a sample map ...
+        final URI resourceUri = addNewMap(template, "Map to change title  - " + mediaType);
+
+        updateMapDocument(requestHeaders, template, HOST_PORT + resourceUri.toString());
+        
+        //fetch map history
+        final HttpEntity findMapEntity = new HttpEntity(requestHeaders);
+        final ResponseEntity<RestMindmapHistoryList> maps = template.exchange(HOST_PORT+resourceUri+"/history/", HttpMethod.GET, findMapEntity, RestMindmapHistoryList.class);
+        assertEquals(maps.getBody().getCount(), 1);
+    }
+
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
+    public void updateRevertMindmap(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
+        final HttpHeaders requestHeaders = createHeaders(mediaType);
+        final RestTemplate template = createTemplate(userEmail);
+
+        // Create a sample map ...
+        final URI resourceUri = addNewMap(template, "map to test revert changes");
+        updateMapDocument(requestHeaders, template, HOST_PORT + resourceUri.toString(), "<map><node text='this is an xml to test revert changes service'></map>");
+        
+        updateMapDocument(requestHeaders, template, HOST_PORT + resourceUri.toString(), "<map><node text='this is an xml with modification to be reverted'></map>");
+        
+        //fetch map history
+        final HttpEntity findMapEntity = new HttpEntity(requestHeaders);
+        final ResponseEntity<RestMindmapHistoryList> mapHistories = template.exchange(HOST_PORT+resourceUri+"/history/", HttpMethod.GET, findMapEntity, RestMindmapHistoryList.class);
+        
+        //aply revert
+        final HttpEntity<String> cloneEntity = new HttpEntity<>(requestHeaders);
+        template.postForLocation(HOST_PORT + resourceUri+"/history/latest", cloneEntity);
+        final RestMindmap latestStoredMap = findMap(requestHeaders, template, resourceUri);
+        template.postForLocation(HOST_PORT + resourceUri+"/history/"+mapHistories.getBody().getChanges().get(1).getId(), cloneEntity);
+        final RestMindmap firstVersionMap = findMap(requestHeaders, template, resourceUri);
+
+        //verify revert
+        assertEquals(firstVersionMap.getXml(), "<map><node text='this is an xml to test revert changes service'></map>");
+        assertEquals(latestStoredMap.getXml(), "<map><node text='this is an xml with modification to be reverted'></map>");
+        
+    }
+    
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
+    public void addCollabWhitoutOwnerPermission(final @NotNull MediaType mediaType) {
+        final HttpHeaders requestHeaders = createHeaders(mediaType);
+        RestTemplate template = createTemplate(userEmail);
+
+        // Create a sample map ...
+        final URI resourceUri = addNewMap(template, "MaddCollabWhitoutOwnerPermission");
+
+        // Add a new collaboration ...
+        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+        final RestCollaborationList collabs = new RestCollaborationList();
+        collabs.setMessage("Adding new permission");
+
+        final String newCollab = restAdminITCase.createNewUser(MediaType.APPLICATION_JSON);
+        String role = "editor";
+
+        addCollabToList(newCollab, role, collabs);
+
+        final HttpEntity<RestCollaborationList> updateEntity = new HttpEntity<>(collabs, requestHeaders);
+        template.put(HOST_PORT + resourceUri + "/collabs/", updateEntity);
+        
+        template = createTemplate(newCollab+":admin");
+        //add collab again with the new user expecting the Exception
+        try{
+            template.put(HOST_PORT + resourceUri + "/collabs/", updateEntity);
+        } catch (HttpClientErrorException e){
+            assertEquals(e.getRawStatusCode(), 400);
+            assertTrue(e.getMessage().contains("User must be owner to share mindmap"));
+        }
+    }
+    
+    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
+    public void addCollabWhitOwnerRole(final @NotNull MediaType mediaType) {
+        final HttpHeaders requestHeaders = createHeaders(mediaType);
+        RestTemplate template = createTemplate(userEmail);
+
+        // Create a sample map ...
+        final URI resourceUri = addNewMap(template, "addCollabWhitOwnerRole");
+
+        // Add a new collaboration ...
+        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+        final RestCollaborationList collabs = new RestCollaborationList();
+        collabs.setMessage("Adding new permission");
+
+        final String newCollab = "new-collaborator@mail.com";
+        String role = "owner";
+
+        addCollabToList(newCollab, role, collabs);
+
+        final HttpEntity<RestCollaborationList> updateEntity = new HttpEntity<>(collabs, requestHeaders);
+        try{
+            template.put(HOST_PORT + resourceUri + "/collabs/", updateEntity);
+        } catch (HttpClientErrorException e){
+            assertEquals(e.getRawStatusCode(), 400);
+            assertTrue(e.getMessage().contains("Collab email can not be change"));
+        }
+    }
+            
+    private String changeMapTitle(final HttpHeaders requestHeaders, final MediaType mediaType, final RestTemplate template, final URI resourceUri) throws RestClientException {
+        // Change map title ...
+        requestHeaders.setContentType(MediaType.TEXT_PLAIN);
+        final String newTitle = "New map to change title  - " + mediaType;
+        final HttpEntity<String> updateEntity = new HttpEntity<>(newTitle, requestHeaders);
+        template.put(HOST_PORT + resourceUri + "/title", updateEntity);
+        return newTitle;
+    }
+
+    private RestMindmapList fetchMaps(final HttpHeaders requestHeaders, final RestTemplate template) throws RestClientException {
+        final HttpEntity findMapEntity = new HttpEntity(requestHeaders);
+        final ResponseEntity<RestMindmapList> maps = template.exchange(BASE_REST_URL + "/maps/", HttpMethod.GET, findMapEntity, RestMindmapList.class);
+        return maps.getBody();
+    }
+    
+    private RestCollaborationList fetchAndGetCollabs(final HttpHeaders requestHeaders, final RestTemplate template, final URI resourceUri) {
+        final ResponseEntity<RestCollaborationList> response = fetchCollabs(requestHeaders, template, resourceUri);
+        RestCollaborationList responseCollbs = response.getBody();
+        return responseCollbs;
+    }
+
+    private RestCollaboration addCollabToList(String newCollab, String role, RestCollaborationList collabs) {
+        RestCollaboration collab = new RestCollaboration();
+        collab.setEmail(newCollab);
+        collab.setRole(role);
+        collabs.addCollaboration(collab);
+        return collab;
     }
 
     private RestMindmap findMap(HttpHeaders requestHeaders, RestTemplate template, URI resourceUri) {

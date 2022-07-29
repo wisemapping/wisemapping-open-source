@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>wise-webapp</artifactId>
     <packaging>war</packaging>
@@ -452,6 +451,68 @@
                     </systemProperties>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.8</version>
+                <executions>
+                    <execution>
+                        <id>default-prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>default-prepare-agent-integration</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>prepare-agent-integration</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>**/*Test*</exclude>
+                            </excludes>
+                            <propertyName>integrationTestArgLine</propertyName>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>default-check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <rule>
+                                    <element>BUNDLE</element>
+                                    <limits>
+                                        <limit>
+                                            <counter>COMPLEXITY</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.10</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>default-report-integration</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report-integration</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>default-report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
@@ -459,6 +520,9 @@
                 <version>9.4.34.v20201102</version>
                 <configuration>
                     <stopKey>foo</stopKey>
+                    <httpConnector>
+                        <port>8080</port>
+                    </httpConnector>
                     <stopPort>9999</stopPort>
                     <war>${project.build.directory}/wisemapping.war</war>
                     <reload>automatic</reload>
@@ -488,9 +552,13 @@
                             <goal>run-forked</goal>
                         </goals>
                         <configuration>
+                            <useTestClasspath>true</useTestClasspath>
+                            <useTestScope>true</useTestScope>
                             <scanIntervalSeconds>0</scanIntervalSeconds>
+                            <daemon>true</daemon>
                             <waitForChild>false</waitForChild>
-                            <jvmArgs>-Ddatabase.base.url=${project.build.directory}</jvmArgs>
+                            <maxStartupLines>200</maxStartupLines>
+                            <jvmArgs>${integrationTestArgLine} -Ddatabase.base.url=${project.build.directory} -Djetty.port=8080</jvmArgs>
                         </configuration>
                     </execution>
                     <execution>
@@ -499,6 +567,9 @@
                         <goals>
                             <goal>stop</goal>
                         </goals>
+                        <configuration>
+                            <stopWait>1</stopWait>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -514,6 +585,7 @@
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
 </project>

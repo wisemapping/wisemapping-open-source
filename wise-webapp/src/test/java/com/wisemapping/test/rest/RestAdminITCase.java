@@ -83,7 +83,7 @@ public class RestAdminITCase {
         }
     }
 
-    public String createNewUser(final @NotNull MediaType mediaType) {
+    public RestUser createNewUserAndGetUser(final @NotNull MediaType mediaType) {
 
         // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(mediaType);
@@ -99,6 +99,13 @@ public class RestAdminITCase {
         ResponseEntity<RestUser> result = findUser(requestHeaders, templateRest, location);
         assertEquals(result.getBody().getEmail(), restUser.getEmail(), "Returned object object seems not be the same.");
 
+        return result.getBody();
+    }
+
+    public String createNewUser(final @NotNull MediaType mediaType) {
+
+        // Fill user data ...
+        final RestUser restUser = createNewUserAndGetUser(mediaType);
         // Find by email and check ...
         // @todo: review find by email... It's failing with 406
 //        findUser(requestHeaders, templateRest, location);
@@ -119,7 +126,7 @@ public class RestAdminITCase {
         return templateRest.exchange(url, HttpMethod.GET, findUserEntity, RestUser.class);
     }
 
-    private ResponseEntity<RestUser> findUserByEmail(HttpHeaders requestHeaders, RestTemplate templateRest, final String email) {
+    public ResponseEntity<RestUser> findUserByEmail(HttpHeaders requestHeaders, RestTemplate templateRest, final String email) {
         HttpEntity<RestUser> findUserEntity = new HttpEntity<>(requestHeaders);
 
         // Add extension only to avoid the fact that the last part is extracted ...

@@ -78,6 +78,7 @@ public class RestLabelITCase {
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
     public void createLabelWithoutRequiredField(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {
         final HttpHeaders requestHeaders = RestHelper.createHeaders(mediaType);
+        requestHeaders.set(HttpHeaders.ACCEPT_LANGUAGE, "en");
         final RestTemplate template = RestHelper.createTemplate(userEmail + ":" + "admin");
 
         try {

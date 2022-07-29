@@ -53,6 +53,11 @@ A quick and dirty solution to share changes in the UI is to manually compile the
 
 Check out the [docker section](./docker/README.)
 
+### Test reports
+
+Individual test result reports can be found in wisemapping-open-source/wise-webapp/target/failsafe-reports/index.html
+Test coverage report of unit and integration test can be found in wisemapping-open-source/wise-webapp/target/site/jacoco and wisemapping-open-source/wise-webapp/target/site/jacoco-it folders. Coverage report is generated in the verify phase of [lifecicle](https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html#introduction-to-the-build-lifecyclea) using [jacoco](https://www.jacoco.org/jacoco/trunk/doc/maven.html)
+
 ## Members
 
 ### Founders

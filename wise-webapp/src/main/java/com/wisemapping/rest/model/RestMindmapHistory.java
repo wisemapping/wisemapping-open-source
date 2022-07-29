@@ -40,15 +40,18 @@ import java.util.TimeZone;
 public class RestMindmapHistory {
 
     static private final SimpleDateFormat sdf;
-    private final int id;
-    private final Calendar creation;
-    private final String creator;
+    private  int id;
+    private  Calendar creation;
+    private  String creator;
 
     static {
         sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
+    public RestMindmapHistory() {
+    }
+    
     public RestMindmapHistory(@NotNull MindMapHistory history) {
         this.id = history.getId();
         this.creation = history.getCreationTime();
@@ -61,18 +64,18 @@ public class RestMindmapHistory {
     }
 
     public void setCreationTime() {
-
     }
 
+    
     public String getCreator() {
         return creator;
     }
 
-    public void setCreator() {
-        // Do nothing ...
+    public void setCreator(String creator) {
     }
 
     public void setId(int id) {
+        this.id=id;
     }
 
     private String toISO8601(@NotNull Date date) {
