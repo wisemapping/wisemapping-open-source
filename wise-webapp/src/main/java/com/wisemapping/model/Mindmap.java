@@ -66,7 +66,7 @@ public class Mindmap implements Serializable {
     @OneToMany(mappedBy = "mindMap", orphanRemoval = true, cascade = {CascadeType.ALL})
     private Set<Collaboration> collaborations = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
     @JoinTable(
             name = "R_LABEL_MINDMAP",
             joinColumns = @JoinColumn(name = "mindmap_id"),
