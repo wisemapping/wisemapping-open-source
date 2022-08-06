@@ -24,11 +24,7 @@ import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.Mindmap;
 import org.jetbrains.annotations.NotNull;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,7 +41,7 @@ public class RestMindmapList {
         this(Collections.emptyList(), null);
     }
 
-    public RestMindmapList(@NotNull List<Mindmap> mindmaps, @NotNull Collaborator collaborator) {
+    public RestMindmapList(@NotNull List<Mindmap> mindmaps, Collaborator collaborator) {
         this.mindmapsInfo = mindmaps.stream()
                 .map(m->new RestMindmapInfo(m, collaborator))
                 .collect(Collectors.toList());
