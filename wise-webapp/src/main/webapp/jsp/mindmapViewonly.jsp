@@ -81,14 +81,14 @@
 		
 		<div id="floating-panel">
 			<div id="zoom-button">
-				<button id="zoom-plus">
+				<button id="zoom-plus" title="Zoom Out">
 					<img src="../../images/add.svg" width="24" height="24"/>
 				</button>
-				<button id="zoom-minus">
+				<button id="zoom-minus" title="Zoom In">
 					<img src="../../images/minus.svg" width="24" height="24"/>
 				</button>
 				<div id="position">
-					<button id="position-button">
+					<button id="position-button" title="Center">
 						<img src="../../images/center_focus.svg" width="24" height="24"/>
 					</button>
 				</div>
