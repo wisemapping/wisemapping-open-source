@@ -23,7 +23,7 @@
 
     <script>
         window.serverconfig = {
-            apiBaseUrl: '',
+            apiBaseUrl: '${requestScope['site.baseurl']}',
             analyticsAccount: '${requestScope['google.analytics.account']}',
             clientType: 'rest',
             recaptcha2Enabled: ${requestScope['google.recaptcha2.enabled']},
@@ -44,7 +44,7 @@
 
 <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <div id="root" class="mindplot-root"></div>
     
     <script type="text/javascript" src="${requestScope['site.static.js.url']}/webapp/vendors.bundle.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="${requestScope['site.static.js.url']}/webapp/app.bundle.js" crossorigin="anonymous"></script>

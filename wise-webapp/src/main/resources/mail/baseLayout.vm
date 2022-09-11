@@ -22,13 +22,13 @@
         </table>
     </div>
     <div style="font-size: 13px; background-color: #FFF; padding: 10px 7px 7px 7px; min-height: 100px">
-        Hi ${firstName}:
+        ${messages.getMessage("EMAIL.GREETINGS",$noArgs,$locale)} ${firstName}:
         <p>
             ${messageBody}
         </p>
 
-        <p style="color: #898989;">Regards,<br/>
-            The WiseMapping Team<br/>
+        <p style="color: #898989;">
+            <a href="http://www.wisemapping.com">The WiseMapping Team</a><br/>
         </p>
     </div>
 </div>

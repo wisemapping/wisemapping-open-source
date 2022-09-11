@@ -38,6 +38,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+import java.util.List;
 
 @Controller
 @CrossOrigin
@@ -51,6 +53,9 @@ public class UserController extends BaseController {
 
     @Value("${google.recaptcha2.enabled}")
     private Boolean recatchaEnabled;
+
+    @Value("${accounts.exclusion.domain:''}")
+    private String domainBanExclusion;
 
     private static final Logger logger = Logger.getLogger(UserController.class);
     private static final String REAL_IP_ADDRESS_HEADER = "X-Real-IP";
@@ -114,6 +119,13 @@ public class UserController extends BaseController {
 
         if (errors.hasErrors()) {
             throw errors;
+        }
+
+        // Is excluded ?.
+        final List<String> excludedDomains = Arrays.asList(domainBanExclusion.split(","));
+        final String emailDomain = registration.getEmail().split("@")[1];
+        if (excludedDomains.contains(emailDomain)) {
+            throw new IllegalArgumentException("Email is part of ban exclusion list due to abuse. Please, contact site admin if you think this is an error." + emailDomain);
         }
     }
 }

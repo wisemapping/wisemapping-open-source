@@ -1,7 +1,6 @@
 Sitemap: https://www.wisemapping.com/sitemap.xml
 
-# https://www.robotstxt.org/robotstxt.html
 User-agent: *
 Allow: /
 Disallow: /c/restful/maps/*/document/xml-pub
-
+Disallow: /c/maps/*/edit

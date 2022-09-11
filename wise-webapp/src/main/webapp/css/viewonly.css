@@ -71,7 +71,12 @@ div#position {
     background-size: 40px 40px;
     background-color: #FFF;
     border-radius: 8px;
+    padding: 0;
 }
+
+#position-button>img {
+    vertical-align: middle;
+  }  
 
 #zoom-button {
     width: 40px;
@@ -88,6 +93,13 @@ div#position {
     background-position: center;
     cursor: pointer;
     background-color: #FFF;
+    padding: 0;
+}
+
+#zoom-plus,
+#zoom-minus
+>img {
+  vertical-align: middle;
 }
 
 #zoom-plus {

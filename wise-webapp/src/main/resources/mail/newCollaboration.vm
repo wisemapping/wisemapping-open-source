@@ -33,6 +33,8 @@
     </div>
 </div>
 
-<p style="font-size: 13px;font-family: Arial, sans-serif">${doNotReplay}</p>
+<p style="color: #898989;">
+    <a href="http://www.wisemapping.com">The WiseMapping Team</a><br/>
+</p>
 </body>
 </html>

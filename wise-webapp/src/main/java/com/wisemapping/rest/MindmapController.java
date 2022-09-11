@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -41,7 +42,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 @Controller
@@ -57,6 +57,13 @@ public class MindmapController extends BaseController {
     @Qualifier("labelService")
     @Autowired
     private LabelService labelService;
+
+    @Qualifier("userService")
+    @Autowired
+    private UserService userService;
+
+    @Value("${accounts.maxInactive:20}")
+    private int maxAccountsInactive;
 
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/json"})
     @ResponseBody
@@ -169,7 +176,7 @@ public class MindmapController extends BaseController {
     /**
      * The intention of this method is the update of several properties at once ...
      */
-    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}", consumes = { "application/json"}, produces = {"application/json"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateProperties(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor) throws IOException, WiseMappingException {
 
@@ -243,7 +250,7 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/maps/{id}/collabs/", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateCollabs(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws CollaborationException, MapCouldNotFoundException, AccessDeniedSecurityException, InvalidEmailException {
+    public void updateCollabs(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws CollaborationException, MapCouldNotFoundException, AccessDeniedSecurityException, InvalidEmailException, TooManyInactiveAccountsExceptions {
         final Mindmap mindMap = findMindmapById(id);
 
         // Only owner can change collaborators...
@@ -251,6 +258,9 @@ public class MindmapController extends BaseController {
         if (!mindMap.hasPermissions(user, CollaborationRole.OWNER)) {
             throw new IllegalArgumentException("No enough permissions");
         }
+
+        // Do not allow more than 20 collabs not active
+        verifyActiveCollabs(restCollabs, user);
 
         // Compare one by one if some of the elements has been changed ....
         final Set<Collaboration> collabsToRemove = new HashSet<>(mindMap.getCollaborations());
@@ -279,7 +289,6 @@ public class MindmapController extends BaseController {
             if (role != CollaborationRole.OWNER) {
                 mindmapService.addCollaboration(mindMap, restCollab.getEmail(), role, restCollabs.getMessage());
             }
-
         }
 
         // Remove all collaborations that no applies anymore ..
@@ -290,7 +299,7 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/collabs/", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void addCollab(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws CollaborationException, MapCouldNotFoundException, AccessDeniedSecurityException, InvalidEmailException {
+    public void addCollab(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws CollaborationException, MapCouldNotFoundException, AccessDeniedSecurityException, InvalidEmailException, TooManyInactiveAccountsExceptions, CollabChangeException {
         final Mindmap mindMap = findMindmapById(id);
 
         // Only owner can change collaborators...
@@ -298,6 +307,9 @@ public class MindmapController extends BaseController {
         if (!mindMap.hasPermissions(user, CollaborationRole.OWNER)) {
             throw new AccessDeniedSecurityException("User must be owner to share mindmap");
         }
+
+        // Do not allow more than 20 collabs not active
+        verifyActiveCollabs(restCollabs, user);
 
         // Is valid email address ?
         final EmailValidator emailValidator = EmailValidator.getInstance();
@@ -312,41 +324,42 @@ public class MindmapController extends BaseController {
         }
 
         // Has any role changed ?. Just removed it.
-        final Map<String, Collaboration> mapsByEmail = mindMap
+        final Map<String, Collaboration> collabByEmail = mindMap
                 .getCollaborations()
                 .stream()
                 .collect(Collectors.toMap(collaboration -> collaboration.getCollaborator().getEmail(), collaboration -> collaboration));
 
-        restCollabs
-                .getCollaborations()
-                .forEach(collab -> {
-                    final String email = collab.getEmail();
-                    if (mapsByEmail.containsKey(email)) {
-                        try {
-                            mindmapService.removeCollaboration(mindMap, mapsByEmail.get(email));
-                        } catch (CollaborationException e) {
-                            logger.error(e);
-                        }
-                    }
-                });
-
 
         // Great, let's add all the collabs again ...
         for (RestCollaboration restCollab : restCollabs.getCollaborations()) {
-            final Collaboration collaboration = mindMap.findCollaboration(restCollab.getEmail());
-            // Validate role format ...
-            String roleStr = restCollab.getRole();
+            // Validate newRole format ...
+            final String roleStr = restCollab.getRole();
             if (roleStr == null) {
-                throw new IllegalArgumentException(roleStr + " is not a valid role");
+                throw new IllegalArgumentException(roleStr + " is not a valid newRole");
             }
 
-            // Is owner ?
-            final CollaborationRole role = CollaborationRole.valueOf(roleStr.toUpperCase());
-            if (role == CollaborationRole.OWNER) {
-                throw new IllegalArgumentException("Owner can not be added as part of the collaboration list.");
-            }
+            // Had the newRole changed ?. Otherwise, don't touch it.
+            final CollaborationRole newRole = CollaborationRole.valueOf(roleStr.toUpperCase());
+            final String collabEmail = restCollab.getEmail();
+            final Collaboration currentCollab = collabByEmail.get(collabEmail);
+            if (currentCollab == null || currentCollab.getRole() != newRole) {
 
-            mindmapService.addCollaboration(mindMap, restCollab.getEmail(), role, restCollabs.getMessage());
+                // Are we trying to change the owner ...
+                if (currentCollab != null && currentCollab.getRole() == CollaborationRole.OWNER) {
+                    throw new CollabChangeException(collabEmail);
+                }
+
+                // Role can not be changed ...
+                if (newRole == CollaborationRole.OWNER) {
+                    throw new CollabChangeException(collabEmail);
+                }
+
+                // This is collaboration that with different newRole, try to change it ...
+                if (currentCollab != null) {
+                    mindmapService.removeCollaboration(mindMap, currentCollab);
+                }
+                mindmapService.addCollaboration(mindMap, collabEmail, newRole, restCollabs.getMessage());
+            }
         }
     }
 
@@ -503,7 +516,7 @@ public class MindmapController extends BaseController {
         response.setHeader("ResourceId", Integer.toString(mindmap.getId()));
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/maps/{id}", consumes = {"application/json"}, produces = { "application/json", "text/plain"})
+    @RequestMapping(method = RequestMethod.POST, value = "/maps/{id}", consumes = {"application/json"}, produces = {"application/json", "text/plain"})
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createDuplicate(@RequestBody RestMindmapInfo restMindmap, @PathVariable int id, @NotNull HttpServletResponse response) throws IOException, WiseMappingException {
         // Validate ...
@@ -587,5 +600,26 @@ public class MindmapController extends BaseController {
             lockManager.unlock(mindmap, user);
         }
         return result;
+    }
+
+    private void verifyActiveCollabs(@NotNull RestCollaborationList restCollabs, User user) throws TooManyInactiveAccountsExceptions {
+        // Do not allow more than 20 new accounts per mindmap...
+        final List<Mindmap> userMindmaps = mindmapService.findMindmapsByUser(user);
+        final Set<String> allEmails = userMindmaps
+                .stream()
+                .filter(m -> m.hasPermissions(user, CollaborationRole.OWNER))
+                .map(Mindmap::getCollaborations)
+                .flatMap(Collection::stream)
+                .map(c -> c.getCollaborator().getEmail())
+                .collect(Collectors.toSet());
+        allEmails.addAll(restCollabs
+                .getCollaborations().stream()
+                .map(RestCollaboration::getEmail)
+                .collect(Collectors.toSet()));
+
+        long inactiveAccounts = allEmails.stream().filter(e -> userService.getUserBy(e) == null).count();
+        if (inactiveAccounts > maxAccountsInactive) {
+            throw new TooManyInactiveAccountsExceptions(inactiveAccounts);
+        }
     }
 }

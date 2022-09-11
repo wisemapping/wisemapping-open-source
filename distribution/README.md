@@ -9,15 +9,27 @@ There are multiple ways to run WiseMapping depending on your database configurat
 
 ## Option 1: Running HSQL within the image storage 
 
-> $ docker run -it --rm -p 8080:8080 veigap/wisemapping:latest>
+> $ docker run -it --rm -p 8080:8080 wisemapping/wisemapping:latest
 
-Then, open your browser at `http://localhost:8888`. A default user is available for testing `test@wisemapping.com` and password `test`.
+Then, open your browser at `http://localhost:8888`. A default user is available for testing `test@wisemapping.org` and password `test`.
 
 ***This option, all changes will be lost once the image is stopped. Use it for testing only*** 
 
 ## Option 2: Running HSQL with mounted directory
 
-> $ docker run -it --rm -p 8080:8080 veigap/wisemapping:latest
+Only one time, copy the empty default out of the container:
+
+> $ mkdir your- db-dir-store-path
+> 
+> $ docker run --name wiseapp -d --mount type=bind,source=your-db-dir-store-path,target=/var/lib/wise-db wisemapping/wisemapping:latest
+> 
+> $ docker cp wiseapp:/var/lib/wisemapping/db your-db-dir-store-path
+> 
+> $ docker stop wiseapp;docker rm wiseapp
+
+Then, execute the container mounting tbe directory:
+
+> $ docker run --mount type=bind,source=your-db-dir-store-path/db,target=/var/lib/wisemapping/db -it --rm -p 8080:8080 wisemapping/wisemapping:latest
 
 ## Option 3: External MySQL/PostgreSQL
 
@@ -36,7 +48,7 @@ Download `app.properties` configuration file and configure the required sections
 
 Run the application mounting your previously configured `app.properties`  
 
-> $ docker run --mount type=bind,source=your-file-path/app.properties,target=/usr/local/tomcat/webapps/ROOT/WEB-INF/app.properties -it --rm -p 8080:8080 veigap/wisemapping:latest 
+> $ docker run --mount type=bind,source=your-file-path/app.properties,target=/usr/local/tomcat/webapps/ROOT/WEB-INF/app.properties -it --rm -p 8080:8080 wisemapping/wisemapping:latest 
 
 # Advanced configuration
 
