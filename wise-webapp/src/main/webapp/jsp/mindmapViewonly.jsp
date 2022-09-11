@@ -17,6 +17,7 @@
     <title>${mindmap.title} | <spring:message code="SITE.TITLE"/></title>
     <link rel="stylesheet"  href="../../css/viewonly.css"/>
     <%@ include file="/jsp/pageHeaders.jsf" %>
+
     <script type="text/javascript">
           var mapId = '${mindmap.id}';
           var historyId = '${hid}';
@@ -24,6 +25,7 @@
           var locale = '${locale}';
           var isAuth = ${principal != null};
      </script>
+
     <c:if test="${requestScope['google.analytics.enabled']}">
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=${requestScope['google.analytics.account']}"></script>
@@ -36,6 +38,11 @@
             'page_title' : 'Public View'
           });
         </script>
+    </c:if>
+
+    <c:if test="${requestScope['google.analytics.enabled']}">
+      <!-- Google Ads Sense Config-->
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4996113942657337" crossorigin="anonymous"></script>
     </c:if>
 
 	<style>
@@ -75,14 +82,14 @@
 		<div id="floating-panel">
 			<div id="zoom-button">
 				<button id="zoom-plus">
-					<img src="../../images/add.svg" />
+					<img src="../../images/add.svg" width="24" height="24"/>
 				</button>
 				<button id="zoom-minus">
-					<img src="../../images/minus.svg" />
+					<img src="../../images/minus.svg" width="24" height="24"/>
 				</button>
 				<div id="position">
 					<button id="position-button">
-						<img src="../../images/center_focus.svg" />
+						<img src="../../images/center_focus.svg" width="24" height="24"/>
 					</button>
 				</div>
 			</div>
