@@ -41,8 +41,20 @@
     </c:if>
 
     <c:if test="${requestScope['google.analytics.enabled']}">
-      <!-- Google Ads Sense Config-->
-      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4996113942657337" crossorigin="anonymous"></script>
+      <!-- Google Ads Sense Config. Lazy loading optimization -->
+      <script type="text/javascript">
+          function downloadJsAtOnload() {
+              setTimeout(function downloadJs() {
+                  var element = document.createElement("script");
+                  element.setAttribute("data-ad-client", "ca-pub-4996113942657337");
+                  element.async = true;
+                  element.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
+                  document.body.appendChild(element);
+              }, 2000);
+          };
+
+          window.addEventListener("load", downloadJsAtOnload, false);
+      </script>
     </c:if>
 
 	<style>
