@@ -118,9 +118,8 @@ public class MindmapManagerImpl
     public List<Mindmap> findMindmapByUser(@NotNull User user) {
 
         final Mindmap collaborator;
-        // Note: Inconsistency on the COLLABORATION table (m.creator.id=:collabId). Needs to review it.
         final Query query = currentSession()
-                .createQuery("from com.wisemapping.model.Mindmap m where m.creator.id=:collabId OR m.id in (select c.mindMap.id from com.wisemapping.model.Collaboration as c where c.collaborator.id=:collabId )");
+                .createQuery("from com.wisemapping.model.Mindmap m where m.id in (select c.mindMap.id from com.wisemapping.model.Collaboration as c where c.collaborator.id=:collabId )");
         query.setParameter("collabId", user.getId());
 
         return query.getResultList();
