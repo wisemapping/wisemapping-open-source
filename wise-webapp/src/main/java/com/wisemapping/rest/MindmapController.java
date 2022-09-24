@@ -74,7 +74,7 @@ public class MindmapController extends BaseController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/maps/", produces = {"application/json"})
-    public RestMindmapList retrieveList(@RequestParam(required = false) String q) throws IOException {
+    public RestMindmapList retrieveList(@RequestParam(required = false) String q) {
         final User user = Utils.getUser();
 
         final MindmapFilter filter = MindmapFilter.parse(q);

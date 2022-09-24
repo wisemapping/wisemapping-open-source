@@ -29,15 +29,7 @@ public interface MindmapManager {
 
     Collaborator findCollaborator(@NotNull String email);
 
-    Collaborator findCollaborator(int id);
-    
     List<Collaboration> findCollaboration(final int collaboratorId);
-
-    List<Collaboration> findCollaboration(final CollaborationRole userRole);
-
-    Collaboration findCollaboration(final int mindmapId, final User user);
-
-    List<Mindmap> getAllMindmaps();
 
     @Nullable
     Mindmap getMindmapById(int mindmapId);

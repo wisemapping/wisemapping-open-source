@@ -116,9 +116,11 @@ public class MindmapManagerImpl
 
     @Override
     public List<Mindmap> findMindmapByUser(@NotNull User user) {
+
         final Mindmap collaborator;
+        // Note: Inconsistency on the COLLABORATION table (m.creator.id=:collabId). Needs to review it.
         final Query query = currentSession()
-                .createQuery("from com.wisemapping.model.Mindmap m where m.id in (select c.mindMap.id from com.wisemapping.model.Collaboration as c where c.collaborator.id=:collabId )");
+                .createQuery("from com.wisemapping.model.Mindmap m where m.creator.id=:collabId OR m.id in (select c.mindMap.id from com.wisemapping.model.Collaboration as c where c.collaborator.id=:collabId )");
         query.setParameter("collabId", user.getId());
 
         return query.getResultList();
@@ -160,41 +162,10 @@ public class MindmapManagerImpl
     }
 
     @Override
-    public Collaborator findCollaborator(int id) {
-        return getHibernateTemplate().get(Collaborator.class, id);
-    }
-
-    @Override
     public List<Collaboration> findCollaboration(final int collaboratorId) {
         Query query = currentSession().createQuery("from com.wisemapping.model.Collaboration c where c.collaborator.id=:collaboratorId");
         query.setParameter("collaboratorId", collaboratorId);
         return query.getResultList();
-    }
-
-    @Override
-    public List<Collaboration> findCollaboration(final CollaborationRole collaborationRole) {
-        Query query = currentSession().createQuery("from com.wisemapping.model.Collaboration c where c.role=:roleId");
-        query.setParameter("roleId", collaborationRole.ordinal());
-        return query.getResultList();
-    }
-
-    @Override
-    public Collaboration findCollaboration(final int mindmapId, final User user) {
-        final Collaboration result;
-
-        Query query = currentSession().createQuery("from com.wisemapping.model.Collaboration c where c.mindMap.id=:mindmapId and c.id=:collaboratorId");
-        query.setParameter("mindmapId", mindmapId);
-        query.setParameter("collaboratorId", user.getId());
-
-        final List<Collaboration> mindMaps = query.getResultList();
-
-        if (mindMaps != null && !mindMaps.isEmpty()) {
-            result = mindMaps.get(0);
-        } else {
-            result = null;
-        }
-
-        return result;
     }
 
     @Override
@@ -211,12 +182,6 @@ public class MindmapManagerImpl
     @Override
     public void removeCollaborator(@NotNull Collaborator collaborator) {
         getHibernateTemplate().delete(collaborator);
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<Mindmap> getAllMindmaps() {
-        return currentSession().createQuery("from com.wisemapping.model.Mindmap wisemapping").list();
     }
 
     @Override
