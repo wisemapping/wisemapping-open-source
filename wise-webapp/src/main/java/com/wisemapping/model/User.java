@@ -31,8 +31,8 @@ import java.util.Set;
 @Entity
 @Table(name = "USER")
 @PrimaryKeyJoinColumn(name = "colaborator_id")
-//@Cacheable
-//@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class User
         extends Collaborator
         implements Serializable {

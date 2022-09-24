@@ -32,8 +32,8 @@ import java.util.Set;
 @Entity
 @Table(name = "COLLABORATOR")
 @Inheritance(strategy = InheritanceType.JOINED)
-//@Cacheable
-//@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Collaborator implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
