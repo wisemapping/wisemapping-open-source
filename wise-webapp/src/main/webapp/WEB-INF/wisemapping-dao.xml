@@ -41,7 +41,7 @@
           class="org.springframework.transaction.interceptor.NameMatchTransactionAttributeSource">
         <property name="properties">
             <props>
-                <prop key="*">PROPAGATION_REQUIRED</prop>
+                <prop key="*">PROPAGATION_REQUIRED_NEW</prop>
             </props>
         </property>
     </bean>
