@@ -112,10 +112,18 @@ public class Collaborator implements Serializable {
 
 
     public boolean identityEquality(@Nullable Collaborator that) {
-        if (this == that) return true;
-        if (that == null) return false;
+        if (this == that) {
+            return true;
+        }
 
-        if (id != that.getId()) return false;
+        if (that == null) {
+            return false;
+        }
+
+        if (id != that.getId()) {
+            return false;
+        }
+
         return email != null ? email.equals(that.getEmail()) : that.getEmail() == null;
     }
 

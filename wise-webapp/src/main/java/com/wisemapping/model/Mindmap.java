@@ -63,7 +63,7 @@ public class Mindmap implements Serializable {
     @Column(name = "public")
     private boolean isPublic;
 
-    @OneToMany(mappedBy = "mindMap", orphanRemoval = true, cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "mindMap", orphanRemoval = true, cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     private Set<Collaboration> collaborations = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
@@ -177,15 +177,14 @@ public class Mindmap implements Serializable {
         return result;
     }
 
+    public boolean isCreator(@NotNull User user) {
+        return this.getCreator()!=null && this.getCreator().identityEquality(user);
+    }
+
     public boolean isPublic() {
         return isPublic;
     }
 
-    //@Todo: This is a hack to overcome some problem with JS EL. For some reason, ${mindmap.public} fails as not supported.
-    // More research is needed...
-    public boolean isAccessible() {
-        return isPublic();
-    }
 
     public void setPublic(boolean isPublic) {
         this.isPublic = isPublic;

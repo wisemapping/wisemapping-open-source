@@ -46,10 +46,10 @@ public class RestMindmapInfo {
     @JsonIgnore
     private final Mindmap mindmap;
     @JsonIgnore
-    private  Set<RestLabel> restLabels;
+    private Set<RestLabel> restLabels;
 
     @JsonIgnore
-    private  int mapId = -1;
+    private int mapId = -1;
 
     private final Collaborator collaborator;
 
@@ -91,9 +91,9 @@ public class RestMindmapInfo {
     public Set<RestLabel> getLabels() {
         // Support test deserialization...
         Set<RestLabel> result = this.restLabels;
-        if(result==null) {
+        if (result == null) {
             final User me = Utils.getUser();
-            result =  mindmap.getLabels().
+            result = mindmap.getLabels().
                     stream()
                     .filter(l -> l.getCreator().equals(me))
                     .map(RestLabel::new)
@@ -107,8 +107,8 @@ public class RestMindmapInfo {
     }
 
     public int getId() {
-        int result  =  this.mapId;
-        if(mapId==-1) {
+        int result = this.mapId;
+        if (mapId == -1) {
             result = mindmap.getId();
         }
         return result;
@@ -132,8 +132,17 @@ public class RestMindmapInfo {
     }
 
     public String getRole() {
-        final Optional<Collaboration> collaboration = mindmap.findCollaboration(Utils.getUser());
-        return collaboration.map(value -> value.getRole().getLabel()).orElse(ROLE_NONE);
+        final User user = Utils.getUser();
+        String result;
+        if (mindmap.isCreator(user)) {
+            // Performance hack. In case that the person is the creator, assume that the role is owner.
+            // This is to avoid loading all the collaboration maps per map.
+            result = CollaborationRole.OWNER.getLabel();
+        } else {
+            final Optional<Collaboration> collaboration = mindmap.findCollaboration(user);
+            result = collaboration.map(value -> value.getRole().getLabel()).orElse(ROLE_NONE);
+        }
+        return result;
     }
 
     public void setRole(String value) {
