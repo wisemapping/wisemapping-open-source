@@ -23,6 +23,8 @@ import com.wisemapping.exceptions.InvalidMindmapException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.util.ZipUtils;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.jetbrains.annotations.NotNull;
@@ -64,9 +66,11 @@ public class Mindmap implements Serializable {
     private boolean isPublic;
 
     @OneToMany(mappedBy = "mindMap", orphanRemoval = true, cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
     private Set<Collaboration> collaborations = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
+    @Fetch(FetchMode.JOIN)
     @JoinTable(
             name = "R_LABEL_MINDMAP",
             joinColumns = @JoinColumn(name = "mindmap_id"),

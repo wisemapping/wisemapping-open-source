@@ -134,15 +134,8 @@ public class RestMindmapInfo {
     public String getRole() {
         final User user = Utils.getUser();
         String result;
-        if (mindmap.isCreator(user)) {
-            // Performance hack. In case that the person is the creator, assume that the role is owner.
-            // This is to avoid loading all the collaboration maps per map.
-            result = CollaborationRole.OWNER.getLabel();
-        } else {
-            final Optional<Collaboration> collaboration = mindmap.findCollaboration(user);
-            result = collaboration.map(value -> value.getRole().getLabel()).orElse(ROLE_NONE);
-        }
-        return result;
+        final Optional<Collaboration> collaboration = mindmap.findCollaboration(user);
+        return  collaboration.map(value -> value.getRole().getLabel()).orElse(ROLE_NONE);
     }
 
     public void setRole(String value) {
