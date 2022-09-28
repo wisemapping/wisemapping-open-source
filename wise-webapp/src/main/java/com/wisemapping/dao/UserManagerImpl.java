@@ -115,6 +115,7 @@ public class UserManagerImpl
             Collaboration newCollab = new Collaboration();
             newCollab.setRoleId(oldCollab.getRole().ordinal());
             newCollab.setMindMap(oldCollab.getMindMap());
+            oldCollab.getMindMap().removedCollaboration(oldCollab);
             newCollab.setCollaborator(user);
             user.addCollaboration(newCollab);
             newCollabs.add(newCollab);
@@ -124,7 +125,6 @@ public class UserManagerImpl
         final HibernateTemplate template = getHibernateTemplate();
         collaborations.forEach(c -> template.delete(c));
         template.delete(collaborator);
-        template.flush();
 
         // Save all new...
         this.createUser(user);

@@ -21,6 +21,7 @@ package com.wisemapping.model;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -46,7 +47,7 @@ public class Collaboration implements Serializable {
     private Collaborator collaborator;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "properties_id", nullable = false, unique = true)
+    @JoinColumn(name = "properties_id", nullable = true, unique = true)
     private CollaborationProperties collaborationProperties = new CollaborationProperties();
 
     public Collaboration() {
@@ -103,12 +104,13 @@ public class Collaboration implements Serializable {
         this.collaborator = collaborator;
     }
 
-    @NotNull
+
+    @Nullable
     public CollaborationProperties getCollaborationProperties() {
         return this.collaborationProperties;
     }
 
-    public void setCollaborationProperties(@NotNull CollaborationProperties collaborationProperties) {
+    public void setCollaborationProperties(@Nullable CollaborationProperties collaborationProperties) {
         this.collaborationProperties = collaborationProperties;
     }
 
