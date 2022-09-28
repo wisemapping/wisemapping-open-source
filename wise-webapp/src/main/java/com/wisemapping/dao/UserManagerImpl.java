@@ -109,27 +109,22 @@ public class UserManagerImpl
         assert user != null : "Trying to store a null user";
 
         // Migrate from previous temporal collab to new user ...
-        List<Collaboration> newCollabs = new ArrayList<>();
-        final Set<Collaboration> collaborations = collaborator.getCollaborations();
-        for (Collaboration oldCollab : collaborations) {
-            Collaboration newCollab = new Collaboration();
-            newCollab.setRoleId(oldCollab.getRole().ordinal());
-            newCollab.setMindMap(oldCollab.getMindMap());
-            oldCollab.getMindMap().removedCollaboration(oldCollab);
-            newCollab.setCollaborator(user);
-            user.addCollaboration(newCollab);
-            newCollabs.add(newCollab);
-        }
-
-        // Delete old collaboration
         final HibernateTemplate template = getHibernateTemplate();
-        collaborations.forEach(c -> template.delete(c));
-        template.delete(collaborator);
+        collaborator.setEmail(collaborator.getEmail() + "_toRemove");
+        template.saveOrUpdate(collaborator);
+        template.flush();
 
         // Save all new...
         this.createUser(user);
-        newCollabs.forEach(c -> template.saveOrUpdate(c));
 
+        // Update mindmap ...
+        final Set<Collaboration> collaborations = collaborator.getCollaborations();
+        for (Collaboration collabs : collaborations) {
+            collabs.setCollaborator(user);
+        }
+
+        // Delete old user ...
+        template.delete(collaborator);
         return user;
     }
 
