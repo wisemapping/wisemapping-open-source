@@ -1,6 +1,6 @@
 CREATE TABLE COLLABORATOR (
   id            INTEGER      NOT NULL IDENTITY,
-  email         VARCHAR(255) NOT NULL,
+  email         VARCHAR(255) NOT NULL UNIQUE,
   creation_date DATE
 );
 
