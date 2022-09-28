@@ -146,7 +146,11 @@ public class Mindmap implements Serializable {
     }
 
     public void removedCollaboration(@NotNull Collaboration collaboration) {
-        collaborations.add(collaboration);
+        collaborations.remove(collaboration);
+    }
+
+    public void removedCollaboration(@NotNull Set<Collaboration> collaborations) {
+        this.collaborations.removeAll(collaborations);
     }
 
     @NotNull
@@ -182,7 +186,7 @@ public class Mindmap implements Serializable {
     }
 
     public boolean isCreator(@NotNull User user) {
-        return this.getCreator()!=null && this.getCreator().identityEquality(user);
+        return this.getCreator() != null && this.getCreator().identityEquality(user);
     }
 
     public boolean isPublic() {

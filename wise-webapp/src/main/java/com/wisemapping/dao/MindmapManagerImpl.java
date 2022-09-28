@@ -227,15 +227,18 @@ public class MindmapManagerImpl
     }
 
     @Override
-    public void removeMindmap(@NotNull final Mindmap mindMap) {
+    public void removeMindmap(@NotNull final Mindmap mindmap) {
         // Delete history first ...
         final Criteria hibernateCriteria = currentSession().createCriteria(MindMapHistory.class);
-        hibernateCriteria.add(Restrictions.eq("mindmapId", mindMap.getId()));
-        List list = hibernateCriteria.list();
+        hibernateCriteria.add(Restrictions.eq("mindmapId", mindmap.getId()));
+        final List list = hibernateCriteria.list();
         getHibernateTemplate().deleteAll(list);
 
+        // Remove collaborations ...
+        mindmap.removedCollaboration(mindmap.getCollaborations());
+
         // Delete mindmap ....
-        getHibernateTemplate().delete(mindMap);
+        getHibernateTemplate().delete(mindmap);
     }
 
     private void saveHistory(@NotNull final Mindmap mindMap) {

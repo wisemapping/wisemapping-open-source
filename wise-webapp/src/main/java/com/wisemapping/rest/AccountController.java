@@ -129,7 +129,7 @@ public class AccountController extends BaseController {
         }
 
         // Delete labels ....
-        List<Label> labels = labelService.getAll(user);
+        final List<Label> labels = labelService.getAll(user);
         labels.forEach(l -> {
             try {
                 labelService.removeLabel(l, user);
