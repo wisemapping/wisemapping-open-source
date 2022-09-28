@@ -43,7 +43,7 @@
           class="org.springframework.transaction.interceptor.NameMatchTransactionAttributeSource">
         <property name="properties">
             <props>
-                <prop key="*">PROPAGATION_NESTED</prop>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>
