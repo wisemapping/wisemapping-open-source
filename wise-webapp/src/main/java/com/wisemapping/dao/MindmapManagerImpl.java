@@ -148,13 +148,6 @@ public class MindmapManagerImpl
                 final SimpleExpression descriptionRestriction = Restrictions.like("description", "%" + criteria.getDescription() + "%");
                 junction.add(descriptionRestriction);
             }
-            if (criteria.getTags().size() > 0) {
-                for (String tag : criteria.getTags()) {
-                    final SimpleExpression tagRestriction = Restrictions.like("tags", "%" + tag + "%");
-                    junction.add(tagRestriction);
-                }
-            }
-
             hibernateCriteria.add(junction);
         }
         return hibernateCriteria.list();

@@ -27,7 +27,6 @@ CREATE TABLE MINDMAP (
   creation_date  DATETIME,
   edition_date   DATETIME,
   creator_id     INTEGER       NOT NULL,
-  tags           VARCHAR(1014),
   last_editor_id INTEGER       NOT NULL
 --FOREIGN KEY(creator_id) REFERENCES USER(colaborator_id)
 );
@@ -74,14 +73,6 @@ CREATE TABLE COLLABORATION (
   FOREIGN KEY (colaborator_id) REFERENCES COLLABORATOR (id),
   FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id),
   FOREIGN KEY (properties_id) REFERENCES COLLABORATION_PROPERTIES (id)
-);
-
-
-CREATE TABLE TAG (
- id      INTEGER      NOT NULL IDENTITY,
- name    VARCHAR(255) NOT NULL,
- user_id INTEGER      NOT NULL,
---FOREIGN KEY(user_id) REFERENCES USER(colaborator_id)
 );
 
 CREATE TABLE ACCESS_AUDITORY (
