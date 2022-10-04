@@ -34,6 +34,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 public class UserManagerImpl
         extends HibernateDaoSupport
@@ -118,7 +119,7 @@ public class UserManagerImpl
         this.createUser(user);
 
         // Update mindmap ...
-        final Set<Collaboration> collaborations = collaborator.getCollaborations();
+        final Set<Collaboration> collaborations = new CopyOnWriteArraySet<>(collaborator.getCollaborations());
         for (Collaboration collabs : collaborations) {
             collabs.setCollaborator(user);
         }
