@@ -68,6 +68,4 @@ public interface MindmapService {
     LockManager getLockManager();
 
     boolean isAdmin(@Nullable User user);
-
-    void purgeHistory(int mapId) throws IOException;
 }

@@ -92,11 +92,6 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public void purgeHistory(int mapId) throws IOException {
-        mindmapManager.purgeHistory(mapId);
-    }
-
-    @Override
     public Mindmap getMindmapByTitle(String title, User user) {
         return mindmapManager.getMindmapByTitle(title, user);
     }

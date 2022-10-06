@@ -38,6 +38,7 @@ public class ViewBaseSecurityAdvise
 
     @Override
     protected boolean isAllowed(@Nullable User user, Mindmap map) {
+        System.out.println("VIEWWWWWWWWWWWWW");
         return getMindmapService().hasPermissions(user, map, CollaborationRole.VIEWER);
     }
 
