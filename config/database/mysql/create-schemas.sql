@@ -42,8 +42,6 @@ CREATE TABLE MINDMAP (
   creation_date  DATETIME,
   edition_date   DATETIME,
   creator_id     INTEGER            NOT NULL,
-  tags           VARCHAR(1014)
-                 CHARACTER SET utf8,
   last_editor_id INTEGER            NOT NULL,
   FOREIGN KEY (creator_id) REFERENCES USER (colaborator_id)
     ON DELETE CASCADE
@@ -110,17 +108,7 @@ CREATE TABLE COLLABORATION (
   FOREIGN KEY (properties_id) REFERENCES COLLABORATION_PROPERTIES (id)
     ON DELETE CASCADE
     ON UPDATE NO ACTION
-)
-  CHARACTER SET utf8;
-
-CREATE TABLE TAG (
-  id      INTEGER            NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  name    VARCHAR(255)
-          CHARACTER SET utf8 NOT NULL,
-  user_id INTEGER            NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES USER (colaborator_id)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION
+  UNIQUE KEY UC_ROLE (mindmap_id,colaborator_id)
 )
   CHARACTER SET utf8;
 
