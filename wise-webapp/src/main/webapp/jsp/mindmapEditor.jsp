@@ -37,9 +37,9 @@
         var mindmapLocked = ${mindmapLocked};
         var mindmapLockedMsg = '<spring:message code="MINDMAP_LOCKED" arguments="${lockInfo.user.fullName},${lockInfo.user.email}"/>';
         var userOptions = ${mindmap.properties};
-        var accountName = '${principal.fullName}';
+        var accountName = '${fn:replace(principal.fullName,'\'','\\\'')}';
         var accountEmail = '${principal.email}';
-        var mapTitle = '${mindmap.title}';
+        var mapTitle = '${fn:replace(mindmap.title,'\'','\\\'')}';
     </script>
 </head>
 
