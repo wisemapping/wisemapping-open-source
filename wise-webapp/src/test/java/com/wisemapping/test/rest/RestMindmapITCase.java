@@ -227,7 +227,7 @@ public class RestMindmapITCase {
         Optional<RestMindmapInfo> mindmapInfo = fetchMap(requestHeaders, template, mapId);
 
         // @todo: Enforce check...
-//        assertTrue(mindmapInfo.get().getStarred() == true);
+        assertTrue(mindmapInfo.get().getStarred() == true);
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")

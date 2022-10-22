@@ -462,6 +462,20 @@ public class MindmapController extends BaseController {
         mindmapService.updateCollaboration(user, collaboration.get());
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}/starred", produces = {"text/plain"})
+    @ResponseBody
+    public String fetchStarred(@PathVariable int id) throws WiseMappingException {
+        final Mindmap mindmap = findMindmapById(id);
+        final User user = Utils.getUser();
+
+        final Optional<Collaboration> collaboration = mindmap.findCollaboration(user);
+        if (!collaboration.isPresent()) {
+            throw new WiseMappingException("No enough permissions.");
+        }
+        boolean result = collaboration.get().getCollaborationProperties().getStarred();
+        return Boolean.toString(result);
+    }
+
     @RequestMapping(method = RequestMethod.DELETE, value = "/maps/batch")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void batchDelete(@RequestParam() String ids) throws IOException, WiseMappingException {
