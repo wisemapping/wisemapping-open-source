@@ -24,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "LABEL")
@@ -34,17 +35,22 @@ public class Label implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotNull private String title;
-    @NotNull private String color;
-    @Nullable private String iconName;
+    @NotNull
+    private String title;
+    @NotNull
+    private String color;
+    @Nullable
+    private String iconName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="creator_id",nullable = true,unique = true)
-    @NotNull private User creator;
+    @JoinColumn(name = "creator_id", nullable = true, unique = true)
+    @NotNull
+    private User creator;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="parent_label_id",nullable = true)
-    @Nullable private Label parent;
+    @JoinColumn(name = "parent_label_id", nullable = true)
+    @Nullable
+    private Label parent;
 
     public void setParent(@Nullable Label parent) {
         this.parent = parent;
@@ -104,17 +110,15 @@ public class Label implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Label)) return false;
 
-        Label label = (Label) o;
-
+        final Label label = (Label) o;
         return id == label.id && creator.getId() == label.creator.getId()
-                &&  !(parent != null ? !parent.equals(label.parent) : label.parent != null);
+                && Objects.equals(parent, label.parent);
     }
 
     @Override
     public int hashCode() {
-        long result = id;
-        result = 31 * result + title.hashCode();
-        result = 31 * result + (creator!=null?creator.hashCode():0);
+        long result = title.hashCode();
+        result = 31 * result + (creator != null ? creator.hashCode() : 0);
         result = 31 * result + (parent != null ? parent.hashCode() : 0);
         return (int) result;
     }
