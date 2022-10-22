@@ -24,12 +24,14 @@
                 <prop key="hibernate.cache.use_second_level_cache">true</prop>
                 <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
                 <prop key="hibernate.default_batch_fetch_size">200</prop>
+                <prop key="hibernate.nestedTransactionAllowed">true</prop>
             </props>
         </property>
     </bean>
 
     <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
         <property name="sessionFactory" ref="mindmapSessionFactory"/>
+        <property name="nestedTransactionAllowed" value="true"/>
     </bean>
 
     <!-- Hibernate Template Definition -->

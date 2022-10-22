@@ -1,7 +1,6 @@
 /********************************************************************************/
 /* Header & Toolbar Styles */
 /********************************************************************************/
-@import "bootstrap.min.css";
 body {
     margin: 0;
     font-family:Arial;
@@ -57,20 +56,16 @@ div#mindplot {
     align-items: stretch;
 }
 
-div#position {
-    margin-top: 5px;
-}
 
 #position-button {
     cursor: pointer;
-    border: solid black 1px;
+    border: solid white 1px;
     width: 40px;
     height: 40px;
     background-position: center;
     background-repeat: no-repeat;
     background-size: 40px 40px;
     background-color: #FFF;
-    border-radius: 8px;
     padding: 0;
 }
 
@@ -81,11 +76,12 @@ div#position {
 #zoom-button {
     width: 40px;
     border: 0;
+    box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2),0px 4px 5px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12);
 }
 
 #zoom-plus,
 #zoom-minus {
-    border: solid black 1px;
+    border: solid white 1px;
     height: 40px;
     width: 40px;
     background-repeat: no-repeat;
@@ -100,14 +96,6 @@ div#position {
 #zoom-minus
 >img {
   vertical-align: middle;
-}
-
-#zoom-plus {
-    border-radius: 8px 8px 0 0;
-}
-
-#zoom-minus {
-    border-radius: 0 0 8px 8px;
 }
 
 div#footerLogo {

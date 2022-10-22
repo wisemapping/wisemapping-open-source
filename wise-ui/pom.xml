@@ -12,7 +12,7 @@
         <groupId>org.wisemapping</groupId>
         <artifactId>wisemapping</artifactId>
         <relativePath>../pom.xml</relativePath>
-        <version>5.0.12</version>
+        <version>5.0.13-SNAPSHOT</version>
     </parent>
 
     <build>
@@ -29,11 +29,11 @@
                                 <mkdir dir="target/wisemapping-mindplot"/>
                                 <exec executable="npm" dir="target" failonerror="true">
                                     <arg value="pack"/>
-                                    <arg value="@wisemapping/mindplot@5.0.16"/>
+                                    <arg value="@wisemapping/mindplot@5.0.17"/>
                                 </exec>
                                 <exec executable="tar" dir="target" failonerror="true">
                                     <arg value="-xvzf"/>
-                                    <arg value="wisemapping-mindplot-5.0.16.tgz"/>
+                                    <arg value="wisemapping-mindplot-5.0.17.tgz"/>
                                     <arg value="-C"/>
                                     <arg value="wisemapping-mindplot"/>
                                 </exec>
@@ -42,11 +42,11 @@
                                 <mkdir dir="target/wisemapping-webapp"/>
                                 <exec executable="npm" dir="target" failonerror="true">
                                     <arg value="pack"/>
-                                    <arg value="@wisemapping/webapp@5.0.15"/>
+                                    <arg value="@wisemapping/webapp@5.0.18"/>
                                 </exec>
                                 <exec executable="tar" dir="target" failonerror="true">
                                     <arg value="-xvzf"/>
-                                    <arg value="wisemapping-webapp-5.0.15.tgz"/>
+                                    <arg value="wisemapping-webapp-5.0.18.tgz"/>
                                     <arg value="-C"/>
                                     <arg value="wisemapping-webapp"/>
                                 </exec>

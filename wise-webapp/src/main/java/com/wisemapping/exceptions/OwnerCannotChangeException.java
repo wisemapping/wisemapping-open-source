@@ -20,13 +20,13 @@ package com.wisemapping.exceptions;
 
 import org.jetbrains.annotations.NotNull;
 
-public class CollabChangeException
+public class OwnerCannotChangeException
         extends ClientException
 {
 
     private static final String MSG_KEY = "OWNER_ROLE_CAN_NOT_BE_CHANGED";
 
-    public CollabChangeException(@NotNull String email)
+    public OwnerCannotChangeException(@NotNull String email)
     {
         super("Collab email can not be change. " + email + " is the the owner.",Severity.WARNING);
     }

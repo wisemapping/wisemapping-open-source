@@ -26,6 +26,7 @@ import java.util.stream.Stream;
 
 import org.springframework.web.client.RestClientException;
 
+import static com.wisemapping.test.rest.RestHelper.createHeaders;
 import static org.testng.Assert.*;
 
 @Test
@@ -223,11 +224,11 @@ public class RestMindmapITCase {
         template.put(resourceUrl, updateEntity);
 
         // Has been updated ?.
-        final String mapId = mapUri.getPath().replace("/service/maps/", "");
-        Optional<RestMindmapInfo> mindmapInfo = fetchMap(requestHeaders, template, mapId);
 
-        // @todo: Enforce check...
-//        assertTrue(mindmapInfo.get().getStarred() == true);
+        final HttpEntity findLabelEntity = new HttpEntity(createHeaders(MediaType.TEXT_PLAIN));
+        final ResponseEntity<String> response = template.exchange(resourceUrl, HttpMethod.GET, findLabelEntity, String.class);
+
+        assertTrue(Boolean.parseBoolean(response.getBody()), "Starred has been updated");
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")

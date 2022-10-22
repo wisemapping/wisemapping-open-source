@@ -31,8 +31,6 @@ import java.util.Set;
 @Entity
 @Table(name = "USER")
 @PrimaryKeyJoinColumn(name = "colaborator_id")
-//@Cacheable
-//@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class User
         extends Collaborator
         implements Serializable {
@@ -57,20 +55,7 @@ public class User
     @Column(name = "authenticator_uri")
     private String authenticatorUri;
 
-    @ElementCollection
-    @CollectionTable(name = "TAG", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "name")
-    private Set<String> tags = new HashSet<>();
-
     public User() {
-    }
-
-    public void setTags(Set<String> tags) {
-        this.tags = tags;
-    }
-
-    public Set<String> getTags() {
-        return tags;
     }
 
     public String getFullName() {

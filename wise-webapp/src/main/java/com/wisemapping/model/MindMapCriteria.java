@@ -24,7 +24,6 @@ import java.util.List;
 public class MindMapCriteria {
     private String title;
     private String description;
-    private List<String> tags = new ArrayList<String>();
     private boolean orConnector = false;
     private int pageNro = 0;
 
@@ -41,18 +40,9 @@ public class MindMapCriteria {
         this.pageNro = page;
     }
 
-    public List<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
-
     public String getTitle() {
         return title;
     }
-
     public void setTitle(String title) {
         this.title = title;
     }
@@ -78,8 +68,7 @@ public class MindMapCriteria {
     }
 
     public boolean isEmpty() {
-        return !(getTags() != null && !getTags().isEmpty() || getTitle() != null || getDescription() != null);
+        return getTitle() != null || getDescription() != null;
     }
 
-    public static MindMapCriteria EMPTY_CRITERIA = new MindMapCriteria();
 }

@@ -10,9 +10,14 @@
     <meta name="viewport" content="initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <base href="${requestScope['site.baseurl']}/static/mindplot/">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute('media');" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;600&display=swap"/>
+
     <title>${mindmap.title} | <spring:message code="SITE.TITLE"/></title>
     <link rel="stylesheet"  href="../../css/viewonly.css"/>
     <%@ include file="/jsp/pageHeaders.jsf" %>
+
     <script type="text/javascript">
           var mapId = '${mindmap.id}';
           var historyId = '${hid}';
@@ -20,6 +25,7 @@
           var locale = '${locale}';
           var isAuth = ${principal != null};
      </script>
+
     <c:if test="${requestScope['google.analytics.enabled']}">
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=${requestScope['google.analytics.account']}"></script>
@@ -32,6 +38,23 @@
             'page_title' : 'Public View'
           });
         </script>
+    </c:if>
+
+    <c:if test="${requestScope['google.analytics.enabled']}">
+      <!-- Google Ads Sense Config. Lazy loading optimization -->
+      <script type="text/javascript">
+          function downloadJsAtOnload() {
+              setTimeout(function downloadJs() {
+                  var element = document.createElement("script");
+                  element.setAttribute("data-ad-client", "ca-pub-4996113942657337");
+                  element.async = true;
+                  element.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
+                  document.body.appendChild(element);
+              }, 2000);
+          };
+
+          window.addEventListener("load", downloadJsAtOnload, false);
+      </script>
     </c:if>
 
 	<style>
@@ -70,15 +93,15 @@
 		
 		<div id="floating-panel">
 			<div id="zoom-button">
-				<button id="zoom-plus">
-					<img src="../../images/add.svg" />
+				<button id="zoom-plus" title="Zoom Out">
+					<img src="../../images/add.svg" width="24" height="24"/>
 				</button>
-				<button id="zoom-minus">
-					<img src="../../images/minus.svg" />
+				<button id="zoom-minus" title="Zoom In">
+					<img src="../../images/minus.svg" width="24" height="24"/>
 				</button>
 				<div id="position">
-					<button id="position-button">
-						<img src="../../images/center_focus.svg" />
+					<button id="position-button" title="Center">
+						<img src="../../images/center_focus.svg" width="24" height="24"/>
 					</button>
 				</div>
 			</div>

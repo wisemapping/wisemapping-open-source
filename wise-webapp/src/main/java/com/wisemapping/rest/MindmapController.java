@@ -74,7 +74,7 @@ public class MindmapController extends BaseController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/maps/", produces = {"application/json"})
-    public RestMindmapList retrieveList(@RequestParam(required = false) String q) throws IOException {
+    public RestMindmapList retrieveList(@RequestParam(required = false) String q) {
         final User user = Utils.getUser();
 
         final MindmapFilter filter = MindmapFilter.parse(q);
@@ -299,7 +299,7 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/collabs/", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void addCollab(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws CollaborationException, MapCouldNotFoundException, AccessDeniedSecurityException, InvalidEmailException, TooManyInactiveAccountsExceptions, CollabChangeException {
+    public void addCollab(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws CollaborationException, MapCouldNotFoundException, AccessDeniedSecurityException, InvalidEmailException, TooManyInactiveAccountsExceptions, OwnerCannotChangeException {
         final Mindmap mindMap = findMindmapById(id);
 
         // Only owner can change collaborators...
@@ -346,12 +346,12 @@ public class MindmapController extends BaseController {
 
                 // Are we trying to change the owner ...
                 if (currentCollab != null && currentCollab.getRole() == CollaborationRole.OWNER) {
-                    throw new CollabChangeException(collabEmail);
+                    throw new OwnerCannotChangeException(collabEmail);
                 }
 
                 // Role can not be changed ...
                 if (newRole == CollaborationRole.OWNER) {
-                    throw new CollabChangeException(collabEmail);
+                    throw new OwnerCannotChangeException(collabEmail);
                 }
 
                 // This is collaboration that with different newRole, try to change it ...
@@ -460,6 +460,20 @@ public class MindmapController extends BaseController {
         }
         collaboration.get().getCollaborationProperties().setStarred(starred);
         mindmapService.updateCollaboration(user, collaboration.get());
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}/starred", produces = {"text/plain"})
+    @ResponseBody
+    public String fetchStarred(@PathVariable int id) throws WiseMappingException {
+        final Mindmap mindmap = findMindmapById(id);
+        final User user = Utils.getUser();
+
+        final Optional<Collaboration> collaboration = mindmap.findCollaboration(user);
+        if (!collaboration.isPresent()) {
+            throw new WiseMappingException("No enough permissions.");
+        }
+        boolean result = collaboration.get().getCollaborationProperties().getStarred();
+        return Boolean.toString(result);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/maps/batch")

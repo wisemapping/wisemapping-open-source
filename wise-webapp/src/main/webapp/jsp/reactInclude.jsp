@@ -6,8 +6,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta charset="utf-8" />
     <base href="${requestScope['site.baseurl']}/static/webapp/">
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;600&display=swap" rel="stylesheet" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute('media');" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;600&display=swap"/>
+
     <%@ include file="/jsp/pageHeaders.jsf" %>
 
     <title>Loading | WiseMapping</title>
@@ -23,8 +25,20 @@
 
     </script>
     <c:if test="${requestScope['google.analytics.enabled']}">
-      <!-- Google Ads Sense Config-->
-      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4996113942657337" crossorigin="anonymous"></script>
+      <!-- Google Ads Sense Config. Lazy loading optimization -->
+      <script type="text/javascript">
+          function downloadJsAtOnload() {
+              setTimeout(function downloadJs() {
+                  var element = document.createElement("script");
+                  element.setAttribute("data-ad-client", "ca-pub-4996113942657337");
+                  element.async = true;
+                  element.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
+                  document.body.appendChild(element);
+              }, 2000);
+          };
+
+          window.addEventListener("load", downloadJsAtOnload, false);
+      </script>
     </c:if>
 </head>
 
