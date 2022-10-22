@@ -299,7 +299,7 @@ public class MindmapController extends BaseController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/collabs/", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void addCollab(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws CollaborationException, MapCouldNotFoundException, AccessDeniedSecurityException, InvalidEmailException, TooManyInactiveAccountsExceptions, CollabChangeException {
+    public void addCollab(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws CollaborationException, MapCouldNotFoundException, AccessDeniedSecurityException, InvalidEmailException, TooManyInactiveAccountsExceptions, OnwerCollabCannotChangeException {
         final Mindmap mindMap = findMindmapById(id);
 
         // Only owner can change collaborators...
@@ -346,12 +346,12 @@ public class MindmapController extends BaseController {
 
                 // Are we trying to change the owner ...
                 if (currentCollab != null && currentCollab.getRole() == CollaborationRole.OWNER) {
-                    throw new CollabChangeException(collabEmail);
+                    throw new OnwerCollabCannotChangeException(collabEmail);
                 }
 
                 // Role can not be changed ...
                 if (newRole == CollaborationRole.OWNER) {
-                    throw new CollabChangeException(collabEmail);
+                    throw new OnwerCollabCannotChangeException(collabEmail);
                 }
 
                 // This is collaboration that with different newRole, try to change it ...
