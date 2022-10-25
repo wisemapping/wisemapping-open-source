@@ -83,12 +83,8 @@ public class Mindmap implements Serializable {
     @Basic(fetch = FetchType.LAZY)
     private byte[] zippedXml;
 
-    //~ Constructors .........................................................................................
-
     public Mindmap() {
     }
-
-    //~ Methods ..............................................................................................
 
     public void setUnzipXml(@NotNull byte[] value) {
         try {
@@ -318,9 +314,18 @@ public class Mindmap implements Serializable {
         final StringBuilder result = new StringBuilder();
         result.append("<map version=\"tango\">");
         result.append("<topic central=\"true\" text=\"");
-        result.append(StringEscapeUtils.escapeXml(title));
+        result.append(escapeXmlAttribute(title));
         result.append("\"/></map>");
         return result.toString();
+    }
+
+    static private String escapeXmlAttribute(String attValue) {
+        // Hack: Find out of the box function.
+        String result = attValue.replace("&", "&amp;");
+        result = result.replace("<", "&lt;");
+        result = result.replace("gt", "&gt;");
+        result = result.replace("\"", "&quot;");
+        return result;
     }
 
     public Mindmap shallowClone() {
@@ -351,18 +356,6 @@ public class Mindmap implements Serializable {
             }
         }
         return false;
-    }
-
-    @Nullable
-    public Label findLabel(int labelId) {
-        Label result = null;
-        for (Label label : this.labels) {
-            if (label.getId() == labelId) {
-                result = label;
-                break;
-            }
-        }
-        return result;
     }
 
     public void removeLabel(@NotNull final Label label) {

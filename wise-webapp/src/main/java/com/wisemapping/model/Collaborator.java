@@ -105,7 +105,7 @@ public class Collaborator implements Serializable {
         int id = this.getId();
         String email = this.getEmail();
 
-        int result = (int) (id ^ (id >>> 32));
+        int result = id ^ (id >>> 32);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         return result;
     }

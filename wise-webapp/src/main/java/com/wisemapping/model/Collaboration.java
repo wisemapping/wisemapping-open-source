@@ -19,8 +19,6 @@
 package com.wisemapping.model;
 
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.*;
