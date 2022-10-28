@@ -24,7 +24,8 @@ import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestLogItem;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 final public class NotificationService {
-    final private static Logger logger = Logger.getLogger(Mailer.class);
+    final private static Logger logger = LogManager.getLogger();
     private ResourceBundleMessageSource messageSource;
 
     @Autowired

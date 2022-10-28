@@ -23,18 +23,21 @@ import com.wisemapping.exceptions.LockException;
 import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
-import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 
 class LockManagerImpl implements LockManager {
     private static final int ONE_MINUTE_MILLISECONDS = 1000 * 60;
     private final Map<Integer, LockInfo> lockInfoByMapId;
     private final static Timer expirationTimer = new Timer();
-    final private static Logger logger = Logger.getLogger(LockManagerImpl.class);
+    final private static Logger logger = LogManager.getLogger();
 
     @Override
     public boolean isLocked(@NotNull Mindmap mindmap) {

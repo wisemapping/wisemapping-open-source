@@ -17,13 +17,15 @@
  */
 package com.wisemapping.service;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisemapping.validator.Messages;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
-import org.apache.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
 import javax.validation.constraints.NotNull;
@@ -35,7 +37,7 @@ import java.util.Map;
 
 public class RecaptchaService {
 
-    final private static Logger logger = Logger.getLogger(RecaptchaService.class);
+    final private static Logger logger = LogManager.getLogger();
     final private static String GOOGLE_RECAPTCHA_VERIFY_URL =
             "https://www.google.com/recaptcha/api/siteverify";
 

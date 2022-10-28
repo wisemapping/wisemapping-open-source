@@ -25,7 +25,8 @@ import com.wisemapping.security.Utils;
 import com.wisemapping.service.*;
 import com.wisemapping.validator.MapInfoValidator;
 import org.apache.commons.validator.routines.EmailValidator;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -46,7 +47,7 @@ import java.util.stream.Collectors;
 
 @Controller
 public class MindmapController extends BaseController {
-    final Logger logger = Logger.getLogger(MindmapController.class);
+    final Logger logger = LogManager.getLogger();
 
     private static final String LATEST_HISTORY_REVISION = "latest";
 

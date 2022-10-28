@@ -26,7 +26,8 @@ import com.wisemapping.rest.model.RestUserRegistration;
 import com.wisemapping.service.*;
 import com.wisemapping.validator.Messages;
 import com.wisemapping.validator.UserValidator;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -57,7 +58,7 @@ public class UserController extends BaseController {
     @Value("${accounts.exclusion.domain:''}")
     private String domainBanExclusion;
 
-    private static final Logger logger = Logger.getLogger(UserController.class);
+    private static final Logger logger = LogManager.getLogger();
     private static final String REAL_IP_ADDRESS_HEADER = "X-Real-IP";
 
     @RequestMapping(method = RequestMethod.POST, value = "/users", produces = {"application/json"})
