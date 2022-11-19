@@ -76,37 +76,36 @@
 </head>
 <body>
 	<div id="root" class="mindplot-root">
-
         <mindplot-component id="mindmap-comp"/>
-        <div id="mindplot-tooltips" className="wise-editor"></div>
+    </div>
+    <div id="mindplot-tooltips" className="wise-editor"></div>
 
-		<a href="${requestScope['site.homepage']}" target="new" aria-label="WiseMapping Homepage">
-    		<div id="footerLogo"></div>
-		</a>
-		
-		<div id="mapDetails">
-			<span class="title"><spring:message code="CREATOR"/>:</span><span>${mindmap.creator.fullName}</span>
-			<span class="title"><spring:message code="DESCRIPTION"/>:</span><span>${mindmap.title}</span>
-		</div>
-		
-		<script type="text/javascript" src="${requestScope['site.static.js.url']}/mindplot/loader.js" crossorigin="anonymous"></script>
-		
-		<div id="floating-panel">
-			<div id="zoom-button">
-				<button id="zoom-plus" title="Zoom Out" alt="Zoom Out">
-					<img src="../../images/add.svg" width="24" height="24"/>
-				</button>
-				<button id="zoom-minus" title="Zoom In" title="Zoom Out" alt="Zoom In">
-					<img src="../../images/minus.svg" width="24" height="24"/>
-				</button>
-				<div id="position">
-					<button id="position-button" title="Zoom To Fit" alt="Zoom To Fit">
-						<img src="../../images/center_focus.svg" width="24" height="24"/>
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
+    <a href="${requestScope['site.homepage']}" target="new" aria-label="WiseMapping Homepage">
+        <div id="footerLogo"></div>
+    </a>
+
+    <div id="mapDetails">
+        <span class="title"><spring:message code="CREATOR"/>:</span><span>${mindmap.creator.fullName}</span>
+        <span class="title"><spring:message code="DESCRIPTION"/>:</span><span>${mindmap.title}</span>
+    </div>
+
+    <script type="text/javascript" src="${requestScope['site.static.js.url']}/mindplot/loader.js" crossorigin="anonymous"></script>
+
+    <div id="floating-panel">
+        <div id="zoom-button">
+            <button id="zoom-plus" title="Zoom Out" alt="Zoom Out">
+                <img src="../../images/add.svg" width="24" height="24"/>
+            </button>
+            <button id="zoom-minus" title="Zoom In" title="Zoom Out" alt="Zoom In">
+                <img src="../../images/minus.svg" width="24" height="24"/>
+            </button>
+            <div id="position">
+                <button id="position-button" title="Zoom To Fit" alt="Zoom To Fit">
+                    <img src="../../images/center_focus.svg" width="24" height="24"/>
+                </button>
+            </div>
+        </div>
+    </div>
 
 	<script type="text/javascript">
 		// Hook zoom events ...
