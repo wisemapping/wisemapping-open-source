@@ -15,9 +15,7 @@
     <meta charset="utf-8" />
     <base href="${requestScope['site.baseurl']}/static/webapp/">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-    <link rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute('media');" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;600&display=swap"/>
-
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
     <%@ include file="/jsp/pageHeaders.jsf" %>
 
     <title>Loading ... | WiseMapping</title>
