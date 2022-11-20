@@ -33,7 +33,7 @@
                   element.async = true;
                   element.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
                   document.body.appendChild(element);
-              }, 0);
+              }, 50);
           };
 
           window.addEventListener("load", downloadJsAtOnload, false);
