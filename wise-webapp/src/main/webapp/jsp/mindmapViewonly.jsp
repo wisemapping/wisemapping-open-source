@@ -1,6 +1,5 @@
 <%@page pageEncoding="UTF-8" %>
 <%@include file="/jsp/init.jsp" %>
-<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 
 <%--@elvariable id="mindmap" type="com.wisemapping.model.Mindmap"--%>
 
