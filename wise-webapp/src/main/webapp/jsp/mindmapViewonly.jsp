@@ -89,7 +89,7 @@
         <span class="title"><spring:message code="DESCRIPTION"/>:</span><span>${mindmap.title}</span>
     </div>
 
-    <script type="text/javascript" src="${requestScope['site.static.js.url']}/mindplot/loader.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="${requestScope['site.static.js.url']}/mindplot/loader.js" crossorigin="anonymous" defer></script>
 
     <div id="floating-panel">
         <div id="zoom-button">
