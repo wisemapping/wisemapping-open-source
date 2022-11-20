@@ -12,7 +12,7 @@
 
     <%@ include file="/jsp/pageHeaders.jsf" %>
 
-    <title>Loading | WiseMapping</title>
+    <title>WiseMapping</title>
 
     <script>
         window.serverconfig = {
@@ -34,7 +34,7 @@
                   element.async = true;
                   element.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
                   document.body.appendChild(element);
-              }, 2000);
+              }, 0);
           };
 
           window.addEventListener("load", downloadJsAtOnload, false);

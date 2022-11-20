@@ -1,11 +1,12 @@
 <%@page pageEncoding="UTF-8" %>
 <%@include file="/jsp/init.jsp" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 
 <%--@elvariable id="mindmap" type="com.wisemapping.model.Mindmap"--%>
 
 <!DOCTYPE HTML>
 
-<html lang="${locale}">
+<html lang="${fn:substring(locale,0,2)}">
 <head>
     <meta name="viewport" content="initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -50,7 +51,7 @@
                   element.async = true;
                   element.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
                   document.body.appendChild(element);
-              }, 2000);
+              }, 0);
           };
 
           window.addEventListener("load", downloadJsAtOnload, false);
@@ -93,15 +94,15 @@
 
     <div id="floating-panel">
         <div id="zoom-button">
-            <button id="zoom-plus" title="Zoom Out" alt="Zoom Out">
-                <img src="../../images/add.svg" width="24" height="24"/>
+            <button id="zoom-plus" title="<spring:message code="ZOOM_IN"/>" alt="<spring:message code="ZOOM_IN"/>">
+                <img src="../../images/add.svg" width="24" height="24" alt="<spring:message code="ZOOM_IN"/>"/>
             </button>
-            <button id="zoom-minus" title="Zoom In" title="Zoom Out" alt="Zoom In">
-                <img src="../../images/minus.svg" width="24" height="24"/>
+            <button id="zoom-minus" title="<spring:message code="ZOOM_OUT"/>" alt="<spring:message code="ZOOM_OUT"/>">
+                <img src="../../images/minus.svg" width="24" height="24" alt="<spring:message code="ZOOM_OUT"/>"/>
             </button>
             <div id="position">
-                <button id="position-button" title="Zoom To Fit" alt="Zoom To Fit">
-                    <img src="../../images/center_focus.svg" width="24" height="24"/>
+                <button id="position-button" title="<spring:message code="ZOOM_TO_FIT"/>" alt="<spring:message code="ZOOM_TO_FIT"/>">
+                    <img src="../../images/center_focus.svg" width="24" height="24" alt="<spring:message code="ZOOM_TO_FIT"/>"/>
                 </button>
             </div>
         </div>
