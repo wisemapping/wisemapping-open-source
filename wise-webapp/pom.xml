@@ -13,8 +13,8 @@
     </parent>
 
     <properties>
-        <org.springframework.version>5.3.23</org.springframework.version>
-        <org.springframework.addons>5.6.2</org.springframework.addons>
+        <org.springframework.version>5.3.24</org.springframework.version>
+        <org.springframework.addons>5.7.3</org.springframework.addons>
         <hibernate.version>5.6.12.Final</hibernate.version>
         <hibernate-validator.version>6.0.21.Final</hibernate-validator.version>
         <spring-security-taglibs.version>5.6.1</spring-security-taglibs.version>
@@ -42,7 +42,7 @@
         <dependency>
             <groupId>com.intellij</groupId>
             <artifactId>annotations</artifactId>
-            <version>7.0.3</version>
+            <version>12.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -50,6 +50,11 @@
             <artifactId>spring-webmvc</artifactId>
             <version>${org.springframework.version}</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.5.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -291,18 +296,6 @@
                         </configuration>
 
                         <dependencies>
-                            <dependency>
-                                <groupId>mysql</groupId>
-                                <artifactId>mysql-connector-java</artifactId>
-                                <version>8.0.31</version>
-                            </dependency>
-
-                            <dependency>
-                                <groupId>org.postgresql</groupId>
-                                <artifactId>postgresql</artifactId>
-                                <version>42.5.0</version>
-                            </dependency>
-
                             <dependency>
                                 <groupId>org.hsqldb</groupId>
                                 <artifactId>hsqldb</artifactId>
