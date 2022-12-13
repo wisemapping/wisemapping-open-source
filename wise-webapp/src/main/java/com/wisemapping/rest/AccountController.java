@@ -19,7 +19,6 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Label;
 import com.wisemapping.model.Mindmap;
@@ -53,10 +52,6 @@ public class AccountController extends BaseController {
     @Qualifier("labelService")
     @Autowired
     private LabelService labelService;
-
-    @Autowired
-    private NotificationService notificationService;
-
 
     @RequestMapping(method = RequestMethod.PUT, value = "account/password", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)

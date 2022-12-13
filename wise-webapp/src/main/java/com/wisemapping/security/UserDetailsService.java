@@ -23,7 +23,6 @@ import com.wisemapping.model.User;
 import com.wisemapping.service.UserService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 

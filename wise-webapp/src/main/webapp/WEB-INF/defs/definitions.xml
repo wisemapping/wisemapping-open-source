@@ -8,6 +8,7 @@
 
     <definition name="login" template="/jsp/reactInclude.jsp"/>
     <definition name="registration" template="/jsp/reactInclude.jsp"/>
+    <definition name="registration-google" template="/jsp/reactInclude.jsp"/>
     <definition name="forgot-password" template="/jsp/reactInclude.jsp"/>
     <definition name="mindmapList" template="/jsp/reactInclude.jsp"/>
 

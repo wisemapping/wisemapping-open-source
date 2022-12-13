@@ -20,6 +20,8 @@ package com.wisemapping.service;
 
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.User;
+import com.wisemapping.rest.model.RestResetPasswordResponse;
+
 import org.jetbrains.annotations.NotNull;
 
 public interface UserService {
@@ -27,6 +29,10 @@ public interface UserService {
     void activateAccount(long code) throws InvalidActivationCodeException;
 
     User createUser(@NotNull User user, boolean emailConfirmEnabled, boolean welcomeEmail) throws WiseMappingException;
+
+	User createUserFromGoogle(@NotNull String callbackCode) throws WiseMappingException;
+
+	User confirmAccountSync(@NotNull String email, @NotNull String code) throws WiseMappingException;
 
     void changePassword(@NotNull User user);
 
@@ -36,7 +42,7 @@ public interface UserService {
 
     void updateUser(User user);
 
-    void resetPassword(@NotNull String email) throws InvalidUserEmailException, InvalidAuthSchemaException;
+    RestResetPasswordResponse resetPassword(@NotNull String email) throws InvalidUserEmailException, InvalidAuthSchemaException;
 
     void removeUser(@NotNull User user);
 

@@ -15,6 +15,9 @@ CREATE TABLE "user" (
   activation_date     DATE,
   allow_send_email    TEXT         NOT NULL DEFAULT 0,
   locale              VARCHAR(5),
+  google_sync         BOOLEAN,
+  sync_code           VARCHAR(255),
+  google_token        VARCHAR(255),
   FOREIGN KEY (colaborator_id) REFERENCES COLLABORATOR (id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
 

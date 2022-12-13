@@ -15,6 +15,9 @@ CREATE TABLE USER (
   activation_date     DATE,
   allow_send_email    CHAR(1)      NOT NULL,
   locale              VARCHAR(5),
+  google_sync		  BOOLEAN,
+  sync_code           VARCHAR(255),
+  google_token        VARCHAR(255),
   FOREIGN KEY (colaborator_id) REFERENCES COLLABORATOR (id)
 );
 

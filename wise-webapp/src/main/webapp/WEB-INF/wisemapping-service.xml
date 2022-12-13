@@ -18,12 +18,25 @@
         <property name="velocityEngineWrapper" ref="velocityEngineWrapper"/>
     </bean>
 
+	<bean id="httpInvoker" class="com.wisemapping.service.http.HttpInvoker">
+	</bean>
+
+    <bean id="googleService" class="com.wisemapping.service.google.GoogleService">
+		<property name="httpInvoker" ref="httpInvoker"/>
+        <property name="optinConfirmUrl" value="${google.oauth2.confirmUrl}"/>
+        <property name="accountBasicDataUrl" value="${google.oauth2.userinfoUrl}"/>
+        <property name="clientId" value="${google.oauth2.clientId}"/>
+        <property name="clientSecret" value="${google.oauth2.clientSecret}"/>
+        <property name="callbackUrl" value="${google.oauth2.callbackUrl}"/>
+	</bean>
+
     <bean id="userServiceTarget" class="com.wisemapping.service.UserServiceImpl">
         <property name="userManager" ref="userManager"/>
         <property name="mindmapService" ref="mindMapServiceTarget"/>
         <property name="notificationService" ref="notificationService"/>
         <property name="messageSource" ref="messageSource"/>
         <property name="velocityEngineWrapper" ref="velocityEngineWrapper"/>
+        <property name="googleService" ref="googleService"/>
     </bean>
 
     <bean id="userService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">

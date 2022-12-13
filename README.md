@@ -58,6 +58,29 @@ Check out the [docker section](./docker/README.)
 Individual test result reports can be found in wisemapping-open-source/wise-webapp/target/failsafe-reports/index.html
 Test coverage report of unit and integration test can be found in wisemapping-open-source/wise-webapp/target/site/jacoco and wisemapping-open-source/wise-webapp/target/site/jacoco-it folders. Coverage report is generated in the verify phase of [lifecicle](https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html#introduction-to-the-build-lifecyclea) using [jacoco](https://www.jacoco.org/jacoco/trunk/doc/maven.html)
 
+
+## Google authorization
+
+You must configure the following wisemapping properties (app.properties) in order to get google authorization working
+   * `google.oauth2.callbackUrl`: url where google will redirect after user authentication, tipically {frontendBaseUrl}/c/registration-google. Also, this url must be defined in google app configuration
+   * `google.oauth2.clientId`: client id from google app
+   * `google.oauth2.clientSecret`: client secret from google app
+
+You must create a Google Application in [Google Cloud](https://console.cloud.google.com) and complete all the information required by Google. Here are the most important properties.
+
+Oauth consent screen
+   * Authorized domains: wisemapping domain (ex: wisemapping.com), and you can add domains of other environments if needed
+   * Permissions
+      * `https://www.googleapis.com/auth/userinfo.profile`
+      * `https://www.googleapis.com/auth/userinfo.email`
+   * Test users: emails for testing, those can be used before the application is validated by Google
+  
+After that, in Credentials, you must create an `Oauth Client Id` credential
+   * Authorized JavaScript origins: list of authorized domains from which to redirect to Google. Ex: `https://wisemaping.com`, `https://wisemapping-testing.com:8080` 
+   * Authorized redirect URIs: list of allowed urls to which google will redirect after authenticating . Ex: `https://wisemaping.com/c/registration-google`, `https://wisemapping-testing.com:8080/c/registration-google`
+
+After credential was created, Google will show you the clientId and clientSecret to configure your application. For productive applications, you must **publish** your application, this is a validation process with Google.
+
 ## Members
 
 ### Founders

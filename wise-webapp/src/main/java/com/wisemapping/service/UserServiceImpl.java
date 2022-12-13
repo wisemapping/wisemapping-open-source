@@ -23,6 +23,10 @@ import com.wisemapping.exceptions.InvalidMindmapException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.*;
+import com.wisemapping.rest.model.RestResetPasswordAction;
+import com.wisemapping.rest.model.RestResetPasswordResponse;
+import com.wisemapping.service.google.GoogleAccountBasicData;
+import com.wisemapping.service.google.GoogleService;
 import com.wisemapping.util.VelocityEngineUtils;
 import com.wisemapping.util.VelocityEngineWrapper;
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +43,7 @@ public class UserServiceImpl
     private NotificationService notificationService;
     private MessageSource messageSource;
     private VelocityEngineWrapper velocityEngineWrapper;
-
+	private GoogleService googleService;
 
     @Override
     public void activateAccount(long code)
@@ -56,10 +60,15 @@ public class UserServiceImpl
     }
 
     @Override
-    public void resetPassword(@NotNull String email)
+    public RestResetPasswordResponse resetPassword(@NotNull String email)
             throws InvalidUserEmailException, InvalidAuthSchemaException {
         final User user = userManager.getUserBy(email);
         if (user != null) {
+			RestResetPasswordResponse response = new RestResetPasswordResponse();
+			if (user.getAuthenticationType().equals(AuthenticationType.GOOGLE_OAUTH2)) {
+				response.setAction(RestResetPasswordAction.OAUTH2_USER);
+				return response;
+			}
 
             if (user.getAuthenticationType() != AuthenticationType.DATABASE) {
                 throw new InvalidAuthSchemaException("Could not change password for " + user.getAuthenticationType().getCode());
@@ -72,6 +81,9 @@ public class UserServiceImpl
 
             // Send an email with the new temporal password ...
             notificationService.resetPassword(user, password);
+
+			response.setAction(RestResetPasswordAction.EMAIL_SENT);
+			return response;
         } else {
             throw new InvalidUserEmailException("The email '" + email + "' does not exists.");
         }
@@ -147,6 +159,55 @@ public class UserServiceImpl
         return user;
     }
 
+    @NotNull
+    public User createUserFromGoogle(@NotNull String callbackCode) throws WiseMappingException {
+		try {
+			GoogleAccountBasicData data = googleService.processCallback(callbackCode);
+			User existingUser = userManager.getUserBy(data.getEmail());
+			if (existingUser == null) {
+				User newUser = new User();
+				// new registrations from google starts synched
+				newUser.setGoogleSync(true);
+				newUser.setEmail(data.getEmail());
+				newUser.setFirstname(data.getName());
+				newUser.setLastname(data.getLastName());
+				newUser.setAuthenticationType(AuthenticationType.GOOGLE_OAUTH2);
+				newUser.setGoogleToken(data.getAccessToken());
+				existingUser = this.createUser(newUser, false, true);
+			} else {
+				// user exists and doesnt have confirmed account linking, I must wait for confirmation
+				if (existingUser.getGoogleSync() == null) {
+					existingUser.setGoogleSync(false);
+					existingUser.setSyncCode(callbackCode);
+					existingUser.setGoogleToken(data.getAccessToken());
+					userManager.updateUser(existingUser);
+				}
+
+			}
+			return existingUser;
+		} catch (Exception e) {
+			throw new WiseMappingException("Cant create user", e);
+		}
+    }
+
+	public User confirmAccountSync(@NotNull String email, @NotNull String code) throws WiseMappingException {
+		User existingUser = userManager.getUserBy(email);
+		// additional security check
+		if (existingUser == null || !existingUser.getSyncCode().equals(code)) {
+			throw new WiseMappingException("User not found / incorrect code");
+		}
+		existingUser.setGoogleSync(true);
+		existingUser.setSyncCode(null);
+		// user will not be able to login again with usr/pwd schema
+		existingUser.setAuthenticationType(AuthenticationType.GOOGLE_OAUTH2);
+		existingUser.setPassword("");
+		userManager.updateUser(existingUser);
+
+		return existingUser;
+	}
+
+
+
     public Mindmap buildTutorialMindmap(@NotNull String firstName) throws InvalidMindmapException {
         //To change body of created methods use File | Settings | File Templates.
         final Locale locale = LocaleContextHolder.getLocale();
@@ -209,7 +270,11 @@ public class UserServiceImpl
         this.velocityEngineWrapper = velocityEngineWrapper;
     }
 
-    @Override
+	public void setGoogleService(GoogleService googleService) {
+		this.googleService = googleService;
+	}
+
+	@Override
     public User getCasUserBy(String uid) {
         // TODO Auto-generated method stub
         return null;

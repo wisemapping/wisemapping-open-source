@@ -19,6 +19,7 @@
 package com.wisemapping.dao;
 
 import com.wisemapping.model.AccessAuditory;
+import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.User;
@@ -31,7 +32,6 @@ import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -101,7 +101,11 @@ public class UserManagerImpl
     @Override
     public void createUser(User user) {
         assert user != null : "Trying to store a null user";
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (!AuthenticationType.GOOGLE_OAUTH2.equals(user.getAuthenticationType())) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        } else {
+            user.setPassword("");
+        }
         getHibernateTemplate().saveOrUpdate(user);
     }
 

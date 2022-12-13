@@ -19,7 +19,8 @@
             analyticsAccount: '${requestScope['google.analytics.account']}',
             clientType: 'rest',
             recaptcha2Enabled: ${requestScope['google.recaptcha2.enabled']},
-            recaptcha2SiteKey: '${requestScope['google.recaptcha2.siteKey']}'
+            recaptcha2SiteKey: '${requestScope['google.recaptcha2.siteKey']}',
+            googleOauth2Url: '${requestScope['google.oauth2.url']}'
         };
 
     </script>

@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.model.User;
 import org.jetbrains.annotations.NotNull;
 
@@ -101,6 +102,10 @@ public class RestUser {
     public User getDelegated() {
         return this.user;
     }
+
+	public AuthenticationType getAuthenticationType() {
+		return user.getAuthenticationType();
+	}
 
     @Override
     public boolean equals(Object o) {
