@@ -54,7 +54,7 @@ public class RequestPropertiesInterceptor implements HandlerInterceptor {
     @Value("${security.type}")
     private String securityType;
 
-	@Value("${google.oauth2.url}")
+	@Value("${security.oauth2.google.url}")
     private String googleOauth2Url;
 
     @Override
@@ -67,7 +67,7 @@ public class RequestPropertiesInterceptor implements HandlerInterceptor {
         request.setAttribute("google.recaptcha2.enabled", recaptcha2Enabled);
         request.setAttribute("google.recaptcha2.siteKey", recaptcha2SiteKey);
 
-        request.setAttribute("google.oauth2.url", googleOauth2Url);
+        request.setAttribute("security.oauth2.google.url", googleOauth2Url);
 
         request.setAttribute("site.homepage", siteHomepage);
         request.setAttribute("site.static.js.url", siteStaticUrl);

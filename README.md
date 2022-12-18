@@ -62,9 +62,9 @@ Test coverage report of unit and integration test can be found in wisemapping-op
 ## Google authorization
 
 You must configure the following wisemapping properties (app.properties) in order to get google authorization working
-   * `google.oauth2.callbackUrl`: url where google will redirect after user authentication, tipically {frontendBaseUrl}/c/registration-google. Also, this url must be defined in google app configuration
-   * `google.oauth2.clientId`: client id from google app
-   * `google.oauth2.clientSecret`: client secret from google app
+   * `security.oauth2.google.callbackUrl`: url where google will redirect after user authentication, tipically {frontendBaseUrl}/c/registration-google. Also, this url must be defined in google app configuration
+   * `security.oauth2.google.clientId`: client id from google app
+   * `security.oauth2.google.clientSecret`: client secret from google app
 
 You must create a Google Application in [Google Cloud](https://console.cloud.google.com) and complete all the information required by Google. Here are the most important properties.
 

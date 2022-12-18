@@ -20,7 +20,7 @@
             clientType: 'rest',
             recaptcha2Enabled: ${requestScope['google.recaptcha2.enabled']},
             recaptcha2SiteKey: '${requestScope['google.recaptcha2.siteKey']}',
-            googleOauth2Url: '${requestScope['google.oauth2.url']}'
+            googleOauth2Url: '${requestScope['security.oauth2.google.url']}'
         };
 
     </script>
