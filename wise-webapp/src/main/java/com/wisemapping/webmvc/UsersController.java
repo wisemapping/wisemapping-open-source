@@ -39,6 +39,11 @@ public class UsersController {
         return new ModelAndView("forgot-password");
     }
 
+    @RequestMapping(value = "registration-google", method = RequestMethod.GET)
+    public ModelAndView processGoogleCallback() {
+        return new ModelAndView("registration-google");
+    }
+
     @RequestMapping(value = "registration", method = RequestMethod.GET)
     public ModelAndView showRegistrationPage() {
         return new ModelAndView("registration");

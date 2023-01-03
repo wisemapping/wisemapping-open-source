@@ -18,7 +18,9 @@
 
 package com.wisemapping.security;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.security.crypto.codec.Hex;
 import org.springframework.security.crypto.codec.Utf8;
@@ -29,7 +31,7 @@ import java.security.NoSuchAlgorithmException;
 
 
 public class LegacyPasswordEncoder implements PasswordEncoder {
-    final private static Logger logger = Logger.getLogger(LegacyPasswordEncoder.class);
+    final private static Logger logger = LogManager.getLogger();
 
     public static final String ENC_PREFIX = "ENC:";
     private final ShaPasswordEncoder sha1Encoder = new ShaPasswordEncoder();

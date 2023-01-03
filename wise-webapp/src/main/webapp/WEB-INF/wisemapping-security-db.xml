@@ -11,12 +11,16 @@
     <bean id="passwordEncoder" class="com.wisemapping.security.DefaultPasswordEncoderFactories" factory-method="createDelegatingPasswordEncoder"/>
 
     <sec:authentication-manager alias="authenticationManager">
-        <sec:authentication-provider ref="dbAuthenticationProvider"/>
+        <sec:authentication-provider ref="dbAuthenticationProvider" />
+        <sec:authentication-provider ref="googleAuthenticationProvider" />
         <sec:authentication-provider user-service-ref="userDetailsService"/>
     </sec:authentication-manager>
 
     <bean id="dbAuthenticationProvider" class="com.wisemapping.security.AuthenticationProvider">
         <property name="userDetailsService" ref="userDetailsService"/>
         <property name="encoder" ref="passwordEncoder"/>
+    </bean>
+    <bean id="googleAuthenticationProvider" class="com.wisemapping.security.GoogleAuthenticationProvider">
+        <property name="userDetailsService" ref="userDetailsService"/>
     </bean>
 </beans>

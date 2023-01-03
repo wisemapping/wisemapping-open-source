@@ -143,15 +143,13 @@ public class MindmapServiceImpl
     public void removeCollaboration(@NotNull Mindmap mindmap, @NotNull Collaboration collaboration) throws CollaborationException {
         // remove collaborator association
         final Mindmap mindMap = collaboration.getMindMap();
-        final Set<Collaboration> collaborations = mindMap.getCollaborations();
-
         final User creator = mindMap.getCreator();
         if (creator.identityEquality(collaboration.getCollaborator())) {
             throw new CollaborationException("User is the creator and must have ownership permissions.Creator Email:" + mindMap.getCreator().getEmail() + ",Collaborator:" + collaboration.getCollaborator().getEmail());
         }
 
         // When you delete an object from hibernate you have to delete it from *all* collections it exists in...
-        collaborations.remove(collaboration);
+        mindMap.removedCollaboration(collaboration);
         mindmapManager.removeCollaboration(collaboration);
     }
 
@@ -249,7 +247,7 @@ public class MindmapServiceImpl
 
     @Override
     public void revertChange(@NotNull Mindmap mindmap, int historyId)
-            throws WiseMappingException, IOException {
+            throws WiseMappingException {
         final MindMapHistory history = mindmapManager.getHistory(historyId);
         mindmap.setZippedXml(history.getZippedXml());
         updateMindmap(mindmap, true);

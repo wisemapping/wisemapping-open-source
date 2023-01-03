@@ -9,15 +9,13 @@
 <%--@elvariable id="lockInfo" type="com.wisemapping.service.LockInfo"--%>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="${fn:substring(locale,0,2)}">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta charset="utf-8" />
     <base href="${requestScope['site.baseurl']}/static/webapp/">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-    <link rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute('media');" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;600&display=swap"/>
-
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
     <%@ include file="/jsp/pageHeaders.jsf" %>
 
     <title>Loading ... | WiseMapping</title>
@@ -47,8 +45,8 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root" class="mindplot-root"></div>
     
-    <script type="text/javascript" src="${requestScope['site.static.js.url']}/webapp/vendors.bundle.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="${requestScope['site.static.js.url']}/webapp/app.bundle.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="${requestScope['site.static.js.url']}/webapp/vendors.bundle.js" crossorigin="anonymous" defer></script>
+    <script type="text/javascript" src="${requestScope['site.static.js.url']}/webapp/app.bundle.js" crossorigin="anonymous" defer></script>
 
 </body>
 

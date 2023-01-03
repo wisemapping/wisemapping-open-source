@@ -19,19 +19,15 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Label;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
-import com.wisemapping.rest.model.RestLogItem;
 import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.LabelService;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.service.UserService;
-import org.apache.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -41,7 +37,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -57,10 +52,6 @@ public class AccountController extends BaseController {
     @Qualifier("labelService")
     @Autowired
     private LabelService labelService;
-
-    @Autowired
-    private NotificationService notificationService;
-
 
     @RequestMapping(method = RequestMethod.PUT, value = "account/password", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)

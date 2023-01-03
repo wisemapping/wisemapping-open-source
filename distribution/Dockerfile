@@ -2,7 +2,7 @@
 # Based on ubuntu:latest, installs WiseMapping (http://ww.wisemapping.org)
 
 # Based info setup ...
-FROM tomcat:9.0-jdk17-openjdk
+FROM tomcat:jdk17
 LABEL maintainer="Paulo Gustavo Veiga <pveiga@wisemapping.com>"
 
 # Build variables ...
@@ -31,6 +31,9 @@ RUN sed -i 's|\
   </Host>|' \
   /usr/local/tomcat/conf/server.xml
 
+RUN sed -i 's|<Context>|<Context>\
+    <Loader jakartaConverter="TOMCAT" />|' \
+  /usr/local/tomcat/conf/context.xml
 # Copy default HSQL DB for testing ...
 RUN mkdir -p ${DB_BASE_DIR}/db
 COPY db/ ${DB_BASE_DIR}/db

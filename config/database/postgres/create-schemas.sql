@@ -15,6 +15,9 @@ CREATE TABLE "user" (
   activation_date     DATE,
   allow_send_email    TEXT         NOT NULL DEFAULT 0,
   locale              VARCHAR(5),
+  google_sync         BOOLEAN,
+  sync_code           VARCHAR(255),
+  google_token        VARCHAR(255),
   FOREIGN KEY (colaborator_id) REFERENCES COLLABORATOR (id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
 
@@ -27,14 +30,6 @@ CREATE TABLE LABEL (
   --FOREIGN KEY (creator_id) REFERENCES USER (colaborator_id)
 );
 
-CREATE TABLE R_LABEL_MINDMAP (
-  mindmap_id       INTEGER            NOT NULL,
-  label_id         INTEGER            NOT NULL,
-  PRIMARY KEY (mindmap_id, label_id),
-  FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id),
-  FOREIGN KEY (label_id) REFERENCES LABEL (id) ON DELETE CASCADE ON UPDATE NO ACTION
-);
-
 CREATE TABLE MINDMAP (
   id             SERIAL       NOT NULL PRIMARY KEY,
   title          VARCHAR(255) NOT NULL,
@@ -44,11 +39,17 @@ CREATE TABLE MINDMAP (
   creation_date  TIMESTAMP,
   edition_date   TIMESTAMP,
   creator_id     INTEGER      NOT NULL,
-  tags           VARCHAR(1014),
   last_editor_id INTEGER      NOT NULL --,
 --FOREIGN KEY(creator_id) REFERENCES "USER"(colaborator_id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
 
+CREATE TABLE R_LABEL_MINDMAP (
+  mindmap_id       INTEGER            NOT NULL,
+  label_id         INTEGER            NOT NULL,
+  PRIMARY KEY (mindmap_id, label_id),
+  FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id),
+  FOREIGN KEY (label_id) REFERENCES LABEL (id) ON DELETE CASCADE ON UPDATE NO ACTION
+);
 
 CREATE TABLE MINDMAP_HISTORY
 (id            SERIAL  NOT NULL PRIMARY KEY,
@@ -76,14 +77,6 @@ CREATE TABLE COLLABORATION (
   FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id) ON DELETE CASCADE ON UPDATE NO ACTION,
   FOREIGN KEY (properties_id) REFERENCES COLLABORATION_PROPERTIES (id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
-
-CREATE TABLE TAG (
-  id      SERIAL       NOT NULL PRIMARY KEY,
-  name    VARCHAR(255) NOT NULL,
-  user_id INTEGER      NOT NULL --,
---FOREIGN KEY(user_id) REFERENCES "USER"(colaborator_id) ON DELETE CASCADE ON UPDATE NO ACTION
-);
-
 
 CREATE TABLE ACCESS_AUDITORY (
   id         SERIAL  NOT NULL PRIMARY KEY,

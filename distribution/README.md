@@ -42,7 +42,7 @@ Depending on the database your want to configure, you can create initialization 
 The next step is configure the WiseMapping for the database and credentials. 
 Download `app.properties` configuration file and configure the required sections:
 
-> $ curl https://bitbucket.org/wisemapping/wisemapping-open-source/raw/644b7078d790220c7844b732a83d45495f11d64e/wise-webapp/src/main/webapp/WEB-INF/app.properties 
+> $ curl https://bitbucket.org/wisemapping/wisemapping-open-source/src/master/wise-webapp/src/main/webapp/WEB-INF/app.properties
 
 ### Starting the application
 

@@ -83,12 +83,8 @@ public class Mindmap implements Serializable {
     @Basic(fetch = FetchType.LAZY)
     private byte[] zippedXml;
 
-    //~ Constructors .........................................................................................
-
     public Mindmap() {
     }
-
-    //~ Methods ..............................................................................................
 
     public void setUnzipXml(@NotNull byte[] value) {
         try {
@@ -146,7 +142,9 @@ public class Mindmap implements Serializable {
     }
 
     public void removedCollaboration(@NotNull Collaboration collaboration) {
-        collaborations.remove(collaboration);
+        // https://stackoverflow.com/questions/25125210/hibernate-persistentset-remove-operation-not-working
+        this.collaborations.remove(collaboration);
+        collaboration.setMindMap(null);
     }
 
     public void removedCollaboration(@NotNull Set<Collaboration> collaborations) {
@@ -316,9 +314,18 @@ public class Mindmap implements Serializable {
         final StringBuilder result = new StringBuilder();
         result.append("<map version=\"tango\">");
         result.append("<topic central=\"true\" text=\"");
-        result.append(StringEscapeUtils.escapeXml(title));
+        result.append(escapeXmlAttribute(title));
         result.append("\"/></map>");
         return result.toString();
+    }
+
+    static private String escapeXmlAttribute(String attValue) {
+        // Hack: Find out of the box function.
+        String result = attValue.replace("&", "&amp;");
+        result = result.replace("<", "&lt;");
+        result = result.replace("gt", "&gt;");
+        result = result.replace("\"", "&quot;");
+        return result;
     }
 
     public Mindmap shallowClone() {
@@ -349,18 +356,6 @@ public class Mindmap implements Serializable {
             }
         }
         return false;
-    }
-
-    @Nullable
-    public Label findLabel(int labelId) {
-        Label result = null;
-        for (Label label : this.labels) {
-            if (label.getId() == labelId) {
-                result = label;
-                break;
-            }
-        }
-        return result;
     }
 
     public void removeLabel(@NotNull final Label label) {
