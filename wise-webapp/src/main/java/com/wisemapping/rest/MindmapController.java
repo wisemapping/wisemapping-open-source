@@ -505,8 +505,6 @@ public class MindmapController extends BaseController {
 
         if (description != null && !description.isEmpty()) {
             mindmap.setDescription(description);
-        } else {
-            mindmap.setDescription("description");
         }
 
         // Validate ...
