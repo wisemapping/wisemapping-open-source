@@ -24,7 +24,7 @@ CREATE TABLE USER (
 CREATE TABLE MINDMAP (
   id             INTEGER       NOT NULL IDENTITY,
   title          VARCHAR(255)  NOT NULL,
-  description    VARCHAR(255)  NOT NULL,
+  description    VARCHAR(255),
   xml            LONGVARBINARY NOT NULL,
   public         BOOLEAN       NOT NULL,
   creation_date  DATETIME,
