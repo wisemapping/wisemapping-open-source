@@ -22,4 +22,3 @@
     <link rel="shortcut icon" href="../../favicon.ico" type="image/x-icon"/>
 
     <sec:csrfMetaTags />
-    <link rel="manifest" href="../../manifest.json" />
