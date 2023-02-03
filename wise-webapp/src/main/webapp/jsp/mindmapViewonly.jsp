@@ -57,7 +57,7 @@
 
 </head>
 <body>
-	<div id="root" class="mindplot-root">
+	<div id="root" class="mindplot-div-container">
         <mindplot-component id="mindmap-comp"/>
     </div>
     <div id="mindplot-tooltips" className="wise-editor"></div>
