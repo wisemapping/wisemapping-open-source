@@ -48,7 +48,7 @@
 			margin: 0px;
 		}
 
-		.mindplot-root {
+		.mindplot-div-container {
 			height: 100%;
 			width: 100%;
 		}
