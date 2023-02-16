@@ -4,7 +4,7 @@ CREATE TABLE COLLABORATOR (
   creation_date DATE
 );
 
-CREATE TABLE "user" (
+CREATE TABLE "USER" (
   authentication_type TEXT         NOT NULL,
   authenticator_uri   VARCHAR(255),
   colaborator_id      INTEGER      NOT NULL PRIMARY KEY,
@@ -21,19 +21,20 @@ CREATE TABLE "user" (
   FOREIGN KEY (colaborator_id) REFERENCES COLLABORATOR (id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
 
-CREATE TABLE LABEL (
+CREATE TABLE "LABEL" (
   id              INTEGER            NOT NULL PRIMARY KEY,
   title           VARCHAR(255),
   creator_id      INTEGER            NOT NULL,
   parent_label_id INTEGER,
-  color           VARCHAR(7)         NOT NULL
-  --FOREIGN KEY (creator_id) REFERENCES USER (colaborator_id)
+  color           VARCHAR(7)         NOT NULL,
+  iconName        VARCHAR(50)       NOT NULL,
+  FOREIGN KEY (creator_id) REFERENCES "USER" (colaborator_id)
 );
 
 CREATE TABLE MINDMAP (
   id             SERIAL       NOT NULL PRIMARY KEY,
   title          VARCHAR(255) NOT NULL,
-  description    VARCHAR(255) NOT NULL,
+  description    VARCHAR(255),
   xml            BYTEA        NOT NULL,
   public         BOOL         NOT NULL DEFAULT FALSE,
   creation_date  TIMESTAMP,
@@ -48,7 +49,7 @@ CREATE TABLE R_LABEL_MINDMAP (
   label_id         INTEGER            NOT NULL,
   PRIMARY KEY (mindmap_id, label_id),
   FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id),
-  FOREIGN KEY (label_id) REFERENCES LABEL (id) ON DELETE CASCADE ON UPDATE NO ACTION
+  FOREIGN KEY (label_id) REFERENCES "LABEL" (id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
 
 CREATE TABLE MINDMAP_HISTORY
@@ -82,8 +83,11 @@ CREATE TABLE ACCESS_AUDITORY (
   id         SERIAL  NOT NULL PRIMARY KEY,
   login_date DATE,
   user_id    INTEGER NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES "user" (colaborator_id) ON DELETE CASCADE ON UPDATE NO ACTION
+  FOREIGN KEY (user_id) REFERENCES "USER" (colaborator_id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
 
+
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO wisemapping;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO wisemapping;
 
 COMMIT;
