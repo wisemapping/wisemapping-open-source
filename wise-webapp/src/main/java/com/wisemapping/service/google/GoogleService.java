@@ -1,17 +1,32 @@
+/*
+ *    Copyright [2022] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 package com.wisemapping.service.google;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.wisemapping.service.http.HttpInvoker;
-import com.wisemapping.service.http.HttpInvokerContentType;
-import com.wisemapping.service.http.HttpInvokerException;
-import com.wisemapping.service.http.HttpMethod;
+import com.wisemapping.service.google.http.HttpInvoker;
+import com.wisemapping.service.google.http.HttpInvokerContentType;
+import com.wisemapping.service.google.http.HttpInvokerException;
 
 @Service
 public class GoogleService {
@@ -83,10 +98,10 @@ public class GoogleService {
 		return result;
 	}
 
-	public GoogleAccountBasicData processCallback(String code)
-			throws HttpInvokerException, JsonMappingException, JsonProcessingException {
+	public GoogleAccountBasicData processCallback(final String code)
+			throws HttpInvokerException {
 		Map<String, String> body = this.getOptinConfirmBody(code);
-		JsonNode optinConfirmResponse = httpInvoker.invoke(
+		JsonNode optionConfirmResponse = httpInvoker.invoke(
 				optinConfirmUrl,
 				HttpInvokerContentType.FORM_ENCODED,
 				HttpMethod.POST,
@@ -94,8 +109,8 @@ public class GoogleService {
 				null,
 				body);
 
-		String accessToken = getNodeAsString(optinConfirmResponse, "access_token");
-		String refreshToken = getNodeAsString(optinConfirmResponse, "refresh_token");
+		final String accessToken = getNodeAsString(optionConfirmResponse, "access_token");
+		final String refreshToken = getNodeAsString(optionConfirmResponse, "refresh_token");
 
 		GoogleAccountBasicData data = this.getAccountBasicData(accessToken);
 		data.setAccessToken(accessToken);

@@ -13,8 +13,8 @@
     </parent>
 
     <properties>
-        <org.springframework.version>5.3.24</org.springframework.version>
-        <org.springframework.addons>5.7.3</org.springframework.addons>
+        <org.springframework.version>5.3.26</org.springframework.version>
+        <org.springframework.addons>5.7.7</org.springframework.addons>
         <hibernate.version>5.6.12.Final</hibernate.version>
         <hibernate-validator.version>6.0.21.Final</hibernate-validator.version>
         <spring-security-taglibs.version>5.6.1</spring-security-taglibs.version>
@@ -36,7 +36,7 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>6.9.8</version>
+            <version>7.7.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -54,7 +54,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.5.1</version>
+            <version>42.5.4</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -358,7 +358,7 @@
                         <configuration>
                             <driver>com.mysql.jdbc.Driver</driver>
                             <username>root</username>
-                            <password></password>
+                            <password/>
                             <url>jdbc:mysql://127.0.0.1:3306/?useUnicode=true&amp;characterEncoding=UTF-8</url>
                             <autocommit>false</autocommit>
                             <srcFiles>
@@ -556,11 +556,9 @@
                             <useTestClasspath>true</useTestClasspath>
                             <useTestScope>true</useTestScope>
                             <scanIntervalSeconds>0</scanIntervalSeconds>
-                            <daemon>true</daemon>
                             <waitForChild>false</waitForChild>
                             <maxStartupLines>200</maxStartupLines>
-                            <jvmArgs>${integrationTestArgLine} -Ddatabase.base.url=${project.build.directory}
-                                -Djetty.port=8080
+                            <jvmArgs>-Ddatabase.base.url=${project.build.directory} -Djetty.port=8080
                             </jvmArgs>
                         </configuration>
                     </execution>
@@ -570,9 +568,6 @@
                         <goals>
                             <goal>stop</goal>
                         </goals>
-                        <configuration>
-                            <stopWait>1</stopWait>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

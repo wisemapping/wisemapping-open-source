@@ -18,6 +18,7 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.ClientException;
+import com.wisemapping.exceptions.OAuthAuthenticationException;
 import com.wisemapping.exceptions.Severity;
 import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.User;
@@ -38,6 +39,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.Locale;
 
@@ -93,6 +95,19 @@ public class BaseController {
     public RestErrors handleClientErrors(@NotNull ClientException ex) {
         final Locale locale = LocaleContextHolder.getLocale();
         return new RestErrors(ex.getMessage(messageSource, locale), ex.getSeverity(), ex.getTechInfo());
+    }
+
+    @ExceptionHandler(OAuthAuthenticationException.class)
+    @ResponseBody
+    public OAuthAuthenticationException handleOAuthErrors(@NotNull OAuthAuthenticationException ex, HttpServletResponse response) {
+        // @todo: Further research needed for this error. No clear why this happens.
+        // Caused by: com.wisemapping.service.http.HttpInvokerException: error invoking https://oauth2.googleapis.com/token, response: {
+        //  "error": "invalid_grant",
+        //  "error_description": "Bad Request"
+        //}, status: 400
+        //
+        response.setStatus(response.getStatus());
+        return ex;
     }
 
     @ExceptionHandler(Exception.class)

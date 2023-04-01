@@ -18,7 +18,7 @@
         <property name="velocityEngineWrapper" ref="velocityEngineWrapper"/>
     </bean>
 
-	<bean id="httpInvoker" class="com.wisemapping.service.http.HttpInvoker">
+	<bean id="httpInvoker" class="com.wisemapping.service.google.http.HttpInvoker">
 	</bean>
 
     <bean id="googleService" class="com.wisemapping.service.google.GoogleService">

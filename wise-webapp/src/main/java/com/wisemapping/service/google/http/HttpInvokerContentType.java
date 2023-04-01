@@ -1,4 +1,4 @@
-package com.wisemapping.service.http;
+package com.wisemapping.service.google.http;
 
 public enum HttpInvokerContentType {
 
@@ -7,7 +7,7 @@ public enum HttpInvokerContentType {
 
 	private String httpContentType;
 	
-	private HttpInvokerContentType(String type) {
+	HttpInvokerContentType(String type) {
 		this.httpContentType = type;
 	}
 

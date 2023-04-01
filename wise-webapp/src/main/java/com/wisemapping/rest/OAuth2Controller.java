@@ -40,7 +40,7 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 @CrossOrigin
-public class Oauth2Controller extends BaseController {
+public class OAuth2Controller extends BaseController {
 	@Qualifier("userService")
 	@Autowired
 	private UserService userService;
@@ -68,7 +68,7 @@ public class Oauth2Controller extends BaseController {
 	@ResponseStatus(value = HttpStatus.OK)
 	public RestOath2CallbackResponse processGoogleCallback(@NotNull @RequestParam String code, @NotNull HttpServletRequest request) throws WiseMappingException {
 		User user = userService.createUserFromGoogle(code);
-		if (user.getGoogleSync() != null && user.getGoogleSync().booleanValue()) {
+		if (user.getGoogleSync() != null && user.getGoogleSync()) {
 			doLogin(request, user.getEmail());
 		}
 		RestOath2CallbackResponse response = new RestOath2CallbackResponse();
