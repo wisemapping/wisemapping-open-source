@@ -2,7 +2,7 @@
 # Based on ubuntu:latest, installs WiseMapping (http://ww.wisemapping.org)
 
 # Based info setup ...
-FROM tomcat:9.0.73-jdk17
+FROM tomcat:9.0.70-jdk17
 LABEL maintainer="Paulo Gustavo Veiga <pveiga@wisemapping.com>"
 
 # Build variables ...
