@@ -2,7 +2,8 @@
 # Based on ubuntu:latest, installs WiseMapping (http://ww.wisemapping.org)
 
 # Based info setup ...
-FROM --platform=$BUILDPLATFORM tomcat:9.0.71-jdk17
+#FROM --platform=$BUILDPLATFORM tomcat:9.0.71-jdk17
+FROM tomcat:9.0.76-jdk17
 LABEL maintainer="Paulo Gustavo Veiga <pveiga@wisemapping.com>"
 
 # Build variables ...
