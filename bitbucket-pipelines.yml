@@ -23,9 +23,8 @@ pipelines:
             - mvn -B verify --file pom.xml
             # Publish to docker repo ...
             - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
-            - docker buildx create --use --platform=linux/arm64,linux/amd64 --name multi-platform-builder
-            - docker buildx inspect --bootstrap
-            - docker buildx build --platform=linux/amd64,linux/arm64 --push -t wisemapping/wisemapping:latest -f ./Dockerfile ../wise-webapp/target/
+            - docker build -t wisemapping/wisemapping:latest -f distribution/Dockerfile wise-webapp/target/
+            - docker push wisemapping/wisemapping:latest
           after-script:
             # Collect checkstyle results, if any, and convert to Bitbucket Code Insights.
             - pipe: atlassian/checkstyle-report:0.3.0
