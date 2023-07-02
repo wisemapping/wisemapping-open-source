@@ -19,6 +19,7 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.EmailNotExistsException;
+import com.wisemapping.exceptions.PasswordTooLongException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.model.User;
@@ -48,6 +49,7 @@ import java.util.List;
 @Controller
 @CrossOrigin
 public class UserController extends BaseController {
+
 	@Qualifier("userService")
 	@Autowired
 	private UserService userService;
@@ -73,6 +75,10 @@ public class UserController extends BaseController {
 	public void registerUser(@RequestBody RestUserRegistration registration, @NotNull HttpServletRequest request,
 			@NotNull HttpServletResponse response) throws WiseMappingException, BindException {
 		logger.debug("Register new user:" + registration.getEmail());
+
+		if (registration.getPassword().length() > User.MAX_PASSWORD_LENGTH_SIZE) {
+			throw new PasswordTooLongException();
+		}
 
 		// If tomcat is behind a reverse proxy, ip needs to be found in other header.
 		String remoteIp = request.getHeader(REAL_IP_ADDRESS_HEADER);

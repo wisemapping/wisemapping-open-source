@@ -32,34 +32,36 @@ public class User
         extends Collaborator
         implements Serializable {
 
+    public static final int MAX_PASSWORD_LENGTH_SIZE = 40;
+
     private String firstname;
     private String lastname;
     private String password;
     private String locale;
-	
+
     @Column(name = "activation_code")
     private long activationCode;
-	
+
     @Column(name = "activation_date")
     private Calendar activationDate;
-	
+
     @Column(name = "allow_send_email")
     private boolean allowSendEmail = false;
-	
+
     @Column(name = "authentication_type")
     private Character authenticationTypeCode = AuthenticationType.DATABASE.getCode();
-	
+
     @Column(name = "authenticator_uri")
     private String authenticatorUri;
-	
+
     @Column(name = "google_sync")
-	private Boolean googleSync;
+    private Boolean googleSync;
 
     @Column(name = "sync_code")
-	private String syncCode;
+    private String syncCode;
 
     @Column(name = "google_token")
-	private String googleToken;
+    private String googleToken;
 
     public User() {
     }
@@ -88,7 +90,7 @@ public class User
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(@javax.validation.constraints.NotNull String password) {
         this.password = password;
     }
 
@@ -158,34 +160,34 @@ public class User
     }
 
     public void setAuthenticationTypeCode(Character authenticationTypeCode) {
-		this.authenticationTypeCode = authenticationTypeCode;
-	}
+        this.authenticationTypeCode = authenticationTypeCode;
+    }
 
-	public Boolean getGoogleSync() {
-		return googleSync;
-	}
+    public Boolean getGoogleSync() {
+        return googleSync;
+    }
 
-	public void setGoogleSync(Boolean googleSync) {
-		this.googleSync = googleSync;
-	}
-	
-	public String getSyncCode() {
-		return syncCode;
-	}
-	
-	public void setSyncCode(String syncCode) {
-		this.syncCode = syncCode;
-	}
+    public void setGoogleSync(Boolean googleSync) {
+        this.googleSync = googleSync;
+    }
 
-	public String getGoogleToken() {
-		return googleToken;
-	}
+    public String getSyncCode() {
+        return syncCode;
+    }
 
-	public void setGoogleToken(String googleToken) {
-		this.googleToken = googleToken;
-	}
-	
-	@Override
+    public void setSyncCode(String syncCode) {
+        this.syncCode = syncCode;
+    }
+
+    public String getGoogleToken() {
+        return googleToken;
+    }
+
+    public void setGoogleToken(String googleToken) {
+        this.googleToken = googleToken;
+    }
+
+    @Override
     public String toString() {
         return "User{" +
                 "firstname='" + firstname + '\'' +
