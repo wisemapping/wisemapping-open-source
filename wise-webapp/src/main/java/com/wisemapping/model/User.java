@@ -21,7 +21,7 @@ package com.wisemapping.model;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Calendar;
 
@@ -90,7 +90,7 @@ public class User
         return password;
     }
 
-    public void setPassword(@javax.validation.constraints.NotNull String password) {
+    public void setPassword(@jakarta.validation.constraints.NotNull String password) {
         this.password = password;
     }
 

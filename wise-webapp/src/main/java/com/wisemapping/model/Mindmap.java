@@ -30,7 +30,7 @@ import org.hibernate.annotations.NotFoundAction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;

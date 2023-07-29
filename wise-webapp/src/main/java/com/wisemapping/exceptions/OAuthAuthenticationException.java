@@ -3,7 +3,7 @@ package com.wisemapping.exceptions;
 
 import com.wisemapping.service.google.http.HttpInvokerException;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 public class OAuthAuthenticationException extends WiseMappingException {
 

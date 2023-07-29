@@ -20,7 +20,7 @@ package com.wisemapping.model;
 
 import org.jetbrains.annotations.NotNull;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity

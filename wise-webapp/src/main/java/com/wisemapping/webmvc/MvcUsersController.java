@@ -22,31 +22,35 @@ package com.wisemapping.webmvc;
 import com.wisemapping.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class UsersController {
+public class MvcUsersController {
 
     @Qualifier("userService")
     @Autowired
     private UserService userService;
 
     @RequestMapping(value = "forgot-password", method = RequestMethod.GET)
+    @PreAuthorize("permitAll()")
     public ModelAndView showResetPasswordPage() {
-        return new ModelAndView("forgot-password");
+        return new ModelAndView("reactInclude");
     }
 
     @RequestMapping(value = "registration-google", method = RequestMethod.GET)
+    @PreAuthorize("permitAll()")
     public ModelAndView processGoogleCallback() {
-        return new ModelAndView("registration-google");
+        return new ModelAndView("reactInclude");
     }
 
     @RequestMapping(value = "registration", method = RequestMethod.GET)
+    @PreAuthorize("permitAll()")
     public ModelAndView showRegistrationPage() {
-        return new ModelAndView("registration");
+        return new ModelAndView("reactInclude");
     }
 
 }

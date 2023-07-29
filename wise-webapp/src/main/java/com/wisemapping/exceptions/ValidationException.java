@@ -15,30 +15,23 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.wisemapping.security;
 
-import org.springframework.security.web.util.matcher.RequestMatcher;
+package com.wisemapping.exceptions;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 
-public class CSFRRequestMatcher implements RequestMatcher {
+import com.wisemapping.exceptions.WiseMappingException;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.validation.Errors;
 
-    private String prefix;
-    static String[] supportedMethods = {"POST", "PUT", "GET", "DELETE", "PATCH"};
+public class ValidationException extends WiseMappingException {
+    private final Errors errors;
 
-    @Override
-    public boolean matches(HttpServletRequest request) {
-        final String requestURI = request.getRequestURI();
-        return Arrays.stream(supportedMethods).anyMatch(p -> request.getMethod().toUpperCase().equals(p))
-                && requestURI.startsWith(prefix);
+    public ValidationException(@NotNull Errors errors) {
+        super("Validation Exceptions:" + errors);
+        this.errors = errors;
     }
 
-    public String getPrefix() {
-        return prefix;
-    }
-
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
+    public Errors getErrors() {
+        return errors;
     }
 }

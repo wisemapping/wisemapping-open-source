@@ -34,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,7 +46,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Locale;
 
 @Controller
-public class MindmapController {
+public class MvcMindmapController {
 
     @Qualifier("mindmapService")
     @Autowired
@@ -59,12 +60,12 @@ public class MindmapController {
         model.addAttribute("mindmap", mindmap);
         final Locale locale = LocaleContextHolder.getLocale();
         model.addAttribute("locale", locale.toString().toLowerCase());
-        return "mindmapPrint";
+        return "mindmapViewonly";
     }
 
     @RequestMapping(value = "maps/")
     public String showListPage(@NotNull Model model) {
-        return "mindmapList";
+        return "reactInclude";
     }
 
     @RequestMapping(value = "maps/{id}/edit", method = RequestMethod.GET)
@@ -106,6 +107,7 @@ public class MindmapController {
     }
 
     @RequestMapping(value = "maps/{id}/try", method = RequestMethod.GET)
+    @PreAuthorize("permitAll()")
     public String showMindmapTryPage(@PathVariable int id, @NotNull Model model) throws WiseMappingException {
         return  showEditorPage(id, model, false);
     }
@@ -118,13 +120,14 @@ public class MindmapController {
     }
 
     @RequestMapping(value = "maps/{id}/embed")
+    @PreAuthorize("permitAll()")
     public ModelAndView showEmbeddedPage(@PathVariable int id, @RequestParam(required = false) Float zoom) throws MapCouldNotFoundException, MapNonPublicException, AccessDeniedSecurityException {
         if (!mindmapService.isMindmapPublic(id)) {
             throw new MapNonPublicException("Map " + id + " is not public.");
         }
 
         final MindMapBean mindmap = findMindmapBean(id);
-        final ModelAndView view = new ModelAndView("mindmapEmbedded", "mindmap", mindmap);
+        final ModelAndView view = new ModelAndView("mindmapViewonly", "mindmap", mindmap);
         view.addObject("zoom", zoom == null ? 1 : zoom);
         final Locale locale = LocaleContextHolder.getLocale();
         view.addObject("locale", locale.toString().toLowerCase());
@@ -132,6 +135,7 @@ public class MindmapController {
     }
 
     @RequestMapping(value = "maps/{id}/public", method = RequestMethod.GET)
+    @PreAuthorize("permitAll()")
     public String showPublicViewPage(@PathVariable int id, @NotNull Model model) throws WiseMappingException {
         if (!mindmapService.isMindmapPublic(id)) {
             throw new MapNonPublicException("Map " + id + " is not public.");
@@ -141,12 +145,14 @@ public class MindmapController {
 
     @Deprecated
     @RequestMapping(value = "publicView", method = RequestMethod.GET)
+    @PreAuthorize("permitAll()")
     public String showPublicViewPageLegacy(@RequestParam(required = true) int mapId) {
         return "redirect:maps/" + mapId + "/public";
     }
 
     @Deprecated
     @RequestMapping(value = "embeddedView", method = RequestMethod.GET)
+    @PreAuthorize("permitAll()")
     public String showPublicViewLegacyPage(@RequestParam(required = true) int mapId, @RequestParam(required = false) int zoom) {
         return "redirect:maps/" + mapId + "/embed?zoom=" + zoom;
     }

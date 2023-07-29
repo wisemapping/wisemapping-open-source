@@ -120,4 +120,5 @@
         </property>
     </bean>
 
+    <import resource="wisemapping-security-${security.type}.xml"/>
 </beans>

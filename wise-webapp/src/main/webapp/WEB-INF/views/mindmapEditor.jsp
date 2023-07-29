@@ -1,7 +1,7 @@
 <%@ page import="com.wisemapping.security.Utils" %>
 <%@ page import="com.wisemapping.model.User" %>
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
-<%@ include file="/jsp/init.jsp" %>
+<%@ include file="init.jsp" %>
 
 <%--@elvariable id="mindmap" type="com.wisemapping.model.Mindmap"--%>
 <%--@elvariable id="editorTryMode" type="java.lang.Boolean"--%>
@@ -16,7 +16,7 @@
     <base href="${requestScope['site.baseurl']}/static/webapp/">
 
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
-    <%@ include file="/jsp/pageHeaders.jsf" %>
+    <%@ include file="pageHeaders.jsf" %>
 
     <title>Loading ... | WiseMapping</title>
 

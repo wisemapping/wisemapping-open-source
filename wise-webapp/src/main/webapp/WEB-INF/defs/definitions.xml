@@ -2,16 +2,6 @@
 
 <tiles-definitions>
 
-    <definition name="mindmapEmbedded" template="/jsp/mindmapViewonly.jsp"/>
-    <definition name="mindmapEditor" template="/jsp/mindmapEditor.jsp"/>
-    <definition name="mindmapPrint" template="/jsp/mindmapViewonly.jsp"/>
-
-    <definition name="login" template="/jsp/reactInclude.jsp"/>
-    <definition name="registration" template="/jsp/reactInclude.jsp"/>
-    <definition name="registration-google" template="/jsp/reactInclude.jsp"/>
-    <definition name="forgot-password" template="/jsp/reactInclude.jsp"/>
-    <definition name="mindmapList" template="/jsp/reactInclude.jsp"/>
-
     <!-- Template Declaration -->
     <definition name="errorTemplate" template="/jsp/errorTemplate.jsp">
         <put-attribute name="title" value="" type="string"/>

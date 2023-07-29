@@ -21,7 +21,7 @@ RUN cd ${WEBAPP_TARGET_DIR} && jar -xvf /tmp/wisemapping.war
 RUN rm /tmp/wisemapping.war
 
 # Change logger to
-RUN cp ${WEBAPP_TARGET_DIR}/WEB-INF/classes/log4j-stdout.properties ${WEBAPP_TARGET_DIR}/WEB-INF/classes/log4j.properties
+RUN cp ${WEBAPP_TARGET_DIR}/WEB-INF/classes/log4j-stdout.xml ${WEBAPP_TARGET_DIR}/WEB-INF/classes/log4j.properties
 
 # Add support for proxy
 RUN sed -i 's|\

@@ -35,13 +35,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.Arrays;
 import java.util.List;
@@ -61,7 +62,7 @@ public class UserController extends BaseController {
 	@Autowired
 	private AuthenticationManager authManager;
 
-	@Value("${google.recaptcha2.enabled}")
+	@Value("${google.recaptcha2.enabled:false}")
 	private Boolean recatchaEnabled;
 
 	@Value("${accounts.exclusion.domain:''}")
@@ -70,7 +71,7 @@ public class UserController extends BaseController {
 	private static final Logger logger = LogManager.getLogger();
 	private static final String REAL_IP_ADDRESS_HEADER = "X-Real-IP";
 
-	@RequestMapping(method = RequestMethod.POST, value = "/users", produces = { "application/json" })
+	@RequestMapping(method = RequestMethod.POST, value = "/users/", produces = { "application/json" })
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public void registerUser(@RequestBody RestUserRegistration registration, @NotNull HttpServletRequest request,
 			@NotNull HttpServletResponse response) throws WiseMappingException, BindException {
