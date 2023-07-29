@@ -71,7 +71,7 @@ public class RestLabelITCase {
 
     static RestLabelList getLabels(HttpHeaders requestHeaders, RestTemplate template) {
         final HttpEntity findLabelEntity = new HttpEntity(requestHeaders);
-        final ResponseEntity<RestLabelList> response = template.exchange(BASE_REST_URL + "/labels", HttpMethod.GET, findLabelEntity, RestLabelList.class);
+        final ResponseEntity<RestLabelList> response = template.exchange(BASE_REST_URL + "/labels/", HttpMethod.GET, findLabelEntity, RestLabelList.class);
         return response.getBody();
     }
 

@@ -11,13 +11,13 @@
         </File>
     </Appenders>
     <Loggers>
-        <Logger name="com.wisemapping" level="debug">
+        <Logger name="com.wisemapping" level="warn">
             <AppenderRef ref="LogToConsole"/>
         </Logger>
-        <Logger name="org.springframework" level="trace">
+        <Logger name="org.springframework" level="warn">
             <AppenderRef ref="LogToConsole"/>
         </Logger>
-        <Root level="trace">
+        <Root level="warn">
             <AppenderRef ref="LogToConsole"/>
         </Root>
     </Loggers>

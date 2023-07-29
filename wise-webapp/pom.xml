@@ -474,12 +474,12 @@
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>11.0.15</version>
                 <configuration>
-                    <stopKey>foo</stopKey>
                     <httpConnector>
                         <port>8080</port>
                     </httpConnector>
                     <stopPort>9999</stopPort>
                     <deployMode>FORK</deployMode>
+                    <stopKey>foo</stopKey>
                     <webApp>
                         <war>${project.build.directory}/wisemapping.war</war>
                         <overrideDescriptor>${project.basedir}/webdefault.xml</overrideDescriptor>
@@ -490,11 +490,11 @@
                         <id>run-forked</id>
                         <phase>pre-integration-test</phase>
                         <goals>
-                            <goal>run-war</goal>
+                            <goal>start-war</goal>
                         </goals>
                         <configuration>
                             <useTestScope>true</useTestScope>
-                            <jvmArgs>-Ddatabase.base.url=${project.build.directory} -Djetty.port=8080 -Dlogging.level.org.springframework=TRACE</jvmArgs>
+                            <jvmArgs>-Ddatabase.base.url=${project.build.directory} -Djetty.port=8080</jvmArgs>
                         </configuration>
                     </execution>
                     <execution>
