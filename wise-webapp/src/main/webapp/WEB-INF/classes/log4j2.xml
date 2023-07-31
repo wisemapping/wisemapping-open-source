@@ -14,7 +14,7 @@
         <Logger name="com.wisemapping" level="warn">
             <AppenderRef ref="LogToConsole"/>
         </Logger>
-        <Logger name="org.springframework" level="trace">
+        <Logger name="org.springframework" level="warn">
             <AppenderRef ref="LogToConsole"/>
         </Logger>
         <Root level="warn">

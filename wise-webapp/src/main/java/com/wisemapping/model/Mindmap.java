@@ -55,7 +55,7 @@ public class Mindmap implements Serializable {
     @JoinColumn(name = "creator_id", unique = true)
     private User creator;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "last_editor_id", nullable = false)
     @NotFound(action = NotFoundAction.IGNORE)
     private User lastEditor;
