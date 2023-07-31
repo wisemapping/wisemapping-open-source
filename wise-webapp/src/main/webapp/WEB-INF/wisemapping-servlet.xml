@@ -22,33 +22,6 @@
         <bean id="requestInterceptor" class="com.wisemapping.filter.RequestPropertiesInterceptor"/>
     </mvc:interceptors>
 
-    <bean id="simpleMappingExceptionResolver"
-          class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-        <property name="defaultStatusCode" value="500"/>
-        <property name="defaultErrorView" value="errorTemplate"/>
-        <property name="warnLogCategory" value="com.wisemapping.mvc.Exceptions"/>
-
-        <property name="exceptionMappings">
-            <props>
-                <!-- Security access exceptions must not handle as unexpected errors -->
-                <prop key="com.wisemapping.exceptions.MapNonPublicException">securityError</prop>
-                <prop key="com.wisemapping.exceptions.AccessDeniedSecurityException">securityError</prop>
-            </props>
-        </property>
-
-        <property name="statusCodes">
-            <props>
-                <prop key="securityError">403</prop>
-            </props>
-        </property>
-    </bean>
-
-    <bean id="viewResolver"
-          class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/views/"/>
-        <property name="suffix" value=".jsp"/>
-    </bean>
-
     <bean id="localeResolver"
           class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
     </bean>

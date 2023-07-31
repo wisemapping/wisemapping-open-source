@@ -11,8 +11,6 @@
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
     <%@ include file="pageHeaders.jsf" %>
 
-    <title>WiseMapping</title>
-
     <script>
         window.serverconfig = {
             apiBaseUrl: '${requestScope['site.baseurl']}',
@@ -23,7 +21,10 @@
             googleOauth2Url: '${requestScope['security.oauth2.google.url']}'
         };
 
+        <!-- Hack to force view selection on react to move all the UI to react-->
+        window.errorMvcView = '${requestScope['exception']!=null?(fn:indexOf(requestScope['exception'],'SecurityException') gt 1?'securityError':'unexpectedError'):''}';
     </script>
+
     <c:if test="${requestScope['google.analytics.enabled']}">
       <!-- Google Ads Sense Config. Lazy loading optimization -->
       <script type="text/javascript">

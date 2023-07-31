@@ -20,11 +20,11 @@ package com.wisemapping.exceptions;
 
 import org.jetbrains.annotations.NotNull;
 
-public class MapNonPublicException
+public class MapNotPublicSecurityException
         extends ClientException {
     public static final String MSG_KEY = "ACCESS_HAS_BEEN_REVOKED";
 
-    public MapNonPublicException(@NotNull String msg) {
+    public MapNotPublicSecurityException(@NotNull String msg) {
         super(msg, Severity.FATAL);
     }
 

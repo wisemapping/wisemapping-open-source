@@ -21,7 +21,7 @@ package com.wisemapping.webmvc;
 
 import com.wisemapping.exceptions.AccessDeniedSecurityException;
 import com.wisemapping.exceptions.MapCouldNotFoundException;
-import com.wisemapping.exceptions.MapNonPublicException;
+import com.wisemapping.exceptions.MapNotPublicSecurityException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.Mindmap;
@@ -121,9 +121,9 @@ public class MvcMindmapController {
 
     @RequestMapping(value = "maps/{id}/embed")
     @PreAuthorize("permitAll()")
-    public ModelAndView showEmbeddedPage(@PathVariable int id, @RequestParam(required = false) Float zoom) throws MapCouldNotFoundException, MapNonPublicException, AccessDeniedSecurityException {
+    public ModelAndView showEmbeddedPage(@PathVariable int id, @RequestParam(required = false) Float zoom) throws MapCouldNotFoundException, MapNotPublicSecurityException, AccessDeniedSecurityException {
         if (!mindmapService.isMindmapPublic(id)) {
-            throw new MapNonPublicException("Map " + id + " is not public.");
+            throw new MapNotPublicSecurityException("Map " + id + " is not public.");
         }
 
         final MindMapBean mindmap = findMindmapBean(id);
@@ -138,7 +138,7 @@ public class MvcMindmapController {
     @PreAuthorize("permitAll()")
     public String showPublicViewPage(@PathVariable int id, @NotNull Model model) throws WiseMappingException {
         if (!mindmapService.isMindmapPublic(id)) {
-            throw new MapNonPublicException("Map " + id + " is not public.");
+            throw new MapNotPublicSecurityException("Map " + id + " is not public.");
         }
         return this.showPrintPage(id, model);
     }
