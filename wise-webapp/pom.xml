@@ -128,12 +128,7 @@
             <version>5.3.15</version>
             <scope>test</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>antlr</groupId>-->
-<!--            <artifactId>antlr</artifactId>-->
-<!--            <version>2.7.7</version>-->
-<!--            <scope>runtime</scope>-->
-<!--        </dependency>-->
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
@@ -146,11 +141,6 @@
             <version>${org.springframework.addons}</version>
             <scope>compile</scope>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>jakarta.persistence</groupId>-->
-        <!--            <artifactId>jakarta.persistence-api</artifactId>-->
-        <!--            <version>3.1.0</version>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
@@ -185,16 +175,16 @@
             <artifactId>commons-dbcp2</artifactId>
             <version>2.9.0</version>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.hibernate</groupId>-->
-        <!--            <artifactId>hibernate-ehcache</artifactId>-->
-        <!--            <version>5.6.15.Final</version>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>javax.cache</groupId>-->
-        <!--            <artifactId>cache-api</artifactId>-->
-        <!--            <version>1.1.1</version>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-ehcache</artifactId>
+            <version>5.6.15.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.cache</groupId>
+            <artifactId>cache-api</artifactId>
+            <version>1.1.1</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
@@ -416,7 +406,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.8</version>
+                <version>0.8.10</version>
                 <executions>
                     <execution>
                         <id>default-prepare-agent</id>
@@ -477,6 +467,7 @@
                     <httpConnector>
                         <port>8080</port>
                     </httpConnector>
+                    <jvmArgs>-Ddatabase.base.url=${project.build.directory} -Djetty.port=8080</jvmArgs>
                     <stopPort>9999</stopPort>
                     <deployMode>FORK</deployMode>
                     <stopKey>foo</stopKey>
@@ -494,7 +485,6 @@
                         </goals>
                         <configuration>
                             <useTestScope>true</useTestScope>
-                            <jvmArgs>-Ddatabase.base.url=${project.build.directory} -Djetty.port=8080</jvmArgs>
                         </configuration>
                     </execution>
                     <execution>
