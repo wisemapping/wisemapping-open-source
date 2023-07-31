@@ -24,7 +24,7 @@
                         <id>generate-sources</id>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <tasks>
+                            <target>
                                 <!-- Download and unzip mindplot npm package -->
                                 <mkdir dir="target/wisemapping-mindplot"/>
                                 <exec executable="npm" dir="target" failonerror="true">
@@ -50,7 +50,7 @@
                                     <arg value="-C"/>
                                     <arg value="wisemapping-webapp"/>
                                 </exec>
-                            </tasks>
+                            </target>
                         </configuration>
                         <goals>
                             <goal>run</goal>
