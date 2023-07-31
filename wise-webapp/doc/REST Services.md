@@ -37,6 +37,6 @@ Template Path: /service/admin/users/{userId}/password
 Creating a new user:
  * Template Path: /service/admin/users/
  * Method: Post
- * curl "http://{host.name}:{host.port}/{context.path}/service/admin/users" --request POST --basic -u "admin@wisemapping.org:test" -H "Content-Type:application/json" --data '{"email": "te2@mydomain.de", "lastname": "lastname", "firstname":"myfirstname","password":"password"}'
+ * curl "http://{host.name}:{host.port}/{context.path}/service/admin/users/" --request POST --basic -u "admin@wisemapping.org:test" -H "Content-Type:application/json" --data '{"email": "te2@mydomain.de", "lastname": "lastname", "firstname":"myfirstname","password":"password"}'
 
 

@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -21,7 +20,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class SecurityConfig {
     @Autowired
     UserService userService;
@@ -62,7 +61,7 @@ public class SecurityConfig {
 
     @Bean
     @Order(1)
-    public SecurityFilterChain filterChain(@NotNull final HttpSecurity http, @NotNull final HandlerMappingIntrospector introspector) throws Exception {
+    public SecurityFilterChain mvcFilterChain(@NotNull final HttpSecurity http, @NotNull final HandlerMappingIntrospector introspector) throws Exception {
         final AuthenticationSuccessHandler authenticationSuccessHandler = new AuthenticationSuccessHandler();
         authenticationSuccessHandler.setAlwaysUseDefaultTargetUrl(false);
         authenticationSuccessHandler.setDefaultTargetUrl("/c/maps/");
@@ -78,12 +77,9 @@ public class SecurityConfig {
                         (auth) ->
                                 auth
                                         .requestMatchers("/login", "logout").permitAll()
-                                        .requestMatchers("/registration", "registration-success").permitAll()
-                                        .requestMatchers("/registration-google").permitAll()
+                                        .requestMatchers("/registration", "registration-success", "/registration-google").permitAll()
                                         .requestMatchers("/forgot-password", "/forgot-password-success").permitAll()
-                                        .requestMatchers("/maps/*/embed").permitAll()
-                                        .requestMatchers("/maps/*/try").permitAll()
-                                        .requestMatchers("/maps/*/public").permitAll()
+                                        .requestMatchers("/maps/*/embed", "/maps/*/try", "/maps/*/public").permitAll()
                                         .requestMatchers("/restful/maps/*/document/xml-pub").permitAll()
                                         .requestMatchers("/**").hasAnyRole("USER", "ADMIN")
                                         .anyRequest().authenticated())
@@ -112,8 +108,12 @@ public class SecurityConfig {
     }
 
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/static/**", "/css/**", "/js/**", "/images/**");
+    @Order(3)
+    public SecurityFilterChain shareResourcesFilterChain(@NotNull final HttpSecurity http, @NotNull final HandlerMappingIntrospector introspector) throws Exception {
+        return http.authorizeHttpRequests(
+                (auth) ->
+                        auth.requestMatchers("/static/**", "/css/**", "/js/**", "/images/**", "/").permitAll()
+        ).build();
     }
 
     @Bean
