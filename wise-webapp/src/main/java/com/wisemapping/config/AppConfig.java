@@ -19,22 +19,14 @@ public class AppConfig {
 
     @Bean
     HandlerExceptionResolver errorHandler() {
-        final SimpleMappingExceptionResolver result =
-                new SimpleMappingExceptionResolver();
-
-        //exception to view name mapping
-        final Properties p = new Properties();
-        p.setProperty(MapNotPublicSecurityException.class.getName(), "reactInclude");
-        p.setProperty(AccessDeniedSecurityException.class.getName(), "reactInclude");
-        result.setExceptionMappings(p);
+        final SimpleMappingExceptionResolver result =  new SimpleMappingExceptionResolver();
 
         //mapping status code with view response.
         result.addStatusCode("reactInclude", 403);
 
         //setting default error view
-        result.setDefaultErrorView("errorTemplate");
+        result.setDefaultErrorView("reactInclude");
         result.setDefaultStatusCode(500);
-
         return result;
     }
 
