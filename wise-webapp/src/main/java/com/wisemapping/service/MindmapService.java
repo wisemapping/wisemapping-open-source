@@ -22,7 +22,7 @@ import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.*;
 import org.jetbrains.annotations.Nullable;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.List;
 

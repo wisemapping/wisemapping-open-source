@@ -19,7 +19,7 @@
 package com.wisemapping.exceptions;
 
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 public class TooManyInactiveAccountsExceptions
         extends ClientException {

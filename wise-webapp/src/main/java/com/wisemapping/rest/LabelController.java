@@ -18,6 +18,7 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.LabelCouldNotFoundException;
+import com.wisemapping.exceptions.ValidationException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.Label;
 import com.wisemapping.model.User;
@@ -30,15 +31,17 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
+@PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
 public class LabelController extends BaseController {
 
     @Qualifier("labelService")
@@ -64,7 +67,7 @@ public class LabelController extends BaseController {
         response.setHeader("ResourceId", Long.toString(label.getId()));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/labels", produces = {"application/json"})
+    @RequestMapping(method = RequestMethod.GET, value = "/labels/", produces = {"application/json"})
     public RestLabelList retrieveList() {
         final User user = Utils.getUser();
         assert user != null;

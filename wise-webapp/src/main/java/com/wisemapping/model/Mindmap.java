@@ -30,7 +30,7 @@ import org.hibernate.annotations.NotFoundAction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -55,7 +55,7 @@ public class Mindmap implements Serializable {
     @JoinColumn(name = "creator_id", unique = true)
     private User creator;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "last_editor_id", nullable = false)
     @NotFound(action = NotFoundAction.IGNORE)
     private User lastEditor;

@@ -21,11 +21,11 @@ package com.wisemapping.mail;
 
 import com.wisemapping.util.VelocityEngineUtils;
 import com.wisemapping.util.VelocityEngineWrapper;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 
+import jakarta.validation.constraints.NotNull;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 

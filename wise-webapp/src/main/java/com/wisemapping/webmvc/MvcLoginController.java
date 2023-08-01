@@ -21,13 +21,15 @@ package com.wisemapping.webmvc;
 import com.wisemapping.model.User;
 import com.wisemapping.security.Utils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class LoginController {
+@PreAuthorize("permitAll()")
+public class MvcLoginController {
 
     @Value("${database.driver}")
     private String driver;
@@ -39,7 +41,7 @@ public class LoginController {
         if (user != null) {
             result = new ModelAndView("forward:/c/maps/");
         } else {
-            result = new ModelAndView("login");
+            result = new ModelAndView("reactInclude");
             result.addObject("isHsql", driver.contains("hsql"));
         }
         return result;

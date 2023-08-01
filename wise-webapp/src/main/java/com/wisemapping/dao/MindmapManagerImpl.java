@@ -20,6 +20,7 @@ package com.wisemapping.dao;
 
 import com.wisemapping.model.*;
 import com.wisemapping.util.ZipUtils;
+import jakarta.persistence.Query;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Order;
@@ -30,7 +31,6 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
-import javax.persistence.Query;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;

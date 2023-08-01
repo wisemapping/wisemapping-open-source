@@ -1,4 +1,4 @@
-<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+<%@ taglib uri = "jakarta.tags.functions" prefix = "fn" %>
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 
 <!DOCTYPE html>
@@ -9,9 +9,7 @@
     <base href="${requestScope['site.baseurl']}/static/webapp/">
 
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
-    <%@ include file="/jsp/pageHeaders.jsf" %>
-
-    <title>WiseMapping</title>
+    <%@ include file="pageHeaders.jsf" %>
 
     <script>
         window.serverconfig = {
@@ -23,7 +21,10 @@
             googleOauth2Url: '${requestScope['security.oauth2.google.url']}'
         };
 
+        <!-- Hack to force view selection on react to move all the UI to react-->
+        window.errorMvcView = '${requestScope['exception']!=null?(fn:indexOf(requestScope['exception'],'SecurityException') gt 1?'securityError':'unexpectedError'):''}';
     </script>
+
     <c:if test="${requestScope['google.analytics.enabled']}">
       <!-- Google Ads Sense Config. Lazy loading optimization -->
       <script type="text/javascript">

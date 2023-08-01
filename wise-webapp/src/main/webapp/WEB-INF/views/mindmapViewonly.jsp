@@ -1,5 +1,5 @@
 <%@page pageEncoding="UTF-8" %>
-<%@include file="/jsp/init.jsp" %>
+<%@include file="init.jsp" %>
 
 <%--@elvariable id="mindmap" type="com.wisemapping.model.Mindmap"--%>
 
@@ -15,7 +15,7 @@
     <link rel="preload" href="../../css/viewonly.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
 
     <title>${mindmap.title} | <spring:message code="SITE.TITLE"/></title>
-    <%@ include file="/jsp/pageHeaders.jsf" %>
+    <%@ include file="pageHeaders.jsf" %>
 
     <script type="text/javascript">
           var mapId = '${mindmap.id}';

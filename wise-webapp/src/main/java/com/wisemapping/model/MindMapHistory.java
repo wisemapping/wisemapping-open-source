@@ -22,7 +22,7 @@ import com.wisemapping.util.ZipUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.IOException;
 import java.util.Calendar;
 
