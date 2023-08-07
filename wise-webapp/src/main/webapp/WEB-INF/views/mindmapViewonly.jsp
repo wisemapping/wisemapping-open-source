@@ -7,7 +7,7 @@
 
 <html lang="${fn:substring(locale,0,2)}">
 <head>
-    <base href="${requestScope['site.baseurl']}/static/mindplot/"/>
+    <base href="${requestScope['site.baseurl']}/static/mindplot/" />
     <meta name="viewport" content="initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 

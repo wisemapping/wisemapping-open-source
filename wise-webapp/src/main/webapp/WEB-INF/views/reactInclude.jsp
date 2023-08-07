@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html lang="${fn:substring(locale,0,2)}">
 <head>
-    <base href="${requestScope['site.baseurl']}/static/webapp/"/>
+    <base href="${requestScope['site.baseurl']}/static/webapp/" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta charset="utf-8" />
 
@@ -48,8 +48,7 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
 
-    <script type="text/javascript" src="${requestScop:1
-    ue['site.static.js.url']}/webapp/vendors.bundle.js" crossorigin="anonymous" async></script>
+    <script type="text/javascript" src="${requestScope['site.static.js.url']}/webapp/vendors.bundle.js" crossorigin="anonymous" async></script>
     <script type="text/javascript" src="${requestScope['site.static.js.url']}/webapp/app.bundle.js" crossorigin="anonymous" async></script>
 </body>
 
