@@ -6,10 +6,13 @@
 <%--@elvariable id="editorTryMode" type="java.lang.String"--%>
 <%--@elvariable id="lockInfo" type="com.wisemapping.service.LockInfo"--%>
 
+<c:set var="baseUrl" value="${requestScope['site.baseurl']}" scope="request" />
+<c:set var="baseJsUrl" value="${requestScope['site.static.js.url']}" scope="request" />
+
 <!DOCTYPE html>
 <html lang="${fn:substring(locale,0,2)}">
 <head>
-    <base href="${requestScope['site.baseurl']}/static/webapp/" />
+    <base href="${baseUrl}/static/webapp/" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta charset="utf-8" />
 
@@ -43,9 +46,7 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root" class="mindplot-div-container"></div>
     
-    <script type="text/javascript" src="${requestScope['site.static.js.url']}/webapp/vendors.bundle.js" crossorigin="anonymous" defer></script>
-    <script type="text/javascript" src="${requestScope['site.static.js.url']}/webapp/app.bundle.js" crossorigin="anonymous" defer></script>
-
+    <script type="text/javascript" src="${baseJsUrl}/webapp/vendors.bundle.js" crossorigin="anonymous" defer></script>
+    <script type="text/javascript" src="${baseJsUrl}/webapp/app.bundle.js" crossorigin="anonymous" defer></script>
 </body>
-
 </html>

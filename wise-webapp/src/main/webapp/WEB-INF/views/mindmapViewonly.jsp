@@ -1,5 +1,7 @@
 <%@page pageEncoding="UTF-8" %>
 <%@include file="init.jsp" %>
+<c:set var="baseUrl" value="${requestScope['site.baseurl']}" scope="request" />
+<c:set var="baseJsUrl" value="${requestScope['site.static.js.url']}" scope="request" />
 
 <%--@elvariable id="mindmap" type="com.wisemapping.model.Mindmap"--%>
 
@@ -7,7 +9,7 @@
 
 <html lang="${fn:substring(locale,0,2)}">
 <head>
-    <base href="${requestScope['site.baseurl']}/static/mindplot/" />
+    <base href="${baseUrl}/static/mindplot/" />
     <meta name="viewport" content="initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
@@ -71,7 +73,7 @@
         <span class="title"><spring:message code="DESCRIPTION"/>:</span><span>${mindmap.title}</span>
     </div>
 
-    <script type="text/javascript" src="${requestScope['site.static.js.url']}/mindplot/loader.js" crossorigin="anonymous" defer></script>
+    <script type="text/javascript" src="${baseJsUrl}/mindplot/loader.js" crossorigin="anonymous" defer></script>
 
     <div id="floating-panel">
         <div id="zoom-button">
