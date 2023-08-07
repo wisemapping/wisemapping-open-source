@@ -6,7 +6,7 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="com.wisemapping" level="debug">
+        <Logger name="com.wisemapping" level="trace">
             <AppenderRef ref="LogToConsole"/>
         </Logger>
         <Logger name="org.springframework" level="trace">
