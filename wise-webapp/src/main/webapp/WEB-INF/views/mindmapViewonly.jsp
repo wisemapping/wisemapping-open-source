@@ -7,9 +7,9 @@
 
 <html lang="${fn:substring(locale,0,2)}">
 <head>
+    <base href="${requestScope['site.baseurl']}/static/mindplot/"/>
     <meta name="viewport" content="initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <base href="${requestScope['site.baseurl']}/static/mindplot/">
 
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
     <link rel="preload" href="../../css/viewonly.css" as="style" onload="this.onload=null;this.rel='stylesheet'">

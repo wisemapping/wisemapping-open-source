@@ -1,12 +1,13 @@
-<%@ taglib uri = "jakarta.tags.functions" prefix = "fn" %>
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+<%@taglib uri="jakarta.tags.functions" prefix="fn" %>
+<%@taglib uri="jakarta.tags.core" prefix="c"%>
 
 <!DOCTYPE html>
 <html lang="${fn:substring(locale,0,2)}">
 <head>
+    <base href="${requestScope['site.baseurl']}/static/webapp/"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta charset="utf-8" />
-    <base href="${requestScope['site.baseurl']}/static/webapp/">
 
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
     <%@ include file="pageHeaders.jsf" %>
@@ -47,7 +48,8 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
 
-    <script type="text/javascript" src="${requestScope['site.static.js.url']}/webapp/vendors.bundle.js" crossorigin="anonymous" async></script>
+    <script type="text/javascript" src="${requestScop:1
+    ue['site.static.js.url']}/webapp/vendors.bundle.js" crossorigin="anonymous" async></script>
     <script type="text/javascript" src="${requestScope['site.static.js.url']}/webapp/app.bundle.js" crossorigin="anonymous" async></script>
 </body>
 
