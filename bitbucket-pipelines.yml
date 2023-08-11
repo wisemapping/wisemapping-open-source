@@ -5,7 +5,7 @@
 
 # Prerequisites: pom.xml and appropriate project structure should exist in the repository.
 
-image: maven:3.9.4
+image: maven:3.8.7
 
 pipelines:
   branches:
