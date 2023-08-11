@@ -80,7 +80,7 @@ public class SecurityConfig {
                                         .requestMatchers("/registration", "registration-success", "/registration-google").permitAll()
                                         .requestMatchers("/forgot-password", "/forgot-password-success").permitAll()
                                         .requestMatchers("/maps/*/embed", "/maps/*/try", "/maps/*/public").permitAll()
-                                        .requestMatchers("/restful/maps/*/document/xml-pub").permitAll()
+                                        .requestMatchers("/maps/*/document/xml-pub").permitAll()
                                         .requestMatchers("/**").hasAnyRole("USER", "ADMIN")
                                         .anyRequest().authenticated())
                 .formLogin((loginForm) ->
@@ -112,7 +112,7 @@ public class SecurityConfig {
     public SecurityFilterChain shareResourcesFilterChain(@NotNull final HttpSecurity http, @NotNull final HandlerMappingIntrospector introspector) throws Exception {
         return http.authorizeHttpRequests(
                 (auth) ->
-                        auth.requestMatchers("/static/**", "/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
+                        auth.requestMatchers("/static/**", "/css/**", "/js/**", "/images/**", "/*").permitAll()
         ).build();
     }
 

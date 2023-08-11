@@ -84,8 +84,7 @@ public class MindmapController extends BaseController {
         List<Mindmap> mindmaps = mindmapService.findMindmapsByUser(user);
         mindmaps = mindmaps
                 .stream()
-                .filter(m -> filter.accept(m, user))
-                .collect(Collectors.toUnmodifiableList());
+                .filter(m -> filter.accept(m, user)).toList();
 
         return new RestMindmapList(mindmaps, user);
     }
@@ -148,6 +147,7 @@ public class MindmapController extends BaseController {
         saveMindmapDocument(minor, mindmap, user);
     }
 
+    @PreAuthorize("permitAll()")
     @RequestMapping(method = RequestMethod.GET, value = {"/maps/{id}/document/xml", "/maps/{id}/document/xml-pub"}, consumes = {"text/plain"}, produces = {"application/xml; charset=UTF-8"})
     @ResponseBody
     public byte[] retrieveDocument(@PathVariable int id, @NotNull HttpServletResponse response) throws WiseMappingException, IOException {
