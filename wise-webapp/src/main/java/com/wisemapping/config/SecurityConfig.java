@@ -112,7 +112,7 @@ public class SecurityConfig {
     public SecurityFilterChain shareResourcesFilterChain(@NotNull final HttpSecurity http, @NotNull final HandlerMappingIntrospector introspector) throws Exception {
         return http.authorizeHttpRequests(
                 (auth) ->
-                        auth.requestMatchers("/static/**", "/css/**", "/js/**", "/images/**", "/").permitAll()
+                        auth.requestMatchers("/static/**", "/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
         ).build();
     }
 
