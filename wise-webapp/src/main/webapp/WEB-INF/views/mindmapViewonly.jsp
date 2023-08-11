@@ -1,4 +1,6 @@
 <%@page pageEncoding="UTF-8" %>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 <%@include file="init.jsp" %>
 <c:set var="baseUrl" value="${requestScope['site.baseurl']}" scope="request" />
 <c:set var="baseJsUrl" value="${requestScope['site.static.js.url']}" scope="request" />
