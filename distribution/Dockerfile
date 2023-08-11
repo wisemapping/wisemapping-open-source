@@ -3,7 +3,7 @@
 
 # Based info setup ...
 #FROM --platform=$BUILDPLATFORM tomcat:9.0.71-jdk17
-FROM tomcat:10.1.11-jdk17
+FROM tomcat:11.0.0-jdk21-openjdk
 LABEL maintainer="Paulo Gustavo Veiga <pveiga@wisemapping.com>"
 
 # Build variables ...
