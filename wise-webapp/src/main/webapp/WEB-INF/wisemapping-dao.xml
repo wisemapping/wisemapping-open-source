@@ -23,7 +23,7 @@
                 <prop key="hibernate.dialect">${database.hibernate.dialect}</prop>
 <!--                <prop key="hibernate.cache.use_second_level_cache">true</prop>-->
 <!--                <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>-->
-<!--                <prop key="hibernate.default_batch_fetch_size">200</prop>-->
+                <prop key="hibernate.default_batch_fetch_size">200</prop>
                 <prop key="hibernate.nestedTransactionAllowed">true</prop>
                 <prop key="hibernate.auto_quote_keyword">true</prop>
             </props>
