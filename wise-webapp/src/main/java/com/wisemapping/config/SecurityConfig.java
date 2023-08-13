@@ -44,13 +44,12 @@ public class SecurityConfig {
                         matchers.requestMatchers(serviceMapper.pattern(("/**"))))
                 .authorizeHttpRequests(auth ->
                         auth
-                                .requestMatchers("/users/").permitAll()
-                                .requestMatchers("/users/resetPassword").permitAll()
-                                .requestMatchers("/oauth2/googlecallback").permitAll()
-                                .requestMatchers("/oauth2/confirmaccountsync").permitAll()
-                                .requestMatchers("/admin/**").hasAnyRole("ADMIN")
-                                .requestMatchers("/**").hasAnyRole("USER", "ADMIN")
-
+                                .requestMatchers(serviceMapper.pattern("/users/")).permitAll()
+                                .requestMatchers(serviceMapper.pattern("/users/resetPassword")).permitAll()
+                                .requestMatchers(serviceMapper.pattern("/oauth2/googlecallback")).permitAll()
+                                .requestMatchers(serviceMapper.pattern("/oauth2/confirmaccountsync")).permitAll()
+                                .requestMatchers(serviceMapper.pattern("/admin/**")).hasAnyRole("ADMIN")
+                                .requestMatchers(serviceMapper.pattern("/**")).hasAnyRole("USER", "ADMIN")
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(httpBasic -> {
@@ -76,12 +75,21 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         (auth) ->
                                 auth
-                                        .requestMatchers("/login", "logout").permitAll()
-                                        .requestMatchers("/registration", "registration-success", "/registration-google").permitAll()
-                                        .requestMatchers("/forgot-password", "/forgot-password-success").permitAll()
-                                        .requestMatchers("/maps/*/embed", "/maps/*/try", "/maps/*/public").permitAll()
-                                        .requestMatchers("/maps/*/document/xml-pub").permitAll()
-                                        .requestMatchers("/**").hasAnyRole("USER", "ADMIN")
+                                        .requestMatchers(mvcMatcher.pattern("/login")).permitAll()
+                                        .requestMatchers(mvcMatcher.pattern("/logout")).permitAll()
+
+                                        .requestMatchers(mvcMatcher.pattern("/registration")).permitAll()
+                                        .requestMatchers(mvcMatcher.pattern("/registration-success")).permitAll()
+                                        .requestMatchers(mvcMatcher.pattern("/registration-google")).permitAll()
+
+                                        .requestMatchers(mvcMatcher.pattern("/forgot-password")).permitAll()
+                                        .requestMatchers(mvcMatcher.pattern("/forgot-password-success")).permitAll()
+                                        .requestMatchers(mvcMatcher.pattern("/maps/*/embed")).permitAll()
+                                        .requestMatchers(mvcMatcher.pattern("/maps/*/try")).permitAll()
+                                        .requestMatchers(mvcMatcher.pattern("/maps/*/public")).permitAll()
+                                        .requestMatchers(restfullMapper.pattern("/maps/*/document/xml-pub")).permitAll()
+                                        .requestMatchers(mvcMatcher.pattern("/**")).hasAnyRole("USER", "ADMIN")
+                                        .requestMatchers(restfullMapper.pattern("/**")).hasAnyRole("USER", "ADMIN")
                                         .anyRequest().authenticated())
                 .formLogin((loginForm) ->
                         loginForm.loginPage("/c/login")
@@ -102,7 +110,7 @@ public class SecurityConfig {
                                 ).authenticationSuccessHandler(authenticationSuccessHandler)
                 )
                 .csrf((csrf) ->
-                        csrf.ignoringRequestMatchers("/logout"));
+                        csrf.ignoringRequestMatchers(mvcMatcher.pattern("/logout")));
 
         return http.build();
     }
@@ -110,9 +118,15 @@ public class SecurityConfig {
     @Bean
     @Order(3)
     public SecurityFilterChain shareResourcesFilterChain(@NotNull final HttpSecurity http, @NotNull final HandlerMappingIntrospector introspector) throws Exception {
+        final MvcRequestMatcher.Builder restfullMapper = new MvcRequestMatcher.Builder(introspector);
+
         return http.authorizeHttpRequests(
                 (auth) ->
-                        auth.requestMatchers("/static/**", "/css/**", "/js/**", "/images/**", "/*").permitAll()
+                        auth.requestMatchers(restfullMapper.pattern("/static/**")).permitAll().
+                                requestMatchers(restfullMapper.pattern("/css/**")).permitAll().
+                                requestMatchers(restfullMapper.pattern("/js/**")).permitAll().
+                                requestMatchers(restfullMapper.pattern("/images/**")).permitAll().
+                                requestMatchers(restfullMapper.pattern("/*")).permitAll()
         ).build();
     }
 

@@ -13,8 +13,8 @@
     </parent>
 
     <properties>
-        <org.springframework.version>6.0.10</org.springframework.version>
-        <org.springframework.addons>6.1.1</org.springframework.addons>
+        <org.springframework.version>6.0.11</org.springframework.version>
+        <org.springframework.addons>6.1.2</org.springframework.addons>
         <hibernate.version>6.2.6.Final</hibernate.version>
         <hibernate-validator.version>6.0.21.Final</hibernate-validator.version>
         <spring-security-taglibs.version>6.0.2</spring-security-taglibs.version>
@@ -50,6 +50,16 @@
             <artifactId>spring-webmvc</artifactId>
             <version>${org.springframework.version}</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-messaging</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-websocket</artifactId>
+            <version>${org.springframework.version}</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
