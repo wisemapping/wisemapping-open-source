@@ -24,6 +24,7 @@ import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestLogItem;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -33,6 +34,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
 
 import jakarta.servlet.http.HttpServletRequest;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -143,7 +145,8 @@ final public class NotificationService {
     private void handleException(Exception e) {
         System.err.println("An expected error has occurred trying to send an email notification. Usually, the main reason for this is that the SMTP server properties has not been configured properly. Edit the WEB-INF/app.properties file and verify the SMTP server configuration properties.");
         System.err.println("Cause:" + e.getMessage());
-
+        e.printStackTrace();
+        logger.log(Level.ERROR, e);
     }
 
     public void setMailer(Mailer mailer) {
