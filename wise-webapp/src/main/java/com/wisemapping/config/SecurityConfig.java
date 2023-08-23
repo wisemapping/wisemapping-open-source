@@ -34,6 +34,22 @@ public class SecurityConfig {
         firewall.setAllowSemicolon(true);
         return firewall;
     }
+    @Bean
+    @Order(1)
+    public SecurityFilterChain embeddedDisabledXOrigin(@NotNull final HttpSecurity http, @NotNull final HandlerMappingIntrospector introspector) throws Exception {
+        final MvcRequestMatcher.Builder mvcMatcher = new MvcRequestMatcher.Builder(introspector).servletPath("/c");
+        http
+                .securityMatchers((matchers) ->
+                        matchers.requestMatchers(mvcMatcher.pattern(("/maps/*/embed"))))
+                .authorizeHttpRequests(
+                        (auth) -> auth.requestMatchers(mvcMatcher.pattern("/maps/*/embed")).permitAll())
+                .headers((header -> header.frameOptions()
+                        .disable()
+                ))
+                .csrf(AbstractHttpConfigurer::disable);
+
+        return http.build();
+    }
 
     @Bean
     @Order(2)
@@ -59,7 +75,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    @Order(1)
+    @Order(3)
     public SecurityFilterChain mvcFilterChain(@NotNull final HttpSecurity http, @NotNull final HandlerMappingIntrospector introspector) throws Exception {
         final AuthenticationSuccessHandler authenticationSuccessHandler = new AuthenticationSuccessHandler();
         authenticationSuccessHandler.setAlwaysUseDefaultTargetUrl(false);
@@ -84,7 +100,6 @@ public class SecurityConfig {
 
                                         .requestMatchers(mvcMatcher.pattern("/forgot-password")).permitAll()
                                         .requestMatchers(mvcMatcher.pattern("/forgot-password-success")).permitAll()
-                                        .requestMatchers(mvcMatcher.pattern("/maps/*/embed")).permitAll()
                                         .requestMatchers(mvcMatcher.pattern("/maps/*/try")).permitAll()
                                         .requestMatchers(mvcMatcher.pattern("/maps/*/public")).permitAll()
                                         .requestMatchers(restfullMapper.pattern("/maps/*/document/xml-pub")).permitAll()
@@ -108,7 +123,9 @@ public class SecurityConfig {
                                 .tokenValiditySeconds(2419200)
                                 .rememberMeParameter("remember-me"
                                 ).authenticationSuccessHandler(authenticationSuccessHandler)
-                )
+                ).headers((header -> header.frameOptions()
+                        .disable()
+                ))
                 .csrf((csrf) ->
                         csrf.ignoringRequestMatchers(mvcMatcher.pattern("/logout")));
 
@@ -116,7 +133,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    @Order(3)
+    @Order(4)
     public SecurityFilterChain shareResourcesFilterChain(@NotNull final HttpSecurity http, @NotNull final HandlerMappingIntrospector introspector) throws Exception {
         final MvcRequestMatcher.Builder restfullMapper = new MvcRequestMatcher.Builder(introspector);
 
@@ -129,6 +146,8 @@ public class SecurityConfig {
                                 requestMatchers(restfullMapper.pattern("/*")).permitAll()
         ).build();
     }
+
+
 
     @Bean
     public UserDetailsService userDetailsService() {
