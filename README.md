@@ -96,5 +96,5 @@ After credential was created, Google will show you the clientId and clientSecret
 ## License
 
 The source code is Licensed under the WiseMapping Open License, Version 1.0 (the “License”);
-You may obtain a copy of the License at: [https://bitbucket.org/wisemapping/wisemapping-open-source/src/develop/license.md](https://bitbucket.org/wisemapping/wisemapping-open-source/src/develop/license.md)
+You may obtain a copy of the License at: [https://bitbucket.org/wisemapping/wisemapping-open-source/src/develop/license.md](https://bitbucket.org/wisemapping/wisemapping-open-source/src/develop/LICENSE.md)
 
