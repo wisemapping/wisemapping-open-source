@@ -19,14 +19,21 @@ package com.wisemapping.dao;
 
 import com.wisemapping.model.Label;
 import com.wisemapping.model.User;
+import jakarta.annotation.Resource;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.SelectionQuery;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public class LabelManagerImpl extends HibernateDaoSupport
+@Repository
+public class LabelManagerImpl
         implements LabelManager {
+    @Resource
+    private SessionFactory sessionFactory;
 
     @Override
     public void addLabel(@NotNull final Label label) {
@@ -35,31 +42,37 @@ public class LabelManagerImpl extends HibernateDaoSupport
 
     @Override
     public void saveLabel(@NotNull final Label label) {
-        currentSession().save(label);
+        getSession().persist(label);
+    }
+
+    private Session getSession() {
+        return sessionFactory.getCurrentSession();
     }
 
     @NotNull
     @Override
-    @SuppressWarnings("unchecked")
     public List<Label> getAllLabels(@NotNull final User user) {
-        var query = currentSession().createQuery("from com.wisemapping.model.Label wisemapping where creator_id=:creatorId");
-        query.setParameter("creatorId", user.getId());
+        final SelectionQuery<Label> query = getSession().createSelectionQuery("from com.wisemapping.model.Label wisemapping where creator=:creatorId", Label.class);
+        query.setParameter("creatorId", user);
         return query.list();
     }
 
     @Nullable
     @Override
     public Label getLabelById(int id, @NotNull final User user) {
-        var query = currentSession().createQuery("from com.wisemapping.model.Label wisemapping where id=:id and creator=:creator");
+        final Session session = getSession();
+        final SelectionQuery<Label> query = session.createSelectionQuery("from com.wisemapping.model.Label wisemapping where id=:id and creator=:creator", Label.class);
         query.setParameter("id", id);
         query.setParameter("creator", user);
-        return getFirst(query.list());
+
+        final List<Label> resultList = query.getResultList();
+        return getFirst(resultList);
     }
 
     @Nullable
     @Override
     public Label getLabelByTitle(@NotNull String title, @NotNull final User user) {
-        var query = currentSession().createQuery("from com.wisemapping.model.Label wisemapping where title=:title and creator=:creator");
+        final SelectionQuery<Label> query = getSession().createSelectionQuery("from com.wisemapping.model.Label wisemapping where title=:title and creator=:creator", Label.class);
         query.setParameter("title", title);
         query.setParameter("creator", user);
         return getFirst(query.list());
@@ -67,10 +80,11 @@ public class LabelManagerImpl extends HibernateDaoSupport
 
     @Override
     public void removeLabel(@NotNull Label label) {
-        getHibernateTemplate().delete(label);
+        getSession().remove(label);
     }
 
-    @Nullable private Label getFirst(List<Label> labels) {
+    @Nullable
+    private Label getFirst(final List<Label> labels) {
         Label result = null;
         if (labels != null && !labels.isEmpty()) {
             result = labels.get(0);

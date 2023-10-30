@@ -18,27 +18,28 @@
 
 package com.wisemapping.dao;
 
-import com.wisemapping.model.AccessAuditory;
-import com.wisemapping.model.AuthenticationType;
-import com.wisemapping.model.Collaboration;
-import com.wisemapping.model.Collaborator;
-import com.wisemapping.model.User;
+import com.wisemapping.model.*;
 import com.wisemapping.security.DefaultPasswordEncoderFactories;
 import com.wisemapping.security.LegacyPasswordEncoder;
+import jakarta.annotation.Resource;
 import org.hibernate.ObjectNotFoundException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.SelectionQuery;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.orm.hibernate5.HibernateTemplate;
-import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+@Repository
 public class UserManagerImpl
-        extends HibernateDaoSupport
         implements UserManager {
+    @Resource
+    private SessionFactory sessionFactory;
 
     private PasswordEncoder passwordEncoder;
 
@@ -46,9 +47,12 @@ public class UserManagerImpl
         this.passwordEncoder = passwordEncoder;
     }
 
-    @SuppressWarnings("unchecked")
     public List<User> getAllUsers() {
-        return currentSession().createQuery("from com.wisemapping.model.User user").list();
+        return getSession().createSelectionQuery("from com.wisemapping.model.User user", User.class).getResultList();
+    }
+
+    private Session getSession() {
+        return sessionFactory.getCurrentSession();
     }
 
 
@@ -57,10 +61,10 @@ public class UserManagerImpl
     public User getUserBy(@NotNull final String email) {
         User user = null;
 
-        var query = currentSession().createQuery("from com.wisemapping.model.User colaborator where email=:email");
+        SelectionQuery<User> query = getSession().createSelectionQuery("from com.wisemapping.model.User colaborator where email=:email",User.class);
         query.setParameter("email", email);
 
-        final List<User> users = query.list();
+        final List<User> users = query.getResultList();
         if (users != null && !users.isEmpty()) {
             assert users.size() == 1 : "More than one user with the same email!";
             user = users.get(0);
@@ -71,19 +75,20 @@ public class UserManagerImpl
 
     @Override
     public Collaborator getCollaboratorBy(final String email) {
-        final Collaborator cola;
-        var query = currentSession().createQuery("from com.wisemapping.model.Collaborator colaborator where " +
-                "email=:email");
+        final Collaborator result;
+        Session session = getSession();
+        final SelectionQuery<Collaborator> query = session.createSelectionQuery("from com.wisemapping.model.Collaborator colaborator where " +
+                "email=:email", Collaborator.class);
         query.setParameter("email", email);
 
-        final List<User> cols = query.list();
+        final List<Collaborator> cols = query.getResultList();
         if (cols != null && !cols.isEmpty()) {
             assert cols.size() == 1 : "More than one colaborator with the same email!";
-            cola = cols.get(0);
+            result = cols.get(0);
         } else {
-            cola = null;
+            result = null;
         }
-        return cola;
+        return result;
     }
 
     @Nullable
@@ -91,7 +96,7 @@ public class UserManagerImpl
     public User getUserBy(int id) {
         User user = null;
         try {
-            user = getHibernateTemplate().get(User.class, id);
+            user = getSession().get(User.class, id);
         } catch (ObjectNotFoundException e) {
             // Ignore ...
         }
@@ -106,7 +111,7 @@ public class UserManagerImpl
         } else {
             user.setPassword("");
         }
-        getHibernateTemplate().saveOrUpdate(user);
+        getSession().persist(user);
     }
 
     @Override
@@ -114,10 +119,10 @@ public class UserManagerImpl
         assert user != null : "Trying to store a null user";
 
         // Migrate from previous temporal collab to new user ...
-        final HibernateTemplate template = getHibernateTemplate();
+        final Session session = getSession();
         collaborator.setEmail(collaborator.getEmail() + "_toRemove");
-        template.saveOrUpdate(collaborator);
-        template.flush();
+        session.merge(collaborator);
+        session.flush();
 
         // Save all new...
         this.createUser(user);
@@ -129,18 +134,18 @@ public class UserManagerImpl
         }
 
         // Delete old user ...
-        template.delete(collaborator);
+        session.remove(collaborator);
         return user;
     }
 
     @Override
     public void removeUser(@NotNull final User user) {
-        getHibernateTemplate().delete(user);
+        getSession().remove(user);
     }
 
     public void auditLogin(@NotNull AccessAuditory accessAuditory) {
         assert accessAuditory != null : "accessAuditory is null";
-        getHibernateTemplate().save(accessAuditory);
+        getSession().persist(accessAuditory);
     }
 
     public void updateUser(@NotNull User user) {
@@ -152,21 +157,21 @@ public class UserManagerImpl
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
 
-        getHibernateTemplate().update(user);
+        getSession().merge(user);
     }
 
     public User getUserByActivationCode(long code) {
         final User user;
 
-        var query = currentSession().createQuery("from com.wisemapping.model.User user where " +
-                "activationCode=:activationCode");
+        final SelectionQuery<User> query = getSession().createSelectionQuery("from com.wisemapping.model.User user where " +
+                "activationCode=:activationCode", User.class);
         query.setParameter("activationCode", code);
-        final List users = query.list();
 
+        final List<User> users = query.getResultList();
         if (users != null && !users.isEmpty()) {
 
             assert users.size() == 1 : "More than one user with the same username!";
-            user = (User) users.get(0);
+            user = users.get(0);
         } else {
             user = null;
         }

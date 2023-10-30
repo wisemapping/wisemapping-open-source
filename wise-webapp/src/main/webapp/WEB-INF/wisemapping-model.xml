@@ -6,17 +6,12 @@
 		http://www.springframework.org/schema/beans/spring-beans.xsd">
     <beans>
         <bean id="userManager" class="com.wisemapping.dao.UserManagerImpl">
-            <property name="hibernateTemplate" ref="hibernateTemplate"/>
             <property name="encoder" ref="passwordEncoder"/>
         </bean>
 
-        <bean id="mindmapManager" class="com.wisemapping.dao.MindmapManagerImpl">
-            <property name="hibernateTemplate" ref="hibernateTemplate"/>
-        </bean>
+        <bean id="mindmapManager" class="com.wisemapping.dao.MindmapManagerImpl"/>
 
-        <bean id="labelManager" class="com.wisemapping.dao.LabelManagerImpl">
-            <property name="hibernateTemplate" ref="hibernateTemplate"/>
-        </bean>
+        <bean id="labelManager" class="com.wisemapping.dao.LabelManagerImpl"/>
 
     </beans>
 </beans>

@@ -50,17 +50,11 @@ public interface MindmapManager {
 
     void removeCollaboration(Collaboration collaboration);
 
-    List<Mindmap> search(MindMapCriteria criteria);
-
-    List<Mindmap> search(MindMapCriteria criteria, int maxResult);
-
     List<MindMapHistory> getHistoryFrom(int mindmapId);
 
     MindMapHistory getHistory(int historyId);
 
     void updateCollaboration(@NotNull Collaboration collaboration);
-
-    void purgeHistory(int mapId) throws IOException;
 
     List<Mindmap> findMindmapByUser(User user);
 }

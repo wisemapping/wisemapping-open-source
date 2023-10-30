@@ -135,11 +135,6 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public List<Mindmap> search(MindMapCriteria criteria) {
-        return mindmapManager.search(criteria);
-    }
-
-    @Override
     public void removeCollaboration(@NotNull Mindmap mindmap, @NotNull Collaboration collaboration) throws CollaborationException {
         // remove collaborator association
         final Mindmap mindMap = collaboration.getMindMap();

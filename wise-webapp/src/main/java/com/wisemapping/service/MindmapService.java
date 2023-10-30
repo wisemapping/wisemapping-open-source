@@ -49,8 +49,6 @@ public interface MindmapService {
 
     void removeMindmap(@NotNull final Mindmap mindmap, @NotNull final User user) throws WiseMappingException;
 
-    List<Mindmap> search(MindMapCriteria criteria);
-
     List<MindMapHistory> findMindmapHistory(int mindmapId);
 
     boolean hasPermissions(@Nullable User user, Mindmap map, CollaborationRole allowedRole);
