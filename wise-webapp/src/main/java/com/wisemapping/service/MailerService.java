@@ -17,35 +17,43 @@
  */
 
 
-package com.wisemapping.mail;
+package com.wisemapping.service;
 
 import com.wisemapping.util.VelocityEngineUtils;
 import com.wisemapping.util.VelocityEngineWrapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 
 import jakarta.validation.constraints.NotNull;
+import org.springframework.stereotype.Service;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-public final class Mailer {
+@Service
+public final class MailerService {
 
     //~ Instance fields ......................................................................................
 
+    @Autowired
     private JavaMailSender mailSender;
+
+    @Autowired
     private VelocityEngineWrapper velocityEngineWrapper;
-    private final String serverFromEmail;
-    private final String supportEmail;
-    private final String errorReporterEmail;
+
+    @Value("${mail.serverSendEmail")
+    private String serverFromEmail;
+
+    @Value("${mail.supportEmail}")
+    private String supportEmail;
+
+    @Value("${mail.errorReporterEmail}")
+    private String errorReporterEmail;
 
     //~ Methods ..............................................................................................
-
-    public Mailer(@NotNull String siteEmail, @NotNull String supportEmail, @NotNull String errorReporterEmail) {
-        this.serverFromEmail = siteEmail;
-        this.supportEmail = supportEmail;
-        this.errorReporterEmail = errorReporterEmail;
-    }
 
     public String getServerSenderEmail() {
         return serverFromEmail;

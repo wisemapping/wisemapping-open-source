@@ -21,7 +21,7 @@ import com.wisemapping.exceptions.ClientException;
 import com.wisemapping.exceptions.OAuthAuthenticationException;
 import com.wisemapping.exceptions.Severity;
 import com.wisemapping.exceptions.ValidationException;
-import com.wisemapping.mail.NotificationService;
+import com.wisemapping.service.NotificationService;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestErrors;
 import com.wisemapping.security.Utils;

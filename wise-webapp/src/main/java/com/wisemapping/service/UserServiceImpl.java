@@ -22,7 +22,6 @@ import com.wisemapping.dao.UserManager;
 import com.wisemapping.exceptions.InvalidMindmapException;
 import com.wisemapping.exceptions.OAuthAuthenticationException;
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.*;
 import com.wisemapping.rest.model.RestResetPasswordAction;
 import com.wisemapping.rest.model.RestResetPasswordResponse;

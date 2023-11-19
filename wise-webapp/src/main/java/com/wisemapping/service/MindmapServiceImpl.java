@@ -20,7 +20,6 @@ package com.wisemapping.service;
 
 import com.wisemapping.dao.MindmapManager;
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.mail.NotificationService;
 import com.wisemapping.model.*;
 import com.wisemapping.security.Utils;
 import org.jetbrains.annotations.NotNull;

@@ -16,7 +16,7 @@
  *   limitations under the License.
  */
 
-package com.wisemapping.mail;
+package com.wisemapping.service;
 
 import com.wisemapping.filter.SupportedUserAgent;
 import com.wisemapping.model.Collaboration;
@@ -29,10 +29,13 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -42,13 +45,16 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Service
 final public class NotificationService {
     final private static Logger logger = LogManager.getLogger();
+    @Autowired
     private ResourceBundleMessageSource messageSource;
 
     @Autowired
-    private Mailer mailer;
+    private MailerService mailerService;
 
+    @Value("${site.baseurl:http://localhost:8080/}")
     private String baseUrl;
 
     public void newCollaboration(@NotNull Collaboration collaboration, @NotNull Mindmap mindmap, @NotNull User user, @Nullable String message) {
@@ -56,7 +62,7 @@ final public class NotificationService {
 
         try {
             // Sent collaboration email ...
-            final String formMail = mailer.getServerSenderEmail();
+            final String formMail = mailerService.getServerSenderEmail();
 
             // Is the user already registered user ?.
             final String collabEmail = collaboration.getCollaborator().getEmail();
@@ -72,14 +78,14 @@ final public class NotificationService {
             model.put("baseUrl", getBaseUrl());
             model.put("senderMail", user.getEmail());
             model.put("message", message);
-            model.put("doNotReplay", messageSource.getMessage("EMAIL.DO_NOT_REPLAY", new Object[]{mailer.getSupportEmail()}, locale));
+            model.put("doNotReplay", messageSource.getMessage("EMAIL.DO_NOT_REPLAY", new Object[]{mailerService.getSupportEmail()}, locale));
 
             // To resolve resources on templates ...
             model.put("noArg", new Object[]{});
             model.put("messages", messageSource);
             model.put("locale", locale);
 
-            mailer.sendEmail(formMail, collabEmail, subject, model, "newCollaboration.vm");
+            mailerService.sendEmail(formMail, collabEmail, subject, model, "newCollaboration.vm");
         } catch (Exception e) {
             handleException(e);
         }
@@ -125,8 +131,8 @@ final public class NotificationService {
             model.put("messageTitle", messageTitle);
             model.put("messageBody", messageBody);
             model.put("baseUrl", getBaseUrl());
-            model.put("supportEmail", mailer.getSupportEmail());
-            model.put("doNotReplay", messageSource.getMessage("EMAIL.DO_NOT_REPLAY", new Object[]{mailer.getSupportEmail()}, locale));
+            model.put("supportEmail", mailerService.getSupportEmail());
+            model.put("doNotReplay", messageSource.getMessage("EMAIL.DO_NOT_REPLAY", new Object[]{mailerService.getSupportEmail()}, locale));
 
             // To resolve resources on templates ...
             model.put("noArg", new Object[]{});
@@ -134,7 +140,7 @@ final public class NotificationService {
             model.put("locale", locale);
 
             logger.debug("Email properties->" + model);
-            mailer.sendEmail(mailer.getServerSenderEmail(), user.getEmail(), mailSubject, model, "baseLayout.vm");
+            mailerService.sendEmail(mailerService.getServerSenderEmail(), user.getEmail(), mailSubject, model, "baseLayout.vm");
         } catch (Exception e) {
             handleException(e);
         }
@@ -146,15 +152,15 @@ final public class NotificationService {
 
     }
 
-    public void setMailer(Mailer mailer) {
-        this.mailer = mailer;
+    public void setMailer(MailerService mailerService) {
+        this.mailerService = mailerService;
     }
 
 
     public void activateAccount(@NotNull User user) {
         final Map<String, Object> model = new HashMap<>();
         model.put("user", user);
-        mailer.sendEmail(mailer.getServerSenderEmail(), user.getEmail(), "[WiseMapping] Active account", model, "activationAccountMail.vm");
+        mailerService.sendEmail(mailerService.getServerSenderEmail(), user.getEmail(), "[WiseMapping] Active account", model, "activationAccountMail.vm");
     }
 
     public void sendRegistrationEmail(@NotNull User user) {

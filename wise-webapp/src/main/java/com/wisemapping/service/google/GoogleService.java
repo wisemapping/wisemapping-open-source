@@ -20,6 +20,8 @@ package com.wisemapping.service.google;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
@@ -30,11 +32,17 @@ import com.wisemapping.service.google.http.HttpInvokerException;
 
 @Service
 public class GoogleService {
+	@Autowired
 	private HttpInvoker httpInvoker;
+	@Value("${security.oauth2.google.confirmUrl}")
 	private String optinConfirmUrl;
+	@Value("${security.oauth2.google.userinfoUrl}")
 	private String accountBasicDataUrl;
+	@Value("${security.oauth2.google.clientId}")
 	private String clientId;
+	@Value("${security.oauth2.google.clientSecret}")
 	private String clientSecret;
+	@Value("${security.oauth2.google.callbackUrl}")
 	private String callbackUrl;
 
 	public void setHttpInvoker(HttpInvoker httpInvoker) {
