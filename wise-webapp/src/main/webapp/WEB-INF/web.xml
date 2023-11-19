@@ -24,10 +24,7 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            /WEB-INF/wisemapping-datasource.xml
-            /WEB-INF/wisemapping-dao.xml
-            /WEB-INF/wisemapping-service.xml
-            /WEB-INF/wisemapping-servlet.xml
+            classpath:spring/wisemapping-common.xml
         </param-value>
     </context-param>
 
@@ -35,8 +32,7 @@
         <param-name>contextInitializerClasses</param-name>
         <param-value>com.wisemapping.webmvc.ApplicationContextInitializer</param-value>
     </context-param>
-
-
+    
     <!--
       - Loads the root application context of this web app at startup.
       - The application context is then available via
@@ -91,7 +87,7 @@
         <init-param>
             <param-name>contextConfigLocation</param-name>
             <param-value>
-                /WEB-INF/wisemapping-servlet.xml
+                classpath:spring/wisemapping-servlet.xml
             </param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
@@ -103,7 +99,7 @@
         <init-param>
             <param-name>contextConfigLocation</param-name>
             <param-value>
-                /WEB-INF/wisemapping-rest.xml
+                classpath:spring/wisemapping-rest.xml
             </param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>

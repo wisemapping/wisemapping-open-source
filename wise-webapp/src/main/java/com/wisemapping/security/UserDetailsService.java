@@ -23,13 +23,16 @@ import com.wisemapping.model.User;
 import com.wisemapping.service.UserService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 
+@Service
 public class UserDetailsService
         implements org.springframework.security.core.userdetails.UserDetailsService {
+    @Autowired
     private UserService userService;
     private String adminUser;
 
