@@ -99,9 +99,9 @@ public class MindmapServiceImpl
 
     @Override
     @Nullable
-    @PreAuthorize("hasPermission(#id, 'READ')")
-    public Mindmap findMindmapById(int id) {
-        return mindmapManager.getMindmapById(id);
+    @PreAuthorize("hasPermission(#mapId, 'READ')")
+    public Mindmap findMindmapById(int mapId) {
+        return mindmapManager.getMindmapById(mapId);
     }
 
     @NotNull
@@ -246,9 +246,9 @@ public class MindmapServiceImpl
 
 
     @Override
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#mindmap, 'READ')")
-    public List<MindMapHistory> findMindmapHistory(int mindmapId) {
-        return mindmapManager.getHistoryFrom(mindmapId);
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#mapId, 'READ')")
+    public List<MindMapHistory> findMindmapHistory(int mapId) {
+        return mindmapManager.getHistoryFrom(mapId);
     }
 
     @Override
@@ -261,9 +261,9 @@ public class MindmapServiceImpl
     }
 
     @Override
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#mindmap, 'READ')")
-    public MindMapHistory findMindmapHistory(int id, int hid) throws WiseMappingException {
-        final List<MindMapHistory> mindmapHistory = this.findMindmapHistory(id);
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#mapId, 'READ')")
+    public MindMapHistory findMindmapHistory(int mapId, int hid) throws WiseMappingException {
+        final List<MindMapHistory> mindmapHistory = this.findMindmapHistory(mapId);
         MindMapHistory result = null;
         for (MindMapHistory history : mindmapHistory) {
             if (history.getId() == hid) {
@@ -273,7 +273,7 @@ public class MindmapServiceImpl
         }
 
         if (result == null) {
-            throw new WiseMappingException("History could not be found for mapid=" + id + ",hid" + hid);
+            throw new WiseMappingException("History could not be found for mapid=" + mapId + ",hid" + hid);
         }
         return result;
     }
@@ -293,7 +293,6 @@ public class MindmapServiceImpl
         return this.lockManager;
     }
 
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#mindmap, 'READ')")
     private Collaboration getCollaborationBy(@NotNull final String email, @NotNull final Set<Collaboration> collaborations) {
         Collaboration collaboration = null;
 
