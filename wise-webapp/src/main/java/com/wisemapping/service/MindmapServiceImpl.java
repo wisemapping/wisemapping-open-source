@@ -27,8 +27,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.List;
@@ -92,37 +92,42 @@ public class MindmapServiceImpl
     }
 
     @Override
+    @PreAuthorize("hasPermission(#user, 'READ')")
     public Mindmap getMindmapByTitle(String title, User user) {
         return mindmapManager.getMindmapByTitle(title, user);
     }
 
     @Override
     @Nullable
+    @PreAuthorize("hasPermission(#id, 'READ')")
     public Mindmap findMindmapById(int id) {
         return mindmapManager.getMindmapById(id);
     }
 
     @NotNull
     @Override
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#user, 'READ')")
     public List<Mindmap> findMindmapsByUser(@NotNull User user) {
         return mindmapManager.findMindmapByUser(user);
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#user, 'READ')")
     public List<Collaboration> findCollaborations(@NotNull User user) {
         return mindmapManager.findCollaboration(user.getId());
     }
 
     @Override
-    public void updateMindmap(@NotNull Mindmap mindMap, boolean saveHistory) throws WiseMappingException {
-        if (mindMap.getTitle() == null || mindMap.getTitle().length() == 0) {
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#mindmap, 'WRITE')")
+    public void updateMindmap(@NotNull Mindmap mindmap, boolean saveHistory) throws WiseMappingException {
+        if (mindmap.getTitle() == null || mindmap.getTitle().length() == 0) {
             throw new WiseMappingException("The title can not be empty");
         }
 
         // Check that what we received a valid mindmap...
         final String xml;
         try {
-            xml = mindMap.getXmlStr().trim();
+            xml = mindmap.getXmlStr().trim();
         } catch (UnsupportedEncodingException e) {
             throw new WiseMappingException("Could not be decoded.", e);
         }
@@ -131,10 +136,11 @@ public class MindmapServiceImpl
             throw new WiseMappingException("Map seems not to be a valid mindmap: '" + xml + "'");
         }
 
-        mindmapManager.updateMindmap(mindMap, saveHistory);
+        mindmapManager.updateMindmap(mindmap, saveHistory);
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#mindmap, 'WRITE')")
     public void removeCollaboration(@NotNull Mindmap mindmap, @NotNull Collaboration collaboration) throws CollaborationException {
         // remove collaborator association
         final Mindmap mindMap = collaboration.getMindMap();
@@ -149,6 +155,7 @@ public class MindmapServiceImpl
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#mindmap, 'READ')")
     public void removeMindmap(@NotNull Mindmap mindmap, @NotNull User user) throws WiseMappingException {
         if (mindmap.getCreator().identityEquality(user)) {
             mindmapManager.removeMindmap(mindmap);
@@ -161,9 +168,10 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public void addMindmap(@NotNull Mindmap map, @NotNull User user) {
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#mindmap, 'WRITE')")
+    public void addMindmap(@NotNull Mindmap mindmap, @NotNull User user) {
 
-        final String title = map.getTitle();
+        final String title = mindmap.getTitle();
 
         if (title == null || title.length() == 0) {
             throw new IllegalArgumentException("The tile can not be empty");
@@ -175,20 +183,21 @@ public class MindmapServiceImpl
         }
 
         final Calendar creationTime = Calendar.getInstance();
-        map.setLastEditor(user);
-        map.setCreationTime(creationTime);
-        map.setLastModificationTime(creationTime);
-        map.setCreator(user);
+        mindmap.setLastEditor(user);
+        mindmap.setCreationTime(creationTime);
+        mindmap.setLastModificationTime(creationTime);
+        mindmap.setCreator(user);
 
         // Add map creator with owner permissions ...
         final User dbUser = userService.getUserBy(user.getId());
-        final Collaboration collaboration = new Collaboration(CollaborationRole.OWNER, dbUser, map);
-        map.getCollaborations().add(collaboration);
+        final Collaboration collaboration = new Collaboration(CollaborationRole.OWNER, dbUser, mindmap);
+        mindmap.getCollaborations().add(collaboration);
 
-        mindmapManager.addMindmap(dbUser, map);
+        mindmapManager.addMindmap(dbUser, mindmap);
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#mindmap, 'WRITE')")
     public void addCollaboration(@NotNull Mindmap mindmap, @NotNull String email, @NotNull CollaborationRole role, @Nullable String message)
             throws CollaborationException {
 
@@ -222,7 +231,8 @@ public class MindmapServiceImpl
         }
     }
 
-    private Collaborator addCollaborator(String email) {
+
+    private Collaborator addCollaborator(@NotNull String email) {
         // Add a new collaborator ...
         Collaborator collaborator = mindmapManager.findCollaborator(email);
         if (collaborator == null) {
@@ -236,11 +246,13 @@ public class MindmapServiceImpl
 
 
     @Override
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#mindmap, 'READ')")
     public List<MindMapHistory> findMindmapHistory(int mindmapId) {
         return mindmapManager.getHistoryFrom(mindmapId);
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#mindmap, 'WRITE')")
     public void revertChange(@NotNull Mindmap mindmap, int historyId)
             throws WiseMappingException {
         final MindMapHistory history = mindmapManager.getHistory(historyId);
@@ -249,6 +261,7 @@ public class MindmapServiceImpl
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#mindmap, 'READ')")
     public MindMapHistory findMindmapHistory(int id, int hid) throws WiseMappingException {
         final List<MindMapHistory> mindmapHistory = this.findMindmapHistory(id);
         MindMapHistory result = null;
@@ -266,6 +279,7 @@ public class MindmapServiceImpl
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#collaborator, 'WRITE')")
     public void updateCollaboration(@NotNull Collaborator collaborator, @NotNull Collaboration collaboration) throws WiseMappingException {
         if (!collaborator.identityEquality(collaboration.getCollaborator())) {
             throw new WiseMappingException("No enough permissions for this operation.");
@@ -279,6 +293,7 @@ public class MindmapServiceImpl
         return this.lockManager;
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#mindmap, 'READ')")
     private Collaboration getCollaborationBy(@NotNull final String email, @NotNull final Set<Collaboration> collaborations) {
         Collaboration collaboration = null;
 

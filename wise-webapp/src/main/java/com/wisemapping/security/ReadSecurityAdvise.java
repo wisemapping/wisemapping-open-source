@@ -16,40 +16,23 @@
 *   limitations under the License.
 */
 
-package com.wisemapping.security.aop;
+package com.wisemapping.security;
 
 import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
-import org.aopalliance.intercept.MethodInterceptor;
-import org.aopalliance.intercept.MethodInvocation;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.stereotype.Component;
 
-public class UpdateSecurityAdvise
-        extends BaseSecurityAdvice
-        implements MethodInterceptor {
+@Component
+public class ReadSecurityAdvise
+        extends MapPermissionsSecurityAdvice {
 
-    @Override
-    public Object invoke(MethodInvocation methodInvocation) throws Throwable {
-        checkRole(methodInvocation);
-        return methodInvocation.proceed();
+    protected boolean isAllowed(@Nullable User user, Mindmap map) {
+        return getMindmapService().hasPermissions(user, map, CollaborationRole.VIEWER);
     }
 
-    @Override
-    protected boolean isAllowed(@Nullable User user, @NotNull Mindmap map) {
-        boolean result;
-        if (map.getCreator() == null) {
-            // This means that the map is new and  is an add operation.
-            result = true;
-        } else {
-            result = getMindmapService().hasPermissions(user, map, CollaborationRole.EDITOR);
-        }
-        return result;
-    }
-
-    @Override
     protected boolean isAllowed(@Nullable User user, int mapId) {
-        return getMindmapService().hasPermissions(user, mapId, CollaborationRole.EDITOR);
+        return getMindmapService().hasPermissions(user, mapId, CollaborationRole.VIEWER);
     }
 }

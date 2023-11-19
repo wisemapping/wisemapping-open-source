@@ -65,8 +65,6 @@
         <property name="interceptorNames">
             <list>
                 <value>txInterceptor</value>
-                <value>viewSecurityAdvisor</value>
-                <value>updateSecurityAdvisor</value>
             </list>
         </property>
         <property name="target" ref="mindMapServiceTarget"/>

@@ -13,8 +13,8 @@
     </parent>
 
     <properties>
-        <org.springframework.version>6.0.13</org.springframework.version>
-        <org.springframework.addons>6.1.2</org.springframework.addons>
+        <org.springframework.version>6.0.14</org.springframework.version>
+        <org.springframework.addons>6.1.5</org.springframework.addons>
         <spring-security-taglibs.version>6.0.2</spring-security-taglibs.version>
     </properties>
 
@@ -147,7 +147,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
             <version>${org.springframework.version}</version>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>

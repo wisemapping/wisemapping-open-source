@@ -16,33 +16,22 @@
 *   limitations under the License.
 */
 
-package com.wisemapping.security.aop;
+package com.wisemapping.security;
 
-import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
-import org.aopalliance.intercept.MethodInterceptor;
-import org.aopalliance.intercept.MethodInvocation;
-import org.jetbrains.annotations.NotNull;
+import com.wisemapping.service.MindmapService;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public class ViewBaseSecurityAdvise
-        extends BaseSecurityAdvice
-        implements MethodInterceptor {
+public abstract class MapPermissionsSecurityAdvice {
+    @Autowired private MindmapService mindmapService;
 
-    @Override
-    public Object invoke(@NotNull MethodInvocation methodInvocation) throws Throwable {
-        checkRole(methodInvocation);
-        return methodInvocation.proceed();
-    }
+    protected abstract boolean isAllowed(@Nullable User user, Mindmap map);
 
-    @Override
-    protected boolean isAllowed(@Nullable User user, Mindmap map) {
-        return getMindmapService().hasPermissions(user, map, CollaborationRole.VIEWER);
-    }
+    protected abstract boolean isAllowed(@Nullable User user, int mapId);
 
-    @Override
-    protected boolean isAllowed(@Nullable User user, int mapId) {
-        return getMindmapService().hasPermissions(user, mapId, CollaborationRole.VIEWER);
+    protected MindmapService getMindmapService() {
+        return mindmapService;
     }
 }
