@@ -27,7 +27,6 @@
             /WEB-INF/wisemapping-datasource.xml
             /WEB-INF/wisemapping-dao.xml
             /WEB-INF/wisemapping-service.xml
-            /WEB-INF/wisemapping-model.xml
             /WEB-INF/wisemapping-servlet.xml
         </param-value>
     </context-param>

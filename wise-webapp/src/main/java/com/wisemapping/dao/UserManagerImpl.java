@@ -28,6 +28,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.SelectionQuery;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
@@ -38,9 +39,10 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @Repository
 public class UserManagerImpl
         implements UserManager {
-    @Resource
+    @Autowired
     private SessionFactory sessionFactory;
 
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     public void setEncoder(PasswordEncoder passwordEncoder) {

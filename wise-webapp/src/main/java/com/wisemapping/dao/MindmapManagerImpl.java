@@ -34,7 +34,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Calendar;
 import java.util.List;
 
-@Repository
+@Repository("mindmapManager")
 public class MindmapManagerImpl
         implements MindmapManager {
     @Resource
