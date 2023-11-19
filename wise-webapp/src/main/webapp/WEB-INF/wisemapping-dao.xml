@@ -35,19 +35,4 @@
         <property name="nestedTransactionAllowed" value="true"/>
     </bean>
 
-    <!-- Hibernate Template Definition -->
-    <bean id="txAttributes"
-          class="org.springframework.transaction.interceptor.NameMatchTransactionAttributeSource">
-        <property name="properties">
-            <props>
-                <prop key="*">PROPAGATION_REQUIRED</prop>
-            </props>
-        </property>
-    </bean>
-
-    <bean id="txInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
-        <property name="transactionManager" ref="transactionManager"/>
-        <property name="transactionAttributeSource" ref="txAttributes"/>
-    </bean>
-
 </beans>

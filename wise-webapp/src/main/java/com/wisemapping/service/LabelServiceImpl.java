@@ -23,16 +23,19 @@ import com.wisemapping.model.Label;
 import com.wisemapping.model.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service("labelService")
+@Transactional(propagation = Propagation.REQUIRED)
 public class LabelServiceImpl implements LabelService {
 
+    @Autowired
     private LabelManager labelManager;
-
-    public void setLabelManager(LabelManager labelManager) {
-        this.labelManager = labelManager;
-    }
 
     @Override
     public void addLabel(@NotNull final Label label, @NotNull final User user) throws WiseMappingException {

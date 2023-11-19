@@ -30,59 +30,8 @@
         <property name="callbackUrl" value="${security.oauth2.google.callbackUrl}"/>
 	</bean>
 
-    <bean id="userServiceTarget" class="com.wisemapping.service.UserServiceImpl">
-        <property name="userManager" ref="userManager"/>
-        <property name="mindmapService" ref="mindMapServiceTarget"/>
-        <property name="notificationService" ref="notificationService"/>
-        <property name="messageSource" ref="messageSource"/>
-        <property name="velocityEngineWrapper" ref="velocityEngineWrapper"/>
-        <property name="googleService" ref="googleService"/>
-    </bean>
-
-    <bean id="userService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-        <property name="transactionManager" ref="transactionManager"/>
-        <property name="target" ref="userServiceTarget"/>
-        <property name="transactionAttributes">
-            <props>
-                <prop key="*">PROPAGATION_REQUIRED</prop>
-            </props>
-        </property>
-    </bean>
-
-    <bean id="mindMapServiceTarget" class="com.wisemapping.service.MindmapServiceImpl">
-        <property name="mindmapManager" ref="mindmapManager"/>
-        <property name="userService" ref="userService"/>
-        <property name="notificationService" ref="notificationService"/>
-        <property name="adminUser" value="${admin.user}"/>
-    </bean>
-
     <bean id="recaptchaService" class="com.wisemapping.service.RecaptchaService">
         <property name="recaptchaSecret" value="${google.recaptcha2.secretKey}"/>
-    </bean>
-
-    <bean id="mindmapService" class="org.springframework.aop.framework.ProxyFactoryBean">
-        <property name="proxyInterfaces" value="com.wisemapping.service.MindmapService"/>
-        <property name="interceptorNames">
-            <list>
-                <value>txInterceptor</value>
-            </list>
-        </property>
-        <property name="target" ref="mindMapServiceTarget"/>
-    </bean>
-
-
-    <bean id="labelServiceTarget" class="com.wisemapping.service.LabelServiceImpl">
-        <property name="labelManager" ref="labelManager"/>
-    </bean>
-
-    <bean id="labelService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-        <property name="transactionManager" ref="transactionManager"/>
-        <property name="target" ref="labelServiceTarget"/>
-        <property name="transactionAttributes">
-            <props>
-                <prop key="*">PROPAGATION_REQUIRED</prop>
-            </props>
-        </property>
     </bean>
 
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">

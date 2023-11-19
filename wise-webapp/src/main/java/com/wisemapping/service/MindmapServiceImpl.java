@@ -27,7 +27,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
@@ -35,8 +39,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-
+@Service("mindmapService")
+@Transactional(propagation = Propagation.REQUIRED)
 public class MindmapServiceImpl
+
         implements MindmapService {
 
     @Autowired
@@ -49,6 +55,8 @@ public class MindmapServiceImpl
     @Autowired
     private NotificationService notificationService;
 
+
+    @Value("${admin.user}")
     private String adminUser;
     final private LockManager lockManager;
 

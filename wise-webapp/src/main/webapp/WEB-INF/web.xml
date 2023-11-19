@@ -45,9 +45,6 @@
     -->
 
     <listener>
-        <listener-class>com.wisemapping.service.HibernateAppListener</listener-class>
-    </listener>
-    <listener>
         <listener-class>com.wisemapping.listener.UnlockOnExpireListener</listener-class>
     </listener>
 

@@ -33,18 +33,31 @@ import com.wisemapping.util.VelocityEngineUtils;
 import com.wisemapping.util.VelocityEngineWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+@Service("userService")
+@Transactional(propagation = Propagation.REQUIRED)
 public class UserServiceImpl
         implements UserService {
+
+    @Autowired
     private UserManager userManager;
+    @Autowired
     private MindmapService mindmapService;
+    @Autowired
     private NotificationService notificationService;
+    @Autowired
     private MessageSource messageSource;
+    @Autowired
     private VelocityEngineWrapper velocityEngineWrapper;
+    @Autowired
     private GoogleService googleService;
 
     @Override
