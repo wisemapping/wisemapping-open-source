@@ -168,7 +168,7 @@ public class MindmapServiceImpl
     }
 
     @Override
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#mindmap, 'WRITE')")
+    @PreAuthorize("hasPermission(#mindmap, 'WRITE')")
     public void addMindmap(@NotNull Mindmap mindmap, @NotNull User user) {
 
         final String title = mindmap.getTitle();

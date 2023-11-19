@@ -47,7 +47,6 @@ public class MapAccessPermissionEvaluation implements PermissionEvaluator {
             result = hasPrivilege(map, perm);
         } else if (targetDomainObject instanceof Collaborator collab) {
             // Read only operations checks ...
-            assert user != null;
             result = user.identityEquality(collab) || readAdvice.getMindmapService().isAdmin(user);
         } else {
             throw new IllegalArgumentException("Unsupported check control of permissions");
