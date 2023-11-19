@@ -24,6 +24,7 @@ import com.wisemapping.model.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +39,8 @@ public class LabelServiceImpl implements LabelService {
     private LabelManager labelManager;
 
     @Override
-    public void addLabel(@NotNull final Label label, @NotNull final User user) throws WiseMappingException {
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#user, 'WRITE')")
+    public void addLabel(@NotNull final Label label, @NotNull final User user) {
 
         label.setCreator(user);
         labelManager.addLabel(label);
@@ -46,22 +48,26 @@ public class LabelServiceImpl implements LabelService {
 
     @NotNull
     @Override
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#user, 'READ')")
     public List<Label> getAll(@NotNull final User user) {
         return labelManager.getAllLabels(user);
     }
 
-    @Override @Nullable
+    @Override
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#user, 'READ')")
     public Label findLabelById(int id, @NotNull final User user) {
         return labelManager.getLabelById(id, user);
     }
 
     @Nullable
     @Override
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#user, 'READ')")
     public Label getLabelByTitle(@NotNull String title, @NotNull final User user) {
         return labelManager.getLabelByTitle(title, user);
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#user, 'WRITE')")
     public void removeLabel(@NotNull Label label, @NotNull User user) throws WiseMappingException {
         if (label.getCreator().equals(user)) {
             labelManager.removeLabel(label);

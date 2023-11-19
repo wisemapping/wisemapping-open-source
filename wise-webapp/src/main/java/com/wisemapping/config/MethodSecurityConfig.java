@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 
 @Configuration
 @EnableMethodSecurity(
-        prePostEnabled = true,
         securedEnabled = true,
         jsr250Enabled = true)
 public class MethodSecurityConfig  {

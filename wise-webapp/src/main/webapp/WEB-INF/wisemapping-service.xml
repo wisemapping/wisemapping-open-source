@@ -18,9 +18,6 @@
         <property name="velocityEngineWrapper" ref="velocityEngineWrapper"/>
     </bean>
 
-	<bean id="httpInvoker" class="com.wisemapping.service.google.http.HttpInvoker">
-	</bean>
-
     <bean id="googleService" class="com.wisemapping.service.google.GoogleService">
 		<property name="httpInvoker" ref="httpInvoker"/>
         <property name="optinConfirmUrl" value="${security.oauth2.google.confirmUrl}"/>
@@ -29,10 +26,6 @@
         <property name="clientSecret" value="${security.oauth2.google.clientSecret}"/>
         <property name="callbackUrl" value="${security.oauth2.google.callbackUrl}"/>
 	</bean>
-
-    <bean id="recaptchaService" class="com.wisemapping.service.RecaptchaService">
-        <property name="recaptchaSecret" value="${google.recaptcha2.secretKey}"/>
-    </bean>
 
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="host" value="${mail.smtp.host}"/>
@@ -47,9 +40,6 @@
                 <prop key="mail.smtp.quitwait">${mail.smtp.quitwait:true}</prop>
             </props>
         </property>
-    </bean>
-
-    <bean id="velocityEngineWrapper" class="com.wisemapping.util.VelocityEngineWrapper">
     </bean>
 
     <bean id="notificationService" class="com.wisemapping.mail.NotificationService">

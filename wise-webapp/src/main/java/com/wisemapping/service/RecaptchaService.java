@@ -29,21 +29,27 @@ import org.apache.http.client.fluent.Request;
 import org.jetbrains.annotations.Nullable;
 
 import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+@Service
 public class RecaptchaService {
 
     final private static Logger logger = LogManager.getLogger();
+
     final private static String GOOGLE_RECAPTCHA_VERIFY_URL =
             "https://www.google.com/recaptcha/api/siteverify";
 
     private final static ObjectMapper objectMapper = new ObjectMapper();
     public static final String CATCH_ERROR_CODE_TIMEOUT_OR_DUPLICATE = "timeout-or-duplicate";
     public static final String CATCHA_ERROR_CODE_INPUT_RESPONSE = "invalid-input-response";
+
+    @Value("${google.recaptcha2.secretKey}")
     private String recaptchaSecret;
 
     @Nullable
