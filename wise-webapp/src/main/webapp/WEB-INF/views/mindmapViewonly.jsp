@@ -71,7 +71,7 @@
     </a>
 
     <div id="mapDetails">
-        <span class="title"><spring:message code="CREATOR"/>:</span><span>${mapFullName}</span>
+        <span class="title"><spring:message code="CREATOR"/>:</span><span>${creatorFullName}</span>
         <span class="title"><spring:message code="DESCRIPTION"/>:</span><span>${mindmap.title}</span>
     </div>
 

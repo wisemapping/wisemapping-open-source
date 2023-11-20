@@ -58,7 +58,7 @@ public class MvcMindmapController {
         final MindMapBean mindmap = findMindmapBean(id);
         model.addAttribute("principal", Utils.getUser());
         model.addAttribute("mindmap", mindmap);
-        model.addAttribute("mapFullName", mindmap.getCreator().getFullName());
+        model.addAttribute("creatorFullName", mindmap.getCreator().getFullName());
         final Locale locale = LocaleContextHolder.getLocale();
         model.addAttribute("locale", locale.toString().toLowerCase());
         return "mindmapViewonly";
