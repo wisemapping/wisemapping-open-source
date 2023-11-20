@@ -53,4 +53,16 @@ public class MvcUsersController {
         return new ModelAndView("reactInclude");
     }
 
+    @RequestMapping(value = "registration-success", method = RequestMethod.GET)
+    @PreAuthorize("permitAll()")
+    public ModelAndView showRegistrationSuccess() {
+        return new ModelAndView("reactInclude");
+    }
+
+    @RequestMapping(value = "forgot-password-success", method = RequestMethod.GET)
+    @PreAuthorize("permitAll()")
+    public ModelAndView showResetPasswordSuccess() {
+        return new ModelAndView("reactInclude");
+    }
 }
+
