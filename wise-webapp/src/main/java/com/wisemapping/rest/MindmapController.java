@@ -24,6 +24,7 @@ import com.wisemapping.rest.model.*;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.*;
 import com.wisemapping.validator.MapInfoValidator;
+import jakarta.transaction.Transactional;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,6 +48,7 @@ import java.util.stream.Collectors;
 
 
 @Controller
+@Transactional
 @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
 public class MindmapController extends BaseController {
     final Logger logger = LogManager.getLogger();
