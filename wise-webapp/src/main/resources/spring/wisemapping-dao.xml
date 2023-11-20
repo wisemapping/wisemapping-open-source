@@ -26,6 +26,8 @@
                 <prop key="hibernate.default_batch_fetch_size">200</prop>
                 <prop key="hibernate.nestedTransactionAllowed">true</prop>
                 <prop key="hibernate.auto_quote_keyword">true</prop>
+                <prop key="hibernate.enable_lazy_load_no_trans">true</prop>
+
             </props>
         </property>
     </bean>
