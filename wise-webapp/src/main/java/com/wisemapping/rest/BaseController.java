@@ -26,6 +26,7 @@ import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestErrors;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.RegistrationException;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -41,6 +42,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.Locale;
 
@@ -69,18 +71,21 @@ public class BaseController {
     @ExceptionHandler(ValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RestErrors handleValidationErrors(@NotNull ValidationException ex) {
+        logger.error(ex.getMessage(), ex);
         return new RestErrors(ex.getErrors(), messageSource);
     }
 
     @ExceptionHandler(JsonHttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RestErrors handleJSONErrors(@NotNull JsonHttpMessageNotReadableException ex) {
+        logger.error(ex.getMessage(), ex);
         return new RestErrors("Communication error", Severity.SEVERE);
     }
 
     @ExceptionHandler(java.lang.reflect.UndeclaredThrowableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RestErrors handleSecurityErrors(@NotNull UndeclaredThrowableException ex) {
+        logger.error(ex.getMessage(), ex);
         final Throwable cause = ex.getCause();
         RestErrors result;
         if (cause instanceof ClientException) {
@@ -94,6 +99,7 @@ public class BaseController {
     @ExceptionHandler(ClientException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RestErrors handleClientErrors(@NotNull ClientException ex) {
+        logger.error(ex.getMessage(), ex);
         final Locale locale = LocaleContextHolder.getLocale();
         return new RestErrors(ex.getMessage(messageSource, locale), ex.getSeverity(), ex.getTechInfo());
     }
@@ -107,6 +113,7 @@ public class BaseController {
         //  "error_description": "Bad Request"
         //}, status: 400
         //
+        logger.error(ex.getMessage(), ex);
         response.setStatus(response.getStatus());
         return ex;
     }
@@ -115,17 +122,17 @@ public class BaseController {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public RestErrors handleServerErrors(@NotNull Exception ex, @NotNull HttpServletRequest request) {
+        logger.error(ex.getMessage(), ex);
         final User user = Utils.getUser(false);
         notificationService.reportJavaException(ex, user, request);
-        logger.error(ex);
-
         return new RestErrors(ex.getMessage(), Severity.SEVERE);
     }
 
     @ExceptionHandler(RegistrationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public RestErrors handleRegistrationErrors(@NotNull RegistrationException exception) {
-        return new RestErrors(exception, messageSource);
+    public RestErrors handleRegistrationErrors(@NotNull RegistrationException ex) {
+        logger.error(ex.getMessage(), ex);
+        return new RestErrors(ex, messageSource);
     }
 }
