@@ -64,7 +64,6 @@ public class BaseController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public RestErrors handleClientErrors(@NotNull IllegalArgumentException ex) {
-        logger.error(ex.getMessage(), ex);
         return new RestErrors(ex.getMessage(), Severity.WARNING);
     }
 
@@ -99,7 +98,6 @@ public class BaseController {
     @ExceptionHandler(ClientException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RestErrors handleClientErrors(@NotNull ClientException ex) {
-        logger.error(ex.getMessage(), ex);
         final Locale locale = LocaleContextHolder.getLocale();
         return new RestErrors(ex.getMessage(messageSource, locale), ex.getSeverity(), ex.getTechInfo());
     }
@@ -132,7 +130,6 @@ public class BaseController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public RestErrors handleRegistrationErrors(@NotNull RegistrationException ex) {
-        logger.error(ex.getMessage(), ex);
         return new RestErrors(ex, messageSource);
     }
 }
