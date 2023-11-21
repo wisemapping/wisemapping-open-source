@@ -24,15 +24,15 @@
             googleOauth2Url: '${requestScope['security.oauth2.google.url']}'
         };
 
-        <!-- Hack to force view selection on react to move all the UI to react-->
+        <%-- Hack to force view selection on react to move all the UI to react --%>
         window.errorMvcView = '${requestScope['exception']!=null?(fn:indexOf(requestScope['exception'],'SecurityException') gt 1?'securityError':'unexpectedError'):''}';
-        <!--
+        /*
             ${requestScope['exception']}
-        -->
+        */
     </script>
 
     <c:if test="${requestScope['google.analytics.enabled']}">
-      <!-- Google Ads Sense Config. Lazy loading optimization -->
+      <%-- Google Ads Sense Config. Lazy loading optimization --%>
       <script type="text/javascript">
           function downloadJsAtOnload() {
               setTimeout(function downloadJs() {
