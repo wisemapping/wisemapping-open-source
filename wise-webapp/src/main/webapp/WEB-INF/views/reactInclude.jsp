@@ -27,7 +27,6 @@
         <%-- Hack to force view selection on react to move all the UI to react --%>
         window.errorMvcView = '${requestScope['exception']!=null?(fn:indexOf(requestScope['exception'],'SecurityException') gt 1?'securityError':'unexpectedError'):''}';
         /*
-            ${requestScope['exception']}
             ${requestScope['exception'].printStackTrace(pageContext.response.writer)}
             ${requestScope['javax.servlet.error.exception'].printStackTrace(pageContext.response.writer)}
         */
