@@ -28,6 +28,8 @@
         window.errorMvcView = '${requestScope['exception']!=null?(fn:indexOf(requestScope['exception'],'SecurityException') gt 1?'securityError':'unexpectedError'):''}';
         /*
             ${requestScope['exception']}
+            ${requestScope['exception'].printStackTrace(pageContext.response.writer)}
+            ${requestScope['javax.servlet.error.exception'].printStackTrace(pageContext.response.writer)}
         */
     </script>
 
