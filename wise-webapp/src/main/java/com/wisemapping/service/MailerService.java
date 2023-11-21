@@ -44,7 +44,7 @@ public final class MailerService {
     @Autowired
     private VelocityEngineWrapper velocityEngineWrapper;
 
-    @Value("${mail.serverSendEmail")
+    @Value("${mail.serverSendEmail}")
     private String serverFromEmail;
 
     @Value("${mail.supportEmail}")
