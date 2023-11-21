@@ -26,6 +26,9 @@
 
         <!-- Hack to force view selection on react to move all the UI to react-->
         window.errorMvcView = '${requestScope['exception']!=null?(fn:indexOf(requestScope['exception'],'SecurityException') gt 1?'securityError':'unexpectedError'):''}';
+        <!--
+            ${requestScope['exception']}
+        -->
     </script>
 
     <c:if test="${requestScope['google.analytics.enabled']}">

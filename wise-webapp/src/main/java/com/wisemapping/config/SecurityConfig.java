@@ -1,7 +1,6 @@
 package com.wisemapping.config;
 
 import com.wisemapping.security.AuthenticationSuccessHandler;
-import com.wisemapping.security.MapAccessPermissionEvaluation;
 import com.wisemapping.security.UserDetailsService;
 import com.wisemapping.service.UserService;
 import org.jetbrains.annotations.NotNull;
@@ -10,9 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
-import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
