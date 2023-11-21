@@ -24,7 +24,6 @@ import com.wisemapping.rest.model.*;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.*;
 import com.wisemapping.validator.MapInfoValidator;
-import jakarta.transaction.Transactional;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,6 +35,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +49,7 @@ import java.util.stream.Collectors;
 
 
 @Controller
-@Transactional
+@Transactional(propagation = Propagation.REQUIRED)
 @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
 public class MindmapController extends BaseController {
     final Logger logger = LogManager.getLogger();

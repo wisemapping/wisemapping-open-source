@@ -21,12 +21,14 @@ import com.wisemapping.exceptions.ClientException;
 import com.wisemapping.exceptions.OAuthAuthenticationException;
 import com.wisemapping.exceptions.Severity;
 import com.wisemapping.exceptions.ValidationException;
-import com.wisemapping.service.NotificationService;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestErrors;
 import com.wisemapping.security.Utils;
+import com.wisemapping.service.NotificationService;
 import com.wisemapping.service.RegistrationException;
-import org.apache.logging.log4j.Level;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -38,10 +40,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.Locale;
