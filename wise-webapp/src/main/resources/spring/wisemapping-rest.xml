@@ -58,6 +58,4 @@
             </list>
         </property>
     </bean>
-    <!-- Configuration Bean -->
-    <context:property-placeholder location="/WEB-INF/app.properties" ignore-unresolvable="true"/>
 </beans>
