@@ -52,7 +52,7 @@
         </init-param>
         <init-param>
             <param-name>sessionFactoryBeanName</param-name>
-            <param-value>mindmapSessionFactory</param-value>
+            <param-value>sessionFactory</param-value>
         </init-param>
     </filter>
 

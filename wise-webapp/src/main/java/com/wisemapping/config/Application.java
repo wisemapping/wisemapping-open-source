@@ -20,10 +20,6 @@ import org.springframework.web.servlet.view.JstlView;
 @ComponentScan
 @ImportResource("classpath:spring/wisemapping-common.xml")
 public class Application {
-
-    @Autowired
-    TransactionManager txManager;
-
     @Bean
     HandlerExceptionResolver errorHandler() {
         final SimpleMappingExceptionResolver result =  new SimpleMappingExceptionResolver();

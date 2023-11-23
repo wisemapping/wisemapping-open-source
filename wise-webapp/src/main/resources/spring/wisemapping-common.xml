@@ -9,8 +9,6 @@
 
     <context:property-placeholder location="/WEB-INF/app.properties" ignore-unresolvable="true"/>
 
-    <import resource="wisemapping-datasource.xml"/>
-    <import resource="wisemapping-dao.xml"/>
     <import resource="wisemapping-service.xml"/>
     <import resource="wisemapping-servlet.xml"/>
 </beans>
