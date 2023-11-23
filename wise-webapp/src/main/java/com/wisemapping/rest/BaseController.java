@@ -68,7 +68,7 @@ public class BaseController {
     @ExceptionHandler(ValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RestErrors handleValidationErrors(@NotNull ValidationException ex) {
-        logger.error(ex.getMessage(), ex);
+        logger.debug(ex.getMessage(), ex);
         return new RestErrors(ex.getErrors(), messageSource);
     }
 
