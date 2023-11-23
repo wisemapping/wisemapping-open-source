@@ -42,6 +42,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -50,9 +51,8 @@ import java.util.stream.Collectors;
 
 @Controller
 @Transactional(propagation = Propagation.REQUIRED)
-@PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
 public class MindmapController extends BaseController {
-    final Logger logger = LogManager.getLogger();
+    private final Logger logger = LogManager.getLogger();
 
     private static final String LATEST_HISTORY_REVISION = "latest";
 
@@ -71,6 +71,8 @@ public class MindmapController extends BaseController {
     @Value("${accounts.maxInactive:20}")
     private int maxAccountsInactive;
 
+
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/json"})
     @ResponseBody
     public RestMindmap retrieve(@PathVariable int id) throws WiseMappingException {
@@ -79,6 +81,7 @@ public class MindmapController extends BaseController {
         return new RestMindmap(mindMap, user);
     }
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.GET, value = "/maps/", produces = {"application/json"})
     public RestMindmapList retrieveList(@RequestParam(required = false) String q) {
         final User user = Utils.getUser();
@@ -92,6 +95,7 @@ public class MindmapController extends BaseController {
         return new RestMindmapList(mindmaps, user);
     }
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}/history/", produces = {"application/json"})
     public RestMindmapHistoryList fetchHistory(@PathVariable int id) {
         final List<MindMapHistory> histories = mindmapService.findMindmapHistory(id);
@@ -102,27 +106,10 @@ public class MindmapController extends BaseController {
         return result;
     }
 
-    @RequestMapping(value = "/maps/{id}/history/{hid}", method = RequestMethod.POST)
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateRevertMindmap(@PathVariable int id, @PathVariable String hid) throws WiseMappingException, IOException {
-        final Mindmap mindmap = findMindmapById(id);
-        final User user = Utils.getUser();
-
-        if (LATEST_HISTORY_REVISION.equals(hid)) {
-            // Revert to the latest stored version ...
-            List<MindMapHistory> mindmapHistory = mindmapService.findMindmapHistory(id);
-            if (mindmapHistory.size() > 0) {
-                final MindMapHistory mindMapHistory = mindmapHistory.get(0);
-                mindmap.setZippedXml(mindMapHistory.getZippedXml());
-                saveMindmapDocument(true, mindmap, user);
-            }
-        } else {
-            mindmapService.revertChange(mindmap, Integer.parseInt(hid));
-        }
-    }
-
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/document", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+
     public void updateDocument(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor) throws WiseMappingException, IOException {
 
         final Mindmap mindmap = findMindmapById(id);
@@ -150,6 +137,26 @@ public class MindmapController extends BaseController {
         saveMindmapDocument(minor, mindmap, user);
     }
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+    @RequestMapping(value = "/maps/{id}/history/{hid}", method = RequestMethod.POST)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void updateRevertMindmap(@PathVariable int id, @PathVariable String hid) throws WiseMappingException, IOException {
+        final Mindmap mindmap = findMindmapById(id);
+        final User user = Utils.getUser();
+
+        if (LATEST_HISTORY_REVISION.equals(hid)) {
+            // Revert to the latest stored version ...
+            List<MindMapHistory> mindmapHistory = mindmapService.findMindmapHistory(id);
+            if (mindmapHistory.size() > 0) {
+                final MindMapHistory mindMapHistory = mindmapHistory.get(0);
+                mindmap.setZippedXml(mindMapHistory.getZippedXml());
+                saveMindmapDocument(true, mindmap, user);
+            }
+        } else {
+            mindmapService.revertChange(mindmap, Integer.parseInt(hid));
+        }
+    }
+
     @PreAuthorize("permitAll()")
     @RequestMapping(method = RequestMethod.GET, value = {"/maps/{id}/document/xml", "/maps/{id}/document/xml-pub"}, consumes = {"text/plain"}, produces = {"application/xml; charset=UTF-8"})
     @ResponseBody
@@ -160,6 +167,7 @@ public class MindmapController extends BaseController {
         return xmlStr.getBytes(StandardCharsets.UTF_8);
     }
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.PUT, value = {"/maps/{id}/document/xml"}, consumes = {"text/plain"})
     @ResponseBody
     public void updateDocument(@PathVariable int id, @RequestBody String xmlDoc) throws WiseMappingException, IOException {
@@ -171,6 +179,7 @@ public class MindmapController extends BaseController {
     }
 
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.GET, value = {"/maps/{id}/{hid}/document/xml"}, consumes = {"text/plain"}, produces = {"application/xml; charset=UTF-8"})
     @ResponseBody
     public byte[] retrieveDocument(@PathVariable int id, @PathVariable int hid, @NotNull HttpServletResponse response) throws WiseMappingException, IOException {
@@ -182,6 +191,7 @@ public class MindmapController extends BaseController {
     /**
      * The intention of this method is the update of several properties at once ...
      */
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateProperties(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor) throws IOException, WiseMappingException {
@@ -236,6 +246,7 @@ public class MindmapController extends BaseController {
         return result;
     }
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/title", consumes = {"text/plain"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateTitle(@RequestBody String title, @PathVariable int id) throws WiseMappingException {
@@ -254,6 +265,7 @@ public class MindmapController extends BaseController {
         mindmapService.updateMindmap(mindMap, false);
     }
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.POST, value = "/maps/{id}/collabs/", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateCollabs(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws CollaborationException, MapCouldNotFoundException, AccessDeniedSecurityException, InvalidEmailException, TooManyInactiveAccountsExceptions {
@@ -303,6 +315,7 @@ public class MindmapController extends BaseController {
         }
     }
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/collabs/", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void addCollab(@PathVariable int id, @NotNull @RequestBody RestCollaborationList restCollabs) throws CollaborationException, MapCouldNotFoundException, AccessDeniedSecurityException, InvalidEmailException, TooManyInactiveAccountsExceptions, OwnerCannotChangeException {
@@ -370,6 +383,7 @@ public class MindmapController extends BaseController {
     }
 
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}/collabs", produces = {"application/json"})
     public RestCollaborationList retrieveList(@PathVariable int id) throws MapCouldNotFoundException, AccessDeniedSecurityException {
         final Mindmap mindMap = findMindmapById(id);
@@ -386,6 +400,7 @@ public class MindmapController extends BaseController {
         return result;
     }
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/description", consumes = {"text/plain"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateDescription(@RequestBody String description, @PathVariable int id) throws WiseMappingException {
@@ -394,6 +409,7 @@ public class MindmapController extends BaseController {
         mindmapService.updateMindmap(mindmap, false);
     }
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/publish", consumes = {"text/plain"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updatePublishState(@RequestBody String value, @PathVariable int id) throws WiseMappingException {
@@ -411,6 +427,7 @@ public class MindmapController extends BaseController {
 
     }
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.DELETE, value = "/maps/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteMapById(@PathVariable int id) throws IOException, WiseMappingException {
@@ -419,6 +436,7 @@ public class MindmapController extends BaseController {
         mindmapService.removeMindmap(mindmap, user);
     }
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.DELETE, value = "/maps/{id}/collabs")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteCollabByEmail(@PathVariable int id, @RequestParam(required = false) String email) throws IOException, WiseMappingException {
@@ -450,6 +468,7 @@ public class MindmapController extends BaseController {
         }
     }
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/starred", consumes = {"text/plain"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateStarredState(@RequestBody String value, @PathVariable int id) throws WiseMappingException {
@@ -468,6 +487,7 @@ public class MindmapController extends BaseController {
         mindmapService.updateCollaboration(user, collaboration.get());
     }
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}/starred", produces = {"text/plain"})
     @ResponseBody
     public String fetchStarred(@PathVariable int id) throws WiseMappingException {
@@ -482,6 +502,7 @@ public class MindmapController extends BaseController {
         return Boolean.toString(result);
     }
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.DELETE, value = "/maps/batch")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void batchDelete(@RequestParam() String ids) throws IOException, WiseMappingException {
@@ -499,6 +520,7 @@ public class MindmapController extends BaseController {
         }
     }
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.POST, value = "/maps", consumes = {"application/xml", "application/json"})
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createMap(@RequestBody(required = false) String mapXml, @NotNull HttpServletResponse response, @RequestParam(required = false) String title, @RequestParam(required = false) String description) throws IOException, WiseMappingException {
@@ -534,6 +556,7 @@ public class MindmapController extends BaseController {
         response.setHeader("ResourceId", Integer.toString(mindmap.getId()));
     }
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.POST, value = "/maps/{id}", consumes = {"application/json"}, produces = {"application/json", "text/plain"})
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createDuplicate(@RequestBody RestMindmapInfo restMindmap, @PathVariable int id, @NotNull HttpServletResponse response) throws IOException, WiseMappingException {
@@ -561,19 +584,8 @@ public class MindmapController extends BaseController {
         response.setHeader("ResourceId", Integer.toString(clonedMap.getId()));
     }
 
-    private void saveMindmapDocument(boolean minor, @NotNull final Mindmap mindMap, @NotNull final User user) throws WiseMappingException {
-        final Calendar now = Calendar.getInstance();
-        mindMap.setLastModificationTime(now);
-        mindMap.setLastEditor(user);
-        mindmapService.updateMindmap(mindMap, !minor);
-    }
 
-    private ValidationException buildValidationException(@NotNull String fieldName, @NotNull String message) throws WiseMappingException {
-        final BindingResult result = new BeanPropertyBindingResult(new RestMindmap(), "");
-        result.rejectValue(fieldName, "error.not-specified", null, message);
-        return new ValidationException(result);
-    }
-
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.DELETE, value = "/maps/{id}/labels/{lid}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void removeLabelFromMap(@PathVariable int id, @PathVariable int lid) throws WiseMappingException {
@@ -589,6 +601,7 @@ public class MindmapController extends BaseController {
         mindmapService.updateMindmap(mindmap, false);
     }
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.POST, value = "/maps/{id}/labels", consumes = {"application/json"})
     @ResponseStatus(value = HttpStatus.OK)
     public void updateLabel(@PathVariable int id, @RequestBody int lid) throws WiseMappingException {
@@ -603,6 +616,7 @@ public class MindmapController extends BaseController {
         mindmapService.updateMindmap(mindmap, false);
     }
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/lock", consumes = {"text/plain"}, produces = {"application/json"})
     public ResponseEntity<RestLockInfo> lockMindmap(@RequestBody String value, @PathVariable int id) throws WiseMappingException {
         final User user = Utils.getUser();
@@ -618,6 +632,20 @@ public class MindmapController extends BaseController {
             lockManager.unlock(mindmap, user);
         }
         return result;
+    }
+
+
+    private void saveMindmapDocument(boolean minor, @NotNull final Mindmap mindMap, @NotNull final User user) throws WiseMappingException {
+        final Calendar now = Calendar.getInstance();
+        mindMap.setLastModificationTime(now);
+        mindMap.setLastEditor(user);
+        mindmapService.updateMindmap(mindMap, !minor);
+    }
+
+    private ValidationException buildValidationException(@NotNull String fieldName, @NotNull String message) throws WiseMappingException {
+        final BindingResult result = new BeanPropertyBindingResult(new RestMindmap(), "");
+        result.rejectValue(fieldName, "error.not-specified", null, message);
+        return new ValidationException(result);
     }
 
     private void verifyActiveCollabs(@NotNull RestCollaborationList restCollabs, User user) throws TooManyInactiveAccountsExceptions {
