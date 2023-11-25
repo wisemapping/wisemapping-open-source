@@ -31,7 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
 @PreAuthorize("permitAll()")
 public class MvcLoginController {
 
-    @Value("${database.driver}")
+//    @Value("${database.driver}")
     private String driver;
 
     @RequestMapping(value = "login", method = RequestMethod.GET)

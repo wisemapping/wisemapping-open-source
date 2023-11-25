@@ -48,7 +48,7 @@ public class RequestPropertiesInterceptor implements HandlerInterceptor {
     @Value("${site.homepage}")
     private String siteHomepage;
 
-    @Value("${site.baseurl}")
+    @Value("${site.baseurl:}")
     private String siteUrl;
 
     @Value("${security.type}")
@@ -75,7 +75,7 @@ public class RequestPropertiesInterceptor implements HandlerInterceptor {
         request.setAttribute("security.type", securityType);
 
         // If the property could not be resolved, try to infer one from the request...
-        if ("${site.baseurl}".equals(siteUrl)) {
+        if (siteUrl.isBlank()) {
             siteUrl = request.getRequestURL().toString().replace(request.getRequestURI(), request.getContextPath());
         }
         request.setAttribute("site.baseurl", siteUrl);

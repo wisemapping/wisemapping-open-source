@@ -50,12 +50,12 @@
         </property>
     </bean>
 
-    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-        <property name="defaultEncoding" value="UTF-8"/>
-        <property name="basenames">
-            <list>
-                <value>messages</value>
-            </list>
-        </property>
-    </bean>
+<!--    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">-->
+<!--        <property name="defaultEncoding" value="UTF-8"/>-->
+<!--        <property name="basenames">-->
+<!--            <list>-->
+<!--                <value>messages</value>-->
+<!--            </list>-->
+<!--        </property>-->
+<!--    </bean>-->
 </beans>

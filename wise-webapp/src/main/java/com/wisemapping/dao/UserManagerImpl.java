@@ -39,7 +39,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @Repository
 public class UserManagerImpl
         implements UserManager {
-    @Autowired
+//    @Autowired
     private SessionFactory sessionFactory;
 
     @Autowired

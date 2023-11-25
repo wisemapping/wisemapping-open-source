@@ -19,16 +19,16 @@
         <bean id="requestInterceptor" class="com.wisemapping.filter.RequestPropertiesInterceptor"/>
     </mvc:interceptors>
 
-    <bean id="localeResolver"
-          class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
-    </bean>
+<!--    <bean id="localeResolver"-->
+<!--          class="org.springframework.web.servlet.i18n.SessionLocaleResolver">-->
+<!--    </bean>-->
 
-    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-        <property name="defaultEncoding" value="UTF-8"/>
-        <property name="basenames">
-            <list>
-                <value>messages</value>
-            </list>
-        </property>
-    </bean>
+<!--    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">-->
+<!--        <property name="defaultEncoding" value="UTF-8"/>-->
+<!--        <property name="basenames">-->
+<!--            <list>-->
+<!--                <value>messages</value>-->
+<!--            </list>-->
+<!--        </property>-->
+<!--    </bean>-->
 </beans>

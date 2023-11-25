@@ -50,7 +50,7 @@ public final class MailerService {
     @Value("${mail.supportEmail}")
     private String supportEmail;
 
-    @Value("${mail.errorReporterEmail}")
+    @Value("${mail.errorReporterEmail:}")
     private String errorReporterEmail;
 
     //~ Methods ..............................................................................................

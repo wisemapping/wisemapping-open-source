@@ -34,15 +34,15 @@ import com.wisemapping.service.google.http.HttpInvokerException;
 public class GoogleService {
 	@Autowired
 	private HttpInvoker httpInvoker;
-	@Value("${security.oauth2.google.confirmUrl}")
+	@Value("${security.oauth2.google.confirmUrl:}")
 	private String optinConfirmUrl;
-	@Value("${security.oauth2.google.userinfoUrl}")
+	@Value("${security.oauth2.google.userinfoUrl:}")
 	private String accountBasicDataUrl;
-	@Value("${security.oauth2.google.clientId}")
+	@Value("${security.oauth2.google.clientId:}")
 	private String clientId;
-	@Value("${security.oauth2.google.clientSecret}")
+	@Value("${security.oauth2.google.clientSecret:}")
 	private String clientSecret;
-	@Value("${security.oauth2.google.callbackUrl}")
+	@Value("${security.oauth2.google.callbackUrl:}")
 	private String callbackUrl;
 
 	public void setHttpInvoker(HttpInvoker httpInvoker) {
