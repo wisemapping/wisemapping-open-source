@@ -20,6 +20,7 @@ package com.wisemapping.dao;
 
 import com.wisemapping.model.*;
 import jakarta.annotation.Resource;
+import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaDelete;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -29,6 +30,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.SelectionQuery;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.Calendar;
@@ -37,7 +39,11 @@ import java.util.List;
 @Repository("mindmapManager")
 public class MindmapManagerImpl
         implements MindmapManager {
-    @Resource
+
+    @Autowired
+    private EntityManagerFactory entityManagerFactory;
+
+    @Autowired
     private SessionFactory sessionFactory;
 
     @Override

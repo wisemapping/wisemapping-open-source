@@ -16,9 +16,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 @EnableWebMvc
-@Configuration
 @EnableTransactionManagement
-@ComponentScan
 @SpringBootApplication
 @EnableJpaRepositories("com.wisemapping.model")
 @ImportResource("classpath:spring/wisemapping-common.xml")
