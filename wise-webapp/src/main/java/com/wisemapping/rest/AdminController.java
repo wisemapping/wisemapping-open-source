@@ -38,7 +38,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@Controller
+@RestController
 @PreAuthorize("isAuthenticated() and hasRole('ROLE_ADMIN')")
 public class AdminController extends BaseController {
     @Qualifier("userService")

@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 
-@Controller
+@RestController
 @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
 public class LabelController extends BaseController {
 

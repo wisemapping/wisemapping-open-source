@@ -31,10 +31,8 @@ import org.springframework.web.servlet.ModelAndView;
 @PreAuthorize("permitAll()")
 public class MvcLoginController {
 
-//    @Value("${database.driver}")
-    private String driver;
 
-    @RequestMapping(value = "login", method = RequestMethod.GET)
+    @RequestMapping(value = "c/login", method = RequestMethod.GET)
     protected ModelAndView showLoginPage() {
         final User user = Utils.getUser(false);
         ModelAndView result;
@@ -42,7 +40,6 @@ public class MvcLoginController {
             result = new ModelAndView("forward:/c/maps/");
         } else {
             result = new ModelAndView("reactInclude");
-            result.addObject("isHsql", driver.contains("hsql"));
         }
         return result;
     }

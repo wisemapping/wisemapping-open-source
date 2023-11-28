@@ -55,7 +55,7 @@ public class MvcMindmapController {
     @Autowired
     private MindmapService mindmapService;
 
-    @RequestMapping(value = "maps/{id}/print")
+    @RequestMapping(value = "c/maps/{id}/print")
     public String showPrintPage(@PathVariable int id, @NotNull Model model) throws MapCouldNotFoundException, AccessDeniedSecurityException {
 
         final MindMapBean mindmap = findMindmapBean(id);
@@ -67,12 +67,12 @@ public class MvcMindmapController {
         return "mindmapViewonly";
     }
 
-    @RequestMapping(value = "maps/")
+    @RequestMapping(value = "c/maps/")
     public String showListPage(@NotNull Model model) {
         return "reactInclude";
     }
 
-    @RequestMapping(value = "maps/{id}/edit", method = RequestMethod.GET)
+    @RequestMapping(value = "c/maps/{id}/edit", method = RequestMethod.GET)
     public String showMindmapEditorPage(@PathVariable int id, @NotNull Model model) throws WiseMappingException {
         return showEditorPage(id, model, true);
     }
@@ -104,26 +104,26 @@ public class MvcMindmapController {
         return "mindmapEditor";
     }
 
-    @RequestMapping(value = "maps/{id}/view", method = RequestMethod.GET)
+    @RequestMapping(value = "c/maps/{id}/view", method = RequestMethod.GET)
     public String showMindmapViewerPage(@PathVariable int id, @NotNull Model model) throws WiseMappingException {
         final String result = showPrintPage(id, model);
         return result;
     }
 
-    @RequestMapping(value = "maps/{id}/try", method = RequestMethod.GET)
+    @RequestMapping(value = "c/maps/{id}/try", method = RequestMethod.GET)
     @PreAuthorize("permitAll()")
     public String showMindmapTryPage(@PathVariable int id, @NotNull Model model) throws WiseMappingException {
         return  showEditorPage(id, model, false);
     }
 
-    @RequestMapping(value = "maps/{id}/{hid}/view", method = RequestMethod.GET)
+    @RequestMapping(value = "c/maps/{id}/{hid}/view", method = RequestMethod.GET)
     public String showMindmapViewerRevPage(@PathVariable int id, @PathVariable int hid, @NotNull Model model) throws WiseMappingException {
         final String result = showPrintPage(id, model);
         model.addAttribute("hid", String.valueOf(hid));
         return result;
     }
 
-    @RequestMapping(value = "maps/{id}/embed")
+    @RequestMapping(value = "c/maps/{id}/embed")
     @PreAuthorize("permitAll()")
     public ModelAndView showEmbeddedPage(@PathVariable int id, @RequestParam(required = false) Float zoom) throws MapCouldNotFoundException, MapNotPublicSecurityException, AccessDeniedSecurityException {
         if (!mindmapService.isMindmapPublic(id)) {
@@ -138,27 +138,13 @@ public class MvcMindmapController {
         return view;
     }
 
-    @RequestMapping(value = "maps/{id}/public", method = RequestMethod.GET)
+    @RequestMapping(value = "c/maps/{id}/public", method = RequestMethod.GET)
     @PreAuthorize("permitAll()")
     public String showPublicViewPage(@PathVariable int id, @NotNull Model model) throws WiseMappingException {
         if (!mindmapService.isMindmapPublic(id)) {
             throw new MapNotPublicSecurityException("Map " + id + " is not public.");
         }
         return this.showPrintPage(id, model);
-    }
-
-    @Deprecated
-    @RequestMapping(value = "publicView", method = RequestMethod.GET)
-    @PreAuthorize("permitAll()")
-    public String showPublicViewPageLegacy(@RequestParam(required = true) int mapId) {
-        return "redirect:maps/" + mapId + "/public";
-    }
-
-    @Deprecated
-    @RequestMapping(value = "embeddedView", method = RequestMethod.GET)
-    @PreAuthorize("permitAll()")
-    public String showPublicViewLegacyPage(@RequestParam(required = true) int mapId, @RequestParam(required = false) int zoom) {
-        return "redirect:maps/" + mapId + "/embed?zoom=" + zoom;
     }
 
     @NotNull

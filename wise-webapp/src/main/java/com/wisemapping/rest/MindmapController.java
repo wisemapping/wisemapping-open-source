@@ -49,7 +49,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-@Controller
+@RestController
 @Transactional(propagation = Propagation.REQUIRED)
 public class MindmapController extends BaseController {
     private final Logger logger = LogManager.getLogger();

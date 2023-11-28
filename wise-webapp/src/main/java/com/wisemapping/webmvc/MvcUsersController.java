@@ -35,31 +35,31 @@ public class MvcUsersController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "forgot-password", method = RequestMethod.GET)
+    @RequestMapping(value = "c/forgot-password", method = RequestMethod.GET)
     @PreAuthorize("permitAll()")
     public ModelAndView showResetPasswordPage() {
         return new ModelAndView("reactInclude");
     }
 
-    @RequestMapping(value = "registration-google", method = RequestMethod.GET)
+    @RequestMapping(value = "c/registration-google", method = RequestMethod.GET)
     @PreAuthorize("permitAll()")
     public ModelAndView processGoogleCallback() {
         return new ModelAndView("reactInclude");
     }
 
-    @RequestMapping(value = "registration", method = RequestMethod.GET)
+    @RequestMapping(value = "c/registration", method = RequestMethod.GET)
     @PreAuthorize("permitAll()")
     public ModelAndView showRegistrationPage() {
         return new ModelAndView("reactInclude");
     }
 
-    @RequestMapping(value = "registration-success", method = RequestMethod.GET)
+    @RequestMapping(value = "c/registration-success", method = RequestMethod.GET)
     @PreAuthorize("permitAll()")
     public ModelAndView showRegistrationSuccess() {
         return new ModelAndView("reactInclude");
     }
 
-    @RequestMapping(value = "forgot-password-success", method = RequestMethod.GET)
+    @RequestMapping(value = "c/forgot-password-success", method = RequestMethod.GET)
     @PreAuthorize("permitAll()")
     public ModelAndView showResetPasswordSuccess() {
         return new ModelAndView("reactInclude");

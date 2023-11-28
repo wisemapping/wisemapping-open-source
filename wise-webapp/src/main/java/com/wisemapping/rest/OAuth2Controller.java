@@ -38,7 +38,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 
-@Controller
+@RestController
 @CrossOrigin
 public class OAuth2Controller extends BaseController {
 	@Qualifier("userService")
