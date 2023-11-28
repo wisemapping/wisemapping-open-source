@@ -7,6 +7,7 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -18,12 +19,12 @@ import org.springframework.web.servlet.view.JstlView;
 @ImportResource(value = {"classpath:spring/wisemapping-servlet.xml"})
 @ComponentScan("com.wisemapping.webmvc")
 public class MvcAppConfig implements WebMvcConfigurer {
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry
-//                .addResourceHandler("/**")
-//                .addResourceLocations("classpath:/public/");
-//    }
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry
+                .addResourceHandler("/**")
+                .addResourceLocations("classpath:/public/");
+    }
 
     @Bean
     public ViewResolver viewResolver() {
