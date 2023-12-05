@@ -146,7 +146,6 @@
             <version>2.7.1</version>
             <scope>runtime</scope>
         </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -198,101 +197,6 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-    <profiles>
-        <profile>
-            <id>hsqldb</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>sql-maven-plugin</artifactId>
-                        <version>1.5</version>
-
-                        <configuration>
-                            <driver>org.hsqldb.jdbc.JDBCDriver</driver>
-                            <url>jdbc:hsqldb:file:${project.build.directory}/db/wisemapping</url>
-                            <username>sa</username>
-                        </configuration>
-
-                        <dependencies>
-                            <dependency>
-                                <groupId>org.hsqldb</groupId>
-                                <artifactId>hsqldb</artifactId>
-                                <version>2.7.2</version>
-                            </dependency>
-                        </dependencies>
-                        <executions>
-                            <execution>
-                                <id>drop-schemas</id>
-                                <phase>prepare-package</phase>
-                                <goals>
-                                    <goal>execute</goal>
-                                </goals>
-                                <configuration>
-                                    <onError>continue</onError>
-                                    <orderFile>descending</orderFile>
-                                    <fileset>
-                                        <basedir>${project.basedir}</basedir>
-                                        <includes>
-                                            <include>config/database/hsql/drop-schemas.sql</include>
-                                            <include>config/database/hsql/create-schemas.sql</include>
-                                            <include>config/database/hsql/apopulate-schemas.sql</include>
-                                        </includes>
-                                    </fileset>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>mysqldb</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>sql-maven-plugin</artifactId>
-                        <version>1.5</version>
-                        <dependencies>
-                            <dependency>
-                                <groupId>mysql</groupId>
-                                <artifactId>mysql-connector-java</artifactId>
-                                <version>8.0.31</version>
-                            </dependency>
-                        </dependencies>
-                        <executions>
-                            <execution>
-                                <id>init-schema</id>
-                                <goals>
-                                    <goal>execute</goal>
-                                </goals>
-                                <phase>prepare-package</phase>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <driver>com.mysql.jdbc.Driver</driver>
-                            <username>root</username>
-                            <password/>
-                            <url>jdbc:mysql://127.0.0.1:3306/?useUnicode=true&amp;characterEncoding=UTF-8</url>
-                            <autocommit>false</autocommit>
-                            <srcFiles>
-                                <srcFile>config/database/mysql/create-database.sql</srcFile>
-                                <srcFile>config/database/mysql/create-schemas.sql</srcFile>
-                                <srcFile>config/database/mysql/apopulate-schemas.sql</srcFile>
-                            </srcFiles>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
     <build>
         <plugins>
             <plugin>

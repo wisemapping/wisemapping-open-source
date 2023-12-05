@@ -8,37 +8,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @EnableJpaRepositories("com.wisemapping.model")
 public class HibernateConfig {
-//    @Value("${database.hibernate.dialect}")
-//    private String dbDialect;
-//
-//    @Value("${database.driver}")
-//    private String dbDriver;
-//
-//    @Value("${database.url}")
-//    private String dbUrl;
-//
-//    @Value("${database.username}")
-//    private String dbUsername;
-//    @Value("${database.password}")
-//    private String dbPassword;
-//
-//    @Value("${database.validation.enabled:true}")
-//    private boolean dbSetOnBorrow;
-//
-//    @Value("${database.validation.query:SELECT 1}")
-//    private String dbValQuery;
 
-//    @Bean
-//    public LocalSessionFactoryBean sessionFactory() {
-//        final LocalSessionFactoryBean result = new LocalSessionFactoryBean();
-//        result.setPackagesToScan("com.wisemapping.model");
-//        result.setDataSource(dataSource());
-//        result.setHibernateProperties(hibernateProperties());
-//
-//        return result;
-//    }
-//
-//
 //    @Bean
 //    public HibernateTransactionManager hibernateTransactionManager() {
 //        final HibernateTransactionManager result = new HibernateTransactionManager();

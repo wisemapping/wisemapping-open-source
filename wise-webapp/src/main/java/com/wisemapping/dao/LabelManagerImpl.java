@@ -25,6 +25,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.SelectionQuery;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -32,7 +33,7 @@ import java.util.List;
 @Repository("labelManager")
 public class LabelManagerImpl
         implements LabelManager {
-    @Resource
+    @Autowired
     private SessionFactory sessionFactory;
 
     @Override

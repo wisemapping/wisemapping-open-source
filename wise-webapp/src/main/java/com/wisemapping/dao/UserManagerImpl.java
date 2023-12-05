@@ -22,6 +22,7 @@ import com.wisemapping.model.*;
 import com.wisemapping.security.DefaultPasswordEncoderFactories;
 import com.wisemapping.security.LegacyPasswordEncoder;
 import jakarta.annotation.Resource;
+import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -39,8 +40,8 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @Repository
 public class UserManagerImpl
         implements UserManager {
-//    @Autowired
-    private SessionFactory sessionFactory;
+    @Autowired
+    private EntityManagerFactory entityManagerFactory;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -54,7 +55,7 @@ public class UserManagerImpl
     }
 
     private Session getSession() {
-        return sessionFactory.getCurrentSession();
+        return  entityManagerFactory.unwrap(SessionFactory.class).getCurrentSession();
     }
 
 

@@ -14,15 +14,15 @@ import org.springframework.security.web.firewall.StrictHttpFirewall;
 
 @SpringBootApplication
 @ImportResource(value = {"classpath:spring/wisemapping-service.xml"})
-@ComponentScan({"com.wisemapping.security", "com.wisemapping.service", "com.wisemapping.dao", "com.wisemapping.util"})
+@ComponentScan({"com.wisemapping.security", "com.wisemapping.service", "com.wisemapping.dao", "com.wisemapping.util", "com.wisemapping.model"})
 public class Application {
 
     public static void main(String[] args) {
 
         new SpringApplicationBuilder()
-                .parent(Application.class, HibernateConfig.class, MethodSecurityConfig.class).web(WebApplicationType.NONE)
-                .child(MvcAppConfig.class, MvcSecurityConfig.class, ServletConfig.class).web(WebApplicationType.SERVLET)
-                .sibling(RestAppConfig.class).web(WebApplicationType.SERVLET)
+                .parent(Application.class, MethodSecurityConfig.class).web(WebApplicationType.NONE)
+                .child(MvcAppConfig.class, MvcSecurityConfig.class, HibernateConfig.class, ServletConfig.class).web(WebApplicationType.SERVLET)
+//                .sibling(RestAppConfig.class).web(WebApplicationType.SERVLET)
                 .run(args);
     }
 
