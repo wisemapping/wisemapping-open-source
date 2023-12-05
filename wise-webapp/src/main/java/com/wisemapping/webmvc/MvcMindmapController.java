@@ -56,7 +56,7 @@ public class MvcMindmapController {
     private MindmapService mindmapService;
 
     @RequestMapping(value = "maps/{id}/print")
-    public String showPrintPage(@PathVariable int id, @NotNull Model model) throws MapCouldNotFoundException, AccessDeniedSecurityException {
+    public String showPrintPage(@PathVariable int id, @NotNull Model model) throws WiseMappingException {
 
         final MindMapBean mindmap = findMindmapBean(id);
         model.addAttribute("principal", Utils.getUser());
@@ -64,6 +64,7 @@ public class MvcMindmapController {
         model.addAttribute("creatorFullName", mindmap.getCreator().getFullName());
         final Locale locale = LocaleContextHolder.getLocale();
         model.addAttribute("locale", locale.toString().toLowerCase());
+        model.addAttribute("properties", mindmap.getProperties());
         return "mindmapViewonly";
     }
 

@@ -24,7 +24,7 @@
     <script type="text/javascript">
           var mapId = '${mindmap.id}';
           var historyId = '${hid}';
-          var userOptions = ${mindmap.properties};
+          var userOptions = ${properties};
           var locale = '${locale}';
           var isAuth = ${principal != null};
      </script>
