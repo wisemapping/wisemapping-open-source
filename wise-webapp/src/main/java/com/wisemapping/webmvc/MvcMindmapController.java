@@ -134,6 +134,7 @@ public class MvcMindmapController {
         final MindMapBean mindmap = findMindmapBean(id);
         final ModelAndView view = new ModelAndView("mindmapViewonly", "mindmap", mindmap);
         view.addObject("zoom", zoom == null ? 1 : zoom);
+        view.addObject("properties", "{}");
         final Locale locale = LocaleContextHolder.getLocale();
         view.addObject("locale", locale.toString().toLowerCase());
         return view;
