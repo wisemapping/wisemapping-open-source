@@ -37,6 +37,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -55,9 +56,6 @@ public class BaseController {
     @Autowired
     ServletContext context;
 
-    @Autowired
-    private NotificationService notificationService;
-
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
@@ -65,9 +63,16 @@ public class BaseController {
         return new RestErrors(ex.getMessage(), Severity.WARNING);
     }
 
+    @ExceptionHandler(AuthenticationCredentialsNotFoundException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public RestErrors handleAuthException(@NotNull final AuthenticationCredentialsNotFoundException ex) {
+        logger.debug(ex.getMessage(), ex);
+        return new RestErrors("Authentication exception. Session must be expired. Try logging again.", Severity.INFO);
+    }
+
     @ExceptionHandler(ValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public RestErrors handleValidationErrors(@NotNull ValidationException ex) {
+    public RestErrors handleValidationErrors(@NotNull final ValidationException ex) {
         logger.debug(ex.getMessage(), ex);
         return new RestErrors(ex.getErrors(), messageSource);
     }
@@ -120,7 +125,7 @@ public class BaseController {
     public RestErrors handleServerErrors(@NotNull Exception ex, @NotNull HttpServletRequest request) {
         logger.error(ex.getMessage(), ex);
         final User user = Utils.getUser(false);
-        notificationService.reportJavaException(ex, user, request);
+//        notificationService.reportJavaException(ex, user, request);
         return new RestErrors(ex.getMessage(), Severity.SEVERE);
     }
 

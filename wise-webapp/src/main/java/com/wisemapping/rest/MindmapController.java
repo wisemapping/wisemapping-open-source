@@ -109,7 +109,6 @@ public class MindmapController extends BaseController {
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/document", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
-
     public void updateDocument(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor) throws WiseMappingException, IOException {
 
         final Mindmap mindmap = findMindmapById(id);
