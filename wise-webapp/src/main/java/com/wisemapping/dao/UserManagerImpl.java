@@ -21,8 +21,9 @@ package com.wisemapping.dao;
 import com.wisemapping.model.*;
 import com.wisemapping.security.DefaultPasswordEncoderFactories;
 import com.wisemapping.security.LegacyPasswordEncoder;
-import jakarta.annotation.Resource;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.TypedQuery;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -44,14 +45,19 @@ public class UserManagerImpl
     private EntityManagerFactory entityManagerFactory;
 
     @Autowired
+    private EntityManager entityManager;
+    @Autowired
     private PasswordEncoder passwordEncoder;
+
+    public UserManagerImpl() {
+    }
 
     public void setEncoder(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> getAllUsers() {
-        return getSession().createSelectionQuery("from com.wisemapping.model.User user", User.class).getResultList();
+        return entityManager.createQuery("from com.wisemapping.model.User user", User.class).getResultList();
     }
 
     private Session getSession() {
@@ -64,7 +70,7 @@ public class UserManagerImpl
     public User getUserBy(@NotNull final String email) {
         User user = null;
 
-        SelectionQuery<User> query = getSession().createSelectionQuery("from com.wisemapping.model.User colaborator where email=:email",User.class);
+        TypedQuery<User> query = entityManager.createQuery("from com.wisemapping.model.User colaborator where email=:email",User.class);
         query.setParameter("email", email);
 
         final List<User> users = query.getResultList();

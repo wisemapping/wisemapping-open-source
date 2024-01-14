@@ -20,10 +20,13 @@ public class Application {
     public static void main(String[] args) {
 
         new SpringApplicationBuilder()
-                .parent(Application.class, MethodSecurityConfig.class).web(WebApplicationType.NONE)
-                .child(MvcAppConfig.class, MvcSecurityConfig.class, HibernateConfig.class, ServletConfig.class).web(WebApplicationType.SERVLET)
-//                .sibling(RestAppConfig.class).web(WebApplicationType.SERVLET)
+                .parent(Application.class, MethodSecurityConfig.class, HibernateConfig.class).web(WebApplicationType.NONE)
+                .child(MvcAppConfig.class, MvcSecurityConfig.class, ServletConfig.class).web(WebApplicationType.SERVLET)
+                .sibling(RestAppConfig.class).web(WebApplicationType.SERVLET)
                 .run(args);
+
+//        new SpringApplicationBuilder(Application.class, MethodSecurityConfig.class,MvcAppConfig.class, MvcSecurityConfig.class, HibernateConfig.class, ServletConfig.class).web(WebApplicationType.SERVLET).run(args);
+
     }
 
     @Bean

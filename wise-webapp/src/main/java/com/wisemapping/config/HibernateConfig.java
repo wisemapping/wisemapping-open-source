@@ -1,12 +1,22 @@
 package com.wisemapping.config;
 
+import com.wisemapping.model.User;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+//@Configuration
+//@EnableTransactionManagement
+//@EnableJpaRepositories("com.wisemapping.model")
+
+
 @Configuration
-@EnableTransactionManagement
-@EnableJpaRepositories("com.wisemapping.model")
+@EnableAutoConfiguration
+@EnableJpaRepositories(basePackages={"com.wisemapping.dao"})
+@EntityScan(basePackageClasses= User.class)
 public class HibernateConfig {
 
 //    @Bean
