@@ -22,12 +22,7 @@ import com.wisemapping.model.*;
 import com.wisemapping.security.DefaultPasswordEncoderFactories;
 import com.wisemapping.security.LegacyPasswordEncoder;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
-import org.hibernate.ObjectNotFoundException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.SelectionQuery;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +36,6 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @Repository
 public class UserManagerImpl
         implements UserManager {
-    @Autowired
-    private EntityManagerFactory entityManagerFactory;
-
     @Autowired
     private EntityManager entityManager;
     @Autowired
@@ -60,17 +52,12 @@ public class UserManagerImpl
         return entityManager.createQuery("from com.wisemapping.model.User user", User.class).getResultList();
     }
 
-    private Session getSession() {
-        return  entityManagerFactory.unwrap(SessionFactory.class).getCurrentSession();
-    }
-
-
     @Override
     @Nullable
     public User getUserBy(@NotNull final String email) {
         User user = null;
 
-        TypedQuery<User> query = entityManager.createQuery("from com.wisemapping.model.User colaborator where email=:email",User.class);
+        TypedQuery<User> query = entityManager.createQuery("from com.wisemapping.model.User colaborator where email=:email", User.class);
         query.setParameter("email", email);
 
         final List<User> users = query.getResultList();
@@ -85,8 +72,8 @@ public class UserManagerImpl
     @Override
     public Collaborator getCollaboratorBy(final String email) {
         final Collaborator result;
-        Session session = getSession();
-        final SelectionQuery<Collaborator> query = session.createSelectionQuery("from com.wisemapping.model.Collaborator colaborator where " +
+
+        final TypedQuery<Collaborator> query = entityManager.createQuery("from com.wisemapping.model.Collaborator colaborator where " +
                 "email=:email", Collaborator.class);
         query.setParameter("email", email);
 
@@ -103,13 +90,7 @@ public class UserManagerImpl
     @Nullable
     @Override
     public User getUserBy(int id) {
-        User user = null;
-        try {
-            user = getSession().get(User.class, id);
-        } catch (ObjectNotFoundException e) {
-            // Ignore ...
-        }
-        return user;
+        return entityManager.find(User.class, id);
     }
 
     @Override
@@ -120,7 +101,7 @@ public class UserManagerImpl
         } else {
             user.setPassword("");
         }
-        getSession().persist(user);
+        entityManager.persist(user);
     }
 
     @Override
@@ -128,10 +109,9 @@ public class UserManagerImpl
         assert user != null : "Trying to store a null user";
 
         // Migrate from previous temporal collab to new user ...
-        final Session session = getSession();
         collaborator.setEmail(collaborator.getEmail() + "_toRemove");
-        session.merge(collaborator);
-        session.flush();
+        entityManager.merge(collaborator);
+        entityManager.flush();
 
         // Save all new...
         this.createUser(user);
@@ -143,18 +123,18 @@ public class UserManagerImpl
         }
 
         // Delete old user ...
-        session.remove(collaborator);
+        entityManager.remove(collaborator);
         return user;
     }
 
     @Override
     public void removeUser(@NotNull final User user) {
-        getSession().remove(user);
+        entityManager.remove(user);
     }
 
     public void auditLogin(@NotNull AccessAuditory accessAuditory) {
         assert accessAuditory != null : "accessAuditory is null";
-        getSession().persist(accessAuditory);
+        entityManager.persist(accessAuditory);
     }
 
     public void updateUser(@NotNull User user) {
@@ -166,13 +146,13 @@ public class UserManagerImpl
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
 
-        getSession().merge(user);
+        entityManager.merge(user);
     }
 
     public User getUserByActivationCode(long code) {
         final User user;
 
-        final SelectionQuery<User> query = getSession().createSelectionQuery("from com.wisemapping.model.User user where " +
+        final TypedQuery<User> query = entityManager.createQuery("from com.wisemapping.model.User user where " +
                 "activationCode=:activationCode", User.class);
         query.setParameter("activationCode", code);
 

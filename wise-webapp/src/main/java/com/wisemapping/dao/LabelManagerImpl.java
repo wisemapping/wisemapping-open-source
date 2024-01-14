@@ -19,10 +19,8 @@ package com.wisemapping.dao;
 
 import com.wisemapping.model.Label;
 import com.wisemapping.model.User;
-import jakarta.annotation.Resource;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.SelectionQuery;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +32,7 @@ import java.util.List;
 public class LabelManagerImpl
         implements LabelManager {
     @Autowired
-    private SessionFactory sessionFactory;
+    private EntityManager entityManager;
 
     @Override
     public void addLabel(@NotNull final Label label) {
@@ -43,26 +41,21 @@ public class LabelManagerImpl
 
     @Override
     public void saveLabel(@NotNull final Label label) {
-        getSession().persist(label);
-    }
-
-    private Session getSession() {
-        return sessionFactory.getCurrentSession();
+        entityManager.persist(label);
     }
 
     @NotNull
     @Override
     public List<Label> getAllLabels(@NotNull final User user) {
-        final SelectionQuery<Label> query = getSession().createSelectionQuery("from com.wisemapping.model.Label wisemapping where creator=:creatorId", Label.class);
+        final TypedQuery<Label> query = entityManager.createQuery("from com.wisemapping.model.Label wisemapping where creator=:creatorId", Label.class);
         query.setParameter("creatorId", user);
-        return query.list();
+        return query.getResultList();
     }
 
     @Nullable
     @Override
     public Label getLabelById(int id, @NotNull final User user) {
-        final Session session = getSession();
-        final SelectionQuery<Label> query = session.createSelectionQuery("from com.wisemapping.model.Label wisemapping where id=:id and creator=:creator", Label.class);
+        final TypedQuery<Label> query = entityManager.createQuery("from com.wisemapping.model.Label wisemapping where id=:id and creator=:creator", Label.class);
         query.setParameter("id", id);
         query.setParameter("creator", user);
 
@@ -73,15 +66,15 @@ public class LabelManagerImpl
     @Nullable
     @Override
     public Label getLabelByTitle(@NotNull String title, @NotNull final User user) {
-        final SelectionQuery<Label> query = getSession().createSelectionQuery("from com.wisemapping.model.Label wisemapping where title=:title and creator=:creator", Label.class);
+        final TypedQuery<Label> query = entityManager.createQuery("from com.wisemapping.model.Label wisemapping where title=:title and creator=:creator", Label.class);
         query.setParameter("title", title);
         query.setParameter("creator", user);
-        return getFirst(query.list());
+        return query.getSingleResult();
     }
 
     @Override
     public void removeLabel(@NotNull Label label) {
-        getSession().remove(label);
+        entityManager.remove(label);
     }
 
     @Nullable

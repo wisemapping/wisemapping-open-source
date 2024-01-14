@@ -19,15 +19,12 @@
 package com.wisemapping.dao;
 
 import com.wisemapping.model.*;
-import jakarta.annotation.Resource;
-import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaDelete;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.SelectionQuery;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,15 +38,12 @@ public class MindmapManagerImpl
         implements MindmapManager {
 
     @Autowired
-    private EntityManagerFactory entityManagerFactory;
-
-    @Autowired
-    private SessionFactory sessionFactory;
+    private EntityManager entityManager;
 
     @Override
     public Collaborator findCollaborator(@NotNull final String email) {
         final Collaborator collaborator;
-        final SelectionQuery<Collaborator> query = getSession().createSelectionQuery("from com.wisemapping.model.Collaborator collaborator where email=:email", Collaborator.class);
+        final TypedQuery<Collaborator> query = entityManager.createQuery("from com.wisemapping.model.Collaborator collaborator where email=:email", Collaborator.class);
         query.setParameter("email", email);
 
         final List<Collaborator> collaborators = query.getResultList();
@@ -62,14 +56,9 @@ public class MindmapManagerImpl
         return collaborator;
     }
 
-    private Session getSession() {
-        return sessionFactory.getCurrentSession();
-    }
-
     @Override
     public List<MindMapHistory> getHistoryFrom(int mindmapId) {
-        final Session session = getSession();
-        final CriteriaBuilder cb = session.getCriteriaBuilder();
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 
         final CriteriaQuery<MindMapHistory> cr = cb.createQuery(MindMapHistory.class);
         final Root<MindMapHistory> root = cr.from(MindMapHistory.class);
@@ -78,7 +67,7 @@ public class MindmapManagerImpl
                 .where(cb.equal(root.get("mindmapId"), mindmapId))
                 .orderBy(cb.desc(root.get("creationTime")));
 
-        return session.
+        return entityManager.
                 createQuery(select)
                 .setMaxResults(30)
                 .getResultList();
@@ -86,21 +75,19 @@ public class MindmapManagerImpl
 
     @Override
     public MindMapHistory getHistory(int historyId) {
-        final Session session = getSession();
-        return session.find(MindMapHistory.class, historyId);
+        return entityManager.find(MindMapHistory.class, historyId);
     }
 
     @Override
     public void updateCollaboration(@NotNull Collaboration collaboration) {
-        final Session session = getSession();
-        session.persist(collaboration);
+        entityManager.persist(collaboration);
     }
 
     @Override
     public List<Mindmap> findMindmapByUser(@NotNull User user) {
 
-        final SelectionQuery<Mindmap> query = getSession()
-                .createSelectionQuery("from com.wisemapping.model.Mindmap m where m.id in (select c.mindMap.id from com.wisemapping.model.Collaboration as c where c.collaborator.id=:collabId )", Mindmap.class);
+        final TypedQuery<Mindmap> query = entityManager
+                .createQuery("from com.wisemapping.model.Mindmap m where m.id in (select c.mindMap.id from com.wisemapping.model.Collaboration as c where c.collaborator.id=:collabId )", Mindmap.class);
         query.setParameter("collabId", user.getId());
 
         return query.getResultList();
@@ -108,41 +95,37 @@ public class MindmapManagerImpl
 
     @Override
     public List<Collaboration> findCollaboration(final int collaboratorId) {
-        final SelectionQuery<Collaboration> query = getSession().createSelectionQuery("from com.wisemapping.model.Collaboration c where c.collaborator.id=:collaboratorId", Collaboration.class);
+        final TypedQuery<Collaboration> query = entityManager.createQuery("from com.wisemapping.model.Collaboration c where c.collaborator.id=:collaboratorId", Collaboration.class);
         query.setParameter("collaboratorId", collaboratorId);
         return query.getResultList();
     }
 
     @Override
     public void addCollaborator(@NotNull Collaborator collaborator) {
-        final Session session = getSession();
         assert collaborator != null : "ADD MINDMAP COLLABORATOR: Collaborator is required!";
-        session.persist(collaborator);
+        entityManager.persist(collaborator);
     }
 
     @Override
     public void removeCollaboration(Collaboration collaboration) {
-        final Session session = getSession();
-        session.remove(collaboration);
+        entityManager.remove(collaboration);
     }
 
     @Override
     public void removeCollaborator(@NotNull Collaborator collaborator) {
-        final Session session = getSession();
-        session.remove(collaborator);
+        entityManager.remove(collaborator);
     }
 
     @Override
     @Nullable
     public Mindmap getMindmapById(int id) {
-        final Session session = getSession();
-        return session.get(Mindmap.class, id);
+        return entityManager.find(Mindmap.class, id);
     }
 
     @Override
     public Mindmap getMindmapByTitle(final String title, final User user) {
         final Mindmap result;
-        final SelectionQuery<Mindmap> query = getSession().createSelectionQuery("from com.wisemapping.model.Mindmap wisemapping where title=:title and creator=:creator", Mindmap.class);
+        final TypedQuery<Mindmap> query = entityManager.createQuery("from com.wisemapping.model.Mindmap wisemapping where title=:title and creator=:creator", Mindmap.class);
         query.setParameter("title", title);
         query.setParameter("creator", user);
 
@@ -164,13 +147,13 @@ public class MindmapManagerImpl
     @Override
     public void saveMindmap(Mindmap mindMap) {
         assert mindMap != null : "Save Mindmap: Mindmap is required!";
-        getSession().persist(mindMap);
+        entityManager.persist(mindMap);
     }
 
     @Override
     public void updateMindmap(@NotNull Mindmap mindMap, boolean saveHistory) {
         assert mindMap != null : "Save Mindmap: Mindmap is required!";
-        getSession().merge(mindMap);
+        entityManager.merge(mindMap);
         if (saveHistory) {
             saveHistory(mindMap);
         }
@@ -179,20 +162,19 @@ public class MindmapManagerImpl
     @Override
     public void removeMindmap(@NotNull final Mindmap mindmap) {
         // Delete history first ...
-        final Session session = getSession();
-        final CriteriaBuilder cb = session.getCriteriaBuilder();
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 
         final CriteriaDelete<MindMapHistory> cr = cb.createCriteriaDelete(MindMapHistory.class);
         final Root<MindMapHistory> root = cr.from(MindMapHistory.class);
 
         final CriteriaDelete<MindMapHistory> deleteStatement = cr.where(cb.equal(root.get("mindmapId"), mindmap.getId()));
-        session.createMutationQuery(deleteStatement).executeUpdate();
+        entityManager.createQuery(deleteStatement).executeUpdate();
 
         // Remove collaborations ...
         mindmap.removedCollaboration(mindmap.getCollaborations());
 
         // Delete mindmap ....
-        getSession().remove(mindmap);
+        entityManager.remove(mindmap);
     }
 
     private void saveHistory(@NotNull final Mindmap mindMap) {
@@ -202,6 +184,6 @@ public class MindmapManagerImpl
         history.setCreationTime(Calendar.getInstance());
         history.setEditor(mindMap.getLastEditor());
         history.setMindmapId(mindMap.getId());
-        getSession().merge(history);
+        entityManager.merge(history);
     }
 }
