@@ -21,7 +21,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @SpringBootApplication
 @EnableWebSecurity
-@ImportResource(value = {"classpath:spring/wisemapping-service.xml"})
+//@ImportResource(value = {"classpath:spring/wisemapping-rest.xml"})
 @ComponentScan({"com.wisemapping.rest"})
 public class RestAppConfig {
     @Bean
@@ -54,5 +54,6 @@ public class RestAppConfig {
                 .httpBasic(withDefaults());
         return http.build();
     }
+
 
 }

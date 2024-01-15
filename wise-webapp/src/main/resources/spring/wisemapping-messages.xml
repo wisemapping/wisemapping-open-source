@@ -28,6 +28,4 @@
             </list>
         </property>
     </bean>
-
-    <import resource="wisemapping-security-${security.type:db}.xml"/>
 </beans>

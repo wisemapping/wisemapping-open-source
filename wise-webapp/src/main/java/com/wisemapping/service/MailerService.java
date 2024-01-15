@@ -38,7 +38,7 @@ public final class MailerService {
 
     //~ Instance fields ......................................................................................
 
-    @Autowired
+//    @Autowired
     private JavaMailSender mailSender;
 
     @Autowired

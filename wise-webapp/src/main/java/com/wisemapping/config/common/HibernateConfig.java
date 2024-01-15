@@ -1,4 +1,4 @@
-package com.wisemapping.config;
+package com.wisemapping.config.common;
 
 import com.wisemapping.model.User;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @EnableAutoConfiguration
-@EnableJpaRepositories(basePackages={"com.wisemapping.dao"})
+@EnableJpaRepositories(basePackages={"com.wisemapping.dao","com.wisemapping.service"})
 @EntityScan(basePackageClasses= User.class)
 public class HibernateConfig {
 
