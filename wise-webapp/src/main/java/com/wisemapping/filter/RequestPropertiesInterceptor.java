@@ -20,12 +20,14 @@ package com.wisemapping.filter;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 
+@Component
 public class RequestPropertiesInterceptor implements HandlerInterceptor {
     @Value("${google.analytics.enabled}")
     private Boolean analyticsEnabled;

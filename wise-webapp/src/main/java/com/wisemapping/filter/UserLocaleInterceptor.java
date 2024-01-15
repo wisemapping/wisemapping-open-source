@@ -21,6 +21,7 @@ package com.wisemapping.filter;
 import com.wisemapping.model.User;
 import com.wisemapping.security.Utils;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
@@ -28,7 +29,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.Locale;
-
+@Component
 public class UserLocaleInterceptor implements HandlerInterceptor {
 
     @Override
