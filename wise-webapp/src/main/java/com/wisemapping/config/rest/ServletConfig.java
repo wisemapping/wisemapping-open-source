@@ -1,4 +1,4 @@
-package com.wisemapping.config.mvc;
+package com.wisemapping.config.rest;
 
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
