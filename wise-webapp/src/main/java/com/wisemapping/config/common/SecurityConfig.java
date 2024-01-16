@@ -54,7 +54,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationProvider dbAuthenticationProvider() {
-        com.wisemapping.security.AuthenticationProvider provider =
+        final com.wisemapping.security.AuthenticationProvider provider =
                 new com.wisemapping.security.AuthenticationProvider();
         provider.setEncoder(passwordEncoder());
         provider.setUserDetailsService(userDetailsService);

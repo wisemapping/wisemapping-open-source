@@ -26,6 +26,7 @@ public class RestAppConfig {
     @Bean
     SecurityFilterChain apiSecurityFilterChain(@NotNull final HttpSecurity http, @NotNull final MvcRequestMatcher.Builder mvc) throws Exception {
         return http
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(mvc.pattern("/api/restfull/users/")).permitAll()
                         .requestMatchers(mvc.pattern("/api/restfull/users/resetPassword")).permitAll()
@@ -37,7 +38,6 @@ public class RestAppConfig {
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(withDefaults())
-                .csrf(AbstractHttpConfigurer::disable)
                 .build();
     }
 }

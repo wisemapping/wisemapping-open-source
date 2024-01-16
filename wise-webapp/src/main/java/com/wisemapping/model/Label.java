@@ -39,8 +39,6 @@ public class Label implements Serializable {
     private String title;
     @NotNull
     private String color;
-    @Nullable
-    private String iconName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", nullable = true, unique = true)
@@ -94,15 +92,6 @@ public class Label implements Serializable {
 
     public void setColor(@NotNull String color) {
         this.color = color;
-    }
-
-    @Nullable
-    public String getIconName() {
-        return iconName;
-    }
-
-    public void setIconName(@NotNull String iconName) {
-        this.iconName = iconName;
     }
 
     @Override

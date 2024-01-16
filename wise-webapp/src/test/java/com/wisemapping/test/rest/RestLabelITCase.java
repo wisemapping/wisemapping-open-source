@@ -139,9 +139,6 @@ public class RestLabelITCase {
         if (color != null) {
             restLabel.setColor(color);
         }
-        if (icon != null) {
-            restLabel.setIconName(icon);
-        }
 
         // Create a new label ...
         HttpEntity<RestLabel> createUserEntity = new HttpEntity<RestLabel>(restLabel, requestHeaders);
