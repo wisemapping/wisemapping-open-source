@@ -4,6 +4,8 @@ import com.wisemapping.config.common.CommonConfig;
 import com.wisemapping.config.common.HibernateConfig;
 import com.wisemapping.config.common.InterceptorsConfig;
 import com.wisemapping.config.common.SecurityConfig;
+import com.wisemapping.config.mvc.MvcAppConfig;
+import com.wisemapping.config.mvc.MvcSecurityConfig;
 import com.wisemapping.config.rest.ServletConfig;
 import com.wisemapping.config.rest.RestAppConfig;
 import org.springframework.boot.WebApplicationType;
@@ -19,8 +21,8 @@ public class Application {
 
         new SpringApplicationBuilder()
                 .parent(HibernateConfig.class, ServletConfig.class, CommonConfig.class, SecurityConfig.class).web(WebApplicationType.NONE)
-//                .child(MvcAppConfig.class, MvcSecurityConfig.class, SecurityConfig.class).web(WebApplicationType.SERVLET)
-                .child(RestAppConfig.class, ServletConfig.class, InterceptorsConfig.class).web(WebApplicationType.SERVLET)
+                .child(MvcAppConfig.class, MvcSecurityConfig.class, SecurityConfig.class, InterceptorsConfig.class).web(WebApplicationType.SERVLET)
+                .sibling(RestAppConfig.class, ServletConfig.class, InterceptorsConfig.class).web(WebApplicationType.SERVLET)
                 .run(args);
     }
 

@@ -28,7 +28,7 @@ public class DefaultPasswordEncoderFactories {
 
     public static final String ENCODING_ID = "bcrypt";
 
-    static PasswordEncoder createDelegatingPasswordEncoder() {
+    public static PasswordEncoder createDelegatingPasswordEncoder() {
 
         final Map<String, PasswordEncoder> encoders = new HashMap<>();
         encoders.put(ENCODING_ID, new BCryptPasswordEncoder(12));
