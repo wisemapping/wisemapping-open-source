@@ -16,7 +16,6 @@ import org.springframework.web.servlet.view.JstlView;
 
 @SpringBootApplication
 @EnableWebMvc
-@ImportResource(value = {"classpath:spring/wisemapping-servlet.xml"})
 @ComponentScan("com.wisemapping.webmvc")
 public class MvcAppConfig implements WebMvcConfigurer {
     @Override

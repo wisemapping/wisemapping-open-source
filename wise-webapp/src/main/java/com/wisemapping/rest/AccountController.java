@@ -53,7 +53,7 @@ public class AccountController extends BaseController {
     @Autowired
     private LabelService labelService;
 
-    @RequestMapping(method = RequestMethod.PUT, value = "account/password", consumes = {"text/plain"})
+    @RequestMapping(method = RequestMethod.PUT, value = "api/restfull/account/password", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void changePassword(@RequestBody String password) throws PasswordTooLongException {
         if (password == null) {
@@ -75,7 +75,7 @@ public class AccountController extends BaseController {
         return new RestUser(user);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "account/firstname", consumes = {"text/plain"})
+    @RequestMapping(method = RequestMethod.PUT, value = "api/restfull/account/firstname", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void changeFirstname(@RequestBody String firstname) {
         if (firstname == null) {
@@ -87,7 +87,7 @@ public class AccountController extends BaseController {
         userService.updateUser(user);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "account/lastname", consumes = {"text/plain"})
+    @RequestMapping(method = RequestMethod.PUT, value = "api/restfull/account/lastname", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void changeLastName(@RequestBody String lastname) {
         if (lastname == null) {
@@ -99,7 +99,7 @@ public class AccountController extends BaseController {
         userService.updateUser(user);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "account/locale", consumes = {"text/plain"})
+    @RequestMapping(method = RequestMethod.PUT, value = "api/restfull/account/locale", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void changeLanguage(@RequestBody String language) {
         if (language == null) {

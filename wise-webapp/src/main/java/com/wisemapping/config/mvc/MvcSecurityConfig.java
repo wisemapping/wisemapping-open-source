@@ -11,7 +11,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
-
 @Configuration
 @EnableWebSecurity
 public class MvcSecurityConfig {
@@ -19,7 +18,6 @@ public class MvcSecurityConfig {
     @Bean
     @Order(1)
     public SecurityFilterChain embeddedDisabledXOrigin(@NotNull final HttpSecurity http, @NotNull final MvcRequestMatcher.Builder mvc) throws Exception {
-
         http
                 .securityMatchers((matchers) ->
                         matchers.requestMatchers(mvc.pattern("/c/maps/*/embed")))
