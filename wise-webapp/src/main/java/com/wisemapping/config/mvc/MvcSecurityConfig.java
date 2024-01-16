@@ -97,6 +97,7 @@ public class MvcSecurityConfig {
                                         requestMatchers(mvc.pattern("/WEB-INF/jsp/*.jsp")).permitAll().
                                 requestMatchers(mvc.pattern("/images/**")).permitAll().
                                 requestMatchers(mvc.pattern("/*")).permitAll()
+
         ).build();
     }
 }
