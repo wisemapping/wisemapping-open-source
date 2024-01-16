@@ -49,7 +49,7 @@ public class LabelController extends BaseController {
     private LabelService labelService;
 
 
-    @RequestMapping(method = RequestMethod.POST, value = "/labels", consumes = {"application/json"})
+    @RequestMapping(method = RequestMethod.POST, value = "/api/restfull/labels", consumes = {"application/json"})
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createLabel(@RequestBody RestLabel restLabel, @NotNull HttpServletResponse response, @RequestParam(required = false) String title) throws WiseMappingException {
         // Overwrite title if it was specified by parameter.
@@ -63,11 +63,11 @@ public class LabelController extends BaseController {
         final Label label = createLabel(restLabel);
 
         // Return the new created label ...
-        response.setHeader("Location", "/service/labels/" + label.getId());
+        response.setHeader("Location", "/api/restfull/labels/" + label.getId());
         response.setHeader("ResourceId", Long.toString(label.getId()));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/labels/", produces = {"application/json"})
+    @RequestMapping(method = RequestMethod.GET, value = "/api/restfull/labels/", produces = {"application/json"})
     public RestLabelList retrieveList() {
         final User user = Utils.getUser();
         assert user != null;
@@ -75,7 +75,7 @@ public class LabelController extends BaseController {
         return new RestLabelList(all);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/labels/{id}")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/api/restfull/labels/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteLabelById(@PathVariable int id) throws WiseMappingException {
         final User user = Utils.getUser();

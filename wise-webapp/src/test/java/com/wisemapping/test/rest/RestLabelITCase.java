@@ -27,7 +27,6 @@ public class RestLabelITCase {
 
     private String userEmail;
     private static final String COLOR = "#000000";
-    private static final String ICON = "glyphicon glyphicon-tag";
 
     @BeforeClass
     void createUser() {
@@ -37,17 +36,17 @@ public class RestLabelITCase {
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-    public void createLabel(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
+    public void createLabel(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
         final HttpHeaders requestHeaders = RestHelper.createHeaders(mediaType);
         final RestTemplate template = RestHelper.createTemplate(userEmail + ":" + "admin");
 
         // Create a new label
-        final String title1 = "Label 1  - " + mediaType.toString();
-        addNewLabel(requestHeaders, template, title1, COLOR, ICON);
+        final String title1 = "Label 1  - " + mediaType;
+        addNewLabel(requestHeaders, template, title1, COLOR);
 
         // Create a new label
-        final String title2 = "Label 2  - " + mediaType.toString();
-        addNewLabel(requestHeaders, template, title2, COLOR, ICON);
+        final String title2 = "Label 2  - " + mediaType;
+        addNewLabel(requestHeaders, template, title2, COLOR);
 
         // Check that the label has been created ...
         final RestLabelList restLabelList = getLabels(requestHeaders, template);
@@ -76,13 +75,13 @@ public class RestLabelITCase {
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-    public void createLabelWithoutRequiredField(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {
+    public void createLabelWithoutRequiredField(final @NotNull MediaType mediaType) throws IOException {
         final HttpHeaders requestHeaders = RestHelper.createHeaders(mediaType);
         requestHeaders.set(HttpHeaders.ACCEPT_LANGUAGE, "en");
         final RestTemplate template = RestHelper.createTemplate(userEmail + ":" + "admin");
 
         try {
-            addNewLabel(requestHeaders, template, null, COLOR, ICON);
+            addNewLabel(requestHeaders, template, null, COLOR);
             fail("Wrong response");
         } catch (HttpClientErrorException e) {
             final String responseBodyAsString = e.getResponseBodyAsString();
@@ -90,7 +89,7 @@ public class RestLabelITCase {
         }
 
         try {
-            addNewLabel(requestHeaders, template, "title12345", null, ICON);
+            addNewLabel(requestHeaders, template, "title12345", null);
             fail("Wrong response");
         } catch (HttpClientErrorException e) {
             final String responseBodyAsString = e.getResponseBodyAsString();
@@ -98,7 +97,7 @@ public class RestLabelITCase {
         }
 
         try {
-            addNewLabel(requestHeaders, template, "title12345", COLOR, null);
+            addNewLabel(requestHeaders, template, "title12345", COLOR);
             fail("Wrong response");
         } catch (HttpClientErrorException e) {
             final String responseBodyAsString = e.getResponseBodyAsString();
@@ -107,17 +106,17 @@ public class RestLabelITCase {
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-    public void validateLabelsUserIsolation(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
+    public void validateLabelsUserIsolation() {    // Configure media types ...
         throw new SkipException("missing test: labels belong to users");
     }
 
     @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-    public void deleteLabel(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {
+    public void deleteLabel(final @NotNull MediaType mediaType) throws IOException {
         final HttpHeaders requestHeaders = RestHelper.createHeaders(mediaType);
         final RestTemplate template = RestHelper.createTemplate(userEmail + ":" + "admin");
 
         final String title = "title to delete";
-        final URI resourceUri = addNewLabel(requestHeaders, template, title, COLOR, ICON);
+        final URI resourceUri = addNewLabel(requestHeaders, template, title, COLOR);
 
         // Now remove it ...
         template.delete(RestHelper.HOST_PORT + resourceUri.toString());
@@ -131,7 +130,7 @@ public class RestLabelITCase {
 
     }
 
-    static URI addNewLabel(@NotNull HttpHeaders requestHeaders, @NotNull RestTemplate template, @Nullable String title, @Nullable String color, @Nullable String icon) throws IOException, WiseMappingException {
+    static URI addNewLabel(@NotNull HttpHeaders requestHeaders, @NotNull RestTemplate template, @Nullable String title, @Nullable String color) throws IOException {
         final RestLabel restLabel = new RestLabel();
         if (title != null) {
             restLabel.setTitle(title);

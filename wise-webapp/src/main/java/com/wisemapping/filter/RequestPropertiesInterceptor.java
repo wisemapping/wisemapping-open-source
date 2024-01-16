@@ -53,9 +53,6 @@ public class RequestPropertiesInterceptor implements HandlerInterceptor {
     @Value("${site.baseurl:}")
     private String siteUrl;
 
-    @Value("${security.type}")
-    private String securityType;
-
 	@Value("${security.oauth2.google.url}")
     private String googleOauth2Url;
 
@@ -74,7 +71,7 @@ public class RequestPropertiesInterceptor implements HandlerInterceptor {
         request.setAttribute("site.homepage", siteHomepage);
         request.setAttribute("site.static.js.url", siteStaticUrl);
 
-        request.setAttribute("security.type", securityType);
+        request.setAttribute("security.type", "db");
 
         // If the property could not be resolved, try to infer one from the request...
         if (siteUrl.isBlank()) {

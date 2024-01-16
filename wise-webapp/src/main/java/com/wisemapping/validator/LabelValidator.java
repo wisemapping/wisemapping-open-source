@@ -54,7 +54,6 @@ public class LabelValidator implements Validator {
     private void validateLabel(@NotNull final Label label, @NotNull final Errors errors) {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "title", Messages.FIELD_REQUIRED);
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "color", Messages.FIELD_REQUIRED);
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "iconName", Messages.FIELD_REQUIRED);
         final String title = label.getTitle();
         ValidatorUtils.rejectIfExceeded(
                 errors,

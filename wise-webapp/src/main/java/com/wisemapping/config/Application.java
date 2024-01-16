@@ -21,8 +21,8 @@ public class Application {
 
         new SpringApplicationBuilder()
                 .parent(HibernateConfig.class, ServletConfig.class, CommonConfig.class, SecurityConfig.class).web(WebApplicationType.NONE)
-                .child(MvcAppConfig.class, MvcSecurityConfig.class, SecurityConfig.class, InterceptorsConfig.class).web(WebApplicationType.SERVLET)
-                .sibling(RestAppConfig.class, ServletConfig.class, InterceptorsConfig.class).web(WebApplicationType.SERVLET)
+//                .child(MvcAppConfig.class, MvcSecurityConfig.class, SecurityConfig.class, InterceptorsConfig.class).web(WebApplicationType.SERVLET)
+                .child(RestAppConfig.class, ServletConfig.class, InterceptorsConfig.class).web(WebApplicationType.SERVLET)
                 .run(args);
     }
 

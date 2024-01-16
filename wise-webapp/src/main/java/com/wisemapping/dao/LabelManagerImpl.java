@@ -69,7 +69,7 @@ public class LabelManagerImpl
         final TypedQuery<Label> query = entityManager.createQuery("from com.wisemapping.model.Label wisemapping where title=:title and creator=:creator", Label.class);
         query.setParameter("title", title);
         query.setParameter("creator", user);
-        return query.getSingleResult();
+        return query.getResultList().stream().findFirst().orElse(null);
     }
 
     @Override
