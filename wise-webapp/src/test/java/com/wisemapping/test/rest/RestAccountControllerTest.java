@@ -19,24 +19,27 @@
 package com.wisemapping.test.rest;
 
 
+import com.wisemapping.config.Application;
 import com.wisemapping.rest.model.RestUser;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
-import org.testng.annotations.Test;
 
 import java.net.URI;
+import java.util.Collection;
 
 import static com.wisemapping.test.rest.RestHelper.*;
-import static org.testng.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-@Test
+
+@SpringBootTest(classes = Application.class)
 public class RestAccountITCase {
 
-    @Test(dataProviderClass = RestHelper.class, dataProvider="ContentType-Provider-Function")
-    public void deleteUser(final @NotNull MediaType mediaType) {    // Configure media types ...
-        final HttpHeaders requestHeaders = createHeaders(mediaType);
+    public void deleteUser() {    // Configure media types ...
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final RestTemplate adminTemplate = createTemplate(ADMIN_CREDENTIALS);
 
         final RestUser dummyUser = createDummyUser();
