@@ -1,5 +1,6 @@
 package com.wisemapping.config.mvc;
 
+import com.wisemapping.webmvc.MvcMindmapController;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -15,10 +16,8 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 
-@Configuration
-@EnableAutoConfiguration
+@SpringBootApplication(scanBasePackageClasses = {MvcMindmapController.class, MvcSecurityConfig.class})
 @EnableWebMvc
-@ComponentScan("com.wisemapping.webmvc")
 public class MvcAppConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

@@ -15,7 +15,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.wisemapping.config.common;
+package com.wisemapping.config.mvc;
 
 import com.wisemapping.filter.RequestPropertiesInterceptor;
 import com.wisemapping.filter.UserLocaleInterceptor;
@@ -23,12 +23,11 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@ComponentScan("com.wisemapping.filter")
+@ComponentScan(basePackageClasses = UserLocaleInterceptor.class)
 public class InterceptorsConfig implements WebMvcConfigurer {
     @Autowired
     private UserLocaleInterceptor userLocaleInterceptor;

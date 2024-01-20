@@ -1,7 +1,9 @@
 package com.wisemapping.config.rest;
 
+import com.wisemapping.rest.MindmapController;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -15,14 +17,13 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 
-@Configuration
-@EnableAutoConfiguration
-@ComponentScan({"com.wisemapping.rest"})
+@SpringBootApplication(scanBasePackageClasses = {MindmapController.class, ServletConfig.class})
 public class RestAppConfig {
     @Bean
     MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector introspector) {
         return new MvcRequestMatcher.Builder(introspector);
     }
+
     @Bean
     SecurityFilterChain apiSecurityFilterChain(@NotNull final HttpSecurity http, @NotNull final MvcRequestMatcher.Builder mvc) throws Exception {
         return http
