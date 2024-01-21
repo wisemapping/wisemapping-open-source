@@ -1,6 +1,7 @@
 package com.wisemapping.config.rest;
 
 import com.wisemapping.rest.MindmapController;
+import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -11,14 +12,13 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
 
-@SpringBootApplication
-@Import({MindmapController.class, ServletConfig.class})
+@SpringBootApplication(scanBasePackageClasses = MindmapController.class)
+@Import({ServletConfig.class, InterceptorsConfig.class})
 @EnableWebSecurity
 public class RestAppConfig {
     @Bean
@@ -29,6 +29,7 @@ public class RestAppConfig {
     @Bean
     SecurityFilterChain apiSecurityFilterChain(@NotNull final HttpSecurity http, @NotNull final MvcRequestMatcher.Builder mvc) throws Exception {
         return http
+                .securityMatcher("/**")
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(mvc.pattern("/api/restfull/users/")).permitAll()
                         .requestMatchers(mvc.pattern("/api/restfull/users/resetPassword")).permitAll()
@@ -38,7 +39,10 @@ public class RestAppConfig {
                         .requestMatchers(mvc.pattern("/**")).hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
-
+                .logout(logout -> logout.permitAll()
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            response.setStatus(HttpServletResponse.SC_OK);
+                        }))
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(withDefaults())
