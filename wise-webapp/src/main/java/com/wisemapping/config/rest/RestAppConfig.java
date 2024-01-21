@@ -2,22 +2,24 @@ package com.wisemapping.config.rest;
 
 import com.wisemapping.rest.MindmapController;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
 
-@SpringBootApplication(scanBasePackageClasses = {MindmapController.class, ServletConfig.class})
+@SpringBootApplication
+@Import({MindmapController.class, ServletConfig.class})
+@EnableWebSecurity
 public class RestAppConfig {
     @Bean
     MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector introspector) {
@@ -27,7 +29,6 @@ public class RestAppConfig {
     @Bean
     SecurityFilterChain apiSecurityFilterChain(@NotNull final HttpSecurity http, @NotNull final MvcRequestMatcher.Builder mvc) throws Exception {
         return http
-                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(mvc.pattern("/api/restfull/users/")).permitAll()
                         .requestMatchers(mvc.pattern("/api/restfull/users/resetPassword")).permitAll()
@@ -37,6 +38,8 @@ public class RestAppConfig {
                         .requestMatchers(mvc.pattern("/**")).hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
+
+                .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(withDefaults())
                 .build();

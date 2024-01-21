@@ -1,11 +1,9 @@
 package com.wisemapping.config.mvc;
 
 import com.wisemapping.webmvc.MvcMindmapController;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -16,8 +14,9 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 
-@SpringBootApplication(scanBasePackageClasses = {MvcMindmapController.class, MvcSecurityConfig.class})
-@EnableWebMvc
+//@SpringBootApplication
+//@Import({MvcMindmapController.class, MvcSecurityConfig.class})
+//@EnableWebMvc
 public class MvcAppConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

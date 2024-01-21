@@ -26,8 +26,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@Configuration
-@ComponentScan(basePackageClasses = UserLocaleInterceptor.class)
+//@Configuration
+//@ComponentScan(basePackageClasses = UserLocaleInterceptor.class)
 public class InterceptorsConfig implements WebMvcConfigurer {
     @Autowired
     private UserLocaleInterceptor userLocaleInterceptor;
