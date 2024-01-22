@@ -47,15 +47,22 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-test</artifactId>
+            <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
             <exclusions>
                 <exclusion>
-                    <groupId>junit</groupId>
-                    <artifactId>junit</artifactId>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-devtools</artifactId>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
@@ -215,46 +222,11 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.4.0</version>
-                <configuration>
-                    <warName>wisemapping</warName>
-                    <overlays>
-                        <overlay>
-                            <groupId>org.wisemapping</groupId>
-                            <artifactId>wise-ui</artifactId>
-                            <targetPath>/static/mindplot/</targetPath>
-                            <includes>
-                                <include>wisemapping-mindplot/package/dist/*</include>
-                            </includes>
-                        </overlay>
-                        <overlay>
-                            <groupId>org.wisemapping</groupId>
-                            <artifactId>wise-ui</artifactId>
-                            <targetPath>/static/webapp/</targetPath>
-                            <includes>
-                                <include>wisemapping-webapp/package/dist/*</include>
-                            </includes>
-                        </overlay>
-                    </overlays>
-                    <archiveClasses>true</archiveClasses>
-                    <packagingExcludes>
-                        WEB-INF/lib/commons-logging-*.jar,
-                    </packagingExcludes>
-                    <webResources>
-                        <resource>
-                            <directory>src/main/resources</directory>
-                            <targetPath>WEB-INF</targetPath>
-                            <includes>
-                                <include>*.wsdl</include>
-                                <include>*.xsd</include>
-                            </includes>
-                        </resource>
-                    </webResources>
-                </configuration>
+                <!--                <configuration>-->
+                <!--                    <jvmArguments>-->
+                <!--                        -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005-->
+                <!--                    </jvmArguments>-->
+                <!--                </configuration>-->
             </plugin>
         </plugins>
     </build>
