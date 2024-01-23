@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
@@ -390,38 +391,35 @@ public class RestMindmapControllerTest {
         return newCollab;
     }
 
-    //
-//    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-//    public void deleteCollabsWithInvalidEmail(final @NotNull MediaType mediaType) {
-//        final HttpHeaders requestHeaders = createHeaders(mediaType);
-//        final RestTemplate template = createTemplate(userEmail);
+
+    @Test
+    public void deleteCollabsWithInvalidEmail() {
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+
+        // Create a sample map ...
+        final URI resourceUri = addNewMap(restTemplate, "deleteCollabsWithInvalidEmail");
+
+        // Remove with invalid email ...
+        try {
+            restTemplate.delete(resourceUri + "/collabs?email=invalidEmail");
+        } catch (HttpClientErrorException e) {
+            assertEquals(e.getRawStatusCode(), 400);
+            assertTrue(e.getMessage().contains("Invalid email exception:"));
+        }
+
+        // Check that it has been removed ...
+        final ResponseEntity<RestCollaborationList> afterDeleteResponse = fetchCollabs(requestHeaders, restTemplate, resourceUri);
+        assertEquals(Objects.requireNonNull(afterDeleteResponse.getBody()).getCollaborations().size(), 1);
+    }
+
+//    @Test
+//    public void deleteCollabsWithoutOwnerPermission() {
+//        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+//        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 //
 //        // Create a sample map ...
-//        final URI resourceUri = addNewMap(template, "deleteCollabsWithInvalidEmail");
-//
-//        // Remove with invalid email ...
-//        try {
-//
-//            template.delete(HOST_PORT + resourceUri + "/collabs?email=invalidEmail");
-//        } catch (HttpClientErrorException e) {
-//            assertEquals(e.getRawStatusCode(), 400);
-//            assertTrue(e.getMessage().contains("Invalid email exception:"));
-//        }
-//
-//        // Check that it has been removed ...
-//        final ResponseEntity<RestCollaborationList> afterDeleteResponse = fetchCollabs(requestHeaders, template, resourceUri);
-//        assertEquals(afterDeleteResponse.getBody().getCollaborations().size(), 1);
-//    }
-//
-//    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-//    public void deleteCollabsWithoutOwnerPermission(final @NotNull MediaType mediaType) {
-//
-//
-//        final HttpHeaders requestHeaders = createHeaders(mediaType);
-//        RestTemplate template = createTemplate(userEmail);
-//
-//        // Create a sample map ...
-//        final URI resourceUri = addNewMap(template, "deleteWithoutOwnerPermission");
+//        final URI resourceUri = addNewMap(restTemplate, "deleteWithoutOwnerPermission");
 //
 //        final String newCollab = restAdminITCase.createNewUser(MediaType.APPLICATION_JSON);
 //        template = createTemplate(newCollab + ":admin");
@@ -453,7 +451,7 @@ public class RestMindmapControllerTest {
 //            assertTrue(e.getMessage().contains("Can not remove owner collab"));
 //        }
 //    }
-//
+
     @NotNull
     private ResponseEntity<RestCollaborationList> fetchCollabs(HttpHeaders requestHeaders, TestRestTemplate template, URI resourceUri) {
         final HttpEntity<RestCollaborationList> findCollabs = new HttpEntity(requestHeaders);
