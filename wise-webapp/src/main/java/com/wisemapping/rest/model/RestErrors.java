@@ -135,4 +135,14 @@ public class RestErrors {
         return gErrors;
     }
 
+    @Override
+    public String toString() {
+        return "RestErrors{" +
+                "errors=" + errors +
+                ", gErrors=" + gErrors +
+                ", messageSource=" + messageSource +
+                ", gSeverity=" + gSeverity +
+                ", _debugInfo='" + _debugInfo + '\'' +
+                '}';
+    }
 }

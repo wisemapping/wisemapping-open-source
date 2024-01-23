@@ -6,10 +6,7 @@ import com.wisemapping.config.rest.RestAppConfig;
 import com.wisemapping.rest.AdminController;
 import com.wisemapping.rest.MindmapController;
 import com.wisemapping.rest.UserController;
-import com.wisemapping.rest.model.RestMindmap;
-import com.wisemapping.rest.model.RestMindmapInfo;
-import com.wisemapping.rest.model.RestMindmapList;
-import com.wisemapping.rest.model.RestUser;
+import com.wisemapping.rest.model.*;
 import jakarta.annotation.Nullable;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,18 +15,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 
 import static com.wisemapping.test.rest.RestHelper.createHeaders;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = {RestAppConfig.class, CommonConfig.class, MindmapController.class, AdminController.class, UserController.class}, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class RestMindmapControllerTest {
@@ -117,7 +112,6 @@ public class RestMindmapControllerTest {
         assertEquals(newTitle, map.getTitle());
     }
 
-
     @Test
     public void validateMapsCreation() {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
@@ -129,15 +123,10 @@ public class RestMindmapControllerTest {
         addNewMap(restTemplate, title);
 
         // Add map with same name ...
-        try {
-            HttpEntity<RestMindmap> createUserEntity = new HttpEntity<>(requestHeaders);
-            restTemplate.postForLocation("/api/restfull/maps?title=" + title, createUserEntity);
-        } catch (HttpClientErrorException cause) {
-            final String responseBodyAsString = cause.getResponseBodyAsString();
-            assert (responseBodyAsString.contains("You have already a map"));
-            return;
-        }
-        fail("Wrong response");
+        HttpEntity<RestMindmap> createUserEntity = new HttpEntity<>(requestHeaders);
+        final ResponseEntity<String> response = restTemplate.exchange("/api/restfull/maps?title=" + title, HttpMethod.POST, createUserEntity, String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertTrue(Objects.requireNonNull(response.getBody()).contains("You have already a map with the same name"));
     }
 
 
@@ -160,61 +149,59 @@ public class RestMindmapControllerTest {
         assertEquals(newDescription, map.getDescription());
     }
 
+
+    @Test
+    public void updateMapXml() throws IOException {    // Configure media types ...
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+
+        // Create a sample map ...
+        final String title = "Update XML sample";
+        final URI resourceUri = addNewMap(restTemplate, title);
+
+        // Update map xml content ...
+        final String resourceUrl = resourceUri.toString();
+        String newXmlContent = updateMapDocument(requestHeaders, restTemplate, resourceUrl, null);
+
+        // Check that the map has been updated ...
+        final RestMindmap response = findMap(requestHeaders, restTemplate, resourceUri);
+        assertEquals(response.getXml(), newXmlContent);
+    }
+
+    private String updateMapDocument(final HttpHeaders requestHeaders, final TestRestTemplate template, final String resourceUrl, String content) throws RestClientException {
+        requestHeaders.setContentType(MediaType.TEXT_PLAIN);
+        final String newXmlContent = content != null ? content : "<map>this is not valid</map>";
+        HttpEntity<String> updateEntity = new HttpEntity<>(newXmlContent, requestHeaders);
+        template.put(resourceUrl + "/document/xml", updateEntity);
+        return newXmlContent;
+    }
+
+
+    @Test
+    public void cloneMap() throws IOException {    // Configure media types ...
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+
+        // Create a sample map ...
+        final String title = "Map to clone  sample ";
+        final String xml = "<map><node text='this is a cloned map'></map>";
+        final URI newMapUri = addNewMap(restTemplate, title, xml);
+
+        // Clone map ...
+        final RestMindmapInfo restMindmap = new RestMindmapInfo();
+        restMindmap.setTitle("Cloned map but with previous content.");
+        restMindmap.setDescription("Cloned map desc");
+
+        // Create a new map ...
+        final HttpEntity<RestMindmapInfo> cloneEntity = new HttpEntity<>(restMindmap, requestHeaders);
+        final URI clonedMapUri = restTemplate.postForLocation(newMapUri, cloneEntity);
+
+        // Check that the map has been updated ...
+        final RestMindmap response = findMap(requestHeaders, restTemplate, clonedMapUri);
+        assertEquals(response.getXml(), xml);
+    }
+
     //
-//    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-//    public void updateMapXml(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
-//        final HttpHeaders requestHeaders = createHeaders(mediaType);
-//        final RestTemplate template = createTemplate(userEmail);
-//
-//        // Create a sample map ...
-//        final String title = "Update XML sample " + mediaType;
-//        final URI resourceUri = addNewMap(template, title);
-//
-//        // Update map xml content ...
-//        final String resourceUrl = HOST_PORT + resourceUri.toString();
-//        String newXmlContent = updateMapDocument(requestHeaders, template, resourceUrl);
-//
-//        // Check that the map has been updated ...
-//        final RestMindmap response = findMap(requestHeaders, template, resourceUri);
-//        assertEquals(response.getXml(), newXmlContent);
-//    }
-//
-//    private String updateMapDocument(final HttpHeaders requestHeaders, final RestTemplate template, final String resourceUrl, String content) throws RestClientException {
-//        requestHeaders.setContentType(MediaType.TEXT_PLAIN);
-//        final String newXmlContent = content != null ? content : "<map>this is not valid</map>";
-//        HttpEntity<String> updateEntity = new HttpEntity<>(newXmlContent, requestHeaders);
-//        template.put(resourceUrl + "/document/xml", updateEntity);
-//        return newXmlContent;
-//    }
-//
-//    private String updateMapDocument(final HttpHeaders requestHeaders, final RestTemplate template, final String resourceUrl) throws RestClientException {
-//        return updateMapDocument(requestHeaders, template, resourceUrl, null);
-//    }
-//
-//    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-//    public void cloneMap(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
-//        final HttpHeaders requestHeaders = createHeaders(mediaType);
-//        final RestTemplate template = createTemplate(userEmail);
-//
-//        // Create a sample map ...
-//        final String title = "Map to clone  sample " + mediaType;
-//        final String xml = "<map><node text='this is a cloned map'></map>";
-//        final URI newMapUri = addNewMap(template, title, xml);
-//
-//        // Clone map ...
-//        final RestMindmapInfo restMindmap = new RestMindmapInfo();
-//        restMindmap.setTitle("Cloned map but with previous content." + mediaType);
-//        restMindmap.setDescription("Cloned map desc");
-//
-//        // Create a new map ...
-//        final HttpEntity<RestMindmapInfo> cloneEntity = new HttpEntity<>(restMindmap, requestHeaders);
-//        final URI clonedMapUri = template.postForLocation(HOST_PORT + newMapUri, cloneEntity);
-//
-//        // Check that the map has been updated ...
-//        final RestMindmap response = findMap(requestHeaders, template, clonedMapUri);
-//        assertEquals(response.getXml(), xml);
-//    }
-//
 //    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
 //    public void updateStarred(final @NotNull MediaType mediaType) {    // Configure media types ...
 //        final HttpHeaders requestHeaders = createHeaders(mediaType);
