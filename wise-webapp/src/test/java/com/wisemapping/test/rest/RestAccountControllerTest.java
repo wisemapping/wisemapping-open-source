@@ -46,7 +46,7 @@ public class RestAccountControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    static public RestAccountControllerTest create(TestRestTemplate restTemplate) {
+    static public RestAccountControllerTest create(@NotNull  TestRestTemplate restTemplate) {
         final RestAccountControllerTest result = new RestAccountControllerTest();
         result.restTemplate = restTemplate;
         return result;
