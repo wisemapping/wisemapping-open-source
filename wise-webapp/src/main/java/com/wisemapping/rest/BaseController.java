@@ -17,10 +17,7 @@
  */
 package com.wisemapping.rest;
 
-import com.wisemapping.exceptions.ClientException;
-import com.wisemapping.exceptions.OAuthAuthenticationException;
-import com.wisemapping.exceptions.Severity;
-import com.wisemapping.exceptions.ValidationException;
+import com.wisemapping.exceptions.*;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestErrors;
 import com.wisemapping.security.Utils;
@@ -98,6 +95,14 @@ public class BaseController {
     public RestErrors handleClientErrors(@NotNull ClientException ex) {
         final Locale locale = LocaleContextHolder.getLocale();
         return new RestErrors(ex.getMessage(messageSource, locale), ex.getSeverity(), ex.getTechInfo());
+    }
+
+
+    @ExceptionHandler(AccessDeniedSecurityException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public RestErrors handleAccessDeniedSecurityException(@NotNull AccessDeniedSecurityException ex) {
+        return new RestErrors(ex.getMessage(), ex.getSeverity(), ex.getTechInfo());
     }
 
     @ExceptionHandler(OAuthAuthenticationException.class)

@@ -46,6 +46,12 @@ public class RestAccountControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    static public RestAccountControllerTest create(TestRestTemplate restTemplate) {
+        final RestAccountControllerTest result = new RestAccountControllerTest();
+        result.restTemplate = restTemplate;
+        return result;
+    }
+
     @Test
     public void deleteUser() {    // Configure media types ...
 
@@ -69,12 +75,10 @@ public class RestAccountControllerTest {
     }
 
     @Test
-    public void createNewUser() {
-
+    public RestUser createNewUser() {
         // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate templateRest = this.restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD);
-
 
         // Fill user data ...
         final RestUser restUser = createDummyUser();
@@ -89,13 +93,14 @@ public class RestAccountControllerTest {
         // Find by email and check ...
         result = findUserByEmail(requestHeaders, templateRest, restUser.getEmail());
         assertEquals(result.getBody().getEmail(), restUser.getEmail(), "Returned object object seems not be the same.");
-    }
 
+        return restUser;
+
+    }
 
     private ResponseEntity<RestUser> findUser(HttpHeaders requestHeaders, TestRestTemplate templateRest, URI location) {
         HttpEntity<RestUser> findUserEntity = new HttpEntity<>(requestHeaders);
-        final String url = HOST_PORT + location;
-        return templateRest.exchange(url, HttpMethod.GET, findUserEntity, RestUser.class);
+        return templateRest.exchange(location.toString(), HttpMethod.GET, findUserEntity, RestUser.class);
     }
 
     private ResponseEntity<RestUser> findUserByEmail(HttpHeaders requestHeaders, TestRestTemplate templateRest, final String email) {
@@ -121,5 +126,4 @@ public class RestAccountControllerTest {
         restUser.setPassword("fooPassword");
         return restUser;
     }
-
 }

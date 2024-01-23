@@ -11,9 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RestHelper {
-
-    public static final String HOST_PORT = "http://localhost:8081";
-    public static final String BASE_REST_URL = HOST_PORT + "/api/restfull";
+    public static final String BASE_REST_URL = "/api/restfull";
 
     static HttpHeaders createHeaders(@NotNull MediaType mediaType) {
         List<MediaType> acceptableMediaTypes = new ArrayList<>();
@@ -24,5 +22,4 @@ public class RestHelper {
         result.setContentType(mediaType);
         return result;
     }
-
 }
