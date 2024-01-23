@@ -401,12 +401,9 @@ public class RestMindmapControllerTest {
         final URI resourceUri = addNewMap(restTemplate, "deleteCollabsWithInvalidEmail");
 
         // Remove with invalid email ...
-        try {
-            restTemplate.delete(resourceUri + "/collabs?email=invalidEmail");
-        } catch (HttpClientErrorException e) {
-            assertEquals(e.getRawStatusCode(), 400);
-            assertTrue(e.getMessage().contains("Invalid email exception:"));
-        }
+        final ResponseEntity<String> exchange = restTemplate.exchange(resourceUri + "/collabs?email=invalidEmail", HttpMethod.DELETE, null, String.class);
+        assertTrue(exchange.getStatusCode().is4xxClientError());
+        assertTrue(Objects.requireNonNull(exchange.getBody()).contains("Invalid email exception:"));
 
         // Check that it has been removed ...
         final ResponseEntity<RestCollaborationList> afterDeleteResponse = fetchCollabs(requestHeaders, restTemplate, resourceUri);
