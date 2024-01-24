@@ -56,7 +56,7 @@ public class RestLabel {
         label.setTitle(title);
     }
 
-    public void setColor(@NotNull final String color) {
+    public void setColor(final String color) {
         label.setColor(color);
     }
 

@@ -94,14 +94,14 @@ public class RestLabelControllerTest {
             addNewLabel(requestHeaders, restTemplate, null, COLOR);
             fail("Wrong response");
         } catch (IllegalStateException e) {
-            assertTrue(e.getMessage().contains("Required field cannot be left blank"));
+            assertTrue(e.getMessage().contains("Required field cannot be left blank"), e.getMessage());
         }
 
         try {
             addNewLabel(requestHeaders, restTemplate, "title12345", null);
             fail("Wrong response");
         } catch (IllegalStateException e) {
-            assertTrue(e.getMessage().contains("Required field cannot be left blank"));
+            assertTrue(e.getMessage().contains("Required field cannot be left blank"), e.getMessage());
         }
     }
 

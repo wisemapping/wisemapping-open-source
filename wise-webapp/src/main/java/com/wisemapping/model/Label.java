@@ -90,7 +90,7 @@ public class Label implements Serializable {
         return color;
     }
 
-    public void setColor(@NotNull String color) {
+    public void setColor(String color) {
         this.color = color;
     }
 
