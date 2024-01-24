@@ -73,7 +73,7 @@ public class Label implements Serializable {
         return title;
     }
 
-    public void setTitle(@NotNull String title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
@@ -85,7 +85,7 @@ public class Label implements Serializable {
         this.id = id;
     }
 
-    @NotNull
+    @Nullable
     public String getColor() {
         return color;
     }

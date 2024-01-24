@@ -55,14 +55,23 @@ public class LabelValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "title", Messages.FIELD_REQUIRED);
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "color", Messages.FIELD_REQUIRED);
         final String title = label.getTitle();
+
         ValidatorUtils.rejectIfExceeded(
                 errors,
                 "title",
                 "The description must have less than " + Constants.MAX_LABEL_NAME_LENGTH + " characters.",
                 title,
                 Constants.MAX_LABEL_NAME_LENGTH);
+
+        ValidatorUtils.rejectIfEmptyOrWhitespace(
+                errors,
+                "title",
+                "Label title can not be empty",
+                title);
+
         final User user = com.wisemapping.security.Utils.getUser();
         assert user != null;
+
         final Label foundLabel = service.getLabelByTitle(title, user);
         if (foundLabel != null) {
             errors.rejectValue("title", Messages.LABEL_TITLE_ALREADY_EXISTS);

@@ -30,7 +30,7 @@ public class RestLabel {
         this.label = label;
     }
 
-    public void setParent(@NotNull final Label parent) {
+    public void setParent(final Label parent) {
         this.label.setParent(parent);
     }
 

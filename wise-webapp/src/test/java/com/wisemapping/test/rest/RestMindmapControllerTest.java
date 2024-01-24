@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
@@ -37,8 +36,6 @@ public class RestMindmapControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    private RestAccountControllerTest restAccount;
-
     @BeforeEach
     void createUser() {
 
@@ -47,7 +44,7 @@ public class RestMindmapControllerTest {
             this.restTemplate = new TestRestTemplate();
             this.restTemplate.setUriTemplateHandler(new DefaultUriBuilderFactory("http://localhost:8081/"));
         }
-        this.restAccount = RestAccountControllerTest.create(restTemplate);
+        RestAccountControllerTest restAccount = RestAccountControllerTest.create(restTemplate);
         this.user = restAccount.createNewUser();
     }
 
@@ -405,6 +402,7 @@ public class RestMindmapControllerTest {
         assertTrue(exchange.getStatusCode().is4xxClientError());
         assertTrue(Objects.requireNonNull(exchange.getBody()).contains("Invalid email exception:"));
 
+
         // Check that it has been removed ...
         final ResponseEntity<RestCollaborationList> afterDeleteResponse = fetchCollabs(requestHeaders, restTemplate, resourceUri);
         assertEquals(Objects.requireNonNull(afterDeleteResponse.getBody()).getCollaborations().size(), 1);
@@ -455,96 +453,96 @@ public class RestMindmapControllerTest {
         return template.exchange(resourceUri + "/collabs", HttpMethod.GET, findCollabs, RestCollaborationList.class);
     }
 
+    @Test
+    public void addCollabsInvalidOwner() {
+
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+
+        // Create a sample map ...fetchAndGetCollabs(requestHeaders, template, resourceUri);
+        final URI resourceUri = addNewMap(restTemplate, "Map for Collaboration");
+
+        // Add a new collaboration ...
+        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+        final RestCollaborationList collabs = new RestCollaborationList();
+        collabs.setMessage("Adding new permission");
+
+        // Validate that owner can not be added.
+        addCollabToList("newCollab@example", "owner", collabs);
+
+        final HttpEntity<RestCollaborationList> updateEntity = new HttpEntity<>(collabs, requestHeaders);
+        restTemplate.put(resourceUri + "/collabs/", updateEntity);
+    }
+
+    @Test
+    public void removeLabelFromMindmap() throws IOException, WiseMappingException {    // Configure media types ...
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+
+        // Create a new label
+        final String titleLabel = "removeLabelFromMindmap";
+        final URI labelUri = RestLabelControllerTest.addNewLabel(requestHeaders, restTemplate, titleLabel, "red");
+
+        // Create a sample map ...
+        final String mapTitle = "removeLabelFromMindmap";
+        final URI mindmapUri = addNewMap(restTemplate, mapTitle);
+        final String mapId = mindmapUri.getPath().replace("/api/restfull/maps/", "");
+
+        // Assign label to map ...
+        String labelId = labelUri.getPath().replace("/api/restfull/labels/", "");
+        HttpEntity<String> labelEntity = new HttpEntity<>(labelId, requestHeaders);
+        restTemplate.postForLocation("/api/restfull/maps/" + mapId + "/labels", labelEntity);
+
+        // Remove label from map
+        restTemplate.delete("/api/restfull//maps/" + mapId + "/labels/" + labelId);
+
+        Optional<RestMindmapInfo> mindmapInfo = fetchMap(requestHeaders, restTemplate, mapId);
+        assertEquals(0, mindmapInfo.get().getLabels().size());
+    }
+
+
+    @NotNull
+    private Optional<RestMindmapInfo> fetchMap(HttpHeaders requestHeaders, TestRestTemplate template, @NotNull String mapId) {
+        // Check that the label has been removed ...
+        final List<RestMindmapInfo> mindmapsInfo = fetchMaps(requestHeaders, template).getMindmapsInfo();
+        return mindmapsInfo
+                .stream()
+                .filter(m -> m.getId() == Integer.parseInt(mapId))
+                .findAny();
+    }
+
     //
-//    @Test(dataProviderClass = RestHelper.class, expectedExceptions = {HttpClientErrorException.class}, dataProvider = "ContentType-Provider-Function")
-//    public void addCollabsInvalidOwner(final @NotNull MediaType mediaType) {
-//
-//        final HttpHeaders requestHeaders = createHeaders(mediaType);
-//        final RestTemplate template = createTemplate(userEmail);
-//
-//        // Create a sample map ...fetchAndGetCollabs(requestHeaders, template, resourceUri);
-//        final URI resourceUri = addNewMap(template, "Map for Collaboration  - " + mediaType);
-//
-//        // Add a new collaboration ...
-//        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-//        final RestCollaborationList collabs = new RestCollaborationList();
-//        collabs.setMessage("Adding new permission");
-//
-//        // Validate that owner can not be added.
-//        addCollabToList("newCollab@example", "owner", collabs);
-//
-//        final HttpEntity<RestCollaborationList> updateEntity = new HttpEntity<>(collabs, requestHeaders);
-//        template.put(HOST_PORT + resourceUri + "/collabs/", updateEntity);
-//    }
-//
-//    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-//    public void removeLabelFromMindmap(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
-//        final HttpHeaders requestHeaders = createHeaders(mediaType);
-//        final RestTemplate template = createTemplate(userEmail);
-//
-//        // Create a new label
-//        final String titleLabel = "removeLabelFromMindmap";
-//        final URI labelUri = RestLabelITCase.addNewLabel(requestHeaders, template, titleLabel, COLOR);
-//
-//        // Create a sample map ...
-//        final String mapTitle = "removeLabelFromMindmap";
-//        final URI mindmapUri = addNewMap(template, mapTitle);
-//        final String mapId = mindmapUri.getPath().replace("/api/restfull/maps/", "");
-//
-//        // Assign label to map ...
-//        String labelId = labelUri.getPath().replace("/api/restfull/labels/", "");
-//        HttpEntity<String> labelEntity = new HttpEntity<>(labelId, requestHeaders);
-//        template.postForLocation(BASE_REST_URL + "/maps/" + mapId + "/labels", labelEntity);
-//
-//        // Remove label from map
-//        template.delete(BASE_REST_URL + "/maps/" + mapId + "/labels/" + labelId);
-//
-//        Optional<RestMindmapInfo> mindmapInfo = fetchMap(requestHeaders, template, mapId);
-//        assertTrue(mindmapInfo.get().getLabels().size() == 0);
-//
-//    }
-//
-//    @NotNull
-//    private Optional<RestMindmapInfo> fetchMap(HttpHeaders requestHeaders, RestTemplate template, @NotNull String mapId) {
-//        // Check that the label has been removed ...
-//        final List<RestMindmapInfo> mindmapsInfo = fetchMaps(requestHeaders, template).getMindmapsInfo();
-//        Optional<RestMindmapInfo> mindmapInfo = mindmapsInfo
-//                .stream()
-//                .filter(m -> m.getId() == Integer.parseInt(mapId))
-//                .findAny();
-//        return mindmapInfo;
-//    }
-//
 //    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
 //    public void deleteMapAndCheckLabels(final @NotNull MediaType mediaType) {    // Configure media types ...
 //        throw new SkipException("missing test: delete map should not affects others labels");
 //    }
 //
-//    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-//    public void addLabelToMindmap(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
-//        final HttpHeaders requestHeaders = createHeaders(mediaType);
-//        final RestTemplate template = createTemplate(userEmail);
-//
-//        // Create a new label
-//        final String titleLabel = "Label 1  - " + mediaType;
-//        final URI labelUri = RestLabelITCase.addNewLabel(requestHeaders, template, titleLabel, COLOR);
-//
-//        // Create a sample map ...
-//        final String mapTitle = "Maps 1  - " + mediaType;
-//        final URI mindmapUri = addNewMap(template, mapTitle);
-//        final String mapId = mindmapUri.getPath().replace("/api/restfull/maps/", "");
-//
-//        // Assign label to map ...
-//        String labelId = labelUri.getPath().replace("/api/restfull/labels/", "");
-//        HttpEntity<String> labelEntity = new HttpEntity<>(labelId, requestHeaders);
-//        template.postForLocation(BASE_REST_URL + "/maps/" + mapId + "/labels", labelEntity);
-//
-//        // Check that the label has been assigned ...
-//        Optional<RestMindmapInfo> mindmapInfo = fetchMap(requestHeaders, template, mapId);
-//
-//        assertTrue(mindmapInfo.get().getLabels().size() == 1);
-//    }
-//
+    @Test
+    public void addLabelToMindmap() throws IOException, WiseMappingException {    // Configure media types ...
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+
+        // Create a new label
+        final String titleLabel = "Label 1  - ";
+        final URI labelUri = RestLabelControllerTest.addNewLabel(requestHeaders, restTemplate, titleLabel, "COLOR");
+
+        // Create a sample map ...
+        final String mapTitle = "Maps 1  - ";
+        final URI mindmapUri = addNewMap(restTemplate, mapTitle);
+        final String mapId = mindmapUri.getPath().replace("/api/restfull/maps/", "");
+
+        // Assign label to map ...
+        String labelId = labelUri.getPath().replace("/api/restfull/labels/", "");
+        HttpEntity<String> labelEntity = new HttpEntity<>(labelId, requestHeaders);
+        restTemplate.postForLocation("/api/restfull/maps/" + mapId + "/labels", labelEntity);
+
+        // Check that the label has been assigned ...
+        Optional<RestMindmapInfo> mindmapInfo = fetchMap(requestHeaders, restTemplate, mapId);
+
+        assertTrue(mindmapInfo.get().getLabels().size() == 1);
+    }
+
+    //
 //    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
 //    public void updateCollabs(final @NotNull MediaType mediaType) {
 //
