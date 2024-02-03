@@ -46,7 +46,7 @@ public class RestAccountControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    static public RestAccountControllerTest create(@NotNull  TestRestTemplate restTemplate) {
+    static public RestAccountControllerTest create(@NotNull TestRestTemplate restTemplate) {
         final RestAccountControllerTest result = new RestAccountControllerTest();
         result.restTemplate = restTemplate;
         return result;
@@ -94,6 +94,8 @@ public class RestAccountControllerTest {
         result = findUserByEmail(requestHeaders, templateRest, restUser.getEmail());
         assertEquals(result.getBody().getEmail(), restUser.getEmail(), "Returned object object seems not be the same.");
 
+        // Assign generated id ...
+        restUser.setId(result.getBody().getId());
         return restUser;
 
     }

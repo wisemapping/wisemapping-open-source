@@ -30,12 +30,12 @@ import java.util.stream.Collectors;
 import static com.wisemapping.test.rest.RestHelper.createHeaders;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = {RestAppConfig.class, CommonConfig.class, MindmapController.class, AdminController.class, UserController.class}, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+//@SpringBootTest(classes = {RestAppConfig.class, CommonConfig.class, MindmapController.class, AdminController.class, UserController.class}, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class RestMindmapControllerTest {
 
     private RestUser user;
 
-    @Autowired
+    //    @Autowired
     private TestRestTemplate restTemplate;
 
     @BeforeEach
@@ -90,7 +90,8 @@ public class RestMindmapControllerTest {
         final URI resourceUri = addNewMap(restTemplate, title1);
 
         // Now remove it ...
-        restTemplate.delete(resourceUri.toString());
+        final ResponseEntity<String> exchange = restTemplate.exchange(resourceUri.toString(), HttpMethod.DELETE, null, String.class);
+        assertTrue(exchange.getStatusCode().is2xxSuccessful(), "Status code:" + exchange.getStatusCode());
 
         // Check that has been removed ...
         try {
@@ -249,7 +250,8 @@ public class RestMindmapControllerTest {
         addNewMap(secondTemplate, title2);
 
         final TestRestTemplate superadminTemplate = this.restTemplate.withBasicAuth("admin@wisemapping.org", "test");
-        superadminTemplate.delete("/admin/users/" + secondUser.getId());
+        final ResponseEntity<String> exchange = superadminTemplate.exchange("/api/restfull/admin/users/" + secondUser.getId(), HttpMethod.DELETE, null, String.class);
+        assertTrue(exchange.getStatusCode().is2xxSuccessful(), "Status Code:" + exchange.getStatusCode() + "- " + exchange.getBody());
 
         // Validate that the two maps are there ...
         final RestMindmapList body = fetchMaps(requestHeaders, firstUser);
@@ -371,7 +373,8 @@ public class RestMindmapControllerTest {
         assertEquals(responseCollbs.getCount(), 2);
 
         // Now, remove it ...
-        restTemplate.delete(resourceUri + "/collabs?email=" + newCollab);
+        final ResponseEntity<String> exchange = restTemplate.exchange(resourceUri + "/collabs?email=" + newCollab, HttpMethod.DELETE, null, String.class);
+        assertTrue(exchange.getStatusCode().is2xxSuccessful());
 
         // Check that it has been removed ...
         final ResponseEntity<RestCollaborationList> afterDeleteResponse = fetchCollabs(requestHeaders, restTemplate, resourceUri);
@@ -491,7 +494,9 @@ public class RestMindmapControllerTest {
         restTemplate.postForLocation("/api/restfull/maps/" + mapId + "/labels", labelEntity);
 
         // Remove label from map
-        restTemplate.delete("/api/restfull//maps/" + mapId + "/labels/" + labelId);
+        final ResponseEntity<String> exchange = restTemplate.exchange("/api/restfull//maps/" + mapId + "/labels/" + labelId, HttpMethod.DELETE, null, String.class);
+        assertTrue(exchange.getStatusCode().is2xxSuccessful());
+
 
         Optional<RestMindmapInfo> mindmapInfo = fetchMap(requestHeaders, restTemplate, mapId);
         assertEquals(0, mindmapInfo.get().getLabels().size());
@@ -574,8 +579,7 @@ public class RestMindmapControllerTest {
         updateEntity = new HttpEntity<>(collabs, requestHeaders);
         restTemplate.postForLocation(resourceUri + "/collabs/", updateEntity);
 
-
-        RestCollaborationList responseCollbs = fetchAndGetCollabs(requestHeaders, restTemplate, resourceUri);
+        final RestCollaborationList responseCollbs = fetchAndGetCollabs(requestHeaders, restTemplate, resourceUri);
 
         // Has been another-collaboration list updated ?
         assertTrue(responseCollbs.getCollaborations().stream().anyMatch(x -> x.getEmail().equals("another-collab@example.com")));
@@ -584,9 +588,8 @@ public class RestMindmapControllerTest {
 
 
     @Test
-    @Disabled
-    public void updateProperties(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {
-        final HttpHeaders requestHeaders = createHeaders(mediaType);
+    public void updateProperties() throws IOException, WiseMappingException {
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
         // Create a sample map ...
@@ -614,33 +617,30 @@ public class RestMindmapControllerTest {
         assertEquals(response.getBody().getProperties(), mapToUpdate.getProperties());
     }
 
+
+    @Test
+    public void batchDelete() {
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+
+        // Create a sample map ...
+        final String title1 = "Batch delete map 1";
+        addNewMap(restTemplate, title1);
+
+        final String title2 = "Batch delete map 2";
+        addNewMap(restTemplate, title2);
+
+        final String maps = fetchMaps(requestHeaders, restTemplate).getMindmapsInfo().stream().map(map -> String.valueOf(map.getId())).collect(Collectors.joining(","));
+
+        final ResponseEntity<String> exchange = restTemplate.exchange("/api/restfull/maps/batch?ids=" + maps , HttpMethod.DELETE, null, String.class);
+        assertTrue(exchange.getStatusCode().is2xxSuccessful(), "Status code:" + exchange.getStatusCode() + " - " + exchange.getBody());
+
+        // Validate that the two maps are there ...
+        final RestMindmapList body = fetchMaps(requestHeaders, restTemplate);
+        assertEquals(0, body.getMindmapsInfo().size());
+    }
+
     //
-//    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-//    public void batchDelete(final @NotNull MediaType mediaType) {    // Configure media types ...
-//        final HttpHeaders requestHeaders = createHeaders(mediaType);
-//        final RestTemplate template = createTemplate(userEmail);
-//
-//        // Create a sample map ...
-//        final String title1 = "Batch delete map 1";
-//        addNewMap(template, title1);
-//
-//        final String title2 = "Batch delete map 2";
-//        addNewMap(template, title2);
-//
-//
-//        String maps;
-//        maps = fetchMaps(requestHeaders, template).getMindmapsInfo().stream().map(map -> {
-//            return String.valueOf(map.getId());
-//        }).collect(Collectors.joining(","));
-//
-//
-//        template.delete(BASE_REST_URL + "/maps/batch?ids=" + maps);
-//
-//        // Validate that the two maps are there ...
-//        final RestMindmapList body = fetchMaps(requestHeaders, template);
-//        assertEquals(body.getMindmapsInfo().size(), 0);
-//    }
-//
 //    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
 //    public void updatePublishState(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
 //        final HttpHeaders requestHeaders = createHeaders(mediaType);
