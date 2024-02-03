@@ -11,6 +11,7 @@ import com.wisemapping.rest.model.*;
 import jakarta.annotation.Nullable;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -284,7 +285,7 @@ public class RestMindmapControllerTest {
         // Check that the map has been updated ...
         HttpEntity<RestUser> findMapEntity = new HttpEntity<>(requestHeaders);
         final ResponseEntity<RestMindmap> response = restTemplate.exchange(resourceUri, HttpMethod.GET, findMapEntity, RestMindmap.class);
-        assertEquals(response.getBody().getXml(), mapToUpdate.getXml());
+        assertEquals(Objects.requireNonNull(response.getBody()).getXml(), mapToUpdate.getXml());
         assertEquals(response.getBody().getProperties(), mapToUpdate.getProperties());
 
         // Unlock ...
@@ -345,7 +346,7 @@ public class RestMindmapControllerTest {
 
         // Has been added ?
         final ResponseEntity<RestCollaborationList> afterResponse = fetchCollabs(requestHeaders, restTemplate, resourceUri);
-        final Optional<RestCollaboration> updatedCollab = afterResponse.getBody().getCollaborations().stream().filter(c -> c.getEmail().equals(newCollab)).findAny();
+        final Optional<RestCollaboration> updatedCollab = Objects.requireNonNull(afterResponse.getBody()).getCollaborations().stream().filter(c -> c.getEmail().equals(newCollab)).findAny();
         assertTrue(updatedCollab.isPresent());
         assertEquals(updatedCollab.get().getRole(), "viewer");
     }
@@ -372,7 +373,7 @@ public class RestMindmapControllerTest {
 
         // Check that it has been removed ...
         final ResponseEntity<RestCollaborationList> afterDeleteResponse = fetchCollabs(requestHeaders, restTemplate, resourceUri);
-        assertEquals(afterDeleteResponse.getBody().getCollaborations().size(), 1);
+        assertEquals(Objects.requireNonNull(afterDeleteResponse.getBody()).getCollaborations().size(), 1);
     }
 
     private String addNewCollaboration(final HttpHeaders requestHeaders, final TestRestTemplate template, final URI resourceUri) throws RestClientException {
@@ -402,13 +403,12 @@ public class RestMindmapControllerTest {
         assertTrue(exchange.getStatusCode().is4xxClientError());
         assertTrue(Objects.requireNonNull(exchange.getBody()).contains("Invalid email exception:"));
 
-
         // Check that it has been removed ...
         final ResponseEntity<RestCollaborationList> afterDeleteResponse = fetchCollabs(requestHeaders, restTemplate, resourceUri);
         assertEquals(Objects.requireNonNull(afterDeleteResponse.getBody()).getCollaborations().size(), 1);
     }
 
-//    @Test
+    //    @Test
 //    public void deleteCollabsWithoutOwnerPermission() {
 //        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
 //        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
@@ -430,22 +430,18 @@ public class RestMindmapControllerTest {
 //
 //    }
 //
-//    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-//    public void deleteOwnerCollab(final @NotNull MediaType mediaType) {
-//        final HttpHeaders requestHeaders = createHeaders(mediaType);
-//        final RestTemplate template = createTemplate(userEmail);
-//
-//        // Create a sample map ...
-//        final URI resourceUri = addNewMap(template, "Map for deleteOwnerCollab");
-//
-//        // Now, remove owner collab ...
-//        try {
-//            template.delete(HOST_PORT + resourceUri + "/collabs?email=" + userEmail.replace(":admin", ""));
-//        } catch (HttpClientErrorException e) {
-//            assertEquals(e.getRawStatusCode(), 400);
-//            assertTrue(e.getMessage().contains("Can not remove owner collab"));
-//        }
-//    }
+    @Test
+    public void deleteOwnerCollab() {
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+
+        // Create a sample map ...
+        final URI resourceUri = addNewMap(restTemplate, "Map for deleteOwnerCollab");
+
+        // Now, remove owner collab ...
+        final ResponseEntity<String> exchange = restTemplate.exchange(resourceUri + "/collabs?email=" + user.getEmail().replace(":admin", ""), HttpMethod.DELETE, null, String.class);
+        assertTrue(exchange.getStatusCode().is4xxClientError());
+        assertTrue(Objects.requireNonNull(exchange.getBody()).contains("Can not remove owner collab"));
+    }
 
     @NotNull
     private ResponseEntity<RestCollaborationList> fetchCollabs(HttpHeaders requestHeaders, TestRestTemplate template, URI resourceUri) {
@@ -475,7 +471,7 @@ public class RestMindmapControllerTest {
     }
 
     @Test
-    public void removeLabelFromMindmap() throws IOException, WiseMappingException {    // Configure media types ...
+    public void removeLabelFromMindmap() {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -511,14 +507,14 @@ public class RestMindmapControllerTest {
                 .findAny();
     }
 
-    //
-//    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-//    public void deleteMapAndCheckLabels(final @NotNull MediaType mediaType) {    // Configure media types ...
-//        throw new SkipException("missing test: delete map should not affects others labels");
-//    }
-//
+
     @Test
-    public void addLabelToMindmap() throws IOException, WiseMappingException {    // Configure media types ...
+    @Disabled("missing test: delete map should not affects others labels")
+    public void deleteMapAndCheckLabels(final @NotNull MediaType mediaType) {    // Configure media types ...
+    }
+
+    @Test
+    public void addLabelToMindmap() {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -542,8 +538,8 @@ public class RestMindmapControllerTest {
         assertTrue(mindmapInfo.get().getLabels().size() == 1);
     }
 
-    //
-//    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
+
+    //    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
 //    public void updateCollabs(final @NotNull MediaType mediaType) {
 //
 //        // Create a sample map ...
