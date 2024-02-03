@@ -1,13 +1,20 @@
 package com.wisemapping.test.rest;
 
 
+import com.wisemapping.config.common.CommonConfig;
+import com.wisemapping.config.rest.RestAppConfig;
 import com.wisemapping.exceptions.WiseMappingException;
+import com.wisemapping.rest.AdminController;
+import com.wisemapping.rest.MindmapController;
+import com.wisemapping.rest.UserController;
 import com.wisemapping.rest.model.*;
 import jakarta.annotation.Nullable;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.web.client.RestClientException;
@@ -23,12 +30,12 @@ import java.util.stream.Collectors;
 import static com.wisemapping.test.rest.RestHelper.createHeaders;
 import static org.junit.jupiter.api.Assertions.*;
 
-//@SpringBootTest(classes = {RestAppConfig.class, CommonConfig.class, MindmapController.class, AdminController.class, UserController.class}, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(classes = {RestAppConfig.class, CommonConfig.class, MindmapController.class, AdminController.class, UserController.class}, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class RestMindmapControllerTest {
 
     private RestUser user;
 
-    //    @Autowired
+        @Autowired
     private TestRestTemplate restTemplate;
 
     @BeforeEach
@@ -513,7 +520,7 @@ public class RestMindmapControllerTest {
 
     @Test
     @Disabled("missing test: delete map should not affects others labels")
-    public void deleteMapAndCheckLabels(final @NotNull MediaType mediaType) {    // Configure media types ...
+    public void deleteMapAndCheckLabels() {    // Configure media types ...
     }
 
     @Test
@@ -672,93 +679,85 @@ public class RestMindmapControllerTest {
         assertEquals(1, Objects.requireNonNull(maps.getBody()).getCount());
     }
 
-    //
-//    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-//    public void updateRevertMindmap(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
-//        final HttpHeaders requestHeaders = createHeaders(mediaType);
-//        final RestTemplate template = createTemplate(userEmail);
-//
-//        // Create a sample map ...
-//        final URI resourceUri = addNewMap(template, "map to test revert changes");
-//        updateMapDocument(requestHeaders, template, HOST_PORT + resourceUri.toString(), "<map><node text='this is an xml to test revert changes service'></map>");
-//
-//        updateMapDocument(requestHeaders, template, HOST_PORT + resourceUri.toString(), "<map><node text='this is an xml with modification to be reverted'></map>");
-//
-//        //fetch map history
-//        final HttpEntity findMapEntity = new HttpEntity(requestHeaders);
-//        final ResponseEntity<RestMindmapHistoryList> mapHistories = template.exchange(HOST_PORT + resourceUri + "/history/", HttpMethod.GET, findMapEntity, RestMindmapHistoryList.class);
-//
-//        //aply revert
-//        final HttpEntity<String> cloneEntity = new HttpEntity<>(requestHeaders);
-//        template.postForLocation(HOST_PORT + resourceUri + "/history/latest", cloneEntity);
-//        final RestMindmap latestStoredMap = findMap(requestHeaders, template, resourceUri);
-//        template.postForLocation(HOST_PORT + resourceUri + "/history/" + mapHistories.getBody().getChanges().get(1).getId(), cloneEntity);
-//        final RestMindmap firstVersionMap = findMap(requestHeaders, template, resourceUri);
-//
-//        //verify revert
-//        assertEquals(firstVersionMap.getXml(), "<map><node text='this is an xml to test revert changes service'></map>");
-//        assertEquals(latestStoredMap.getXml(), "<map><node text='this is an xml with modification to be reverted'></map>");
-//
-//    }
-//
-//    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-//    public void addCollabWhitoutOwnerPermission(final @NotNull MediaType mediaType) {
-//        final HttpHeaders requestHeaders = createHeaders(mediaType);
-//        RestTemplate template = createTemplate(userEmail);
-//
-//        // Create a sample map ...
-//        final URI resourceUri = addNewMap(template, "MaddCollabWhitoutOwnerPermission");
-//
-//        // Add a new collaboration ...
-//        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-//        final RestCollaborationList collabs = new RestCollaborationList();
-//        collabs.setMessage("Adding new permission");
-//
-//        final String newCollab = restAdminITCase.createNewUser(MediaType.APPLICATION_JSON);
-//        String role = "editor";
-//
-//        addCollabToList(newCollab, role, collabs);
-//
-//        final HttpEntity<RestCollaborationList> updateEntity = new HttpEntity<>(collabs, requestHeaders);
-//        template.put(HOST_PORT + resourceUri + "/collabs/", updateEntity);
-//
-//        template = createTemplate(newCollab + ":admin");
-//        //add collab again with the new user expecting the Exception
-//        try {
-//            template.put(HOST_PORT + resourceUri + "/collabs/", updateEntity);
-//        } catch (HttpClientErrorException e) {
-//            assertEquals(e.getRawStatusCode(), 400);
-//            assertTrue(e.getMessage().contains("User must be owner to share mindmap"));
-//        }
-//    }
-//
-//    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-//    public void addCollabWhitOwnerRole(final @NotNull MediaType mediaType) {
-//        final HttpHeaders requestHeaders = createHeaders(mediaType);
-//        RestTemplate template = createTemplate(userEmail);
-//
-//        // Create a sample map ...
-//        final URI resourceUri = addNewMap(template, "addCollabWhitOwnerRole");
-//
-//        // Add a new collaboration ...
-//        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-//        final RestCollaborationList collabs = new RestCollaborationList();
-//        collabs.setMessage("Adding new permission");
-//
-//        final String newCollab = "new-collaborator@mail.com";
-//        String role = "owner";
-//
-//        addCollabToList(newCollab, role, collabs);
-//
-//        final HttpEntity<RestCollaborationList> updateEntity = new HttpEntity<>(collabs, requestHeaders);
-//        try {
-//            template.put(HOST_PORT + resourceUri + "/collabs/", updateEntity);
-//        } catch (HttpClientErrorException e) {
-//            assertEquals(e.getRawStatusCode(), 400);
-//            assertTrue(e.getMessage().contains("Collab email can not be change"));
-//        }
-//    }
-//
+
+    @Test
+    public void updateRevertMindmap() throws IOException {
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+
+        // Create a sample map ...
+        final URI resourceUri = addNewMap(restTemplate, "map to test revert changes");
+        updateMapDocument(requestHeaders, restTemplate, resourceUri.toString(), "<map><node text='this is an xml to test revert changes service'></map>");
+
+        updateMapDocument(requestHeaders, restTemplate, resourceUri.toString(), "<map><node text='this is an xml with modification to be reverted'></map>");
+
+        //fetch map history
+        final HttpEntity<RestMindmapHistoryList> findMapEntity = new HttpEntity<>(requestHeaders);
+        final ResponseEntity<RestMindmapHistoryList> mapHistories = restTemplate.exchange(resourceUri + "/history/", HttpMethod.GET, findMapEntity, RestMindmapHistoryList.class);
+
+        //aply revert
+        final HttpEntity<String> cloneEntity = new HttpEntity<>(requestHeaders);
+        restTemplate.postForLocation(resourceUri + "/history/latest", cloneEntity);
+        final RestMindmap latestStoredMap = findMap(requestHeaders, restTemplate, resourceUri);
+        restTemplate.postForLocation(resourceUri + "/history/" + mapHistories.getBody().getChanges().get(1).getId(), cloneEntity);
+        final RestMindmap firstVersionMap = findMap(requestHeaders, restTemplate, resourceUri);
+
+        //verify revert
+        assertEquals(firstVersionMap.getXml(), "<map><node text='this is an xml to test revert changes service'></map>");
+        assertEquals(latestStoredMap.getXml(), "<map><node text='this is an xml with modification to be reverted'></map>");
+    }
+
+
+    @Test
+    public void addCollabWhitoutOwnerPermission() {
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+
+        // Create a sample map ...
+        final URI resourceUri = addNewMap(restTemplate, "MaddCollabWhitoutOwnerPermission");
+
+        // Add a new collaboration ...
+        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+        final RestCollaborationList collabs = new RestCollaborationList();
+        collabs.setMessage("Adding new permission");
+
+        final RestAccountControllerTest restAccount = RestAccountControllerTest.create(restTemplate);
+        final RestUser newCollab = restAccount.createNewUser();
+        String role = "editor";
+
+        addCollabToList(newCollab.getEmail(), role, collabs);
+
+        final HttpEntity<RestCollaborationList> updateEntity = new HttpEntity<>(collabs, requestHeaders);
+        restTemplate.put(resourceUri + "/collabs/", updateEntity);
+
+        final TestRestTemplate newCollabTemplate = this.restTemplate.withBasicAuth(newCollab.getEmail(), newCollab.getPassword());
+        final ResponseEntity<Void> exchange = newCollabTemplate.exchange(resourceUri + "/collabs/", HttpMethod.PUT, updateEntity, Void.class);
+        assertTrue(exchange.getStatusCode().is4xxClientError(), exchange.toString());
+    }
+
+    @Test
+    public void addCollabWhitOwnerRole() {
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+
+        // Create a sample map ...
+        final URI resourceUri = addNewMap(restTemplate, "addCollabWhitOwnerRole");
+
+        // Add a new collaboration ...
+        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+        final RestCollaborationList collabs = new RestCollaborationList();
+        collabs.setMessage("Adding new permission");
+
+        final String newCollab = "new-collaborator@mail.com";
+        String role = "owner";
+
+        addCollabToList(newCollab, role, collabs);
+
+        final HttpEntity<RestCollaborationList> updateEntity = new HttpEntity<>(collabs, requestHeaders);
+        final ResponseEntity<RestCollaborationList> collabsList = restTemplate.exchange(resourceUri + "/collabs/", HttpMethod.PUT, updateEntity, RestCollaborationList.class);
+        assertTrue(collabsList.getStatusCode().is4xxClientError());
+    }
+
     private String changeMapTitle(final HttpHeaders requestHeaders, final MediaType mediaType, final TestRestTemplate template, final URI resourceUri) throws RestClientException {
         requestHeaders.setContentType(MediaType.TEXT_PLAIN);
         final String result = "New map to change title  - " + mediaType;
@@ -791,7 +790,7 @@ public class RestMindmapControllerTest {
     }
 
     private RestMindmap findMap(@NotNull HttpHeaders requestHeaders, @NotNull TestRestTemplate template, URI resourceUri) {
-        final HttpEntity findMapEntity = new HttpEntity(requestHeaders);
+        final HttpEntity<RestMindmap> findMapEntity = new HttpEntity<>(requestHeaders);
         final ResponseEntity<RestMindmap> response = template.exchange("http://localhost:8081/" + resourceUri.toString(), HttpMethod.GET, findMapEntity, RestMindmap.class);
 
         if (!response.getStatusCode().is2xxSuccessful()) {
