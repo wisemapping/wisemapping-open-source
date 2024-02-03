@@ -1,20 +1,13 @@
 package com.wisemapping.test.rest;
 
 
-import com.wisemapping.config.common.CommonConfig;
-import com.wisemapping.config.rest.RestAppConfig;
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.rest.AdminController;
-import com.wisemapping.rest.MindmapController;
-import com.wisemapping.rest.UserController;
 import com.wisemapping.rest.model.*;
 import jakarta.annotation.Nullable;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.web.client.RestClientException;
@@ -172,8 +165,9 @@ public class RestMindmapControllerTest {
         assertEquals(response.getXml(), newXmlContent);
     }
 
-    private String updateMapDocument(final HttpHeaders requestHeaders, final TestRestTemplate template, final String resourceUrl, String content) throws RestClientException {
+    private String updateMapDocument(final HttpHeaders requestHeaders, final TestRestTemplate template, final String resourceUrl, final String content) throws RestClientException {
         requestHeaders.setContentType(MediaType.TEXT_PLAIN);
+
         final String newXmlContent = content != null ? content : "<map>this is not valid</map>";
         HttpEntity<String> updateEntity = new HttpEntity<>(newXmlContent, requestHeaders);
         template.put(resourceUrl + "/document/xml", updateEntity);
@@ -182,7 +176,7 @@ public class RestMindmapControllerTest {
 
 
     @Test
-    public void cloneMap() throws IOException {    // Configure media types ...
+    public void cloneMap() throws IOException {
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -198,7 +192,10 @@ public class RestMindmapControllerTest {
 
         // Create a new map ...
         final HttpEntity<RestMindmapInfo> cloneEntity = new HttpEntity<>(restMindmap, requestHeaders);
-        final URI clonedMapUri = restTemplate.postForLocation(newMapUri, cloneEntity);
+        final ResponseEntity<Void> exchange = restTemplate.exchange(newMapUri.toString(), HttpMethod.POST, cloneEntity, Void.class);
+        assertTrue(exchange.getStatusCode().is2xxSuccessful());
+        URI clonedMapUri = exchange.getHeaders().getLocation();
+
 
         // Check that the map has been updated ...
         final RestMindmap response = findMap(requestHeaders, restTemplate, clonedMapUri);
@@ -288,7 +285,7 @@ public class RestMindmapControllerTest {
 
         // Check that the map has been updated ...
         HttpEntity<RestUser> findMapEntity = new HttpEntity<>(requestHeaders);
-        final ResponseEntity<RestMindmap> response = restTemplate.exchange(resourceUri, HttpMethod.GET, findMapEntity, RestMindmap.class);
+        final ResponseEntity<RestMindmap> response = restTemplate.exchange(resourceUri.toString(), HttpMethod.GET, findMapEntity, RestMindmap.class);
         assertEquals(Objects.requireNonNull(response.getBody()).getXml(), mapToUpdate.getXml());
         assertEquals(response.getBody().getProperties(), mapToUpdate.getProperties());
 
@@ -449,7 +446,7 @@ public class RestMindmapControllerTest {
 
     @NotNull
     private ResponseEntity<RestCollaborationList> fetchCollabs(HttpHeaders requestHeaders, TestRestTemplate template, URI resourceUri) {
-        final HttpEntity<RestCollaborationList> findCollabs = new HttpEntity(requestHeaders);
+        final HttpEntity<RestCollaborationList> findCollabs = new HttpEntity<>(requestHeaders);
         return template.exchange(resourceUri + "/collabs", HttpMethod.GET, findCollabs, RestCollaborationList.class);
     }
 
@@ -610,7 +607,7 @@ public class RestMindmapControllerTest {
 
         // Check that the map has been updated ...
         HttpEntity<RestUser> findMapEntity = new HttpEntity<>(requestHeaders);
-        final ResponseEntity<RestMindmap> response = restTemplate.exchange(resourceUri, HttpMethod.GET, findMapEntity, RestMindmap.class);
+        final ResponseEntity<RestMindmap> response = restTemplate.exchange(resourceUri.toString(), HttpMethod.GET, findMapEntity, RestMindmap.class);
         assertEquals(response.getBody().getTitle(), mapToUpdate.getTitle());
         assertEquals(response.getBody().getDescription(), mapToUpdate.getDescription());
         assertEquals(response.getBody().getXml(), mapToUpdate.getXml());
@@ -632,7 +629,7 @@ public class RestMindmapControllerTest {
 
         final String maps = fetchMaps(requestHeaders, restTemplate).getMindmapsInfo().stream().map(map -> String.valueOf(map.getId())).collect(Collectors.joining(","));
 
-        final ResponseEntity<String> exchange = restTemplate.exchange("/api/restfull/maps/batch?ids=" + maps , HttpMethod.DELETE, null, String.class);
+        final ResponseEntity<String> exchange = restTemplate.exchange("/api/restfull/maps/batch?ids=" + maps, HttpMethod.DELETE, null, String.class);
         assertTrue(exchange.getStatusCode().is2xxSuccessful(), "Status code:" + exchange.getStatusCode() + " - " + exchange.getBody());
 
         // Validate that the two maps are there ...
@@ -640,46 +637,42 @@ public class RestMindmapControllerTest {
         assertEquals(0, body.getMindmapsInfo().size());
     }
 
+
+    @Test
+    public void updatePublishState() {
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+
+        // Create a sample map ...
+        final String mapTitle = "updatePublishState";
+        final URI mindmapUri = addNewMap(restTemplate, mapTitle);
+
+        // Change map status ...
+        requestHeaders.setContentType(MediaType.TEXT_PLAIN);
+        final HttpEntity<String> updateEntity = new HttpEntity<>(Boolean.TRUE.toString(), requestHeaders);
+
+        final ResponseEntity<String> exchange = restTemplate.exchange(mindmapUri + "/publish", HttpMethod.PUT, updateEntity, String.class);
+        assertTrue(exchange.getStatusCode().is2xxSuccessful());
+    }
+
+    @Test
+    public void fetchMapHistory() {
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+
+        // Create a sample map ...
+        final URI resourceUri = addNewMap(restTemplate, "Map to change title");
+        updateMapDocument(requestHeaders, restTemplate, resourceUri.toString(), null);
+
+        //fetch map history
+        final HttpEntity<RestMindmapHistoryList> findMapEntity = new HttpEntity<>(requestHeaders);
+        final ResponseEntity<RestMindmapHistoryList> maps = restTemplate.exchange(resourceUri + "/history/", HttpMethod.GET, findMapEntity, RestMindmapHistoryList.class);
+        assertTrue(maps.getStatusCode().is2xxSuccessful(), maps.toString());
+
+        assertEquals(1, Objects.requireNonNull(maps.getBody()).getCount());
+    }
+
     //
-//    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-//    public void updatePublishState(final @NotNull MediaType mediaType) throws IOException, WiseMappingException {    // Configure media types ...
-//        final HttpHeaders requestHeaders = createHeaders(mediaType);
-//        final RestTemplate template = createTemplate(userEmail);
-//
-//        // Create a sample map ...
-//        final String mapTitle = "updatePublishState";
-//        final URI mindmapUri = addNewMap(template, mapTitle);
-//        final String mapId = mindmapUri.getPath().replace("/api/restfull/maps/", "");
-//
-//        // Change map status ...
-//        requestHeaders.setContentType(MediaType.TEXT_PLAIN);
-//        //final String newPublicState = "true";
-//        final HttpEntity<String> updateEntity = new HttpEntity<>(Boolean.TRUE.toString(), requestHeaders);
-//        template.put(HOST_PORT + mindmapUri + "/publish", updateEntity);
-//
-////        //fetch public view
-////        final HttpEntity findMapEntity = new HttpEntity(requestHeaders);
-////        ResponseEntity<String> publicView = template.exchange(HOST_PORT  + mapId + "/public", HttpMethod.GET, findMapEntity, String.class);
-////        assertNotNull(publicView.getBody());
-////        assertEquals(publicView.getStatusCodeValue(), 200);
-//    }
-//
-//    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
-//    public void fetchMapHistory(final @NotNull MediaType mediaType) {    // Configure media types ...
-//        final HttpHeaders requestHeaders = createHeaders(mediaType);
-//        final RestTemplate template = createTemplate(userEmail);
-//
-//        // Create a sample map ...
-//        final URI resourceUri = addNewMap(template, "Map to change title  - " + mediaType);
-//
-//        updateMapDocument(requestHeaders, template, HOST_PORT + resourceUri.toString());
-//
-//        //fetch map history
-//        final HttpEntity findMapEntity = new HttpEntity(requestHeaders);
-//        final ResponseEntity<RestMindmapHistoryList> maps = template.exchange(HOST_PORT + resourceUri + "/history/", HttpMethod.GET, findMapEntity, RestMindmapHistoryList.class);
-//        assertEquals(maps.getBody().getCount(), 1);
-//    }
-//
 //    @Test(dataProviderClass = RestHelper.class, dataProvider = "ContentType-Provider-Function")
 //    public void updateRevertMindmap(final @NotNull MediaType mediaType) throws IOException {    // Configure media types ...
 //        final HttpHeaders requestHeaders = createHeaders(mediaType);
