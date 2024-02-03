@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 import static com.wisemapping.test.rest.RestHelper.createHeaders;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = {RestAppConfig.class, CommonConfig.class, MindmapController.class, AdminController.class, UserController.class}, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(classes = {RestAppConfig.class, CommonConfig.class, MindmapController.class, AdminController.class, UserController.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RestMindmapControllerTest {
 
     private RestUser user;
@@ -791,7 +791,7 @@ public class RestMindmapControllerTest {
 
     private RestMindmap findMap(@NotNull HttpHeaders requestHeaders, @NotNull TestRestTemplate template, URI resourceUri) {
         final HttpEntity<RestMindmap> findMapEntity = new HttpEntity<>(requestHeaders);
-        final ResponseEntity<RestMindmap> response = template.exchange("http://localhost:8081/" + resourceUri.toString(), HttpMethod.GET, findMapEntity, RestMindmap.class);
+        final ResponseEntity<RestMindmap> response = template.exchange(resourceUri.toString(), HttpMethod.GET, findMapEntity, RestMindmap.class);
 
         if (!response.getStatusCode().is2xxSuccessful()) {
             throw new IllegalArgumentException(response.toString());

@@ -18,7 +18,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 
 @SpringBootApplication(scanBasePackageClasses = MindmapController.class)
-@Import({ServletConfig.class, InterceptorsConfig.class})
+@Import({InterceptorsConfig.class})
 @EnableWebSecurity
 public class RestAppConfig {
     @Bean
