@@ -1,17 +1,17 @@
 version: '3'
+
 services:
   wise-api:
+    container_name: wise-api
+    image: wise-api:latest
     build:
       context: ./wise-api
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
-#    environment:
-#      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/product
-#      SPRING_DATASOURCE_USERNAME: product_user
-#      SPRING_DATASOURCE_PASSWORD: product_user_password
-
-  react-app:
+  wise-ui:
+    container_name: wise-ui
+    image: wise-ui:latest
     build:
       context: ./wise-ui
       dockerfile: Dockerfile
