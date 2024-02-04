@@ -27,20 +27,20 @@ import com.wisemapping.rest.model.RestLabelList;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.LabelService;
 import com.wisemapping.validator.LabelValidator;
+import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/restfull/labels")
 @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
 public class LabelController extends BaseController {
 
@@ -49,7 +49,7 @@ public class LabelController extends BaseController {
     private LabelService labelService;
 
 
-    @RequestMapping(method = RequestMethod.POST, value = "/api/restfull/labels", consumes = {"application/json"})
+    @RequestMapping(method = RequestMethod.POST, value = "", consumes = {"application/json"})
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createLabel(@RequestBody RestLabel restLabel, @NotNull HttpServletResponse response, @RequestParam(required = false) String title) throws WiseMappingException {
         // Overwrite title if it was specified by parameter.
@@ -67,7 +67,7 @@ public class LabelController extends BaseController {
         response.setHeader("ResourceId", Long.toString(label.getId()));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/restfull/labels/", produces = {"application/json"})
+    @RequestMapping(method = RequestMethod.GET, value = "/", produces = {"application/json"})
     public RestLabelList retrieveList() {
         final User user = Utils.getUser();
         assert user != null;
@@ -75,7 +75,7 @@ public class LabelController extends BaseController {
         return new RestLabelList(all);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/api/restfull/labels/{id}")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteLabelById(@PathVariable int id) throws WiseMappingException {
         final User user = Utils.getUser();

@@ -33,11 +33,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/restfull/admin/")
+@RequestMapping("/api/restfull/admin")
 @PreAuthorize("isAuthenticated() and hasRole('ROLE_ADMIN')")
 public class AdminController extends BaseController {
     @Qualifier("userService")
@@ -48,9 +47,9 @@ public class AdminController extends BaseController {
     @Autowired
     private MindmapService mindmapService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "users/{id}", produces = {"application/json"})
+    @RequestMapping(method = RequestMethod.GET, value = "/users/{id}", produces = {"application/json"})
     @ResponseBody
-    public RestUser getUserById(@PathVariable int id) throws IOException {
+    public RestUser getUserById(@PathVariable int id) {
         final User userBy = userService.getUserBy(id);
         if (userBy == null) {
             throw new IllegalArgumentException("User could not be found");
@@ -58,9 +57,9 @@ public class AdminController extends BaseController {
         return new RestUser(userBy);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "users/email/{email:.+}", produces = {"application/json"})
+    @RequestMapping(method = RequestMethod.GET, value = "/users/email/{email:.+}", produces = {"application/json"})
     @ResponseBody
-    public RestUser getUserByEmail(@PathVariable String email) throws IOException {
+    public RestUser getUserByEmail(@PathVariable String email) {
         final User user = userService.getUserBy(email);
         if (user == null) {
             throw new IllegalArgumentException("User '" + email + "' could not be found");
@@ -68,7 +67,7 @@ public class AdminController extends BaseController {
         return new RestUser(user);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "users", consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(method = RequestMethod.POST, value = "/users", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createUser(@RequestBody RestUser user, HttpServletResponse response) throws WiseMappingException {
         if (user == null) {
@@ -105,9 +104,9 @@ public class AdminController extends BaseController {
         response.setHeader("Location", "/api/restfull/admin/users/" + user.getId());
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "users/{id}/password", consumes = {"text/plain"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/users/{id}/password", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void changePassword(@RequestBody String password, @PathVariable int id) throws WiseMappingException {
+    public void changePassword(@RequestBody String password, @PathVariable int id) {
         if (password == null) {
             throw new IllegalArgumentException("Password can not be null");
         }
@@ -120,7 +119,7 @@ public class AdminController extends BaseController {
         userService.changePassword(user);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "users/{id}")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/users/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteUserByEmail(@PathVariable int id) throws WiseMappingException {
         final User user = userService.getUserBy(id);
@@ -133,7 +132,6 @@ public class AdminController extends BaseController {
             final Mindmap mindmap = collaboration.getMindMap();
             mindmapService.removeMindmap(mindmap, user);
         }
-
         userService.removeUser(user);
     }
 }

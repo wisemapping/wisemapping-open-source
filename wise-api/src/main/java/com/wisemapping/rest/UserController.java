@@ -48,6 +48,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/restfull/users")
 @CrossOrigin
 public class UserController extends BaseController {
 
@@ -71,7 +72,7 @@ public class UserController extends BaseController {
 	private static final Logger logger = LogManager.getLogger();
 	private static final String REAL_IP_ADDRESS_HEADER = "X-Real-IP";
 
-	@RequestMapping(method = RequestMethod.POST, value = "/users/", produces = { "application/json" })
+	@RequestMapping(method = RequestMethod.POST, value = "/", produces = { "application/json" })
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public void registerUser(@RequestBody RestUserRegistration registration, @NotNull HttpServletRequest request,
 			@NotNull HttpServletResponse response) throws WiseMappingException, BindException {
@@ -98,10 +99,10 @@ public class UserController extends BaseController {
 
 		user.setAuthenticationType(AuthenticationType.DATABASE);
 		userService.createUser(user, false, true);
-		response.setHeader("Location", "/service/users/" + user.getId());
+		response.setHeader("Location", "/api/restfull/users/" + user.getId());
 	}
 
-	@RequestMapping(method = RequestMethod.PUT, value = "/users/resetPassword", produces = { "application/json" })
+	@RequestMapping(method = RequestMethod.PUT, value = "/resetPassword", produces = { "application/json" })
 	@ResponseStatus(value = HttpStatus.OK)
 	public RestResetPasswordResponse resetPassword(@RequestParam String email) throws InvalidAuthSchemaException, EmailNotExistsException {
 		try {
