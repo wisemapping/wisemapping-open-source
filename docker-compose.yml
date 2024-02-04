@@ -6,10 +6,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/product
-      SPRING_DATASOURCE_USERNAME: product_user
-      SPRING_DATASOURCE_PASSWORD: product_user_password
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/product
+#      SPRING_DATASOURCE_USERNAME: product_user
+#      SPRING_DATASOURCE_PASSWORD: product_user_password
 
   react-app:
     build:
@@ -18,4 +18,4 @@ services:
     depends_on:
       - wise-api
     ports:
-      - "3000:80"
+      - "80:80"
