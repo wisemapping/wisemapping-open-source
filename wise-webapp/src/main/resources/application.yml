@@ -1,6 +1,12 @@
 # SpringBoot Configuration ...
 
 spring:
+  output:
+    ansi:
+      enabled=always:
+  application:
+    name: wisemapping-api
+    title: wisemapping-api
   datasource:
     driver-class-name: org.hsqldb.jdbc.JDBCDriver
     password: ''
