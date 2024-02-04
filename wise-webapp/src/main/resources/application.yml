@@ -1,0 +1,73 @@
+# SpringBoot Configuration ...
+
+spring:
+  datasource:
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+    password: ''
+    url: jdbc:hsqldb:file:${database.base.url}/db/wisemapping
+    username: sa
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: true
+    properties:
+      hibernate:
+        current_session_context_class: thread
+        default_batch_fetch_size: 200
+        dialect: org.hibernate.dialect.HSQLDialect
+        format_sql: true
+  main:
+    allow-circular-references: true
+  sql:
+    init:
+      mode: always
+      platform: hsqldb
+
+# Application Configuration.
+
+admin:
+  user: admin@wisemapping.org
+database:
+  base:
+    url: /Users/veigap/
+google:
+  ads:
+    enabled: false
+  analytics:
+    account: UA-XXXX
+    enabled: false
+  recaptcha2:
+    enabled: true
+    secretKey: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
+    siteKey: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
+logging:
+  level:
+    org:
+      apache:
+        tomcat: INFO
+    root: INFO
+mail:
+  password: ''
+  serverSendEmail: root@localhost
+  smtp:
+    auth: false
+    host: localhost
+    port: 25
+    quitwait: false
+    starttls:
+      enable: false
+  supportEmail: root@localhost
+  username: root
+security:
+  oauth2:
+    google:
+      confirmUrl: https://oauth2.googleapis.com/token
+      url: https//review
+      userinfoUrl: https://www.googleapis.com/oauth2/v3/userinfo
+site:
+  homepage: c/login
+  static:
+    js:
+      url: /static
+
+
