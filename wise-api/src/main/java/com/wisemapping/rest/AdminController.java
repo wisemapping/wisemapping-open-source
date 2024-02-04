@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/restfull/admin/")
 @PreAuthorize("isAuthenticated() and hasRole('ROLE_ADMIN')")
 public class AdminController extends BaseController {
     @Qualifier("userService")
@@ -47,7 +48,7 @@ public class AdminController extends BaseController {
     @Autowired
     private MindmapService mindmapService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/restfull/admin/users/{id}", produces = {"application/json"})
+    @RequestMapping(method = RequestMethod.GET, value = "users/{id}", produces = {"application/json"})
     @ResponseBody
     public RestUser getUserById(@PathVariable int id) throws IOException {
         final User userBy = userService.getUserBy(id);
@@ -57,7 +58,7 @@ public class AdminController extends BaseController {
         return new RestUser(userBy);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/restfull/admin/users/email/{email:.+}", produces = {"application/json"})
+    @RequestMapping(method = RequestMethod.GET, value = "users/email/{email:.+}", produces = {"application/json"})
     @ResponseBody
     public RestUser getUserByEmail(@PathVariable String email) throws IOException {
         final User user = userService.getUserBy(email);
@@ -67,7 +68,7 @@ public class AdminController extends BaseController {
         return new RestUser(user);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/api/restfull/admin/users", consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(method = RequestMethod.POST, value = "users", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createUser(@RequestBody RestUser user, HttpServletResponse response) throws WiseMappingException {
         if (user == null) {
@@ -104,7 +105,7 @@ public class AdminController extends BaseController {
         response.setHeader("Location", "/api/restfull/admin/users/" + user.getId());
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/api/restfull/admin/users/{id}/password", consumes = {"text/plain"})
+    @RequestMapping(method = RequestMethod.PUT, value = "users/{id}/password", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void changePassword(@RequestBody String password, @PathVariable int id) throws WiseMappingException {
         if (password == null) {
@@ -119,7 +120,7 @@ public class AdminController extends BaseController {
         userService.changePassword(user);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/api/restfull/admin/users/{id}")
+    @RequestMapping(method = RequestMethod.DELETE, value = "users/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteUserByEmail(@PathVariable int id) throws WiseMappingException {
         final User user = userService.getUserBy(id);

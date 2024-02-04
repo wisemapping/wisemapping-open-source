@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
-@Transactional(propagation = Propagation.REQUIRED)
+//@RequestMapping("/api/restfull/labels")
 public class MindmapController extends BaseController {
     private final Logger logger = LogManager.getLogger();
 

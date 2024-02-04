@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/restfull/account/")
 @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
 public class AccountController extends BaseController {
     @Qualifier("userService")
@@ -53,7 +54,7 @@ public class AccountController extends BaseController {
     @Autowired
     private LabelService labelService;
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/api/restfull/account/password", consumes = {"text/plain"})
+    @RequestMapping(method = RequestMethod.PUT, value = "password", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void changePassword(@RequestBody String password) throws PasswordTooLongException {
         if (password == null) {
@@ -69,13 +70,13 @@ public class AccountController extends BaseController {
         userService.changePassword(user);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/restfull/account", produces = {"application/json"})
+    @RequestMapping(method = RequestMethod.GET, value = "", produces = {"application/json"})
     public RestUser fetchAccount() {
         final User user = Utils.getUser(true);
         return new RestUser(user);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/api/restfull/account/firstname", consumes = {"text/plain"})
+    @RequestMapping(method = RequestMethod.PUT, value = "firstname", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void changeFirstname(@RequestBody String firstname) {
         if (firstname == null) {
@@ -87,7 +88,7 @@ public class AccountController extends BaseController {
         userService.updateUser(user);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/api/restfull/account/lastname", consumes = {"text/plain"})
+    @RequestMapping(method = RequestMethod.PUT, value = "lastname", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void changeLastName(@RequestBody String lastname) {
         if (lastname == null) {
@@ -99,7 +100,7 @@ public class AccountController extends BaseController {
         userService.updateUser(user);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/api/restfull/account/locale", consumes = {"text/plain"})
+    @RequestMapping(method = RequestMethod.PUT, value = "locale", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void changeLanguage(@RequestBody String language) {
         if (language == null) {
@@ -113,7 +114,7 @@ public class AccountController extends BaseController {
     }
 
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @RequestMapping(method = RequestMethod.DELETE, value = "/api/restfull/account")
+    @RequestMapping(method = RequestMethod.DELETE, value = "")
     public void deleteUser() throws WiseMappingException {
         // Delete collaborations ...
         final User user = Utils.getUser(true);
