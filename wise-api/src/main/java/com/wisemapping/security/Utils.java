@@ -34,7 +34,6 @@ final public class Utils {
         return getUser(false);
     }
 
-    @NotNull
     public static User getUser(boolean forceCheck) {
         User result = null;
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();

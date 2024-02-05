@@ -69,7 +69,7 @@ public class AdminController extends BaseController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/users", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void createUser(@RequestBody RestUser user, HttpServletResponse response) throws WiseMappingException {
+    public void createUser(@RequestBody RestUser user, final HttpServletResponse response) throws WiseMappingException {
         if (user == null) {
             throw new IllegalArgumentException("User could not be found");
         }

@@ -118,14 +118,4 @@ public class RestAccountControllerTest {
         return templateRest.postForLocation(BASE_REST_URL + "/admin/users", createUserEntity);
     }
 
-    private RestUser createDummyUser() {
-        final RestUser restUser = new RestUser();
-        final String username = "foo-to-delete" + System.nanoTime();
-        final String email = username + "@example.org";
-        restUser.setEmail(email);
-        restUser.setFirstname("foo first name");
-        restUser.setLastname("foo last name");
-        restUser.setPassword("fooPassword");
-        return restUser;
-    }
 }
