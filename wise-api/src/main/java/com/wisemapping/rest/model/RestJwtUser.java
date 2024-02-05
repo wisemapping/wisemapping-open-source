@@ -33,21 +33,20 @@ import org.jetbrains.annotations.NotNull;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RestJwtUser {
 
-    private String username;
+    private String email;
     private String password;
 
-
-    public RestJwtUser(@NotNull  String username, @NotNull String password) {
-        this.setUsername(username);
+    public RestJwtUser(@NotNull  String email, @NotNull String password) {
+        this.setEmail(email);
         this.setPassword(password);
     }
 
-    public String getUsername() {
-        return this.username;
+    public String getEmail() {
+        return this.email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {

@@ -21,14 +21,14 @@ public class JwtTokenUtil implements Serializable {
     @Value("${app.jwt.secret}")
     private String jwtSecret;
 
-    @Value("${app.jwt.expirationMs}")
-    private int jwtExpirationMs;
+    @Value("${app.jwt.expirationMin}")
+    private int jwtExpirationMin;
 
     public String generateJwtToken(@NotNull final UserDetails user) {
         return Jwts.builder()
                 .setSubject((user.getUsername()))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMin * 1000L * 60))
                 .signWith(key(), SignatureAlgorithm.HS256)
                 .compact();
     }

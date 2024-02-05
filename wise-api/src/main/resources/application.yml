@@ -29,12 +29,20 @@ spring:
       mode: always
       platform: hsqldb
 
+# Login ...
+logging:
+  level:
+    org:
+      apache:
+        tomcat: INFO
+    root: TRACE
+
 # Application Configuration.
 
 app:
   jwt:
     secret: dlqxKAg685SaKhsQXIMeM=JWCw3bkl3Ei3Tb7LMlnd19oMd66burPNlJ0Po1qguyjgpakQTk2CN3
-    expirationMs: 10000
+    expirationMin: 10080 # One week
   admin:
     user: admin@wisemapping.org
 
@@ -48,12 +56,6 @@ google:
     enabled: true
     secretKey: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
     siteKey: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
-logging:
-  level:
-    org:
-      apache:
-        tomcat: INFO
-    root: INFO
 mail:
   password: ''
   serverSendEmail: root@localhost

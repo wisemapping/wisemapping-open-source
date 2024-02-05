@@ -55,11 +55,11 @@ public class JwtAuthController {
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody RestJwtUser user, @NotNull HttpServletResponse response) throws Exception {
 
 		// Is a valid user ?
-		authenticate(user.getUsername(), user.getPassword());
+		authenticate(user.getEmail(), user.getPassword());
 
 		// Create token ...
 		final UserDetails userDetails = userDetailsService
-				.loadUserByUsername(user.getUsername());
+				.loadUserByUsername(user.getEmail());
 
 		final String token = jwtTokenUtil.generateJwtToken(userDetails);
 

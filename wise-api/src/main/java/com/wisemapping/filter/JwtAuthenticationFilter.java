@@ -18,9 +18,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    private static final String BEARER_TOKEN_PREFIX = "Bearer ";
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -32,33 +34,51 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain)
             throws ServletException, IOException {
-        final String authorizationHeader = request.getHeader("Authorization");
 
-        String username = null;
-        String jwtToken = null;
 
-        // Extract username from token ...
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            jwtToken = authorizationHeader.substring(7);
-            try {
-                username = jwtTokenUtil.extractFromJwtToken(jwtToken);
-            } catch (Exception e) {
-                // Handle token extraction/validation errors
-                logger.debug("Error extracting username from token: " + e.getMessage());
+        final Optional<String> token = getJwtTokenFromRequest(request);
+        if (token.isPresent() && SecurityContextHolder.getContext().getAuthentication() == null) {
+            // Extract email from token ...
+            final Optional<String> email = extractEmailFromToken(token.get());
+
+            if (email.isPresent() && jwtTokenUtil.validateJwtToken(token.get())) {
+                // Is it an existing user ?
+                final UserDetails userDetails = userDetailsService.loadUserByUsername(email.get());
+                if (userDetails != null) {
+                    final UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                } else {
+                    logger.trace("User " + email.get() + " could not be found");
+                }
             }
         }
-
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
-            if (jwtTokenUtil.validateJwtToken(jwtToken)) {
-                final UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            }
-        }
-
         filterChain.doFilter(request, response);
+    }
+
+    private Optional<String> extractEmailFromToken(final @NotNull String token) {
+        Optional<String> result = Optional.empty();
+        try {
+            result = Optional.of(jwtTokenUtil.extractFromJwtToken(token));
+        } catch (Exception e) {
+            // Handle token extraction/validation errors
+            logger.debug("Error extracting email from token: " + e.getMessage());
+        }
+        return result;
+    }
+
+    private static Optional<String> getJwtTokenFromRequest(@NotNull HttpServletRequest request) {
+        Optional<String> result = Optional.empty();
+
+        final String authorizationHeader = request.getHeader("Authorization");
+        if (authorizationHeader != null) {
+            if (authorizationHeader.startsWith(BEARER_TOKEN_PREFIX)) {
+                logger.trace("JWT Bearer token found");
+                final String token = authorizationHeader.substring(BEARER_TOKEN_PREFIX.length());
+                result = Optional.of(token);
+            }
+        }
+        return result;
     }
 }
