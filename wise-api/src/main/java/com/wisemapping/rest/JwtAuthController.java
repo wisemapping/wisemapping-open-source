@@ -21,8 +21,10 @@ package com.wisemapping.rest;
 import com.wisemapping.rest.model.RestJwtUser;
 import com.wisemapping.security.JwtTokenUtil;
 import com.wisemapping.security.UserDetailsService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -50,7 +52,7 @@ public class JwtAuthController {
 	private JwtTokenUtil jwtTokenUtil;
 
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-	public ResponseEntity<?> createAuthenticationToken(@RequestBody RestJwtUser user) throws Exception {
+	public ResponseEntity<?> createAuthenticationToken(@RequestBody RestJwtUser user, @NotNull HttpServletResponse response) throws Exception {
 
 		// Is a valid user ?
 		authenticate(user.getUsername(), user.getPassword());
@@ -60,6 +62,10 @@ public class JwtAuthController {
 				.loadUserByUsername(user.getUsername());
 
 		final String token = jwtTokenUtil.generateJwtToken(userDetails);
+
+		// Add token in the header ...
+		response.addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+
 		return ResponseEntity.ok(token);
 	}
 

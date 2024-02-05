@@ -27,6 +27,7 @@ import com.wisemapping.rest.JwtAuthController;
 import com.wisemapping.rest.model.RestJwtUser;
 import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.rest.model.RestUserRegistration;
+import com.wisemapping.security.JwtTokenUtil;
 import com.wisemapping.service.UserService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -35,10 +36,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import static com.wisemapping.test.rest.RestHelper.createDummyUser;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -54,21 +57,27 @@ public class RestJwtAuthControllerTest {
     private ObjectMapper objectMapper;
 
     @Autowired
+    JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
     private MockMvc mockMvc;
 
     @Autowired
     private UserService userService;
 
     @Test
-    void generateTockenValidUser() throws Exception {
+    void generateTokenValidUser() throws Exception {
         final RestJwtUser user = new RestJwtUser("test@wisemapping.org", "test");
         final String userJson = objectMapper.writeValueAsString(user);
 
-        mockMvc.perform(
+        final MvcResult result = mockMvc.perform(
                         post("/api/restfull/authenticate").
                                 contentType(MediaType.APPLICATION_JSON)
                                 .content(userJson))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk()).andReturn();
+
+
+        assertTrue(jwtTokenUtil.validateJwtToken(result.getResponse().getContentAsString()));
     }
 
     @Test
@@ -81,6 +90,7 @@ public class RestJwtAuthControllerTest {
                                 contentType(MediaType.APPLICATION_JSON)
                                 .content(userJson))
                 .andExpect(status().is4xxClientError());
+
     }
 
     @Test
@@ -93,6 +103,7 @@ public class RestJwtAuthControllerTest {
                                 contentType(MediaType.APPLICATION_JSON)
                                 .content(userJson))
                 .andExpect(status().is4xxClientError());
-    }
 
+
+    }
 }

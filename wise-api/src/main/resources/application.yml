@@ -8,9 +8,9 @@ spring:
     name: wisemapping-api
     title: wisemapping-api
   datasource:
+    url: jdbc:hsqldb:mem:wisemapping
     driver-class-name: org.hsqldb.jdbc.JDBCDriver
     password: ''
-    url: jdbc:hsqldb:file:${database.base.url}/db/wisemapping
     username: sa
   jpa:
     hibernate:
