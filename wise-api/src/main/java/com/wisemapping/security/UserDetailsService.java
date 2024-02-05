@@ -36,7 +36,7 @@ public class UserDetailsService
     @Autowired
     private UserService userService;
 
-    @Value("${admin.user}")
+    @Value("${app.admin.user}")
     private String adminUser;
 
     @Override

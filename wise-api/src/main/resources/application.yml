@@ -31,11 +31,13 @@ spring:
 
 # Application Configuration.
 
-admin:
-  user: admin@wisemapping.org
-database:
-  base:
-    url: /Users/veigap/
+app:
+  jwt:
+    secret: dlqxKAg685SaKhsQXIMeM=JWCw3bkl3Ei3Tb7LMlnd19oMd66burPNlJ0Po1qguyjgpakQTk2CN3
+    expirationMs: 10000
+  admin:
+    user: admin@wisemapping.org
+
 google:
   ads:
     enabled: false

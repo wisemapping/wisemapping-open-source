@@ -54,7 +54,7 @@ public class MindmapServiceImpl
     @Autowired
     private NotificationService notificationService;
 
-    @Value("${admin.user}")
+    @Value("${app.admin.user}")
     private String adminUser;
     final private LockManager lockManager;
 

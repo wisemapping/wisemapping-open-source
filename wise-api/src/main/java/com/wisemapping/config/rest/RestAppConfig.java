@@ -32,6 +32,7 @@ public class RestAppConfig {
                 .securityMatcher("/**")
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(mvc.pattern("/api/restfull/users/")).permitAll()
+                        .requestMatchers(mvc.pattern("/api/restfull/authenticate")).permitAll()
                         .requestMatchers(mvc.pattern("/api/restfull/users/resetPassword")).permitAll()
                         .requestMatchers(mvc.pattern("/api/restfull/oauth2/googlecallback")).permitAll()
                         .requestMatchers(mvc.pattern("/api/restfull/oauth2/confirmaccountsync")).permitAll()
